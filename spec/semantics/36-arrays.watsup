@@ -1,0 +1,269 @@
+;; Ordered containers have internal IDs, never PHP object identity. Mutating
+;; shared containers will separate them; literal builders own their fresh ID.
+dec $array_empty() : parray
+def $array_empty() = {ITEMS eps, NEXT $(-9223372036854775808)}
+
+dec $entry_lookup(pentry*, pkey) : pitem?
+def $entry_lookup(eps, pkey) = eps
+def $entry_lookup((ENTRY pkey pitem) :: pentry_tail*, pkey) = (pitem)
+def $entry_lookup((ENTRY pkey_other pitem) :: pentry_tail*, pkey) = $entry_lookup(pentry_tail*, pkey)
+  -- if pkey_other =/= pkey
+
+dec $entry_insert(pentry*, pkey, pitem) : pentry*
+def $entry_insert(eps, pkey, pitem) = [ENTRY pkey pitem]
+def $entry_insert((ENTRY pkey pitem_old) :: pentry_tail*, pkey, pitem) = (ENTRY pkey pitem) :: pentry_tail*
+def $entry_insert((ENTRY pkey_other pitem_old) :: pentry_tail*, pkey, pitem) = (ENTRY pkey_other pitem_old) :: $entry_insert(pentry_tail*, pkey, pitem)
+  -- if pkey_other =/= pkey
+
+dec $next_history(int, pkey) : int
+def $next_history(i, KSTRING n*) = i
+def $next_history(i, KINT i_key) = i
+  -- if $(i_key < i)
+def $next_history(i, KINT i_key) = $(i_key + 1)
+  -- if $(i_key >= i)
+  -- if $(i_key < 9223372036854775807)
+def $next_history(i, KINT 9223372036854775807) = 9223372036854775807
+
+dec $array_insert(parray, pkey, pitem) : parray
+def $array_insert(parray, pkey, pitem) = parray[.ITEMS = $entry_insert(parray.ITEMS, pkey, pitem)][.NEXT = $next_history(parray.NEXT, pkey)]
+
+dec $array_append_key(parray) : pkey
+def $array_append_key(parray) = KINT 0
+  -- if parray.NEXT = $(-9223372036854775808)
+def $array_append_key(parray) = KINT parray.NEXT
+  -- if parray.NEXT =/= $(-9223372036854775808)
+
+dec $array_replace(parray*, nat, parray) : parray*
+def $array_replace(parray_old :: parray_tail*, 0, parray) = parray :: parray_tail*
+def $array_replace(parray_old :: parray_tail*, n, parray) = parray_old :: $array_replace(parray_tail*, n_next, parray)
+  -- if $(n > 0)
+  -- if $(n - 1) = n_next
+
+dec $allocate_array(pstate, parray) : pstate
+def $allocate_array(S, parray) = S[.ARRAYS = S.ARRAYS ++ [parray]][.RESULT = KNOWN (PARRAY n)]
+  -- if n = |S.ARRAYS|
+
+dec $diagnostic(pstate, text, nat*, int) : pstate
+def $diagnostic(S, text, n_message*, z) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC text n_message* z]]
+  -- if $(z > 0)
+def $diagnostic(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
+  -- if $(z <= 0)
+
+dec $cast_notices(pstate, castnotice*, nat, int) : pstate
+def $cast_notices(S, eps, n_bits, z) = S
+def $cast_notices(S, RANGEWARNING :: castnotice_tail*, n_bits, z) = $cast_notices(S_warned, castnotice_tail*, n_bits, z)
+  -- if (n_text*, b) = $number_text(NFLOAT n_bits, $(-1))
+  -- if S_warned = $diagnostic(S, "Warning", [84,104,101,32,102,108,111,97,116,32] ++ n_text* ++ [32,105,115,32,110,111,116,32,114,101,112,114,101,115,101,110,116,97,98,108,101,32,97,115,32,97,110,32,105,110,116,44,32,99,97,115,116,32,111,99,99,117,114,114,101,100], z)
+def $cast_notices(S, PRECISIONLOSS :: castnotice_tail*, n_bits, z) = $cast_notices(S_warned, castnotice_tail*, n_bits, z)
+  -- if (n_text*, b) = $number_text(NFLOAT n_bits, $(-1))
+  -- if S_warned = $diagnostic(S, "Deprecated", [73,109,112,108,105,99,105,116,32,99,111,110,118,101,114,115,105,111,110,32,102,114,111,109,32,102,108,111,97,116,32] ++ n_text* ++ [32,116,111,32,105,110,116,32,108,111,115,101,115,32,112,114,101,99,105,115,105,111,110], z)
+
+dec $key_value(pstate, pvalue, bool, int) : pstate
+def $key_value(S, PINT i, b, z) = S[.KEY = KINT i]
+def $key_value(S, PBOOL false, b, z) = S[.KEY = KINT 0]
+def $key_value(S, PBOOL true, b, z) = S[.KEY = KINT 1]
+def $key_value(S, PSTRING n*, b, z) = S[.KEY = KINT i]
+  -- if $string_key(n*) = INTEGERKEY i
+def $key_value(S, PSTRING n*, b, z) = S[.KEY = KSTRING n*]
+  -- if $string_key(n*) = STRINGKEY
+def $key_value(S, PNULL, true, z) = S[.KEY = KSTRING eps]
+def $key_value(S, PNULL, false, z) = S_warned[.KEY = KSTRING eps]
+  -- if S_warned = $diagnostic(S, "Deprecated", [85,115,105,110,103,32,110,117,108,108,32,97,115,32,97,110,32,97,114,114,97,121,32,111,102,102,115,101,116,32,105,115,32,100,101,112,114,101,99,97,116,101,100,44,32,117,115,101,32,97,110,32,101,109,112,116,121,32,115,116,114,105,110,103,32,105,110,115,116,101,97,100], z)
+def $key_value(S, PFLOAT n, b, z) = S_warned[.KEY = KINT i]
+  -- if (i, castnotice*) = $float_long(n, true)
+  -- if S_warned = $cast_notices(S, castnotice*, n, z)
+def $key_value(S, PARRAY n, b, z) = S[.COMPLETION = UNSUPPORTED "array-key error compilation"]
+
+dec $undefined_operand(pstate, poperand) : bool
+def $undefined_operand(S, VARIABLE n* z) = true
+  -- if $lookup(S.ENV, n*) = eps
+def $undefined_operand(S, VARIABLE n* z) = true
+  -- if $lookup(S.ENV, n*) = (n_cell)
+  -- if S.STORE[n_cell] = UNDEFINED
+def $undefined_operand(S, poperand) = false
+  -- otherwise
+
+dec $key_operand(pstate, poperand, int) : pstate
+def $key_operand(S, poperand, z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $key_operand(S, poperand, z) = $key_value(S_read, pvalue, $undefined_operand(S, poperand), z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+dec $literal_insert(pstate, nat, pkey?, pvalue, int) : pstate
+def $literal_insert(S, n_array, (pkey), pvalue, z) = S[.ARRAYS = $array_replace(S.ARRAYS, n_array, $array_insert(S.ARRAYS[n_array], pkey, DIRECT pvalue))]
+def $literal_insert(S, n_array, eps, pvalue, z) = S[.ARRAYS = $array_replace(S.ARRAYS, n_array, $array_insert(S.ARRAYS[n_array], pkey, DIRECT pvalue))]
+  -- if pkey = $array_append_key(S.ARRAYS[n_array])
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = eps
+def $literal_insert(S, n_array, eps, pvalue, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,97,100,100,32,101,108,101,109,101,110,116,32,116,111,32,116,104,101,32,97,114,114,97,121,32,97,115,32,116,104,101,32,110,101,120,116,32,101,108,101,109,101,110,116,32,105,115,32,97,108,114,101,97,100,121,32,111,99,99,117,112,105,101,100], z)
+  -- if pkey = $array_append_key(S.ARRAYS[n_array])
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (pitem)
+
+dec $entry_value(pstate, pitem) : pvalue
+def $entry_value(S, DIRECT pvalue) = pvalue
+def $entry_value(S, ALIAS n) = pvalue
+  -- if S.STORE[n] = DEFINED pvalue
+
+dec $c_string(nat*) : nat*
+dec $missing_key_bytes(pkey) : nat*
+def $missing_key_bytes(KINT i) = $decimal_integer(i)
+def $missing_key_bytes(KSTRING n*) = [34] ++ $c_string(n*) ++ [34]
+
+def $c_string(eps) = eps
+def $c_string(0 :: n_tail*) = eps
+def $c_string(n :: n_tail*) = n :: $c_string(n_tail*)
+  -- if n =/= 0
+
+dec $dimension_key(pstate, poperand, int) : pstate
+dec $array_read(pstate, pvalue, poperand, int) : pstate
+def $array_read(S, PARRAY n, poperand, z) = S_key
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $array_read(S, PARRAY n, poperand, z) = S_key[.RESULT = KNOWN $entry_value(S_key, pitem)]
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if $entry_lookup(S_key.ARRAYS[n].ITEMS, S_key.KEY) = (pitem)
+def $array_read(S, PARRAY n, poperand, z) = S_warned[.RESULT = KNOWN PNULL]
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if $entry_lookup(S_key.ARRAYS[n].ITEMS, S_key.KEY) = eps
+  -- if S_warned = $diagnostic(S_key, "Warning", [85,110,100,101,102,105,110,101,100,32,97,114,114,97,121,32,107,101,121,32] ++ $missing_key_bytes(S_key.KEY), z)
+def $array_read(S, pvalue, poperand, z) = S[.COMPLETION = UNSUPPORTED "non-array dimension access"]
+  -- otherwise
+
+dec $entries_strict(pstate, pentry*, pentry*) : bool
+def $entries_strict(S, eps, eps) = true
+def $entries_strict(S, (ENTRY pkey pitem_1) :: pentry_left*, (ENTRY pkey pitem_2) :: pentry_right*) = $entries_strict(S, pentry_left*, pentry_right*)
+  -- if $strict_value(S, $entry_value(S, pitem_1), $entry_value(S, pitem_2))
+def $entries_strict(S, pentry_left*, pentry_right*) = false
+  -- otherwise
+
+def $strict_value(S, PARRAY n, PARRAY n) = true
+def $strict_value(S, PARRAY n_1, PARRAY n_2) = $entries_strict(S, S.ARRAYS[n_1].ITEMS, S.ARRAYS[n_2].ITEMS)
+  -- if n_1 =/= n_2
+
+dec $array_union(parray, pentry*) : parray
+def $array_union(parray, eps) = parray
+def $array_union(parray, (ENTRY pkey pitem) :: pentry_tail*) = $array_union($array_insert(parray, pkey, pitem), pentry_tail*)
+  -- if $entry_lookup(parray.ITEMS, pkey) = eps
+def $array_union(parray, (ENTRY pkey pitem) :: pentry_tail*) = $array_union(parray, pentry_tail*)
+  -- if $entry_lookup(parray.ITEMS, pkey) = (pitem_left)
+
+def $binary_apply(S, ADD, PARRAY n_1, PARRAY n_2, z) = $allocate_array(S, $array_union(S.ARRAYS[n_1], S.ARRAYS[n_2].ITEMS))
+
+def $stringify(S, PARRAY n, z) = S_warned[.RESULT = KNOWN (PSTRING ([65,114,114,97,121]))]
+  -- if S_warned = $diagnostic(S, "Warning", [65,114,114,97,121,32,116,111,32,115,116,114,105,110,103,32,99,111,110,118,101,114,115,105,111,110], z)
+
+;; Compile-time array classification reuses pure operations on an isolated state.
+;; It only accepts successful computations without diagnostics or variable reads.
+dec $constant_state(pstate) : pstate?
+def $constant_state(S) = (S)
+  -- if S.COMPLETION = NORMAL
+  -- if S.EVENTS = eps
+def $constant_state(S) = eps
+  -- otherwise
+
+dec $fold_binary(pstate, pbin, expression, expression) : pstate?
+dec $fold_items(pstate, nat, phpType13*) : pstate?
+def $fold_constant(S, expression) = (S[.RESULT = KNOWN pvalue])
+  -- if $fold_scalar(expression) = (pvalue)
+def $fold_constant(S, NExprArray (SEQUENCE phpType13*) metadata) = $fold_items(S_new, n, phpType13*)
+  -- if S_new = $allocate_array(S, $array_empty())
+  -- if S_new.RESULT = KNOWN (PARRAY n)
+def $fold_constant(S, NExprBinaryOpPlus expression_1 expression_2 metadata) = $fold_binary(S, ADD, expression_1, expression_2)
+  -- if $fold_scalar(NExprBinaryOpPlus expression_1 expression_2 metadata) = eps
+def $fold_constant(S, NExprBinaryOpIdentical expression_1 expression_2 metadata) = $fold_binary(S, IDENTICAL, expression_1, expression_2)
+  -- if $fold_scalar(NExprBinaryOpIdentical expression_1 expression_2 metadata) = eps
+def $fold_constant(S, NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $fold_binary(S, NOTIDENTICAL, expression_1, expression_2)
+  -- if $fold_scalar(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = eps
+def $fold_constant(S, NExprBinaryOpMinus expression_1 expression_2 metadata) = $fold_binary(S, SUBTRACT, expression_1, expression_2)
+  -- if $fold_scalar(NExprBinaryOpMinus expression_1 expression_2 metadata) = eps
+def $fold_constant(S, NExprBinaryOpMul expression_1 expression_2 metadata) = $fold_binary(S, MULTIPLY, expression_1, expression_2)
+  -- if $fold_scalar(NExprBinaryOpMul expression_1 expression_2 metadata) = eps
+def $fold_constant(S, NExprBinaryOpDiv expression_1 expression_2 metadata) = $fold_binary(S, DIVIDE, expression_1, expression_2)
+  -- if $fold_scalar(NExprBinaryOpDiv expression_1 expression_2 metadata) = eps
+def $fold_constant(S, NExprUnaryPlus expression metadata) = $constant_state($unary_apply(S_value, POSITIVE, pvalue, 1))
+  -- if $fold_scalar(NExprUnaryPlus expression metadata) = eps
+  -- if $fold_constant(S, expression) = (S_value)
+  -- if S_value.RESULT = KNOWN pvalue
+def $fold_constant(S, NExprUnaryMinus expression metadata) = $constant_state($unary_apply(S_value, NEGATIVE, pvalue, 1))
+  -- if $fold_scalar(NExprUnaryMinus expression metadata) = eps
+  -- if $fold_constant(S, expression) = (S_value)
+  -- if S_value.RESULT = KNOWN pvalue
+def $fold_constant(S, NExprArrayDimFetch expression phpType5 metadata) = $constant_state($array_read(S_key, pvalue, S_key.RESULT, 1))
+  -- if phpType5 = expression_key
+  -- if $fold_constant(S, expression) = (S_array)
+  -- if S_array.RESULT = KNOWN pvalue
+  -- if $fold_constant(S_array, expression_key) = (S_key)
+def $fold_constant(S, expression) = eps
+  -- otherwise
+
+def $fold_binary(S, pbin, expression_1, expression_2) = $constant_state($binary_apply(S_right, pbin, pvalue_1, pvalue_2, 1))
+  -- if $fold_constant(S, expression_1) = (S_left)
+  -- if S_left.RESULT = KNOWN pvalue_1
+  -- if $fold_constant(S_left, expression_2) = (S_right)
+  -- if S_right.RESULT = KNOWN pvalue_2
+def $fold_binary(S, pbin, expression_1, expression_2) = eps
+  -- otherwise
+
+def $fold_items(S, n, eps) = (S[.RESULT = KNOWN (PARRAY n)])
+def $fold_items(S, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $fold_items(S_insert, n, phpType13_tail*)
+  -- if $fold_constant(S, expression) = (S_value)
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $constant_state($literal_insert(S_value, n, eps, pvalue, 1)) = (S_insert)
+def $fold_items(S, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $fold_items(S_insert, n, phpType13_tail*)
+  -- if phpType5 = expression_key
+  -- if $fold_constant(S, expression_key) = (S_key)
+  -- if S_key.RESULT = KNOWN pvalue_key
+  -- if $constant_state($key_value(S_key, pvalue_key, false, 1)) = (S_converted)
+  -- if $fold_constant(S_converted, expression) = (S_value)
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if S_insert = $literal_insert(S_value, n, (S_converted.KEY), pvalue, 1)
+def $fold_items(S, n, phpType13*) = eps
+  -- otherwise
+
+def $array_is_constant(expression) = true
+  -- if $fold_constant($initial_state(NORMAL), expression) = (S)
+def $array_is_constant(expression) = false
+  -- otherwise
+
+def $dimension_key(S, poperand, z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $dimension_key(S, poperand, z) = $key_value(S_read, pvalue, false, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+def $array_name_fold_warning(phpType34) = true
+  -- if phpType34 = expression
+  -- if $fold_constant($initial_state(NORMAL), expression) = (S)
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $array_name_fold_warning(phpType34) = false
+  -- otherwise
+
+;; Delayed variable/dimension fetches preserve name operands across key effects.
+dec $delayed_base(expression) : bool
+def $delayed_base(NExprVariable phpType34 metadata) = true
+def $delayed_base(NExprArrayDimFetch expression phpType5 metadata) = true
+def $delayed_base(expression) = false
+  -- otherwise
+
+dec $base_read(pstate, pbase, int) : pstate
+def $base_read(S, BASE_VALUE poperand, z) = $resolve_at(S, poperand, z)
+def $base_read(S, BASE_NAME poperand z_name, z) = S_name
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $base_read(S, BASE_NAME poperand z_name, z) = $read_name(S_name, n_name*, z_name)
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $base_read(S, BASE_DIM pbase poperand z_key, z) = S_base
+  -- if S_base = $base_read(S, pbase, z_key)
+  -- if S_base.COMPLETION =/= NORMAL
+def $base_read(S, BASE_DIM pbase poperand z_key, z) = $array_read(S_base, pvalue, poperand, z_key)
+  -- if S_base = $base_read(S, pbase, z_key)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN pvalue

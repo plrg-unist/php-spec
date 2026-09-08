@@ -229,8 +229,7 @@ def $drive(S, n) = $drive(S_next, n_next)
   -- if $(n - 1) = n_next
   -- PhpStep: S ~> S_next
 
-dec $initial_state(pcompletion) : pstate
-def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, RESULT KNOWN PNULL, CELL 0}
+def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL)}
 dec $run_statements(statement*, nat) : pstate
 def $run_statements(statement_tail*, n) = $drive(S[.TODO = $statement_tasks(statement_tail*)], n)
   -- if $check_statements(statement_tail*) = READY

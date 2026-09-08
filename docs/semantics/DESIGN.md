@@ -12,8 +12,8 @@ and a variable environment mapping byte names to cell identities. Cells contain
 `UNDEFINED` or a PHP value; missing names, undefined slots and null remain distinct.
 Ordinary assignment copies a value into the designated cell. Reference rebinding
 changes one name's cell identity, leaving other aliases attached to their original
-cell. Unset removes the binding. Array contents and property type sources are the
-next storage obligations, not silently approximated by this variable model.
+cell. Unset removes the binding. Property type sources and writable array paths
+remain later storage obligations.
 
 An operand is either a captured value or a delayed compiled-variable read. Dynamic
 name expressions can therefore retain a delayed read across RHS effects. A dynamic
@@ -29,8 +29,9 @@ lines alone are insufficient for multiline arithmetic. These distinctions follow
 
 The driver spends one budget unit per task transition, including expression
 continuations. PHP values distinguish null, booleans, signed integers, float bits
-and byte sequences. Base64 decoding and integer decimal output are pure `.watsup`.
-Calls, arrays, objects, handlers and resumable control remain pending in the feature
+byte sequences and internal array-container IDs. Base64 decoding and integer
+decimal output are pure `.watsup`. Calls, objects, handlers and resumable control
+remain pending in the feature
 inventory. Access to an unimplemented request-owned variable is Unsupported,
 including reference acquisition and unset; it cannot fabricate an ordinary local.
 
@@ -52,11 +53,35 @@ including exact versus nonexact division, int/float distinction, signed zero and
 NaN. See NUMERICS.md for helper evidence and still-pending numeric operations.
 
 Dynamic names use the same explicit scalar string conversion and warnings. A pure
-folding classifier detects NaN names whose warning belongs to compilation; those
+folding classifier detects NaN and array names whose warning belongs to compilation; those
 cases are currently Unsupported until the compile phase accumulates diagnostics.
 Emitting that warning at runtime would change its order. This pending case and
-missing source context remain distinct from modeled PHP failures. Array/operator
+missing source context remain distinct from modeled PHP failures. Object/operator
 protocol dispatch and callbacks are later obligations, not native fallbacks.
+
+Ordinary arrays use ordered key/value entries and signed next-index history.
+Literal construction evaluates key expressions before values, but consumes delayed
+variable values before delayed keys. Dimension bases have separate descriptors:
+dynamic names and nested dimension fetches remain delayed through key-expression
+effects, while a computed name value is captured. This differs from a dynamic
+variable used as an arithmetic value. Null and float key conversions retain their
+ordered diagnostics; undefined variable keys suppress the null deprecation only
+in literal construction. Missing string-key diagnostics truncate at NUL, matching
+Zend's `%s` rendering. Reads, nested strict identity and left-biased union are
+implemented. Strict identity first checks shared container identity, observable
+for arrays containing NaN. Containers are shared by value assignment; dimension
+writes, copy-on-write separation, embedded references and unpacking remain pending.
+Eager copying would incorrectly change singleton-reference behavior, so the next
+storage layer must count reachable edges and live temporaries before separation.
+
+A pure constant classifier reuses the array/numeric rules on isolated state and
+accepts only normal results without diagnostics. This determines compiler source
+lines: a folded array retains its first element's effective line, an empty array
+uses its closing line, and a runtime array ends on its last compiled value.
+Source evidence is `zend_try_ct_eval_array`, `zend_compile_array`,
+`zend_delayed_compile_dim`, `zend_ast_create_list_1`, `ZEND_ADD_ARRAY_ELEMENT`,
+`zend_fetch_dimension_address_inner` and `zend_hash_compare_impl`. Compile-time
+array-key errors remain explicit Unsupported until their static phase is modeled.
 
 The static pass currently rejects unsupported syntax before execution. This is a
 visible bootstrap limitation, not a claim that unsupported code always executes.
@@ -75,7 +100,8 @@ The baseline profile is `tests/semantics/profile.json`, described in CORE.md.
 fresh semantic/oracle processes under the same file identity, directory, profile
 and locale, compares exact output channels and status, and retains raw classified
 negative outcomes. It reuses the syntax harness dependency-closure fingerprint
-before and after each campaign. The authored and seeded alias cases establish the current scalar/storage slice;
+before and after each campaign. The authored and seeded cases establish the current
+scalar, variable-storage and ordinary-array literal/read slice;
 they do not establish complete PHP semantics or BOLA freedom. Compact current
 evidence is `coverage/semantics/source.json`; exact raw observations are regenerated
 in the ignored `coverage/results-semantic-source.jsonl`. The earlier phase0 report

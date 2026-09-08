@@ -78,6 +78,65 @@ CASES = {
 }
 
 
+CASES.update({
+    'array-nested-key-delayed': b'<?php $a=[[1],[2]];$i=0;echo $a[$i][(($i=1)===1)-1];',
+    'array-nested-key-captured': b'<?php $a=[[1],[2]];$i=0;$n="i";echo $a[$$n][(($i=1)===1)-1];',
+    'array-nested-root-delayed': b'<?php $a=[[1]];echo $a[0][($a=[[2]])[0][0]-2];',
+    'array-nested-root-captured': b'<?php echo ($a=[[1]])[0][($a=[[2]])[0][0]-2];',
+
+    'array-dynamic-base-delayed': b'<?php $a=[1];$n="a";echo $$n[($a=[2])[0]-2];',
+    'array-dynamic-base-name-delayed': b'<?php $a=[1];$b=[2];$n="a";echo $$n[(($n="b")==="b")-1];',
+    'array-dynamic-base-name-captured': b'<?php $a=[1];$b=[2];$n="a";echo ${($n="a")}[ (($n="b")==="b")-1 ];',
+    'array-captured-name-base-delayed': b'<?php $a=[1];$n="a";echo ${($n="a")}[($a=[2])[0]-2];',
+
+    'array-unary-fold-line': b'<?php\necho [\n-\n1,\n2\n];',
+    'array-nan-shared-identity': b'<?php $a=[NAN];$b=$a;echo $a===$a,$a===$b;echo [NAN]===[NAN];$b=$a+[];echo $a===$b;',
+    'array-nested-fold-line': b'<?php\necho [\n[3][0]-1,\n9\n];',
+    'array-basic': b'<?php\n$a=[1,2];echo $a[0],$a[1];',
+    'array-identity': b'<?php\necho [1] === [1], [1]!==[1.0], [1,2]!==[1=>2,0=>1], [[1]] === [[1]];',
+    'array-union': b'<?php\n$a=[1,2]+[0=>3,2=>4,"x"=>5];echo $a[0],$a[1],$a[2],$a["x"];',
+    'array-keydelayed': b'<?php\n$k=0;$a=[$k=>($k=1)];echo $a[1];',
+    'array-keycaptured': b'<?php\n$k=0;$n="k";$a=[$$n=>($k=1)];echo $a[0];',
+    'array-keymissing': b'<?php\n$a=[$missing=>1];echo $a[""];',
+    'array-keydynamicmissing': b'<?php\n$n="missing";$a=[$$n=>1];echo $a[""];',
+    'array-keynull': b'<?php\n$a=[null=>1];echo $a[null];',
+    'array-floatkey': b'<?php\n$a=[1.5=>1,INF=>2,NAN=>3];echo $a[1],$a[0];',
+    'array-negative': b'<?php\n$a=[-5=>1,2,3];echo $a[-5],$a[-4],$a[-3];',
+    'array-max': b'<?php\n$a=[PHP_INT_MAX=>1,2];',
+    'array-missing': b'<?php\n$a=[];echo $a["a"],$a[1];',
+    'array-arrayecho': b'<?php\necho [\n1,\n2\n];',
+    'array-arrayechodynamic': b'<?php\n$a=1;echo [\n1,\n$a\n];',
+    'array-keyline': b'<?php\n$a=[\nnull=>\n1\n];echo $a[\nnull\n];',
+    'array-keyfloatline': b'<?php\n$a=[\n1.5=>\n1\n];',
+    'array-nestedline': b'<?php\necho [\n[\n1\n]\n];',
+    'array-dimline': b'<?php\n$a=[];echo $a[\n"a"\n];',
+    'array-dimdelayed': b'<?php\n$a=[1,2];echo $a[($a=[3,4])[0]-3];',
+    'array-missing-nul': b'<?php\n$a=[];echo $a["a\\0b"],$a["a\\nb"];',
+    'array-missing-cv-dimension': b'<?php\n$a=[];echo $a[$missing];',
+    'array-missing-both': b'<?php\n$a=[$missingkey=>$missingvalue];echo $a[""];',
+    'array-key-by-value-copy': b'<?php\n$a=[1,2];$b=$a;$a=[3];echo $b[0],$b[1],$a[0];',
+    'array-key-collision-types': b'<?php\n$a=[1=>"a","1"=>"b",true=>"c",1.0=>"d",null=>"e",false=>"f",0=>"g"];echo $a[1],$a[0],$a[""];',
+    'array-key-canonical-strings': b'<?php\n$a=["01"=>1,"+1"=>2,"-0"=>3,"1 "=>4,"-1"=>5,"9223372036854775808"=>6];echo $a["01"],$a["+1"],$a["-0"],$a["1 "],$a[-1],$a["9223372036854775808"];',
+    'array-key-int-min': b'<?php\n$a=[PHP_INT_MIN=>1,2];echo $a[PHP_INT_MIN],$a[PHP_INT_MIN+1];',
+    'array-key-int-max-replace': b'<?php\n$a=[PHP_INT_MAX=>1,PHP_INT_MAX=>2];echo $a[PHP_INT_MAX];',
+    'array-array-mixed-operators': b'<?php\necho []===null,":",[]!==false,":",[]===[],":",[]+[1];',
+    'array-array-type-error': b'<?php\necho "prefix",[1]-[1];',
+    'array-array-scalar-type-error': b'<?php\necho "prefix",1+[1];',
+    'array-array-unary-type-error': b'<?php\necho "prefix",-[1];',
+    'array-array-name-runtime': b'<?php\n$a=[];$$a=1;echo $$a;',
+    'array-array-name-dynamic-literal': b'<?php\n$a=1;${[$a]}=2;echo $Array;',
+    'array-array-name-nonfold-key': b'<?php\n${[null=>1]}=2;echo $Array;',
+    'array-empty-array-line': b'<?php\necho [\n\n];',
+    'array-keyed-array-line': b'<?php\necho [\n"key"=>\n1\n];',
+    'array-nested-constant-arithmetic-line': b'<?php\necho [\n[1]+[2],\n3\n];',
+    'array-nested-constant-dim-line': b'<?php\necho [\n[1][0],\n3\n];',
+    'array-nested-dynamic-array-line': b'<?php\n$x=1;echo [\n[\n$x\n]\n];',
+    'array-literal-captured-array': b'<?php\n$a=[1];$n="a";$b=[$$n,($a=[2])];echo $b[0][0],$b[1][0];',
+    'array-literal-delayed-array': b'<?php\n$a=[1];$b=[$a,($a=[2])];echo $b[0][0],$b[1][0];',
+    'array-dimension-key-mutation': b'<?php\n$a=["x"=>1];$k="x";echo $a[($k="x")];',
+    'array-nested-dimension-lookup-line': b'<?php\n$a=[[]];echo $a[\n0\n][\n"missing"\n];',
+})
+
 # Independent review-authored witnesses keep their original provenance.
 CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read']
 for identifier in CONFORMANCE:
@@ -112,6 +171,17 @@ for number in range(80):
     left, right = rng.choice(scalar_values), rng.choice(scalar_values)
     operator = rng.choice(['+', '-', '*', '/', '===', '!=='])
     CASES[f'generated-scalar-{number:02}'] = f'<?php\n$a={left};$b={right};echo $a {operator} $b;'.encode()
+
+
+# Independent reviewer key-collision seed exercises canonicalization and ordering.
+array_keys = ['0', '-1', '1.2', 'null', 'true', 'false', '"1"', '"01"',
+              '"+1"', '"-0"', 'PHP_INT_MIN', 'PHP_INT_MAX']
+rng = random.Random(7116)
+for number in range(40):
+    first, second, third = [rng.choice(array_keys) for _ in range(3)]
+    CASES[f'generated-array-keys-{number:02}'] = (
+        f'<?php\n$a=[{first}=>1,{second}=>2,{third}=>3];'
+        f'echo $a[{first}],$a[{second}],$a[{third}];').encode()
 
 
 def fingerprint():
@@ -168,7 +238,10 @@ def main():
         for source in [b'<?php echo $argc;', b'<?php $a=&$argc;',
                        b'<?php $n="argc"; $a=&$$n;', b'<?php unset($GLOBALS);',
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
-                       b'<?php echo $missing; ${INF-INF}=1;']:
+                       b'<?php echo $missing; ${INF-INF}=1;',
+                       b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
+                       b'<?php $x=1;$a=[&$x];', b'<?php $a=[];$a[0]=1;',
+                       b'<?php $a=[...[]];', b'<?php $a=[[]=>1];']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
@@ -211,7 +284,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614}, 'scope': 'authored scalar and variable-storage checked execution fixtures', 'profile': PROFILE,
+    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage/results-semantic-source.jsonl'

@@ -16,6 +16,7 @@ def $coerce_number(PBOOL true) = COERCED (NINT 1) false
 def $coerce_number(PINT i) = COERCED (NINT i) false
 def $coerce_number(PFLOAT n) = COERCED (NFLOAT n) false
 def $coerce_number(PSTRING n*) = $coerce_string($numeric_string(n*))
+def $coerce_number(PARRAY n) = BADNUMBER
 
 dec $type_bytes(pvalue) : nat*
 def $type_bytes(PNULL) = [110, 117, 108, 108]
@@ -23,6 +24,7 @@ def $type_bytes(PBOOL b) = [98, 111, 111, 108]
 def $type_bytes(PINT i) = [105, 110, 116]
 def $type_bytes(PFLOAT n) = [102, 108, 111, 97, 116]
 def $type_bytes(PSTRING n*) = [115, 116, 114, 105, 110, 103]
+def $type_bytes(PARRAY n) = [97,114,114,97,121]
 
 dec $operator_bytes(pbin) : nat*
 def $operator_bytes(ADD) = [43]
@@ -69,24 +71,32 @@ def $strict_identical(PFLOAT n_1, PFLOAT n_2) = $num_identical(NFLOAT n_1, NFLOA
 def $strict_identical(pvalue_1, pvalue_2) = (pvalue_1 = pvalue_2)
   -- otherwise
 
+dec $strict_value(pstate, pvalue, pvalue) : bool
+dec $both_arrays(pvalue, pvalue) : bool
+def $both_arrays(PARRAY n_1, PARRAY n_2) = true
+def $both_arrays(pvalue_1, pvalue_2) = false
+  -- otherwise
 dec $binary_apply(pstate, pbin, pvalue, pvalue, int) : pstate
 def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure(S, pbin, pvalue_1, pvalue_2, z)
   -- if $arithmetic_operator(pbin)
+  -- if ~(pbin = ADD /\ $both_arrays(pvalue_1, pvalue_2))
   -- if $coerce_number(pvalue_1) = BADNUMBER
 def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure(S_left, pbin, pvalue_1, pvalue_2, z)
   -- if $arithmetic_operator(pbin)
+  -- if ~(pbin = ADD /\ $both_arrays(pvalue_1, pvalue_2))
   -- if $coerce_number(pvalue_1) = COERCED pnumber_1 b_left
   -- if S_left = $leading_warning(S, b_left, z)
   -- if $coerce_number(pvalue_2) = BADNUMBER
 def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $number_result(S_right, $number_binary(pbin, pnumber_1, pnumber_2), z)
   -- if $arithmetic_operator(pbin)
+  -- if ~(pbin = ADD /\ $both_arrays(pvalue_1, pvalue_2))
   -- if $coerce_number(pvalue_1) = COERCED pnumber_1 b_left
   -- if S_left = $leading_warning(S, b_left, z)
   -- if $coerce_number(pvalue_2) = COERCED pnumber_2 b_right
   -- if S_right = $leading_warning(S_left, b_right, z)
 
-def $binary_apply(S, IDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL $strict_identical(pvalue_1, pvalue_2))]
-def $binary_apply(S, NOTIDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL (~$strict_identical(pvalue_1, pvalue_2)))]
+def $binary_apply(S, IDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL $strict_value(S, pvalue_1, pvalue_2))]
+def $binary_apply(S, NOTIDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL (~$strict_value(S, pvalue_1, pvalue_2)))]
 
 dec $unary_apply(pstate, punary, pvalue, int) : pstate
 def $unary_apply(S, punary, pvalue, z) = $type_failure(S, MULTIPLY, pvalue, PINT 1, z)
@@ -161,7 +171,8 @@ def $fold_scalar(expression) = eps
 
 def $name_fold_warning(phpType34) = true
   -- if phpType34 = expression
-  -- if $fold_scalar(expression) = (PFLOAT n)
+  -- if $fold_constant($initial_state(NORMAL), expression) = (S_folded)
+  -- if S_folded.RESULT = KNOWN (PFLOAT n)
   -- if (n_out*, true) = $number_text(NFLOAT n, 14)
 def $name_fold_warning(phpType34) = false
   -- otherwise
@@ -174,3 +185,6 @@ def $resolve_name(S, poperand, z) = $stringify(S_read, pvalue, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+
+def $strict_value(S, pvalue_1, pvalue_2) = $strict_identical(pvalue_1, pvalue_2)
+  -- otherwise

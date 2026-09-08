@@ -6,9 +6,10 @@
   },
   "seeds": {
     "alias": 85010,
-    "scalar": 6614
+    "scalar": 6614,
+    "array_keys": 7116
   },
-  "scope": "authored scalar and variable-storage checked execution fixtures",
+  "scope": "authored scalar, variable storage and ordinary array literal/read checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -54,8 +55,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "f3a1a917b8ae5ad947e3182844e78ee2992de64dc917f25d7693f806e387e9d4",
-    "files": 612,
+    "sha256": "e03665531809faa351ed96eb3efb9eded856d391323fb7e20d5dad94344283b2",
+    "files": 628,
     "scope": [
       "frontend",
       "adapter",
@@ -393,6 +394,330 @@
     {
       "id": "dynamic-reference-rebind",
       "source_sha256": "87ac1018583c6766bd769ae1c55d265524b8857241f5fd674e7fd9ed677b2ea1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-key-delayed",
+      "source_sha256": "e7852f58c05516cc0f46515c77d984cee5af77a689cebc5e1184a75c86046d2f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-key-captured",
+      "source_sha256": "03635d47a8919543f16e252602a762e338008fbd6e2841dc134d09fb8f5033e1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-root-delayed",
+      "source_sha256": "4381044f1d7b1f6499eeaef2e9960bfaead188cb6b4763b8f935cfb053f02c40",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-root-captured",
+      "source_sha256": "e61c9e7647a88a6ebe32605c42b4fa0696e1b79659e035b0f13bd0acfac7e89c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-dynamic-base-delayed",
+      "source_sha256": "32bdc74023c3af374faa852378a8aa8d88bdd1d530f06cbd629022b7959bf17b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-dynamic-base-name-delayed",
+      "source_sha256": "b219aff58af3f55e00523d62a1edabb97c3a326d75b8778e38bee4c0044bed50",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-dynamic-base-name-captured",
+      "source_sha256": "b7e53e283f2adff73650048f98d694c20a650f7840b10bd1c3c3507b90bfaa01",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-captured-name-base-delayed",
+      "source_sha256": "269bb04f46aed1c3554173ddf2ab1f61161e4814900a2738a628c2dd5274b7f5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unary-fold-line",
+      "source_sha256": "c44b6bc3889bde168c1fbd7ac57d5229f9089ac67fe630d276d4221d48eab246",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nan-shared-identity",
+      "source_sha256": "c02647058f95d3e00916a7f1bb3127d908fb6c0f7275c472dade43f7e94aa195",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-fold-line",
+      "source_sha256": "eae85375307e20384c735041838039dd68953069c06606378db534223001a008",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-basic",
+      "source_sha256": "7ac5c9575cc61472e28635357250d82cdffd0811ac98965b8b96c2e245a4ed8e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-identity",
+      "source_sha256": "b8390224dc5cc1b33cd716fe24040ed6160ab270a928b0c94c9e7d2da719b9b0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-union",
+      "source_sha256": "26a3ae1fe9eb53c798fccfa7cf1acd451194d9ba913abae78d331200bae8397a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keydelayed",
+      "source_sha256": "33ad9c286eb214427b30883219050919463aea4c03c7363e898823cf8765f75a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keycaptured",
+      "source_sha256": "d8cd42af1284cd668c2f885912e5c8f88e538b8ba56e023ea3c25bc56814a9e5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keymissing",
+      "source_sha256": "736165e03ebf46c52ae107fb033fbb43c2eb002bbfb71bdee082f2f9b697260c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keydynamicmissing",
+      "source_sha256": "c2013b7433b521fc381c9147cf50a7b8136e2d8182a354697e14795d58aa46f2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keynull",
+      "source_sha256": "7e50062c890671d4cae9cca689bf44d2809f17b7568d2dd6acf27a40cc497e46",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-floatkey",
+      "source_sha256": "51cab46c92f8af7e5da9ecb1960865cbc462a326ac5a45162c7674a18963819e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-negative",
+      "source_sha256": "dfa4325be26bd911fa04bbd40c98dd62c06a82191f6d605156ced90066862ff7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-max",
+      "source_sha256": "53fbcf866796236a6143c5c2777ac44012a6e1e7ed0805b5fed7266fb0070932",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-missing",
+      "source_sha256": "e73e31fde01c6ad60c094a3f3077d048ee9ab3cc30db74e75c5dac7029920bd7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-arrayecho",
+      "source_sha256": "9d01bdbcf4b1c251eaccb40e8a4f22d84553c1046b245d5cd83d99d656af5292",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-arrayechodynamic",
+      "source_sha256": "56d74477e6a9dd38ddd5f43bbe6f3af490f76832eaed22d03a4bf7fadceadae4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keyline",
+      "source_sha256": "38014d5b30d8f6fee75295db847049afeafe534dd701e5bd5f3314e93424478c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keyfloatline",
+      "source_sha256": "5ae2c8d20fd888c69a50856a505652fcbd9c4c1f142a044eb6883f3d788923a4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nestedline",
+      "source_sha256": "2c0db709302c5e6fb865fb8a98085dd63954af9950698ea5805975a08a864ebb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-dimline",
+      "source_sha256": "663eb61ea027dfcb0b80d284fa24775c1cb4750e4583b14cc6d25519ca079ee1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-dimdelayed",
+      "source_sha256": "b180d1709e6f73584242625918a2b1c94ec239dee0c82c3360a80cff9e8c0de8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-missing-nul",
+      "source_sha256": "88cdd46b88e5859e626b25539f31d5b50a2d630b88da78a3a49c4c4c3f82dc78",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-missing-cv-dimension",
+      "source_sha256": "c123447da22b8306c65073eeeff50da94a8319a99f560bccaac48f82a4d442cc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-missing-both",
+      "source_sha256": "8d8fdf33b0692b93b365aa5360117d8392b676ac687a6548ec5c8ee5bca48141",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-key-by-value-copy",
+      "source_sha256": "0377101d2bb13aa37f122551b56434ecf3f5dc12b4bebf43046f3886511653be",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-key-collision-types",
+      "source_sha256": "179c95367eb95353f1d944b9c9a52187fc84c8a3988a09457a0ce2a4fa7f35c5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-key-canonical-strings",
+      "source_sha256": "3d4dc3df5dfd522fbc49036669d4e6dcec51af4a4d6899fb4fa03789fbd56ab0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-key-int-min",
+      "source_sha256": "c844984888b4a29dd2141970b62eba581de471f4ce5e357f9d1deff0ec1ddb67",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-key-int-max-replace",
+      "source_sha256": "b99986182533a0ec55e96f6f7a415f461e925d678e87836de4fedd91ff0ec061",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-mixed-operators",
+      "source_sha256": "3ffdeb2a6c6925c357165e27b1d76fe4145d70648ff88c8d53f33c18b9ae46fc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-type-error",
+      "source_sha256": "44a9f25b9c6ee660368bda73de9f4d624ac431529f76ee16c722f80d9423928a",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-scalar-type-error",
+      "source_sha256": "bf8a006b36de54c7a8717ee3996a9fec9d981377ebd789f046e993d057932b7d",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-unary-type-error",
+      "source_sha256": "6d7cd600b01a3d7895345d953aca04b7a4847818ba3a6c0dc4757cbc9e7eaf91",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-name-runtime",
+      "source_sha256": "55782a906b9959dfe2618f4292518f0fa689a8707cad7147f48c4b53bcb07eb7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-name-dynamic-literal",
+      "source_sha256": "19460c442d0af363f1714ca54daa25d0317715182a0d2ef8301082e214cd16e6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-array-name-nonfold-key",
+      "source_sha256": "9927cd71b762f77714c2515ac2c5e5dc1de6256174ba87817615498a9f56a714",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-empty-array-line",
+      "source_sha256": "df73d028461809048c5f013d60117959419662b7bace45e458ed3183c717167c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-keyed-array-line",
+      "source_sha256": "826fe212203f50c204dafd2717632f43075587f95c2426cf4859800a55b06961",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-constant-arithmetic-line",
+      "source_sha256": "75bbc729de8b4d82bf8e788b97bf65f023c642e3d49e884137a63e7f2c860cd6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-constant-dim-line",
+      "source_sha256": "41cb918d253e80125b3b6af92e1f73a83317ea5664fb32de55e3abe6a0fe1128",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-dynamic-array-line",
+      "source_sha256": "320ed74923044982a1006aa51445854f5a549f6f67617506e241da0b4393538a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-literal-captured-array",
+      "source_sha256": "a728fd4a00a6f4386043f3ff0b2951b0a1cb0bb5b154b841012b53bbe36b3686",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-literal-delayed-array",
+      "source_sha256": "05252e6dc012b5239e446dd51aa0e643f341e2b9bcc1aff4711e3f131cbf2486",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-dimension-key-mutation",
+      "source_sha256": "b9bc50d668fb1c15ff7676133006468971c947545567b65971f85bbbf8402aec",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-nested-dimension-lookup-line",
+      "source_sha256": "c0188580f3c49a2eda531f3f781bf88f1c2a5072a6416f1d0a7f31bf7fa80b39",
       "semantic_status": "normal",
       "comparison": "pass"
     },
@@ -1013,6 +1338,246 @@
       "source_sha256": "9c8cb4d52f3ce0e173bda0416d7b96e0b62a77af18c8bdb2645bda7bbb20f912",
       "semantic_status": "normal",
       "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-00",
+      "source_sha256": "13eae1e79bc1069613f08f2c62920cc6f413db4ccca58417bbabfb1f04a7e919",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-01",
+      "source_sha256": "22e82ff36aebceee47615fff14e2dc005769ed58e3748a5d6c146361dcc3c091",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-02",
+      "source_sha256": "795e728ff6c531a2ef6d12f749083aa2e8788106d8ddf20ffdeb6ce92d844156",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-03",
+      "source_sha256": "1d82019f20f58f51763073c2bf4ed5549cc58ef358326f626c083aab4432c4df",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-04",
+      "source_sha256": "2c80f3aeb79f9fdcad50ac710eaa11fbf5d9d71140106b982b23191f933e4744",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-05",
+      "source_sha256": "a496ecae7806c0afaf0578b1e8f5a7c1830f54228877cb2ea80013167a638762",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-06",
+      "source_sha256": "5b58dacd74409711b917b9e665da37c0b975994147f0dba6c5f91fe99f9ee380",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-07",
+      "source_sha256": "110c93a078e628a3eae76ff4fb737e68cfaa4ae9b72684e696e7cc120fca3707",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-08",
+      "source_sha256": "1b6eef01fec020320001a2c7919c8bd751f1b9b2fd08e1e8e202d2d3e0e80d32",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-09",
+      "source_sha256": "862b37d249e59e8b1fad073e93760e60bb29494037754870aaf997ee6010a5c3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-10",
+      "source_sha256": "9ecc2fb954b3be2881862b447af02ca3cb37d661ad61bb54f557b18dfba9a913",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-11",
+      "source_sha256": "7489e261d850fc2659ea6d1b5f7b6d8bccd888f504238e0817aab325b35eb6e8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-12",
+      "source_sha256": "6464a71b5087e6c445f960f76dfeb3c2a64635007e6b98e36ef11a06b1e8c2b8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-13",
+      "source_sha256": "1b6eef01fec020320001a2c7919c8bd751f1b9b2fd08e1e8e202d2d3e0e80d32",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-14",
+      "source_sha256": "0089cbbfc865d3ce34a7e2073fa22f02b81b6dfb1802b2cd19420375fc3930f0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-15",
+      "source_sha256": "c0b490d03f91e3f917ac519b8f034a2dbc91452269aabd2cc70aa789b9539b0a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-16",
+      "source_sha256": "2ea55c0e0ae33b4af491f2be971cfd694557b36bd316701d158c76178a79c58a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-17",
+      "source_sha256": "e59a934471190c73111dd38ac2295f3dc0a2f07440435e6eca38663435932ea6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-18",
+      "source_sha256": "3cf3e302a0093f5978118a15e99d9c7376ca49a886dce87755bb426577c6c03a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-19",
+      "source_sha256": "172a81951f920d16e10a0c3a09e4d4e6887bf76ef650fd491c1824dc1819e401",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-20",
+      "source_sha256": "325f7f4021e36749440db2059a6a91d4ede975817ab1ffff9c64479509d5fc0e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-21",
+      "source_sha256": "e528cfa848844760ce131dd9f1a5d015733332daeed077e14079c05a13ebfee9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-22",
+      "source_sha256": "7014453ea1c94a9c0e410ff9cdfefaa65f5102f5a40067761c1ac89da8509fab",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-23",
+      "source_sha256": "e26021350a881d26259b22c0e5cb3598eea680853d6c0c410d55cd9a0685161e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-24",
+      "source_sha256": "b8a1aef3f0ef0a16551dd40fbbd3859a43bd06cc800eb53f6845e900f2f54023",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-25",
+      "source_sha256": "9a8e686b698cf54d077d8105fafde41e41b49e559f5fe52add77c6513bd0cf81",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-26",
+      "source_sha256": "cdf51c08e77a63e7712d9e2d2da997c2dbe04e7689c75db8186b425390e7d29f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-27",
+      "source_sha256": "87b295d64bb9283f71e0db5dfc80065caa2160d95b77deca0222be0b8016d3f6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-28",
+      "source_sha256": "a1a6124d97df5fa6b8eaa9581786f33363830ea0498e2d061183e96021fad80f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-29",
+      "source_sha256": "13263405e8068fd8888adaadf426891ecff5b974e1097b6d203b642ef579aa0b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-30",
+      "source_sha256": "7a23dc3e2239bbfac1f76b30379c49bdb479cb4c5d903273952e62d79d7140eb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-31",
+      "source_sha256": "46c16c8bad88c4820e64de46fc7d236ea8d8a312b9980e64c0ce01785557fe42",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-32",
+      "source_sha256": "a3530444167ea0f675d36697e9e184a4df6267a486fca9c3c272da1b7c4a9d26",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-33",
+      "source_sha256": "9ab835ca81e9380620240d50c5dd07ee100809c72fcbfceb767ee675cdbabc71",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-34",
+      "source_sha256": "5a4da5c000ec83fd42e26a29939800fd680cb180ac3017f1c7711a6aaa90137f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-35",
+      "source_sha256": "c59954da9c672b04dc5e5abec45a7b418e7d41e040d14bf5a350f165be85d6a4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-36",
+      "source_sha256": "aa1c5d68aa4e36bbfa6061ef4e85c5ab9904ded6d2997bab0789befcc0ecf151",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-37",
+      "source_sha256": "a51ec38930a62c6e68c53a1a8e6b9377cd723fbca9940bcbda1670678426d8b5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-38",
+      "source_sha256": "f195dc20deab4503ad2934a7c4c775f2990f4d9be45c6d43d0f95d46017b146d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-array-keys-39",
+      "source_sha256": "8c35b0a17dcd2b1ef21758b4c11ae1b92e2d2dc57d23776fd3e642b6806a10c5",
+      "semantic_status": "normal",
+      "comparison": "pass"
     }
   ],
   "negative_checks": [
@@ -1020,7 +1585,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-zd4ebwdz/unsupported.php"
+        "/tmp/php-semantics-anxtk9aw/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -1039,7 +1604,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-zd4ebwdz/unsupported.php"
+        "/tmp/php-semantics-anxtk9aw/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -1058,7 +1623,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-zd4ebwdz/unsupported.php",
+        "/tmp/php-semantics-anxtk9aw/unsupported.php",
         "--steps",
         "0"
       ],
@@ -1079,7 +1644,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-zd4ebwdz/unsupported.php",
+        "/tmp/php-semantics-anxtk9aw/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -1092,12 +1657,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-zd4ebwdz/unsupported.php.missing"
+        "/tmp/php-semantics-anxtk9aw/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-zd4ebwdz/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-anxtk9aw/unsupported.php.missing'"
       }
     },
     {
@@ -1206,6 +1771,96 @@
       }
     },
     {
+      "source": "PD9waHAgZWNobyBNSVNTSU5HOyAke1tdfT0xOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time array name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBNSVNTSU5HOyAke1sxXStbMl19PTE7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time array name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJHg9MTskYT1bJiR4XTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "array references or unpacking",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9W107JGFbMF09MTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "lvalue",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9Wy4uLltdXTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "array references or unpacking",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9W1tdPT4xXTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "array-key error compilation",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
       "input": {
         "op": "execute",
         "ast": {
@@ -1259,7 +1914,28 @@
               }
             ]
           },
-          "CELL": "0"
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       }
     },
@@ -1321,7 +1997,28 @@
               }
             ]
           },
-          "CELL": "0"
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       }
     },
@@ -1377,7 +2074,28 @@
               }
             ]
           },
-          "CELL": "0"
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       }
     },
@@ -1448,14 +2166,35 @@
               }
             ]
           },
-          "CELL": "0"
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       }
     }
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "789e82b3b0bd6b3260c37b1c8d94a5cbb054b94d97509dc09937ff91f3458726",
-    "records": 157
+    "sha256": "7d244996a0910233dd0c49731749ebe1b5550adefd891e2ca5a58de261bf6980",
+    "records": 251
   }
 }

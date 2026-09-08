@@ -2,12 +2,17 @@
 syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
 syntax poperand = KNOWN pvalue | VARIABLE nat* int
-syntax ptask = BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | NAME_READ int
+syntax pbase = BASE_VALUE poperand | BASE_NAME poperand int | BASE_DIM pbase poperand int
+syntax ptask = ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
+  | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
+  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_DYNAMIC poperand int | PREP_REF expression int
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | UNSET expression | UNSET_DYNAMIC int
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat }
+  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase }
+dec $fold_constant(pstate, expression) : pstate?
+dec $initial_state(pcompletion) : pstate
 var S : pstate
 var namebytes : nat*
 

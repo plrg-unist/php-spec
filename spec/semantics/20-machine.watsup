@@ -1,5 +1,9 @@
 ;; Request state and pending work are explicit; PHP effects never use host I/O.
-syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat*
+syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PARRAY nat
+syntax pkey = KINT int | KSTRING nat*
+syntax pitem = DIRECT pvalue | ALIAS nat
+syntax pentry = ENTRY pkey pitem
+syntax parray = { ITEMS pentry*, NEXT int }
 syntax pevent = OUTPUT nat* | WARNING nat* int | DIAGNOSTIC text nat* int
 syntax pcompletion = NORMAL | PHPERROR nat* int | THROWN text nat* int | STATICERROR text int | UNSUPPORTED text | BUDGET
 syntax pcheck = READY | REJECT pcompletion
@@ -21,6 +25,18 @@ def $source_line(metadataEntry :: metadataEntry_tail*) = z
 def $source_line(metadataEntry :: metadataEntry_tail*) = $source_line(metadataEntry_tail*)
   -- if $($metadata_line(metadataEntry) <= 0)
 
+dec $metadata_end_line(metadataEntry) : int
+def $metadata_end_line(MendLine z) = z
+def $metadata_end_line(metadataEntry) = 0
+  -- otherwise
+dec $source_end_line(metadata) : int
+def $source_end_line(eps) = 0
+def $source_end_line(metadataEntry :: metadataEntry_tail*) = z
+  -- if z = $metadata_end_line(metadataEntry)
+  -- if $(z > 0)
+def $source_end_line(metadataEntry :: metadataEntry_tail*) = $source_end_line(metadataEntry_tail*)
+  -- if $($metadata_end_line(metadataEntry) <= 0)
+
 dec $expression_line(expression) : int
 dec $variable_line(phpType34, metadata) : int
 def $variable_line(BYTES text, metadata) = $source_line(metadata)
@@ -33,20 +49,28 @@ def $expression_line(NExprConstFetch name metadata) = $source_line(metadata)
 def $expression_line(NExprVariable phpType34 metadata) = $variable_line(phpType34, metadata)
 def $expression_line(NExprAssign expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprAssignRef expression_1 expression_2 metadata) = $expression_line(expression_1)
-def $expression_line(NExprBinaryOpPlus expression_1 expression_2 metadata) = $source_line(metadata)
-def $expression_line(NExprBinaryOpMinus expression_1 expression_2 metadata) = $source_line(metadata)
-def $expression_line(NExprBinaryOpMul expression_1 expression_2 metadata) = $source_line(metadata)
-def $expression_line(NExprBinaryOpDiv expression_1 expression_2 metadata) = $source_line(metadata)
-def $expression_line(NExprUnaryPlus expression metadata) = $source_line(metadata)
-def $expression_line(NExprUnaryMinus expression metadata) = $source_line(metadata)
-def $expression_line(NExprBinaryOpIdentical expression_1 expression_2 metadata) = $source_line(metadata)
-def $expression_line(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $source_line(metadata)
+def $expression_line(NExprBinaryOpPlus expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpMinus expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpMul expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpDiv expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprUnaryPlus expression metadata) = $expression_line(expression)
+def $expression_line(NExprUnaryMinus expression metadata) = $expression_line(expression)
+def $expression_line(NExprBinaryOpIdentical expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprArray (SEQUENCE eps) metadata) = $source_end_line(metadata)
+def $expression_line(NExprArray (SEQUENCE ((NArrayItem phpType5 expression phpType4_1 phpType4_2 metadata_item) :: phpType13_tail*)) metadata) = $expression_line(expression)
+def $expression_line(NExprArrayDimFetch expression phpType5 metadata) = $expression_line(expression)
 def $expression_line(expression) = 0
   -- otherwise
 
 ;; Zend emits consumers with the current compiler line after child compilation.
 ;; This differs from the AST start line and assignment's explicit LHS reset.
 dec $compiled_line(expression) : int
+dec $array_is_constant(expression) : bool
+dec $array_last_line(phpType13*) : int
+def $array_last_line([NArrayItem phpType5 expression phpType4_1 phpType4_2 metadata]) = $compiled_line(expression)
+def $array_last_line(phpType13 :: phpType13_tail*) = $array_last_line(phpType13_tail*)
+  -- if phpType13_tail* =/= eps
 def $compiled_line(NExprVariable (BYTES text) metadata) = $source_line(metadata)
 def $compiled_line(NExprVariable phpType34 metadata) = $compiled_line(expression)
   -- if phpType34 = expression
@@ -60,13 +84,20 @@ def $compiled_line(NExprBinaryOpIdentical expression_1 expression_2 metadata) = 
 def $compiled_line(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $compiled_line(expression_2)
 def $compiled_line(NExprUnaryPlus expression metadata) = $compiled_line(expression)
 def $compiled_line(NExprUnaryMinus expression metadata) = $compiled_line(expression)
+def $compiled_line(NExprArray (SEQUENCE phpType13*) metadata) = $expression_line(NExprArray (SEQUENCE phpType13*) metadata)
+  -- if $array_is_constant(NExprArray (SEQUENCE phpType13*) metadata)
+def $compiled_line(NExprArray (SEQUENCE phpType13*) metadata) = $array_last_line(phpType13*)
+  -- if ~$array_is_constant(NExprArray (SEQUENCE phpType13*) metadata)
+def $compiled_line(NExprArrayDimFetch expression phpType5 metadata) = $compiled_line(expression_key)
+  -- if phpType5 = expression_key
 def $compiled_line(expression) = $expression_line(expression)
   -- otherwise
 
-;; This initial static pass checks supported statement forms before any effects.
 dec $check_lvalue(expression) : pcheck
 dec $check_variable(phpType34) : pcheck
+dec $array_name_fold_warning(phpType34) : bool
 dec $name_fold_warning(phpType34) : bool
+dec $check_array_items(phpType13*) : pcheck
 dec $check_expression(expression) : pcheck
 def $check_expression(NScalarString (BYTES text) metadata) = READY
 def $check_expression(NScalarInt (INTEGER z) metadata) = READY
@@ -107,7 +138,33 @@ def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metada
   -- if $check_expression(expression_1) = READY
 def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_expression(expression_1) = REJECT pcompletion
+def $check_expression(NExprArray (SEQUENCE phpType13*) metadata) = $check_array_items(phpType13*)
+def $check_expression(NExprArrayDimFetch expression_1 phpType5 metadata) = $check_expression(expression_2)
+  -- if phpType5 = expression_2
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprArrayDimFetch expression_1 phpType5 metadata) = REJECT pcompletion
+  -- if phpType5 = expression_2
+  -- if $check_expression(expression_1) = REJECT pcompletion
 def $check_expression(expression) = REJECT (UNSUPPORTED "expression")
+  -- otherwise
+
+def $check_array_items(eps) = READY
+def $check_array_items((NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)
+  -- if $check_expression(expression) = READY
+def $check_array_items((NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
+  -- if $check_expression(expression) = REJECT pcompletion
+def $check_array_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)
+  -- if phpType5 = expression_key
+  -- if $check_expression(expression_key) = READY
+  -- if $check_expression(expression) = READY
+def $check_array_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
+  -- if phpType5 = expression_key
+  -- if $check_expression(expression_key) = REJECT pcompletion
+def $check_array_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
+  -- if phpType5 = expression_key
+  -- if $check_expression(expression_key) = READY
+  -- if $check_expression(expression) = REJECT pcompletion
+def $check_array_items(phpType13*) = REJECT (UNSUPPORTED "array references or unpacking")
   -- otherwise
 
 def $check_lvalue(NExprVariable phpType34 metadata) = $check_variable(phpType34)
@@ -117,9 +174,12 @@ def $check_lvalue(expression) = REJECT (UNSUPPORTED "lvalue")
 def $check_variable(BYTES text) = READY
 def $check_variable(phpType34) = REJECT (UNSUPPORTED "compile-time NaN name diagnostic")
   -- if $name_fold_warning(phpType34)
+def $check_variable(phpType34) = REJECT (UNSUPPORTED "compile-time array name diagnostic")
+  -- if $array_name_fold_warning(phpType34)
 def $check_variable(phpType34) = $check_expression(expression)
   -- if phpType34 = expression
   -- if ~$name_fold_warning(phpType34)
+  -- if ~$array_name_fold_warning(phpType34)
 
 dec $check_unsets(expression*) : pcheck
 def $check_unsets(eps) = READY
