@@ -16,7 +16,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
 | 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes/unset reviewed; embedded refs/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
-| 3b | Calls, closures, binding and independent static checks | In progress — local type helpers reviewed; signatures active, calls/activation pending |
+| 3b | Calls, closures, binding and independent static checks | In progress — local types/signatures reviewed; class headers active, calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
 | 4b | Properties, modern declarations and internal protocols | Pending |
 | 5a | Checked dynamic sources, autoload and explicit services | Pending |
@@ -32,8 +32,8 @@ timeouts and interrupted campaigns never count as validation passes.
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
 - Runner owns source execution and storage/control. Next: exact ownership roots,
   temporary lifetimes and conditional COW, then embedded array references.
-- Fresh signatures agent owns pending `17-signatures.watsup`/`signatures.py`,
-  then class linking. Type helpers use explicit namespace/import/class/position/
+- Signatures agent owns the class-header compiler, then class linking.
+  Local types/signatures are reviewed helpers. Type helpers use namespace/import/class/position/
   source contexts and ordered diagnostics; unresolved names remain explicit.
   Activation, autoload and call binding are separate machine obligations.
 - Numeric helpers are pure; runner owns PHP values/effects. See NUMERICS.
@@ -64,6 +64,12 @@ timeouts and interrupted campaigns never count as validation passes.
   24 intended relative-static interpretations, 34 parser rejects and one known
   frontend compile restriction. This is helper evidence; declaration activation
   and reconciliation of direct-void frontend rejection remain pending.
+- Local signatures `ac5bc703`: **357 checked helper/lint comparisons**, 28
+  descriptors, 174 return-reference checks, 4 edited minimum-int descriptors and
+  14 Unsupported checks; 2 frontend restrictions and 2 edited compiler checks
+  remain separate. Expanded independent matrix: 458 comparisons. Review fixed
+  global namespace-relative special defaults and checked deferred-default lines.
+  No declaration activation, default materialization or call binding is claimed.
 - **68 independent oracle targets**, 15 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Delayed names, self-assignment capture, cyclic arrays and NaN sharing identity
@@ -82,7 +88,7 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review exact array ownership/ref topology and local signature descriptors.
+Review exact array ownership/ref topology and the forthcoming class-header compiler.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,
 mixed comparisons, handlers and configurable precision need integration.
 Control/calls/objects/dynamic sources/resumable execution/lifetime remain pending.

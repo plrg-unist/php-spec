@@ -1373,10 +1373,16 @@
         "calls.variadic",
         "properties.promotion"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/17-signatures.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
+      "helper_tests": [
+        "tests/semantics/signatures.py",
+        "coverage/semantics/signatures.json"
+      ]
     },
     {
       "node": "PropertyHook",
@@ -4273,15 +4279,21 @@
     {
       "id": "calls.defaults",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/17-signatures.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/signatures.py",
+        "coverage/semantics/signatures.json"
+      ],
       "source_tests": [],
       "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php",
         "tests/semantics/conformance/parameter-global-relative-null.php",
@@ -4502,17 +4514,20 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/17-signatures.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
-        "coverage/semantics/static-types.json"
+        "coverage/semantics/static-types.json",
+        "tests/semantics/signatures.py",
+        "coverage/semantics/signatures.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending. Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-static-outside-class.php",
         "tests/semantics/conformance/type-parent-without-parent.php",
@@ -4562,15 +4577,20 @@
     {
       "id": "static.constant-expression",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/17-signatures.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/signatures.py",
+        "coverage/semantics/signatures.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",
