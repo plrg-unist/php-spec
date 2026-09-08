@@ -45,5 +45,7 @@ SpecTec values and emits a structured observation. `make test-semantics` runs th
 source execution regressions; unfinished behavior returns explicit Unsupported.
 See [semantic design](docs/semantics/DESIGN.md) and
 [numeric reference](docs/semantics/NUMERICS.md) and
-[static types](docs/semantics/STATIC.md) for interfaces and helper checks.
+[static checks](docs/semantics/STATIC.md) for interfaces and helper checks.
+[Declaration continuation](docs/semantics/LINKING-HANDOFF.md) records the compiler
+context and linking work that remains before source activation.
 Intentional departures are recorded in [engine discrepancies](docs/semantics/DISCREPANCIES.md).

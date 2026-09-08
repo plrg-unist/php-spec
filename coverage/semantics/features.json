@@ -3161,12 +3161,21 @@
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/conformance/reference-cv-source-initialization.php",
+        "tests/semantics/conformance/reference-cv-source-multiline.php",
+        "tests/semantics/conformance/reference-dynamic-target-initialization.php",
+        "tests/semantics/conformance/reference-dynamic-source-initialization.php",
+        "tests/semantics/conformance/float-variable-name-delayed.php",
+        "tests/semantics/conformance/overflow-float-variable-name-delayed.php",
+        "tests/semantics/conformance/negative-float-variable-name-captured.php",
+        "tests/semantics/conformance/boolean-variable-name-captured.php",
+        "tests/semantics/conformance/reference-float-cv-initialization.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
+      "review": "Independent CV correction eea66b2d: 439 exact source comparisons and 25 negatives; 617 graph plus 77 boundary cases (5335 assertions) and 50 expanded source probes passed. Direct CV source initialization now follows delayed reference-target name consumption; literal FLOAT names use CV delayed reads, while unary/constants retain captured behavior. All nine timing witnesses are mandatory. Element places, frames, properties and callbacks remain pending; raw historical disagreements and accepted resolution remain in reference-timing-disagreement.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-variable.php",
         "tests/semantics/conformance/dynamic-name-delayed.php",
@@ -3179,8 +3188,7 @@
         "tests/semantics/conformance/negative-float-variable-name-captured.php",
         "tests/semantics/conformance/boolean-variable-name-captured.php",
         "tests/semantics/conformance/reference-float-cv-initialization.php"
-      ],
-      "notes": "Newly uncovered admitted CV initialization/classification defects require the immediate next repair; raw five disagreements and four controls in coverage/semantics/reference-timing-disagreement.json. Existing 421-case selection passed without these newly found cases."
+      ]
     },
     {
       "id": "storage.globals",
@@ -3297,12 +3305,17 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "tests/semantics/conformance/reference-assignment-result.php"
+        "tests/semantics/conformance/reference-assignment-result.php",
+        "tests/semantics/conformance/reference-cv-source-initialization.php",
+        "tests/semantics/conformance/reference-cv-source-multiline.php",
+        "tests/semantics/conformance/reference-dynamic-target-initialization.php",
+        "tests/semantics/conformance/reference-dynamic-source-initialization.php",
+        "tests/semantics/conformance/reference-float-cv-initialization.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending.",
+      "review": "Independent CV correction eea66b2d: 439 exact source comparisons and 25 negatives; 617 graph plus 77 boundary cases (5335 assertions) and 50 expanded source probes passed. Direct CV source initialization now follows delayed reference-target name consumption; literal FLOAT names use CV delayed reads, while unary/constants retain captured behavior. All nine timing witnesses are mandatory. Element places, frames, properties and callbacks remain pending; raw historical disagreements and accepted resolution remain in reference-timing-disagreement.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php",
@@ -3310,9 +3323,17 @@
         "tests/semantics/conformance/reference-cv-source-multiline.php",
         "tests/semantics/conformance/reference-dynamic-target-initialization.php",
         "tests/semantics/conformance/reference-dynamic-source-initialization.php",
-        "tests/semantics/conformance/reference-float-cv-initialization.php"
-      ],
-      "notes": "Newly uncovered admitted CV initialization/classification defects require the immediate next repair; raw five disagreements and four controls in coverage/semantics/reference-timing-disagreement.json. Existing 421-case selection passed without these newly found cases."
+        "tests/semantics/conformance/reference-float-cv-initialization.php",
+        "tests/semantics/conformance/element-reference-source-copy.php",
+        "tests/semantics/conformance/element-reference-source-append.php",
+        "tests/semantics/conformance/element-reference-source-nested-missing.php",
+        "tests/semantics/conformance/element-reference-literal-copy.php",
+        "tests/semantics/conformance/element-reference-dynamic-name.php",
+        "tests/semantics/conformance/element-reference-source-container-rebind.php",
+        "tests/semantics/conformance/element-reference-target-before-cv.php",
+        "tests/semantics/conformance/element-reference-source-existing-wrapper.php",
+        "tests/semantics/conformance/element-reference-string-rejection.php"
+      ]
     },
     {
       "id": "storage.typed-reference-sources",
@@ -3546,7 +3567,16 @@
         "tests/semantics/conformance/array-union-right-singleton.php",
         "tests/semantics/conformance/array-union-right-self-reference.php",
         "tests/semantics/conformance/array-reference-key-acquisition.php",
-        "tests/semantics/conformance/array-reference-delayed-key.php"
+        "tests/semantics/conformance/array-reference-delayed-key.php",
+        "tests/semantics/conformance/element-reference-source-copy.php",
+        "tests/semantics/conformance/element-reference-source-append.php",
+        "tests/semantics/conformance/element-reference-source-nested-missing.php",
+        "tests/semantics/conformance/element-reference-literal-copy.php",
+        "tests/semantics/conformance/element-reference-dynamic-name.php",
+        "tests/semantics/conformance/element-reference-source-container-rebind.php",
+        "tests/semantics/conformance/element-reference-target-before-cv.php",
+        "tests/semantics/conformance/element-reference-source-existing-wrapper.php",
+        "tests/semantics/conformance/element-reference-string-rejection.php"
       ]
     },
     {

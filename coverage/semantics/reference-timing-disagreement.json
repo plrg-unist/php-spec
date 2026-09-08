@@ -1,6 +1,6 @@
 {
   "scope": "historical raw newly discovered admitted CV classification and reference-initialization timing mismatches outside prior421 selection; no filtering",
-  "status": "unresolved",
+  "status": "resolved-specification-defects",
   "implementation_base_commit": "0574573309b1a5d305542862f832ac4abb02fbb8",
   "implementation_fingerprint": {
     "sha256": "1e82a26fa410c8a46fd8ef62d99ea46e31e9b5a79274ce37518ca81ab566dad8",
@@ -415,5 +415,85 @@
     "negative-float-variable-name-captured",
     "boolean-variable-name-captured",
     "reference-float-cv-initialization"
-  ]
+  ],
+  "resolution": {
+    "commit": "eea66b2d",
+    "semantics": "Direct CV source reference initialization follows delayed target-name consumption; exact literal FLOAT variable names use compiled-variable delayed reads. Dynamic sources and array-literal reference acquisition preserve their distinct earlier acquisition points.",
+    "source_report": "coverage/semantics/source.json",
+    "reviewed_fingerprint": {
+      "sha256": "bce380a6afe133404a6f1ffe633754713102ef23136a029aa5bc810eefc2ce80",
+      "files": 675,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "validation": "Independent 439 exact source comparisons plus 25 negatives; 617 graph and 77 boundary cases (5335 assertions); 50 expanded source probes.",
+    "source_cases": [
+      {
+        "id": "conformance-reference-cv-source-initialization",
+        "source_sha256": "76e1334771c0e43fc6a79ef40ea14ade553d7fce7328fffb4257b6e8718b681f",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-reference-cv-source-multiline",
+        "source_sha256": "864bca2501ab937d49d6ac9dfb55740e5693e810db4620fa5543a030488f7046",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-reference-dynamic-target-initialization",
+        "source_sha256": "f1aad06e5abac0f001703c70cab5ba6837354dc2d36e1458c65d1b70422f4512",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-reference-dynamic-source-initialization",
+        "source_sha256": "eb6a3a15fdd9ee04621f9601eacad2bdc10e3fffac960952c7a3067513c2f9cb",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-float-variable-name-delayed",
+        "source_sha256": "426972fd82815ed0d2dfca6c7473e7df76e1328fa582c2b40d5b05654f34ce58",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-overflow-float-variable-name-delayed",
+        "source_sha256": "4c9097016b1d580b6f5061033bf43cfd28b817ad129f2c9ca63167119752fd35",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-negative-float-variable-name-captured",
+        "source_sha256": "9c762131a1de31741e335021294fdf48c2778295527d7c5d420b678e18ec97cc",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-boolean-variable-name-captured",
+        "source_sha256": "ca757ddfa383b20e5ce61bc27d62c1a69b4d640a2c3d5e30a1b592eb76f84955",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      },
+      {
+        "id": "conformance-reference-float-cv-initialization",
+        "source_sha256": "fdd81a89b3004023547ec6bcf4829d4fa29af57573c7a0eed1195ccde81079f0",
+        "semantic_status": "normal",
+        "comparison": "pass"
+      }
+    ]
+  }
 }

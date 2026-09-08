@@ -1314,6 +1314,132 @@
       "expected_exit_status": 0,
       "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
       "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-source-copy",
+      "file": "tests/semantics/conformance/element-reference-source-copy.php",
+      "purpose": "Acquiring an element reference separates a copied array before promoting its entry.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "91",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-source-append",
+      "file": "tests/semantics/conformance/element-reference-source-append.php",
+      "purpose": "An append reference source creates the next entry before later alias writes.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "12",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-source-nested-missing",
+      "file": "tests/semantics/conformance/element-reference-source-nested-missing.php",
+      "purpose": "Missing nested source dimensions initialize arrays and an aliased null entry.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "9",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-literal-copy",
+      "file": "tests/semantics/conformance/element-reference-literal-copy.php",
+      "purpose": "A literal reference to an element separates an earlier ordinary array copy.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "91",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-dynamic-name",
+      "file": "tests/semantics/conformance/element-reference-dynamic-name.php",
+      "purpose": "A delayed dynamic target name observes mutation in the source dimension key.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "9",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-source-container-rebind",
+      "file": "tests/semantics/conformance/element-reference-source-container-rebind.php",
+      "purpose": "An owning source reference survives rebinding the variable that held its container.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "9",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-before-cv",
+      "file": "tests/semantics/conformance/element-reference-target-before-cv.php",
+      "purpose": "Element target acquisition precedes direct CV source initialization and emits both diagnostics.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Warning: Undefined variable $x in {FILE} on line 2\nDeprecated: Using null as an array offset is deprecated, use an empty string instead in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-source-existing-wrapper",
+      "file": "tests/semantics/conformance/element-reference-source-existing-wrapper.php",
+      "purpose": "Acquiring an already referenced entry retains sharing across ordinary array copies.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "999",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-string-rejection",
+      "file": "tests/semantics/conformance/element-reference-string-rejection.php",
+      "purpose": "String-offset reference acquisition throws the exact language Error.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Uncaught Error: Cannot create references to/from string offsets in {FILE}:1\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 1\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }

@@ -68,11 +68,11 @@ still consumes its value. The independent witness now passes in the mandatory
 retain the original process observations and the accepted correction fingerprint.
 This was a specification defect, with no intentional departure selected.
 
-## CV classification and reference initialization: pending specification defects
+## CV classification and reference initialization: resolved specification defects
 
 `${$x}=&$x; echo ${""}===null;` emits an undefined `$x` warning in PHP,
-but the current machine initializes the direct source variable before reading
-the delayed target name and omits that warning. The multiline witness locates
+but the previous machine initialized the direct source variable before reading
+the delayed target name and omitted that warning. The multiline witness locates
 the warning on the target-name expression line. A dynamic source fetch has a
 different acquisition point; array-literal reference acquisition also remains
 before delayed key conversion.
@@ -85,5 +85,7 @@ expressions are controls and must retain ordinary captured reads.
 [Raw nine-case evidence](../../coverage/semantics/reference-timing-disagreement.json)
 retains five disagreements and four controls, exact source bytes and both process
 observations. These were newly uncovered outside the previous 421-case selection,
-not excluded comparisons. The mandatory next repair precedes element references;
-no intentional divergence is selected.
+not excluded comparisons. Commit `eea66b2d` corrects both defects; all nine witnesses now pass in the
+mandatory 439-case source gate, alongside 25 negative checks. Historical
+observations remain unchanged in the raw record; its resolution binds the
+accepted source IDs and fingerprint. No intentional divergence is selected.

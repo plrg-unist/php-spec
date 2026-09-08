@@ -33,8 +33,8 @@ timeouts and interrupted campaigns never count as validation passes.
 - References agent owns source execution/storage after reviewed ownership `41e8fa2b`;
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
   pruning, owning reference results, COW/union and variable-source literal refs
-  `4b954dfa` are reviewed. Immediate CV timing/classification repair precedes
-  element references.
+  `4b954dfa` and CV timing/classification repair `eea66b2d` are reviewed.
+  Element-reference sources/literal values precede element-reference targets.
 - Static worker continuation: checked source-unit occurrence/context traversal,
   ordered compiler diagnostics and declaration descriptors before further linking.
   [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md) records reviewed helper
@@ -53,17 +53,17 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `4b954dfa`: independently repeated **421 exact source comparisons
+- Source machine `eea66b2d`: independently repeated **439 exact source comparisons
   +25 negatives**; variable-source literal refs, COW/union and owning reference
-  results included. **617 graph +72 boundary cases**, 5,315 assertions, and
-  48 additional literal-reference source probes passed. New constructors enter
+  results included. **617 graph +77 boundary cases**, 5,335 assertions, and
+  50 additional CV timing/name source probes passed. New constructors enter
   through separate gates; element references and source GC remain Unsupported.
   See [handoff](docs/semantics/ARRAY-HANDOFF.md).
-- New admitted CV timing/classification defects were found outside that selection:
-  delayed reference target names miss an undefined-variable warning; float-literal
-  variable names read too early (spec 3 versus PHP 4). Five raw disagreements and
-  four controls are [retained](coverage/semantics/reference-timing-disagreement.json).
-  Nine retained oracle witnesses are mandatory regressions for the next repair.
+- CV timing/classification defects are resolved in `eea66b2d`: delayed reference
+  target names now warn before direct source initialization; literal-float names
+  use delayed reads (PHP/spec 4). All nine witnesses are mandatory. The five
+  original disagreements, four controls and accepted resolution remain
+  [retained](coverage/semantics/reference-timing-disagreement.json).
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
   Local types `531a8b40`/`9da9b012`, signatures `ac5bc703`, and class headers
@@ -79,7 +79,7 @@ timeouts and interrupted campaigns never count as validation passes.
   12 Unsupported and 1 source-phase pending witness independently repeated;
   expanded matrix 1,444. Exact declaration rendering is bounded by compiled
   defaults and explicit comparison contexts; NaN warning context stays pending.
-- **92 independent oracle targets**, 24 integrated into the reviewed source
+- **101 independent oracle targets**, 33 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read
@@ -97,9 +97,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Repair direct-CV reference-source initialization timing and literal-float CV
-classification, retaining the distinct literal-reference acquisition order.
-Element references and broader writable places follow independent source gates.
+Review element-reference sources and literal values, then element targets,
+retaining distinct acquisition/COW/temporary-owner timing. Nine new oracle
+witnesses constrain these paths, including the string-offset reference Error.
 The next static source-context traversal and class linking must preserve pinned
 phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source

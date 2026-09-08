@@ -1,0 +1,1 @@
+<?php $n="old";$a=["new"=>1];$$n=&$a[($n="new")];$new=9;echo $a["new"];
