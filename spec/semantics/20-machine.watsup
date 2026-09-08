@@ -1,12 +1,9 @@
 ;; Request state and pending work are explicit; PHP effects never use host I/O.
 syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat*
-syntax pevent = OUTPUT nat*
+syntax pevent = OUTPUT nat* | WARNING nat* int
 syntax pcompletion = NORMAL | PHPERROR nat* int | STATICERROR text int | UNSUPPORTED text | BUDGET
-syntax ptask = STMT statement | ECHO expression
-syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion }
 syntax pcheck = READY | REJECT pcompletion
 syntax peval = VALUE pvalue | ABRUPT pcompletion
-var S : pstate
 var n : nat
 var z : int
 
@@ -23,13 +20,53 @@ def $source_line(metadataEntry :: metadataEntry_tail*) = z
 def $source_line(metadataEntry :: metadataEntry_tail*) = $source_line(metadataEntry_tail*)
   -- if $($metadata_line(metadataEntry) <= 0)
 
+dec $expression_line(expression) : int
+dec $variable_line(phpType34, metadata) : int
+def $variable_line(BYTES text, metadata) = $source_line(metadata)
+def $variable_line(phpType34, metadata) = $expression_line(expression)
+  -- if phpType34 = expression
+def $expression_line(NScalarString phpType35 metadata) = $source_line(metadata)
+def $expression_line(NScalarInt phpType24 metadata) = $source_line(metadata)
+def $expression_line(NExprConstFetch name metadata) = $source_line(metadata)
+def $expression_line(NExprVariable phpType34 metadata) = $variable_line(phpType34, metadata)
+def $expression_line(NExprAssign expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignRef expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(expression) = 0
+  -- otherwise
+
 ;; This initial static pass checks supported statement forms before any effects.
+dec $check_lvalue(expression) : pcheck
+dec $check_variable(phpType34) : pcheck
 dec $check_expression(expression) : pcheck
 def $check_expression(NScalarString (BYTES text) metadata) = READY
 def $check_expression(NScalarInt (INTEGER z) metadata) = READY
 def $check_expression(NExprConstFetch (NName (BYTES text) metadata_1) metadata_2) = READY
+def $check_expression(NExprVariable phpType34 metadata) = $check_variable(phpType34)
+def $check_expression(NExprAssign expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_lvalue(expression_1) = READY
+def $check_expression(NExprAssign expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_lvalue(expression_1) = REJECT pcompletion
+def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = $check_lvalue(expression_2)
+  -- if $check_lvalue(expression_1) = READY
+def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_lvalue(expression_1) = REJECT pcompletion
 def $check_expression(expression) = REJECT (UNSUPPORTED "expression")
   -- otherwise
+
+def $check_lvalue(NExprVariable phpType34 metadata) = $check_variable(phpType34)
+def $check_lvalue(expression) = REJECT (UNSUPPORTED "lvalue")
+  -- otherwise
+
+def $check_variable(BYTES text) = READY
+def $check_variable(phpType34) = $check_expression(expression)
+  -- if phpType34 = expression
+
+dec $check_unsets(expression*) : pcheck
+def $check_unsets(eps) = READY
+def $check_unsets(expression :: expression_tail*) = $check_unsets(expression_tail*)
+  -- if $check_lvalue(expression) = READY
+def $check_unsets(expression :: expression_tail*) = REJECT pcompletion
+  -- if $check_lvalue(expression) = REJECT pcompletion
 
 dec $check_expressions(expression*) : pcheck
 def $check_expressions(eps) = READY
@@ -44,6 +81,7 @@ def $check_statement(NStmtNop metadata) = READY
 def $check_statement(NStmtInlineHTML (BYTES text) metadata) = READY
 def $check_statement(NStmtEcho (SEQUENCE expression_tail*) metadata) = $check_expressions(expression_tail*)
 def $check_statement(NStmtExpression expression metadata) = $check_expression(expression)
+def $check_statement(NStmtUnset (SEQUENCE expression_tail*) metadata) = $check_unsets(expression_tail*)
 def $check_statement(NStmtBlock (SEQUENCE statement_tail*) metadata) = $check_statements(statement_tail*)
 def $check_statement(NStmtBreak ABSENT metadata) = REJECT (STATICERROR "'break' not in the 'loop' or 'switch' context" z)
   -- if z = $source_line(metadata)
@@ -101,51 +139,3 @@ def $echo_value(PBOOL true) = [49]
 def $echo_value(PINT z) = $decimal_integer(z)
 def $echo_value(PSTRING n*) = n*
 
-dec $statement_tasks(statement*) : ptask*
-def $statement_tasks(statement_tail*) = (STMT statement_tail)*
-dec $echo_tasks(expression*) : ptask*
-def $echo_tasks(expression_tail*) = (ECHO expression_tail)*
-
-relation PhpStep: pstate ~> pstate
-  hint(input %0)
-rule PhpStep/nop: S ~> S[.TODO = ptask_tail*]
-  -- if S.TODO = (STMT (NStmtNop metadata)) :: ptask_tail*
-rule PhpStep/block: S ~> S[.TODO = $statement_tasks(statement_tail*) ++ ptask_tail*]
-  -- if S.TODO = (STMT (NStmtBlock (SEQUENCE statement_tail*) metadata)) :: ptask_tail*
-rule PhpStep/inline: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT $base64(text)]]
-  -- if S.TODO = (STMT (NStmtInlineHTML (BYTES text) metadata)) :: ptask_tail*
-rule PhpStep/echo: S ~> S[.TODO = $echo_tasks(expression_tail*) ++ ptask_tail*]
-  -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
-rule PhpStep/echo-value: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT $echo_value(pvalue)]]
-  -- if S.TODO = (ECHO expression) :: ptask_tail*
-  -- if $evaluate(expression) = VALUE pvalue
-rule PhpStep/echo-abrupt: S ~> S[.TODO = eps][.COMPLETION = pcompletion]
-  -- if S.TODO = (ECHO expression) :: ptask_tail*
-  -- if $evaluate(expression) = ABRUPT pcompletion
-rule PhpStep/discard-value: S ~> S[.TODO = ptask_tail*]
-  -- if S.TODO = (STMT (NStmtExpression expression metadata)) :: ptask_tail*
-  -- if $evaluate(expression) = VALUE pvalue
-rule PhpStep/discard-abrupt: S ~> S[.TODO = eps][.COMPLETION = pcompletion]
-  -- if S.TODO = (STMT (NStmtExpression expression metadata)) :: ptask_tail*
-  -- if $evaluate(expression) = ABRUPT pcompletion
-
-dec $drive(pstate, nat) : pstate
-def $drive(S, n) = S
-  -- if S.TODO = eps
-def $drive(S, 0) = S[.COMPLETION = BUDGET]
-  -- if S.TODO = ptask :: ptask_tail*
-def $drive(S, n) = $drive(S_next, n_next)
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if $(n > 0)
-  -- if $(n - 1) = n_next
-  -- PhpStep: S ~> S_next
-
-dec $run_statements(statement*, nat) : pstate
-def $run_statements(statement_tail*, n) = $drive({TODO $statement_tasks(statement_tail*), EVENTS eps, COMPLETION NORMAL}, n)
-  -- if $check_statements(statement_tail*) = READY
-def $run_statements(statement_tail*, n) = {TODO eps, EVENTS eps, COMPLETION pcompletion}
-  -- if $check_statements(statement_tail*) = REJECT pcompletion
-
-dec $php_run(program, nat) : pstate
-def $php_run(PROGRAM statement_tail*, n) = $run_statements(statement_tail*, n)
-def $php_run(ENCODEDPROGRAM text_source text_lexer text_bom text_preamble text_original? statement_tail*, n) = $run_statements(statement_tail*, n)

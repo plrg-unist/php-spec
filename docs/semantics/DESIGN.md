@@ -7,15 +7,32 @@ SL runner elaborates, checks executable bindings, and structures those modules
 through Result-returning library APIs. It disables caches and checks encountered
 alternative successes. No PHP evaluator computes semantic results.
 
-The current bootstrap machine carries pending statement/echo tasks, output events,
-and a distinct completion tag. Its recursive driver spends one explicit budget
-unit per transition. This establishes the execution boundary; storage, calls,
-objects and resumable control remain pending, as recorded in the feature inventory.
-PHP values already distinguish null, booleans, signed integers, float bits and
-byte sequences. Base64 decoding and integer decimal output are pure `.watsup`.
+The machine carries explicit pending tasks, output/diagnostic events, a completion,
+and a variable environment mapping byte names to cell identities. Cells contain
+`UNDEFINED` or a PHP value; missing names, undefined slots and null remain distinct.
+Ordinary assignment copies a value into the designated cell. Reference rebinding
+changes one name's cell identity, leaving other aliases attached to their original
+cell. Unset removes the binding. Array contents and property type sources are the
+next storage obligations, not silently approximated by this variable model.
 
-The initial slice handles empty statements, blocks, inline bytes, literal output
-and discarded scalar expressions. Its independent static pass rejects a bare
+An operand is either a captured value or a delayed compiled-variable read. Dynamic
+name expressions can therefore retain a delayed read across RHS effects. A dynamic
+write fetch initializes an absent cell to null before consuming its RHS operand;
+a direct variable assignment reads its RHS first. Discarded direct variable reads
+are eliminated by the pinned compiler, whereas dynamic fetches remain observable.
+These distinctions follow `zend_try_compile_cv`, `zend_compile_assign`,
+`zend_compile_assign_ref`, the `ZEND_FETCH_*`/`ZEND_ASSIGN*` handlers, and
+`zend_assign_to_variable_ex`; minimized source cases retain their diagnostic order.
+
+The driver spends one budget unit per task transition, including expression
+continuations. PHP values distinguish null, booleans, signed integers, float bits
+and byte sequences. Base64 decoding and integer decimal output are pure `.watsup`.
+Calls, arrays, objects, handlers and resumable control remain pending in the feature
+inventory. Access to an unimplemented request-owned variable is Unsupported,
+including reference acquisition and unset; it cannot fabricate an ordinary local.
+
+The implemented source paths handle empty statements, blocks, inline bytes, scalar
+output, assignments, reference rebinding, dynamic names and unset. Its independent static pass rejects a bare
 `break` outside loop/switch before output. Unknown constants produce an Error;
 known but unimplemented startup constants produce Unsupported. The startup names
 catalog records the pinned CLI environment (including excluded library names),
@@ -40,5 +57,8 @@ The baseline profile is `tests/semantics/profile.json`, described in CORE.md.
 fresh semantic/oracle processes under the same file identity, directory, profile
 and locale, compares exact output channels and status, and retains raw classified
 negative outcomes. It reuses the syntax harness dependency-closure fingerprint
-before and after each campaign. These few bootstrap cases establish runner
-integration only; they do not establish complete PHP semantics or BOLA freedom.
+before and after each campaign. The authored and seeded alias cases establish the current scalar/storage slice;
+they do not establish complete PHP semantics or BOLA freedom. Compact current
+evidence is `coverage/semantics/source.json`; exact raw observations are regenerated
+in the ignored `coverage/results-semantic-source.jsonl`. The earlier phase0 report
+is historical evidence for its recorded fingerprint.

@@ -1,0 +1,106 @@
+;; Names designate cells. Rebinding a name changes its cell, not the old cell's value.
+syntax pslot = UNDEFINED | DEFINED pvalue
+syntax pbinding = BIND nat* nat
+syntax poperand = KNOWN pvalue | VARIABLE nat* int
+syntax ptask = STMT statement | EVAL expression | EMIT | NAME_READ int
+  | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
+  | REF_NAME nat* | REF_DYNAMIC poperand | PREP_REF expression
+  | ACQUIRE expression | ACQUIRE_DYNAMIC | UNSET expression | UNSET_DYNAMIC
+syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat }
+var S : pstate
+var namebytes : nat*
+
+;; The initial environment for these language-owned names is a separate pending
+;; obligation. Access cannot masquerade as an ordinary absent local variable.
+dec $environment_name(nat*) : bool
+def $environment_name(n*) = true
+  -- if n* <- [[71,76,79,66,65,76,83], [116,104,105,115], [97,114,103,99], [97,114,103,118], [95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,83,69,82,86,69,82], [95,69,78,86], [95,82,69,81,85,69,83,84], [95,70,73,76,69,83], [95,83,69,83,83,73,79,78], [104,116,116,112,95,114,101,115,112,111,110,115,101,95,104,101,97,100,101,114]]
+def $environment_name(n*) = false
+  -- otherwise
+
+dec $lookup(pbinding*, nat*) : nat?
+def $lookup(eps, n_name*) = eps
+def $lookup((BIND n_name* n_cell) :: pbinding_tail*, n_name*) = n_cell
+def $lookup((BIND n_other* n_cell) :: pbinding_tail*, n_name*) = $lookup(pbinding_tail*, n_name*)
+  -- if n_other* =/= n_name*
+
+dec $unbind(pbinding*, nat*) : pbinding*
+def $unbind(eps, n_name*) = eps
+def $unbind((BIND n_name* n_cell) :: pbinding_tail*, n_name*) = pbinding_tail*
+def $unbind((BIND n_other* n_cell) :: pbinding_tail*, n_name*) = (BIND n_other* n_cell) :: $unbind(pbinding_tail*, n_name*)
+  -- if n_other* =/= n_name*
+
+dec $set_cell(pslot*, nat, pslot) : pslot*
+def $set_cell(pslot_old :: pslot_tail*, 0, pslot) = pslot :: pslot_tail*
+def $set_cell(pslot_old :: pslot_tail*, n, pslot) = pslot_old :: $set_cell(pslot_tail*, n_next, pslot)
+  -- if $(n > 0)
+  -- if $(n - 1) = n_next
+
+dec $ensure(pstate, nat*) : pstate
+def $ensure(S, n_name*) = S[.CELL = n_cell]
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.ENV = (BIND n_name* n_cell) :: S.ENV]
+  -- if $lookup(S.ENV, n_name*) = eps
+  -- if n_cell = |S.STORE|
+
+dec $acquire_name(pstate, nat*) : pstate
+def $acquire_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $acquire_name(S, n_name*) = S_found
+  -- if ~$environment_name(n_name*)
+  -- if S_found = $ensure(S, n_name*)
+  -- if S_found.STORE[S_found.CELL] = DEFINED pvalue
+def $acquire_name(S, n_name*) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED PNULL)]
+  -- if ~$environment_name(n_name*)
+  -- if S_found = $ensure(S, n_name*)
+  -- if S_found.STORE[S_found.CELL] = UNDEFINED
+
+dec $missing(pstate, nat*, int) : pstate
+def $missing(S, n_name*, z) = S[.RESULT = KNOWN PNULL][.EVENTS = S.EVENTS ++ [WARNING n_name* z]]
+  -- if $(z > 0)
+def $missing(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
+  -- if $(z <= 0)
+
+dec $read_name(pstate, nat*, int) : pstate
+def $read_name(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $read_name(S, n_name*, z) = $missing(S, n_name*, z)
+  -- if ~$environment_name(n_name*)
+  -- if $lookup(S.ENV, n_name*) = eps
+def $read_name(S, n_name*, z) = $missing(S, n_name*, z)
+  -- if ~$environment_name(n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = UNDEFINED
+def $read_name(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
+  -- if ~$environment_name(n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+
+dec $resolve(pstate, poperand) : pstate
+def $resolve(S, KNOWN pvalue) = S[.RESULT = KNOWN pvalue]
+def $resolve(S, VARIABLE n_name* z) = $read_name(S, n_name*, z)
+
+dec $resolve_at(pstate, poperand, int) : pstate
+def $resolve_at(S, KNOWN pvalue, z) = S[.RESULT = KNOWN pvalue]
+def $resolve_at(S, VARIABLE n_name* z_origin, z) = $read_name(S, n_name*, z)
+
+dec $write_name(pstate, nat*, pvalue) : pstate
+def $write_name(S, n_name*, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $write_name(S, n_name*, pvalue) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED pvalue)][.RESULT = KNOWN pvalue]
+  -- if ~$environment_name(n_name*)
+  -- if S_found = $ensure(S, n_name*)
+
+dec $bind_reference(pstate, nat*) : pstate
+def $bind_reference(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $bind_reference(S, n_name*) = S[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.RESULT = KNOWN pvalue]
+  -- if ~$environment_name(n_name*)
+  -- if S.STORE[S.CELL] = DEFINED pvalue
+
+dec $unset_name(pstate, nat*) : pstate
+def $unset_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $unset_name(S, n_name*) = S[.ENV = $unbind(S.ENV, n_name*)]
+  -- if ~$environment_name(n_name*)

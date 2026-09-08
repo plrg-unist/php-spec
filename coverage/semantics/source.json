@@ -1,0 +1,677 @@
+{
+  "budgets": {
+    "transitions": 100000,
+    "worker_seconds": 30,
+    "process_seconds": 35
+  },
+  "seed": 85010,
+  "scope": "authored scalar and variable-storage checked execution fixtures",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "oracle": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ],
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "fingerprints": {
+    "sha256": "5ff54648224a6de8fc99d612ebd04e3c38996fcdbd79ede227c0ab024484398d",
+    "files": 595,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "results": [
+    {
+      "id": "empty",
+      "source_sha256": "adfd37cc6b2aaa1be09c85fbda2131ccf31b7dd535bbf177ae1ad2571ba8ee4b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "bytes",
+      "source_sha256": "e337f863c296c694b420750537f9fe6b6634c30d0c3672c439849125d3db11fd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "integers",
+      "source_sha256": "c71117a818d807862d16bf60c467fd7399a99f15b0abc58f7213b1d36d4d41d0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "constants",
+      "source_sha256": "bebb7731247d643c162d072b9449140a68cd1c1423eefff80dfbfdc88a24bd8d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "blocks",
+      "source_sha256": "81bb6aaca2eb5e338eb1b88cfd3d27ede254aad5a21bf48934dced49abf4bf5a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "discard",
+      "source_sha256": "3e8bd80ba3841d16d861a77999d79111077fb2fb7f8d1eb238d687fd98befe5d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "undefined",
+      "source_sha256": "6672b60f223ae4e294fc9af8fdc8058bc8165fabd74399426b123e847355e4f1",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "static-break",
+      "source_sha256": "f917932e62c07853d5fe11d41c9fdc6c0d8e1928f6d9e2785d81fde1fbe37f43",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "assignment-chain",
+      "source_sha256": "e7bbf27b09d288d136778c85c453e64e58da2a1f059ea067ee26318fa9c32adc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "assignment-copy",
+      "source_sha256": "d0ef783ffccd73f027c84fd467464fdcf03251e086e459869e4d35897806bbc8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "alias-write",
+      "source_sha256": "df13ca4c5a4904d833f54258998c1fa6cc077b6562e7ccad821b3b080bc012bd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "alias-rebind",
+      "source_sha256": "43795fa6884b8ab5d3b41a3b9d3a6a5be6de9cb26f1a74516c438032de3d0b97",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-initialize",
+      "source_sha256": "da5ffce9e88a067c1c47d1da24797410befaef118da858aca046dce26dcae09f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "unset-reference",
+      "source_sha256": "aefeb873b22861ae24f32ea74931dc06ec3802ec9477758cf60cb95e91d81a76",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "missing-read",
+      "source_sha256": "3a511c52067e08d3c96b7cd7d5870f35187fd2b17e955396bfd84ac9fd810ace",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-name",
+      "source_sha256": "8c0f43f3716d552d7c5c1081d658d2e99663f0408c532bd0db954775a722f751",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-delayed-name",
+      "source_sha256": "843e0de52094a23d17b9027681e103fc567bea0cebce716a5ad6f2c1bd8a2b55",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-captured-name",
+      "source_sha256": "a9defaf1d800e2e26842a42422f817835b9e013162f20fdd75d1fd91f1027060",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-unset",
+      "source_sha256": "079baf2484aba5b8789df0803d980339237b77a6b9ec427694cd829336316d61",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-numeric-name",
+      "source_sha256": "be3d7f89b135b82d3b47363e4ecb8ec3b8e4db819fed97675f77f9c183c6fa0e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-write-initialize",
+      "source_sha256": "838562af55c06251ffa8537b2941cc56de50a8c5cb66f4e787e3a202e47eca9b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "cv-write-missing",
+      "source_sha256": "558858d1818729294e77a6bfbd6ae6e702ddf5f40a2e0a389f02ab5bb209d4ef",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "discard-variable",
+      "source_sha256": "f7f1d32b25f25fd6cf649cf38e91aed5f00340df9ace0acbfdb1ddc22983e8be",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "assignment-source-lines",
+      "source_sha256": "47daa153cf5789998012bc0baf5d235a5afa5483248513e8cd6c2f77c183600a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-captured-nested",
+      "source_sha256": "36f0d51954764f69dcce9e5ecc0a635b4a5dfc417db518d2b97efaf76bb4eb3c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-ref-rhs-changes-name",
+      "source_sha256": "92203ead9487e0ac739434b8c349b6b4aee2240292715183e96dfd90b75fd26b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "captured-ref-rhs-changes-name",
+      "source_sha256": "dc61fea6c65482d84262e44ed958e6a013c3db0333491647a5a88380755b501e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-nul-name",
+      "source_sha256": "04ba29556c8aa240bef4ae3c52b8b96df2dd63315d39ed1513f979fffeb4c4d4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-source-lines",
+      "source_sha256": "227cd58a2bb179165530385dc2baf942224dd13337acfd53fca3ae73bdaa2348",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-reference",
+      "source_sha256": "624c0aa63ed81a15d0a0092831baab866dfaa874318151cec990abead4f6a363",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "dynamic-reference-rebind",
+      "source_sha256": "87ac1018583c6766bd769ae1c55d265524b8857241f5fd674e7fd9ed677b2ea1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-reference-rebind",
+      "source_sha256": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-dynamic-variable",
+      "source_sha256": "1fe5e05ebb31ffcd6ecc35c3b51ac1e696f3206e18e913319001a1f28abda548",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-00",
+      "source_sha256": "20077d5b3e62a393fb6b63230a7fd227d40610e6e3de7ac3ab7f78e5b9a1d8e1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-01",
+      "source_sha256": "1598e90ce28612ff18873bd20f79c314184cf1cf3fb623f4bc7cb2fa08c352a1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-02",
+      "source_sha256": "3b9202016ab6d4e82c3afa0abb888959d387319cddcdbf338de97b15d952f32e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-03",
+      "source_sha256": "c25f76a0461364147be0fbd5bb1a49f160256be4bdb9faec2ceedbf39fe54627",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-04",
+      "source_sha256": "d2ed2d156fdf4004327fe971649a66c8afbd042151994c839d5e38eb796d0585",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-05",
+      "source_sha256": "dd51a29469c7b25d2d351ed0d7e56c40162762f0a620761360372c7c91bf02b1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-06",
+      "source_sha256": "80bc298af6d069408053c52b329a7f4f0d2842dc92a926781ddbd4feebb2c7a4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-07",
+      "source_sha256": "1a590e58de75eb0602fba4e567ee3cdd914e1e2fbf4edd0ab04809ea5d591b55",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-08",
+      "source_sha256": "540d6b4141cd3e379ea4afc5f5ef39cc2b2169273f7c907d4c48655643f0bb2c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-09",
+      "source_sha256": "83a6cd23513b1f058ba8284853266b3a85ef1ae47b52e04edf97bea9f16da6ab",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-10",
+      "source_sha256": "17f05571d9ac49da50331bed1ded18a706c3a16f37db78519dd2d8eea90f0f62",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-11",
+      "source_sha256": "86a04c885731071c91d9afd6e435751e46df1a68dc68958410fffc46f38c9233",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-12",
+      "source_sha256": "cabda31c2a504355e538faf23f30dc02b89a4afd1dbf6cd6c306acd27bc0c4a6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-13",
+      "source_sha256": "de38ad7bb21bd12dd79f63933d259ca26d322482be6d4ad2c4206ebd93b5291a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-14",
+      "source_sha256": "aee3da96bcae2880dbfc403cf0dcb51a38d4e61723568465022ad8188d5a9ce2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-15",
+      "source_sha256": "03d8062c29293cf8c0a86543189c39165f114ced6dc370c4aa4ba34ed03998fb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-16",
+      "source_sha256": "6d902cf0cb7503978637e64699dee67028fb54d6959bbb92ac8b579572f23fd5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-17",
+      "source_sha256": "50ec9bbd91266c128a0070dfd239e0e5ceee7c0a2e30714c2f3d92ed396e71aa",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-18",
+      "source_sha256": "20cd3d51ad8f0f70b3554215aa7833ece346774549b1873963900cea7af0fc6b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-alias-19",
+      "source_sha256": "17ce368d13f58ecbba1feb20fb15c18c1f4b273d3fd0b48547f3faa4ba43228f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    }
+  ],
+  "negative_checks": [
+    {
+      "source": "PD9waHAgc3RybGVuKCJhIik7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-gt5qz4qt/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "expression",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBQSFBfSU5UX01BWDs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-gt5qz4qt/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "initial constant",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-gt5qz4qt/unsupported.php",
+        "--steps",
+        "0"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-gt5qz4qt/unsupported.php",
+        "--timeout",
+        "0.000001"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "timeout"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-gt5qz4qt/unsupported.php.missing"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "runner_failure",
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-gt5qz4qt/unsupported.php.missing'"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkYXJnYzs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9JiRhcmdjOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJG49ImFyZ2MiOyAkYT0mJCRuOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgdW5zZXQoJEdMT0JBTFMpOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJG49IkdMT0JBTFMiOyB1bnNldCgkJG4pOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {}
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0"
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {
+                    "startLine": {
+                      "int": "-1"
+                    }
+                  }
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0"
+        }
+      }
+    }
+  ],
+  "raw_results": {
+    "path": "coverage/results-semantic-source.jsonl",
+    "sha256": "6f904d11e41ff33bd934f90d84fe400254817b19bdb0feb413260111e5f0b38d",
+    "records": 53
+  }
+}
