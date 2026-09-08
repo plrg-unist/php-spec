@@ -34,6 +34,11 @@ decimal output are pure `.watsup`. Calls, objects, handlers and resumable contro
 remain pending in the feature
 inventory. Access to an unimplemented request-owned variable is Unsupported,
 including reference acquisition and unset; it cannot fabricate an ordinary local.
+The guard follows this pinned startup profile; `_SESSION` is ordinary because the
+session extension is absent. `http_response_header` is locally scoped: computed
+names, direct writes/references and unset work normally, while literal reads remain
+Unsupported until the compiler tracks its per-scope assignment/deprecation state
+(`zend_try_compile_cv`). No extension behavior is inferred from name spelling.
 
 The implemented source paths handle empty statements, blocks, inline bytes, scalar
 output, assignments, reference rebinding, dynamic names, unset and the numeric bridge below. Its independent static pass rejects a bare
@@ -127,5 +132,7 @@ before and after each campaign. The authored and seeded cases establish the curr
 scalar, variable-storage and ordinary-array literal/read/write/unset slice;
 they do not establish complete PHP semantics or BOLA freedom. Compact current
 evidence is `coverage/semantics/source.json`; exact raw observations are regenerated
-in the ignored `coverage/results-semantic-source.jsonl`. The earlier phase0 report
+in the ignored `coverage/results-semantic-source.jsonl`. `--prefix ID` runs a
+focused source subset plus all outcome negatives and writes separate `source-selected`
+reports, preserving the last full campaign. The earlier phase0 report
 is historical evidence for its recorded fingerprint.

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fresh-process, original-byte differential tests for the checked machine."""
+import argparse
 import base64
 import hashlib
 import json
@@ -249,6 +250,17 @@ CASES.update({
     'array-unset-review-unset-key-rebind-root': b'<?php\n$a=[1];$b=[2];unset($a[($a=&$b)[0]-2]);echo $a===[],$b===[];',
 })
 
+CASES.update({
+    'profile-local-session-read': b'<?php echo $_SESSION;',
+    'profile-local-session-references': b'<?php $n="_SESSION";$$n=1;$b=&$_SESSION;$b=2;echo $_SESSION;unset($_SESSION);echo $b;',
+    'profile-local-session-array': b'<?php $_SESSION[]=1;$_SESSION[]=2;$a=$_SESSION;unset($_SESSION[0]);echo $a[0],$_SESSION[1];',
+    'profile-local-session-unset': b'<?php unset($_SESSION);unset($_SESSION[0]);',
+    'profile-local-http-response-header-read': b'<?php $n="http_response_header";echo $$n;',
+    'profile-local-http-response-header-references': b'<?php $n="http_response_header";$$n=1;$b=&$http_response_header;$b=2;echo $$n;unset($http_response_header);echo $b;',
+    'profile-local-http-response-header-array': b'<?php $http_response_header[]=1;$http_response_header[]=2;$n="http_response_header";$a=$$n;unset($http_response_header[0]);echo $a[0],$$n[1];',
+    'profile-local-http-response-header-unset': b'<?php unset($http_response_header);unset($http_response_header[0]);',
+})
+
 # Independent review-authored witnesses keep their original provenance.
 CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 for identifier in CONFORMANCE:
@@ -301,11 +313,16 @@ def fingerprint():
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--prefix', default='', help='Run source cases with this ID prefix; always retain outcome negatives.')
+    args = parser.parse_args()
+    selected = {name: source for name, source in CASES.items() if name.startswith(args.prefix)}
+    assert selected, 'no source cases matched prefix'
     before = fingerprint()
     results = []
     negatives = []
     with tempfile.TemporaryDirectory(prefix='php-semantics-') as directory:
-        for name, source in CASES.items():
+        for name, source in selected.items():
             path = Path(directory) / (name + '.php')
             path.write_bytes(source)
             semantic = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)],
@@ -353,7 +370,9 @@ def main():
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
                        b'<?php $x=1;$a=[&$x];', b'<?php $a="abc";unset($a[0][0]);',
-                       b'<?php $a=[...[]];', b'<?php $a=[[]=>1];']:
+                       b'<?php $a=[...[]];', b'<?php $a=[[]=>1];',
+                       b'<?php echo $http_response_header;',
+                       b'<?php $http_response_header=1;echo $http_response_header;']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
@@ -397,17 +416,17 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures', 'profile': PROFILE,
+    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
-    raw = ROOT / 'coverage/results-semantic-source.jsonl'
+    raw = ROOT / 'coverage' / ('results-semantic-source-selected.jsonl' if args.prefix else 'results-semantic-source.jsonl')
     raw.write_text(''.join(json.dumps(result) + '\n' for result in results))
     report['raw_results'] = {'path': str(raw.relative_to(ROOT)),
                              'sha256': hashlib.sha256(raw.read_bytes()).hexdigest(), 'records': len(results)}
     report['results'] = [{'id': result['id'], 'source_sha256': result['source_sha256'],
                           'semantic_status': result['semantic']['status'], 'comparison': result['comparison']}
                          for result in results]
-    output = ROOT / 'coverage/semantics/source.json' 
+    output = ROOT / 'coverage/semantics' / ('source-selected.json' if args.prefix else 'source.json') 
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, indent=2) + '\n')
     print(f'{len(results)} differential cases and {len(negatives)} outcome negatives passed')

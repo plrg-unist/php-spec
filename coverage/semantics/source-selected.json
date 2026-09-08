@@ -1,0 +1,889 @@
+{
+  "selection_prefix": "profile-local-",
+  "budgets": {
+    "transitions": 100000,
+    "worker_seconds": 30,
+    "process_seconds": 35
+  },
+  "seeds": {
+    "alias": 85010,
+    "scalar": 6614,
+    "array_keys": 7116
+  },
+  "scope": "authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "oracle": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ],
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "fingerprints": {
+    "sha256": "f1201644f0ebe4c80f2eecc9eb8ad17364e3599dfdbdd23f01ee6757e6990854",
+    "files": 652,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "results": [
+    {
+      "id": "profile-local-session-read",
+      "source_sha256": "c62d253e31b2154dc7c662d627c62eaa3d4d3aea0505f89baa3576098738e463",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-session-references",
+      "source_sha256": "a300200d1cf02b2fcfc4f8a23770a6ca4dc668ba4f867778266d4ac78a1dd96e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-session-array",
+      "source_sha256": "1b9313069a999eebd82c27a083ff4d3d283b73846544d3a98635d2e2d0274849",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-session-unset",
+      "source_sha256": "f94e305c5cfd230b63aa6393cb92b9e2aa3830144d56a77d50b045e4172e8950",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-read",
+      "source_sha256": "280dc692deb5e622988778a6c516fa91e3f280115eca512da703da702cd8531d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-references",
+      "source_sha256": "50daf8e2857643342b7c7822dec5ceb784151fc4d62f188d47b6798834f69c04",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-array",
+      "source_sha256": "2d1d4e1c0f313619bd3c77164c6b24997a72dd68d0471727679358b43cc26038",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-unset",
+      "source_sha256": "f287c7e1cb63fdd9285851455da3c605fd68799c85131bc32783f23e0c9dbce8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    }
+  ],
+  "negative_checks": [
+    {
+      "source": "PD9waHAgc3RybGVuKCJhIik7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-ke07io2e/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "expression",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-ke07io2e/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "initial constant",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-ke07io2e/unsupported.php",
+        "--steps",
+        "0"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-ke07io2e/unsupported.php",
+        "--timeout",
+        "0.000001"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "timeout"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-ke07io2e/unsupported.php.missing"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "runner_failure",
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-ke07io2e/unsupported.php.missing'"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkYXJnYzs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9JiRhcmdjOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJG49ImFyZ2MiOyAkYT0mJCRuOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgdW5zZXQoJEdMT0JBTFMpOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJG49IkdMT0JBTFMiOyB1bnNldCgkJG4pOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkbWlzc2luZzsgJHtOQU59PTE7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time NaN name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkbWlzc2luZzsgJHtJTkYtSU5GfT0xOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time NaN name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBNSVNTSU5HOyAke1tdfT0xOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time array name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBNSVNTSU5HOyAke1sxXStbMl19PTE7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time array name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJHg9MTskYT1bJiR4XTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "array references or unpacking",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9ImFiYyI7dW5zZXQoJGFbMF1bMF0pOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "intermediate string offset unset",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9Wy4uLltdXTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "array references or unpacking",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9W1tdPT4xXTs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "array-key error compilation",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkaHR0cF9yZXNwb25zZV9oZWFkZXI7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time http_response_header context",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGh0dHBfcmVzcG9uc2VfaGVhZGVyPTE7ZWNobyAkaHR0cF9yZXNwb25zZV9oZWFkZXI7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time http_response_header context",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {}
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {
+                    "startLine": {
+                      "int": "-1"
+                    }
+                  }
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Expr_Array",
+                    "fields": [
+                      []
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PSTRING",
+                "args": [
+                  [
+                    "65",
+                    "114",
+                    "114",
+                    "97",
+                    "121"
+                  ]
+                ]
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [
+            {
+              "ITEMS": [],
+              "NEXT": "-9223372036854775808"
+            }
+          ],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Scalar_Float",
+                    "fields": [
+                      {
+                        "float": "7ff8000000000000"
+                      }
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PFLOAT",
+                "args": [
+                  "9221120237041090560"
+                ]
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Expr_BinaryOp_Div",
+                    "fields": [
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "1"
+                          }
+                        ],
+                        "meta": {}
+                      },
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "0"
+                          }
+                        ],
+                        "meta": {}
+                      }
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PINT",
+                "args": [
+                  "0"
+                ]
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "raw_results": {
+    "path": "coverage/results-semantic-source-selected.jsonl",
+    "sha256": "adf4e33eceac1b39e9bbbfd38f3965c318b3d5e66a8700d4528da4bfa9025a8c",
+    "records": 8
+  }
+}

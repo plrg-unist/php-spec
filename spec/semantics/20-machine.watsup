@@ -100,6 +100,12 @@ def $compiled_line(NExprArrayDimFetch expression phpType5 metadata) = $compiled_
 def $compiled_line(expression) = $expression_line(expression)
   -- otherwise
 
+dec $header_literal(phpType34) : bool
+def $header_literal(BYTES text) = ($base64(text) = [104,116,116,112,95,114,101,115,112,111,110,115,101,95,104,101,97,100,101,114])
+def $header_literal(NScalarString (BYTES text) metadata) = $header_literal(BYTES text)
+def $header_literal(phpType34) = false
+  -- otherwise
+
 dec $check_assignment_target(expression) : pcheck
 dec $check_unset_target(expression) : pcheck
 dec $check_lvalue(expression) : pcheck
@@ -187,6 +193,9 @@ def $check_array_items(phpType13*) = REJECT (UNSUPPORTED "array references or un
   -- otherwise
 
 def $check_assignment_target(NExprVariable phpType34 metadata) = $check_variable(phpType34)
+  -- if ~$header_literal(phpType34)
+def $check_assignment_target(NExprVariable phpType34 metadata) = READY
+  -- if $header_literal(phpType34)
 def $check_assignment_target(NExprArrayDimFetch expression ABSENT metadata) = $check_assignment_target(expression)
 def $check_assignment_target(NExprArrayDimFetch expression phpType5 metadata) = $check_expression(expression_key)
   -- if phpType5 = expression_key
@@ -199,10 +208,16 @@ def $check_assignment_target(expression) = REJECT (UNSUPPORTED "lvalue")
 
 
 def $check_lvalue(NExprVariable phpType34 metadata) = $check_variable(phpType34)
+  -- if ~$header_literal(phpType34)
+def $check_lvalue(NExprVariable phpType34 metadata) = READY
+  -- if $header_literal(phpType34)
 def $check_lvalue(expression) = REJECT (UNSUPPORTED "lvalue")
   -- otherwise
 
 def $check_variable(BYTES text) = READY
+  -- if ~$header_literal(BYTES text)
+def $check_variable(phpType34) = REJECT (UNSUPPORTED "compile-time http_response_header context")
+  -- if $header_literal(phpType34)
 def $check_variable(phpType34) = REJECT (UNSUPPORTED "compile-time NaN name diagnostic")
   -- if $name_fold_warning(phpType34)
 def $check_variable(phpType34) = REJECT (UNSUPPORTED "compile-time array name diagnostic")
@@ -211,8 +226,12 @@ def $check_variable(phpType34) = $check_expression(expression)
   -- if phpType34 = expression
   -- if ~$name_fold_warning(phpType34)
   -- if ~$array_name_fold_warning(phpType34)
+  -- if ~$header_literal(phpType34)
 
 def $check_unset_target(NExprVariable phpType34 metadata) = $check_variable(phpType34)
+  -- if ~$header_literal(phpType34)
+def $check_unset_target(NExprVariable phpType34 metadata) = READY
+  -- if $header_literal(phpType34)
 def $check_unset_target(NExprArrayDimFetch expression ABSENT metadata) = $context_error("Cannot use [] for unsetting", $compiled_line(expression))
   -- if $check_unset_target(expression) = READY
 def $check_unset_target(NExprArrayDimFetch expression phpType5 metadata) = REJECT pcompletion

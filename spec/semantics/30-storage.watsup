@@ -19,11 +19,13 @@ dec $initial_state(pcompletion) : pstate
 var S : pstate
 var namebytes : nat*
 
+;; Only main-registered globals and language-special/request CLI names are guarded.
+;; Session is absent from the pinned profile; HTTP wrappers create local names.
 ;; The initial environment for these language-owned names is a separate pending
 ;; obligation. Access cannot masquerade as an ordinary absent local variable.
 dec $environment_name(nat*) : bool
 def $environment_name(n*) = true
-  -- if n* <- [[71,76,79,66,65,76,83], [116,104,105,115], [97,114,103,99], [97,114,103,118], [95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,83,69,82,86,69,82], [95,69,78,86], [95,82,69,81,85,69,83,84], [95,70,73,76,69,83], [95,83,69,83,83,73,79,78], [104,116,116,112,95,114,101,115,112,111,110,115,101,95,104,101,97,100,101,114]]
+  -- if n* <- [[71,76,79,66,65,76,83], [116,104,105,115], [97,114,103,99], [97,114,103,118], [95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,83,69,82,86,69,82], [95,69,78,86], [95,82,69,81,85,69,83,84], [95,70,73,76,69,83]]
 def $environment_name(n*) = false
   -- otherwise
 
