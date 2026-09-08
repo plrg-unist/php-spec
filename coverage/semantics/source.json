@@ -1,4 +1,5 @@
 {
+  "selection_prefix": "",
   "budgets": {
     "transitions": 100000,
     "worker_seconds": 30,
@@ -55,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "cf0a308adb326f80d31d195eb934514de254bb7f7d235e4253507c26551c1b8f",
-    "files": 647,
+    "sha256": "936b8b1510cc4c27e5505c5f05ab93bdfbe480fc1b3a9099c389ef2e779f9dbc",
+    "files": 662,
     "scope": [
       "frontend",
       "adapter",
@@ -1322,6 +1323,54 @@
       "comparison": "pass"
     },
     {
+      "id": "profile-local-session-read",
+      "source_sha256": "c62d253e31b2154dc7c662d627c62eaa3d4d3aea0505f89baa3576098738e463",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-session-references",
+      "source_sha256": "a300200d1cf02b2fcfc4f8a23770a6ca4dc668ba4f867778266d4ac78a1dd96e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-session-array",
+      "source_sha256": "1b9313069a999eebd82c27a083ff4d3d283b73846544d3a98635d2e2d0274849",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-session-unset",
+      "source_sha256": "f94e305c5cfd230b63aa6393cb92b9e2aa3830144d56a77d50b045e4172e8950",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-read",
+      "source_sha256": "280dc692deb5e622988778a6c516fa91e3f280115eca512da703da702cd8531d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-references",
+      "source_sha256": "50daf8e2857643342b7c7822dec5ceb784151fc4d62f188d47b6798834f69c04",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-array",
+      "source_sha256": "2d1d4e1c0f313619bd3c77164c6b24997a72dd68d0471727679358b43cc26038",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "profile-local-http-response-header-unset",
+      "source_sha256": "f287c7e1cb63fdd9285851455da3c605fd68799c85131bc32783f23e0c9dbce8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
       "id": "conformance-reference-rebind",
       "source_sha256": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
       "semantic_status": "normal",
@@ -2257,7 +2306,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-bf6xtmjr/unsupported.php"
+        "/tmp/php-semantics-z7n0roxk/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -2276,7 +2325,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-bf6xtmjr/unsupported.php"
+        "/tmp/php-semantics-z7n0roxk/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -2295,7 +2344,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-bf6xtmjr/unsupported.php",
+        "/tmp/php-semantics-z7n0roxk/unsupported.php",
         "--steps",
         "0"
       ],
@@ -2316,7 +2365,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-bf6xtmjr/unsupported.php",
+        "/tmp/php-semantics-z7n0roxk/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -2329,12 +2378,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-bf6xtmjr/unsupported.php.missing"
+        "/tmp/php-semantics-z7n0roxk/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-bf6xtmjr/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-z7n0roxk/unsupported.php.missing'"
       }
     },
     {
@@ -2533,6 +2582,36 @@
       }
     },
     {
+      "source": "PD9waHAgZWNobyAkaHR0cF9yZXNwb25zZV9oZWFkZXI7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time http_response_header context",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGh0dHBfcmVzcG9uc2VfaGVhZGVyPTE7ZWNobyAkaHR0cF9yZXNwb25zZV9oZWFkZXI7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time http_response_header context",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
       "input": {
         "op": "execute",
         "ast": {
@@ -2613,7 +2692,9 @@
             "args": [
               "0"
             ]
-          }
+          },
+          "ALLOCATIONS": [],
+          "HELD": []
         }
       }
     },
@@ -2702,7 +2783,9 @@
             "args": [
               "0"
             ]
-          }
+          },
+          "ALLOCATIONS": [],
+          "HELD": []
         }
       }
     },
@@ -2794,7 +2877,16 @@
             "args": [
               "0"
             ]
-          }
+          },
+          "ALLOCATIONS": [
+            {
+              "tag": "HARRAY",
+              "args": [
+                "0"
+              ]
+            }
+          ],
+          "HELD": []
         }
       }
     },
@@ -2877,7 +2969,9 @@
             "args": [
               "0"
             ]
-          }
+          },
+          "ALLOCATIONS": [],
+          "HELD": []
         }
       }
     },
@@ -2975,14 +3069,16 @@
             "args": [
               "0"
             ]
-          }
+          },
+          "ALLOCATIONS": [],
+          "HELD": []
         }
       }
     }
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "d3c5a4e36ff5e35ced95ab20fda7f3e0710a07ec7b5665bbe83ffa7066875ccc",
-    "records": 363
+    "sha256": "f0c890f4800b4be6c6eefd1fc3214ea2fd265f24a50c15cfc0e6443fee5dfa2e",
+    "records": 371
   }
 }

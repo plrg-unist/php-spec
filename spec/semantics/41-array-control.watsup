@@ -1,4 +1,4 @@
-rule PhpStep/array-literal: S ~> S_new[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*]
+rule PhpStep/array-literal: S ~> S_new[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (EVAL (NExprArray (SEQUENCE phpType13*) metadata)) :: ptask_tail*
   -- if S_new = $allocate_array(S, $array_empty())
   -- if S_new.RESULT = KNOWN (PARRAY n)
@@ -9,15 +9,15 @@ rule PhpStep/array-unkeyed: S ~> S[.TODO = [EVAL expression, ARRAY_VALUE n eps p
 rule PhpStep/array-keyed: S ~> S[.TODO = [EVAL expression_key, ARRAY_KEY n expression phpType13_tail*] ++ ptask_tail*]
   -- if S.TODO = (ARRAY_NEXT n ((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
   -- if phpType5 = expression_key
-rule PhpStep/array-key: S ~> S[.TODO = [EVAL expression, ARRAY_VALUE n (S.RESULT) phpType13_tail* $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/array-key: S ~> S[.TODO = [EVAL expression, ARRAY_VALUE n (S.RESULT) phpType13_tail* $compiled_line(expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ARRAY_KEY n expression phpType13_tail*) :: ptask_tail*
-rule PhpStep/array-value-unkeyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*]
+rule PhpStep/array-value-unkeyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ARRAY_VALUE n eps phpType13_tail* z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if S_out = $literal_insert(S_read, n, eps, pvalue, z)
-rule PhpStep/array-value-keyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*]
+rule PhpStep/array-value-keyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ARRAY_VALUE n (poperand) phpType13_tail* z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -38,27 +38,27 @@ rule PhpStep/array-key-abrupt: S ~> S_key[.TODO = eps]
 rule PhpStep/dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), DIM_FETCH $compiled_line(expression_key)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key
-rule PhpStep/dimension-prepare-cv: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (VARIABLE n_name* $variable_line(phpType34, metadata))]
+rule PhpStep/dimension-prepare-cv: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (VARIABLE n_name* $variable_line(phpType34, metadata))][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
 rule PhpStep/dimension-prepare-name: S ~> S[.TODO = [EVAL expression, DIM_NAME $compiled_line(expression)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
   -- if phpType34 = expression
-rule PhpStep/dimension-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_NAME S.RESULT z]
+rule PhpStep/dimension-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_NAME S.RESULT z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_NAME z) :: ptask_tail*
 rule PhpStep/dimension-prepare-path: S ~> S[.TODO = [DIM_PREP expression, DIM_INDEX expression_key $compiled_line(expression_key)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key
-rule PhpStep/dimension-index: S ~> S[.TODO = [EVAL expression, DIM_PATH S.BASE z] ++ ptask_tail*]
+rule PhpStep/dimension-index: S ~> S[.TODO = [EVAL expression, DIM_PATH S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (DIM_INDEX expression z) :: ptask_tail*
-rule PhpStep/dimension-path: S ~> S[.TODO = ptask_tail*][.BASE = BASE_DIM pbase S.RESULT z]
+rule PhpStep/dimension-path: S ~> S[.TODO = ptask_tail*][.BASE = BASE_DIM pbase S.RESULT z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_PATH pbase z) :: ptask_tail*
 rule PhpStep/dimension-prepare-value: S ~> S[.TODO = [EVAL expression, DIM_CAPTURE] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP expression) :: ptask_tail*
   -- if ~$delayed_base(expression)
-rule PhpStep/dimension-capture: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+rule PhpStep/dimension-capture: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT][.RESULT = KNOWN PNULL]
   -- if S.TODO = DIM_CAPTURE :: ptask_tail*
-rule PhpStep/dimension-fetch: S ~> S_out[.TODO = ptask_tail*]
+rule PhpStep/dimension-fetch: S ~> S_out[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
   -- if S_out = $base_read(S, S.BASE, z)

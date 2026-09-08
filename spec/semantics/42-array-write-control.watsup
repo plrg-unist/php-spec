@@ -1,6 +1,6 @@
 rule PhpStep/array-assignment: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression_base phpType5 metadata_dim), ASSIGN_PREP (NExprArrayDimFetch expression_base phpType5 metadata_dim) expression] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssign (NExprArrayDimFetch expression_base phpType5 metadata_dim) expression metadata)) :: ptask_tail*
-rule PhpStep/array-assignment-prepare: S ~> S[.TODO = [EVAL expression, ASSIGN_ARRAY S.BASE $compiled_line(expression_target) $assignment_self(expression_target, expression)] ++ ptask_tail*]
+rule PhpStep/array-assignment-prepare: S ~> S[.TODO = [EVAL expression, ASSIGN_ARRAY S.BASE $compiled_line(expression_target) $assignment_self(expression_target, expression)] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ASSIGN_PREP expression_target expression) :: ptask_tail*
 rule PhpStep/array-assignment-write: S ~> S_written[.TODO = ptask_tail*]
   -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*

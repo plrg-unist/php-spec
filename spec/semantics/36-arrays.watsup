@@ -40,7 +40,7 @@ def $array_replace(parray_old :: parray_tail*, n, parray) = parray_old :: $array
   -- if $(n - 1) = n_next
 
 dec $allocate_array(pstate, parray) : pstate
-def $allocate_array(S, parray) = S[.ARRAYS = S.ARRAYS ++ [parray]][.RESULT = KNOWN (PARRAY n)]
+def $allocate_array(S, parray) = S[.ARRAYS = S.ARRAYS ++ [parray]][.RESULT = KNOWN (PARRAY n)][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n]]
   -- if n = |S.ARRAYS|
 
 dec $diagnostic(pstate, text, nat*, int) : pstate

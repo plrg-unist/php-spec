@@ -1,0 +1,160 @@
+;; Allocation is distinct from backing storage and reachability. Releasing zero
+;; incoming owners cascades; unreachable cycles survive until cycle collection.
+syntax hedge = HEDGE pnode pnode
+syntax hgraph = { NODES pnode*, EDGES hedge*, ROOTS pnode* }
+var H : hgraph
+
+dec $heap_member(pnode, pnode*) : bool
+def $heap_member(pnode, eps) = false
+def $heap_member(pnode, pnode :: pnode_tail*) = true
+def $heap_member(pnode, pnode_other :: pnode_tail*) = $heap_member(pnode, pnode_tail*)
+  -- if pnode =/= pnode_other
+
+dec $heap_count(pnode, pnode*) : nat
+def $heap_count(pnode, eps) = 0
+def $heap_count(pnode, pnode :: pnode_tail*) = $(1 + $heap_count(pnode, pnode_tail*))
+def $heap_count(pnode, pnode_other :: pnode_tail*) = $heap_count(pnode, pnode_tail*)
+  -- if pnode =/= pnode_other
+
+dec $heap_unique(pnode*) : bool
+def $heap_unique(eps) = true
+def $heap_unique(pnode :: pnode_tail*) = (~$heap_member(pnode, pnode_tail*) /\ $heap_unique(pnode_tail*))
+
+dec $heap_subset(pnode*, pnode*) : bool
+def $heap_subset(eps, pnode_alloc*) = true
+def $heap_subset(pnode :: pnode_tail*, pnode_alloc*) = ($heap_member(pnode, pnode_alloc*) /\ $heap_subset(pnode_tail*, pnode_alloc*))
+
+dec $heap_edges_valid(hedge*, pnode*) : bool
+def $heap_edges_valid(eps, pnode*) = true
+def $heap_edges_valid((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode*) = ($heap_member(pnode_from, pnode*) /\ $heap_member(pnode_to, pnode*) /\ $heap_edges_valid(hedge_tail*, pnode*))
+
+dec $heap_valid(hgraph) : bool
+def $heap_valid(H) = ($heap_unique(H.NODES) /\ $heap_subset(H.ROOTS, H.NODES) /\ $heap_edges_valid(H.EDGES, H.NODES))
+
+dec $heap_edge_owners(pnode, hedge*, pnode*) : nat
+def $heap_edge_owners(pnode, eps, pnode_alloc*) = 0
+def $heap_edge_owners(pnode, (HEDGE pnode_from pnode) :: hedge_tail*, pnode_alloc*) = $(1 + $heap_edge_owners(pnode, hedge_tail*, pnode_alloc*))
+  -- if $heap_member(pnode_from, pnode_alloc*)
+def $heap_edge_owners(pnode, (HEDGE pnode_from pnode_to) :: hedge_tail*, pnode_alloc*) = $heap_edge_owners(pnode, hedge_tail*, pnode_alloc*)
+  -- if (pnode =/= pnode_to \/ ~$heap_member(pnode_from, pnode_alloc*))
+
+dec $heap_owners(hgraph, pnode) : nat
+def $heap_owners(H, pnode) = $($heap_count(pnode, H.ROOTS) + $heap_edge_owners(pnode, H.EDGES, H.NODES))
+
+dec $heap_retained(hgraph, pnode*) : pnode*
+def $heap_retained(H, eps) = eps
+def $heap_retained(H, pnode :: pnode_tail*) = pnode :: $heap_retained(H, pnode_tail*)
+  -- if $($heap_owners(H, pnode) > 0)
+def $heap_retained(H, pnode :: pnode_tail*) = $heap_retained(H, pnode_tail*)
+  -- if $heap_owners(H, pnode) = 0
+
+dec $heap_live_edges(hedge*, pnode*) : hedge*
+def $heap_live_edges(eps, pnode*) = eps
+def $heap_live_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode*) = (HEDGE pnode_from pnode_to) :: $heap_live_edges(hedge_tail*, pnode*)
+  -- if ($heap_member(pnode_from, pnode*) /\ $heap_member(pnode_to, pnode*))
+def $heap_live_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode*) = $heap_live_edges(hedge_tail*, pnode*)
+  -- if (~$heap_member(pnode_from, pnode*) \/ ~$heap_member(pnode_to, pnode*))
+
+dec $heap_prune(hgraph) : hgraph
+def $heap_prune(H) = H[.EDGES = $heap_live_edges(H.EDGES, H.NODES)]
+  -- if $heap_retained(H, H.NODES) = H.NODES
+def $heap_prune(H) = $heap_prune(H[.NODES = pnode*])
+  -- if pnode* = $heap_retained(H, H.NODES)
+  -- if pnode* =/= H.NODES
+
+;; Collection is a separate pure graph operation, not a PHP GC trigger or a
+;; gc_collect_cycles return-count implementation. Order preserves allocation IDs.
+dec $heap_children(pnode, hedge*) : pnode*
+dec $heap_reach(pnode*, pnode*, hedge*) : pnode*
+def $heap_reach(eps, pnode_seen*, hedge*) = pnode_seen*
+def $heap_reach(pnode :: pnode_work*, pnode_seen*, hedge*) = $heap_reach(pnode_work*, pnode_seen*, hedge*)
+  -- if $heap_member(pnode, pnode_seen*)
+def $heap_reach(pnode :: pnode_work*, pnode_seen*, hedge*) = $heap_reach($heap_children(pnode, hedge*) ++ pnode_work*, pnode :: pnode_seen*, hedge*)
+  -- if ~$heap_member(pnode, pnode_seen*)
+
+def $heap_children(pnode, eps) = eps
+def $heap_children(pnode, (HEDGE pnode pnode_to) :: hedge_tail*) = pnode_to :: $heap_children(pnode, hedge_tail*)
+def $heap_children(pnode, (HEDGE pnode_other pnode_to) :: hedge_tail*) = $heap_children(pnode, hedge_tail*)
+  -- if pnode =/= pnode_other
+
+dec $heap_intersect(pnode*, pnode*) : pnode*
+def $heap_intersect(eps, pnode_seen*) = eps
+def $heap_intersect(pnode :: pnode_tail*, pnode_seen*) = pnode :: $heap_intersect(pnode_tail*, pnode_seen*)
+  -- if $heap_member(pnode, pnode_seen*)
+def $heap_intersect(pnode :: pnode_tail*, pnode_seen*) = $heap_intersect(pnode_tail*, pnode_seen*)
+  -- if ~$heap_member(pnode, pnode_seen*)
+
+dec $heap_collect(hgraph) : hgraph
+def $heap_collect(H) = H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)]
+  -- if pnode_live* = $heap_intersect(H.NODES, $heap_reach(H.ROOTS, eps, H.EDGES))
+
+dec $value_nodes(pvalue) : pnode*
+def $value_nodes(PARRAY n) = [HARRAY n]
+def $value_nodes(pvalue) = eps
+  -- otherwise
+
+dec $operand_nodes(poperand) : pnode*
+def $operand_nodes(KNOWN pvalue) = $value_nodes(pvalue)
+def $operand_nodes(VARIABLE n* z) = eps
+
+dec $base_nodes(pbase) : pnode*
+def $base_nodes(BASE_VALUE poperand) = $operand_nodes(poperand)
+def $base_nodes(BASE_NAME poperand z) = $operand_nodes(poperand)
+def $base_nodes(BASE_DIM pbase poperand z) = $base_nodes(pbase) ++ $operand_nodes(poperand)
+def $base_nodes(BASE_APPEND pbase z) = $base_nodes(pbase)
+
+dec $task_nodes(ptask) : pnode*
+def $task_nodes(ARRAY_NEXT n phpType13*) = [HARRAY n]
+def $task_nodes(ARRAY_KEY n expression phpType13*) = [HARRAY n]
+def $task_nodes(ARRAY_VALUE n eps phpType13* z) = [HARRAY n]
+def $task_nodes(ARRAY_VALUE n (poperand) phpType13* z) = [HARRAY n] ++ $operand_nodes(poperand)
+def $task_nodes(BINARY_RIGHT pbin poperand z) = $operand_nodes(poperand)
+def $task_nodes(WRITE_DYNAMIC poperand z) = $operand_nodes(poperand)
+def $task_nodes(REF_DYNAMIC poperand z) = $operand_nodes(poperand)
+def $task_nodes(DIM_PATH pbase z) = $base_nodes(pbase)
+def $task_nodes(ASSIGN_ARRAY pbase z bool) = $base_nodes(pbase)
+def $task_nodes(ptask) = eps
+  -- otherwise
+
+dec $tasks_nodes(ptask*) : pnode*
+def $tasks_nodes(eps) = eps
+def $tasks_nodes(ptask :: ptask_tail*) = $task_nodes(ptask) ++ $tasks_nodes(ptask_tail*)
+
+dec $environment_nodes(pbinding*) : pnode*
+def $environment_nodes(eps) = eps
+def $environment_nodes((BIND n* n_cell) :: pbinding_tail*) = (HCELL n_cell) :: $environment_nodes(pbinding_tail*)
+
+dec $item_nodes(pitem) : pnode*
+def $item_nodes(DIRECT pvalue) = $value_nodes(pvalue)
+def $item_nodes(ALIAS n) = [HCELL n]
+def $item_nodes(UNINITIALIZED) = eps
+
+dec $entries_nodes(pentry*) : pnode*
+def $entries_nodes(eps) = eps
+def $entries_nodes((ENTRY pkey pitem) :: pentry_tail*) = $item_nodes(pitem) ++ $entries_nodes(pentry_tail*)
+
+dec $node_children(pstate, pnode) : pnode*
+def $node_children(S, HCELL n) = eps
+  -- if S.STORE[n] = UNDEFINED
+def $node_children(S, HCELL n) = $value_nodes(pvalue)
+  -- if S.STORE[n] = DEFINED pvalue
+def $node_children(S, HARRAY n) = $entries_nodes(S.ARRAYS[n].ITEMS)
+
+dec $node_edges(pnode, pnode*) : hedge*
+def $node_edges(pnode, eps) = eps
+def $node_edges(pnode, pnode_child :: pnode_tail*) = (HEDGE pnode pnode_child) :: $node_edges(pnode, pnode_tail*)
+
+dec $allocation_edges(pstate, pnode*) : hedge*
+def $allocation_edges(S, eps) = eps
+def $allocation_edges(S, pnode :: pnode_tail*) = $node_edges(pnode, $node_children(S, pnode)) ++ $allocation_edges(S, pnode_tail*)
+
+dec $machine_roots(pstate) : pnode*
+def $machine_roots(S) = $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD
+
+dec $heap_graph(pstate) : hgraph
+def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}
+
+;; Not called by the source driver yet: internal borrowed RESULT values and RHS
+;; captures must be moved into explicit HELD roots before conditional separation.
+dec $prune_allocations(pstate) : pstate
+def $prune_allocations(S) = S[.ALLOCATIONS = $heap_prune($heap_graph(S)).NODES]

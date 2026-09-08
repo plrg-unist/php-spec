@@ -78,8 +78,28 @@ for arrays containing NaN. Containers are shared by value assignment. Ordinary
 simple/nested assignment and append copy each selected container shallowly before
 mutation, preserving other value copies and variable-cell aliases. This is an
 abstraction for the current absence of embedded reference entries; it must become
-conditional separation with reachable edge/temporary accounting before embedded
-references are admitted. Embedded references and unpacking remain pending.
+conditional separation with surviving-allocation and temporary ownership accounting
+before embedded references are admitted. Embedded references and unpacking remain pending.
+
+The allocation helper separates allocated cells/containers from historical backing
+vectors. Incoming ownership counts include repeated root/entry edges, but expand
+each allocated node once. Releasing nodes with zero incoming owners cascades;
+unreachable cycles and their outgoing reference owners survive until collection.
+This distinction is observable in singleton-reference array copying before versus
+after `gc_collect_cycles`. The pure graph collection operation has no PHP trigger,
+return-count, destructor or automatic-GC claim. Source pruning and conditional
+separation are not enabled yet; embedded references remain Unsupported.
+
+Captured task operands, array builders and explicit `HELD` values contribute roots;
+delayed variable descriptors borrow their cells. Task transitions move captured
+values and discard consumed results instead of retaining obsolete roots. The root
+projection applies at audited task boundaries: internal helpers currently borrow
+`RESULT`, while `CELL` and `LOCATION` are borrowed identifiers. Before separation,
+those helpers must explicitly hold live RHS values and acquired references across
+mutation/callback boundaries. Constant-pool roots and source-unit/compiled-occurrence
+identities are also required before repeated literal execution in loops/calls.
+`tests/semantics/ownership.py` checks graph invariants separately from source claims.
+Source anchors are `i_zval_ptr_dtor`, `zend_array_dup_value`, and `zend_gc_collect_cycles`.
 
 Write preparation retains delayed name/key operands through RHS evaluation.
 Dimension assignment acquires a keyed slot before reading a delayed RHS, whereas
