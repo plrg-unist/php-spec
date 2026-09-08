@@ -41,7 +41,8 @@ are never successful validation, and incomplete families stay visible.
 
 ## Evidence and decisions
 
-- Plan and all three skills read; required syntax/dependency docs reviewed.
+- Contracts/inventory commit: `69868bac`. Plan and all three skills read;
+  required syntax/dependency docs reviewed.
 - Initial inventory enumerates all 169 constructors and 297 runtime obligations;
   all remain pending until implementations and evidence exist.
 - Baseline profile fixes precision, diagnostics, optimizer/JIT, locale/timezone;
@@ -53,6 +54,10 @@ are never successful validation, and incomplete families stay visible.
   runtime obligation IDs with valid constructor references. Local oracle probe
   confirms 8.5.10 CLI, 8-byte integers, NTS and `E_ALL=30719`.
 - No semantic validation has completed. No intentional engine disagreement.
+
+Inventory gate: `python3 scripts/check-semantic-inventory.py`; `--complete` also
+rejects every unfinished entry and requires source/helper evidence separately.
+The initial completion gate correctly rejects all 466 pending entries.
 
 Next: review executable runner and numeric slices,
 then update statuses from actual source/helper evidence without narrowing scope.

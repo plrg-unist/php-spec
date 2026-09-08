@@ -47,7 +47,9 @@ an interface detail; it must preserve these distinctions.
 
 The following is a closed initial catalog, subject to additions supported by
 language necessity and explicit review. Each row names its inventory obligations;
-rules, source-level tests and review are recorded there. Source paths below are
+rules, source-level tests and review are recorded there.
+`python3 scripts/check-semantic-inventory.py --complete` requires every entry to
+be closed; numeric/byte/coercion entries additionally require helper evidence. Source paths below are
 relative to `vendor/php-src`. All implementation/test statuses are **pending**.
 Methods and inherited constraints are those of the matching stub/implementation,
 including argument binding, visibility, callbacks and abrupt completion.
@@ -97,7 +99,7 @@ Fixture inputs/services must be reviewed, finite and shared by both executions.
 | Borderline family | Decision and reason |
 | --- | --- |
 | Ordinary scalar/container helpers, `var_dump`, `print_r`, serialization, regular expressions, date/math/string libraries, sessions, databases, network/process APIs | Excluded ordinary libraries. Use core expressions/output to observe tests; no hidden helper initializes semantic state. |
-| Reflection and reflection-created lazy objects | Reflection is excluded. The environment admits no lazy objects, so lazy-object property callbacks are outside this stated environment, not validated ordinary-object behavior. Reflection APIs cannot be used as test setup. |
+| Reflection and reflection-created lazy objects | Reflection is excluded. The environment admits no lazy objects, so lazy-object property callbacks are outside this stated environment, not validated ordinary-object behavior. Reflection APIs cannot be used as test setup. The matching `ext/reflection/php_reflection.c` methods `newLazyGhost`, `newLazyProxy`, `resetAsLazyGhost`, and `resetAsLazyProxy` call `zend_object_make_lazy`; ordinary class construction does not create this state. |
 | Weak references/maps, explicit GC, closure binding, argument introspection, output buffers and ticks | Included above because they expose or control core alias/call/lifecycle/output behavior; unfinished rules cannot be reclassified as libraries to close coverage. |
 | `Serializable`, `Countable`, `InternalIterator` | Declaration identities/signature obligations must be retained when admitted core types depend on them (notably WeakMap). Serialization/count library execution and foreign internal iterators are excluded; user-defined protocol methods remain ordinary methods. |
 | Stream wrappers and `spl_autoload` default filesystem search | Excluded ordinary-library registration/search. Include and autoload services expose explicit source lookup; missing required service is Unsupported, not fabricated success. |
