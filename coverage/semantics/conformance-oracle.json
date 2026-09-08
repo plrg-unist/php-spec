@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "9eae9c5f87dbe1c8fe10818f07aa651e4412c18ef17a734faba4731b61feaeff",
+    "tests/semantics/conformance/cases.json": "d827af1b0bf1c11e62226003379fca108934afd3b975821bee0789651eb00b28",
     "tests/semantics/conformance/oracle.py": "0f2b5ea748443ec4a545630713f4356fa6ffaee7b28ed9b3cf84042db4677add",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -93,7 +93,19 @@
     "tests/semantics/conformance/type-parent-without-parent.php": "978213bfa0d94a0c33fa5d68fbe986b3a9e66f8373ae0edcf455a3698febf00b",
     "tests/semantics/conformance/type-callable-property.php": "3a08a7c170a9a5e8fb14ca0f8db92e8965efe91ecc6646219bda2179091b8ffa",
     "tests/semantics/conformance/type-alias-duplicate.php": "c53fd8b31608c41839a13c9b852c00dc1128b7a1a03016da929013073fcd325e",
-    "tests/semantics/conformance/type-dnf-namespace-distinct.php": "5a367e7e87c93f6126233f404e0ce6533e3dae411c8db47d59999064cd9452fc"
+    "tests/semantics/conformance/type-dnf-namespace-distinct.php": "5a367e7e87c93f6126233f404e0ce6533e3dae411c8db47d59999064cd9452fc",
+    "tests/semantics/conformance/array-self-append.php": "a0fcd980a834b1025468ece420739a8a6dfb217d5b103689adffde5e6be5129b",
+    "tests/semantics/conformance/array-self-index.php": "c15f4a5339d95fd31c193f0c4b643f9953c702ac0f2318aebd592e349aaa8dda",
+    "tests/semantics/conformance/array-self-key-side-effect.php": "283e5b0bf5b5bdd426db6a13ee07fd339a8f4b84ed53e67c411cb867d1a62315",
+    "tests/semantics/conformance/array-delayed-lhs-name.php": "38dd2af23e04b8d8c87c959fa0ec9235915827b2ed9ef75e19be8578cf74d4b1",
+    "tests/semantics/conformance/array-captured-lhs-name.php": "3c79d4caad39d594da13a935a05e7c0b8d479e3c426b3b2e914e245880626ff0",
+    "tests/semantics/conformance/array-delayed-lhs-key.php": "e5589908d596b0d0aed6c091a124c7259395703aecc0459c43ed93d65802cfae",
+    "tests/semantics/conformance/array-captured-lhs-key.php": "6176d6aa4d4205c946fe8599795f5298512798e0d2ccde44e69a78bd466fd81a",
+    "tests/semantics/conformance/array-rhs-overwrites-root.php": "279638742991c1f1d23736992f396a79f2e71cb26b11a40405860d1d3f6407c2",
+    "tests/semantics/conformance/array-nested-self-index.php": "a1e0622e5f1bc00cbb494c7a62f4eccfa86f9a31a0db0fd1ddef4869c03470be",
+    "tests/semantics/conformance/array-dynamic-self-cycle.php": "2f0823ad2ae553c63a5c2eed004c3839eaf5ab5eb717ac61897f30b646d0b232",
+    "tests/semantics/conformance/array-alias-self-cycle.php": "bd4886fde181acdcb386571b03d19d44239bfcf55e891182dcb4cfd5ccbf42c6",
+    "tests/semantics/conformance/array-distinct-cycle-comparison.php": "6da4735fb431ee6771eaa9897f7c3daa80a81acda18b22c38a8ed2e09298fcf3"
   },
   "results": [
     {
@@ -544,6 +556,126 @@
       "stdout": "b2s=",
       "stderr": "",
       "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-self-append",
+      "source_sha256": "a0fcd980a834b1025468ece420739a8a6dfb217d5b103689adffde5e6be5129b",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-self-append.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-self-index",
+      "source_sha256": "c15f4a5339d95fd31c193f0c4b643f9953c702ac0f2318aebd592e349aaa8dda",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-self-index.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-self-key-side-effect",
+      "source_sha256": "283e5b0bf5b5bdd426db6a13ee07fd339a8f4b84ed53e67c411cb867d1a62315",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-self-key-side-effect.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-delayed-lhs-name",
+      "source_sha256": "38dd2af23e04b8d8c87c959fa0ec9235915827b2ed9ef75e19be8578cf74d4b1",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-delayed-lhs-name.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MWI=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-captured-lhs-name",
+      "source_sha256": "3c79d4caad39d594da13a935a05e7c0b8d479e3c426b3b2e914e245880626ff0",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-captured-lhs-name.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "YjI=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-delayed-lhs-key",
+      "source_sha256": "e5589908d596b0d0aed6c091a124c7259395703aecc0459c43ed93d65802cfae",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-delayed-lhs-key.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTA6MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-captured-lhs-key",
+      "source_sha256": "6176d6aa4d4205c946fe8599795f5298512798e0d2ccde44e69a78bd466fd81a",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-captured-lhs-key.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MToyMA==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-rhs-overwrites-root",
+      "source_sha256": "279638742991c1f1d23736992f396a79f2e71cb26b11a40405860d1d3f6407c2",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-rhs-overwrites-root.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-nested-self-index",
+      "source_sha256": "a1e0622e5f1bc00cbb494c7a62f4eccfa86f9a31a0db0fd1ddef4869c03470be",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-nested-self-index.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-dynamic-self-cycle",
+      "source_sha256": "2f0823ad2ae553c63a5c2eed004c3839eaf5ab5eb717ac61897f30b646d0b232",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-dynamic-self-cycle.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-alias-self-cycle",
+      "source_sha256": "bd4886fde181acdcb386571b03d19d44239bfcf55e891182dcb4cfd5ccbf42c6",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-alias-self-cycle.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-distinct-cycle-comparison",
+      "source_sha256": "6da4735fb431ee6771eaa9897f7c3daa80a81acda18b22c38a8ed2e09298fcf3",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-distinct-cycle-comparison.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBOZXN0aW5nIGxldmVsIHRvbyBkZWVwIC0gcmVjdXJzaXZlIGRlcGVuZGVuY3k/IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9hcnJheS1kaXN0aW5jdC1jeWNsZS1jb21wYXJpc29uLnBocDoyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL2FycmF5LWRpc3RpbmN0LWN5Y2xlLWNvbXBhcmlzb24ucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 255,
       "expected_match": true
     }
   ]

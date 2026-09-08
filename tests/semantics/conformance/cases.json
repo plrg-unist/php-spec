@@ -639,6 +639,186 @@
       "expected_exit_status": 0,
       "provenance": "independently authored before static-type implementation; not derived from a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "array-self-append",
+      "file": "tests/semantics/conformance/array-self-append.php",
+      "purpose": "Direct self-append captures the original empty array before location acquisition.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-self-index",
+      "file": "tests/semantics/conformance/array-self-index.php",
+      "purpose": "Direct indexed self-assignment copies the original array value.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-self-key-side-effect",
+      "file": "tests/semantics/conformance/array-self-key-side-effect.php",
+      "purpose": "Key expression effects precede the special same-variable RHS snapshot.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-delayed-lhs-name",
+      "file": "tests/semantics/conformance/array-delayed-lhs-name.php",
+      "purpose": "An LHS variable-variable name stored in a CV remains delayed across the RHS.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1b",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-captured-lhs-name",
+      "file": "tests/semantics/conformance/array-captured-lhs-name.php",
+      "purpose": "A computed LHS name is captured even though array access is delayed.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "b2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-delayed-lhs-key",
+      "file": "tests/semantics/conformance/array-delayed-lhs-key.php",
+      "purpose": "A CV key remains delayed across RHS effects.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "10:1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-captured-lhs-key",
+      "file": "tests/semantics/conformance/array-captured-lhs-key.php",
+      "purpose": "An explicitly computed key is captured before RHS effects.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1:20",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-rhs-overwrites-root",
+      "file": "tests/semantics/conformance/array-rhs-overwrites-root.php",
+      "purpose": "The writable root reflects RHS reassignment while the assigned value stays captured.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-nested-self-index",
+      "file": "tests/semantics/conformance/array-nested-self-index.php",
+      "purpose": "Same-variable capture precedes intermediate nested array creation.",
+      "obligations": [
+        "storage.assignment",
+        "containers.nested-write",
+        "containers.array-copy"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-dynamic-self-cycle",
+      "file": "tests/semantics/conformance/array-dynamic-self-cycle.php",
+      "purpose": "Dynamic LHS self-assignment can create a cyclic container even without explicit array reference syntax.",
+      "obligations": [
+        "containers.cycles",
+        "containers.comparison",
+        "storage.aliases"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-alias-self-cycle",
+      "file": "tests/semantics/conformance/array-alias-self-cycle.php",
+      "purpose": "An aliased RHS variable avoids the same-CV snapshot and creates a cyclic container.",
+      "obligations": [
+        "containers.cycles",
+        "containers.comparison",
+        "storage.aliases"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-distinct-cycle-comparison",
+      "file": "tests/semantics/conformance/array-distinct-cycle-comparison.php",
+      "purpose": "Distinct cyclic containers trigger the guarded recursive-comparison Error.",
+      "obligations": [
+        "containers.cycles",
+        "containers.comparison",
+        "storage.aliases"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Uncaught Error: Nesting level too deep - recursive dependency? in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }
