@@ -5,8 +5,8 @@ Target: PHP 8.5.10 syntax only; `PLAN.md` remains the scope and completion contr
 | Milestone | Gate | Status |
 | --- | --- | --- |
 | 1. Dependencies and inventory | Pinned local runtimes, corpora, exhaustive source inventory | Complete |
-| 2. Checked path | Byte-safe transport, checked SpecTec conversion, fresh printing, negative checks | In progress |
-| 3. Complete syntax | Every grammar/scanner/constructor family mapped and exercised | Pending |
+| 2. Checked path | Byte-safe transport, checked SpecTec conversion, fresh printing, negative checks | Complete |
+| 3. Complete syntax | Every grammar/scanner/constructor family mapped and exercised | In progress |
 | 4. Classified validation | Full corpora, generated cases, minimized discrepancies resolved | Pending |
 | 5. Portable handoff | Offline copied-path build/checks and provenance audit | Pending |
 
@@ -25,7 +25,11 @@ verified. Independent inventory review enumerated 635 grammar productions,
 191 scanner rules and 169 non-recovery node contracts. Full witness mappings
 remain a milestone 3 gate, rather than an assumption from enumeration.
 
-Next gate: checked source/AST path and independent malformed-value tests.
+Milestone 2 gate: byte/lexical and expression fixtures pass both round trips,
+parser comparison and typed fixture elaboration through actual SpecTec values.
+Independent malformed-value/fixture tests pass 24/24, including output mutation.
+
+Next gate: resolve upstream parser/printer discrepancies and audit every family.
 Known targeted discrepancies awaiting resolution: clone printing stability,
 negative interpolation offsets, omitted destructuring slot, __PROPERTY__ method
 name, and parser-stage CompileError classification.
