@@ -17,7 +17,7 @@ def $pvtestname(PVINCOMPATIBLE,ptbranch*,ptbranch_parent*) = $ptascii("Declarati
 def $pvtestname(PVNEEDS (ptbytes :: ptbytes_rest*),ptbranch*,ptbranch_parent*) = $ptascii("Could not check compatibility between C::f(): ") ++ $pttypename(ptbranch*) ++ $ptascii(" and P::f(): ") ++ $pttypename(ptbranch_parent*) ++ $ptascii(", because class ") ++ ptbytes ++ $ptascii(" is not available")
 '''
 def cls(name,parent='',ancestors=(),final=False):
-    return '{NAME ('+types.byte_expr(name)+'),PARENT ('+types.byte_expr(parent)+'),ANCESTORS (['+','.join('('+types.byte_expr(n)+')' for n in ancestors)+']),FINAL '+str(final).lower()+'}'
+    return '{NAME ('+types.byte_expr(name)+'),PARENT ('+types.byte_expr(parent)+'),ANCESTORS '+('(['+','.join('('+types.byte_expr(n)+')' for n in ancestors)+'])' if ancestors else 'eps')+',FINAL '+str(final).lower()+'}'
 def context(name,parent,file):
     return '{NAMESPACE eps,IMPORTS eps,SCOPE (PTKNOWN ('+types.byte_expr(name)+') ('+(types.byte_expr(parent) if parent else 'eps')+')),POSITION PTRETURN,OWNER ('+types.byte_expr(name)+'),MEMBER ([102]),FILE ('+types.byte_expr(str(file))+'),LINE 1}'
 def main():
@@ -107,6 +107,10 @@ def main():
                 invocation=f'$pvcovariant({child},{c},{parent},{p},{registry})'
                 declarations.append(f'dec $case{len(declarations)}() : bool\ndef $case{len(declarations)}() = true\n  -- if {invocation} = {expected}\n')
                 records.append({'name':name,'classification':'symbolic-normalized-input','invocation':invocation,'expected':expected})
+            for name,descriptor,ancestors in [('empty-ancestor-closure',cls('Leaf'),[]),('single-ancestor-closure',cls('Child','Parent',['Parent']),['Parent'])]:
+                expected='['+','.join('('+types.byte_expr(n)+')' for n in ancestors)+']' if ancestors else 'eps'
+                declarations.append(f'dec $case{len(declarations)}() : bool\ndef $case{len(declarations)}() = true\n  -- if pvclass = {descriptor}\n  -- if |pvclass.ANCESTORS| = {len(ancestors)}\n  -- if pvclass.ANCESTORS = {expected}\n')
+                records.append({'name':name,'classification':'symbolic-graph-input','invocation':descriptor,'expected':expected})
             for start in range(0,len(declarations),30):
                 batch=declarations[start:start+30];fixture=Path(tmp)/'cases.watsup'
                 fixture.write_text(PREFIX+'\n'.join(batch)+'\ndec $main() : bool\ndef $main() = true\n'+'\n'.join('  -- if '+re.search(r'\$case\d+',x).group()+'()' for x in batch)+'\n')
@@ -126,7 +130,7 @@ def main():
     ids=[record['id'] for record in records]
     assert len(set(ids))==len(ids),'duplicate variance case identities'
     assert before==fingerprint(),'inputs changed during covariance validation'
-    report={'target':'PHP 8.5.10 CLI NTS signed64','result':'pass','source_oracle_helper':sum(r['classification']=='source-oracle-helper' for r in records),'symbolic_descriptors':sum(r['classification']=='symbolic-normalized-input' and not r['expected'].startswith('PVUNSUPPORTED') for r in records),'explicit_unsupported':sum(r.get('expected','').startswith('PVUNSUPPORTED') for r in records),'comparison':'declaration-only executed oracle; exact covariance status plus test-rendered fatal message/file/line; explicit visible graph prerequisite, no source activation semantics','identity':identity,'profile':types.PROFILE,'environment':{'LC_ALL':'C','TZ':'UTC'},'budgets':{'request_seconds':30,'shutdown_seconds':5,'oracle_seconds':10,'batch_seconds':120},'fingerprints':before,'cases':records}
+    report={'target':'PHP 8.5.10 CLI NTS signed64','result':'pass','source_oracle_helper':sum(r['classification']=='source-oracle-helper' for r in records),'symbolic_descriptors':sum(r['classification']=='symbolic-normalized-input' and not r['expected'].startswith('PVUNSUPPORTED') for r in records),'graph_descriptor_checks':sum(r['classification']=='symbolic-graph-input' for r in records),'explicit_unsupported':sum(r.get('expected','').startswith('PVUNSUPPORTED') for r in records),'comparison':'declaration-only executed oracle; exact covariance status plus test-rendered fatal message/file/line; explicit visible graph prerequisite, no source activation semantics','identity':identity,'profile':types.PROFILE,'environment':{'LC_ALL':'C','TZ':'UTC'},'budgets':{'request_seconds':30,'shutdown_seconds':5,'oracle_seconds':10,'batch_seconds':120},'fingerprints':before,'cases':records}
     (ROOT/'coverage/semantics/variance.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ['cases','identity','profile','fingerprints']}))
 if __name__=='__main__':main()
