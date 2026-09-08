@@ -16,7 +16,7 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
   domains, state, variable binding operations.
 - `36-arrays`: ordered entries/history, key coercions, reads, identity, union,
   isolated constant classifier. `37-array-locations`: location acquisition and
-  current unconditional shallow path copying. `38-array-unset`: unset contexts.
+  conditional shallow path copying. `38-array-unset`: unset contexts.
 - `39-ownership`: allocation graph, root projection, owner counts, RC pruning,
   separate mathematical cycle collection. Source driver prunes completed tasks.
 - `40-control`: driver and variable/scalar tasks; `41` array literals/reads;
@@ -31,18 +31,20 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 1. Array write/unset entry now moves captured path/RHS inputs into `HELD` before
    internal borrowed `RESULT` lookups, then restores earlier `HELD`. The driver
    prunes after completed tasks and releases terminal abrupt temporaries; budgets
-   retain interrupted roots. No helper currently prunes internally. Before COW
-   owner counts, explicitly clear borrowed `RESULT` and prune with live inputs
-   held. Scalar/read helpers still require resumable roots before callbacks.
+   retain interrupted roots. Binary consumers also hold captured operands while
+   resolving borrowed values. Location COW clears borrowed `RESULT` and prunes
+   with live inputs held. Scalar/read helpers still require resumable roots before callbacks.
    `CELL`/`LOCATION` remain borrowed for admitted variable-only references;
    `zend_compile_assign_ref`/`ZEND_MAKE_REF` identify the precise future owned
    acquisition cases. Extend task-root dispatch whenever adding captured tasks.
-2. Replace unconditional shallow copies by shared-container separation. Copy
-   entries without cloning contained reference cells. `zend_array_dup_value`
-   unwraps a singleton reference except when its value is the source container
-   itself. Count incoming edges in the surviving allocation graph, not traversals
-   of every ENV alias and not root reachability alone. Remove acyclic allocations
-   by cascading zero incoming owners; retain unreachable cycles until collection.
+2. Conditional COW and singleton unwrapping now have pure helper rules; validate
+   them through source embedded references next. `zend_array_dup_value` unwraps a
+   singleton reference except when its value is the source container itself.
+   Union duplicates left entries this way; right-merge singleton wrappers unwrap
+   even for source-self references (`zval_add_ref`). Conflicting keys skip copying.
+   Entry copying counts a pruned graph projection rooted at its borrowed source;
+   it leaves caller allocations intact for constant-classifier local builders.
+   Unreachable cycles remain owners until collection; dead acyclic allocations do not.
 3. Admit literal/element reference acquisition and assignment in small reviewed
    increments, preserving designation and diagnostic order. Reuse singleton,
    shared-container, nested-reference and cycle oracle targets before foreach.

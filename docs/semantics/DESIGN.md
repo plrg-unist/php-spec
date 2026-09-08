@@ -86,11 +86,16 @@ in literal construction. Missing string-key diagnostics truncate at NUL, matchin
 Zend's `%s` rendering. Reads, nested strict identity and left-biased union are
 implemented. Strict identity first checks shared container identity, observable
 for arrays containing NaN. Containers are shared by value assignment. Ordinary
-simple/nested assignment and append copy each selected container shallowly before
-mutation, preserving other value copies and variable-cell aliases. This is an
-abstraction for the current absence of embedded reference entries; it must become
-conditional separation with surviving-allocation and temporary ownership accounting
-before embedded references are admitted. Embedded references and unpacking remain pending.
+simple/nested assignment, append and unset separate only shared containers,
+preserving other value copies and variable-cell aliases. A sole container owner
+reuses the array. Shallow copies unwrap a singleton reference except when that
+reference points back to the source array; other wrappers remain shared. Union
+duplicates its left entries with this rule, while the right merge unwraps every
+singleton wrapper without a source-self exception (`zval_add_ref`). Conflicting
+right keys skip the copy constructor. The merge advances its target graph per
+insertion, with both borrowed operand arrays retained until completion. These
+wrapper rules have helper graph evidence; source embedded
+reference construction and unpacking remain pending.
 
 The allocation helper separates allocated cells/containers from historical backing
 vectors. Incoming ownership counts include repeated root/entry edges, but expand
@@ -99,18 +104,21 @@ unreachable cycles and their outgoing reference owners survive until collection.
 This distinction is observable in singleton-reference array copying before versus
 after `gc_collect_cycles`. The pure graph collection operation has no PHP trigger,
 return-count, destructor or automatic-GC claim. The source driver now prunes
-after each completed task transition; conditional separation and embedded
-references remain pending.
+after each completed task transition. Location separation also prunes after
+discarding its borrowed lookup result; embedded reference construction remains pending.
 
 Captured task operands, array builders and explicit `HELD` values contribute roots;
 delayed variable descriptors borrow their cells. Task transitions move captured
 values and discard consumed results instead of retaining obsolete roots. The root
-projection applies at audited task boundaries. Array write/unset helper entry
+projection applies at audited task boundaries. Array write/unset and binary helper entry
 consumes the current task and moves its captured path, RHS and scratch inputs
 into `HELD` before reusing `RESULT` for borrowed lookups. Helper return restores
-the previous `HELD`, including on abrupt outcomes. No helper prunes internally;
-future separation must discard borrowed `RESULT` before counting owners, with
-live inputs already held. Scalar/read helpers also have no internal pruning or
+the previous `HELD`, including on abrupt outcomes. Location separation discards
+borrowed `RESULT` before pruning and counting owners, with live inputs already
+held. Entry duplication computes singleton counts from a pruned graph projection
+that roots its borrowed source table. It does not prune caller allocations:
+isolated constant classification has local builder IDs outside machine task roots.
+Scalar/read helpers otherwise have no internal pruning or
 callback/suspension boundary. Adding callbacks requires explicit resumable roots.
 
 `CELL` and `LOCATION` remain borrowed on the admitted variable-only acquisition

@@ -143,7 +143,8 @@ def main():
         cases.append([f'S_next = $drive({assignment}, 1)',
                       'S_next.COMPLETION = NORMAL', 'S_next.HELD = [HCELL 0]',
                       '$heap_valid($heap_graph(S_next))',
-                      f'S_next.RESULT = KNOWN (PARRAY {0 if captured else 1})'])
+                      'S_next.RESULT = KNOWN (PARRAY 0)',
+                      f'|S_next.ARRAYS| = {2 if captured else 1}'])
     for completion in ('THROWN "Error" eps 1', 'UNSUPPORTED "test boundary"'):
         # Abrupt handlers may already have emptied TODO; cleanup still applies.
         abrupt = (live+f'[.COMPLETION = {completion}][.ENV = eps]'
@@ -186,6 +187,85 @@ def main():
                'S_next.COMPLETION = NORMAL', 'S_next.ALLOCATIONS = [HARRAY 0, HCELL 1]',
                'S_next.STORE[1] = DEFINED (PARRAY 0)', '$heap_valid($heap_graph(S_next))'],
               [f'$hold_task_inputs({reference}[.TODO = [DISCARD]]).HELD = [HCELL 0]']]
+    # Separation observes surviving incoming owners, not backing vectors or the
+    # number of names that alias one cell. These are helper-only embedded refs.
+    copying = (initial+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 0), DEFINED (PINT 1)]]'
+               '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}]]'
+               '[.ENV = [BIND ([97]) 0, BIND ([98]) 1]]'
+               '[.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0]]')
+    for suffix in ('', '[.RESULT = KNOWN (PARRAY 0)]', '[.ENV = [BIND ([97]) 0, BIND ([98]) 0]]'):
+        unshared = copying+'[.ENV = [BIND ([97]) 0]]'+suffix
+        cases.append([f'S_next = $location_array({unshared}, ROOT 0, 1)',
+                      '|S_next.ARRAYS| = 1', 'S_next.RESULT = KNOWN (PARRAY 0)',
+                      '$entry_lookup(S_next.ARRAYS[0].ITEMS, KINT 0) = (ALIAS 2)',
+                      '$heap_valid($heap_graph(S_next))'])
+    variants = [('', 'DIRECT (PINT 1)'),
+                ('[.ENV = [BIND ([97]) 0, BIND ([98]) 1, BIND ([120]) 2]]', 'ALIAS 2'),
+                ('[.HELD = [HCELL 2]]', 'ALIAS 2'),
+                ('[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 0), DEFINED (PARRAY 0)]]', 'ALIAS 2'),
+                ('[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 2)]), NEXT 2}]]', 'ALIAS 2'),
+                ('[.ENV = [BIND ([97]) 0]][.HELD = [HARRAY 0]]', 'DIRECT (PINT 1)')]
+    for suffix, item in variants:
+        cases.append([f'S_next = $location_array({copying+suffix}, ROOT 0, 1)',
+                      '|S_next.ARRAYS| = 2', 'S_next.RESULT = KNOWN (PARRAY 1)',
+                      f'$entry_lookup(S_next.ARRAYS[1].ITEMS, KINT 0) = ({item})',
+                      '$entry_lookup(S_next.ARRAYS[0].ITEMS, KINT 0) = (ALIAS 2)',
+                      '$heap_valid($heap_graph(S_next))'])
+        cases.append([f'S_next = $binary_apply({copying+suffix}, ADD, PARRAY 0, PARRAY 0, 1)',
+                      f'$entry_lookup(S_next.ARRAYS[1].ITEMS, KINT 0) = ({item})',
+                      '$entry_lookup(S_next.ARRAYS[0].ITEMS, KINT 0) = (ALIAS 2)',
+                      '$heap_valid($heap_graph(S_next))'])
+    for cycle in (False, True):
+        extra = ', ENTRY (KINT 1) (DIRECT (PARRAY 1))' if cycle else ''
+        dead = (copying+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, '
+                '{ITEMS ([ENTRY (KINT 0) (ALIAS 2)'+extra+']), NEXT 2}]]'
+                '[.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0, HARRAY 1]]')
+        item = 'ALIAS 2' if cycle else 'DIRECT (PINT 1)'
+        cases.append([f'S_next = $location_array({dead}, ROOT 0, 1)',
+                      f'$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = ({item})',
+                      f'$heap_member(HARRAY 1, S_next.ALLOCATIONS) = {str(cycle).lower()}',
+                      '$heap_valid($heap_graph(S_next))'])
+        cases.append([f'S_next = $prune_allocations($binary_apply({dead}, ADD, PARRAY 0, PARRAY 0, 1))',
+                      f'$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = ({item})',
+                      f'$heap_member(HARRAY 1, S_next.ALLOCATIONS) = {str(cycle).lower()}',
+                      '$heap_valid($heap_graph(S_next))'])
+        cases.append([f'S_next = $prune_allocations($binary_apply($allocate_array({dead}, $array_empty()), ADD, PARRAY 2, PARRAY 0, 1))',
+                      f'$entry_lookup(S_next.ARRAYS[3].ITEMS, KINT 0) = ({item})',
+                      f'$heap_member(HARRAY 1, S_next.ALLOCATIONS) = {str(cycle).lower()}',
+                      '$heap_valid($heap_graph(S_next))'])
+    merging = (copying+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 1), DEFINED (PINT 1)]]'
+               '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, '
+               '{ITEMS ([ENTRY (KINT 2) (DIRECT (PINT 3))]), NEXT 3}]]'
+               '[.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0, HARRAY 1]]')
+    cases += [[f'S_next = $binary_apply({merging}, ADD, PARRAY 1, PARRAY 0, 1)',
+               '$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = (DIRECT (PINT 1))',
+               '$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 2) = (DIRECT (PINT 3))',
+               '$heap_owners($heap_graph(S_next), HCELL 2) = 1'],
+              [f'S_next = $ownership_step({merging}[.RESULT = KNOWN (PARRAY 1)][.HELD = [HCELL 2]][.TODO = [BINARY_RIGHT ADD (KNOWN (PARRAY 0)) 1]])',
+               'S_next.HELD = [HCELL 2]', 'S_next.TODO = eps',
+               '$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = (ALIAS 2)',
+               '$heap_valid($heap_graph(S_next))']]
+    self_merge = merging+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 1), DEFINED (PARRAY 0)]]'
+    for left, right, item, changed in ((0,1,'ALIAS 2','PINT 9'),
+                                       (1,0,'DIRECT (PARRAY 0)','PARRAY 0')):
+        cases.append([f'S_next = $binary_apply({self_merge}, ADD, PARRAY {left}, PARRAY {right}, 1)',
+                      f'$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = ({item})',
+                      f'$location_write(S_next, ELEMENT 2 (KINT 0), PINT 9).STORE[2] = DEFINED ({changed})',
+                      '$heap_valid($heap_graph(S_next))'])
+    for suffix in ('[.HELD = [HCELL 2]]', '[.ENV = [BIND ([97]) 0, BIND ([98]) 1, BIND ([120]) 2]]'):
+        cases.append([f'S_next = $binary_apply({merging+suffix}, ADD, PARRAY 1, PARRAY 0, 1)',
+                      '$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = (ALIAS 2)',
+                      '$heap_valid($heap_graph(S_next))'])
+    conflict = merging+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, {ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 3))]), NEXT 1}]]'
+    local = (merging+'[.ENV = eps]'
+             '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, {ITEMS ([ENTRY (KINT 1) (ALIAS 2)]), NEXT 2}]]')
+    cases += [[f'S_next = $binary_apply({conflict}, ADD, PARRAY 1, PARRAY 0, 1)',
+               'S_next.ARRAYS[2].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 3))]',
+               '$heap_owners($heap_graph(S_next), HCELL 2) = 1'],
+              [f'S_next = $prune_allocations($binary_apply({local}, ADD, PARRAY 0, PARRAY 1, 1))',
+               'S_next.HELD = eps', 'S_next.ALLOCATIONS = [HCELL 2, HARRAY 2]',
+               'S_next.ARRAYS[2].ITEMS = [ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 2)]',
+               '$heap_valid($heap_graph(S_next))']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):

@@ -165,14 +165,25 @@ def $identity_apply(S, b_negate, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBO
 def $identity_apply(S, b_negate, pvalue_1, pvalue_2, z) = $throw_scalar(S, "Error", ([78,101,115,116,105,110,103,32,108,101,118,101,108,32,116,111,111,32,100,101,101,112,32,45,32,114,101,99,117,114,115,105,118,101,32,100,101,112,101,110,100,101,110,99,121,63]), z)
   -- if $strict_check(S, pvalue_1, pvalue_2, eps) = RECURSIVE
 
-dec $array_union(parray, pentry*) : parray
-def $array_union(parray, eps) = parray
-def $array_union(parray, (ENTRY pkey pitem) :: pentry_tail*) = $array_union($array_insert(parray, pkey, pitem), pentry_tail*)
-  -- if $entry_lookup(parray.ITEMS, pkey) = eps
-def $array_union(parray, (ENTRY pkey pitem) :: pentry_tail*) = $array_union(parray, pentry_tail*)
-  -- if $entry_lookup(parray.ITEMS, pkey) = (pitem_left)
+dec $duplicate_entries(pstate, nat, pentry*) : pentry*
+dec $merge_item(pstate, pitem) : pitem
+dec $array_union(pstate, nat, pentry*) : pstate
+def $array_union(S, n_target, eps) = S
+def $array_union(S, n_target, (ENTRY pkey pitem) :: pentry_tail*) = $array_union(S_insert, n_target, pentry_tail*)
+  -- if $entry_lookup(S.ARRAYS[n_target].ITEMS, pkey) = eps
+  -- if pitem_copy = $merge_item(S, pitem)
+  -- if S_insert = S[.ARRAYS = $array_replace(S.ARRAYS, n_target, $array_insert(S.ARRAYS[n_target], pkey, pitem_copy))]
+def $array_union(S, n_target, (ENTRY pkey pitem) :: pentry_tail*) = $array_union(S, n_target, pentry_tail*)
+  -- if $entry_lookup(S.ARRAYS[n_target].ITEMS, pkey) = (pitem_left)
 
-def $binary_apply(S, ADD, PARRAY n_1, PARRAY n_2, z) = $allocate_array(S, $array_union(S.ARRAYS[n_1], S.ARRAYS[n_2].ITEMS))
+;; Both borrowed tables survive this callback-free copy, including callers whose
+;; operands are classifier locals. Additional array roots affect survival, not
+;; the cell-owner counts used here. Restore the caller's roots after merging.
+def $binary_apply(S, ADD, PARRAY n_1, PARRAY n_2, z) = S_union[.HELD = S.HELD]
+  -- if S_inputs = S[.HELD = S.HELD ++ [HARRAY n_1, HARRAY n_2]]
+  -- if S_copy = $allocate_array(S_inputs, S.ARRAYS[n_1][.ITEMS = $duplicate_entries(S_inputs, n_1, S.ARRAYS[n_1].ITEMS)])
+  -- if S_copy.RESULT = KNOWN (PARRAY n_target)
+  -- if S_union = $array_union(S_copy, n_target, S.ARRAYS[n_2].ITEMS)
 
 def $stringify(S, PARRAY n, z) = S_warned[.RESULT = KNOWN (PSTRING ([65,114,114,97,121]))]
   -- if S_warned = $diagnostic(S, "Warning", [65,114,114,97,121,32,116,111,32,115,116,114,105,110,103,32,99,111,110,118,101,114,115,105,111,110], z)

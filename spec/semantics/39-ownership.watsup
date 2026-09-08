@@ -162,10 +162,46 @@ dec $hold_task_inputs(pstate) : pstate
 def $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD ++ $task_nodes(ptask) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)]
   -- if S.TODO = ptask :: ptask_tail*
 
-;; Called only on completed task states. Helpers may borrow RESULT internally;
-;; no pruning is permitted there without a separate ownership boundary.
+;; Called on completed task states and the explicit location-separation boundary
+;; below. Other helpers may borrow RESULT and must not prune without holding inputs.
 dec $prune_allocations(pstate) : pstate
 def $prune_allocations(S) = S[.ALLOCATIONS = $heap_prune($heap_graph(S)).NODES]
+
+;; zend_array_dup_value unwraps singleton references, except a reference back to
+;; the source array. Count surviving incoming edges, including uncollected cycles
+;; and owning temporaries, rather than expanding every environment alias.
+dec $duplicate_item(pstate, nat, pitem) : pitem
+def $duplicate_item(S, n_source, ALIAS n_cell) = DIRECT pvalue
+  -- if H = $heap_prune($heap_graph(S)[.ROOTS = $machine_roots(S) ++ [HARRAY n_source]])
+  -- if $heap_owners(H, HCELL n_cell) = 1
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if pvalue =/= PARRAY n_source
+def $duplicate_item(S, n_source, pitem) = pitem
+  -- otherwise
+
+;; The source table is borrowed for duplication. Prune only the ownership graph:
+;; isolated constant evaluation also calls this helper with local builder IDs.
+;; It must not release unrelated builder allocations in that caller's state.
+def $duplicate_entries(S, n_source, eps) = eps
+def $duplicate_entries(S, n_source, (ENTRY pkey pitem) :: pentry_tail*) = (ENTRY pkey $duplicate_item(S, n_source, pitem)) :: $duplicate_entries(S, n_source, pentry_tail*)
+
+;; zend_hash_merge calls zval_add_ref only for inserted entries. This copy
+;; constructor unwraps every singleton reference, without the source-self
+;; exception in zend_array_dup_value. The target graph advances per insertion.
+def $merge_item(S, ALIAS n_cell) = DIRECT pvalue
+  -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) = 1
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $merge_item(S, pitem) = pitem
+  -- otherwise
+
+;; RESULT is only a borrowed location lookup here. Captured inputs have already
+;; moved to HELD, so clearing scratch before pruning does not release an owner.
+def $separate_location_array(S, n) = S_live[.RESULT = KNOWN (PARRAY n)]
+  -- if S_live = $prune_allocations(S[.RESULT = KNOWN PNULL])
+  -- if $heap_owners($heap_graph(S_live), HARRAY n) = 1
+def $separate_location_array(S, n) = $allocate_array(S_live, S_live.ARRAYS[n][.ITEMS = $duplicate_entries(S_live, n, S_live.ARRAYS[n].ITEMS)])
+  -- if S_live = $prune_allocations(S[.RESULT = KNOWN PNULL])
+  -- if $($heap_owners($heap_graph(S_live), HARRAY n) > 1)
 
 ;; There are no catch/finally frames yet. A terminal abrupt outcome releases
 ;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a

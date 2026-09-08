@@ -27,12 +27,12 @@ def $location_name(S, n_name*) = S_cell[.LOCATION = ROOT S_cell.CELL]
   -- if ~$environment_name(n_name*)
   -- if S_cell = $ensure(S, n_name*)
 
-;; Before embedded references are admitted, shallow path copies preserve all
-;; value/alias observers. Container graphs are not recursively copied.
+;; A location borrows RESULT. The mutation caller holds live inputs explicitly
+;; before separation counts surviving owners; container graphs stay shallow.
 dec $location_array(pstate, plocation, int) : pstate
 def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
   -- if $location_slot(S, plocation) = DEFINED (PARRAY n)
-  -- if S_new = $allocate_array(S, S.ARRAYS[n])
+  -- if S_new = $separate_location_array(S, n)
   -- if S_new.RESULT = KNOWN pvalue
 
 def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
