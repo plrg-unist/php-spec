@@ -330,7 +330,9 @@
       "node": "Expr_AssignRef",
       "constructor": "NExprAssignRef",
       "obligations": [
-        "storage.reference-rebinding"
+        "storage.reference-rebinding",
+        "storage.aliases",
+        "storage.temporary-lifetimes"
       ],
       "status": "partial",
       "implementation": [
@@ -339,9 +341,10 @@
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/conformance/reference-assignment-result.php"
       ],
-      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
+      "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending."
     },
     {
       "node": "Expr_BinaryOp_BitwiseAnd",
@@ -3230,25 +3233,26 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/conformance/reference-assignment-result.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
+      "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/dynamic-variable.php",
         "tests/semantics/conformance/return-reference.php",
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
-        "tests/semantics/conformance/array-distinct-cycle-comparison.php",
-        "tests/semantics/conformance/reference-assignment-result.php"
+        "tests/semantics/conformance/array-distinct-cycle-comparison.php"
       ]
     },
     {
@@ -3259,17 +3263,19 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/conformance/reference-assignment-result.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
+      "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php"
@@ -3313,7 +3319,8 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/42-array-write-control.watsup",
-        "spec/semantics/43-array-unset-control.watsup"
+        "spec/semantics/43-array-unset-control.watsup",
+        "spec/semantics/30-storage.watsup"
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
@@ -3321,15 +3328,13 @@
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/conformance/reference-assignment-result.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent scoped HELD/driver-pruning review46772123:617 graph+27 boundary cases5125 assertions and371 selected exact source comparisons+25negatives passed. Prior graph foundation41e8fa2b had150 independent closure-oracle probes. The newly uncovered reference-assignment-result4vs3 regression lies outside the previous selection and requires immediate repair; conditional COW, embedded refs, callbacks and source GC remain pending.",
-      "planned_source_tests": [
-        "tests/semantics/conformance/reference-assignment-result.php"
-      ]
+      "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending."
     },
     {
       "id": "containers.ordered-arrays",
@@ -7012,7 +7017,7 @@
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_gc.c"
       ],
-      "review": "Independent reviewer: allocation ownership41e8fa2b;617 pure graphs+15 boundary/machine cases5075 assertions, plus150 independent transitive-closure graph probes. Source machine regression371 exact comparisons+25negatives passed. Allocation pruning is not driver-enabled; internal HELD roots, conditional COW, embedded array references and source GC remain pending.",
+      "review": "Independent allocation/RC foundation 41e8fa2b included 150 extra closure-oracle probes. Scoped HELD/driver pruning 46772123 and owning reference results 751fbcff are reviewed; latest helper gate: 617 graphs plus 34 boundary cases (5146 assertions). Conditional COW, embedded array references, callbacks and source GC remain pending; no source collection claim.",
       "notes": "Unreachable cycles awaiting collection retain reference-wrapper owners and can change array-copy unwrapping. Reachability-only owner counting is insufficient; explicit collection changes ordinary array mutation observations.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-uncollected-cycle-reference.php",

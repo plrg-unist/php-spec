@@ -51,3 +51,16 @@ logical set inclusion. [Oracle evidence](../../coverage/semantics/conformance-or
 retains exact sources, diagnostics, process outcomes and source hashes; the
 [catalog](../../tests/semantics/conformance/cases.json) names each witness. No
 variance implementation or source-class coverage is established by these probes.
+
+## Reference-assignment result: resolved specification defect
+
+With `$a=1`, `($x=&$a)+($a=2)` originally produced spec 3 versus PHP 4.
+`ZEND_ASSIGN_REF` returns an owning reference wrapper; its consumer reads the
+cell's current value. Commit `751fbcff` models that captured cell explicitly,
+including survival when both variable names are rebound. Ordinary assignment
+still consumes its value. The independent witness now passes in the mandatory
+388-case source gate, alongside 25 negative checks.
+
+[Raw history and resolution](../../coverage/semantics/reference-result-disagreement.json)
+retain the original process observations and the accepted correction fingerprint.
+This was a specification defect, with no intentional departure selected.

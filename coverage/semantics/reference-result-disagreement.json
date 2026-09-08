@@ -42,7 +42,7 @@
   "cases": [
     {
       "id": "reference-assignment-result",
-      "status": "unresolved",
+      "status": "resolved-specification-defect",
       "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-assignment-result.php",
       "source": "<?php\n$a = 1;\necho ($x =& $a) + ($a = 2);\n",
       "source_sha256": "c84fcd45bcdf86cb6d573818c0cbc1479c3e7142e7ae7843040ff2f944055d00",
@@ -75,6 +75,36 @@
         ],
         "frontend": "accepted",
         "checked": "program"
+      },
+      "resolution": {
+        "commit": "751fbcff",
+        "semantics": "Owning REFERENCE operand retains the assigned cell and dereferences its current value at consumption; rebinding variable names does not redirect that cell.",
+        "source_report": "coverage/semantics/source.json",
+        "source_case_id": "conformance-reference-assignment-result",
+        "reviewed_fingerprint": {
+          "sha256": "9b33aa32fcac8ca4c58f3aa5268a68c2482758fca952ba67eed89a6e57a6c9d0",
+          "files": 657,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory"
+          ]
+        },
+        "reviewed_observation": {
+          "stdout_b64": "NA==",
+          "stderr_b64": "",
+          "exit_status": 0
+        },
+        "validation": "Independent 388 exact source comparisons and 25 negatives; 617 graph plus 34 boundary cases (5146 assertions); 26 additional reviewer source probes."
       }
     }
   ]
