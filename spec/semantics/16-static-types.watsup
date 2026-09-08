@@ -1,0 +1,498 @@
+;; Independent local declaration types. No declaration activation or class lookup.
+syntax ptbytes = nat*
+syntax ptqual = PTPLAIN | PTFULL | PTRELATIVE
+syntax ptscope = PTGLOBAL | PTKNOWN ptbytes ptbytes? | PTANONYMOUS bool | PTDEFERRED
+syntax ptposition = PTPARAMETER | PTRETURN | PTPROPERTY | PTCONSTANT
+syntax ptcontext = { NAMESPACE ptbytes, IMPORTS (ptbytes, ptbytes)*, SCOPE ptscope,
+  POSITION ptposition, OWNER ptbytes, MEMBER ptbytes, FILE ptbytes, LINE nat }
+syntax ptatom = PTBUILTIN text | PTCLASS ptbytes | PTSELF | PTPARENT | PTSTATIC
+syntax ptbranch = PTBRANCH ptatom*
+syntax ptdiagnostic = PTDIAGNOSTIC text text ptbranch* ptcontext
+syntax ptresult = PTOK ptbranch* ptdiagnostic* | PTERROR ptdiagnostic* | PTUNSUPPORTED text
+syntax ptinput = PTNAME ptqual ptbytes | PTNULLABLE ptinput | PTUNION ptinput* | PTINTER ptinput* | PTABSENT | PTINVALID
+var ptbyte : nat
+
+dec $ptlower(nat) : nat
+def $ptlower(ptbyte) = $(ptbyte + 32)
+  -- if $(ptbyte >= 65) /\ $(ptbyte <= 90)
+def $ptlower(ptbyte) = ptbyte
+  -- if $(ptbyte < 65) \/ $(ptbyte > 90)
+
+dec $ptlc(ptbytes) : ptbytes
+def $ptlc(ptbyte*) = ($ptlower(ptbyte))*
+
+dec $ptfirst(ptbytes) : ptbytes
+def $ptfirst(eps) = eps
+def $ptfirst(92 :: ptbyte*) = eps
+def $ptfirst(ptbyte :: ptbyte_rest*) = ptbyte :: $ptfirst(ptbyte_rest*)
+  -- if ptbyte =/= 92
+
+dec $ptlast(ptbytes) : ptbytes
+def $ptlast(ptbyte*) = ptbyte*
+  -- if ~(92 <- ptbyte*)
+def $ptlast(ptbyte*) = $ptlast(ptbyte*[ptbyte_i:ptbyte_n])
+  -- if 92 <- ptbyte*
+  -- if ptbyte_i = $(|$ptfirst(ptbyte*)| + 1)
+  -- if ptbyte_n = $(|ptbyte*| - ptbyte_i)
+
+dec $ptjoin(ptbytes, ptbytes) : ptbytes
+def $ptjoin(eps, ptbyte*) = ptbyte*
+def $ptjoin(ptbyte_ns*, ptbyte*) = ptbyte_ns* ++ [92] ++ ptbyte*
+  -- if $(|ptbyte_ns*| > 0)
+
+dec $ptimport((ptbytes, ptbytes)*, ptbytes) : ptbytes?
+def $ptimport(eps, ptbytes) = eps
+def $ptimport((ptbytes_alias, ptbytes_name) :: (ptbytes_a, ptbytes_n)*, ptbytes) = ptbytes_name
+  -- if $ptlc(ptbytes_alias) = $ptlc(ptbytes)
+def $ptimport((ptbytes_alias, ptbytes_name) :: (ptbytes_a, ptbytes_n)*, ptbytes) = $ptimport((ptbytes_a, ptbytes_n)*, ptbytes)
+  -- if $ptlc(ptbytes_alias) =/= $ptlc(ptbytes)
+
+dec $ptresolve(ptcontext, ptqual, ptbytes) : ptbytes
+def $ptresolve(ptcontext, PTFULL, ptbytes) = ptbytes
+def $ptresolve(ptcontext, PTRELATIVE, ptbytes) = $ptjoin(ptcontext.NAMESPACE, ptbytes)
+def $ptresolve(ptcontext, PTPLAIN, ptbytes) = $ptjoin(ptcontext.NAMESPACE, ptbytes)
+  -- if $ptimport(ptcontext.IMPORTS, $ptfirst(ptbytes)) = eps
+def $ptresolve(ptcontext, PTPLAIN, ptbytes) = ptbytes_name ++ ptbytes[ptbyte_i:ptbyte_n]
+  -- if $ptimport(ptcontext.IMPORTS, $ptfirst(ptbytes)) = ptbytes_name
+  -- if ptbyte_i = |$ptfirst(ptbytes)|
+  -- if ptbyte_n = $(|ptbytes| - ptbyte_i)
+
+dec $ptbuiltin(ptbytes) : text
+def $ptbuiltin([110, 117, 108, 108]) = "null"
+def $ptbuiltin([116, 114, 117, 101]) = "true"
+def $ptbuiltin([102, 97, 108, 115, 101]) = "false"
+def $ptbuiltin([105, 110, 116]) = "int"
+def $ptbuiltin([102, 108, 111, 97, 116]) = "float"
+def $ptbuiltin([115, 116, 114, 105, 110, 103]) = "string"
+def $ptbuiltin([98, 111, 111, 108]) = "bool"
+def $ptbuiltin([118, 111, 105, 100]) = "void"
+def $ptbuiltin([110, 101, 118, 101, 114]) = "never"
+def $ptbuiltin([105, 116, 101, 114, 97, 98, 108, 101]) = "iterable"
+def $ptbuiltin([111, 98, 106, 101, 99, 116]) = "object"
+def $ptbuiltin([109, 105, 120, 101, 100]) = "mixed"
+def $ptbuiltin([97, 114, 114, 97, 121]) = "array"
+def $ptbuiltin([99, 97, 108, 108, 97, 98, 108, 101]) = "callable"
+def $ptbuiltin([115, 101, 108, 102]) = "self"
+def $ptbuiltin([112, 97, 114, 101, 110, 116]) = "parent"
+def $ptbuiltin([115, 116, 97, 116, 105, 99]) = "static"
+def $ptbuiltin(ptbytes) = ""
+  -- otherwise
+
+dec $ptissue(ptcontext, text, text, ptbranch*) : ptdiagnostic
+def $ptissue(ptcontext, text_level, text_code, ptbranch*) = PTDIAGNOSTIC text_level text_code ptbranch* ptcontext
+
+dec $pterror(ptcontext, text, ptbranch*) : ptresult
+def $pterror(ptcontext, text, ptbranch*) = PTERROR ([$ptissue(ptcontext, "fatal", text, ptbranch*)])
+
+dec $ptprepend(ptdiagnostic*, ptresult) : ptresult
+def $ptprepend(ptdiagnostic_old*, PTOK ptbranch* ptdiagnostic*) = PTOK ptbranch* (ptdiagnostic_old* ++ ptdiagnostic*)
+def $ptprepend(ptdiagnostic_old*, PTERROR ptdiagnostic*) = PTERROR (ptdiagnostic_old* ++ ptdiagnostic*)
+def $ptprepend(ptdiagnostic*, PTUNSUPPORTED text) = PTUNSUPPORTED text
+
+dec $ptscope(ptcontext, text) : ptresult
+def $ptscope(ptcontext, text) = $pterror(ptcontext, "no-class-scope", [(PTBRANCH ([(PTBUILTIN text)]))])
+  -- if ptcontext.SCOPE = PTGLOBAL
+def $ptscope(ptcontext, "parent") = $pterror(ptcontext, "no-parent", eps)
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes eps
+def $ptscope(ptcontext, "parent") = $pterror(ptcontext, "no-parent", eps)
+  -- if ptcontext.SCOPE = PTANONYMOUS false
+def $ptscope(ptcontext, "self") = PTOK ([(PTBRANCH ([(PTCLASS ptbytes)]))]) eps
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes ptbytes_parent?
+def $ptscope(ptcontext, "parent") = PTOK ([(PTBRANCH ([(PTCLASS ptbytes_parent)]))]) eps
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes ptbytes_parent
+def $ptscope(ptcontext, "static") = PTOK ([(PTBRANCH ([PTSTATIC]))]) eps
+  -- if ptcontext.SCOPE =/= PTGLOBAL
+def $ptscope(ptcontext, "self") = PTOK ([(PTBRANCH ([PTSELF]))]) eps
+  -- if ptcontext.SCOPE = PTDEFERRED \/ ptcontext.SCOPE = PTANONYMOUS true \/ ptcontext.SCOPE = PTANONYMOUS false
+def $ptscope(ptcontext, "parent") = PTOK ([(PTBRANCH ([PTPARENT]))]) eps
+  -- if ptcontext.SCOPE = PTDEFERRED \/ ptcontext.SCOPE = PTANONYMOUS true
+
+dec $ptclasswarnings(ptcontext, ptqual, ptbytes, ptbytes) : ptdiagnostic*
+def $ptclasswarnings(ptcontext, ptqual, ptbytes, ptbytes_name) = [$ptissue(ptcontext, "deprecated", "underscore-class", [(PTBRANCH ([(PTCLASS ptbytes_name)]))])]
+  -- if ptbytes_name = [95]
+def $ptclasswarnings(ptcontext, PTPLAIN, ptbytes, ptbytes_name) = [$ptissue(ptcontext, "warning", "confusable-class", [(PTBRANCH ([(PTCLASS ptbytes)])), (PTBRANCH ([(PTCLASS ptbytes_name)]))])]
+  -- if ptbytes <- [[98,111,111,108,101,97,110], [105,110,116,101,103,101,114], [100,111,117,98,108,101], [114,101,115,111,117,114,99,101]]
+  -- if $ptimport(ptcontext.IMPORTS, ptbytes) = eps
+def $ptclasswarnings(ptcontext, ptqual, ptbytes, ptbytes_name) = eps
+  -- otherwise
+
+dec $ptinvalidname(ptqual, ptbytes) : ptbytes
+def $ptinvalidname(PTFULL, ptbytes) = [92] ++ ptbytes
+def $ptinvalidname(PTRELATIVE, ptbytes) = [110,97,109,101,115,112,97,99,101,92] ++ ptbytes
+
+dec $ptsingle(ptcontext, ptqual, ptbytes) : ptresult
+def $ptsingle(ptcontext, ptqual, ptbytes) = $pterror(ptcontext, "builtin-unqualified", [(PTBRANCH ([(PTBUILTIN text)]))])
+  -- if text = $ptbuiltin($ptlc(ptbytes))
+  -- if text =/= ""
+  -- if ~(text <- ["self", "parent", "static", "array", "callable"])
+  -- if ptqual =/= PTPLAIN
+def $ptsingle(ptcontext, PTPLAIN, ptbytes) = PTOK ([(PTBRANCH ([(PTBUILTIN text)]))]) eps
+  -- if text = $ptbuiltin($ptlc(ptbytes))
+  -- if text =/= ""
+  -- if ~(text <- ["self", "parent", "static"])
+def $ptsingle(ptcontext, ptqual, ptbytes) = $ptscope(ptcontext, text)
+  -- if text = $ptbuiltin($ptlc(ptbytes))
+  -- if text <- ["self", "parent", "static"]
+  -- if ptqual = PTPLAIN \/ ptqual = PTRELATIVE
+def $ptsingle(ptcontext, ptqual, ptbytes) = $pterror(ptcontext, "invalid-class-name", [(PTBRANCH ([(PTCLASS ($ptinvalidname(ptqual, ptbytes)))]))])
+  -- if $ptbuiltin($ptlc(ptbytes)) <- ["self", "parent", "static"]
+  -- if ptqual = PTFULL
+def $ptsingle(ptcontext, ptqual, ptbytes) = $pterror(ptcontext, "reserved-type-name", [(PTBRANCH ([(PTCLASS ptbytes_name)]))])
+  -- if text = $ptbuiltin($ptlc(ptbytes))
+  -- if text = "" \/ (text <- ["array", "callable"] /\ ptqual =/= PTPLAIN)
+  -- if ptbytes_name = $ptresolve(ptcontext, ptqual, ptbytes)
+  -- if $ptbuiltin($ptlc($ptlast(ptbytes_name))) =/= ""
+def $ptsingle(ptcontext, ptqual, ptbytes) = PTOK ([(PTBRANCH ([(PTCLASS ptbytes_name)]))]) ($ptclasswarnings(ptcontext, ptqual, ptbytes, ptbytes_name))
+  -- if $ptbuiltin($ptlc(ptbytes)) = ""
+  -- if ptbytes_name = $ptresolve(ptcontext, ptqual, ptbytes)
+  -- if $ptbuiltin($ptlc($ptlast(ptbytes_name))) = ""
+
+;; The checked syntax includes edited/parser-only constructors: reject explicitly.
+dec $ptast(phpType18) : ptinput
+def $ptast(NIdentifier (BYTES text) metadata) = PTNAME PTPLAIN ($base64(text))
+def $ptast(NName (BYTES text) metadata) = PTNAME PTPLAIN ($base64(text))
+def $ptast(NNameFullyQualified (BYTES text) metadata) = PTNAME PTFULL ($base64(text))
+def $ptast(NNameRelative (BYTES text) metadata) = PTNAME PTRELATIVE ($base64(text))
+def $ptast(NNullableType phpType37 metadata) = PTNULLABLE ($ptast(phpType37))
+def $ptast(NUnionType (SEQUENCE phpType71*) metadata) = PTUNION ($ptast(phpType71))*
+def $ptast(NIntersectionType (SEQUENCE phpType37*) metadata) = PTINTER ($ptast(phpType37))*
+def $ptast(ABSENT) = PTABSENT
+def $ptast(NVarLikeIdentifier phpType35 metadata) = PTINVALID
+
+;; Masks are finite sets of primitive alternatives; class identities stay byte names.
+dec $ptmask(ptatom) : text*
+def $ptmask(PTBUILTIN "bool") = ["true", "false"]
+def $ptmask(PTBUILTIN "iterable") = ["array"]
+def $ptmask(PTBUILTIN text) = [text]
+  -- if text =/= "bool" /\ text =/= "iterable"
+def $ptmask(PTSTATIC) = ["static"]
+def $ptmask(ptatom) = eps
+  -- otherwise
+
+dec $ptmasks(ptbranch*) : text*
+def $ptmasks(eps) = eps
+def $ptmasks((PTBRANCH ([ptatom])) :: ptbranch*) = $ptmask(ptatom) ++ $ptmasks(ptbranch*)
+def $ptmasks((PTBRANCH ptatom*) :: ptbranch*) = $ptmasks(ptbranch*)
+  -- if |ptatom*| =/= 1
+
+dec $ptoverlap(text*, text*) : text*
+def $ptoverlap(eps, text_right*) = eps
+def $ptoverlap(text :: text_rest*, text_right*) = text :: $ptoverlap(text_rest*, text_right*)
+  -- if text <- text_right*
+def $ptoverlap(text :: text_rest*, text_right*) = $ptoverlap(text_rest*, text_right*)
+  -- if ~(text <- text_right*)
+
+dec $ptclasskey(ptatom) : ptatom
+def $ptclasskey(PTCLASS ptbytes) = PTCLASS ($ptlc(ptbytes))
+def $ptclasskey(PTBUILTIN "iterable") = PTCLASS ([116,114,97,118,101,114,115,97,98,108,101])
+def $ptclasskey(ptatom) = ptatom
+  -- otherwise
+
+dec $ptsubset(ptatom*, ptatom*) : bool
+def $ptsubset(eps, ptatom_right*) = true
+def $ptsubset(ptatom :: ptatom_rest*, ptatom_right*) = $ptsubset(ptatom_rest*, ptatom_right*)
+  -- if $ptclasskey(ptatom) <- ($ptclasskey(ptatom_right))*
+def $ptsubset(ptatom :: ptatom_rest*, ptatom_right*) = false
+  -- if ~($ptclasskey(ptatom) <- ($ptclasskey(ptatom_right))*)
+
+dec $ptclassbranch(ptbranch) : bool
+def $ptclassbranch(PTBRANCH ([PTCLASS ptbytes])) = true
+def $ptclassbranch(PTBRANCH ([PTSELF])) = true
+def $ptclassbranch(PTBRANCH ([PTPARENT])) = true
+def $ptclassbranch(PTBRANCH ([PTBUILTIN "iterable"])) = true
+def $ptclassbranch(PTBRANCH ptatom*) = true
+  -- if $(|ptatom*| > 1)
+def $ptclassbranch(ptbranch) = false
+  -- otherwise
+
+dec $ptclassview(ptbranch) : ptbranch
+def $ptclassview(PTBRANCH ([PTBUILTIN "iterable"])) = PTBRANCH ([(PTCLASS ([84,114,97,118,101,114,115,97,98,108,101]))])
+def $ptclassview(ptbranch) = ptbranch
+  -- otherwise
+
+dec $ptredundant(ptcontext, ptbranch, ptbranch*) : ptresult
+def $ptredundant(ptcontext, ptbranch, eps) = PTOK ([ptbranch]) eps
+def $ptredundant(ptcontext, PTBRANCH ptatom_new*, (PTBRANCH ptatom_old*) :: ptbranch*) = $pterror(ptcontext, "duplicate-type", [$ptclassview(PTBRANCH ptatom_new*)])
+  -- if |ptatom_new*| = 1 /\ |ptatom_old*| = 1
+  -- if $ptsubset(ptatom_new*, ptatom_old*)
+def $ptredundant(ptcontext, PTBRANCH ptatom_new*, (PTBRANCH ptatom_old*) :: ptbranch*) = $pterror(ptcontext, "redundant-intersection", [$ptclassview(PTBRANCH ptatom_new*), $ptclassview(PTBRANCH ptatom_old*)])
+  -- if |ptatom_new*| =/= 1 \/ |ptatom_old*| =/= 1
+  -- if $ptsubset(ptatom_new*, ptatom_old*) \/ $ptsubset(ptatom_old*, ptatom_new*)
+def $ptredundant(ptcontext, PTBRANCH ptatom_new*, (PTBRANCH ptatom_old*) :: ptbranch*) = $ptredundant(ptcontext, PTBRANCH ptatom_new*, ptbranch*)
+  -- if ~($ptsubset(ptatom_new*, ptatom_old*) \/ $ptsubset(ptatom_old*, ptatom_new*))
+
+dec $ptunioncheck(ptcontext, ptbranch, ptbranch*) : ptresult
+def $ptunioncheck(ptcontext, PTBRANCH ([PTBUILTIN "mixed"]), ptbranch*) = $pterror(ptcontext, "mixed-standalone", eps)
+def $ptunioncheck(ptcontext, ptbranch_new, ptbranch*) = $pterror(ptcontext, "duplicate-type", (PTBRANCH ([PTBUILTIN text_overlap]))*)
+  -- if ptbranch_new =/= PTBRANCH ([PTBUILTIN "mixed"])
+  -- if text_overlap* = $ptoverlap($ptmasks(ptbranch*), $ptmasks([ptbranch_new]))
+  -- if $(|text_overlap*| > 0)
+def $ptunioncheck(ptcontext, ptbranch_new, ptbranch*) = $pterror(ptcontext, "true-false-union", eps)
+  -- if $ptoverlap($ptmasks(ptbranch*), $ptmasks([ptbranch_new])) = eps
+  -- if ($ptmasks([ptbranch_new]) = ["true"] /\ "false" <- $ptmasks(ptbranch*)) \/ ($ptmasks([ptbranch_new]) = ["false"] /\ "true" <- $ptmasks(ptbranch*))
+def $ptunioncheck(ptcontext, ptbranch_new, ptbranch*) = $ptredundant(ptcontext, ptbranch_new, ptbranch*)
+  -- if $ptclassbranch(ptbranch_new)
+  -- if $ptoverlap($ptmasks(ptbranch*), $ptmasks([ptbranch_new])) = eps
+def $ptunioncheck(ptcontext, ptbranch_new, ptbranch*) = PTOK ([ptbranch_new]) eps
+  -- if ~$ptclassbranch(ptbranch_new)
+  -- if ptbranch_new =/= PTBRANCH ([PTBUILTIN "mixed"])
+  -- if $ptoverlap($ptmasks(ptbranch*), $ptmasks([ptbranch_new])) = eps
+  -- if ~(($ptmasks([ptbranch_new]) = ["true"] /\ "false" <- $ptmasks(ptbranch*)) \/ ($ptmasks([ptbranch_new]) = ["false"] /\ "true" <- $ptmasks(ptbranch*)))
+
+dec $ptisclass(ptatom) : bool
+
+dec $ptintercheck(ptcontext, ptbranch, ptatom*) : ptresult
+def $ptintercheck(ptcontext, PTBRANCH ([PTCLASS ptbytes]), ptatom*) = $pterror(ptcontext, "duplicate-type", [(PTBRANCH ([(PTCLASS ptbytes)]))])
+  -- if $ptclasskey(PTCLASS ptbytes) <- ($ptclasskey(ptatom))*
+def $ptintercheck(ptcontext, PTBRANCH ([PTCLASS ptbytes]), ptatom*) = PTOK ([(PTBRANCH (ptatom* ++ [(PTCLASS ptbytes)]))]) eps
+  -- if ~($ptclasskey(PTCLASS ptbytes) <- ($ptclasskey(ptatom))*)
+def $ptintercheck(ptcontext, PTBRANCH ([ptatom]), ptatom_old*) = $pterror(ptcontext, "invalid-intersection-member", [(PTBRANCH ([ptatom]))])
+  -- if ~$ptisclass(ptatom)
+
+def $ptisclass(PTCLASS ptbytes) = true
+def $ptisclass(ptatom) = false
+  -- otherwise
+
+dec $ptobjectclass(ptbranch*) : bool
+def $ptobjectclass(eps) = false
+def $ptobjectclass((PTBRANCH ([PTBUILTIN "iterable"])) :: ptbranch*) = $ptobjectclass(ptbranch*)
+def $ptobjectclass(ptbranch :: ptbranch_rest*) = true
+  -- if ptbranch =/= PTBRANCH ([PTBUILTIN "iterable"])
+  -- if $ptclassbranch(ptbranch) \/ ptbranch = PTBRANCH ([PTSTATIC])
+def $ptobjectclass(ptbranch :: ptbranch_rest*) = $ptobjectclass(ptbranch_rest*)
+  -- if ~$ptclassbranch(ptbranch)
+  -- if ptbranch =/= PTBRANCH ([PTSTATIC])
+
+dec $ptfinish(ptcontext, ptresult) : ptresult
+def $ptfinish(ptcontext, PTERROR ptdiagnostic*) = PTERROR ptdiagnostic*
+def $ptfinish(ptcontext, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptfinish(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "object-class-redundant", ptbranch*))
+  -- if "object" <- $ptmasks(ptbranch*)
+  -- if $ptobjectclass(ptbranch*)
+def $ptfinish(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "void-standalone", eps))
+  -- if ~("object" <- $ptmasks(ptbranch*) /\ $ptobjectclass(ptbranch*))
+  -- if "void" <- $ptmasks(ptbranch*)
+  -- if |ptbranch*| =/= 1
+def $ptfinish(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "never-standalone", eps))
+  -- if ~("object" <- $ptmasks(ptbranch*) /\ $ptobjectclass(ptbranch*))
+  -- if ~("void" <- $ptmasks(ptbranch*) /\ |ptbranch*| =/= 1)
+  -- if "never" <- $ptmasks(ptbranch*)
+  -- if |ptbranch*| =/= 1
+def $ptfinish(ptcontext, PTOK ptbranch* ptdiagnostic*) = PTOK ptbranch* ptdiagnostic*
+  -- if ~("object" <- $ptmasks(ptbranch*) /\ $ptobjectclass(ptbranch*))
+  -- if ~("void" <- $ptmasks(ptbranch*) /\ |ptbranch*| =/= 1)
+  -- if ~("never" <- $ptmasks(ptbranch*) /\ |ptbranch*| =/= 1)
+
+dec $ptnullable(ptcontext, ptresult) : ptresult
+def $ptnullable(ptcontext, PTERROR ptdiagnostic*) = PTERROR ptdiagnostic*
+def $ptnullable(ptcontext, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptnullable(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "mixed-nullable", eps))
+  -- if "mixed" <- $ptmasks(ptbranch*)
+def $ptnullable(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "null-nullable", eps))
+  -- if "null" <- $ptmasks(ptbranch*)
+def $ptnullable(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptfinish(ptcontext, PTOK (ptbranch* ++ [(PTBRANCH ([PTBUILTIN "null"]))]) ptdiagnostic*)
+  -- if ~("mixed" <- $ptmasks(ptbranch*) \/ "null" <- $ptmasks(ptbranch*))
+
+dec $ptnamestart(nat) : bool
+def $ptnamestart(ptbyte) = $(ptbyte >= 65) /\ $(ptbyte <= 90) \/ $(ptbyte >= 97) /\ $(ptbyte <= 122) \/ ptbyte = 95 \/ $(ptbyte >= 128) /\ $(ptbyte <= 255)
+dec $ptvalidname(ptbytes, bool) : bool
+def $ptvalidname(eps, bool) = ~bool
+def $ptvalidname(92 :: ptbyte*, false) = $ptvalidname(ptbyte*, true)
+def $ptvalidname(92 :: ptbyte*, true) = false
+def $ptvalidname(ptbyte :: ptbyte_rest*, bool) = $ptvalidname(ptbyte_rest*, false)
+  -- if ptbyte =/= 92
+  -- if $ptnamestart(ptbyte) \/ (~bool /\ $(ptbyte >= 48) /\ $(ptbyte <= 57))
+def $ptvalidname(ptbyte :: ptbyte_rest*, bool) = false
+  -- if ptbyte =/= 92
+  -- if ~($ptnamestart(ptbyte) \/ (~bool /\ $(ptbyte >= 48) /\ $(ptbyte <= 57)))
+
+dec $ptraw(ptcontext, ptinput) : ptresult
+dec $ptunionfold(ptcontext, ptinput*, ptresult) : ptresult
+dec $ptunionadd(ptcontext, ptbranch*, ptdiagnostic*, ptresult) : ptresult
+dec $ptunionchecked(ptbranch*, ptdiagnostic*, ptresult) : ptresult
+def $ptunionchecked(ptbranch_old*, ptdiagnostic_old*, PTOK ptbranch* ptdiagnostic*) = PTOK (ptbranch_old* ++ ptbranch*) (ptdiagnostic_old* ++ ptdiagnostic*)
+def $ptunionchecked(ptbranch*, ptdiagnostic_old*, PTERROR ptdiagnostic*) = PTERROR (ptdiagnostic_old* ++ ptdiagnostic*)
+def $ptunionchecked(ptbranch*, ptdiagnostic*, PTUNSUPPORTED text) = PTUNSUPPORTED text
+
+def $ptunionadd(ptcontext, ptbranch*, ptdiagnostic*, PTERROR ptdiagnostic_new*) = PTERROR (ptdiagnostic* ++ ptdiagnostic_new*)
+def $ptunionadd(ptcontext, ptbranch*, ptdiagnostic*, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptunionadd(ptcontext, ptbranch*, ptdiagnostic*, PTOK ([ptbranch_new]) ptdiagnostic_new*) = $ptunionchecked(ptbranch*, ptdiagnostic* ++ ptdiagnostic_new*, $ptunioncheck(ptcontext, ptbranch_new, ptbranch*))
+
+def $ptunionfold(ptcontext, eps, ptresult) = $ptfinish(ptcontext, ptresult)
+def $ptunionfold(ptcontext, ptinput :: ptinput_rest*, PTERROR ptdiagnostic*) = PTERROR ptdiagnostic*
+def $ptunionfold(ptcontext, ptinput :: ptinput_rest*, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptunionfold(ptcontext, ptinput :: ptinput_rest*, PTOK ptbranch* ptdiagnostic*) = $ptunionfold(ptcontext, ptinput_rest*, $ptunionadd(ptcontext, ptbranch*, ptdiagnostic*, $ptraw(ptcontext, ptinput)))
+
+dec $ptinterfold(ptcontext, ptinput*, ptresult) : ptresult
+dec $ptinteradd(ptcontext, ptatom*, ptdiagnostic*, ptresult) : ptresult
+def $ptinteradd(ptcontext, ptatom*, ptdiagnostic*, PTERROR ptdiagnostic_new*) = PTERROR (ptdiagnostic* ++ ptdiagnostic_new*)
+def $ptinteradd(ptcontext, ptatom*, ptdiagnostic*, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptinteradd(ptcontext, ptatom*, ptdiagnostic*, PTOK ([ptbranch]) ptdiagnostic_new*) = $ptprepend(ptdiagnostic* ++ ptdiagnostic_new*, $ptintercheck(ptcontext, ptbranch, ptatom*))
+def $ptinterfold(ptcontext, eps, ptresult) = ptresult
+def $ptinterfold(ptcontext, ptinput :: ptinput_rest*, PTERROR ptdiagnostic*) = PTERROR ptdiagnostic*
+def $ptinterfold(ptcontext, ptinput :: ptinput_rest*, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptinterfold(ptcontext, ptinput :: ptinput_rest*, PTOK ([(PTBRANCH ptatom*)]) ptdiagnostic*) = $ptinterfold(ptcontext, ptinput_rest*, $ptinteradd(ptcontext, ptatom*, ptdiagnostic*, $ptraw(ptcontext, ptinput)))
+
+def $ptraw(ptcontext, PTNAME ptqual ptbytes) = $ptsingle(ptcontext, ptqual, ptbytes)
+  -- if $ptvalidname(ptbytes, true)
+def $ptraw(ptcontext, PTNAME ptqual ptbytes) = PTUNSUPPORTED "edited invalid type name"
+  -- if ~$ptvalidname(ptbytes, true)
+def $ptraw(ptcontext, PTNULLABLE ptinput) = $ptnullable(ptcontext, $ptraw(ptcontext, ptinput))
+def $ptraw(ptcontext, PTUNION ptinput*) = $ptunionfold(ptcontext, ptinput*, PTOK eps eps)
+  -- if $(|ptinput*| >= 2)
+def $ptraw(ptcontext, PTINTER ptinput*) = $ptinterfold(ptcontext, ptinput*, PTOK ([(PTBRANCH eps)]) eps)
+  -- if $(|ptinput*| >= 2)
+def $ptraw(ptcontext, PTUNION ptinput*) = PTUNSUPPORTED "edited singleton or empty union"
+  -- if $(|ptinput*| < 2)
+def $ptraw(ptcontext, PTINTER ptinput*) = PTUNSUPPORTED "edited singleton or empty intersection"
+  -- if $(|ptinput*| < 2)
+def $ptraw(ptcontext, PTABSENT) = PTOK eps eps
+def $ptraw(ptcontext, PTINVALID) = PTUNSUPPORTED "variable-like identifier in declaration type"
+
+dec $ptposition(ptcontext, ptresult) : ptresult
+def $ptposition(ptcontext, PTERROR ptdiagnostic*) = PTERROR ptdiagnostic*
+def $ptposition(ptcontext, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $ptposition(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "parameter-void", ptbranch*))
+  -- if ptcontext.POSITION = PTPARAMETER
+  -- if "void" <- $ptmasks(ptbranch*)
+def $ptposition(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "parameter-never", ptbranch*))
+  -- if ptcontext.POSITION = PTPARAMETER
+  -- if "never" <- $ptmasks(ptbranch*)
+def $ptposition(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "static-return-only", ptbranch*))
+  -- if ptcontext.POSITION =/= PTRETURN
+  -- if "static" <- $ptmasks(ptbranch*)
+def $ptposition(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "property-forbidden-type", ptbranch*))
+  -- if ptcontext.POSITION = PTPROPERTY
+  -- if $ptoverlap($ptmasks(ptbranch*), ["void", "never", "callable"]) =/= eps
+def $ptposition(ptcontext, PTOK ptbranch* ptdiagnostic*) = $ptprepend(ptdiagnostic*, $pterror(ptcontext, "constant-forbidden-type", ptbranch*))
+  -- if ptcontext.POSITION = PTCONSTANT
+  -- if $ptoverlap($ptmasks(ptbranch*), ["void", "never", "callable"]) =/= eps
+def $ptposition(ptcontext, PTOK ptbranch* ptdiagnostic*) = PTOK ptbranch* ptdiagnostic*
+  -- if ~(ptcontext.POSITION = PTPARAMETER /\ $ptoverlap($ptmasks(ptbranch*), ["void", "never"]) =/= eps)
+  -- if ~(ptcontext.POSITION =/= PTRETURN /\ "static" <- $ptmasks(ptbranch*))
+  -- if ~((ptcontext.POSITION = PTPROPERTY \/ ptcontext.POSITION = PTCONSTANT) /\ $ptoverlap($ptmasks(ptbranch*), ["void", "never", "callable"]) =/= eps)
+
+dec $ptype_normalize(phpType18, ptcontext) : ptresult
+def $ptype_normalize(phpType18, ptcontext) = $ptposition(ptcontext, $ptraw(ptcontext, $ptast(phpType18)))
+  -- if ptcontext.FILE =/= eps /\ ptcontext.LINE =/= 0
+def $ptype_normalize(phpType18, ptcontext) = PTUNSUPPORTED "missing source file or compiler line"
+  -- if ptcontext.FILE = eps \/ ptcontext.LINE = 0
+
+;; Message bytes are semantic output; CLI prefixes/traces remain runner formatting.
+dec $ptasciidigit(text, nat) : nat
+def $ptasciidigit(text, ptbyte) = $(ptbyte + 32)
+  -- if text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"[ptbyte:1]
+def $ptasciidigit(text, ptbyte) = $ptasciidigit(text, $(ptbyte + 1))
+  -- if text =/= " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"[ptbyte:1]
+dec $ptascii(text) : ptbytes
+def $ptascii("") = eps
+def $ptascii(text) = $ptasciidigit(text[0:1], 0) :: $ptascii(text[1:ptbyte])
+  -- if $(|text| > 0)
+  -- if ptbyte = $(|text| - 1)
+
+dec $ptstrings(ptbytes, ptbytes*) : ptbytes
+def $ptstrings(ptbytes_sep, eps) = eps
+def $ptstrings(ptbytes_sep, [ptbytes]) = ptbytes
+def $ptstrings(ptbytes_sep, ptbytes :: ptbytes_rest*) = ptbytes ++ ptbytes_sep ++ $ptstrings(ptbytes_sep, ptbytes_rest*)
+  -- if $(|ptbytes_rest*| > 0)
+
+dec $ptatomname(ptatom) : ptbytes
+def $ptatomname(PTCLASS ptbytes) = ptbytes
+def $ptatomname(PTBUILTIN text) = $ptascii(text)
+def $ptatomname(PTSELF) = $ptascii("self")
+def $ptatomname(PTPARENT) = $ptascii("parent")
+def $ptatomname(PTSTATIC) = $ptascii("static")
+
+dec $ptclassnames(ptbranch*, bool) : ptbytes*
+def $ptclassnames(eps, bool) = eps
+def $ptclassnames((PTBRANCH ptatom*) :: ptbranch*, false) = $ptstrings([38], ($ptatomname(ptatom))*) :: $ptclassnames(ptbranch*, false)
+  -- if $(|ptatom*| > 1)
+def $ptclassnames((PTBRANCH ptatom*) :: ptbranch*, true) = ([40] ++ $ptstrings([38], ($ptatomname(ptatom))*) ++ [41]) :: $ptclassnames(ptbranch*, true)
+  -- if $(|ptatom*| > 1)
+def $ptclassnames((PTBRANCH ([ptatom])) :: ptbranch*, bool) = $ptatomname(ptatom) :: $ptclassnames(ptbranch*, bool)
+  -- if $ptisclass(ptatom) \/ ptatom = PTSELF \/ ptatom = PTPARENT
+def $ptclassnames((PTBRANCH ([PTBUILTIN "iterable"])) :: ptbranch*, bool) = $ptascii("Traversable") :: $ptclassnames(ptbranch*, bool)
+def $ptclassnames((PTBRANCH ([ptatom])) :: ptbranch*, bool) = $ptclassnames(ptbranch*, bool)
+  -- if ~($ptisclass(ptatom) \/ ptatom = PTSELF \/ ptatom = PTPARENT \/ ptatom = PTBUILTIN "iterable")
+
+dec $ptmasknames(text*, text*) : ptbytes*
+def $ptmasknames(text_mask*, eps) = eps
+def $ptmasknames(text_mask*, "bool" :: text_rest*) = $ptascii("bool") :: $ptmasknames(text_mask*, text_rest*)
+  -- if "true" <- text_mask* /\ "false" <- text_mask*
+def $ptmasknames(text_mask*, "bool" :: text_rest*) = $ptmasknames(text_mask*, text_rest*)
+  -- if ~("true" <- text_mask* /\ "false" <- text_mask*)
+def $ptmasknames(text_mask*, text :: text_rest*) = $ptascii(text) :: $ptmasknames(text_mask*, text_rest*)
+  -- if text =/= "bool"
+  -- if text <- text_mask*
+  -- if ~(text <- ["true", "false"] /\ "true" <- text_mask* /\ "false" <- text_mask*)
+def $ptmasknames(text_mask*, text :: text_rest*) = $ptmasknames(text_mask*, text_rest*)
+  -- if text =/= "bool"
+  -- if ~(text <- text_mask*) \/ (text <- ["true", "false"] /\ "true" <- text_mask* /\ "false" <- text_mask*)
+
+dec $ptaddnull(ptbytes*, bool) : ptbytes
+def $ptaddnull(ptbytes*, false) = $ptstrings([124], ptbytes*)
+def $ptaddnull(eps, true) = $ptascii("null")
+def $ptaddnull([ptbytes], true) = [63] ++ ptbytes
+  -- if ~(38 <- ptbytes)
+def $ptaddnull(ptbytes*, true) = $ptstrings([124], ptbytes* ++ [$ptascii("null")])
+  -- if $(|ptbytes*| > 1)
+def $ptaddnull([ptbytes], true) = ptbytes ++ $ptascii("|null")
+  -- if 38 <- ptbytes
+
+dec $pttypename(ptbranch*) : ptbytes
+def $pttypename(ptbranch*) = $ptaddnull(ptbytes*, "null" <- $ptmasks(ptbranch*))
+  -- if ptbytes* = $ptclassnames(ptbranch*, |ptbranch*| =/= 1) ++ $ptmasknames($ptmasks(ptbranch*), ["mixed", "self", "parent", "static", "callable", "object", "array", "string", "int", "float", "bool", "false", "true", "void", "never"])
+
+dec $ptmessage(ptdiagnostic) : ptbytes
+def $ptmessage(PTDIAGNOSTIC text "mixed-standalone" ptbranch* ptcontext) = $ptascii("Type mixed can only be used as a standalone type")
+def $ptmessage(PTDIAGNOSTIC text "true-false-union" ptbranch* ptcontext) = $ptascii("Type contains both true and false, bool must be used instead")
+def $ptmessage(PTDIAGNOSTIC text "mixed-nullable" ptbranch* ptcontext) = $ptascii("Type mixed cannot be marked as nullable since mixed already includes null")
+def $ptmessage(PTDIAGNOSTIC text "null-nullable" ptbranch* ptcontext) = $ptascii("null cannot be marked as nullable")
+def $ptmessage(PTDIAGNOSTIC text "void-standalone" ptbranch* ptcontext) = $ptascii("Void can only be used as a standalone type")
+def $ptmessage(PTDIAGNOSTIC text "never-standalone" ptbranch* ptcontext) = $ptascii("never can only be used as a standalone type")
+def $ptmessage(PTDIAGNOSTIC text "parameter-void" ptbranch* ptcontext) = $ptascii("void cannot be used as a parameter type")
+def $ptmessage(PTDIAGNOSTIC text "parameter-never" ptbranch* ptcontext) = $ptascii("never cannot be used as a parameter type")
+def $ptmessage(PTDIAGNOSTIC text "no-parent" ptbranch* ptcontext) = $ptascii("Cannot use \"parent\" when current class scope has no parent")
+def $ptmessage(PTDIAGNOSTIC text "underscore-class" ptbranch* ptcontext) = $ptascii("Using \"_\" as a type name is deprecated since 8.4")
+def $ptmessage(PTDIAGNOSTIC text "duplicate-type" ptbranch* ptcontext) = $ptascii("Duplicate type ") ++ $pttypename(ptbranch*) ++ $ptascii(" is redundant")
+def $ptmessage(PTDIAGNOSTIC text "builtin-unqualified" ptbranch* ptcontext) = $ptascii("Type declaration '") ++ $pttypename(ptbranch*) ++ $ptascii("' must be unqualified")
+def $ptmessage(PTDIAGNOSTIC text "reserved-type-name" ptbranch* ptcontext) = $ptascii("Cannot use \"") ++ $pttypename(ptbranch*) ++ $ptascii("\" as a type name as it is reserved")
+def $ptmessage(PTDIAGNOSTIC text "no-class-scope" ptbranch* ptcontext) = $ptascii("Cannot use \"") ++ $pttypename(ptbranch*) ++ $ptascii("\" when no class scope is active")
+def $ptmessage(PTDIAGNOSTIC text "invalid-intersection-member" ptbranch* ptcontext) = $ptascii("Type ") ++ $pttypename(ptbranch*) ++ $ptascii(" cannot be part of an intersection type")
+def $ptmessage(PTDIAGNOSTIC text "object-class-redundant" ptbranch* ptcontext) = $ptascii("Type ") ++ $pttypename(ptbranch*) ++ $ptascii(" contains both object and a class type, which is redundant")
+def $ptmessage(PTDIAGNOSTIC text "property-forbidden-type" ptbranch* ptcontext) = $ptascii("Property ") ++ ptcontext.OWNER ++ $ptascii("::$") ++ ptcontext.MEMBER ++ $ptascii(" cannot have type ") ++ $pttypename(ptbranch*)
+def $ptmessage(PTDIAGNOSTIC text "constant-forbidden-type" ptbranch* ptcontext) = $ptascii("Class constant ") ++ ptcontext.OWNER ++ $ptascii("::") ++ ptcontext.MEMBER ++ $ptascii(" cannot have type ") ++ $pttypename(ptbranch*)
+def $ptmessage(PTDIAGNOSTIC text "redundant-intersection" ([(PTBRANCH ptatom_new*), (PTBRANCH ptatom_old*)]) ptcontext) = $ptascii("Type ") ++ $pttypename([(PTBRANCH ptatom_new*)]) ++ $ptascii(" is redundant with type ") ++ $pttypename([(PTBRANCH ptatom_old*)])
+  -- if |ptatom_new*| = |ptatom_old*|
+def $ptmessage(PTDIAGNOSTIC text "redundant-intersection" ([(PTBRANCH ptatom_new*), (PTBRANCH ptatom_old*)]) ptcontext) = $ptascii("Type ") ++ $pttypename([(PTBRANCH ptatom_new*)]) ++ $ptascii(" is redundant as it is more restrictive than type ") ++ $pttypename([(PTBRANCH ptatom_old*)])
+  -- if $(|ptatom_new*| > |ptatom_old*|)
+def $ptmessage(PTDIAGNOSTIC text "redundant-intersection" ([(PTBRANCH ptatom_new*), (PTBRANCH ptatom_old*)]) ptcontext) = $ptascii("Type ") ++ $pttypename([(PTBRANCH ptatom_old*)]) ++ $ptascii(" is redundant as it is more restrictive than type ") ++ $pttypename([(PTBRANCH ptatom_new*)])
+  -- if $(|ptatom_new*| < |ptatom_old*|)
+
+dec $ptcorrect(ptbytes) : ptbytes
+
+dec $ptconfusable(ptbytes) : ptbytes
+def $ptconfusable(ptbytes) = $ptascii(" is not a supported builtin type and will be interpreted as a class name. ")
+  -- if ptbytes = $ptascii("resource")
+def $ptconfusable(ptbytes) = $ptascii(" will be interpreted as a class name. Did you mean \"") ++ ptbytes_correct ++ $ptascii("\"? ")
+  -- if ptbytes =/= $ptascii("resource")
+  -- if ptbytes_correct = $ptcorrect(ptbytes)
+def $ptcorrect(ptbytes) = $ptascii("int")
+  -- if ptbytes = $ptascii("integer")
+def $ptcorrect(ptbytes) = $ptascii("float")
+  -- if ptbytes = $ptascii("double")
+def $ptcorrect(ptbytes) = $ptascii("bool")
+  -- if ptbytes = $ptascii("boolean")
+
+dec $ptimporthint(ptcontext) : ptbytes
+def $ptimporthint(ptcontext) = eps
+  -- if ptcontext.NAMESPACE = eps
+def $ptimporthint(ptcontext) = $ptascii(" or import the class with \"use\"")
+  -- if ptcontext.NAMESPACE =/= eps
+
+def $ptmessage(PTDIAGNOSTIC text "confusable-class" ([(PTBRANCH ([PTCLASS ptbytes])), (PTBRANCH ([PTCLASS ptbytes_name]))]) ptcontext) = [34] ++ ptbytes ++ [34] ++ $ptconfusable(ptbytes) ++ $ptascii("Write \"\\") ++ ptbytes_name ++ [34] ++ $ptimporthint(ptcontext) ++ $ptascii(" to suppress this warning")
+
+def $ptmessage(PTDIAGNOSTIC text "invalid-class-name" ptbranch* ptcontext) = $ptascii("'") ++ $pttypename(ptbranch*) ++ $ptascii("' is an invalid class name")
+
+;; Intentional correction of the namespace-relative static compiler inconsistency.
+def $ptmessage(PTDIAGNOSTIC text "static-return-only" ptbranch* ptcontext) = $ptascii("static can only be used as a return type")
