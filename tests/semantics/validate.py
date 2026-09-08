@@ -137,8 +137,59 @@ CASES.update({
     'array-nested-dimension-lookup-line': b'<?php\n$a=[[]];echo $a[\n0\n][\n"missing"\n];',
 })
 
+CASES.update({
+    'array-write-basic': b'<?php\n$a=[];$a[0]=1;$a["x"]=2;echo $a[0],$a["x"];',
+    'array-write-nested': b'<?php\n$a=[];$a[0][1]=2;echo $a[0][1];',
+    'array-write-append': b'<?php\n$a[]=1;$a[]=2;echo $a[0],$a[1];',
+    'array-write-nestedappend': b'<?php\n$a[][]=1;$a[][]=2;echo $a[0][0],$a[1][0];',
+    'array-write-copy': b'<?php\n$a=[1];$b=$a;$a[0]=2;echo $a[0],$b[0];',
+    'array-write-nestedcopy': b'<?php\n$a=[[1]];$b=$a;$a[0][0]=2;echo $a[0][0],$b[0][0];',
+    'array-write-rootrefs': b'<?php\n$a=[1];$b=&$a;$c=$a;$b[0]=2;echo $a[0],$b[0],$c[0];',
+    'array-write-nestedrootrefs': b'<?php\n$a=[[1]];$b=&$a;$c=$a;$b[0][0]=2;echo $a[0][0],$b[0][0],$c[0][0];',
+    'array-write-false': b'<?php\n$a=false;$a[0]=1;echo $a[0];',
+    'array-write-falseinner': b'<?php\n$a=[false];$a[0][0]=1;echo $a[0][0];',
+    'array-write-null': b'<?php\n$a=null;$a[0]=1;echo $a[0];',
+    'array-write-nullkey': b'<?php\n$a[null]=1;echo $a[""];',
+    'array-write-floatkey': b'<?php\n$a[1.5]=1;echo $a[1];',
+    'array-write-keyerror': b'<?php\n$a[[]]=1;',
+    'array-write-scalarerror': b'<?php\n$a=true;$a[$missing]=$value;',
+    'array-write-keyrhswarnings': b'<?php\n$a[$missing]=$value;',
+    'array-write-appendrhswarning': b'<?php\n$a[]=$missing;echo $a[0];',
+    'array-write-overflowrhswarning': b'<?php\n$a=[PHP_INT_MAX=>1];$a[]=$missing;',
+    'array-write-negativehistory': b'<?php\n$a=[-5=>1];$a[]=2;echo $a[-5],$a[-4];',
+    'array-write-selfmissing': b'<?php\n$a[0]=$a;echo $a[0]===null;',
+    'array-write-selfappendmissing': b'<?php\n$a[]=$a;echo $a[0]===null;',
+    'array-write-selfexisting': b'<?php\n$a=[];$a[0]=$a;echo $a[0]===[];',
+    'array-write-selfappendexisting': b'<?php\n$a=[];$a[]=$a;echo $a[0]===[];',
+    'array-write-aliasself': b'<?php\n$a=[];$b=&$a;$a[0]=$b;echo $a===$a[0];',
+    'array-write-dynamicself': b'<?php\n$a=[];$n="a";$$n[0]=$a;echo $a===$a[0];',
+    'array-write-cycliccomparison': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$c=[];$d=&$c;$c[0]=$d;echo $a===$c;',
+    'array-write-cyclelength': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$c=[];$d=&$c;$c[0]=$d;$c[1]=1;echo $a===$c;',
+    'array-write-cyclemutation': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$a[1]=2;echo $a[0]===$a,$a[0]===$a[0][0];',
+    'array-write-keydelayed': b'<?php\n$a=[];$i=0;$a[$i]=($i=1);echo $a[1];',
+    'array-write-keycaptured': b'<?php\n$a=[];$i=0;$n="i";$a[$$n]=($i=1);echo $a[0];',
+    'array-write-rootchanged': b'<?php\n$a=[1];$a[0]=($a=[2]);echo $a[0][0];',
+    'array-write-linewrite': b'<?php\n$a[\nnull\n]=\n$missing;',
+    'array-write-lineself': b'<?php\n$a[\n0\n]=\n$a;',
+    'array-write-linefalse': b'<?php\n$a=false;$a[\n0\n]=\n1;',
+    'array-write-lineechoassignment': b'<?php\necho ($a[\n0\n]=\n[]);',
+    'array-write-nestedkeyeffects': b'<?php\n$a=[];$i=0;$a[$i][(($i=1)===1)-1]=2;echo $a[1][0];',
+    'array-write-nestedrhseffects': b'<?php\n$a=[];$i=0;$a[$i][0]=($i=1);echo $a[1][0];',
+})
+
+CASES.update({
+    'array-write-review-cycle-write-after': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$a[1]=1;echo $a[0]===$a, $a[0][0]===$a[0];',
+    'array-write-review-cycle-nested-write': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$a[0][1]=1;echo $a[0][0]===$a[0],$a[0][1];',
+    'array-write-review-cycle-count-shortcircuit': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$c=[];$d=&$c;$c[0]=$d;$c[1]=1;echo $a===$c;',
+    'array-write-review-cycle-key-shortcircuit': b'<?php\n$a=[];$b=&$a;$a[0]=$b;$c=[];$d=&$c;$c[1]=$d;echo $a===$c;',
+    'array-write-review-self-key-aliases-root': b'<?php\n$a=[1];$b=[2];$a[($a=&$b)[0]]=$a;echo $a[0],$a[2][0],$b[2][0];',
+    'array-write-review-nested-rhs-assign-root': b'<?php\n$a=[[1]];$a[0][0]=($a=[[2]]);echo $a[0][0][0][0];',
+    'array-write-review-nan-nested-identical-overwrite': b'<?php\n$x=[NAN];$a=[$x];$b=$a;$a[0]=$x;echo $a===$b;',
+    'array-write-review-key-error-rhs-throw': b'<?php\n$a=[];$a[[]]=1/0;',
+})
+
 # Independent review-authored witnesses keep their original provenance.
-CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read']
+CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -240,7 +291,7 @@ def main():
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $x=1;$a=[&$x];', b'<?php $a=[];$a[0]=1;',
+                       b'<?php $x=1;$a=[&$x];', b'<?php $a=[];unset($a[0]);',
                        b'<?php $a=[...[]];', b'<?php $a=[[]=>1];']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
@@ -284,7 +335,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read checked execution fixtures', 'profile': PROFILE,
+    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read/write checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage/results-semantic-source.jsonl'

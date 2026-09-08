@@ -1,0 +1,150 @@
+;; Direct cells and array element locations preserve designation through writes.
+dec $location_slot(pstate, plocation) : pslot
+def $location_slot(S, ROOT n) = S.STORE[n]
+def $location_slot(S, ELEMENT n pkey) = DEFINED pvalue
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (DIRECT pvalue)
+def $location_slot(S, ELEMENT n pkey) = S.STORE[n_cell]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $location_slot(S, plocation) = UNDEFINED
+  -- otherwise
+
+dec $alias_item(pitem?) : bool
+def $alias_item((ALIAS n)) = true
+def $alias_item(pitem?) = false
+  -- otherwise
+
+dec $location_write(pstate, plocation, pvalue) : pstate
+def $location_write(S, ROOT n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
+def $location_write(S, ELEMENT n pkey, pvalue) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue)]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $location_write(S, ELEMENT n pkey, pvalue) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, DIRECT pvalue))]
+  -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
+
+dec $location_name(pstate, nat*) : pstate
+def $location_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $location_name(S, n_name*) = S_cell[.LOCATION = ROOT S_cell.CELL]
+  -- if ~$environment_name(n_name*)
+  -- if S_cell = $ensure(S, n_name*)
+
+;; Before embedded references are admitted, shallow path copies preserve all
+;; value/alias observers. Container graphs are not recursively copied.
+dec $location_array(pstate, plocation, int) : pstate
+def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+  -- if $location_slot(S, plocation) = DEFINED (PARRAY n)
+  -- if S_new = $allocate_array(S, S.ARRAYS[n])
+  -- if S_new.RESULT = KNOWN pvalue
+
+def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+  -- if $location_slot(S, plocation) = UNDEFINED
+  -- if S_new = $allocate_array(S, $array_empty())
+  -- if S_new.RESULT = KNOWN pvalue
+def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+  -- if $location_slot(S, plocation) = DEFINED PNULL
+  -- if S_new = $allocate_array(S, $array_empty())
+  -- if S_new.RESULT = KNOWN pvalue
+def $location_array(S, plocation, z) = $diagnostic(S_written, "Deprecated", ([65,117,116,111,109,97,116,105,99,32,99,111,110,118,101,114,115,105,111,110,32,111,102,32,102,97,108,115,101,32,116,111,32,97,114,114,97,121,32,105,115,32,100,101,112,114,101,99,97,116,101,100]), z)
+  -- if $location_slot(S, plocation) = DEFINED (PBOOL false)
+  -- if S_new = $allocate_array(S, $array_empty())
+  -- if S_new.RESULT = KNOWN pvalue
+  -- if S_written = $location_write(S_new, plocation, pvalue)
+def $location_array(S, plocation, z) = S[.COMPLETION = UNSUPPORTED "string offset write"]
+  -- if $location_slot(S, plocation) = DEFINED (PSTRING n*)
+def $location_array(S, plocation, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,115,101,32,97,32,115,99,97,108,97,114,32,118,97,108,117,101,32,97,115,32,97,110,32,97,114,114,97,121]), z)
+  -- otherwise
+
+dec $element_location(pstate, nat, pkey) : pstate
+def $element_location(S, n, pkey) = S[.LOCATION = ELEMENT n pkey]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+def $element_location(S, n, pkey) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, UNINITIALIZED))][.LOCATION = ELEMENT n pkey]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = eps
+
+dec $append_location(pstate, nat, int) : pstate
+def $append_location(S, n, z) = $element_location(S, n, pkey)
+  -- if pkey = $array_append_key(S.ARRAYS[n])
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = eps
+def $append_location(S, n, z) = $literal_insert(S, n, eps, PNULL, z)
+  -- if pkey = $array_append_key(S.ARRAYS[n])
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+
+dec $base_acquire(pstate, pbase, int) : pstate
+dec $array_acquire(pstate, pbase, int) : pstate
+def $array_acquire(S, pbase, z) = S_base
+  -- if S_base = $base_acquire(S, pbase, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $array_acquire(S, pbase, z) = $location_array(S_base, S_base.LOCATION, z)
+  -- if S_base = $base_acquire(S, pbase, z)
+  -- if S_base.COMPLETION = NORMAL
+
+def $base_acquire(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $location_name(S, n_name*)
+def $base_acquire(S, BASE_NAME poperand z_name, z) = S_name
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $base_acquire(S, BASE_NAME poperand z_name, z) = $location_name(S_name, n_name*)
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = S_array
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION =/= NORMAL
+def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = S_key
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION = NORMAL
+  -- if S_key = $dimension_key(S_array, poperand, z_key)
+  -- if S_key.COMPLETION =/= NORMAL
+def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = $element_location(S_key, n, S_key.KEY)
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION = NORMAL
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+  -- if S_key = $dimension_key(S_array, poperand, z_key)
+  -- if S_key.COMPLETION = NORMAL
+def $base_acquire(S, BASE_APPEND pbase z_key, z) = S_array
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION =/= NORMAL
+def $base_acquire(S, BASE_APPEND pbase z_key, z) = $append_location(S_array, n, z_key)
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION = NORMAL
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+
+dec $assign_array(pstate, pbase, poperand, int) : pstate
+def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = S_place
+  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand_key z_key, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = S_read
+  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand_key z_key, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_place, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = $location_write(S_read, S_place.LOCATION, pvalue)
+  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand_key z_key, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_place, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = S_array
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = S_read
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_array, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = $literal_insert(S_read, n, eps, pvalue, z)
+  -- if S_array = $array_acquire(S, pbase, z_key)
+  -- if S_array.COMPLETION = NORMAL
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+  -- if S_read = $resolve_at(S_array, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+dec $root_cv(expression) : (nat*)?
+def $root_cv(NExprVariable phpType34 metadata) = $cv_name(phpType34)
+def $root_cv(NExprArrayDimFetch expression phpType5 metadata) = $root_cv(expression)
+def $root_cv(expression) = eps
+  -- otherwise
+
+def $assignment_self(expression, NExprVariable phpType34 metadata) = true
+  -- if $root_cv(expression) = (n_name*)
+  -- if $cv_name(phpType34) = (n_name*)
+def $assignment_self(expression_1, expression_2) = false
+  -- otherwise

@@ -12,8 +12,8 @@ and a variable environment mapping byte names to cell identities. Cells contain
 `UNDEFINED` or a PHP value; missing names, undefined slots and null remain distinct.
 Ordinary assignment copies a value into the designated cell. Reference rebinding
 changes one name's cell identity, leaving other aliases attached to their original
-cell. Unset removes the binding. Property type sources and writable array paths
-remain later storage obligations.
+cell. Unset removes the binding. Writable paths designate either a variable cell
+or an element in an internal array container. Property type sources remain pending.
 
 An operand is either a captured value or a delayed compiled-variable read. Dynamic
 name expressions can therefore retain a delayed read across RHS effects. A dynamic
@@ -69,10 +69,24 @@ ordered diagnostics; undefined variable keys suppress the null deprecation only
 in literal construction. Missing string-key diagnostics truncate at NUL, matching
 Zend's `%s` rendering. Reads, nested strict identity and left-biased union are
 implemented. Strict identity first checks shared container identity, observable
-for arrays containing NaN. Containers are shared by value assignment; dimension
-writes, copy-on-write separation, embedded references and unpacking remain pending.
-Eager copying would incorrectly change singleton-reference behavior, so the next
-storage layer must count reachable edges and live temporaries before separation.
+for arrays containing NaN. Containers are shared by value assignment. Ordinary
+simple/nested assignment and append copy each selected container shallowly before
+mutation, preserving other value copies and variable-cell aliases. This is an
+abstraction for the current absence of embedded reference entries; it must become
+conditional separation with reachable edge/temporary accounting before embedded
+references are admitted. Array unset, embedded references and unpacking remain pending.
+
+Write preparation retains delayed name/key operands through RHS evaluation.
+Dimension assignment acquires a keyed slot before reading a delayed RHS, whereas
+terminal append reads its RHS before the overflow check. Missing/undefined/null
+containers become arrays; false conversion emits its deprecation after creation.
+New element slots retain an explicit uninitialized state. Zend specially captures
+a syntactically matching root-variable RHS (`$a[0]=$a`) before location acquisition.
+Dynamic roots and variable aliases can instead create cycles even without embedded
+reference entries. Strict comparison protects active left-container IDs and returns
+a PHP Error for recursive dependency; same-container identity still succeeds.
+These rules follow `zend_compile_expr_with_potential_assign_to_self`,
+`ZEND_ASSIGN_DIM`, `zend_fetch_dimension_address` and `zend_hash_compare`.
 
 A pure constant classifier reuses the array/numeric rules on isolated state and
 accepts only normal results without diagnostics. This determines compiler source
@@ -101,7 +115,7 @@ fresh semantic/oracle processes under the same file identity, directory, profile
 and locale, compares exact output channels and status, and retains raw classified
 negative outcomes. It reuses the syntax harness dependency-closure fingerprint
 before and after each campaign. The authored and seeded cases establish the current
-scalar, variable-storage and ordinary-array literal/read slice;
+scalar, variable-storage and ordinary-array literal/read/write slice;
 they do not establish complete PHP semantics or BOLA freedom. Compact current
 evidence is `coverage/semantics/source.json`; exact raw observations are regenerated
 in the ignored `coverage/results-semantic-source.jsonl`. The earlier phase0 report

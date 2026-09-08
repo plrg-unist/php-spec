@@ -103,6 +103,7 @@ def $literal_insert(S, n_array, eps, pvalue, z) = $throw_scalar(S, "Error", [67,
 
 dec $entry_value(pstate, pitem) : pvalue
 def $entry_value(S, DIRECT pvalue) = pvalue
+def $entry_value(S, UNINITIALIZED) = PNULL
 def $entry_value(S, ALIAS n) = pvalue
   -- if S.STORE[n] = DEFINED pvalue
 
@@ -116,6 +117,7 @@ def $c_string(0 :: n_tail*) = eps
 def $c_string(n :: n_tail*) = n :: $c_string(n_tail*)
   -- if n =/= 0
 
+dec $dimension_key_value(pstate, pvalue, int) : pstate
 dec $dimension_key(pstate, poperand, int) : pstate
 dec $array_read(pstate, pvalue, poperand, int) : pstate
 def $array_read(S, PARRAY n, poperand, z) = S_key
@@ -133,16 +135,35 @@ def $array_read(S, PARRAY n, poperand, z) = S_warned[.RESULT = KNOWN PNULL]
 def $array_read(S, pvalue, poperand, z) = S[.COMPLETION = UNSUPPORTED "non-array dimension access"]
   -- otherwise
 
-dec $entries_strict(pstate, pentry*, pentry*) : bool
-def $entries_strict(S, eps, eps) = true
-def $entries_strict(S, (ENTRY pkey pitem_1) :: pentry_left*, (ENTRY pkey pitem_2) :: pentry_right*) = $entries_strict(S, pentry_left*, pentry_right*)
-  -- if $strict_value(S, $entry_value(S, pitem_1), $entry_value(S, pitem_2))
-def $entries_strict(S, pentry_left*, pentry_right*) = false
+dec $strict_check(pstate, pvalue, pvalue, nat*) : pcomparison
+dec $entries_strict(pstate, pentry*, pentry*, nat*) : pcomparison
+def $entries_strict(S, eps, eps, n_seen*) = COMPARED true
+def $entries_strict(S, (ENTRY pkey pitem_1) :: pentry_left*, (ENTRY pkey pitem_2) :: pentry_right*, n_seen*) = $entries_strict(S, pentry_left*, pentry_right*, n_seen*)
+  -- if $strict_check(S, $entry_value(S, pitem_1), $entry_value(S, pitem_2), n_seen*) = COMPARED true
+def $entries_strict(S, (ENTRY pkey pitem_1) :: pentry_left*, (ENTRY pkey pitem_2) :: pentry_right*, n_seen*) = RECURSIVE
+  -- if $strict_check(S, $entry_value(S, pitem_1), $entry_value(S, pitem_2), n_seen*) = RECURSIVE
+def $entries_strict(S, pentry_left*, pentry_right*, n_seen*) = COMPARED false
   -- otherwise
 
-def $strict_value(S, PARRAY n, PARRAY n) = true
-def $strict_value(S, PARRAY n_1, PARRAY n_2) = $entries_strict(S, S.ARRAYS[n_1].ITEMS, S.ARRAYS[n_2].ITEMS)
+def $strict_check(S, PARRAY n, PARRAY n, n_seen*) = COMPARED true
+def $strict_check(S, PARRAY n_1, PARRAY n_2, n_seen*) = RECURSIVE
   -- if n_1 =/= n_2
+  -- if n_1 <- n_seen*
+def $strict_check(S, PARRAY n_1, PARRAY n_2, n_seen*) = COMPARED false
+  -- if n_1 =/= n_2
+  -- if ~(n_1 <- n_seen*)
+  -- if |S.ARRAYS[n_1].ITEMS| =/= |S.ARRAYS[n_2].ITEMS|
+def $strict_check(S, PARRAY n_1, PARRAY n_2, n_seen*) = $entries_strict(S, S.ARRAYS[n_1].ITEMS, S.ARRAYS[n_2].ITEMS, n_1 :: n_seen*)
+  -- if n_1 =/= n_2
+  -- if ~(n_1 <- n_seen*)
+  -- if |S.ARRAYS[n_1].ITEMS| = |S.ARRAYS[n_2].ITEMS|
+def $strict_check(S, pvalue_1, pvalue_2, n_seen*) = COMPARED $strict_identical(pvalue_1, pvalue_2)
+  -- otherwise
+
+def $identity_apply(S, b_negate, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL (b =/= b_negate))]
+  -- if $strict_check(S, pvalue_1, pvalue_2, eps) = COMPARED b
+def $identity_apply(S, b_negate, pvalue_1, pvalue_2, z) = $throw_scalar(S, "Error", ([78,101,115,116,105,110,103,32,108,101,118,101,108,32,116,111,111,32,100,101,101,112,32,45,32,114,101,99,117,114,115,105,118,101,32,100,101,112,101,110,100,101,110,99,121,63]), z)
+  -- if $strict_check(S, pvalue_1, pvalue_2, eps) = RECURSIVE
 
 dec $array_union(parray, pentry*) : parray
 def $array_union(parray, eps) = parray
@@ -232,7 +253,7 @@ def $array_is_constant(expression) = false
 def $dimension_key(S, poperand, z) = S_read
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION =/= NORMAL
-def $dimension_key(S, poperand, z) = $key_value(S_read, pvalue, false, z)
+def $dimension_key(S, poperand, z) = $dimension_key_value(S_read, pvalue, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -267,3 +288,7 @@ def $base_read(S, BASE_DIM pbase poperand z_key, z) = $array_read(S_base, pvalue
   -- if S_base = $base_read(S, pbase, z_key)
   -- if S_base.COMPLETION = NORMAL
   -- if S_base.RESULT = KNOWN pvalue
+
+def $dimension_key_value(S, PARRAY n, z) = $throw_scalar(S, "TypeError", ([67,97,110,110,111,116,32,97,99,99,101,115,115,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32,97,114,114,97,121,32,111,110,32,97,114,114,97,121]), z)
+def $dimension_key_value(S, pvalue, z) = $key_value(S, pvalue, false, z)
+  -- otherwise

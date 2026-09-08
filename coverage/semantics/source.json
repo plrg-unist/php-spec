@@ -9,7 +9,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and ordinary array literal/read checked execution fixtures",
+  "scope": "authored scalar, variable storage and ordinary array literal/read/write checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -55,8 +55,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "e03665531809faa351ed96eb3efb9eded856d391323fb7e20d5dad94344283b2",
-    "files": 628,
+    "sha256": "73bcd1c2ce27bfc593977c42aa987d40187b7ed376a34f2922372e34c4e51829",
+    "files": 643,
     "scope": [
       "frontend",
       "adapter",
@@ -722,6 +722,276 @@
       "comparison": "pass"
     },
     {
+      "id": "array-write-basic",
+      "source_sha256": "10f20b249563eebfb889a8087b9675b43b277ff47b5a264ac0bec2f6b175532d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nested",
+      "source_sha256": "b6ab9107938b3cc3661043f1ef02a52548da300e8b3fb1b092f759587bbd947c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-append",
+      "source_sha256": "a8dca8b5f556094a45bbcd297ffbc5d5cc8c981dd1b3ee011d0288ffc2a70b3a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nestedappend",
+      "source_sha256": "8296ed508125e0f73f6cbedd7028d2dcb194e4031b50f6a3d6920195ab95ceb0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-copy",
+      "source_sha256": "1d708cc28348b54e25d464d1c8fa8063f3989df42a4200e8d27c680cbf5fed40",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nestedcopy",
+      "source_sha256": "9f89bff2571fa9fd858a391c165888b3cf6155fdd28cd1cfbb216224c92f47fd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-rootrefs",
+      "source_sha256": "8bfd1598fffca3cb6678a267c87d4ed8d90311f70d57a1b907848ae93b17724b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nestedrootrefs",
+      "source_sha256": "c61c469400694330d6ff572d53698aad4c2c860cbad1c7f5fe4052400ab64731",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-false",
+      "source_sha256": "14309adcdaf8fbfe78e97f4b1e5e41e260391b49d87a0da8d49fa85e86c7d268",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-falseinner",
+      "source_sha256": "8a6d175b5b80b26c6820339cfe11e812d9822ad2746fa59ff5cb3d3794997971",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-null",
+      "source_sha256": "cd11f58d0bd10b3bacea3b5bc073d0a11bccf7128609de73dbf74ec715fbb1e1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nullkey",
+      "source_sha256": "e703f6fa1131db244c3c895aa95ada1285ae606ccf2ed1ef5548b90caf9a1f95",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-floatkey",
+      "source_sha256": "fb3091af29f5a6eda104d7041e770342e3240ac63bf60385e98d85c343b30e6a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-keyerror",
+      "source_sha256": "2ebce2b0b16795c7aac5198acdc1dc5d205fcd89fecdf3fee2458f0000b78ad2",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-scalarerror",
+      "source_sha256": "387f1f85f4813e6962c42434434614b3e1c4de12a40b7d46d037252bd91a9e1b",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-keyrhswarnings",
+      "source_sha256": "8200aef43e4fa99712c4fc1d185b255e4d220aa3aa1104c948c96d039be0112b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-appendrhswarning",
+      "source_sha256": "c01ecd47f34643cb293e85b41c1026e097bd67c3968de10fe44b105768fcebca",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-overflowrhswarning",
+      "source_sha256": "8cd8555973ebe40228b45c430f492e99ff278f8e482446017c565a800921becc",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-negativehistory",
+      "source_sha256": "673b12ea93326ee386f4186a947ac8611da69ba2353a79b3d940d494c738fe58",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-selfmissing",
+      "source_sha256": "75d0798e78e6e45e51fc4920aedd5be0d3da60a94325288033d216860c27c9f6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-selfappendmissing",
+      "source_sha256": "913478a790bb3bc66c2074854ec73050b4d0dcfd6807da376e51b3b617b6a0a9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-selfexisting",
+      "source_sha256": "70619eb001562cf9be33c412f16f7a8a1fff68bd31ca8ff9273e1d7936060426",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-selfappendexisting",
+      "source_sha256": "8261b35359a3e938feb76b8602228e23e9d993ac2c0f36876ff87c42f75c67aa",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-aliasself",
+      "source_sha256": "8a17cae6ef5ba487214ad64ee1db307ca13310c986b919cd850bd1b632e11c79",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-dynamicself",
+      "source_sha256": "5fd9498d1927273b41d7d37a868273626b88db2d668792d24ba638c2b4bb097a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-cycliccomparison",
+      "source_sha256": "eea45cb4794ef9d188397b2dbac2803317c6c5789daa3c97d48be466b0641be9",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-cyclelength",
+      "source_sha256": "f022089fb0743d8a3e7774d7277fe06d52aba1f9d66e09b6e45d1b7bad1b2111",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-cyclemutation",
+      "source_sha256": "bdbd3379d858bb06fff7dbc9c3234cffb379bd7811257aaf1bcc1b07cda2d2b1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-keydelayed",
+      "source_sha256": "6c046f7e846a9c3ae1d4960c2698f983602803a1e005c7b26d720c2cfa0655ac",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-keycaptured",
+      "source_sha256": "28e0a5d8c84915d9f1f5e138e6c809bffe9453c6fb906e88744cc0135da40ab4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-rootchanged",
+      "source_sha256": "bee54ec5509a8d4d145fd50235e9091dda514a3873b5badb20838549565a271e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-linewrite",
+      "source_sha256": "48f1dfaba6158caa8422145f41cbf2c03d4b10271a07eee721ecc473c4c71887",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-lineself",
+      "source_sha256": "88712e5c1dc22f0d83eb3cf49cda9255dc41b023e070ed152d4347cab946015c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-linefalse",
+      "source_sha256": "4b78da91e36cf6ce8b31e2a86d073514450c9891ac04ca4577d68eff0648c0b0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-lineechoassignment",
+      "source_sha256": "c313e572c919cc4ef31817bdd836514c6fcc39ffce5651ba46c76ca5d8c42258",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nestedkeyeffects",
+      "source_sha256": "084c0b23e0dcde8cae05ee5e16df98f80de25af72e3c64b30e9f2ea904f7144d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-nestedrhseffects",
+      "source_sha256": "31fb27526af31c89b6f270334bd5413152a9ba72c48cb41eaac988dd7c58cec1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-cycle-write-after",
+      "source_sha256": "9c5868e221b6044cc3fe313e53177339e8fc51f514e22c07605ae5473747545a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-cycle-nested-write",
+      "source_sha256": "0181aa850cb66bf7d6376cdd5d228c5d6c4bccf959e7b2415fc8936a1b4c4d83",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-cycle-count-shortcircuit",
+      "source_sha256": "f022089fb0743d8a3e7774d7277fe06d52aba1f9d66e09b6e45d1b7bad1b2111",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-cycle-key-shortcircuit",
+      "source_sha256": "94af6003e5af593f7151c8077e940aa28e3df047c225923f311ce9f76e892aae",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-self-key-aliases-root",
+      "source_sha256": "28004f43e8b501e97fcc576455041ced80ca0c0dde02c20efc7c95dabf01aa04",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-nested-rhs-assign-root",
+      "source_sha256": "03fe438f45a5a080f066d7928601f7052495d08d346b41c358e7df319e6983d2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-nan-nested-identical-overwrite",
+      "source_sha256": "74f9c1298d17131d8a9ba345ae07271e8da7c0ecc5707d6963076f08483c8ec0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-write-review-key-error-rhs-throw",
+      "source_sha256": "0863abcd4fb6bf94bc5a73ecedd810078a7abb311f08e876d0d64c5ee96da25b",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
       "id": "conformance-reference-rebind",
       "source_sha256": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
       "semantic_status": "normal",
@@ -736,6 +1006,78 @@
     {
       "id": "conformance-delayed-read",
       "source_sha256": "19295ebbb201e747edd5bcbbee4834acb0245c4eaca3ca8343e2e008bbfcb5ac",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-alias-self-cycle",
+      "source_sha256": "bd4886fde181acdcb386571b03d19d44239bfcf55e891182dcb4cfd5ccbf42c6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-captured-lhs-key",
+      "source_sha256": "6176d6aa4d4205c946fe8599795f5298512798e0d2ccde44e69a78bd466fd81a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-captured-lhs-name",
+      "source_sha256": "3c79d4caad39d594da13a935a05e7c0b8d479e3c426b3b2e914e245880626ff0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-delayed-lhs-key",
+      "source_sha256": "e5589908d596b0d0aed6c091a124c7259395703aecc0459c43ed93d65802cfae",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-delayed-lhs-name",
+      "source_sha256": "38dd2af23e04b8d8c87c959fa0ec9235915827b2ed9ef75e19be8578cf74d4b1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-distinct-cycle-comparison",
+      "source_sha256": "6da4735fb431ee6771eaa9897f7c3daa80a81acda18b22c38a8ed2e09298fcf3",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-dynamic-self-cycle",
+      "source_sha256": "2f0823ad2ae553c63a5c2eed004c3839eaf5ab5eb717ac61897f30b646d0b232",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-nested-self-index",
+      "source_sha256": "a1e0622e5f1bc00cbb494c7a62f4eccfa86f9a31a0db0fd1ddef4869c03470be",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-rhs-overwrites-root",
+      "source_sha256": "279638742991c1f1d23736992f396a79f2e71cb26b11a40405860d1d3f6407c2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-self-append",
+      "source_sha256": "a0fcd980a834b1025468ece420739a8a6dfb217d5b103689adffde5e6be5129b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-self-index",
+      "source_sha256": "c15f4a5339d95fd31c193f0c4b643f9953c702ac0f2318aebd592e349aaa8dda",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-array-self-key-side-effect",
+      "source_sha256": "283e5b0bf5b5bdd426db6a13ee07fd339a8f4b84ed53e67c411cb867d1a62315",
       "semantic_status": "normal",
       "comparison": "pass"
     },
@@ -1585,7 +1927,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-anxtk9aw/unsupported.php"
+        "/tmp/php-semantics-rixftdyg/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -1604,7 +1946,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-anxtk9aw/unsupported.php"
+        "/tmp/php-semantics-rixftdyg/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -1623,7 +1965,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-anxtk9aw/unsupported.php",
+        "/tmp/php-semantics-rixftdyg/unsupported.php",
         "--steps",
         "0"
       ],
@@ -1644,7 +1986,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-anxtk9aw/unsupported.php",
+        "/tmp/php-semantics-rixftdyg/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -1657,12 +1999,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-anxtk9aw/unsupported.php.missing"
+        "/tmp/php-semantics-rixftdyg/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-anxtk9aw/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-rixftdyg/unsupported.php.missing'"
       }
     },
     {
@@ -1816,7 +2158,7 @@
       }
     },
     {
-      "source": "PD9waHAgJGE9W107JGFbMF09MTs=",
+      "source": "PD9waHAgJGE9W107dW5zZXQoJGFbMF0pOw==",
       "exit_status": 1,
       "observation": {
         "status": "unsupported",
@@ -1935,6 +2277,12 @@
                 ]
               }
             ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
           }
         }
       }
@@ -2018,6 +2366,12 @@
                 ]
               }
             ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
           }
         }
       }
@@ -2094,6 +2448,12 @@
                   }
                 ]
               }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
             ]
           }
         }
@@ -2187,6 +2547,12 @@
                 ]
               }
             ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
           }
         }
       }
@@ -2194,7 +2560,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "7d244996a0910233dd0c49731749ebe1b5550adefd891e2ca5a58de261bf6980",
-    "records": 251
+    "sha256": "ed19fc9c7ef748799f4c9087a94452eb1b1168aba1e114e3d0257316e0638264",
+    "records": 308
   }
 }

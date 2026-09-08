@@ -71,7 +71,7 @@ def $strict_identical(PFLOAT n_1, PFLOAT n_2) = $num_identical(NFLOAT n_1, NFLOA
 def $strict_identical(pvalue_1, pvalue_2) = (pvalue_1 = pvalue_2)
   -- otherwise
 
-dec $strict_value(pstate, pvalue, pvalue) : bool
+dec $identity_apply(pstate, bool, pvalue, pvalue, int) : pstate
 dec $both_arrays(pvalue, pvalue) : bool
 def $both_arrays(PARRAY n_1, PARRAY n_2) = true
 def $both_arrays(pvalue_1, pvalue_2) = false
@@ -95,8 +95,8 @@ def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $number_result(S_right, $num
   -- if $coerce_number(pvalue_2) = COERCED pnumber_2 b_right
   -- if S_right = $leading_warning(S_left, b_right, z)
 
-def $binary_apply(S, IDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL $strict_value(S, pvalue_1, pvalue_2))]
-def $binary_apply(S, NOTIDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL (~$strict_value(S, pvalue_1, pvalue_2)))]
+def $binary_apply(S, IDENTICAL, pvalue_1, pvalue_2, z) = $identity_apply(S, false, pvalue_1, pvalue_2, z)
+def $binary_apply(S, NOTIDENTICAL, pvalue_1, pvalue_2, z) = $identity_apply(S, true, pvalue_1, pvalue_2, z)
 
 dec $unary_apply(pstate, punary, pvalue, int) : pstate
 def $unary_apply(S, punary, pvalue, z) = $type_failure(S, MULTIPLY, pvalue, PINT 1, z)
@@ -185,6 +185,3 @@ def $resolve_name(S, poperand, z) = $stringify(S_read, pvalue, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
-
-def $strict_value(S, pvalue_1, pvalue_2) = $strict_identical(pvalue_1, pvalue_2)
-  -- otherwise

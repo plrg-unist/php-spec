@@ -1,0 +1,20 @@
+rule PhpStep/array-assignment: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression_base phpType5 metadata_dim), ASSIGN_PREP (NExprArrayDimFetch expression_base phpType5 metadata_dim) expression] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssign (NExprArrayDimFetch expression_base phpType5 metadata_dim) expression metadata)) :: ptask_tail*
+rule PhpStep/array-assignment-prepare: S ~> S[.TODO = [EVAL expression, ASSIGN_ARRAY S.BASE $compiled_line(expression_target) $assignment_self(expression_target, expression)] ++ ptask_tail*]
+  -- if S.TODO = (ASSIGN_PREP expression_target expression) :: ptask_tail*
+rule PhpStep/array-assignment-write: S ~> S_written[.TODO = ptask_tail*]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if S_written = $assign_array(S, pbase, S.RESULT, z)
+rule PhpStep/array-assignment-self: S ~> S_written[.TODO = ptask_tail*]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z true) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_written = $assign_array(S_read, pbase, S_read.RESULT, z)
+rule PhpStep/array-assignment-self-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z true) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/dimension-prepare-append: S ~> S[.TODO = [DIM_PREP expression, DIM_APPEND $compiled_line(expression)] ++ ptask_tail*]
+  -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression ABSENT metadata)) :: ptask_tail*
+rule PhpStep/dimension-append: S ~> S[.TODO = ptask_tail*][.BASE = BASE_APPEND S.BASE z]
+  -- if S.TODO = (DIM_APPEND z) :: ptask_tail*
