@@ -6,8 +6,8 @@ inventory and 169 constructors pass validation. All 30,976 corpus records are
 classified with no unresolved failures. A fresh offline rebuild and complete
 validation also pass with workspace resources unavailable; see the
 [portability evidence](coverage/portability.json).
-[PROGRESS.md](PROGRESS.md) records gates and
-[PLAN.md](PLAN.md) defines scope. Evaluation semantics and BOLA verification are later research phases.
+The [validation report](coverage/milestone4.json) records coverage and classified
+outcomes. Evaluation semantics and BOLA verification are later research phases.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

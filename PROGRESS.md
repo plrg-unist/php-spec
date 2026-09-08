@@ -1,6 +1,6 @@
 # Progress
 
-Target: PHP 8.5.10 syntax only. [PLAN.md](PLAN.md) is the completion contract.
+Target: PHP 8.5.10 syntax only.
 
 | Milestone | Status | Evidence |
 | --- | --- | --- |

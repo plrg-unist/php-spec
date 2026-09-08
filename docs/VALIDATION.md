@@ -7,6 +7,10 @@ compilation checks. The worker also offers optional `oracle-string` diagnostics
 using `TOKEN_PARSE`; that operation differs on BOMs, shebangs and encoding
 profiles and is not the corpus reference or a retained full-corpus observation.
 The parsers share the lexer, so agreement is not independent lexical validation.
+Use the pinned `vendor/php-src/Zend/zend_language_parser.y`, scanner and AST
+actions to resolve syntax questions; other PHP releases are not substitutes.
+The scope includes syntax in valid programs under the supported configuration
+profiles, even when invalid-program checks occur at different phases.
 
 Run `python3 tests/validate.py --elaborate` for targeted checked round trips and
 `python3 tests/malformed.py` for malformed-value rejection and
@@ -20,6 +24,10 @@ record order. A failed or incomplete shard fails the combined run.
 Reports distinguish passes, parser rejections, compilation-phase differences,
 acceptance disagreements, conversion failures, and AST/printing instability.
 An interrupted run is exploratory evidence, never the completion report.
+Missing fixtures, crashes, timeouts and resource failures remain unresolved
+failures, not reasons to exclude supported syntax.
+For direct SpecTec CLI calls, inspect diagnostics as well as exit status:
+some framework errors can exit zero. The project drivers return failure exits.
 Compilation-phase discrepancies require an exact source/configuration match
 in `tests/phase-discrepancies.json`, the reviewed frontend restriction and
 matching pinned lint diagnostic. An unrelated compilation error cannot excuse
@@ -61,6 +69,9 @@ execution; a changing implementation makes the run fail.
 the matching runner, retaining source/configuration provenance. It does not
 run `SKIPIF`, `CLEAN`, redirects, or application code. Application candidates
 include PHP/include extensions and other files containing PHP opening tags.
+PHPT `EXPECT*` sections describe runtime outcomes, not syntax acceptance labels.
+Retain error tests and extension-dependent sources; runtime skip conditions do
+not imply parser rejection.
 Parsing outer source does not cover dynamically generated code or `eval`
 strings; static additional cases must have their own provenance.
 `tests/validate_extraction.py` compares every PHPT extraction with the pinned

@@ -23,6 +23,9 @@ adapter's `spec/schema.json` mapping. Formal field domains distinguish statement
 expressions, names, auxiliary nodes, nullable bodies and ordered lists. They
 include parser-accepted forms that compilation can reject. Recovered error nodes
 are forbidden. Unknown nodes, fields and metadata fail visibly.
+These declarations define value domains, not a PHP source parser. Keep the
+explicit mappings complete; raw-source or opaque-node fallbacks cannot replace
+unsupported syntax.
 
 The transport has version `1` and a statement-list `program`. Node fields are
 ordered; metadata keys are named. Byte strings use canonical base64. Integers

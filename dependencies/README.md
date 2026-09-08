@@ -25,6 +25,11 @@ pkg-config autoconf bison re2c xz-utils patch unzip libgmp-dev opam`.
 `files.jsonl` is the complete per-file SHA256/mode manifest for these imports;
 it also records internal SpecTec symlinks. No nested repositories are imported.
 Upstream source paths and URLs above are provenance, never runtime dependencies.
+Keep operational inputs inside this project: do not add dependencies on sibling
+checkouts, absolute workspace paths, escaping symlinks or nested repositories.
+Retain all non-system source inputs and their licenses for offline rebuilding.
+Dependency upgrades require explicit pins, refreshed provenance and validation;
+necessary vendor changes require documented, reproducible patches.
 The original PHP-Parser distribution provenance remains in
 `vendor/php-parser.UPSTREAM.md`.
 

@@ -14,7 +14,6 @@ does not implement evaluation, built-in functions, HTTP behavior, authorization
 policies, or BOLA proofs. Syntax validation does not establish any of those.
 
 This document records the agreed scope and completion contract.
-[PROGRESS.md](PROGRESS.md) records validated milestone status;
 [README.md](README.md) documents the current implementation and commands.
 The current user request authorizes all five milestones, including commits.
 
