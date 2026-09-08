@@ -69,7 +69,7 @@ for key, name in types.items():
         else: variants.append({'string': 'BYTES text', 'int': 'INTEGER int', 'float': 'FLOAT text', 'bool': 'BOOLEAN bool', 'null': 'ABSENT'}[kind])
     lines.append('syntax ' + name + ' =\n  ' + '\n  | '.join(variants))
     lines.append('')
-lines.append('syntax program = PROGRAM statement*')
+lines.append('syntax program = PROGRAM statement* | ENCODEDPROGRAM text text text text text? statement*')
 (ROOT / 'spec/php.watsup').write_text('\n'.join(lines) + '\n')
 data['metadata'] = metadata
 data['domains'] = {name: key for key, name in types.items()}

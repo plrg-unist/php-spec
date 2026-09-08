@@ -1,0 +1,1 @@
+<?php /*é*/ declare(encoding="SJIS"); echo "\u{1f600}";

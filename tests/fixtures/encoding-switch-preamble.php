@@ -1,0 +1,1 @@
+<?php /*あ*/ declare(encoding="SJIS");echo 1;

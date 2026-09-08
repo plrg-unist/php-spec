@@ -1,0 +1,1 @@
+<?php class enum extends X {} $x=(integer)$a; $x=(double)$a; $x=(binary)$a; $x=(boolean)$a; $x="a $a[012] b $a[0x1] c $a[0b1] d $a[0o1]";

@@ -11,8 +11,9 @@
 - License: [BSD-3-Clause](php-parser/LICENSE)
 
 `php-parser/` contains all 274 regular files from this upstream distribution,
-unchanged, with its enclosing archive directory removed. There are no local
-patches or exclusions. The upstream archive includes the generated parsers,
+with its enclosing archive directory removed. Four runtime files now carry
+[documented grammar/printer corrections](../patches/README.md); all other
+distribution files remain unchanged. The original archives are retained locally. The upstream archive includes the generated parsers,
 library, CLI, README, license and Composer metadata; it omits development
 tests, grammar sources and documentation. No nested Git repository is included.
 
@@ -25,7 +26,5 @@ this record. Review the upstream changes and rerun frontend validation before
 adopting a new version.
 
 The library requires PHP >= 7.4 with tokenizer and JSON support. This project's
-selected PHP target is 8.5.10. Runtime installation, autoload integration, the
-SpecTec adapter and frontend tests are separate work; this import does not add
-them. The upstream CLI expects a Composer-style autoloader and is not wired as
-a project command yet.
+selected runtime is locally pinned PHP 8.5.10. Use `bin/php-syntax` for the
+checked frontend, not the unmodified upstream CLI.

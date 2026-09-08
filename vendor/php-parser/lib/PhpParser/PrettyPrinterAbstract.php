@@ -195,6 +195,9 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
      */
     public function __construct(array $options = []) {
         $this->phpVersion = $options['phpVersion'] ?? PhpVersion::fromComponents(7, 4);
+        if ($this->phpVersion->id >= 80000) {
+            $this->precedenceMap[BinaryOp\Concat::class] = [64, 65, 64];
+        }
 
         $this->newline = $options['newline'] ?? "\n";
         if ($this->newline !== "\n" && $this->newline != "\r\n") {
@@ -355,16 +358,13 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
         }
 
         $result = '';
-        foreach ($nodes as $node) {
-            $comments = $node->getComments();
-            if ($comments) {
-                $result .= $this->nl . $this->pComments($comments);
-                if ($node instanceof Stmt\Nop) {
-                    continue;
-                }
-            }
-
+        foreach ($nodes as $index => $node) {
             $result .= $this->nl . $this->p($node);
+            // A comment-bearing empty statement before another statement needs
+            // its separator, otherwise reparsing attaches its comments there.
+            if ($node instanceof Stmt\Nop && $index !== array_key_last($nodes)) {
+                $result .= ';';
+            }
         }
 
         if ($indent) {
@@ -507,11 +507,6 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
         $lastIdx = count($nodes) - 1;
         foreach ($nodes as $idx => $node) {
             if ($node !== null) {
-                $comments = $node->getComments();
-                if ($comments) {
-                    $result .= $this->nl . $this->pComments($comments);
-                }
-
                 $result .= $this->nl . $this->p($node);
             } else {
                 $result .= $this->nl;
@@ -536,7 +531,29 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
         $formattedComments = [];
 
         foreach ($comments as $comment) {
-            $formattedComments[] = str_replace("\n", $this->nl, $comment->getReformattedText());
+            // Canonicalize only source indentation, preserving comment content.
+            // Upstream's formatting heuristic can accumulate indentation for
+            // comments after intersection/reference markers.
+            $lines = explode("\n", str_replace("\r\n", "\n", $comment->getText()));
+            $prefix = null;
+            foreach (array_slice($lines, 1) as $line) {
+                if (trim($line, " \t") !== '') {
+                    preg_match('/^[ \t]*/', $line, $match);
+                    if ($prefix === null) {
+                        $prefix = $match[0];
+                    } else {
+                        $length = 0;
+                        while ($length < min(strlen($prefix), strlen($match[0]))
+                            && $prefix[$length] === $match[0][$length]) ++$length;
+                        $prefix = substr($prefix, 0, $length);
+                    }
+                }
+            }
+            foreach ($lines as $index => &$line) {
+                if ($index > 0) $line = trim($line, " \t") === '' ? '' : substr($line, strlen($prefix ?? ''));
+            }
+            unset($line);
+            $formattedComments[] = implode($this->nl, $lines);
         }
 
         return implode($this->nl, $formattedComments);
@@ -607,7 +624,15 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
     ): string {
         // No orig tokens means this is a normal pretty print without preservation of formatting
         if (!$this->origTokens) {
-            return $this->{'p' . $node->getType()}($node, $precedence, $lhsPrecedence);
+            $comments = $node->getComments();
+            if ($comments && $node instanceof Expr && $precedence !== self::MAX_PRECEDENCE) {
+                // Put operand comments inside grouping. Before a generated
+                // opening parenthesis they may disappear or attach to its parent.
+                return '(' . $this->pComments($comments) . $this->nl
+                    . $this->{'p' . $node->getType()}($node, self::MAX_PRECEDENCE, self::MAX_PRECEDENCE) . ')';
+            }
+            return ($comments ? $this->pComments($comments) . $this->nl : '')
+                . $this->{'p' . $node->getType()}($node, $precedence, $lhsPrecedence);
         }
 
         /** @var Node|null $origNode */

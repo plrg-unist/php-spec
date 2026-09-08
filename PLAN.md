@@ -13,10 +13,10 @@ CRIS proofs excluding the class of BOLA bugs studied by BolaRay. This phase
 does not implement evaluation, built-in functions, HTTP behavior, authorization
 policies, or BOLA proofs. Syntax validation does not establish any of those.
 
-This document records the agreed direction and outstanding work. It is not a
-claim that the frontend or specification already exists, and it does not by
-itself authorize every milestone. Future agents should execute the milestones
-authorized by the current user request.
+This document records the agreed scope and completion contract.
+[PROGRESS.md](PROGRESS.md) records validated milestone status;
+[README.md](README.md) documents the current implementation and commands.
+The current user request authorizes all five milestones, including commits.
 
 ## Settled decisions and current state
 
@@ -33,14 +33,15 @@ authorized by the current user request.
 - PHP-Parser **v5.8.0**, commit
   `044a6a392ff8ad0d61f14370a5fbbd0a0107152f`, is vendored in
   [vendor/php-parser](vendor/php-parser). Its 274 distribution files are
-  unchanged, including the BSD-3-Clause license and generated parsers.
+  retained, with four [documented local corrections](patches/README.md).
+  The unchanged distribution archive and BSD-3-Clause license are preserved.
   [Import provenance and reproduction instructions](vendor/php-parser.UPSTREAM.md)
   record the archive checksum and exclusions made by upstream's distribution.
 - The import was checked byte-for-byte, including file modes. It contains no
-  links or nested Git repository. No parser execution tests have run: the
-  available isolated development PHP lacked tokenizer support. PHP 8.5.10,
-  autoload wiring, the SpecTec toolchain, specification, adapter, printer
-  integration, corpora and test harness remain to be provided.
+  links or nested Git repository. PHP 8.5.10 and the SpecTec dependency closure
+  now build from project-local sources. The schema, checked adapter, printer
+  integration, corpora and validation harness are implemented; consult the
+  progress gates for their current validation status.
 - PHP-Parser's pinned implementation reports PHP 8.5 support and implements
   modern features; its README's 8.4 statement is stale. Its version targeting
   is explicitly best-effort and tracks major/minor versions, not patch
@@ -249,9 +250,13 @@ Keep syntax-accepted inputs even if they require unavailable services or removed
 runtime functions. Deduplication may reduce execution cost but must retain
 provenance and honest per-source coverage counts.
 
-Use `token_get_all($source, TOKEN_PARSE)` on PHP 8.5.10 as a practical
-parser-only acceptance oracle; ordinary tokenization without `TOKEN_PARSE`
-does not establish acceptance. Keep `php -l` results separate: linting also
+The initial practical oracle was `token_get_all($source, TOKEN_PARSE)`.
+Validation exposed its string/file distinction for BOM, shebang and source
+encodings. The revised design uses a narrow [native helper](native/README.md)
+to invoke the pinned source-file `zendparse` without compilation or evaluation.
+A separate raw file lexer supplies tokens to PHP-Parser's independent grammar;
+raw `TOKEN_PARSE` remains a separately labelled observation. Ordinary raw
+lexing does not establish acceptance. Keep `php -l` results separate: linting also
 performs compilation checks. Record acceptance, parser rejection, compile
 rejection where checked, adapter rejection, unsupported input, crash and
 timeout separately. Compare raw frontend/oracle outcomes before applying any
@@ -330,8 +335,8 @@ Tests provide evidence; do not claim a proof of PHP conformance or BOLA freedom.
 Read this plan and the local vendor provenance. Check the user's current
 authorization, repository status and any applicable repository instructions;
 preserve existing changes. Inspect the implementation, manifests and work log
-before selecting the next incomplete milestone. At the initial state described
-above, start with milestone 1, not a custom parser rewrite or PHP semantics.
+before selecting the next incomplete milestone. Continue from the first incomplete
+validated milestone, rather than restarting dependency work or adding semantics.
 Update the work log and validated status after authorized work so another agent
 can resume without the original conversation or external skill files.
 

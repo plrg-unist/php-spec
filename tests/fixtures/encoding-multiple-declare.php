@@ -1,0 +1,1 @@
+<?php declare(ticks=1); declare(encoding=("SJIS")); echo "ƒ\";

@@ -1,0 +1,63 @@
+# Syntax validation
+
+The reference is the local PHP 8.5.10 source-file parser, invoked by the narrow
+native helper without compilation or evaluation. PHP-Parser receives a separate
+raw file-lexer token stream and applies its own grammar. `TOKEN_PARSE` string
+scanning and lint are separate observations; the former differs on BOMs,
+shebangs and encoding profiles, while the latter adds compilation checks.
+The parsers share the lexer, so agreement is not independent lexical validation.
+
+Run `python3 tests/validate.py --elaborate` for targeted checked round trips and
+`python3 tests/malformed.py` for malformed-value rejection and
+`python3 tests/wire_negative.py` for malformed deep-transport rejection.
+The corpus run adds `--corpus --lint-all --output coverage/results-corpus.jsonl`
+to `tests/validate.py`; bounded interaction cases use `--generated`.
+Reports distinguish passes, parser rejections, compilation-phase differences,
+acceptance disagreements, conversion failures, and AST/printing instability.
+An interrupted run is exploratory evidence, never the completion report.
+
+Each successful source passes through fresh PHP-Parser nodes, a real SpecTec
+value checked against elaborated declarations, fresh reconstructed nodes, and
+the standard printer. The harness checks exact transport preservation in both
+directions, output parser acceptance, printing idempotence, and normalized AST
+equality. Targeted runs additionally elaborate typed `.watsup` fixtures.
+Every parsed source compares its raw comment-token inventory with retained AST
+comments, preventing simultaneous loss in both round-trip branches.
+Malformed tests exercise the strict checker and typed elaboration separately;
+they also change a checked scalar and require changed output.
+
+Canonical equality ignores source positions, literal spelling/kind,
+heredoc delimiters/indentation, and the inline-HTML leading-newline printing
+hint. These remain in the transport. Comment equality ignores positions,
+CRLF versus LF, a common indentation prefix on continuation lines, and
+indentation before conventional leading `*` markers. Substantive text,
+relative indentation within the content, ordering, and doc-comment identity
+are compared. This accounts for Standard's documented comment reformatting;
+the exact original comment bytes remain in the transport.
+Initial encoding selection, original spelling provenance and BOM spelling are
+ignored by canonical equality:
+wide canonical output gains a BOM to prevent Zend's content-sensitive heuristic
+from selecting a different character width after formatting. Retained original-spelling bytes
+and encoding/BOM metadata still pass through the checked value and reverse conversion.
+Candidate-list detection can select another initial encoding after byte escapes
+make a literal ASCII; decoded AST payloads and declaration literals remain strict.
+Two exact compiler-invalid encoding-rescan cases have hash-pinned dispositions
+in `tests/invalid-discrepancies.json`; raw failures and pinned lint evidence stay
+in reports. An unlisted failure is never classified through that ledger.
+Each run fingerprints implementation, tests and runtime binaries before and after
+execution; a changing implementation makes the run fail.
+
+`tests/corpus.py` extracts `FILE`, `FILEEOF`, and `FILE_EXTERNAL` according to
+the matching runner, retaining source/configuration provenance. It does not
+run `SKIPIF`, `CLEAN`, redirects, or application code. Application candidates
+include PHP/include extensions and other files containing PHP opening tags.
+Parsing outer source does not cover dynamically generated code or `eval`
+strings; static additional cases must have their own provenance.
+`tests/validate_extraction.py` compares every PHPT extraction with the pinned
+runner's trusted container parser; it never runs the extracted test programs.
+
+`coverage/grammar.json` enumerates all Bison productions; `coverage/scanner.json`
+enumerates all state-prefixed scanner rules. Optional disposable instrumentation
+records actual parser reductions and scanner rule actions on source fixtures.
+The ordinary oracle and vendored sources remain unchanged. Coverage of a rule
+is evidence of exercising it, not proof of parser or semantic correctness.

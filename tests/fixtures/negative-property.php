@@ -1,0 +1,1 @@
+<?php class C { public private(set) $x { get => ; } }

@@ -101,7 +101,14 @@
                     "name": "args",
                     "type": {
                         "list": {
-                            "atom": "PhpParser\\Node\\Arg"
+                            "union": [
+                                {
+                                    "atom": "PhpParser\\Node\\Arg"
+                                },
+                                {
+                                    "atom": "PhpParser\\Node\\VariadicPlaceholder"
+                                }
+                            ]
                         }
                     }
                 }
@@ -3547,6 +3554,9 @@
                             },
                             {
                                 "atom": "PhpParser\\Node\\Identifier"
+                            },
+                            {
+                                "atom": "PhpParser\\Node\\Name"
                             }
                         ]
                     }

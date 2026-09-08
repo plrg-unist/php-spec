@@ -1,0 +1,26 @@
+[
+  {
+    "id": "generated/encoding-transitions/2166",
+    "sha256": "3960e92713f95c972f5f4ce10aae8c82ee9192205e04b81fa9f09bf41e7421d9",
+    "lint_contains": "Encoding declaration pragma must be the very first statement in the script",
+    "failure_prefix": "canonical output rejected:",
+    "reason": "Whole-buffer UTF-8 to SJIS rescan moves backward into the preceding encoding declaration, creating a nested declaration AST; pinned compilation rejects its placement. The independent frontend preserves this parser-only AST, whose canonical printing is not supported.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_language_scanner.l:881",
+      "vendor/php-src/Zend/zend_compile.c:6962",
+      "vendor/php-src/Zend/zend_compile.c:7005"
+    ]
+  },
+  {
+    "id": "generated/encoding-transitions/2167",
+    "sha256": "9dbacb04480fabb3f230b5ddc56e5874d7b22cadb7b8dd77bb2986d364ff1cc3",
+    "lint_contains": "Encoding declaration pragma must be the very first statement in the script",
+    "failure_prefix": "canonical output rejected:",
+    "reason": "Whole-buffer UTF-8 to SJIS rescan moves backward into the preceding encoding declaration, creating a nested declaration AST; pinned compilation rejects its placement. The independent frontend preserves this parser-only AST, whose canonical printing is not supported.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_language_scanner.l:881",
+      "vendor/php-src/Zend/zend_compile.c:6962",
+      "vendor/php-src/Zend/zend_compile.c:7005"
+    ]
+  }
+]

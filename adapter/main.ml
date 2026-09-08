@@ -123,9 +123,18 @@ and import_comment json =
       mk "comment" "COMMENT" (V.Make.bool (J.to_bool doc) :: bytes_value text :: List.map int_value positions)
   | _ -> fail "malformed comment"
 let import_program json =
-  exact ["version"; "program"] json;
+  let encoded = List.mem_assoc "encoding" (assoc json) in
+  exact (["version"; "program"] @ if encoded then ["encoding"] else []) json;
   if field "version" json <> `Int 1 then fail "transport version mismatch";
-  mk "program" "PROGRAM" [V.Make.list (T.list (typ "statement")) (List.map (import "statement") (list (field "program" json)))]
+  let statements = V.Make.list (T.list (typ "statement")) (List.map (import "statement") (list (field "program" json))) in
+  if encoded then (
+    let encoding = field "encoding" json in
+    let spelling = List.mem_assoc "original" (assoc encoding) in
+    exact (["source"; "lexer"; "bom"; "preamble"] @ if spelling then ["original"] else []) encoding;
+    let args = List.map (fun key -> bytes_value (field key encoding)) ["source"; "lexer"; "bom"; "preamble"] in
+    let original = V.Make.opt (T.opt T.text) (if spelling then Some (bytes_value (field "original" encoding)) else None) in
+    mk "program" "ENCODEDPROGRAM" (args @ [original; statements]))
+  else mk "program" "PROGRAM" [statements]
 
 let split value =
   let op,args = M.split (V.Get.case value) in
@@ -165,8 +174,14 @@ and export_comment value =
   | _ -> fail "wrong checked comment"
 let export_program value =
   let tag,args = split value in
-  if tag <> "PROGRAM" then fail ("not program: " ^ tag);
-  `Assoc ["version", `Int 1; "program", `List (List.map export (V.Get.list (only args)))]
+  let values, encoding = match tag, args with
+    | "PROGRAM", [statements] -> statements, []
+    | "ENCODEDPROGRAM", [source; lexer; bom; preamble; original; statements] ->
+        let fields = ["source", `String (V.Get.text source); "lexer", `String (V.Get.text lexer); "bom", `String (V.Get.text bom); "preamble", `String (V.Get.text preamble)] in
+        let spelling = match V.Get.opt original with None -> [] | Some value -> ["original", `String (V.Get.text value)] in
+        statements, ["encoding", `Assoc (fields @ spelling)]
+    | _ -> fail "not program" in
+  `Assoc (["version", `Int 1; "program", `List (List.map export (V.Get.list values))] @ encoding)
 
 let rec fixture (value : V.t) =
   match value.it with
@@ -182,7 +197,7 @@ let () =
   try while true do
     let line = read_line () in
     let response = try
-      let request = Yojson.Basic.from_string line in
+      let request = Wire.decode (Yojson.Basic.from_string line) in
       let op = string (field "op" request) in
       if op = "elaborate_fixture" then (
         ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ string (field "fixture" request) ^ "\n"));
@@ -195,5 +210,5 @@ let () =
         if op = "elaborate" then ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ Option.get expression ^ "\n"));
         `Assoc (["ok", `Bool true; "ast", export_program value] @ match expression with None -> [] | Some text -> ["fixture", `String text]))
     with exn -> `Assoc ["ok", `Bool false; "category", `String "adapter_rejection"; "message", `String (Printexc.to_string exn)] in
-    print_endline (Yojson.Basic.to_string response)
+    print_endline (Yojson.Basic.to_string (Wire.encode response))
   done with End_of_file -> ()

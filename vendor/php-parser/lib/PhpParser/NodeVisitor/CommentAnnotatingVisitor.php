@@ -79,4 +79,63 @@ class CommentAnnotatingVisitor extends NodeVisitorAbstract {
 
         return null;
     }
+    public function afterTraverse(array $nodes) {
+        // Parentheses, operators and punctuation may have no surviving AST node.
+        // Preserve their comments on the nearest containing node, promoted to the
+        // outermost node with the same start. Existing declaration annotations
+        // stay in place; this pass only recovers comments the visitor did not use.
+        $assigned = [];
+        $starts = [];
+        $pending = $nodes;
+        while ($pending) {
+            $node = array_pop($pending);
+            foreach ($node->getComments() as $comment) {
+                $assigned[$comment->getStartTokenPos()] = true;
+            }
+            $start = $node->getStartTokenPos();
+            $end = $node->getEndTokenPos();
+            if ($start <= $end && (!isset($starts[$start]) || $end > $starts[$start][1])) {
+                $starts[$start] = [$node, $end];
+            }
+            foreach ($node->getSubNodeNames() as $name) {
+                $child = $node->$name;
+                if ($child instanceof Node) {
+                    $pending[] = $child;
+                } elseif (is_array($child)) {
+                    foreach ($child as $item) {
+                        if ($item instanceof Node) $pending[] = $item;
+                    }
+                }
+            }
+        }
+        ksort($starts);
+        $positions = array_keys($starts);
+        $active = [];
+        $next = 0;
+        foreach ($this->commentPositions as $pos) {
+            if (isset($assigned[$pos])) continue;
+            while ($next < count($positions) && $positions[$next] <= $pos) {
+                $start = $positions[$next++];
+                while ($active && $active[count($active) - 1][1] < $start) array_pop($active);
+                $active[] = $starts[$start];
+            }
+            while ($active && $active[count($active) - 1][1] < $pos) array_pop($active);
+            $owner = $active ? $active[count($active) - 1][0]
+                : ($next < count($positions) ? $starts[$positions[$next]][0] : null);
+            if ($owner === null) {
+                throw new \LogicException('Comment has no syntax attachment');
+            }
+            $token = $this->tokens[$pos];
+            $class = $token->id === \T_DOC_COMMENT ? Comment\Doc::class : Comment::class;
+            $comment = new $class($token->text, $token->line, $token->pos, $pos,
+                $token->getEndLine(), $token->getEndPos() - 1, $pos);
+            $comments = $owner->getComments();
+            $comments[] = $comment;
+            usort($comments, static fn(Comment $a, Comment $b): int =>
+                $a->getStartTokenPos() <=> $b->getStartTokenPos());
+            $owner->setAttribute('comments', $comments);
+        }
+        return null;
+    }
+
 }

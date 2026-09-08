@@ -1,35 +1,33 @@
 # Progress
 
-Target: PHP 8.5.10 syntax only; `PLAN.md` remains the scope and completion contract.
+Target: PHP 8.5.10 syntax only. [PLAN.md](PLAN.md) is the completion contract.
 
-| Milestone | Gate | Status |
+| Milestone | Status | Evidence |
 | --- | --- | --- |
-| 1. Dependencies and inventory | Pinned local runtimes, corpora, exhaustive source inventory | Complete |
-| 2. Checked path | Byte-safe transport, checked SpecTec conversion, fresh printing, negative checks | Complete |
-| 3. Complete syntax | Every grammar/scanner/constructor family mapped and exercised | In progress |
-| 4. Classified validation | Full corpora, generated cases, minimized discrepancies resolved | Pending |
-| 5. Portable handoff | Offline copied-path build/checks and provenance audit | Pending |
+| 1. Dependencies and inventory | Complete | Pinned local PHP/SpecTec; 97 OCaml packages; retained source inputs |
+| 2. Checked path | Complete | Actual SpecTec values, both conversions, typed positive/negative checks |
+| 3. Complete syntax | Complete | [Independent gate](coverage/milestone3.json): all 635 productions, 191 scanner rules, 169 constructors mapped |
+| 4. Classified validation | In progress | Frozen full engine/application corpus run is next |
+| 5. Portable handoff | Pending | Fresh offline dependency rebuild passed; complete relocated checks remain |
 
-Implementation owns schema, conversion, frontend, README and milestone commits.
-Dependency work owns pinned inputs/runtimes, corpus imports and portability.
-Independent review owns inventory, validation harness and final gate review.
-No milestone is complete merely because an upstream parser claims support.
+Milestone 3 passed 86 targeted cases (72 accepted, 14 rejected), 3,501 generated
+cases (3,268 accepted, 231 rejected, two exact compiler-invalid dispositions),
+the deep-AST regression, 24 typed negatives, 33 wire negatives and three encoded
+mutation checks. All 21,744 PHPT extractions match the pinned runner. The complete
+79-codec matrix is included in generated validation. Current imports: 64,850
+verified files. Full corpus and portability gates remain separate obligations.
 
-Current decisions: reuse pinned PHP-Parser and its Standard printer; explicit
-constructor/field mappings; encode source strings as bytes and numbers losslessly;
-validate actual SpecTec values, including adversarial malformed cases.
+Decisions: explicit typed constructors and fields; lossless byte/numeric
+transport; strict membership against elaborated SpecTec declarations; printing
+from freshly reconstructed checked values. A bounded-depth wire handles deep
+ASTs. The native helper separates file-mode raw lexing from parser-only Zend
+acceptance, with no source execution. Encoding declarations drive fresh output
+chunks; original spelling provenance never controls printing. Exact conversion
+retains metadata while canonical equality normalizes documented spelling only.
+See [design](docs/DESIGN.md), [validation](docs/VALIDATION.md) and
+[patches](patches/README.md).
 
-Milestone 1 gate: PHP 8.5.10 tokenizer/JSON/mbstring and pinned SpecTec built
-locally; 97 OCaml packages and all source inputs retained; 64,756 imported files
-verified. Independent inventory review enumerated 635 grammar productions,
-191 scanner rules and 169 non-recovery node contracts. Full witness mappings
-remain a milestone 3 gate, rather than an assumption from enumeration.
-
-Milestone 2 gate: byte/lexical and expression fixtures pass both round trips,
-parser comparison and typed fixture elaboration through actual SpecTec values.
-Independent malformed-value/fixture tests pass 24/24, including output mutation.
-
-Next gate: resolve upstream parser/printer discrepancies and audit every family.
-Known targeted discrepancies awaiting resolution: clone printing stability,
-negative interpolation offsets, omitted destructuring slot, __PROPERTY__ method
-name, and parser-stage CompileError classification.
+Implementation owns code/docs/commits; independent review owns validation and
+coverage; dependency work owns provenance and portability. Preserve the stable
+implementation fingerprint during final runs. Exploratory reports are not
+completion evidence. Never push.

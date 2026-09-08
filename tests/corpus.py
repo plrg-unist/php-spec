@@ -8,7 +8,10 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SYNTAX_INI = {"short_open_tag", "zend.multibyte", "zend.script_encoding", "default_charset"}
+SYNTAX_INI = {"short_open_tag", "zend.multibyte", "zend.script_encoding",
+              "zend.detect_unicode", "default_charset", "internal_encoding",
+              "mbstring.internal_encoding", "mbstring.substitute_character", "mbstring.language"}
+PHP_TRIM = b" \t\n\r\0\v"
 
 
 def sections(data):
@@ -35,10 +38,13 @@ def sections(data):
 
 def config(section):
     values = {}
-    for line in section.decode("latin1").splitlines():
-        match = re.match(r"\s*([\w.]+)\s*=\s*(.*?)\s*$", line)
-        if match and match[1] in SYNTAX_INI:
-            values[match[1]] = match[2]
+    # run-tests.php settings2array splits on CR/LF, then PHP trim on each side.
+    for line in re.split(rb"[\r\n]+", section):
+        if b"=" in line:
+            name, value = (part.strip(PHP_TRIM) for part in line.split(b"=", 1))
+            name = name.decode("latin1")
+            if name in SYNTAX_INI:
+                values[name] = value.decode("latin1")
     return values
 
 
@@ -65,8 +71,8 @@ def phpt(path):
         source = source.rstrip(b"\r\n")
     if key == "FILE_EXTERNAL":
         # This is the runner's removal of '..', not ordinary path normalization.
-        relative = source.replace(b"..", b"").strip().decode("utf-8", "surrogateescape")
-        external = path.parent / relative
+        relative = source.replace(b"..", b"").strip(PHP_TRIM).decode("utf-8", "surrogateescape")
+        external = Path(str(path.parent) + "/" + relative)
         if not external.resolve().is_relative_to((ROOT / "vendor/php-src").resolve()):
             raise ValueError("external fixture escapes imported PHP tree")
         common["external"] = str(external.relative_to(ROOT))
@@ -85,10 +91,23 @@ def inputs():
             continue
         suffix = path.suffix.lower()
         source = path.read_bytes()
-        # PHP-bearing template/include files count even with non-PHP extensions.
-        if suffix in {".php", ".php3", ".php4", ".php5", ".phtml", ".inc"} or b"<?php" in source or b"<?=" in source:
-            yield record(path, "BolaRay", source, status="source", ini={},
-                         candidate="extension" if suffix in {".php", ".php3", ".php4", ".php5", ".phtml", ".inc"} else "embedded_tag")
+        php_extensions = {".php", ".php3", ".php4", ".php5", ".phtml", ".inc"}
+        template_extensions = {".html", ".htm", ".tpl", ".twig", ".phtm", ".asp",
+                               ".ctp", ".latte", ".module", ".theme", ".include"}
+        full_tag = re.search(rb"<\?(?:php(?=[ \t\r\n])|=)", source, re.I)
+        short_tag = re.search(rb"<\?(?!php(?=[ \t\r\n])|=|xml\b)", source, re.I)
+        # Restrict bare short-tag discovery to textual template extensions;
+        # arbitrary binary assets and XML processing instructions are not PHP inputs.
+        if suffix in php_extensions or full_tag or (suffix in template_extensions and short_tag):
+            candidate = ("extension" if suffix in php_extensions else
+                         "embedded_tag" if full_tag else "short_tag_template")
+            item = record(path, "BolaRay", source, status="source", ini={},
+                          candidate=candidate, source_id=str(path.relative_to(ROOT)),
+                          config_profile="short_tags_off")
+            yield item
+            if short_tag:
+                yield {**item, "id": item["id"] + "#short_open_tag=1",
+                       "ini": {"short_open_tag": "1"}, "config_profile": "short_tags_on"}
     for path in sorted((ROOT / "tests/fixtures").glob("*.php")):
         meta_path = path.with_suffix(".json")
         meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}

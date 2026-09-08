@@ -1,0 +1,1 @@
+<?php declare(encoding="SJIS",encoding="UTF-8"); echo "あ";

@@ -1,0 +1,1 @@
+<?php declare(encoding="ISO-8859-1"); echo "\u{1F600}";

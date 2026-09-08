@@ -1,10 +1,17 @@
 # Syntax representation
 
 The target is PHP 8.5.10 CLI, NTS, 64-bit. PHP-Parser and Standard are both
-explicitly configured for PHP 8.5. `token_get_all(..., TOKEN_PARSE)` supplies a
-separate parser observation; linting additionally checks compilation. The
-frontend never evaluates input code or resolves names. Short tags are selected
-at PHP worker startup, where the tokenizer observes the actual INI profile.
+explicitly configured for PHP 8.5. The [native helper](../native/README.md) invokes
+Zend's source-file parser without compilation or evaluation. Its separate raw
+file lexer supplies tokens to PHP-Parser's independent grammar. This preserves
+file-mode BOM, shebang and encoding behavior that `TOKEN_PARSE` string scanning
+misses. Raw `TOKEN_PARSE` and lint remain separate observations; lint adds
+compilation checks. No input code is executed and no names are resolved.
+
+Source INI profiles apply to the native file scanner. In particular,
+`zend.script_encoding` is scoped around source reads so that it cannot decode
+the tooling files themselves. Encoding declarations are interpreted lexically
+without using Zend parser acceptance to gate the independent PHP-Parser parse.
 
 `spec/nodes.json` records explicit ordered field contracts from the pinned
 PHP-Parser node classes, including inherited declarations. The reviewed generator
@@ -20,7 +27,37 @@ use canonical decimal strings within the target machine range. Float payloads
 use 16 hexadecimal digits containing IEEE-754 binary64 bits, preserving overflow
 infinity and avoiding JSON number conversion. Literal spellings remain metadata.
 Comments retain their bytes, doc-comment distinction and six source positions.
+A deterministic attachment pass retains comments that upstream leaves unattached.
 The schema declares every accepted metadata key and its payload type.
+
+Encoded programs additionally carry initial source/lexer encoding names, BOM
+and skipped shebang bytes. Noninjective or changing filters retain original byte
+spelling as explicit provenance; that field is never read by the printer. Node
+payloads and positions refer to actual filtered lexer bytes. The frontend checks
+every token against the active conversion and native cursor, including encoding
+declarations inside preceding declaration bodies.
+
+The existing declaration nodes express each encoding switch. Fresh printing
+marks generated declaration-header boundaries internally, converts each chunk
+under its active source encoding, and removes the markers. It uses no original
+source positions. When a new filter shortens the generated prefix, fresh spaces
+after the header absorb Zend's retained numeric cursor offset; the next token
+is preserved without replaying source text. Literal byte escapes preserve values unavailable as source
+characters. For configured replacement characters in comments or identifiers,
+the printer derives a byte preimage using the pinned converter and checks the
+entire inverse conversion; it never consults original spelling. Transfer-codec
+printing likewise preserves decoded bytes, including bare newlines. Wide encodings receive an unambiguous canonical BOM because Zend's
+BOMless width heuristic can change after formatting; exact original BOM metadata
+survives conversion, but canonical AST equality ignores this spelling choice.
+Initial source/lexer encoding names are likewise decoding provenance: candidate
+lists can select a different encoding after literal bytes become ASCII escapes.
+Canonical equality ignores these initial names, BOM and original spelling;
+exact checked conversion retains them all. Preamble and AST payload bytes,
+including encoding directive literal values, remain strict.
+
+Deep values use a bounded-depth wire table with forward child indexes, keeping
+the same typed AST while avoiding fixed JSON parser stack limits. All endpoints
+reject malformed references and table shapes before normal schema validation.
 
 The OCaml adapter constructs `Runtime.Value` objects, then recursively checks
 **the values themselves** against elaborated `.watsup` definitions. It ignores
@@ -31,7 +68,7 @@ check of the same membership boundary. The schema is loaded once per worker.
 
 Reverse conversion reads only the checked value. PHP reconstruction allocates
 fresh nodes and assigns every declared field, avoiding constructor defaults or
-normalizations that could change supplied values. Standard receives these fresh
+normalizations that could change supplied values. The corrected Standard printer receives these fresh
 nodes; original nodes and lexer tokens cannot bypass the adapter. The low-level
 workers are test interfaces; `bin/php-syntax` provides the checked public path
 and nonzero process failure exits.

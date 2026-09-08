@@ -1,0 +1,1 @@
+<?php declare(encoding="SJIS"){echo "\";} declare(encoding="UTF-8");echo "ã‚";

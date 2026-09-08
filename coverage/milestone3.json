@@ -1,0 +1,77 @@
+{
+  "milestone": 3,
+  "status": "passed",
+  "implementation": {
+    "sha256": "06d1f99bd94d2766e788fde668b3df2f7fe7f3a8ab8607afb51046d479094b12",
+    "files": 499,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries"
+    ]
+  },
+  "source_validation": {
+    "targeted": {
+      "tested": 86,
+      "counts": {
+        "pass": 72,
+        "parser_rejection": 14
+      },
+      "stable_implementation": true,
+      "passing_source_compilation": {
+        "compilation_accepted": 61,
+        "parser_accepted_compilation_rejected": 11
+      }
+    },
+    "generated": {
+      "tested": 3501,
+      "counts": {
+        "pass": 3268,
+        "parser_rejection": 231,
+        "invalid_program_roundtrip_difference": 2
+      },
+      "stable_implementation": true,
+      "passing_source_compilation": {
+        "compilation_accepted": 3267,
+        "parser_accepted_compilation_rejected": 1
+      }
+    },
+    "deep": {
+      "tested": 1,
+      "counts": {
+        "pass": 1
+      },
+      "stable_implementation": true,
+      "passing_source_compilation": {
+        "compilation_accepted": 1
+      }
+    }
+  },
+  "typed_malformed": 24,
+  "flat_wire_malformed": 33,
+  "encoded_mutation_properties": 3,
+  "native_file_suite": "passed",
+  "phpt_extraction_reference_matches": 21744,
+  "coverage": {
+    "productions": 635,
+    "accepted_source_production_witnesses": 631,
+    "source_backed_dispositions": [
+      0,
+      71,
+      149,
+      200
+    ],
+    "scanner_rules": 191,
+    "scanner_token_alternatives": 264,
+    "witnessed_constructors": 169
+  },
+  "review": "Actual Runtime.Value membership and reverse export reviewed; strict options/list/payload negatives cross-checked against SpecTec elaboration. Fresh encoded payload mutation changes output; spelling provenance cannot override it. Native file lexer is separate from parser-only oracle; no source execution. Both maps reviewed against pinned source and field contracts. Full engine/application classification is milestone4."
+}

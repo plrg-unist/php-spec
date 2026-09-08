@@ -1,0 +1,1 @@
+<?php namespace A; const X = 1; namespace B; function f() {}

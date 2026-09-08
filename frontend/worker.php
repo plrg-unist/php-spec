@@ -1,11 +1,20 @@
 <?php declare(strict_types=1);
 // A JSON-line worker. It never evaluates submitted PHP programs.
 require __DIR__ . '/autoload.php';
+require __DIR__ . '/FileLexer.php';
+require __DIR__ . '/encoding.php';
+require __DIR__ . '/wire.php';
+require __DIR__ . '/target.php';
+require __DIR__ . '/SourcePrinter.php';
+ini_set('display_errors', 'stderr');
+ini_set('log_errors', '0');
+ini_set('memory_limit', '-1');
 if (PHP_VERSION !== '8.5.10' || PHP_INT_SIZE !== 8) throw new RuntimeException('PHP 8.5.10, 64-bit required');
+if (!function_exists('php_spec_parse_file')) throw new RuntimeException('Load the local .tools/php-file.so syntax helper');
 $schema = json_decode(file_get_contents(__DIR__ . '/../spec/schema.json'), true, 512, JSON_THROW_ON_ERROR);
 $version = PhpParser\PhpVersion::fromComponents(8, 5);
 $parser = (new PhpParser\ParserFactory())->createForVersion($version);
-$printer = new PhpParser\PrettyPrinter\Standard(['phpVersion' => $version, 'newline' => "\n", 'indent' => '    ']);
+$printer = new SourcePrinter(['phpVersion' => $version, 'newline' => "\n", 'indent' => '    ']);
 
 function bytes(string $encoded): string {
     $value = base64_decode($encoded, true);
@@ -87,28 +96,49 @@ set_error_handler(static function (int $severity, string $message) use (&$diagno
 while (($line = fgets(STDIN)) !== false) {
     $diagnostics = [];
     try {
-        $request = json_decode($line, false, 2048, JSON_THROW_ON_ERROR);
+        $request = wireDecode(json_decode($line, false, 131072, JSON_THROW_ON_ERROR));
         switch ($request->op) {
             case 'version':
                 $result = ['php' => PHP_VERSION, 'parser' => '5.8.0', 'short_open_tag' => (bool)ini_get('short_open_tag')];
                 break;
             case 'oracle':
-                try { token_get_all(bytes($request->source), TOKEN_PARSE); $result = ['accepted' => true]; }
+            case 'oracle-string':
+                try {
+                    if ($request->op === 'oracle-string') token_get_all(bytes($request->source), TOKEN_PARSE);
+                    else {
+                        if (!withPhpSourceFile(bytes($request->source), 'php_spec_parse_file')) {
+                            throw new RuntimeException('File parser returned false without an exception');
+                        }
+                    }
+                    $result = ['accepted' => true];
+                }
                 catch (CompileError $error) { $result = ['accepted' => false, 'category' => $error instanceof ParseError ? 'parser_rejection' : 'parser_static_rejection', 'message' => base64_encode($error->getMessage())]; }
                 break;
             case 'parse':
-                try { $ast = $parser->parse(bytes($request->source), new PhpParser\ErrorHandler\Throwing()); }
+                try { $ast = parseWithEncoding($parser, bytes($request->source)); checkTargetSyntax($ast, $parser->getTokens()); }
                 catch (PhpParser\Error $error) { $result = ['accepted' => false, 'category' => 'parser_rejection', 'message' => base64_encode($error->getMessage())]; break; }
-                $result = ['accepted' => true, 'ast' => ['version' => 1, 'program' => encode($ast)]];
+                $transport = ['version' => 1, 'program' => encode($ast)];
+                $encoding = sourceEncoding(bytes($request->source), $parser->getTokens(), $ast);
+                if ($encoding !== null) $transport['encoding'] = $encoding;
+                $comments = [];
+                foreach ($parser->getTokens() as $index => $token) {
+                    if ($token->id === T_COMMENT || $token->id === T_DOC_COMMENT) {
+                        $comments[] = ['doc' => $token->id === T_DOC_COMMENT, 'text' => base64_encode($token->text), 'token' => $index];
+                    }
+                }
+                $result = ['accepted' => true, 'ast' => $transport, 'token_comments' => $comments];
                 break;
             case 'print':
                 if ($request->ast->version !== 1) throw new RuntimeException('Transport version mismatch');
                 $fresh = decode($request->ast->program);
-                $result = ['source' => base64_encode($printer->prettyPrintFile($fresh)), 'ast' => ['version' => 1, 'program' => encode($fresh)]];
+                $transport = ['version' => 1, 'program' => encode($fresh)];
+                if (isset($request->ast->encoding)) $transport['encoding'] = $request->ast->encoding;
+                $printer->sourceEncoding = $request->ast->encoding ?? null;
+                $result = ['source' => base64_encode(printEncoding($printer->printChunks($fresh), $printer->sourceEncoding)), 'ast' => $transport];
                 break;
             default: throw new RuntimeException('Unknown operation');
         }
-        echo json_encode(['ok' => true, 'diagnostics' => $diagnostics] + $result, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE), "\n";
+        echo json_encode(wireEncode(['ok' => true, 'diagnostics' => $diagnostics] + $result), JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE, 131072), "\n";
     } catch (Throwable $error) {
         echo json_encode(['ok' => false, 'category' => 'frontend_error', 'message' => base64_encode(get_class($error) . ': ' . $error->getMessage())], JSON_THROW_ON_ERROR), "\n";
     }

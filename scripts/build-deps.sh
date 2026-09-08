@@ -14,7 +14,7 @@ if [[ "$phase" == all || "$phase" == php ]]; then
       cd .tools/php-build
       ../php-src/configure --prefix="$project_dir/.tools/php" \
         --disable-all --enable-cli --disable-cgi --disable-phpdbg \
-        --without-pear --enable-tokenizer --enable-mbstring --disable-mbregex
+        --without-pear --enable-tokenizer --enable-mbstring --disable-mbregex --enable-ctype
       make -j"$jobs"
       make install
     )
@@ -22,8 +22,9 @@ if [[ "$phase" == all || "$phase" == php ]]; then
   .tools/php/bin/php -n -r '
     if (PHP_VERSION !== "8.5.10" || PHP_SAPI !== "cli" ||
         !extension_loaded("tokenizer") || !extension_loaded("json") ||
-        !extension_loaded("mbstring")) exit(1);
-    echo "PHP ", PHP_VERSION, " CLI; tokenizer/JSON/mbstring enabled\n";'
+        !extension_loaded("mbstring") || !extension_loaded("ctype")) exit(1);
+    echo "PHP ", PHP_VERSION, " CLI; tokenizer/JSON/mbstring/ctype enabled\n";'
+  scripts/build-file-helper.sh
 fi
 if [[ "$phase" == all || "$phase" == opam ]]; then
   opam_root="$project_dir/.tools/opam"

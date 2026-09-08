@@ -19,6 +19,7 @@ pkg-config autoconf bison re2c xz-utils patch unzip libgmp-dev opam`.
 | `vendor/p4-spectec` | Unchanged Git tree `da36ac3c434cd291940293a63da64544307730a3`, imported from the existing workspace checkout. [Upstream](https://github.com/kaist-plrg/p4-spectec/tree/da36ac3c434cd291940293a63da64544307730a3); Apache-2.0, `LICENSE`. P4 compiler submodule content is unnecessary and not imported. |
 | `vendor/opam-repository`, `vendor/opam-cache` | The exact 97 package recipes in `opam-packages.txt`, imported from the study's compatible switch/repository and its content-addressed archive cache. Recipes retain origins, checksums and individual license fields; archives include upstream licenses. This includes all non-system compiler/library/PPX inputs, not only the top-level packages. |
 | `vendor/php-parser-source` | PHP-Parser v5.8.0, commit `044a6a392ff8ad0d61f14370a5fbbd0a0107152f`; BSD-3-Clause. Distribution plus unchanged upstream `grammar/` and `test/` obtained from a detached checkout because the distribution excludes them. The complete checkout archive is retained separately under `vendor/archives`. This is evidence; execution uses `vendor/php-parser`. |
+| `vendor/php-yacc` | Grammar generator ircmaxell/php-yacc v0.0.7, commit `c1525792be8f477a33f1466dfe8ad8eb09242b16`; Apache-2.0 (`LICENSE.md`). Unchanged [upstream archive](https://github.com/ircmaxell/PHP-Yacc/tree/c1525792be8f477a33f1466dfe8ad8eb09242b16) retained locally. `scripts/phpyacc.sh` supplies local PHP and class autoloading without Composer. Used only to reproduce documented PHP-Parser grammar fixes. Its wrapper suppresses PHP 8.5 deprecation notices for legacy generator signatures; frontend/oracle diagnostics are unaffected. |
 | `corpora/bolaray` | All 25 application snapshots copied byte-for-byte from the supplied [BolaRay artifact](https://zenodo.org/records/13744942) benchmark directory. `bolaray-snapshots.json` records per-application tree hashes, file counts and license notices. Components keep their licenses; an absent application license is recorded without inventing one. The published image archive hash is informational; the supplied unpacked source was pinned directly. |
 
 `files.jsonl` is the complete per-file SHA256/mode manifest for these imports;
@@ -27,7 +28,11 @@ Upstream source paths and URLs above are provenance, never runtime dependencies.
 The original PHP-Parser distribution provenance remains in
 `vendor/php-parser.UPSTREAM.md`.
 
-The PHP build is CLI, NTS, 64-bit on this host, with tokenizer, JSON and mbstring.
+The local native file-scanner bridge is also built by `build-deps.sh`; its
+source, phase boundary and direct checks are described in `native/README.md`.
+It uses only the pinned PHP headers and ordinary C compiler.
+
+The PHP build is CLI, NTS, 64-bit on this host, with tokenizer, JSON, mbstring and ctype (the grammar generator uses ctype).
 Bundled libmbfl supports source-encoding profiles; mbregex is disabled to avoid
 an unnecessary external regex dependency. Normal calls use `-n` plus explicit
 syntax-relevant INI settings. This is a syntax oracle, not an application runtime.

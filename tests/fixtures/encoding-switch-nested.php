@@ -1,0 +1,1 @@
+<?php if(true){declare(encoding="SJIS");echo "\";}

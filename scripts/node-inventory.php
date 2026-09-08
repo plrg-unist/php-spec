@@ -57,6 +57,14 @@ foreach ($classes as $class => $reflection) {
             if (!$native instanceof ReflectionNamedType) throw new RuntimeException("Missing contract: $class.$field");
             $type = ['atom' => $native->getName()];
         }
+        // Parser actions accept these forms before compiler validation; upstream
+        // documentation describes only valid compiled programs.
+        if ($node->getType() === 'Stmt_Enum' && $field === 'scalarType') {
+            $type = ['union' => [['atom' => 'null'], ['atom' => 'PhpParser\\Node\\Identifier'], ['atom' => 'PhpParser\\Node\\Name']]];
+        }
+        if ($node->getType() === 'Attribute' && $field === 'args') {
+            $type = ['list' => ['union' => [['atom' => 'PhpParser\\Node\\Arg'], ['atom' => 'PhpParser\\Node\\VariadicPlaceholder']]]];
+        }
         $fields[] = ['name' => $field, 'type' => $type];
     }
     $parents = [];

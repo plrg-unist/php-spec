@@ -1,0 +1,1 @@
+<?php declare(encoding="SJIS"); /*\*/ declare(encoding="UTF-8");echo 1;

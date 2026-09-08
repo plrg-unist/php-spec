@@ -1,0 +1,1 @@
+<?php /*ÿ*/ declare(encoding="SJIS"); echo "\";

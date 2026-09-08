@@ -3,22 +3,25 @@
 import argparse
 import base64
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'frontend'))
+import wire
 
 class Worker:
-    def __init__(self, command):
-        self.process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+    def __init__(self, command, env=None):
+        self.process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, env=env)
     def request(self, value):
-        self.process.stdin.write(json.dumps(value, separators=(',', ':')) + '\n')
+        self.process.stdin.write(wire.dumps(value) + '\n')
         self.process.stdin.flush()
         line = self.process.stdout.readline()
         if not line:
             raise RuntimeError('worker terminated unexpectedly')
-        result = json.loads(line)
+        result = wire.loads(line)
         if not result.get('ok'):
             raise RuntimeError(json.dumps(result))
         return result
@@ -30,17 +33,33 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('command', choices=['parse', 'pretty', 'check', 'print-ast'])
 parser.add_argument('file', help='input file, or - for stdin')
 parser.add_argument('--short-tags', action='store_true')
+parser.add_argument('--ini', action='append', default=[], metavar='KEY=VALUE', help='source lexer configuration (repeatable)')
 parser.add_argument('--elaborate', action='store_true', help='also check a typed .watsup fixture')
 args = parser.parse_args()
 workers = []
 try:
     source = sys.stdin.buffer.read() if args.file == '-' else Path(args.file).read_bytes()
-    frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d', 'display_errors=stderr', '-d',
-                       'short_open_tag=' + str(int(args.short_tags)), str(ROOT / 'frontend/worker.php')])
+    profile = {'short_open_tag': str(int(args.short_tags))}
+    allowed = {'short_open_tag', 'zend.multibyte', 'zend.detect_unicode', 'zend.script_encoding',
+               'internal_encoding', 'mbstring.internal_encoding', 'mbstring.substitute_character', 'mbstring.language', 'default_charset'}
+    for setting in args.ini:
+        key, separator, value = setting.partition('=')
+        if not separator or key not in allowed:
+            raise ValueError('Unsupported source INI setting: ' + setting)
+        profile[key] = value
+    environment = os.environ.copy()
+    environment.pop('PHP_SPEC_SCRIPT_ENCODING', None)
+    if 'zend.script_encoding' in profile:
+        environment['PHP_SPEC_SCRIPT_ENCODING'] = profile.pop('zend.script_encoding')
+    command = [str(ROOT / '.tools/php/bin/php'), '-n', '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
+               '-d', 'display_errors=stderr']
+    for key, value in profile.items():
+        command.extend(['-d', key + '=' + value])
+    frontend = Worker(command + [str(ROOT / 'frontend/worker.php')], env=environment)
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)])
     workers = [frontend, adapter]
     if args.command == 'print-ast':
-        ast = json.loads(source)
+        ast = wire.loads(source)
     else:
         encoded = base64.b64encode(source).decode('ascii')
         # Observe both parsers before imposing the production acceptance gate.
@@ -50,15 +69,15 @@ try:
             raise RuntimeError(json.dumps({'frontend': parsed, 'oracle': oracle}))
         ast = parsed['ast']
     checked = adapter.request({'op': 'elaborate' if args.elaborate else 'check', 'ast': ast})
-    if checked['ast'] != ast:
+    if not wire.equal(checked['ast'], ast):
         raise RuntimeError('conversion changed transported fields or metadata')
     if args.command == 'parse':
-        print(json.dumps(checked['ast'], indent=2))
+        print(wire.dumps(checked['ast']))
     elif args.command == 'check':
         print(json.dumps({'accepted': True, 'checked': 'program', 'php': '8.5.10'}))
     else:
         printed = frontend.request({'op': 'print', 'ast': checked['ast']})
-        if printed['ast'] != checked['ast']:
+        if not wire.equal(printed['ast'], checked['ast']):
             raise RuntimeError('fresh reconstruction changed transported fields or metadata')
         output = base64.b64decode(printed['source'])
         accepted = frontend.request({'op': 'oracle', 'source': printed['source']})
