@@ -1,0 +1,210 @@
+;; PHP binary64 reference arithmetic. Bits are unsigned mathematical integers.
+syntax pnumber = NINT int | NFLOAT nat
+syntax pnumresult = NUM pnumber | DIVZERO
+syntax fparts = FINITE nat nat nat | INFINITE nat | NOTNUMBER nat
+var i : int
+var n : nat
+var b : bool
+
+;; Mathematical helpers, never native floating point.
+dec $npow2(nat) : nat
+def $npow2(0) = 1
+def $npow2(n) = $(n_1 * n_1 * 2)
+  -- if $(n > 0)
+  -- if $(n \ 2) = 1
+  -- if n_1 = $npow2($(n / 2))
+def $npow2(n) = $(n_1 * n_1)
+  -- if $(n > 0)
+  -- if $(n \ 2) = 0
+  -- if n_1 = $npow2($(n / 2))
+
+dec $nabs(int) : nat
+def $nabs(i) = n -- if $(i >= 0) -- if i = n
+def $nabs(i) = n -- if $(i < 0) -- if $(-i) = n
+
+dec $nsign(int) : nat
+def $nsign(i) = 0 -- if $(i >= 0)
+def $nsign(i) = 1 -- if $(i < 0)
+
+dec $nsigned(nat, nat) : int
+def $nsigned(0, n) = n
+def $nsigned(1, n) = $(-n)
+
+dec $nlog2(nat) : int
+def $nlog2(1) = 0
+def $nlog2(n) = $($nlog2($(n / 2)) + 1) -- if $(n > 1)
+
+dec $nscale(nat, nat, int) : (nat, nat)
+def $nscale(n_1, n_2, i) = ($(n_1 * $npow2($nabs(i))), n_2) -- if $(i >= 0)
+def $nscale(n_1, n_2, i) = (n_1, $(n_2 * $npow2($nabs(i)))) -- if $(i < 0)
+
+dec $nround(nat, nat) : nat
+def $nround(n_1, n_2) = $(n_1 / n_2)
+  -- if $(2 * (n_1 \ n_2) < n_2)
+def $nround(n_1, n_2) = $(n_1 / n_2)
+  -- if $(2 * (n_1 \ n_2) = n_2)
+  -- if $((n_1 / n_2) \ 2) = 0
+def $nround(n_1, n_2) = $(n_1 / n_2 + 1)
+  -- if $(2 * (n_1 \ n_2) > n_2)
+def $nround(n_1, n_2) = $(n_1 / n_2 + 1)
+  -- if $(2 * (n_1 \ n_2) = n_2)
+  -- if $((n_1 / n_2) \ 2) = 1
+
+dec $fratio_exp(nat, nat) : int
+def $fratio_exp(n_1, n_2) = i
+  -- if i = $($nlog2(n_1) - $nlog2(n_2))
+  -- if (n_3, n_4) = $nscale(n_1, n_2, $(-i))
+  -- if $(n_3 >= n_4)
+def $fratio_exp(n_1, n_2) = $(i - 1)
+  -- if i = $($nlog2(n_1) - $nlog2(n_2))
+  -- if (n_3, n_4) = $nscale(n_1, n_2, $(-i))
+  -- if $(n_3 < n_4)
+
+dec $fminexp(int) : int
+def $fminexp(i) = i -- if $(i >= -1022)
+def $fminexp(i) = -1022 -- if $(i < -1022)
+
+dec $fcap(nat) : nat
+def $fcap(n) = n -- if $(n < 9218868437227405312)
+def $fcap(n) = 9218868437227405312 -- if $(n >= 9218868437227405312)
+
+dec $float_round(nat, nat, nat) : nat
+def $float_round(n_s, 0, n_d) = $(n_s * 9223372036854775808) -- if $(n_d > 0)
+def $float_round(n_s, n_n, n_d) = $(n_s * 9223372036854775808 + $fcap(n_bits))
+  -- if $(n_n > 0)
+  -- if $(n_d > 0)
+  -- if i = $fminexp($fratio_exp(n_n, n_d))
+  -- if (n_1, n_2) = $nscale(n_n, n_d, $(52 - i))
+  -- if n_q = $nround(n_1, n_2)
+  -- if n_bits = $(n_q + (i + 1022) * 4503599627370496)
+
+dec $float_decode(nat) : fparts
+def $float_decode(n) = FINITE n_s n_n n_d
+  -- if $(n < 18446744073709551616)
+  -- if n_s = $(n / 9223372036854775808)
+  -- if n_e = $((n / 4503599627370496) \ 2048)
+  -- if n_e = 0
+  -- if (n_n, n_d) = $nscale($(n \ 4503599627370496), 1, -1074)
+def $float_decode(n) = FINITE n_s n_n n_d
+  -- if $(n < 18446744073709551616)
+  -- if n_s = $(n / 9223372036854775808)
+  -- if n_e = $((n / 4503599627370496) \ 2048)
+  -- if $(n_e > 0)
+  -- if $(n_e < 2047)
+  -- if (n_n, n_d) = $nscale($(n \ 4503599627370496 + 4503599627370496), 1, $(n_e - 1075))
+def $float_decode(n) = INFINITE $(n / 9223372036854775808)
+  -- if $(n < 18446744073709551616)
+  -- if $((n / 4503599627370496) \ 2048) = 2047
+  -- if $(n \ 4503599627370496) = 0
+def $float_decode(n) = NOTNUMBER n
+  -- if $(n < 18446744073709551616)
+  -- if $((n / 4503599627370496) \ 2048) = 2047
+  -- if $(n \ 4503599627370496 > 0)
+
+dec $float_of_int(int) : nat
+def $float_of_int(i) = $float_round($nsign(i), $nabs(i), 1)
+
+dec $num_float(pnumber) : nat
+def $num_float(NINT i) = $float_of_int(i)
+def $num_float(NFLOAT n) = n
+
+dec $float_neg(nat) : nat
+def $float_neg(n) = $((n + 9223372036854775808) \ 18446744073709551616)
+
+dec $float_quiet(nat) : nat
+def $float_quiet(n) = n -- if $((n / 2251799813685248) \ 2) = 1
+def $float_quiet(n) = $(n + 2251799813685248) -- if $((n / 2251799813685248) \ 2) = 0
+
+dec $finfinity(nat) : nat
+def $finfinity(n) = $(n * 9223372036854775808 + 9218868437227405312)
+
+dec $fadd_parts(fparts, fparts) : nat
+def $fadd_parts(NOTNUMBER n, fparts) = $float_quiet(n)
+def $fadd_parts(INFINITE n_s, NOTNUMBER n) = $float_quiet(n)
+def $fadd_parts(FINITE n_s n_1 n_2, NOTNUMBER n) = $float_quiet(n)
+def $fadd_parts(INFINITE n_s, INFINITE n_s) = $finfinity(n_s)
+def $fadd_parts(INFINITE n_1, INFINITE n_2) = 18444492273895866368 -- if n_1 =/= n_2
+def $fadd_parts(INFINITE n_s, FINITE n_1 n_2 n_3) = $finfinity(n_s)
+def $fadd_parts(FINITE n_1 n_2 n_3, INFINITE n_s) = $finfinity(n_s)
+def $fadd_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4) = $float_round($nsign(i), $nabs(i), $(n_2 * n_4))
+  -- if i = $($nsigned(n_s1, n_1) * n_4 + $nsigned(n_s2, n_3) * n_2)
+  -- if i =/= 0
+def $fadd_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4) = $(n_s1 * n_s2 * 9223372036854775808)
+  -- if $($nsigned(n_s1, n_1) * n_4 + $nsigned(n_s2, n_3) * n_2) = 0
+
+dec $float_add(nat, nat) : nat
+def $float_add(n_1, n_2) = $fadd_parts($float_decode(n_1), $float_decode(n_2))
+
+dec $fsub_rhs(nat, fparts, nat) : nat
+def $fsub_rhs(n_1, NOTNUMBER n_2, n_3) = $float_add(n_1, n_2)
+def $fsub_rhs(n_1, INFINITE n_s, n_2) = $float_add(n_1, $float_neg(n_2))
+def $fsub_rhs(n_1, FINITE n_s n_n n_d, n_2) = $float_add(n_1, $float_neg(n_2))
+
+dec $float_sub(nat, nat) : nat
+def $float_sub(n_1, n_2) = $fsub_rhs(n_1, $float_decode(n_2), n_2)
+
+dec $fmul_parts(fparts, fparts) : nat
+def $fmul_parts(NOTNUMBER n, fparts) = $float_quiet(n)
+def $fmul_parts(INFINITE n_s, NOTNUMBER n) = $float_quiet(n)
+def $fmul_parts(FINITE n_s n_1 n_2, NOTNUMBER n) = $float_quiet(n)
+def $fmul_parts(INFINITE n_1, INFINITE n_2) = $finfinity($((n_1 + n_2) \ 2))
+def $fmul_parts(INFINITE n_s1, FINITE n_s2 0 n_d) = 18444492273895866368
+def $fmul_parts(FINITE n_s1 0 n_d, INFINITE n_s2) = 18444492273895866368
+def $fmul_parts(INFINITE n_s1, FINITE n_s2 n_n n_d) = $finfinity($((n_s1 + n_s2) \ 2)) -- if $(n_n > 0)
+def $fmul_parts(FINITE n_s1 n_n n_d, INFINITE n_s2) = $finfinity($((n_s1 + n_s2) \ 2)) -- if $(n_n > 0)
+def $fmul_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4) = $float_round($((n_s1 + n_s2) \ 2), $(n_1 * n_3), $(n_2 * n_4))
+
+dec $float_mul(nat, nat) : nat
+def $float_mul(n_1, n_2) = $fmul_parts($float_decode(n_1), $float_decode(n_2))
+
+;; IEEE division helper includes zero for use beneath PHP's explicit zero guard.
+dec $fdiv_parts(fparts, fparts) : nat
+def $fdiv_parts(NOTNUMBER n, fparts) = $float_quiet(n)
+def $fdiv_parts(INFINITE n_s, NOTNUMBER n) = $float_quiet(n)
+def $fdiv_parts(FINITE n_s n_1 n_2, NOTNUMBER n) = $float_quiet(n)
+def $fdiv_parts(INFINITE n_1, INFINITE n_2) = 18444492273895866368
+def $fdiv_parts(INFINITE n_s1, FINITE n_s2 n_n n_d) = $finfinity($((n_s1 + n_s2) \ 2))
+def $fdiv_parts(FINITE n_s1 n_n n_d, INFINITE n_s2) = $((n_s1 + n_s2) \ 2 * 9223372036854775808)
+def $fdiv_parts(FINITE n_s1 0 n_1, FINITE n_s2 0 n_2) = 18444492273895866368
+def $fdiv_parts(FINITE n_s1 n_n n_1, FINITE n_s2 0 n_2) = $finfinity($((n_s1 + n_s2) \ 2)) -- if $(n_n > 0)
+def $fdiv_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4) = $float_round($((n_s1 + n_s2) \ 2), $(n_1 * n_4), $(n_2 * n_3)) -- if $(n_3 > 0)
+
+dec $float_div(nat, nat) : nat
+def $float_div(n_1, n_2) = $fdiv_parts($float_decode(n_1), $float_decode(n_2))
+
+dec $long_range(int) : bool
+def $long_range(i) = ($(i >= -9223372036854775808) /\ $(i <= 9223372036854775807))
+
+dec $num_add(pnumber, pnumber) : pnumber
+def $num_add(NINT i_1, NINT i_2) = NINT $(i_1 + i_2) -- if $long_range($(i_1 + i_2))
+def $num_add(NINT i_1, NINT i_2) = NFLOAT $float_add($float_of_int(i_1), $float_of_int(i_2)) -- if ~$long_range($(i_1 + i_2))
+def $num_add(NFLOAT n_1, pnumber) = NFLOAT $float_add(n_1, $num_float(pnumber))
+def $num_add(NINT i, NFLOAT n) = NFLOAT $float_add($float_of_int(i), n)
+
+dec $num_sub(pnumber, pnumber) : pnumber
+def $num_sub(NINT i_1, NINT i_2) = NINT $(i_1 - i_2) -- if $long_range($(i_1 - i_2))
+def $num_sub(NINT i_1, NINT i_2) = NFLOAT $float_sub($float_of_int(i_1), $float_of_int(i_2)) -- if ~$long_range($(i_1 - i_2))
+def $num_sub(NFLOAT n_1, pnumber) = NFLOAT $float_sub(n_1, $num_float(pnumber))
+def $num_sub(NINT i, NFLOAT n) = NFLOAT $float_sub($float_of_int(i), n)
+
+dec $num_mul(pnumber, pnumber) : pnumber
+def $num_mul(NINT i_1, NINT i_2) = NINT $(i_1 * i_2) -- if $long_range($(i_1 * i_2))
+def $num_mul(NINT i_1, NINT i_2) = NFLOAT $float_mul($float_of_int(i_1), $float_of_int(i_2)) -- if ~$long_range($(i_1 * i_2))
+def $num_mul(NFLOAT n_1, pnumber) = NFLOAT $float_mul(n_1, $num_float(pnumber))
+def $num_mul(NINT i, NFLOAT n) = NFLOAT $float_mul($float_of_int(i), n)
+
+dec $num_zero(pnumber) : bool
+def $num_zero(NINT i) = (i = 0)
+def $num_zero(NFLOAT n) = ($(n \ 9223372036854775808) = 0)
+
+dec $num_div(pnumber, pnumber) : pnumresult
+def $num_div(pnumber_1, pnumber_2) = DIVZERO -- if $num_zero(pnumber_2)
+def $num_div(NINT i_1, NINT i_2) = NUM (NINT $(i_1 / i_2))
+  -- if i_2 =/= 0
+  -- if $(i_1 \ i_2) = 0
+  -- if $long_range($(i_1 / i_2))
+def $num_div(NINT i_1, NINT i_2) = NUM (NFLOAT $float_div($float_of_int(i_1), $float_of_int(i_2)))
+  -- if i_2 =/= 0
+  -- if ($(i_1 \ i_2) =/= 0 \/ ~$long_range($(i_1 / i_2)))
+def $num_div(NFLOAT n, pnumber) = NUM (NFLOAT $float_div(n, $num_float(pnumber))) -- if ~$num_zero(pnumber)
+def $num_div(NINT i, NFLOAT n) = NUM (NFLOAT $float_div($float_of_int(i), n)) -- if ~$num_zero(NFLOAT n)
