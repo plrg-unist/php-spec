@@ -9,11 +9,11 @@ Complete core remains the goal. Existing syntax validation is not semantic evide
 | Milestone | Deliverable | Status / owner |
 | --- | --- | --- |
 | 0a | Core/environment/observation contracts; all constructors/runtime obligations | Complete — reviewer (contracts only) |
-| 0b | Checked AST runner, explicit outcomes, original-source differential harness | In progress — runner |
-| 1a | Pure integers/bytes and result typing | In progress — numeric |
-| 1b | Pure binary64 codec, rounding, operations and special cases | In progress — numeric |
+| 0b | Checked AST runner, explicit outcomes, original-source differential harness | Complete — bounded bootstrap reviewed (`8b856a27`) |
+| 1a | Pure integers/bytes and result typing | Partial — integer/bitwise/float-cast helpers reviewed; source integration pending |
+| 1b | Pure binary64 codec, rounding, operations and special cases | Partial — add/sub/mul/div helpers reviewed; source integration pending |
 | 1c | Numeric text, conversions, formatting, power | Pending |
-| 2a | Slots, aliases, frames and access modes | Pending |
+| 2a | Slots, aliases, frames and access modes | In progress — runner |
 | 2b | Arrays, strings, lvalues and expression sequencing | Pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Pending |
@@ -53,11 +53,22 @@ are never successful validation, and incomplete families stay visible.
 - Inventory check: exact schema membership for 169 constructors; 297 unique
   runtime obligation IDs with valid constructor references. Local oracle probe
   confirms 8.5.10 CLI, 8-byte integers, NTS and `E_ALL=30719`.
-- No semantic validation has completed. No intentional engine disagreement.
+- Reviewed commits: numeric `4d343899` (1,976 differential +8 symbolic tests),
+  integer `7d48a580` (1,025 tests), runner `8b856a27` (8 source comparisons
+  +7 retained outcome/context negatives). All repeated independently with stable
+  fingerprints; reports are `coverage/semantics/{numeric,integer,phase0}.json`.
+  Numeric source execution and full family closure remain pending.
+- Runner fixes retained: known startup constants no longer masquerade as undefined;
+  missing source positions are explicit; harness cwd and fingerprints now match.
+- 31 independent storage/call/control source targets match the pinned oracle:
+  `tests/semantics/conformance`, report `conformance-oracle.json`. These are
+  oracle-only expectations, not implemented semantics. Null-key PHP 8.5
+  deprecations and delayed dynamic-name assignment are retained.
+- No intentional engine disagreement.
 
 Inventory gate: `python3 scripts/check-semantic-inventory.py`; `--complete` also
 rejects every unfinished entry and requires source/helper evidence separately.
 The initial completion gate correctly rejects all 466 pending entries.
 
-Next: review executable runner and numeric slices,
-then update statuses from actual source/helper evidence without narrowing scope.
+Next: review storage/access sequencing and numeric text/formatting increments;
+run the independent source targets as their dependencies become executable.

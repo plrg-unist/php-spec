@@ -1,0 +1,450 @@
+{
+  "version": 1,
+  "scope": "phase2/3 discriminating source conformance targets; oracle validation is not semantic validation",
+  "cases": [
+    {
+      "id": "reference-rebind",
+      "file": "tests/semantics/conformance/reference-rebind.php",
+      "purpose": "Reference rebinding detaches one variable name without writing the original cell.",
+      "obligations": [
+        "storage.reference-rebinding",
+        "storage.aliases"
+      ],
+      "expected_stdout": "133",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "parameter-rebind",
+      "file": "tests/semantics/conformance/parameter-rebind.php",
+      "purpose": "Rebinding a by-reference formal does not redirect the caller variable.",
+      "obligations": [
+        "calls.byref-argument",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "19",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-copy",
+      "file": "tests/semantics/conformance/array-reference-copy.php",
+      "purpose": "Array copy separates ordinary entries and preserves embedded reference cells.",
+      "obligations": [
+        "containers.array-copy",
+        "containers.embedded-references"
+      ],
+      "expected_stdout": "7728",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "append-history",
+      "file": "tests/semantics/conformance/append-history.php",
+      "purpose": "Unsetting the highest key preserves next-free-index history.",
+      "obligations": [
+        "containers.append-history",
+        "containers.unset"
+      ],
+      "expected_stdout": "6:2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "negative-append",
+      "file": "tests/semantics/conformance/negative-append.php",
+      "purpose": "Negative next-free-index follows the pinned modern rule.",
+      "obligations": [
+        "containers.append-history"
+      ],
+      "expected_stdout": "-5:1;-4:2;",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "key-collisions",
+      "file": "tests/semantics/conformance/key-collisions.php",
+      "purpose": "Canonical decimal, leading-zero, boolean and null keys preserve ordered replacement. Null-key conversion emits the pinned PHP 8.5 deprecation.",
+      "obligations": [
+        "containers.key-normalization",
+        "containers.ordered-arrays",
+        "diagnostics.severity"
+      ],
+      "expected_stdout": "01=s;1=b;=n;",
+      "expected_stderr": "Deprecated: Using null as an array offset is deprecated, use an empty string instead in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "foreach-value-mutation",
+      "file": "tests/semantics/conformance/foreach-value-mutation.php",
+      "purpose": "By-value foreach retains its iteration snapshot while the source changes.",
+      "obligations": [
+        "containers.foreach-value",
+        "containers.foreach-mutation"
+      ],
+      "expected_stdout": "12:189",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "foreach-reference-mutation",
+      "file": "tests/semantics/conformance/foreach-reference-mutation.php",
+      "purpose": "By-reference foreach visits appended elements and preserves its residual alias.",
+      "obligations": [
+        "containers.foreach-reference",
+        "containers.foreach-mutation",
+        "containers.residual-alias"
+      ],
+      "expected_stdout": "123:129",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "foreach-residual-alias",
+      "file": "tests/semantics/conformance/foreach-residual-alias.php",
+      "purpose": "Reusing an aliased foreach variable in a by-value loop mutates the last entry.",
+      "obligations": [
+        "containers.residual-alias",
+        "containers.foreach-value"
+      ],
+      "expected_stdout": "122",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "dynamic-variable",
+      "file": "tests/semantics/conformance/dynamic-variable.php",
+      "purpose": "A dynamic variable name designates its current binding and participates in aliases.",
+      "obligations": [
+        "storage.variable-names",
+        "storage.aliases"
+      ],
+      "expected_stdout": "77",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "delayed-read",
+      "file": "tests/semantics/conformance/delayed-read.php",
+      "purpose": "A simple variable operand is read after the right assignment at this target.",
+      "obligations": [
+        "expression.delayed-reads",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "4:2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "destructure-reference",
+      "file": "tests/semantics/conformance/destructure-reference.php",
+      "purpose": "Destructuring can bind an element alias while copying another element.",
+      "obligations": [
+        "containers.destructuring",
+        "containers.embedded-references"
+      ],
+      "expected_stdout": "8289",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-offset",
+      "file": "tests/semantics/conformance/string-offset.php",
+      "purpose": "String offset assignment changes exactly the addressed byte.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes"
+      ],
+      "expected_stdout": "aXc:c",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "short-circuit",
+      "file": "tests/semantics/conformance/short-circuit.php",
+      "purpose": "Unselected boolean/ternary/coalescing branches do not call an undefined function.",
+      "obligations": [
+        "expression.short-circuit",
+        "expression.ternary",
+        "expression.coalesce"
+      ],
+      "expected_stdout": "TC",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "missing-null-access",
+      "file": "tests/semantics/conformance/missing-null-access.php",
+      "purpose": "isset/empty/coalesce distinguish silent access without warnings.",
+      "obligations": [
+        "storage.absent-null",
+        "expression.isset",
+        "expression.empty",
+        "expression.coalesce"
+      ],
+      "expected_stdout": "NFEC",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "coalesce-write",
+      "file": "tests/semantics/conformance/coalesce-write.php",
+      "purpose": "Null coalescing assignment writes only absent/null entries.",
+      "obligations": [
+        "expression.coalesce-write"
+      ],
+      "expected_stdout": "3F",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-unpack",
+      "file": "tests/semantics/conformance/array-unpack.php",
+      "purpose": "String-key unpack replaces in place while integer keys are appended and renumbered.",
+      "obligations": [
+        "containers.unpack",
+        "containers.ordered-arrays"
+      ],
+      "expected_stdout": "x:3;0:2;1:4;y:5;",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "return-reference",
+      "file": "tests/semantics/conformance/return-reference.php",
+      "purpose": "A by-reference return can share the caller cell.",
+      "obligations": [
+        "calls.byref-return",
+        "storage.aliases"
+      ],
+      "expected_stdout": "88",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "closure-capture",
+      "file": "tests/semantics/conformance/closure-capture.php",
+      "purpose": "Value and reference captures evolve differently.",
+      "obligations": [
+        "calls.closures",
+        "calls.captures",
+        "calls.arrows"
+      ],
+      "expected_stdout": "121",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "function-statics",
+      "file": "tests/semantics/conformance/function-statics.php",
+      "purpose": "A named function retains per-request static state across calls.",
+      "obligations": [
+        "calls.static-variables",
+        "storage.static-bindings"
+      ],
+      "expected_stdout": "123",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "named-variadic",
+      "file": "tests/semantics/conformance/named-variadic.php",
+      "purpose": "Named binding and named variadic entries retain their argument names.",
+      "obligations": [
+        "calls.named",
+        "calls.variadic",
+        "calls.defaults"
+      ],
+      "expected_stdout": "34z:5",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "unpacked-byref",
+      "file": "tests/semantics/conformance/unpacked-byref.php",
+      "purpose": "Unpacked arguments can expose references according to formal passing mode.",
+      "obligations": [
+        "calls.unpack",
+        "calls.byref-argument"
+      ],
+      "expected_stdout": "8",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "weak-type",
+      "file": "tests/semantics/conformance/weak-type.php",
+      "purpose": "Weak scalar argument coercion occurs before return type checking.",
+      "obligations": [
+        "coercion.weak-types",
+        "calls.return-types"
+      ],
+      "expected_stdout": "I",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "strict-type",
+      "file": "tests/semantics/conformance/strict-type.php",
+      "purpose": "Strict call-site typing raises a catchable TypeError.",
+      "obligations": [
+        "coercion.strict-types",
+        "static.strict-types",
+        "control.catch"
+      ],
+      "expected_stdout": "T",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "finally-return",
+      "file": "tests/semantics/conformance/finally-return.php",
+      "purpose": "A finally return replaces a pending return after ordered side effects.",
+      "obligations": [
+        "control.finally-replacement",
+        "control.return"
+      ],
+      "expected_stdout": "TF2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "finally-throw",
+      "file": "tests/semantics/conformance/finally-throw.php",
+      "purpose": "Finally replaces a pending throw, and the outer catch sees the replacement.",
+      "obligations": [
+        "control.finally-replacement",
+        "control.throw",
+        "control.catch"
+      ],
+      "expected_stdout": "FE",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "nested-control",
+      "file": "tests/semantics/conformance/nested-control.php",
+      "purpose": "Multi-level continue leaves the inner loop and runs outer update correctly.",
+      "obligations": [
+        "control.continue-level",
+        "control.for"
+      ],
+      "expected_stdout": "00;10;20;",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "switch-match",
+      "file": "tests/semantics/conformance/switch-match.php",
+      "purpose": "Switch uses loose comparison while match uses strict identity.",
+      "obligations": [
+        "control.switch",
+        "control.match",
+        "coercion.loose-comparison",
+        "coercion.identity"
+      ],
+      "expected_stdout": "SM",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "declaration-timing",
+      "file": "tests/semantics/conformance/declaration-timing.php",
+      "purpose": "Unconditional functions are available before their declaration; conditional ones after execution.",
+      "obligations": [
+        "calls.declaration-timing"
+      ],
+      "expected_stdout": "FG",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "namespace-import",
+      "file": "tests/semantics/conformance/namespace-import.php",
+      "purpose": "Function imports resolve aliases independently of local fallback.",
+      "obligations": [
+        "source.namespaces",
+        "source.imports",
+        "calls.namespace-fallback"
+      ],
+      "expected_stdout": "AB",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "dynamic-name-delayed",
+      "file": "tests/semantics/conformance/dynamic-name-delayed.php",
+      "purpose": "A direct variable used as a dynamic lvalue name remains delayed until after RHS evaluation.",
+      "obligations": [
+        "expression.delayed-reads",
+        "expression.lvalue-order",
+        "storage.variable-names"
+      ],
+      "expected_stdout": "no-a/b",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "authored from pinned zend_compile_assign/assign_ref investigation; independently oracle-checked",
+      "semantic_status": "pending"
+    }
+  ]
+}

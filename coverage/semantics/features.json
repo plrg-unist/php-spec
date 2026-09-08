@@ -802,10 +802,15 @@
         "declarations.constants",
         "calls.namespace-fallback"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Expr_Empty",
@@ -1299,10 +1304,15 @@
       "obligations": [
         "numeric.signed64"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Scalar_InterpolatedString",
@@ -1429,10 +1439,15 @@
       "obligations": [
         "bytes.byte-values"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "StaticVar",
@@ -1451,10 +1466,15 @@
       "obligations": [
         "control.sequence"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Break",
@@ -1463,10 +1483,15 @@
         "control.break-level",
         "static.control-targets"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Case",
@@ -1578,10 +1603,15 @@
       "obligations": [
         "bytes.output-conversion"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Else",
@@ -1634,10 +1664,15 @@
         "control.sequence",
         "declarations.NoDiscard"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Finally",
@@ -1749,10 +1784,15 @@
       "obligations": [
         "source.preamble"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Interface",
@@ -1794,10 +1834,15 @@
       "obligations": [
         "control.sequence"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
+      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Property",
@@ -2059,7 +2104,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/namespace-import.php"
+      ]
     },
     {
       "id": "source.imports",
@@ -2072,163 +2120,226 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/namespace-import.php"
+      ]
     },
     {
       "id": "numeric.signed64",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.arithmetic-result-types",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.overflow-rounding",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.division",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.remainder",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/01-integer.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/integer.py",
+        "coverage/semantics/integer.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.shifts",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/01-integer.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/integer.py",
+        "coverage/semantics/integer.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.integer-bitwise",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/01-integer.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/integer.py",
+        "coverage/semantics/integer.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.binary64-codec",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.binary64-rounding",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.binary64-add-sub",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.binary64-mul-div",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.binary64-specials",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/00-numeric.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric.py",
+        "coverage/semantics/numeric.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: source/rule/instrumentation review and repeated 1976 differential +8 symbolic checks passed; source integration and family closure pending."
     },
     {
       "id": "numeric.binary64-comparison",
@@ -2246,15 +2357,20 @@
     {
       "id": "numeric.float-int-conversion",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/01-integer.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/integer.py",
+        "coverage/semantics/integer.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.power",
@@ -2337,15 +2453,23 @@
     {
       "id": "bytes.byte-values",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "bytes.byte-concatenation",
@@ -2402,15 +2526,23 @@
     {
       "id": "bytes.output-conversion",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "coercion.arithmetic",
@@ -2441,15 +2573,20 @@
     {
       "id": "coercion.cast-int",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/01-integer.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/integer.py",
+        "coverage/semantics/integer.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
     },
     {
       "id": "coercion.cast-float",
@@ -2540,7 +2677,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/weak-type.php"
+      ]
     },
     {
       "id": "coercion.strict-types",
@@ -2553,7 +2693,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/strict-type.php"
+      ]
     },
     {
       "id": "coercion.loose-comparison",
@@ -2566,7 +2709,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/switch-match.php"
+      ]
     },
     {
       "id": "coercion.identity",
@@ -2579,7 +2725,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/switch-match.php"
+      ]
     },
     {
       "id": "coercion.increment-decrement",
@@ -2618,7 +2767,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/missing-null-access.php"
+      ]
     },
     {
       "id": "storage.read-modes",
@@ -2631,7 +2783,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/string-offset.php"
+      ]
     },
     {
       "id": "storage.variable-names",
@@ -2644,7 +2799,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/dynamic-variable.php",
+        "tests/semantics/conformance/dynamic-name-delayed.php"
+      ]
     },
     {
       "id": "storage.globals",
@@ -2709,7 +2868,12 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/reference-rebind.php",
+        "tests/semantics/conformance/dynamic-variable.php",
+        "tests/semantics/conformance/return-reference.php"
+      ]
     },
     {
       "id": "storage.reference-rebinding",
@@ -2722,7 +2886,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/reference-rebind.php",
+        "tests/semantics/conformance/parameter-rebind.php"
+      ]
     },
     {
       "id": "storage.typed-reference-sources",
@@ -2748,7 +2916,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/function-statics.php"
+      ]
     },
     {
       "id": "storage.temporary-lifetimes",
@@ -2774,7 +2945,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/key-collisions.php",
+        "tests/semantics/conformance/array-unpack.php"
+      ]
     },
     {
       "id": "containers.key-normalization",
@@ -2787,7 +2962,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/key-collisions.php"
+      ]
     },
     {
       "id": "containers.append-history",
@@ -2800,7 +2978,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/append-history.php",
+        "tests/semantics/conformance/negative-append.php"
+      ]
     },
     {
       "id": "containers.append-overflow",
@@ -2826,7 +3008,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/append-history.php"
+      ]
     },
     {
       "id": "containers.array-copy",
@@ -2839,7 +3024,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/array-reference-copy.php"
+      ]
     },
     {
       "id": "containers.embedded-references",
@@ -2852,7 +3040,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/array-reference-copy.php",
+        "tests/semantics/conformance/destructure-reference.php"
+      ]
     },
     {
       "id": "containers.object-identities",
@@ -2917,7 +3109,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/destructure-reference.php"
+      ]
     },
     {
       "id": "containers.unpack",
@@ -2930,7 +3125,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/array-unpack.php"
+      ]
     },
     {
       "id": "containers.string-offsets",
@@ -2943,7 +3141,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/string-offset.php"
+      ]
     },
     {
       "id": "containers.nested-write",
@@ -2969,7 +3170,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/foreach-value-mutation.php",
+        "tests/semantics/conformance/foreach-residual-alias.php"
+      ]
     },
     {
       "id": "containers.foreach-reference",
@@ -2982,7 +3187,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/foreach-reference-mutation.php"
+      ]
     },
     {
       "id": "containers.foreach-mutation",
@@ -2995,7 +3203,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/foreach-value-mutation.php",
+        "tests/semantics/conformance/foreach-reference-mutation.php"
+      ]
     },
     {
       "id": "containers.residual-alias",
@@ -3008,7 +3220,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/foreach-reference-mutation.php",
+        "tests/semantics/conformance/foreach-residual-alias.php"
+      ]
     },
     {
       "id": "expression.operand-order",
@@ -3021,7 +3237,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/delayed-read.php"
+      ]
     },
     {
       "id": "expression.delayed-reads",
@@ -3034,7 +3253,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/delayed-read.php",
+        "tests/semantics/conformance/dynamic-name-delayed.php"
+      ]
     },
     {
       "id": "expression.lvalue-order",
@@ -3047,7 +3270,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/dynamic-name-delayed.php"
+      ]
     },
     {
       "id": "expression.compound-write",
@@ -3073,7 +3299,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/short-circuit.php"
+      ]
     },
     {
       "id": "expression.coalesce",
@@ -3086,7 +3315,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/short-circuit.php",
+        "tests/semantics/conformance/missing-null-access.php"
+      ]
     },
     {
       "id": "expression.coalesce-write",
@@ -3099,7 +3332,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/coalesce-write.php"
+      ]
     },
     {
       "id": "expression.ternary",
@@ -3112,7 +3348,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/short-circuit.php"
+      ]
     },
     {
       "id": "expression.nullsafe",
@@ -3138,7 +3377,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/missing-null-access.php"
+      ]
     },
     {
       "id": "expression.empty",
@@ -3151,20 +3393,31 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/missing-null-access.php"
+      ]
     },
     {
       "id": "control.sequence",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "control.conditionals",
@@ -3216,7 +3469,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/nested-control.php"
+      ]
     },
     {
       "id": "control.foreach",
@@ -3242,7 +3498,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/switch-match.php"
+      ]
     },
     {
       "id": "control.match",
@@ -3255,7 +3514,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/switch-match.php"
+      ]
     },
     {
       "id": "control.labels",
@@ -3307,7 +3569,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/nested-control.php"
+      ]
     },
     {
       "id": "control.return",
@@ -3320,7 +3585,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/finally-return.php"
+      ]
     },
     {
       "id": "control.throw",
@@ -3333,7 +3601,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/finally-throw.php"
+      ]
     },
     {
       "id": "control.catch",
@@ -3346,7 +3617,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/strict-type.php",
+        "tests/semantics/conformance/finally-throw.php"
+      ]
     },
     {
       "id": "control.finally-replacement",
@@ -3359,7 +3634,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/finally-return.php",
+        "tests/semantics/conformance/finally-throw.php"
+      ]
     },
     {
       "id": "control.exit",
@@ -3398,7 +3677,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/declaration-timing.php"
+      ]
     },
     {
       "id": "calls.name-resolution",
@@ -3424,7 +3706,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/namespace-import.php"
+      ]
     },
     {
       "id": "calls.positional",
@@ -3450,7 +3735,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/named-variadic.php"
+      ]
     },
     {
       "id": "calls.unpack",
@@ -3463,7 +3751,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/unpacked-byref.php"
+      ]
     },
     {
       "id": "calls.variadic",
@@ -3476,7 +3767,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/named-variadic.php"
+      ]
     },
     {
       "id": "calls.byref-argument",
@@ -3489,7 +3783,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/parameter-rebind.php",
+        "tests/semantics/conformance/unpacked-byref.php"
+      ]
     },
     {
       "id": "calls.byref-return",
@@ -3502,7 +3800,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/return-reference.php"
+      ]
     },
     {
       "id": "calls.defaults",
@@ -3515,7 +3816,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/named-variadic.php"
+      ]
     },
     {
       "id": "calls.return-types",
@@ -3528,7 +3832,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/weak-type.php"
+      ]
     },
     {
       "id": "calls.closures",
@@ -3541,7 +3848,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/closure-capture.php"
+      ]
     },
     {
       "id": "calls.captures",
@@ -3554,7 +3864,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/closure-capture.php"
+      ]
     },
     {
       "id": "calls.arrows",
@@ -3567,7 +3880,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/closure-capture.php"
+      ]
     },
     {
       "id": "calls.first-class-callable",
@@ -3593,7 +3909,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/function-statics.php"
+      ]
     },
     {
       "id": "calls.recursion",
@@ -3663,15 +3982,23 @@
     {
       "id": "static.independent-compile-phase",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "static.lvalue-rejection",
@@ -3736,7 +4063,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/strict-type.php"
+      ]
     },
     {
       "id": "static.constant-expression",
@@ -4776,7 +5106,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/key-collisions.php"
+      ]
     },
     {
       "id": "diagnostics.message",
@@ -4794,28 +5127,44 @@
     {
       "id": "diagnostics.source-location",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "diagnostics.renderer",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "diagnostics.suppression",
@@ -5639,15 +5988,23 @@
     {
       "id": "validation.checked-input",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.pure-reference",
@@ -5665,54 +6022,86 @@
     {
       "id": "validation.original-source",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.oracle-pin",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.outcome-separation",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.raw-byte-comparison",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.exception-observation",
@@ -5730,28 +6119,44 @@
     {
       "id": "validation.fingerprints",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.budgets",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "adapter/main.ml",
+        "bin/php-semantics",
+        "spec/semantics/10-bytes.watsup",
+        "spec/semantics/20-machine.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/phase0.json"
+      ],
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": null
+      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.PHPT-sections",
