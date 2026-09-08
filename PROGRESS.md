@@ -34,7 +34,7 @@ timeouts and interrupted campaigns never count as validation passes.
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
   pruning, owning reference results, COW/union and variable-source literal refs
   `4b954dfa` and CV timing/classification repair `eea66b2d` are reviewed.
-  Element-reference sources/literal values precede element-reference targets.
+  Element-reference sources/literal values `9a7bde01` are reviewed; targets next.
 - Static worker: structural source-unit occurrences `898f0152` reviewed; next
   namespace/import compiler contexts and ordered compile-task barriers, then
   declaration descriptors before further linking.
@@ -54,11 +54,12 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `eea66b2d`: independently repeated **439 exact source comparisons
-  +25 negatives**; variable-source literal refs, COW/union and owning reference
-  results included. **617 graph +77 boundary cases**, 5,335 assertions, and
-  50 additional CV timing/name source probes passed. New constructors enter
-  through separate gates; element references and source GC remain Unsupported.
+- Source machine `9a7bde01`: independently repeated **469 exact source comparisons
+  +25 negatives**; variable/element-source reference literals, COW/union and
+  owning reference results included. **617 graph +87 boundary cases**, 5,389
+  assertions, plus 40 topology and 26 array-prepass source probes passed.
+  Element-reference targets, string offsets, nonarray reads and source GC remain
+  explicitly pending.
   See [handoff](docs/semantics/ARRAY-HANDOFF.md).
 - CV timing/classification defects are resolved in `eea66b2d`: delayed reference
   target names now warn before direct source initialization; literal-float names
@@ -85,7 +86,7 @@ timeouts and interrupted campaigns never count as validation passes.
   expanded 32 sources passed. Exact AST retention and unit/path identity are
   representation checks, with no source compile/evaluation agreement claimed.
   See [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md).
-- **104 independent oracle targets**, 33 integrated into the reviewed source
+- **115 independent oracle targets**, 40 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read
@@ -103,9 +104,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review element-reference sources and literal values, then element targets,
-retaining distinct acquisition/COW/temporary-owner timing. Nine new oracle
-witnesses constrain these paths, including the string-offset reference Error.
+Review element-reference targets, retaining distinct acquisition/COW/temporary-
+owner timing. New independent target and prepass witnesses are mandatory in the
+next gate. The string-offset reference Error remains a separate pending context.
 The next static source-context traversal and class linking must preserve pinned
 phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source

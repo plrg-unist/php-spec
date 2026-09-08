@@ -1482,6 +1482,160 @@
       "expected_exit_status": 255,
       "provenance": "independent source pin probe of zend_compile_use and zend_compile_const_decl; follow observed case/order behavior",
       "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-copy",
+      "file": "tests/semantics/conformance/element-reference-target-copy.php",
+      "purpose": "Element reference binding separates an ordinary copied container.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "91",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-rebind",
+      "file": "tests/semantics/conformance/element-reference-target-rebind.php",
+      "purpose": "Replacing an element alias rebinds the slot without writing through its old cell.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "191",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-self-cycle",
+      "file": "tests/semantics/conformance/element-reference-target-self-cycle.php",
+      "purpose": "A CV reference source observes its initialized element target and creates a self-cycle.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "7",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-same-array",
+      "file": "tests/semantics/conformance/element-reference-target-same-array.php",
+      "purpose": "Two entries of one array share the acquired source cell after reference binding.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "99",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-append",
+      "file": "tests/semantics/conformance/element-reference-target-append.php",
+      "purpose": "An append target binds its new slot to the source reference cell.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "9",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-key-replaces-root",
+      "file": "tests/semantics/conformance/element-reference-target-key-replaces-root.php",
+      "purpose": "Target-key side effects replace the root before source and target acquisition.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "99",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-source-replaces-root",
+      "file": "tests/semantics/conformance/element-reference-target-source-replaces-root.php",
+      "purpose": "Source-key side effects replace the delayed target root before binding.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "9",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "element-reference-target-self-key",
+      "file": "tests/semantics/conformance/element-reference-target-self-key.php",
+      "purpose": "Target-root initialization precedes a delayed self-key read and yields an array-offset TypeError.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Uncaught TypeError: Cannot access offset of type array on array in {FILE}:1\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 1\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-append-prepass",
+      "file": "tests/semantics/conformance/array-reference-append-prepass.php",
+      "purpose": "Array constant prepass rejects append references at the ambient first-element compiler line.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot use [] for reading in {FILE} on line 3\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-nested-append-prepass",
+      "file": "tests/semantics/conformance/array-reference-nested-append-prepass.php",
+      "purpose": "Constant prepass descends dimension bases and rejects a nested append reference.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot use [] for reading in {FILE} on line 1\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-assignment-key-prepass",
+      "file": "tests/semantics/conformance/array-reference-assignment-key-prepass.php",
+      "purpose": "Constant prepass stops at reference assignments inside dimension keys.",
+      "obligations": [
+        "containers.embedded-references",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "11",
+      "expected_stderr": "Deprecated: Using null as an array offset is deprecated, use an empty string instead in {FILE} on line 1\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
+      "semantic_status": "pending"
     }
   ]
 }

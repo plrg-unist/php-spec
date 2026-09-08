@@ -39,13 +39,16 @@
       "implementation": [
         "spec/semantics/36-arrays.watsup",
         "spec/semantics/41-array-control.watsup",
-        "spec/semantics/39-ownership.watsup"
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent literal-reference review 4b954dfa: 421 exact source comparisons and 25 negatives; 617 graph plus 72 boundary cases (5315 assertions) and 48 extra source probes passed. Variable/dynamic-name source references are acquired before delayed key conversion and held until ALIAS insertion; COW/union preserve reviewed wrapper rules. Element-reference sources/targets, unpacking, callbacks and source GC remain pending.",
+      "review": "Independent element-source/reference-literal review 9a7bde01: 469 exact source comparisons and 25 negatives; 617 graph plus 87 boundary cases (5389 assertions), 40 topology and 26 array-prepass source probes passed. Writable array sources separate the path then borrow/promote its final reference cell; nonliteral target and non-CV source hold a MAKE_REF owner through target acquisition. Array constant prepass visits every value then key, rejecting append reads at ambient compiler line while stopping at assignment/variable boundaries. Element reference targets, string-offset reference behavior, callbacks and source GC remain pending.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -3326,7 +3329,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent CV correction eea66b2d: 439 exact source comparisons and 25 negatives; 617 graph plus 77 boundary cases (5335 assertions) and 50 expanded source probes passed. Direct CV source initialization now follows delayed reference-target name consumption; literal FLOAT names use CV delayed reads, while unary/constants retain captured behavior. All nine timing witnesses are mandatory. Element places, frames, properties and callbacks remain pending; raw historical disagreements and accepted resolution remain in reference-timing-disagreement.json.",
+      "review": "Independent CV correction eea66b2d: 439 exact source comparisons and 25 negatives; 617 graph plus 77 boundary cases (5335 assertions) and 50 expanded source probes passed. Direct CV source initialization now follows delayed reference-target name consumption; literal FLOAT names use CV delayed reads, while unary/constants retain captured behavior. All nine timing witnesses are mandatory. Element places, frames, properties and callbacks remain pending; raw historical disagreements and accepted resolution remain in reference-timing-disagreement.json. Element RHS acquisition and MAKE_REF ownership subsequently reviewed in 9a7bde01; element targets remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php",
@@ -3343,7 +3346,18 @@
         "tests/semantics/conformance/element-reference-source-container-rebind.php",
         "tests/semantics/conformance/element-reference-target-before-cv.php",
         "tests/semantics/conformance/element-reference-source-existing-wrapper.php",
-        "tests/semantics/conformance/element-reference-string-rejection.php"
+        "tests/semantics/conformance/element-reference-string-rejection.php",
+        "tests/semantics/conformance/element-reference-target-copy.php",
+        "tests/semantics/conformance/element-reference-target-rebind.php",
+        "tests/semantics/conformance/element-reference-target-self-cycle.php",
+        "tests/semantics/conformance/element-reference-target-same-array.php",
+        "tests/semantics/conformance/element-reference-target-append.php",
+        "tests/semantics/conformance/element-reference-target-key-replaces-root.php",
+        "tests/semantics/conformance/element-reference-target-source-replaces-root.php",
+        "tests/semantics/conformance/element-reference-target-self-key.php",
+        "tests/semantics/conformance/array-reference-append-prepass.php",
+        "tests/semantics/conformance/array-reference-nested-append-prepass.php",
+        "tests/semantics/conformance/array-reference-assignment-key-prepass.php"
       ]
     },
     {
@@ -3520,7 +3534,8 @@
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/36-arrays.watsup",
         "spec/semantics/39-ownership.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/20-machine.watsup"
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
@@ -3533,7 +3548,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent literal-reference review 4b954dfa: 421 exact source comparisons and 25 negatives; 617 graph plus 72 boundary cases (5315 assertions) and 48 extra source probes passed. Variable/dynamic-name source references are acquired before delayed key conversion and held until ALIAS insertion; COW/union preserve reviewed wrapper rules. Element-reference sources/targets, unpacking, callbacks and source GC remain pending.",
+      "review": "Independent element-source/reference-literal review 9a7bde01: 469 exact source comparisons and 25 negatives; 617 graph plus 87 boundary cases (5389 assertions), 40 topology and 26 array-prepass source probes passed. Writable array sources separate the path then borrow/promote its final reference cell; nonliteral target and non-CV source hold a MAKE_REF owner through target acquisition. Array constant prepass visits every value then key, rejecting append reads at ambient compiler line while stopping at assignment/variable boundaries. Element reference targets, string-offset reference behavior, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3555,7 +3570,10 @@
       "implementation": [
         "spec/semantics/36-arrays.watsup",
         "spec/semantics/39-ownership.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
@@ -3569,7 +3587,7 @@
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": "Independent literal-reference review 4b954dfa: 421 exact source comparisons and 25 negatives; 617 graph plus 72 boundary cases (5315 assertions) and 48 extra source probes passed. Variable/dynamic-name source references are acquired before delayed key conversion and held until ALIAS insertion; COW/union preserve reviewed wrapper rules. Element-reference sources/targets, unpacking, callbacks and source GC remain pending.",
+      "review": "Independent element-source/reference-literal review 9a7bde01: 469 exact source comparisons and 25 negatives; 617 graph plus 87 boundary cases (5389 assertions), 40 topology and 26 array-prepass source probes passed. Writable array sources separate the path then borrow/promote its final reference cell; nonliteral target and non-CV source hold a MAKE_REF owner through target acquisition. Array constant prepass visits every value then key, rejecting append reads at ambient compiler line while stopping at assignment/variable boundaries. Element reference targets, string-offset reference behavior, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/destructure-reference.php",
@@ -3587,7 +3605,18 @@
         "tests/semantics/conformance/element-reference-source-container-rebind.php",
         "tests/semantics/conformance/element-reference-target-before-cv.php",
         "tests/semantics/conformance/element-reference-source-existing-wrapper.php",
-        "tests/semantics/conformance/element-reference-string-rejection.php"
+        "tests/semantics/conformance/element-reference-string-rejection.php",
+        "tests/semantics/conformance/element-reference-target-copy.php",
+        "tests/semantics/conformance/element-reference-target-rebind.php",
+        "tests/semantics/conformance/element-reference-target-self-cycle.php",
+        "tests/semantics/conformance/element-reference-target-same-array.php",
+        "tests/semantics/conformance/element-reference-target-append.php",
+        "tests/semantics/conformance/element-reference-target-key-replaces-root.php",
+        "tests/semantics/conformance/element-reference-target-source-replaces-root.php",
+        "tests/semantics/conformance/element-reference-target-self-key.php",
+        "tests/semantics/conformance/array-reference-append-prepass.php",
+        "tests/semantics/conformance/array-reference-nested-append-prepass.php",
+        "tests/semantics/conformance/array-reference-assignment-key-prepass.php"
       ]
     },
     {
@@ -3621,7 +3650,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending.",
+      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending. Element RHS paths and their alias/COW behavior subsequently reviewed in 9a7bde01; element reference targets remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
@@ -3748,7 +3777,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending.",
+      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending. Element RHS paths and their alias/COW behavior subsequently reviewed in 9a7bde01; element reference targets remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-self-append.php",
         "tests/semantics/conformance/array-self-index.php",
