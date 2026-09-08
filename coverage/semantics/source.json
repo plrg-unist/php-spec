@@ -10,7 +10,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and array literal (including variable references)/read/write/unset checked execution fixtures",
+  "scope": "authored scalar, variable storage and array literal/read/write/unset plus variable and element reference-source checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -56,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "bce380a6afe133404a6f1ffe633754713102ef23136a029aa5bc810eefc2ce80",
-    "files": 675,
+    "sha256": "122c4c4ddbeb519a942a8660e012561d04d654e2c3f86ef133762c243f8d3d40",
+    "files": 691,
     "scope": [
       "frontend",
       "adapter",
@@ -395,6 +395,144 @@
     {
       "id": "dynamic-reference-rebind",
       "source_sha256": "87ac1018583c6766bd769ae1c55d265524b8857241f5fd674e7fd9ed677b2ea1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-self-append",
+      "source_sha256": "0287b5251b147246de5cb451959aa48fc431739f0964b6336b5b37767bb6e63b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-singleton-copy",
+      "source_sha256": "a5bab73fb9af903f7e22b6795c7ef304260af6ee1d86e5960a4b8ee2413eaa34",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-key-order",
+      "source_sha256": "b2b9e025f6d17a4ca330556153ec48396d5edcc0ab4d81a85b755ba07fe6c487",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-target-name-order",
+      "source_sha256": "aba7d3e2b44aa546dd0f4bf5f69c3e0df1b62fdfb2dfd581ffb83c893baea6c0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-overflow",
+      "source_sha256": "b78d8dad61aff6c35369f2bc8673ae2b2d03a80e8fe115ff94a6b0fae51b811e",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-false",
+      "source_sha256": "45dcc002ed51c0621e3fab34068b4e7a7a2716694499823b841087e7ac9238e5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-scalar-error",
+      "source_sha256": "1633ef667ef295e24f254e7c6c2c94be1c3c77507b0dd4fe9a273e676f44acfd",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-nested-copy",
+      "source_sha256": "e6a75aef1a8453255884656cbe7a5c11b6670cb3677faddee2d8bd53339f1504",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-replaces-container",
+      "source_sha256": "fb372ac642d05e08b73a0ce86c54b8235ad6c281a8a94fc17a5540a60248490a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-duplicates",
+      "source_sha256": "52b6476f953c04768b9d9896825e00105da066b9415db23cb8a161df7fea9b5e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-appends",
+      "source_sha256": "84b1b2018f9224e451db372ea7d457cff4067aecf7779c2ce6f9d9b7ced113b4",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-nested-append-reject",
+      "source_sha256": "13cf36109c7920a3bdb833e6bd3cdc21602e757699d9dd6bbb6d6c61f38df3dd",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-append-lines",
+      "source_sha256": "13364715b50bce66744fcfc0ad2b973991b58a275c20b0798b36cf0b9ac51c3c",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-key-append-reject",
+      "source_sha256": "32ff9c760af7245452be25b199cb1d7537454e2486f4ba4c61bcad1c5a92befa",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-append-reference-key",
+      "source_sha256": "5fe3e250965e7f6e7aea2cf8bfb8e211c26f5755bca0e2b471c7b291dafc9096",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-append-reference-value",
+      "source_sha256": "4dac127a5f0be8ed24091493991c5f186d9c73f88e3515ac6ab7546ce5d9c406",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-shared-self",
+      "source_sha256": "a6408247fa97c923ffe4ae0a630b8592edbd9692418de17cbf8bdc7b3231daab",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-singleton-self",
+      "source_sha256": "894c89f9a274dc479eae69f10a6de01a03916fe4fc89c5829134f55f23d55e63",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-old-cell",
+      "source_sha256": "a1220f2bd5c5eaa551a9a84221330b6302e8a8856012910038220ee80a2d5c3a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-dynamic-target-replaces-container",
+      "source_sha256": "254e7e78217a9c34d7da649a621cd72dd51615a83d1075a2e6f2d2ae8f9c852b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-literal-float-target",
+      "source_sha256": "0106d1ca13040574a02c73137eccde088ca9449d1c70c4606db3d4e242968a7c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-multiline",
+      "source_sha256": "3af8ee9107bed135833777d9aa91f8801b2ba01c2676533c03b78b3bcd97df46",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-source-nested-false-line",
+      "source_sha256": "c94789fa4230f985fce1830acfdf56270fd5cfe0d7cdd8594ee24cdcf277259f",
       "semantic_status": "normal",
       "comparison": "pass"
     },
@@ -1869,6 +2007,48 @@
       "comparison": "pass"
     },
     {
+      "id": "conformance-element-reference-source-copy",
+      "source_sha256": "6c74c430e291e15ec8acbe26cdc008cba5ce373b76d244609de9c972ff32969f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-element-reference-source-append",
+      "source_sha256": "a591f26badb59515728030a1c56bfcc3f39f98aa52f062b10a127d9f263c2fcd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-element-reference-source-nested-missing",
+      "source_sha256": "36104f98e29b84447a7962a1fbb26e76807b2e8810773c547f60cfb56f7671b5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-element-reference-literal-copy",
+      "source_sha256": "004eb812a575dc60f8e26c47190b734f4d3ffaf4de190a6c3bc0f284ab42e0c6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-element-reference-dynamic-name",
+      "source_sha256": "ac2aecd91cf0483c46559ff6017dc05c0dcd0cd4bb4f56ee0ededc9798ff91f3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-element-reference-source-container-rebind",
+      "source_sha256": "17e6d6fc6216f05d6a1d79edfb4309715fc77d1c187b5fa167e555f5de89372b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "conformance-element-reference-source-existing-wrapper",
+      "source_sha256": "781716506334d50f5d2cea2f34f6e40970d9651b93a547eb8989b91a8c3b7837",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
       "id": "generated-alias-00",
       "source_sha256": "20077d5b3e62a393fb6b63230a7fd227d40610e6e3de7ac3ab7f78e5b9a1d8e1",
       "semantic_status": "normal",
@@ -2714,7 +2894,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-w9_mm_wb/unsupported.php"
+        "/tmp/php-semantics-zu8tw06c/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -2733,7 +2913,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-w9_mm_wb/unsupported.php"
+        "/tmp/php-semantics-zu8tw06c/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -2752,7 +2932,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-w9_mm_wb/unsupported.php",
+        "/tmp/php-semantics-zu8tw06c/unsupported.php",
         "--steps",
         "0"
       ],
@@ -2773,7 +2953,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-w9_mm_wb/unsupported.php",
+        "/tmp/php-semantics-zu8tw06c/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -2786,12 +2966,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-w9_mm_wb/unsupported.php.missing"
+        "/tmp/php-semantics-zu8tw06c/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-w9_mm_wb/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-zu8tw06c/unsupported.php.missing'"
       }
     },
     {
@@ -2930,7 +3110,7 @@
       }
     },
     {
-      "source": "PD9waHAgJGE9W1sxXV07JGI9WyYkYVswXV07",
+      "source": "PD9waHAgJGE9WzFdOyR4PTI7JGFbMF09JiR4Ow==",
       "exit_status": 1,
       "observation": {
         "status": "unsupported",
@@ -3467,7 +3647,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "a9dde125d81b94e2bac556ca440dfa2752e18162caa099c0cdb5eaf70d9cb7ed",
-    "records": 439
+    "sha256": "8834ae07371587c33d1cfc9e24a04f196711551978913512a46b49004c7e8098",
+    "records": 469
   }
 }

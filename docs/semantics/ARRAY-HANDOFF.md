@@ -3,8 +3,8 @@
 Read PLAN.md, PROGRESS.md, DESIGN.md and the php/php-spec/p4-spectec skills first.
 The current source machine supports ordinary ordered arrays, delayed dimension
 reads, simple/nested writes, append and unset. Variable-cell aliases and literal
-references to direct/dynamic variables work. Element-reference acquisition and
-assignment, foreach, callbacks and source GC are still pending. Do not infer
+references to direct/dynamic variables and writable array elements work. Element
+reference assignment targets, foreach, callbacks and source GC are still pending. Do not infer
 those paths from the ALIAS constructor or pure ownership helpers.
 Reference-assignment expressions now return owning `REFERENCE` operands. Their
 cell identity is captured but their contained value is read by the consumer;
@@ -46,9 +46,12 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
    Entry copying counts a pruned graph projection rooted at its borrowed source;
    it leaves caller allocations intact for constant-classifier local builders.
    Unreachable cycles remain owners until collection; dead acyclic allocations do not.
-3. Literal reference tasks now hold an acquired cell before delayed key conversion,
-   then move its owner into an ALIAS entry. Admit element reference acquisition
-   and assignment next, preserving designation and diagnostic order. Reuse singleton,
+3. Literal reference tasks hold an acquired cell before delayed key conversion,
+   then move its owner into an ALIAS entry. Element sources separate their path
+   before promoting the final slot, returning a borrowed cell. Exact nonliteral
+   target/non-CV source assignment uses REF_CAPTURE and an owning REF_DYNAMIC
+   task; direct literal names use the ordinary borrowed source path. Admit element
+   assignment targets next, preserving designation and diagnostic order. Reuse singleton,
    shared-container, nested-reference and cycle oracle targets before foreach.
 4. Before repeated literal execution, add explicit source-unit/compiled-occurrence
    identities and persistent literal-pool roots. One constant literal occurrence
@@ -78,6 +81,11 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
   source. Non-CV sources are acquired earlier; literal references acquire before
   delayed keys. Preserve this distinction when adding element targets. Literal
   float variable names are CVs, while unary and named constants are dynamic.
+- `$x=&$a[]` works, but `[&$a[]]` fails during the array constant-evaluation
+  prepass. It visits every value then key even for by-reference entries, retaining
+  the array's ambient compiler line. Its recursive cases stop at assignments and
+  variable names: `[&$a[($x=&$b[])]]` therefore remains valid. Keep this narrow
+  checked traversal aligned with the compiler-context work.
 
 ## Validation and coordination
 

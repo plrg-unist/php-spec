@@ -18,3 +18,9 @@ rule PhpStep/dimension-prepare-append: S ~> S[.TODO = [DIM_PREP expression, DIM_
   -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression ABSENT metadata)) :: ptask_tail*
 rule PhpStep/dimension-append: S ~> S[.TODO = ptask_tail*][.BASE = BASE_APPEND S.BASE z]
   -- if S.TODO = (DIM_APPEND z) :: ptask_tail*
+
+rule PhpStep/acquire-array: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), ACQUIRE_ARRAY $compiled_line(NExprArrayDimFetch expression phpType5 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (ACQUIRE (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
+rule PhpStep/acquire-array-cell: S ~> S_cell[.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ACQUIRE_ARRAY z) :: ptask_tail*
+  -- if S_cell = $acquire_array_reference($hold_task_inputs(S), S.BASE, z)

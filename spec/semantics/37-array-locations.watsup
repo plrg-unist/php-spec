@@ -137,6 +137,30 @@ def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = $literal_insert(S_r
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 
+;; W-fetch separates the source path before turning its final slot into a
+;; reference. The returned CELL borrows the entry's owner; MAKE_REF or literal
+;; ADD_ARRAY_ELEMENT supplies a distinct temporary owner at its own boundary.
+dec $reference_slot(pslot) : pslot
+def $reference_slot(DEFINED pvalue) = DEFINED pvalue
+def $reference_slot(UNDEFINED) = DEFINED PNULL
+
+dec $element_reference(pstate, nat, pkey) : pstate
+def $element_reference(S, n, pkey) = S[.CELL = n_cell]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $element_reference(S, n, pkey) = S[.CELL = n_cell][.STORE = S.STORE ++ [pslot]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]][.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, ALIAS n_cell))]
+  -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
+  -- if pslot = $reference_slot($location_slot(S, ELEMENT n pkey))
+  -- if n_cell = |S.STORE|
+
+dec $acquire_array_reference(pstate, pbase, int) : pstate
+def $acquire_array_reference(S, pbase, z) = S_place
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $acquire_array_reference(S, pbase, z) = $element_reference(S_place, n, pkey)
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_place.LOCATION = ELEMENT n pkey
+
 dec $root_cv(expression) : (nat*)?
 def $root_cv(NExprVariable phpType34 metadata) = $cv_name(phpType34)
 def $root_cv(NExprArrayDimFetch expression phpType5 metadata) = $root_cv(expression)

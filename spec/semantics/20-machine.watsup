@@ -113,6 +113,9 @@ dec $check_variable(phpType34) : pcheck
 dec $array_name_fold_warning(phpType34) : bool
 dec $name_fold_warning(phpType34) : bool
 dec $check_array_items(phpType13*) : pcheck
+dec $constant_read_check(expression, int) : pcheck
+dec $constant_items_check(phpType13*, int) : pcheck
+dec $constant_pair_check(expression, expression, int) : pcheck
 dec $context_error(text, int) : pcheck
 def $context_error(text, z) = REJECT (STATICERROR text z)
   -- if $(z > 0)
@@ -129,7 +132,7 @@ def $check_expression(NExprAssign expression_1 expression_2 metadata) = $check_e
   -- if $check_assignment_target(expression_1) = READY
 def $check_expression(NExprAssign expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_assignment_target(expression_1) = REJECT pcompletion
-def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = $check_lvalue(expression_2)
+def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = $check_assignment_target(expression_2)
   -- if $check_lvalue(expression_1) = READY
 def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_lvalue(expression_1) = REJECT pcompletion
@@ -160,6 +163,9 @@ def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metada
 def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_expression(expression_1) = REJECT pcompletion
 def $check_expression(NExprArray (SEQUENCE phpType13*) metadata) = $check_array_items(phpType13*)
+  -- if $constant_items_check(phpType13*, $expression_line(NExprArray (SEQUENCE phpType13*) metadata)) = READY
+def $check_expression(NExprArray (SEQUENCE phpType13*) metadata) = REJECT pcompletion
+  -- if $constant_items_check(phpType13*, $expression_line(NExprArray (SEQUENCE phpType13*) metadata)) = REJECT pcompletion
 def $check_expression(NExprArrayDimFetch expression ABSENT metadata) = $context_error("Cannot use [] for reading", $compiled_line(expression))
   -- if $check_expression(expression) = READY
 def $check_expression(NExprArrayDimFetch expression ABSENT metadata) = REJECT pcompletion
@@ -173,9 +179,44 @@ def $check_expression(NExprArrayDimFetch expression_1 phpType5 metadata) = REJEC
 def $check_expression(expression) = REJECT (UNSUPPORTED "expression")
   -- otherwise
 
+;; zend_try_ct_eval_array probes every value then key before checking by_ref.
+;; Follow only zend_eval_const_expr's admitted recursive cases: assignments and
+;; variable names stop this traversal. The ambient array compiler line persists.
+def $constant_pair_check(expression_1, expression_2, z) = $constant_read_check(expression_2, z)
+  -- if $constant_read_check(expression_1, z) = READY
+def $constant_pair_check(expression_1, expression_2, z) = REJECT pcompletion
+  -- if $constant_read_check(expression_1, z) = REJECT pcompletion
+def $constant_read_check(NExprArrayDimFetch expression ABSENT metadata, z) = $context_error("Cannot use [] for reading", z)
+def $constant_read_check(NExprArrayDimFetch expression phpType5 metadata, z) = $constant_pair_check(expression, expression_key, z)
+  -- if phpType5 = expression_key
+def $constant_read_check(NExprArray (SEQUENCE phpType13*) metadata, z) = $constant_items_check(phpType13*, z)
+def $constant_read_check(NExprBinaryOpPlus expression_1 expression_2 metadata, z) = $constant_pair_check(expression_1, expression_2, z)
+def $constant_read_check(NExprBinaryOpMinus expression_1 expression_2 metadata, z) = $constant_pair_check(expression_1, expression_2, z)
+def $constant_read_check(NExprBinaryOpMul expression_1 expression_2 metadata, z) = $constant_pair_check(expression_1, expression_2, z)
+def $constant_read_check(NExprBinaryOpDiv expression_1 expression_2 metadata, z) = $constant_pair_check(expression_1, expression_2, z)
+def $constant_read_check(NExprBinaryOpIdentical expression_1 expression_2 metadata, z) = $constant_pair_check(expression_1, expression_2, z)
+def $constant_read_check(NExprBinaryOpNotIdentical expression_1 expression_2 metadata, z) = $constant_pair_check(expression_1, expression_2, z)
+def $constant_read_check(NExprUnaryPlus expression metadata, z) = $constant_read_check(expression, z)
+def $constant_read_check(NExprUnaryMinus expression metadata, z) = $constant_read_check(expression, z)
+def $constant_read_check(expression, z) = READY
+  -- otherwise
+def $constant_items_check(eps, z) = READY
+def $constant_items_check((NArrayItem ABSENT expression phpType4_1 phpType4_2 metadata) :: phpType13_tail*, z) = $constant_items_check(phpType13_tail*, z)
+  -- if $constant_read_check(expression, z) = READY
+def $constant_items_check((NArrayItem ABSENT expression phpType4_1 phpType4_2 metadata) :: phpType13_tail*, z) = REJECT pcompletion
+  -- if $constant_read_check(expression, z) = REJECT pcompletion
+def $constant_items_check((NArrayItem phpType5 expression phpType4_1 phpType4_2 metadata) :: phpType13_tail*, z) = $constant_items_check(phpType13_tail*, z)
+  -- if phpType5 = expression_key
+  -- if $constant_pair_check(expression, expression_key, z) = READY
+def $constant_items_check((NArrayItem phpType5 expression phpType4_1 phpType4_2 metadata) :: phpType13_tail*, z) = REJECT pcompletion
+  -- if phpType5 = expression_key
+  -- if $constant_pair_check(expression, expression_key, z) = REJECT pcompletion
+def $constant_items_check(phpType13*, z) = READY
+  -- otherwise
+
 dec $check_array_value(expression, bool) : pcheck
 def $check_array_value(expression, false) = $check_expression(expression)
-def $check_array_value(expression, true) = $check_lvalue(expression)
+def $check_array_value(expression, true) = $check_assignment_target(expression)
 
 def $check_array_items(eps) = READY
 def $check_array_items((NArrayItem ABSENT expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)

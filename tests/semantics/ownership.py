@@ -307,6 +307,41 @@ def main():
               [f'S_next = $drive({initial}[.STORE = [DEFINED (PSTRING ([120]))]][.ALLOCATIONS = [HCELL 0]][.TODO = [REF_DYNAMIC_CV (REFERENCE 0) ([120]) 1]], 1)',
                'S_next.COMPLETION = NORMAL', 'S_next.RESULT = REFERENCE 1',
                'S_next.ALLOCATIONS = [HCELL 1]', '$heap_valid($heap_graph(S_next))']]
+    acquire = (live+'[.BASE = BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 0)) 1]'
+               '[.TODO = [ACQUIRE_ARRAY 1]]')
+    cases += [[f'S_next = $ownership_step({acquire}[.HELD = [HCELL 0]])',
+               'S_next.HELD = [HCELL 0]', 'S_next.RESULT = KNOWN PNULL',
+               'S_next.CELL = 1', 'S_next.STORE[1] = DEFINED PNULL',
+               'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 1)]',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 1', '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $ownership_step({base}[.ENV = [BIND ([97]) 0]][.BASE = BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 0)) 1][.TODO = [ACQUIRE_ARRAY 1]])',
+               'S_next.CELL = 1', '|S_next.STORE| = 2', '|S_next.ARRAYS| = 2',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 2'],
+              [f'S_next = $ownership_step({acquire}[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 0)]][.ENV = [BIND ([97]) 0, BIND ([98]) 1]][.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]] )',
+               'S_next.CELL = 2', 'S_next.STORE[0] = DEFINED (PARRAY 1)',
+               'S_next.ARRAYS[0].ITEMS = eps', 'S_next.ARRAYS[1].ITEMS = [ENTRY (KINT 0) (ALIAS 2)]',
+               '$heap_valid($heap_graph(S_next))'],
+              [f'S_acquired = $ownership_step({acquire})',
+               'S_next = $ownership_step(S_acquired[.TODO = [REF_CAPTURE (KNOWN (PSTRING ([120]))) 1]])',
+               'S_next.TODO = [REF_DYNAMIC (KNOWN (PSTRING ([120]))) 1 1]',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 2', '$heap_valid($heap_graph(S_next))'],
+              [f'S_acquired = $ownership_step({acquire})',
+               'S_next = $ownership_step(S_acquired[.TODO = [REF_DYNAMIC (KNOWN (PSTRING ([120]))) 1 1]])',
+               'S_next.RESULT = REFERENCE 1', 'S_next.TODO = eps',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 3', '$heap_valid($heap_graph(S_next))'],
+              ['$task_nodes(REF_DYNAMIC (REFERENCE 0) 1 1) = [HCELL 0, HCELL 1]']]
+    for key, line in (('PARRAY 0', 1), ('PNULL', 0)):
+        cases.append([f'S_next = $drive({acquire}[.BASE = BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN ({key})) {line}][.TODO = [ACQUIRE_ARRAY {line}]][.HELD = [HCELL 0]], 1)',
+                      'S_next.COMPLETION =/= NORMAL', '|S_next.STORE| = 1',
+                      'S_next.HELD = eps', 'S_next.RESULT = KNOWN PNULL', '$heap_valid($heap_graph(S_next))'])
+    cases += [[f'S_next = $drive({acquire}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT PNULL)]), NEXT 9223372036854775807}}]][.BASE = BASE_APPEND (BASE_VALUE (VARIABLE ([97]) 1)) 1], 1)',
+               'S_next.COMPLETION =/= NORMAL', '|S_next.STORE| = 1',
+               'S_next.HELD = eps', '$heap_valid($heap_graph(S_next))'],
+              [f'S_acquired = $ownership_step({acquire})',
+               'S_next = $drive(S_acquired[.TODO = [REF_DYNAMIC (VARIABLE ([120]) 0) 1 0]], 1)',
+               'S_next.COMPLETION = UNSUPPORTED "missing source line"',
+               'S_next.HELD = eps', '$heap_owners($heap_graph(S_next), HCELL 1) = 1',
+               '$heap_valid($heap_graph(S_next))']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):
@@ -319,7 +354,7 @@ def main():
                 (ROOT/'.tools/ownership-failure.watsup').write_text(fixture.read_text())
                 raise AssertionError(f'ownership batch {start}: {run.stdout}{run.stderr}')
     assert before == fingerprint(), 'implementation changed during ownership validation'
-    report = {'result':'pass','classification':'helper-only allocation graph; source element-reference acquisition and GC remain pending',
+    report = {'result':'pass','classification':'helper-only allocation graph; source element-reference targets and GC remain pending',
               'graph_cases':len(graphs),'machine_and_boundary_cases':len(cases)-len(graphs),
               'assertions':sum(map(len,cases)),'seed':8501039,'fingerprint':before,
               'manifest_sha256':hashlib.sha256(json.dumps(cases,sort_keys=True).encode()).hexdigest()}

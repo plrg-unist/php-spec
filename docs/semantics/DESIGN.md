@@ -95,7 +95,8 @@ singleton wrapper without a source-self exception (`zval_add_ref`). Conflicting
 right keys skip the copy constructor. The merge advances its target graph per
 insertion, with both borrowed operand arrays retained until completion. These
 wrapper rules now also have source evidence through variable-source reference
-literals. Element-reference acquisition/assignment and unpacking remain pending.
+literals. Writable element sources now acquire references after path separation;
+element-reference assignment targets and unpacking remain pending.
 
 The allocation helper separates allocated cells/containers from historical backing
 vectors. Incoming ownership counts include repeated root/entry edges, but expand
@@ -121,11 +122,13 @@ isolated constant classification has local builder IDs outside machine task root
 Scalar/read helpers otherwise have no internal pruning or
 callback/suspension boundary. Adding callbacks requires explicit resumable roots.
 
-`CELL` and `LOCATION` remain borrowed on the admitted variable-only acquisition
-paths. `zend_compile_assign_ref` emits `ZEND_MAKE_REF` for a nondirect target and
-non-CV source; that instruction owns a reference across later target acquisition.
-It must be modeled when those element-reference paths are admitted, not replaced
-by a blanket extra cell owner that changes singleton-wrapper copying.
+`CELL` and `LOCATION` remain borrowed after variable/element acquisition.
+`zend_compile_assign_ref` emits `ZEND_MAKE_REF` for a nonliteral target and
+non-CV source; `REF_CAPTURE` moves that cell into an owning `REF_DYNAMIC` task
+across target name consumption. Literal string, integer and float variable targets
+are direct too; they retain the borrowed source protocol. Element acquisition
+uses the existing held path designation and COW helpers, then promotes its final
+direct/uninitialized slot into a cell or borrows its existing alias cell.
 For assignment to a dynamic variable name, a CV source is initialized only after
 the delayed target name is consumed. A non-CV source is acquired before that
 consumer. This differs from literal reference entries, which acquire their source
@@ -143,7 +146,11 @@ identities are also required before repeated literal execution in loops/calls.
 `tests/semantics/ownership.py` checks graph invariants separately from source claims.
 Source anchors are `i_zval_ptr_dtor`, `zend_array_dup_value`, and `zend_gc_collect_cycles`.
 
-Array literals admit references to direct and dynamic variables. Key expressions
+Array literals admit references to direct/dynamic variables and writable array
+elements. Their constant-evaluation prepass visits every value then key before
+checking by-reference flags. Append reads there cause a compiler error with the
+ambient array line; its recursion stops at assignments and variable names.
+Consequently `$x=&$a[]` is valid while `[&$a[]]` is rejected. Key expressions
 are evaluated first; variable acquisition initializes an absent source to null
 before the delayed key is read. Thus `[$x=>&$x]` has a null-key deprecation without
 an undefined-variable warning. `ZEND_ADD_ARRAY_ELEMENT` creates an owning wrapper
@@ -152,7 +159,7 @@ inputs until insertion transfers the reference to an `ALIAS` entry. Duplicate ke
 replace the old entry and release its owner at the task boundary. Earlier `HELD`
 is restored on normal/error/Unsupported paths. The handler-specific extra copy
 around null-key diagnostics remains part of future callback semantics. Source
-anchors are `zend_compile_array` and `ZEND_ADD_ARRAY_ELEMENT`; no element lvalue,
+anchors are `zend_compile_array` and `ZEND_ADD_ARRAY_ELEMENT`; no element reference target,
 by-reference argument/return or foreach support follows from this literal slice.
 
 Write preparation retains delayed name/key operands through RHS evaluation.

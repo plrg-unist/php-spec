@@ -80,6 +80,29 @@ CASES = {
 
 
 CASES.update({
+    'element-source-self-append': b'<?php $x=&$x[];echo $x===null;',
+    'element-source-singleton-copy': b'<?php $x=1;$a=[&$x];unset($x);$b=$a;$y=&$a[0];$y=9;echo $a[0],$b[0];',
+    'element-source-literal-key-order': b'<?php $a=[$k=>&$x[$k]];echo $a[""]===null;',
+    'element-source-target-name-order': b'<?php $a=[];${$k}=&$a[$k];echo ${""}===null;',
+    'element-source-overflow': b'<?php $a=[PHP_INT_MAX=>1];$x=&$a[];',
+    'element-source-false': b'<?php $a=false;$x=&$a[0];echo $x===null;',
+    'element-source-scalar-error': b'<?php $a=1;$x=&$a[0];',
+    'element-source-nested-copy': b'<?php $a=[[1]];$b=$a;$x=&$a[0][0];$x=9;echo $a[0][0],$b[0][0];',
+    'element-source-literal-replaces-container': b'<?php $a=[1];$a=[&$a[0]];$b=$a;$b[0]=9;echo $a[0],$b[0];',
+    'element-source-literal-duplicates': b'<?php $a=[1,2];$b=[0=>&$a[0],0=>&$a[1]];$b[0]=9;echo $a[0],$a[1];',
+    'element-source-literal-appends': b'<?php $a=[];$b=[&$a[],&$a[]];$b[0]=1;$b[1]=2;echo $a[0],$a[1];',
+    'element-source-literal-nested-append-reject': b'<?php echo "unreachable";$b=[&$a[][0]];',
+    'element-source-literal-append-lines': b'<?php\n$b=[\n1,\n&$a[]\n];',
+    'element-source-literal-key-append-reject': b'<?php\n$b=[\n1,\n&$a[$c[]]\n];',
+    'element-source-literal-append-reference-key': b'<?php $a=[];$b=[&$a[($x=&$c[])]];echo $b[0]===null;',
+    'element-source-literal-append-reference-value': b'<?php $b=[($x=&$a[])];echo $b[0]===null;',
+    'element-source-shared-self': b'<?php $a=[&$a];$x=&$a[0];$x=[7];echo $a[0];',
+    'element-source-singleton-self': b'<?php $a=[&$a];$b=$a;unset($a);$x=&$b[0];$x=[7];echo $b[0][0];',
+    'element-source-old-cell': b'<?php $a=[1];echo ($x=&$a[0])+($a=[2])[0];',
+    'element-source-dynamic-target-replaces-container': b'<?php $a=[1];$n="a";echo ($$n=&$a[0])+($a=2);',
+    'element-source-literal-float-target': b'<?php $a=[1];${1.5}=&$a[0];${1.5}=9;echo $a[0];',
+    'element-source-multiline': b'<?php\n$x=&\n$a[\n$k\n];echo $x===null;',
+    'element-source-nested-false-line': b'<?php\n$a=[false];\n$x=&$a[0][\n0\n];echo $x===null;',
     'reference-cv-timing-string-name': b'<?php ${${"x"}}=&${"x"};echo ${""}===null;',
     'reference-cv-timing-integer-name': b'<?php ${${12}}=&${12};echo ${""}===null;',
     'reference-cv-timing-captured-target': b'<?php $n="x";${$$n}=&$x;echo ${""}===null;',
@@ -329,6 +352,10 @@ CONFORMANCE += ['reference-cv-source-initialization', 'reference-cv-source-multi
                 'float-variable-name-delayed', 'overflow-float-variable-name-delayed',
                 'negative-float-variable-name-captured', 'boolean-variable-name-captured',
                 'reference-float-cv-initialization']
+CONFORMANCE += ['element-reference-source-copy', 'element-reference-source-append',
+                'element-reference-source-nested-missing', 'element-reference-literal-copy',
+                'element-reference-dynamic-name', 'element-reference-source-container-rebind',
+                'element-reference-source-existing-wrapper']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -435,7 +462,7 @@ def main():
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $a=[[1]];$b=[&$a[0]];', b'<?php $a="abc";unset($a[0][0]);',
+                       b'<?php $a=[1];$x=2;$a[0]=&$x;', b'<?php $a="abc";unset($a[0][0]);',
                        b'<?php $a=[...[]];', b'<?php $a=[[]=>1];',
                        b'<?php echo $http_response_header;',
                        b'<?php $http_response_header=1;echo $http_response_header;']:
@@ -482,7 +509,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and array literal (including variable references)/read/write/unset checked execution fixtures', 'profile': PROFILE,
+    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and array literal/read/write/unset plus variable and element reference-source checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage' / ('results-semantic-source-selected.jsonl' if args.prefix else 'results-semantic-source.jsonl')
