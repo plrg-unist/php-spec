@@ -35,9 +35,9 @@ timeouts and interrupted campaigns never count as validation passes.
   pruning, owning reference results, COW/union and variable-source literal refs
   `4b954dfa` and CV timing/classification repair `eea66b2d` are reviewed.
   Element-reference targets `f56e12bc` are reviewed; scalar/string dimensions next.
-- Static worker: structural source-unit occurrences `898f0152` reviewed; next
-  namespace/import compiler contexts and ordered compile-task barriers, then
-  declaration descriptors before further linking.
+- Static worker: structural source-unit occurrences `898f0152` and bounded
+  namespace/import contexts `891c2c95` reviewed; next checked compiler-location
+  metadata and valid import-alias frontend repair, then further declarations.
   [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md) records reviewed helper
   interfaces and pending applicability, internal metadata, linking and activation.
   Coordinate source-unit/task integration with the references owner.
@@ -87,6 +87,14 @@ timeouts and interrupted campaigns never count as validation passes.
   expanded 32 sources passed. Exact AST retention and unit/path identity are
   representation checks, with no source compile/evaluation agreement claimed.
   See [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md).
+- Namespace/import compiler helper `891c2c95`: **211 original checked prefix
+  comparisons** plus 64 independent alternates passed; 24 explicit seen-symbol
+  inputs, 6 work barriers, 3 environments, 13 resumption/missing-brace cases and
+  4 negatives. The multiline import-line defect is resolved and
+  [raw history retained](coverage/semantics/compiler-context-line-disagreement.json).
+  Anonymous brace locations and 12 valid function/constant alias frontend gaps
+  remain pending. Edited helper cases do not close source gaps; body compilation
+  and source runtime activation remain pending.
 - **131 independent oracle targets**, 55 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
@@ -107,9 +115,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 Review scalar/string dimension reads and subsequent writable/reference contexts,
 preserving key conversion, diagnostic and temporary-owner timing. Element-target
-and array-prepass witnesses remain mandatory. Source-context review found multiline
-import diagnostic lines differ from statement starts; correction and fresh
-independent compiler-helper evidence are required before acceptance.
+and array-prepass witnesses remain mandatory. The reviewed compiler helper uses name-derived import/namespace lines. Next
+repair missing anonymous-brace metadata and import-alias frontend acceptance,
+then independently validate the complete syntax corpus in an immutable snapshot.
 The next static source-context traversal and class linking must preserve pinned
 phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source

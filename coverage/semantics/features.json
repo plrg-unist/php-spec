@@ -1929,10 +1929,17 @@
       "obligations": [
         "source.imports"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
+      "helper_tests": [
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
+      ]
     },
     {
       "node": "Stmt_HaltCompiler",
@@ -2007,10 +2014,17 @@
         "source.namespaces",
         "static.namespaces"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
+      "helper_tests": [
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
+      ]
     },
     {
       "node": "Stmt_Nop",
@@ -2161,10 +2175,17 @@
       "obligations": [
         "source.imports"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
+      "helper_tests": [
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
+      ]
     },
     {
       "node": "Stmt_While",
@@ -2201,10 +2222,17 @@
       "obligations": [
         "source.imports"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
+      "helper_tests": [
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
+      ]
     },
     {
       "node": "VarLikeIdentifier",
@@ -2303,15 +2331,21 @@
     {
       "id": "source.namespaces",
       "milestone": "0b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php",
         "tests/semantics/conformance/constant-import-mixed-namespace.php",
@@ -2322,15 +2356,21 @@
     {
       "id": "source.imports",
       "milestone": "0b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php",
         "tests/semantics/conformance/constant-import-mixed-namespace.php",
@@ -4795,17 +4835,21 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/21-source-context.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
-        "coverage/semantics/static-types.json"
+        "coverage/semantics/static-types.json",
+        "tests/semantics/source_context.py",
+        "coverage/semantics/source-context.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "review": "Independent bounded namespace/import compiler-context review 891c2c95: 211 original checked source-prefix comparisons plus 64 independent alternates; 24 explicit seen-symbol inputs, 6 work barriers, 3 environment consumers, 13 resumption/missing-brace cases and 4 negatives passed. Separately retained 45 frontend rejections, including 12 accepted-PHP function/constant alias gaps and 18 edited-alias helpers. Import/name compiler lines use checked name metadata; missing anonymous brace locations are Unsupported. Ordinary statement/body/default compilation, complete namespace diagnostics and source runtime activation remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-iterable-global.php",
         "tests/semantics/conformance/type-iterable-namespaced.php",

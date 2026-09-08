@@ -102,7 +102,7 @@ The three `constant-import-*` [oracle targets](../../tests/semantics/conformance
 retain this case/order distinction. It must follow the pin during compiler-context
 integration; no intentional divergence or source-semantic coverage is claimed.
 
-## Compiler-context import lines: specification defect under correction
+## Compiler-context import lines: resolved specification defect
 
 Multiline imports use the pinned compiler AST's name anchor rather than the
 PHP-Parser statement start. `use` followed by a newline and `A,A;` emits both
@@ -114,6 +114,7 @@ the fatal on line 4 in PHP and line 3 in the helper.
 [Five raw disagreements](../../coverage/semantics/compiler-context-line-disagreement.json)
 retain original source bytes, parsed nodes, exact oracle streams/status and the
 helper's diagnostic events under its recorded implementation fingerprint.
-Correct the checked compiler location before accepting this helper. Missing
-location metadata needs an explicit boundary; it cannot justify guessing a line.
-No intentional divergence is selected, and no source activation is claimed.
+Commit `891c2c95` uses the first imported name, group prefix or named namespace
+location; 211 mandatory prefix comparisons and 64 independent alternates passed.
+Anonymous namespace brace metadata remains an explicit Unsupported boundary when
+a diagnostic needs it. No intentional divergence or source activation is claimed.
