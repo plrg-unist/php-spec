@@ -94,8 +94,8 @@ duplicates its left entries with this rule, while the right merge unwraps every
 singleton wrapper without a source-self exception (`zval_add_ref`). Conflicting
 right keys skip the copy constructor. The merge advances its target graph per
 insertion, with both borrowed operand arrays retained until completion. These
-wrapper rules have helper graph evidence; source embedded
-reference construction and unpacking remain pending.
+wrapper rules now also have source evidence through variable-source reference
+literals. Element-reference acquisition/assignment and unpacking remain pending.
 
 The allocation helper separates allocated cells/containers from historical backing
 vectors. Incoming ownership counts include repeated root/entry edges, but expand
@@ -105,7 +105,7 @@ This distinction is observable in singleton-reference array copying before versu
 after `gc_collect_cycles`. The pure graph collection operation has no PHP trigger,
 return-count, destructor or automatic-GC claim. The source driver now prunes
 after each completed task transition. Location separation also prunes after
-discarding its borrowed lookup result; embedded reference construction remains pending.
+discarding its borrowed lookup result; source GC remains pending.
 
 Captured task operands, array builders and explicit `HELD` values contribute roots;
 delayed variable descriptors borrow their cells. Task transitions move captured
@@ -136,6 +136,18 @@ Constant-pool roots and source-unit/compiled-occurrence
 identities are also required before repeated literal execution in loops/calls.
 `tests/semantics/ownership.py` checks graph invariants separately from source claims.
 Source anchors are `i_zval_ptr_dtor`, `zend_array_dup_value`, and `zend_gc_collect_cycles`.
+
+Array literals admit references to direct and dynamic variables. Key expressions
+are evaluated first; variable acquisition initializes an absent source to null
+before the delayed key is read. Thus `[$x=>&$x]` has a null-key deprecation without
+an undefined-variable warning. `ZEND_ADD_ARRAY_ELEMENT` creates an owning wrapper
+temporary before key conversion; `HELD` retains that cell and captured key/builder
+inputs until insertion transfers the reference to an `ALIAS` entry. Duplicate keys
+replace the old entry and release its owner at the task boundary. Earlier `HELD`
+is restored on normal/error/Unsupported paths. The handler-specific extra copy
+around null-key diagnostics remains part of future callback semantics. Source
+anchors are `zend_compile_array` and `ZEND_ADD_ARRAY_ELEMENT`; no element lvalue,
+by-reference argument/return or foreach support follows from this literal slice.
 
 Write preparation retains delayed name/key operands through RHS evaluation.
 Dimension assignment acquires a keyed slot before reading a delayed RHS, whereas

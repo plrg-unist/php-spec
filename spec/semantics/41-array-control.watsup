@@ -35,6 +35,27 @@ rule PhpStep/array-key-abrupt: S ~> S_key[.TODO = eps]
   -- if S_read.COMPLETION = NORMAL
   -- if S_key = $key_operand(S_read, poperand, z)
   -- if S_key.COMPLETION =/= NORMAL
+
+rule PhpStep/array-reference-unkeyed: S ~> S[.TODO = [ACQUIRE expression, ARRAY_REF_VALUE n eps phpType13_tail* $compiled_line(expression)] ++ ptask_tail*]
+  -- if S.TODO = (ARRAY_NEXT n ((NArrayItem ABSENT expression (BOOLEAN true) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
+rule PhpStep/array-reference-keyed: S ~> S[.TODO = [EVAL expression_key, ARRAY_REF_KEY n expression phpType13_tail*] ++ ptask_tail*]
+  -- if S.TODO = (ARRAY_NEXT n ((NArrayItem phpType5 expression (BOOLEAN true) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
+  -- if phpType5 = expression_key
+rule PhpStep/array-reference-key: S ~> S[.TODO = [ACQUIRE expression, ARRAY_REF_VALUE n (S.RESULT) phpType13_tail* $compiled_line(expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (ARRAY_REF_KEY n expression phpType13_tail*) :: ptask_tail*
+rule PhpStep/array-reference-value-unkeyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (ARRAY_REF_VALUE n eps phpType13_tail* z) :: ptask_tail*
+  -- if S_out = $literal_item_insert($hold_literal_reference(S), n, eps, ALIAS S.CELL, z)
+rule PhpStep/array-reference-value-keyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (ARRAY_REF_VALUE n (poperand) phpType13_tail* z) :: ptask_tail*
+  -- if S_key = $key_operand($hold_literal_reference(S), poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_out = $literal_item_insert(S_key, n, (S_key.KEY), ALIAS S.CELL, z)
+rule PhpStep/array-reference-key-abrupt: S ~> S_key[.TODO = eps][.HELD = S.HELD][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (ARRAY_REF_VALUE n (poperand) phpType13_tail* z) :: ptask_tail*
+  -- if S_key = $key_operand($hold_literal_reference(S), poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+
 rule PhpStep/dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), DIM_FETCH $compiled_line(expression_key)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key

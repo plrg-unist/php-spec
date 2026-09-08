@@ -93,13 +93,15 @@ def $key_operand(S, poperand, z) = $key_value(S_read, pvalue, $undefined_operand
   -- if S_read.RESULT = KNOWN pvalue
 
 dec $literal_insert(pstate, nat, pkey?, pvalue, int) : pstate
-def $literal_insert(S, n_array, (pkey), pvalue, z) = S[.ARRAYS = $array_replace(S.ARRAYS, n_array, $array_insert(S.ARRAYS[n_array], pkey, DIRECT pvalue))]
-def $literal_insert(S, n_array, eps, pvalue, z) = S[.ARRAYS = $array_replace(S.ARRAYS, n_array, $array_insert(S.ARRAYS[n_array], pkey, DIRECT pvalue))]
+dec $literal_item_insert(pstate, nat, pkey?, pitem, int) : pstate
+def $literal_insert(S, n_array, pkey?, pvalue, z) = $literal_item_insert(S, n_array, pkey?, DIRECT pvalue, z)
+def $literal_item_insert(S, n_array, (pkey), pitem, z) = S[.ARRAYS = $array_replace(S.ARRAYS, n_array, $array_insert(S.ARRAYS[n_array], pkey, pitem))]
+def $literal_item_insert(S, n_array, eps, pitem, z) = S[.ARRAYS = $array_replace(S.ARRAYS, n_array, $array_insert(S.ARRAYS[n_array], pkey, pitem))]
   -- if pkey = $array_append_key(S.ARRAYS[n_array])
   -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = eps
-def $literal_insert(S, n_array, eps, pvalue, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,97,100,100,32,101,108,101,109,101,110,116,32,116,111,32,116,104,101,32,97,114,114,97,121,32,97,115,32,116,104,101,32,110,101,120,116,32,101,108,101,109,101,110,116,32,105,115,32,97,108,114,101,97,100,121,32,111,99,99,117,112,105,101,100], z)
+def $literal_item_insert(S, n_array, eps, pitem, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,97,100,100,32,101,108,101,109,101,110,116,32,116,111,32,116,104,101,32,97,114,114,97,121,32,97,115,32,116,104,101,32,110,101,120,116,32,101,108,101,109,101,110,116,32,105,115,32,97,108,114,101,97,100,121,32,111,99,99,117,112,105,101,100], z)
   -- if pkey = $array_append_key(S.ARRAYS[n_array])
-  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (pitem)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (pitem_old)
 
 dec $entry_value(pstate, pitem) : pvalue
 def $entry_value(S, DIRECT pvalue) = pvalue

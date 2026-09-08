@@ -173,22 +173,26 @@ def $check_expression(NExprArrayDimFetch expression_1 phpType5 metadata) = REJEC
 def $check_expression(expression) = REJECT (UNSUPPORTED "expression")
   -- otherwise
 
+dec $check_array_value(expression, bool) : pcheck
+def $check_array_value(expression, false) = $check_expression(expression)
+def $check_array_value(expression, true) = $check_lvalue(expression)
+
 def $check_array_items(eps) = READY
-def $check_array_items((NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)
-  -- if $check_expression(expression) = READY
-def $check_array_items((NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
-  -- if $check_expression(expression) = REJECT pcompletion
-def $check_array_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)
+def $check_array_items((NArrayItem ABSENT expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)
+  -- if $check_array_value(expression, b) = READY
+def $check_array_items((NArrayItem ABSENT expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
+  -- if $check_array_value(expression, b) = REJECT pcompletion
+def $check_array_items((NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13_tail*) = $check_array_items(phpType13_tail*)
   -- if phpType5 = expression_key
   -- if $check_expression(expression_key) = READY
-  -- if $check_expression(expression) = READY
-def $check_array_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
+  -- if $check_array_value(expression, b) = READY
+def $check_array_items((NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
   -- if phpType5 = expression_key
   -- if $check_expression(expression_key) = REJECT pcompletion
-def $check_array_items((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
+def $check_array_items((NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13_tail*) = REJECT pcompletion
   -- if phpType5 = expression_key
   -- if $check_expression(expression_key) = READY
-  -- if $check_expression(expression) = REJECT pcompletion
+  -- if $check_array_value(expression, b) = REJECT pcompletion
 def $check_array_items(phpType13*) = REJECT (UNSUPPORTED "array references or unpacking")
   -- otherwise
 
@@ -335,4 +339,3 @@ def $echo_value(PINT z) = $decimal_integer(z)
 def $echo_value(PSTRING n*) = n*
 def $echo_value(PFLOAT n) = n_out*
   -- if (n_out*, b_warning) = $number_text(NFLOAT n, 14)
-

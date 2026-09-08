@@ -109,6 +109,9 @@ def $task_nodes(ARRAY_NEXT n phpType13*) = [HARRAY n]
 def $task_nodes(ARRAY_KEY n expression phpType13*) = [HARRAY n]
 def $task_nodes(ARRAY_VALUE n eps phpType13* z) = [HARRAY n]
 def $task_nodes(ARRAY_VALUE n (poperand) phpType13* z) = [HARRAY n] ++ $operand_nodes(poperand)
+def $task_nodes(ARRAY_REF_KEY n expression phpType13*) = [HARRAY n]
+def $task_nodes(ARRAY_REF_VALUE n eps phpType13* z) = [HARRAY n]
+def $task_nodes(ARRAY_REF_VALUE n (poperand) phpType13* z) = [HARRAY n] ++ $operand_nodes(poperand)
 def $task_nodes(BINARY_RIGHT pbin poperand z) = $operand_nodes(poperand)
 def $task_nodes(WRITE_DYNAMIC poperand z) = $operand_nodes(poperand)
 def $task_nodes(REF_DYNAMIC poperand z) = $operand_nodes(poperand)
@@ -161,6 +164,12 @@ def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATI
 dec $hold_task_inputs(pstate) : pstate
 def $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD ++ $task_nodes(ptask) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)]
   -- if S.TODO = ptask :: ptask_tail*
+
+;; ADD_ARRAY_ELEMENT owns the acquired wrapper before delayed key conversion.
+;; Acquisition itself remains borrowed; insertion moves this owner into ALIAS.
+dec $hold_literal_reference(pstate) : pstate
+def $hold_literal_reference(S) = S_inputs[.HELD = S_inputs.HELD ++ [HCELL S.CELL]]
+  -- if S_inputs = $hold_task_inputs(S)
 
 ;; Called on completed task states and the explicit location-separation boundary
 ;; below. Other helpers may borrow RESULT and must not prune without holding inputs.

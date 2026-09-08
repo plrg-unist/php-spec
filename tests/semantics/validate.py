@@ -80,6 +80,35 @@ CASES = {
 
 
 CASES.update({
+    'array-reference-literal-write': b'<?php $x=1;$a=[&$x];$a[0]=7;echo $x;$x=9;echo $a[0];',
+    'array-reference-literal-initialize': b'<?php $a=[&$x];echo $a[0]===null,$x===null;$x=7;echo $a[0];',
+    'array-reference-literal-nested-shared': b'<?php $x=[1];$a=[&$x];$b=$a;$b[0][0]=9;echo $x[0],$a[0][0],$b[0][0];',
+    'array-reference-literal-nested-singleton': b'<?php $x=[1];$a=[&$x];unset($x);$b=$a;$b[0][0]=9;echo $a[0][0],$b[0][0];',
+    'array-reference-literal-value-overwrite': b'<?php $x=1;$a=[0=>&$x,0=>2];$a[0]=9;echo $x,$a[0];',
+    'array-reference-literal-ref-overwrite': b'<?php $x=1;$y=2;$a=[0=>&$x,0=>&$y];$a[0]=9;echo $x,$y;',
+    'array-reference-literal-unset-entry': b'<?php $x=1;$a=[&$x];unset($a[0]);$a[]=7;echo $x,$a[1];',
+    'array-reference-literal-rebind': b'<?php $x=1;$y=2;$a=[&$x];$x=&$y;$a[0]=9;echo $a[0],$x,$y;',
+    'array-reference-literal-self': b'<?php $a=[&$a];echo $a[0]===$a;$a[1]=7;echo $a[0][1];',
+    'array-reference-literal-self-copy': b'<?php $a=[&$a];$b=$a;unset($a);$c=$b;$c[0]=[7];echo ($b[0]===[7])+0;',
+    'array-reference-literal-self-union-left': b'<?php $a=[&$a];$b=$a;unset($a);$c=$b+[1=>2];$c[0]=[7];echo ($b[0]===[7])+0;',
+    'array-reference-literal-self-union-right': b'<?php $a=[&$a];$b=$a;unset($a);$c=[1=>2]+$b;$c[0]=[7];echo ($b[0]===[7])+0;',
+    'array-reference-literal-dead-cycle': b'<?php $x=1;$a=[&$x];$dead=[&$x,&$dead];unset($x,$dead);$b=$a;$b[]=0;$b[0]=9;echo $a[0],$b[0];',
+    'array-reference-literal-dead-acyclic': b'<?php $x=1;$a=[&$x];$dead=[&$x];unset($x,$dead);$b=$a;$b[]=0;$b[0]=9;echo $a[0],$b[0];',
+    'array-reference-literal-key-acquires': b'<?php\n$a=[$x=>&$x];echo $a[""]===null;',
+    'array-reference-literal-key-missing': b'<?php\n$a=[$x=>&$y];echo $a[""]===null;',
+    'array-reference-literal-key-captured': b'<?php\n$n="x";$a=[$$n=>&$x];echo $a[""]===null;',
+    'array-reference-literal-key-dynamic': b'<?php $n="x";$a=[$n=>&${$n="y"}];echo $a["y"]===null;',
+    'array-reference-literal-key-ref': b'<?php $n="x";$a=[($q=&$n)=>&${$n="y"}];echo $a["y"]===null;',
+    'array-reference-literal-key-old-cell': b'<?php $n="x";$m="y";$a=[($q=&$n)=>&${[($n=&$m),($q=&$m),"y"][2]}];$y=7;echo $a["x"];',
+    'array-reference-literal-key-order': b'<?php $n="x";$x=1;$y=2;$a=[($n="y")=>&$$n];$a["y"]=9;echo $x,$y;',
+    'array-reference-literal-key-lines': b'<?php\n$a=[\n$x\n=>&\n$y\n];echo $a[""]===null;',
+    'array-reference-literal-null-key-lines': b'<?php\n$a=[\nnull\n=>&\n$x\n];echo $a[""]===null;',
+    'array-reference-literal-overflow': b'<?php\n$a=[PHP_INT_MAX=>&$x,&$y];',
+    'array-reference-literal-union-conflict': b'<?php $x=1;$a=[&$x];unset($x);$b=[0=>2]+$a;$b[0]=9;echo $a[0],$b[0];',
+})
+
+
+CASES.update({
     'reference-result-mutated-value': b'<?php $a=1;echo ($x=&$a)+($a=2);',
     'reference-result-mutated-type': b'<?php $a=1;echo ($x=&$a)===($a="1");',
     'reference-result-rebound-name': b'<?php $a=1;$b=2;echo ($x=&$a)+($a=&$b);',
@@ -283,6 +312,9 @@ CASES.update({
 
 # Independent review-authored witnesses keep their original provenance.
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
+CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
+                'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
+                'array-reference-key-acquisition', 'array-reference-delayed-key']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -389,7 +421,7 @@ def main():
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $x=1;$a=[&$x];', b'<?php $a="abc";unset($a[0][0]);',
+                       b'<?php $a=[[1]];$b=[&$a[0]];', b'<?php $a="abc";unset($a[0][0]);',
                        b'<?php $a=[...[]];', b'<?php $a=[[]=>1];',
                        b'<?php echo $http_response_header;',
                        b'<?php $http_response_header=1;echo $http_response_header;']:
@@ -436,7 +468,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures', 'profile': PROFILE,
+    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and array literal (including variable references)/read/write/unset checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage' / ('results-semantic-source-selected.jsonl' if args.prefix else 'results-semantic-source.jsonl')

@@ -266,6 +266,33 @@ def main():
                'S_next.HELD = eps', 'S_next.ALLOCATIONS = [HCELL 2, HARRAY 2]',
                'S_next.ARRAYS[2].ITEMS = [ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 2)]',
                '$heap_valid($heap_graph(S_next))']]
+    literal = (initial+'[.STORE = [DEFINED (PINT 1)]][.ENV = [BIND ([120]) 0]]'
+               '[.ARRAYS = [{ITEMS eps, NEXT 0}]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]'
+               '[.TODO = [ARRAY_REF_VALUE 0 eps eps 1]]')
+    cases += [[f'S_next = $hold_literal_reference({literal})',
+               'S_next.HELD = [HARRAY 0, HCELL 0]',
+               '$heap_owners($heap_graph(S_next), HCELL 0) = 2',
+               '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $ownership_step({literal})', 'S_next.HELD = eps',
+               'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 0)]',
+               '$heap_owners($heap_graph(S_next), HCELL 0) = 2',
+               '$heap_valid($heap_graph(S_next))'],
+              ['$tasks_nodes([ARRAY_REF_KEY 0 (NScalarInt (INTEGER 1) eps) eps, ARRAY_REF_VALUE 1 (REFERENCE 2) eps 1]) = [HARRAY 0, HARRAY 1, HCELL 2]'],
+              [f'S_next = $ownership_step({initial}[.RESULT = REFERENCE 0][.TODO = [ARRAY_REF_KEY 1 (NExprVariable (BYTES "eA==") eps) eps]])',
+               '$machine_roots(S_next) = [HARRAY 1, HCELL 0]', 'S_next.RESULT = KNOWN PNULL']]
+    for key, line in (('PNULL', 0), ('PARRAY 0', 1)):
+        cases.append([f'S_next = $drive({literal}[.HELD = [HCELL 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN ({key})) eps {line}]], 1)',
+                      'S_next.COMPLETION =/= NORMAL', 'S_next.HELD = eps',
+                      'S_next.ALLOCATIONS = [HCELL 0]', '$heap_valid($heap_graph(S_next))'])
+    cases += [[f'S_next = $ownership_step({literal}[.HELD = [HCELL 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN PNULL) eps 1]])',
+               'S_next.COMPLETION = NORMAL', 'S_next.HELD = [HCELL 0]',
+               '|S_next.EVENTS| = 1', 'S_next.ARRAYS[0].ITEMS = [ENTRY (KSTRING eps) (ALIAS 0)]'],
+              [f'S_next = $drive({literal}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT (PINT 0))]), NEXT 9223372036854775807}}]], 1)',
+               'S_next.COMPLETION =/= NORMAL', 'S_next.ALLOCATIONS = [HCELL 0]',
+               'S_next.HELD = eps', '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $prune_allocations($ownership_step({literal}[.STORE = [DEFINED (PINT 1), DEFINED (PINT 2)]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN (PINT 0)) eps 1]]))',
+               'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]',
+               'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 0)]', '$heap_valid($heap_graph(S_next))']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):
@@ -278,7 +305,7 @@ def main():
                 (ROOT/'.tools/ownership-failure.watsup').write_text(fixture.read_text())
                 raise AssertionError(f'ownership batch {start}: {run.stdout}{run.stderr}')
     assert before == fingerprint(), 'implementation changed during ownership validation'
-    report = {'result':'pass','classification':'helper-only allocation graph; source embedded references and GC remain pending',
+    report = {'result':'pass','classification':'helper-only allocation graph; source element-reference acquisition and GC remain pending',
               'graph_cases':len(graphs),'machine_and_boundary_cases':len(cases)-len(graphs),
               'assertions':sum(map(len,cases)),'seed':8501039,'fingerprint':before,
               'manifest_sha256':hashlib.sha256(json.dumps(cases,sort_keys=True).encode()).hexdigest()}

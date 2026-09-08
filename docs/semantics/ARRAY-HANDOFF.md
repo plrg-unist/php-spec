@@ -2,9 +2,10 @@
 
 Read PLAN.md, PROGRESS.md, DESIGN.md and the php/php-spec/p4-spectec skills first.
 The current source machine supports ordinary ordered arrays, delayed dimension
-reads, simple/nested writes, append and unset. Variable-cell aliases work. Embedded
-array references, foreach, callbacks and source GC are still pending. Do not infer
-source support from the existing ALIAS constructor or pure ownership helpers.
+reads, simple/nested writes, append and unset. Variable-cell aliases and literal
+references to direct/dynamic variables work. Element-reference acquisition and
+assignment, foreach, callbacks and source GC are still pending. Do not infer
+those paths from the ALIAS constructor or pure ownership helpers.
 Reference-assignment expressions now return owning `REFERENCE` operands. Their
 cell identity is captured but their contained value is read by the consumer;
 keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
@@ -37,16 +38,17 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
    `CELL`/`LOCATION` remain borrowed for admitted variable-only references;
    `zend_compile_assign_ref`/`ZEND_MAKE_REF` identify the precise future owned
    acquisition cases. Extend task-root dispatch whenever adding captured tasks.
-2. Conditional COW and singleton unwrapping now have pure helper rules; validate
-   them through source embedded references next. `zend_array_dup_value` unwraps a
+2. Conditional COW and singleton unwrapping have helper and variable-reference
+   literal source tests. `zend_array_dup_value` unwraps a
    singleton reference except when its value is the source container itself.
    Union duplicates left entries this way; right-merge singleton wrappers unwrap
    even for source-self references (`zval_add_ref`). Conflicting keys skip copying.
    Entry copying counts a pruned graph projection rooted at its borrowed source;
    it leaves caller allocations intact for constant-classifier local builders.
    Unreachable cycles remain owners until collection; dead acyclic allocations do not.
-3. Admit literal/element reference acquisition and assignment in small reviewed
-   increments, preserving designation and diagnostic order. Reuse singleton,
+3. Literal reference tasks now hold an acquired cell before delayed key conversion,
+   then move its owner into an ALIAS entry. Admit element reference acquisition
+   and assignment next, preserving designation and diagnostic order. Reuse singleton,
    shared-container, nested-reference and cycle oracle targets before foreach.
 4. Before repeated literal execution, add explicit source-unit/compiled-occurrence
    identities and persistent literal-pool roots. One constant literal occurrence

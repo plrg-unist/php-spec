@@ -7,6 +7,7 @@ syntax pnode = HCELL nat | HARRAY nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | NOWHERE
 syntax ptask = DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
+  | ARRAY_REF_KEY nat expression phpType13* | ARRAY_REF_VALUE nat poperand? phpType13* int
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
