@@ -89,3 +89,15 @@ not excluded comparisons. Commit `eea66b2d` corrects both defects; all nine witn
 mandatory 439-case source gate, alongside 25 negative checks. Historical
 observations remain unchanged in the raw record; its resolution binds the
 accepted source IDs and fingerprint. No intentional divergence is selected.
+
+## Constant-import seen-symbol casing: observed pin behavior
+
+After `namespace Ns; const X=1;`, `use const Other\Y as X;` is accepted.
+Changing the namespace spelling to `ns` rejects the import as already in use.
+Putting the import before the declaration rejects the declaration with either
+namespace spelling. `zend_compile_use` lowercases the namespace prefix of its
+seen-symbol key, while `zend_compile_const_decl` registers the original spelling.
+
+The three `constant-import-*` [oracle targets](../../tests/semantics/conformance/cases.json)
+retain this case/order distinction. It must follow the pin during compiler-context
+integration; no intentional divergence or source-semantic coverage is claimed.

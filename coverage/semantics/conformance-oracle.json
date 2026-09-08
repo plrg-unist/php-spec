@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "9d1f7d9a9ec2051655d14bd65909a17008c8664e7da46ed822c2be5f3e3e485f",
+    "tests/semantics/conformance/cases.json": "67ac58c61446a9c15c5c4c2aa5d0412002ae171d75991abe12529b8b97d20cbb",
     "tests/semantics/conformance/oracle.py": "41164985f592c3bb439fe1b663d3a74fe335a122f9ae8c676ede8083925a396b",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -150,6 +150,9 @@
     "tests/semantics/conformance/element-reference-target-before-cv.php": "84c8aff7b6dcf12f40a939925c8ffe9adc67c1e94938db8d8ad14b1bd9ffd134",
     "tests/semantics/conformance/element-reference-source-existing-wrapper.php": "781716506334d50f5d2cea2f34f6e40970d9651b93a547eb8989b91a8c3b7837",
     "tests/semantics/conformance/element-reference-string-rejection.php": "5623059ffedf58d0cb667dc2496de5e845829d9823432226dfd8bb95cfc6e0ab",
+    "tests/semantics/conformance/constant-import-mixed-namespace.php": "ddc6297eb3be5e0b9fca0a572f8687ea224c7f8919425447afbd22f514698c91",
+    "tests/semantics/conformance/constant-import-lower-namespace.php": "ebee58fa0735e81887d51a55a919b95bc27137f41b81fa002db9631802969bde",
+    "tests/semantics/conformance/constant-import-before-declaration.php": "aab72e0f140353aeca4d3ff73f07d5a21ef3750dabcc2ce040005efd65f76f5f",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
@@ -1166,6 +1169,36 @@
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "",
       "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIHJlZmVyZW5jZXMgdG8vZnJvbSBzdHJpbmcgb2Zmc2V0cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvZWxlbWVudC1yZWZlcmVuY2Utc3RyaW5nLXJlamVjdGlvbi5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9lbGVtZW50LXJlZmVyZW5jZS1zdHJpbmctcmVqZWN0aW9uLnBocCBvbiBsaW5lIDEK",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "constant-import-mixed-namespace",
+      "source_sha256": "ddc6297eb3be5e0b9fca0a572f8687ea224c7f8919425447afbd22f514698c91",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/constant-import-mixed-namespace.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "constant-import-lower-namespace",
+      "source_sha256": "ebee58fa0735e81887d51a55a919b95bc27137f41b81fa002db9631802969bde",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/constant-import-lower-namespace.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgY29uc3QgT3RoZXJcWSBhcyBYIGJlY2F1c2UgdGhlIG5hbWUgaXMgYWxyZWFkeSBpbiB1c2UgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL2NvbnN0YW50LWltcG9ydC1sb3dlci1uYW1lc3BhY2UucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "constant-import-before-declaration",
+      "source_sha256": "aab72e0f140353aeca4d3ff73f07d5a21ef3750dabcc2ce040005efd65f76f5f",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/constant-import-before-declaration.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCBkZWNsYXJlIGNvbnN0IE5zXFggYmVjYXVzZSB0aGUgbmFtZSBpcyBhbHJlYWR5IGluIHVzZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvY29uc3RhbnQtaW1wb3J0LWJlZm9yZS1kZWNsYXJhdGlvbi5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
       "exit_status": 255,
       "expected_match": true
     }

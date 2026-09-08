@@ -1440,6 +1440,48 @@
       "expected_exit_status": 255,
       "provenance": "independently authored and oracle-probed before element-reference implementation; not derived from a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "constant-import-mixed-namespace",
+      "file": "tests/semantics/conformance/constant-import-mixed-namespace.php",
+      "purpose": "Mixed-case namespace prefix misses the import seen-constant lookup after a declaration.",
+      "obligations": [
+        "source.imports",
+        "source.namespaces"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independent source pin probe of zend_compile_use and zend_compile_const_decl; follow observed case/order behavior",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "constant-import-lower-namespace",
+      "file": "tests/semantics/conformance/constant-import-lower-namespace.php",
+      "purpose": "Lowercase namespace prefix collides in the import seen-constant lookup.",
+      "obligations": [
+        "source.imports",
+        "source.namespaces"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot use const Other\\Y as X because the name is already in use in {FILE} on line 1\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independent source pin probe of zend_compile_use and zend_compile_const_decl; follow observed case/order behavior",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "constant-import-before-declaration",
+      "file": "tests/semantics/conformance/constant-import-before-declaration.php",
+      "purpose": "A prior constant import conflicts with a later declaration in mixed-case namespace.",
+      "obligations": [
+        "source.imports",
+        "source.namespaces"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot declare const Ns\\X because the name is already in use in {FILE} on line 1\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independent source pin probe of zend_compile_use and zend_compile_const_decl; follow observed case/order behavior",
+      "semantic_status": "pending"
     }
   ]
 }

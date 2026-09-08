@@ -1,0 +1,1 @@
+<?php namespace Ns; use const Other\Y as X; const X=1;
