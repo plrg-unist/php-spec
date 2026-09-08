@@ -65,6 +65,9 @@ are never successful validation, and incomplete families stay visible.
   `tests/semantics/conformance`, report `conformance-oracle.json`. These are
   oracle-only expectations, not implemented semantics. Null-key PHP 8.5
   deprecations and delayed dynamic-name assignment are retained.
+- Source audit added 5 assertion obligations (302 runtime obligations total):
+  direct/dynamic calls differ in argument elision and generated descriptions.
+  Assertion controls/errors stay in scope rather than ordinary-library exclusions.
 - No intentional engine disagreement.
 
 Inventory gate: `python3 scripts/check-semantic-inventory.py`; `--complete` also

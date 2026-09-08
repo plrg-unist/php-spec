@@ -11,7 +11,7 @@
     "metadata": "Independent review establishes no standalone dynamic action; contextual obligations still apply."
   },
   "constructor_count": 169,
-  "runtime_obligation_count": 297,
+  "runtime_obligation_count": 302,
   "constructors": [
     {
       "node": "Arg",
@@ -863,7 +863,10 @@
       "obligations": [
         "calls.name-resolution",
         "calls.positional",
-        "calls.first-class-callable"
+        "calls.first-class-callable",
+        "static.assertion-elision",
+        "source.assertion-description",
+        "protocols.assert"
       ],
       "status": "pending",
       "implementation": [],
@@ -6256,6 +6259,71 @@
       "source_tests": [],
       "evidence": [
         "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.assertion-elision",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.assertion-description",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_ast.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.assert",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/ext/standard/assert.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.assert_options",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/ext/standard/assert.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.assertion-failure",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/ext/standard/assert.c"
       ],
       "review": null
     }

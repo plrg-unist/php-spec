@@ -67,6 +67,7 @@ including argument binding, visibility, callbacks and abrupt completion.
 | `exit`, `die`, `clone` | Callable forms are builtin declarations at this pin; clone includes its property-update argument; `Zend/zend_builtin_functions.{c,stub.php}` | `control.exit`, `classes.clone`, `classes.clone-with-properties` |
 | `func_num_args`, `func_get_arg`, `func_get_args` | Observe call-frame argument state, including variadics/references; same source | `calls.argument-introspection` |
 | `error_reporting`, `set_error_handler`, `restore_error_handler`, `get_error_handler`, `set_exception_handler`, `restore_exception_handler`, `get_exception_handler`, `trigger_error`, `user_error` | Minimal diagnostic control and callback reentry; same source | `diagnostics.*` |
+| `assert`, `assert_options`, `AssertionError`, `ASSERT_*` | Compiler-special assertion checks, generated descriptions, failure/callback policy and its deprecated controls; `Zend/zend_compile.c::zend_compile_assert`, `Zend/zend_vm_def.h::ZEND_ASSERT_CHECK`, `ext/standard/assert.c` | `static.assertion-elision`, `source.assertion-description`, `protocols.assert`, `protocols.assert_options`, `diagnostics.assertion-failure` |
 | `define`, `defined` | Dynamic declaration and lookup needed alongside constant syntax; same source | `declarations.constants` |
 | `spl_autoload_register`, `spl_autoload_unregister`, `spl_autoload_functions`, `spl_autoload_call` | Class lookup reenters ordinary PHP; `ext/spl/php_spl.{c,stub.php}` | `dynamic.autoload-registration`, `dynamic.autoload-dispatch` |
 | `register_shutdown_function` | Request-end callback execution; `ext/standard/basic_functions.{c,stub.php}` | `lifecycle.shutdown-registration`, `lifecycle.shutdown-order` |
@@ -76,6 +77,15 @@ including argument binding, visibility, callbacks and abrupt completion.
 | `ob_start`, `ob_flush`, `ob_clean`, `ob_end_flush`, `ob_end_clean`, `ob_get_flush`, `ob_get_clean`, `ob_get_contents`, `ob_get_level`, `ob_get_length`, `ob_list_handlers`, `ob_get_status`, `ob_implicit_flush` | Explicit output buffering and callback/cleanup interactions; `main/output.c`, `ext/standard/basic_functions.stub.php` | `lifecycle.output-buffer-callbacks`, `environment.output-destination` |
 | `Attribute`, `ReturnTypeWillChange`, `AllowDynamicProperties`, `SensitiveParameter`, `SensitiveParameterValue`, `Override`, `Deprecated`, `NoDiscard`, `DelayedTargetValidation` | Builtin declaration checks, deprecations, discarded results and trace redaction; constructors/properties/constants follow `Zend/zend_attributes.{c,stub.php}` | `declarations` obligations with the same names |
 | Core constants | Literal `true`/`false`/`null`, integer/float limits, PHP version/platform, `E_*`, and constants of admitted classes/APIs; explicit target/configuration values from `Zend/zend_constants.c` and the stubs | `declarations.constants`, `environment.config` |
+
+Assertions require explicit compile/runtime configuration. A known direct `assert`
+call omits argument evaluation when `zend.assertions` is zero or negative; a
+dynamic call still evaluates arguments before the intrinsic returns early. The
+compiler supplies an exported expression description for a one-argument direct
+call. Preserve this distinction, `AssertionError`/supplied throwable behavior,
+callback effects, and the deprecated `assert_options` controls. Source-backed
+assertion obligations remain pending; treating the API as an ordinary excluded
+library would hide these language effects.
 
 Intrinsic names do not bypass PHP argument/type checks or exception propagation.
 Unavailable ordinary-library calls produce explicit Unsupported when reached;
