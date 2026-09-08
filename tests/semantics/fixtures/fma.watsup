@@ -1,0 +1,13 @@
+;; Independent exact identities, including a fused result differing from mul+add.
+dec $main() : bool
+def $main() = true
+  ;; (1 + 2^-52) * (1 - 2^-52) - 1 = -2^-104.
+  -- if $float_fma_finite(4607182418800017409, 4607182418800017406, 13830554455654793216) = 13362180094408261632
+  ;; The exact intermediate product overflows binary64; the fused answer does not.
+  -- if $float_fma_finite(9218868437227405311, 4611686018427387904, 18442240474082181119) = 9218868437227405311
+  -- if $float_fma_finite(18442240474082181119, 4611686018427387904, 9218868437227405311) = 18442240474082181119
+  ;; Subnormal halfway ties, and negative zero from all-zero negative terms.
+  -- if $float_fma_finite(1, 4602678819172646912, 1) = 2
+  -- if $float_fma_finite(1, 4602678819172646912, 0) = 0
+  -- if $float_fma_finite(9223372036854775808, 4607182418800017408, 9223372036854775808) = 9223372036854775808
+  -- if $float_fma_finite(4607182418800017408, 4607182418800017408, 13830554455654793216) = 0

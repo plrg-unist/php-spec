@@ -1,0 +1,11 @@
+;; A single-rounding finite binary64 fused multiply-add. The libm power graph
+;; calls this only with finite operands; no host arithmetic or implicit fusion.
+dec $fma_finite_parts(fparts, fparts, fparts) : nat
+def $fma_finite_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4, FINITE n_s3 n_5 n_6) = $float_round($nsign(i), $nabs(i), $(n_2 * n_4 * n_6))
+  -- if i = $($nsigned($((n_s1 + n_s2) \ 2), $(n_1 * n_3)) * n_6 + $nsigned(n_s3, n_5) * n_2 * n_4)
+  -- if i =/= 0
+def $fma_finite_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4, FINITE n_s3 n_5 n_6) = $((n_s1 + n_s2) \ 2 * n_s3 * 9223372036854775808)
+  -- if $($nsigned($((n_s1 + n_s2) \ 2), $(n_1 * n_3)) * n_6 + $nsigned(n_s3, n_5) * n_2 * n_4) = 0
+
+dec $float_fma_finite(nat, nat, nat) : nat
+def $float_fma_finite(n_1, n_2, n_3) = $fma_finite_parts($float_decode(n_1), $float_decode(n_2), $float_decode(n_3))
