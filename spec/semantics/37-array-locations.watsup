@@ -161,6 +161,36 @@ def $acquire_array_reference(S, pbase, z) = $element_reference(S_place, n, pkey)
   -- if S_place.COMPLETION = NORMAL
   -- if S_place.LOCATION = ELEMENT n pkey
 
+;; Reference assignment replaces the entry's binding; an old ALIAS cell is
+;; not written through. A CV source is initialized only after target W-fetch.
+dec $bind_element_reference(pstate, nat, pkey, nat) : pstate
+def $bind_element_reference(S, n, pkey, n_source) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, ALIAS n_source))][.RESULT = REFERENCE n_source]
+
+dec $assign_array_reference(pstate, pbase, nat, int) : pstate
+def $assign_array_reference(S, pbase, n_source, z) = S_place
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $assign_array_reference(S, pbase, n_source, z) = $bind_element_reference(S_place, n, pkey, n_source)
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_place.LOCATION = ELEMENT n pkey
+
+dec $assign_array_reference_cv(pstate, pbase, nat*, int) : pstate
+def $assign_array_reference_cv(S, pbase, n_source*, z) = S_place
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $assign_array_reference_cv(S, pbase, n_source*, z) = S_cell
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_place, n_source*)
+  -- if S_cell.COMPLETION =/= NORMAL
+def $assign_array_reference_cv(S, pbase, n_source*, z) = $bind_element_reference(S_cell, n, pkey, S_cell.CELL)
+  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_place.LOCATION = ELEMENT n pkey
+  -- if S_cell = $acquire_name(S_place, n_source*)
+  -- if S_cell.COMPLETION = NORMAL
+
 dec $root_cv(expression) : (nat*)?
 def $root_cv(NExprVariable phpType34 metadata) = $cv_name(phpType34)
 def $root_cv(NExprArrayDimFetch expression phpType5 metadata) = $root_cv(expression)

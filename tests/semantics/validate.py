@@ -80,6 +80,29 @@ CASES = {
 
 
 CASES.update({
+    'element-target-cv-initialize': b'<?php $a[$x]=&$x;echo $a[""]===null;',
+    'element-target-dynamic-initialize': b'<?php $n="x";$a[$x]=&$$n;echo $a[""]===null;',
+    'element-target-literal-cv-initialize': b'<?php $a[$x]=&${"x"};echo $a[""]===null;',
+    'element-target-nested-append': b'<?php $a=[];$a[][0]=&$x;$x=9;echo $a[0][0];',
+    'element-target-both-append': b'<?php $a=[];$a[]=&$a[];echo $a[0]===null,$a[1]===null;',
+    'element-target-append-self': b'<?php $a=[];$a[]=&$a;echo $a[0]===$a;',
+    'element-target-reference-key': b'<?php $x=0;$a=[];$b=[1,2];$a[($n=&$x)]=&$b[($x=1)];$b[1]=9;echo $a[1];',
+    'element-target-result-current': b'<?php $x=1;$a=[];echo ($a[0]=&$x)+($x=2);',
+    'element-target-result-old-cell': b'<?php $x=1;$y=2;$a=[];echo ($a[0]=&$x)+($x=&$y);',
+    'element-target-result-last-owner': b'<?php $a=[];$b=[1];echo ($a[0]=&$b[0])+(($a=[2])[0]+($b=[3])[0]);',
+    'element-target-literal-assignment': b'<?php $b=[($a[]=&$x)];$x=9;echo $b[0]===null,$a[0];',
+    'element-target-singleton-copy': b'<?php $x=1;$a=[&$x];unset($x);$b=$a;$a[0]=&$b[0];$a[0]=9;echo $a[0],$b[0];',
+    'element-target-singleton-unrelated': b'<?php $x=1;$a=[&$x];unset($x);$b=$a;$a[1]=&$b[0];$a[0]=9;echo $a[0],$a[1],$b[0];',
+    'element-target-overflow': b'<?php $a=[PHP_INT_MAX=>1];$a[]=&$x;',
+    'element-target-nested-overflow': b'<?php $a=[PHP_INT_MAX=>1];$a[][0]=&$x;',
+    'element-target-false': b'<?php $a=false;$x=1;$a[0]=&$x;echo $a[0];',
+    'element-target-scalar-error': b'<?php $a=1;$a[0]=&$x;',
+    'element-target-cv-self-key': b'<?php $a[$a]=&$a;',
+    'element-target-same-slot': b'<?php $a=[1];$a[0]=&$a[0];$a[0]=9;echo $a[0];',
+    'element-target-unset-old-root': b'<?php $a=[1];$x=2;$a[0]=&$x;unset($x);$b=$a;$b[0]=9;echo $a[0],$b[0];',
+    'element-target-multiline-cv': b'<?php\n$a[\n$x\n]=&\n$x;echo $a[""]===null;',
+    'element-target-multiline-dynamic': b'<?php\n$n="x";\n$a[\n$x\n]=&\n$$n;echo $a[""]===null;',
+    'element-target-nested-alias': b'<?php $x=[1];$a=[&$x];$b=$a;$y=2;$a[0][0]=&$y;$y=9;echo $a[0][0],$b[0][0],$x[0];',
     'element-source-self-append': b'<?php $x=&$x[];echo $x===null;',
     'element-source-singleton-copy': b'<?php $x=1;$a=[&$x];unset($x);$b=$a;$y=&$a[0];$y=9;echo $a[0],$b[0];',
     'element-source-literal-key-order': b'<?php $a=[$k=>&$x[$k]];echo $a[""]===null;',
@@ -356,6 +379,14 @@ CONFORMANCE += ['element-reference-source-copy', 'element-reference-source-appen
                 'element-reference-source-nested-missing', 'element-reference-literal-copy',
                 'element-reference-dynamic-name', 'element-reference-source-container-rebind',
                 'element-reference-source-existing-wrapper']
+CONFORMANCE += ['element-reference-target-copy', 'element-reference-target-rebind',
+                'element-reference-target-self-cycle', 'element-reference-target-same-array',
+                'element-reference-target-append', 'element-reference-target-key-replaces-root',
+                'element-reference-target-source-replaces-root', 'element-reference-target-self-key',
+                'element-reference-target-before-cv', 'array-reference-append-prepass',
+                'array-reference-nested-append-prepass', 'array-reference-assignment-key-prepass',
+                'array-reference-after-copy', 'array-union-left-self-reference',
+                'array-union-right-self-reference']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -462,7 +493,7 @@ def main():
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $a=[1];$x=2;$a[0]=&$x;', b'<?php $a="abc";unset($a[0][0]);',
+                       b'<?php $a="abc";$x=&$a[0];', b'<?php $a="abc";unset($a[0][0]);',
                        b'<?php $a=[...[]];', b'<?php $a=[[]=>1];',
                        b'<?php echo $http_response_header;',
                        b'<?php $http_response_header=1;echo $http_response_header;']:

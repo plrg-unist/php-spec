@@ -342,6 +342,38 @@ def main():
                'S_next.COMPLETION = UNSUPPORTED "missing source line"',
                'S_next.HELD = eps', '$heap_owners($heap_graph(S_next), HCELL 1) = 1',
                '$heap_valid($heap_graph(S_next))']]
+    target = 'BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 0)) 1'
+    cases += [[f'S_next = $ownership_step({live}[.HELD = [HCELL 0]][.TODO = [REF_ARRAY_CV (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (VARIABLE ([120]) 1) 1) ([120]) 1]])',
+               'S_next.RESULT = REFERENCE 1', 'S_next.HELD = [HCELL 0]',
+               '|S_next.EVENTS| = 2', 'S_next.EVENTS[0] = WARNING ([120]) 1',
+               'S_next.ARRAYS[0].ITEMS = [ENTRY (KSTRING eps) (ALIAS 1)]',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 3', '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $ownership_step({base}[.STORE = [DEFINED (PARRAY 0), DEFINED (PINT 1), DEFINED (PINT 2)]][.ENV = [BIND ([97]) 0, BIND ([120]) 1, BIND ([121]) 2]][.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0]][.TODO = [REF_ARRAY_CV ({target}) ([121]) 1]])',
+               'S_next.STORE[1] = DEFINED (PINT 1)', 'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 1)]',
+               'S_next.RESULT = REFERENCE 2', '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $ownership_step({live}[.TODO = [REF_ARRAY_CV ({target}) ([97]) 1]])',
+               'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 0)]', 'S_next.RESULT = REFERENCE 0',
+               '$heap_owners($heap_graph(S_next), HCELL 0) = 3', '$heap_owners($heap_graph(S_next), HARRAY 0) = 1',
+               '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $drive({live}[.STORE = [DEFINED (PSTRING ([120]))]][.TODO = [REF_ARRAY_CV ({target}) ([120]) 1]], 1)',
+               'S_next.COMPLETION = UNSUPPORTED "string offset write"', '|S_next.STORE| = 1',
+               'S_next.ALLOCATIONS = [HCELL 0]', '$lookup(S_next.ENV, [120]) = eps'],
+              [f'S_next = $drive({live}[.TODO = [REF_ARRAY_CV ({target}) ([95,71,69,84]) 1]], 1)',
+               'S_next.COMPLETION = UNSUPPORTED "request environment variable"', '|S_next.STORE| = 1',
+               'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) UNINITIALIZED]', '$heap_valid($heap_graph(S_next))'],
+              ['$tasks_nodes([REF_ARRAY_CAPTURE (BASE_VALUE (REFERENCE 0)) 1, REF_ARRAY (BASE_VALUE (REFERENCE 1)) 2 1, REF_ARRAY_CV (BASE_VALUE (REFERENCE 3)) ([120]) 1]) = [HCELL 0, HCELL 1, HCELL 2, HCELL 3]']]
+    captured = (live+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PINT 9)]]'
+                '[.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]]')
+    cases += [[f'S_next = $drive({captured}[.TODO = [REF_ARRAY ({target}) 1 1]], 1)',
+               'S_next.RESULT = REFERENCE 1', 'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 1)]',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 2', '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $drive({captured}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT PNULL)]), NEXT 9223372036854775807}}]][.TODO = [REF_ARRAY (BASE_APPEND (BASE_VALUE (VARIABLE ([97]) 1)) 1) 1 1]], 1)',
+               'S_next.COMPLETION =/= NORMAL', 'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]',
+               'S_next.HELD = eps', '$heap_valid($heap_graph(S_next))'],
+              [f'S_next = $ownership_step({captured}[.STORE = [DEFINED (PARRAY 0), DEFINED (PINT 9), DEFINED (PARRAY 0)]][.ENV = [BIND ([97]) 0, BIND ([98]) 2]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0]][.TODO = [REF_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 1)) 1) 1 1]])',
+               'S_next.STORE[0] = DEFINED (PARRAY 1)',
+               'S_next.ARRAYS[1].ITEMS = [ENTRY (KINT 0) (ALIAS 1), ENTRY (KINT 1) (ALIAS 1)]',
+               '$heap_owners($heap_graph(S_next), HCELL 1) = 4', '$heap_valid($heap_graph(S_next))']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):
@@ -354,7 +386,7 @@ def main():
                 (ROOT/'.tools/ownership-failure.watsup').write_text(fixture.read_text())
                 raise AssertionError(f'ownership batch {start}: {run.stdout}{run.stderr}')
     assert before == fingerprint(), 'implementation changed during ownership validation'
-    report = {'result':'pass','classification':'helper-only allocation graph; source element-reference targets and GC remain pending',
+    report = {'result':'pass','classification':'helper-only allocation graph; callback lifetimes and source GC remain pending',
               'graph_cases':len(graphs),'machine_and_boundary_cases':len(cases)-len(graphs),
               'assertions':sum(map(len,cases)),'seed':8501039,'fingerprint':before,
               'manifest_sha256':hashlib.sha256(json.dumps(cases,sort_keys=True).encode()).hexdigest()}

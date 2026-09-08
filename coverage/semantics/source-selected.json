@@ -1,5 +1,5 @@
 {
-  "selection_prefix": "element-source-",
+  "selection_prefix": "element-target-",
   "budgets": {
     "transitions": 100000,
     "worker_seconds": 30,
@@ -10,7 +10,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and array literal (including variable references)/read/write/unset checked execution fixtures",
+  "scope": "authored scalar, variable storage and array literal/read/write/unset plus variable and element reference-source checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -56,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "fc7c8573e5a68ddf24c00e40731a4917bfdb3602a4c18b843246f28498bcc91e",
-    "files": 691,
+    "sha256": "262da3fa5272695e9e50cb2db1ee5ddd69d62c72797562ce0415be0dd9dcc670",
+    "files": 702,
     "scope": [
       "frontend",
       "adapter",
@@ -75,140 +75,140 @@
   },
   "results": [
     {
-      "id": "element-source-self-append",
-      "source_sha256": "0287b5251b147246de5cb451959aa48fc431739f0964b6336b5b37767bb6e63b",
+      "id": "element-target-cv-initialize",
+      "source_sha256": "b6572e3cd858096717c4f499ece305b1ce1bd4972ccfcb22cf6378edd9a05a15",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-singleton-copy",
-      "source_sha256": "a5bab73fb9af903f7e22b6795c7ef304260af6ee1d86e5960a4b8ee2413eaa34",
+      "id": "element-target-dynamic-initialize",
+      "source_sha256": "0caeac71d3125c4f36a2305acf9a17461bdeb07b5a7c4d9dd674c87e9b0e92db",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-literal-key-order",
-      "source_sha256": "b2b9e025f6d17a4ca330556153ec48396d5edcc0ab4d81a85b755ba07fe6c487",
+      "id": "element-target-literal-cv-initialize",
+      "source_sha256": "4068c5506029722bef930f943909aca0c65be16299995436ec3c5a83f6e1f13d",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-target-name-order",
-      "source_sha256": "aba7d3e2b44aa546dd0f4bf5f69c3e0df1b62fdfb2dfd581ffb83c893baea6c0",
+      "id": "element-target-nested-append",
+      "source_sha256": "c0ed883c158cbab136eab2096cf666c79dac9984898afafc5f0c59c5c76293db",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-overflow",
-      "source_sha256": "b78d8dad61aff6c35369f2bc8673ae2b2d03a80e8fe115ff94a6b0fae51b811e",
+      "id": "element-target-both-append",
+      "source_sha256": "05b118579446b31e8dc5d29647b76f85d99563b1a030ce73fa2c22dfdf31b9d0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-append-self",
+      "source_sha256": "ac71726d6b111d4c7ee234412ac372861d62e8e2f652b34c79c9616be2363806",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-reference-key",
+      "source_sha256": "daf9dc0676b49f659e7c820e853e2ac21e751bf119745b9b0a8b54991d8b9287",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-result-current",
+      "source_sha256": "f6f35c7cc72366ecff23574b07e1b347a589949ad8e63a695c95d7a59c267df7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-result-old-cell",
+      "source_sha256": "50321a49bdd488f095a5b0b16e8e686b9663e8aefb61877fadb9787e5dcfd248",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-result-last-owner",
+      "source_sha256": "8400cb743c29e50e6ccf64ea74e1af1f0d3ae15ef8b0ba9281d7a9d7512009be",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-literal-assignment",
+      "source_sha256": "1c0ff7add450055e742404a0d777c147fb04272b1f54ef9739a97f703f30f5f8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-singleton-copy",
+      "source_sha256": "a97a990d5ed4919eccf890c979016827bc9429fb72eec5dbbb6c30ebaca4b661",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-singleton-unrelated",
+      "source_sha256": "0d3761f076fd538c802ff0a766843ffad0a575dbc0aba887db872900e91b1130",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-overflow",
+      "source_sha256": "13f8cf833502f14975b07731a3bb3ed7ecce659e6e36175a12a4f7d27a5c2cab",
       "semantic_status": "php_error",
       "comparison": "pass"
     },
     {
-      "id": "element-source-false",
-      "source_sha256": "45dcc002ed51c0621e3fab34068b4e7a7a2716694499823b841087e7ac9238e5",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-scalar-error",
-      "source_sha256": "1633ef667ef295e24f254e7c6c2c94be1c3c77507b0dd4fe9a273e676f44acfd",
+      "id": "element-target-nested-overflow",
+      "source_sha256": "abdaebe895981bfcbf7ebf1c0665c94f2274eb39b6afe0b769f0cbe65c3ec68a",
       "semantic_status": "php_error",
       "comparison": "pass"
     },
     {
-      "id": "element-source-nested-copy",
-      "source_sha256": "e6a75aef1a8453255884656cbe7a5c11b6670cb3677faddee2d8bd53339f1504",
+      "id": "element-target-false",
+      "source_sha256": "056486d6afeabd8ca56e176f7637388ec2bf18740c7c877910c9fbead5e733b4",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-literal-replaces-container",
-      "source_sha256": "fb372ac642d05e08b73a0ce86c54b8235ad6c281a8a94fc17a5540a60248490a",
+      "id": "element-target-scalar-error",
+      "source_sha256": "54b521dbca2f770ce95e1ec46d20fba392bb5129a2fd8282641e498d34591e49",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-cv-self-key",
+      "source_sha256": "161945501b37662c57c7ae3db2190f8d9a147a6699ffc94a8672ada63c51759a",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "element-target-same-slot",
+      "source_sha256": "47d162a95d4d251c06e68de0419395cc7410b792af04e144e83755ad0f2e4146",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-literal-duplicates",
-      "source_sha256": "52b6476f953c04768b9d9896825e00105da066b9415db23cb8a161df7fea9b5e",
+      "id": "element-target-unset-old-root",
+      "source_sha256": "e796f18d600c373d2e7a3674bf8f4e0986ff924595f819c4228789e0bfb9ccec",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-literal-appends",
-      "source_sha256": "84b1b2018f9224e451db372ea7d457cff4067aecf7779c2ce6f9d9b7ced113b4",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-literal-nested-append-reject",
-      "source_sha256": "13cf36109c7920a3bdb833e6bd3cdc21602e757699d9dd6bbb6d6c61f38df3dd",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-literal-append-lines",
-      "source_sha256": "13364715b50bce66744fcfc0ad2b973991b58a275c20b0798b36cf0b9ac51c3c",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-literal-key-append-reject",
-      "source_sha256": "32ff9c760af7245452be25b199cb1d7537454e2486f4ba4c61bcad1c5a92befa",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-literal-append-reference-key",
-      "source_sha256": "5fe3e250965e7f6e7aea2cf8bfb8e211c26f5755bca0e2b471c7b291dafc9096",
+      "id": "element-target-multiline-cv",
+      "source_sha256": "1d1cff53830241f31444d24187cf166d26159def0b3be7d0ddaebc77266613f7",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-literal-append-reference-value",
-      "source_sha256": "4dac127a5f0be8ed24091493991c5f186d9c73f88e3515ac6ab7546ce5d9c406",
+      "id": "element-target-multiline-dynamic",
+      "source_sha256": "e5ba966b1a23a70988d7bb1901f4f4fd32593f3ab97a76c6860072648fe4bf97",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "element-source-shared-self",
-      "source_sha256": "a6408247fa97c923ffe4ae0a630b8592edbd9692418de17cbf8bdc7b3231daab",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-singleton-self",
-      "source_sha256": "894c89f9a274dc479eae69f10a6de01a03916fe4fc89c5829134f55f23d55e63",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-old-cell",
-      "source_sha256": "a1220f2bd5c5eaa551a9a84221330b6302e8a8856012910038220ee80a2d5c3a",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-dynamic-target-replaces-container",
-      "source_sha256": "254e7e78217a9c34d7da649a621cd72dd51615a83d1075a2e6f2d2ae8f9c852b",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-literal-float-target",
-      "source_sha256": "0106d1ca13040574a02c73137eccde088ca9449d1c70c4606db3d4e242968a7c",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-multiline",
-      "source_sha256": "3af8ee9107bed135833777d9aa91f8801b2ba01c2676533c03b78b3bcd97df46",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "element-source-nested-false-line",
-      "source_sha256": "c94789fa4230f985fce1830acfdf56270fd5cfe0d7cdd8594ee24cdcf277259f",
+      "id": "element-target-nested-alias",
+      "source_sha256": "c48c22a59423efef262a3f8b88b3433ac7b2a368908da7a0f3e4dc771ff19ed4",
       "semantic_status": "normal",
       "comparison": "pass"
     }
@@ -218,7 +218,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kquhni1n/unsupported.php"
+        "/tmp/php-semantics-8yekrvv2/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -237,7 +237,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kquhni1n/unsupported.php"
+        "/tmp/php-semantics-8yekrvv2/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -256,7 +256,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kquhni1n/unsupported.php",
+        "/tmp/php-semantics-8yekrvv2/unsupported.php",
         "--steps",
         "0"
       ],
@@ -277,7 +277,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kquhni1n/unsupported.php",
+        "/tmp/php-semantics-8yekrvv2/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -290,12 +290,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kquhni1n/unsupported.php.missing"
+        "/tmp/php-semantics-8yekrvv2/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-kquhni1n/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-8yekrvv2/unsupported.php.missing'"
       }
     },
     {
@@ -434,7 +434,7 @@
       }
     },
     {
-      "source": "PD9waHAgJGE9WzFdOyR4PTI7JGFbMF09JiR4Ow==",
+      "source": "PD9waHAgJGE9ImFiYyI7JHg9JiRhWzBdOw==",
       "exit_status": 1,
       "observation": {
         "status": "unsupported",
@@ -442,7 +442,7 @@
         "stderr": "",
         "exit_status": null,
         "diagnostic": null,
-        "reason": "lvalue",
+        "reason": "string offset write",
         "events": [],
         "frontend": "accepted",
         "checked": "program"
@@ -971,7 +971,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source-selected.jsonl",
-    "sha256": "ab2666a1c460a48594c13ff62f80f77422ec5f12ff01474c7af8970c95975806",
+    "sha256": "8bdc9f33e2a432b41f9f29a14c8075587a112af3109257c401415af5ca2b9511",
     "records": 23
   }
 }

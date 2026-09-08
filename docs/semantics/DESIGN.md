@@ -95,8 +95,8 @@ singleton wrapper without a source-self exception (`zval_add_ref`). Conflicting
 right keys skip the copy constructor. The merge advances its target graph per
 insertion, with both borrowed operand arrays retained until completion. These
 wrapper rules now also have source evidence through variable-source reference
-literals. Writable element sources now acquire references after path separation;
-element-reference assignment targets and unpacking remain pending.
+literals. Writable element sources acquire references after path separation;
+element targets replace the final entry's alias binding. Unpacking remains pending.
 
 The allocation helper separates allocated cells/containers from historical backing
 vectors. Incoming ownership counts include repeated root/entry edges, but expand
@@ -124,14 +124,17 @@ callback/suspension boundary. Adding callbacks requires explicit resumable roots
 
 `CELL` and `LOCATION` remain borrowed after variable/element acquisition.
 `zend_compile_assign_ref` emits `ZEND_MAKE_REF` for a nonliteral target and
-non-CV source; `REF_CAPTURE` moves that cell into an owning `REF_DYNAMIC` task
-across target name consumption. Literal string, integer and float variable targets
+non-CV source; `REF_CAPTURE`/`REF_ARRAY_CAPTURE` move that cell into owning
+`REF_DYNAMIC`/`REF_ARRAY` tasks across target designation. Literal string, integer and float variable targets
 are direct too; they retain the borrowed source protocol. Element acquisition
 uses the existing held path designation and COW helpers, then promotes its final
 direct/uninitialized slot into a cell or borrows its existing alias cell.
 For assignment to a dynamic variable name, a CV source is initialized only after
-the delayed target name is consumed. A non-CV source is acquired before that
-consumer. This differs from literal reference entries, which acquire their source
+the delayed target name is consumed. Element reference targets designate their
+slot before initializing the CV source; non-CV sources are owned across target
+COW and acquisition. Binding replaces the entry's alias, preserving the old cell
+for other owners, and returns an owning reference operand. This differs from
+literal reference entries, which acquire their source
 before consuming the delayed key. CV names include literal string, integer and
 floating-point names (`zend_try_compile_cv`); unary and named-constant expressions
 remain dynamic even when their values can be folded.
@@ -159,8 +162,8 @@ inputs until insertion transfers the reference to an `ALIAS` entry. Duplicate ke
 replace the old entry and release its owner at the task boundary. Earlier `HELD`
 is restored on normal/error/Unsupported paths. The handler-specific extra copy
 around null-key diagnostics remains part of future callback semantics. Source
-anchors are `zend_compile_array` and `ZEND_ADD_ARRAY_ELEMENT`; no element reference target,
-by-reference argument/return or foreach support follows from this literal slice.
+anchors are `zend_compile_array` and `ZEND_ADD_ARRAY_ELEMENT`. Element target
+rebinding has separate rules; by-reference argument/return and foreach remain pending.
 
 Write preparation retains delayed name/key operands through RHS evaluation.
 Dimension assignment acquires a keyed slot before reading a delayed RHS, whereas

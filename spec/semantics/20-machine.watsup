@@ -108,7 +108,6 @@ def $header_literal(phpType34) = false
 
 dec $check_assignment_target(expression) : pcheck
 dec $check_unset_target(expression) : pcheck
-dec $check_lvalue(expression) : pcheck
 dec $check_variable(phpType34) : pcheck
 dec $array_name_fold_warning(phpType34) : bool
 dec $name_fold_warning(phpType34) : bool
@@ -133,9 +132,9 @@ def $check_expression(NExprAssign expression_1 expression_2 metadata) = $check_e
 def $check_expression(NExprAssign expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_assignment_target(expression_1) = REJECT pcompletion
 def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = $check_assignment_target(expression_2)
-  -- if $check_lvalue(expression_1) = READY
+  -- if $check_assignment_target(expression_1) = READY
 def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = REJECT pcompletion
-  -- if $check_lvalue(expression_1) = REJECT pcompletion
+  -- if $check_assignment_target(expression_1) = REJECT pcompletion
 def $check_expression(NExprBinaryOpPlus expression_1 expression_2 metadata) = $check_expression(expression_2)
   -- if $check_expression(expression_1) = READY
 def $check_expression(NExprBinaryOpPlus expression_1 expression_2 metadata) = REJECT pcompletion
@@ -251,13 +250,6 @@ def $check_assignment_target(NExprArrayDimFetch expression phpType5 metadata) = 
 def $check_assignment_target(expression) = REJECT (UNSUPPORTED "lvalue")
   -- otherwise
 
-
-def $check_lvalue(NExprVariable phpType34 metadata) = $check_variable(phpType34)
-  -- if ~$header_literal(phpType34)
-def $check_lvalue(NExprVariable phpType34 metadata) = READY
-  -- if $header_literal(phpType34)
-def $check_lvalue(expression) = REJECT (UNSUPPORTED "lvalue")
-  -- otherwise
 
 def $check_variable(BYTES text) = READY
   -- if ~$header_literal(BYTES text)

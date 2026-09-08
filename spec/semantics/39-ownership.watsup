@@ -119,6 +119,9 @@ def $task_nodes(REF_DYNAMIC poperand n z) = $operand_nodes(poperand) ++ [HCELL n
 def $task_nodes(REF_DYNAMIC_CV poperand n_name* z) = $operand_nodes(poperand)
 def $task_nodes(DIM_PATH pbase z) = $base_nodes(pbase)
 def $task_nodes(ASSIGN_ARRAY pbase z bool) = $base_nodes(pbase)
+def $task_nodes(REF_ARRAY_CAPTURE pbase z) = $base_nodes(pbase)
+def $task_nodes(REF_ARRAY pbase n z) = $base_nodes(pbase) ++ [HCELL n]
+def $task_nodes(REF_ARRAY_CV pbase n_name* z) = $base_nodes(pbase)
 def $task_nodes(ptask) = eps
   -- otherwise
 

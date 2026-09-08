@@ -3,8 +3,9 @@
 Read PLAN.md, PROGRESS.md, DESIGN.md and the php/php-spec/p4-spectec skills first.
 The current source machine supports ordinary ordered arrays, delayed dimension
 reads, simple/nested writes, append and unset. Variable-cell aliases and literal
-references to direct/dynamic variables and writable array elements work. Element
-reference assignment targets, foreach, callbacks and source GC are still pending. Do not infer
+references to direct/dynamic variables and writable array elements work, including
+element reference assignment targets. String-offset references, foreach, callbacks
+and source GC are still pending. Do not infer
 those paths from the ALIAS constructor or pure ownership helpers.
 Reference-assignment expressions now return owning `REFERENCE` operands. Their
 cell identity is captured but their contained value is read by the consumer;
@@ -50,9 +51,11 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
    then move its owner into an ALIAS entry. Element sources separate their path
    before promoting the final slot, returning a borrowed cell. Exact nonliteral
    target/non-CV source assignment uses REF_CAPTURE and an owning REF_DYNAMIC
-   task; direct literal names use the ordinary borrowed source path. Admit element
-   assignment targets next, preserving designation and diagnostic order. Reuse singleton,
-   shared-container, nested-reference and cycle oracle targets before foreach.
+   task; direct literal names use the ordinary borrowed source path. Element
+   targets use REF_ARRAY for the owning non-CV source, or REF_ARRAY_CV to acquire
+   the source only after target designation. Binding replaces ALIAS entries rather
+   than writing through their previous cells. Complete remaining scalar/string
+   read/offset contexts and array consumer interactions before foreach.
 4. Before repeated literal execution, add explicit source-unit/compiled-occurrence
    identities and persistent literal-pool roots. One constant literal occurrence
    can return the same container across iterations/calls; separately written
@@ -78,8 +81,8 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
   copying. `array-{uncollected,collected}-cycle-reference` targets distinguish99
   from19. Pure graph collection does not model triggers, counts or destructors.
 - Dynamic reference assignment consumes its target name before initializing a CV
-  source. Non-CV sources are acquired earlier; literal references acquire before
-  delayed keys. Preserve this distinction when adding element targets. Literal
+  source; element targets designate the slot before CV acquisition. Non-CV sources
+  are acquired earlier; literal references acquire before delayed keys. Literal
   float variable names are CVs, while unary and named constants are dynamic.
 - `$x=&$a[]` works, but `[&$a[]]` fails during the array constant-evaluation
   prepass. It visits every value then key even for by-reference entries, retaining
