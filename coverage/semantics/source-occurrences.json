@@ -1,0 +1,814 @@
+{
+  "scope": "checked structural traversal; no PHP compiler or execution agreement claimed",
+  "constructors": 169,
+  "source_cases": 14,
+  "domain_alternatives": 1086,
+  "metamorphic_assertions": 3,
+  "assertions": 1497,
+  "fingerprint": {
+    "closure": {
+      "sha256": "2c65e682efd3a5c65aeb915e25491956f22f6d72227387ebf56d1f8cd49b2b9a",
+      "files": 687,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "direct": {
+      "spec/php.watsup": "2e186460cd8e199406f13b6e0ff55861e5dd453bc6c0f816338f1a52637db85f",
+      "spec/semantics/11-source-occurrences.watsup": "dee3b76b313751b631c8ad48ea06e2a25e1b375b167262db4f0d85a879dc025f",
+      "tests/semantics/source_occurrences.py": "9ac3190f63ee9ac931ff0e8c294d42f60bd12dce229f126822ad7adc4636bceb",
+      "spec/schema.json": "4ac03d124e176dac6b3ae07ade52cc95acd871f1796df8d3eb1151d244ac753b",
+      "scripts/generate-occurrences.py": "90db74bfb8281e5a0ad7038e85b23cda5188294d6a8f9e0a99b00fc5fbb84b0a",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "_build/default/adapter/main.exe": "5d0da111c9a3610231f4d7e7fadd042e64b8894b2c93be73bad9524bf9c26c6e",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  },
+  "cases": [
+    {
+      "id": "constructor-Arg",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-ArrayItem",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Attribute",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-AttributeGroup",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-ClosureUse",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Const",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-DeclareItem",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_Array",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_ArrayDimFetch",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_ArrowFunction",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Assign",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_BitwiseAnd",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_BitwiseOr",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_BitwiseXor",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Coalesce",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Concat",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Div",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Minus",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Mod",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Mul",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Plus",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_Pow",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_ShiftLeft",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignOp_ShiftRight",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_AssignRef",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_BitwiseAnd",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_BitwiseOr",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_BitwiseXor",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_BooleanAnd",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_BooleanOr",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Coalesce",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Concat",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Div",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Equal",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Greater",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_GreaterOrEqual",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Identical",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_LogicalAnd",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_LogicalOr",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_LogicalXor",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Minus",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Mod",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Mul",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_NotEqual",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_NotIdentical",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Pipe",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Plus",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Pow",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_ShiftLeft",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_ShiftRight",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Smaller",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_SmallerOrEqual",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BinaryOp_Spaceship",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_BitwiseNot",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_BooleanNot",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Array",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Bool",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Double",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Int",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Object",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_String",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Unset",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Cast_Void",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_ClassConstFetch",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_Clone",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Closure",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_ConstFetch",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Empty",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_ErrorSuppress",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Eval",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Exit",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_FuncCall",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Include",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Instanceof",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_Isset",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_List",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_Match",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_MethodCall",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_New",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_NullsafeMethodCall",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_NullsafePropertyFetch",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_PostDec",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_PostInc",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_PreDec",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_PreInc",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Print",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_PropertyFetch",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_ShellExec",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_StaticCall",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_StaticPropertyFetch",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_Ternary",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Expr_Throw",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_UnaryMinus",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_UnaryPlus",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Expr_Variable",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_Yield",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Expr_YieldFrom",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Identifier",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-InterpolatedStringPart",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-IntersectionType",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-MatchArm",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Name",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Name_FullyQualified",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Name_Relative",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-NullableType",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Param",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-PropertyHook",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-PropertyItem",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Scalar_Float",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_Int",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_InterpolatedString",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Class",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Dir",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_File",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Function",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Line",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Method",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Namespace",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Property",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_MagicConst_Trait",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Scalar_String",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-StaticVar",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Block",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Break",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Case",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Catch",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Class",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_ClassConst",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_ClassMethod",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Const",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Continue",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Declare",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Do",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Echo",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Else",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_ElseIf",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Enum",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_EnumCase",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Expression",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Finally",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_For",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Foreach",
+      "occurrences": 3
+    },
+    {
+      "id": "constructor-Stmt_Function",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Global",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Goto",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_GroupUse",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_HaltCompiler",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_If",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_InlineHTML",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Interface",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Label",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Namespace",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Nop",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Property",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Return",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Static",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Switch",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_Trait",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_TraitUse",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_TraitUseAdaptation_Alias",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_TraitUseAdaptation_Precedence",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-Stmt_TryCatch",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Unset",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_Use",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-Stmt_While",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-UnionType",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-UseItem",
+      "occurrences": 2
+    },
+    {
+      "id": "constructor-VarLikeIdentifier",
+      "occurrences": 1
+    },
+    {
+      "id": "constructor-VariadicPlaceholder",
+      "occurrences": 1
+    },
+    {
+      "id": "source-0",
+      "source_base64": "PD9waHA=",
+      "source_sha256": "fe5bcb54c56e0b9f456a060364dd28b2248f3a0e21c168d4ce9d009b73e83e3c",
+      "ast_sha256": "01cb4ed2a4c8c591197d7f71f6cc507c2f85feb48369740887343c73ea0fcc17",
+      "occurrences": 0
+    },
+    {
+      "id": "source-1",
+      "source_base64": "PD9waHAgJGE9WzEsMV07ICRiPVsxLDFdOw==",
+      "source_sha256": "88c4de93d65cf04c345746a52cdf79b104c38abc0d284c136181f1f26739a68f",
+      "ast_sha256": "4030267fd3e825b64e0d9ef399c8a4c832ab86e3cfca4a8a8a4679cf46bba794",
+      "occurrences": 16
+    },
+    {
+      "id": "source-2",
+      "source_base64": "PD9waHAgWywgJHgsLCAkeV0gPSBbMSwyLDMsNF07",
+      "source_sha256": "4560dd5686eaf79bbf1b759aa26a0d89ebd838766b63f40b455335b7ab0b60cb",
+      "ast_sha256": "c1951c7dab1d1cb3ed5fba8fb20df16150095d0b7dedfc2c0166c47b87447959",
+      "occurrences": 16
+    },
+    {
+      "id": "source-3",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigkYT1udWxsLCAuLi4kYikgeyByZXR1cm4gW05BTl07IH0gZigpOyBmKCk7",
+      "source_sha256": "0aff556ea4b3a786b4139c90b523f1159dcfc53d80ed45a45769fda453f29dbb",
+      "ast_sha256": "728b99bf2d710e7d0dfa3a92a105189edc5266561d9ffa8c16d383fb4bea22e6",
+      "occurrences": 19
+    },
+    {
+      "id": "source-4",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE47IHVzZSBBXEIgYXMgQzsgZnVuY3Rpb24gZig/QyAkeCk6IEN8bnVsbCB7IHJldHVybiAkeDsgfSBuYW1lc3BhY2UgTTsgJGE9MTs=",
+      "source_sha256": "3572bcf118e1be19ad4dfbe1fb82b46c6cadb6470f27048ccbd05bf69445324f",
+      "ast_sha256": "6395d98109dfb3adc2fefe13ad6e4c13c78d2839aa84b8fde70f68b652ca2504",
+      "occurrences": 23
+    },
+    {
+      "id": "source-5",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE4geyBjbGFzcyBDIHsgcHJpdmF0ZSA/QSAkcCA9IG51bGw7IHB1YmxpYyBmdW5jdGlvbiBmKCkge30gfSB9IG5hbWVzcGFjZSB7IDsgfQ==",
+      "source_sha256": "25f19f48e582ff09a06a669e6dc84a37de12beca544fbf91268caea210af7d55",
+      "ast_sha256": "1118f93366ff31a1d040be1eed7c4c02054a74c2c09b85c83324ead38ebab53f",
+      "occurrences": 14
+    },
+    {
+      "id": "source-6",
+      "source_base64": "PD9waHAgaW50ZXJmYWNlIEkgeyBwdWJsaWMgZnVuY3Rpb24gZigpOyB9IGZ1bmN0aW9uIGYoKSB7fQ==",
+      "source_sha256": "d8a890a3426a3050f6b1e6ec518af833b677ef8ddf6231cf4f420272c64eb7d2",
+      "ast_sha256": "b7ef3292241dc73018cb1be2b85bda52ef61f5bfc5715f431cc1091f2846826b",
+      "occurrences": 6
+    },
+    {
+      "id": "source-7",
+      "source_base64": "PD9waHAgZm9yICgkaT0wOyAkaTwyOyAkaSsrKSB7ICRhPVsxXTsgfQ==",
+      "source_sha256": "0a4e336304e8782f4b95ba6f4022a9b1a4d65d59c6ed1c42a74fdedf8732e16f",
+      "ast_sha256": "0dd4a70a4b3b0cedeb60fabcf37569e2db4df1ea9d3d7b5019a752cfdf8e1de9",
+      "occurrences": 15
+    },
+    {
+      "id": "source-8",
+      "source_base64": "PD9waHAgaWYgKCRhKSB7O30gZWxzZWlmICgkYikgezt9IGVsc2Ugezt9IHRyeSB7O30gY2F0Y2ggKEF8QiAkZSkgezt9IGZpbmFsbHkgezt9",
+      "source_sha256": "f96007f80e98ca45e530e4b3d2f2af8ab95ad7805930540fdad3875878ce1a26",
+      "ast_sha256": "9d11b08229079c46ffc4477f990eadf60f410698bf908633b19542252cb13015",
+      "occurrences": 11
+    },
+    {
+      "id": "source-9",
+      "source_base64": "PD9waHAgJGEgPSBmdW5jdGlvbigpIHVzZSAoJiR4LCAkeSkgeyByZXR1cm4gZm4oJGEpID0+ICRhOyB9Ow==",
+      "source_sha256": "a1550c34057b43f33edd78a4a6f357aa14db297aebde427d706ed7589e2bad78",
+      "ast_sha256": "60c69a5fc6535391b1eb08fbbb6cfd16b95e5a3bf77dee1d739e243a86794333",
+      "occurrences": 13
+    },
+    {
+      "id": "source-10",
+      "source_base64": "PD9waHAgJGEgPSAiYVx4MDBceGZmIjsgJGI9MWUxMDAwOyAkYz0tMC4wOw==",
+      "source_sha256": "fa757a3d28bab9e4c0a49472291eca1f1df1b18e74ecfd876ec3753c1f2c74fd",
+      "ast_sha256": "d368da377bc0d5f766f52825c0070e08acbe3c322fff43f3757a57b025cfda3f",
+      "occurrences": 13
+    },
+    {
+      "id": "source-11",
+      "source_base64": "PD9waHAgLyoqIG5vZGUtbG9va2luZyBkYXRhOiB7Im5vZGUiOiJTY2FsYXJfSW50In0gKi8gZnVuY3Rpb24gZigpIHt9",
+      "source_sha256": "4fc5475daa1ae373e2a0e64cd305d259ff02a717ca0e6d86ab1dc2e5f0920eaa",
+      "ast_sha256": "45271f8b9bdd24de5066c7ab2b30df6e74ce88d0ad886e9f5ab23b54419c739b",
+      "occurrences": 2
+    },
+    {
+      "id": "source-12",
+      "source_base64": "IyEvdXNyL2Jpbi9waHAKPD9waHAgZWNobyAib2siOyBfX2hhbHRfY29tcGlsZXIoKTsAZGF0YQ==",
+      "source_sha256": "eb09ddd08ecc0f227103b1f7b534fe63e9a468c648d3788f8ecaabdee833d9dc",
+      "ast_sha256": "a3c0e6d75a1e2a6f3a6b26880785e8831c610b7b523213b90e03b1d50f34f309",
+      "occurrences": 3
+    },
+    {
+      "id": "source-13",
+      "source_base64": "PD9waHAgJGEgPSBuZXcgY2xhc3MgeyBwdWJsaWMgZnVuY3Rpb24gZigpIHt9IH07IG1hdGNoKCRhKSB7IDEsMj0+MywgZGVmYXVsdD0+NCB9Ow==",
+      "source_sha256": "16a7cd025b2b0894472c87c402b9dd4a10d3ced54deb6bcefaf50627a3cec993",
+      "ast_sha256": "3e8d0ef9db00398341a8979811cad7869b08d022542de2b5d2ddf48b2e19d90e",
+      "occurrences": 16
+    }
+  ]
+}

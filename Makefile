@@ -10,6 +10,7 @@ build:
 schema:
 	.tools/php/bin/php -n scripts/node-inventory.php > spec/nodes.json
 	python3 scripts/generate-schema.py
+	python3 scripts/generate-occurrences.py
 	python3 scripts/encoding-inventory.py
 
 test: build
@@ -36,4 +37,5 @@ inventory: build
 
 test-semantics: build
 	python3 tests/semantics/evidence.py
+	python3 tests/semantics/source_occurrences.py
 	python3 tests/semantics/validate.py

@@ -102,6 +102,10 @@ project-local PHP 8.5.10 binary only as an oracle, never as a semantic operation
 
 ## Compiler context pass before further activation
 
+The first [checked source-occurrence gate](SOURCE-CONTEXT.md) provides generated
+typed child access, retained source units and stable unit-local structural paths.
+It does not yet supply lexical environments or a PHP compilation schedule.
+
 A useful next milestone is an ordered traversal producing explicit compiler
 contexts and pending descriptor work from checked ASTs. Carry all three import
 kinds (class/function/constant), namespace, original declaration identity,
