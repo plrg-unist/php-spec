@@ -1,0 +1,197 @@
+;; User-method implementation checks after applicability/prototype selection.
+;; Valid compiled signatures and the covariance helper's visible graph are inputs.
+;; Internal methods require a pinned descriptor catalog before entering this phase.
+syntax pmmethod = { OWNER ptbytes, NAME ptbytes, SIGNATURE pssignature, CONTEXT ptcontext }
+syntax pminput = PMUSER pmmethod | PMINTERNAL ptbytes ptbytes
+syntax pmcheck = PMCHECK pvstatus ptbytes* | PMUNSUPPORTED text
+
+dec $pmrequired(psparam*) : nat
+dec $pmargument(psparam*, nat) : psparam?
+dec $pmmax(nat, nat) : nat
+dec $pmcollect(pmcheck, pvresult) : pmcheck
+dec $pmargtype(psparam, pvclass, psparam, pvclass, pvclasses) : pvresult
+dec $pmargcheck(psparam?, pvclass, psparam?, pvclass, pvclasses, pmcheck) : pmcheck
+dec $pmargref(psparam, psparam, pmcheck) : pmcheck
+dec $pmarguments(psparam*, pvclass, psparam*, pvclass, pvclasses, nat, nat, pmcheck) : pmcheck
+dec $pmreturns(pssignature, pvclass, pssignature, pvclass, pvclasses, pmcheck) : pmcheck
+dec $pmvalidusers(pmmethod, pvclass, pmmethod, pvclass, pvclasses) : pmcheck
+dec $pmusers(pmmethod, pvclass, pmmethod, pvclass, pvclasses) : pmcheck
+dec $pmcompare(pminput, pvclass, pminput, pvclass, pvclasses) : pmcheck
+
+def $pmrequired(eps) = 0
+def $pmrequired(psparam :: psparam_rest*) = $(1 + $pmrequired(psparam_rest*))
+  -- if psparam.REQUIRED
+def $pmrequired(psparam :: psparam_rest*) = $pmrequired(psparam_rest*)
+  -- if ~psparam.REQUIRED
+def $pmargument(eps, nat) = eps
+def $pmargument(psparam :: psparam_rest*, 0) = psparam
+def $pmargument([psparam], nat) = psparam
+  -- if $(nat > 0) /\ psparam.VARIADIC
+def $pmargument(psparam :: psparam_rest*, nat) = $pmargument(psparam_rest*, $nabs($(nat - 1)))
+  -- if $(nat > 0) /\ ~(psparam_rest* = eps /\ psparam.VARIADIC)
+def $pmmax(nat, nat_other) = nat
+  -- if $(nat >= nat_other)
+def $pmmax(nat, nat_other) = nat_other
+  -- if $(nat < nat_other)
+
+;; Preserve each earlier unresolved comparison's registration collection even
+;; when a later parameter/reference/return check gives a definite mismatch.
+def $pmcollect(PMCHECK pvstatus ptbytes*, PVCOMPATIBLE) = PMCHECK pvstatus ptbytes*
+def $pmcollect(PMCHECK pvstatus ptbytes*, PVINCOMPATIBLE) = PMCHECK PVNO ptbytes*
+def $pmcollect(PMCHECK pvstatus ptbytes*, PVNEEDS ptbytes_new*) = PMCHECK PVUNRESOLVED ($pvunique(ptbytes* ++ ptbytes_new*, eps))
+def $pmcollect(pmcheck, PVUNSUPPORTED text) = PMUNSUPPORTED text
+
+def $pmargtype(psparam, pvclass, psparam_parent, pvclass_parent, pvclasses) = PVCOMPATIBLE
+  -- if psparam.TYPE = eps \/ "mixed" <- $ptmasks(psparam.TYPE)
+def $pmargtype(psparam, pvclass, psparam_parent, pvclass_parent, pvclasses) = PVINCOMPATIBLE
+  -- if psparam.TYPE =/= eps /\ ~("mixed" <- $ptmasks(psparam.TYPE))
+  -- if psparam_parent.TYPE = eps
+def $pmargtype(psparam, pvclass, psparam_parent, pvclass_parent, pvclasses) = $pvcovariant(psparam_parent.TYPE, pvclass_parent, psparam.TYPE, pvclass, pvclasses)
+  -- if psparam.TYPE =/= eps /\ ~("mixed" <- $ptmasks(psparam.TYPE))
+  -- if psparam_parent.TYPE =/= eps
+
+def $pmargcheck(psparam?, pvclass, eps, pvclass_parent, pvclasses, pmcheck) = pmcheck
+def $pmargcheck(eps, pvclass, psparam_parent, pvclass_parent, pvclasses, PMCHECK pvstatus ptbytes*) = PMCHECK PVNO ptbytes*
+def $pmargcheck(psparam, pvclass, psparam_parent, pvclass_parent, pvclasses, pmcheck) = $pmargref(psparam, psparam_parent, $pmcollect(pmcheck, $pmargtype(psparam, pvclass, psparam_parent, pvclass_parent, pvclasses)))
+def $pmargref(psparam, psparam_parent, PMUNSUPPORTED text) = PMUNSUPPORTED text
+def $pmargref(psparam, psparam_parent, PMCHECK pvstatus ptbytes*) = PMCHECK PVNO ptbytes*
+  -- if psparam.BYREF =/= psparam_parent.BYREF
+def $pmargref(psparam, psparam_parent, PMCHECK pvstatus ptbytes*) = PMCHECK pvstatus ptbytes*
+  -- if psparam.BYREF = psparam_parent.BYREF
+
+def $pmarguments(psparam*, pvclass, psparam_parent*, pvclass_parent, pvclasses, nat, nat_end, PMCHECK PVNO ptbytes*) = PMCHECK PVNO ptbytes*
+def $pmarguments(psparam*, pvclass, psparam_parent*, pvclass_parent, pvclasses, nat, nat_end, PMUNSUPPORTED text) = PMUNSUPPORTED text
+def $pmarguments(psparam*, pvclass, psparam_parent*, pvclass_parent, pvclasses, nat, nat, PMCHECK pvstatus ptbytes*) = PMCHECK pvstatus ptbytes*
+  -- if pvstatus =/= PVNO
+def $pmarguments(psparam*, pvclass, psparam_parent*, pvclass_parent, pvclasses, nat, nat_end, PMCHECK pvstatus ptbytes*) = $pmarguments(psparam*, pvclass, psparam_parent*, pvclass_parent, pvclasses, $(nat + 1), nat_end, $pmargcheck($pmargument(psparam*, nat), pvclass, $pmargument(psparam_parent*, nat), pvclass_parent, pvclasses, PMCHECK pvstatus ptbytes*))
+  -- if pvstatus =/= PVNO /\ $(nat < nat_end)
+
+def $pmreturns(pssignature, pvclass, pssignature_parent, pvclass_parent, pvclasses, PMCHECK PVNO ptbytes*) = PMCHECK PVNO ptbytes*
+def $pmreturns(pssignature, pvclass, pssignature_parent, pvclass_parent, pvclasses, PMUNSUPPORTED text) = PMUNSUPPORTED text
+def $pmreturns(pssignature, pvclass, pssignature_parent, pvclass_parent, pvclasses, PMCHECK pvstatus ptbytes*) = PMCHECK pvstatus ptbytes*
+  -- if pvstatus =/= PVNO /\ pssignature_parent.RETURNS = eps
+def $pmreturns(pssignature, pvclass, pssignature_parent, pvclass_parent, pvclasses, PMCHECK pvstatus ptbytes*) = PMCHECK PVNO ptbytes*
+  -- if pvstatus =/= PVNO /\ pssignature_parent.RETURNS =/= eps /\ pssignature.RETURNS = eps
+def $pmreturns(pssignature, pvclass, pssignature_parent, pvclass_parent, pvclasses, PMCHECK pvstatus ptbytes*) = $pmcollect(PMCHECK pvstatus ptbytes*, $pvcovariant(pssignature.RETURNS, pvclass, pssignature_parent.RETURNS, pvclass_parent, pvclasses))
+  -- if pvstatus =/= PVNO /\ pssignature_parent.RETURNS =/= eps /\ pssignature.RETURNS =/= eps
+
+def $pmusers(pmmethod, pvclass, pmmethod_parent, pvclass_parent, pvclasses) = PMUNSUPPORTED "user method requires named descriptors and source context"
+  -- if pvclass.NAME = eps \/ pvclass_parent.NAME = eps \/ pmmethod.OWNER = eps \/ pmmethod.NAME = eps \/ pmmethod_parent.OWNER = eps \/ pmmethod_parent.NAME = eps \/ pmmethod.CONTEXT.FILE = eps \/ pmmethod.CONTEXT.LINE = 0 \/ pmmethod_parent.CONTEXT.FILE = eps \/ pmmethod_parent.CONTEXT.LINE = 0
+def $pmusers(pmmethod, pvclass, pmmethod_parent, pvclass_parent, pvclasses) = $pmvalidusers(pmmethod, pvclass, pmmethod_parent, pvclass_parent, pvclasses)
+  -- otherwise
+
+def $pmvalidusers(pmmethod, pvclass, pmmethod_parent, pvclass_parent, pvclasses) = PMCHECK PVNO eps
+  -- if $($pmrequired(pmmethod.SIGNATURE.PARAMETERS) > $pmrequired(pmmethod_parent.SIGNATURE.PARAMETERS)) \/ (pmmethod_parent.SIGNATURE.BYREF /\ ~pmmethod.SIGNATURE.BYREF) \/ ($psseenvariadic(pmmethod_parent.SIGNATURE.PARAMETERS) /\ ~$psseenvariadic(pmmethod.SIGNATURE.PARAMETERS))
+def $pmvalidusers(pmmethod, pvclass, pmmethod_parent, pvclass_parent, pvclasses) = $pmreturns(pmmethod.SIGNATURE, pvclass, pmmethod_parent.SIGNATURE, pvclass_parent, pvclasses, $pmarguments(pmmethod.SIGNATURE.PARAMETERS, pvclass, pmmethod_parent.SIGNATURE.PARAMETERS, pvclass_parent, pvclasses, 0, $pmmax(|pmmethod.SIGNATURE.PARAMETERS|, |pmmethod_parent.SIGNATURE.PARAMETERS|), PMCHECK PVYES eps))
+  -- otherwise
+
+def $pmcompare(PMUSER pmmethod, pvclass, PMUSER pmmethod_parent, pvclass_parent, pvclasses) = $pmusers(pmmethod, pvclass, pmmethod_parent, pvclass_parent, pvclasses)
+def $pmcompare(pminput, pvclass, pminput_parent, pvclass_parent, pvclasses) = PMUNSUPPORTED "internal method requires a pinned signature and tentative-return catalog"
+  -- otherwise
+
+;; Diagnostic rendering is separate from comparison and delayed availability.
+;; Only explicitly compiled user defaults are rendered; no expressions execute.
+syntax pmdisplay = PMTEXT ptbytes | PMDISPLAYUNSUPPORTED text
+syntax pmdiagnostic = { LEVEL text, MESSAGE ptbytes, FILE ptbytes, LINE nat }
+syntax pmdiagresult = PMDIAGNOSTIC pmdiagnostic | PMDIAGUNSUPPORTED text
+
+dec $pmcstring(ptbytes) : ptbytes
+dec $pmcdisplay(pmdisplay) : pmdisplay
+dec $pmcat(pmdisplay, pmdisplay) : pmdisplay
+dec $pmif(bool, ptbytes) : ptbytes
+dec $pmtypeatom(ptatom, pvclass) : ptatom
+dec $pmtypebranch(ptbranch, pvclass) : ptbranch
+dec $pmtypename(ptbranch*, pvclass) : ptbytes
+dec $pmnumber(expression) : pnumber
+dec $pmnegative(pnumber) : pnumber
+dec $pmmaterialnumber(expression, text) : pnumber
+dec $pmconstant(name, ptcontext) : ptbytes
+dec $pmplainconstant(ptbytes, ptcontext) : ptbytes
+dec $pmstring(ptbytes) : ptbytes
+dec $pmdefaulttext(psdefault, ptcontext, int) : pmdisplay
+dec $pmparameter(psparam, pvclass, ptcontext, int) : pmdisplay
+dec $pmparameters(psparam*, pvclass, ptcontext, int) : pmdisplay
+dec $pmdeclaration(pmmethod, pvclass, int) : pmdisplay
+dec $pmfatal(pmdisplay, ptcontext) : pmdiagresult
+dec $pmmismatch(pmmethod, pvclass, pmmethod, pvclass, int) : pmdiagresult
+dec $pmunavailable(pmmethod, pvclass, pmmethod, pvclass, ptbytes*, int) : pmdiagresult
+
+def $pmcstring(eps) = eps
+def $pmcstring(0 :: ptbytes) = eps
+def $pmcstring(ptbyte :: ptbytes) = ptbyte :: $pmcstring(ptbytes)
+  -- if ptbyte =/= 0
+def $pmcdisplay(PMTEXT ptbytes) = PMTEXT ($pmcstring(ptbytes))
+def $pmcdisplay(PMDISPLAYUNSUPPORTED text) = PMDISPLAYUNSUPPORTED text
+
+def $pmcat(PMTEXT ptbytes, PMTEXT ptbytes_other) = PMTEXT (ptbytes ++ ptbytes_other)
+def $pmcat(PMDISPLAYUNSUPPORTED text, pmdisplay) = PMDISPLAYUNSUPPORTED text
+def $pmcat(PMTEXT ptbytes, PMDISPLAYUNSUPPORTED text) = PMDISPLAYUNSUPPORTED text
+def $pmif(true, ptbytes) = ptbytes
+def $pmif(false, ptbytes) = eps
+def $pmtypeatom(PTSELF, pvclass) = PTCLASS pvclass.NAME
+def $pmtypeatom(PTPARENT, pvclass) = PTCLASS ($pvname(PTPARENT, pvclass))
+def $pmtypeatom(ptatom, pvclass) = ptatom
+  -- if ptatom =/= PTSELF /\ ptatom =/= PTPARENT
+def $pmtypebranch(PTBRANCH ptatom*, pvclass) = PTBRANCH (($pmtypeatom(ptatom, pvclass))*)
+def $pmtypename(ptbranch*, pvclass) = $pttypename(($pmtypebranch(ptbranch, pvclass))*)
+
+def $pmnumber(NScalarInt (INTEGER int) metadata) = NINT int
+def $pmnumber(NScalarFloat (FLOAT text) metadata) = NFLOAT $hex_bits(text, 0)
+def $pmnumber(NExprUnaryPlus expression metadata) = $pmnumber(expression)
+def $pmnumber(NExprUnaryMinus expression metadata) = $pmnegative($pmnumber(expression))
+def $pmnegative(NINT int) = NINT $(-int)
+  -- if int =/= $(-9223372036854775808)
+def $pmnegative(NINT int) = NFLOAT ($float_neg($float_of_int(int)))
+  -- if int = $(-9223372036854775808)
+def $pmnegative(NFLOAT nat) = NFLOAT $float_neg(nat)
+def $pmmaterialnumber(expression, "float") = NFLOAT ($num_float($pmnumber(expression)))
+def $pmmaterialnumber(expression, "int") = $pmnumber(expression)
+
+def $pmconstant(NNameFullyQualified (BYTES text) metadata, ptcontext) = $base64(text)
+def $pmconstant(NNameRelative (BYTES text) metadata, ptcontext) = $ptjoin(ptcontext.NAMESPACE, $base64(text))
+def $pmconstant(NName (BYTES text) metadata, ptcontext) = $pmplainconstant($base64(text), ptcontext)
+def $pmplainconstant(ptbytes, ptcontext) = $ptjoin(ptcontext.NAMESPACE, ptbytes)
+  -- if |$ptfirst(ptbytes)| = |ptbytes|
+def $pmplainconstant(ptbytes, ptcontext) = $ptresolve(ptcontext, PTPLAIN, ptbytes)
+  -- if |$ptfirst(ptbytes)| =/= |ptbytes|
+def $pmstring(ptbytes) = [39] ++ ptbytes ++ [39]
+  -- if $(|ptbytes| <= 10)
+def $pmstring(ptbytes) = [39] ++ ptbytes[0:10] ++ $ptascii("...'")
+  -- if $(|ptbytes| > 10)
+
+def $pmdefaulttext(PSDEFAULT phpType5 text, ptcontext, int) = PMTEXT $ptascii(text)
+  -- if text <- ["null", "true", "false"]
+def $pmdefaulttext(PSDEFAULT (NExprArray (SEQUENCE eps) metadata) "array", ptcontext, int) = PMTEXT $ptascii("[]")
+def $pmdefaulttext(PSDEFAULT (NScalarString (BYTES text) metadata) "string", ptcontext, int) = PMTEXT ($pmstring($base64(text)))
+def $pmdefaulttext(PSDEFAULT expression text, ptcontext, int) = PMTEXT ptbytes
+  -- if text <- ["int", "float"]
+  -- if (ptbytes, false) = $number_text($pmmaterialnumber(expression, text), int)
+def $pmdefaulttext(PSDEFAULT expression text, ptcontext, int) = PMDISPLAYUNSUPPORTED "NaN default rendering requires activation warning context"
+  -- if text <- ["int", "float"]
+  -- if (ptbytes, true) = $number_text($pmmaterialnumber(expression, text), int)
+def $pmdefaulttext(PSDEFAULT (NExprConstFetch name metadata) "deferred", ptcontext, int) = PMTEXT ($pmconstant(name, ptcontext))
+def $pmdefaulttext(psdefault, ptcontext, int) = PMDISPLAYUNSUPPORTED "method default display requires a compiled supported default"
+  -- otherwise
+
+def $pmparameter(psparam, pvclass, ptcontext, int) = PMTEXT ($pmtypename(psparam.TYPE, pvclass) ++ $pmif(psparam.TYPE =/= eps, [32]) ++ $pmif(psparam.BYREF, [38]) ++ $pmif(psparam.VARIADIC, $ptascii("...")) ++ [36] ++ psparam.NAME)
+  -- if psparam.REQUIRED \/ psparam.VARIADIC
+def $pmparameter(psparam, pvclass, ptcontext, int) = $pmcat(PMTEXT ($pmtypename(psparam.TYPE, pvclass) ++ $pmif(psparam.TYPE =/= eps, [32]) ++ $pmif(psparam.BYREF, [38]) ++ [36] ++ psparam.NAME ++ $ptascii(" = ")), $pmdefaulttext(psparam.DEFAULT, ptcontext, int))
+  -- if ~psparam.REQUIRED /\ ~psparam.VARIADIC
+def $pmparameters(eps, pvclass, ptcontext, int) = PMTEXT eps
+def $pmparameters(psparam :: psparam_rest*, pvclass, ptcontext, int) = $pmcat($pmparameter(psparam, pvclass, ptcontext, int), $pmcat(PMTEXT ($pmif(psparam_rest* =/= eps, $ptascii(", "))), $pmparameters(psparam_rest*, pvclass, ptcontext, int)))
+def $pmdeclaration(pmmethod, pvclass, int) = PMDISPLAYUNSUPPORTED "method declaration display requires a named nonanonymous owner"
+  -- if pmmethod.OWNER = eps \/ pmmethod.NAME = eps \/ 0 <- pmmethod.OWNER
+def $pmdeclaration(pmmethod, pvclass, int) = $pmcat(PMTEXT ($pmif(pmmethod.SIGNATURE.BYREF, $ptascii("& ")) ++ pmmethod.OWNER ++ $ptascii("::") ++ pmmethod.NAME ++ [40]), $pmcat($pmparameters(pmmethod.SIGNATURE.PARAMETERS, pvclass, pmmethod.CONTEXT, int), PMTEXT ([41] ++ $pmif(pmmethod.SIGNATURE.RETURNS =/= eps, $ptascii(": ")) ++ $pmtypename(pmmethod.SIGNATURE.RETURNS, pvclass))))
+  -- otherwise
+
+def $pmfatal(PMDISPLAYUNSUPPORTED text, ptcontext) = PMDIAGUNSUPPORTED text
+def $pmfatal(PMTEXT ptbytes, ptcontext) = PMDIAGUNSUPPORTED "method diagnostic requires source file and compiler line"
+  -- if ptcontext.FILE = eps \/ ptcontext.LINE = 0
+def $pmfatal(PMTEXT ptbytes, ptcontext) = PMDIAGNOSTIC { LEVEL "fatal", MESSAGE ptbytes, FILE ptcontext.FILE, LINE ptcontext.LINE }
+  -- if ptcontext.FILE =/= eps /\ ptcontext.LINE =/= 0
+def $pmmismatch(pmmethod, pvclass, pmmethod_parent, pvclass_parent, int) = $pmfatal($pmcat(PMTEXT ($ptascii("Declaration of ")), $pmcat($pmcdisplay($pmdeclaration(pmmethod, pvclass, int)), $pmcat(PMTEXT ($ptascii(" must be compatible with ")), $pmcdisplay($pmdeclaration(pmmethod_parent, pvclass_parent, int))))), pmmethod.CONTEXT)
+
+;; Call only after the caller has exhausted availability attempts for the
+;; supplied global pending collection. Comparison itself never calls this.
+def $pmunavailable(pmmethod, pvclass, pmmethod_parent, pvclass_parent, eps, int) = PMDIAGUNSUPPORTED "availability diagnostic requires an unresolved class collection"
+def $pmunavailable(pmmethod, pvclass, pmmethod_parent, pvclass_parent, ptbytes :: ptbytes_rest*, int) = $pmfatal($pmcat(PMTEXT ($ptascii("Could not check compatibility between ")), $pmcat($pmcdisplay($pmdeclaration(pmmethod, pvclass, int)), $pmcat(PMTEXT ($ptascii(" and ")), $pmcat($pmcdisplay($pmdeclaration(pmmethod_parent, pvclass_parent, int)), PMTEXT ($ptascii(", because class ") ++ ptbytes ++ $ptascii(" is not available")))))), pmmethod.CONTEXT)

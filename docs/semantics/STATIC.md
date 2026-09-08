@@ -286,3 +286,65 @@ runtime identity, budgets and implementation fingerprints. Evidence is
 `Zend/zend_inheritance.c`. Method arity/by-reference/contravariant parameter
 checks, tentative internal returns, member legality and trait binding remain
 separate pending steps.
+
+`19-method-signatures.watsup` adds `$pmcompare` for selected user-method
+implementation checks. `PMUSER` supplies the original method owner/name, its
+compiled `pssignature` and declaration context. Child and prototype comparison
+scopes and the phase-visible class registry are separate arguments. Applicability
+is a caller obligation: private concrete-method exemptions, constructor prototype
+selection, final/static/abstract/visibility checks and the preceding body compiler
+must run in their proper stages. This helper does not select a prototype from a
+class table. `PMINTERNAL` returns explicit Unsupported until a pinned internal
+signature/tentative-return catalog is available.
+
+`PMCHECK` returns compatible, incompatible or unresolved status and an ordered
+missing-name collection. Required argument count, return-reference covariance
+and variadic preservation precede parameter checks. Parameters compare
+contravariantly, repeat variadic positions as needed, permit added optional
+parameters and enforce reference-mode equality. Return types then compare
+covariantly. Earlier unresolved collections survive a later definite mismatch,
+including a parameter reference mismatch. These collections represent comparison
+registration effects; they are not an autoload execution schedule.
+
+`$pmdeclaration` renders the selected user-method declaration from its descriptor.
+It preserves the original owner and method spelling, parameter names, reference
+and variadic markers, optional defaults, and type names resolved using the
+explicit comparison scope. Thus display ownership and contextual type scope are
+separate inputs; trait binding still must establish both correctly. Numeric
+literal defaults use the existing pure binary64/integer and precision formatting
+rules. Strings use the engine's ten-byte default preview. Deferred constant names
+retain namespace/qualified-import resolution under the signature compiler's
+no-constant-import-alias precondition. General constant expressions and missing
+compiled defaults remain pending.
+
+`$pmmismatch` produces a fatal diagnostic descriptor for a definite incompatible
+result. `$pmunavailable` produces the availability diagnostic only when its caller
+has exhausted loading attempts for the supplied pending collection. Neither
+function performs lookup or activation. The renderer applies C-string truncation
+separately to each declaration inserted through the engine's `%s` operands, so an
+embedded NUL in a string default can truncate the child declaration while the
+parent declaration still appears. Source file and exact function compiler line
+come from the declaration context; the parser's first modifier/attribute line is
+not a substitute. Missing contexts, anonymous display identity and internal
+catalogs have explicit pending results.
+
+Run `python3 tests/semantics/method_signatures.py`. The local helper campaign
+checks compiled source signatures, ordered preceding compile diagnostics,
+compatibility results and exact production-rendered diagnostic bytes/file/line.
+It retains binary oracle channels, namespace/import and multiline fixtures,
+ordered unresolved descriptors, explicit pending cases, source/AST hashes,
+runtime identity, budgets and fingerprints. It does not establish source method
+activation, delayed loading, trait binding or call semantics. The source basis is
+`zend_do_perform_implementation_check`, `zend_do_perform_arg_type_hint_check`,
+`zend_get_function_declaration`, `zend_append_type_hint` and
+`emit_incompatible_method_error` in pinned `Zend/zend_inheritance.c`, together
+with the previously validated signature/default and numeric rules.
+
+NaN default display is an explicit pending boundary: numeric formatting can emit
+an ordinary coercion warning at the active class-declaration location, distinct
+from the method compiler line used for the fatal mismatch. The renderer does not
+discard that warning flag or invent its context. An edited NaN literal requests
+that context explicitly; the source witness `1e1000-1e1000` remains pending in the
+constant-expression default compiler. The test retains its exact warning on line
+3 and fatal on line 4. This unfinished core behavior is not excluded from the
+later compiler/activation work.
