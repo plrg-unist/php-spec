@@ -106,3 +106,72 @@ parent substitution/crashing are intentional departures from this engine pin.
 The dedicated 24 context/position witnesses are reported separately as intended
 semantics, never included in the engine-agreement count. Oracle crashes are
 retained by the independent reviewer, never counted as validation passes.
+
+`17-signatures.watsup` adds `$pscompile(parameters, return-type, by-reference,
+context)`, loaded after the type helper. Its `PSOK` result contains ordered
+parameter descriptors, the return type and return-reference bit, together with
+ordered compile diagnostics. `PSERROR` retains earlier nonfatal diagnostics and
+the first fatal; `PSUNSUPPORTED` identifies an unfinished compilation step and
+makes no claim about a completed diagnostic trace. The caller provides the
+function/method display name and original declaration line in the context;
+parameter lines come from each checked parameter node. A retained unresolved
+constant default updates that line to its constant-fetch line, as the constant
+compiler does; already-folded null/true/false literals retain the parameter line.
+Namespace/import/class
+context is passed unchanged to the type helper. No function is registered or
+invoked, and no class is loaded by these rules.
+
+Compilation normalizes the return type before walking parameters. The parameter
+walk checks startup-profile auto-globals, duplicates, `$this`, variadic ordering
+and variadic defaults before default/type validation. The target build has no
+session extension: `_SESSION` is therefore an ordinary parameter name. Null
+literal defaults can make a type implicitly nullable; the deprecation precedes
+parameter-position errors. Optional parameters preceding the last required
+parameter become required and lose their defaults, including implicitly nullable
+parameters for which that particular optional-before-required notice is suppressed.
+A terminal variadic parameter is optional and retains its reference bit. An absent
+`__toString` return type receives the implicit string descriptor; magic-method
+arity, body legality and other class obligations remain separate checks.
+
+Each retained default stores the original checked expression and its materialized
+kind, including the int-to-float conversion required by a float-only declaration.
+Plain unresolved constants retain their syntax and the `deferred` kind; consumers
+must resolve them in the eventual declaration environment. This does not accept
+or evaluate their runtime values. Literal scalars, empty arrays, literal
+true/false/null, and nested signs over numeric literals are classified here.
+A namespace-relative special constant is resolved against the explicit namespace:
+`namespace\null` is the null literal in global scope, and a deferred constant
+in a named namespace. Case variants follow the same rule. This local interface
+assumes no constant-import aliases; class imports remain the type helper
+context. Constant-import processing is an explicit prerequisite of the later
+complete default compiler.
+Pure mathematical integer tracking checks signed64 negation overflow; float
+operands remain floats under either sign. Thus the source decimal literal
+`9223372036854775808`, including nested negative signs, remains a float. No host
+PHP arithmetic, Zend compiler result, or binary64 calculation is used to classify
+these signatures. Default materialization itself is still pending.
+
+General constant expressions, nonempty arrays, dynamic new/closures/callables,
+parameter attributes, promotion and hooks currently produce Unsupported. These
+are unfinished core work, not excluded language features. The next default
+milestone must compile constant expressions using the pure numeric rules and an
+explicit declaration/constant environment, preserving deferred expressions and
+compile effects before supplying the same signature descriptor. Full declaration
+activation, namespace/constant-import processing, class linking/variance and
+calls remain later integration steps. A caller must also account for parameter
+`http_response_header` setting the function compiler's assigned-name flag before
+body compilation (`zend_compile_params`); this helper does not compile bodies.
+
+Run `python3 tests/semantics/signatures.py` for pinned lint comparisons of exact
+ordered severity/message/file/line events, descriptor fields, retained default
+ASTs and explicit pending/edited cases. PHP-Parser's early direct-void and
+variadic-default rejections are retained separately with exact frontend and lint
+evidence; equivalent edited checked parameter ASTs exercise the compiler rules
+without claiming source-parser agreement. The report records the local oracle's
+loaded extensions, profile, budgets, source/binary fingerprints and raw lint
+channels. These are local helper checks, never source execution coverage.
+Source evidence is `zend_compile_params`, `zend_is_valid_default_value`,
+`zend_try_ct_eval_unary_pm`, `zend_compile_const_expr_const`,
+`zend_resolve_const_name`, `zend_try_ct_eval_const`, `zend_const_expr_to_zval` and
+`zend_compile_func_decl` in the pinned `Zend/zend_compile.c`, together with
+`php_startup_auto_globals` in `main/php_variables.c`.

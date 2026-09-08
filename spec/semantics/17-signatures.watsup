@@ -1,0 +1,302 @@
+;; Local signature compilation. Declaration activation and calls are separate.
+syntax psraw = { NAME ptbytes, TYPE phpType18, BYREF bool, VARIADIC bool,
+  DEFAULT phpType5, LINE nat, EXTRA bool }
+syntax psinput = PSINPUT psraw | PSINPUTUNSUPPORTED text
+syntax psnumber = PSINTEGER int | PSFLOAT | PSNONNUMERIC
+syntax psdefault = PSNONE | PSDEFAULT phpType5 text | PSDEFAULTUNSUPPORTED text
+syntax psparam = { NAME ptbytes, TYPE ptbranch*, BYREF bool, VARIADIC bool,
+  REQUIRED bool, DEFAULT psdefault }
+syntax pssignature = { PARAMETERS psparam*, RETURNS ptbranch*, BYREF bool }
+syntax psdiagnostic = PSTYPEDIAGNOSTIC ptdiagnostic | PSDIAGNOSTIC text text ptbytes* ptcontext
+syntax psresult = PSOK pssignature psdiagnostic* | PSERROR psdiagnostic* | PSUNSUPPORTED text
+syntax psoneresult = PSONE psparam psdiagnostic* | PSONEERROR psdiagnostic* | PSONEUNSUPPORTED text
+
+
+dec $psline(metadata) : nat
+dec $psstartline(metadataEntry) : bool
+dec $pslower(phpType17) : psinput
+dec $psrequiredlater(psinput*) : ptbytes?
+dec $psdefault(phpType5, ptcontext) : psdefault
+dec $psnumber(expression) : psnumber
+dec $psnegate(psnumber) : psnumber
+dec $psnumberkind(psnumber) : text
+dec $psnumericdefault(expression, psnumber) : psdefault
+dec $psconstantkind(name, ptcontext) : text
+dec $psplainconstant(ptbytes) : text
+dec $psissue(ptcontext, text, text, ptbytes*) : psdiagnostic
+dec $pserror(ptcontext, text, ptbytes*) : psoneresult
+dec $psautoglobal(ptbytes) : bool
+dec $psprepend(psdiagnostic*, psoneresult) : psoneresult
+dec $psnullable(ptcontext, phpType18, psdefault, ptresult) : ptresult
+dec $psisnulldefault(psdefault) : bool
+dec $psforced(phpType18, psdefault, ptresult) : bool
+dec $psacceptdefault(ptbranch*, psdefault) : bool
+dec $psconvertdefault(ptbranch*, psdefault) : psdefault
+dec $psone(ptcontext, psraw, psinput*, ptbytes*, bool) : psoneresult
+dec $psdefaultstage(ptcontext, psraw, psinput*) : psoneresult
+dec $psdefaultready(ptcontext, psraw, psinput*, psdefault) : psoneresult
+dec $psdefaultline(psdefault, ptcontext) : nat
+dec $pstypestage(ptcontext, psraw, psinput*, psdefault) : psoneresult
+dec $pshasdefault(psdefault) : bool
+dec $pstyped(ptcontext, psraw, psinput*, psdefault, bool, ptresult) : psoneresult
+dec $psnullnotice(ptcontext, psraw, bool) : psdiagnostic*
+dec $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, ptresult) : psoneresult
+dec $psretain_default(psinput*, psdefault) : psdefault
+dec $psoptionalnotice(ptcontext, psraw, psinput*, bool) : psdiagnostic*
+dec $psdefaulttypename(text) : ptbytes
+dec $psfold(ptcontext, psinput*, pssignature, psdiagnostic*) : psresult
+dec $psseenvariadic(psparam*) : bool
+dec $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult) : psresult
+dec $pscompile(phpType16, phpType18, bool, ptcontext) : psresult
+dec $psreturnstage(ptcontext, psinput*, bool, ptresult) : psresult
+dec $psfallbackreturn(ptcontext, ptbranch*) : ptbranch*
+dec $psreturnnotice(ptcontext, ptbranch*, bool) : psdiagnostic*
+dec $psfunctionname(ptcontext) : ptbytes
+dec $psmessage(psdiagnostic) : ptbytes
+
+;; Missing positions on edited syntax are explicit, never guessed.
+def $psline(eps) = 0
+def $psline((MstartLine int) :: metadataEntry*) = ptbyte
+  -- if int = ptbyte
+def $psline(metadataEntry :: metadataEntry_rest*) = $psline(metadataEntry_rest*)
+  -- if ~($psstartline(metadataEntry))
+def $psstartline(MstartLine int) = true
+def $psstartline(metadataEntry) = false
+  -- otherwise
+
+def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType39 metadata) = PSINPUT { NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), EXTRA (phpType14 =/= SEQUENCE eps \/ int =/= 0 \/ phpType39 =/= SEQUENCE eps) }
+def $pslower(phpType17) = PSINPUTUNSUPPORTED "edited dynamic parameter name"
+  -- otherwise
+
+def $psrequiredlater(eps) = eps
+def $psrequiredlater(psinput :: psinput_rest*) = ptbytes
+  -- if $psrequiredlater(psinput_rest*) = ptbytes
+def $psrequiredlater((PSINPUT psraw) :: psinput*) = psraw.NAME
+  -- if $psrequiredlater(psinput*) = eps
+  -- if psraw.DEFAULT = ABSENT /\ ~psraw.VARIADIC
+def $psrequiredlater((PSINPUT psraw) :: psinput*) = eps
+  -- if $psrequiredlater(psinput*) = eps
+  -- if psraw.DEFAULT =/= ABSENT \/ psraw.VARIADIC
+def $psrequiredlater((PSINPUTUNSUPPORTED text) :: psinput*) = eps
+  -- if $psrequiredlater(psinput*) = eps
+
+;; Literal defaults retain checked expressions. TYPE records any int-to-float
+;; conversion required when the consumer materializes that literal value.
+def $psdefault(ABSENT, ptcontext) = PSNONE
+def $psdefault(NScalarInt phpType24 metadata, ptcontext) = PSDEFAULT (NScalarInt phpType24 metadata) "int"
+def $psdefault(NScalarFloat phpType43 metadata, ptcontext) = PSDEFAULT (NScalarFloat phpType43 metadata) "float"
+def $psdefault(NScalarString phpType35 metadata, ptcontext) = PSDEFAULT (NScalarString phpType35 metadata) "string"
+def $psdefault(NExprArray (SEQUENCE eps) metadata, ptcontext) = PSDEFAULT (NExprArray (SEQUENCE eps) metadata) "array"
+def $psdefault(NExprConstFetch name metadata, ptcontext) = PSDEFAULT (NExprConstFetch name metadata) text
+  -- if text = $psconstantkind(name, ptcontext)
+def $psdefault(NExprUnaryMinus expression metadata, ptcontext) = $psnumericdefault(NExprUnaryMinus expression metadata, $psnegate($psnumber(expression)))
+def $psdefault(NExprUnaryPlus expression metadata, ptcontext) = $psnumericdefault(NExprUnaryPlus expression metadata, $psnumber(expression))
+
+;; Pure integer tracking suffices to classify numeric signs; binary64 operands
+;; remain floats under either sign, including an overflowing decimal literal.
+def $psnumber(NScalarInt (INTEGER int) metadata) = PSINTEGER int
+def $psnumber(NScalarFloat phpType43 metadata) = PSFLOAT
+def $psnumber(NExprUnaryPlus expression metadata) = $psnumber(expression)
+def $psnumber(NExprUnaryMinus expression metadata) = $psnegate($psnumber(expression))
+def $psnumber(expression) = PSNONNUMERIC
+  -- otherwise
+def $psnegate(PSINTEGER int) = PSINTEGER $(-int)
+  -- if int =/= $(-9223372036854775808)
+def $psnegate(PSINTEGER int) = PSFLOAT
+  -- if int = $(-9223372036854775808)
+def $psnegate(PSFLOAT) = PSFLOAT
+def $psnegate(PSNONNUMERIC) = PSNONNUMERIC
+def $psnumberkind(PSINTEGER int) = "int"
+def $psnumberkind(PSFLOAT) = "float"
+def $psnumericdefault(expression, PSNONNUMERIC) = PSDEFAULTUNSUPPORTED "nonnumeric unary parameter default requires constant-expression compilation"
+def $psnumericdefault(expression, psnumber) = PSDEFAULT expression $psnumberkind(psnumber)
+  -- if psnumber =/= PSNONNUMERIC
+def $psdefault(phpType5, ptcontext) = PSDEFAULTUNSUPPORTED "nonliteral parameter default requires constant-expression compilation"
+  -- otherwise
+
+def $psconstantkind(NName (BYTES text) metadata, ptcontext) = $psplainconstant($ptlc($base64(text)))
+def $psconstantkind(NNameFullyQualified (BYTES text) metadata, ptcontext) = $psplainconstant($ptlc($base64(text)))
+def $psconstantkind(NNameRelative (BYTES text) metadata, ptcontext) = $psplainconstant($ptlc($ptjoin(ptcontext.NAMESPACE, $base64(text))))
+def $psplainconstant(ptbytes) = text
+  -- if text = $ptbuiltin(ptbytes)
+  -- if text <- ["null", "true", "false"]
+def $psplainconstant(ptbytes) = "deferred"
+  -- if ~($ptbuiltin(ptbytes) <- ["null", "true", "false"])
+
+def $psissue(ptcontext, text_level, text_code, ptbytes*) = PSDIAGNOSTIC text_level text_code ptbytes* ptcontext
+
+def $pserror(ptcontext, text, ptbytes*) = PSONEERROR ([$psissue(ptcontext, "fatal", text, ptbytes*)])
+
+def $psautoglobal(ptbytes) = ptbytes <- [$ptascii("GLOBALS"), $ptascii("_SERVER"), $ptascii("_GET"), $ptascii("_POST"), $ptascii("_FILES"), $ptascii("_COOKIE"), $ptascii("_REQUEST"), $ptascii("_ENV")]
+
+def $psprepend(psdiagnostic_old*, PSONE psparam psdiagnostic*) = PSONE psparam (psdiagnostic_old* ++ psdiagnostic*)
+def $psprepend(psdiagnostic_old*, PSONEERROR psdiagnostic*) = PSONEERROR (psdiagnostic_old* ++ psdiagnostic*)
+def $psprepend(psdiagnostic*, PSONEUNSUPPORTED text) = PSONEUNSUPPORTED text
+
+;; Force null before standalone/parameter-position checking, as compile_typename_ex.
+def $psnullable(ptcontext, phpType18, psdefault, PTERROR ptdiagnostic*) = PTERROR ptdiagnostic*
+def $psnullable(ptcontext, phpType18, psdefault, PTUNSUPPORTED text) = PTUNSUPPORTED text
+def $psnullable(ptcontext, phpType18, PSDEFAULT phpType5 "null", PTOK ptbranch* ptdiagnostic*) = $ptfinish(ptcontext, PTOK (ptbranch* ++ [(PTBRANCH ([PTBUILTIN "null"]))]) ptdiagnostic*)
+  -- if phpType18 =/= ABSENT
+  -- if ~("null" <- $ptmasks(ptbranch*) \/ "mixed" <- $ptmasks(ptbranch*))
+def $psnullable(ptcontext, phpType18, psdefault, PTOK ptbranch* ptdiagnostic*) = PTOK ptbranch* ptdiagnostic*
+  -- if ~(phpType18 =/= ABSENT /\ $psisnulldefault(psdefault) /\ ~("null" <- $ptmasks(ptbranch*) \/ "mixed" <- $ptmasks(ptbranch*)))
+def $psisnulldefault(PSDEFAULT phpType5 "null") = true
+def $psisnulldefault(psdefault) = false
+  -- otherwise
+
+def $psforced(phpType18, psdefault, PTOK ptbranch* ptdiagnostic*) = phpType18 =/= ABSENT /\ $psisnulldefault(psdefault) /\ ~("null" <- $ptmasks(ptbranch*) \/ "mixed" <- $ptmasks(ptbranch*))
+def $psforced(phpType18, psdefault, ptresult) = false
+  -- otherwise
+
+def $psacceptdefault(ptbranch*, PSNONE) = true
+def $psacceptdefault(ptbranch*, PSDEFAULT phpType5 text) = true
+  -- if ptbranch* = eps \/ "mixed" <- $ptmasks(ptbranch*) \/ text = "deferred" \/ text <- $ptmasks(ptbranch*) \/ (text = "int" /\ "float" <- $ptmasks(ptbranch*))
+def $psacceptdefault(ptbranch*, PSDEFAULT phpType5 text) = false
+  -- if ~(ptbranch* = eps \/ "mixed" <- $ptmasks(ptbranch*) \/ text = "deferred" \/ text <- $ptmasks(ptbranch*) \/ (text = "int" /\ "float" <- $ptmasks(ptbranch*)))
+
+def $psconvertdefault(ptbranch*, PSDEFAULT phpType5 "int") = PSDEFAULT phpType5 "float"
+  -- if "float" <- $ptmasks(ptbranch*)
+  -- if ~("int" <- $ptmasks(ptbranch*) \/ "mixed" <- $ptmasks(ptbranch*))
+def $psconvertdefault(ptbranch*, psdefault) = psdefault
+  -- otherwise
+
+def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = PSONEUNSUPPORTED "missing parameter compiler line"
+  -- if psraw.LINE = 0
+def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $pserror(ptcontext, "parameter-auto-global", [psraw.NAME])
+  -- if psraw.LINE =/= 0
+  -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
+  -- if $psautoglobal(psraw.NAME)
+def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $pserror(ptcontext, "parameter-redefined", [psraw.NAME])
+  -- if psraw.LINE =/= 0
+  -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
+  -- if ~$psautoglobal(psraw.NAME)
+  -- if psraw.NAME <- ptbytes*
+def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $pserror(ptcontext, "parameter-this", eps)
+  -- if psraw.LINE =/= 0
+  -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
+  -- if ~$psautoglobal(psraw.NAME)
+  -- if ~(psraw.NAME <- ptbytes*)
+  -- if psraw.NAME = $ptascii("this")
+def $psone(ptcontext, psraw, psinput*, ptbytes*, true) = $pserror(ptcontext, "variadic-last", eps)
+  -- if psraw.LINE =/= 0
+  -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
+  -- if ~$psautoglobal(psraw.NAME)
+  -- if ~(psraw.NAME <- ptbytes*)
+  -- if psraw.NAME =/= $ptascii("this")
+def $psone(ptcontext, psraw, psinput*, ptbytes*, false) = $psdefaultstage(ptcontext, psraw, psinput*)
+  -- if psraw.LINE =/= 0
+  -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
+  -- if ~$psautoglobal(psraw.NAME)
+  -- if ~(psraw.NAME <- ptbytes*)
+  -- if psraw.NAME =/= $ptascii("this")
+
+def $psdefaultstage(ptcontext, psraw, psinput*) = $pserror(ptcontext, "variadic-default", eps)
+  -- if psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT
+def $psdefaultstage(ptcontext, psraw, psinput*) = PSONEUNSUPPORTED "parameter attributes, promotion or hooks"
+  -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
+  -- if psraw.EXTRA
+def $psdefaultstage(ptcontext, psraw, psinput*) = $psdefaultready(ptcontext, psraw, psinput*, $psdefault(psraw.DEFAULT, ptcontext))
+  -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
+  -- if ~psraw.EXTRA
+
+def $psdefaultline(PSDEFAULT (NExprConstFetch name metadata) "deferred", ptcontext) = $psline(metadata)
+def $psdefaultline(psdefault, ptcontext) = ptcontext.LINE
+  -- otherwise
+
+def $psdefaultready(ptcontext, psraw, psinput*, psdefault) = PSONEUNSUPPORTED "missing deferred default compiler line"
+  -- if $psdefaultline(psdefault, ptcontext) = 0
+def $psdefaultready(ptcontext, psraw, psinput*, psdefault) = $pstypestage(ptcontext[.LINE = $psdefaultline(psdefault, ptcontext)], psraw, psinput*, psdefault)
+  -- if $psdefaultline(psdefault, ptcontext) =/= 0
+
+def $pstypestage(ptcontext, psraw, psinput*, PSDEFAULTUNSUPPORTED text) = PSONEUNSUPPORTED text
+def $pstypestage(ptcontext, psraw, psinput*, psdefault) = $pstyped(ptcontext, psraw, psinput*, psdefault, $psforced(psraw.TYPE, psdefault, ptresult), $psnullable(ptcontext, psraw.TYPE, psdefault, ptresult))
+  -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if ptresult = $ptraw(ptcontext, $ptast(psraw.TYPE))
+def $pshasdefault(PSDEFAULT phpType5 text) = true
+def $pshasdefault(psdefault) = false
+  -- otherwise
+
+def $pstyped(ptcontext, psraw, psinput*, psdefault, bool, PTERROR ptdiagnostic*) = PSONEERROR (PSTYPEDIAGNOSTIC ptdiagnostic)*
+def $pstyped(ptcontext, psraw, psinput*, psdefault, bool, PTUNSUPPORTED text) = PSONEUNSUPPORTED text
+def $pstyped(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = $psprepend((PSTYPEDIAGNOSTIC ptdiagnostic)* ++ $psnullnotice(ptcontext, psraw, bool), $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, $ptposition(ptcontext, PTOK ptbranch* eps)))
+
+def $psnullnotice(ptcontext, psraw, true) = [$psissue(ptcontext, "deprecated", "implicit-nullable", [psraw.NAME])]
+def $psnullnotice(ptcontext, psraw, false) = eps
+
+def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTERROR ptdiagnostic*) = PSONEERROR (PSTYPEDIAGNOSTIC ptdiagnostic)*
+def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTUNSUPPORTED text) = PSONEUNSUPPORTED text
+def $pspositionstage(ptcontext, psraw, psinput*, PSDEFAULT phpType5 text, bool, PTOK ptbranch* ptdiagnostic*) = $pserror(ptcontext, "invalid-default", [$psdefaulttypename(text), psraw.NAME, $pttypename(ptbranch*)])
+  -- if ~$psacceptdefault(ptbranch*, PSDEFAULT phpType5 text)
+def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = PSONE { NAME psraw.NAME, TYPE ptbranch*, BYREF psraw.BYREF, VARIADIC psraw.VARIADIC, REQUIRED ((psraw.DEFAULT = ABSENT /\ ~psraw.VARIADIC) \/ $psrequiredlater(psinput*) =/= eps), DEFAULT $psretain_default(psinput*, $psconvertdefault(ptbranch*, psdefault)) } ($psoptionalnotice(ptcontext, psraw, psinput*, bool))
+  -- if $psacceptdefault(ptbranch*, psdefault)
+
+def $psretain_default(psinput*, psdefault) = PSNONE
+  -- if $psrequiredlater(psinput*) =/= eps
+def $psretain_default(psinput*, psdefault) = psdefault
+  -- if $psrequiredlater(psinput*) = eps
+
+def $psoptionalnotice(ptcontext, psraw, psinput*, false) = [$psissue(ptcontext, "deprecated", "optional-before-required", [psraw.NAME, ptbytes])]
+  -- if psraw.DEFAULT =/= ABSENT
+  -- if $psrequiredlater(psinput*) = ptbytes
+def $psoptionalnotice(ptcontext, psraw, psinput*, bool) = eps
+  -- otherwise
+
+def $psline((MstartLine int) :: metadataEntry*) = 0
+  -- if $(int < 0)
+
+def $psdefaulttypename("true") = $ptascii("bool")
+def $psdefaulttypename("false") = $ptascii("bool")
+def $psdefaulttypename(text) = $ptascii(text)
+  -- if text =/= "true" /\ text =/= "false"
+
+def $psfold(ptcontext, eps, pssignature, psdiagnostic*) = PSOK pssignature psdiagnostic*
+def $psfold(ptcontext, (PSINPUTUNSUPPORTED text) :: psinput*, pssignature, psdiagnostic*) = PSUNSUPPORTED text
+def $psfold(ptcontext, (PSINPUT psraw) :: psinput*, pssignature, psdiagnostic*) = $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, $psone(ptcontext[.LINE = psraw.LINE][.POSITION = PTPARAMETER], psraw, psinput*, (psparam.NAME)*, $psseenvariadic(pssignature.PARAMETERS)))
+  -- if psparam* = pssignature.PARAMETERS
+
+def $psseenvariadic(eps) = false
+def $psseenvariadic(psparam :: psparam_rest*) = psparam.VARIADIC \/ $psseenvariadic(psparam_rest*)
+
+def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, PSONE psparam psdiagnostic_new*) = $psfold(ptcontext, psinput*, pssignature[.PARAMETERS = pssignature.PARAMETERS ++ [psparam]], psdiagnostic* ++ psdiagnostic_new*)
+def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEERROR psdiagnostic_new*) = PSERROR (psdiagnostic* ++ psdiagnostic_new*)
+def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEUNSUPPORTED text) = PSUNSUPPORTED text
+
+def $pscompile(SEQUENCE phpType17*, phpType18, bool, ptcontext) = $psreturnstage(ptcontext, ($pslower(phpType17))*, bool, $ptype_normalize(phpType18, ptcontext[.POSITION = PTRETURN]))
+  -- if ptcontext.MEMBER =/= eps
+def $pscompile(phpType16, phpType18, bool, ptcontext) = PSUNSUPPORTED "missing declaration display name"
+  -- if ptcontext.MEMBER = eps
+
+def $psreturnstage(ptcontext, psinput*, bool, PTERROR ptdiagnostic*) = PSERROR (PSTYPEDIAGNOSTIC ptdiagnostic)*
+def $psreturnstage(ptcontext, psinput*, bool, PTUNSUPPORTED text) = PSUNSUPPORTED text
+def $psreturnstage(ptcontext, psinput*, bool, PTOK ptbranch* ptdiagnostic*) = $psfold(ptcontext, psinput*, { PARAMETERS eps, RETURNS $psfallbackreturn(ptcontext, ptbranch*), BYREF bool }, (PSTYPEDIAGNOSTIC ptdiagnostic)* ++ $psreturnnotice(ptcontext, ptbranch*, bool))
+
+def $psfallbackreturn(ptcontext, eps) = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if ptcontext.OWNER =/= eps /\ $ptlc(ptcontext.MEMBER) = $ptascii("__tostring")
+def $psfallbackreturn(ptcontext, ptbranch*) = ptbranch*
+  -- otherwise
+
+def $psreturnnotice(ptcontext, ptbranch*, true) = [$psissue(ptcontext, "deprecated", "void-return-reference", eps)]
+  -- if "void" <- $ptmasks(ptbranch*)
+def $psreturnnotice(ptcontext, ptbranch*, bool) = eps
+  -- otherwise
+
+def $psfunctionname(ptcontext) = ptcontext.MEMBER
+  -- if ptcontext.OWNER = eps
+def $psfunctionname(ptcontext) = ptcontext.OWNER ++ $ptascii("::") ++ ptcontext.MEMBER
+  -- if ptcontext.OWNER =/= eps
+
+def $psmessage(PSTYPEDIAGNOSTIC ptdiagnostic) = $ptmessage(ptdiagnostic)
+def $psmessage(PSDIAGNOSTIC text "parameter-auto-global" ([ptbytes]) ptcontext) = $ptascii("Cannot re-assign auto-global variable ") ++ ptbytes
+def $psmessage(PSDIAGNOSTIC text "parameter-redefined" ([ptbytes]) ptcontext) = $ptascii("Redefinition of parameter $") ++ ptbytes
+def $psmessage(PSDIAGNOSTIC text "parameter-this" ptbytes* ptcontext) = $ptascii("Cannot use $this as parameter")
+def $psmessage(PSDIAGNOSTIC text "variadic-last" ptbytes* ptcontext) = $ptascii("Only the last parameter can be variadic")
+def $psmessage(PSDIAGNOSTIC text "variadic-default" ptbytes* ptcontext) = $ptascii("Variadic parameter cannot have a default value")
+def $psmessage(PSDIAGNOSTIC text "invalid-default" ([ptbytes_kind, ptbytes_name, ptbytes_type]) ptcontext) = $ptascii("Cannot use ") ++ ptbytes_kind ++ $ptascii(" as default value for parameter $") ++ ptbytes_name ++ $ptascii(" of type ") ++ ptbytes_type
+def $psmessage(PSDIAGNOSTIC text "implicit-nullable" ([ptbytes]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Implicitly marking parameter $") ++ ptbytes ++ $ptascii(" as nullable is deprecated, the explicit nullable type must be used instead")
+def $psmessage(PSDIAGNOSTIC text "optional-before-required" ([ptbytes_optional, ptbytes_required]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Optional parameter $") ++ ptbytes_optional ++ $ptascii(" declared before required parameter $") ++ ptbytes_required ++ $ptascii(" is implicitly treated as a required parameter")
+def $psmessage(PSDIAGNOSTIC text "void-return-reference" ptbytes* ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Returning by reference from a void function is deprecated")
+
+def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = PSONEUNSUPPORTED "edited invalid parameter name"
+  -- if psraw.LINE =/= 0
+  -- if ~($ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME))
