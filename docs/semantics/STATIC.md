@@ -236,3 +236,53 @@ or no-parent checks. These witnesses are not implemented trait semantics or
 runtime return-type validation. `zend_do_link_class` also loads parent, traits
 and interfaces before trait-member binding, parent inheritance and interface
 checks; eventual requests and resumptions must preserve that ordering.
+
+`19-variance.watsup` adds `$pvcovariant(child-type, child-scope,
+prototype-type, prototype-scope, visible-classes)`. It returns `PVCOMPATIBLE`,
+`PVINCOMPATIBLE`, or `PVNEEDS` with missing class names. Absent types or unnamed
+scope inputs return explicit Unsupported. Other inputs must be valid normalized
+branch descriptors. Each class descriptor supplies its canonical identity,
+parent name, complete transitive class/interface ancestor names and final flag;
+registry keys may be aliases for that same identity. These are authoritative
+inputs from a future independent linker, not facts inferred from all declarations
+in the AST. Both scope identities are explicitly known. Registry visibility must
+match the particular compilation or linking phase.
+
+The rules compare primitive masks, class ancestry, unions and intersections,
+including iterable's array/Traversable components, Closure/callable, final-self
+replacement of static, mixed and never. Equal class names compare case
+insensitively without requiring a registry entry. Definite failure dominates an
+unresolved conjunction; definite success dominates an unresolved disjunction.
+Contextual self/parent markers are resolved for comparison without rerunning the
+local type compiler or changing the retained declaration type structure.
+
+The pinned engine's static-permits-self predicate is deliberately separate from
+general subtype checking. A child static return can replace a pure `I&J` return
+when its class implements either member, but cannot replace `(I&J)|null` merely
+because its class implements both. `zend_type_permits_self` scans the top-level
+named entries and skips nested DNF intersections. The specification follows this
+observed predicate; it does not substitute mathematical set subtyping.
+
+`PVNEEDS` collects every missing class name from the child type followed by the
+prototype type, preserving branch/member order and deduplicating exact byte
+strings. This reflects `register_unresolved_classes` for an unresolved comparison
+under the supplied visibility environment. It is not a callback/autoload schedule
+or a complete delayed-obligation machine. Actual lookup visibility, existing
+pending requests, inactive-engine errors, autoload timing, resume checks and
+class activation remain unfinished. The helper emits no declaration diagnostics.
+
+Run `python3 tests/semantics/variance.py`. Checked source return ASTs are locally
+normalized and compared under manually specified class graphs corresponding to
+executed declaration-only oracle fixtures. The harness compares covariance
+status and test-rendered fatal text, file and line for isolated return-only
+methods; this does not implement production method diagnostic rendering or
+source declaration activation. Separate symbolic descriptors exercise aliases,
+contextual markers and missing-name order. Reports retain stable source/type-AST
+hashes and case IDs, explicit registry/context inputs, raw oracle channels,
+runtime identity, budgets and implementation fingerprints. Evidence is
+`zend_perform_covariant_type_check`, its class/intersection helpers,
+`zend_type_permits_self`, `resolve_class_name`, `lookup_class_ex`,
+`register_unresolved_classes` and `emit_incompatible_method_error` in the pinned
+`Zend/zend_inheritance.c`. Method arity/by-reference/contravariant parameter
+checks, tentative internal returns, member legality and trait binding remain
+separate pending steps.

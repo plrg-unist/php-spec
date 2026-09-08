@@ -1,0 +1,220 @@
+;; Covariance on valid normalized types and explicit known class scopes.
+;; Registry entries are phase-visible canonical identities/aliases; ANCESTORS
+;; is the authoritative transitive class/interface closure, supplied by linking.
+;; PVNEEDS collects missing names child-first, then prototype, under that input.
+;; It is not an autoload schedule. No registration, loading, visibility changes,
+;; declaration activation or diagnostic emission occurs here.
+syntax pvclass = { NAME ptbytes, PARENT ptbytes, ANCESTORS ptbytes*, FINAL bool }
+syntax pvclasses = (ptbytes, pvclass)*
+syntax pvstatus = PVYES | PVNO | PVUNRESOLVED
+syntax pvresult = PVCOMPATIBLE | PVINCOMPATIBLE | PVNEEDS ptbytes* | PVUNSUPPORTED text
+
+dec $pvlookup(pvclass, pvclasses, ptbytes) : pvclass?
+dec $pvregistry(pvclasses, ptbytes) : pvclass?
+dec $pvname(ptatom, pvclass) : ptbytes
+dec $pvischild(pvclass, pvclass) : bool
+dec $pvand(pvstatus, pvstatus) : pvstatus
+dec $pvor(pvstatus, pvstatus) : pvstatus
+dec $pvclassbelow(ptbytes, pvclass, ptbytes, pvclass, pvclasses) : pvstatus
+dec $pvfoundbelow(pvclass?, pvclass?) : pvstatus
+dec $pvexists(ptbytes, pvclass, pvclasses) : pvstatus
+dec $pvexistsatoms(ptatom*, pvclass, pvclasses) : pvstatus
+dec $pvanybelow(ptatom*, pvclass, ptbytes, pvclass, pvclasses) : pvstatus
+dec $pvalltargets(ptatom*, pvclass, ptatom*, pvclass, pvclasses) : pvstatus
+dec $pvanytarget(ptatom*, pvclass, ptbranch*, pvclass, pvclasses) : pvstatus
+dec $pvclassspecial(ptatom, pvclass, ptbranch*, pvclass, pvclasses) : pvstatus
+dec $pvclosure(ptbytes, pvclass, pvclasses) : pvstatus
+dec $pvfinalself(ptbytes, pvclass, pvclasses) : pvstatus
+dec $pvbranch(ptbranch, pvclass, ptbranch*, pvclass, pvclasses) : pvstatus
+dec $pvbranches(ptbranch*, pvclass, ptbranch*, pvclass, pvclasses) : pvstatus
+dec $pvpermitatoms(ptatom*, pvclass, pvclass, pvclasses) : bool
+dec $pvpermitbranches(ptbranch*, pvclass, pvclass, pvclasses) : bool
+dec $pvpermitself(ptbranch*, pvclass, pvclass, pvclasses) : bool
+dec $pvadded(text*, text*, bool) : text*
+dec $pvcheck(ptbranch*, pvclass, ptbranch*, pvclass, pvclasses) : pvstatus
+dec $pvcheckadded(text*, ptbranch*, pvclass, ptbranch*, pvclass, pvclasses) : pvstatus
+dec $pvmissingatoms(ptatom*, pvclass, pvclasses) : ptbytes*
+dec $pvmissing(ptbranch*, pvclass, pvclasses) : ptbytes*
+dec $pvunique(ptbytes*, ptbytes*) : ptbytes*
+dec $pvfinish(pvstatus, ptbranch*, pvclass, ptbranch*, pvclass, pvclasses) : pvresult
+dec $pvcovariant(ptbranch*, pvclass, ptbranch*, pvclass, pvclasses) : pvresult
+
+def $pvlookup(pvclass, pvclasses, ptbytes) = pvclass
+  -- if $ptlc(pvclass.NAME) = $ptlc(ptbytes)
+def $pvlookup(pvclass, pvclasses, ptbytes) = $pvregistry(pvclasses, ptbytes)
+  -- if $ptlc(pvclass.NAME) =/= $ptlc(ptbytes)
+def $pvregistry(eps, ptbytes) = eps
+def $pvregistry((ptbytes_key, pvclass) :: (ptbytes_rest, pvclass_rest)*, ptbytes) = pvclass
+  -- if $ptlc(ptbytes_key) = $ptlc(ptbytes)
+def $pvregistry((ptbytes_key, pvclass) :: (ptbytes_rest, pvclass_rest)*, ptbytes) = $pvregistry((ptbytes_rest, pvclass_rest)*, ptbytes)
+  -- if $ptlc(ptbytes_key) =/= $ptlc(ptbytes)
+
+def $pvname(PTCLASS ptbytes, pvclass) = ptbytes
+def $pvname(PTSELF, pvclass) = pvclass.NAME
+def $pvname(PTPARENT, pvclass) = pvclass.PARENT
+  -- if pvclass.PARENT =/= eps
+def $pvname(PTPARENT, pvclass) = $ptascii("parent")
+  -- if pvclass.PARENT = eps
+def $pvname(PTBUILTIN "iterable", pvclass) = $ptascii("Traversable")
+
+def $pvischild(pvclass, pvclass_parent) = $ptlc(pvclass.NAME) = $ptlc(pvclass_parent.NAME) \/ $ptlc(pvclass_parent.NAME) <- ($ptlc(ptbytes))*
+  -- if ptbytes* = pvclass.ANCESTORS
+
+def $pvand(PVNO, pvstatus) = PVNO
+def $pvand(pvstatus, PVNO) = PVNO
+  -- if pvstatus =/= PVNO
+def $pvand(PVYES, pvstatus) = pvstatus
+  -- if pvstatus =/= PVNO
+def $pvand(PVUNRESOLVED, pvstatus) = PVUNRESOLVED
+  -- if pvstatus =/= PVNO
+def $pvor(PVYES, pvstatus) = PVYES
+def $pvor(pvstatus, PVYES) = PVYES
+  -- if pvstatus =/= PVYES
+def $pvor(PVNO, pvstatus) = pvstatus
+  -- if pvstatus =/= PVYES
+def $pvor(PVUNRESOLVED, pvstatus) = PVUNRESOLVED
+  -- if pvstatus =/= PVYES
+
+;; Equal names need no class lookup, even when not yet declared.
+def $pvclassbelow(ptbytes, pvclass, ptbytes_parent, pvclass_parent, pvclasses) = PVYES
+  -- if $ptlc(ptbytes) = $ptlc(ptbytes_parent)
+def $pvclassbelow(ptbytes, pvclass, ptbytes_parent, pvclass_parent, pvclasses) = $pvfoundbelow($pvlookup(pvclass, pvclasses, ptbytes), $pvlookup(pvclass_parent, pvclasses, ptbytes_parent))
+  -- if $ptlc(ptbytes) =/= $ptlc(ptbytes_parent)
+def $pvfoundbelow(eps, pvclass?) = PVUNRESOLVED
+def $pvfoundbelow(pvclass, eps) = PVUNRESOLVED
+def $pvfoundbelow(pvclass, pvclass_parent) = PVYES
+  -- if $pvischild(pvclass, pvclass_parent)
+def $pvfoundbelow(pvclass, pvclass_parent) = PVNO
+  -- if ~$pvischild(pvclass, pvclass_parent)
+
+def $pvexists(ptbytes, pvclass, pvclasses) = PVUNRESOLVED
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = eps
+def $pvexists(ptbytes, pvclass, pvclasses) = PVYES
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = pvclass_found
+def $pvexistsatoms(eps, pvclass, pvclasses) = PVNO
+def $pvexistsatoms(ptatom :: ptatom_rest*, pvclass, pvclasses) = $pvor($pvexists($pvname(ptatom, pvclass), pvclass, pvclasses), $pvexistsatoms(ptatom_rest*, pvclass, pvclasses))
+
+def $pvanybelow(eps, pvclass, ptbytes, pvclass_parent, pvclasses) = PVNO
+def $pvanybelow(ptatom :: ptatom_rest*, pvclass, ptbytes, pvclass_parent, pvclasses) = $pvor($pvclassbelow($pvname(ptatom, pvclass), pvclass, ptbytes, pvclass_parent, pvclasses), $pvanybelow(ptatom_rest*, pvclass, ptbytes, pvclass_parent, pvclasses))
+def $pvalltargets(ptatom*, pvclass, eps, pvclass_parent, pvclasses) = PVYES
+def $pvalltargets(ptatom*, pvclass, ptatom_parent :: ptatom_rest*, pvclass_parent, pvclasses) = $pvand($pvanybelow(ptatom*, pvclass, $pvname(ptatom_parent, pvclass_parent), pvclass_parent, pvclasses), $pvalltargets(ptatom*, pvclass, ptatom_rest*, pvclass_parent, pvclasses))
+def $pvanytarget(ptatom*, pvclass, eps, pvclass_parent, pvclasses) = PVNO
+def $pvanytarget(ptatom*, pvclass, ptbranch :: ptbranch_rest*, pvclass_parent, pvclasses) = $pvor($pvalltargets(ptatom*, pvclass, ptatom_parent*, pvclass_parent, pvclasses), $pvanytarget(ptatom*, pvclass, ptbranch_rest*, pvclass_parent, pvclasses))
+  -- if $ptclassbranch(ptbranch)
+  -- if $ptclassview(ptbranch) = PTBRANCH ptatom_parent*
+def $pvanytarget(ptatom*, pvclass, ptbranch :: ptbranch_rest*, pvclass_parent, pvclasses) = $pvanytarget(ptatom*, pvclass, ptbranch_rest*, pvclass_parent, pvclasses)
+  -- if ~$ptclassbranch(ptbranch)
+
+;; Singleton classes have extra object/Closure-callable/final-self rules.
+;; Intersections have only the object special case in this engine pin.
+def $pvclassspecial(ptatom, pvclass, ptbranch*, pvclass_parent, pvclasses) = $pvexists($pvname(ptatom, pvclass), pvclass, pvclasses)
+  -- if "object" <- $ptmasks(ptbranch*)
+def $pvclassspecial(ptatom, pvclass, ptbranch*, pvclass_parent, pvclasses) = $pvor($pvclosure($pvname(ptatom, pvclass), pvclass, pvclasses), $pvfinalself($pvname(ptatom, pvclass), pvclass, pvclasses))
+  -- if ~("object" <- $ptmasks(ptbranch*))
+  -- if "callable" <- $ptmasks(ptbranch*) /\ "static" <- $ptmasks(ptbranch*) /\ pvclass.FINAL
+def $pvclassspecial(ptatom, pvclass, ptbranch*, pvclass_parent, pvclasses) = $pvclosure($pvname(ptatom, pvclass), pvclass, pvclasses)
+  -- if ~("object" <- $ptmasks(ptbranch*))
+  -- if "callable" <- $ptmasks(ptbranch*) /\ ~("static" <- $ptmasks(ptbranch*) /\ pvclass.FINAL)
+def $pvclassspecial(ptatom, pvclass, ptbranch*, pvclass_parent, pvclasses) = $pvfinalself($pvname(ptatom, pvclass), pvclass, pvclasses)
+  -- if ~("object" <- $ptmasks(ptbranch*) \/ "callable" <- $ptmasks(ptbranch*))
+  -- if "static" <- $ptmasks(ptbranch*) /\ pvclass.FINAL
+def $pvclassspecial(ptatom, pvclass, ptbranch*, pvclass_parent, pvclasses) = PVNO
+  -- otherwise
+
+def $pvclosure(ptbytes, pvclass, pvclasses) = PVUNRESOLVED
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = eps
+def $pvclosure(ptbytes, pvclass, pvclasses) = PVYES
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = pvclass_found
+  -- if $ptlc(pvclass_found.NAME) = $ptlc($ptascii("Closure"))
+def $pvclosure(ptbytes, pvclass, pvclasses) = PVNO
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = pvclass_found
+  -- if $ptlc(pvclass_found.NAME) =/= $ptlc($ptascii("Closure"))
+def $pvfinalself(ptbytes, pvclass, pvclasses) = PVUNRESOLVED
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = eps
+def $pvfinalself(ptbytes, pvclass, pvclasses) = PVYES
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = pvclass_found
+  -- if $ptlc(pvclass_found.NAME) = $ptlc(pvclass.NAME)
+def $pvfinalself(ptbytes, pvclass, pvclasses) = PVNO
+  -- if $pvlookup(pvclass, pvclasses, ptbytes) = pvclass_found
+  -- if $ptlc(pvclass_found.NAME) =/= $ptlc(pvclass.NAME)
+
+def $pvbranch(ptbranch, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVYES
+  -- if ~$ptclassbranch(ptbranch)
+def $pvbranch(ptbranch, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvor($pvclassspecial(ptatom, pvclass, ptbranch_parent*, pvclass_parent, pvclasses), $pvanytarget([ptatom], pvclass, ptbranch_parent*, pvclass_parent, pvclasses))
+  -- if $ptclassbranch(ptbranch)
+  -- if $ptclassview(ptbranch) = PTBRANCH ([ptatom])
+def $pvbranch(PTBRANCH ptatom*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvor($pvexistsatoms(ptatom*, pvclass, pvclasses), $pvanytarget(ptatom*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses))
+  -- if $(|ptatom*| > 1)
+  -- if "object" <- $ptmasks(ptbranch_parent*)
+def $pvbranch(PTBRANCH ptatom*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvanytarget(ptatom*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses)
+  -- if $(|ptatom*| > 1)
+  -- if ~("object" <- $ptmasks(ptbranch_parent*))
+def $pvbranches(eps, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVYES
+def $pvbranches(ptbranch :: ptbranch_rest*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvand($pvbranch(ptbranch, pvclass, ptbranch_parent*, pvclass_parent, pvclasses), $pvbranches(ptbranch_rest*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses))
+
+;; This is the pinned static-permits-self predicate, not general subtyping:
+;; a top-level intersection accepts any matching member; DNF branches are skipped.
+def $pvpermitatoms(eps, pvclass, pvclass_self, pvclasses) = false
+def $pvpermitatoms(ptatom :: ptatom_rest*, pvclass, pvclass_self, pvclasses) = true
+  -- if $pvlookup(pvclass_self, pvclasses, $pvname(ptatom, pvclass)) = pvclass_found
+  -- if $pvischild(pvclass_self, pvclass_found)
+def $pvpermitatoms(ptatom :: ptatom_rest*, pvclass, pvclass_self, pvclasses) = $pvpermitatoms(ptatom_rest*, pvclass, pvclass_self, pvclasses)
+  -- if $pvlookup(pvclass_self, pvclasses, $pvname(ptatom, pvclass)) = eps
+def $pvpermitatoms(ptatom :: ptatom_rest*, pvclass, pvclass_self, pvclasses) = $pvpermitatoms(ptatom_rest*, pvclass, pvclass_self, pvclasses)
+  -- if $pvlookup(pvclass_self, pvclasses, $pvname(ptatom, pvclass)) = pvclass_found
+  -- if ~$pvischild(pvclass_self, pvclass_found)
+
+def $pvpermitbranches(eps, pvclass, pvclass_self, pvclasses) = false
+def $pvpermitbranches(ptbranch :: ptbranch_rest*, pvclass, pvclass_self, pvclasses) = $pvpermitatoms([ptatom], pvclass, pvclass_self, pvclasses) \/ $pvpermitbranches(ptbranch_rest*, pvclass, pvclass_self, pvclasses)
+  -- if $ptclassbranch(ptbranch)
+  -- if $ptclassview(ptbranch) = PTBRANCH ([ptatom])
+def $pvpermitbranches((PTBRANCH ptatom*) :: ptbranch_rest*, pvclass, pvclass_self, pvclasses) = $pvpermitbranches(ptbranch_rest*, pvclass, pvclass_self, pvclasses)
+  -- if ~$ptclassbranch(PTBRANCH ptatom*) \/ |ptatom*| =/= 1
+
+def $pvpermitself(ptbranch*, pvclass, pvclass_self, pvclasses) = true
+  -- if "object" <- $ptmasks(ptbranch*)
+def $pvpermitself([(PTBRANCH ptatom*)], pvclass, pvclass_self, pvclasses) = $pvpermitatoms(ptatom*, pvclass, pvclass_self, pvclasses)
+  -- if $(|ptatom*| > 1)
+def $pvpermitself(ptbranch*, pvclass, pvclass_self, pvclasses) = $pvpermitbranches(ptbranch*, pvclass, pvclass_self, pvclasses)
+  -- otherwise
+
+def $pvadded(eps, text_parent*, bool) = eps
+def $pvadded(text :: text_rest*, text_parent*, bool) = $pvadded(text_rest*, text_parent*, bool)
+  -- if text <- text_parent* \/ (text = "static" /\ bool)
+def $pvadded(text :: text_rest*, text_parent*, bool) = text :: $pvadded(text_rest*, text_parent*, bool)
+  -- if ~(text <- text_parent* \/ (text = "static" /\ bool))
+def $pvcheck(ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVYES
+  -- if "mixed" <- $ptmasks(ptbranch_parent*) /\ ~("void" <- $ptmasks(ptbranch*))
+def $pvcheck(ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvcheckadded($pvadded($ptmasks(ptbranch*), $ptmasks(ptbranch_parent*), $pvpermitself(ptbranch_parent*, pvclass_parent, pvclass, pvclasses)), ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses)
+  -- otherwise
+
+def $pvcheckadded(eps, ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvbranches(ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses)
+def $pvcheckadded(["never"], ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVYES
+def $pvcheckadded(text*, ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVNO
+  -- if text* =/= eps /\ text* =/= ["never"]
+
+def $pvmissingatoms(eps, pvclass, pvclasses) = eps
+def $pvmissingatoms(ptatom :: ptatom_rest*, pvclass, pvclasses) = $pvname(ptatom, pvclass) :: $pvmissingatoms(ptatom_rest*, pvclass, pvclasses)
+  -- if $pvlookup(pvclass, pvclasses, $pvname(ptatom, pvclass)) = eps
+def $pvmissingatoms(ptatom :: ptatom_rest*, pvclass, pvclasses) = $pvmissingatoms(ptatom_rest*, pvclass, pvclasses)
+  -- if $pvlookup(pvclass, pvclasses, $pvname(ptatom, pvclass)) = pvclass_found
+def $pvmissing(eps, pvclass, pvclasses) = eps
+def $pvmissing(ptbranch :: ptbranch_rest*, pvclass, pvclasses) = $pvmissingatoms(ptatom*, pvclass, pvclasses) ++ $pvmissing(ptbranch_rest*, pvclass, pvclasses)
+  -- if $ptclassbranch(ptbranch)
+  -- if $ptclassview(ptbranch) = PTBRANCH ptatom*
+def $pvmissing(ptbranch :: ptbranch_rest*, pvclass, pvclasses) = $pvmissing(ptbranch_rest*, pvclass, pvclasses)
+  -- if ~$ptclassbranch(ptbranch)
+def $pvunique(eps, ptbytes_seen*) = eps
+def $pvunique(ptbytes :: ptbytes_rest*, ptbytes_seen*) = $pvunique(ptbytes_rest*, ptbytes_seen*)
+  -- if ptbytes <- ptbytes_seen*
+def $pvunique(ptbytes :: ptbytes_rest*, ptbytes_seen*) = ptbytes :: $pvunique(ptbytes_rest*, ptbytes_seen* ++ [ptbytes])
+  -- if ~(ptbytes <- ptbytes_seen*)
+
+def $pvfinish(PVYES, ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVCOMPATIBLE
+def $pvfinish(PVNO, ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVINCOMPATIBLE
+def $pvfinish(PVUNRESOLVED, ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVNEEDS ($pvunique($pvmissing(ptbranch*, pvclass, pvclasses) ++ $pvmissing(ptbranch_parent*, pvclass_parent, pvclasses), eps))
+
+def $pvcovariant(ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = PVUNSUPPORTED "covariance requires two present normalized types and named class contexts"
+  -- if ptbranch* = eps \/ ptbranch_parent* = eps \/ pvclass.NAME = eps \/ pvclass_parent.NAME = eps
+def $pvcovariant(ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses) = $pvfinish($pvcheck(ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses), ptbranch*, pvclass, ptbranch_parent*, pvclass_parent, pvclasses)
+  -- if ptbranch* =/= eps /\ ptbranch_parent* =/= eps /\ pvclass.NAME =/= eps /\ pvclass_parent.NAME =/= eps
