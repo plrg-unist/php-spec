@@ -1,0 +1,67 @@
+;; Byte-wise string operators and string increment/decrement after value capture.
+syntax stringupdate = UPDATEDSTRING nat* | UPDATEDNUMBER pnumber
+syntax stringupdatenotice = STRINGINCREMENT | STRINGDECREMENT | EMPTYDECREMENT
+syntax incscan = INC nat* nat
+
+dec $string_and(nat*, nat*) : nat*
+def $string_and(eps, n_t*) = eps
+def $string_and(n :: n_t*, eps) = eps
+def $string_and(n_1 :: n_t1*, n_2 :: n_t2*) = $bit_combine(0, n_1, n_2) :: $string_and(n_t1*, n_t2*)
+
+dec $string_xor(nat*, nat*) : nat*
+def $string_xor(eps, n_t*) = eps
+def $string_xor(n :: n_t*, eps) = eps
+def $string_xor(n_1 :: n_t1*, n_2 :: n_t2*) = $bit_combine(2, n_1, n_2) :: $string_xor(n_t1*, n_t2*)
+
+dec $string_or(nat*, nat*) : nat*
+def $string_or(eps, n_t*) = n_t*
+def $string_or(n :: n_t*, eps) = n :: n_t*
+def $string_or(n_1 :: n_t1*, n_2 :: n_t2*) = $bit_combine(1, n_1, n_2) :: $string_or(n_t1*, n_t2*)
+
+dec $string_not(nat*) : nat*
+def $string_not(eps) = eps
+def $string_not(n :: n_t*) = $nabs($(255 - n)) :: $string_not(n_t*)
+
+dec $inc_character(nat) : (nat, nat)
+def $inc_character(122) = (97, 97)
+def $inc_character(90) = (65, 65)
+def $inc_character(57) = (48, 49)
+def $inc_character(n) = ($(n + 1), 0)
+  -- if (($(n >= 97) /\ $(n < 122)) \/ ($(n >= 65) /\ $(n < 90)) \/ ($(n >= 48) /\ $(n < 57)))
+def $inc_character(n) = (n, 0)
+  -- if ~ (($(n >= 97) /\ $(n <= 122)) \/ ($(n >= 65) /\ $(n <= 90)) \/ ($(n >= 48) /\ $(n <= 57)))
+
+dec $inc_continue(nat, incscan) : incscan
+def $inc_continue(n, INC n_u* 0) = INC (n :: n_u*) 0
+def $inc_continue(n, INC n_u* n_pending) = INC (n_new :: n_u*) n_carry
+  -- if $(n_pending > 0)
+  -- if (n_new, n_carry) = $inc_character(n)
+
+dec $inc_scan(nat*) : incscan
+def $inc_scan(eps) = INC eps 1
+def $inc_scan(n :: n_t*) = $inc_continue(n, $inc_scan(n_t*))
+
+dec $inc_finish(incscan) : nat*
+def $inc_finish(INC n_t* 0) = n_t*
+def $inc_finish(INC n_t* n_carry) = n_carry :: n_t* -- if $(n_carry > 0)
+
+dec $increment_bytes(nat*) : nat*
+def $increment_bytes(eps) = 49
+def $increment_bytes(n :: n_t*) = $inc_finish($inc_scan(n :: n_t*))
+
+dec $increment_classified(pnumeric, nat*) : (stringupdate, stringupdatenotice*)
+def $increment_classified(FULLNUM pnumber, n_t*) = (UPDATEDNUMBER $num_add(pnumber, NINT 1), eps)
+def $increment_classified(LEADNUM pnumber, n_t*) = (UPDATEDSTRING $increment_bytes(n_t*), STRINGINCREMENT)
+def $increment_classified(NOTNUMERIC, n_t*) = (UPDATEDSTRING $increment_bytes(n_t*), STRINGINCREMENT)
+
+dec $string_increment(nat*) : (stringupdate, stringupdatenotice*)
+def $string_increment(n_t*) = $increment_classified($numeric_string(n_t*), n_t*)
+
+dec $decrement_classified(pnumeric, nat*) : (stringupdate, stringupdatenotice*)
+def $decrement_classified(FULLNUM pnumber, n_t*) = (UPDATEDNUMBER $num_sub(pnumber, NINT 1), eps)
+def $decrement_classified(LEADNUM pnumber, n_t*) = (UPDATEDSTRING n_t*, STRINGDECREMENT)
+def $decrement_classified(NOTNUMERIC, n_t*) = (UPDATEDSTRING n_t*, STRINGDECREMENT)
+
+dec $string_decrement(nat*) : (stringupdate, stringupdatenotice*)
+def $string_decrement(eps) = (UPDATEDNUMBER (NINT $(-1)), EMPTYDECREMENT)
+def $string_decrement(n :: n_t*) = $decrement_classified($numeric_string(n :: n_t*), n :: n_t*)

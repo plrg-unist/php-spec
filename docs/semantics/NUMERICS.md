@@ -90,6 +90,17 @@ Source: `zend_compare`, `zendi_try_get_long`, `zval_get_long_func`,
 and warning identities. Handler execution and general mixed-type comparison still
 belong to later machine integration.
 
+`05-string-operators.watsup` defines byte-wise `&`, `|`, `^`, `~` and string
+increment/decrement. Numeric strings become numbers; other string increments use
+right-to-left ASCII carry, with one linear traversal. PHP 8.5 deprecates every
+nonnumeric string increment, and nonnumeric/empty-string decrements have distinct
+notices. The returned original-value-based update is pending until its notice
+handlers finish; machine integration must preserve the engine's callback mutation
+and abrupt-completion behavior. Source: `increment_string`, `increment_function`,
+`decrement_function` and `bitwise_*_function`. Run
+`python3 tests/semantics/string_operators.py` for byte grids, mixed lengths,
+carry boundaries and diagnostic identities.
+
 Remaining arithmetic obligations include power and remaining contextual dispatch
-(e.g. type coercions, string/mixed comparisons and increment/decrement).
+(e.g. type coercions and string/mixed comparisons).
 The passing first milestone does not establish complete arithmetic or core PHP.
