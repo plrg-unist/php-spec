@@ -3808,7 +3808,11 @@
         "tests/semantics/conformance/string-read-array-key-error.php",
         "tests/semantics/conformance/string-read-missing-key.php",
         "tests/semantics/conformance/string-read-delayed-base.php",
-        "tests/semantics/conformance/string-read-reference-key.php"
+        "tests/semantics/conformance/string-read-reference-key.php",
+        "tests/semantics/conformance/string-read-literal-prepass.php",
+        "tests/semantics/conformance/string-read-dynamic-literal-prepass.php",
+        "tests/semantics/conformance/string-read-negative-literal-prepass.php",
+        "tests/semantics/conformance/string-read-assignment-prepass-barrier.php"
       ]
     },
     {
@@ -7170,7 +7174,13 @@
         "vendor/php-src/Zend/zend_compile.c"
       ],
       "review": null,
-      "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported."
+      "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
+      "planned_source_tests": [
+        "tests/semantics/conformance/string-read-literal-prepass.php",
+        "tests/semantics/conformance/string-read-dynamic-literal-prepass.php",
+        "tests/semantics/conformance/string-read-negative-literal-prepass.php",
+        "tests/semantics/conformance/string-read-assignment-prepass-barrier.php"
+      ]
     },
     {
       "id": "static.special-variable-diagnostics",

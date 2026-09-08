@@ -1814,6 +1814,62 @@
       "expected_exit_status": 0,
       "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-literal-prepass",
+      "file": "tests/semantics/conformance/string-read-literal-prepass.php",
+      "purpose": "Array-literal constant evaluation suppresses a leading integer string-offset warning that direct execution emits.",
+      "obligations": [
+        "containers.string-offsets",
+        "static.constant-fold-diagnostics"
+      ],
+      "expected_stdout": "bb",
+      "expected_stderr": "Warning: Illegal string offset \"1x\" in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent follow-up discriminator for pinned zend_eval_const_expr dimension folding and assignment barriers",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-dynamic-literal-prepass",
+      "file": "tests/semantics/conformance/string-read-dynamic-literal-prepass.php",
+      "purpose": "Array literal prepass folds individual constant string offsets even when another item prevents folding the whole array.",
+      "obligations": [
+        "containers.string-offsets",
+        "static.constant-fold-diagnostics"
+      ],
+      "expected_stdout": "b",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independent follow-up discriminator for pinned zend_eval_const_expr dimension folding and assignment barriers",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-negative-literal-prepass",
+      "file": "tests/semantics/conformance/string-read-negative-literal-prepass.php",
+      "purpose": "Negative constant string offsets remain runtime operations and retain their leading-text warning inside an array literal.",
+      "obligations": [
+        "containers.string-offsets",
+        "static.constant-fold-diagnostics"
+      ],
+      "expected_stdout": "c",
+      "expected_stderr": "Warning: Illegal string offset \"-1x\" in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent follow-up discriminator for pinned zend_eval_const_expr dimension folding and assignment barriers",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-assignment-prepass-barrier",
+      "file": "tests/semantics/conformance/string-read-assignment-prepass-barrier.php",
+      "purpose": "Assignment boundaries stop array prepass descent and preserve an inner string-offset warning.",
+      "obligations": [
+        "containers.string-offsets",
+        "static.constant-fold-diagnostics"
+      ],
+      "expected_stdout": "b",
+      "expected_stderr": "Warning: Illegal string offset \"1x\" in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent follow-up discriminator for pinned zend_eval_const_expr dimension folding and assignment barriers",
+      "semantic_status": "pending"
     }
   ]
 }

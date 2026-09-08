@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "7e68401753c8ed51d984ea98321f212ef7da8f889c4bfe365de1510456187e80",
+    "tests/semantics/conformance/cases.json": "07293d8aca66af6d627f72f5774e1999d31cc8f4f6e6a40a7bb2eae15a0adcda",
     "tests/semantics/conformance/oracle.py": "448e42aa0ec1de11e4320560a1963fba4e137fa8fe75aebc990368394dde4eb5",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -176,6 +176,10 @@
     "tests/semantics/conformance/string-read-missing-key.php": "9bf820bbfdad7252eaad66be9ac5adf1b4ef802698b9576f68b050ad3731847e",
     "tests/semantics/conformance/string-read-delayed-base.php": "3d02f86d9ba459d879139b8b4d78a37b46d5c296285edcf9e851cebf5c80d9eb",
     "tests/semantics/conformance/string-read-reference-key.php": "0b3b96892b099d0d92a29f75176b4292e79ab5266eb98d8234b94130c6fb54f7",
+    "tests/semantics/conformance/string-read-literal-prepass.php": "9c81c78bc146d4cd1bd5709d90a338fd34d1965e4be4ce8f92e635ac201c40b2",
+    "tests/semantics/conformance/string-read-dynamic-literal-prepass.php": "071a410c57f42fcb3d7c05b327ff1f12e2165611a411085861d1234a98843800",
+    "tests/semantics/conformance/string-read-negative-literal-prepass.php": "ec329f700cacd9b0447a44afcb62f82bc4f305843405550731b5d3a19f15adf5",
+    "tests/semantics/conformance/string-read-assignment-prepass-barrier.php": "8747a313cc2eee465cbd2f462d63446901e32a4ed4a013c624650b3858c20f4f",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
@@ -1453,6 +1457,46 @@
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "Yw==",
       "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-read-literal-prepass",
+      "source_sha256": "9c81c78bc146d4cd1bd5709d90a338fd34d1965e4be4ce8f92e635ac201c40b2",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-read-literal-prepass.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "YmI=",
+      "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0ICIxeCIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy1yZWFkLWxpdGVyYWwtcHJlcGFzcy5waHAgb24gbGluZSAyCg==",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-read-dynamic-literal-prepass",
+      "source_sha256": "071a410c57f42fcb3d7c05b327ff1f12e2165611a411085861d1234a98843800",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-read-dynamic-literal-prepass.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "Yg==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-read-negative-literal-prepass",
+      "source_sha256": "ec329f700cacd9b0447a44afcb62f82bc4f305843405550731b5d3a19f15adf5",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-read-negative-literal-prepass.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "Yw==",
+      "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0ICItMXgiIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctcmVhZC1uZWdhdGl2ZS1saXRlcmFsLXByZXBhc3MucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-read-assignment-prepass-barrier",
+      "source_sha256": "8747a313cc2eee465cbd2f462d63446901e32a4ed4a013c624650b3858c20f4f",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-read-assignment-prepass-barrier.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "Yg==",
+      "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0ICIxeCIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy1yZWFkLWFzc2lnbm1lbnQtcHJlcGFzcy1iYXJyaWVyLnBocCBvbiBsaW5lIDIK",
       "exit_status": 0,
       "expected_match": true
     }
