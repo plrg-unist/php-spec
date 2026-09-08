@@ -11,7 +11,7 @@
     "metadata": "Independent review establishes no standalone dynamic action; contextual obligations still apply."
   },
   "constructor_count": 169,
-  "runtime_obligation_count": 303,
+  "runtime_obligation_count": 304,
   "constructors": [
     {
       "node": "Arg",
@@ -1227,7 +1227,8 @@
       "obligations": [
         "storage.variable-names",
         "storage.slots",
-        "static.constant-fold-diagnostics"
+        "static.constant-fold-diagnostics",
+        "static.special-variable-diagnostics"
       ],
       "status": "partial",
       "implementation": [
@@ -6862,6 +6863,29 @@
       ],
       "review": null,
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported."
+    },
+    {
+      "id": "static.special-variable-diagnostics",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [
+        "static.independent-compile-phase"
+      ],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/http-read-before-write.php",
+        "tests/semantics/conformance/http-write-before-read.php",
+        "tests/semantics/conformance/http-unreachable-write.php",
+        "tests/semantics/conformance/http-dynamic-name.php",
+        "tests/semantics/conformance/http-parameter-scope.php"
+      ],
+      "notes": "Literal http_response_header reads may warn at compilation; per-scope prior compiled writes/parameter declarations suppress the warning even if no runtime assignment occurs. Computed names remain ordinary. Preserve compiler diagnostic order and source line."
     }
   ],
   "intentional_divergences": [

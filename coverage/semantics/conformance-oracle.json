@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "d827af1b0bf1c11e62226003379fca108934afd3b975821bee0789651eb00b28",
+    "tests/semantics/conformance/cases.json": "b2255e198889bb756887bce47550ea262eecc58f0f1eeb7a4f4a13fd7502171a",
     "tests/semantics/conformance/oracle.py": "0f2b5ea748443ec4a545630713f4356fa6ffaee7b28ed9b3cf84042db4677add",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -105,7 +105,12 @@
     "tests/semantics/conformance/array-nested-self-index.php": "a1e0622e5f1bc00cbb494c7a62f4eccfa86f9a31a0db0fd1ddef4869c03470be",
     "tests/semantics/conformance/array-dynamic-self-cycle.php": "2f0823ad2ae553c63a5c2eed004c3839eaf5ab5eb717ac61897f30b646d0b232",
     "tests/semantics/conformance/array-alias-self-cycle.php": "bd4886fde181acdcb386571b03d19d44239bfcf55e891182dcb4cfd5ccbf42c6",
-    "tests/semantics/conformance/array-distinct-cycle-comparison.php": "6da4735fb431ee6771eaa9897f7c3daa80a81acda18b22c38a8ed2e09298fcf3"
+    "tests/semantics/conformance/array-distinct-cycle-comparison.php": "6da4735fb431ee6771eaa9897f7c3daa80a81acda18b22c38a8ed2e09298fcf3",
+    "tests/semantics/conformance/http-read-before-write.php": "4c8b834c504ebf12bbedc9ae41ebd8022b10cf215390577d83ec619d8a69711e",
+    "tests/semantics/conformance/http-write-before-read.php": "5aaaf2169c3afcfdd97e97053ea013b8a6dde9fd3c9f3914ee5eb093e8b911dc",
+    "tests/semantics/conformance/http-unreachable-write.php": "fbb947e82aff82d20459c596e990cfcdd3b7f1c57ac4b680e396f6f4da521f91",
+    "tests/semantics/conformance/http-dynamic-name.php": "b4e26efd06083ed409bd6efd1eb2faed046d54f81311b31a474bd6809682305a",
+    "tests/semantics/conformance/http-parameter-scope.php": "e756a86136289a63ed841a684d0069f48378f405e7e1f7a0d130730ff49eb903"
   },
   "results": [
     {
@@ -676,6 +681,56 @@
       "stdout": "",
       "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBOZXN0aW5nIGxldmVsIHRvbyBkZWVwIC0gcmVjdXJzaXZlIGRlcGVuZGVuY3k/IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9hcnJheS1kaXN0aW5jdC1jeWNsZS1jb21wYXJpc29uLnBocDoyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL2FycmF5LWRpc3RpbmN0LWN5Y2xlLWNvbXBhcmlzb24ucGhwIG9uIGxpbmUgMgo=",
       "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "http-read-before-write",
+      "source_sha256": "4c8b834c504ebf12bbedc9ae41ebd8022b10cf215390577d83ec619d8a69711e",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/http-read-before-write.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "RGVwcmVjYXRlZDogVGhlIHByZWRlZmluZWQgbG9jYWxseSBzY29wZWQgJGh0dHBfcmVzcG9uc2VfaGVhZGVyIHZhcmlhYmxlIGlzIGRlcHJlY2F0ZWQsIGNhbGwgaHR0cF9nZXRfbGFzdF9yZXNwb25zZV9oZWFkZXJzKCkgaW5zdGVhZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvaHR0cC1yZWFkLWJlZm9yZS13cml0ZS5waHAgb24gbGluZSAyCldhcm5pbmc6IFVuZGVmaW5lZCB2YXJpYWJsZSAkaHR0cF9yZXNwb25zZV9oZWFkZXIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL2h0dHAtcmVhZC1iZWZvcmUtd3JpdGUucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "http-write-before-read",
+      "source_sha256": "5aaaf2169c3afcfdd97e97053ea013b8a6dde9fd3c9f3914ee5eb093e8b911dc",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/http-write-before-read.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "http-unreachable-write",
+      "source_sha256": "fbb947e82aff82d20459c596e990cfcdd3b7f1c57ac4b680e396f6f4da521f91",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/http-unreachable-write.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRodHRwX3Jlc3BvbnNlX2hlYWRlciBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvaHR0cC11bnJlYWNoYWJsZS13cml0ZS5waHAgb24gbGluZSAyCg==",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "http-dynamic-name",
+      "source_sha256": "b4e26efd06083ed409bd6efd1eb2faed046d54f81311b31a474bd6809682305a",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/http-dynamic-name.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "http-parameter-scope",
+      "source_sha256": "e756a86136289a63ed841a684d0069f48378f405e7e1f7a0d130730ff49eb903",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/http-parameter-scope.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
       "expected_match": true
     }
   ]

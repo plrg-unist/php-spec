@@ -99,7 +99,9 @@ Compile-time contextual checks still examine unexecuted code as required by PHP.
 The pinned build registers `GLOBALS` plus `_GET`, `_POST`, `_COOKIE`, `_SERVER`,
 `_ENV`, `_REQUEST` and `_FILES` as auto-globals. It has no session extension:
 `_SESSION` and `http_response_header` are ordinary variable names under this
-profile. Initial values and registered auto-global names are separate facts.
+profile. Literal `http_response_header` accesses additionally have per-scope
+compiler deprecation state (`static.special-variable-diagnostics`). Initial values
+and registered auto-global names are separate facts.
 
 The environment supplies request configuration, argument/stdin bytes and explicitly
 admitted initial values; deterministic source units have original bytes, canonical

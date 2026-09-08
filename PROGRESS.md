@@ -35,7 +35,8 @@ timeouts and interrupted campaigns never count as validation passes.
 - Pure numeric domain: `NINT int | NFLOAT nat` (binary64 bits); add/sub/mul
   return numbers, division returns `NUM number | DIVZERO`, power returns a
   number plus a pending notice. Runner owns the PHP value domain and effects.
-- Static agent owns separate descriptor/context/result types: checked
+- Fresh signatures agent owns the uncommitted signature helpers and next class
+  linking; reviewed local types remain its dependency. Interfaces: checked
   type AST plus namespace/import/class/position/source context to normalized
   types and ordered compile diagnostics. Keep unresolved names explicit; no
   autoload, declaration hoisting, pstate edits or bootstrap pcheck dependency.
@@ -52,7 +53,7 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Evidence and decisions
 
-- Inventory: exact 169 constructors and 303 unique runtime obligations, all
+- Inventory: exact 169 constructors and 304 unique runtime obligations, all
   still pending/partial at full-core scope. Contracts began in `69868bac`.
 - Independently reviewed/repeated helpers: numeric `4d343899` (1,976 differential
   +8 symbolic cases), integer `7d48a580` (1,025), numeric text `9cc4ecef` (350).
@@ -70,7 +71,7 @@ timeouts and interrupted campaigns never count as validation passes.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
   dynamic-write initialization, eliminated discarded CV reads and warning lines.
   Operator diagnostics use post-child compile lines, distinct from AST/LHS lines.
-- 57 independent source targets in `tests/semantics/conformance` match the oracle;
+- 62 independent source targets in `tests/semantics/conformance` match the oracle;
   15 are integrated into the reviewed source harness. Oracle-only evidence is
   `coverage/semantics/conformance-oracle.json`; it never implies implementation.
 - Fixed profile includes `E_ALL=30719`, original identity and byte-exact channels.
@@ -87,6 +88,8 @@ timeouts and interrupted campaigns never count as validation passes.
   substitutes the parent otherwise; exact observations and rationale are in
   `docs/semantics/DISCREPANCIES.md`. Crash reproduction is not conformance.
 
+Final closure must check obligation-specific case IDs/current fingerprints and
+source witnesses for intentional divergences before any family is marked complete.
 Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfinished
 entries and requires independent review plus source/helper evidence separately.
 Nine isolated evidence negatives reject source/binary/path drift and missing,

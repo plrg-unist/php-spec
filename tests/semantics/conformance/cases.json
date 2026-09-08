@@ -819,6 +819,76 @@
       "expected_exit_status": 255,
       "provenance": "independently authored before writable-array implementation; not derived from a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "http-read-before-write",
+      "file": "tests/semantics/conformance/http-read-before-write.php",
+      "purpose": "Compiler deprecation precedes runtime missing-variable warning before a later source assignment.",
+      "obligations": [
+        "static.special-variable-diagnostics",
+        "storage.variable-names"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Deprecated: The predefined locally scoped $http_response_header variable is deprecated, call http_get_last_response_headers() instead in {FILE} on line 2\nWarning: Undefined variable $http_response_header in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "Independently authored compiler-state discriminator; not derived from a PHPT.",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "http-write-before-read",
+      "file": "tests/semantics/conformance/http-write-before-read.php",
+      "purpose": "Prior compiled write suppresses the predefined-name deprecation.",
+      "obligations": [
+        "static.special-variable-diagnostics",
+        "storage.variable-names"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "Independently authored compiler-state discriminator; not derived from a PHPT.",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "http-unreachable-write",
+      "file": "tests/semantics/conformance/http-unreachable-write.php",
+      "purpose": "Compile-time assignment tracking is independent of whether the branch executes.",
+      "obligations": [
+        "static.special-variable-diagnostics",
+        "storage.variable-names"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Warning: Undefined variable $http_response_header in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "Independently authored compiler-state discriminator; not derived from a PHPT.",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "http-dynamic-name",
+      "file": "tests/semantics/conformance/http-dynamic-name.php",
+      "purpose": "Computed variable names are ordinary runtime lookup, without literal-name compiler warning.",
+      "obligations": [
+        "static.special-variable-diagnostics",
+        "storage.variable-names"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "Independently authored compiler-state discriminator; not derived from a PHPT.",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "http-parameter-scope",
+      "file": "tests/semantics/conformance/http-parameter-scope.php",
+      "purpose": "Parameter declaration marks the predefined name assigned in its function scope.",
+      "obligations": [
+        "static.special-variable-diagnostics",
+        "storage.variable-names"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "Independently authored compiler-state discriminator; not derived from a PHPT.",
+      "semantic_status": "pending"
     }
   ]
 }
