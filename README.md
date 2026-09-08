@@ -44,4 +44,6 @@ four independently checked shards and verifies their complete ordered merge;
 SpecTec values and emits a structured observation. `make test-semantics` runs the
 source execution regressions; unfinished behavior returns explicit Unsupported.
 See [semantic design](docs/semantics/DESIGN.md) and
-[numeric reference](docs/semantics/NUMERICS.md) for interfaces and helper checks.
+[numeric reference](docs/semantics/NUMERICS.md) and
+[static types](docs/semantics/STATIC.md) for interfaces and helper checks.
+[Engine discrepancies](docs/semantics/DISCREPANCIES.md) records intentional departures.

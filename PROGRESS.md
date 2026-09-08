@@ -16,7 +16,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
 | 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary literals/reads reviewed; writes/COW/references/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
-| 3b | Calls, closures, binding and independent static checks | In progress — static local types under review; calls/activation pending |
+| 3b | Calls, closures, binding and independent static checks | In progress — local type helpers reviewed; signatures active, calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
 | 4b | Properties, modern declarations and internal protocols | Pending |
 | 5a | Checked dynamic sources, autoload and explicit services | Pending |
@@ -67,7 +67,8 @@ timeouts and interrupted campaigns never count as validation passes.
   dynamic-write initialization, eliminated discarded CV reads and warning lines.
   Operator diagnostics use post-child compile lines, distinct from AST/LHS lines.
 - 57 independent source targets in `tests/semantics/conformance` match the oracle;
-  only three are currently integrated into semantic tests. Oracle-only evidence is
+  15 are integrated into the current source harness (12 await the writable-array
+  gate). Oracle-only evidence is
   `coverage/semantics/conformance-oracle.json`; it never implies implementation.
 - Fixed profile includes `E_ALL=30719`, original identity and byte-exact channels.
   Weak/GC, closure/call introspection, output buffers and ticks stay core. Ordinary
@@ -88,8 +89,9 @@ entries and requires independent review plus source/helper evidence separately.
 Nine isolated evidence negatives reject source/binary/path drift and missing,
 escaping or unproved evidence; `make test-semantics` includes them.
 Next: review writable array locations/self-assignment, then COW/reference
-topology; finish local type gate after the explicit relative-static correction. The initial
-686-case helper repeat passed exact diagnostics and stable closure; source declaration
-activation is still pending. Phase1 remains partial: source power,
+topology; local signature descriptors next. Local types `531a8b40` passed independent
+686-case exact diagnostic repeat, 9 descriptors and 7 Unsupported checks, with
+24 intended relative-static cases separate from oracle agreement; 34 parser rejects
+and one known frontend restriction are explicit. Source declaration activation is pending. Phase1 remains partial: source power,
 remainder/shifts/bitwise/incdec/casts, mixed comparisons, handlers and configurable
 precision still need integration and evidence. Frames/lifecycle remain pending.

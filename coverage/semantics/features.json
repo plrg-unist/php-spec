@@ -1291,10 +1291,16 @@
       "obligations": [
         "static.intersection"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ]
     },
     {
       "node": "MatchArm",
@@ -1346,10 +1352,16 @@
       "obligations": [
         "static.nullable"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ]
     },
     {
       "node": "Param",
@@ -2103,10 +2115,16 @@
         "static.union",
         "static.dnf"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ]
     },
     {
       "node": "UseItem",
@@ -4449,15 +4467,20 @@
     {
       "id": "static.declarations",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-static-outside-class.php",
         "tests/semantics/conformance/type-parent-without-parent.php",
@@ -4467,15 +4490,20 @@
     {
       "id": "static.namespaces",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-iterable-global.php",
         "tests/semantics/conformance/type-iterable-namespaced.php",
@@ -4515,15 +4543,20 @@
     {
       "id": "static.nullable",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-nullable-mixed.php"
       ]
@@ -4531,15 +4564,20 @@
     {
       "id": "static.union",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-duplicate-case.php",
         "tests/semantics/conformance/type-iterable-global.php",
@@ -4550,15 +4588,20 @@
     {
       "id": "static.intersection",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-dnf-redundant.php"
       ]
@@ -4566,15 +4609,20 @@
     {
       "id": "static.dnf",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-dnf-redundant.php",
         "tests/semantics/conformance/type-dnf-namespace-distinct.php"
@@ -4583,15 +4631,20 @@
     {
       "id": "static.mixed-void-never",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/16-static-types.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/static_types.py",
+        "coverage/semantics/static-types.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-nullable-mixed.php"
       ]
@@ -6783,5 +6836,15 @@
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported."
     }
   ],
-  "intentional_divergences": []
+  "intentional_divergences": [
+    {
+      "id": "relative-static-declaration-type",
+      "description": "Interpret namespace-relative static as late-static static with normal class-scope and position legality; pinned compiler segfaults without a parent and incorrectly substitutes parent otherwise.",
+      "decision": "docs/semantics/DISCREPANCIES.md",
+      "oracle_evidence": "coverage/semantics/engine-defects.json",
+      "implementation": "spec/semantics/16-static-types.watsup",
+      "helper_evidence": "coverage/semantics/static-types.json",
+      "source_integration": "pending"
+    }
+  ]
 }
