@@ -68,7 +68,7 @@ timeouts and interrupted campaigns never count as validation passes.
   counts, source restrictions and expanded reviewer matrices. Edited compiler
   checks do not repair frontend phase gaps. No source activation, default
   materialization, body compilation, linking or call binding is claimed.
-- **77 independent oracle targets**, 16 integrated into the reviewed source
+- **81 independent oracle targets**, 16 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read

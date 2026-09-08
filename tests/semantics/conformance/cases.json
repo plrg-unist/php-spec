@@ -1098,6 +1098,66 @@
       "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
       "semantic_status": "pending",
       "known_disagreement": "coverage/semantics/reference-result-disagreement.json"
+    },
+    {
+      "id": "array-union-left-singleton",
+      "file": "tests/semantics/conformance/array-union-left-singleton.php",
+      "purpose": "Array union unwraps a singleton scalar reference copied from the left operand.",
+      "obligations": [
+        "containers.union",
+        "containers.embedded-references",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "19",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-authored and pinned-oracle checked before source embedded-reference integration; source paths zend_array_dup_value and zval_add_ref differ",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-union-left-self-reference",
+      "file": "tests/semantics/conformance/array-union-left-self-reference.php",
+      "purpose": "Array union left duplication preserves a singleton reference back to its source array.",
+      "obligations": [
+        "containers.union",
+        "containers.embedded-references",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-authored and pinned-oracle checked before source embedded-reference integration; source paths zend_array_dup_value and zval_add_ref differ",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-union-right-singleton",
+      "file": "tests/semantics/conformance/array-union-right-singleton.php",
+      "purpose": "Array union unwraps a singleton scalar reference copied from the right operand.",
+      "obligations": [
+        "containers.union",
+        "containers.embedded-references",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "19",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-authored and pinned-oracle checked before source embedded-reference integration; source paths zend_array_dup_value and zval_add_ref differ",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-union-right-self-reference",
+      "file": "tests/semantics/conformance/array-union-right-self-reference.php",
+      "purpose": "Array union right merging unwraps a singleton reference back to its source array.",
+      "obligations": [
+        "containers.union",
+        "containers.embedded-references",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "0",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-authored and pinned-oracle checked before source embedded-reference integration; source paths zend_array_dup_value and zval_add_ref differ",
+      "semantic_status": "pending"
     }
   ]
 }

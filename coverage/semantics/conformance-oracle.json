@@ -47,8 +47,8 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "eeebd743862680984522e1309fbab6d32dbddb865b475b5c5eb67234a0e86c77",
-    "tests/semantics/conformance/oracle.py": "3090b5f3962d0a7d0d68534c5fac50a05d837d9ed320adca6b40f272387adf22",
+    "tests/semantics/conformance/cases.json": "ea1f5272ba45f9ac426ce9e56937817873e099cd9371e71e120bbd9f85108dce",
+    "tests/semantics/conformance/oracle.py": "41164985f592c3bb439fe1b663d3a74fe335a122f9ae8c676ede8083925a396b",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
     "tests/semantics/conformance/array-reference-copy.php": "f41c8eb1bf51cdd40f2a02d7cc953a14b47dcce558c54f847c83d511bbfef091",
@@ -126,12 +126,17 @@
     "tests/semantics/conformance/variance-static-dnf-both.php": "74cc36bcc04d73d9a6ed920ee73821830fc0235079f088b647dfbc59ac65b768",
     "tests/semantics/conformance/variance-self-intersection.php": "388d4f2601d94883d3945d7152ca0d5f9128545051a8933917d9d7e7d4ff1c85",
     "tests/semantics/conformance/reference-assignment-result.php": "c84fcd45bcdf86cb6d573818c0cbc1479c3e7142e7ae7843040ff2f944055d00",
+    "tests/semantics/conformance/array-union-left-singleton.php": "3f040defaac5af59974cfa3084fc4954605e1c62b562c538e7018c20dad46b7d",
+    "tests/semantics/conformance/array-union-left-self-reference.php": "bc1716bd7cd46bfbc4cae5cf73c594a9ee2d8db68b3a3c9f5ec7d5f3650dde55",
+    "tests/semantics/conformance/array-union-right-singleton.php": "e74381502896956c41749f0fd0ae5a4b95508c955dd43697ddbd05f4cd8b3f21",
+    "tests/semantics/conformance/array-union-right-self-reference.php": "2073b70badb2f55308f33f266270e51e3391b2f438dc78f9273a77d186944ca9",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
     "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7",
     "vendor/php-src/Zend/zend_inheritance.c": "69793711dc0a88c93545be87baa57e2fca26f2dc2e0701a8d956611980fee486",
-    "vendor/php-src/Zend/zend_vm_def.h": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41"
+    "vendor/php-src/Zend/zend_vm_def.h": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41",
+    "vendor/php-src/Zend/zend_variables.c": "13abee4e3dcf1dec216653a77625d2e3b7cc9fcd6514ffade3aab882372d6440"
   },
   "results": [
     {
@@ -900,6 +905,46 @@
       "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-assignment-result.php",
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "NA==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-union-left-singleton",
+      "source_sha256": "3f040defaac5af59974cfa3084fc4954605e1c62b562c538e7018c20dad46b7d",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-union-left-singleton.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTk=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-union-left-self-reference",
+      "source_sha256": "bc1716bd7cd46bfbc4cae5cf73c594a9ee2d8db68b3a3c9f5ec7d5f3650dde55",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-union-left-self-reference.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-union-right-singleton",
+      "source_sha256": "e74381502896956c41749f0fd0ae5a4b95508c955dd43697ddbd05f4cd8b3f21",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-union-right-singleton.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTk=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-union-right-self-reference",
+      "source_sha256": "2073b70badb2f55308f33f266270e51e3391b2f438dc78f9273a77d186944ca9",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-union-right-self-reference.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MA==",
       "stderr": "",
       "exit_status": 0,
       "expected_match": true

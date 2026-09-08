@@ -3495,12 +3495,17 @@
       "helper_tests": [],
       "source_tests": [],
       "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+        "vendor/php-src/Zend/zend_hash.c",
+        "vendor/php-src/Zend/zend_variables.c"
       ],
       "review": null,
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
-        "tests/semantics/conformance/destructure-reference.php"
+        "tests/semantics/conformance/destructure-reference.php",
+        "tests/semantics/conformance/array-union-left-singleton.php",
+        "tests/semantics/conformance/array-union-left-self-reference.php",
+        "tests/semantics/conformance/array-union-right-singleton.php",
+        "tests/semantics/conformance/array-union-right-self-reference.php"
       ]
     },
     {
@@ -3556,9 +3561,16 @@
         "coverage/semantics/source.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+        "vendor/php-src/Zend/zend_hash.c",
+        "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
+      "planned_source_tests": [
+        "tests/semantics/conformance/array-union-left-singleton.php",
+        "tests/semantics/conformance/array-union-left-self-reference.php",
+        "tests/semantics/conformance/array-union-right-singleton.php",
+        "tests/semantics/conformance/array-union-right-self-reference.php"
+      ]
     },
     {
       "id": "containers.comparison",

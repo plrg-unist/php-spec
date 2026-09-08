@@ -142,3 +142,9 @@ ownership. Similarly, `array-literal-occurrence-identity` observes shared identi
 when one constant-array literal occurrence executes twice, but distinct identity
 for two occurrences; NaN strict comparison exposes this distinction. These are
 pending semantic obligations, backed by pinned oracle targets only.
+
+The `array-union-{left,right}-{singleton,self-reference}` targets distinguish
+the two union copy paths. Both unwrap singleton scalar references. Left-array
+duplication preserves a singleton reference back to its source array; right-side
+merging unwraps even that wrapper (`zend_array_dup_value` versus `zval_add_ref`).
+These witnesses constrain the pending source embedded-reference integration.
