@@ -80,6 +80,15 @@ CASES = {
 
 
 CASES.update({
+    'reference-cv-timing-string-name': b'<?php ${${"x"}}=&${"x"};echo ${""}===null;',
+    'reference-cv-timing-integer-name': b'<?php ${${12}}=&${12};echo ${""}===null;',
+    'reference-cv-timing-captured-target': b'<?php $n="x";${$$n}=&$x;echo ${""}===null;',
+    'reference-cv-timing-existing-cell': b'<?php $x="x";${($k=&$x)}=&$x;echo $x,$k;',
+    'reference-cv-timing-array-name': b'<?php $x=[];${$x}=&$x;echo ${"Array"}===$x;',
+    'float-cv-small-name': b'<?php ${5e-324}=1;echo ${5e-324}+(${5e-324}=2);',
+    'float-cv-zero-name': b'<?php ${0.0}=1;echo ${0.0}+(${0.0}=2);',
+    'float-cv-array-identity': b'<?php ${1.5}=[NAN];echo ${1.5}===(${1.5}=[NAN]);',
+    'float-cv-negative-zero-control': b'<?php ${-0.0}=1;echo ${-0.0}+(${-0.0}=2);',
     'array-reference-literal-write': b'<?php $x=1;$a=[&$x];$a[0]=7;echo $x;$x=9;echo $a[0];',
     'array-reference-literal-initialize': b'<?php $a=[&$x];echo $a[0]===null,$x===null;$x=7;echo $a[0];',
     'array-reference-literal-nested-shared': b'<?php $x=[1];$a=[&$x];$b=$a;$b[0][0]=9;echo $x[0],$a[0][0],$b[0][0];',
@@ -315,6 +324,11 @@ CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-varia
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
                 'array-reference-key-acquisition', 'array-reference-delayed-key']
+CONFORMANCE += ['reference-cv-source-initialization', 'reference-cv-source-multiline',
+                'reference-dynamic-target-initialization', 'reference-dynamic-source-initialization',
+                'float-variable-name-delayed', 'overflow-float-variable-name-delayed',
+                'negative-float-variable-name-captured', 'boolean-variable-name-captured',
+                'reference-float-cv-initialization']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 

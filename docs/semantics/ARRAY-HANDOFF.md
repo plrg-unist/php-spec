@@ -74,6 +74,10 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 - A dead uncollected cycle can retain a reference owner and change later singleton
   copying. `array-{uncollected,collected}-cycle-reference` targets distinguish99
   from19. Pure graph collection does not model triggers, counts or destructors.
+- Dynamic reference assignment consumes its target name before initializing a CV
+  source. Non-CV sources are acquired earlier; literal references acquire before
+  delayed keys. Preserve this distinction when adding element targets. Literal
+  float variable names are CVs, while unary and named constants are dynamic.
 
 ## Validation and coordination
 

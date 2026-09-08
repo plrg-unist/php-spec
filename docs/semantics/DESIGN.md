@@ -126,6 +126,12 @@ paths. `zend_compile_assign_ref` emits `ZEND_MAKE_REF` for a nondirect target an
 non-CV source; that instruction owns a reference across later target acquisition.
 It must be modeled when those element-reference paths are admitted, not replaced
 by a blanket extra cell owner that changes singleton-wrapper copying.
+For assignment to a dynamic variable name, a CV source is initialized only after
+the delayed target name is consumed. A non-CV source is acquired before that
+consumer. This differs from literal reference entries, which acquire their source
+before consuming the delayed key. CV names include literal string, integer and
+floating-point names (`zend_try_compile_cv`); unary and named-constant expressions
+remain dynamic even when their values can be folded.
 
 Terminal throw/error/Unsupported outcomes release pending tasks, scratch values
 and `HELD`, even when the last task already emptied `TODO`; environment roots and

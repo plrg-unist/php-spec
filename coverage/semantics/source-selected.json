@@ -1,5 +1,5 @@
 {
-  "selection_prefix": "array-reference-literal-",
+  "selection_prefix": "float-cv-",
   "budgets": {
     "transitions": 100000,
     "worker_seconds": 30,
@@ -10,7 +10,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures",
+  "scope": "authored scalar, variable storage and array literal (including variable references)/read/write/unset checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -56,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "c1af109e7c32d08b395526f65cfc9b11ae8c6f455ead83a32cbfc69e702e247f",
-    "files": 666,
+    "sha256": "bce380a6afe133404a6f1ffe633754713102ef23136a029aa5bc810eefc2ce80",
+    "files": 675,
     "scope": [
       "frontend",
       "adapter",
@@ -75,152 +75,26 @@
   },
   "results": [
     {
-      "id": "array-reference-literal-write",
-      "source_sha256": "a19a76a574d490a33c4a2d48671af9bb27e693cdc75e716b62be3db44671f842",
+      "id": "float-cv-small-name",
+      "source_sha256": "eb815c173b1929882f88ff631f41b592f73312032c95441c3fc2464e72c45daf",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "array-reference-literal-initialize",
-      "source_sha256": "40e46b2e2d8baf38c97afd111eee021ceb8db281dc2a995eb008124c24fa3ba4",
+      "id": "float-cv-zero-name",
+      "source_sha256": "2d294c92651b31035b86989ad78127f7a953e3e3b1362bf354a9aad526954bc9",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "array-reference-literal-nested-shared",
-      "source_sha256": "8d7c6529e24b49abdc61366194fd70f9620c5df459a11d4857c0b0b1b417f5cc",
+      "id": "float-cv-array-identity",
+      "source_sha256": "931250809fa269f962b535193b318f0d466b8761a40729d4961d9e3399cf7fe2",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "array-reference-literal-nested-singleton",
-      "source_sha256": "e413e84a9140e1776cc136246ddbb597191f4f75a2651082ceb54c463ca1fef2",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-value-overwrite",
-      "source_sha256": "0d4329355ea62f8f1c9c7dfd3323a0f2a9d99f82ce13152a4bdde7aea0427165",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-ref-overwrite",
-      "source_sha256": "ee120619dafdcfbde61ff3ae468f1a5caf5b2505e00001705702857bc1ef2a37",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-unset-entry",
-      "source_sha256": "eb37fcf67f5fef2b2e27ca98a8468115e9e020682ca149f871a7f568641f3946",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-rebind",
-      "source_sha256": "3bc0c8e2b3077919c1a1bf9368c045904eb9f6f04c198820082d759b41a97a24",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-self",
-      "source_sha256": "d1da69e8a225dcf54af8b0483b35cf5b5fee57400cd189b7a456926a0415ead2",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-self-copy",
-      "source_sha256": "c9ac2c2959c7282e52a8cb8d28d08fff566a9c514c33b24463acae871ea05cb5",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-self-union-left",
-      "source_sha256": "ef1481969bc943c50c8b9d8a3d37b5f8cffea2502fdedf66eee588faa135923e",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-self-union-right",
-      "source_sha256": "fa5cce2bc007131ccf5200d95a4e92298b2f2cb45b7d04ad462475866e773fe0",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-dead-cycle",
-      "source_sha256": "eb022f15e33de10da110c577e7ef51e5d8bdc091abe862d52302d03a894d8903",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-dead-acyclic",
-      "source_sha256": "ed85b7036d90b81b857bade43e68674ce53b08f47f30bce9300dec284a0ae004",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-acquires",
-      "source_sha256": "84368683daf1da66b0799dfbf0193309d47630d1e11d3a08e477fedcb2a03897",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-missing",
-      "source_sha256": "3f0da7c60dde1119163512a411328d6cf7e4cfe40162eb574f3fe2dfc7ba5048",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-captured",
-      "source_sha256": "201c84cba230bbadb8f3f8869674962de97df69adaf0610e22bd296cebb9039a",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-dynamic",
-      "source_sha256": "31b2e55de20a4d35ca124ed5c95c37fb23b45bea65971a83f23b967995896867",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-ref",
-      "source_sha256": "32e89e0e2e45b2d83c1f1134c4ee484797c0a297d9aabdda43698436919bef91",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-old-cell",
-      "source_sha256": "e4175a9caa7a7b9c90830534116a896b5090ec4b92e88bcfb9db502f73fd0fd1",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-order",
-      "source_sha256": "32c38af94c3125160702b3a56ee81f31bc87b5048daf0bec8cc002a3df51ddce",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-key-lines",
-      "source_sha256": "4c732afae7149db3434fe845bfc908dcea78baa77038b7f3e5dc8a26243469dd",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-null-key-lines",
-      "source_sha256": "db3cbf447f884bf4eb5e05f05574d57015b74a75302c7519421080687de50fc2",
-      "semantic_status": "normal",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-overflow",
-      "source_sha256": "8725138020207a8897639ff678cbe6ad2186e4780caddc6792d0eeef1e5583e2",
-      "semantic_status": "php_error",
-      "comparison": "pass"
-    },
-    {
-      "id": "array-reference-literal-union-conflict",
-      "source_sha256": "7de24c52fbf6ef94676138228ef6358fbfc56f838c400d160282d94a0b2f382e",
+      "id": "float-cv-negative-zero-control",
+      "source_sha256": "27d6c19d9d9ccf5d59dfb8b08d082157415bc16b11552fd509a0995570e45156",
       "semantic_status": "normal",
       "comparison": "pass"
     }
@@ -230,7 +104,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-q7pqkopk/unsupported.php"
+        "/tmp/php-semantics-wan_03ej/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -249,7 +123,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-q7pqkopk/unsupported.php"
+        "/tmp/php-semantics-wan_03ej/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -268,7 +142,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-q7pqkopk/unsupported.php",
+        "/tmp/php-semantics-wan_03ej/unsupported.php",
         "--steps",
         "0"
       ],
@@ -289,7 +163,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-q7pqkopk/unsupported.php",
+        "/tmp/php-semantics-wan_03ej/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -302,12 +176,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-q7pqkopk/unsupported.php.missing"
+        "/tmp/php-semantics-wan_03ej/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-q7pqkopk/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-wan_03ej/unsupported.php.missing'"
       }
     },
     {
@@ -983,7 +857,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source-selected.jsonl",
-    "sha256": "25f963993bc282d364dc560952fc9868cbeca91455fcd26ff82799dc7f94a041",
-    "records": 25
+    "sha256": "418ecd204c5fc17f361926822f95696d4a440c34c4265b0bd55aaa783e5fb5d9",
+    "records": 4
   }
 }

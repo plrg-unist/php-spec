@@ -293,6 +293,20 @@ def main():
               [f'S_next = $prune_allocations($ownership_step({literal}[.STORE = [DEFINED (PINT 1), DEFINED (PINT 2)]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN (PINT 0)) eps 1]]))',
                'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]',
                'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 0)]', '$heap_valid($heap_graph(S_next))']]
+    cases += [[f'S_next = $ownership_step({initial}[.TODO = [REF_DYNAMIC_CV (VARIABLE ([120]) 3) ([120]) 3]])',
+               'S_next.EVENTS = [WARNING ([120]) 3]',
+               'S_next.STORE = [DEFINED PNULL]', 'S_next.RESULT = REFERENCE 0',
+               '$heap_owners($heap_graph(S_next), HCELL 0) = 3', '$heap_valid($heap_graph(S_next))'],
+              ['$task_nodes(REF_DYNAMIC_CV (REFERENCE 0) ([120]) 1) = [HCELL 0]'],
+              [f'S_next = $drive({initial}[.TODO = [REF_DYNAMIC_CV (VARIABLE ([120]) 0) ([120]) 0]], 1)',
+               'S_next.COMPLETION = UNSUPPORTED "missing source line"',
+               'S_next.STORE = eps', 'S_next.ALLOCATIONS = eps'],
+              [f'S_next = $drive({initial}[.TODO = [REF_DYNAMIC_CV (KNOWN (PSTRING ([120]))) ([95,71,69,84]) 1]], 1)',
+               'S_next.COMPLETION = UNSUPPORTED "request environment variable"',
+               'S_next.STORE = eps', 'S_next.ALLOCATIONS = eps'],
+              [f'S_next = $drive({initial}[.STORE = [DEFINED (PSTRING ([120]))]][.ALLOCATIONS = [HCELL 0]][.TODO = [REF_DYNAMIC_CV (REFERENCE 0) ([120]) 1]], 1)',
+               'S_next.COMPLETION = NORMAL', 'S_next.RESULT = REFERENCE 1',
+               'S_next.ALLOCATIONS = [HCELL 1]', '$heap_valid($heap_graph(S_next))']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):

@@ -1,7 +1,13 @@
 def $cv_name(BYTES text) = ($base64(text))
 def $cv_name(NScalarString (BYTES text) metadata) = ($base64(text))
 def $cv_name(NScalarInt (INTEGER z) metadata) = ($decimal_integer(z))
+def $cv_name(NScalarFloat (FLOAT text) metadata) = ($echo_value(PFLOAT $hex_bits(text, 0)))
 def $cv_name(phpType34) = eps
+  -- otherwise
+
+dec $reference_cv(expression) : (nat*)?
+def $reference_cv(NExprVariable phpType34 metadata) = $cv_name(phpType34)
+def $reference_cv(expression) = eps
   -- otherwise
 
 ;; A CV operand is read by its consumer; dynamic FETCH_R captures a value.
@@ -169,6 +175,13 @@ rule PhpStep/reference-dynamic: S ~> S[.TODO = [EVAL expression_name, PREP_REF e
   -- if phpType34 = expression_name
 rule PhpStep/prepare-reference: S ~> S[.TODO = [ACQUIRE expression, REF_DYNAMIC S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
+  -- if $reference_cv(expression) = eps
+;; A CV source is fetched by ASSIGN_REF after the delayed target FETCH_W.
+;; A non-CV source is acquired earlier; array literal references also acquire
+;; before their key consumer, and do not use this assignment protocol.
+rule PhpStep/prepare-reference-cv: S ~> S[.TODO = (REF_DYNAMIC_CV S.RESULT n_name* z) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
+  -- if $reference_cv(expression) = (n_name*)
 rule PhpStep/acquire-name: S ~> S_cell[.TODO = ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_cell = $acquire_name(S, $base64(text))
@@ -197,6 +210,24 @@ rule PhpStep/bind-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (REF_DYNAMIC poperand z) :: ptask_tail*
   -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION =/= NORMAL
+rule PhpStep/bind-dynamic-cv: S ~> S_bound[.TODO = ptask_tail*]
+  -- if S.TODO = (REF_DYNAMIC_CV poperand n_source* z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_target*)
+  -- if S_cell = $acquire_name(S_name, n_source*)
+  -- if S_cell.COMPLETION = NORMAL
+  -- if S_bound = $bind_reference(S_cell, n_target*)
+rule PhpStep/bind-dynamic-cv-name-abrupt: S ~> S_name[.TODO = eps]
+  -- if S.TODO = (REF_DYNAMIC_CV poperand n_source* z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION =/= NORMAL
+rule PhpStep/bind-dynamic-cv-source-abrupt: S ~> S_cell[.TODO = eps]
+  -- if S.TODO = (REF_DYNAMIC_CV poperand n_source* z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_name, n_source*)
+  -- if S_cell.COMPLETION =/= NORMAL
 rule PhpStep/unset-name: S ~> S_unset[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (UNSET (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_unset = $unset_name(S, $base64(text))
