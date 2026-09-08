@@ -78,6 +78,11 @@ tmp = fma(r4, p2, fma(r2, p1, tail + r))
 normal_result = fma(scale, tmp, scale)
 ```
 
+`python3 tests/semantics/libm_data_evidence.py` independently checks all 657
+generated constant/coefficient/table words against the pinned ELF bytes using
+the retained data references and struct layout. The report is
+`coverage/semantics/libm-data.json`; no arithmetic routine is executed.
+
 These contractions correspond to `0x7a29a`–`0x7a34a` (log and product),
 `0x7a364`–`0x7a3e5` (exp reduction/polynomial), and `0x7a3f7` (normal scale).
 The overflow branch rounds `2^1009 * fma(scale,tmp,scale)` (`0x7a6f2`).
