@@ -3,7 +3,9 @@
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
 PHP-Parser 5.8.0 to checked P4-SpecTec values. The complete grammar/scanner
 inventory and 169 constructors pass validation. All 30,976 corpus records are
-classified with no unresolved failures; portable handoff is being finalized.
+classified with no unresolved failures. A fresh offline rebuild and complete
+validation also pass with workspace resources unavailable; see the
+[portability evidence](coverage/portability.json).
 [PROGRESS.md](PROGRESS.md) records gates and
 [PLAN.md](PLAN.md) defines scope. Evaluation semantics and BOLA verification are later research phases.
 

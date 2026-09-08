@@ -1,0 +1,188 @@
+{
+  "status": "passed",
+  "target": "PHP 8.5.10 syntax",
+  "reproduction": "scripts/portable-check.sh",
+  "isolation": {
+    "copied_path": "/var/tmp/php-spec-final.Q66ush",
+    "git_metadata": false,
+    "network_namespace": "disabled networking",
+    "hidden_mounts": [
+      "/home",
+      "/tmp"
+    ],
+    "environment": "env -i with documented system PATH and local OPAM root"
+  },
+  "dependency_bootstrap": {
+    "from_local_source_inputs": true,
+    "copied_build_products": false,
+    "inputs": {
+      "dependencies/files.jsonl": "097d22017e5a8a3a9789018a45b8b479e2c89efb255f6d84d4b25884472f9b22",
+      "dependencies/opam-packages.txt": "cb988fa0d45656f0b7c6a8316c0c87f46519d90831f5039d3f2f961b21576007",
+      "scripts/build-deps.sh": "1af881314dab57ac9291402e05a36d03fa272a19b2a990833b5da4b74d4fc2d8",
+      "scripts/build-file-helper.sh": "72a46351d52c5f34aca8bd4f6427a740c5be4d4e34b611d482fe4f59481cfe95",
+      "scripts/opam-exec.sh": "0281677119b9d4456f6d263b7acae1fc073ced563ad24c53dd10fac3dd0f7781",
+      "native/php_file.c": "e61168407fa0261f30fc7fe1f17c18b18645b30c282be76da20c5f3949c44654"
+    },
+    "final_changed_inputs": [
+      "scripts/build-file-helper.sh",
+      "native/php_file.c"
+    ],
+    "changed_input_rebuild": "make build recompiles native/php_file.c through scripts/build-file-helper.sh before any final validation; PHP/OCaml/SpecTec bootstrap inputs unchanged",
+    "log_sha256": "7ae44107a26d7caf8f8be492735e7534e265848ad10a70d876ad28e012a2b61f"
+  },
+  "commands": [
+    "scripts/verify-inputs.py",
+    "make build",
+    "make test",
+    "make validate",
+    "make inventory",
+    "scripts/verify-inputs.py"
+  ],
+  "imports": {
+    "files_and_links_verified_before_and_after": 64850,
+    "manifest": "dependencies/files.jsonl",
+    "sha256": "097d22017e5a8a3a9789018a45b8b479e2c89efb255f6d84d4b25884472f9b22"
+  },
+  "authored_inputs": {
+    "manifest": "coverage/portability-inputs.json",
+    "sha256": "eed5b29de731737759a481fea57bb230bc27a57ab04f060025467348dac4afc6",
+    "files": 518,
+    "unchanged_before_and_after": true,
+    "matches_main_sources": true
+  },
+  "implementation": {
+    "main": {
+      "sha256": "eac3c76525bef6d1683e5ed72c28e61a3bb1ab084ee1faa0f646d124904f61b4",
+      "files": 520,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "isolated": {
+      "sha256": "8a183a2b463678de090290e0dc28e82e409b262188bbd703933cf0d15a300513",
+      "files": 520,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "binaries": {
+      ".tools/php/bin/php": {
+        "main": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "isolated": "cb1579777d5a640d28d2aaa9f41e755a31a7d2c1784e6893338e675dfe250c74"
+      },
+      ".tools/php-file.so": {
+        "main": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "isolated": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07"
+      },
+      "_build/default/adapter/main.exe": {
+        "main": "983b51218a14a6d6464505c71ee71b5813ce733396526a1c8012e90e187678bd",
+        "isolated": "0ec0f7308873c5d71a2eea067648128782be8834d5188113e8b32443a4044f1b"
+      }
+    }
+  },
+  "reports": {
+    "results-targeted": {
+      "tested": 93,
+      "counts": {
+        "pass": 79,
+        "parser_rejection": 14
+      },
+      "stable_implementation": true,
+      "jsonl_sha256": "de4396bd3aac2c6a203563d51cdc15ff8ceebbc2de8491d16d065fb0cbda5930",
+      "summary_sha256": "0315cea9bbbb31bf5576828c4262a8dbea8c797b1bae548fd5e26034a403c2cf"
+    },
+    "results-generated": {
+      "tested": 4103,
+      "counts": {
+        "pass": 3781,
+        "parser_rejection": 320,
+        "invalid_program_roundtrip_difference": 2
+      },
+      "stable_implementation": true,
+      "jsonl_sha256": "e5573670a2556fda9e1334201249155a099e1ec53263db0be8d98173c95f01b8",
+      "summary_sha256": "d3d7af47b9a5e4efdf0738ffd8f114c418be48f30b5c7951ac8674f4de3c841e"
+    },
+    "results-corpus": {
+      "tested": 30976,
+      "counts": {
+        "pass": 30666,
+        "parser_rejection": 254,
+        "compile_phase_difference": 42,
+        "redirect_container": 6,
+        "non_source": 8
+      },
+      "stable_implementation": true,
+      "jsonl_sha256": "d3b81d33efbb37c357ca15de6f97dbcc4f1619c1538a7ddca20f5736399c7a85",
+      "summary_sha256": "b813f448bc03ffd214ef3dee0cf18c6dcf90d5a1f561a156000a0763156a4fbc"
+    },
+    "results-deep": {
+      "tested": 1,
+      "counts": {
+        "pass": 1
+      },
+      "stable_implementation": true,
+      "jsonl_sha256": "da478cc5b1a718fbb6e0435c2396270ec96e030aec570dac272b2ef83b708270",
+      "summary_sha256": "623c02bc5023324a49a019a9c5e96b1af876e8b5f3fe26b5e8fab7a03ee7690c"
+    }
+  },
+  "additional_checks": {
+    "malformed": {
+      "total": 24,
+      "passed": 24
+    },
+    "wire-negative": {
+      "total": 33,
+      "passed": 33
+    },
+    "PHPT_extraction_matches": 21744,
+    "native_file_helper": "passed",
+    "encoding_mutations": 3,
+    "phase_ledger_guard": "passed",
+    "parallel_aggregation_and_process_failures": "passed",
+    "encoding_registry_spellings": 214,
+    "encoding_registry_checks": 685
+  },
+  "coverage": {
+    "mapped_grammar_productions": 635,
+    "mapped_scanner_rules": 191,
+    "mapped_AST_constructors": 169,
+    "traced_grammar_productions": 631,
+    "separately_documented_trace_dispositions": [
+      0,
+      71,
+      149,
+      200
+    ]
+  },
+  "main_comparison": {
+    "records": 30976,
+    "equal": true,
+    "normalization": "Only independently allocated /tmp/tmp[a-z0-9_]{8}.php paths inside decoded lint diagnostics; all other fields and bytes compared."
+  },
+  "final_log": {
+    "path": "/var/tmp/php-spec-final-gates-corrected.log",
+    "sha256": "0d87a6f8756f74496dab6eec560b772171b5a85a71d3d0017aed727eb0613b9e"
+  }
+}
