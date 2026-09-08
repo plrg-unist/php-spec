@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "4a556d2ac34024869ec9db297fdb10b94e72500b289277b73fb8dd0462b23491",
+    "tests/semantics/conformance/cases.json": "bc9089c9fc5a74ec60f5675529b9b0cd7db92e234de42661e1f9099169766f7a",
     "tests/semantics/conformance/oracle.py": "41164985f592c3bb439fe1b663d3a74fe335a122f9ae8c676ede8083925a396b",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -132,6 +132,15 @@
     "tests/semantics/conformance/array-union-right-self-reference.php": "2073b70badb2f55308f33f266270e51e3391b2f438dc78f9273a77d186944ca9",
     "tests/semantics/conformance/array-reference-key-acquisition.php": "2277fdc18f1b53e5b82e78eb38a1597d2cc308247cae10f155d76e75496c3f5a",
     "tests/semantics/conformance/array-reference-delayed-key.php": "692e21dcfe001e34faee2b133da8638b56a9bd8f83d85f81e318d0fa4546aa2d",
+    "tests/semantics/conformance/reference-cv-source-initialization.php": "76e1334771c0e43fc6a79ef40ea14ade553d7fce7328fffb4257b6e8718b681f",
+    "tests/semantics/conformance/reference-cv-source-multiline.php": "864bca2501ab937d49d6ac9dfb55740e5693e810db4620fa5543a030488f7046",
+    "tests/semantics/conformance/reference-dynamic-target-initialization.php": "f1aad06e5abac0f001703c70cab5ba6837354dc2d36e1458c65d1b70422f4512",
+    "tests/semantics/conformance/reference-dynamic-source-initialization.php": "eb6a3a15fdd9ee04621f9601eacad2bdc10e3fffac960952c7a3067513c2f9cb",
+    "tests/semantics/conformance/float-variable-name-delayed.php": "426972fd82815ed0d2dfca6c7473e7df76e1328fa582c2b40d5b05654f34ce58",
+    "tests/semantics/conformance/overflow-float-variable-name-delayed.php": "4c9097016b1d580b6f5061033bf43cfd28b817ad129f2c9ca63167119752fd35",
+    "tests/semantics/conformance/negative-float-variable-name-captured.php": "9c762131a1de31741e335021294fdf48c2778295527d7c5d420b678e18ec97cc",
+    "tests/semantics/conformance/boolean-variable-name-captured.php": "ca757ddfa383b20e5ce61bc27d62c1a69b4d640a2c3d5e30a1b592eb76f84955",
+    "tests/semantics/conformance/reference-float-cv-initialization.php": "fdd81a89b3004023547ec6bcf4829d4fa29af57573c7a0eed1195ccde81079f0",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
@@ -968,6 +977,96 @@
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "MQ==",
       "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "reference-cv-source-initialization",
+      "source_sha256": "76e1334771c0e43fc6a79ef40ea14ade553d7fce7328fffb4257b6e8718b681f",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-cv-source-initialization.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9yZWZlcmVuY2UtY3Ytc291cmNlLWluaXRpYWxpemF0aW9uLnBocCBvbiBsaW5lIDEK",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "reference-cv-source-multiline",
+      "source_sha256": "864bca2501ab937d49d6ac9dfb55740e5693e810db4620fa5543a030488f7046",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-cv-source-multiline.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9yZWZlcmVuY2UtY3Ytc291cmNlLW11bHRpbGluZS5waHAgb24gbGluZSAzCg==",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "reference-dynamic-target-initialization",
+      "source_sha256": "f1aad06e5abac0f001703c70cab5ba6837354dc2d36e1458c65d1b70422f4512",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-dynamic-target-initialization.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9yZWZlcmVuY2UtZHluYW1pYy10YXJnZXQtaW5pdGlhbGl6YXRpb24ucGhwIG9uIGxpbmUgMQo=",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "reference-dynamic-source-initialization",
+      "source_sha256": "eb6a3a15fdd9ee04621f9601eacad2bdc10e3fffac960952c7a3067513c2f9cb",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-dynamic-source-initialization.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "float-variable-name-delayed",
+      "source_sha256": "426972fd82815ed0d2dfca6c7473e7df76e1328fa582c2b40d5b05654f34ce58",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/float-variable-name-delayed.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "NA==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "overflow-float-variable-name-delayed",
+      "source_sha256": "4c9097016b1d580b6f5061033bf43cfd28b817ad129f2c9ca63167119752fd35",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/overflow-float-variable-name-delayed.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "NA==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "negative-float-variable-name-captured",
+      "source_sha256": "9c762131a1de31741e335021294fdf48c2778295527d7c5d420b678e18ec97cc",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/negative-float-variable-name-captured.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "Mw==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "boolean-variable-name-captured",
+      "source_sha256": "ca757ddfa383b20e5ce61bc27d62c1a69b4d640a2c3d5e30a1b592eb76f84955",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/boolean-variable-name-captured.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "Mw==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "reference-float-cv-initialization",
+      "source_sha256": "fdd81a89b3004023547ec6bcf4829d4fa29af57573c7a0eed1195ccde81079f0",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-float-cv-initialization.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MQ==",
+      "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICQxLjUgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3JlZmVyZW5jZS1mbG9hdC1jdi1pbml0aWFsaXphdGlvbi5waHAgb24gbGluZSAxCg==",
       "exit_status": 0,
       "expected_match": true
     }

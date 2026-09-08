@@ -1188,6 +1188,132 @@
       "expected_exit_status": 0,
       "provenance": "reviewer-authored pinned-oracle discriminator before source reference literals; zend_compile_array and ZEND_ADD_ARRAY_ELEMENT acquisition/key order",
       "semantic_status": "pending"
+    },
+    {
+      "id": "reference-cv-source-initialization",
+      "file": "tests/semantics/conformance/reference-cv-source-initialization.php",
+      "purpose": "Direct CV reference source initializes after delayed target-name read.",
+      "obligations": [
+        "storage.variable-names",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Warning: Undefined variable $x in {FILE} on line 1\n",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "reference-cv-source-multiline",
+      "file": "tests/semantics/conformance/reference-cv-source-multiline.php",
+      "purpose": "Undefined delayed target-name warning uses its expression line.",
+      "obligations": [
+        "storage.variable-names",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Warning: Undefined variable $x in {FILE} on line 3\n",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "reference-dynamic-target-initialization",
+      "file": "tests/semantics/conformance/reference-dynamic-target-initialization.php",
+      "purpose": "Dynamic target expression reads before direct CV source initialization.",
+      "obligations": [
+        "storage.variable-names",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Warning: Undefined variable $x in {FILE} on line 1\n",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "reference-dynamic-source-initialization",
+      "file": "tests/semantics/conformance/reference-dynamic-source-initialization.php",
+      "purpose": "Dynamic reference source fetch initializes before delayed target-name read.",
+      "obligations": [
+        "storage.variable-names",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "float-variable-name-delayed",
+      "file": "tests/semantics/conformance/float-variable-name-delayed.php",
+      "purpose": "Literal float variable names use delayed compiled-variable reads.",
+      "obligations": [
+        "storage.variable-names",
+        "control.sequence"
+      ],
+      "expected_stdout": "4",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "overflow-float-variable-name-delayed",
+      "file": "tests/semantics/conformance/overflow-float-variable-name-delayed.php",
+      "purpose": "An overflowing positive literal float name still denotes a compiled variable.",
+      "obligations": [
+        "storage.variable-names",
+        "control.sequence"
+      ],
+      "expected_stdout": "4",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "negative-float-variable-name-captured",
+      "file": "tests/semantics/conformance/negative-float-variable-name-captured.php",
+      "purpose": "Unary negative float name retains an ordinary captured read.",
+      "obligations": [
+        "storage.variable-names",
+        "control.sequence"
+      ],
+      "expected_stdout": "3",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "boolean-variable-name-captured",
+      "file": "tests/semantics/conformance/boolean-variable-name-captured.php",
+      "purpose": "A boolean constant name retains an ordinary captured read.",
+      "obligations": [
+        "storage.variable-names",
+        "control.sequence"
+      ],
+      "expected_stdout": "3",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "reference-float-cv-initialization",
+      "file": "tests/semantics/conformance/reference-float-cv-initialization.php",
+      "purpose": "Float literal CV reference acquisition must wait until delayed target-name read.",
+      "obligations": [
+        "storage.variable-names",
+        "storage.reference-rebinding"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Warning: Undefined variable $1.5 in {FILE} on line 1\n",
+      "expected_exit_status": 0,
+      "provenance": "independently reproduced before corrective implementation; raw pre-fix semantic observations retained in coverage/semantics/reference-timing-disagreement.json",
+      "semantic_status": "pending"
     }
   ]
 }

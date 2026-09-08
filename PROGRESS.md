@@ -14,7 +14,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes/unset reviewed; embedded refs/foreach pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/unset and variable-source literal refs reviewed; element refs/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Partial — local types/signatures reviewed; calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Partial — local class headers reviewed; linking/activation pending |
@@ -32,16 +32,18 @@ timeouts and interrupted campaigns never count as validation passes.
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
 - References agent owns source execution/storage after reviewed ownership `41e8fa2b`;
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
-  pruning, owning reference results and COW/union `4f04ed97` are reviewed; next
-  by-reference array literals from variable/dynamic names, then element references.
-- Signatures agent owns method compatibility after reviewed covariance `8a6c5708`.
-  Local types/signatures are reviewed helpers. They use explicit namespace,
-  import, class, position and source contexts and ordered diagnostics; unresolved names remain explicit.
-  Activation, autoload and call binding are separate machine obligations.
+  pruning, owning reference results, COW/union and variable-source literal refs
+  `4b954dfa` are reviewed. Immediate CV timing/classification repair precedes
+  element references.
+- Static worker continuation: checked source-unit occurrence/context traversal,
+  ordered compiler diagnostics and declaration descriptors before further linking.
+  [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md) records reviewed helper
+  interfaces and pending applicability, internal metadata, linking and activation.
+  Coordinate source-unit/task integration with the references owner.
 - Numeric helpers are pure; runner owns PHP values/effects. See NUMERICS.
   Storage uses cells, captured versus delayed operands and internal array IDs.
-  Nested dimension descriptors preserve fetch timing; shallow graph copies are
-  reviewed only for currently admitted reference-free entries. See DESIGN.
+  Nested dimension descriptors preserve fetch timing; graph copies account for
+  admitted literal reference entries and uncollected cycles. See DESIGN.
 - Shared working tree: stage owned files only, never push. Baseline `082a3a2b`;
   the workspace gitlink was already modified. Commit each reviewed increment.
 
@@ -51,15 +53,17 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `4f04ed97`: independently repeated **388 exact source comparisons
-  +25 negatives**; COW/union and owning reference results included. New source
-  constructors are admitted through separate gates; remaining ones stay Unsupported.
-  `_SESSION` is ordinary here; HTTP compiler diagnostics remain pending.
-- Ownership/COW `4f04ed97`: **617 graph +63 boundary cases**, 5,278 assertions,
-  independently repeated; 320 additional graph probes and 12 source NaN checks
-  passed. Allocated graphs retain uncollected cycles. Left-copy/RHS-merge wrapper
-  distinctions are reviewed helpers; source embedded references and GC remain
-  pending. See [handoff](docs/semantics/ARRAY-HANDOFF.md).
+- Source machine `4b954dfa`: independently repeated **421 exact source comparisons
+  +25 negatives**; variable-source literal refs, COW/union and owning reference
+  results included. **617 graph +72 boundary cases**, 5,315 assertions, and
+  48 additional literal-reference source probes passed. New constructors enter
+  through separate gates; element references and source GC remain Unsupported.
+  See [handoff](docs/semantics/ARRAY-HANDOFF.md).
+- New admitted CV timing/classification defects were found outside that selection:
+  delayed reference target names miss an undefined-variable warning; float-literal
+  variable names read too early (spec 3 versus PHP 4). Five raw disagreements and
+  four controls are [retained](coverage/semantics/reference-timing-disagreement.json).
+  Nine retained oracle witnesses are mandatory regressions for the next repair.
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
   Local types `531a8b40`/`9da9b012`, signatures `ac5bc703`, and class headers
@@ -69,9 +73,13 @@ timeouts and interrupted campaigns never count as validation passes.
   counts, source restrictions and expanded reviewer matrices. Edited compiler
   checks do not repair frontend phase gaps. No source activation, default
   materialization, body compilation, linking or call binding is claimed. The
-  covariance ancestry fixture has a queued empty-list encoding correction and
-  revalidation; production covariance rules are unchanged.
-- **83 independent oracle targets**, 16 integrated into the reviewed source
+  covariance ancestry fixture correction `05745733` passed the same campaign
+  plus two explicit zero/one-ancestor shape checks; production rules are unchanged.
+  User-method helper `a7d79477`: **926** comparisons, 4 ordered pending descriptors,
+  12 Unsupported and 1 source-phase pending witness independently repeated;
+  expanded matrix 1,444. Exact declaration rendering is bounded by compiled
+  defaults and explicit comparison contexts; NaN warning context stays pending.
+- **92 independent oracle targets**, 24 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read
@@ -89,10 +97,11 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review by-reference array literals from variable/dynamic sources, including
-acquisition-before-delayed-key conversion and temporary reference ownership.
-Element references and broader writable places require later source gates.
-Method compatibility and class linking must preserve pinned phase ordering.
+Repair direct-CV reference-source initialization timing and literal-float CV
+classification, retaining the distinct literal-reference acquisition order.
+Element references and broader writable places follow independent source gates.
+The next static source-context traversal and class linking must preserve pinned
+phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source
 activation, autoload schedule or production declaration diagnostics.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,

@@ -1,0 +1,1 @@
+<?php ${true}=1;echo ${true}+(${true}=2);

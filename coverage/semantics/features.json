@@ -38,13 +38,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent ordinary literals/read review eb48f793:251 source observations +22 negatives; writable locations, embedded references/unpack and COW topology pending."
+      "review": "Independent literal-reference review 4b954dfa: 421 exact source comparisons and 25 negatives; 617 graph plus 72 boundary cases (5315 assertions) and 48 extra source probes passed. Variable/dynamic-name source references are acquired before delayed key conversion and held until ALIAS insertion; COW/union preserve reviewed wrapper rules. Element-reference sources/targets, unpacking, callbacks and source GC remain pending.",
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ]
     },
     {
       "node": "Attribute",
@@ -1685,15 +1690,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/17-signatures.watsup",
-        "spec/semantics/19-variance.watsup"
+        "spec/semantics/19-variance.watsup",
+        "spec/semantics/19-method-signatures.watsup"
       ],
       "source_tests": [],
-      "review": "Independent covariance helper 8a6c5708: 1028 checked return-type/source-oracle comparisons, 9 symbolic descriptors and 4 Unsupported checks repeated; expanded 1928 comparisons passed. The fixture visible-class registry was corrected to include current C for prototype-context lookup. Production helper returns status/missing names under supplied visible class graphs; method compatibility, diagnostics, class linking, autoload, activation and call checks remain pending.",
+      "review": "Independent user-method helper a7d79477: 926 source-oracle/helper comparisons, 4 ordered pending descriptors, 12 Unsupported checks and 1 explicit source-phase pending witness repeated; expanded 1444 passed before the narrow NaN guard. Covariance fixture correction 05745733 repeated 1028 comparisons, 9 descriptors, 2 graph-shape checks and 4 Unsupported. Exact user declaration diagnostics are modeled only for supplied selected prototypes/scopes and supported compiled defaults. Applicability, internal/tentative metadata, full defaults and warning context, compiler traversal, linking/autoload/activation and calls remain pending; see STATIC and LINKING-HANDOFF.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "tests/semantics/variance.py",
         "coverage/semantics/signatures.json",
-        "coverage/semantics/variance.json"
+        "coverage/semantics/variance.json",
+        "tests/semantics/method_signatures.py",
+        "coverage/semantics/method-signatures.json"
       ]
     },
     {
@@ -3161,8 +3169,18 @@
       "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-variable.php",
-        "tests/semantics/conformance/dynamic-name-delayed.php"
-      ]
+        "tests/semantics/conformance/dynamic-name-delayed.php",
+        "tests/semantics/conformance/reference-cv-source-initialization.php",
+        "tests/semantics/conformance/reference-cv-source-multiline.php",
+        "tests/semantics/conformance/reference-dynamic-target-initialization.php",
+        "tests/semantics/conformance/reference-dynamic-source-initialization.php",
+        "tests/semantics/conformance/float-variable-name-delayed.php",
+        "tests/semantics/conformance/overflow-float-variable-name-delayed.php",
+        "tests/semantics/conformance/negative-float-variable-name-captured.php",
+        "tests/semantics/conformance/boolean-variable-name-captured.php",
+        "tests/semantics/conformance/reference-float-cv-initialization.php"
+      ],
+      "notes": "Newly uncovered admitted CV initialization/classification defects require the immediate next repair; raw five disagreements and four controls in coverage/semantics/reference-timing-disagreement.json. Existing 421-case selection passed without these newly found cases."
     },
     {
       "id": "storage.globals",
@@ -3287,8 +3305,14 @@
       "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
-        "tests/semantics/conformance/parameter-rebind.php"
-      ]
+        "tests/semantics/conformance/parameter-rebind.php",
+        "tests/semantics/conformance/reference-cv-source-initialization.php",
+        "tests/semantics/conformance/reference-cv-source-multiline.php",
+        "tests/semantics/conformance/reference-dynamic-target-initialization.php",
+        "tests/semantics/conformance/reference-dynamic-source-initialization.php",
+        "tests/semantics/conformance/reference-float-cv-initialization.php"
+      ],
+      "notes": "Newly uncovered admitted CV initialization/classification defects require the immediate next repair; raw five disagreements and four controls in coverage/semantics/reference-timing-disagreement.json. Existing 421-case selection passed without these newly found cases."
     },
     {
       "id": "storage.typed-reference-sources",
@@ -3463,7 +3487,8 @@
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/39-ownership.watsup"
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/41-array-control.watsup"
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
@@ -3476,7 +3501,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent COW/union review 4f04ed97: 388 exact admitted-source comparisons and 25 negatives; 617 graph plus 63 boundary helper cases (5278 assertions), 320 independent graph probes and 12 source NaN discriminators passed. Shared location arrays separate; singleton wrappers unwrap except left-copy source-self references. Union RHS zval_add_ref unwraps even source-self singleton wrappers; key conflicts skip copying. Source embedded-reference constructors, element references, callbacks and GC remain pending.",
+      "review": "Independent literal-reference review 4b954dfa: 421 exact source comparisons and 25 negatives; 617 graph plus 72 boundary cases (5315 assertions) and 48 extra source probes passed. Variable/dynamic-name source references are acquired before delayed key conversion and held until ALIAS insertion; COW/union preserve reviewed wrapper rules. Element-reference sources/targets, unpacking, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3493,16 +3518,26 @@
     {
       "id": "containers.embedded-references",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": null,
+      "review": "Independent literal-reference review 4b954dfa: 421 exact source comparisons and 25 negatives; 617 graph plus 72 boundary cases (5315 assertions) and 48 extra source probes passed. Variable/dynamic-name source references are acquired before delayed key conversion and held until ALIAS insertion; COW/union preserve reviewed wrapper rules. Element-reference sources/targets, unpacking, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/destructure-reference.php",
@@ -3545,7 +3580,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent reviewer: bounded writable-array commit f0b3c5ee; 308 source comparisons and 22 outcome negatives passed with stable acceptance fingerprint, plus 44 independent exploratory writes. Shallow graph copies preserve currently admitted reference-free entries, including scalar-alias cycles; embedded references and their topology remain pending.",
+      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
@@ -3672,7 +3707,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent reviewer: bounded writable-array commit f0b3c5ee; 308 source comparisons and 22 outcome negatives passed with stable acceptance fingerprint, plus 44 independent exploratory writes. Shallow graph copies preserve currently admitted reference-free entries, including scalar-alias cycles; embedded references and their topology remain pending.",
+      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-self-append.php",
         "tests/semantics/conformance/array-self-index.php",
@@ -3957,7 +3992,13 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending.",
+      "planned_source_tests": [
+        "tests/semantics/conformance/float-variable-name-delayed.php",
+        "tests/semantics/conformance/overflow-float-variable-name-delayed.php",
+        "tests/semantics/conformance/negative-float-variable-name-captured.php",
+        "tests/semantics/conformance/boolean-variable-name-captured.php"
+      ]
     },
     {
       "id": "control.conditionals",
@@ -4784,18 +4825,21 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/19-variance.watsup"
+        "spec/semantics/19-variance.watsup",
+        "spec/semantics/19-method-signatures.watsup"
       ],
       "helper_tests": [
         "tests/semantics/variance.py",
-        "coverage/semantics/variance.json"
+        "coverage/semantics/variance.json",
+        "tests/semantics/method_signatures.py",
+        "coverage/semantics/method-signatures.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Independent covariance helper 8a6c5708: 1028 checked return-type/source-oracle comparisons, 9 symbolic descriptors and 4 Unsupported checks repeated; expanded 1928 comparisons passed. The fixture visible-class registry was corrected to include current C for prototype-context lookup. Production helper returns status/missing names under supplied visible class graphs; method compatibility, diagnostics, class linking, autoload, activation and call checks remain pending.",
+      "review": "Independent user-method helper a7d79477: 926 source-oracle/helper comparisons, 4 ordered pending descriptors, 12 Unsupported checks and 1 explicit source-phase pending witness repeated; expanded 1444 passed before the narrow NaN guard. Covariance fixture correction 05745733 repeated 1028 comparisons, 9 descriptors, 2 graph-shape checks and 4 Unsupported. Exact user declaration diagnostics are modeled only for supplied selected prototypes/scopes and supported compiled defaults. Applicability, internal/tentative metadata, full defaults and warning context, compiler traversal, linking/autoload/activation and calls remain pending; see STATIC and LINKING-HANDOFF.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",

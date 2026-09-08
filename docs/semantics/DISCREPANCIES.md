@@ -67,3 +67,23 @@ still consumes its value. The independent witness now passes in the mandatory
 [Raw history and resolution](../../coverage/semantics/reference-result-disagreement.json)
 retain the original process observations and the accepted correction fingerprint.
 This was a specification defect, with no intentional departure selected.
+
+## CV classification and reference initialization: pending specification defects
+
+`${$x}=&$x; echo ${""}===null;` emits an undefined `$x` warning in PHP,
+but the current machine initializes the direct source variable before reading
+the delayed target name and omits that warning. The multiline witness locates
+the warning on the target-name expression line. A dynamic source fetch has a
+different acquisition point; array-literal reference acquisition also remains
+before delayed key conversion.
+
+`${1.5}=1; echo ${1.5}+(${1.5}=2);` gives PHP 4 versus spec 3 because
+literal float variable names are compiled variables at the pin. An overflowing
+positive float literal has the same behavior; unary-negative and boolean
+expressions are controls and must retain ordinary captured reads.
+
+[Raw nine-case evidence](../../coverage/semantics/reference-timing-disagreement.json)
+retains five disagreements and four controls, exact source bytes and both process
+observations. These were newly uncovered outside the previous 421-case selection,
+not excluded comparisons. The mandatory next repair precedes element references;
+no intentional divergence is selected.

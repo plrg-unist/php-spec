@@ -1,0 +1,419 @@
+{
+  "scope": "historical raw newly discovered admitted CV classification and reference-initialization timing mismatches outside prior421 selection; no filtering",
+  "status": "unresolved",
+  "implementation_base_commit": "0574573309b1a5d305542862f832ac4abb02fbb8",
+  "implementation_fingerprint": {
+    "sha256": "1e82a26fa410c8a46fd8ef62d99ea46e31e9b5a79274ce37518ca81ab566dad8",
+    "files": 666,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "machine_file_sha256": {
+    "spec/php.watsup": "2e186460cd8e199406f13b6e0ff55861e5dd453bc6c0f816338f1a52637db85f",
+    "spec/semantics/00-numeric.watsup": "f7d962c8314711ddbd0a0e6b5302ff0d7c61c0c38b454d225e7e8b4d0cf42652",
+    "spec/semantics/01-integer.watsup": "d1955f4f435421fbb8d1ffdda1587be0f62a3509994bcb4bfd20eb74a4ab55ef",
+    "spec/semantics/02-numeric-text.watsup": "9a14de77d14e5841b0e6de2dc1105ae72ccd35b97744d75cdfeaab605c12772c",
+    "spec/semantics/03-numeric-format.watsup": "9ce53fca5a4316cb79676aa89d8e1a05826a090e6b883cb8d45cf30875f345ca",
+    "spec/semantics/04-numeric-context.watsup": "d06480b358dc356bd2e3d432020faaf9f25ea59f0210bc9b9b3affe7f8208268",
+    "spec/semantics/10-bytes.watsup": "7a01fb92f9f93c0508dbc99579e8e3e44e2637afc115ded1a2390e069f1e2a1b",
+    "spec/semantics/15-constant-names.watsup": "870097189bf24babf9b6e3c6fa1ceacc24affef9d4f50634afd41083750c8979",
+    "spec/semantics/20-machine.watsup": "656082ad6f945e16fe01d93eec599c0b2e1d6d51616182169d2f7d17c44a6750",
+    "spec/semantics/30-storage.watsup": "ecc0d01f57a98f9f3ff284705bf5dd4bb5e623804b097c2823dd26f789502de8",
+    "spec/semantics/35-scalar-operations.watsup": "28c6b64c70e5ff971de757e5d6ab77b0c631fe7ea50cf5ae25f1b4c807d50949",
+    "spec/semantics/36-arrays.watsup": "622a5792643e12dcc5d1317ec23d7c40b64cf24fbc83f485c5e978103a19942a",
+    "spec/semantics/37-array-locations.watsup": "679cc7481590aa836b4570952c2d5c1a362352d388a1eac7928a9dc810bf9ae3",
+    "spec/semantics/38-array-unset.watsup": "7a0f7488ede140f297fa3460229cbd18fa9162ff5559aa4e33f8c4c418ddb02e",
+    "spec/semantics/39-ownership.watsup": "7c7adb35a244cb7221287604a28e2fb31d7dcfe73c99312ce2705cd4b33eed82",
+    "spec/semantics/40-control.watsup": "af699454ba55cc1b4c19c4410e3e6b50cc0aa2f16476e0cd3bf8e8cef2e8d7e4",
+    "spec/semantics/41-array-control.watsup": "87ab63a84851b7eea5a0c79ad36bc7fb280844c62293769750843a79b389bf2d",
+    "spec/semantics/42-array-write-control.watsup": "4557c4635be867a69ce0923509d825f0823cd3529d6740b35f3e999944d10a45",
+    "spec/semantics/43-array-unset-control.watsup": "3c25d2fca48080c07ff9c1121805b3f9fab1db05143bf518b962561b3b715306"
+  },
+  "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "cases": [
+    {
+      "id": "reference-source-initialization-0",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-0.php",
+      "source": "<?php ${$x}=&$x;echo ${\"\"}===null;",
+      "source_sha256": "76e1334771c0e43fc6a79ef40ea14ade553d7fce7328fffb4257b6e8718b681f",
+      "comparison": "semantic-disagreement",
+      "oracle": {
+        "stdout_b64": "MQ==",
+        "stderr_b64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZWZlcmVuY2UtdGltaW5nLTAucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-1",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-1.php",
+      "source": "<?php\n${\n$x\n} =&\n$x;\necho ${\"\"}===null;",
+      "source_sha256": "864bca2501ab937d49d6ac9dfb55740e5693e810db4620fa5543a030488f7046",
+      "comparison": "semantic-disagreement",
+      "oracle": {
+        "stdout_b64": "MQ==",
+        "stderr_b64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZWZlcmVuY2UtdGltaW5nLTEucGhwIG9uIGxpbmUgMwo=",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-2",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-2.php",
+      "source": "<?php $n=\"x\";${$$n}=&$x;echo ${\"\"}===null;",
+      "source_sha256": "f1aad06e5abac0f001703c70cab5ba6837354dc2d36e1458c65d1b70422f4512",
+      "comparison": "pass-control",
+      "oracle": {
+        "stdout_b64": "MQ==",
+        "stderr_b64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZWZlcmVuY2UtdGltaW5nLTIucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICR4IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZWZlcmVuY2UtdGltaW5nLTIucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "WARNING",
+            "args": [
+              [
+                "120"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICJWMkZ5Ym1sdVp6b2dWVzVrWldacGJtVmtJSFpoY21saFlteGxJQ1I0SUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OXlaV1psY21WdVkyVXRkR2x0YVc1bkxUSXVjR2h3SUc5dUlHeHBibVVnTVFvPSIsICJleGl0X3N0YXR1cyI6IDAsICJkaWFnbm9zdGljIjogbnVsbCwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbeyJ0YWciOiAiV0FSTklORyIsICJhcmdzIjogW1siMTIwIl0sICIxIl19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbIjQ5Il1dfV0sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-3",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-3.php",
+      "source": "<?php $n=\"x\";${$x}=&$$n;echo ${\"\"}===null;",
+      "source_sha256": "eb6a3a15fdd9ee04621f9601eacad2bdc10e3fffac960952c7a3067513c2f9cb",
+      "comparison": "pass-control",
+      "oracle": {
+        "stdout_b64": "MQ==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-4",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-4.php",
+      "source": "<?php ${1.5}=1;echo ${1.5}+(${1.5}=2);",
+      "source_sha256": "426972fd82815ed0d2dfca6c7473e7df76e1328fa582c2b40d5b05654f34ce58",
+      "comparison": "semantic-disagreement",
+      "oracle": {
+        "stdout_b64": "NA==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "Mw==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "51"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNdz09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTEiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-5",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-5.php",
+      "source": "<?php ${1e309}=1;echo ${1e309}+(${1e309}=2);",
+      "source_sha256": "4c9097016b1d580b6f5061033bf43cfd28b817ad129f2c9ca63167119752fd35",
+      "comparison": "semantic-disagreement",
+      "oracle": {
+        "stdout_b64": "NA==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "Mw==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "51"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNdz09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTEiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-6",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-6.php",
+      "source": "<?php ${-1.5}=1;echo ${-1.5}+(${-1.5}=2);",
+      "source_sha256": "9c762131a1de31741e335021294fdf48c2778295527d7c5d420b678e18ec97cc",
+      "comparison": "pass-control",
+      "oracle": {
+        "stdout_b64": "Mw==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "Mw==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "51"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNdz09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTEiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-7",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-7.php",
+      "source": "<?php ${true}=1;echo ${true}+(${true}=2);",
+      "source_sha256": "ca757ddfa383b20e5ce61bc27d62c1a69b4d640a2c3d5e30a1b592eb76f84955",
+      "comparison": "pass-control",
+      "oracle": {
+        "stdout_b64": "Mw==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "Mw==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "51"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNdz09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTEiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    },
+    {
+      "id": "reference-source-initialization-8",
+      "file": "/home/user/workspace/php-spec/.tools/reference-timing-8.php",
+      "source": "<?php ${${\"1.5\"}}=&${1.5};echo ${\"\"}===null;",
+      "source_sha256": "fdd81a89b3004023547ec6bcf4829d4fa29af57573c7a0eed1195ccde81079f0",
+      "comparison": "semantic-disagreement",
+      "oracle": {
+        "stdout_b64": "MQ==",
+        "stderr_b64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICQxLjUgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JlZmVyZW5jZS10aW1pbmctOC5waHAgb24gbGluZSAxCg==",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      }
+    }
+  ],
+  "mandatory_regression_targets": [
+    "reference-cv-source-initialization",
+    "reference-cv-source-multiline",
+    "reference-dynamic-target-initialization",
+    "reference-dynamic-source-initialization",
+    "float-variable-name-delayed",
+    "overflow-float-variable-name-delayed",
+    "negative-float-variable-name-captured",
+    "boolean-variable-name-captured",
+    "reference-float-cv-initialization"
+  ]
+}
