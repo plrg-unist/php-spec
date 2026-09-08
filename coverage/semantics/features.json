@@ -35,10 +35,16 @@
         "containers.embedded-references",
         "containers.unpack"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent ordinary literals/read review eb48f793:251 source observations +22 negatives; writable locations, embedded references/unpack and COW topology pending."
     },
     {
       "node": "Attribute",
@@ -104,10 +110,16 @@
       "obligations": [
         "containers.ordered-arrays"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent ordinary literals/read review eb48f793:251 source observations +22 negatives; writable locations, embedded references/unpack and COW topology pending."
     },
     {
       "node": "Expr_ArrayDimFetch",
@@ -118,10 +130,16 @@
         "containers.string-offsets",
         "protocols.ArrayAccess"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent ordinary literals/read review eb48f793:251 source observations +22 negatives; writable locations, embedded references/unpack and COW topology pending."
     },
     {
       "node": "Expr_ArrowFunction",
@@ -2736,7 +2754,9 @@
         "spec/semantics/10-bytes.watsup",
         "spec/semantics/20-machine.watsup",
         "spec/semantics/35-scalar-operations.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -2747,7 +2767,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
     },
     {
       "id": "coercion.arithmetic",
@@ -2888,17 +2908,22 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/04-numeric-context.watsup"
+        "spec/semantics/04-numeric-context.watsup",
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_context.py",
         "coverage/semantics/numeric-context.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending."
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
     },
     {
       "id": "coercion.weak-types",
@@ -2956,7 +2981,9 @@
       "implementation": [
         "spec/semantics/04-numeric-context.watsup",
         "spec/semantics/35-scalar-operations.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_context.py",
@@ -2969,7 +2996,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending.",
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -3235,15 +3262,21 @@
     {
       "id": "containers.ordered-arrays",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/key-collisions.php",
         "tests/semantics/conformance/array-unpack.php"
@@ -3252,15 +3285,21 @@
     {
       "id": "containers.key-normalization",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/key-collisions.php"
       ]
@@ -3268,15 +3307,21 @@
     {
       "id": "containers.append-history",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/append-history.php",
         "tests/semantics/conformance/negative-append.php"
@@ -3285,15 +3330,21 @@
     {
       "id": "containers.append-overflow",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
     },
     {
       "id": "containers.unset",
@@ -3373,28 +3424,40 @@
     {
       "id": "containers.union",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
     },
     {
       "id": "containers.comparison",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/41-array-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
     },
     {
       "id": "containers.destructuring",

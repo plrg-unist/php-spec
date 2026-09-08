@@ -14,9 +14,9 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | In progress — array storage, then reference topology and foreach |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary literals/reads reviewed; writes/COW/references/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
-| 3b | Calls, closures, binding and independent static checks | Pending |
+| 3b | Calls, closures, binding and independent static checks | In progress — static local types under review; calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
 | 4b | Properties, modern declarations and internal protocols | Pending |
 | 5a | Checked dynamic sources, autoload and explicit services | Pending |
@@ -35,14 +35,16 @@ timeouts and interrupted campaigns never count as validation passes.
 - Pure numeric domain: `NINT int | NFLOAT nat` (binary64 bits); add/sub/mul
   return numbers, division returns `NUM number | DIVZERO`, power returns a
   number plus a pending notice. Runner owns the PHP value domain and effects.
-- Next static/type agent owns separate descriptor/context/result types: checked
+- Static agent owns separate descriptor/context/result types: checked
   type AST plus namespace/import/class/position/source context to normalized
   types and ordered compile diagnostics. Keep unresolved names explicit; no
   autoload, declaration hoisting, pstate edits or bootstrap pcheck dependency.
   Start local type legality, then signature descriptors; see NUMERICS and CORE.
 - Storage maps byte names to cells; operands distinguish captured values from
-  delayed variable reads. Arrays will distinguish copied entries from aliases
-  and retain append history. See `docs/semantics/DESIGN.md`.
+  delayed variable reads. Arrays retain ordered entries/history and internal IDs;
+  recursive dimension descriptors defer fetches through key effects. Shared-ID
+  identity shortcuts are observable with NaN, without PHP object identity.
+  Writes/COW and embedded reference topology are next; see DESIGN.
 - Shared working tree: stage owned files only, never push. Baseline `082a3a2b`;
   the workspace gitlink was already modified.
 
@@ -57,7 +59,8 @@ timeouts and interrupted campaigns never count as validation passes.
   Reports in `coverage/semantics/`.
 - Reviewed source machine: bootstrap `8b856a27` (8 comparisons +7 negatives),
   scalar storage `5a083605` (53 comparisons +12 negatives), numeric bridge
-  `e3fbd6e8` (157 comparisons +16 negatives). Stable acceptance fingerprints;
+  `e3fbd6e8` (157 comparisons +16 negatives), ordinary array reads `eb48f793`
+  (251 comparisons +22 negatives). Stable acceptance fingerprints;
   current report `coverage/semantics/source.json`, raw observations in
   `coverage/results-semantic-source.jsonl`. Phase0 report is historical.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
@@ -81,7 +84,7 @@ Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfini
 entries and requires independent review plus source/helper evidence separately.
 Nine isolated evidence negatives reject source/binary/path drift and missing,
 escaping or unproved evidence; `make test-semantics` includes them.
-Next: review ordinary array literals/reads, then COW/reference topology; review
-local static/type rules independently. Phase1 remains partial: source power,
+Next: review writable array locations/self-assignment, then COW/reference
+topology; review local static/type rules after harness evidence fixes. Phase1 remains partial: source power,
 remainder/shifts/bitwise/incdec/casts, mixed comparisons, handlers and configurable
 precision still need integration and evidence. Frames/lifecycle remain pending.
