@@ -12,6 +12,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'frontend'))
 import wire
+sys.path.insert(0, str(ROOT / 'tests'))
+import validate as syntax_validation
 PHP = ROOT / '.tools/php/bin/php'
 CASES = [
     ('relative-static-no-parent', 'class C { function f(): namespace\\static {} }', 'lint', -11, b''),
@@ -29,7 +31,7 @@ def main():
     env.pop('PHP_SPEC_SCRIPT_ENCODING', None)
     watched = [Path(__file__), PHP, ROOT / '.tools/php-file.so', ROOT / 'frontend/worker.php', ROOT / 'tests/semantics/profile.json', ROOT / 'vendor/php-src/Zend/zend_compile.c']
     def fingerprints():
-        return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
+        return {'implementation_closure': syntax_validation.implementation_fingerprint(), 'direct': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}}
     before = fingerprints()
     identity = subprocess.run([str(PHP),'-n',*flags,'-r','echo json_encode([PHP_VERSION,PHP_SAPI,PHP_INT_SIZE,PHP_ZTS]);'],capture_output=True,env=env,timeout=5,check=True)
     target = json.loads(identity.stdout)
