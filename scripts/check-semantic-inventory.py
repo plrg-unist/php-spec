@@ -43,6 +43,11 @@ for entry in constructors + obligations:
     name = entry.get('id', entry.get('node'))
     status = entry['status']
     require(status in features['status_policy'], f'{name}: unknown status {status}')
+    for field in ('implementation', 'source_tests', 'helper_tests'):
+        for reference in entry.get(field, []):
+            path = ROOT / reference
+            require(path.is_file() and path.resolve().is_relative_to(ROOT),
+                    f'{name}: missing or escaping {field} path {reference}')
     if status in finished:
         require(bool(entry['review']), f'{name}: missing independent review')
         require(bool(entry['source_tests']), f'{name}: missing source-level evidence')

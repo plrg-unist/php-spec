@@ -35,4 +35,5 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	python3 tests/semantics/evidence.py
 	python3 tests/semantics/validate.py
