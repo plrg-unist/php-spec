@@ -168,6 +168,24 @@ def main():
               [f'S_next = $drive({live}[.TODO = [DISCARD]][.HELD = [HCELL 0]], 0)',
                'S_next.COMPLETION = BUDGET', 'S_next.TODO = [DISCARD]',
                'S_next.HELD = [HCELL 0]', 'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]']]
+    reference = live+'[.ENV = eps][.RESULT = REFERENCE 0]'
+    cases += [['$operand_nodes(REFERENCE 0) = [HCELL 0]',
+               f'$heap_valid($heap_graph({reference}))',
+               f'$prune_allocations({reference}).ALLOCATIONS = [HCELL 0, HARRAY 0]'],
+              [f'$resolve({reference}[.STORE = [DEFINED (PINT 7)]], REFERENCE 0).RESULT = KNOWN (PINT 7)',
+               f'$resolve_at({reference}[.STORE = [DEFINED (PSTRING ([55]))]], REFERENCE 0, 1).RESULT = KNOWN (PSTRING ([55]))'],
+              [f'S_next = $bind_reference({live}, [98])',
+               'S_next.RESULT = REFERENCE 0',
+               '$machine_roots(S_next) = [HCELL 0, HCELL 0, HCELL 0]',
+               '$heap_owners($heap_graph(S_next), HARRAY 0) = 1'],
+              [f'S_next = $drive({reference}[.TODO = [BINARY_LEFT IDENTICAL (NScalarInt (INTEGER 1) eps) 1]], 1)',
+               'S_next.COMPLETION = BUDGET', 'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]',
+               '$machine_roots(S_next) = [HCELL 0]', '$heap_valid($heap_graph(S_next))'],
+              [f'$drive({reference}[.TODO = [DISCARD]], 1).ALLOCATIONS = eps'],
+              [f'S_next = $drive({reference}[.TODO = [WRITE_NAME ([98]) 1, DISCARD]], 2)',
+               'S_next.COMPLETION = NORMAL', 'S_next.ALLOCATIONS = [HARRAY 0, HCELL 1]',
+               'S_next.STORE[1] = DEFINED (PARRAY 0)', '$heap_valid($heap_graph(S_next))'],
+              [f'$hold_task_inputs({reference}[.TODO = [DISCARD]]).HELD = [HCELL 0]']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):
@@ -180,7 +198,7 @@ def main():
                 (ROOT/'.tools/ownership-failure.watsup').write_text(fixture.read_text())
                 raise AssertionError(f'ownership batch {start}: {run.stdout}{run.stderr}')
     assert before == fingerprint(), 'implementation changed during ownership validation'
-    report = {'result':'pass','classification':'helper-only allocation graph; source references and GC remain pending',
+    report = {'result':'pass','classification':'helper-only allocation graph; source embedded references and GC remain pending',
               'graph_cases':len(graphs),'machine_and_boundary_cases':len(cases)-len(graphs),
               'assertions':sum(map(len,cases)),'seed':8501039,'fingerprint':before,
               'manifest_sha256':hashlib.sha256(json.dumps(cases,sort_keys=True).encode()).hexdigest()}

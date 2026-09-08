@@ -1,7 +1,7 @@
 ;; Names designate cells. Rebinding a name changes its cell, not the old cell's value.
 syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
-syntax poperand = KNOWN pvalue | VARIABLE nat* int
+syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
 syntax pbase = BASE_VALUE poperand | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int
 syntax pnode = HCELL nat | HARRAY nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | NOWHERE
@@ -91,10 +91,13 @@ def $read_name(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
 dec $resolve(pstate, poperand) : pstate
 def $resolve(S, KNOWN pvalue) = S[.RESULT = KNOWN pvalue]
 def $resolve(S, VARIABLE n_name* z) = $read_name(S, n_name*, z)
+def $resolve(S, REFERENCE n) = S[.RESULT = KNOWN pvalue]
+  -- if S.STORE[n] = DEFINED pvalue
 
 dec $resolve_at(pstate, poperand, int) : pstate
 def $resolve_at(S, KNOWN pvalue, z) = S[.RESULT = KNOWN pvalue]
 def $resolve_at(S, VARIABLE n_name* z_origin, z) = $read_name(S, n_name*, z)
+def $resolve_at(S, REFERENCE n, z) = $resolve(S, REFERENCE n)
 
 dec $write_name(pstate, nat*, pvalue) : pstate
 def $write_name(S, n_name*, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
@@ -106,7 +109,9 @@ def $write_name(S, n_name*, pvalue) = S_found[.STORE = $set_cell(S_found.STORE, 
 dec $bind_reference(pstate, nat*) : pstate
 def $bind_reference(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_name(n_name*)
-def $bind_reference(S, n_name*) = S[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.RESULT = KNOWN pvalue]
+;; ZEND_ASSIGN_REF returns an owning reference wrapper when its value is used.
+;; Consumers dereference this captured cell, even if a name is later rebound.
+def $bind_reference(S, n_name*) = S[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.RESULT = REFERENCE S.CELL]
   -- if ~$environment_name(n_name*)
   -- if S.STORE[S.CELL] = DEFINED pvalue
 

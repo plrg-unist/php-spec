@@ -15,7 +15,18 @@ changes one name's cell identity, leaving other aliases attached to their origin
 cell. Unset removes the binding. Writable paths designate either a variable cell
 or an element in an internal array container. Property type sources remain pending.
 
-An operand is either a captured value or a delayed compiled-variable read. Dynamic
+An operand is a captured value, a delayed compiled-variable read, or an owning
+reference-result cell. `ZEND_ASSIGN_REF` copies the reference wrapper into its
+expression result. Consumers dereference that fixed cell at consumption time;
+later writes change its value, while rebinding a variable name does not retarget
+the result. Its `HCELL` root keeps the cell and contained array alive after the
+last environment binding is removed. Ordinary assignment and array insertion
+consume its value without creating an embedded alias. The retained
+`reference-assignment-result` regression distinguishes PHP's result `4` from the
+previous erroneous captured-value result `3`; it was absent from the earlier
+371-case selection and is now a mandatory source comparison.
+
+Dynamic
 name expressions can therefore retain a delayed read across RHS effects. A dynamic
 write fetch initializes an absent cell to null before consuming its RHS operand;
 a direct variable assignment reads its RHS first. Discarded direct variable reads

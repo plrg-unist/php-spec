@@ -96,6 +96,7 @@ def $value_nodes(pvalue) = eps
 dec $operand_nodes(poperand) : pnode*
 def $operand_nodes(KNOWN pvalue) = $value_nodes(pvalue)
 def $operand_nodes(VARIABLE n* z) = eps
+def $operand_nodes(REFERENCE n) = [HCELL n]
 
 dec $base_nodes(pbase) : pnode*
 def $base_nodes(BASE_VALUE poperand) = $operand_nodes(poperand)

@@ -5,6 +5,9 @@ The current source machine supports ordinary ordered arrays, delayed dimension
 reads, simple/nested writes, append and unset. Variable-cell aliases work. Embedded
 array references, foreach, callbacks and source GC are still pending. Do not infer
 source support from the existing ALIAS constructor or pure ownership helpers.
+Reference-assignment expressions now return owning `REFERENCE` operands. Their
+cell identity is captured but their contained value is read by the consumer;
+keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 
 ## Entry points
 

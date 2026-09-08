@@ -80,6 +80,26 @@ CASES = {
 
 
 CASES.update({
+    'reference-result-mutated-value': b'<?php $a=1;echo ($x=&$a)+($a=2);',
+    'reference-result-mutated-type': b'<?php $a=1;echo ($x=&$a)===($a="1");',
+    'reference-result-rebound-name': b'<?php $a=1;$b=2;echo ($x=&$a)+($a=&$b);',
+    'reference-result-dynamic-target': b'<?php $n="x";$a=1;echo ($$n=&$a)+($a=2);',
+    'reference-result-dynamic-source': b'<?php $n="a";$a=1;echo ($x=&$$n)+($a=2);',
+    'reference-result-dynamic-name': b'<?php $n="a";$a=1;$b=2;${($x=&$n)}=($n="b");echo $a,$b;',
+    'reference-result-array-key': b'<?php $a=1;$r=[($x=&$a)=>($a=2)];echo $r[2];',
+    'reference-result-array-base': b'<?php $a=[1];echo ($x=&$a)[($a=[2])[0]-2];',
+    'reference-result-array-rebind': b'<?php $a=[1];$b=[2];echo ($x=&$a)[($a=&$b)[0]-2];',
+    'reference-result-nan-identity': b'<?php $a=[NAN];echo ($x=&$a)===($a=[NAN]);',
+    'reference-result-literal-copy': b'<?php $a=1;$r=[($x=&$a)];$a=2;echo $r[0];',
+    'reference-result-ordinary-copy': b'<?php $a=1;$b=($x=&$a);$a=2;echo $a,$b;',
+    'reference-result-old-cell': b'<?php $a=1;$b=2;echo ($x=&$a)+(($a=&$b)+($x=&$b));',
+    'reference-result-old-array-cell': b'<?php $a=[1];$b=[2];$c=($x=&$a)+(($a=&$b)+($x=&$b));echo $c[0];',
+    'reference-result-null-key': b'<?php $a=1;$r=[($x=&$a)=>($a=null)];echo $r[""]===null;',
+    'reference-result-rhs': b'<?php $a=1;$r=[];$r[0]=($x=&$a);$a=2;echo $r[0];',
+})
+
+
+CASES.update({
     'array-nested-key-delayed': b'<?php $a=[[1],[2]];$i=0;echo $a[$i][(($i=1)===1)-1];',
     'array-nested-key-captured': b'<?php $a=[[1],[2]];$i=0;$n="i";echo $a[$$n][(($i=1)===1)-1];',
     'array-nested-root-delayed': b'<?php $a=[[1]];echo $a[0][($a=[[2]])[0][0]-2];',
@@ -262,7 +282,7 @@ CASES.update({
 })
 
 # Independent review-authored witnesses keep their original provenance.
-CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
+CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
