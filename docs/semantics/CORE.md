@@ -6,7 +6,8 @@ local dependency pins in [provenance](../../dependencies/README.md).
 [PROGRESS.md](../../PROGRESS.md) records current implementation limits.
 The [inventory](../../coverage/semantics/features.json) tracks every syntax
 constructor and separate runtime obligations. A catalog entry is a requirement,
-not a claim that its implementation exists. All entries initially remain pending.
+not a claim that its implementation exists. Entries remain partial until their
+full implementation and evidence obligations close.
 
 ## Execution and observations
 
@@ -95,6 +96,11 @@ Compile-time contextual checks still examine unexecuted code as required by PHP.
 
 ## Environment and ordinary-library boundary
 
+The pinned build registers `GLOBALS` plus `_GET`, `_POST`, `_COOKIE`, `_SERVER`,
+`_ENV`, `_REQUEST` and `_FILES` as auto-globals. It has no session extension:
+`_SESSION` and `http_response_header` are ordinary variable names under this
+profile. Initial values and registered auto-global names are separate facts.
+
 The environment supplies request configuration, argument/stdin bytes and explicitly
 admitted initial values; deterministic source units have original bytes, canonical
 identity and lookup/failure responses. Includes share the proper scope and once
@@ -119,8 +125,8 @@ Fixture inputs/services must be reviewed, finite and shared by both executions.
 
 Boundary decisions constrain the eventual claim, not the implementation schedule.
 All supported environment cases of each core construct require rules, independent
-review and source evidence. There are currently no intentional engine divergences;
-any future departure must retain its exact mismatch and reviewed rationale.
+review and source evidence. Any intentional departure must retain its exact
+mismatch and reviewed rationale.
 
 Intentional departures from engine defects are recorded separately in
 [DISCREPANCIES](DISCREPANCIES.md); they never count as differential agreement.
