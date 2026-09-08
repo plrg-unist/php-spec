@@ -1,4 +1,4 @@
-.PHONY: deps build schema test validate inventory
+.PHONY: deps build schema test validate inventory test-semantics
 
 deps:
 	./scripts/build-deps.sh
@@ -33,3 +33,6 @@ inventory: build
 	python3 scripts/grammar-mapping.py
 	python3 scripts/scanner-mapping.py
 	python3 scripts/encoding-spellings.py
+
+test-semantics: build
+	python3 tests/semantics/validate.py

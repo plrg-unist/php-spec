@@ -1,0 +1,658 @@
+{
+  "budgets": {
+    "transitions": 100000,
+    "worker_seconds": 30,
+    "process_seconds": 35
+  },
+  "seed": null,
+  "scope": "phase0 authored checked execution fixtures",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "oracle": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ],
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "fingerprints": {
+    "sha256": "90eb5ac860a73907ad3e24c5e9c1dc21d90c873476bda602d7da8bf6d5b713e6",
+    "files": 585,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "results": [
+    {
+      "id": "empty",
+      "source_sha256": "adfd37cc6b2aaa1be09c85fbda2131ccf31b7dd535bbf177ae1ad2571ba8ee4b",
+      "source_base64": "PD9waHAgOw==",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/empty.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "normal",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "bytes",
+      "source_sha256": "e337f863c296c694b420750537f9fe6b6634c30d0c3672c439849125d3db11fd",
+      "source_base64": "PD9waHAgZWNobyAiYVx4MDBceGZmIiwgIiIsICJCQyIsICJERUYiOw==",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/bytes.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "normal",
+        "stdout": "YQD/QkNERUY=",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "97",
+                "0",
+                "255"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              []
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "66",
+                "67"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "68",
+                "69",
+                "70"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "YQD/QkNERUY=",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "integers",
+      "source_sha256": "c71117a818d807862d16bf60c467fd7399a99f15b0abc58f7213b1d36d4d41d0",
+      "source_base64": "PD9waHAgZWNobyAwLCA0MiwgOTIyMzM3MjAzNjg1NDc3NTgwNzs=",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/integers.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "normal",
+        "stdout": "MDQyOTIyMzM3MjAzNjg1NDc3NTgwNw==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "48"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "52",
+                "50"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "57",
+                "50",
+                "50",
+                "51",
+                "51",
+                "55",
+                "50",
+                "48",
+                "51",
+                "54",
+                "56",
+                "53",
+                "52",
+                "55",
+                "55",
+                "53",
+                "56",
+                "48",
+                "55"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "MDQyOTIyMzM3MjAzNjg1NDc3NTgwNw==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "constants",
+      "source_sha256": "bebb7731247d643c162d072b9449140a68cd1c1423eefff80dfbfdc88a24bd8d",
+      "source_base64": "PD9waHAgZWNobyB0cnVlLCBmYWxzZSwgTlVMTCwgVHJVZSwgRmFMc0U7",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/constants.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "normal",
+        "stdout": "MTE=",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              []
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              []
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              []
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "MTE=",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "blocks",
+      "source_sha256": "81bb6aaca2eb5e338eb1b88cfd3d27ede254aad5a21bf48934dced49abf4bf5a",
+      "source_base64": "b3V0c2lkZTw/cGhwIHsgZWNobyAiaW5zaWRlIjsgeyBlY2hvIDczOyB9IH0gPz5lbmQ=",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/blocks.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "normal",
+        "stdout": "b3V0c2lkZWluc2lkZTczZW5k",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "111",
+                "117",
+                "116",
+                "115",
+                "105",
+                "100",
+                "101"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "105",
+                "110",
+                "115",
+                "105",
+                "100",
+                "101"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "55",
+                "51"
+              ]
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "101",
+                "110",
+                "100"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "b3V0c2lkZWluc2lkZTczZW5k",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "discard",
+      "source_sha256": "3e8bd80ba3841d16d861a77999d79111077fb2fb7f8d1eb238d687fd98befe5d",
+      "source_base64": "PD9waHAgInVudXNlZCI7IDcyOyB0cnVlOyBlY2hvICJlbmQiOw==",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/discard.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "normal",
+        "stdout": "ZW5k",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "101",
+                "110",
+                "100"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "ZW5k",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "undefined",
+      "source_sha256": "6672b60f223ae4e294fc9af8fdc8058bc8165fabd74399426b123e847355e4f1",
+      "source_base64": "PD9waHAKZWNobyAicHJlZml4IiwgVU5LTk9XTl9DT05TVDsgZWNobyAidW5yZWFjaGFibGUiOw==",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/undefined.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "php_error",
+        "stdout": "cHJlZml4",
+        "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlVOS05PV05fQ09OU1QiIGluIC90bXAvcGhwLXNlbWFudGljcy00MXFjMWl0MC91bmRlZmluZWQucGhwOjIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvdG1wL3BocC1zZW1hbnRpY3MtNDFxYzFpdDAvdW5kZWZpbmVkLnBocCBvbiBsaW5lIDIK",
+        "exit_status": 255,
+        "diagnostic": {
+          "class": "Error",
+          "message": "VW5kZWZpbmVkIGNvbnN0YW50ICJVTktOT1dOX0NPTlNUIg==",
+          "line": 2
+        },
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "112",
+                "114",
+                "101",
+                "102",
+                "105",
+                "120"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "cHJlZml4",
+        "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlVOS05PV05fQ09OU1QiIGluIC90bXAvcGhwLXNlbWFudGljcy00MXFjMWl0MC91bmRlZmluZWQucGhwOjIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvdG1wL3BocC1zZW1hbnRpY3MtNDFxYzFpdDAvdW5kZWZpbmVkLnBocCBvbiBsaW5lIDIK",
+        "exit_status": 255
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "static-break",
+      "source_sha256": "f917932e62c07853d5fe11d41c9fdc6c0d8e1928f6d9e2785d81fde1fbe37f43",
+      "source_base64": "PD9waHAgZWNobyAidW5yZWFjaGFibGUiOwpicmVhazs=",
+      "context": {
+        "file": "/tmp/php-semantics-41qc1it0/static-break.php",
+        "cwd": "/tmp/php-semantics-41qc1it0"
+      },
+      "semantic": {
+        "status": "static_rejection",
+        "stdout": "",
+        "stderr": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvdG1wL3BocC1zZW1hbnRpY3MtNDFxYzFpdDAvc3RhdGljLWJyZWFrLnBocCBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+        "exit_status": 255,
+        "diagnostic": {
+          "class": "CompileError",
+          "message": "J2JyZWFrJyBub3QgaW4gdGhlICdsb29wJyBvciAnc3dpdGNoJyBjb250ZXh0",
+          "line": 2
+        },
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "oracle": {
+        "stdout": "",
+        "stderr": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvdG1wL3BocC1zZW1hbnRpY3MtNDFxYzFpdDAvc3RhdGljLWJyZWFrLnBocCBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+        "exit_status": 255
+      },
+      "comparison": "pass"
+    }
+  ],
+  "negative_checks": [
+    {
+      "source": "PD9waHAgc3RybGVuKCJhIik7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-41qc1it0/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "expression",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBQSFBfSU5UX01BWDs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-41qc1it0/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "initial constant",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-41qc1it0/unsupported.php",
+        "--steps",
+        "0"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-41qc1it0/unsupported.php",
+        "--timeout",
+        "0.000001"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "timeout"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-41qc1it0/unsupported.php.missing"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "runner_failure",
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-41qc1it0/unsupported.php.missing'"
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {}
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {
+                    "startLine": {
+                      "int": "-1"
+                    }
+                  }
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

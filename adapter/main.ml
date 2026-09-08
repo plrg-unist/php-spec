@@ -193,6 +193,43 @@ let rec fixture (value : V.t) =
   | OptV (Some v) -> "(" ^ fixture v ^ ")"
   | CaseV _ -> let tag,args = split value in "(" ^ tag ^ String.concat "" (List.map (fun v -> " (" ^ fixture v ^ ")") args) ^ ")"
   | _ -> fail "unsupported fixture shape"
+module Run = Runtime.Dynamic_Runner.Signature
+let semantic_paths () =
+  let files = Yojson.Basic.from_file (root ^ "/spec/semantics/modules.json") |> list |> List.map string in
+  List.map (fun path -> root ^ "/" ^ path) files
+let semantic_runner = lazy (
+  let paths = semantic_paths () in
+  let source = String.concat "\n" (List.map read_all paths) in
+  List.iter (fun def -> match def.it with
+    | TypD (id, [], deftyp, _) -> Hashtbl.replace definition_table id.it deftyp
+    | _ -> ()) (elab source);
+  let spec = match Backend_boot.Build.spec_of_mode Run.SL_mode paths with
+    | Ok spec -> spec
+    | Error error -> let at,msg = Pass.to_region_msg error in fail (Util.Error.string_of_error at msg) in
+  match Backend_boot.Build.build_null ~cache:false ~det:true Backend_boot.Config.SL_interface spec with
+  | Ok runner -> runner
+  | Error error -> fail (Util.Error.string_of_error error.at error.msg))
+let rec semantic_json (value : V.t) =
+  match value.it with
+  | BoolV b -> `Bool b
+  | NumV (`Int n) | NumV (`Nat n) -> `String (Bigint.to_string n)
+  | TextV s -> `String s
+  | ListV values -> `List (List.map semantic_json values)
+  | OptV None -> `Null
+  | OptV (Some v) -> semantic_json v
+  | StructV fields -> `Assoc (List.map (fun (key,v) -> Domain.Atom.string_of_atom key.it, semantic_json v) fields)
+  | CaseV _ -> let tag,args = split value in `Assoc ["tag", `String tag; "args", `List (List.map semantic_json args)]
+  | _ -> fail "unexpected semantic result shape"
+let execute value request =
+  let budget = field "steps" request |> J.to_int in
+  if budget < 0 then fail "negative transition budget";
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  match Runner.Interp.eval_func "php_run" [] [value; V.Make.nat (Bigint.of_int budget)] with
+  | Run.Pass state -> check (typ "pstate") state;
+      `Assoc ["ok", `Bool true; "state", semantic_json state]
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
 let () =
   try while true do
     let line = read_line () in
@@ -203,12 +240,14 @@ let () =
         ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ string (field "fixture" request) ^ "\n"));
         `Assoc ["ok", `Bool true])
       else (
-        if op <> "check" && op <> "elaborate" then fail "unknown operation";
+        if op <> "check" && op <> "elaborate" && op <> "execute" then fail "unknown operation";
         let value = import_program (field "ast" request) in
         check (typ "program") value;
+        if op = "execute" then (try execute value request with exn ->
+          `Assoc ["ok", `Bool false; "category", `String "runner_failure"; "message", `String (Printexc.to_string exn)]) else (
         let expression = if op = "elaborate" || List.mem_assoc "fixture" (assoc request) then Some (fixture value) else None in
         if op = "elaborate" then ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ Option.get expression ^ "\n"));
-        `Assoc (["ok", `Bool true; "ast", export_program value] @ match expression with None -> [] | Some text -> ["fixture", `String text]))
+        `Assoc (["ok", `Bool true; "ast", export_program value] @ match expression with None -> [] | Some text -> ["fixture", `String text])))
     with exn -> `Assoc ["ok", `Bool false; "category", `String "adapter_rejection"; "message", `String (Printexc.to_string exn)] in
     print_endline (Yojson.Basic.to_string (Wire.encode response))
   done with End_of_file -> ()

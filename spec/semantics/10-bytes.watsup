@@ -1,0 +1,46 @@
+;; Transport decoding and decimal output use mathematical integers only.
+var b : nat
+var i : int
+
+dec $base64_digit(text, nat) : nat
+def $base64_digit(text, b) = b
+  -- if text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[b:1]
+def $base64_digit(text, b) = $base64_digit(text, $(b + 1))
+  -- if text =/= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[b:1]
+
+dec $base64(text) : nat*
+def $base64("") = eps
+def $base64(text) = [$(b_1 * 4 + b_2 / 16)]
+  -- if |text| = 4
+  -- if text[2:2] = "=="
+  -- if b_1 = $base64_digit(text[0:1], 0)
+  -- if b_2 = $base64_digit(text[1:1], 0)
+def $base64(text) = [$(b_1 * 4 + b_2 / 16), $((b_2 \ 16) * 16 + b_3 / 4)]
+  -- if |text| = 4
+  -- if text[2:1] =/= "="
+  -- if text[3:1] = "="
+  -- if b_1 = $base64_digit(text[0:1], 0)
+  -- if b_2 = $base64_digit(text[1:1], 0)
+  -- if b_3 = $base64_digit(text[2:1], 0)
+def $base64(text) = [$(b_1 * 4 + b_2 / 16), $((b_2 \ 16) * 16 + b_3 / 4), $((b_3 \ 4) * 64 + b_4)] ++ $base64(text[4:b_rest])
+  -- if $(|text| >= 4)
+  -- if b_rest = $(|text| - 4)
+  -- if text[3:1] =/= "="
+  -- if b_1 = $base64_digit(text[0:1], 0)
+  -- if b_2 = $base64_digit(text[1:1], 0)
+  -- if b_3 = $base64_digit(text[2:1], 0)
+  -- if b_4 = $base64_digit(text[3:1], 0)
+
+dec $decimal_unsigned(nat) : nat*
+def $decimal_unsigned(b) = [$(48 + b)]
+  -- if $(b < 10)
+def $decimal_unsigned(b) = $decimal_unsigned($(b / 10)) ++ [$(48 + b \ 10)]
+  -- if $(b >= 10)
+
+dec $decimal_integer(int) : nat*
+def $decimal_integer(i) = $decimal_unsigned(b)
+  -- if $(i >= 0)
+  -- if i = b
+def $decimal_integer(i) = [45] ++ $decimal_unsigned(b)
+  -- if $(i < 0)
+  -- if $(-i) = b

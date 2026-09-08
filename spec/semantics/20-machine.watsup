@@ -1,0 +1,151 @@
+;; Request state and pending work are explicit; PHP effects never use host I/O.
+syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat*
+syntax pevent = OUTPUT nat*
+syntax pcompletion = NORMAL | PHPERROR nat* int | STATICERROR text int | UNSUPPORTED text | BUDGET
+syntax ptask = STMT statement | ECHO expression
+syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion }
+syntax pcheck = READY | REJECT pcompletion
+syntax peval = VALUE pvalue | ABRUPT pcompletion
+var S : pstate
+var n : nat
+var z : int
+
+dec $metadata_line(metadataEntry) : int
+def $metadata_line(MstartLine z) = z
+def $metadata_line(metadataEntry) = 0
+  -- otherwise
+
+dec $source_line(metadata) : int
+def $source_line(eps) = 0
+def $source_line(metadataEntry :: metadataEntry_tail*) = z
+  -- if z = $metadata_line(metadataEntry)
+  -- if $(z > 0)
+def $source_line(metadataEntry :: metadataEntry_tail*) = $source_line(metadataEntry_tail*)
+  -- if $($metadata_line(metadataEntry) <= 0)
+
+;; This initial static pass checks supported statement forms before any effects.
+dec $check_expression(expression) : pcheck
+def $check_expression(NScalarString (BYTES text) metadata) = READY
+def $check_expression(NScalarInt (INTEGER z) metadata) = READY
+def $check_expression(NExprConstFetch (NName (BYTES text) metadata_1) metadata_2) = READY
+def $check_expression(expression) = REJECT (UNSUPPORTED "expression")
+  -- otherwise
+
+dec $check_expressions(expression*) : pcheck
+def $check_expressions(eps) = READY
+def $check_expressions(expression :: expression_tail*) = $check_expressions(expression_tail*)
+  -- if $check_expression(expression) = READY
+def $check_expressions(expression :: expression_tail*) = REJECT pcompletion
+  -- if $check_expression(expression) = REJECT pcompletion
+
+dec $check_statements(statement*) : pcheck
+dec $check_statement(statement) : pcheck
+def $check_statement(NStmtNop metadata) = READY
+def $check_statement(NStmtInlineHTML (BYTES text) metadata) = READY
+def $check_statement(NStmtEcho (SEQUENCE expression_tail*) metadata) = $check_expressions(expression_tail*)
+def $check_statement(NStmtExpression expression metadata) = $check_expression(expression)
+def $check_statement(NStmtBlock (SEQUENCE statement_tail*) metadata) = $check_statements(statement_tail*)
+def $check_statement(NStmtBreak ABSENT metadata) = REJECT (STATICERROR "'break' not in the 'loop' or 'switch' context" z)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0)
+def $check_statement(NStmtBreak ABSENT metadata) = REJECT (UNSUPPORTED "missing source line")
+  -- if $($source_line(metadata) <= 0)
+def $check_statement(statement) = REJECT (UNSUPPORTED "statement")
+  -- otherwise
+
+def $check_statements(eps) = READY
+def $check_statements(statement :: statement_tail*) = $check_statements(statement_tail*)
+  -- if $check_statement(statement) = READY
+def $check_statements(statement :: statement_tail*) = REJECT pcompletion
+  -- if $check_statement(statement) = REJECT pcompletion
+
+dec $lower_byte(nat) : nat
+def $lower_byte(n) = $(n + 32)
+  -- if $(n >= 65)
+  -- if $(n <= 90)
+def $lower_byte(n) = n
+  -- otherwise
+
+dec $constant(text, nat*, int) : peval
+def $constant(text, n*, z) = VALUE PNULL
+  -- if ($lower_byte(n))* = [110, 117, 108, 108]
+def $constant(text, n*, z) = VALUE (PBOOL true)
+  -- if ($lower_byte(n))* = [116, 114, 117, 101]
+def $constant(text, n*, z) = VALUE (PBOOL false)
+  -- if ($lower_byte(n))* = [102, 97, 108, 115, 101]
+def $constant(text, n*, z) = ABRUPT (UNSUPPORTED "initial constant")
+  -- if $initial_constant(text)
+  -- if ($lower_byte(n))* =/= [110, 117, 108, 108]
+  -- if ($lower_byte(n))* =/= [116, 114, 117, 101]
+  -- if ($lower_byte(n))* =/= [102, 97, 108, 115, 101]
+def $constant(text, n*, z) = ABRUPT (UNSUPPORTED "missing source line")
+  -- if $(z <= 0)
+  -- if ($lower_byte(n))* =/= [110, 117, 108, 108]
+  -- if ($lower_byte(n))* =/= [116, 114, 117, 101]
+  -- if ($lower_byte(n))* =/= [102, 97, 108, 115, 101]
+  -- if ~$initial_constant(text)
+def $constant(text, n*, z) = ABRUPT (PHPERROR n* z)
+  -- otherwise
+
+dec $evaluate(expression) : peval
+def $evaluate(NScalarString (BYTES text) metadata) = VALUE (PSTRING $base64(text))
+def $evaluate(NScalarInt (INTEGER z) metadata) = VALUE (PINT z)
+def $evaluate(NExprConstFetch (NName (BYTES text) metadata_1) metadata_2) = $constant(text, $base64(text), $source_line(metadata_2))
+def $evaluate(expression) = ABRUPT (UNSUPPORTED "expression")
+  -- otherwise
+
+dec $echo_value(pvalue) : nat*
+def $echo_value(PNULL) = eps
+def $echo_value(PBOOL false) = eps
+def $echo_value(PBOOL true) = [49]
+def $echo_value(PINT z) = $decimal_integer(z)
+def $echo_value(PSTRING n*) = n*
+
+dec $statement_tasks(statement*) : ptask*
+def $statement_tasks(statement_tail*) = (STMT statement_tail)*
+dec $echo_tasks(expression*) : ptask*
+def $echo_tasks(expression_tail*) = (ECHO expression_tail)*
+
+relation PhpStep: pstate ~> pstate
+  hint(input %0)
+rule PhpStep/nop: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtNop metadata)) :: ptask_tail*
+rule PhpStep/block: S ~> S[.TODO = $statement_tasks(statement_tail*) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtBlock (SEQUENCE statement_tail*) metadata)) :: ptask_tail*
+rule PhpStep/inline: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT $base64(text)]]
+  -- if S.TODO = (STMT (NStmtInlineHTML (BYTES text) metadata)) :: ptask_tail*
+rule PhpStep/echo: S ~> S[.TODO = $echo_tasks(expression_tail*) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
+rule PhpStep/echo-value: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT $echo_value(pvalue)]]
+  -- if S.TODO = (ECHO expression) :: ptask_tail*
+  -- if $evaluate(expression) = VALUE pvalue
+rule PhpStep/echo-abrupt: S ~> S[.TODO = eps][.COMPLETION = pcompletion]
+  -- if S.TODO = (ECHO expression) :: ptask_tail*
+  -- if $evaluate(expression) = ABRUPT pcompletion
+rule PhpStep/discard-value: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtExpression expression metadata)) :: ptask_tail*
+  -- if $evaluate(expression) = VALUE pvalue
+rule PhpStep/discard-abrupt: S ~> S[.TODO = eps][.COMPLETION = pcompletion]
+  -- if S.TODO = (STMT (NStmtExpression expression metadata)) :: ptask_tail*
+  -- if $evaluate(expression) = ABRUPT pcompletion
+
+dec $drive(pstate, nat) : pstate
+def $drive(S, n) = S
+  -- if S.TODO = eps
+def $drive(S, 0) = S[.COMPLETION = BUDGET]
+  -- if S.TODO = ptask :: ptask_tail*
+def $drive(S, n) = $drive(S_next, n_next)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $(n > 0)
+  -- if $(n - 1) = n_next
+  -- PhpStep: S ~> S_next
+
+dec $run_statements(statement*, nat) : pstate
+def $run_statements(statement_tail*, n) = $drive({TODO $statement_tasks(statement_tail*), EVENTS eps, COMPLETION NORMAL}, n)
+  -- if $check_statements(statement_tail*) = READY
+def $run_statements(statement_tail*, n) = {TODO eps, EVENTS eps, COMPLETION pcompletion}
+  -- if $check_statements(statement_tail*) = REJECT pcompletion
+
+dec $php_run(program, nat) : pstate
+def $php_run(PROGRAM statement_tail*, n) = $run_statements(statement_tail*, n)
+def $php_run(ENCODEDPROGRAM text_source text_lexer text_bom text_preamble text_original? statement_tail*, n) = $run_statements(statement_tail*, n)
