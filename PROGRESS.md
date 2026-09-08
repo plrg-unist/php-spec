@@ -10,11 +10,11 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | --- | --- | --- |
 | 0a | Core/environment/observation contracts and inventory | Complete — contracts only |
 | 0b | Checked AST runner and original-source differential harness | Complete — bounded bootstrap reviewed (`8b856a27`) |
-| 1a | Pure integers/bytes and result typing | Partial — integer/bitwise/float-cast helpers reviewed; source integration pending |
-| 1b | Pure binary64 and rounding | Partial — add/sub/mul/div helpers reviewed; source integration pending |
+| 1a | Pure integers/bytes and result typing | Partial — helpers reviewed; scalar arithmetic source bridge reviewed |
+| 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context helpers reviewed; power pending |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | In progress — scalar source bridge review, then arrays and foreach |
+| 2b | Arrays, strings, lvalues and sequencing | In progress — array storage, then reference topology and foreach |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
@@ -48,13 +48,16 @@ timeouts and interrupted campaigns never count as validation passes.
 - Independently reviewed/repeated helpers: numeric `4d343899` (1,976 differential
   +8 symbolic cases), integer `7d48a580` (1,025), numeric text `9cc4ecef` (350).
   Formatter `99ebf273` (8,826), context `33e503aa` (921) also independently
-  repeated with stable fingerprints. Reports in `coverage/semantics/`.
+  repeated with stable fingerprints; string operators `81f151d7` (1,400).
+  Reports in `coverage/semantics/`.
 - Reviewed source machine: bootstrap `8b856a27` (8 comparisons +7 negatives),
-  scalar storage `5a083605` (53 comparisons +12 negatives). Stable fingerprints;
+  scalar storage `5a083605` (53 comparisons +12 negatives), numeric bridge
+  `e3fbd6e8` (157 comparisons +16 negatives). Stable acceptance fingerprints;
   current report `coverage/semantics/source.json`, raw observations in
   `coverage/results-semantic-source.jsonl`. Phase0 report is historical.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
   dynamic-write initialization, eliminated discarded CV reads and warning lines.
+  Operator diagnostics use post-child compile lines, distinct from AST/LHS lines.
 - 35 independent source targets in `tests/semantics/conformance` match the oracle;
   only three are currently integrated into semantic tests. Oracle-only evidence is
   `coverage/semantics/conformance-oracle.json`; it never implies implementation.
@@ -69,5 +72,8 @@ timeouts and interrupted campaigns never count as validation passes.
 
 Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfinished
 entries and requires independent review plus source/helper evidence separately.
-Next: review the numeric source bridge and byte-string helpers, then arrays;
+Nine isolated evidence negatives reject source/binary/path drift and missing,
+escaping or unproved evidence; `make test-semantics` includes them.
+Next: review general power and array storage; after power, numeric owns separate
+static/type descriptors and ordered compile diagnostics (no machine-state edits);
 keep frame, callback and lifecycle obligations visible throughout.
