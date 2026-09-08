@@ -217,13 +217,15 @@ rule PhpStep/unset-dynamic-abrupt: S ~> S_name[.TODO = eps]
 dec $drive(pstate, nat) : pstate
 def $drive(S, n) = S
   -- if S.TODO = eps
-def $drive(S, n) = S[.TODO = eps]
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if S.COMPLETION =/= NORMAL
+  -- if S.COMPLETION = NORMAL
+def $drive(S, n) = S
+  -- if S.COMPLETION = BUDGET
+def $drive(S, n) = $prune_allocations($release_temporaries(S))
+  -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
 def $drive(S, 0) = S[.COMPLETION = BUDGET]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
-def $drive(S, n) = $drive(S_next, n_next)
+def $drive(S, n) = $drive($prune_allocations(S_next), n_next)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if $(n > 0)

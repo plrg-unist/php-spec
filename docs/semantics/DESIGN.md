@@ -87,16 +87,33 @@ each allocated node once. Releasing nodes with zero incoming owners cascades;
 unreachable cycles and their outgoing reference owners survive until collection.
 This distinction is observable in singleton-reference array copying before versus
 after `gc_collect_cycles`. The pure graph collection operation has no PHP trigger,
-return-count, destructor or automatic-GC claim. Source pruning and conditional
-separation are not enabled yet; embedded references remain Unsupported.
+return-count, destructor or automatic-GC claim. The source driver now prunes
+after each completed task transition; conditional separation and embedded
+references remain pending.
 
 Captured task operands, array builders and explicit `HELD` values contribute roots;
 delayed variable descriptors borrow their cells. Task transitions move captured
 values and discard consumed results instead of retaining obsolete roots. The root
-projection applies at audited task boundaries: internal helpers currently borrow
-`RESULT`, while `CELL` and `LOCATION` are borrowed identifiers. Before separation,
-those helpers must explicitly hold live RHS values and acquired references across
-mutation/callback boundaries. Constant-pool roots and source-unit/compiled-occurrence
+projection applies at audited task boundaries. Array write/unset helper entry
+consumes the current task and moves its captured path, RHS and scratch inputs
+into `HELD` before reusing `RESULT` for borrowed lookups. Helper return restores
+the previous `HELD`, including on abrupt outcomes. No helper prunes internally;
+future separation must discard borrowed `RESULT` before counting owners, with
+live inputs already held. Scalar/read helpers also have no internal pruning or
+callback/suspension boundary. Adding callbacks requires explicit resumable roots.
+
+`CELL` and `LOCATION` remain borrowed on the admitted variable-only acquisition
+paths. `zend_compile_assign_ref` emits `ZEND_MAKE_REF` for a nondirect target and
+non-CV source; that instruction owns a reference across later target acquisition.
+It must be modeled when those element-reference paths are admitted, not replaced
+by a blanket extra cell owner that changes singleton-wrapper copying.
+
+Terminal throw/error/Unsupported outcomes release pending tasks, scratch values
+and `HELD`, even when the last task already emptied `TODO`; environment roots and
+uncollected cycles survive. This is temporary cleanup in the current machine
+without catch/finally or call frames, not effectful PHP request shutdown or future
+exception unwinding. Budget exhaustion preserves the interrupted state and roots.
+Constant-pool roots and source-unit/compiled-occurrence
 identities are also required before repeated literal execution in loops/calls.
 `tests/semantics/ownership.py` checks graph invariants separately from source claims.
 Source anchors are `i_zval_ptr_dtor`, `zend_array_dup_value`, and `zend_gc_collect_cycles`.

@@ -154,7 +154,20 @@ def $machine_roots(S) = $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}
 
-;; Not called by the source driver yet: internal borrowed RESULT values and RHS
-;; captures must be moved into explicit HELD roots before conditional separation.
+;; Array mutation helpers consume the current task but keep its captured inputs
+;; alive while RESULT is reused for borrowed lookups. Restore the caller's HELD
+;; after the helper returns. Delayed names and locations remain borrowed.
+dec $hold_task_inputs(pstate) : pstate
+def $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD ++ $task_nodes(ptask) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)]
+  -- if S.TODO = ptask :: ptask_tail*
+
+;; Called only on completed task states. Helpers may borrow RESULT internally;
+;; no pruning is permitted there without a separate ownership boundary.
 dec $prune_allocations(pstate) : pstate
 def $prune_allocations(S) = S[.ALLOCATIONS = $heap_prune($heap_graph(S)).NODES]
+
+;; There are no catch/finally frames yet. A terminal abrupt outcome releases
+;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a
+;; tool observation and must retain the interrupted machine state.
+dec $release_temporaries(pstate) : pstate
+def $release_temporaries(S) = S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]

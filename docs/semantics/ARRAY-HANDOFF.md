@@ -15,7 +15,7 @@ source support from the existing ALIAS constructor or pure ownership helpers.
   isolated constant classifier. `37-array-locations`: location acquisition and
   current unconditional shallow path copying. `38-array-unset`: unset contexts.
 - `39-ownership`: allocation graph, root projection, owner counts, RC pruning,
-  separate mathematical cycle collection. No source driver calls pruning yet.
+  separate mathematical cycle collection. Source driver prunes completed tasks.
 - `40-control`: driver and variable/scalar tasks; `41` array literals/reads;
   `42` assignments; `43` unset. Modules are ordered in `modules.json`.
 - `tests/semantics/validate.py`: exact original-source differential observations;
@@ -25,12 +25,15 @@ source support from the existing ALIAS constructor or pure ownership helpers.
 
 ## Next bounded increments
 
-1. Audit roots across internal acquisition/copy helpers. `RESULT` is sometimes a
-   borrowed lookup result, while the pending RHS is held only in helper locals.
-   Move owning captured values into `HELD` before overwriting scratch fields; clear
-   them at consumption. `CELL`/`LOCATION` currently borrow, but byref acquisition
-   may need an owning reference across callbacks. Extend task-root dispatch when
-   adding tasks. Only then enable pruning and conditional COW.
+1. Array write/unset entry now moves captured path/RHS inputs into `HELD` before
+   internal borrowed `RESULT` lookups, then restores earlier `HELD`. The driver
+   prunes after completed tasks and releases terminal abrupt temporaries; budgets
+   retain interrupted roots. No helper currently prunes internally. Before COW
+   owner counts, explicitly clear borrowed `RESULT` and prune with live inputs
+   held. Scalar/read helpers still require resumable roots before callbacks.
+   `CELL`/`LOCATION` remain borrowed for admitted variable-only references;
+   `zend_compile_assign_ref`/`ZEND_MAKE_REF` identify the precise future owned
+   acquisition cases. Extend task-root dispatch whenever adding captured tasks.
 2. Replace unconditional shallow copies by shared-container separation. Copy
    entries without cloning contained reference cells. `zend_array_dup_value`
    unwraps a singleton reference except when its value is the source container

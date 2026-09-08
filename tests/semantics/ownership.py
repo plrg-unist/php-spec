@@ -124,6 +124,50 @@ def main():
     for task, roots in moves:
         cases.append([f'S_next = $ownership_step({initial}[.RESULT = KNOWN (PARRAY 0)][.TODO = [{task}]])',
                       f'$machine_roots(S_next) = {roots}'])
+    # Internal mutation entry transfers each captured input exactly once. Lookup
+    # scratch may then be overwritten without losing a temporary-only RHS/path.
+    held = (initial+'[.RESULT = KNOWN (PARRAY 0)][.BASE = BASE_VALUE (KNOWN (PARRAY 1))]'
+            '[.TODO = [ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PARRAY 2)) 1) 1 false, BINARY_RIGHT ADD (KNOWN (PARRAY 3)) 1]]'
+            '[.HELD = [HCELL 4]]')
+    cases += [[f'S_next = $hold_task_inputs({held})',
+               'S_next.HELD = [HCELL 4, HARRAY 2, HARRAY 0, HARRAY 1]',
+               'S_next.RESULT = KNOWN PNULL', 'S_next.BASE = BASE_VALUE (KNOWN PNULL)',
+               '$machine_roots(S_next) = [HARRAY 3, HCELL 4, HARRAY 2, HARRAY 0, HARRAY 1]']]
+    live = (initial+'[.STORE = [DEFINED (PARRAY 0)]]'
+            '[.ARRAYS = [{ITEMS eps, NEXT 0}]]'
+            '[.ENV = [BIND ([97]) 0]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]')
+    for captured in (False, True):
+        operand = 'KNOWN (PARRAY 0)' if captured else 'VARIABLE ([97]) 1'
+        assignment = (live+f'[.RESULT = {operand}]'
+                      '[.HELD = [HCELL 0]][.TODO = [ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 0)) 1) 1 false]]')
+        cases.append([f'S_next = $drive({assignment}, 1)',
+                      'S_next.COMPLETION = NORMAL', 'S_next.HELD = [HCELL 0]',
+                      '$heap_valid($heap_graph(S_next))',
+                      f'S_next.RESULT = KNOWN (PARRAY {0 if captured else 1})'])
+    for completion in ('THROWN "Error" eps 1', 'UNSUPPORTED "test boundary"'):
+        # Abrupt handlers may already have emptied TODO; cleanup still applies.
+        abrupt = (live+f'[.COMPLETION = {completion}][.ENV = eps]'
+                  '[.RESULT = KNOWN (PARRAY 0)][.HELD = [HCELL 0]]')
+        cases.append([f'S_next = $drive({abrupt}, 1)',
+                      'S_next.ALLOCATIONS = eps', 'S_next.HELD = eps',
+                      'S_next.RESULT = KNOWN PNULL', '$heap_valid($heap_graph(S_next))'])
+    for value, line in (('PINT 1', 1), ('PBOOL false', 0)):
+        abrupt_write = (live+f'[.STORE = [DEFINED ({value})]][.RESULT = KNOWN (PARRAY 0)]'
+                        f'[.HELD = [HCELL 0]][.TODO = [ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 0)) {line}) {line} false]]')
+        cases.append([f'S_next = $ownership_step({abrupt_write})',
+                      'S_next.COMPLETION =/= NORMAL', 'S_next.HELD = [HCELL 0]',
+                      'S_next.TODO = eps'])
+    for key in ('PINT 0', 'PARRAY 0'):
+        unset = (live+f'[.BASE = BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN ({key})) 1]'
+                 '[.HELD = [HCELL 0]][.TODO = [UNSET_ARRAY]]')
+        cases.append([f'S_next = $ownership_step({unset})',
+                      'S_next.HELD = [HCELL 0]', 'S_next.TODO = eps',
+                      'S_next.RESULT = KNOWN PNULL', 'S_next.BASE = BASE_VALUE (KNOWN PNULL)'])
+    cases += [[f'$drive({cyclic}[.COMPLETION = UNSUPPORTED "test cycle"], 1).ALLOCATIONS = [HCELL 1, HARRAY 0]'],
+              [f'$drive({live}[.ENV = eps][.RESULT = KNOWN (PARRAY 0)][.TODO = [DISCARD]], 1).ALLOCATIONS = eps'],
+              [f'S_next = $drive({live}[.TODO = [DISCARD]][.HELD = [HCELL 0]], 0)',
+               'S_next.COMPLETION = BUDGET', 'S_next.TODO = [DISCARD]',
+               'S_next.HELD = [HCELL 0]', 'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]']]
     declarations = ['dec $ownership_step(pstate) : pstate\ndef $ownership_step(S) = S_next\n  -- PhpStep: S ~> S_next\n']
     with tempfile.TemporaryDirectory(prefix='ownership-', dir=ROOT/'.tools') as tmp:
         for start in range(0,len(cases),64):
