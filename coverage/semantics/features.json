@@ -48,7 +48,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent element-source/reference-literal review 9a7bde01: 469 exact source comparisons and 25 negatives; 617 graph plus 87 boundary cases (5389 assertions), 40 topology and 26 array-prepass source probes passed. Writable array sources separate the path then borrow/promote its final reference cell; nonliteral target and non-CV source hold a MAKE_REF owner through target acquisition. Array constant prepass visits every value then key, rejecting append reads at ambient compiler line while stopping at assignment/variable boundaries. Element reference targets, string-offset reference behavior, callbacks and source GC remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -121,13 +121,20 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent ordinary literals/read review eb48f793:251 source observations +22 negatives; writable locations, embedded references/unpack and COW topology pending."
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ]
     },
     {
       "node": "Expr_ArrayDimFetch",
@@ -141,13 +148,20 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent ordinary literals/read review eb48f793:251 source observations +22 negatives; writable locations, embedded references/unpack and COW topology pending."
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ]
     },
     {
       "node": "Expr_ArrowFunction",
@@ -345,14 +359,21 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/conformance/reference-assignment-result.php"
       ],
-      "review": "Independent reference-result correction 751fbcff: 388 exact source comparisons and 25 negatives, 617 graph plus 34 boundary cases (5146 assertions), and 26 expanded reviewer source probes passed. Owning reference operands preserve the captured cell across variable rebinding and dereference at consumption. Composite reference targets, embedded references, frames, properties and callbacks remain pending."
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ]
     },
     {
       "node": "Expr_BinaryOp_BitwiseAnd",
@@ -3313,9 +3334,14 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/40-control.watsup",
-        "spec/semantics/39-ownership.watsup"
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
@@ -3329,7 +3355,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent CV correction eea66b2d: 439 exact source comparisons and 25 negatives; 617 graph plus 77 boundary cases (5335 assertions) and 50 expanded source probes passed. Direct CV source initialization now follows delayed reference-target name consumption; literal FLOAT names use CV delayed reads, while unary/constants retain captured behavior. All nine timing witnesses are mandatory. Element places, frames, properties and callbacks remain pending; raw historical disagreements and accepted resolution remain in reference-timing-disagreement.json. Element RHS acquisition and MAKE_REF ownership subsequently reviewed in 9a7bde01; element targets remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php",
@@ -3548,7 +3574,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent element-source/reference-literal review 9a7bde01: 469 exact source comparisons and 25 negatives; 617 graph plus 87 boundary cases (5389 assertions), 40 topology and 26 array-prepass source probes passed. Writable array sources separate the path then borrow/promote its final reference cell; nonliteral target and non-CV source hold a MAKE_REF owner through target acquisition. Array constant prepass visits every value then key, rejecting append reads at ambient compiler line while stopping at assignment/variable boundaries. Element reference targets, string-offset reference behavior, callbacks and source GC remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3587,7 +3613,7 @@
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": "Independent element-source/reference-literal review 9a7bde01: 469 exact source comparisons and 25 negatives; 617 graph plus 87 boundary cases (5389 assertions), 40 topology and 26 array-prepass source probes passed. Writable array sources separate the path then borrow/promote its final reference cell; nonliteral target and non-CV source hold a MAKE_REF owner through target acquisition. Array constant prepass visits every value then key, rejecting append reads at ambient compiler line while stopping at assignment/variable boundaries. Element reference targets, string-offset reference behavior, callbacks and source GC remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/destructure-reference.php",
@@ -3640,9 +3666,13 @@
       "implementation": [
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/42-array-write-control.watsup",
-        "spec/semantics/36-arrays.watsup"
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
@@ -3650,7 +3680,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending. Element RHS paths and their alias/COW behavior subsequently reviewed in 9a7bde01; element reference targets remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
@@ -3767,9 +3797,13 @@
       "implementation": [
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/42-array-write-control.watsup",
-        "spec/semantics/36-arrays.watsup"
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
@@ -3777,7 +3811,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent source review through 4b954dfa: 421 exact comparisons and 25 negatives, plus ownership helper and expanded literal-reference probes. Nested writes and cyclic graphs support admitted variable-source literal references with reviewed COW and retained uncollected owners. Element-reference places, source collection, callbacks and broader writable contexts remain pending. Element RHS paths and their alias/COW behavior subsequently reviewed in 9a7bde01; element reference targets remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-self-append.php",
         "tests/semantics/conformance/array-self-index.php",

@@ -101,3 +101,19 @@ seen-symbol key, while `zend_compile_const_decl` registers the original spelling
 The three `constant-import-*` [oracle targets](../../tests/semantics/conformance/cases.json)
 retain this case/order distinction. It must follow the pin during compiler-context
 integration; no intentional divergence or source-semantic coverage is claimed.
+
+## Compiler-context import lines: specification defect under correction
+
+Multiline imports use the pinned compiler AST's name anchor rather than the
+PHP-Parser statement start. `use` followed by a newline and `A,A;` emits both
+no-effect warnings and its duplicate-alias fatal on line 2; the draft helper
+reported line 1. Function/constant imports and group-use prefixes reproduce
+the same distinction. An independently checked namespace/group witness reports
+the fatal on line 4 in PHP and line 3 in the helper.
+
+[Five raw disagreements](../../coverage/semantics/compiler-context-line-disagreement.json)
+retain original source bytes, parsed nodes, exact oracle streams/status and the
+helper's diagnostic events under its recorded implementation fingerprint.
+Correct the checked compiler location before accepting this helper. Missing
+location metadata needs an explicit boundary; it cannot justify guessing a line.
+No intentional divergence is selected, and no source activation is claimed.

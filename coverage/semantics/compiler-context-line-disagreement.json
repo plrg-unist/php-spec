@@ -1,0 +1,1105 @@
+{
+  "scope": "Independent original-source compiler oracle versus namespace/import helper diagnostic events; source runtime activation is not claimed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "implementation_fingerprints": {
+    "spec/php.watsup": "2e186460cd8e199406f13b6e0ff55861e5dd453bc6c0f816338f1a52637db85f",
+    "spec/semantics/11-source-occurrences.watsup": "dee3b76b313751b631c8ad48ea06e2a25e1b375b167262db4f0d85a879dc025f",
+    "spec/semantics/10-bytes.watsup": "7a01fb92f9f93c0508dbc99579e8e3e44e2637afc115ded1a2390e069f1e2a1b",
+    "spec/semantics/16-static-types.watsup": "f5eaf8d1e2d0cceabe9159a098582e78e5353df9ac735f9d5e8ac4900e258f19",
+    "spec/semantics/21-source-context.watsup": "042788bd4132514150df45e301866ba8bbbab589a120f4dda4e8697bbc0b0ad6",
+    "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "_build/default/adapter/main.exe": "5d0da111c9a3610231f4d7e7fadd042e64b8894b2c93be73bad9524bf9c26c6e",
+    ".tools/review3-source-context.py": "68f8341bd006b9595def489f3bcba7f6f23ef6f94d10262540b4c3d2b9716c77"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "frontend": {
+        "ok": true,
+        "diagnostics": [],
+        "accepted": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Namespace",
+              "fields": [
+                {
+                  "node": "Name",
+                  "fields": [
+                    {
+                      "bytes": "Tg=="
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "16"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "3"
+                    },
+                    "startFilePos": {
+                      "int": "16"
+                    },
+                    "startLine": {
+                      "int": "2"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                },
+                [
+                  {
+                    "node": "Stmt_GroupUse",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "24"
+                          },
+                          "endLine": {
+                            "int": "4"
+                          },
+                          "endTokenPos": {
+                            "int": "9"
+                          },
+                          "startFilePos": {
+                            "int": "24"
+                          },
+                          "startLine": {
+                            "int": "4"
+                          },
+                          "startTokenPos": {
+                            "int": "9"
+                          }
+                        }
+                      },
+                      [
+                        {
+                          "node": "UseItem",
+                          "fields": [
+                            {
+                              "int": "1"
+                            },
+                            {
+                              "node": "Name",
+                              "fields": [
+                                {
+                                  "bytes": "Qg=="
+                                }
+                              ],
+                              "meta": {
+                                "endFilePos": {
+                                  "int": "27"
+                                },
+                                "endLine": {
+                                  "int": "4"
+                                },
+                                "endTokenPos": {
+                                  "int": "12"
+                                },
+                                "startFilePos": {
+                                  "int": "27"
+                                },
+                                "startLine": {
+                                  "int": "4"
+                                },
+                                "startTokenPos": {
+                                  "int": "12"
+                                }
+                              }
+                            },
+                            {
+                              "node": "Identifier",
+                              "fields": [
+                                {
+                                  "bytes": "WA=="
+                                }
+                              ],
+                              "meta": {
+                                "endFilePos": {
+                                  "int": "32"
+                                },
+                                "endLine": {
+                                  "int": "4"
+                                },
+                                "endTokenPos": {
+                                  "int": "16"
+                                },
+                                "startFilePos": {
+                                  "int": "32"
+                                },
+                                "startLine": {
+                                  "int": "4"
+                                },
+                                "startTokenPos": {
+                                  "int": "16"
+                                }
+                              }
+                            }
+                          ],
+                          "meta": {
+                            "endFilePos": {
+                              "int": "32"
+                            },
+                            "endLine": {
+                              "int": "4"
+                            },
+                            "endTokenPos": {
+                              "int": "16"
+                            },
+                            "startFilePos": {
+                              "int": "27"
+                            },
+                            "startLine": {
+                              "int": "4"
+                            },
+                            "startTokenPos": {
+                              "int": "12"
+                            }
+                          }
+                        },
+                        {
+                          "node": "UseItem",
+                          "fields": [
+                            {
+                              "int": "1"
+                            },
+                            {
+                              "node": "Name",
+                              "fields": [
+                                {
+                                  "bytes": "Qw=="
+                                }
+                              ],
+                              "meta": {
+                                "endFilePos": {
+                                  "int": "35"
+                                },
+                                "endLine": {
+                                  "int": "5"
+                                },
+                                "endTokenPos": {
+                                  "int": "19"
+                                },
+                                "startFilePos": {
+                                  "int": "35"
+                                },
+                                "startLine": {
+                                  "int": "5"
+                                },
+                                "startTokenPos": {
+                                  "int": "19"
+                                }
+                              }
+                            },
+                            {
+                              "node": "Identifier",
+                              "fields": [
+                                {
+                                  "bytes": "WA=="
+                                }
+                              ],
+                              "meta": {
+                                "endFilePos": {
+                                  "int": "40"
+                                },
+                                "endLine": {
+                                  "int": "5"
+                                },
+                                "endTokenPos": {
+                                  "int": "23"
+                                },
+                                "startFilePos": {
+                                  "int": "40"
+                                },
+                                "startLine": {
+                                  "int": "5"
+                                },
+                                "startTokenPos": {
+                                  "int": "23"
+                                }
+                              }
+                            }
+                          ],
+                          "meta": {
+                            "endFilePos": {
+                              "int": "40"
+                            },
+                            "endLine": {
+                              "int": "5"
+                            },
+                            "endTokenPos": {
+                              "int": "23"
+                            },
+                            "startFilePos": {
+                              "int": "35"
+                            },
+                            "startLine": {
+                              "int": "5"
+                            },
+                            "startTokenPos": {
+                              "int": "19"
+                            }
+                          }
+                        }
+                      ]
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "42"
+                      },
+                      "endLine": {
+                        "int": "5"
+                      },
+                      "endTokenPos": {
+                        "int": "25"
+                      },
+                      "startFilePos": {
+                        "int": "20"
+                      },
+                      "startLine": {
+                        "int": "3"
+                      },
+                      "startTokenPos": {
+                        "int": "7"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "44"
+                },
+                "endLine": {
+                  "int": "5"
+                },
+                "endTokenPos": {
+                  "int": "27"
+                },
+                "kind": {
+                  "int": "2"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "token_comments": []
+      },
+      "oracle": {
+        "stdout": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcGswN3NiaXliL2lucHV0LnBocAo=",
+        "stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgQVxDIGFzIFggYmVjYXVzZSB0aGUgbmFtZSBpcyBhbHJlYWR5IGluIHVzZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wazA3c2JpeWIvaW5wdXQucGhwIG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+        "exit_status": 255
+      },
+      "helper": {
+        "stdout": "[\n  (fatal, [\n      67,\n      97,\n      110,\n      110,\n      111,\n      116,\n      32,\n      117,\n      115,\n      101,\n      32,\n      65,\n      92,\n      67,\n      32,\n      97,\n      115,\n      32,\n      88,\n      32,\n      98,\n      101,\n      99,\n      97,\n      117,\n      115,\n      101,\n      32,\n      116,\n      104,\n      101,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      105,\n      115,\n      32,\n      97,\n      108,\n      114,\n      101,\n      97,\n      100,\n      121,\n      32,\n      105,\n      110,\n      32,\n      117,\n      115,\n      101\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 3)\n]\n",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "source_base64": "PD9waHAgbmFtZXNwYWNlCk4KeyB1c2UKQVx7QiBhcyBYLApDIGFzIFh9OyB9",
+      "source_sha256": "a8290caf6dde0bb9dd3f02becdadff58b9b9e4a28f099839167e5b9a329975ae",
+      "classification": "compiler-helper-diagnostic-line-disagreement"
+    },
+    {
+      "frontend": {
+        "ok": true,
+        "diagnostics": [],
+        "accepted": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Use",
+              "fields": [
+                {
+                  "int": "1"
+                },
+                [
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "10"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "3"
+                          },
+                          "startFilePos": {
+                            "int": "10"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "3"
+                          }
+                        }
+                      },
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "10"
+                      },
+                      "endLine": {
+                        "int": "2"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "10"
+                      },
+                      "startLine": {
+                        "int": "2"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  },
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "13"
+                          },
+                          "endLine": {
+                            "int": "3"
+                          },
+                          "endTokenPos": {
+                            "int": "6"
+                          },
+                          "startFilePos": {
+                            "int": "13"
+                          },
+                          "startLine": {
+                            "int": "3"
+                          },
+                          "startTokenPos": {
+                            "int": "6"
+                          }
+                        }
+                      },
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "13"
+                      },
+                      "endLine": {
+                        "int": "3"
+                      },
+                      "endTokenPos": {
+                        "int": "6"
+                      },
+                      "startFilePos": {
+                        "int": "13"
+                      },
+                      "startLine": {
+                        "int": "3"
+                      },
+                      "startTokenPos": {
+                        "int": "6"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "14"
+                },
+                "endLine": {
+                  "int": "3"
+                },
+                "endTokenPos": {
+                  "int": "7"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "token_comments": []
+      },
+      "oracle": {
+        "stdout": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcGswN3NiaXliL2lucHV0LnBocAo=",
+        "stderr": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wazA3c2JpeWIvaW5wdXQucGhwIG9uIGxpbmUgMgpXYXJuaW5nOiBUaGUgdXNlIHN0YXRlbWVudCB3aXRoIG5vbi1jb21wb3VuZCBuYW1lICdBJyBoYXMgbm8gZWZmZWN0IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBrMDdzYml5Yi9pbnB1dC5waHAgb24gbGluZSAyCkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIEEgYXMgQSBiZWNhdXNlIHRoZSBuYW1lIGlzIGFscmVhZHkgaW4gdXNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBrMDdzYml5Yi9pbnB1dC5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+        "exit_status": 255
+      },
+      "helper": {
+        "stdout": "[\n  (warning, [\n      84,\n      104,\n      101,\n      32,\n      117,\n      115,\n      101,\n      32,\n      115,\n      116,\n      97,\n      116,\n      101,\n      109,\n      101,\n      110,\n      116,\n      32,\n      119,\n      105,\n      116,\n      104,\n      32,\n      110,\n      111,\n      110,\n      45,\n      99,\n      111,\n      109,\n      112,\n      111,\n      117,\n      110,\n      100,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      39,\n      65,\n      39,\n      32,\n      104,\n      97,\n      115,\n      32,\n      110,\n      111,\n      32,\n      101,\n      102,\n      102,\n      101,\n      99,\n      116\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1),\n  (warning, [\n      84,\n      104,\n      101,\n      32,\n      117,\n      115,\n      101,\n      32,\n      115,\n      116,\n      97,\n      116,\n      101,\n      109,\n      101,\n      110,\n      116,\n      32,\n      119,\n      105,\n      116,\n      104,\n      32,\n      110,\n      111,\n      110,\n      45,\n      99,\n      111,\n      109,\n      112,\n      111,\n      117,\n      110,\n      100,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      39,\n      65,\n      39,\n      32,\n      104,\n      97,\n      115,\n      32,\n      110,\n      111,\n      32,\n      101,\n      102,\n      102,\n      101,\n      99,\n      116\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1),\n  (fatal, [\n      67,\n      97,\n      110,\n      110,\n      111,\n      116,\n      32,\n      117,\n      115,\n      101,\n      32,\n      65,\n      32,\n      97,\n      115,\n      32,\n      65,\n      32,\n      98,\n      101,\n      99,\n      97,\n      117,\n      115,\n      101,\n      32,\n      116,\n      104,\n      101,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      105,\n      115,\n      32,\n      97,\n      108,\n      114,\n      101,\n      97,\n      100,\n      121,\n      32,\n      105,\n      110,\n      32,\n      117,\n      115,\n      101\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1)\n]\n",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "source_base64": "PD9waHAgdXNlCkEsCkE7",
+      "source_sha256": "c634143e825813c49d6ea4bf09eda4338cc05b95707e3ce9024382986fb25696",
+      "classification": "compiler-helper-diagnostic-line-disagreement"
+    },
+    {
+      "frontend": {
+        "ok": true,
+        "diagnostics": [],
+        "accepted": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_GroupUse",
+              "fields": [
+                {
+                  "int": "0"
+                },
+                {
+                  "node": "Name",
+                  "fields": [
+                    {
+                      "bytes": "QQ=="
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "10"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "3"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "2"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                },
+                [
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "1"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "Qg=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "13"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "6"
+                          },
+                          "startFilePos": {
+                            "int": "13"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "6"
+                          }
+                        }
+                      },
+                      {
+                        "node": "Identifier",
+                        "fields": [
+                          {
+                            "bytes": "WA=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "18"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "10"
+                          },
+                          "startFilePos": {
+                            "int": "18"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "10"
+                          }
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "18"
+                      },
+                      "endLine": {
+                        "int": "2"
+                      },
+                      "endTokenPos": {
+                        "int": "10"
+                      },
+                      "startFilePos": {
+                        "int": "13"
+                      },
+                      "startLine": {
+                        "int": "2"
+                      },
+                      "startTokenPos": {
+                        "int": "6"
+                      }
+                    }
+                  },
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "1"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "Qw=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "20"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "12"
+                          },
+                          "startFilePos": {
+                            "int": "20"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "12"
+                          }
+                        }
+                      },
+                      {
+                        "node": "Identifier",
+                        "fields": [
+                          {
+                            "bytes": "WA=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "25"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "16"
+                          },
+                          "startFilePos": {
+                            "int": "25"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "16"
+                          }
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "25"
+                      },
+                      "endLine": {
+                        "int": "2"
+                      },
+                      "endTokenPos": {
+                        "int": "16"
+                      },
+                      "startFilePos": {
+                        "int": "20"
+                      },
+                      "startLine": {
+                        "int": "2"
+                      },
+                      "startTokenPos": {
+                        "int": "12"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "27"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "18"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "token_comments": []
+      },
+      "oracle": {
+        "stdout": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcGswN3NiaXliL2lucHV0LnBocAo=",
+        "stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgQVxDIGFzIFggYmVjYXVzZSB0aGUgbmFtZSBpcyBhbHJlYWR5IGluIHVzZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wazA3c2JpeWIvaW5wdXQucGhwIG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+        "exit_status": 255
+      },
+      "helper": {
+        "stdout": "[\n  (fatal, [\n      67,\n      97,\n      110,\n      110,\n      111,\n      116,\n      32,\n      117,\n      115,\n      101,\n      32,\n      65,\n      92,\n      67,\n      32,\n      97,\n      115,\n      32,\n      88,\n      32,\n      98,\n      101,\n      99,\n      97,\n      117,\n      115,\n      101,\n      32,\n      116,\n      104,\n      101,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      105,\n      115,\n      32,\n      97,\n      108,\n      114,\n      101,\n      97,\n      100,\n      121,\n      32,\n      105,\n      110,\n      32,\n      117,\n      115,\n      101\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1)\n]\n",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "source_base64": "PD9waHAgdXNlCkFce0IgYXMgWCxDIGFzIFh9Ow==",
+      "source_sha256": "743ad13852f9b79bb3d06956c0f476a1a617a966f488e969206b3e88d7d5bf4e",
+      "classification": "compiler-helper-diagnostic-line-disagreement"
+    },
+    {
+      "frontend": {
+        "ok": true,
+        "diagnostics": [],
+        "accepted": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Use",
+              "fields": [
+                {
+                  "int": "2"
+                },
+                [
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "19"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "5"
+                          },
+                          "startFilePos": {
+                            "int": "19"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "5"
+                          }
+                        }
+                      },
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "19"
+                      },
+                      "endLine": {
+                        "int": "2"
+                      },
+                      "endTokenPos": {
+                        "int": "5"
+                      },
+                      "startFilePos": {
+                        "int": "19"
+                      },
+                      "startLine": {
+                        "int": "2"
+                      },
+                      "startTokenPos": {
+                        "int": "5"
+                      }
+                    }
+                  },
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "22"
+                          },
+                          "endLine": {
+                            "int": "3"
+                          },
+                          "endTokenPos": {
+                            "int": "8"
+                          },
+                          "startFilePos": {
+                            "int": "22"
+                          },
+                          "startLine": {
+                            "int": "3"
+                          },
+                          "startTokenPos": {
+                            "int": "8"
+                          }
+                        }
+                      },
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "22"
+                      },
+                      "endLine": {
+                        "int": "3"
+                      },
+                      "endTokenPos": {
+                        "int": "8"
+                      },
+                      "startFilePos": {
+                        "int": "22"
+                      },
+                      "startLine": {
+                        "int": "3"
+                      },
+                      "startTokenPos": {
+                        "int": "8"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "23"
+                },
+                "endLine": {
+                  "int": "3"
+                },
+                "endTokenPos": {
+                  "int": "9"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "token_comments": []
+      },
+      "oracle": {
+        "stdout": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcGswN3NiaXliL2lucHV0LnBocAo=",
+        "stderr": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wazA3c2JpeWIvaW5wdXQucGhwIG9uIGxpbmUgMgpXYXJuaW5nOiBUaGUgdXNlIHN0YXRlbWVudCB3aXRoIG5vbi1jb21wb3VuZCBuYW1lICdBJyBoYXMgbm8gZWZmZWN0IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBrMDdzYml5Yi9pbnB1dC5waHAgb24gbGluZSAyCkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGZ1bmN0aW9uIEEgYXMgQSBiZWNhdXNlIHRoZSBuYW1lIGlzIGFscmVhZHkgaW4gdXNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBrMDdzYml5Yi9pbnB1dC5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+        "exit_status": 255
+      },
+      "helper": {
+        "stdout": "[\n  (warning, [\n      84,\n      104,\n      101,\n      32,\n      117,\n      115,\n      101,\n      32,\n      115,\n      116,\n      97,\n      116,\n      101,\n      109,\n      101,\n      110,\n      116,\n      32,\n      119,\n      105,\n      116,\n      104,\n      32,\n      110,\n      111,\n      110,\n      45,\n      99,\n      111,\n      109,\n      112,\n      111,\n      117,\n      110,\n      100,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      39,\n      65,\n      39,\n      32,\n      104,\n      97,\n      115,\n      32,\n      110,\n      111,\n      32,\n      101,\n      102,\n      102,\n      101,\n      99,\n      116\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1),\n  (warning, [\n      84,\n      104,\n      101,\n      32,\n      117,\n      115,\n      101,\n      32,\n      115,\n      116,\n      97,\n      116,\n      101,\n      109,\n      101,\n      110,\n      116,\n      32,\n      119,\n      105,\n      116,\n      104,\n      32,\n      110,\n      111,\n      110,\n      45,\n      99,\n      111,\n      109,\n      112,\n      111,\n      117,\n      110,\n      100,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      39,\n      65,\n      39,\n      32,\n      104,\n      97,\n      115,\n      32,\n      110,\n      111,\n      32,\n      101,\n      102,\n      102,\n      101,\n      99,\n      116\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1),\n  (fatal, [\n      67,\n      97,\n      110,\n      110,\n      111,\n      116,\n      32,\n      117,\n      115,\n      101,\n      32,\n      102,\n      117,\n      110,\n      99,\n      116,\n      105,\n      111,\n      110,\n      32,\n      65,\n      32,\n      97,\n      115,\n      32,\n      65,\n      32,\n      98,\n      101,\n      99,\n      97,\n      117,\n      115,\n      101,\n      32,\n      116,\n      104,\n      101,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      105,\n      115,\n      32,\n      97,\n      108,\n      114,\n      101,\n      97,\n      100,\n      121,\n      32,\n      105,\n      110,\n      32,\n      117,\n      115,\n      101\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1)\n]\n",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uCkEsCkE7",
+      "source_sha256": "20fbb7c2f7dbdabba47d919bb307216ec2a967b55eca4796023fae86f60f542f",
+      "classification": "compiler-helper-diagnostic-line-disagreement"
+    },
+    {
+      "frontend": {
+        "ok": true,
+        "diagnostics": [],
+        "accepted": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Use",
+              "fields": [
+                {
+                  "int": "3"
+                },
+                [
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "16"
+                          },
+                          "endLine": {
+                            "int": "2"
+                          },
+                          "endTokenPos": {
+                            "int": "5"
+                          },
+                          "startFilePos": {
+                            "int": "16"
+                          },
+                          "startLine": {
+                            "int": "2"
+                          },
+                          "startTokenPos": {
+                            "int": "5"
+                          }
+                        }
+                      },
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "16"
+                      },
+                      "endLine": {
+                        "int": "2"
+                      },
+                      "endTokenPos": {
+                        "int": "5"
+                      },
+                      "startFilePos": {
+                        "int": "16"
+                      },
+                      "startLine": {
+                        "int": "2"
+                      },
+                      "startTokenPos": {
+                        "int": "5"
+                      }
+                    }
+                  },
+                  {
+                    "node": "UseItem",
+                    "fields": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "node": "Name",
+                        "fields": [
+                          {
+                            "bytes": "QQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "19"
+                          },
+                          "endLine": {
+                            "int": "3"
+                          },
+                          "endTokenPos": {
+                            "int": "8"
+                          },
+                          "startFilePos": {
+                            "int": "19"
+                          },
+                          "startLine": {
+                            "int": "3"
+                          },
+                          "startTokenPos": {
+                            "int": "8"
+                          }
+                        }
+                      },
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "19"
+                      },
+                      "endLine": {
+                        "int": "3"
+                      },
+                      "endTokenPos": {
+                        "int": "8"
+                      },
+                      "startFilePos": {
+                        "int": "19"
+                      },
+                      "startLine": {
+                        "int": "3"
+                      },
+                      "startTokenPos": {
+                        "int": "8"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "20"
+                },
+                "endLine": {
+                  "int": "3"
+                },
+                "endTokenPos": {
+                  "int": "9"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "token_comments": []
+      },
+      "oracle": {
+        "stdout": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcGswN3NiaXliL2lucHV0LnBocAo=",
+        "stderr": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wazA3c2JpeWIvaW5wdXQucGhwIG9uIGxpbmUgMgpXYXJuaW5nOiBUaGUgdXNlIHN0YXRlbWVudCB3aXRoIG5vbi1jb21wb3VuZCBuYW1lICdBJyBoYXMgbm8gZWZmZWN0IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBrMDdzYml5Yi9pbnB1dC5waHAgb24gbGluZSAyCkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGNvbnN0IEEgYXMgQSBiZWNhdXNlIHRoZSBuYW1lIGlzIGFscmVhZHkgaW4gdXNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBrMDdzYml5Yi9pbnB1dC5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+        "exit_status": 255
+      },
+      "helper": {
+        "stdout": "[\n  (warning, [\n      84,\n      104,\n      101,\n      32,\n      117,\n      115,\n      101,\n      32,\n      115,\n      116,\n      97,\n      116,\n      101,\n      109,\n      101,\n      110,\n      116,\n      32,\n      119,\n      105,\n      116,\n      104,\n      32,\n      110,\n      111,\n      110,\n      45,\n      99,\n      111,\n      109,\n      112,\n      111,\n      117,\n      110,\n      100,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      39,\n      65,\n      39,\n      32,\n      104,\n      97,\n      115,\n      32,\n      110,\n      111,\n      32,\n      101,\n      102,\n      102,\n      101,\n      99,\n      116\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1),\n  (warning, [\n      84,\n      104,\n      101,\n      32,\n      117,\n      115,\n      101,\n      32,\n      115,\n      116,\n      97,\n      116,\n      101,\n      109,\n      101,\n      110,\n      116,\n      32,\n      119,\n      105,\n      116,\n      104,\n      32,\n      110,\n      111,\n      110,\n      45,\n      99,\n      111,\n      109,\n      112,\n      111,\n      117,\n      110,\n      100,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      39,\n      65,\n      39,\n      32,\n      104,\n      97,\n      115,\n      32,\n      110,\n      111,\n      32,\n      101,\n      102,\n      102,\n      101,\n      99,\n      116\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1),\n  (fatal, [\n      67,\n      97,\n      110,\n      110,\n      111,\n      116,\n      32,\n      117,\n      115,\n      101,\n      32,\n      99,\n      111,\n      110,\n      115,\n      116,\n      32,\n      65,\n      32,\n      97,\n      115,\n      32,\n      65,\n      32,\n      98,\n      101,\n      99,\n      97,\n      117,\n      115,\n      101,\n      32,\n      116,\n      104,\n      101,\n      32,\n      110,\n      97,\n      109,\n      101,\n      32,\n      105,\n      115,\n      32,\n      97,\n      108,\n      114,\n      101,\n      97,\n      100,\n      121,\n      32,\n      105,\n      110,\n      32,\n      117,\n      115,\n      101\n    ], [\n      47,\n      104,\n      111,\n      109,\n      101,\n      47,\n      117,\n      115,\n      101,\n      114,\n      47,\n      119,\n      111,\n      114,\n      107,\n      115,\n      112,\n      97,\n      99,\n      101,\n      47,\n      112,\n      104,\n      112,\n      45,\n      115,\n      112,\n      101,\n      99,\n      47,\n      46,\n      116,\n      111,\n      111,\n      108,\n      115,\n      47,\n      116,\n      109,\n      112,\n      107,\n      48,\n      55,\n      115,\n      98,\n      105,\n      121,\n      98,\n      47,\n      105,\n      110,\n      112,\n      117,\n      116,\n      46,\n      112,\n      104,\n      112\n    ], 1)\n]\n",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "source_base64": "PD9waHAgdXNlIGNvbnN0CkEsCkE7",
+      "source_sha256": "40ed5dab2e736a7b4321dbb6f986b67a930aa185670e884813913fc880b600ab",
+      "classification": "compiler-helper-diagnostic-line-disagreement"
+    }
+  ],
+  "resolution": null
+}

@@ -14,7 +14,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/unset and variable-source literal refs reviewed; element refs/foreach pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/unset and variable/element reference sources and targets reviewed; string offsets/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Partial — local types/signatures reviewed; calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Partial — local class headers reviewed; linking/activation pending |
@@ -34,7 +34,7 @@ timeouts and interrupted campaigns never count as validation passes.
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
   pruning, owning reference results, COW/union and variable-source literal refs
   `4b954dfa` and CV timing/classification repair `eea66b2d` are reviewed.
-  Element-reference sources/literal values `9a7bde01` are reviewed; targets next.
+  Element-reference targets `f56e12bc` are reviewed; scalar/string dimensions next.
 - Static worker: structural source-unit occurrences `898f0152` reviewed; next
   namespace/import compiler contexts and ordered compile-task barriers, then
   declaration descriptors before further linking.
@@ -54,12 +54,13 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `9a7bde01`: independently repeated **469 exact source comparisons
-  +25 negatives**; variable/element-source reference literals, COW/union and
-  owning reference results included. **617 graph +87 boundary cases**, 5,389
-  assertions, plus 40 topology and 26 array-prepass source probes passed.
-  Element-reference targets, string offsets, nonarray reads and source GC remain
-  explicitly pending.
+- Source machine `f56e12bc`: independently repeated **507 exact source comparisons
+  +25 negatives**; variable/element references, literal entries, COW/union and
+  owning results included. **617 graph +96 boundary cases**, 5,434 assertions,
+  plus 57 independent target topology/timing probes passed. Element assignment
+  replaces the entry's alias; target designation precedes CV initialization,
+  while captured non-CV sources retain an owner across target COW.
+  String dimensions, nonarray reads and source GC remain pending.
   See [handoff](docs/semantics/ARRAY-HANDOFF.md).
 - CV timing/classification defects are resolved in `eea66b2d`: delayed reference
   target names now warn before direct source initialization; literal-float names
@@ -86,7 +87,7 @@ timeouts and interrupted campaigns never count as validation passes.
   expanded 32 sources passed. Exact AST retention and unit/path identity are
   representation checks, with no source compile/evaluation agreement claimed.
   See [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md).
-- **115 independent oracle targets**, 40 integrated into the reviewed source
+- **115 independent oracle targets**, 55 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read
@@ -104,9 +105,11 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review element-reference targets, retaining distinct acquisition/COW/temporary-
-owner timing. New independent target and prepass witnesses are mandatory in the
-next gate. The string-offset reference Error remains a separate pending context.
+Review scalar/string dimension reads and subsequent writable/reference contexts,
+preserving key conversion, diagnostic and temporary-owner timing. Element-target
+and array-prepass witnesses remain mandatory. Source-context review found multiline
+import diagnostic lines differ from statement starts; correction and fresh
+independent compiler-helper evidence are required before acceptance.
 The next static source-context traversal and class linking must preserve pinned
 phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source
