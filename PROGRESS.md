@@ -35,8 +35,9 @@ timeouts and interrupted campaigns never count as validation passes.
   pruning, owning reference results, COW/union and variable-source literal refs
   `4b954dfa` and CV timing/classification repair `eea66b2d` are reviewed.
   Element-reference sources/literal values precede element-reference targets.
-- Static worker continuation: checked source-unit occurrence/context traversal,
-  ordered compiler diagnostics and declaration descriptors before further linking.
+- Static worker: structural source-unit occurrences `898f0152` reviewed; next
+  namespace/import compiler contexts and ordered compile-task barriers, then
+  declaration descriptors before further linking.
   [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md) records reviewed helper
   interfaces and pending applicability, internal metadata, linking and activation.
   Coordinate source-unit/task integration with the references owner.
@@ -79,6 +80,11 @@ timeouts and interrupted campaigns never count as validation passes.
   12 Unsupported and 1 source-phase pending witness independently repeated;
   expanded matrix 1,444. Exact declaration rendering is bounded by compiled
   defaults and explicit comparison contexts; NaN warning context stays pending.
+- Structural source-unit helper `898f0152`: 169 constructor shapes, 1,086 domain
+  alternatives and 14 checked sources (1,497 assertions) independently repeated;
+  expanded 32 sources passed. Exact AST retention and unit/path identity are
+  representation checks, with no source compile/evaluation agreement claimed.
+  See [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md).
 - **101 independent oracle targets**, 33 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`

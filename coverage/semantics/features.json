@@ -2209,15 +2209,20 @@
     {
       "id": "source.context",
       "milestone": "0b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/11-source-occurrences.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/source_occurrences.py",
+        "coverage/semantics/source-occurrences.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": "Independent structural source-unit helper 898f0152: 169 constructor shapes, 1086 domain alternatives, 14 checked sources and 1497 assertions repeated; expanded 32 sources/1587 assertions and isolated generation-drift rejection passed. Retains exact checked AST and metadata with typed field/index occurrence paths scoped to caller-supplied compiled-source ID. Representation evidence only: no lexical compiler contexts, diagnostic order, source activation or runtime literal allocation yet."
     },
     {
       "id": "source.encodings",

@@ -19,6 +19,9 @@ are labeled as proposals; do not mistake them for existing commands.
 Implementation is now active. [PROGRESS.md](PROGRESS.md) records current
 milestones, assignments and validation evidence; the historical starting status
 above is retained to distinguish this plan from implementation results.
+[Source-context interfaces](docs/semantics/SOURCE-CONTEXT.md) and the
+[declaration handoff](docs/semantics/LINKING-HANDOFF.md) record the reviewed
+structural foundation and pending compiler/linker integration.
 
 ## 1. Objective and settled requirements
 
