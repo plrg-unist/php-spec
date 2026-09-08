@@ -3,8 +3,8 @@ syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
 syntax poperand = KNOWN pvalue | VARIABLE nat* int
 syntax pbase = BASE_VALUE poperand | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int
-syntax plocation = ROOT nat | ELEMENT nat pkey
-syntax ptask = ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
+syntax plocation = ROOT nat | ELEMENT nat pkey | NOWHERE
+syntax ptask = UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | NAME_READ int

@@ -1,0 +1,134 @@
+;; Unset does not create missing slots; its final key conversion is distinct
+;; from intermediate dimension access (notably for null keys and warning order).
+dec $entry_delete(pentry*, pkey) : pentry*
+def $entry_delete(eps, pkey) = eps
+def $entry_delete((ENTRY pkey pitem) :: pentry_tail*, pkey) = pentry_tail*
+def $entry_delete((ENTRY pkey_other pitem) :: pentry_tail*, pkey) = (ENTRY pkey_other pitem) :: $entry_delete(pentry_tail*, pkey)
+  -- if pkey_other =/= pkey
+
+dec $find_location(pstate, nat*) : plocation
+def $find_location(S, n_name*) = ROOT n
+  -- if $lookup(S.ENV, n_name*) = (n)
+def $find_location(S, n_name*) = NOWHERE
+  -- if $lookup(S.ENV, n_name*) = eps
+
+dec $find_name(pstate, nat*, int, bool) : pstate
+def $find_name(S, n_name*, z, b) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*)
+def $find_name(S, n_name*, z, b) = S[.LOCATION = plocation][.RESULT = KNOWN pvalue]
+  -- if ~$environment_name(n_name*)
+  -- if plocation = $find_location(S, n_name*)
+  -- if $location_slot(S, plocation) = DEFINED pvalue
+def $find_name(S, n_name*, z, false) = S[.LOCATION = plocation][.RESULT = KNOWN PNULL]
+  -- if ~$environment_name(n_name*)
+  -- if plocation = $find_location(S, n_name*)
+  -- if $location_slot(S, plocation) = UNDEFINED
+def $find_name(S, n_name*, z, true) = S_missing[.LOCATION = plocation]
+  -- if ~$environment_name(n_name*)
+  -- if plocation = $find_location(S, n_name*)
+  -- if $location_slot(S, plocation) = UNDEFINED
+  -- if S_missing = $missing(S, n_name*, z)
+
+dec $unset_false(pstate, int) : pstate
+def $unset_false(S, z) = $diagnostic(S, "Deprecated", ([65,117,116,111,109,97,116,105,99,32,99,111,110,118,101,114,115,105,111,110,32,111,102,32,102,97,108,115,101,32,116,111,32,97,114,114,97,121,32,105,115,32,100,101,112,114,101,99,97,116,101,100]), z)
+
+dec $unset_skip_key(pstate, poperand, int) : pstate
+def $unset_skip_key(S, poperand, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $unset_skip_key(S, poperand, z) = S_read[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
+  -- if S.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S, poperand, z)
+
+dec $find_element(pstate, nat, pkey) : pstate
+def $find_element(S, n, pkey) = S[.LOCATION = ELEMENT n pkey][.RESULT = KNOWN $entry_value(S, pitem)]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+def $find_element(S, n, pkey) = S[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = eps
+
+dec $unset_intermediate(pstate, pvalue, plocation, poperand, int) : pstate
+def $unset_intermediate(S, PARRAY n, plocation, poperand, z) = S_key
+  -- if S_array = $location_array(S, plocation, z)
+  -- if S_key = $dimension_key(S_array, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $unset_intermediate(S, PARRAY n, plocation, poperand, z) = $find_element(S_key, n_copy, S_key.KEY)
+  -- if S_array = $location_array(S, plocation, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n_copy)
+  -- if S_key = $dimension_key(S_array, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+def $unset_intermediate(S, PNULL, plocation, poperand, z) = $unset_skip_key(S, poperand, z)
+def $unset_intermediate(S, PBOOL false, plocation, poperand, z) = $unset_skip_key($unset_false(S, z), poperand, z)
+def $unset_intermediate(S, PSTRING n*, plocation, poperand, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+def $unset_intermediate(S, pvalue, plocation, poperand, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
+  -- otherwise
+
+dec $base_find(pstate, pbase, int) : pstate
+def $base_find(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $find_name(S, n_name*, z, true)
+def $base_find(S, BASE_NAME poperand z_name, z) = S_name
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $base_find(S, BASE_NAME poperand z_name, z) = $find_name(S_name, n_name*, z_name, false)
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $base_find(S, BASE_DIM pbase poperand z_key, z) = S_found
+  -- if S_found = $base_find(S, pbase, z_key)
+  -- if S_found.COMPLETION =/= NORMAL
+def $base_find(S, BASE_DIM pbase poperand z_key, z) = $unset_intermediate(S_found, pvalue, S_found.LOCATION, poperand, z_key)
+  -- if S_found = $base_find(S, pbase, z_key)
+  -- if S_found.COMPLETION = NORMAL
+  -- if S_found.RESULT = KNOWN pvalue
+
+dec $unset_key_value(pstate, pvalue, int) : pstate
+def $unset_key_value(S, PARRAY n, z) = $throw_scalar(S, "TypeError", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32,97,114,114,97,121,32,111,110,32,97,114,114,97,121]), z)
+def $unset_key_value(S, pvalue, z) = $key_value(S, pvalue, true, z)
+  -- otherwise
+
+dec $unset_key(pstate, poperand, int) : pstate
+def $unset_key(S, poperand, z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $unset_key(S, poperand, z) = $unset_key_value(S_read, pvalue, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+dec $unset_nonarray(pstate, pvalue, int) : pstate
+def $unset_nonarray(S, PNULL, z) = S
+def $unset_nonarray(S, PBOOL false, z) = $unset_false(S, z)
+def $unset_nonarray(S, PSTRING n*, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]), z)
+def $unset_nonarray(S, pvalue, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
+  -- otherwise
+
+dec $is_array_value(pvalue) : bool
+def $is_array_value(PARRAY n) = true
+def $is_array_value(pvalue) = false
+  -- otherwise
+
+dec $unset_final(pstate, pvalue, plocation, poperand, int) : pstate
+def $unset_final(S, PARRAY n, plocation, poperand, z) = S_key
+  -- if S_array = $location_array(S, plocation, z)
+  -- if S_key = $unset_key(S_array, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $unset_final(S, PARRAY n, plocation, poperand, z) = S_key[.ARRAYS = $array_replace(S_key.ARRAYS, n_copy, parray[.ITEMS = $entry_delete(parray.ITEMS, S_key.KEY)])]
+  -- if S_array = $location_array(S, plocation, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n_copy)
+  -- if S_key = $unset_key(S_array, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if parray = S_key.ARRAYS[n_copy]
+def $unset_final(S, pvalue, plocation, poperand, z) = S_read
+  -- if ~$is_array_value(pvalue)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $unset_final(S, pvalue, plocation, poperand, z) = $unset_nonarray(S_read, pvalue, z)
+  -- if ~$is_array_value(pvalue)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+
+dec $unset_array(pstate, pbase) : pstate
+def $unset_array(S, BASE_DIM pbase poperand z) = S_found
+  -- if S_found = $base_find(S, pbase, z)
+  -- if S_found.COMPLETION =/= NORMAL
+def $unset_array(S, BASE_DIM pbase poperand z) = $unset_final(S_found, pvalue, S_found.LOCATION, poperand, z)
+  -- if S_found = $base_find(S, pbase, z)
+  -- if S_found.COMPLETION = NORMAL
+  -- if S_found.RESULT = KNOWN pvalue

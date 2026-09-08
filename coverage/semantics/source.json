@@ -9,7 +9,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and ordinary array literal/read/write checked execution fixtures",
+  "scope": "authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -55,8 +55,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "73bcd1c2ce27bfc593977c42aa987d40187b7ed376a34f2922372e34c4e51829",
-    "files": 643,
+    "sha256": "cf0a308adb326f80d31d195eb934514de254bb7f7d235e4253507c26551c1b8f",
+    "files": 647,
     "scope": [
       "frontend",
       "adapter",
@@ -989,6 +989,336 @@
       "id": "array-write-review-key-error-rhs-throw",
       "source_sha256": "0863abcd4fb6bf94bc5a73ecedd810078a7abb311f08e876d0d64c5ee96da25b",
       "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-absent-direct",
+      "source_sha256": "f4cb71748a9a7a8bba0ea79acea5d84032e75c274b30c3f88da4a57257f4122b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-absent-dynamic",
+      "source_sha256": "2d115cbcea8b45a40ce105b15c3e5699ac912ded4db9b54d7bebdc5a75c7aca8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-absent-nested",
+      "source_sha256": "95bdf7738e8cfd0bf995eece68cf8d7dbd07c80995d5cd24a31a144188869a2a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-absent-dynamic-nested",
+      "source_sha256": "5679f37e13311d425e9e79424493d11c96e65a56c7dc50411940df3d39178eac",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-absent-key-expr",
+      "source_sha256": "791840e25f8493fc111b404ecbfe020e4231fee018c24871e7a6c183ed02beec",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-null-terminal",
+      "source_sha256": "330c51cd76830ac5340641af4c2e30e157ed015ccaf05449e0a5a50a8bd8a023",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-null-intermediate",
+      "source_sha256": "00837b1221b90e92bbd2bb8d17f269b42076888ad2b488b866e5c3eeb35078ad",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-false-base",
+      "source_sha256": "e110d0e5974fa84d1a218c7ab41e095e01e077928ab0267b8a564c6514d51a09",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-int-base",
+      "source_sha256": "90bdf2043b1efc1357e17f0eeecbcdf4fb0d2f77c8c780f138919fb6e1a9dc60",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-string-base",
+      "source_sha256": "bfbb1a01ac8cd86354400cd608fe687ba5758ceaef8f151b2034ad0d5e139875",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-key-illegal",
+      "source_sha256": "64f5662ee965aecf74d6517a96a5bb75441f721961f6e6302bfeee1c73e034df",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-key-illegal-no-base",
+      "source_sha256": "3f222a8d61c00d75ec8bc9fa2624f602a3d30b977ba66a61398bbce760b28785",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-key-illegal-null-base",
+      "source_sha256": "afd771ac7409a798bbad14833efe8f941e262c8dc63a4ed94ded0850e7ef77be",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-key-illegal-int-base",
+      "source_sha256": "b9aa43674eeeeb8192cba9f5b5581a0c950c2c654e91136f6ebd02563e41f937",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-missing-key-cow",
+      "source_sha256": "e14fd61a95cf78a070ed5b3ee9f6bb313ce25f2648a0facb348eb3e6ac131e8c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-missing-nested-key-cow",
+      "source_sha256": "ff015d2ba56b9ea4529f0fd0668c150a35daee627b26e695be2e29040f10933c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-missing-parent-key-cow",
+      "source_sha256": "f8759ab269da9f21018e58ebd626b0bfd4d937cfe30c04572809492d2bf10996",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-terminal-cow",
+      "source_sha256": "5c39173a2e2e5056d415b0579784ef2d1616f3f922c042a9aee71d3e2fbedd25",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-history-positive",
+      "source_sha256": "9b2e6e3f35453abb2c401fc9852a6fdddfbba180aef0b3281de4f309d1a173ff",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-history-negative",
+      "source_sha256": "1f0063b73b802e4737f6608de1004cb6332da9a4d48ac4e27d6b0d0c9a4b40c8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-history-max",
+      "source_sha256": "fd1d6ebc6ad945b4b916787385716740f3ec2269a412cf7f12a93f0fa90e1648",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-delayed-key",
+      "source_sha256": "9f69e1ec8afd1dc9eeae75204766cc946a48a85c2094ab4beb1db0e4c261cccb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-delayed-root",
+      "source_sha256": "f8d9c405a5073aebf55018a3fe5e061a2d9ecb474a080bc318308fdb6cd25308",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-delayed-name",
+      "source_sha256": "ef86f838c4fc157d4f5a136bf260867b0d9f220c53dd7e83835001f473a5384f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-captured-name",
+      "source_sha256": "fd2f0d705ca4d32965478e2f0612905b013cd76b87b3f0bf5cf82f751b0fc3d1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-cycle-unset-self",
+      "source_sha256": "dfa6dd67373b43960ba616b06109b69e19971261d64393c6089b7137e80ea853",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-cycle-unset-nested",
+      "source_sha256": "2f1f549da6e1a5d839e621791ea96fd8e632f56914eff933708f02d7576a82bd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-read",
+      "source_sha256": "c0fc9824b8aa5dc9d2f0a47a2d1efb9f733da7be262b9cf0b2eb331583b413c4",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-nested-read",
+      "source_sha256": "7842d0d7712821ea9238c9897de65fa58c93712b1b6d9a8f59e7b9b6f1bcca4f",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-unset",
+      "source_sha256": "f8e5e78414a56ed93c21f43450b700f3446483ba176f290a8547c34db1baf934",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-nested-unset",
+      "source_sha256": "5f47bfdb5fd5edfd44502fa6099cb159ea56ec66de74f0f6844ac27bb54b0667",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-read-line",
+      "source_sha256": "fb48e4ff9cba34f4e0ec83a7b49b1ff9c8e4916cb4408205485f50ec954a4e1a",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-empty-unset-line",
+      "source_sha256": "b14dcedbb9bc5a23f838d76c3a409b744c68f2d3ee60754452cc8fcd3d8beb53",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-false-terminal-key-order",
+      "source_sha256": "a820b69fe151b2af254d0bb51ff0979312a0825326bfe67cd86a177be4acb361",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-false-intermediate-key-order",
+      "source_sha256": "8ed08906f40aacff8e2b20e671280c1312939bbce61b9c1b8e4becf9b8db0b38",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-scalar-terminal-key-order",
+      "source_sha256": "bf9497772b2b0824c60fece1fa035ba61e7c464ec65939d7c2c8026c3b560954",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-scalar-intermediate-key-order",
+      "source_sha256": "2f279133333c4c285b4269098a65a15681f6e38674e0c659a7366082477abfaf",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-null-terminal-key-order",
+      "source_sha256": "75122a748ddc8849eac3975c2d282ab719bf403790d349c9b9f4633d7e2a22f8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-null-intermediate-key-order",
+      "source_sha256": "de8d8805f4de937443b53f6165326dd0b72f95f141302204b710cb2649b74356",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-float-key",
+      "source_sha256": "35ca11e360ae1d3682bc814ce0a0a3fcd0ef8ce76d5822b94d4b322af88c796a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-missing-cv-key",
+      "source_sha256": "70364b759fea8db9fd0cda9f87afe4f07dbc669ca34a28d6b1720eebd3888a98",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-missing-cv-key-intermediate",
+      "source_sha256": "ee07440988add57465ddbc3c2483b55efad1715d99016bda4e9f32dac60982c0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-array-key-intermediate",
+      "source_sha256": "affd54f9c30413653ea5333968b982a8d9c8c63bbae643bbc812d1247cff78c3",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-nested-null-line",
+      "source_sha256": "8218c8f214c0fb0f59eb31650884cdc86c7e8c47bc685a5db15c0427bbabe3db",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-absent-nested-line",
+      "source_sha256": "0c92a884bd8dd31fc5878517082cf7e94f8d0cc0210addde0b504091d2b5d6d5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-root-alias",
+      "source_sha256": "5d7e0573b3b88834600a7749b02bef1ed26f77875e2f63f50954266adb68bc26",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-nested-root-alias",
+      "source_sha256": "e8ec43dc143595cfeb6925085fceaa74a9023565057f6b61a8a23e1c3bd2edaa",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-history-overflow-after-reuse",
+      "source_sha256": "2426001f6fd3d38878307f08f552a7b4cacb3e1a6b869c79e9f474ed1e0a0b90",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-history-copy",
+      "source_sha256": "64ea51ea37b21c9f71ff82093d494ebe16f44c99b1823fe5bd660c30e3e934be",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-byte-key",
+      "source_sha256": "e18a9d50991b32c7ae114ad83bfe3abf057da7214ab0c0f7563fe7c83cc96bbc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-order-reinsert",
+      "source_sha256": "9736020ce57e860134cdde18fc6901179adbe19e3975e19b7cc3ec77f2271d9e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-review-multiline-false-intermediate",
+      "source_sha256": "2a17f19f1d00759a5d9f478fba0ad8b025276ade1163da46cd85dbaf0806be2b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-review-multiline-dynamic-float",
+      "source_sha256": "ae9bcbe751258072cf60f79492672a06c8d2106a9eea991bfd505bf4862c69ec",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-review-multiple-unset-name-change",
+      "source_sha256": "eea90a7c6b09de80f32cb8ba18552b14ae3b837edfe1f0d495a04bc04298b691",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "array-unset-review-unset-key-rebind-root",
+      "source_sha256": "f0a99f74ae12024dbb564fb3d7d315fb0c7eb17e6973fb5f296fb6c045e90684",
+      "semantic_status": "normal",
       "comparison": "pass"
     },
     {
@@ -1927,7 +2257,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-rixftdyg/unsupported.php"
+        "/tmp/php-semantics-bf6xtmjr/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -1946,7 +2276,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-rixftdyg/unsupported.php"
+        "/tmp/php-semantics-bf6xtmjr/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -1965,7 +2295,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-rixftdyg/unsupported.php",
+        "/tmp/php-semantics-bf6xtmjr/unsupported.php",
         "--steps",
         "0"
       ],
@@ -1986,7 +2316,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-rixftdyg/unsupported.php",
+        "/tmp/php-semantics-bf6xtmjr/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -1999,12 +2329,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-rixftdyg/unsupported.php.missing"
+        "/tmp/php-semantics-bf6xtmjr/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-rixftdyg/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-bf6xtmjr/unsupported.php.missing'"
       }
     },
     {
@@ -2158,7 +2488,7 @@
       }
     },
     {
-      "source": "PD9waHAgJGE9W107dW5zZXQoJGFbMF0pOw==",
+      "source": "PD9waHAgJGE9ImFiYyI7dW5zZXQoJGFbMF1bMF0pOw==",
       "exit_status": 1,
       "observation": {
         "status": "unsupported",
@@ -2166,7 +2496,7 @@
         "stderr": "",
         "exit_status": null,
         "diagnostic": null,
-        "reason": "lvalue",
+        "reason": "intermediate string offset unset",
         "events": [],
         "frontend": "accepted",
         "checked": "program"
@@ -2388,6 +2718,98 @@
               "fields": [
                 [
                   {
+                    "node": "Expr_Array",
+                    "fields": [
+                      []
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PSTRING",
+                "args": [
+                  [
+                    "65",
+                    "114",
+                    "114",
+                    "97",
+                    "121"
+                  ]
+                ]
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [
+            {
+              "ITEMS": [],
+              "NEXT": "-9223372036854775808"
+            }
+          ],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
                     "node": "Scalar_Float",
                     "fields": [
                       {
@@ -2560,7 +2982,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "ed19fc9c7ef748799f4c9087a94452eb1b1168aba1e114e3d0257316e0638264",
-    "records": 308
+    "sha256": "d3c5a4e36ff5e35ced95ab20fda7f3e0710a07ec7b5665bbe83ffa7066875ccc",
+    "records": 363
   }
 }

@@ -188,6 +188,67 @@ CASES.update({
     'array-write-review-key-error-rhs-throw': b'<?php\n$a=[];$a[[]]=1/0;',
 })
 
+CASES.update({
+    'array-unset-absent-direct': b'<?php\nunset($a[0]);echo 1;',
+    'array-unset-absent-dynamic': b'<?php\n$n="a";unset($$n[0]);echo 1;',
+    'array-unset-absent-nested': b'<?php\nunset($a[0][0]);echo 1;',
+    'array-unset-absent-dynamic-nested': b'<?php\n$n="a";unset($$n[0][0]);echo 1;',
+    'array-unset-absent-key-expr': b'<?php\nunset($a[$k]);echo 1;',
+    'array-unset-null-terminal': b'<?php\n$a=[""=>1];unset($a[null]);echo $a===[];',
+    'array-unset-null-intermediate': b'<?php\n$a=[""=>[1]];unset($a[null][0]);echo $a[""]===[];',
+    'array-unset-false-base': b'<?php\n$a=false;unset($a[0]);echo $a===false;',
+    'array-unset-int-base': b'<?php\n$a=1;unset($a[0]);echo $a;',
+    'array-unset-string-base': b'<?php\n$a="abc";unset($a[0]);echo $a;',
+    'array-unset-key-illegal': b'<?php\n$a=[];unset($a[[]]);echo 1;',
+    'array-unset-key-illegal-no-base': b'<?php\nunset($a[[]]);echo 1;',
+    'array-unset-key-illegal-null-base': b'<?php\n$a=null;unset($a[[]]);echo 1;',
+    'array-unset-key-illegal-int-base': b'<?php\n$a=1;unset($a[[]]);echo 1;',
+    'array-unset-missing-key-cow': b'<?php\n$a=[NAN];$b=$a;unset($a[99]);echo $a===$b;',
+    'array-unset-missing-nested-key-cow': b'<?php\n$x=[NAN];$a=[$x];$b=$a;unset($a[0][99]);echo $a===$b,$a[0]===$x;',
+    'array-unset-missing-parent-key-cow': b'<?php\n$a=[NAN];$b=$a;unset($a[99][0]);echo $a===$b;',
+    'array-unset-empty-terminal-cow': b'<?php\n$a=[];$b=$a;unset($a[99]);echo $a===$b;',
+    'array-unset-history-positive': b'<?php\n$a=[5=>1];unset($a[5]);$a[]=2;echo $a[6];',
+    'array-unset-history-negative': b'<?php\n$a=[-5=>1];unset($a[-5]);$a[]=2;echo $a[-4];',
+    'array-unset-history-max': b'<?php\n$a=[PHP_INT_MAX=>1];unset($a[PHP_INT_MAX]);$a[]=2;echo $a[PHP_INT_MAX];',
+    'array-unset-delayed-key': b'<?php\n$a=[0=>1,1=>2];$i=0;unset($a[$i+($i=1)]);echo $a[0];',
+    'array-unset-delayed-root': b'<?php\n$a=[1];unset($a[($a=[2])[0]-2]);echo $a===[];',
+    'array-unset-delayed-name': b'<?php\n$a=[1];$b=[2];$n="a";unset($$n[(($n="b")==="b")-1]);echo $a[0],$b===[];',
+    'array-unset-captured-name': b'<?php\n$a=[1];$b=[2];$n="a";unset(${($n="a")}[ (($n="b")==="b")-1]);echo $a===[],$b[0];',
+    'array-unset-cycle-unset-self': b'<?php\n$a=[];$b=&$a;$a[0]=$b;unset($a[0]);echo $a===[],$b===[];',
+    'array-unset-cycle-unset-nested': b'<?php\n$a=[];$b=&$a;$a[0]=$b;unset($a[0][0]);echo $a[0]===[];',
+    'array-unset-empty-read': b'<?php\necho "before";$a[];',
+    'array-unset-empty-nested-read': b'<?php\necho "before";$a[][0];',
+    'array-unset-empty-unset': b'<?php\necho "before";unset($a[]);',
+    'array-unset-empty-nested-unset': b'<?php\necho "before";unset($a[][0]);',
+    'array-unset-empty-read-line': b'<?php\necho "before";\necho $a\n[\n];',
+    'array-unset-empty-unset-line': b'<?php\necho "before";\nunset($a\n[\n]);',
+    'array-unset-false-terminal-key-order': b'<?php\n$a=false;unset($a[$missing]);',
+    'array-unset-false-intermediate-key-order': b'<?php\n$a=false;unset($a[$missing][0]);',
+    'array-unset-scalar-terminal-key-order': b'<?php\n$a=1;unset($a[$missing]);',
+    'array-unset-scalar-intermediate-key-order': b'<?php\n$a=1;unset($a[$missing][0]);',
+    'array-unset-null-terminal-key-order': b'<?php\n$a=null;unset($a[$missing]);',
+    'array-unset-null-intermediate-key-order': b'<?php\n$a=null;unset($a[$missing][0]);',
+    'array-unset-float-key': b'<?php\n$a=[0=>1,1=>2];unset($a[1.5],$a[NAN]);echo $a===[];',
+    'array-unset-missing-cv-key': b'<?php\n$a=[""=>1];unset($a[$missing]);echo $a===[];',
+    'array-unset-missing-cv-key-intermediate': b'<?php\n$a=[""=>[1]];unset($a[$missing][0]);echo $a[""]===[];',
+    'array-unset-array-key-intermediate': b'<?php\n$a=[];unset($a[[]][0]);',
+    'array-unset-nested-null-line': b'<?php\n$a=[""=>[]];unset($a[\nnull\n][\n0\n]);',
+    'array-unset-absent-nested-line': b'<?php\nunset($a[\n0\n][\n1\n]);',
+    'array-unset-root-alias': b'<?php\n$a=[1];$b=&$a;$c=$a;unset($b[0]);echo $a===[],$b===[],$c[0];',
+    'array-unset-nested-root-alias': b'<?php\n$a=[[1]];$b=&$a;$c=$a;unset($b[0][0]);echo $a[0]===[],$b[0]===[],$c[0][0];',
+    'array-unset-history-overflow-after-reuse': b'<?php\n$a=[PHP_INT_MAX=>1];unset($a[PHP_INT_MAX]);$a[]=2;$a[]=3;',
+    'array-unset-history-copy': b'<?php\n$a=[5=>1];unset($a[5]);$b=$a;$a[]=2;$b[]=3;echo $a[6],$b[6];',
+    'array-unset-byte-key': b'<?php\n$a=["a\\0b"=>1,"a"=>2];unset($a["a\\0b"]);echo $a===["a"=>2];',
+    'array-unset-order-reinsert': b'<?php\n$a=["a"=>1,"b"=>2];unset($a["a"]);$a["a"]=3;echo $a===["b"=>2,"a"=>3];',
+})
+
+CASES.update({
+    'array-unset-review-multiline-false-intermediate': b'<?php\n$a=false;unset(\n$a\n[$missing]\n[0]\n);',
+    'array-unset-review-multiline-dynamic-float': b'<?php\n$n=NAN;unset(\n$$n\n[$missing]\n);',
+    'array-unset-review-multiple-unset-name-change': b'<?php\n$a=[1];$b=[2];$n="a";unset($$n[0],${($n="b")}[0]);echo $a===[],$b===[];',
+    'array-unset-review-unset-key-rebind-root': b'<?php\n$a=[1];$b=[2];unset($a[($a=&$b)[0]-2]);echo $a===[],$b===[];',
+})
+
 # Independent review-authored witnesses keep their original provenance.
 CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 for identifier in CONFORMANCE:
@@ -291,7 +352,7 @@ def main():
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $x=1;$a=[&$x];', b'<?php $a=[];unset($a[0]);',
+                       b'<?php $x=1;$a=[&$x];', b'<?php $a="abc";unset($a[0][0]);',
                        b'<?php $a=[...[]];', b'<?php $a=[[]=>1];']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
@@ -313,8 +374,9 @@ def main():
             response = syntax_validation.wire.loads(result.stdout)
             assert response.get('ok') and response['state']['COMPLETION']['tag'] == 'UNSUPPORTED', response
             negatives.append({'input': payload, 'exit_status': result.returncode, 'observation': response})
-    # Numeric warnings/errors also require source context on edited checked ASTs.
+    # Warnings/errors also require source context on edited checked ASTs.
     for expression in [
+        {'node': 'Expr_Array', 'fields': [[]], 'meta': {}},
         {'node': 'Scalar_Float', 'fields': [{'float': '7ff8000000000000'}], 'meta': {}},
         {'node': 'Expr_BinaryOp_Div', 'fields': [
             {'node': 'Scalar_Int', 'fields': [{'int': '1'}], 'meta': {}},
@@ -335,7 +397,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read/write checked execution fixtures', 'profile': PROFILE,
+    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, variable storage and ordinary array literal/read/write/unset checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage/results-semantic-source.jsonl'

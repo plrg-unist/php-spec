@@ -74,7 +74,7 @@ simple/nested assignment and append copy each selected container shallowly befor
 mutation, preserving other value copies and variable-cell aliases. This is an
 abstraction for the current absence of embedded reference entries; it must become
 conditional separation with reachable edge/temporary accounting before embedded
-references are admitted. Array unset, embedded references and unpacking remain pending.
+references are admitted. Embedded references and unpacking remain pending.
 
 Write preparation retains delayed name/key operands through RHS evaluation.
 Dimension assignment acquires a keyed slot before reading a delayed RHS, whereas
@@ -87,6 +87,15 @@ reference entries. Strict comparison protects active left-container IDs and retu
 a PHP Error for recursive dependency; same-container identity still succeeds.
 These rules follow `zend_compile_expr_with_potential_assign_to_self`,
 `ZEND_ASSIGN_DIM`, `zend_fetch_dimension_address` and `zend_hash_compare`.
+
+Dimension unset preserves append history and separates shared paths even when the
+key is absent. It never creates an absent slot. A missing direct-variable base
+warns, while a missing dynamic-name base is quiet. Terminal unset suppresses the
+null-key deprecation; intermediate dimension access retains it. False/scalar
+containers also differ in when they consume a missing key. These distinctions
+follow `ZEND_UNSET_DIM` and `ZEND_FETCH_DIM_UNSET`, with independent byte/line/order
+fixtures. Empty `[]` reads and unsets are rejected statically before output;
+intermediate string offsets remain pending with the string access protocol.
 
 A pure constant classifier reuses the array/numeric rules on isolated state and
 accepts only normal results without diagnostics. This determines compiler source
@@ -115,7 +124,7 @@ fresh semantic/oracle processes under the same file identity, directory, profile
 and locale, compares exact output channels and status, and retains raw classified
 negative outcomes. It reuses the syntax harness dependency-closure fingerprint
 before and after each campaign. The authored and seeded cases establish the current
-scalar, variable-storage and ordinary-array literal/read/write slice;
+scalar, variable-storage and ordinary-array literal/read/write/unset slice;
 they do not establish complete PHP semantics or BOLA freedom. Compact current
 evidence is `coverage/semantics/source.json`; exact raw observations are regenerated
 in the ignored `coverage/results-semantic-source.jsonl`. The earlier phase0 report

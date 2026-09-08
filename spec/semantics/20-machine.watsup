@@ -101,11 +101,18 @@ def $compiled_line(expression) = $expression_line(expression)
   -- otherwise
 
 dec $check_assignment_target(expression) : pcheck
+dec $check_unset_target(expression) : pcheck
 dec $check_lvalue(expression) : pcheck
 dec $check_variable(phpType34) : pcheck
 dec $array_name_fold_warning(phpType34) : bool
 dec $name_fold_warning(phpType34) : bool
 dec $check_array_items(phpType13*) : pcheck
+dec $context_error(text, int) : pcheck
+def $context_error(text, z) = REJECT (STATICERROR text z)
+  -- if $(z > 0)
+def $context_error(text, z) = REJECT (UNSUPPORTED "missing source line")
+  -- if $(z <= 0)
+
 dec $check_expression(expression) : pcheck
 def $check_expression(NScalarString (BYTES text) metadata) = READY
 def $check_expression(NScalarInt (INTEGER z) metadata) = READY
@@ -147,6 +154,10 @@ def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metada
 def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_expression(expression_1) = REJECT pcompletion
 def $check_expression(NExprArray (SEQUENCE phpType13*) metadata) = $check_array_items(phpType13*)
+def $check_expression(NExprArrayDimFetch expression ABSENT metadata) = $context_error("Cannot use [] for reading", $compiled_line(expression))
+  -- if $check_expression(expression) = READY
+def $check_expression(NExprArrayDimFetch expression ABSENT metadata) = REJECT pcompletion
+  -- if $check_expression(expression) = REJECT pcompletion
 def $check_expression(NExprArrayDimFetch expression_1 phpType5 metadata) = $check_expression(expression_2)
   -- if phpType5 = expression_2
   -- if $check_expression(expression_1) = READY
@@ -201,12 +212,23 @@ def $check_variable(phpType34) = $check_expression(expression)
   -- if ~$name_fold_warning(phpType34)
   -- if ~$array_name_fold_warning(phpType34)
 
+def $check_unset_target(NExprVariable phpType34 metadata) = $check_variable(phpType34)
+def $check_unset_target(NExprArrayDimFetch expression ABSENT metadata) = $context_error("Cannot use [] for unsetting", $compiled_line(expression))
+  -- if $check_unset_target(expression) = READY
+def $check_unset_target(NExprArrayDimFetch expression phpType5 metadata) = REJECT pcompletion
+  -- if $check_unset_target(expression) = REJECT pcompletion
+def $check_unset_target(NExprArrayDimFetch expression phpType5 metadata) = $check_expression(expression_key)
+  -- if phpType5 = expression_key
+  -- if $check_unset_target(expression) = READY
+def $check_unset_target(expression) = REJECT (UNSUPPORTED "unset target")
+  -- otherwise
+
 dec $check_unsets(expression*) : pcheck
 def $check_unsets(eps) = READY
 def $check_unsets(expression :: expression_tail*) = $check_unsets(expression_tail*)
-  -- if $check_lvalue(expression) = READY
+  -- if $check_unset_target(expression) = READY
 def $check_unsets(expression :: expression_tail*) = REJECT pcompletion
-  -- if $check_lvalue(expression) = REJECT pcompletion
+  -- if $check_unset_target(expression) = REJECT pcompletion
 
 dec $check_expressions(expression*) : pcheck
 def $check_expressions(eps) = READY
