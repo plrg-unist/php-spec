@@ -1,0 +1,104 @@
+;; Context-specific scalar helpers. Callback execution belongs to the machine.
+syntax keyinteger = STRINGKEY | INTEGERKEY int
+syntax strcastnotice = LEADINGNUMBER | STRINGPRECISIONLOSS
+syntax strintresult = STRINT int strcastnotice* | STRINTERROR
+
+dec $compare_int(int, int) : int
+def $compare_int(i_1, i_2) = $(-1) -- if $(i_1 < i_2)
+def $compare_int(i_1, i_2) = 0 -- if i_1 = i_2
+def $compare_int(i_1, i_2) = 1 -- if $(i_1 > i_2)
+
+;; Zend's three-way scalar comparator returns +1 for unordered inputs. Greater-
+;; than uses the reversed comparison, not a positive-result test on this order.
+dec $float_compare_parts(fparts, fparts) : int
+def $float_compare_parts(NOTNUMBER n, fparts) = 1
+def $float_compare_parts(INFINITE n_s, NOTNUMBER n) = 1
+def $float_compare_parts(FINITE n_s n_n n_d, NOTNUMBER n) = 1
+def $float_compare_parts(INFINITE n_s1, INFINITE n_s2) = $compare_int(n_s2, n_s1)
+def $float_compare_parts(INFINITE 0, FINITE n_s n_n n_d) = 1
+def $float_compare_parts(INFINITE 1, FINITE n_s n_n n_d) = $(-1)
+def $float_compare_parts(FINITE n_s n_n n_d, INFINITE 0) = $(-1)
+def $float_compare_parts(FINITE n_s n_n n_d, INFINITE 1) = 1
+def $float_compare_parts(FINITE n_s1 n_1 n_2, FINITE n_s2 n_3 n_4) = $compare_int($($nsigned(n_s1, n_1) * n_4), $($nsigned(n_s2, n_3) * n_2))
+
+dec $float_compare(nat, nat) : int
+def $float_compare(n_1, n_2) = $float_compare_parts($float_decode(n_1), $float_decode(n_2))
+
+dec $num_compare(pnumber, pnumber) : int
+def $num_compare(NINT i_1, NINT i_2) = $compare_int(i_1, i_2)
+def $num_compare(NFLOAT n, pnumber) = $float_compare(n, $num_float(pnumber))
+def $num_compare(NINT i, NFLOAT n) = $float_compare($float_of_int(i), n)
+
+dec $num_identical(pnumber, pnumber) : bool
+def $num_identical(NINT i_1, NINT i_2) = (i_1 = i_2)
+def $num_identical(NFLOAT n_1, NFLOAT n_2) = ($float_compare(n_1, n_2) = 0)
+def $num_identical(NINT i, NFLOAT n) = false
+def $num_identical(NFLOAT n, NINT i) = false
+
+dec $fparts_nan(fparts) : bool
+def $fparts_nan(NOTNUMBER n) = true
+def $fparts_nan(INFINITE n) = false
+def $fparts_nan(FINITE n_s n_n n_d) = false
+
+dec $number_bool(pnumber) : (bool, bool)
+def $number_bool(NINT i) = (i =/= 0, false)
+def $number_bool(NFLOAT n) = (~$num_zero(NFLOAT n), $fparts_nan($float_decode(n)))
+
+dec $key_candidate(pnumeric, nat*) : keyinteger
+def $key_candidate(NOTNUMERIC, n_t*) = STRINGKEY
+def $key_candidate(LEADNUM pnumber, n_t*) = STRINGKEY
+def $key_candidate(FULLNUM (NFLOAT n), n_t*) = STRINGKEY
+def $key_candidate(FULLNUM (NINT i), n_t*) = INTEGERKEY i -- if n_t* = $ntsigned(i)
+def $key_candidate(FULLNUM (NINT i), n_t*) = STRINGKEY -- if n_t* =/= $ntsigned(i)
+
+dec $string_key(nat*) : keyinteger
+def $string_key(n_t*) = $key_candidate($numeric_string(n_t*), n_t*)
+
+;; Explicit string casts use saturating conversion, unlike float's modulo wrap.
+;; The pinned cap helper returns 0 for infinities and does not issue range notices.
+dec $fcap_integer(fparts) : int
+def $fcap_integer(INFINITE n) = 0
+def $fcap_integer(NOTNUMBER n) = 0
+def $fcap_integer(FINITE n_s n_n n_d) = $nsigned(n_s, $(n_n / n_d)) -- if $fparts_fits(FINITE n_s n_n n_d)
+def $fcap_integer(FINITE 0 n_n n_d) = 9223372036854775807 -- if ~$fparts_fits(FINITE 0 n_n n_d)
+def $fcap_integer(FINITE 1 n_n n_d) = $(-9223372036854775808) -- if ~$fparts_fits(FINITE 1 n_n n_d)
+
+dec $ncast_string_integer(pnumber) : int
+def $ncast_string_integer(NINT i) = i
+def $ncast_string_integer(NFLOAT n) = $fcap_integer($float_decode(n))
+
+dec $numeric_cast_integer(pnumeric) : int
+def $numeric_cast_integer(NOTNUMERIC) = 0
+def $numeric_cast_integer(FULLNUM pnumber) = $ncast_string_integer(pnumber)
+def $numeric_cast_integer(LEADNUM pnumber) = $ncast_string_integer(pnumber)
+
+dec $string_cast_integer(nat*) : int
+def $string_cast_integer(n_t*) = $numeric_cast_integer($numeric_string(n_t*))
+
+dec $numeric_cast_float(pnumeric, nat) : nat
+def $numeric_cast_float(NOTNUMERIC, n_s) = 0
+def $numeric_cast_float(FULLNUM (NFLOAT n), n_s) = n
+def $numeric_cast_float(LEADNUM (NFLOAT n), n_s) = n
+def $numeric_cast_float(FULLNUM (NINT 0), n_s) = $(n_s * 9223372036854775808)
+def $numeric_cast_float(LEADNUM (NINT 0), n_s) = $(n_s * 9223372036854775808)
+def $numeric_cast_float(FULLNUM (NINT i), n_s) = $float_of_int(i) -- if i =/= 0
+def $numeric_cast_float(LEADNUM (NINT i), n_s) = $float_of_int(i) -- if i =/= 0
+
+dec $string_cast_float(nat*) : nat
+def $string_cast_float(n_t*) = $numeric_cast_float($numeric_string(n_t*), n_s)
+  -- if (n_s, n_rest*) = $ntsign($nttrim(n_t*))
+
+dec $strprecision(pnumber) : strcastnotice*
+def $strprecision(NINT i) = eps
+def $strprecision(NFLOAT n) = eps
+  -- if $float_compare(n, $float_of_int($ncast_string_integer(NFLOAT n))) = 0
+def $strprecision(NFLOAT n) = STRINGPRECISIONLOSS
+  -- if $float_compare(n, $float_of_int($ncast_string_integer(NFLOAT n))) =/= 0
+
+dec $string_long_result(pnumeric) : strintresult
+def $string_long_result(NOTNUMERIC) = STRINTERROR
+def $string_long_result(FULLNUM pnumber) = STRINT $ncast_string_integer(pnumber) $strprecision(pnumber)
+def $string_long_result(LEADNUM pnumber) = STRINT $ncast_string_integer(pnumber) (LEADINGNUMBER :: $strprecision(pnumber))
+
+dec $string_long(nat*) : strintresult
+def $string_long(n_t*) = $string_long_result($numeric_string(n_t*))

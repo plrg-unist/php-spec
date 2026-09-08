@@ -76,5 +76,20 @@ including every normal power-of-two boundary, decimal-decade neighbors and
 both adjacent bit patterns in shortest mode. The retained 8,826-case run took
 about 55 seconds on the development host. It does not establish every possible precision/value combination.
 
-Remaining arithmetic obligations include context-dependent coercions and power.
-The passing milestones do not establish complete arithmetic or core PHP.
+`04-numeric-context.watsup` supplies numeric three-way/strict comparisons,
+numeric boolean conversion with pending NaN warning, canonical integer string
+keys, and distinct explicit/implicit string casts. String float casts preserve
+negative zero even when numeric-string classification is integer zero. Explicit
+string-to-int casts saturate finite overflow and return zero for infinity without
+float-cast warnings; implicit integer operands additionally report leading-data
+and precision-loss notices in source order. `num_compare` follows Zend's unordered
+result of +1; greater-than must reverse operands, not test for a positive result.
+Source: `zend_compare`, `zendi_try_get_long`, `zval_get_long_func`,
+`zend_dval_to_lval_cap`, and `i_zend_is_true`. Run
+`python3 tests/semantics/numeric_context.py` for keys, casts, numeric comparisons
+and warning identities. Handler execution and general mixed-type comparison still
+belong to later machine integration.
+
+Remaining arithmetic obligations include power and remaining contextual dispatch
+(e.g. type coercions, string/mixed comparisons and increment/decrement).
+The passing first milestone does not establish complete arithmetic or core PHP.
