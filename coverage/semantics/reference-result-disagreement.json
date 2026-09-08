@@ -1,0 +1,81 @@
+{
+  "scope": "historical raw semantic disagreement; newly discovered outside prior source selection",
+  "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation_commit": "467721230f4963ec1192b49f0de18f26ba8c8633",
+  "implementation_fingerprint": {
+    "sha256": "13fd291914ea45895d78f5f074127e8057b0e9eec6472cc196256055c8f98c83",
+    "files": 663,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "cases": [
+    {
+      "id": "reference-assignment-result",
+      "status": "unresolved",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-assignment-result.php",
+      "source": "<?php\n$a = 1;\necho ($x =& $a) + ($a = 2);\n",
+      "source_sha256": "c84fcd45bcdf86cb6d573818c0cbc1479c3e7142e7ae7843040ff2f944055d00",
+      "oracle": {
+        "stdout_b64": "NA==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_process": {
+        "stdout_b64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNdz09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTEiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_b64": "",
+        "exit_status": 0
+      },
+      "semantic_observation": {
+        "status": "normal",
+        "stdout": "Mw==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "51"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    }
+  ]
+}

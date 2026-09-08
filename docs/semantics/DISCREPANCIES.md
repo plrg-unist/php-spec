@@ -1,8 +1,8 @@
 # Engine discrepancies
 
-These decisions are explicit departures from the pinned engine, separate from
-ordinary differential agreement. Observed formatting and diagnostic quirks that
-we reproduce are described with their respective semantics.
+This ledger separates intentional departures from observed engine irregularities
+that the specification must reproduce. Only explicitly chosen departures belong
+in the intentional-divergence inventory.
 
 ## Namespace-relative `static` declaration types
 
@@ -30,3 +30,24 @@ outcomes. Regenerate with `python3 tests/semantics/engine_defects.py`. A reprodu
 crash is recorded as `engine-crash`, never as PHP failure or conformance success.
 The static helper's chosen-behavior checks are reported separately from engine
 comparisons; source activation remains subject to its own integration gate.
+
+## Static-return variance: follow the pinned behavior
+
+The pinned `Zend/zend_inheritance.c::zend_type_permits_self`, called by
+`zend_perform_covariant_type_check`, treats a top-level named member matching the
+child class as sufficient for a `static` return type. It does not require every
+intersection member and does not inspect an intersection nested inside DNF.
+
+The retained `variance-static-*` oracle targets establish that a child `static`
+return is accepted against parent `I&J` when its class implements either I or J,
+and rejected when neither matches. An accepted implementation can actually return
+a value that is not J. Parent `(I&J)|null` rejects `static` even when the child
+implements both interfaces. `variance-self-intersection` confirms that an ordinary
+`self` return rejects the missing member in the same setting.
+
+These are candidate engine inconsistencies, not a selected divergence. Future
+variance rules must reproduce the pinned predicate instead of replacing it with
+logical set inclusion. [Oracle evidence](../../coverage/semantics/conformance-oracle.json)
+retains exact sources, diagnostics, process outcomes and source hashes; the
+[catalog](../../tests/semantics/conformance/cases.json) names each witness. No
+variance implementation or source-class coverage is established by these probes.

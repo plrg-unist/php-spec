@@ -47,8 +47,8 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "be2de4b18192ace95a338ea5ed855f938468b3d7ca41cb2628a538eac87d1cce",
-    "tests/semantics/conformance/oracle.py": "614590577b5db260b33a917071dfb5b5bbfe39184c47afd4271021bf96ce4295",
+    "tests/semantics/conformance/cases.json": "eeebd743862680984522e1309fbab6d32dbddb865b475b5c5eb67234a0e86c77",
+    "tests/semantics/conformance/oracle.py": "3090b5f3962d0a7d0d68534c5fac50a05d837d9ed320adca6b40f272387adf22",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
     "tests/semantics/conformance/array-reference-copy.php": "f41c8eb1bf51cdd40f2a02d7cc953a14b47dcce558c54f847c83d511bbfef091",
@@ -117,10 +117,21 @@
     "tests/semantics/conformance/parameter-global-relative-null.php": "9a93d67973a787da780ca51da9e5bacfc0275cf45f0a1765574f43720d2162d0",
     "tests/semantics/conformance/parameter-global-relative-true.php": "8e74dd9d476634eda480f52cfc4f49884208b67890fd6fd0578218053c5a5332",
     "tests/semantics/conformance/parameter-named-relative-true.php": "8bdd99c6186fcecda9d59bd9bd7a6f26988bdb93fcfbcaed5c17260b7da78996",
+    "tests/semantics/conformance/trait-deferred-self-union.php": "646f148be66dbfa9bff557d1c4cd78ca437984afd4e855c98f145a1d08f37288",
+    "tests/semantics/conformance/class-direct-self-union.php": "4ac7ba79800b75be4989c78d71b03b5158a113260c48271649a33ead1d2d40e2",
+    "tests/semantics/conformance/trait-deferred-parent.php": "431b5d7ee3bc1ff1d4eacbbf6367eaec2242e12bc2c0f21b06a94a6eeaf0a36f",
+    "tests/semantics/conformance/variance-static-intersection-first.php": "0e330f285bd11a62df052cf2b5dfb1cb44f40592c8cabb2aa9767f5da2015e50",
+    "tests/semantics/conformance/variance-static-intersection-second.php": "68f5330af3ccd4ae24b0a225862b56a964b1c7235859e68711c496dfcc8f2d9a",
+    "tests/semantics/conformance/variance-static-intersection-neither.php": "7c7d4fbe21a651f1e6e4a246ec5fe98a5ee7397d264afd1ec90721b0684e8a0c",
+    "tests/semantics/conformance/variance-static-dnf-both.php": "74cc36bcc04d73d9a6ed920ee73821830fc0235079f088b647dfbc59ac65b768",
+    "tests/semantics/conformance/variance-self-intersection.php": "388d4f2601d94883d3945d7152ca0d5f9128545051a8933917d9d7e7d4ff1c85",
+    "tests/semantics/conformance/reference-assignment-result.php": "c84fcd45bcdf86cb6d573818c0cbc1479c3e7142e7ae7843040ff2f944055d00",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
-    "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7"
+    "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7",
+    "vendor/php-src/Zend/zend_inheritance.c": "69793711dc0a88c93545be87baa57e2fca26f2dc2e0701a8d956611980fee486",
+    "vendor/php-src/Zend/zend_vm_def.h": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41"
   },
   "results": [
     {
@@ -799,6 +810,96 @@
       "file": "/home/user/workspace/php-spec/tests/semantics/conformance/parameter-named-relative-true.php",
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "ZGVjbGFyZWQ=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "trait-deferred-self-union",
+      "source_sha256": "646f148be66dbfa9bff557d1c4cd78ca437984afd4e855c98f145a1d08f37288",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/trait-deferred-self-union.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "ZGVjbGFyZWQ=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "class-direct-self-union",
+      "source_sha256": "4ac7ba79800b75be4989c78d71b03b5158a113260c48271649a33ead1d2d40e2",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/class-direct-self-union.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IER1cGxpY2F0ZSB0eXBlIEMgaXMgcmVkdW5kYW50IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9jbGFzcy1kaXJlY3Qtc2VsZi11bmlvbi5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "trait-deferred-parent",
+      "source_sha256": "431b5d7ee3bc1ff1d4eacbbf6367eaec2242e12bc2c0f21b06a94a6eeaf0a36f",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/trait-deferred-parent.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "ZGVjbGFyZWQ=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "variance-static-intersection-first",
+      "source_sha256": "0e330f285bd11a62df052cf2b5dfb1cb44f40592c8cabb2aa9767f5da2015e50",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/variance-static-intersection-first.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "bm90Sg==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "variance-static-intersection-second",
+      "source_sha256": "68f5330af3ccd4ae24b0a225862b56a964b1c7235859e68711c496dfcc8f2d9a",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/variance-static-intersection-second.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "ZGVjbGFyZWQ=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "variance-static-intersection-neither",
+      "source_sha256": "7c7d4fbe21a651f1e6e4a246ec5fe98a5ee7397d264afd1ec90721b0684e8a0c",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/variance-static-intersection-neither.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEM6OmYoKTogc3RhdGljIG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIFA6OmYoKTogSSZKIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS92YXJpYW5jZS1zdGF0aWMtaW50ZXJzZWN0aW9uLW5laXRoZXIucGhwIG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "variance-static-dnf-both",
+      "source_sha256": "74cc36bcc04d73d9a6ed920ee73821830fc0235079f088b647dfbc59ac65b768",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/variance-static-dnf-both.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEM6OmYoKTogc3RhdGljIG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIFA6OmYoKTogKEkmSil8bnVsbCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvdmFyaWFuY2Utc3RhdGljLWRuZi1ib3RoLnBocCBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "variance-self-intersection",
+      "source_sha256": "388d4f2601d94883d3945d7152ca0d5f9128545051a8933917d9d7e7d4ff1c85",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/variance-self-intersection.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEM6OmYoKTogQyBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBQOjpmKCk6IEkmSiBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvdmFyaWFuY2Utc2VsZi1pbnRlcnNlY3Rpb24ucGhwIG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "reference-assignment-result",
+      "source_sha256": "c84fcd45bcdf86cb6d573818c0cbc1479c3e7142e7ae7843040ff2f944055d00",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/reference-assignment-result.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "NA==",
       "stderr": "",
       "exit_status": 0,
       "expected_match": true

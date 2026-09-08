@@ -31,8 +31,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
 - References agent owns source execution/storage after reviewed ownership `41e8fa2b`;
-  read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Next audit internal HELD
-  roots before enabling pruning, conditional COW and source embedded references.
+  read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
+  pruning `46772123` are reviewed; next fix reference-result operands, then COW
+  and source embedded references.
 - Signatures agent owns class linking/variance after reviewed local class headers.
   Local types/signatures are reviewed helpers. They use explicit namespace,
   import, class, position and source contexts and ordered diagnostics; unresolved names remain explicit.
@@ -50,14 +51,15 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `41e8fa2b`: independently repeated **371 exact source comparisons
+- Source machine `46772123`: independently repeated **371 exact source comparisons
   +25 negatives**; ordinary array writes/unset and profile-name fixes included.
   `_SESSION` is ordinary here; HTTP compiler diagnostics remain pending.
 - Ownership `41e8fa2b`: **617 graph +15 machine/boundary helper cases**, 5,075
   assertions, independently repeated; 150 extra reviewer graph probes passed.
   Explicit allocated graphs preserve uncollected cycles; task captures move and
-  clear scratch fields. Driver pruning, internal HELD roots, COW and source
-  reference/GC integration remain pending.
+  clear scratch fields. Scoped HELD/driver pruning `46772123` independently passes
+  **617 graph +27 boundary cases**, 5,125 assertions. Terminal nonbudget cleanup
+  restores ownership boundaries; COW, source embedded refs and GC remain pending.
 - Numeric, integer, parsing, formatting, coercion and string helpers independently
   reviewed/repeated; see NUMERICS and their reports. Power `4e9256ba` passed
   **3,660 bit-exact cases**; exact source/FMA contractions and 657 ELF data words
@@ -77,11 +79,12 @@ timeouts and interrupted campaigns never count as validation passes.
   10 Unsupported, plus 57 exact frontend restrictions and 57 separate edited
   compiler checks. Expanded independent matrix: 235 comparisons/13 descriptors.
   Bodies are retained syntax; source activation and class linking remain pending.
-- **68 independent oracle targets**, 15 integrated into the reviewed source
+- **77 independent oracle targets**, 15 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Known admitted mismatch under immediate repair: `($x=&$a)+($a=2)` with `$a=1`
   gives PHP 4 versus spec 3. Reference-assignment results need owning reference
-  operands. The 371-case selection does not cover this failing source.
+  operands. [Raw discrepancy](coverage/semantics/reference-result-disagreement.json)
+  records this newly uncovered regression outside the prior 371-case selection.
 - Delayed names, self-assignment capture, cyclic arrays and NaN sharing identity
   have retained discriminators. Operator compile lines differ from AST/LHS lines.
   Reference wrappers/temporary ownership must preserve these observations.
@@ -95,11 +98,13 @@ timeouts and interrupted campaigns never count as validation passes.
   semantics, avoiding the pinned compiler crash/accidental parent substitution.
   Exact observations and rationale are in DISCREPANCIES. Crash reproduction is
   not conformance; source activation requires its own intended-behavior witnesses.
+  Static-return intersection/DNF variance irregularities are separately retained
+  in that ledger and must follow the pin; no new departure was selected.
 
 ## Next gates
 
-Review the references runner’s scoped HELD/driver integration, then fix the
-admitted reference-assignment-result mismatch before COW/embedded references.
+Fix and review the newly uncovered reference-assignment-result mismatch before
+COW/embedded references; its retained witness must join the source regression gate.
 Class linking/variance must follow pinned source predicates and phase ordering.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,
 mixed comparisons, handlers and configurable precision need integration.

@@ -974,6 +974,130 @@
       "expected_exit_status": 0,
       "provenance": "independently authored review regression; not derived from a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "trait-deferred-self-union",
+      "file": "tests/semantics/conformance/trait-deferred-self-union.php",
+      "purpose": "Trait binding retains an accepted self|C union rather than rerunning local duplicate-type checks.",
+      "obligations": [
+        "classes.traits",
+        "static.signature-variance"
+      ],
+      "expected_stdout": "declared",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "class-direct-self-union",
+      "file": "tests/semantics/conformance/class-direct-self-union.php",
+      "purpose": "A directly declared self|C method rejects duplicate C, contrasting deferred trait binding.",
+      "obligations": [
+        "classes.traits",
+        "static.signature-variance"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Duplicate type C is redundant in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "trait-deferred-parent",
+      "file": "tests/semantics/conformance/trait-deferred-parent.php",
+      "purpose": "Trait parent return type does not force a no-parent error merely by binding the trait.",
+      "obligations": [
+        "classes.traits",
+        "static.signature-variance"
+      ],
+      "expected_stdout": "declared",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "variance-static-intersection-first",
+      "file": "tests/semantics/conformance/variance-static-intersection-first.php",
+      "purpose": "Pinned static-return shortcut accepts matching only the first intersection member; actual returned C is not J.",
+      "obligations": [
+        "static.signature-variance",
+        "classes.late-static-binding"
+      ],
+      "expected_stdout": "notJ",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "variance-static-intersection-second",
+      "file": "tests/semantics/conformance/variance-static-intersection-second.php",
+      "purpose": "Pinned static-return shortcut also accepts matching only the second intersection member.",
+      "obligations": [
+        "static.signature-variance",
+        "classes.late-static-binding"
+      ],
+      "expected_stdout": "declared",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "variance-static-intersection-neither",
+      "file": "tests/semantics/conformance/variance-static-intersection-neither.php",
+      "purpose": "Pinned static-return shortcut rejects when no named intersection member matches.",
+      "obligations": [
+        "static.signature-variance"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Declaration of C::f(): static must be compatible with P::f(): I&J in {FILE} on line 4\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "variance-static-dnf-both",
+      "file": "tests/semantics/conformance/variance-static-dnf-both.php",
+      "purpose": "Nested intersection in nullable DNF is rejected for static even when the child implements both members.",
+      "obligations": [
+        "static.signature-variance"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Declaration of C::f(): static must be compatible with P::f(): (I&J)|null in {FILE} on line 4\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "variance-self-intersection",
+      "file": "tests/semantics/conformance/variance-self-intersection.php",
+      "purpose": "Ordinary self covariance rejects the missing intersection member, contrasting the static shortcut.",
+      "obligations": [
+        "static.signature-variance"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Declaration of C::f(): C must be compatible with P::f(): I&J in {FILE} on line 4\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "reference-assignment-result",
+      "file": "tests/semantics/conformance/reference-assignment-result.php",
+      "purpose": "Reference-assignment expression yields an owning reference cell whose value is read by the later consumer; newly found PHP4/spec3 regression.",
+      "obligations": [
+        "storage.aliases",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "4",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-reproduced source/phase discriminator before implementation; not derived from a PHPT",
+      "semantic_status": "pending",
+      "known_disagreement": "coverage/semantics/reference-result-disagreement.json"
     }
   ]
 }

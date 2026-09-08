@@ -21,7 +21,7 @@ def main():
     def fingerprints():
         return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
     watched += [ROOT / 'vendor/php-src/Zend' / name for name in
-                ('zend_compile.c', 'zend_operators.c', 'zend_hash.c', 'zend_gc.c')]
+                ('zend_compile.c', 'zend_operators.c', 'zend_hash.c', 'zend_gc.c', 'zend_inheritance.c', 'zend_vm_def.h')]
     before = fingerprints()
     flags = [x for k, v in profile.items() for x in ('-d', k + '=' + v)]
     environment = dict(os.environ, LC_ALL='C', TZ='UTC')

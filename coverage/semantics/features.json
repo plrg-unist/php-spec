@@ -3247,7 +3247,8 @@
         "tests/semantics/conformance/return-reference.php",
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
-        "tests/semantics/conformance/array-distinct-cycle-comparison.php"
+        "tests/semantics/conformance/array-distinct-cycle-comparison.php",
+        "tests/semantics/conformance/reference-assignment-result.php"
       ]
     },
     {
@@ -3309,17 +3310,26 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/39-ownership.watsup"
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/43-array-unset-control.watsup"
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent reviewer: allocation ownership41e8fa2b;617 pure graphs+15 boundary/machine cases5075 assertions, plus150 independent transitive-closure graph probes. Source machine regression371 exact comparisons+25negatives passed. Allocation pruning is not driver-enabled; internal HELD roots, conditional COW, embedded array references and source GC remain pending."
+      "review": "Independent scoped HELD/driver-pruning review46772123:617 graph+27 boundary cases5125 assertions and371 selected exact source comparisons+25negatives passed. Prior graph foundation41e8fa2b had150 independent closure-oracle probes. The newly uncovered reference-assignment-result4vs3 regression lies outside the previous selection and requires immediate repair; conditional COW, embedded refs, callbacks and source GC remain pending.",
+      "planned_source_tests": [
+        "tests/semantics/conformance/reference-assignment-result.php"
+      ]
     },
     {
       "id": "containers.ordered-arrays",
@@ -4743,7 +4753,18 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/trait-deferred-self-union.php",
+        "tests/semantics/conformance/class-direct-self-union.php",
+        "tests/semantics/conformance/trait-deferred-parent.php",
+        "tests/semantics/conformance/variance-static-intersection-first.php",
+        "tests/semantics/conformance/variance-static-intersection-second.php",
+        "tests/semantics/conformance/variance-static-intersection-neither.php",
+        "tests/semantics/conformance/variance-static-dnf-both.php",
+        "tests/semantics/conformance/variance-self-intersection.php"
+      ],
+      "notes": "Follow pinned zend_type_permits_self static-return shortcut, including the retained intersection versus nested DNF irregularity; logical set inclusion is not an interchangeable implementation."
     },
     {
       "id": "static.never-return",
@@ -4824,7 +4845,12 @@
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/trait-deferred-self-union.php",
+        "tests/semantics/conformance/class-direct-self-union.php",
+        "tests/semantics/conformance/trait-deferred-parent.php"
+      ]
     },
     {
       "id": "classes.trait-alias",
@@ -5006,7 +5032,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/variance-static-intersection-first.php",
+        "tests/semantics/conformance/variance-static-intersection-second.php"
+      ]
     },
     {
       "id": "classes.instanceof",
