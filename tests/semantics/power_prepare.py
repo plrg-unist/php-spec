@@ -3,6 +3,8 @@
 import hashlib
 import json
 import os
+import random
+import struct
 import time
 from pathlib import Path
 import subprocess
@@ -21,15 +23,27 @@ def pnum(value):
     return f'({"NINT" if value[0] == "i" else "NFLOAT"} $({int(value[1], 10 if value[0] == "i" else 16)}))'
 
 
-def main():
+def main(full=False):
     subprocess.run([str(ROOT / 'scripts/opam-exec.sh'), 'dune', 'build', '--root',
                     str(HERE), 'numeric_runner.exe'], cwd=ROOT, check=True)
     runner = HERE / '_build/default/numeric_runner.exe'
-    specs = SPECS
+    specs = SPECS + ([ROOT/f'spec/semantics/{name}.watsup' for name in
+                     ['07-fma','08-libm-data','09-libm-power']] if full else [])
     watched = specs + [PHP, Path(__file__), HERE / 'numeric_runner.ml', runner,
                        HERE/'power_platform.py', ROOT/'dependencies/libm-provenance.json']
     def fingerprints():
         return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
+    if full:
+        watched += [ROOT/'scripts/generate-libm-data.py', HERE/'fixtures/fma.watsup', HERE/'power.py']
+        watched += [ROOT/'vendor/libm-pow-source/sysdeps/ieee754/dbl-64'/name for name in
+                    ['e_pow_log_data.c','e_exp_data.c','math_config.h']]
+        data = ROOT/'spec/semantics/08-libm-data.watsup'
+        original = data.read_bytes()
+        subprocess.run(['python3',str(ROOT/'scripts/generate-libm-data.py')],cwd=ROOT,check=True)
+        assert original == data.read_bytes(), 'generated libm data was stale'
+        run = subprocess.run([str(runner),str(SPECS[0]),str(specs[-3]),str(HERE/'fixtures/fma.watsup')],
+                             capture_output=True,text=True,check=True,timeout=30)
+        assert run.stdout.strip() == 'true', run.stdout
     before = fingerprints()
     started = time.monotonic()
     platform = inspect_platform()
@@ -47,6 +61,45 @@ def main():
               for a in [0x3ff0000000000000,0xbff0000000000000,0x3fe0000000000000,0x4000000000000000]
               for b in [0,2**63,1,0x8000000000000001,0x43e0000000000000,0xc3e0000000000000,
                         0x7ff0000000000000,0xfff0000000000000,0x7ff8000000000042,0x7ff0000000000001]]
+    if full:
+        def floating(value):
+            return ['f',struct.pack('>d',value).hex()]
+        cases += [[['i',str(a)],['i',str(b)]] for a,b in
+                  [(2,64),(3,40),(10,20),(-3,41),(2,-1074),(2,-1075),(2,-1022),
+                   (2,1023),(2,1024),(1,-9223372036854775808)]]
+        cases += [[floating(a),floating(b)] for a,b in
+                  [(2.,.5),(3.,.5),(.5,.5),(2.,3.14),(10.,.1),(1e-300,.5),
+                   (1e300,.5),(1.0000000000000002,1e15),(0.9999999999999999,1e15),
+                   (2.,-1074.5),(2.,-1073.5),(-2.,-1073.),(-2.,1023.)]]
+        rng = random.Random(85016)
+        cases += [[['f',f'{rng.getrandbits(64):016x}'],['f',f'{rng.getrandbits(64):016x}']]
+                  for _ in range(50)]
+        cases += [[['f',f'{rng.randrange(0x3fd0000000000000,0x4020000000000000):016x}'],floating(rng.uniform(-100,100))]
+                  for _ in range(50)]
+    if full:
+        # All logarithm table cell boundaries and neighboring binary64 values.
+        for cell in range(129):
+            center = 0x3fe6955500000000 + cell * (1 << 45)
+            cases += [[['f',f'{center+delta:016x}'],floating(exponent)]
+                      for delta in [-1,0,1] for exponent in [.5,3.14,-100.,1e15]]
+        # Exponential range/table reduction boundaries, with both adjacent inputs.
+        for k in [-137600,-137599,-137472,-131072,-94592,-128,-127,-1,0,1,127,128,65408,131071,131072]:
+            center=int(floating((k+.5)/128)[1],16)
+            cases += [[floating(2.),['f',f'{center+delta:016x}']] for delta in [-1,0,1]]
+        for base in [1,2,0x000fffffffffffff,0x0010000000000000,0x0010000000000001,
+                     0x3fefffffffffffff,0x3ff0000000000001,0x7fefffffffffffff]:
+            cases += [[['f',f'{base:016x}'],floating(exponent)] for exponent in [.5,-.5,2.,-2.,1.,3.]]
+        cases += [[['i',str(rng.randrange(-100000000,100000000))],['i',str(rng.randrange(2,50))]] for _ in range(100)]
+        # Dense finite outputs across many binary scales, separate from random
+        # raw bit patterns that often immediately take domain/overflow branches.
+        for _ in range(1000):
+            base=(rng.randrange(1003,1044) << 52) + rng.getrandbits(52)
+            cases.append([['f',f'{base:016x}'],floating(rng.uniform(-20,20))])
+        for _ in range(100):
+            cases.append([['f',f'{rng.randrange(1,1<<52):016x}'],floating(rng.uniform(-.9,.9))])
+        for boundary in [958 << 52, 1086 << 52, 1075 << 52, 1076 << 52]:
+            cases += [[floating(base),['f',f'{(boundary+delta)|(sign<<63):016x}']]
+                      for delta in [-1,0,1] for sign in [0,1] for base in [-2.,-.5,1.,2.]]
     php = r'''
 $libm_paths=[];
 foreach(explode("\n",file_get_contents('/proc/self/maps'))as$line){
@@ -83,14 +136,15 @@ foreach(json_decode(stream_get_contents(STDIN),true)as[$av,$bv]){
         assert result[2] in [[],[[8192,'Power of base 0 and negative exponent is deprecated']]],result
         number=f'({"NFLOAT" if result[0]=="double" else "NINT"} $({value}))'
         notice=str(bool(result[2])).lower()
-        expected=f'POWERDONE {number} {notice}'
-        operation='power_prepare'
+        expected=f'({number}, {notice})' if full else f'POWERDONE {number} {notice}'
+        operation='num_pow' if full else 'power_prepare'
         clauses.append(f'dec $pcase{index}() : bool\ndef $pcase{index}() = true\n'
                        f'  -- if ${operation}({pnum(a)}, {pnum(b)}) = {expected}\n')
-    # Intermediate decomposition check, not agreement on 2**64's result.
-    index=len(cases)
-    clauses.append(f'dec $pcase{index}() : bool\ndef $pcase{index}() = true\n'
-                   '  -- if $power_prepare(NINT 2, NINT 64) = POWERGENERAL 4607182418800017408 4895412794951729152 4607182418800017408 0 false\n')
+    if not full:
+        # Intermediate decomposition check, not agreement on 2**64's result.
+        index=len(cases)
+        clauses.append(f'dec $pcase{index}() : bool\ndef $pcase{index}() = true\n'
+                       '  -- if $power_prepare(NINT 2, NINT 64) = POWERGENERAL 4607182418800017408 4895412794951729152 4607182418800017408 0 false\n')
     with tempfile.TemporaryDirectory(prefix='powerprep-',dir=ROOT/'.tools')as tmp:
         for start in range(0,len(clauses),60):
             stop=min(start+60,len(clauses));fixture=Path(tmp)/f'cases-{start}.watsup'
@@ -103,10 +157,10 @@ foreach(json_decode(stream_get_contents(STDIN),true)as[$av,$bv]){
                 raise SystemExit(f'FAIL cases {start}..{stop}: {run.stdout}{run.stderr}')
     assert platform == inspect_platform(), 'power platform changed during validation'
     assert before==fingerprints(),'power implementation changed during validation'
-    report={'cases':len(cases),'pending_task_checks':1,'elapsed_seconds':round(time.monotonic()-started,3),'result':'pass','fingerprints':before,'profile':profile,'platform':platform,
+    report={'cases':len(cases),'pending_task_checks':0 if full else 1,'elapsed_seconds':round(time.monotonic()-started,3),'result':'pass','fingerprints':before,'profile':profile,'platform':platform,
             'environment':{'LC_ALL':'C','TZ':'UTC'},
             'case_manifest_sha256':hashlib.sha256(json.dumps([cases,outputs],sort_keys=True).encode()).hexdigest()}
-    (ROOT/'coverage/semantics/power-prepare.json').write_text(json.dumps(report,indent=2)+'\n')
+    (ROOT/('coverage/semantics/power.json' if full else 'coverage/semantics/power-prepare.json')).write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report))
 
 

@@ -111,6 +111,21 @@ Power validation pins both PHP and its actual loaded libm/selected CPU variant;
 see [power provenance](POWER-PROVENANCE.md). Preload/audit interposition is rejected
 by these tests, and no platform routine computes semantic answers.
 
-Remaining arithmetic obligations include general power and remaining contextual dispatch
-(e.g. type coercions and string/mixed comparisons).
-The passing first milestone does not establish complete arithmetic or core PHP.
+`07-fma.watsup` supplies exact single-rounding finite fused multiply-add, with
+seven independent rounding/cancellation identities in
+`tests/semantics/fixtures/fma.watsup`.
+`08-libm-data.watsup` encodes the pinned GNU constants/tables; regenerate it with
+`scripts/generate-libm-data.py`, which uses only integer operations for encoding.
+`09-libm-power.watsup` resolves every `POWERGENERAL` task through the selected
+contracted log/exp graph. `num_pow(pnumber, pnumber)` returns a number and pending
+zero-base-negative-exponent notice. It performs no native floating arithmetic.
+The graph preserves intermediate FMA versus non-FMA rounding, including separate
+underflow correction; it intentionally models the selected libm approximation,
+which is not necessarily correctly rounded mathematical exponentiation.
+`python3 tests/semantics/power.py` checks whole-power result types/bits, special
+cases, integer overflow sequencing, all log-table boundaries, subnormal/overflow
+and exponent-parity thresholds, plus deterministic finite/raw-bit samples.
+The LGPL-derived modules retain source attribution and local license references.
+
+Remaining integration obligations include type coercions and string/mixed
+comparisons. Passing helper tests do not establish complete PHP core coverage.

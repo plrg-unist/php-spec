@@ -1,0 +1,102 @@
+;; Pure translation of the selected GNU libc pow FMA operation graph.
+;; Copyright (C) 2018-2024 Free Software Foundation, Inc.
+;; LGPL-2.1-or-later; see vendor/libm-pow-source/COPYING.LIB and LICENSES.
+;; Target contractions are documented in docs/semantics/POWER-PROVENANCE.md.
+dec $pow_log(nat) : (nat, nat)
+def $pow_log(n_ix) = (n_y, $float_add($float_sub(n_hi, n_y), n_lo))
+  -- if n_tmp = $long_unsigned($(n_ix - 4604531861337669632))
+  -- if n_index = $((n_tmp / 35184372088832) \ 128)
+  -- if IRESULT i_k = $long_shr($long_signed(n_tmp), 52)
+  -- if n_z = $long_unsigned($(n_ix - (n_tmp / 4503599627370496) * 4503599627370496))
+  -- if n_kd = $float_of_int(i_k)
+  -- if (n_invc, n_logc, n_logctail) = $pow_log_table(n_index)
+  -- if n_r = $float_fma_finite(n_z, n_invc, 13830554455654793216)
+  -- if n_t1 = $float_fma_finite(n_kd, $pow_ln2hi(), n_logc)
+  -- if n_t2 = $float_add(n_t1, n_r)
+  -- if n_lo1 = $float_fma_finite(n_kd, $pow_ln2lo(), n_logctail)
+  -- if n_lo2 = $float_add($float_sub(n_t1, n_t2), n_r)
+  -- if n_ar = $float_mul($pow_log_coeff(0), n_r)
+  -- if n_ar2 = $float_mul(n_r, n_ar)
+  -- if n_ar3 = $float_mul(n_r, n_ar2)
+  -- if n_hi = $float_add(n_t2, n_ar2)
+  -- if n_lo3 = $float_fma_finite(n_ar, n_r, $float_neg(n_ar2))
+  -- if n_lo4 = $float_add($float_sub(n_t2, n_hi), n_ar2)
+  -- if n_p1 = $float_fma_finite(n_r, $pow_log_coeff(2), $pow_log_coeff(1))
+  -- if n_p2 = $float_fma_finite(n_r, $pow_log_coeff(4), $pow_log_coeff(3))
+  -- if n_p3 = $float_fma_finite(n_r, $pow_log_coeff(6), $pow_log_coeff(5))
+  -- if n_p4 = $float_fma_finite(n_ar2, n_p3, n_p2)
+  -- if n_p5 = $float_fma_finite(n_ar2, n_p4, n_p1)
+  -- if n_lo = $float_fma_finite(n_ar3, n_p5, $float_add($float_add($float_add(n_lo1, n_lo2), n_lo3), n_lo4))
+  -- if n_y = $float_add(n_hi, n_lo)
+
+dec $pow_restore_zero(nat, nat) : nat
+def $pow_restore_zero(n_y, n_sbits) = $((n_sbits / 9223372036854775808) * 9223372036854775808)
+  -- if $num_zero(NFLOAT n_y)
+def $pow_restore_zero(n_y, n_sbits) = n_y -- if ~$num_zero(NFLOAT n_y)
+
+dec $pow_correction_one(nat) : nat
+def $pow_correction_one(n) = 13830554455654793216 -- if $($float_compare(n, 0) < 0)
+def $pow_correction_one(n) = 4607182418800017408 -- if $($float_compare(n, 0) >= 0)
+
+dec $pow_underflow_round(nat, nat, nat, nat) : nat
+def $pow_underflow_round(n_scale, n_product, n_y, n_sbits) = n_y
+  -- if $(n_y \ 9223372036854775808 >= 4607182418800017408)
+def $pow_underflow_round(n_scale, n_product, n_y, n_sbits) = $pow_restore_zero(n_result, n_sbits)
+  -- if $(n_y \ 9223372036854775808 < 4607182418800017408)
+  -- if n_one = $pow_correction_one(n_y)
+  -- if n_lo1 = $float_add($float_sub(n_scale, n_y), n_product)
+  -- if n_hi = $float_add(n_one, n_y)
+  -- if n_lo2 = $float_add($float_add($float_sub(n_one, n_hi), n_y), n_lo1)
+  -- if n_result = $float_sub($float_add(n_hi, n_lo2), n_one)
+
+dec $pow_exp_finish(nat, nat, nat, bool) : nat
+def $pow_exp_finish(n_tmp, n_sbits, n_ki, false) = $float_fma_finite(n_sbits, n_tmp, n_sbits)
+def $pow_exp_finish(n_tmp, n_sbits, n_ki, true) = $float_mul(9151314442816847872, $float_fma_finite(n_scale, n_tmp, n_scale))
+  -- if $((n_ki / 2147483648) \ 2) = 0
+  -- if n_scale = $long_unsigned($(n_sbits - 4544132024016830464))
+def $pow_exp_finish(n_tmp, n_sbits, n_ki, true) = $float_mul(4503599627370496, $pow_underflow_round(n_scale, n_product, n_y, n_scale))
+  -- if $((n_ki / 2147483648) \ 2) = 1
+  -- if n_scale = $((n_sbits + 4602678819172646912) \ 18446744073709551616)
+  -- if n_product = $float_mul(n_scale, n_tmp)
+  -- if n_y = $float_add(n_scale, n_product)
+
+dec $pow_exp_reduce(nat, nat, nat) : nat
+def $pow_exp_reduce(n_x, n_xtail, n_sign) = $pow_exp_finish(n_tmp, n_sbits, n_ki, b_large)
+  -- if b_large = $((n_x / 4503599627370496) \ 2048 >= 1032)
+  -- if n_ki = $float_fma_finite(n_x, $pow_invln2N(), $pow_shift())
+  -- if n_kd = $float_sub(n_ki, $pow_shift())
+  -- if n_r = $float_add($float_fma_finite(n_kd, $pow_negln2loN(), $float_fma_finite(n_kd, $pow_negln2hiN(), n_x)), n_xtail)
+  -- if (n_tail, n_scalehead) = $pow_exp_table($(n_ki \ 128))
+  -- if n_top = $((n_ki + n_sign * 262144) * 35184372088832 \ 18446744073709551616)
+  -- if n_sbits = $((n_scalehead + n_top) \ 18446744073709551616)
+  -- if n_r2 = $float_mul(n_r, n_r)
+  -- if n_r4 = $float_mul(n_r2, n_r2)
+  -- if n_p1 = $float_fma_finite(n_r, $pow_exp_coeff(1), $pow_exp_coeff(0))
+  -- if n_p2 = $float_fma_finite(n_r, $pow_exp_coeff(3), $pow_exp_coeff(2))
+  -- if n_tmp = $float_fma_finite(n_r4, n_p2, $float_fma_finite(n_r2, n_p1, $float_add(n_tail, n_r)))
+
+dec $pow_exp(nat, nat, nat) : nat
+def $pow_exp(n_x, n_xtail, n_sign) = $pow_apply_sign(4607182418800017408, n_sign)
+  -- if $((n_x / 4503599627370496) \ 2048 < 969)
+def $pow_exp(n_x, n_xtail, n_sign) = $finfinity(n_sign)
+  -- if $((n_x / 4503599627370496) \ 2048 >= 1033)
+  -- if $(n_x < 9223372036854775808)
+def $pow_exp(n_x, n_xtail, n_sign) = $(n_sign * 9223372036854775808)
+  -- if $((n_x / 4503599627370496) \ 2048 >= 1033)
+  -- if $(n_x >= 9223372036854775808)
+def $pow_exp(n_x, n_xtail, n_sign) = $pow_exp_reduce(n_x, n_xtail, n_sign)
+  -- if $((n_x / 4503599627370496) \ 2048 >= 969)
+  -- if $((n_x / 4503599627370496) \ 2048 < 1033)
+
+dec $pow_logexp(nat, nat, nat) : nat
+def $pow_logexp(n_ix, n_y, n_sign) = $pow_exp(n_ehi, n_elo, n_sign)
+  -- if (n_hi, n_lo) = $pow_log(n_ix)
+  -- if n_ehi = $float_mul(n_y, n_hi)
+  -- if n_elo = $float_fma_finite(n_y, n_lo, $float_fma_finite(n_y, n_hi, $float_neg(n_ehi)))
+
+dec $power_complete(powerplan) : (pnumber, bool)
+def $power_complete(POWERDONE pnumber b) = (pnumber, b)
+def $power_complete(POWERGENERAL n_factor n_ix n_y n_sign b) = (NFLOAT $float_mul(n_factor, $pow_logexp(n_ix, n_y, n_sign)), b)
+
+dec $num_pow(pnumber, pnumber) : (pnumber, bool)
+def $num_pow(pnumber_1, pnumber_2) = $power_complete($power_prepare(pnumber_1, pnumber_2))
