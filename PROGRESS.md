@@ -14,7 +14,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes reviewed; unset/embedded refs/foreach pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes/unset reviewed; embedded refs/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | In progress — local type helpers reviewed; signatures active, calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
@@ -45,7 +45,8 @@ timeouts and interrupted campaigns never count as validation passes.
   recursive dimension descriptors defer fetches through key effects. Shared-ID
   identity shortcuts are observable with NaN, without PHP object identity.
   Writable paths shallow-copy container graphs, including scalar-alias cycles.
-  Dimension unset and exact embedded-reference topology are next; see DESIGN.
+  Dimension unset preserves diagnostic modes/history and failed-delete separation.
+  Exact embedded-reference topology is next; see DESIGN.
 - Shared working tree: stage owned files only, never push. Baseline `082a3a2b`;
   the workspace gitlink was already modified.
 
@@ -62,7 +63,8 @@ timeouts and interrupted campaigns never count as validation passes.
   scalar storage `5a083605` (53 comparisons +12 negatives), numeric bridge
   `e3fbd6e8` (157 comparisons +16 negatives), ordinary array reads `eb48f793`
   (251 comparisons +22 negatives), writable arrays `f0b3c5ee`
-  (308 comparisons +22 negatives; 44 additional reviewer probes). Stable acceptance fingerprints;
+  (308 comparisons +22 negatives; 44 additional reviewer probes), array unset
+  `83c228cc` (363 comparisons +23 negatives; 19 extra reviewer probes). Stable acceptance fingerprints;
   current report `coverage/semantics/source.json`, raw observations in
   `coverage/results-semantic-source.jsonl`. Phase0 report is historical.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
@@ -92,7 +94,9 @@ escaping or unproved evidence; `make test-semantics` includes them.
 Next: review writable array locations/self-assignment, then COW/reference
 topology; local signature descriptors next. Local types `531a8b40` passed independent
 686-case exact diagnostic repeat, 9 descriptors and 7 Unsupported checks, with
-24 intended relative-static cases separate from oracle agreement; 34 parser rejects
+24 intended relative-static cases separate from oracle agreement; corrective
+`9da9b012` retains 694 cases and passed an expanded 743-case reviewer matrix.
+34 parser rejects
 and one known frontend restriction are explicit. Source declaration activation is pending. Phase1 remains partial: source power,
 remainder/shifts/bitwise/incdec/casts, mixed comparisons, handlers and configurable
 precision still need integration and evidence. Frames/lifecycle remain pending.

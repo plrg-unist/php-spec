@@ -46,4 +46,4 @@ source execution regressions; unfinished behavior returns explicit Unsupported.
 See [semantic design](docs/semantics/DESIGN.md) and
 [numeric reference](docs/semantics/NUMERICS.md) and
 [static types](docs/semantics/STATIC.md) for interfaces and helper checks.
-[Engine discrepancies](docs/semantics/DISCREPANCIES.md) records intentional departures.
+Intentional departures are recorded in [engine discrepancies](docs/semantics/DISCREPANCIES.md).

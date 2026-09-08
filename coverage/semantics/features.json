@@ -3381,15 +3381,21 @@
     {
       "id": "containers.unset",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/38-array-unset.watsup",
+        "spec/semantics/43-array-unset-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: bounded array unset 83c228cc; 363 source comparisons and 23 negatives passed stable fingerprint, plus 19 extra reviewer probes. Embedded references and intermediate string protocols remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/append-history.php"
       ]
@@ -4457,7 +4463,8 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending.",
+      "notes": "Frontend currently rejects direct void parameters before checked AST construction although native parsing accepts them; source integration must reconcile compiler phase/message, not classify this as parser agreement."
     },
     {
       "id": "static.lvalue-rejection",
