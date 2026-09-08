@@ -61,7 +61,9 @@ def main():
         fixed = ['Makefile', 'dune-project', '.tools/php/bin/php',
                  '.tools/php-file.so', '_build/default/adapter/main.exe',
                  'coverage/encoding-spellings.json']
-        for name in fixed + ['spec/semantics/rules.watsup', 'tests/fixture.php']:
+        helper_name = 'tests/semantics/_build/default/numeric_runner.exe'
+        for name in fixed + [helper_name, 'spec/semantics/rules.watsup', 'tests/fixture.php',
+                             'tests/semantics/dune', 'tests/semantics/data.json']:
             path = root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b'original')
@@ -102,10 +104,32 @@ def main():
                 raise AssertionError('missing pinned oracle accepted')
             binary.write_bytes(b'original')
             assert before == validate.implementation_fingerprint(), 'restored fixture differs'
+
+            # Concurrent dune runs may rewrite these without changing any input
+            # or executable. Their presence, contents and deletion are irrelevant.
+            for name in ('.lock', 'trace.csexp', '.filesystem-clock'):
+                log = root / 'tests/semantics/_build' / name
+                log.write_bytes(b'first build')
+                assert before == validate.implementation_fingerprint(), 'build log addition changed identity'
+                log.write_bytes(b'next build')
+                assert before == validate.implementation_fingerprint(), 'build log churn changed identity'
+                log.unlink()
+                assert before == validate.implementation_fingerprint(), 'build log removal changed identity'
+            for name in ('tests/semantics/dune', 'tests/semantics/data.json',
+                         '_build/default/adapter/main.exe', helper_name):
+                artifact = root / name
+                artifact.write_bytes(b'modified')
+                assert before != validate.implementation_fingerprint(), f'changed input ignored: {name}'
+                artifact.write_bytes(b'original')
+            helper = root / helper_name
+            helper.unlink()
+            assert before != validate.implementation_fingerprint(), 'deleted helper binary ignored'
+            helper.write_bytes(b'original')
+            assert before == validate.implementation_fingerprint(), 'restored artifacts differ'
         finally:
             validate.ROOT = original_root
     check_inventory_paths()
-    print('6 stale-identity and 3 invalid-evidence checks rejected; restored identity matched')
+    print('11 stale-identity and 3 invalid-evidence checks rejected; 9 build-log changes ignored; restored identity matched')
 
 
 if __name__ == '__main__':

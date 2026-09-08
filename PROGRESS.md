@@ -114,5 +114,7 @@ Control/calls/objects/dynamic sources/resumable execution/lifetime remain pendin
 entries; source/helper evidence and independent review remain separate.
 Before the first family closes, strengthen this gate to check obligation-specific
 case IDs/current report fingerprints and intentional-divergence source evidence.
-Nine isolated evidence negatives reject source/binary/path drift and missing,
-escaping or unproved evidence; `make test-semantics` includes them.
+Fourteen isolated evidence negatives reject source/config/data/binary/path drift
+and missing, escaping or unproved evidence. Nine generated build-log changes
+preserve identity; executed adapter/helper binaries remain hashed.
+`make test-semantics` includes these checks.

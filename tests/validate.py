@@ -240,9 +240,16 @@ def classify_phase_difference(record, result):
 def implementation_fingerprint():
     roots = ['frontend', 'adapter', 'spec', 'native', 'tests', 'scripts', 'bin', 'vendor/php-parser']
     paths = [path for root in roots for path in (ROOT / root).rglob('*')
-             if path.is_file() and '__pycache__' not in path.parts and path.suffix != '.pyc']
+             if path.is_file() and not {'__pycache__', '_build'}.intersection(path.relative_to(ROOT).parts)
+             and path.suffix != '.pyc']
     paths += [ROOT / name for name in ['Makefile', 'dune-project', '.tools/php/bin/php',
               '.tools/php-file.so', '_build/default/adapter/main.exe', 'coverage/encoding-spellings.json']]
+    # Dune bookkeeping is generated, but executed artifacts remain evidence
+    # inputs. Syntax-only builds need not have built the semantic helper yet;
+    # helper campaigns also require and fingerprint this binary directly.
+    helper = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
+    if helper.exists():
+        paths.append(helper)
     digest = hashlib.sha256()
     for path in sorted(set(paths)):
         digest.update(str(path.relative_to(ROOT)).encode() + b'\0')

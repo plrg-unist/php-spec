@@ -64,6 +64,10 @@ in `tests/invalid-discrepancies.json`; raw failures and pinned lint evidence sta
 in reports. An unlisted failure is never classified through that ledger.
 Each run fingerprints implementation, tests and runtime binaries before and after
 execution; a changing implementation makes the run fail.
+Generated `_build` trees are omitted from source scans; the executed adapter and
+the semantic helper (when built) are explicitly hashed. Helper campaigns also
+require and hash their executable directly. Dune log/lock churn therefore does
+not invalidate evidence, while binary changes still do.
 
 `tests/corpus.py` extracts `FILE`, `FILEEOF`, and `FILE_EXTERNAL` according to
 the matching runner, retaining source/configuration provenance. It does not
