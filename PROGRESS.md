@@ -30,8 +30,10 @@ timeouts and interrupted campaigns never count as validation passes.
 ## Assignments and interfaces
 
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
-- Runner owns source execution and storage/control. Next: exact ownership roots,
-  temporary lifetimes and conditional COW, then embedded array references.
+- Runner owns source execution and storage/control. Next: explicit allocated-graph
+  ownership/RC helpers and temporary lifetimes, followed by source regressions.
+  After independent review and a committed handoff, replace the runner with a
+  fresh agent before source embedded references and conditional COW.
 - Signatures agent owns the class-header compiler, then class linking.
   Local types/signatures are reviewed helpers. Type helpers use namespace/import/class/position/
   source contexts and ordered diagnostics; unresolved names remain explicit.
