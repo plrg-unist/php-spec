@@ -1,0 +1,130 @@
+;; PHP's integer power loop and the selected libm operation's special cases.
+;; Libm special-case translation: Copyright (C) 2018-2024 Free Software Foundation, Inc.
+;; LGPL-2.1-or-later; see vendor/libm-pow-source/COPYING.LIB and LICENSES.
+;; POWERGENERAL is a pending pure log/exp task, never a successful PHP outcome.
+syntax floatpowerplan = FPOWVALUE nat | FPOWLOGEXP nat nat nat
+syntax powerplan = POWERDONE pnumber bool | POWERGENERAL nat nat nat nat bool
+
+dec $pow_checkint(fparts) : nat
+def $pow_checkint(NOTNUMBER n) = 0
+def $pow_checkint(INFINITE n) = 0
+def $pow_checkint(FINITE n_s n_n n_d) = 0 -- if $(n_n \ n_d) =/= 0
+def $pow_checkint(FINITE n_s n_n n_d) = 1 -- if $(n_n \ n_d) = 0 -- if $((n_n / n_d) \ 2) = 1
+def $pow_checkint(FINITE n_s n_n n_d) = 2 -- if $(n_n \ n_d) = 0 -- if $((n_n / n_d) \ 2) = 0
+
+dec $pow_signaling(fparts) : bool
+def $pow_signaling(NOTNUMBER n) = ($((n / 2251799813685248) \ 2) = 0)
+def $pow_signaling(INFINITE n) = false
+def $pow_signaling(FINITE n_s n_n n_d) = false
+
+dec $pow_yspecial(nat, nat, fparts) : floatpowerplan
+def $pow_yspecial(n_x, n_y, FINITE n_s 0 n_d) = FPOWVALUE 4607182418800017408
+  -- if ~$pow_signaling($float_decode(n_x))
+def $pow_yspecial(n_x, n_y, FINITE n_s 0 n_d) = FPOWVALUE $float_add(n_x, n_y)
+  -- if $pow_signaling($float_decode(n_x))
+def $pow_yspecial(4607182418800017408, n_y, NOTNUMBER n) = FPOWVALUE 4607182418800017408
+  -- if ~$pow_signaling(NOTNUMBER n)
+def $pow_yspecial(4607182418800017408, n_y, NOTNUMBER n) = FPOWVALUE $float_add(4607182418800017408, n_y)
+  -- if $pow_signaling(NOTNUMBER n)
+def $pow_yspecial(n_x, n_y, NOTNUMBER n) = FPOWVALUE $float_add(n_x, n_y)
+  -- if n_x =/= 4607182418800017408
+
+dec $pow_yinfinity(nat, nat, fparts) : floatpowerplan
+def $pow_yinfinity(n_x, n_y, NOTNUMBER n) = FPOWVALUE $float_add(n_x, n_y)
+def $pow_yinfinity(n_x, n_y, INFINITE n_s) = FPOWVALUE $finfinity(0) -- if $(n_y < 9223372036854775808)
+def $pow_yinfinity(n_x, n_y, INFINITE n_s) = FPOWVALUE 0 -- if $(n_y >= 9223372036854775808)
+def $pow_yinfinity(n_x, n_y, FINITE n_s n_n n_d) = FPOWVALUE 4607182418800017408 -- if n_n = n_d
+def $pow_yinfinity(n_x, n_y, FINITE n_s n_n n_d) = FPOWVALUE 0
+  -- if ($(n_n < n_d) /\ $(n_y < 9223372036854775808)) \/ ($(n_n > n_d) /\ $(n_y >= 9223372036854775808))
+def $pow_yinfinity(n_x, n_y, FINITE n_s n_n n_d) = FPOWVALUE $finfinity(0)
+  -- if ($(n_n > n_d) /\ $(n_y < 9223372036854775808)) \/ ($(n_n < n_d) /\ $(n_y >= 9223372036854775808))
+
+dec $pow_result_sign(nat, nat) : nat
+def $pow_result_sign(n_x, n_y) = 1
+  -- if $(n_x >= 9223372036854775808)
+  -- if $pow_checkint($float_decode(n_y)) = 1
+def $pow_result_sign(n_x, n_y) = 0
+  -- if ($(n_x < 9223372036854775808) \/ $pow_checkint($float_decode(n_y)) =/= 1)
+
+dec $pow_apply_sign(nat, nat) : nat
+def $pow_apply_sign(n, 0) = n
+def $pow_apply_sign(n, 1) = $float_neg(n)
+
+dec $pow_xexception(nat, nat) : floatpowerplan
+def $pow_xexception(n_x, n_y) = FPOWVALUE $pow_apply_sign($float_mul(n_x, n_x), $pow_result_sign(n_x, n_y))
+  -- if $(n_y < 9223372036854775808)
+def $pow_xexception(n_x, n_y) = FPOWVALUE $float_div(4607182418800017408, $pow_apply_sign($float_mul(n_x, n_x), $pow_result_sign(n_x, n_y)))
+  -- if $(n_y >= 9223372036854775808)
+
+dec $pow_normalize(nat) : nat
+def $pow_normalize(n) = n -- if $(n >= 4503599627370496)
+def $pow_normalize(n) = $long_unsigned($($float_mul(n, 4841369599423283200) - 234187180623265792))
+  -- if $(n < 4503599627370496)
+
+dec $pow_regular(nat, nat, nat) : floatpowerplan
+def $pow_regular(n_x, n_y, n_s) = FPOWVALUE 4607182418800017408
+  -- if $((n_y / 4503599627370496) \ 2048 < 958)
+def $pow_regular(4607182418800017408, n_y, n_s) = FPOWVALUE 4607182418800017408
+  -- if $((n_y / 4503599627370496) \ 2048 >= 1086)
+def $pow_regular(n_x, n_y, n_s) = FPOWVALUE $finfinity(0)
+  -- if $((n_y / 4503599627370496) \ 2048 >= 1086)
+  -- if ($(n_x > 4607182418800017408) /\ $(n_y < 9223372036854775808)) \/ ($(n_x < 4607182418800017408) /\ $(n_y >= 9223372036854775808))
+def $pow_regular(n_x, n_y, n_s) = FPOWVALUE 0
+  -- if $((n_y / 4503599627370496) \ 2048 >= 1086)
+  -- if ($(n_x < 4607182418800017408) /\ $(n_y < 9223372036854775808)) \/ ($(n_x > 4607182418800017408) /\ $(n_y >= 9223372036854775808))
+def $pow_regular(n_x, n_y, n_s) = FPOWLOGEXP $pow_normalize(n_x) n_y n_s
+  -- if $((n_y / 4503599627370496) \ 2048 >= 958)
+  -- if $((n_y / 4503599627370496) \ 2048 < 1086)
+
+dec $pow_xfinite(nat, nat) : floatpowerplan
+def $pow_xfinite(n_x, n_y) = FPOWVALUE 18444492273895866368
+  -- if $(n_x >= 9223372036854775808)
+  -- if $pow_checkint($float_decode(n_y)) = 0
+def $pow_xfinite(n_x, n_y) = $pow_regular($(n_x \ 9223372036854775808), n_y, $pow_result_sign(n_x, n_y))
+  -- if ($(n_x < 9223372036854775808) \/ $pow_checkint($float_decode(n_y)) =/= 0)
+
+dec $pow_xdispatch(nat, nat, fparts) : floatpowerplan
+def $pow_xdispatch(n_x, n_y, NOTNUMBER n) = $pow_xexception(n_x, n_y)
+def $pow_xdispatch(n_x, n_y, INFINITE n_s) = $pow_xexception(n_x, n_y)
+def $pow_xdispatch(n_x, n_y, FINITE n_s 0 n_d) = $pow_xexception(n_x, n_y)
+def $pow_xdispatch(n_x, n_y, FINITE n_s n_n n_d) = $pow_xfinite(n_x, n_y) -- if $(n_n > 0)
+
+dec $pow_ydispatch(nat, nat, fparts) : floatpowerplan
+def $pow_ydispatch(n_x, n_y, NOTNUMBER n) = $pow_yspecial(n_x, n_y, NOTNUMBER n)
+def $pow_ydispatch(n_x, n_y, INFINITE n_s) = $pow_yinfinity(n_x, n_y, $float_decode(n_x))
+def $pow_ydispatch(n_x, n_y, FINITE n_s 0 n_d) = $pow_yspecial(n_x, n_y, FINITE n_s 0 n_d)
+def $pow_ydispatch(n_x, n_y, FINITE n_s n_n n_d) = $pow_xdispatch(n_x, n_y, $float_decode(n_x)) -- if $(n_n > 0)
+
+dec $float_power_plan(nat, nat) : floatpowerplan
+def $float_power_plan(n_x, n_y) = $pow_ydispatch(n_x, n_y, $float_decode(n_y))
+
+dec $power_combine(nat, floatpowerplan, bool) : powerplan
+def $power_combine(n_factor, FPOWVALUE n, b) = POWERDONE (NFLOAT $float_mul(n_factor, n)) b
+def $power_combine(n_factor, FPOWLOGEXP n_x n_y n_s, b) = POWERGENERAL n_factor n_x n_y n_s b
+
+dec $power_float(nat, nat, nat) : powerplan
+def $power_float(n_factor, n_x, n_y) = $power_combine(n_factor, $float_power_plan(n_x, n_y), b)
+  -- if b = ($num_zero(NFLOAT n_x) /\ $($float_compare(n_y, 0) < 0))
+
+dec $power_int_loop(int, int, int) : powerplan
+def $power_int_loop(i_acc, i_base, 0) = POWERDONE (NINT i_acc) false
+def $power_int_loop(i_acc, i_base, i_exp) = $power_int_loop(i_next, i_base, $(i_exp - 1))
+  -- if $(i_exp > 0) -- if $(i_exp \ 2) = 1
+  -- if NINT i_next = $num_mul(NINT i_acc, NINT i_base)
+def $power_int_loop(i_acc, i_base, i_exp) = $power_float(n, $float_of_int(i_base), $float_of_int($(i_exp - 1)))
+  -- if $(i_exp > 0) -- if $(i_exp \ 2) = 1
+  -- if NFLOAT n = $num_mul(NINT i_acc, NINT i_base)
+def $power_int_loop(i_acc, i_base, i_exp) = $power_int_loop(i_acc, i_next, $(i_exp / 2))
+  -- if $(i_exp > 0) -- if $(i_exp \ 2) = 0
+  -- if NINT i_next = $num_mul(NINT i_base, NINT i_base)
+def $power_int_loop(i_acc, i_base, i_exp) = $power_float($float_of_int(i_acc), n, $float_of_int($(i_exp / 2)))
+  -- if $(i_exp > 0) -- if $(i_exp \ 2) = 0
+  -- if NFLOAT n = $num_mul(NINT i_base, NINT i_base)
+
+dec $power_prepare(pnumber, pnumber) : powerplan
+def $power_prepare(NINT i, NINT 0) = POWERDONE (NINT 1) false
+def $power_prepare(NINT 0, NINT i) = POWERDONE (NINT 0) false -- if $(i > 0)
+def $power_prepare(NINT i_1, NINT i_2) = $power_int_loop(1, i_1, i_2) -- if i_1 =/= 0 -- if $(i_2 > 0)
+def $power_prepare(NINT i_1, NINT i_2) = $power_float(4607182418800017408, $float_of_int(i_1), $float_of_int(i_2)) -- if $(i_2 < 0)
+def $power_prepare(NFLOAT n, pnumber) = $power_float(4607182418800017408, n, $num_float(pnumber))
+def $power_prepare(NINT i, NFLOAT n) = $power_float(4607182418800017408, $float_of_int(i), n)

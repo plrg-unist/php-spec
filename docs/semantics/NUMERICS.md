@@ -101,6 +101,16 @@ and abrupt-completion behavior. Source: `increment_string`, `increment_function`
 `python3 tests/semantics/string_operators.py` for byte grids, mixed lengths,
 carry boundaries and diagnostic identities.
 
-Remaining arithmetic obligations include power and remaining contextual dispatch
+`06-power-prepare.watsup` models PHP's integer exponentiation loop and libm's
+zero/infinity/NaN/domain and extreme-exponent branches. It returns `POWERDONE`
+for a computed answer or `POWERGENERAL` for a pending pure log/exp task, retaining
+any multiplication required after integer overflow and the pending zero-base
+negative-exponent deprecation. A pending task is not a successful PHP result.
+`python3 tests/semantics/power_prepare.py` checks the bounded preparation milestone.
+Power validation pins both PHP and its actual loaded libm/selected CPU variant;
+see [power provenance](POWER-PROVENANCE.md). Preload/audit interposition is rejected
+by these tests, and no platform routine computes semantic answers.
+
+Remaining arithmetic obligations include general power and remaining contextual dispatch
 (e.g. type coercions and string/mixed comparisons).
 The passing first milestone does not establish complete arithmetic or core PHP.
