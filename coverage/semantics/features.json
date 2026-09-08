@@ -810,7 +810,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Expr_Empty",
@@ -1312,7 +1312,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Scalar_InterpolatedString",
@@ -1447,7 +1447,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "StaticVar",
@@ -1474,7 +1474,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Break",
@@ -1491,7 +1491,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Case",
@@ -1611,7 +1611,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Else",
@@ -1672,7 +1672,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Finally",
@@ -1792,7 +1792,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Interface",
@@ -1842,7 +1842,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
       ],
-      "review": "Independent phase0 review accepted commit8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
     },
     {
       "node": "Stmt_Property",
@@ -2213,7 +2213,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated 1025 helper comparisons passed (commit 7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.shifts",
@@ -2231,7 +2231,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated 1025 helper comparisons passed (commit 7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.integer-bitwise",
@@ -2249,7 +2249,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated 1025 helper comparisons passed (commit 7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.binary64-codec",
@@ -2370,7 +2370,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated 1025 helper comparisons passed (commit 7d48a580); source conversion/handlers pending."
     },
     {
       "id": "numeric.power",
@@ -2388,15 +2388,20 @@
     {
       "id": "numeric.numeric-text",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/02-numeric-text.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_text.py",
+        "coverage/semantics/numeric-text.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: byte grammar, exponent guards and exact rational conversion reviewed; 350 helper comparisons repeated with stable fingerprints (commit 9cc4ecef); source conversions pending."
     },
     {
       "id": "numeric.based-literals",
@@ -2414,15 +2419,20 @@
     {
       "id": "numeric.decimal-rounding",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/02-numeric-text.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_text.py",
+        "coverage/semantics/numeric-text.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: byte grammar, exponent guards and exact rational conversion reviewed; 350 helper comparisons repeated with stable fingerprints (commit 9cc4ecef); source conversions pending."
     },
     {
       "id": "numeric.float-formatting",
@@ -2469,7 +2479,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "bytes.byte-concatenation",
@@ -2542,7 +2552,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "coercion.arithmetic",
@@ -2586,7 +2596,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated1025 helper comparisons passed (commit7d48a580); source conversion/handlers pending."
+      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated 1025 helper comparisons passed (commit 7d48a580); source conversion/handlers pending."
     },
     {
       "id": "coercion.cast-float",
@@ -3417,7 +3427,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "control.conditionals",
@@ -3998,7 +4008,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "static.lvalue-rejection",
@@ -5143,7 +5153,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "diagnostics.renderer",
@@ -5164,7 +5174,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "diagnostics.suppression",
@@ -6004,7 +6014,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.pure-reference",
@@ -6038,7 +6048,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.oracle-pin",
@@ -6059,7 +6069,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.outcome-separation",
@@ -6080,7 +6090,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.raw-byte-comparison",
@@ -6101,7 +6111,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.exception-observation",
@@ -6135,7 +6145,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.budgets",
@@ -6156,7 +6166,7 @@
       "evidence": [
         "vendor/php-src/run-tests.php"
       ],
-      "review": "Independent reviewer: phase0 commit8b856a27; repeated8 source comparisons and7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
     },
     {
       "id": "validation.PHPT-sections",

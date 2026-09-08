@@ -12,7 +12,7 @@ Complete core remains the goal. Existing syntax validation is not semantic evide
 | 0b | Checked AST runner, explicit outcomes, original-source differential harness | Complete — bounded bootstrap reviewed (`8b856a27`) |
 | 1a | Pure integers/bytes and result typing | Partial — integer/bitwise/float-cast helpers reviewed; source integration pending |
 | 1b | Pure binary64 codec, rounding, operations and special cases | Partial — add/sub/mul/div helpers reviewed; source integration pending |
-| 1c | Numeric text, conversions, formatting, power | Pending |
+| 1c | Numeric text, conversions, formatting, power | Partial — numeric text reviewed; formatting in progress — numeric |
 | 2a | Slots, aliases, frames and access modes | In progress — runner |
 | 2b | Arrays, strings, lvalues and expression sequencing | Pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
@@ -54,9 +54,10 @@ are never successful validation, and incomplete families stay visible.
   runtime obligation IDs with valid constructor references. Local oracle probe
   confirms 8.5.10 CLI, 8-byte integers, NTS and `E_ALL=30719`.
 - Reviewed commits: numeric `4d343899` (1,976 differential +8 symbolic tests),
-  integer `7d48a580` (1,025 tests), runner `8b856a27` (8 source comparisons
+  integer `7d48a580` (1,025 tests), numeric text `9cc4ecef` (350 tests),
+  runner `8b856a27` (8 source comparisons
   +7 retained outcome/context negatives). All repeated independently with stable
-  fingerprints; reports are `coverage/semantics/{numeric,integer,phase0}.json`.
+  fingerprints; reports are `coverage/semantics/{numeric,integer,numeric-text,phase0}.json`.
   Numeric source execution and full family closure remain pending.
 - Runner fixes retained: known startup constants no longer masquerade as undefined;
   missing source positions are explicit; harness cwd and fingerprints now match.

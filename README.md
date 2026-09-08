@@ -39,3 +39,9 @@ interaction checks. `make validate` checks all imported source candidates in
 four independently checked shards and verifies their complete ordered merge;
 `make inventory` regenerates source coverage evidence. See
 [validation](docs/VALIDATION.md) for classifications and normalization.
+
+`bin/php-semantics FILE` executes the currently implemented rules through checked
+SpecTec values and emits a structured observation. `make test-semantics` runs the
+source execution regressions; unfinished behavior returns explicit Unsupported.
+See [semantic design](docs/semantics/DESIGN.md) and
+[numeric reference](docs/semantics/NUMERICS.md) for interfaces and helper checks.
