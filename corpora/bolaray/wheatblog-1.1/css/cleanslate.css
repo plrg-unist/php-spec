@@ -1,0 +1,761 @@
+/* CSS For Wheatblog template - universal */
+/* 2005 Joshua Estell. GNU GPL http://www.hinkybox.com/gpl.php */
+/* Last Revision  05/19/05
+/* STRUCTURE */
+/*
+Selector {		
+		Text 
+		Positioning
+		Sizing
+		Margin
+		Padding
+			Borders
+		Background
+		}
+*/
+
+/* shorthand key 
+
+ font: font-style | font-variant | font-weight | font-size | line-height | font-family ;
+ 
+ background: background-color | background-image | background-repeat | background-attachment | background-position ;
+ 
+
+*/
+
+body  {
+		font : 11px/18px Tahoma, Arial, Helvetica, sans-serif;
+		margin : 0;
+		padding : 0;
+		background : #5e656c url(elem/universal/universal-body-repeat.gif) 0% 50% repeat-y;
+		}
+span {
+
+		font-size : 11px;
+		color :  #FFF;
+		}
+table, 
+tr,td {
+		font-size : 10px;
+		background : #FFF;
+		}
+input {		color :  #FFF;
+		background : #fff;
+			border : 1px solid #000;
+		}
+
+input[type=submit] {		color :  #FFF;
+		font: 11px/11px Tahoma, Arial, Helvetica, sans-serif;
+			border : 1px solid #000;
+		background : #FFF;
+		}		
+		
+select {		color :  #FFF;
+		font-size : 10px;
+		background : #f7f7f7;
+		}		
+
+textarea {
+		color : #555;
+		font : 11px/11px  Tahoma, Arial, Helvetica, sans-serif;
+			border : 1px solid #000;
+		background : #f7f7f7;
+		}
+		
+a:link, 
+a:visited {
+		color : #003;
+		text-decoration : none;
+        font-size : 10px;
+		}
+		
+A:hover,
+A:active {
+		color : #007;
+		}		
+
+
+/* begin page structure  */
+
+div#container {
+		width : 772px;
+		margin : 0 0 0 30px;
+		}
+div#clear {
+		
+		}
+		
+html>body div#clear { /* BKtO */
+		
+		}	
+div#content {
+		width : 590px;
+		margin : 0 0 0 10px;
+		padding : 0 10px;
+		background-color : transparent;
+		}
+* html div#content { 
+		height : 590px; /* Only IE Sees Me */
+		} 		
+		
+div#navigation {
+		  float : right;
+		  width : 118px;
+		  padding : 0 4px;
+		  margin : -68px 5px 0 0;
+		}
+		
+html>body div#navigation { /* BKtO */
+		}		
+				
+div#title {
+		text-align : left;
+		width : 605px;		
+		height : 40px;
+		margin : 0 0 0 40px;
+		padding : 0 5px 0 0;
+			border-bottom : 1px dashed #ddd;
+		background : #FFF url(elem/universal/universal-div-title-image.gif) 0 100% no-repeat;
+		}
+
+div#title h1 {		color :  #FFF;
+		font: bold 14px/14px Tahoma, Arial, Helvetica, sans-serif;
+		margin : 0 0 0 0;
+		padding : 4px 0 0 7px;
+		}
+
+div#title h2 { 
+		color : #333;
+		font : 12px/12px Tahoma, Arial, Helvetica, sans-serif; 
+		margin : 0 0 0 0;
+		padding : 4px 0 0 7px;
+}						
+div.access {
+		text-align : right;
+		width : 609px;		
+		margin : 3px 0 0 40px;
+		padding : 2px 0;
+			border-bottom : 1px solid #F7F7F7;
+		}
+html>body div.access { /* BKtO */
+
+		}		
+		
+div.access#confirmed {
+		text-align : right;
+		width : 609px;		
+		margin : 3px 0 0 40px;
+		padding : 2px 0;
+			border-bottom : 1px solid #F7F7F7;
+		}
+		
+html>body div.access#confirmed { /* BKtO */
+		}
+				
+div.access form {
+		display: inline;
+		}
+
+div.access#commented {
+		line-height : 12px;
+		text-align : center;
+		margin : 10px 11px 10px 11px;
+		padding : 3px 0;
+			border : 1px solid #a6c8dd;
+		background : transparent url(elem/dividedsky/dividedsky-gradient-repeat.gif) repeat-x bottom;
+		}
+
+div.access#commented span.dirs {
+		text-align : center;
+		display : block;
+		padding : 3px 0 0 0;
+		}
+		
+div.access form input#user,
+div.access form input#pass {
+		display:inline;
+		margin: 0px 0 0 4px;
+		font-size:11px;
+		}
+div.access form input:focus { /* a minor flourish */
+		background : #fff;
+		}
+		
+/* start links for access panel */
+/* shared with adminbar from admin-only */				
+
+div.access a#login:link,
+div.access a#login:visited,
+div.access a#datelist:link,
+div.access a#datelist:visited {
+		font-size:11px;
+		color: #333;
+		border : 1px solid #666;
+		padding: 1px 5px 1px 5px;
+		margin: 1px 5px 1px 4px; 
+		}
+div.access a#login:hover,
+div.access a#datelist:hover { 
+		color: #222;
+		border : 1px solid #666;
+		background : #EEEEFF;
+		}
+		
+/* end links for access panel */	
+
+/* end structure - begin sidebar nav */
+
+div#nav-nav { }   
+div#nav-cats { }  
+div#nav-admin { } 
+div#nav-links { } 
+	
+ul.nav-group {		
+		font-size : 11px;
+		list-style : none;
+		margin : 0;
+		padding : 0;
+		}
+ul.nav-group li {
+		font : 11px/11px  Tahoma, Arial, Helvetica, sans-serif;
+		margin : 0;
+		border-bottom : 1px solid #DDD;
+		line-height : 14px;
+		}
+
+ul.nav-group li.nav-group-heading {
+		font-weight : bold;
+		display : block;
+		padding : 2px 0 1px 0px;
+		margin : 3px 0 0 0;
+		border-bottom : 2px solid #AAA;
+		color : #000011;
+		}
+ul.nav-group li.nav-item a:link,
+ul.nav-group li.nav-item a:visited {
+		font : 11px/11px  Tahoma, Arial, Helvetica, sans-serif;		
+		display : block;
+		margin : 1px;
+		padding : 2px;
+		text-decoration : none;
+		border : 1px solid #EEE;
+		}
+ul.nav-group li.nav-item a:hover,
+ul.nav-group li.nav-item a:active {
+		background : #EEEEFF;
+		border : 1px solid #777;
+		}
+
+/* end sidebar navigation begin admin-only */
+
+div.adminbar {		color :  #FFF;
+		text-align : center;
+		font : 11px/11px  Tahoma, Arial, Helvetica, sans-serif;
+		margin : 5px 10px;
+		padding : 0 0 0 0;
+			border : 1px solid #a6c8dd;
+		background : #F7F7F7;
+		}
+
+div.adminbar ul{
+		list-style : none;
+		margin : 3px 0;
+		padding : 0 0;
+			border : 0 none inherit;
+		}
+
+div.adminbar li {
+		display : inline;
+		margin : 0 0 0 2px;
+		padding : 2px 5px 2px 5px;
+			border-top : 0 none inherit;
+			border-right : 1px solid #aaa;
+			border-bottom : 0 none inherit;
+			border-left : 1px solid #aaa;
+		}
+
+div.adminbar li a:link,
+div.adminbar li a:visited {		color :  #FFF;
+		display : inline;
+		}
+
+div.adminbar li a:hover {
+		color : #333;
+		text-decoration : none;
+			border : 1px solid #333;		
+		background : #EEEEFF;
+		}
+		
+div.adminbar#manageform {
+		text-align : right;
+		margin : 10px 10px 5px 10px;
+		padding : 4px 0;
+			border : 1px solid #a6c8dd;
+		background : #F7F7F7;
+		}		
+
+div.adminbar#manageform span {
+		padding : 0 4px 0 0;
+		}
+
+div.adminbar form  {
+		font : 11px  Tahoma, Arial, Helvetica, sans-serif;
+		display : inline;
+		margin : 0 0 0 4px;
+		padding : 2px;
+		}
+		
+div.form-heading {		color :  #FFF;
+		text-align : left;
+		margin : 10px 0;
+		padding : 0 0 0 0;
+			border-top : 1px solid #666;
+			border-right : 1px solid #999;
+			border-bottom : 1px solid #999;
+			border-left : 1px solid #666;		
+		background : #FFF;
+		}
+
+div.form-heading h3 {		color :  #FFF;
+		font: bold 11px/16px  Tahoma, Arial, Helvetica, sans-serif;
+		margin : 5px auto;
+		padding : 2px 5px 2px 5px;
+		background : transparent;
+		}
+
+/* end admin only - begin posts */
+		
+div.access FORM SPAN {
+		font-size : 11px;
+		padding: 2px;
+		margin: 0 0 0 4px;
+		}
+div.access#admin {
+		background-image : none;
+		padding : 2px 0 4px 0;
+		text-align: center;
+}
+div.access#admin ul {
+        padding : 0;
+		display:inline;
+		list-style-type : none;
+}
+div.access#admin li {
+		display:inline; 	
+        padding : 0 2px 0 0;
+		border : none;
+}
+div.access#admin li a:link,
+div.access#admin li a:visited {
+        padding: 0 2px 1px 2px;
+		margin: 1px ; 
+		border : 1px #EEE solid;
+		}
+div.access#admin li a:hover {
+		padding: 0 2px 1px 2px;
+		margin: 1px; 
+		border : 1px solid #AAA;
+		color : #222;
+		background : #EEEEFF;
+}		
+
+/* end admin only - begin posts */
+
+div.subcontent {		color :  #FFF;
+		font-size : 11px;
+		line-height : 14px;
+		margin : 10px auto;
+		padding : 0 0 0 0;
+		font-family : inherit;
+		text-align : left;
+		}
+
+div.subcontent#rss {
+		text-align:left;
+		padding : 2px 0 2px 4px;
+		background-image:none;
+		
+		}
+		
+div.subcontent-heading {		color :  #FFF;
+		border : 1px solid #aaa;
+		padding: 3px 5px;
+		margin : 7px auto 7px auto;
+		line-height: 12px;
+		}
+		
+div.subcontent-heading#reg {
+		line-height:14px;
+		padding: 10px;
+		}		
+				
+div.subcontent-form {		color :  #FFF;
+		text-align : center;
+		margin : 10px 10px;
+		padding : 0;
+		}
+		
+div.subcontent-form form {
+		display : inline;
+		margin : 2px 0 2px 2px;
+		}
+		
+div.subcontent#postform {
+		padding : 5px;
+		}
+
+div.subcontent-form input.text {		color :  #FFF;
+		display : inline;
+		width : 220px;
+		}
+		
+/* for manage_users */
+
+div.subcontent-users {		color :  #FFF;
+		line-height : 14px;
+		margin : 10px auto;
+		padding : 10px;
+			border-top : 1px solid #666;
+			border-right : 1px solid #999;
+			border-bottom : 1px solid #999;
+			border-left : 1px solid #666;		
+		background : #F7F7F7;
+		}
+
+div.subcontent-users td { 
+		background : #F7F7F7;
+		}
+div.subcontent-users td.fieldname {
+		text-transform : capitalize;
+		text-align: right;
+		}
+
+div.subcontent-users label {
+		font: 11px/12px  Tahoma, Arial, Helvetica, sans-serif;
+		padding : 0 5px;
+		}
+div.subcontent-users input {
+		margin : 0;
+		padding : 0;
+			border-top : 1px solid #666;
+			border-right : 1px solid #999;
+			border-bottom : 1px solid #999;
+			border-left : 1px solid #666;		
+		}
+
+div.subcontent-users a:link,
+div.subcontent-users a:visited,
+div.subcontent-users a:hover { 
+		color : #555;
+		font: 11px/12px  Tahoma, Arial, Helvetica, sans-serif;
+		text-decoration : none;
+		padding : 2px 4px;
+		margin : 0 0 0 4px; 
+			border-top : 1px solid #666;
+			border-right : 1px solid #999;
+			border-bottom : 1px solid #999;
+			border-left : 1px solid #666;		
+		background : #FFF;
+		}
+
+div.subcontent-users input[type = submit] { /* fix this annoying button bullshit */		
+		font: 11px/12px  Tahoma, Arial, Helvetica, sans-serif;
+		margin-top : 3px;
+		padding: 1px 4px;
+			border-top : 1px solid #666;
+			border-right : 1px solid #999;
+			border-bottom : 1px solid #999;
+			border-left : 1px solid #666;		
+		background : #FFF;
+		cursor: pointer;
+		}		
+				
+div.subcontent#postform {		color :  #FFF;
+		
+		text-align : left;
+		margin : 10px 10px;
+		padding : 5px;
+			border : 1px solid #a6c8dd;
+		}
+		
+div.subcontent h3.cnt-subhead,
+div.subcontent-heading h3.cnt-subhead {
+		font-size : 11px;
+	    font-weight: bold;		color :  #FFF;
+		margin : 10px auto;
+		padding : 5px;
+		border : 1px solid #bbb;
+		background : #fFF;
+		}
+
+div.subcontent h3.cnt-subhead#lock {
+		color : #a00;
+		}
+		
+/* Post and Comment bodies */
+		
+div.post-heading,
+div.comment-heading {
+		background :#EEE; 
+		margin: 0; 
+		padding: 0; 
+		border-color: #ddd; 
+		border-width: 1px 1px 0 1px; 
+		border-style: solid; 
+		}
+h3.post-title,
+h3.comment-auth {
+		float:left;
+		font-size : 13px; 
+		padding : 3px 5px; 
+		margin:0;
+		}
+h4.post-date,
+h4.comment-date {
+		text-align:right;
+		font-size : 10px; 
+		padding : 3px 10px 3px 5px; 
+		margin:0;
+		color:#666;
+		font-style:italic;
+		}
+div.post-body,
+div.comment-body {
+		font-size:11px;
+		padding: 10px; 
+		margin: 0 0 0 0;
+			border-color: #ddd; 
+			border-width: 0 1px 0 1px; 
+			border-style: solid; 
+		background: transparent;
+		}
+div.post-menu,
+div.comment-menu {
+		text-align:right;
+		font-size:11px;
+		line-height : 13px;		
+		margin: 0; 
+		padding: 1px 5px 2px 5px; 
+			border-color: #ddd; 
+			border-width: 0 1px 1px 1px; 
+			border-style: solid; 
+		background :#EEE; 
+		
+		}		 
+div.post-menu ul.postnav,
+div.comment-menu ul.postnav {
+        padding : 0;
+		display:inline;
+		list-style-type : none;
+		}		
+ul.postnav {
+		padding-left : 0;
+		margin-left : 0;
+		display:inline;
+		list-style-type : none;
+		 }
+ul.postnav li  {
+		display:inline; 					
+		border-right : 1px solid #aaa;
+        padding : 0 2px 0 0;
+		 }
+ul.postnav li.postid {
+		font : 10px/10px Tahoma, Arial, Helvetica, sans-serif;
+		float:left;
+		display:inline; 
+		margin : 0;
+        padding : 0;
+		}		 
+
+ul.postnav li span.lock {
+		color:#A00;
+		}
+		
+div.post-menu ul.postnav li a:link, 
+div.post-menu ul.postnav li a:visited,
+div.comment-menu ul.postnav li a:link, 
+div.comment-menu ul.postnav li a:visited  {
+        padding: 0 2px 1px 2px;
+		margin: 1px ; 
+		border : 1px #EEE solid;
+		}
+		
+div.post-menu ul.postnav li a.locked:link, 
+div.post-menu ul.postnav li a.locked:visited, 
+div.comment-menu ul.postnav li a.locked:link, 
+div.comment-menu ul.postnav li a.locked:visited {
+        padding: 0 2px 1px 2px;
+		margin: 1px ; 
+		border : 1px #EEE solid;
+		color : #600;
+		}
+		
+div.post-menu ul.postnav li a.locked:hover,
+div.comment-menu ul.postnav li a.locked:hover {
+		padding: 0 2px 1px 2px;
+		margin: 1px; 
+		border : 1px solid #AAA;
+		color : #600;
+		background : #EEEEFF;
+		}
+		
+div.post-menu ul.postnav li a:hover, 
+div.comment-menu ul.postnav li a:hover {
+		padding: 0 2px 1px 2px;
+		margin: 1px; 
+		border : 1px solid #AAA;
+		color : #222;
+		background : #EEEEFF;
+		}
+/* end unique for posts */
+
+/* begin unique for comments */
+
+
+div.subcontent-comment {		color :  #FFF;
+		text-align : left;
+		margin : 10px 10px 10px 10px;
+		padding : 0 0 0 0;
+			border : 1px solid #DDD;
+		}
+	
+	
+/* still need to trim these bits */	
+
+input.button {		color :  #FFF;
+		background : #FFF;
+		font-size : 11px;
+
+		border : 1px outset #000;
+		}
+		
+input.search {		color :  #FFF;
+		background : #FFF;
+		font-size : 10px;
+
+		border : 1px solid #000;
+		}
+
+		/* legacy */		
+input.wheatblog_input {		color :  #FFF;
+		background : #fff;
+		width : 40%;
+		font-size : 12px;
+		border : 1px solid #AAA;
+		}
+		
+textarea.wheatblog_textarea {		color :  #FFF;
+		background : #fff;
+		width : 99%;
+		height : 400px;
+		font-size : 12px;
+		font-weight : normal;
+		overflow : auto;
+		border : 1px solid #AAA;
+		}
+textarea.wheatblog_textarea_002 {		color :  #FFF;
+		background : #fff;
+		width : 99%;
+		height : 32px;
+		font-size : 12px;
+		overflow : auto;
+		border : 1px solid #000;
+		}
+        /* content generated by function insert_tagline() */
+div.access h2.admin-page {
+		font-size : 13px; 
+		padding : 3px 5px 3px 8px; 
+		margin:0;
+		}
+
+form#addpost label  {
+		display: block;
+		margin: 0 0 2px 0;
+		}
+		
+form#addpost input,
+form#addpost select#day,
+form#addpost select#weekday,
+form#addpost select#date,
+form#addpost select#month,
+form#addpost select#category,
+form#addpost select#lock,
+form#addpost select#show,
+form#addpost select#year {
+		display : inline;
+		background :#FFFFFF;
+		}
+		
+FORM#addpost input#submit {		color :  #FFF;
+		background : #EEEEFF;
+		border : 1px solid #666;
+		font-size : 11px;
+		}
+
+
+table#vb-table {
+		border-color: #ddd; 
+		border-width: 0 0 1px 0; 
+		border-style: solid; 
+		}
+
+table#vb-table tr#vb-heading th {
+		background :#EEE;
+		border-bottom : 1px solid #666;
+		border-right : 1px solid #666;
+		padding : 3px;
+		margin : 1px 5px 1px 5px;   
+		text-align : center;
+		}
+
+table#vb-table tr.vb-body td {
+		text-align : center;
+		background :#EEE;
+		border-bottom : 1px solid #666;
+		border-right : 1px solid #666;
+		padding : 3px;
+		margin : 1px 5px 1px 5px;   
+		}
+table#vb-table tr#vb-heading td#heading-title { 
+		text-align:left;
+		}		
+table#vb-table tr.vb-body td.td-title {
+		text-align : left;
+		background :#EEE;
+		border-bottom : 1px solid #666;
+		border-right : 1px solid #666;
+		padding : 3px;
+		margin : 1px 5px 1px 5px;   
+		}
+/* the little validation tagline at the foot of the page */
+
+div#wb-tag {
+		color : #333;
+		font-size: 9px;
+		text-align : center;
+		text-transform: lowercase;
+		margin: 0 10px 0 0;
+		padding : 22px 0 0 0; 
+		}
+		
+div#wb-tag ul {
+		display:inline;
+		list-style : none;
+		margin : 0;
+		padding : 0;
+		 }
+		 
+div#wb-tag ul li   {
+		display:inline;
+		padding : 0;
+		border : 0 none inherit;
+    	 }
+		 
+div#wb-tag ul li a:link,
+div#wb-tag ul li a:visited  {
+		color : #666;
+		}
+div#wb-tag ul li a:hover {
+		color : #999;
+		text-decoration: none;
+		}

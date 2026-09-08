@@ -1,0 +1,133 @@
+<?php
+/**
+ ***********************************************************************************************
+ * @copyright 2004-2023 The Admidio Team
+ * @see https://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ ***********************************************************************************************
+ */
+
+/**
+ * Create menu from database and serve several output formats
+ *
+ * This class will read the menu structure from the database table **adm_menu** and stores each main
+ * node as a MenuNode object within an internal array. There are several output methods to use the
+ * menu within the layout. You can create a simple html list, a bootstrap media object list or
+ * add it to an existing navbar.
+ *
+ * **Code examples**
+ * ```
+ * // create an object for the menu and show a html list
+ * $menuList = new Menu();
+ * $html = $menuList->getHtml();
+ *
+ *
+ * // create an object for the menu and add the menu to the navbar
+ * $navbar = new HtmlNavbar('navbar', 'Example');
+ * $menuNavbar = new Menu();
+ * $menuList->addToNavbar($navbar);
+ * ```
+ */
+class MainMenu
+{
+    /**
+     * @var array Array with the main nodes and their entries
+     */
+    protected $menuNodes;
+
+    /**
+     * @var array Multidimensional array with the complete menu structure.
+     */
+    protected $menuItems;
+
+    /**
+     * @var bool Flag to remember if the menu must be reloaded from database
+     */
+    protected $menuLoaded;
+
+    public function __construct()
+    {
+        $this->initialize();
+    }
+
+    /**
+     * Count the number of main nodes from this menu
+     * @return int Number of nodes from this menu
+     */
+    public function countMainNodes(): int
+    {
+        return count($this->menuNodes);
+    }
+
+    /**
+     * Returns an array with all menu items. The array has the following structure:
+     * Array ( [0] => Array (
+     *      [id] => modules
+     *      [name] => Module
+     *      [items] => Array (
+     *          [overview] => Array (
+     *              [id] => overview
+     *              [name] => Übersicht
+     *              [description] =>
+     *              [url] => http://localhost/GitHub/admidio/adm_program/overview.php
+     *              [icon] => fa-home
+     *              [badgeCount] => 0 )
+     *          [announcements] => Array (
+     *              [id] => announcements
+     *              [name] => Ankündigungen
+     *              ... )
+     *          )
+     *    )
+     * )
+     * @return array Array with all entries of this node
+     */
+    public function getAllMenuItems(): array
+    {
+        if (!$this->menuLoaded) {
+            $this->loadFromDatabase();
+        }
+
+        return $this->menuItems;
+    }
+
+    /**
+     * Initialise the member parameters of this class. This method should also be called if
+     * the menu structure should be reloaded from database.
+     */
+    public function initialize()
+    {
+        $this->menuNodes  = array();
+        $this->menuItems  = array();
+        $this->menuLoaded = false;
+    }
+
+    /**
+     * Load the menu from the database table adm_menu
+     */
+    public function loadFromDatabase()
+    {
+        global $gDb;
+
+        $countMenuNodes = $this->countMainNodes();
+        $this->menuLoaded = true;
+
+        $sql = 'SELECT men_id, men_name, men_name_intern
+                  FROM '.TBL_MENU.'
+                 WHERE men_men_id_parent IS NULL
+              ORDER BY men_order';
+
+        $mainNodesStatement = $gDb->queryPrepared($sql);
+
+        while ($mainNodes = $mainNodesStatement->fetch()) {
+            $this->menuNodes[$countMenuNodes] = new MenuNode($mainNodes['men_name_intern'], $mainNodes['men_name']);
+            $this->menuNodes[$countMenuNodes]->loadFromDatabase($mainNodes['men_id']);
+
+            if ($this->menuNodes[$countMenuNodes]->count() > 0) {
+                $this->menuItems[] = array(
+                    'id' => $mainNodes['men_name_intern'],
+                    'name' => $mainNodes['men_name'],
+                    'items' => $this->menuNodes[$countMenuNodes]->getAllItems());
+            }
+        }
+    }
+}

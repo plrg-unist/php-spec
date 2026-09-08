@@ -1,0 +1,881 @@
+/* CSS For Wheatblog template - stoiclook */
+/* inspired by Cafuego.net (http://cafuego.net)  */
+/* 2005 Joshua Estell. GNU GPL http://www.hinkybox.com/gpl.php */
+/* Last Revision  05/20/05
+/* STRUCTURE */
+/*
+Selector {		
+		Text 
+		Positioning
+		Sizing
+		Margin
+		Padding
+			Borders
+		Background
+		}
+*/
+
+/* shorthand key 
+
+ font: font-style | font-variant | font-weight | font-size | line-height | font-family ;
+ 
+ background: background-color | background-image | background-repeat | background-attachment | background-position ;
+ 
+
+*/
+
+
+body {
+		color : #000;
+		font : 9px/11px  Verdana, Arial, Helvetica, sans-serif; 
+		text-align : left;
+		margin : 0;
+		padding : 0;
+		background : #CCC;
+		}
+
+span {
+		color :  #000;
+		font : 9px/11px Verdana, Arial, Helvetica, sans-serif; 
+		}
+		
+table,
+tr,
+td {
+		background : #fff;
+		}
+
+img { 
+		margin : 0;
+		padding : 0;
+			border : 0; 
+		}
+
+input {
+		color : #555;
+		font : 9px/11px  Verdana, Arial, Helvetica, sans-serif;
+			border : 1px solid #000;
+		background : #FFF;
+		}
+		
+input[type=submit] { 
+		color : #000;
+		font: 9px/11px Verdana, Arial, Helvetica, sans-serif;
+			border : 1px solid #000;
+		background :#FFF;
+
+}
+
+select {
+		color : #555;
+		font : 9px/11px  Verdana, Arial, Helvetica, sans-serif;
+			border : 1px solid #000;
+		background : #f7f7f7;
+		}		
+
+textarea {
+		color : #555;
+		font : 9px/11px  Verdana, Arial, Helvetica, sans-serif;
+			border : 1px solid #000;
+		background : #f7f7f7;
+}
+
+a:link, 
+a:visited {
+        color : #4D1B1B;	
+		text-decoration : none;
+		}
+
+a:hover,
+a:active  {
+		color : #A00;
+		text-decoration : underline;
+		}		
+
+/* begin page structure  */
+
+div#container {
+		width : 748px;
+		margin : 0 auto 0 10px;
+		padding : 0 0 0 0; 
+		}
+		
+div#clear {
+		clear : both; /* IE Sees this */
+		width : 584px;
+		height : 20px;
+		margin : 0 0 0 1px;
+		background : #CCC;
+		}
+		
+html>body div#clear {  /* pokes IE in the eye (aiyeeeeee) */
+		width : 584px;
+		height : 20px;
+		margin : 0 0 0 -5px;
+
+}		
+
+div#content {
+		width : 584px;
+		float: left;
+		min-height : 800px;
+		margin : 0 0 5px 0;
+		padding : 0 0 0 0;
+		background : #ccc;
+		}
+
+* html div#content { 
+		height : 800px; /* properly positions #clear at very bottom in IE. */
+		} 
+
+div#navigation {
+   		float : right;
+		text-align: left; 
+	    z-index : 1000;
+		width : 140px;		
+		margin : 41px 10px 0 -10px;  /* IE Sees this */
+		padding : 0 0 0 0;
+  		}
+
+html>body div#navigation {  /* pokes IE in the eye */
+		margin : 41px 10px 0 -2px;
+		}		
+		
+div#title {
+		color : #000;
+		font : 12px/14px Verdana, Arial, Helvetica, sans-serif; 
+		width: 584px;
+		height : 60px;
+		margin: 0 auto 5px 10px;
+	  	padding : 0 0 0 0;
+			border-bottom : 1px solid #999;
+		background : #CCC;
+		}
+
+div#title h1 { 
+		color : #000;
+		font : 20px/20px Verdana, Arial, Helvetica, sans-serif; 
+		margin : 0 0 0 20px;
+		padding : 10px 0 0 7px;		
+		}
+
+div#title h2 { 
+		color : #333;
+		font : 12px/14px Verdana, Arial, Helvetica, sans-serif; 
+		margin : 0 0 0 20px;
+		padding : 4px 0 0 7px;
+}		
+
+div.access {
+		color : #000;
+		text-align : right;
+		line-height	: 12px;
+		width : 584px; /* IE Sees this */
+		margin : 0 auto 0 10px;
+		padding : 2px 0; /* IE cuts off the link borders w/o this */
+			border : 0 none inherit;
+		background : #CCC;
+		}
+		
+html>body div.access { /* pokes IE in the eye */
+		width : 584px; 
+		margin : 0 auto 0 10px;
+		padding : 2px 0; /* IE cuts off the link borders w/o this */
+		background : #CCC;
+		}
+		
+div.access#confirmed {
+		color : #000;
+		line-height : 12px;
+		text-align : right;
+		width : 584px;
+		margin : 0 auto 0 10px;
+		padding : 2px 0; /* IE cuts off the link borders w/o this */
+			border : 0;
+		background : #CCC;
+		}
+		
+html>body div.access#confirmed { 
+		width : 583px; 
+		}
+		
+div.access form {
+		display : inline;
+		}
+
+div.access#commented {
+		line-height : 12px;
+		text-align : center;
+		margin : 10px 11px 10px 11px;
+		padding : 3px 0;
+			border : 0;		
+		background : #CCC;
+}
+
+div.access#commented span.dirs {
+		text-align : center;
+		display : block;
+		padding : 1px 0 0 0;
+}
+
+
+div.access form input#user,
+div.access form input#pass {
+		font : 9px/14px Verdana, Arial, Helvetica, sans-serif; 
+		display : inline;
+		margin : 0 0 0 4px;
+		}
+		
+div.access form input:focus {
+		background : #fff;
+		}
+
+/* start links for access panel */
+/* shared with adminbar from admin-only */		
+
+div.access a#login:link,
+div.access a#login:visited,
+div.adminbar a#datelist:link,
+div.adminbar a#datelist:visited {
+		font : 9px/14px Verdana, Arial, Helvetica, sans-serif; 
+		color : #000;
+		margin : 1px 5px 1px 4px; 
+		padding : 2px 5px 2px 5px;
+			border : 1px solid #333;
+		background : #FFF;
+		}
+		
+div.access a#login:hover,
+div.adminbar a#datelist:hover { 
+		color : #333;
+		text-decoration : none;		
+			border-top : 1px solid #333;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 1px solid #333; 
+		background : #FFF;
+		}
+		
+/* end links for access panel */	
+
+/* end structure - begin sidebar nav */
+
+div#nav-nav {
+		margin : 5px 10px 10px 0;
+		padding : 10px 3px 3px 3px;
+			border-top : 1px solid #333;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 1px solid #333; 
+		background : #FFF;
+		 }  
+div#nav-cats {
+		margin : 5px 10px 10px 0;
+		padding : 10px 3px 3px 3px;
+			border-top : 1px solid #333;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 1px solid #333; 
+		background : #FFF;
+		 }  
+div#nav-admin { 
+		margin : 5px 10px 10px 0;
+		padding : 10px 3px 3px 3px;
+			border-top : 1px solid #333;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 1px solid #333; 
+		background : #FFF;
+		} 
+div#nav-links { 
+		margin : 5px 10px 10px 0;
+		padding : 10px 3px 3px 3px;
+			border-top : 1px solid #333;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 1px solid #333; 
+		background : #FFF;
+		} 
+
+ul.nav-group {
+		font-size : 9px;
+		list-style : none;
+		margin : 0;
+		padding : 0;
+		border : 1px solid #FFF;
+		}
+		
+ul.nav-group li {
+		margin : 0;
+		padding : 0;
+		}
+* html ul.nav-group li { /* IE whitespace bug workaround */
+		height : 10px;
+		padding : 1px;
+		margin : 0;
+		} 
+
+ul.nav-group li.nav-group-heading {
+		color : #000;
+		font-weight : bold;
+		display : block;
+		width : 110px;
+		float : right;
+		text-align : right;
+		margin : -20px -10px 0 0;
+		padding : 2px 2px 1px 2px;
+			border : 1px solid #000;
+		background : #FFF;
+		}
+* html ul.nav-group li.nav-group-heading {  /* IE cuts off float borders w/o neg margin adjust */
+		padding : 1px 2px 1px 2px;
+		margin : -15px -5px 0 0;
+		}
+		
+ul.nav-group li.nav-item a:link,
+ul.nav-group li.nav-item a:visited {
+        color : #600;
+		font-weight: bold;
+		text-align : left;
+		text-decoration : none;
+		display : block;
+		margin : 1px;
+		padding : 0 4px 1px 3px;
+		border : 1px solid #FFF;
+		}
+
+ul.nav-group li.nav-item a:hover {
+		color : #A00;
+		text-decoration: none;
+		background : #FFF;
+		}
+
+/* end sidebar navigation begin admin-only */
+
+div.adminbar { 
+		color : #000;
+		text-align : center;
+		font : 9px/11px Verdana, Arial, Helvetica, sans-serif;
+		margin : 5px 10px;
+		padding : 0 0 0 0;
+			border : 1px solid #000;
+		background : #FFF;
+		}
+
+div.adminbar ul{
+		list-style : none;
+		margin : 3px 0;
+		padding : 0 0;
+			border : 0 none inherit;
+		}
+
+div.adminbar li {
+		display : inline;
+		margin : 0 0 0 2px;
+		padding : 2px 5px 2px 5px;
+			border-top : 0 none inherit;
+			border-right : 1px solid #aaa;
+			border-bottom : 0 none inherit;
+			border-left : 1px solid #aaa;
+		}
+
+div.adminbar li a:link,
+div.adminbar li a:visited {
+		color : #000;
+		display : inline;
+		}
+
+div.adminbar li a:hover {
+		color : #333;
+		text-decoration : none;
+		}
+		
+div.adminbar#manageform {
+		text-align : right;
+		margin : 10px 10px 5px 10px;
+		padding : 4px 0;
+			border : 1px solid #000;
+		background : #FFF;
+		}		
+
+div.adminbar#manageform span {
+		padding : 0 4px 0 0;
+		}
+
+div.adminbar form  {
+		font : 9px  Verdana, Arial, Helvetica, sans-serif;
+		display : inline;
+		margin : 0 0 0 4px;
+		padding : 2px;
+		}
+		
+
+div.form-heading {
+		color : #000;
+		text-align : left;
+		margin : 10px 10px;
+		padding : 0 0 0 0;
+		border : 1px solid #000;
+		background : #FFF;
+		}
+
+div.form-heading h3 {
+		color : #000;
+		font: bold 9px/11px  Verdana, Arial, Helvetica, sans-serif;
+		margin : 5px auto;
+		padding : 2px 5px 2px 5px;
+		background : transparent;
+		}
+
+/* end admin only - begin posts */
+		
+div.subcontent {
+		color : #000;
+		text-align : left;
+		margin : 30px 10px 10px 10px;
+		border : 1px solid #ccc; /* IE's silly bottom margin for floats -- coupled with negative margin on post-heading */
+		padding : 0;
+
+		}
+		
+div.subcontent#rss {
+		text-align :left;
+		padding : 3px 5px;
+		}		
+		
+div.subcontent-heading {
+		color : #000;
+		font: 9px/9px  Verdana, Arial, Helvetica, sans-serif;
+		margin : 7px 11px 7px 11px;
+		padding: 3px 5px;
+		border : 1px solid #000;
+		background : #FFF;
+		}
+div.subcontent-heading#reg {
+		line-height:14px;
+		padding: 10px;
+		}		
+div.subcontent-form {
+		color : #000;
+		text-align : center;
+		margin : 10px 10px;
+		padding : 0;
+		}
+		
+div.subcontent-form form {
+		display : inline;
+		margin : 2px 0 2px 2px;
+		}
+		
+div.subcontent-form input.text {
+		color : #000;
+		display : inline;
+		width : 220px;
+		}
+		
+/* for manage_users */
+
+div.subcontent-users { 
+		color : #000;
+		font : 9px  Verdana, Arial, Helvetica, sans-serif;
+		text-align : left;
+		margin : 10px 10px 0 10px;
+		padding : 10px 5px;
+				border : 1px solid #000;
+		background : #FFF;
+		}
+
+div.subcontent-users td.fieldname {
+		text-transform : capitalize;
+		text-align: right;
+		}
+
+div.subcontent-users label {
+		padding : 0 5px;
+		}
+div.subcontent-users input {
+		margin : 0;
+		padding : 0;
+		}
+
+div.subcontent-users a:link,
+div.subcontent-users a:visited,
+div.subcontent-users a:hover { 
+		color : #555;
+		font: 9px/12px  Verdana, Arial, Helvetica, sans-serif;
+		text-decoration : none;
+		padding : 2px 4px;
+		margin : 0 0 0 4px; 
+			border-top : 1px solid #ccc;
+			border-right : 1px solid #eee;
+			border-bottom : 1px solid #eee;
+			border-left : 1px solid #ccc;
+		background : #FFF;
+		}
+
+div.subcontent-users input[type = submit] { 
+		font: 9px/12px  Verdana, Arial, Helvetica, sans-serif;
+		margin-top : 3px;
+		padding: 1px 4px;
+			border-top: 1px solid #ccc;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			border-left: 1px solid #ccc;
+		background : #FFF;
+		cursor: pointer;
+		}		
+				
+div.subcontent#postform {
+		color : #000;
+		
+		text-align : left;
+		margin : 10px 10px;
+		padding : 5px;
+				border : 1px solid #000;
+		background : #FFF;
+		}
+		
+div.subcontent h3.cnt-subhead,
+div.subcontent-heading h3.cnt-subhead {
+		font-size : 9px;
+	    font-weight: bold;
+		color : #000;
+		margin : 10px auto;
+		padding : 5px;
+				border : 1px solid #000;
+		background : #FFF;
+		}
+
+div.subcontent h3.cnt-subhead#lock {
+		color : #a00;
+		}
+		
+/* Post and Comment bodies */
+		
+div.post-heading,
+div.comment-heading {
+		font : 9px/11px Verdana, Arial, Helvetica, sans-serif; 
+		display : block;
+		float : left;
+		margin : 0 10px 0 0 ; 
+		padding : 3px 2px 3px 2px; 
+			border : 1px solid #000;
+		background : #FFF;		
+		}
+* html div.post-heading,
+div.comment-heading {
+		 margin : 0 10px -10px 0 ; /* IE excessive float margin-bottom */		
+		 } 
+
+
+h3.post-title,
+h3.comment-auth {
+		color:#333;
+		font : bold 9px/11px Verdana, Arial, Helvetica, sans-serif; 
+		display : inline;
+		position : relative;
+		z-index: 0;
+		margin: 0 0 0 0;
+		padding : 0 3px 0 8px; 
+		background: #FFF;		
+		}
+		
+h4.post-date,
+h4.comment-date {
+		color:#666;
+		font : 9px/11px Verdana, Arial, Helvetica, sans-serif; 
+		display : inline;
+		position : relative;
+		z-index: 0;
+		margin: 0 0 0 0;
+		padding : 0 10px 0 3px;  
+		background: #FFF;		
+		}
+		
+div.post-body,
+div.comment-body {
+		font : 9px/18px  Verdana, Arial, Helvetica, sans-serif;
+		margin: 10px 0 0 20px;
+		padding: 20px 10px 10px 10px; 
+		background: #FFF;		
+			border: 1px solid #000;			
+		}
+		
+div.post-menu,
+div.comment-menu {
+		font: 9px/10px  Verdana, Arial, Helvetica, sans-serif;
+		text-align : right;
+		display : block;
+		float : right;
+		width : auto;
+		margin : -10px 10px 0 0 ; 
+		padding : 3px 2px 3px 2px; 
+			border : 1px solid #000;
+		background : #FFF;
+		}		 
+		
+div.post-menu ul.postnav,
+div.comment-menu ul.postnav {
+		color : #888;
+		display:inline;
+		list-style-type : none;
+		margin :  -3px 0 3px 0;
+        padding : 0;
+		background : transparent;
+		}
+		
+ul.postnav li  {
+		font : 9px/10px Verdana, Arial, Helvetica, sans-serif;
+		display:inline; 
+		margin :  0;
+        padding : 0;
+		 }
+ul.postnav li.postid {
+		font : 9px/10px Verdana, Arial, Helvetica, sans-serif;
+		float:left;
+		display:inline; 
+		margin : 0;
+        padding : 0;
+		}		 
+
+ul.postnav li span.lock {
+		color:#A00;
+		}
+		 
+div.post-menu ul.postnav li a:link, 
+div.post-menu ul.postnav li a:visited,
+div.comment-menu ul.postnav li a:link, 
+div.comment-menu ul.postnav li a:visited  {
+		font : 9px/10px Verdana, Arial, Helvetica, sans-serif;
+        color : #000;
+		margin: 0 1px;
+        padding: 2px 2px;
+		}
+		
+div.post-menu ul.postnav li a.locked:link, 
+div.post-menu ul.postnav li a.locked:visited, 
+div.comment-menu ul.postnav li a.locked:link, 
+div.comment-menu ul.postnav li a.locked:visited {
+		font : 9px/10px Verdana, Arial, Helvetica, sans-serif;
+		color : #000;
+		margin: 0 1px; 
+        padding: 2px 2px;
+
+		}
+div.post-menu ul.postnav li a.locked:hover,
+div.comment-menu ul.postnav li a.locked:hover {
+		color : #300;
+		text-decoration: none;
+		background : #FFF;
+		}
+		
+div.post-menu ul.postnav li a:hover, 
+div.comment-menu ul.postnav li a:hover {
+		color : #333;
+		text-decoration: none;
+		background : #FFF;
+		}
+		
+/* end unique for posts */
+
+/* begin unique for comments */
+
+div.subcontent-comment {
+		color : #000;
+		
+		text-align : left;
+		margin : 10px 10px 10px 10px;
+		padding : 0 0 0 0;
+		}
+div.subcontent div.comment-menu  {
+		display: none; /* hides the unused comment-menu in permalink.php's post form */
+		}	
+
+/* still need to trim these bits */
+
+
+input.button {
+		color : #000;
+		font : 9px  Verdana, Arial, Helvetica, sans-serif;
+			border : 1px outset #000;
+		background : #FFF;
+		}
+		
+		/* legacy */	
+input.search {
+		color: #777;
+		font: 9px  Verdana, Arial, Helvetica, sans-serif;
+		display: block;
+		width: 186px;
+		padding: 3px 3px 2px 3px;
+			border-top: 1px solid #ccc;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			border-left: 1px solid #ccc;
+		background: #FFF;
+		}
+	
+		/* legacy */		
+input.wheatblog_input {
+		color: #777;
+		font: 9px  Verdana, Arial, Helvetica, sans-serif;
+		display: block;
+		width: 186px;
+		padding: 3px 3px 2px 3px;
+			border-top: 1px solid #ccc;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			border-left: 1px solid #ccc;
+		background: #FFF;
+		}
+		
+	
+		/* legacy */		
+textarea.wheatblog_textarea {
+		color: #222;
+		font: 9px/11px  Verdana, Arial, Helvetica, sans-serif;
+		display: block;
+		width : 500px;
+		height : 200px;
+		padding: 3px 3px 2px 3px;
+			border-top: 1px solid #ccc;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			border-left: 1px solid #ccc;
+		background: #FFF;
+		overflow : auto;
+		}
+		
+textarea.wheatblog_textarea_002 {
+		color: #222;
+		width : 500px;
+		height : 150px;
+		padding: 3px 3px 2px 3px;
+			border-top: 1px solid #ccc;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			border-left: 1px solid #ccc;
+		background: #fff;
+		overflow : auto;
+		}
+		
+div.access h2.admin-page {
+		font-size : 13px; 
+		margin:0;
+		padding : 3px 5px 3px 8px; 
+		}
+		
+form#addpost label  {
+		display: block;
+		margin: 0 0 2px 0;
+		}
+		
+form#addpost input,
+form#addpost select#day,
+form#addpost select#weekday,
+form#addpost select#date,
+form#addpost select#month,
+form#addpost select#category,
+form#addpost select#lock,
+form#addpost select#show,
+form#addpost select#year {
+		color: #555;
+		font-size: 9px;
+			border-top: 1px solid #ccc;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			border-left: 1px solid #ccc;
+		background: #FFF;			
+		margin : 0;
+		}
+		
+form#addpost input#submit {
+		color : #000;
+		font: 9px  Verdana, Arial, Helvetica, sans-serif;
+		float: left;
+				border : 1px solid #000;
+		background : #FFF;
+		}
+		
+table#vb-table {
+		margin : 5px 0 5px 0;
+			border-top : 1px solid #000;
+			border-right : 0 none inherit;
+			border-bottom : 0 none inherit;	
+			border-left : 1px solid #000;
+		background : #FFF;			
+		}
+
+table#vb-table tr#vb-heading th {
+		text-align : center;
+		margin : 1px 5px 1px 5px;   
+		padding : 3px;
+			border-top : 0 none inherit;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 0 none inherit;	
+		background : #FFF;
+		}
+		
+table#vb-table tr.vb-body td {
+		margin : 1px 5px 1px 5px;   
+		padding : 3px;
+		text-align : center;
+			border-top : 0 none inherit;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 0 none inherit;			
+		background : #FFF;
+		}
+		
+table#vb-table tr#vb-heading td#heading-title { 
+		text-align:left;
+		}		
+		
+table#vb-table tr.vb-body td.td-title {
+		text-align : left;
+		margin : 1px 5px 1px 5px;   
+		padding : 3px;
+			border-top : 0 none inherit;
+			border-right : 1px solid #000;
+			border-bottom : 1px solid #000;
+			border-left : 0 none inherit;						
+		background : #FFF;
+		}
+
+/* the little validation tagline at the foot of the page */
+
+div#wb-tag {
+		color : #666;
+		font-size: 9px;
+		text-align : right;
+		text-transform: lowercase;
+		margin: 10px 12px 10px 37px;
+		padding : 5px 5px 0 0px; 
+			border-top : 1px solid #333;
+		}
+html>body div#wb-tag {
+		margin: 10px 12px 0 37px;
+		padding : 5px 5px 10px 0px; 
+		}		
+div#wb-tag ul {
+		display:inline;
+		list-style : none;
+		margin : 0;
+		padding : 0;
+		 }
+		 
+div#wb-tag ul li   {
+		display:inline;
+		padding : 0;
+		border : 0 none inherit;
+    	 }
+		 
+div#wb-tag ul li a:link,
+div#wb-tag ul li a:visited  {
+		color : #333;
+		}
+div#wb-tag ul li a:hover {
+		color : #333;
+		text-decoration: none;
+		}

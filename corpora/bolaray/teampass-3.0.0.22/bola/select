@@ -1,0 +1,738 @@
+..//index.php:140:        'SELECT m.valeur AS valeur, l.flag AS flag
+..//includes/core/load.js.php:1679:                    // now select if sending by email
+..//includes/core/login.js.php:970:            // Unselect any method
+..//includes/core/otv.php:96:        'SELECT id, timestamp, code, item_id, encrypted
+..//includes/core/otv.php:108:                'SELECT *
+..//includes/core/otv.php:118:                'SELECT * FROM '.prefixTable('automatic_del').' WHERE item_id=%i',
+..//scripts/task_maintenance_clean_orphan_objects.php:94:    $items = DB::query('SELECT id,label FROM ' . prefixTable('items') . ' WHERE id_tree NOT IN %li', $foldersIds);
+..//scripts/task_maintenance_clean_orphan_objects.php:113:        'SELECT id
+..//scripts/task_maintenance_clean_orphan_objects.php:119:            'SELECT * FROM ' . prefixTable('log_items') . ' WHERE id_item = %i AND action = %s',
+..//scripts/background_tasks___items_handler.php:80:    'SELECT *
+..//scripts/background_tasks___items_handler.php:98:        'SELECT *
+..//scripts/background_tasks___items_handler.php:138:    'SELECT *
+..//scripts/background_tasks___items_handler.php:164:        'SELECT *
+..//scripts/background_tasks___items_handler.php:236:                'SELECT *
+..//scripts/background_tasks___items_handler.php:372:            SELECT user_id, item_id, MIN(timestamp) AS oldest_timestamp
+..//scripts/task_maintenance_users_personal_folder.php:83:        'SELECT id, login, email
+..//scripts/task_maintenance_users_personal_folder.php:103:            'SELECT id
+..//scripts/background_tasks___user_keys_creation.php:66:    'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:85:        'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:116:        'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:255:            'SELECT public_key, private_key
+..//scripts/background_tasks___user_keys_creation.php:384:        'SELECT public_key, private_key
+..//scripts/background_tasks___user_keys_creation.php:428:        'SELECT id, pw
+..//scripts/background_tasks___user_keys_creation.php:437:            'SELECT share_key, increment_id
+..//scripts/background_tasks___user_keys_creation.php:469:                    'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:502:        'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:542:        'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:550:            'SELECT share_key
+..//scripts/background_tasks___user_keys_creation.php:582:                    'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:604:        'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:644:        'SELECT id
+..//scripts/background_tasks___user_keys_creation.php:652:            'SELECT share_key
+..//scripts/background_tasks___user_keys_creation.php:680:                        'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:703:        'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:743:        'SELECT id
+..//scripts/background_tasks___user_keys_creation.php:750:            'SELECT share_key
+..//scripts/background_tasks___user_keys_creation.php:782:                    'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:804:        'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:843:        'SELECT id
+..//scripts/background_tasks___user_keys_creation.php:851:            'SELECT share_key
+..//scripts/background_tasks___user_keys_creation.php:883:                    'SELECT increment_id
+..//scripts/background_tasks___user_keys_creation.php:905:        'SELECT *
+..//scripts/background_tasks___user_keys_creation.php:946:        'SELECT email, login, auth_type
+..//scripts/background_tasks___user_task.php:72:    'SELECT *
+..//scripts/background_tasks___do_calculation.php:70:        'SELECT count(*) as num_results
+..//scripts/background_tasks___do_calculation.php:86:            'SELECT count(*) as num_results
+..//scripts/background_tasks___userKeysCreation.php:71:    'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:130:                        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:139:                        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:148:                        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:157:                        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:165:                        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:194:        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:202:    fwrite($fichier, 'Nombre records: SELECT * FROM ' . prefixTable('background_subtasks') . ' WHERE task LIKE "%%s%" - '.$action.' - '.DB::count()."\n");
+..//scripts/background_tasks___userKeysCreation.php:227:        'SELECT COUNT(*) FROM ' . prefixTable('background_subtasks') . 
+..//scripts/background_tasks___userKeysCreation.php:237:        'SELECT *
+..//scripts/background_tasks___userKeysCreation.php:289:        'SELECT * FROM ' . prefixTable('background_subtasks') . ' WHERE increment_id = %i', 
+..//scripts/background_tasks___userKeysCreation.php:334:        'SELECT *
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:157:            'SELECT public_key, private_key
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:270:        'SELECT pw, public_key, private_key, login, name
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:313:        'SELECT id, pw, perso
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:323:            'SELECT share_key, increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:352:            'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:383:        'SELECT *
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:423:        'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:431:            'SELECT share_key
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:463:                    'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:485:        'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:525:        'SELECT id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:533:            'SELECT share_key
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:561:                        'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:584:        'SELECT *
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:624:        'SELECT id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:631:            'SELECT share_key
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:663:                    'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:685:        'SELECT *
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:723:        'SELECT f.id AS id, i.perso AS perso
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:732:            'SELECT share_key, increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:760:            'SELECT increment_id
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:791:        'SELECT *
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:858:        'SELECT email, login, auth_type, special, lastname, name
+..//scripts/background_tasks___sending_emails.php:65:    'SELECT *
+..//scripts/background_tasks___sending_emails.php:121:            'SELECT valeur FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s',
+..//scripts/background_tasks___sending_emails.php:128:                'SELECT *
+..//scripts/background_tasks___items_handler_subtask.php:58:    'SELECT *
+..//scripts/background_tasks___items_handler_subtask.php:66:    'SELECT arguments
+..//sources/export.queries.php:140:                        'SELECT i.id as id, i.id_tree as id_tree, i.restricted_to as restricted_to, i.perso as perso,
+..//sources/export.queries.php:167:                                    'SELECT i.pw AS pw, s.share_key AS share_key
+..//sources/export.queries.php:192:                                    'SELECT b.label, b.id
+..//sources/export.queries.php:205:                                    'SELECT tag
+..//sources/export.queries.php:217:                                    'SELECT t.id, t.title
+..//sources/export.queries.php:228:                                            'SELECT parent_id, title
+..//sources/export.queries.php:335:                    'SELECT i.id as id, i.restricted_to as restricted_to, i.perso as perso, i.label as label, i.description as description, i.pw as pw, i.login as login, i.url as url, i.email as email,
+..//sources/export.queries.php:365:                                'SELECT i.pw AS pw, s.share_key AS share_key
+..//sources/export.queries.php:390:                                'SELECT b.label, b.id
+..//sources/export.queries.php:407:                                'SELECT tag
+..//sources/export.queries.php:490:            $rows = DB::query('SELECT * FROM ' . prefixTable('export'));
+..//sources/export.queries.php:643:                        'SELECT i.id AS id, i.label AS label, i.restricted_to AS restricted_to, i.perso AS perso
+..//sources/export.queries.php:755:                'SELECT i.id as id, i.url as url, i.perso as perso, i.label as label, i.description as description, i.pw as pw, i.login as login, i.id_tree as id_tree,
+..//sources/utils.queries.php:100:                        'SELECT i.id as id, i.restricted_to as restricted_to, i.perso as perso,
+..//sources/utils.queries.php:211:                'SELECT i.id AS id
+..//sources/utils.queries.php:252:                'SELECT label, login, pw, pw_iv, url
+..//sources/logs.datatables.php:122:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:129:        'SELECT l.date as date, l.label as label, l.qui as who, 
+..//sources/logs.datatables.php:198:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:210:        'SELECT l.date as date, u.login as login, i.label as label
+..//sources/logs.datatables.php:282:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:290:        'SELECT l.date as date, u.login as login, u.name AS name, u.lastname AS lastname, i.label as label
+..//sources/logs.datatables.php:357:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:363:        'SELECT l.date as date, u.login as login, u.name AS name, u.lastname AS lastname, l.label as label
+..//sources/logs.datatables.php:433:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:443:        'SELECT l.date AS date, u.login AS login, u.name AS name, u.lastname AS lastname, i.label AS label,
+..//sources/logs.datatables.php:528:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:533:        'SELECT l.date as auth_date, l.label as label, l.qui as who, l.field_1
+..//sources/logs.datatables.php:609:        'SELECT COUNT(*)
+..//sources/logs.datatables.php:616:        'SELECT l.date as date, l.label as label, l.qui as who,
+..//sources/logs.datatables.php:685:        'SELECT COUNT(e.timestamp)
+..//sources/logs.datatables.php:693:        'SELECT e.timestamp, e.item_id, e.user_id, u.login, u.name, u.lastname, i.label
+..//sources/logs.datatables.php:762:        'SELECT COUNT(timestamp)
+..//sources/logs.datatables.php:767:        'SELECT *
+..//sources/logs.datatables.php:842:    'SELECT COUNT(increment_id)
+..//sources/logs.datatables.php:848:        'SELECT *
+..//sources/logs.datatables.php:878:                'SELECT name, lastname FROM ' . prefixTable('users') . '
+..//sources/logs.datatables.php:928:        'SELECT COUNT(increment_id)
+..//sources/logs.datatables.php:935:        'SELECT *
+..//sources/logs.datatables.php:969:                'SELECT name, lastname FROM ' . prefixTable('users') . '
+..//sources/favourites.queries.php:72:            $data = DB::queryfirstrow('SELECT favourites FROM '.prefixTable('users').' WHERE id = %i', $_SESSION['user_id']);
+..//sources/folders.class.php:136:                'SELECT *
+..//sources/folders.class.php:160:            'SELECT personal_folder, bloquer_creation, bloquer_modification
+..//sources/folders.class.php:199:                'SELECT valeur
+..//sources/folders.class.php:310:                    'SELECT increment_id, folders, visible_folders
+..//sources/folders.class.php:350:                $rows = DB::query('SELECT role_id, type FROM ' . prefixTable('roles_values') . ' WHERE folder_id = %i', $parent_id);
+..//sources/folders.class.php:380:            $rows = DB::query('SELECT id_category FROM ' . prefixTable('categories_folders') . ' WHERE id_folder = %i', $parent_id);
+..//sources/user.logs.datatables.php:115:    'SELECT l.date as date, i.label as label, l.action as action
+..//sources/user.logs.datatables.php:121:    'SELECT s.date AS date, s.label AS label, s.field_1 AS field1
+..//sources/user.logs.datatables.php:128:    'SELECT l.date as date, i.label as label, l.action as action, i.id as id
+..//sources/user.logs.datatables.php:134:    SELECT s.date AS date, s.label AS label, s.field_1 AS field1, s.id as id
+..//sources/tasks.queries.php:165:        'SELECT max(finished_at), process_type
+..//sources/tasks.queries.php:181:        'SELECT MAX(finished_at) AS max_finished_at, job AS process_type 
+..//sources/tasks.queries.php:198:        'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Size (MB)" 
+..//sources/folders.datatable.php:133:        $data = DB::queryFirstRow('SELECT title FROM '.prefixTable('nested_tree').' WHERE id = %i', $t->parent_id);
+..//sources/folders.datatable.php:140:        $rows = DB::query('SELECT fonction_id  FROM '.prefixTable('rights').' WHERE authorized=%i AND tree_id = %i', 1, $t->id);
+..//sources/folders.datatable.php:159:            'SELECT m.valeur AS valeur, n.renewal_period AS renewal_period,
+..//sources/folders.datatable.php:197:                $sOutput .= '"<span data-id=\"'.$t->id.'\" id=\"c'.$t->id.'\" class=\"infotip edit-select field-complex pointer\" title=\"'.TP_PW_COMPLEXITY[$node_data['valeur']][1].'\"  data-value=\"'.TP_PW_COMPLEXITY[$node_data['valeur']][0].'\"><i class=\"'.addslashes(TP_PW_COMPLEXITY[$node_data['valeur']][2]).'\"></i></span>"';
+..//sources/folders.datatable.php:207:                'SELECT bloquer_creation,bloquer_modification
+..//sources/users.datatable.php:81:$rows = DB::query('SELECT id,title FROM '.prefixTable('roles_title').' ORDER BY title ASC');
+..//sources/users.datatable.php:151:    'SELECT * FROM '.prefixTable('users').
+..//sources/users.datatable.php:157:    'SELECT * FROM '.prefixTable('users').
+..//sources/users.datatable.php:212:            'SELECT date FROM '.prefixTable('log_system ').' WHERE type = %s AND field_1 = %i',
+..//sources/users.datatable.php:246:            'SELECT title
+..//sources/expired.datatables.php:133:    'SELECT a.item_id, i.label, a.del_value, i.id_tree
+..//sources/expired.datatables.php:141:    'SELECT a.item_id, i.label, a.del_value, i.id_tree
+..//sources/main.functions.php:475:    $rows = DB::query('SELECT id FROM ' . prefixTable('nested_tree') . ' WHERE personal_folder = %i', 0);
+..//sources/main.functions.php:494:        'SELECT id FROM ' . prefixTable('nested_tree') . ' WHERE title = %s',
+..//sources/main.functions.php:515:        'SELECT * FROM ' . prefixTable('roles_title') . '
+..//sources/main.functions.php:526:    DB::query('SELECT * FROM ' . prefixTable('nested_tree') . '');
+..//sources/main.functions.php:528:    DB::query('SELECT * FROM ' . prefixTable('roles_title'));
+..//sources/main.functions.php:613:        'SELECT id, id_tree FROM ' . prefixTable('items') . '
+..//sources/main.functions.php:629:        'SELECT i.id_tree, r.item_id
+..//sources/main.functions.php:685:    DB::queryfirstrow('SELECT id FROM ' . prefixTable('nested_tree') . '');
+..//sources/main.functions.php:687:    DB::queryfirstrow('SELECT id FROM ' . prefixTable('roles_title'));
+..//sources/main.functions.php:692:            'SELECT COUNT(*)
+..//sources/main.functions.php:720:        'SELECT *
+..//sources/main.functions.php:787:            'SELECT id
+..//sources/main.functions.php:820:        'SELECT id
+..//sources/main.functions.php:907:        'SELECT *
+..//sources/main.functions.php:920:                'SELECT tag
+..//sources/main.functions.php:931:                'SELECT renewal_period
+..//sources/main.functions.php:944:                        'SELECT id, login
+..//sources/main.functions.php:1012:        'SELECT label, description, id_tree, perso, restricted_to, login, url
+..//sources/main.functions.php:1020:        'SELECT tag
+..//sources/main.functions.php:1036:                'SELECT id, login
+..//sources/main.functions.php:1103:        'SELECT i.label, i.description, i.id_tree as id_tree, i.perso, i.restricted_to, i.id, i.login, i.url, l.date
+..//sources/main.functions.php:1114:        'SELECT tag
+..//sources/main.functions.php:1130:                'SELECT id, login
+..//sources/main.functions.php:1172:        'SELECT id FROM ' . prefixTable('nested_tree') . ' WHERE personal_folder = %i',
+..//sources/main.functions.php:1177:        'SELECT id FROM ' . prefixTable('nested_tree') . ' WHERE personal_folder = %i',
+..//sources/main.functions.php:1182:        'SELECT id FROM ' . prefixTable('items') . ' WHERE perso = %i',
+..//sources/main.functions.php:1187:        'SELECT id FROM ' . prefixTable('items') . ' WHERE perso = %i',
+..//sources/main.functions.php:1192:        'SELECT id FROM ' . prefixTable('users') . ''
+..//sources/main.functions.php:1196:        'SELECT id FROM ' . prefixTable('users') . ' WHERE admin = %i',
+..//sources/main.functions.php:1201:        'SELECT id FROM ' . prefixTable('users') . ' WHERE gestionnaire = %i',
+..//sources/main.functions.php:1206:        'SELECT id FROM ' . prefixTable('users') . ' WHERE read_only = %i',
+..//sources/main.functions.php:1213:        'SELECT name FROM ' . prefixTable('languages')
+..//sources/main.functions.php:1217:            'SELECT * FROM ' . prefixTable('users') . ' WHERE user_language = %s',
+..//sources/main.functions.php:1226:        'SELECT user_ip FROM ' . prefixTable('users')
+..//sources/main.functions.php:1897:                'SELECT id, id_tree, label
+..//sources/main.functions.php:1947:            'SELECT id, id_tree, label
+..//sources/main.functions.php:1998:        'SELECT *
+..//sources/main.functions.php:2146:            'SELECT * FROM ' . prefixTable('misc') . ' WHERE type=%s',
+..//sources/main.functions.php:2212:            'SELECT * FROM ' . prefixTable('misc') . ' WHERE type=%s_type OR type=%s_type2',
+..//sources/main.functions.php:2243:        'SELECT id_category
+..//sources/main.functions.php:2254:        'SELECT id_category
+..//sources/main.functions.php:2556:        'SELECT id_tree
+..//sources/main.functions.php:2651:        'SELECT ' . $fields . '
+..//sources/main.functions.php:3027:            'SELECT id, public_key
+..//sources/main.functions.php:3587:        'SELECT increment_id
+..//sources/main.functions.php:3665:        'SELECT valeur FROM ' . prefixTable('misc') . '
+..//sources/main.functions.php:3694:        'SELECT '.$fieldName.'
+..//sources/main.functions.php:3745:            'SELECT id
+..//sources/main.functions.php:3761:            'SELECT c.id, c.title, c.level, c.type, c.masked, c.order, c.encrypted_data, c.role_visibility, c.is_mandatory,
+..//sources/main.functions.php:3789:            'SELECT valeur
+..//sources/main.functions.php:3806:            'SELECT t.title
+..//sources/main.functions.php:3845:            'SELECT id, fonction_id
+..//sources/main.functions.php:3881:        'SELECT valeur
+..//sources/main.queries.php:172:                DB::query('SELECT * FROM ' . prefixTable('items_change'));
+..//sources/main.queries.php:174:                DB::query('SELECT * FROM ' . prefixTable('suggestion'));
+..//sources/main.queries.php:694:        'SELECT increment_id
+..//sources/main.queries.php:750:            'SELECT *
+..//sources/main.queries.php:771:                'SELECT complexity
+..//sources/main.queries.php:893:            'SELECT id, email, pw
+..//sources/main.queries.php:900:            'SELECT id, login, email, pw
+..//sources/main.queries.php:1031:            'SELECT valeur FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s',
+..//sources/main.queries.php:1038:                'SELECT *
+..//sources/main.queries.php:1143:        'SELECT i.id AS id, i.label AS label, i.id_tree AS id_tree, l.date, i.perso AS perso, i.restricted_to AS restricted
+..//sources/main.queries.php:1177:        DB::query('SELECT * FROM ' . prefixTable('suggestion'));
+..//sources/main.queries.php:1333:        'SELECT label, date AS error_date
+..//sources/main.queries.php:1436:            'SELECT public_key, private_key, pw, auth_type
+..//sources/main.queries.php:1445:                'SELECT object_id, share_key, increment_id
+..//sources/main.queries.php:1552:            'SELECT private_key
+..//sources/main.queries.php:1619:            'SELECT email, auth_type, login
+..//sources/main.queries.php:1769:            'SELECT email, auth_type, login
+..//sources/main.queries.php:1834:            'SELECT *
+..//sources/main.queries.php:1906:            'SELECT public_key
+..//sources/main.queries.php:2058:        'SELECT id, pw
+..//sources/main.queries.php:2066:            'SELECT share_key, increment_id
+..//sources/main.queries.php:2098:                    'SELECT increment_id
+..//sources/main.queries.php:2131:        'SELECT *
+..//sources/main.queries.php:2155:        'SELECT increment_id
+..//sources/main.queries.php:2163:            'SELECT share_key
+..//sources/main.queries.php:2195:                    'SELECT increment_id
+..//sources/main.queries.php:2217:        'SELECT increment_id
+..//sources/main.queries.php:2241:        'SELECT id
+..//sources/main.queries.php:2249:            'SELECT share_key
+..//sources/main.queries.php:2281:                    'SELECT increment_id
+..//sources/main.queries.php:2303:        'SELECT *
+..//sources/main.queries.php:2327:        'SELECT id
+..//sources/main.queries.php:2334:            'SELECT share_key
+..//sources/main.queries.php:2366:                    'SELECT increment_id
+..//sources/main.queries.php:2388:        'SELECT *
+..//sources/main.queries.php:2411:        'SELECT id
+..//sources/main.queries.php:2419:            'SELECT share_key
+..//sources/main.queries.php:2451:                    'SELECT increment_id
+..//sources/main.queries.php:2473:        'SELECT *
+..//sources/main.queries.php:2506:            'SELECT id, pw
+..//sources/main.queries.php:2515:                'SELECT share_key, increment_id
+..//sources/main.queries.php:2542:                        'SELECT increment_id
+..//sources/main.queries.php:2565:        'SELECT *
+..//sources/main.queries.php:2589:            'SELECT public_key, encrypted_psk
+..//sources/main.queries.php:2615:                    'SELECT id, pw
+..//sources/main.queries.php:2660:                            'SELECT id, file
+..//sources/main.queries.php:2773:            'SELECT '.$post_fields.'
+..//sources/main.queries.php:2819:            'SELECT auth_type, login, private_key
+..//sources/main.queries.php:2915:            'SELECT auth_type, login, private_key, special
+..//sources/main.queries.php:2978:                'SELECT id, pw
+..//sources/main.queries.php:2985:                'SELECT share_key, increment_id
+..//sources/roles.queries.php:143:                        'SELECT *
+..//sources/roles.queries.php:259:                'SELECT increment_id, folders
+..//sources/roles.queries.php:348:                    'SELECT *
+..//sources/roles.queries.php:374:                    'SELECT *
+..//sources/roles.queries.php:401:                    'SELECT *
+..//sources/roles.queries.php:429:                    'SELECT *
+..//sources/roles.queries.php:455:                            'SELECT fonction_id FROM '.prefixTable('users').' WHERE id = %s',
+..//sources/roles.queries.php:576:                'SELECT id, fonction_id FROM '.prefixTable('users').'
+..//sources/roles.queries.php:662:                        'SELECT *
+..//sources/roles.queries.php:818:                    'SELECT a.increment_id, a.role_id, r.title
+..//sources/roles.queries.php:847:            $rows = DB::query('SELECT id,title FROM ' . prefixTable('roles_title'));
+..//sources/roles.queries.php:898:                'SELECT *
+..//sources/users.queries.php:157:                'SELECT id, fonction_id, groupes_interdits, groupes_visibles
+..//sources/users.queries.php:384:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:409:                    'SELECT id FROM ' . prefixTable('nested_tree') . '
+..//sources/users.queries.php:422:                            'SELECT id FROM ' . prefixTable('items') . '
+..//sources/users.queries.php:445:                    'SELECT increment_id
+..//sources/users.queries.php:510:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:555:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:600:                'SELECT admin, isAdministratedByRole, can_manage_all_users, gestionnaire
+..//sources/users.queries.php:648:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:693:                'SELECT admin, isAdministratedByRole, gestionnaire
+..//sources/users.queries.php:739:                'SELECT admin, isAdministratedByRole, gestionnaire
+..//sources/users.queries.php:781:                'SELECT admin, isAdministratedByRole, gestionnaire
+..//sources/users.queries.php:821:                'SELECT * FROM ' . prefixTable('nested_tree') . '
+..//sources/users.queries.php:834:                'SELECT * FROM ' . prefixTable('roles_title') . '
+..//sources/users.queries.php:870:                    'SELECT *
+..//sources/users.queries.php:890:                    'SELECT l.date as date, u.login as login, i.label as label, l.action as action
+..//sources/users.queries.php:902:                    'SELECT *
+..//sources/users.queries.php:921:                    'SELECT *
+..//sources/users.queries.php:944:                            'SELECT login
+..//sources/users.queries.php:999:                    'SELECT id FROM ' . prefixTable('nested_tree') . '
+..//sources/users.queries.php:1009:                        'SELECT i.pw, i.label, l.id_user
+..//sources/users.queries.php:1052:                'SELECT admin, isAdministratedByRole, gestionnaire
+..//sources/users.queries.php:1090:                'SELECT id FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:1098:                    'SELECT admin, isAdministratedByRole, gestionnaire
+..//sources/users.queries.php:1159:                'SELECT *
+..//sources/users.queries.php:1189:                $rows = DB::query('SELECT id,title,creator_id FROM ' . prefixTable('roles_title'));
+..//sources/users.queries.php:1225:                $rows = DB::query('SELECT id,title FROM ' . prefixTable('roles_title') . ' ORDER BY title ASC');
+..//sources/users.queries.php:1436:                    'SELECT id
+..//sources/users.queries.php:1526:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:1547:                        'SELECT id FROM ' . prefixTable('nested_tree') . '
+..//sources/users.queries.php:1560:                                'SELECT id FROM ' . prefixTable('items') . '
+..//sources/users.queries.php:1581:                        'SELECT * FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:1678:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:1730:                'SELECT * FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:1785:                'SELECT login, name, lastname, email, disabled, fonction_id, groupes_interdits, groupes_visibles, isAdministratedByRole, avatar_thumb, roles_from_ad_groups
+..//sources/users.queries.php:1806:                    'SELECT folder_id, type
+..//sources/users.queries.php:1840:                                'SELECT title, nlevel, id
+..//sources/users.queries.php:1933:                    'SELECT *
+..//sources/users.queries.php:1941:                    'SELECT *
+..//sources/users.queries.php:1954:                        'SELECT id, title FROM ' . prefixTable('roles_title') . '
+..//sources/users.queries.php:1966:                    'SELECT id, title FROM ' . prefixTable('roles_title') . '
+..//sources/users.queries.php:1976:                        'SELECT id, title FROM ' . prefixTable('nested_tree') . '
+..//sources/users.queries.php:1989:                        'SELECT id, title FROM ' . prefixTable('nested_tree') . '
+..//sources/users.queries.php:2089:                'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:2259:                    'SELECT fonction_id, public_key
+..//sources/users.queries.php:2364:                    'SELECT user_ip_lastdate
+..//sources/users.queries.php:2549:                                    'SELECT id, login, fonction_id, auth_type
+..//sources/users.queries.php:2595:            $rows = DB::query('SELECT id,title FROM ' . prefixTable('roles_title'));
+..//sources/users.queries.php:2668:                'SELECT id, fonction_id, groupes_interdits, groupes_visibles
+..//sources/users.queries.php:2857:                'SELECT email
+..//sources/users.queries.php:2928:                'SELECT id
+..//sources/users.queries.php:3009:                'SELECT id, private_key, public_key
+..//sources/users.queries.php:3058:                    'SELECT id
+..//sources/users.queries.php:3143:                'SELECT id
+..//sources/users.queries.php:3390:                'SELECT *
+..//sources/users.queries.php:3447:        'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/users.queries.php:3511:        'SELECT admin, isAdministratedByRole FROM ' . prefixTable('users') . '
+..//sources/checks.php:187:        'SELECT login, key_tempo, admin, gestionnaire, can_manage_all_users FROM ' . prefixTable('users') . ' WHERE id = %i',
+..//sources/upload.files.php:105:            'SELECT end_timestamp FROM ' . prefixTable('tokens') . ' WHERE user_id = %i AND token = %s',
+..//sources/upload.files.php:452:    $data = DB::queryFirstRow('SELECT avatar, avatar_thumb FROM ' . prefixTable('users') . ' WHERE id=%i', $_SESSION['user_id']);
+..//sources/tree.php:120:    'SELECT valeur FROM ' . prefixTable('misc') . '
+..//sources/tree.php:751:        'SELECT data
+..//sources/upload.attachments.php:151:            'SELECT end_timestamp
+..//sources/upload.attachments.php:404:            'SELECT id, public_key
+..//sources/backups.queries.php:129:                    $result = DB::queryRaw('SELECT * FROM ' . $table);
+..//sources/backups.queries.php:131:                        'SELECT *
+..//sources/backups.queries.php:276:                'SELECT valeur
+..//sources/utilities.queries.php:107:                'SELECT valeur, intitule
+..//sources/utilities.queries.php:127:                'SELECT u.login as login, u.name as name, u.lastname as lastname,
+..//sources/utilities.queries.php:216:                    'SELECT valeur
+..//sources/utilities.queries.php:262:                        'SELECT id
+..//sources/utilities.queries.php:355:                    'SELECT valeur
+..//sources/utilities.queries.php:405:                        'SELECT id
+..//sources/utilities.queries.php:499:                        'SELECT * FROM ' . prefixTable('log_items') . '
+..//sources/utilities.queries.php:519:                        'SELECT * FROM ' . prefixTable('log_system') . '
+..//sources/utilities.queries.php:542:                        'SELECT * FROM ' . prefixTable('log_system') . ' WHERE type=%s ' .
+..//sources/utilities.queries.php:559:                        'SELECT * FROM ' . prefixTable('log_items') . ' WHERE action=%s ' .
+..//sources/utilities.queries.php:576:                        'SELECT * FROM ' . prefixTable('log_system') . ' WHERE type=%s ' .
+..//sources/utilities.queries.php:593:                        'SELECT * FROM ' . prefixTable('log_system') . ' WHERE type=%s ' .
+..//sources/utilities.queries.php:666:                'SELECT *
+..//sources/utilities.queries.php:674:                'SELECT id
+..//sources/utilities.queries.php:681:                'SELECT increment_id
+..//sources/utilities.queries.php:688:                'SELECT id
+..//sources/utilities.queries.php:695:                'SELECT id
+..//sources/utilities.queries.php:701:                'SELECT id
+..//sources/items.queries.php:336:                    'SELECT bloquer_creation, bloquer_modification, personal_folder
+..//sources/items.queries.php:353:                    'SELECT valeur
+..//sources/items.queries.php:380:                    'SELECT * FROM ' . prefixTable('items') . '
+..//sources/items.queries.php:477:                            'SELECT id, public_key
+..//sources/items.queries.php:506:                                    'SELECT encrypted_data
+..//sources/items.queries.php:562:                            'SELECT *
+..//sources/items.queries.php:632:                                $dataTmp = DB::queryfirstrow('SELECT login FROM ' . prefixTable('users') . ' WHERE id= %i', $userRest);
+..//sources/items.queries.php:650:                                    $dataTmp = DB::queryfirstrow('SELECT login FROM ' . prefixTable('users') . ' WHERE id= ' . $userRest);
+..//sources/items.queries.php:716:                            'SELECT id
+..//sources/items.queries.php:942:                    'SELECT bloquer_creation, bloquer_modification, personal_folder, title
+..//sources/items.queries.php:958:                    'SELECT valeur
+..//sources/items.queries.php:998:                    'SELECT *
+..//sources/items.queries.php:1009:                    'SELECT *
+..//sources/items.queries.php:1056:                        'SELECT i.id as id, i.label as label, i.description as description, i.pw as pw, i.url as url, i.id_tree as id_tree, i.perso as perso, i.login as login, 
+..//sources/items.queries.php:1068:                        'SELECT share_key
+..//sources/items.queries.php:1144:                        'SELECT tag
+..//sources/items.queries.php:1226:                                    'SELECT c.id AS id, c.title AS title, i.data AS data, i.data_iv AS data_iv,
+..//sources/items.queries.php:1243:                                        'SELECT id, title, encrypted_data, masked
+..//sources/items.queries.php:1323:                                            'SELECT share_key
+..//sources/items.queries.php:1418:                            'SELECT *
+..//sources/items.queries.php:1461:                            'SELECT *
+..//sources/items.queries.php:1564:                                    'SELECT id, name, lastname
+..//sources/items.queries.php:1603:                            'SELECT t.title, t.id AS id
+..//sources/items.queries.php:1638:                                    'SELECT title
+..//sources/items.queries.php:1783:                        $dataTmp = DB::query('SELECT title FROM ' . prefixTable('nested_tree') . ' WHERE id IN %li', array($data['id_tree'], $inputData['folderId']));
+..//sources/items.queries.php:1824:                        'SELECT *
+..//sources/items.queries.php:1834:                        'SELECT l.date as date, l.action as action, l.raison as raison, u.login as login
+..//sources/items.queries.php:1985:                    'SELECT * FROM ' . prefixTable('items') . '
+..//sources/items.queries.php:2005:                    'SELECT personal_folder FROM ' . prefixTable('nested_tree') . '
+..//sources/items.queries.php:2012:                    'SELECT share_key
+..//sources/items.queries.php:2085:                    'SELECT *
+..//sources/items.queries.php:2132:                    'SELECT f.id AS id, f.file AS file, f.name AS name, f.status AS status, f.extension AS extension,
+..//sources/items.queries.php:2203:                $rows = DB::query('SELECT * FROM ' . prefixTable('restriction_to_roles') . ' WHERE item_id = %i', $inputData['itemId']);
+..//sources/items.queries.php:2215:                $rows = DB::query('SELECT * FROM ' . prefixTable('tags') . ' WHERE item_id = %i', $inputData['itemId']);
+..//sources/items.queries.php:2318:                'SELECT *
+..//sources/items.queries.php:2329:                'SELECT *
+..//sources/items.queries.php:2354:                'SELECT *
+..//sources/items.queries.php:2364:                'SELECT *
+..//sources/items.queries.php:2382:                'SELECT id, login, email, admin, name, lastname
+..//sources/items.queries.php:2417:                'SELECT tag
+..//sources/items.queries.php:2442:                'SELECT role_id
+..//sources/items.queries.php:2456:                'SELECT share_key
+..//sources/items.queries.php:2550:                    'SELECT r.type
+..//sources/items.queries.php:2584:                        'SELECT t.title, t.id
+..//sources/items.queries.php:2601:                        'SELECT k.label, k.id
+..//sources/items.queries.php:2683:                        'SELECT id_category
+..//sources/items.queries.php:2696:                            'SELECT i.id AS id, i.field_id AS field_id, i.data AS data, i.item_id AS item_id,
+..//sources/items.queries.php:2710:                                'SELECT share_key
+..//sources/items.queries.php:2756:                        'SELECT category_id
+..//sources/items.queries.php:2781:                        'SELECT * 
+..//sources/items.queries.php:2864:                            $dataTmp = DB::queryfirstrow('SELECT login FROM ' . prefixTable('users') . ' WHERE id= ' . $userRest);
+..//sources/items.queries.php:2930:                'SELECT i.*, n.title AS folder_title
+..//sources/items.queries.php:2953:                'SELECT role_id
+..//sources/items.queries.php:3000:                    'SELECT id, name, file, extension, size
+..//sources/items.queries.php:3044:                    'SELECT r.role_id AS role_id, t.title AS title
+..//sources/items.queries.php:3059:                        'SELECT id, login, fonction_id, email, name, lastname
+..//sources/items.queries.php:3109:                        'SELECT email
+..//sources/items.queries.php:3137:                DB::query('SELECT * FROM ' . prefixTable('items_change') . ' WHERE item_id = %i', $inputData['id']);
+..//sources/items.queries.php:3234:                'SELECT id_tree
+..//sources/items.queries.php:3326:                $data = DB::queryFirstRow('SELECT id, title FROM ' . prefixTable('nested_tree') . ' WHERE title = %s', $title);
+..//sources/items.queries.php:3335:                'SELECT parent_id, personal_folder
+..//sources/items.queries.php:3345:                    'SELECT valeur
+..//sources/items.queries.php:3359:                'SELECT title, parent_id, personal_folder FROM ' . prefixTable('nested_tree') . ' WHERE id = %i',
+..//sources/items.queries.php:3433:                'SELECT title, parent_id, personal_folder
+..//sources/items.queries.php:3440:                'SELECT title, parent_id, personal_folder
+..//sources/items.queries.php:3598:                        'SELECT allow_pw_change
+..//sources/items.queries.php:3624:                            'SELECT type FROM ' . prefixTable('roles_values') . ' WHERE role_id = %i AND folder_id = %i',
+..//sources/items.queries.php:3692:                        'SELECT *
+..//sources/items.queries.php:3703:                    'SELECT valeur FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %i',
+..//sources/items.queries.php:3714:                        'SELECT id_category
+..//sources/items.queries.php:3731:                        'SELECT f.id_category, c.title AS title
+..//sources/items.queries.php:3741:                            "SELECT *
+..//sources/items.queries.php:3829:                    $where->add('l.date=%l', '(SELECT date FROM ' . prefixTable('log_items') . " WHERE action IN ('at_creation', 'at_modification') AND id_item=i.id ORDER BY date DESC LIMIT 1)");
+..//sources/items.queries.php:3839:                        'SELECT i.id AS id, MIN(i.restricted_to) AS restricted_to, MIN(i.perso) AS perso,
+..//sources/items.queries.php:3860:                        'SELECT i.id AS id, MIN(i.restricted_to) AS restricted_to, MIN(i.perso) AS perso,
+..//sources/items.queries.php:3898:                            'SELECT role_id
+..//sources/items.queries.php:3910:                            'SELECT role_id
+..//sources/items.queries.php:4115:                    'SELECT i.id
+..//sources/items.queries.php:4183:                'SELECT i.pw AS pw, s.share_key AS share_key
+..//sources/items.queries.php:4227:                    'SELECT perso, anyone_can_modify
+..//sources/items.queries.php:4267:                $dataTmp = DB::queryFirstRow('SELECT timestamp, user_id FROM ' . prefixTable('items_edition') . ' WHERE item_id = %i', $inputData['itemId']);
+..//sources/items.queries.php:4278:                        'SELECT timestamp, user_id FROM ' . prefixTable('items_edition') . ' WHERE item_id = %i',
+..//sources/items.queries.php:4321:                'SELECT id, personal_folder, title
+..//sources/items.queries.php:4362:                'SELECT m.valeur, n.personal_folder
+..//sources/items.queries.php:4376:                    'SELECT t.title
+..//sources/items.queries.php:4396:                    'SELECT personal_folder
+..//sources/items.queries.php:4413:                'SELECT r.role_id AS role_id, t.title AS title
+..//sources/items.queries.php:4428:                    'SELECT id, login, fonction_id, email, name, lastname
+..//sources/items.queries.php:4459:						'SELECT type
+..//sources/items.queries.php:4541:                'SELECT name, id_item, file
+..//sources/items.queries.php:4549:                'SELECT id_tree
+..//sources/items.queries.php:4644:                    'SELECT label,id_tree
+..//sources/items.queries.php:4722:                'SELECT i.pw, f.personal_folder,i.id_tree, f.title,i.label
+..//sources/items.queries.php:4731:                'SELECT personal_folder, title
+..//sources/items.queries.php:4784:                    'SELECT id
+..//sources/items.queries.php:4801:                    'SELECT id
+..//sources/items.queries.php:4846:                    'SELECT share_key
+..//sources/items.queries.php:4857:                        'SELECT id, public_key
+..//sources/items.queries.php:4878:                    'SELECT id
+..//sources/items.queries.php:4885:                        'SELECT share_key
+..//sources/items.queries.php:4896:                            'SELECT id, public_key
+..//sources/items.queries.php:4918:                    'SELECT id
+..//sources/items.queries.php:4925:                        'SELECT share_key
+..//sources/items.queries.php:4936:                            'SELECT id, public_key
+..//sources/items.queries.php:5041:                        'SELECT i.pw, f.personal_folder,i.id_tree, f.title,i.label
+..//sources/items.queries.php:5066:                        'SELECT personal_folder, title FROM ' . prefixTable('nested_tree') . ' WHERE id = %i',
+..//sources/items.queries.php:5106:                            'SELECT id
+..//sources/items.queries.php:5123:                            'SELECT id
+..//sources/items.queries.php:5176:                            'SELECT share_key
+..//sources/items.queries.php:5187:                                'SELECT id, public_key
+..//sources/items.queries.php:5208:                            'SELECT id
+..//sources/items.queries.php:5215:                                'SELECT share_key
+..//sources/items.queries.php:5226:                                    'SELECT id, public_key
+..//sources/items.queries.php:5248:                            'SELECT id
+..//sources/items.queries.php:5255:                                'SELECT share_key
+..//sources/items.queries.php:5266:                                    'SELECT id, public_key
+..//sources/items.queries.php:5378:                        'SELECT label, id_tree
+..//sources/items.queries.php:5484:                $dataAuthor = DB::queryfirstrow('SELECT email,login FROM ' . prefixTable('users') . ' WHERE id = ' . $post_content[1]);
+..//sources/items.queries.php:5485:                $dataItem = DB::queryfirstrow('SELECT label, id_tree FROM ' . prefixTable('items') . ' WHERE id = ' . $post_content[0]);
+..//sources/items.queries.php:5508:                    'SELECT label,id_tree
+..//sources/items.queries.php:5558:                    'SELECT notification FROM ' . prefixTable('items') . ' WHERE id = %i',
+..//sources/items.queries.php:5618:                'SELECT *
+..//sources/items.queries.php:5651:                    'SELECT * FROM ' . prefixTable('log_items') . ' WHERE id_item = %i ORDER BY date DESC',
+..//sources/items.queries.php:5701:                'SELECT date FROM ' . prefixTable('log_items') . ' WHERE action = %s AND id_item = %i ORDER BY date DESC',
+..//sources/items.queries.php:5726:            $rows = DB::query('SELECT id FROM ' . prefixTable('otv') . ' WHERE timestamp < ' . (time() - $SETTINGS['otv_expiration_period'] * 86400));
+..//sources/items.queries.php:5747:                'SELECT s.share_key, i.pw
+..//sources/items.queries.php:5835:                'SELECT f.id AS id, f.file AS file, f.name AS name, f.status AS status,
+..//sources/items.queries.php:5901:                'SELECT file FROM ' . prefixTable('files') . ' WHERE id=%i',
+..//sources/items.queries.php:5933:            $data = DB::queryFirstRow('SELECT title FROM ' . prefixTable('nested_tree') . ' WHERE id = %i', $idFolder);
+..//sources/items.queries.php:5941:                        'SELECT label
+..//sources/items.queries.php:5954:                            'SELECT id FROM ' . prefixTable('nested_tree') . ' WHERE personal_folder = %i',
+..//sources/items.queries.php:5973:                        'SELECT label
+..//sources/items.queries.php:6199:                    'SELECT id, categories
+..//sources/items.queries.php:6243:                'SELECT *
+..//sources/items.queries.php:6252:                'SELECT l.date as date, l.action as action, l.raison as raison,
+..//sources/items.queries.php:6426:                'SELECT login FROM ' . prefixTable('users') . ' WHERE id = %i',
+..//sources/items.queries.php:6430:                'SELECT title FROM ' . prefixTable('nested_tree') . ' WHERE id = %i',
+..//sources/items.queries.php:6436:                'SELECT email
+..//sources/items.queries.php:6469:            $rows = DB::query('SELECT id,login,email FROM ' . prefixTable('users') . ' ORDER BY login ASC');
+..//sources/items.queries.php:6518:                'SELECT label, id_tree
+..//sources/items.queries.php:6525:                'SELECT id_user
+..//sources/items.queries.php:6532:                'SELECT email, login
+..//sources/items.queries.php:6618:                'SELECT *
+..//sources/items.queries.php:6693:                'SELECT id, file AS filename
+..//sources/items.queries.php:6712:                    'SELECT increment_id, raison
+..//sources/items.queries.php:6774:                'SELECT id, file AS filename
+..//sources/items.queries.php:6835:                'SELECT visible_folders
+..//sources/items.queries.php:6871:            $rows = DB::query('SELECT tag FROM ' . prefixTable('tags') . ' WHERE tag LIKE %ss GROUP BY tag', $inputData['getTerm']);
+..//sources/items.queries.php:6894:        'SELECT bloquer_creation, bloquer_modification, personal_folder
+..//sources/downloadFile.php:86:        'SELECT f.id AS id, f.file AS file, f.name AS name, f.status AS status, f.extension AS extension,
+..//sources/identify.php:328:            'SELECT *
+..//sources/identify.php:579:                'SELECT id, title, complexity
+..//sources/identify.php:603:        $rows = DB::query('SELECT id, title FROM ' . prefixTable('roles_title') . ' ORDER BY title ASC');
+..//sources/identify.php:672:                    'SELECT id,label,id_tree
+..//sources/identify.php:698:            $rows = DB::query('SELECT email FROM ' . prefixTable('users') . " WHERE admin = %i and email != ''", 1);
+..//sources/identify.php:871:        'SELECT date
+..//sources/identify.php:1269:            'SELECT valeur
+..//sources/identify.php:1442:                'SELECT lgr.role_id
+..//sources/identify.php:2180:            'SELECT u.*, a.value AS api_key
+..//sources/fields.queries.php:109:            //$categoriesSelect = '';
+..//sources/fields.queries.php:112:                'SELECT *
+..//sources/fields.queries.php:126:                    'SELECT t.title AS title, c.id_folder as id_folder
+..//sources/fields.queries.php:164:                    'SELECT *
+..//sources/fields.queries.php:187:                                        'SELECT title
+..//sources/fields.queries.php:449:                    'SELECT id
+..//sources/fields.queries.php:573:                    'SELECT i.id, i.data, i.data_iv, i.encryption_type
+..//sources/fields.queries.php:733:            'SELECT id
+..//sources/fields.queries.php:743:            'SELECT c.order AS position
+..//sources/fields.queries.php:767:        'SELECT id, c.order AS position
+..//sources/fields.queries.php:913:            $categoriesSelect = "";
+..//sources/fields.queries.php:916:                "SELECT *
+..//sources/fields.queries.php:926:                    "SELECT t.title AS title, c.id_folder as id_folder
+..//sources/fields.queries.php:955:                    "SELECT *
+..//sources/fields.queries.php:970:                                    "SELECT title
+..//sources/fields.queries.php:1030:                    $row = DB::queryfirstrow("SELECT title FROM ".prefixTable("nested_tree")." WHERE id=%i", $folder);
+..//sources/fields.queries.php:1057:                "SELECT i.id, i.data, i.data_iv, i.encryption_type
+..//sources/fields.queries.php:1102:            $categoriesSelect = "";
+..//sources/fields.queries.php:1105:                "SELECT * FROM ".prefixTable("categories")."
+..//sources/fields.queries.php:1132:                        "SELECT t.title AS title, c.id_folder as id_folder
+..//sources/fields.queries.php:1172:                        "SELECT * FROM ".prefixTable("categories")."
+..//sources/admin.queries.php:195:            'SELECT id, login, email
+..//sources/admin.queries.php:212:                'SELECT id
+..//sources/admin.queries.php:328:        $items = DB::query('SELECT id,label FROM ' . prefixTable('items') . ' WHERE id_tree NOT IN %li', $foldersIds);
+..//sources/admin.queries.php:348:            'SELECT id
+..//sources/admin.queries.php:354:                'SELECT * FROM ' . prefixTable('log_items') . ' WHERE id_item = %i AND action = %s',
+..//sources/admin.queries.php:437:                $result = DB::queryRaw('SELECT * FROM ' . $table);
+..//sources/admin.queries.php:439:                    'SELECT *
+..//sources/admin.queries.php:553:            'SELECT valeur
+..//sources/admin.queries.php:653:            'SELECT id
+..//sources/admin.queries.php:659:                'SELECT * FROM ' . prefixTable('log_items') . ' WHERE id_item = %i AND action = %s',
+..//sources/admin.queries.php:667:                    'SELECT date, id_user FROM ' . prefixTable('log_items') . ' WHERE id_item=%i ORDER BY date ASC',
+..//sources/admin.queries.php:973:        $rows = DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s', 'admin');
+..//sources/admin.queries.php:980:        $bck = DB::queryFirstRow('SELECT valeur FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'backup', 'filename');
+..//sources/admin.queries.php:1108:        DB::query('SELECT id FROM ' . prefixTable('items') . ' WHERE perso = %i', 0);
+..//sources/admin.queries.php:1241:                    'SELECT id, pw, pw_iv
+..//sources/admin.queries.php:1304:                    'SELECT raison, increment_id
+..//sources/admin.queries.php:1371:                    'SELECT id, data
+..//sources/admin.queries.php:1431:                    'SELECT id, file, status
+..//sources/admin.queries.php:1516:                        DB::query('SELECT increment_id FROM ' . prefixTable('log_items') . " WHERE action = %s AND raison LIKE 'at_pw :%'", 'at_modification');
+..//sources/admin.queries.php:1518:                        DB::query('SELECT id FROM ' . prefixTable('files'));
+..//sources/admin.queries.php:1520:                        DB::query('SELECT id FROM ' . prefixTable('categories_items'));
+..//sources/admin.queries.php:1522:                        DB::query('SELECT raison FROM ' . prefixTable('log_items') . " WHERE action = %s AND raison LIKE 'at_pw :%'", 'at_modification');
+..//sources/admin.queries.php:1636:            'SELECT current_table, value, value2, current_sql
+..//sources/admin.queries.php:1716:            'SELECT value, value2
+..//sources/admin.queries.php:1802:            'SELECT *
+..//sources/admin.queries.php:1892:        $rows = DB::query('SELECT * FROM ' . prefixTable('emails') . ' WHERE status = %s OR status = %s', 'not_sent', '');
+..//sources/admin.queries.php:1972:                'SELECT id, file, status
+..//sources/admin.queries.php:2069:                    'SELECT file
+..//sources/admin.queries.php:2347:        DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'api');
+..//sources/admin.queries.php:2499:        DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'google_authentication');
+..//sources/admin.queries.php:2525:            DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'ga_website_name');
+..//sources/admin.queries.php:2581:            DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'agses_hosted_url');
+..//sources/admin.queries.php:2610:            DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'agses_hosted_id');
+..//sources/admin.queries.php:2639:            DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'agses_hosted_apikey');
+..//sources/admin.queries.php:2708:            'SELECT * FROM ' . prefixTable('misc') . '
+..//sources/admin.queries.php:2748:                    'SELECT * FROM ' . prefixTable('misc') . '
+..//sources/admin.queries.php:2861:            DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'send_stats');
+..//sources/admin.queries.php:2893:            DB::query('SELECT * FROM ' . prefixTable('misc') . ' WHERE type = %s AND intitule = %s', 'admin', 'send_statistics_items');
+..//sources/admin.queries.php:2979:            'SELECT id, title
+..//sources/core.php:117:        'SELECT valeur FROM ' . prefixTable('misc') . ' WHERE type=%s AND intitule=%s',
+..//sources/core.php:177:    $rows = DB::query('SELECT * FROM ' . prefixTable('languages') . ' GROUP BY name, label, code, flag, id ORDER BY name ASC');
+..//sources/core.php:235:        'SELECT key_tempo FROM ' . prefixTable('users') . ' WHERE id=%i',
+..//sources/core.php:299:        'SELECT valeur FROM ' . prefixTable('misc') . ' WHERE type=%s_type AND intitule=%s_intitule',
+..//sources/core.php:410:        'SELECT login, admin, gestionnaire, can_manage_all_users, groupes_visibles, groupes_interdits, fonction_id, last_connexion, roles_from_ad_groups FROM ' . prefixTable('users') . ' WHERE id=%i',
+..//sources/core.php:490:        'SELECT *
+..//sources/core.php:499:            'SELECT *
+..//sources/core.php:587:DB::query('SELECT * FROM ' . prefixTable('users') . ' WHERE timestamp>=%i', time() - 600);
+..//sources/folders.queries.php:136:                    $data = DB::queryFirstRow('SELECT title FROM ' . prefixTable('nested_tree') . ' WHERE id = %i', $t->parent_id);
+..//sources/folders.queries.php:143:                    $rows = DB::query('SELECT fonction_id  FROM ' . prefixTable('rights') . ' WHERE authorized=%i AND tree_id = %i', 1, $t->id);
+..//sources/folders.queries.php:158:                        'SELECT m.valeur AS valeur, n.renewal_period AS renewal_period,
+..//sources/folders.queries.php:194:                        'SELECT bloquer_creation,bloquer_modification
+..//sources/folders.queries.php:339:                'SELECT *
+..//sources/folders.queries.php:376:                'SELECT personal_folder, bloquer_creation, bloquer_modification
+..//sources/folders.queries.php:405:                        'SELECT valeur
+..//sources/folders.queries.php:575:                    'SELECT *
+..//sources/folders.queries.php:596:                'SELECT personal_folder, bloquer_creation, bloquer_modification
+..//sources/folders.queries.php:625:                        'SELECT valeur
+..//sources/folders.queries.php:729:                        'SELECT increment_id, folders, visible_folders
+..//sources/folders.queries.php:768:                    $rows = DB::query('SELECT id FROM ' . prefixTable('roles_title'));
+..//sources/folders.queries.php:788:                    $rows = DB::query('SELECT role_id, type FROM ' . prefixTable('roles_values') . ' WHERE folder_id = %i', $post_parent_id);
+..//sources/folders.queries.php:818:                $rows = DB::query('SELECT id_category FROM ' . prefixTable('categories_folders') . ' WHERE id_folder = %i', $post_parent_id);
+..//sources/folders.queries.php:926:                            $itemsInSubFolder = DB::query('SELECT id FROM ' . prefixTable('items') . ' WHERE id_tree=%i', $thisSubFolders->id);
+..//sources/folders.queries.php:962:                                    'SELECT increment_id, folders, visible_folders
+..//sources/folders.queries.php:1117:                    'SELECT valeur
+..//sources/folders.queries.php:1193:                    'SELECT role_id, type
+..//sources/folders.queries.php:1201:                        'SELECT *
+..//sources/folders.queries.php:1221:                    'SELECT id_category
+..//sources/folders.queries.php:1240:                    'SELECT *
+..//sources/folders.queries.php:1249:                        'SELECT *
+..//sources/folders.queries.php:1260:                        'SELECT *
+..//sources/folders.queries.php:1275:                            'SELECT share_key
+..//sources/folders.queries.php:1350:                            'SELECT *
+..//sources/folders.queries.php:1397:                            'SELECT f.id AS id, f.file AS file, f.name AS name, f.status AS status, f.extension AS extension,
+..//sources/import.queries.php:133:            'SELECT valeur
+..//sources/import.queries.php:324:            'SELECT title
+..//sources/import.queries.php:475:            'SELECT valeur
+..//sources/import.queries.php:726:                'SELECT title FROM '.prefixTable('nested_tree').' WHERE id = %i',
+..//sources/import.queries.php:854:        'SELECT * FROM '.prefixTable('nested_tree').'
+..//sources/import.queries.php:913:        'SELECT id FROM '.prefixTable('nested_tree').'
+..//sources/import.queries.php:941:            'SELECT m.valeur as value, t.nlevel as nlevel
+..//sources/find.queries.php:103:    'SELECT id FROM ' . prefixTable('nested_tree') . ' WHERE title = %i',
+..//sources/find.queries.php:112:        'SELECT id FROM ' . prefixTable('nested_tree') . '
+..//sources/find.queries.php:225:    'SELECT id FROM ' . prefixTable('cache') . "
+..//sources/find.queries.php:232:    'SELECT id, label, description, tags, id_tree, perso, restricted_to, login, folder, author, renewal_period, url, timestamp
+..//sources/find.queries.php:263:                    'SELECT type FROM ' . prefixTable('roles_values') . ' WHERE role_id = %i AND folder_id = %i',
+..//sources/find.queries.php:338:            'SELECT role_id FROM ' . prefixTable('restriction_to_roles') . ' WHERE item_id = %i',
+..//sources/find.queries.php:410:            'SELECT anyone_can_modify FROM ' . prefixTable('items') . ' WHERE id = %i',
+..//sources/find.queries.php:441:            'SELECT role_id FROM ' . prefixTable('restriction_to_roles') . ' WHERE item_id=%i',
+..//sources/find.queries.php:562:                    'SELECT type FROM ' . prefixTable('roles_values') . ' WHERE role_id = %i AND folder_id = %i',
+..//sources/find.queries.php:612:                'SELECT i.pw AS pw, s.share_key AS share_key
+..//api/Model/FolderModel.php:31:        $rows = $this->select( "SELECT id, title FROM " . prefixTable('nested_tree') . " WHERE nlevel=1" );
+..//api/Model/FolderModel.php:58:        $childrens = $this->select('SELECT id, title FROM ' . prefixTable('nested_tree') . ' WHERE parent_id=' . $parentId);
+..//api/Model/ItemModel.php:44:            "SELECT i.id, label, description, i.pw, i.url, i.id_tree, i.login, i.email, i.viewed_no, i.fa_icon, i.inactif, i.perso, t.title as folder_label
+..//api/Model/ItemModel.php:54:                'SELECT share_key
+..//api/Model/UserModel.php:31:        return $this->select("SELECT * FROM ".prefixTable('users')." ORDER BY id ASC LIMIT ?", ["i", $limit]);
+..//api/Model/AuthModel.php:66:            $apiInfo = $this->select("SELECT count(*) FROM " . prefixTable('api') . " WHERE value='".$inputData['apikey']."' AND label='".$inputData['login']."'");
+..//api/Model/AuthModel.php:76:                "SELECT u.id, u.pw, u.public_key, u.private_key, u.personal_folder, u.fonction_id, u.groupes_visibles, u.groupes_interdits, a.value AS user_api_key
+..//api/Model/AuthModel.php:181:            $rows = $this->select("SELECT * FROM " . prefixTable('roles_values') . " WHERE role_id IN (".$userFunctionId.") AND type IN ('W', 'ND', 'NE', 'NDNE', 'R')");
+..//api/Model/AuthModel.php:202:        $rows = $this->select("SELECT id, id_tree FROM " . prefixTable('items') . " WHERE restricted_to LIKE '".$userInfo['id']."'".
+..//api/Model/AuthModel.php:211:        $rows = $this->select("SELECT i.id_tree, r.item_id
+..//api/Model/AuthModel.php:226:            'SELECT id
+..//pages/2fa.php:103:                                <select class='form-control form-control-sm select2 disabled' id='mfa_for_roles' onchange='' multiple="multiple" style="width:100%;">
+..//pages/items.php:69:$rows = DB::query('SELECT id,login,email FROM ' . prefixTable('users') . ' ORDER BY login ASC');
+..//pages/items.php:80:$rows = DB::query('SELECT id,title FROM ' . prefixTable('roles_title') . ' ORDER BY title ASC');
+..//pages/items.php:231:                                            <select class="form-control form-control-sm w-10" id="pwd-definition-size">
+..//pages/items.php:273:                                    <select id="form-item-folder" class="form-control form-item-control select2 no-root" style="width:100%;" data-change-ongoing=""></select>
+..//pages/items.php:279:                                    <select id="form-item-restrictedto" class="form-control form-item-control select2" style="width:100%;" multiple="multiple" data-change-ongoing=""></select>
+..//pages/items.php:360:                                        <select id="form-item-anounce" class="form-control form-item-control select2" style="width:100%;" multiple="multiple" data-placeholder="<?php echo langHdl('select_users_if_needed'); ?>" data-change-ongoing=""></select>
+..//pages/items.php:907:                                    <select class="form-control form-item-control select2" style="width:100%;" id="form-item-server-cron-frequency">
+..//pages/items.php:973:                        <select class="form-control form-item-control select2 no-root" style="width:100%;" id="form-item-copy-destination"></select>
+..//pages/items.php:1145:                            <select class="form-control form-folder-control select2" style="width:100%;" id="form-folder-add-parent" required></select>
+..//pages/items.php:1149:                            <select class="form-control form-folder-control select2" style="width:100%;" id="form-folder-add-complexicity" required>
+..//pages/items.php:1160:                            <select class="form-control form-folder-control select2" style="width:100%;" id="form-folder-add-rights" required>
+..//pages/items.php:1201:                        <select class="form-control form-folder-control select2" style="width:100%;" id="form-folder-delete-selection" required></select>
+..//pages/items.php:1231:                        <select class="form-control form-folder-control select2 no-root" style="width:100%;" id="form-folder-copy-source" required></select>
+..//pages/items.php:1235:                        <select class="form-control form-folder-control select2" style="width:100%;" id="form-folder-copy-destination" required>
+..//pages/folders.php:69:$complexityHtml = '<div id="hidden-select-complexity" class="hidden"><select id="select-complexity" class="form-control form-item-control save-me">';
+..//pages/folders.php:70:$complexitySelect = '';
+..//pages/folders.php:72:    $complexitySelect .= '<option value="' . $level[0] . '">' . $level[1] . '</option>';
+..//pages/folders.php:74:$complexityHtml .= $complexitySelect . '</select></div>';
+..//pages/folders.php:151:                                    <select id="new-parent" class="form-control form-item-control select2 no-root" style="width:100%;">
+..//pages/folders.php:157:                                    <select id="new-complexity" class="form-control form-item-control select2 no-root" style="width:100%;">
+..//pages/folders.php:163:                                    <select id="new-access-right" class="form-control form-item-control select2 no-root" style="width:100%;">
+..//pages/folders.php:255:                                <select class="form-control form-control-sm w-10" id="folders-depth">
+..//pages/items.js.php:692:                // Select tab#1
+..//pages/items.js.php:3365:        node_to_select = node_to_select || '';
+..//pages/items.js.php:3378:        if (node_to_select !== '') {
+..//pages/items.js.php:4203:        // Select tab#1
+..//pages/items.js.php:5410:                    // If restricted to Users then select them
+..//pages/import.php:132:                                    <select class="form-control select2" style="width:100%;" id="import-csv-target-folder"></select>
+..//pages/import.php:200:                                    <select class="form-control select2" style="width:100%;" id="import-keepass-target-folder"></select>
+..//pages/actions.php:93:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:122:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:149:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:178:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:204:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:233:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:263:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/actions.php:293:    'SELECT field_1, date FROM ' . prefixTable('log_system') . '
+..//pages/roles.php:98:                            <select id="roles-list" class="form-control form-item-control select2" style="width:100%;">
+..//pages/roles.php:106:                                $rows = DB::query('SELECT * FROM ' . prefixTable('roles_title') . $where);
+..//pages/roles.php:131:                                    <select id="form-complexity-list" class="form-control form-item-control select2" style="width:100%;">
+..//pages/roles.php:230:                                        <select class="form-control form-control-sm w-10" id="folders-depth">
+..//pages/roles.php:247:                                        <select class="form-control form-control-sm w-10" id="folders-compare">
+..//pages/roles.php:253:                                        <input type="checkbox" id="cb-all-selection" class="folder-select mr-2">
+..//pages/fields.php:151:                                    <select class="form-control form-item-control select2" multiple="multiple" style="width:100%;" id="form-category-folders">
+..//pages/fields.php:156:        'SELECT * FROM ' . prefixTable('nested_tree') . '
+..//pages/fields.php:176:                                    <select class="form-control form-item-control select2" style="width:100%;" id="form-category-list"></select>
+..//pages/fields.php:196:                                    <select class="form-control form-item-control select2" style="width:100%;" id="form-field-type">
+..//pages/fields.php:226:                                    <select class="form-control form-item-control select2" multiple="multiple" style="width:100%;" id="form-field-roles">
+..//pages/fields.php:231:    'SELECT id, title
+..//pages/fields.php:244:                                    <select class="form-control form-item-control select2" style="width:100%;" id="form-field-category"></select>
+..//pages/fields.php:249:                                    <select class="form-control form-item-control select2" style="width:100%;" id="form-field-order"></select>
+..//pages/users.js.php:1891:     * EDIT SELECT LIST
+..//pages/users.js.php:2650:                    '<select id="ldap-user-roles" class="form-control form-item-control select2 required" style="width:100%;" multiple="multiple">'+
+..//pages/roles.js.php:79:    // Preapre select drop list
+..//pages/roles.js.php:941:            '<select class="select-role form-control form-item-control">' +
+..//pages/export.php:79:                        <select class="form-control select2" style="width:100%;" id="export-format">
+..//pages/export.php:88:                            <select class="form-control select2-all" style="width:100%;" id="export-folders" multiple>
+..//pages/ldap.php:234:                                        <select class='form-control form-control-sm' id='ldap_type'>
+..//pages/ldap.php:255:                                        <select class='form-control form-control-sm' id='ldap_type'>
+..//pages/ldap.php:413:                                        <select class='form-control form-control-sm' id='ldap_tls_certifacte_check'>
+..//pages/ldap.php:490:                                        <select class='form-control form-control-sm select2' id='ldap_new_user_is_administrated_by'>
+..//pages/fields.js.php:154:        // Update select of Roles
+..//pages/fields.js.php:160:        // Select order BOTTOM
+..//pages/fields.js.php:558:            // Update select of Roles
+..//pages/export.js.php:88:                // this isn't a multi-select -> don't add the buttons!
+..//pages/users.php:81:    'SELECT id, title, creator_id
+..//pages/users.php:214:                                        <select class="form-control form-item-control" style="width:100%;" id="ldap-new-role-selection"></select>
+..//pages/users.php:218:                                        <select id="ldap-new-role-complexity" class="form-control form-item-control" style="width:100%;">
+..//pages/users.php:333:                            <select id="form-roles" class="form-control form-item-control select2 no-root required track-change" style="width:100%;" multiple="multiple">
+..//pages/users.php:339:                            <select id="form-managedby" class="form-control form-item-control select2 no-root required track-change" style="width:100%;">
+..//pages/users.php:345:                            <select id="form-auth" class="form-control form-item-control select2 no-root track-change" style="width:100%;" multiple="multiple">
+..//pages/users.php:351:                            <select id="form-forbid" class="form-control form-item-control select2 no-root track-change" style="width:100%;" multiple="multiple">
+..//pages/users.php:454:                        <select id="propagate-from" class="form-control form-item-control select2" style="width:100%;">
+..//pages/users.php:481:                        <select id="propagate-to" class="form-control form-item-control select2" style="width:100%;" multiple="multiple">
+..//pages/utilities.logs.php:196:                                <!-- select -->
+..//pages/utilities.logs.php:199:                                    <select class="form-control" id="purge-filter-user">
+..//pages/utilities.logs.php:202:                                    $rows = DB::query('SELECT id, name, lastname FROM ' . prefixTable('users') . ' WHERE admin = 0');
+..//pages/utilities.logs.php:214:                                    <select class="form-control" id="purge-filter-action">
+..//pages/options.php:256:                                <select class='form-control form-control-sm' id='timezone'>
+..//pages/options.php:274:                                <select class='form-control form-control-sm' id='date_format'>
+..//pages/options.php:293:                                <select class='form-control form-control-sm' id='time_format'>
+..//pages/options.php:308:                                <select class='form-control form-control-sm' id='default_language'>
+..//pages/options.php:405:                            <select class='form-control form-control-sm' id='personal_saltkey_security_level'>
+..//pages/options.php:780:                                <select class='form-control form-control-sm select2 disabled' id='roles_allowed_to_print_select' onchange='' multiple="multiple" style="width:100%;">
+..//pages/options.php:969:                                <select class='form-control form-control-sm' id='offline_key_level'>
+..//pages/profile.php:76:$languages = DB::query('SELECT label, name FROM ' . prefixTable('languages') . ' ORDER BY label ASC');
+..//pages/profile.php:78:DB::query('SELECT id_item FROM ' . prefixTable('log_items') . ' WHERE action = "at_creation" AND  id_user = "' . $_SESSION['user_id'] . '"');
+..//pages/profile.php:80:DB::query('SELECT id_item FROM ' . prefixTable('log_items') . ' WHERE action = "at_modification" AND  id_user = "' . $_SESSION['user_id'] . '"');
+..//pages/profile.php:82:DB::query('SELECT id_item FROM ' . prefixTable('log_items') . ' WHERE action = "at_shown" AND  id_user = "' . $_SESSION['user_id'] . '"');
+..//pages/profile.php:84:DB::query('SELECT id_item FROM ' . prefixTable('log_items') . ' WHERE action = "at_password_shown" AND  id_user = "' . $_SESSION['user_id'] . '"');
+..//pages/profile.php:87:    'SELECT avatar 
+..//pages/profile.php:101:        'SELECT title 
+..//pages/profile.php:317:                                            'SELECT label AS labelAction, date, null
+..//pages/profile.php:321:                                                    SELECT l.action, l.date, i.label AS itemLabel
+..//pages/profile.php:373:                                            <select class="form-control" id="profile-user-timezone">
+..//pages/profile.php:390:                                            <select class="form-control" id="profile-user-language">
+..//pages/profile.php:406:                                            <select class="form-control" id="profile-user-treeloadstrategy">
+..//pages/statistics.js.php:75:    // Select/Deselect button
+..//pages/api.php:125:                                        'SELECT increment_id, label, timestamp, user_id, value 
+..//pages/api.php:183:                                                'SELECT increment_id, label, timestamp value FROM ' . prefixTable('api') . '
+..//pages/emails.php:141:                                <select class='form-control form-control-sm' id='email_security'>
+..//pages/emails.php:186:                                <select class='form-control form-control-sm' id='email_debug_level'>
+..//pages/emails.php:221:                            DB::query('SELECT * FROM ' . prefixTable('emails') . ' WHERE status = %s OR status = %s', 'not_sent', '');

@@ -1,0 +1,9 @@
+2005-10-17 Peter Jay Salzman <p@dirac.org>
+
+	* registration.php: Email address regex fixed.
+	My check on valid email addresses during account registration didn't allow
+	for addresses with underscores.  I've changed my regex from:
+		/^[^@s]+@([-a-z0-9]+.)+[a-z]{2,}$/
+	to:
+		/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
+	Thanks goes to martinbogo@gmail.com for the new regex!

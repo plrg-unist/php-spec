@@ -1,0 +1,718 @@
+..//install/upgrade_operations.php:122:        // Loop on items and update for requested ones
+..//install/upgrade_operations.php:128:                    "UPDATE `".$pre."items`
+..//install/upgrade_operations.php:178:            // update created_at field
+..//install/upgrade_operations.php:181:                "UPDATE `" . $pre . "items` SET created_at = '".$item['datetime']."' WHERE id = ".$item['id']
+..//install/upgrade_operations.php:207:            // update updated_at field
+..//install/upgrade_operations.php:210:                "UPDATE `" . $pre . "items` SET updated_at = '".$item['datetime']."' WHERE id = ".$item['id']
+..//install/upgrade_operations.php:229:            // update updated_at field
+..//install/upgrade_operations.php:232:                "UPDATE `" . $pre . "items` SET deleted_at = '".$item['datetime']."' WHERE id = ".$item['id']
+..//install/upgrade_operations.php:428:        $mysqli2->query("UPDATE " . $pre . "nested_tree SET categories = '".json_encode($arr_data)."' WHERE id = ".$folder);
+..//install/upgrade_operations.php:508:    // update file
+..//install/upgrade_run_3.0.php:100:    "UPDATE ".$pre."users 
+..//install/upgrade_run_3.0.php:182:    "UPDATE `" . $pre . "users` SET `treeloadstrategy` = 'full' WHERE treeloadstrategy NOT IN ('full','sequential');"
+..//install/upgrade_run_3.0.php:454:    // update created_at field
+..//install/upgrade_run_3.0.php:457:        "UPDATE `" . $pre . "users` SET name = 'Change me', lastname = 'Change me' WHERE id = 1"
+..//install/upgrade_run_3.0.php:671:        "UPDATE `" . $pre . "misc` SET valeur = ".time()." WHERE type = 'admin' AND intitule = 'upgrade_timestamp'"
+..//install/upgrade_run_3.0.php:699:            // update created_at field
+..//install/upgrade_run_3.0.php:702:                "UPDATE `" . $pre . "users` SET created_at = '".$user['datetime']."' WHERE id = ".$user['uid']
+..//install/upgrade_run_3.0.php:714:            // update updated_at field
+..//install/upgrade_run_3.0.php:717:                "UPDATE `" . $pre . "users` SET updated_at = '".$user['datetime']."' WHERE id = ".$user['uid']
+..//install/upgrade_run_3.1.php:329:// Add field allowed_to_update to api table
+..//install/upgrade_run_3.1.php:336:    echo '[{"finish":"1", "msg":"", "error":"An error appears when adding field allowed_to_update to table api! ' . mysqli_error($db_link) . '!"}]';
+..//install/upgrade_run_3.0.0_suggestions.php:162:            "UPDATE ".$pre."suggestion
+..//install/upgrade_run_3.0.0_users.php:160:                        'UPDATE ' . $pre . "users
+..//install/upgrade_run_3.0.0_users.php:700:                            'Hello '.$userEmail['userName'].',<br><br>This is a generated email from Teampass passwords manager.<br><br>Teampass administrator has performed an update which includes a change of encryption protocol. During your next login in Teampass, a One Time Code will be asked in order to re-encrypt your data.<br><br>Please use on demand (it is unique for your account):<br><br><b>#tp_password#</b><br><br>This process might take a couple of minutes depending of the number of items existing in the database.<br><br>Cheers'
+..//install/upgrade_ajax.php:94:                        "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:115:                        "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:136:                        "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:597:                "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:720:                                "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:741:                                "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:762:                                "UPDATE `" . $pre . "misc`
+..//install/upgrade_ajax.php:883:                // Update config file
+..//install/upgrade_ajax.php:899:                // update CSRFP TOKEN
+..//install/upgrade_ajax.php:954:            // update with correct version
+..//install/upgrade_ajax.php:957:                "UPDATE `" . $pre . "misc`
+..//install/upgrade_run_3.0.0.php:154:            // Force update for some settings
+..//install/upgrade_run_3.0.0.php:158:                    "UPDATE `".$pre."misc`
+..//install/upgrade_run_3.0.0.php:337:    // Update all existing entries
+..//install/upgrade_run_3.0.0.php:340:        'UPDATE ' . $pre . "files
+..//install/upgrade_run_3.0.0.php:361:    'UPDATE ' . $pre . "misc
+..//install/upgrade_run_3.0.0.php:457:        'UPDATE ' . $pre . "misc
+..//install/upgrade_run_3.0.0.php:595:            'UPDATE ' . $pre . "users
+..//install/upgrade_run_3.0.0.php:663:mysqli_query($db_link, "UPDATE `" . $pre . "nested_tree` SET `fa_icon` = 'fas fa-folder'  WHERE fa_icon = 'fa-folder'");
+..//install/upgrade_run_3.0.0.php:664:mysqli_query($db_link, "UPDATE `" . $pre . "nested_tree` SET `fa_icon_selected` = 'fas fa-folder-open'  WHERE fa_icon_selected = 'fa-folder-open'");
+..//install/upgrade_run_3.0.0.php:679:mysqli_query($db_link, "UPDATE `" . $pre . "misc` SET `intitule` = 'ldap_user_dn_attribute'  WHERE intitule = 'settings_ldap_user_dn_attribute'");
+..//install/upgrade_run_3.0.0.php:694:            "UPDATE ".$pre."misc
+..//install/upgrade_run_3.0.0.php:702:            "UPDATE ".$pre."misc
+..//install/upgrade_run_3.0.0.php:710:            "UPDATE ".$pre."misc
+..//install/upgrade_run_3.0.0.php:718:            "UPDATE ".$pre."misc
+..//install/upgrade_run_3.0.0.php:735:            "UPDATE ".$pre."roles_title
+..//install/upgrade_run_3.0.0.php:743:            "UPDATE ".$pre."roles_title
+..//install/upgrade_run_3.0.0.php:751:            "UPDATE ".$pre."roles_title
+..//install/upgrade_run_3.0.0.php:759:            "UPDATE ".$pre."roles_title
+..//install/upgrade_run_3.0.0.php:768:mysqli_query($db_link, "UPDATE `" . $pre . "misc` SET `valeur` = '0'  WHERE intitule = 'enable_server_password_change'");
+..//install/upgrade_run_3.0.0.php:977:    'UPDATE `' . $pre . 'users` SET is_ready_for_usage = 1 WHERE is_ready_for_usage = 0;'
+..//install/upgrade_run_3.0.0.php:1212:    "UPDATE `" . $pre . "items` SET `auto_update_pwd_next_date` = '0' WHERE `auto_update_pwd_next_date` IS NULL;"
+..//install/upgrade_run_3.0.0.php:1569:// Update this new field
+..//install/upgrade_run_3.0.0.php:1572:    'UPDATE `' . $pre . 'users` SET otp_provided = 1 WHERE `last_connexion` != "";'
+..//install/upgrade_run_3.0.0.php:1595:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`bg` WHERE `name`=`bulgarian`;');
+..//install/upgrade_run_3.0.0.php:1596:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`ca` WHERE `name`=`catalan`;');
+..//install/upgrade_run_3.0.0.php:1597:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`zh-Hans` WHERE `name`=`chinese`;');
+..//install/upgrade_run_3.0.0.php:1598:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`cs` WHERE `name`=`czech`;');
+..//install/upgrade_run_3.0.0.php:1599:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`nl` WHERE `name`=`dutch`;');
+..//install/upgrade_run_3.0.0.php:1600:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`en` WHERE `name`=`english`;');
+..//install/upgrade_run_3.0.0.php:1601:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`et` WHERE `name`=`estonian`;');
+..//install/upgrade_run_3.0.0.php:1602:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`fr` WHERE `name`=`french`;');
+..//install/upgrade_run_3.0.0.php:1603:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`de` WHERE `name`=`german`;');
+..//install/upgrade_run_3.0.0.php:1604:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`el` WHERE `name`=`greek`;');
+..//install/upgrade_run_3.0.0.php:1605:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`hu` WHERE `name`=`hungarian`;');
+..//install/upgrade_run_3.0.0.php:1606:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`it` WHERE `name`=`italian`;');
+..//install/upgrade_run_3.0.0.php:1607:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`ja` WHERE `name`=`japanese`;');
+..//install/upgrade_run_3.0.0.php:1608:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`no` WHERE `name`=`norwegian`;');
+..//install/upgrade_run_3.0.0.php:1609:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`pl` WHERE `name`=`polish`;');
+..//install/upgrade_run_3.0.0.php:1610:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`pt` WHERE `name`=`portuguese`;');
+..//install/upgrade_run_3.0.0.php:1611:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`pt-br` WHERE `name`=`portuguese_br`;');
+..//install/upgrade_run_3.0.0.php:1612:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`ro` WHERE `name`=`romanian`;');
+..//install/upgrade_run_3.0.0.php:1613:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`ru` WHERE `name`=`russian`;');
+..//install/upgrade_run_3.0.0.php:1614:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`es` WHERE `name`=`spanish`;');
+..//install/upgrade_run_3.0.0.php:1615:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`sv` WHERE `name`=`swedish`;');
+..//install/upgrade_run_3.0.0.php:1616:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`tr` WHERE `name`=`turkish`;');
+..//install/upgrade_run_3.0.0.php:1617:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`uk` WHERE `name`=`ukrainian`;');
+..//install/upgrade_run_3.0.0.php:1618:    mysqli_query($db_link, 'UPDATE `' . $pre . 'languages` SET `code_poeditor`=`vi` WHERE `name`=`vietnamese`;');
+..//install/upgrade_run_3.0.0.php:1625:    mysqli_query($db_link, 'UPDATE `' . $pre . 'log_items` SET `action` = `at_modification` WHERE `action` = `at_modification2`;');
+..//install/upgrade_run_3.0.0.php:1778:        "UPDATE ".$pre."api SET `user_id` = ".$col['label'].", `label` = NULL WHERE `increment_id` = ".$col['increment_id']
+..//install/upgrade_run_3.0.0.php:1804:                    "UPDATE ".$pre."api 
+..//install/upgrade_run_3.0.0.php:1811:                    "UPDATE ".$pre."api 
+..//install/upgrade_run_3.0.0.php:1857:        "UPDATE ".$pre."api 
+..//install/upgrade_run_3.0.0.php:1952:        "UPDATE `" . $pre . "misc` SET valeur = ".time()." WHERE type = 'admin' AND intitule = 'upgrade_timestamp'"
+..//install/upgrade_run_3.0.0_passwords.php:158:            'UPDATE '.$pre."items
+..//install/install.queries.php:225:                        mysqli_query($dbTmp, "UPDATE `_install` SET `value` = '" . $value . "' WHERE `key` = '" . $key . "';");
+..//install/install.queries.php:232:                    mysqli_query($dbTmp, "UPDATE `_install` SET `value` = '". empty($session_url_path) ? $data['url_path'] : $session_url_path. "' WHERE `key` = 'url_path';");
+..//install/install.queries.php:238:                    mysqli_query($dbTmp, "UPDATE `_install` SET `value` = '" . empty($session_abspath) ? $data['absolute_path'] : $session_abspath . "' WHERE `key` = 'absolute_path';");
+..//install/install.queries.php:281:                            mysqli_query($dbTmp, "UPDATE `_install` SET `value` = '" . $value . "' WHERE `key` = '" . $key . "';");
+..//install/install.queries.php:792:                            $mysqli_result = mysqli_query($dbTmp, 'UPDATE `' . $var['tbl_prefix'] . "users` SET `pw` = '" . bCrypt($var['admin_pwd'], '13') . "' WHERE login = 'admin' AND id = '1'");
+..//install/install.queries.php:1438:                    // update CSRFP TOKEN
+..//install/upgrade.php:311:                            By default, the maintenance mode is enabled when an Update is performed. This prevents the use of TeamPass while the scripts are running.<br />
+..//install/upgrade.php:312:                            However, some administrators may prefer to warn the users in another way. Nevertheless, keep in mind that the update process may fail or even be corrupted due to parallel queries.
+..//install/upgrade.php:730:                        "<div>" + getTime() + " - <span id='user_"+rand_number+"'>Performing database update operations ... <i class=\"fas fa-cog fa-spin\" style=\"color:orange\"></i></span></div>"+ 
+..//install/upgrade.php:744:                            .html('Database update operations done <i class="fas fa-thumbs-up" style="color:green"></i>'); 
+..//install/upgrade.php:1055:function runUpdate (script_file, type_parameter, start_at, noitems_by_loop, loop_number, file_number)
+..//install/upgrade_run_3.0.0_fields.php:156:            'UPDATE '.$pre."categories_items
+..//install/upgrade_run_3.0.0_logs.php:158:            "UPDATE ".$pre."log_items
+..//install/upgrade_run_3.0.0_files.php:191:            'UPDATE '.$pre."files
+..//includes/core/load.js.php:119:                        // update local storage
+..//includes/core/load.js.php:227:                            // update local storage
+..//includes/core/login.js.php:763:                                // Update session
+..//includes/core/logout.php:38:// Update table by deleting ID
+..//includes/libraries/Tree/NestedTree/NestedTree.php:438:                'update %s set nlevel = %d, nleft = %d, nright = %d where %s = %d',
+..//includes/libraries/Tree/NestedTree/NestedTree.php:455:     * it is finally done, it takes the update n-value and assigns it as its
+..//includes/libraries/Tree/NestedTree/NestedTree.php:461:     *                         be able to update the data in it
+..//includes/libraries/Encryption/Encryption/File.php:584:            /* Update the HMAC. */
+..//includes/libraries/Encryption/phpseclib/File/ANSI.php:460:     * Also update the $this->screen and $this->history buffers
+..//includes/libraries/Encryption/phpseclib/File/X509.php:3960:            $thisUpdate = !empty($this->startDate) ? $this->startDate : @date('D, d M Y H:i:s O');
+..//includes/libraries/Encryption/phpseclib/File/X509.php:3962:            $thisUpdate = new DateTime('now', new DateTimeZone(@date_default_timezone_get()));
+..//includes/libraries/Encryption/phpseclib/File/X509.php:3963:            $thisUpdate = !empty($this->startDate) ? $this->startDate : $thisUpdate->format('D, d M Y H:i:s O');
+..//includes/libraries/Database/Meekrodb/db.class.php:313:      str_replace('%', $this->param_char, "UPDATE %b SET %hc"),
+..//includes/libraries/Database/Meekrodb/db.class.php:347:          str_replace('%', $this->param_char, "INSERT INTO %b %lb VALUES $var ON DUPLICATE KEY UPDATE %hc"), 
+..//includes/libraries/Database/Meekrodb/db.class.php:352:          str_replace('%', $this->param_char, "INSERT INTO %b %lb VALUES $var ON DUPLICATE KEY UPDATE ") . $update_str, 
+..//includes/libraries/Database/Meekrodb/db.class.php:374:    if (! isset($args[0])) { // update will have all the data of the insert
+..//includes/libraries/Database/Meekrodb/db.class.php:376:        return $this->nonSQLError("Badly formatted insertUpdate() query -- you didn't specify the update component!");
+..//includes/libraries/Database/Meekrodb/db.class.php:382:    if (is_array($args[0])) $update = $args[0];
+..//includes/libraries/Database/Meekrodb/db.class.php:383:    else $update = $args;
+..//includes/libraries/Carbon/Traits/Creator.php:125:     * Update constructedObjectId on cloned.
+..//includes/libraries/Carbon/CarbonInterface.php:661:     * Update constructedObjectId on cloned.
+..//includes/libraries/Carbon/CarbonPeriod.php:2172:     * Update properties after removing built-in filters.
+..//includes/libraries/LdapRecord/Models/Model.php:1118:     * @param array $attributes The attributes to update or create for the current entry.
+..//includes/libraries/LdapRecord/Models/Model.php:1246:     * Update the model.
+..//includes/libraries/LdapRecord/Models/Model.php:1248:     * @param array $attributes The attributes to update for the current entry.
+..//includes/libraries/LdapRecord/Models/Model.php:1263:     * Update the model attribute with the specified value.
+..//includes/libraries/LdapRecord/Models/Model.php:1410:            // removed and update the attributes value.
+..//includes/libraries/LdapRecord/Query/Pagination/AbstractPaginator.php:126:     * Update the server controls.
+..//includes/libraries/LdapRecord/Query/Builder.php:1863:     * Update the entry with the given modifications.
+..//includes/libraries/LdapRecord/Query/Builder.php:1878:     * Update an entries attribute in the directory.
+..//includes/libraries/Pdf/tcpdf/tcpdf_parser.php:6:// Last Update : 2015-04-28
+..//includes/libraries/Pdf/tcpdf/tcpdf_import.php:6:// Last Update : 2013-09-17
+..//includes/libraries/Pdf/tcpdf/tcpdf_barcodes_2d.php:6:// Last Update : 2014-05-20
+..//includes/libraries/Pdf/tcpdf/config/tcpdf_config.php:5:// Last Update : 2014-12-11
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_colors.php:6:// Last Update : 2014-04-25
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_static.php:6:// Last Update : 2019-11-01
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_fonts.php:6:// Last Update : 2014-12-10
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_fonts.php:317:							// hsbw command: update width
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_fonts.php:1499:	 * Update the CIDToGIDMap string with a new value.
+..//includes/libraries/Pdf/tcpdf/include/barcodes/qrcode.php:6:// Last Update : 2012-07-25
+..//includes/libraries/Pdf/tcpdf/include/barcodes/pdf417.php:6:// Last Update : 2014-04-25
+..//includes/libraries/Pdf/tcpdf/include/barcodes/pdf417.php:585:			// update total codewords
+..//includes/libraries/Pdf/tcpdf/include/barcodes/datamatrix.php:6:// Last Update : 2014-05-06
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_images.php:6:// Last Update : 2014-11-15
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_font_data.php:6:// Last Update : 2013-04-01
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_filters.php:6:// Last Update : 2014-04-25
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_filters.php:301:			// update number of bits
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_filters.php:331:				// update dictionary
+..//includes/libraries/Pdf/tcpdf/tcpdf_autoconfig.php:6:// Last Update : 2014-12-18
+..//includes/libraries/Pdf/tcpdf/tcpdf_barcodes_1d.php:6:// Last Update : 2014-10-20
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:6:// Last Update : 2019-09-20
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:3056:	 * Move pointer at the specified document page and update page dimensions.
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:4468:				// update fontkeys that are sharing this font file
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:4915:					// update name tree
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:5398:						// update font subsetchars
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:6513:					// update last blank space position
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:6531:				// update string length
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:10378:				// update footer position
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:11348:		// update transformation mark
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:18334:						// update the end of row position
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:18363:							// update endy and endpage on rowspanned cells
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:19549:				// update row-spanned cells
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:19574:					// update remaining rowspanned cells
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:19635:					// update row-spanned cells
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:19649:						// update row-spanned cells
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:21197:			// update remaining pages
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:21571:					// update page numbers
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:21707:					// update page numbers
+..//includes/libraries/portable-ascii-master/src/voku/helper/ASCII.php:1367:        // update the encoding map with the characters not already met
+..//includes/libraries/teampassclasses/passwordmanager/src/PasswordManager.php:70:                // Update user password in DB
+..//includes/libraries/teampassclasses/passwordmanager/src/PasswordManager.php:102:        // Update user password in DB
+..//includes/libraries/teampassclasses/nestedtree/src/NestedTree.php:444:                'update %s set nlevel = %d, nleft = %d, nright = %d where %s = %d',
+..//includes/libraries/teampassclasses/nestedtree/src/NestedTree.php:461:     * it is finally done, it takes the update n-value and assigns it as its
+..//includes/libraries/teampassclasses/nestedtree/src/NestedTree.php:467:     *                         be able to update the data in it
+..//includes/libraries/Authentication/phpseclib/File/ANSI.php:429:     * Also update the $this->screen and $this->history buffers
+..//includes/libraries/Authentication/phpseclib/File/X509.php:3673:        $thisUpdate = !empty($this->startDate) ? $this->startDate : @date('D, d M Y H:i:s O');
+..//includes/libraries/Illuminate/Database/Connection.php:421:     * Run an update statement against the database.
+..//includes/libraries/Illuminate/Database/Connection.php:482:            // For update or delete statements, we want to get the number of rows affected
+..//includes/libraries/Illuminate/Database/Migrations/MigrationCreator.php:149:        // or update migration from the console instead of typing it manually.
+..//includes/libraries/Illuminate/Database/ConnectionInterface.php:66:     * Run an update statement against the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Relation.php:175:     * Run a raw update against the base query.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/MorphPivot.php:28:     * Set the keys for a save update query.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/HasOneOrMany.php:244:     * Create or update a related record matching the attributes, and fill it with values.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/BelongsToMany.php:613:     * Create or update a related record matching the attributes, and fill it with values.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/BelongsToMany.php:1023:        // If we actually have IDs for the relation, we will run the query to update all
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/BelongsToMany.php:1179:     * Specify that the pivot table has creation and update timestamps.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/HasManyThrough.php:249:     * Create or update a related record matching the attributes, and fill it with values.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/AsPivot.php:86:     * Set the keys for a save update query.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:157:            // record, otherwise, we will just update this existing record on this joining
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:158:            // table, so that the developers will easily update these records pain free.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:165:            // Now we'll try to update an existing pivot record with the attributes that were
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:178:     * Update an existing pivot record on the table.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:210:     * Update an existing pivot record on the table via a custom class.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:353:        // If the record needs to have creation and update timestamps, we will make
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:368:     * Set the creation and update timestamps on an attach record.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:455:     * Create or update a record matching the attributes, and fill it with values.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:795:     * Update records in the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:806:     * Insert new records or update the existing ones.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:813:    public function upsert(array $values, $uniqueBy, $update = null)
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:824:            $update = array_keys(reset($values));
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:770:     * Update the model in the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:845:        // If the model already exists in the database we can just update our record
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:847:        // clause to only update this model. Otherwise, we'll just insert them.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:908:     * Perform a model update operation.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:915:        // If the updating event returns false, we will cancel the update operation so
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:923:        // update timestamp on the model which are maintained by us for developer
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:929:        // Once we have run the update operation, we will fire the "updated" event for
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:969:     * Set the keys for a save update query.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1004:        // update timestamps on this model, which are maintained by us for developer
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1031:        // the created event is fired, just in case the developer tries to update it
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1032:        // during the event. This will allow them to do so and run an update here.
+..//includes/libraries/Illuminate/Database/Eloquent/Concerns/HasAttributes.php:540:        // the value and update the cast type so we may leverage the following
+..//includes/libraries/Illuminate/Database/Eloquent/Concerns/HasTimestamps.php:17:     * Update the model's update timestamp.
+..//includes/libraries/Illuminate/Database/Eloquent/Concerns/HasTimestamps.php:33:     * Update the creation and update timestamps.
+..//includes/libraries/Illuminate/Database/Schema/Blueprint.php:1089:     * Add nullable creation and update timestamps to the table.
+..//includes/libraries/Illuminate/Database/Schema/Blueprint.php:1102:     * Add nullable creation and update timestamps to the table.
+..//includes/libraries/Illuminate/Database/Schema/Blueprint.php:1115:     * Add creation and update timestampTz columns to the table.
+..//includes/libraries/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php:87:            // If this foreign key specifies the action to be taken on update we will add
+..//includes/libraries/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php:91:                $sql .= " on update {$foreign->onUpdate}";
+..//includes/libraries/Illuminate/Database/Schema/Grammars/Grammar.php:85:        // build out the syntax for what should happen on an update or delete of
+..//includes/libraries/Illuminate/Database/Schema/Grammars/Grammar.php:92:            $sql .= " on update {$command->onUpdate}";
+..//includes/libraries/Illuminate/Database/Schema/Grammars/MySqlGrammar.php:713:        return $column->useCurrentOnUpdate ? "$columnType on update $current" : $columnType;
+..//includes/libraries/Illuminate/Database/Schema/ForeignKeyDefinition.php:12: * @method ForeignKeyDefinition onUpdate(string $action) Add an ON UPDATE action
+..//includes/libraries/Illuminate/Database/Query/Builder.php:2893:     * Update records in the database.
+..//includes/libraries/Illuminate/Database/Query/Builder.php:2908:     * Insert or update a record matching the attributes, and fill it with values.
+..//includes/libraries/Illuminate/Database/Query/Builder.php:2928:     * Insert new records or update the existing ones.
+..//includes/libraries/Illuminate/Database/Query/Builder.php:2935:    public function upsert(array $values, $uniqueBy, $update = null)
+..//includes/libraries/Illuminate/Database/Query/Builder.php:2939:        } elseif ($update === []) {
+..//includes/libraries/Illuminate/Database/Query/Builder.php:2954:            $update = array_keys(reset($values));
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:136:     * Compile an update statement into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:164:     * Compile the columns for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:198:        $sql .= ' on conflict ('.$this->columnize($uniqueBy).') do update set ';
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:241:     * Compile an update statement with joins or limit into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:257:        return "update {$table} set {$columns} where {$this->wrap('rowid')} in ({$selectSql})";
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:261:     * Prepare the bindings for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:186:     * Compile an update statement into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:202:     * Compile the columns for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:234:        $sql .= ' on conflict ('.$this->columnize($uniqueBy).') do update set ';
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:264:     * Compile an update statement with joins or limit into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:280:        return "update {$table} set {$columns} where {$this->wrap('ctid')} in ({$selectSql})";
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:284:     * Prepare the bindings for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:933:     * Compile an update statement into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:955:     * Compile the columns for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:969:     * Compile an update statement without joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:979:        return "update {$table} set {$columns} {$where}";
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:983:     * Compile an update statement with joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:995:        return "update {$table} {$joins} set {$columns} {$where}";
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1015:     * Prepare the bindings for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:327:     * Compile an update statement with joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:341:        return "update {$alias} set {$columns} from {$table} {$joins} {$where}";
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:372:            $update = collect($update)->map(function ($value, $key) {
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:378:            $sql .= 'when matched then update set '.$update.' ';
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:387:     * Prepare the bindings for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/MySqlGrammar.php:139:     * Compile the columns for an update statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/MySqlGrammar.php:167:        $sql = $this->compileInsert($query, $values).' on duplicate key update ';
+..//includes/libraries/Illuminate/Database/Query/Grammars/MySqlGrammar.php:201:     * Compile an update statement without joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/MySqlGrammar.php:225:     * Prepare the bindings for an update statement.
+..//includes/libraries/Illuminate/Cache/DatabaseStore.php:224:            // Here we will update the values in the table. We will also encrypt the value
+..//includes/libraries/Illuminate/Redis/Connections/PhpRedisConnection.php:205:     * Add one or more members to a sorted set or update its score if it already exists.
+..//includes/libraries/Illuminate/Auth/EloquentUserProvider.php:81:     * Update the "remember me" token for the given user in storage.
+..//includes/libraries/Illuminate/Auth/DatabaseUserProvider.php:81:     * Update the "remember me" token for the given user in storage.
+..//includes/libraries/Illuminate/Auth/SessionGuard.php:441:     * Update the session with the given ID.
+..//includes/libraries/Illuminate/Contracts/Auth/UserProvider.php:25:     * Update the "remember me" token for the given user in storage.
+..//includes/libraries/Illuminate/Foundation/ComposerScripts.php:23:     * Handle the post-update Composer event.
+..//includes/libraries/Illuminate/Bus/DatabaseBatchRepository.php:176:     * Update an atomic value within the batch.
+..//includes/libraries/Illuminate/Queue/Jobs/DatabaseJobRecord.php:42:     * Update the "reserved at" timestamp of the job.
+..//includes/libraries/Illuminate/Queue/Console/WorkCommand.php:146:     * Listen for the queue events in order to update the console output.
+..//includes/libraries/Illuminate/Queue/DatabaseQueue.php:240:            return 'FOR UPDATE SKIP LOCKED';
+..//includes/libraries/Illuminate/Routing/Route.php:758:     * Update the "prefix" attribute on the action array.
+..//includes/libraries/Illuminate/Routing/ResourceRegistrar.php:269:     * Add the update method for a resourceful route.
+..//includes/libraries/Illuminate/Routing/Router.php:386:     * Update the group stack with the given attributes.
+..//includes/libraries/Illuminate/Session/DatabaseSessionHandler.php:157:     * Perform an update operation on the session ID.
+..//includes/libraries/Cron/AbstractField.php:164:        // UPDATE - This is actually false. The C implementation will allow a
+..//includes/language/vietnamese.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/vietnamese.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/chinese.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/chinese.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/catalan.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/arabic.php:111:    'admin_action_pw_prefix_correct_tip' => 'Please backup the database before performing this task. This script will perform an update of password prefix in database. Only run this to fix incorrectly displayed passwords after upgrading from older versions.',
+..//includes/language/arabic.php:204:    'item_updated_text' => 'This item has been edited. You need to update before you can change it.',
+..//includes/language/arabic.php:691:    'please_update' => 'Please update the software and database!',
+..//includes/language/arabic.php:979:    'update_server_password' => 'Update server password',
+..//includes/language/arabic.php:988:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/arabic.php:1118:    'Dont_update_with_this_data' => 'Don\'t update item with this data',
+..//includes/language/norwegian.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/norwegian.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/japanese.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/japanese.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/bulgarian.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/swedish.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/swedish.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/turkish.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/turkish.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/estonian.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/romanian.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/portuguese.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/portuguese.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/dutch.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/greek.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/greek.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/ukrainian.php:877:    'update_server_password' => 'Update server password',
+..//includes/language/ukrainian.php:880:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//includes/language/english.php:846:    'please_update' => 'Please update the software and database!',
+..//includes/language/english.php:1001:    'update_server_password' => 'Update server password',
+..//includes/language/english.php:1006:    'ssh_password_frequency_change_info' => 'Select the interval between automatic server password updates (selecting 0 will disable automatic password changing).<br />Automatic password updates will only be performed if the system administrator has also configured the scheduled password update feature cron job.',
+..//error.php:69:    // Update table by deleting ID
+..//scripts/task_maintenance_clean_orphan_objects.php:196:    // Update CACHE table
+..//scripts/background_tasks___items_handler.php:107:        // update DB - started_at
+..//scripts/background_tasks___items_handler.php:218:            // update the task status
+..//scripts/task_maintenance_users_personal_folder.php:90:        //update PF field for user
+..//scripts/task_maintenance_users_personal_folder.php:125:            //If exists then update it
+..//scripts/task_maintenance_users_personal_folder.php:141:                //update PF field for user
+..//scripts/background_tasks___user_keys_creation.php:181:            // update the task status
+..//scripts/background_tasks___user_task.php:83:    // update DB - started_at
+..//scripts/background_tasks___user_task.php:93:    // update visible_folders HTML
+..//scripts/background_tasks___user_task.php:96:    // update DB
+..//scripts/background_tasks___do_calculation.php:98:// Update DB
+..//scripts/background_tasks___userKeysCreation.php:179:            // Update the subtask with the process id
+..//scripts/background_tasks___userKeysCreation.php:261:    //error_log('Subtask update : '.$subTaskId." - ".print_r($taskParams,true));
+..//scripts/background_tasks___userKeysCreation.php:298:    //error_log('Task update : '.$taskId);
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:97:// update DB - started_at
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:118:// update the subtask status
+..//scripts/background_tasks___userKeysCreation_subtaskHdl.php:845:    // update LOG
+..//scripts/background_tasks___sending_emails.php:87:    // update DB
+..//scripts/background_tasks___sending_emails.php:148:                // update item_id in files table
+..//scripts/background_tasks___sending_emails.php:159:        // update cron time
+..//sources/utils.queries.php:229:        //CASE auto update server password
+..//sources/utils.queries.php:319:                // update log
+..//sources/favourites.queries.php:87:            //update user's account
+..//sources/favourites.queries.php:96:            //update session
+..//sources/folders.class.php:270:            // Update timestamp
+..//sources/folders.class.php:308:                // update cache_tree
+..//sources/main.functions.php:431:    // update user's timestamp
+..//sources/main.functions.php:851: * Update the CACHE table.
+..//sources/main.functions.php:865:        // UPDATE an item
+..//sources/main.functions.php:980: * Cache table - update existing value.
+..//sources/main.functions.php:2176:    // update file
+..//sources/main.functions.php:3568:function cacheTreeUserHandler(int $user_id, string $data, array $SETTINGS, string $field_update = '')
+..//sources/main.functions.php:3618:                    $field_update => $data,
+..//sources/main.functions.php:3674:    // Case when an update in the tree has been done
+..//sources/main.queries.php:806:        // update sessions
+..//sources/main.queries.php:817:            // update DB
+..//sources/main.queries.php:830:            // update LOG
+..//sources/main.queries.php:1055:                // update item_id in files table
+..//sources/main.queries.php:1066:        // update cron time
+..//sources/main.queries.php:1240:        // update table misc with current timestamp
+..//sources/main.queries.php:1568:            // Update user account
+..//sources/main.queries.php:1652:                // Update user account
+..//sources/main.queries.php:2710:                    // Now update user
+..//sources/main.queries.php:2858:                // Update user account
+..//sources/main.queries.php:2934:                // Update user account
+..//sources/main.queries.php:3002:                    // Update user account
+..//sources/main.queries.php:3061:        // Update table
+..//sources/roles.queries.php:256:            // update folders rights for users in cache_tree
+..//sources/users.queries.php:57:$isprofileupdate = filter_input(INPUT_POST, 'isprofileupdate', FILTER_SANITIZE_STRING);
+..//sources/users.queries.php:64:        && (null === $isprofileupdate || $isprofileupdate === false)
+..//sources/users.queries.php:315:                // update LOG
+..//sources/users.queries.php:470:                // update LOG
+..//sources/users.queries.php:496:         * UPDATE CAN CREATE ROOT FOLDER RIGHT
+..//sources/users.queries.php:537:         * UPDATE ADMIN RIGHTS FOR USER
+..//sources/users.queries.php:585:         * UPDATE MANAGER RIGHTS FOR USER
+..//sources/users.queries.php:633:         * UPDATE READ ONLY RIGHTS FOR USER
+..//sources/users.queries.php:677:         * UPDATE CAN MANAGE ALL USERS RIGHTS FOR USER
+..//sources/users.queries.php:724:         * UPDATE PERSONNAL FOLDER FOR USER
+..//sources/users.queries.php:802:                // update LOG
+..//sources/users.queries.php:1576:                    // update LOG
+..//sources/users.queries.php:1586:                    // update SESSION
+..//sources/users.queries.php:1601:                    // update user
+..//sources/users.queries.php:1616:                    // update LOG
+..//sources/users.queries.php:1643:         * UPDATE CAN CREATE ROOT FOLDER RIGHT
+..//sources/users.queries.php:2035:         * UPDATE USERS RIGHTS BY SHARING
+..//sources/users.queries.php:2107:                        // update user
+..//sources/users.queries.php:2131:         * UPDATE USER PROFILE
+..//sources/users.queries.php:2171:                // update user
+..//sources/users.queries.php:2187:                // Update SETTINGS
+..//sources/users.queries.php:3076:            // Update table
+..//sources/users.queries.php:3160:                // update LOG
+..//sources/users.queries.php:3330:            //update user is not ready
+..//sources/users.queries.php:3416:            // update profil
+..//sources/users.queries.php:3476:            // update LOG
+..//sources/upload.files.php:458:        'UPDATE ' . prefixTable('users') . "
+..//sources/tree.php:731:    // Case when an update in the tree has been done
+..//sources/backups.queries.php:203:                //update LOG
+..//sources/items.queries.php:496:                    // update fields
+..//sources/items.queries.php:526:                                    // update value
+..//sources/items.queries.php:538:                                    // update value
+..//sources/items.queries.php:585:                                // Update value
+..//sources/items.queries.php:722:                            // update item_id in files table
+..//sources/items.queries.php:821:        * update an ITEM
+..//sources/items.queries.php:1183:                        // update LOG
+..//sources/items.queries.php:1195:                    // update item
+..//sources/items.queries.php:1217:                    // update fields
+..//sources/items.queries.php:1277:                                        // update value
+..//sources/items.queries.php:1289:                                        // update value
+..//sources/items.queries.php:1308:                                    // update LOG
+..//sources/items.queries.php:1367:                                        // update value
+..//sources/items.queries.php:1386:                                        // update LOG
+..//sources/items.queries.php:1441:                                // Update value
+..//sources/items.queries.php:1454:                    // Update automatic deletion - Only by the creator of the Item
+..//sources/items.queries.php:1459:                        // check if elem exists in Table. If not add it or update it.
+..//sources/items.queries.php:1492:                                // update LOG
+..//sources/items.queries.php:1509:                                // Update automatic deletion
+..//sources/items.queries.php:1535:                                // update LOG
+..//sources/items.queries.php:1659:                    // Update CACHE table
+..//sources/items.queries.php:2046:                // generate the query to update the new record with the previous values
+..//sources/items.queries.php:2837:                            // Update cache table
+..//sources/items.queries.php:3030:                    // update DB
+..//sources/items.queries.php:3258:            // Update CACHE table
+..//sources/items.queries.php:3273:        * Update a Group
+..//sources/items.queries.php:3357:            // update Folders table
+..//sources/items.queries.php:3371:                // update complixity value
+..//sources/items.queries.php:4283:                // If edition by same user (and token not freed before for any reason, then update timestamp)
+..//sources/items.queries.php:4573:                // Update the log
+..//sources/items.queries.php:4642:                // Update SESSION with this new favourite
+..//sources/items.queries.php:4757:                // Just update is needed. Item key is the same
+..//sources/items.queries.php:4815:                // update pw
+..//sources/items.queries.php:4829:                // just update is needed. Item key is the same
+..//sources/items.queries.php:4955:                // update item
+..//sources/items.queries.php:4978:            // Update cache table
+..//sources/items.queries.php:5075:                        // just update is needed. Item key is the same
+..//sources/items.queries.php:5137:                        // update pw
+..//sources/items.queries.php:5155:                        // just update is needed. Item key is the same
+..//sources/items.queries.php:5285:                        // update item
+..//sources/items.queries.php:5419:                    // Update CACHE table
+..//sources/identify.php:618:        // Update table
+..//sources/identify.php:1395:    // Update user info with his AD groups
+..//sources/identify.php:1425: * Permits to update the user's AD groups with mapping roles
+..//sources/identify.php:1522:        // So we need to update it in Teampass and ask for private key re-encryption
+..//sources/identify.php:2057:        //update user's password
+..//sources/fields.queries.php:357:            // Update category
+..//sources/fields.queries.php:552:                // UPDATE FIELD
+..//sources/fields.queries.php:765:    // Update all orders
+..//sources/fields.queries.php:787:    // update for the new item
+..//sources/fields.queries.php:852:            // update order
+..//sources/fields.queries.php:1010:            // update order
+..//sources/admin.queries.php:200:            //update PF field for user
+..//sources/admin.queries.php:234:                //If exists then update it
+..//sources/admin.queries.php:250:                    //update PF field for user
+..//sources/admin.queries.php:367:        //Update CACHE table
+..//sources/admin.queries.php:511:            //update LOG
+..//sources/admin.queries.php:1256:                            'current_sql' => 'UPDATE ' . prefixTable('items') . " SET pw = '" . $record['pw'] . "' WHERE id = '" . $record['id'] . "';",
+..//sources/admin.queries.php:1288:                    // update backup table
+..//sources/admin.queries.php:1319:                            'current_sql' => 'UPDATE ' . prefixTable('log_items') . " SET raison = '" . $record['raison'] . "' WHERE increment_id = '" . $record['increment_id'] . "';",
+..//sources/admin.queries.php:1354:                        // update backup table
+..//sources/admin.queries.php:1384:                            'current_sql' => 'UPDATE ' . prefixTable('categories_items') . " SET data = '" . $record['data'] . "' WHERE id = '" . $record['id'] . "';",
+..//sources/admin.queries.php:1415:                    // update backup table
+..//sources/admin.queries.php:1492:                        // Update backup table
+..//sources/admin.queries.php:1827:                    //update item_id in files table
+..//sources/admin.queries.php:1847:                    //update LOG
+..//sources/admin.queries.php:1906:                //update item_id in files table
+..//sources/admin.queries.php:1921:        //update LOG
+..//sources/admin.queries.php:2123:            //update LOG
+..//sources/admin.queries.php:2214:            // Update existing key
+..//sources/admin.queries.php:2306:            // Update existing key
+..//sources/admin.queries.php:2744:            // in case of stats enabled, update the actual time
+..//sources/admin.queries.php:2779:            // update also jsUrl for CSFP protection
+..//sources/core.php:259:    // Update table by deleting ID
+..//sources/core.php:293:// CHECK IF UPDATE IS NEEDED
+..//sources/core.php:338:        // Update table by deleting ID
+..//sources/core.php:427:        // update user's rights
+..//sources/folders.queries.php:427:            // Prepare update parameters
+..//sources/folders.queries.php:454:            // Update timestamp
+..//sources/folders.queries.php:686:                // Update timestamp
+..//sources/folders.queries.php:727:                    // update cache_tree
+..//sources/folders.queries.php:952:                                //Update CACHE table
+..//sources/folders.queries.php:960:                                // update cache_tree
+..//sources/folders.queries.php:1016:            // Update timestamp
+..//sources/folders.queries.php:1330:                        // Generate the query to update the new record with the previous values
+..//sources/folders.queries.php:1497:            // Update timestamp
+..//pages/actions.js.php:405:                    // Update storage
+..//pages/items.php:851:    <!-- SERVER UPDATE --><?php
+..//pages/items.js.php:671:                // Force update of simplepassmeter
+..//pages/items.js.php:711:                // Update variable
+..//pages/items.js.php:872:            if (debugJavascript === true) console.info('SHOW SERVER UPDATE ITEM');
+..//pages/items.js.php:3032:            // Force update of simplepassmeter
+..//pages/items.js.php:3547:                        // Update hidden variables
+..//pages/items.js.php:4100:            // Update silently the info about the folder
+..//pages/items.js.php:4370:                // Update hidden variables
+..//pages/items.js.php:4732:                // Prepare auto_update info
+..//pages/users.js.php:1048:                                            // update the process
+..//pages/users.js.php:2379:                        // update the process
+..//pages/fields.js.php:125:    // Update list of Field options in case of Category seleciton
+..//pages/fields.js.php:154:        // Update select of Roles
+..//pages/fields.js.php:558:            // Update select of Roles
+..//pages/profile.js.php:137:                // update form
+..//vendor/tecnickcom/tcpdf/tcpdf_parser.php:6:// Last Update : 2015-04-28
+..//vendor/tecnickcom/tcpdf/tcpdf_import.php:6:// Last Update : 2013-09-17
+..//vendor/tecnickcom/tcpdf/tools/tcpdf_addfont.php:7:// Last Update : 2013-08-05
+..//vendor/tecnickcom/tcpdf/tcpdf_barcodes_2d.php:6:// Last Update : 2014-05-20
+..//vendor/tecnickcom/tcpdf/config/tcpdf_config.php:5:// Last Update : 2014-12-11
+..//vendor/tecnickcom/tcpdf/include/tcpdf_colors.php:6:// Last Update : 2014-04-25
+..//vendor/tecnickcom/tcpdf/include/tcpdf_static.php:6:// Last Update : 2023-09-06
+..//vendor/tecnickcom/tcpdf/include/tcpdf_fonts.php:6:// Last Update : 2014-12-10
+..//vendor/tecnickcom/tcpdf/include/tcpdf_fonts.php:317:							// hsbw command: update width
+..//vendor/tecnickcom/tcpdf/include/tcpdf_fonts.php:1499:	 * Update the CIDToGIDMap string with a new value.
+..//vendor/tecnickcom/tcpdf/include/barcodes/qrcode.php:6:// Last Update : 2012-07-25
+..//vendor/tecnickcom/tcpdf/include/barcodes/pdf417.php:6:// Last Update : 2014-04-25
+..//vendor/tecnickcom/tcpdf/include/barcodes/pdf417.php:585:			// update total codewords
+..//vendor/tecnickcom/tcpdf/include/barcodes/datamatrix.php:6:// Last Update : 2014-05-06
+..//vendor/tecnickcom/tcpdf/include/tcpdf_images.php:6:// Last Update : 2014-11-15
+..//vendor/tecnickcom/tcpdf/include/tcpdf_font_data.php:6:// Last Update : 2013-04-01
+..//vendor/tecnickcom/tcpdf/include/tcpdf_filters.php:6:// Last Update : 2014-04-25
+..//vendor/tecnickcom/tcpdf/include/tcpdf_filters.php:301:			// update number of bits
+..//vendor/tecnickcom/tcpdf/include/tcpdf_filters.php:331:				// update dictionary
+..//vendor/tecnickcom/tcpdf/examples/example_062.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_063.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_049.php:5:// Last Update : 2014-12-10
+..//vendor/tecnickcom/tcpdf/examples/example_061.php:5:// Last Update : 2014-01-25
+..//vendor/tecnickcom/tcpdf/examples/example_060.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_048.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_064.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_058.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_059.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_065.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_067.php:5:// Last Update : 2022-01-07
+..//vendor/tecnickcom/tcpdf/examples/config/tcpdf_config_alt.php:5:// Last Update : 2013-05-16
+..//vendor/tecnickcom/tcpdf/examples/example_029.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_015.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_001.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_014.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_028.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_002.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_016.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_017.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_003.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_007.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_013.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_012.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_006.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_010.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_004.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_038.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_039.php:5:// Last Update : 2014-01-13
+..//vendor/tecnickcom/tcpdf/examples/example_005.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_011.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_008.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_034.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_020.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/lang/msa.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/ger.php:5:// Last Update : 2010-11-16
+..//vendor/tecnickcom/tcpdf/examples/lang/bul.php:5:// Last Update : 2013-05-13
+..//vendor/tecnickcom/tcpdf/examples/lang/hat.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/hye.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/dan.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/mkd.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/ces.php:5:// Last Update : 2010-11-22
+..//vendor/tecnickcom/tcpdf/examples/lang/slv.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/nld.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/urd.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/rus.php:5:// Last Update : 2012-07-25
+..//vendor/tecnickcom/tcpdf/examples/lang/kat.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/cym.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/mlt.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/hrv.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/ukr.php:5:// Last Update : 2012-07-25
+..//vendor/tecnickcom/tcpdf/examples/lang/ita.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/yid.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/sqi.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/jpn.php:5:// Last Update : 2011-01-24
+..//vendor/tecnickcom/tcpdf/examples/lang/ron.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/eng.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/pol.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/srp.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/aze.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/ind.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/bra.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/heb.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/cat.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/spa.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/gle.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/kor.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/eus.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/por.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/fra.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/bel.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/glg.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/afr.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/swe.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/ara.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/zho.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/est.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/hun.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/far.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/nob.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/chi.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/lang/swa.php:5:// Last Update : 2010-10-26
+..//vendor/tecnickcom/tcpdf/examples/example_021.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_035.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_009.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_023.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_037.php:5:// Last Update : 2013-09-30
+..//vendor/tecnickcom/tcpdf/examples/example_036.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_022.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_026.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_032.php:5:// Last Update : 2013-06-19
+..//vendor/tecnickcom/tcpdf/examples/example_033.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_027.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_031.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_025.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_019.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_018.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_024.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_030.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_1d_svgi.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_datamatrix_svg.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_qrcode_png.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_pdf417_png.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_pdf417_html.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/tcpdf_barcodes_2d_include.php:5:// Last Update : 2013-05-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_datamatrix_svgi.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_qrcode_svgi.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_qrcode_svg.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_datamatrix_png.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_pdf417_svg.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/tcpdf_barcodes_1d_include.php:5:// Last Update : 2013-05-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_datamatrix_html.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_qrcode_html.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_1d_svg.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_1d_png.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_1d_html.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/barcodes/example_2d_pdf417_svgi.php:6:// Last Update : 2013-03-19
+..//vendor/tecnickcom/tcpdf/examples/example_057.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_043.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_042.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_056.php:5:// Last Update : 2013-09-30
+..//vendor/tecnickcom/tcpdf/examples/example_040.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_054.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/tcpdf_include.php:5:// Last Update : 2014-12-10
+..//vendor/tecnickcom/tcpdf/examples/example_055.php:5:// Last Update : 2014-12-10
+..//vendor/tecnickcom/tcpdf/examples/example_041.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_045.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_051.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_050.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_044.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_052.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_046.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_047.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/examples/example_053.php:5:// Last Update : 2013-05-14
+..//vendor/tecnickcom/tcpdf/tcpdf_autoconfig.php:6:// Last Update : 2014-12-18
+..//vendor/tecnickcom/tcpdf/tcpdf_barcodes_1d.php:6:// Last Update : 2014-10-20
+..//vendor/tecnickcom/tcpdf/tcpdf.php:6:// Last Update : 2023-09-06
+..//vendor/tecnickcom/tcpdf/tcpdf.php:3067:	 * Move pointer at the specified document page and update page dimensions.
+..//vendor/tecnickcom/tcpdf/tcpdf.php:4497:				// update fontkeys that are sharing this font file
+..//vendor/tecnickcom/tcpdf/tcpdf.php:4944:					// update name tree
+..//vendor/tecnickcom/tcpdf/tcpdf.php:5428:						// update font subsetchars
+..//vendor/tecnickcom/tcpdf/tcpdf.php:6545:					// update last blank space position
+..//vendor/tecnickcom/tcpdf/tcpdf.php:6563:				// update string length
+..//vendor/tecnickcom/tcpdf/tcpdf.php:10413:				// update footer position
+..//vendor/tecnickcom/tcpdf/tcpdf.php:11387:		// update transformation mark
+..//vendor/tecnickcom/tcpdf/tcpdf.php:18384:						// update the end of row position
+..//vendor/tecnickcom/tcpdf/tcpdf.php:18413:							// update endy and endpage on rowspanned cells
+..//vendor/tecnickcom/tcpdf/tcpdf.php:19619:				// update row-spanned cells
+..//vendor/tecnickcom/tcpdf/tcpdf.php:19644:					// update remaining rowspanned cells
+..//vendor/tecnickcom/tcpdf/tcpdf.php:19705:					// update row-spanned cells
+..//vendor/tecnickcom/tcpdf/tcpdf.php:19719:						// update row-spanned cells
+..//vendor/tecnickcom/tcpdf/tcpdf.php:21267:			// update remaining pages
+..//vendor/tecnickcom/tcpdf/tcpdf.php:21641:					// update page numbers
+..//vendor/tecnickcom/tcpdf/tcpdf.php:21777:					// update page numbers
+..//vendor/phpseclib/phpseclib/phpseclib/Net/SSH2.php:5487:     * Update packet types in log history
+..//vendor/phpseclib/phpseclib/phpseclib/File/ANSI.php:460:     * Also update the $this->screen and $this->history buffers
+..//vendor/phpseclib/phpseclib/phpseclib/File/X509.php:4023:            $thisUpdate = !empty($this->startDate) ? $this->startDate : @date('D, d M Y H:i:s O');
+..//vendor/phpseclib/phpseclib/phpseclib/File/X509.php:4025:            $thisUpdate = new DateTime('now', new DateTimeZone(@date_default_timezone_get()));
+..//vendor/phpseclib/phpseclib/phpseclib/File/X509.php:4026:            $thisUpdate = !empty($this->startDate) ? $this->startDate : $thisUpdate->format('D, d M Y H:i:s O');
+..//vendor/sergeytsalkov/meekrodb/db.class.php:477:      str_replace('%', $this->param_char, "UPDATE %b SET %hc"),
+..//vendor/sergeytsalkov/meekrodb/db.class.php:536:          str_replace('%', $this->param_char, "INSERT INTO %b %lc VALUES $var ON DUPLICATE KEY UPDATE %hc"), 
+..//vendor/sergeytsalkov/meekrodb/db.class.php:541:          str_replace('%', $this->param_char, "INSERT INTO %b %lc VALUES $var ON DUPLICATE KEY UPDATE ") . $update_str, 
+..//vendor/sergeytsalkov/meekrodb/db.class.php:563:    if (! isset($args[0])) { // update will have all the data of the insert
+..//vendor/sergeytsalkov/meekrodb/db.class.php:565:        throw new MeekroDBException("Badly formatted insertUpdate() query -- you didn't specify the update component!");
+..//vendor/sergeytsalkov/meekrodb/db.class.php:571:    if (is_array($args[0])) $update = $args[0];
+..//vendor/sergeytsalkov/meekrodb/db.class.php:572:    else $update = $args;
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest.php:6:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 600, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest.php:11:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 700, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest.php:15:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 800, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:8:      DB::query("UPDATE accounts SET age=%i WHERE username=%s", 700, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:12:        DB::query("UPDATE accounts SET age=%i WHERE username=%s", 800, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:17:          DB::query("UPDATE accounts SET age=%i WHERE username=%s", 500, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:44:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 600, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:47:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 700, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:49:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 800, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:66:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 200, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:70:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 300, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/TransactionTest_55.php:74:    DB::query("UPDATE accounts SET age=%i WHERE username=%s", 400, 'Abe');
+..//vendor/sergeytsalkov/meekrodb/simpletest/ObjectTest.php:307:    $this->mdb->query("UPDATE accounts SET age=15, username='Bart' WHERE age=%i", 74);
+..//vendor/sergeytsalkov/meekrodb/simpletest/BasicTest.php:378:    $affected_rows = DB::query("UPDATE accounts SET `user.age`=15, username='Bart' WHERE `user.age`=%i", 74);
+..//vendor/sergeytsalkov/meekrodb/simpletest/BasicTest.php:401:    DB::query("UPDATE accounts SET profile_id=1 WHERE id=2");
+..//vendor/nesbot/carbon/src/Carbon/Traits/Creator.php:129:     * Update constructedObjectId on cloned.
+..//vendor/nesbot/carbon/src/Carbon/CarbonInterface.php:661:     * Update constructedObjectId on cloned.
+..//vendor/nesbot/carbon/src/Carbon/CarbonPeriod.php:2427:     * Update properties after removing built-in filters.
+..//vendor/teampassclasses/passwordmanager/src/PasswordManager.php:70:                // Update user password in DB
+..//vendor/teampassclasses/passwordmanager/src/PasswordManager.php:102:        // Update user password in DB
+..//vendor/teampassclasses/nestedtree/src/NestedTree.php:444:                'update %s set nlevel = %d, nleft = %d, nright = %d where %s = %d',
+..//vendor/teampassclasses/nestedtree/src/NestedTree.php:461:     * it is finally done, it takes the update n-value and assigns it as its
+..//vendor/teampassclasses/nestedtree/src/NestedTree.php:467:     *                         be able to update the data in it
+..//vendor/defuse/php-encryption/src/File.php:612:            /* Update the HMAC. */
+..//vendor/voku/portable-ascii/src/voku/helper/ASCII.php:1367:        // update the encoding map with the characters not already met
+..//vendor/symfony/http-foundation/JsonResponse.php:182:        // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:381:                "UPDATE $this->table SET $this->lifetimeCol = :expiry, $this->timeCol = :time WHERE $this->idCol = :id"
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:814:     * Returns an update statement supported by the database for writing session data.
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:823:                $sql = "UPDATE $this->table SET $this->dataCol = EMPTY_BLOB(), $this->lifetimeCol = :expiry, $this->timeCol = :time WHERE $this->idCol = :id RETURNING $this->dataCol into :data";
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:827:                $sql = "UPDATE $this->table SET $this->dataCol = :data, $this->lifetimeCol = :expiry, $this->timeCol = :time WHERE $this->idCol = :id";
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:848:                    "ON DUPLICATE KEY UPDATE $this->dataCol = VALUES($this->dataCol), $this->lifetimeCol = VALUES($this->lifetimeCol), $this->timeCol = VALUES($this->timeCol)";
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:855:                    "WHEN MATCHED THEN UPDATE SET $this->dataCol = ?, $this->lifetimeCol = ?, $this->timeCol = ?;";
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:862:                    "ON CONFLICT ($this->idCol) DO UPDATE SET ($this->dataCol, $this->lifetimeCol, $this->timeCol) = (EXCLUDED.$this->dataCol, EXCLUDED.$this->lifetimeCol, EXCLUDED.$this->timeCol)";
+..//vendor/dragonmantank/cron-expression/src/Cron/AbstractField.php:164:        // UPDATE - This is actually false. The C implementation will allow a
+..//vendor/bjeavons/zxcvbn-php/src/Scorer.php:162:        // update state if new best.
+..//vendor/illuminate/translation/lang/en/passwords.php:11:    | that are given by the password broker for a password update attempt
+..//vendor/illuminate/contracts/Auth/UserProvider.php:25:     * Update the "remember me" token for the given user in storage.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1068:     * @param  array  $attributes  The attributes to update or create for the current entry.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1193:     * Update the model.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1195:     * @param  array  $attributes  The attributes to update for the current entry.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1209:     * Update the model attribute with the specified value.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1352:            // removed and update the attributes value.
+..//vendor/directorytree/ldaprecord/src/Query/Pagination/AbstractPaginator.php:123:     * Update the server controls.
+..//vendor/directorytree/ldaprecord/src/Query/Builder.php:1788:     * Update the entry with the given modifications.
+..//vendor/directorytree/ldaprecord/src/Query/Builder.php:1802:     * Update an entries attribute in the directory.

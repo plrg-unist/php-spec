@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<update>
+    <step id="1">ALTER TABLE %PREFIX%_components ADD COLUMN com_update_completed boolean NOT NULL DEFAULT true</step>
+    <step id="5">UPDATE %PREFIX%_components SET com_update_completed = false WHERE com_name_intern = 'CORE'</step>
+    <step id="10" database="mysql">UPDATE %PREFIX%_preferences INNER JOIN %PREFIX%_roles ON rol_administrator = true SET prf_value = rol_uuid WHERE prf_name = 'system_notifications_role'</step>
+    <step id="20" database="pgsql">UPDATE %PREFIX%_preferences SET prf_value = rol_uuid FROM %PREFIX%_roles WHERE prf_name = 'system_notifications_role' AND rol_administrator = true</step>
+    <step id="30" database="mysql">UPDATE %PREFIX%_preferences pr1 INNER JOIN %PREFIX%_preferences pr2 ON pr2.prf_name = 'mail_bcc_count' SET pr1.prf_value = pr2.prf_value WHERE pr1.prf_name = 'mail_number_recipients'</step>
+    <step id="40" database="pgsql">UPDATE %PREFIX%_preferences pr1 SET prf_value = pr2.prf_value FROM %PREFIX%_preferences pr2 WHERE pr2.prf_name = 'mail_bcc_count' AND pr1.prf_name = 'mail_number_recipients'</step>
+    <step id="50">DELETE FROM %PREFIX%_preferences WHERE prf_name = 'mail_bcc_count'</step>
+    <step id="60" database="mysql">UPDATE %PREFIX%_preferences pr1 INNER JOIN %PREFIX%_preferences pr2 ON pr2.prf_name = 'enable_email_notification' SET pr1.prf_value = pr2.prf_value WHERE pr1.prf_name = 'system_notifications_new_entries'</step>
+    <step id="70" database="pgsql">UPDATE %PREFIX%_preferences pr1 SET prf_value = pr2.prf_value FROM %PREFIX%_preferences pr2 WHERE pr2.prf_name = 'enable_email_notification' AND pr1.prf_name = 'system_notifications_new_entries'</step>
+    <step id="80">DELETE FROM %PREFIX%_preferences WHERE prf_name = 'enable_email_notification'</step>
+    <step id="90" database="mysql">UPDATE %PREFIX%_preferences pr1 INNER JOIN %PREFIX%_preferences pr2 ON pr2.prf_name = 'enable_email_changenotification' SET pr1.prf_value = pr2.prf_value WHERE pr1.prf_name = 'system_notifications_profile_changes'</step>
+    <step id="100" database="pgsql">UPDATE %PREFIX%_preferences pr1 SET prf_value = pr2.prf_value FROM %PREFIX%_preferences pr2 WHERE pr2.prf_name = 'enable_email_changenotification' AND pr1.prf_name = 'system_notifications_profile_changes'</step>
+    <step id="110">DELETE FROM %PREFIX%_preferences WHERE prf_name = 'enable_email_changenotification'</step>
+    <step id="120" database="mysql">UPDATE %PREFIX%_preferences pr1 INNER JOIN %PREFIX%_preferences pr2 ON pr2.prf_name = 'enable_system_mails' SET pr1.prf_value = pr2.prf_value WHERE pr1.prf_name = 'system_notifications_enabled'</step>
+    <step id="130" database="pgsql">UPDATE %PREFIX%_preferences pr1 SET prf_value = pr2.prf_value FROM %PREFIX%_preferences pr2 WHERE pr2.prf_name = 'enable_system_mails' AND pr1.prf_name = 'system_notifications_enabled'</step>
+    <step id="140">DELETE FROM %PREFIX%_preferences WHERE prf_name = 'enable_system_mails'</step>
+    <step id="150">ALTER TABLE %PREFIX%_user_fields ADD COLUMN usf_default_value varchar(100)</step>
+    <step id="160">ALTER TABLE %PREFIX%_user_fields ADD COLUMN usf_regex varchar(100)</step>
+    <step id="170">ALTER TABLE %PREFIX%_user_fields ADD COLUMN usf_required_input smallint NOT NULL DEFAULT 0</step>
+    <step id="180" database="mysql">UPDATE %PREFIX%_user_fields SET usf_required_input = usf_mandatory</step>
+    <step id="185" database="pgsql">UPDATE %PREFIX%_user_fields SET usf_required_input = usf_mandatory::int</step>
+    <step id="190">ALTER TABLE %PREFIX%_user_fields DROP COLUMN usf_mandatory</step>
+    <step id="200">UPDATE %PREFIX%_user_fields SET usf_required_input = 2 WHERE usf_name_intern = 'EMAIL' AND usf_required_input = 0</step>
+    <step id="210">UPDATE %PREFIX%_user_fields SET usf_required_input = 2 WHERE usf_name_intern = 'DATA_PROTECTION_PERMISSION'</step>
+    <step id="220">ALTER TABLE %PREFIX%_roles ADD COLUMN rol_view_memberships smallint NOT NULL DEFAULT 0</step>
+    <step id="230">ALTER TABLE %PREFIX%_roles ADD COLUMN rol_view_members_profiles smallint NOT NULL DEFAULT 0</step>
+    <step id="240">UPDATE %PREFIX%_roles SET rol_view_memberships = rol_this_list_view, rol_view_members_profiles = rol_this_list_view</step>
+    <step id="250">ALTER TABLE %PREFIX%_roles DROP COLUMN rol_this_list_view</step>
+    <step id="260" database="mysql">UPDATE %PREFIX%_dates SET dat_end = date_sub(dat_end, interval 1 second) WHERE dat_all_day = true</step>
+    <step id="270" database="pgsql">UPDATE %PREFIX%_dates SET dat_end = dat_end - interval '1 second' WHERE dat_all_day = true</step>
+    <step id="280" database="mysql">UPDATE %PREFIX%_roles INNER JOIN %PREFIX%_categories ON cat_id = rol_cat_id AND cat_name_intern = 'EVENTS' SET rol_view_memberships = 3 WHERE rol_view_memberships = 0</step>
+    <step id="290" database="pgsql">UPDATE %PREFIX%_roles SET rol_view_memberships = 3 FROM %PREFIX%_categories WHERE cat_id = rol_cat_id AND cat_name_intern = 'EVENTS' AND rol_view_memberships = 0</step>
+    <step id="300">UPDATE %PREFIX%_preferences SET prf_value = '0' WHERE prf_name = 'mail_save_attachments' AND prf_value NOT LIKE '0'</step>
+    <step id="310">UPDATE %PREFIX%_preferences SET prf_value = 'en' WHERE prf_name = 'system_language' AND prf_value LIKE 'sw'</step>
+    <step id="320">UPDATE %PREFIX%_menu SET men_description = 'SYS_EVENTS_DESC' WHERE men_description = 'DAT_DATES_DESC'</step>
+    <step>stop</step>
+</update>

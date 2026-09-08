@@ -1,0 +1,76 @@
+===============================================================================
+Wheatblog App -- CHANGELOG.txt
+===============================================================================
+
+FEATURES/CHANGES by version:
+[(+) = feature added | (-) = feature removed | (*) = feature improved]
+
+Features in Releast 1.0 ::
++ Captcha comment spam protection
+* RSS feeds are now full-length feeds
+
+Features in Release 1.0 ::
++ RSS 2.0 feeds
++ PHP sessions-based user authentication
++ blog roll/link list management
++ an assortment of XTHML 1.0/CSS templates
++ SQLite support
+
+Features in Release .05b ::
++ editing interface for comments added to the post editing interface
++ javascript confiration when deleting posts and comments in the admin layer
++ clickable automated list of categories in the presentation layer (index.php)
++ clickable automated list of categories as a seperate page (list_category.php)
++ abstracted blog title to a var in the settings (wheatblog_settings.inc.php)
++ gave all include files a *.php extension for added security
+* modified directory structure so includes and css are in the blog directory
+* expanded archive views to include all months from 2004 and 2005
+* expanded manage posts interface to filter posts by years 2005-2010
+
+Features in Release .03b ::
+* RSS (.91) generation
+* view by archive (added view_by_title.php for listing all posts by title)
+* expanded comments at top of each page to clarify page functions/dependencies
+
+Features in Release .02b ::
++ comments system + ability to delete comments through the admin layer
++ permalinks for posts
++ permalink article & any comments are on one page (i.e. no pop-up windows)
++ view by archive
++ view by category
++ RSS (.91) generation
++ visibility setting (show/hide option for each post)
++ more prefs can be set in the config (wheatblog_settings.inc)
++ better use of CSS for formatting
++ functionalized many code elements for cleaner code & easier changes
+- authentication (now handled by .htaccess or other server-level protection)
+
+===============================================================================
+
+Known Issues in .03b which persist in .05b :: 
+
+ISSUE 1:
+Double-post problem.  Each post (including comment posts) actually creates 
+two posts.  The second post contains nothing but default values.  The output 
+layer ignores these, but you can see them in the admin layer.  It's easy enough 
+to have the admin layer also ignore them, but the problem needs to be rooted 
+out.  
+
+  PARTIAL FIX (04.07.04) included in .03b:
+  Added an if condition in add_post.php which checks that $the_year > 0 
+  before sending the SQL update statment.  This works, as the default value 
+  for $the_year is zero.  Thus, no double posts, but something is still 
+  fishy in the logic (or it is a problem on my testing platform).  
+
+  A similar fix has been applied to the comment posting pages.  
+
+ISSUE 2:
+The comment counter works so long as you only add (and never delete) 
+comments.  Each comment comment deleted using the admin interface (specifically, 
+delete_comment.php) will throw the counter will be off by two (i.e. removing 
+one comment will decrement the counter by two, rather than one).  
+
+  PARTIAL FIX (04.08.04) included in .03b:
+  I found that by incrementing the counter after decrementing it, I could force 
+  the count to be accurate.  It's not a perfect fix.  I still don't know why 
+  the count is getting off, but it works for now.

@@ -1,0 +1,11 @@
+	<dl>
+	<dd>
+	<noscript>
+		<div>{L_RECAPTCHA_NOSCRIPT}</div>
+	</noscript>
+
+		{L_RECAPTCHA_INVISIBLE}
+		<script src="{RECAPTCHA_SERVER}.js?hl={LA_RECAPTCHA_LANG}" async defer></script>
+		<div class="g-recaptcha" data-sitekey="{% if RECAPTCHA_PUBKEY %}{{ RECAPTCHA_PUBKEY }}{% else %}6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI{% endif %}" data-size="invisible"></div>
+	</dd>
+	</dl>

@@ -1,0 +1,54 @@
+Data Types
+
+MySQL:      http://dev.mysql.com/doc/mysql/en/column-type-overview.html
+PostgreSQL: http://www.postgresql.org/docs/8.0/interactive/datatype.html
+
+
+In MySQL, (TEXT|BLOB) are variable length types.  They differ from
+(VARCHAR|VARBINARY) in:
+	* (TEXT|BLOB) have no trailing space removal.
+	* (TEXT|BLOB) can't have default values.
+TEXT doesn't seem to appear in PostgreSQL.
+
+
+
+BOOLEAN:
+	SQLite:     Yes.
+	MySQL:      Yes.  Synonymous with TINYINT(1).
+	PostgreSQL: Yes.
+
+
+TEXT:
+This is not in the SQL standard, but is widely implemented.
+	SQLite:     Yes.
+	MySQL:      Yes.  Maximum 65,535 characters.
+	PostgreSQL: Yes.  Any length.
+
+
+MEDIUMTEXT:
+	SQLite:     Yes.
+	MySQL:      Yes.   A TEXT column with maximum 16,777,215 bytes.
+	PostgreSQL  No.
+
+
+VARCHAR:
+Part of the SQL standard.
+	SQLite:     Yes.
+	MySQL:      Yes.
+
+		Maximum length of 65,532 bytes
+		http://dev.mysql.com/doc/mysql/en/char.html
+
+		The maximum actual length of a VARCHAR in MySQL 5.0 is determined by
+		the maximum row size and the character set you use. The maximum
+		effective length is 65,532 bytes.
+
+	PostgreSQL: Yes.
+
+		No size limit
+		http://www.postgresql.org/docs/8.0/interactive/datatype-character.html
+
+		If character varying is used without length specifier, the type accepts
+		strings of any size. The latter is a PostgreSQL extension.
+
+

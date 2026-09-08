@@ -1,0 +1,648 @@
+..//install/upgrade_operations.php:242: * Delete unnecessary keys for personal items
+..//install/upgrade_operations.php:268: * Delete unnecessary keys for personal items
+..//install/upgrade_operations.php:300:            'DELETE FROM ' . $pre . 'sharekeys_items
+..//install/upgrade_operations.php:306:            'DELETE FROM ' . $pre . 'sharekeys_files
+..//install/upgrade_operations.php:312:            'DELETE FROM ' . $pre . 'sharekeys_fields
+..//install/upgrade_operations.php:318:            'DELETE FROM ' . $pre . 'sharekeys_logs
+..//install/upgrade_run_3.0.php:250:    "DELETE FROM `" . $pre . "misc` WHERE `intitule`='maintenance_job_tasks';"
+..//install/upgrade_run_3.0.php:254:    "DELETE FROM `" . $pre . "misc` WHERE `intitule`='maintenance_job_frequency';"
+..//install/upgrade_run_3.0.php:509:// delete old otv
+..//install/upgrade_run_3.0.php:512:    "DELETE FROM `" . $pre . "otv` WHERE max_views IS NULL;"
+..//install/upgrade_run_3.1.php:317:// Add field allowed_to_delete to api table
+..//install/upgrade_run_3.1.php:324:    echo '[{"finish":"1", "msg":"", "error":"An error appears when adding field allowed_to_delete to table api! ' . mysqli_error($db_link) . '!"}]';
+..//install/upgrade_run_3.0.0_users.php:171:                        'DELETE  
+..//install/upgrade_run_3.0.0_users.php:177:                        'DELETE  
+..//install/upgrade_run_3.0.0_users.php:183:                        'DELETE  
+..//install/upgrade_run_3.0.0_users.php:189:                        'DELETE  
+..//install/upgrade_run_3.0.0_users.php:195:                        'DELETE  
+..//install/upgrade_ajax.php:77:        // If yes then get keys to database and delete it
+..//install/upgrade_ajax.php:703:                // If yes then get keys to database and delete it
+..//install/upgrade_ajax.php:921:                unlink($csrfp_file); // delete existing csrfp.config file
+..//install/upgrade_run_3.0.0.php:680:mysqli_query($db_link, "DELETE FROM `" . $pre . "misc` WHERE `intitule` = 'ldap-test-config-username' AND type = 'admin'");
+..//install/upgrade_run_3.0.0.php:681:mysqli_query($db_link, "DELETE FROM `" . $pre . "misc` WHERE `intitule` = 'ldap-test-config-pwd' AND type = 'admin'");
+..//install/upgrade_run_3.0.0.php:1839:            "DELETE FROM ".$pre."api WHERE increment_id = ".$row['increment_id']
+..//install/install.queries.php:1449:                    unlink($csrfp_file); // delete existing csrfp.config file
+..//install/tp.functions.php:359:        // delete setting
+..//install/tp.functions.php:362:            "DELETE FROM ".$table."
+..//install/upgrade_run_3.0.0_files.php:206:            'DELETE FROM '.$pre.'files
+..//includes/core/otv.php:117:            $dataDelete = DB::queryfirstrow(
+..//includes/core/otv.php:136:                        // delete item
+..//includes/core/otv.php:199:            // delete entry
+..//includes/libraries/Encryption/phpseclib/Net/SFTP/Stream.php:691:     * Delete a file
+..//includes/libraries/Database/Meekrodb/db.class.php:393:    $query = "DELETE FROM {$table} WHERE {$where}";
+..//includes/libraries/PHPMailer/PHPMailer/PHPMailer.php:4734:            //RFC6376 is slightly unclear here - it says to delete space at the *end* of each value
+..//includes/libraries/PHPMailer/PHPMailer/PHPMailer.php:4735:            //But then says to delete space before and after the colon.
+..//includes/libraries/protect/SuperGlobal/SuperGlobal.php:100:     * Delete a variable
+..//includes/libraries/LdapRecord/Models/Model.php:1324:     * Delete the model from the directory.
+..//includes/libraries/LdapRecord/Models/Model.php:1329:     * @param bool $recursive Whether to recursively delete leaf nodes (models that are children).
+..//includes/libraries/LdapRecord/Models/Model.php:1374:     * Delete an attribute on the model.
+..//includes/libraries/LdapRecord/Models/Model.php:1378:     * Delete specific values in attributes:
+..//includes/libraries/LdapRecord/Models/Model.php:1382:     * Delete an entire attribute:
+..//includes/libraries/LdapRecord/Models/Model.php:1432:        $delete = [];
+..//includes/libraries/LdapRecord/Models/Model.php:1449:     * @param bool          $deleteOldRdn Whether to delete the old models relative distinguished name once renamed / moved.
+..//includes/libraries/LdapRecord/Models/Model.php:1473:     * @param bool|true          $deleteOldRdn Whether to delete the old models relative distinguished name once renamed / moved.
+..//includes/libraries/LdapRecord/LdapInterface.php:50:    public const OID_SERVER_TREE_DELETE = '1.2.840.113556.1.4.805';
+..//includes/libraries/LdapRecord/LdapInterface.php:419:     * Delete attribute values from current attributes.
+..//includes/libraries/LdapRecord/Query/Cache.php:86:     * Delete an item from the cache.
+..//includes/libraries/LdapRecord/Query/Builder.php:1893:     * Delete an entry from the directory.
+..//includes/libraries/LdapRecord/Query/Builder.php:1907:     * Delete attributes on the entry in the directory.
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_fonts.php:99:			// this font already exist (delete it from fonts folder to rebuild it)
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_fonts.php:2559:							// mark characters to delete with false
+..//includes/libraries/Pdf/tcpdf/include/tcpdf_fonts.php:2582:						// mark characters to delete with false
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:63://  * move and delete pages;
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:98: * <li>move and delete pages;</li>
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:10924:	 * @param array $permissions the set of permissions (specify the ones you want to block):<ul><li>print : Print the document;</li><li>modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';</li><li>copy : Copy or otherwise extract text and graphics from the document;</li><li>annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);</li><li>fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;</li><li>extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);</li><li>assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;</li><li>print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.</li><li>owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.</li></ul>
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:21160:		// delete current page
+..//includes/libraries/Pdf/tcpdf/tcpdf.php:21779:	 * Delete the copy of the current TCPDF object used for undo operation.
+..//includes/libraries/teampassclasses/superglobal/src/SuperGlobal.php:121:     * Delete a variable
+..//includes/libraries/Authentication/phpseclib/Net/SFTP/Stream.php:672:     * Delete a file
+..//includes/libraries/Illuminate/Database/Connection.php:433:     * Run a delete statement against the database.
+..//includes/libraries/Illuminate/Database/Connection.php:482:            // For update or delete statements, we want to get the number of rows affected
+..//includes/libraries/Illuminate/Database/Migrations/Migrator.php:622:     * Delete the migration repository data store.
+..//includes/libraries/Illuminate/Database/Migrations/MigrationRepositoryInterface.php:75:     * Delete the migration repository data store.
+..//includes/libraries/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:173:     * Delete the migration repository data store.
+..//includes/libraries/Illuminate/Database/ConnectionInterface.php:75:     * Run a delete statement against the database.
+..//includes/libraries/Illuminate/Database/Eloquent/SoftDeletes.php:42:     * Force a hard delete on a soft deleted model.
+..//includes/libraries/Illuminate/Database/Eloquent/SoftDeletes.php:60:     * Perform the actual delete query on this model instance.
+..//includes/libraries/Illuminate/Database/Eloquent/SoftDeletes.php:76:     * Perform the actual delete query on this model instance.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/MorphPivot.php:41:     * Delete the pivot model record from the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/AsPivot.php:107:     * Delete the pivot model record from the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/AsPivot.php:131:     * Get the query builder for a delete operation on the pivot.
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:424:            // If associated IDs were passed to the method we will only delete those
+..//includes/libraries/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php:438:            // to run the delete on the pivot table. Then, if the touch parameter
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:66:     * A replacement for the typical delete function.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:947:     * Delete records from the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:961:     * Run the default delete function on the builder.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:973:     * Register a replacement for the default delete function.
+..//includes/libraries/Illuminate/Database/Eloquent/Builder.php:980:        $this->onDelete = $callback;
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1075:        // We will actually pull the models from the database table and call delete on
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1090:     * Delete the model from the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1104:        // If the model doesn't exist, there is nothing to delete so we'll just return
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1117:        // by the timestamp. Then we will go ahead and delete the model instance.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1123:        // the developers may hook into post-delete operations. We will then return
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1124:        // a boolean true as the delete is presumably successful on the database.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1131:     * Force a hard delete on a soft deleted model.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1133:     * This method protects developers from running forceDelete when trait is missing.
+..//includes/libraries/Illuminate/Database/Eloquent/Model.php:1143:     * Perform the actual delete query on this model instance.
+..//includes/libraries/Illuminate/Database/Schema/Blueprint.php:431:     * Indicate that the soft delete column should be dropped.
+..//includes/libraries/Illuminate/Database/Schema/Blueprint.php:442:     * Indicate that the soft delete column should be dropped.
+..//includes/libraries/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php:84:                $sql .= " on delete {$foreign->onDelete}";
+..//includes/libraries/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php:236:        return "delete from sqlite_master where type in ('table', 'index', 'trigger')";
+..//includes/libraries/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php:246:        return "delete from sqlite_master where type in ('view')";
+..//includes/libraries/Illuminate/Database/Schema/Grammars/Grammar.php:85:        // build out the syntax for what should happen on an update or delete of
+..//includes/libraries/Illuminate/Database/Schema/Grammars/Grammar.php:88:            $sql .= " on delete {$command->onDelete}";
+..//includes/libraries/Illuminate/Database/Schema/ForeignKeyDefinition.php:11: * @method ForeignKeyDefinition onDelete(string $action) Add an ON DELETE action
+..//includes/libraries/Illuminate/Database/Query/Builder.php:3017:     * Delete records from the database.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:285:     * Compile a delete statement into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:300:     * Compile a delete statement with joins or limit into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:313:        return "delete from {$table} where {$this->wrap('rowid')} in ({$selectSql})";
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:325:            'delete from sqlite_sequence where name = ?' => [$query->from],
+..//includes/libraries/Illuminate/Database/Query/Grammars/SQLiteGrammar.php:326:            'delete from '.$this->wrapTable($query->from) => [],
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:306:     * Compile a delete statement into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:321:     * Compile a delete statement with joins or limit into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/PostgresGrammar.php:334:        return "delete from {$table} where {$this->wrap('ctid')} in ({$selectSql})";
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1031:     * Compile a delete statement into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1050:     * Compile a delete statement without joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1059:        return "delete from {$table} {$where}";
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1063:     * Compile a delete statement with joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1076:        return "delete {$alias} from {$table} {$joins} {$where}";
+..//includes/libraries/Illuminate/Database/Query/Grammars/Grammar.php:1080:     * Prepare the bindings for a delete statement.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:237:     * Compile a delete statement without joins into SQL.
+..//includes/libraries/Illuminate/Database/Query/Grammars/SqlServerGrammar.php:249:                        ? Str::replaceFirst('delete', 'delete top ('.$query->limit.')', $sql)
+..//includes/libraries/Illuminate/Database/Query/Grammars/MySqlGrammar.php:245:     * Compile a delete query that does not use joins.
+..//includes/libraries/Illuminate/Database/Query/Grammars/MySqlGrammar.php:256:        // When using MySQL, delete statements may contain order by statements and limits
+..//includes/libraries/Illuminate/Database/Console/Migrations/MigrateCommand.php:139:        // proper state, we need to delete it here so we don't get an error that this
+..//includes/libraries/Illuminate/Database/Console/DumpCommand.php:23:                {--prune : Delete all existing migration files}';
+..//includes/libraries/Illuminate/Cache/RedisTaggedCache.php:136:     * Delete all of the items that were stored forever.
+..//includes/libraries/Illuminate/Cache/RedisTaggedCache.php:146:     * Delete all standard items.
+..//includes/libraries/Illuminate/Cache/RedisTaggedCache.php:156:     * Find and delete all of the items that were stored against a reference.
+..//includes/libraries/Illuminate/Cache/RedisTaggedCache.php:171:     * Delete item keys that have been stored against a reference.
+..//includes/libraries/Illuminate/Cache/Repository.php:174:     * Retrieve an item from the cache and delete it.
+..//includes/libraries/Illuminate/Auth/Passwords/TokenRepositoryInterface.php:35:     * Delete a token record.
+..//includes/libraries/Illuminate/Auth/Passwords/TokenRepositoryInterface.php:43:     * Delete expired tokens.
+..//includes/libraries/Illuminate/Auth/Passwords/DatabaseTokenRepository.php:101:     * Delete all existing reset tokens from the database.
+..//includes/libraries/Illuminate/Auth/Passwords/DatabaseTokenRepository.php:185:     * Delete a token record by user.
+..//includes/libraries/Illuminate/Auth/Passwords/DatabaseTokenRepository.php:196:     * Delete expired tokens.
+..//includes/libraries/Illuminate/Auth/Passwords/PasswordBroker.php:99:        // in their persistent storage. Then we'll delete the token and return.
+..//includes/libraries/Illuminate/Auth/Passwords/PasswordBroker.php:159:     * Delete password reset tokens of the given user.
+..//includes/libraries/Illuminate/Contracts/Cache/Repository.php:11:     * Retrieve an item from the cache and delete it.
+..//includes/libraries/Illuminate/Contracts/Filesystem/Filesystem.php:108:     * Delete the file at a given path.
+..//includes/libraries/Illuminate/Contracts/Filesystem/Filesystem.php:192:     * Recursively delete a directory.
+..//includes/libraries/Illuminate/Contracts/Queue/ClearableQueue.php:8:     * Delete all of the jobs from the queue.
+..//includes/libraries/Illuminate/Contracts/Queue/Job.php:53:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Contracts/Queue/Job.php:95:     * Delete the job, call the "failed" method, and raise the failed job event.
+..//includes/libraries/Illuminate/Contracts/Routing/Registrar.php:35:     * Register a new DELETE route with the router.
+..//includes/libraries/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php:395:     * Visit the given URI with a DELETE request.
+..//includes/libraries/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php:411:     * Visit the given URI with a DELETE request, expecting a JSON response.
+..//includes/libraries/Illuminate/Bus/Batch.php:408:     * Delete the batch from storage.
+..//includes/libraries/Illuminate/Bus/BatchRepository.php:78:     * Delete the batch that has the given ID.
+..//includes/libraries/Illuminate/Bus/DatabaseBatchRepository.php:223:     * Delete the batch that has the given ID.
+..//includes/libraries/Illuminate/Filesystem/Filesystem.php:257:     * Delete the file at a given path.
+..//includes/libraries/Illuminate/Filesystem/Filesystem.php:652:     * Recursively delete a directory.
+..//includes/libraries/Illuminate/Filesystem/Filesystem.php:670:            // delete that sub-directory otherwise we'll just delete the file and
+..//includes/libraries/Illuminate/Filesystem/Filesystem.php:676:            // If the item is just a file, we can go ahead and delete it since we're
+..//includes/libraries/Illuminate/Filesystem/Filesystem.php:678:            // and calling directories recursively, so we delete the real path.
+..//includes/libraries/Illuminate/Filesystem/FilesystemAdapter.php:338:     * Delete the file at a given path.
+..//includes/libraries/Illuminate/Filesystem/FilesystemAdapter.php:663:     * Recursively delete a directory.
+..//includes/libraries/Illuminate/Http/Client/PendingRequest.php:526:     * Issue a DELETE request to the given URL.
+..//includes/libraries/Illuminate/Queue/BeanstalkdQueue.php:139:     * Delete a message from the Beanstalk queue.
+..//includes/libraries/Illuminate/Queue/InteractsWithQueue.php:27:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Queue/SqsQueue.php:144:     * Delete all of the jobs from the queue.
+..//includes/libraries/Illuminate/Queue/Failed/DynamoDbFailedJobProvider.php:147:     * Delete a single failed job from storage.
+..//includes/libraries/Illuminate/Queue/Failed/FailedJobProviderInterface.php:34:     * Delete a single failed job from storage.
+..//includes/libraries/Illuminate/Queue/Failed/DatabaseUuidFailedJobProvider.php:101:     * Delete a single failed job from storage.
+..//includes/libraries/Illuminate/Queue/Failed/DatabaseFailedJobProvider.php:88:     * Delete a single failed job from storage.
+..//includes/libraries/Illuminate/Queue/Failed/NullFailedJobProvider.php:43:     * Delete a single failed job from storage.
+..//includes/libraries/Illuminate/Queue/RedisQueue.php:261:     * Delete a reserved job from the queue.
+..//includes/libraries/Illuminate/Queue/RedisQueue.php:273:     * Delete a reserved job from the reserved queue and release it.
+..//includes/libraries/Illuminate/Queue/RedisQueue.php:291:     * Delete all of the jobs from the queue.
+..//includes/libraries/Illuminate/Queue/CallQueuedHandler.php:199:            $shouldDelete = (new ReflectionClass($class))
+..//includes/libraries/Illuminate/Queue/CallQueuedHandler.php:202:            $shouldDelete = false;
+..//includes/libraries/Illuminate/Queue/Jobs/DatabaseJob.php:58:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Queue/Jobs/SqsJob.php:62:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Queue/Jobs/BeanstalkdJob.php:73:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Queue/Jobs/Job.php:102:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Queue/Jobs/Job.php:173:     * Delete the job, call the "failed" method, and raise the failed job event.
+..//includes/libraries/Illuminate/Queue/Jobs/Job.php:187:            // If the job has failed, we will delete it, call the "failed" method and then call
+..//includes/libraries/Illuminate/Queue/Jobs/RedisJob.php:54:        // of the reserved job is required in order for us to properly delete its data.
+..//includes/libraries/Illuminate/Queue/Jobs/RedisJob.php:76:     * Delete the job from the queue.
+..//includes/libraries/Illuminate/Queue/Console/ClearCommand.php:28:    protected $description = 'Delete all of the jobs from the specified queue';
+..//includes/libraries/Illuminate/Queue/Console/ForgetFailedCommand.php:21:    protected $description = 'Delete a failed queue job';
+..//includes/libraries/Illuminate/Queue/DatabaseQueue.php:308:     * Delete a reserved job from the queue.
+..//includes/libraries/Illuminate/Queue/DatabaseQueue.php:326:     * Delete a reserved job from the reserved queue and release it.
+..//includes/libraries/Illuminate/Queue/DatabaseQueue.php:345:     * Delete all of the jobs from the queue.
+..//includes/libraries/Illuminate/Routing/Router.php:185:     * Register a new DELETE route with the router.
+..//includes/libraries/Illuminate/Session/Middleware/StartSession.php:176:        // hit it, we'll call this handler to let it delete all the expired sessions.
+..//includes/language/vietnamese.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/vietnamese.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/vietnamese.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/vietnamese.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/vietnamese.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/vietnamese.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/vietnamese.php:381:    'delete_item' => 'Delete item',
+..//includes/language/vietnamese.php:719:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/vietnamese.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/vietnamese.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/vietnamese.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/vietnamese.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/vietnamese.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/vietnamese.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/vietnamese.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/chinese.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/chinese.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/chinese.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/chinese.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/chinese.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/chinese.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/chinese.php:381:    'delete_item' => 'Delete item',
+..//includes/language/chinese.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/chinese.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/chinese.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/chinese.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/chinese.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/chinese.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/chinese.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/catalan.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/catalan.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/catalan.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/catalan.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/catalan.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/catalan.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/catalan.php:381:    'delete_item' => 'Delete item',
+..//includes/language/catalan.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/catalan.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/catalan.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/catalan.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/catalan.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/catalan.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/russian.php:308:    'delete_folders' => 'Delete Folders',
+..//includes/language/russian.php:385:    'delete_item' => 'Delete item',
+..//includes/language/arabic.php:459:    'confirm_delete_group' => 'You have chosen to delete this folder and all included items ... are you sure?',
+..//includes/language/arabic.php:460:    'confirm_del_account' => 'You have chosen to delete this account. Are you sure?',
+..//includes/language/arabic.php:480:    'del_function' => 'Delete Roles',
+..//includes/language/arabic.php:481:    'del_group' => 'Delete Folder',
+..//includes/language/arabic.php:628:    'item_menu_del_elem' => 'Delete item',
+..//includes/language/arabic.php:629:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/arabic.php:630:    'item_menu_del_rep' => 'Delete folder',
+..//includes/language/arabic.php:745:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/arabic.php:780:    'user_del' => 'Delete account',
+..//includes/language/arabic.php:783:    'views_confirm_items_deletion' => 'Do you really want to delete the selected items from database?',
+..//includes/language/arabic.php:801:    'settings_api_delete_key' => 'Delete key',
+..//includes/language/arabic.php:923:    'user_info_delete_warning' => 'By clicking save, you will irretrievably delete this account!',
+..//includes/language/arabic.php:928:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/arabic.php:950:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/arabic.php:1049:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/arabic.php:1050:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/arabic.php:1054:    'delete_items' => 'Delete selected Items',
+..//includes/language/arabic.php:1056:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/norwegian.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/norwegian.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/norwegian.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/norwegian.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/norwegian.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/norwegian.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/norwegian.php:381:    'delete_item' => 'Delete item',
+..//includes/language/norwegian.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/norwegian.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/norwegian.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/norwegian.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/norwegian.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/norwegian.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/norwegian.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/czech.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/czech.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/czech.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/czech.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/czech.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/czech.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/czech.php:381:    'delete_item' => 'Delete item',
+..//includes/language/japanese.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/japanese.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/japanese.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/japanese.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/japanese.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/japanese.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/japanese.php:381:    'delete_item' => 'Delete item',
+..//includes/language/japanese.php:719:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/japanese.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/japanese.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/japanese.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/japanese.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/japanese.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/japanese.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/japanese.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/bulgarian.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/bulgarian.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/bulgarian.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/bulgarian.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/bulgarian.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/bulgarian.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/bulgarian.php:381:    'delete_item' => 'Delete item',
+..//includes/language/bulgarian.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/bulgarian.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/bulgarian.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/bulgarian.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/bulgarian.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/swedish.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/swedish.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/swedish.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/swedish.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/swedish.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/swedish.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/swedish.php:381:    'delete_item' => 'Delete item',
+..//includes/language/swedish.php:719:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/swedish.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/swedish.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/swedish.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/swedish.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/swedish.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/swedish.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/swedish.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/turkish.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/turkish.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/turkish.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/turkish.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/turkish.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/turkish.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/turkish.php:381:    'delete_item' => 'Delete item',
+..//includes/language/turkish.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/turkish.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/turkish.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/turkish.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/turkish.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/turkish.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/turkish.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/estonian.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/estonian.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/estonian.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/estonian.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/estonian.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/estonian.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/estonian.php:381:    'delete_item' => 'Delete item',
+..//includes/language/estonian.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/estonian.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/estonian.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/estonian.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/hungarian.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/hungarian.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/hungarian.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/hungarian.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/hungarian.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/hungarian.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/hungarian.php:381:    'delete_item' => 'Delete item',
+..//includes/language/hungarian.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/hungarian.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/hungarian.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/hungarian.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/romanian.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/romanian.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/romanian.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/romanian.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/romanian.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/romanian.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/romanian.php:381:    'delete_item' => 'Delete item',
+..//includes/language/romanian.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/romanian.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/romanian.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/portuguese.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/portuguese.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/portuguese.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/portuguese.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/portuguese.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/portuguese.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/portuguese.php:381:    'delete_item' => 'Delete item',
+..//includes/language/portuguese.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/portuguese.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/portuguese.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/portuguese.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/portuguese.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/portuguese.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/dutch.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/dutch.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/dutch.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/dutch.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/dutch.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/dutch.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/dutch.php:381:    'delete_item' => 'Delete item',
+..//includes/language/greek.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/greek.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/greek.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/greek.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/greek.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/greek.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/greek.php:381:    'delete_item' => 'Delete item',
+..//includes/language/greek.php:719:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/greek.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/greek.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/greek.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/greek.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/greek.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/greek.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/polish.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/polish.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/polish.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/polish.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/polish.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/polish.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/polish.php:381:    'delete_item' => 'Delete item',
+..//includes/language/ukrainian.php:216:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/ukrainian.php:218:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/ukrainian.php:282:    'delete_allowed' => 'Delete allowed',
+..//includes/language/ukrainian.php:285:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/ukrainian.php:304:    'delete_folders' => 'Delete Folders',
+..//includes/language/ukrainian.php:377:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/ukrainian.php:381:    'delete_item' => 'Delete item',
+..//includes/language/ukrainian.php:719:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/ukrainian.php:772:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/ukrainian.php:845:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/ukrainian.php:859:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/ukrainian.php:907:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/ukrainian.php:908:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/ukrainian.php:911:    'delete_items' => 'Delete selected Items',
+..//includes/language/ukrainian.php:913:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//includes/language/english.php:302:    'caution_while_deleting_field' => 'Caution - Deleting this field will also delete related data in items.',
+..//includes/language/english.php:304:    'caution_while_deleting_category' => 'Caution - Deleting this folder will delete all its belonging fields and also all fields related data.',
+..//includes/language/english.php:368:    'delete_allowed' => 'Delete allowed',
+..//includes/language/english.php:371:    'delete_not_allowed' => 'Delete not allowed',
+..//includes/language/english.php:390:    'delete_folders' => 'Delete Folders',
+..//includes/language/english.php:463:    'delete_item_message' => 'You have decided to delete this selected item. You need to confirm your choice by clicking Perform button.',
+..//includes/language/english.php:467:    'delete_item' => 'Delete item',
+..//includes/language/english.php:821:    'item_menu_del_from_fav' => 'Delete from favorites',
+..//includes/language/english.php:876:    'settings_manager_edit' => 'Managers may edit or delete any items they can view',
+..//includes/language/english.php:967:    'user_info_delete_question' => 'Delete account?',
+..//includes/language/english.php:983:    'role_cannot_delete_item' => 'Cannot delete items',
+..//includes/language/english.php:1034:    'enable_massive_move_delete' => 'Allow user to perform massive move and delete operations',
+..//includes/language/english.php:1035:    'enable_massive_move_delete_tip' => 'When enabled, this option permits a user to perform a massive move and/or delete operation in one time. The user will only be able to perform this on Items on which he is allowed to.',
+..//includes/language/english.php:1038:    'delete_items' => 'Delete selected Items',
+..//includes/language/english.php:1040:    'you_decided_to_delete_items' => 'You decided to delete items',
+..//scripts/task_maintenance_clean_orphan_objects.php:73: * Delete all orphan objects from DB
+..//scripts/task_maintenance_clean_orphan_objects.php:96:        //Delete item
+..//scripts/task_maintenance_clean_orphan_objects.php:99:        // Delete if template related to item
+..//scripts/task_maintenance_clean_orphan_objects.php:111:    // delete orphan items
+..//scripts/task_maintenance_clean_orphan_objects.php:132:    // Delete all item keys for which no user exist
+..//scripts/task_maintenance_clean_orphan_objects.php:134:        'DELETE k FROM ' . prefixTable('sharekeys_items') . ' k
+..//scripts/task_maintenance_clean_orphan_objects.php:139:    // Delete all files keys for which no user exist
+..//scripts/task_maintenance_clean_orphan_objects.php:141:        'DELETE k FROM ' . prefixTable('sharekeys_files') . ' k
+..//scripts/task_maintenance_clean_orphan_objects.php:146:    // Delete all fields keys for which no user exist
+..//scripts/task_maintenance_clean_orphan_objects.php:148:        'DELETE k FROM ' . prefixTable('sharekeys_fields') . ' k
+..//scripts/task_maintenance_clean_orphan_objects.php:153:    // Delete all item logs for which no user exist
+..//scripts/task_maintenance_clean_orphan_objects.php:155:        'DELETE l FROM ' . prefixTable('log_items') . ' l
+..//scripts/task_maintenance_clean_orphan_objects.php:160:    // Delete all system logs for which no user exist
+..//scripts/task_maintenance_clean_orphan_objects.php:162:        'DELETE l FROM ' . prefixTable('log_system') . ' l
+..//scripts/task_maintenance_clean_orphan_objects.php:167:    // Delete all item keys for which no object exist
+..//scripts/task_maintenance_clean_orphan_objects.php:169:        'DELETE k FROM ' . prefixTable('sharekeys_items') . ' k
+..//scripts/task_maintenance_clean_orphan_objects.php:174:    // Delete all files keys for which no object exist
+..//scripts/task_maintenance_clean_orphan_objects.php:176:        'DELETE k FROM ' . prefixTable('sharekeys_files') . ' k
+..//scripts/task_maintenance_clean_orphan_objects.php:181:    // Delete all fields keys for which no object exist
+..//scripts/task_maintenance_clean_orphan_objects.php:183:        'DELETE k FROM ' . prefixTable('sharekeys_fields') . ' k
+..//scripts/task_maintenance_clean_orphan_objects.php:188:    // Delete all item logs for which no object exist
+..//scripts/task_maintenance_clean_orphan_objects.php:190:        'DELETE l FROM ' . prefixTable('log_items') . ' l
+..//scripts/background_tasks___items_handler.php:370:        'DELETE i1 FROM '.prefixTable('items_edition').' i1
+..//scripts/background_tasks___items_handler.php:380:    // Delete entry if token has expired
+..//scripts/background_tasks___items_handler.php:383:        'DELETE FROM '.prefixTable('items_edition').'
+..//scripts/task_maintenance_purge_old_files.php:87:                //delete file FILES
+..//scripts/task_maintenance_purge_old_files.php:106:                //delete file
+..//sources/folders.class.php:397:                // delete cache tree
+..//sources/main.functions.php:871:        // DELETE an item
+..//sources/main.functions.php:2449: * DELETE the file with expected command depending on server type.
+..//sources/main.functions.php:2996:    // Delete existing entries for this object
+..//sources/roles.queries.php:559:            // Delete roles
+..//sources/users.queries.php:349:         * Delete the user
+..//sources/users.queries.php:395:                // delete user in database
+..//sources/users.queries.php:401:                // delete user api
+..//sources/users.queries.php:407:                // delete personal folder and subfolders
+..//sources/users.queries.php:418:                        // delete folder
+..//sources/users.queries.php:420:                        // delete items & logs
+..//sources/users.queries.php:428:                            // Delete item
+..//sources/users.queries.php:439:                // Delete objects keys
+..//sources/users.queries.php:443:                // Delete any process related to user
+..//sources/users.queries.php:452:                    // Delete task
+..//sources/users.queries.php:460:                // Delete main process
+..//sources/users.queries.php:1039:         * delete the timestamp value for specified user => disconnect
+..//sources/users.queries.php:1079:         * delete the timestamp value for all users
+..//sources/users.queries.php:1537:                // delete account
+..//sources/users.queries.php:1538:                // delete user in database
+..//sources/users.queries.php:1545:                    // delete personal folder and subfolders
+..//sources/users.queries.php:1556:                            // delete folder
+..//sources/users.queries.php:1558:                            // delete items & logs
+..//sources/users.queries.php:1566:                                // Delete item
+..//sources/upload.files.php:88:    // delete expired tokens
+..//sources/upload.files.php:451:    // get current avatar and delete it
+..//sources/upload.attachments.php:103:    // delete expired tokens
+..//sources/backups.queries.php:282:            // Delete operation id
+..//sources/backups.queries.php:334:            //delete file
+..//sources/utilities.queries.php:242:                    //delete log
+..//sources/utilities.queries.php:316:        //CASE delete selected recycled elements
+..//sources/utilities.queries.php:380:                    // Delete folder
+..//sources/utilities.queries.php:387:                    //delete log
+..//sources/utilities.queries.php:395:                    // Delete all items in this folder
+..//sources/items.queries.php:577:                            // Delete if empty
+..//sources/items.queries.php:1433:                            // Delete if empty
+..//sources/items.queries.php:1522:                                // delete automatic deleteion for this item
+..//sources/items.queries.php:1617:                        // delete previous values
+..//sources/items.queries.php:2780:                    $dataDelete = DB::queryfirstrow(
+..//sources/items.queries.php:2791:                    // Now delete if required
+..//sources/items.queries.php:2792:                    if ($dataDelete !== null && ((int) $dataDelete['del_enabled'] === 1
+..//sources/items.queries.php:2814:                            // delete item
+..//sources/items.queries.php:3027:                        array_pop($_SESSION['latest_items']); //delete last items
+..//sources/items.queries.php:3162:         * Delete an item
+..//sources/items.queries.php:3240:            // delete item consists in disabling it
+..//sources/items.queries.php:4067:                            // 30 -> can view without edit (no copy) or delete but can move
+..//sources/items.queries.php:4069:                            // 50 -> can edit and delete but not move
+..//sources/items.queries.php:4111:            // DELETE - 2.1.19 - AND (l.action = 'at_creation' OR (l.action = 'at_modification' AND l.raison LIKE 'at_pw :%'))
+..//sources/items.queries.php:4269:                // If token is taken for this Item and delay is passed then delete it.
+..//sources/items.queries.php:4515:        * DELETE attached file from an item
+..//sources/items.queries.php:4566:                // Delete from FILES table
+..//sources/items.queries.php:4584:                // DElete sharekeys
+..//sources/items.queries.php:4591:                // Delete file from server
+..//sources/items.queries.php:4654:                // delete from session
+..//sources/items.queries.php:4661:                // delete from DB
+..//sources/items.queries.php:5325:         * MASSIVE Delete an item
+..//sources/items.queries.php:5399:                    // delete item consists in disabling it
+..//sources/items.queries.php:5579:                    // TODO : delete user from array and store in DB
+..//sources/items.queries.php:5725:            // delete all existing old otv codes
+..//sources/items.queries.php:6690:            // Delete non confirmed files for this item
+..//sources/items.queries.php:6700:                // Delete file in DB
+..//sources/items.queries.php:6707:                // Delete file on server
+..//sources/items.queries.php:6710:                // Delete related logs
+..//sources/identify.php:1467:        // Delete all user's AD groups
+..//sources/fields.queries.php:368:            // Delete all folders
+..//sources/fields.queries.php:440:                // Delete ID
+..//sources/fields.queries.php:477:                // Delete ID
+..//sources/fields.queries.php:484:                // Delete all data
+..//sources/fields.queries.php:1012:                // delete all existing inputs
+..//sources/admin.queries.php:330:            //Delete item
+..//sources/admin.queries.php:333:            // Delete if template related to item
+..//sources/admin.queries.php:346:        // delete orphan items
+..//sources/admin.queries.php:561:        // Delete operation id
+..//sources/admin.queries.php:604:        //delete file
+..//sources/admin.queries.php:751:            //delete file FILES
+..//sources/admin.queries.php:780:            //delete file
+..//sources/admin.queries.php:1141:        // delete previous backup files
+..//sources/admin.queries.php:1147:                    unlink($file); // delete file
+..//sources/admin.queries.php:1634:        // delete files
+..//sources/admin.queries.php:1686:    * Change SALT Key - Delete BACKUP data
+..//sources/admin.queries.php:1714:        // delete files
+..//sources/admin.queries.php:1840:                    //delete from DB
+..//sources/admin.queries.php:1916:                //delete from DB
+..//sources/admin.queries.php:2227:            // Delete existing key
+..//sources/admin.queries.php:2232:                'DELETE FROM ' . prefixTable('api') . ' WHERE increment_id = %i',
+..//sources/admin.queries.php:2328:            // Delete existing key
+..//sources/admin.queries.php:2331:            DB::query('DELETE FROM ' . prefixTable('api') . ' WHERE increment_id=%i', $post_id);
+..//sources/aes.functions.php:108: * Delete all objects keys for one user.
+..//sources/core.php:115:    // Should we delete folder INSTALL?
+..//sources/core.php:123:         * Permits to delete files and folders recursively.
+..//sources/core.php:162:        // Delete temporary install table
+..//sources/core.php:164:        // Delete tag
+..//sources/folders.queries.php:835:                    // delete cache tree
+..//sources/folders.queries.php:922:                            //array for delete folder
+..//sources/folders.queries.php:925:                            //delete items & logs
+..//sources/folders.queries.php:947:                                // delete folder from SESSION
+..//sources/folders.queries.php:1000:                    // delete folders
+..//sources/import.queries.php:139:        // Delete operation id
+..//sources/import.queries.php:253:            //delete file
+..//sources/import.queries.php:283:        //delete file
+..//sources/import.queries.php:481:        // Delete operation id
+..//sources/find.queries.php:255:        // massive move/delete enabled?
+..//sources/find.queries.php:551:            // 30 -> can view without edit (no copy) or delete but can move
+..//sources/find.queries.php:553:            // 50 -> can edit and delete but not move
+..//pages/items.php:306:                                <!-- DELETE AFTER CONSULTATION -->
+..//pages/items.php:985:    <!-- DELETE ITEM FORM -->
+..//pages/items.php:986:    <div class="row hidden form-item-delete form-item-action">
+..//pages/items.php:1191:    <!-- DELETE FOLDER FORM -->
+..//pages/items.php:1192:    <div class="row hidden form-folder-delete form-folder-action">
+..//pages/items.js.php:579:            if (debugJavascript === true) console.info('SHOW DELETE FOLDER');
+..//pages/items.js.php:805:            if (debugJavascript === true) console.info('SHOW DELETE ITEM');
+..//pages/items.js.php:807:                // Show delete form
+..//pages/items.js.php:1258:     * DELETE - recycle item
+..//pages/items.js.php:1764:     * FOLDER DELETE - Delete an existing folder
+..//pages/items.js.php:3586:                        // Delete existing clipboard
+..//pages/items.js.php:4752:                // Delete after X views
+..//pages/items.js.php:5041:                // Delete inputs related files uploaded but not confirmed
+..//pages/items.js.php:5131:            // Delete the file
+..//pages/roles.js.php:710:            // DELETE SELECTED ROLE
+..//pages/utilities.deletion.js.php:220:            $('#recycled-bin-confirm-delete div').find('.card-body')
+..//pages/fields.js.php:474:                        // Delete rows
+..//pages/fields.js.php:489:                        // Delete row
+..//pages/options.php:712:                        <div class='row mb-2 option' data-keywords="password delete massive">
+..//pages/options.php:736:                        <div class='row mb-2 option' data-keywords="password delete view expiration">
+..//pages/options.php:748:                        <div class='row mb-2 option' data-keywords="password delete view expiration">
+..//pages/folders.js.php:177:            //--- DELETE FORM SHOW
+..//pages/folders.js.php:208:            //--- DELETE FOLDERS
+..//pages/folders.js.php:277:     * Handle delete button status
+..//pages/search.js.php:591:            // Delete selected items
+..//vendor/tecnickcom/tcpdf/include/tcpdf_fonts.php:99:			// this font already exist (delete it from fonts folder to rebuild it)
+..//vendor/tecnickcom/tcpdf/include/tcpdf_fonts.php:2560:							// mark characters to delete with false
+..//vendor/tecnickcom/tcpdf/include/tcpdf_fonts.php:2583:						// mark characters to delete with false
+..//vendor/tecnickcom/tcpdf/examples/index.php:66:<li>Move, Copy and Delete page: [<a href="example_044.php" title="PDF [new window]" target="_blank">PDF</a>]</li>
+..//vendor/tecnickcom/tcpdf/examples/example_016.php:46:	- assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;
+..//vendor/tecnickcom/tcpdf/examples/example_044.php:8://               Move, copy and delete pages
+..//vendor/tecnickcom/tcpdf/examples/example_044.php:22: * @abstract TCPDF - Example: Move, copy and delete pages
+..//vendor/tecnickcom/tcpdf/examples/example_044.php:83:$txt = 'TCPDF allows you to Copy, Move and Delete pages.';
+..//vendor/tecnickcom/tcpdf/examples/example_044.php:112:// Delete page 6
+..//vendor/tecnickcom/tcpdf/tcpdf.php:63://  * move and delete pages;
+..//vendor/tecnickcom/tcpdf/tcpdf.php:98: * <li>move and delete pages;</li>
+..//vendor/tecnickcom/tcpdf/tcpdf.php:10963:	 * @param array $permissions the set of permissions (specify the ones you want to block):<ul><li>print : Print the document;</li><li>modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';</li><li>copy : Copy or otherwise extract text and graphics from the document;</li><li>annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);</li><li>fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;</li><li>extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);</li><li>assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;</li><li>print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.</li><li>owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.</li></ul>
+..//vendor/tecnickcom/tcpdf/tcpdf.php:21230:		// delete current page
+..//vendor/tecnickcom/tcpdf/tcpdf.php:21849:	 * Delete the copy of the current TCPDF object used for undo operation.
+..//vendor/phpseclib/phpseclib/phpseclib/Net/SFTP.php:2846:        // The folder does not exist at all, so we cannot delete it.
+..//vendor/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php:692:     * Delete a file
+..//vendor/phpmailer/phpmailer/src/PHPMailer.php:4946:            //RFC6376 is slightly unclear here - it says to delete space at the *end* of each value
+..//vendor/phpmailer/phpmailer/src/PHPMailer.php:4947:            //But then says to delete space before and after the colon.
+..//vendor/sergeytsalkov/meekrodb/db.class.php:507:    $query = "DELETE FROM {$table} WHERE {$where}";
+..//vendor/sergeytsalkov/meekrodb/simpletest/WalkTest.php:37:    DB::query("DELETE FROM profile WHERE id=100");
+..//vendor/sergeytsalkov/meekrodb/simpletest/ObjectTest.php:159:    $this->mdb->query("DELETE FROM accounts WHERE password=%s", 'blahblahblahblah');
+..//vendor/sergeytsalkov/meekrodb/simpletest/BasicTest.php:110:    DB::query("DELETE FROM accounts WHERE username=###s", 'f_u');
+..//vendor/sergeytsalkov/meekrodb/simpletest/BasicTest.php:210:    $affected_rows = DB::query("DELETE FROM accounts WHERE password=%s", 'blahblahblahblah');
+..//vendor/teampassclasses/superglobal/src/SuperGlobal.php:127:     * Delete a variable
+..//vendor/psr/simple-cache/src/CacheInterface.php:37:     * Delete an item from the cache by its unique key.
+..//vendor/symfony/translation/MetadataAwareInterface.php:15: * This interface is used to get, set, and delete metadata about the translation messages.
+..//vendor/symfony/translation/MetadataAwareInterface.php:42:     * Passing an empty domain will delete all metadata. Passing an empty key will
+..//vendor/symfony/translation/MetadataAwareInterface.php:43:     * delete all metadata for the given domain.
+..//vendor/symfony/translation/CatalogueMetadataAwareInterface.php:15: * This interface is used to get, set, and delete metadata about the Catalogue.
+..//vendor/symfony/translation/CatalogueMetadataAwareInterface.php:42:     * Passing an empty domain will delete all catalogue metadata. Passing an empty key will
+..//vendor/symfony/translation/CatalogueMetadataAwareInterface.php:43:     * delete all metadata for the given domain.
+..//vendor/symfony/translation/Command/TranslationPullCommand.php:93:                new InputOption('force', null, InputOption::VALUE_NONE, 'Override existing translations with provider ones (it will delete not synchronized messages).'),
+..//vendor/symfony/translation/Command/TranslationPushCommand.php:84:                new InputOption('force', null, InputOption::VALUE_NONE, 'Override existing translations with local ones (it will delete not synchronized messages).'),
+..//vendor/symfony/translation/Command/TranslationPushCommand.php:85:                new InputOption('delete-missing', null, InputOption::VALUE_NONE, 'Delete translations available on provider but not locally.'),
+..//vendor/symfony/translation/Command/TranslationPushCommand.php:97:You can delete provider translations which are not present locally by using the <comment>--delete-missing</> flag:
+..//vendor/symfony/var-dumper/Caster/AmqpCaster.php:29:        \AMQP_AUTODELETE => 'AMQP_AUTODELETE',
+..//vendor/symfony/http-foundation/BinaryFileResponse.php:375:    public function deleteFileAfterSend(bool $shouldDelete = true): static
+..//vendor/symfony/http-foundation/Request.php:59:    public const METHOD_DELETE = 'DELETE';
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:316:        // delete the record associated with this id
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:317:        $sql = "DELETE FROM $this->table WHERE $this->idCol = :id";
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:407:            // delete the session records that have expired
+..//vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:408:            $sql = "DELETE FROM $this->table WHERE $this->lifetimeCol < :time";
+..//vendor/symfony/http-foundation/Session/Storage/SessionStorageInterface.php:69:     * only delete the session data from persistent storage.
+..//vendor/symfony/http-foundation/Session/SessionInterface.php:71:     * @param bool     $destroy  Whether to delete the old session or leave it to garbage collection
+..//vendor/illuminate/contracts/Cache/Repository.php:11:     * Retrieve an item from the cache and delete it.
+..//vendor/illuminate/contracts/Filesystem/Filesystem.php:101:     * Delete the file at a given path.
+..//vendor/illuminate/contracts/Filesystem/Filesystem.php:185:     * Recursively delete a directory.
+..//vendor/illuminate/contracts/Queue/ClearableQueue.php:8:     * Delete all of the jobs from the queue.
+..//vendor/illuminate/contracts/Queue/Job.php:51:     * Delete the job from the queue.
+..//vendor/illuminate/contracts/Queue/Job.php:93:     * Delete the job, call the "failed" method, and raise the failed job event.
+..//vendor/illuminate/contracts/Routing/Registrar.php:35:     * Register a new DELETE route with the router.
+..//vendor/illuminate/filesystem/Filesystem.php:296:     * Delete the file at a given path.
+..//vendor/illuminate/filesystem/Filesystem.php:721:     * Recursively delete a directory.
+..//vendor/illuminate/filesystem/Filesystem.php:739:            // delete that sub-directory otherwise we'll just delete the file and
+..//vendor/illuminate/filesystem/Filesystem.php:745:            // If the item is just a file, we can go ahead and delete it since we're
+..//vendor/illuminate/filesystem/Filesystem.php:747:            // and calling directories recursively, so we delete the real path.
+..//vendor/illuminate/filesystem/FilesystemAdapter.php:500:     * Delete the file at a given path.
+..//vendor/illuminate/filesystem/FilesystemAdapter.php:882:     * Recursively delete a directory.
+..//vendor/illuminate/support/Testing/Fakes/BatchFake.php:148:     * Delete the batch from storage.
+..//vendor/illuminate/support/Testing/Fakes/BatchRepositoryFake.php:133:     * Delete the batch that has the given ID.
+..//vendor/directorytree/ldaprecord/src/Models/Relations/HasMany.php:282:     * Detach the model or delete the parent if the relation is empty.
+..//vendor/directorytree/ldaprecord/src/Models/Relations/HasMany.php:402:     * Detach all relation models or delete the model if its relation is empty.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1268:     * Delete the model from the directory.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1273:     * @param  bool  $recursive  Whether to recursively delete leaf nodes (models that are children).
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1317:     * Delete an attribute on the model.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1321:     * Delete specific values in attributes:
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1325:     * Delete an entire attribute:
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1373:        $delete = [];
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1390:     * @param  bool  $deleteOldRdn  Whether to delete the old models relative distinguished name once renamed / moved.
+..//vendor/directorytree/ldaprecord/src/Models/Model.php:1413:     * @param  bool|true  $deleteOldRdn  Whether to delete the old models relative distinguished name once renamed / moved.
+..//vendor/directorytree/ldaprecord/src/LdapInterface.php:50:    public const OID_SERVER_TREE_DELETE = '1.2.840.113556.1.4.805';
+..//vendor/directorytree/ldaprecord/src/LdapInterface.php:400:     * Delete attribute values from current attributes.
+..//vendor/directorytree/ldaprecord/src/Query/Cache.php:83:     * Delete an item from the cache.
+..//vendor/directorytree/ldaprecord/src/Query/Builder.php:1816:     * Delete an entry from the directory.
+..//vendor/directorytree/ldaprecord/src/Query/Builder.php:1829:     * Delete attributes on the entry in the directory.

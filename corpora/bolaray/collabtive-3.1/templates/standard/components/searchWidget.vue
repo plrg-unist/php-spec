@@ -1,0 +1,2 @@
+searchwidget
+["searchtitle"]
