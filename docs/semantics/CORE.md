@@ -148,6 +148,6 @@ the two union copy paths. Both unwrap singleton scalar references. Left-array
 duplication preserves a singleton reference back to its source array; right-side
 merging unwraps even that wrapper (`zend_array_dup_value` versus `zval_add_ref`).
 Variable-source literal references and scalar singleton union witnesses are
-reviewed in `4b954dfa`. The source self-reference targets still require element
-reference assignment; explicit collection and repeated literal-occurrence
-identity remain pending.
+reviewed in `4b954dfa`; element reference targets and both self-reference union
+witnesses are reviewed in `f56e12bc`. Explicit collection and repeated literal-
+occurrence identity remain pending.

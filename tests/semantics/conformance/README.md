@@ -29,3 +29,9 @@ witness follows `Zend/zend_compile.c::zend_compile_array` /
 `zend_try_ct_eval_array` constant creation and
 `Zend/zend_operators.c::zend_is_identical` shared-array fast path. Its NaN payload
 makes shared-container identity observably different from recursive comparison.
+
+The scalar/string read targets follow `zend_fetch_dimension_address_read` in
+`Zend/zend_execute.c`: scalar bases do not coerce keys, string integer text differs
+from array canonical keys, cast warnings precede byte lookup, and negative offsets
+address bytes. Missing-container/key lines and captured versus delayed operands
+have separate targets. They are oracle evidence until integrated and reviewed.

@@ -87,7 +87,7 @@ timeouts and interrupted campaigns never count as validation passes.
   expanded 32 sources passed. Exact AST retention and unit/path identity are
   representation checks, with no source compile/evaluation agreement claimed.
   See [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md).
-- **115 independent oracle targets**, 55 integrated into the reviewed source
+- **127 independent oracle targets**, 55 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read

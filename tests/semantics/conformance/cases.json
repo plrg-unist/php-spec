@@ -1636,6 +1636,184 @@
       "expected_exit_status": 0,
       "provenance": "independently authored and pinned-oracle-probed before element target implementation; prepass witnesses independently reviewed after source acquisition gate",
       "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-numeric-keys",
+      "file": "tests/semantics/conformance/string-read-numeric-keys.php",
+      "purpose": "String numeric integer spellings use numeric-string conversion rather than array canonical-key rules.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "bbbca",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-trailing-key",
+      "file": "tests/semantics/conformance/string-read-trailing-key.php",
+      "purpose": "Leading integer text warns before byte lookup, and its NUL suffix is truncated in the diagnostic.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "bb",
+      "expected_stderr": "Warning: Illegal string offset \"1tail\" in {FILE} on line 2\nWarning: Illegal string offset \"1\" in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-float-text-error",
+      "file": "tests/semantics/conformance/string-read-float-text-error.php",
+      "purpose": "A numeric string with a fractional form is not an integer string offset.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "before",
+      "expected_stderr": "Fatal error: Uncaught TypeError: Cannot access offset of type string on string in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-float-casts",
+      "file": "tests/semantics/conformance/string-read-float-casts.php",
+      "purpose": "Floating offsets warn once per cast and use silent integer conversion, including infinity and NaN.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "bcaa",
+      "expected_stderr": "Warning: String offset cast occurred in {FILE} on line 2\nWarning: String offset cast occurred in {FILE} on line 2\nWarning: String offset cast occurred in {FILE} on line 2\nWarning: String offset cast occurred in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-null-bool-casts",
+      "file": "tests/semantics/conformance/string-read-null-bool-casts.php",
+      "purpose": "Null and booleans issue string-offset cast warnings, without array-null deprecation.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "aab",
+      "expected_stderr": "Warning: String offset cast occurred in {FILE} on line 2\nWarning: String offset cast occurred in {FILE} on line 2\nWarning: String offset cast occurred in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-negative-bounds",
+      "file": "tests/semantics/conformance/string-read-negative-bounds.php",
+      "purpose": "Negative offsets index bytes and out-of-bounds reads return the empty string with exact signed offsets.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "111111",
+      "expected_stderr": "Warning: Uninitialized string offset -4 in {FILE} on line 2\nWarning: Uninitialized string offset -9223372036854775808 in {FILE} on line 2\nWarning: Uninitialized string offset 3 in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-array-key-error",
+      "file": "tests/semantics/conformance/string-read-array-key-error.php",
+      "purpose": "An array key throws string-specific offset TypeError.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "before",
+      "expected_stderr": "Fatal error: Uncaught TypeError: Cannot access offset of type array on string in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "scalar-read-ignores-key-coercion",
+      "file": "tests/semantics/conformance/scalar-read-ignores-key-coercion.php",
+      "purpose": "Scalar reads emit scalar-value warnings without coercing array/null/floating keys as array keys.",
+      "obligations": [
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "11111",
+      "expected_stderr": "Warning: Trying to access array offset on false in {FILE} on line 2\nWarning: Trying to access array offset on true in {FILE} on line 2\nWarning: Trying to access array offset on int in {FILE} on line 2\nWarning: Trying to access array offset on float in {FILE} on line 2\nWarning: Trying to access array offset on null in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "scalar-read-undefined-order",
+      "file": "tests/semantics/conformance/scalar-read-undefined-order.php",
+      "purpose": "Undefined container and delayed key diagnostics precede the null-container access warning.",
+      "obligations": [
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Warning: Undefined variable $a in {FILE} on line 3\nWarning: Undefined variable $k in {FILE} on line 3\nWarning: Trying to access array offset on null in {FILE} on line 3\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-missing-key",
+      "file": "tests/semantics/conformance/string-read-missing-key.php",
+      "purpose": "A missing delayed string key emits undefined-variable then cast warnings before reading byte zero.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "a",
+      "expected_stderr": "Warning: Undefined variable $k in {FILE} on line 3\nWarning: String offset cast occurred in {FILE} on line 3\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-delayed-base",
+      "file": "tests/semantics/conformance/string-read-delayed-base.php",
+      "purpose": "A direct string container is read after key side effects; a temporary string base retains the captured value.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "Db",
+      "expected_stderr": "Warning: String offset cast occurred in {FILE} on line 2\nWarning: String offset cast occurred in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-read-reference-key",
+      "file": "tests/semantics/conformance/string-read-reference-key.php",
+      "purpose": "A reference-yielding key observes its captured cell after a sibling key expression mutates it.",
+      "obligations": [
+        "containers.string-offsets",
+        "storage.read-modes",
+        "expression.lvalue-order"
+      ],
+      "expected_stdout": "c",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored from pinned zend_fetch_dimension_address_read; not derived from semantic implementation or a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }
