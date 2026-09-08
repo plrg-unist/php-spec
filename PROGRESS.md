@@ -45,7 +45,7 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Current evidence and decisions
 
-- Inventory: 169 constructors and 304 runtime obligations, all pending/partial
+- Inventory: 169 constructors and 306 runtime obligations, all pending/partial
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
@@ -64,11 +64,14 @@ timeouts and interrupted campaigns never count as validation passes.
   24 intended relative-static interpretations, 34 parser rejects and one known
   frontend compile restriction. This is helper evidence; declaration activation
   and reconciliation of direct-void frontend rejection remain pending.
-- **62 independent oracle targets**, 15 integrated into the reviewed source
+- **65 independent oracle targets**, 15 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Delayed names, self-assignment capture, cyclic arrays and NaN sharing identity
   have retained discriminators. Operator compile lines differ from AST/LHS lines.
   Reference wrappers/temporary ownership must preserve these observations.
+  New oracle witnesses establish literal-occurrence identity and uncollected-cycle
+  reference ownership: explicit GC changes ordinary copied-array mutation (99
+  before collection versus 19 after). Reachability-only owner counting is insufficient.
 - Fixed environment and intrinsic scope remain in CORE. Weak/GC, closures,
   introspection, output buffers, ticks and assertions stay core; no unfinished
   family may be reclassified as an ordinary library.

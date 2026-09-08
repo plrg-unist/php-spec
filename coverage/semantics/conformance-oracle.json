@@ -47,8 +47,8 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "b2255e198889bb756887bce47550ea262eecc58f0f1eeb7a4f4a13fd7502171a",
-    "tests/semantics/conformance/oracle.py": "0f2b5ea748443ec4a545630713f4356fa6ffaee7b28ed9b3cf84042db4677add",
+    "tests/semantics/conformance/cases.json": "5ad83fdec171393e658c6466bcc8881bb3db9e1b9a63a99cc40d77ebf4e410fa",
+    "tests/semantics/conformance/oracle.py": "614590577b5db260b33a917071dfb5b5bbfe39184c47afd4271021bf96ce4295",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
     "tests/semantics/conformance/array-reference-copy.php": "f41c8eb1bf51cdd40f2a02d7cc953a14b47dcce558c54f847c83d511bbfef091",
@@ -110,7 +110,14 @@
     "tests/semantics/conformance/http-write-before-read.php": "5aaaf2169c3afcfdd97e97053ea013b8a6dde9fd3c9f3914ee5eb093e8b911dc",
     "tests/semantics/conformance/http-unreachable-write.php": "fbb947e82aff82d20459c596e990cfcdd3b7f1c57ac4b680e396f6f4da521f91",
     "tests/semantics/conformance/http-dynamic-name.php": "b4e26efd06083ed409bd6efd1eb2faed046d54f81311b31a474bd6809682305a",
-    "tests/semantics/conformance/http-parameter-scope.php": "e756a86136289a63ed841a684d0069f48378f405e7e1f7a0d130730ff49eb903"
+    "tests/semantics/conformance/http-parameter-scope.php": "e756a86136289a63ed841a684d0069f48378f405e7e1f7a0d130730ff49eb903",
+    "tests/semantics/conformance/array-literal-occurrence-identity.php": "dc7414e548226e15c8c12f39f8ffd9f84618b6e6354e66ab3e969554edb8c407",
+    "tests/semantics/conformance/array-uncollected-cycle-reference.php": "1f636f0995bc7cd3c7ea4fb0ecddfb63141dff321dba8b48d0318125a9c79fe8",
+    "tests/semantics/conformance/array-collected-cycle-reference.php": "e4ba85fb6a5fbdccbdb4203044283088e96995e16de4a21af4afaa93fa8a8ac9",
+    "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
+    "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
+    "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
+    "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7"
   },
   "results": [
     {
@@ -729,6 +736,36 @@
       "file": "/home/user/workspace/php-spec/tests/semantics/conformance/http-parameter-scope.php",
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "MQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-literal-occurrence-identity",
+      "source_sha256": "dc7414e548226e15c8c12f39f8ffd9f84618b6e6354e66ab3e969554edb8c407",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-literal-occurrence-identity.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTA=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-uncollected-cycle-reference",
+      "source_sha256": "1f636f0995bc7cd3c7ea4fb0ecddfb63141dff321dba8b48d0318125a9c79fe8",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-uncollected-cycle-reference.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "OTk=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-collected-cycle-reference",
+      "source_sha256": "e4ba85fb6a5fbdccbdb4203044283088e96995e16de4a21af4afaa93fa8a8ac9",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-collected-cycle-reference.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MToxOQ==",
       "stderr": "",
       "exit_status": 0,
       "expected_match": true

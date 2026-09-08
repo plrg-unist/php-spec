@@ -889,6 +889,49 @@
       "expected_exit_status": 0,
       "provenance": "Independently authored compiler-state discriminator; not derived from a PHPT.",
       "semantic_status": "pending"
+    },
+    {
+      "id": "array-literal-occurrence-identity",
+      "file": "tests/semantics/conformance/array-literal-occurrence-identity.php",
+      "purpose": "Repeated execution of one constant-array literal occurrence shares identity; distinct source occurrences remain distinct even with equal NaN payloads.",
+      "obligations": [
+        "containers.literal-occurrence-identity",
+        "coercion.identity"
+      ],
+      "expected_stdout": "10",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-uncollected-cycle-reference",
+      "file": "tests/semantics/conformance/array-uncollected-cycle-reference.php",
+      "purpose": "An unreachable uncollected cycle retains an embedded reference owner, so a copied array preserves its shared wrapper.",
+      "obligations": [
+        "containers.embedded-references",
+        "lifecycle.uncollected-reference-owners"
+      ],
+      "expected_stdout": "99",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-collected-cycle-reference",
+      "file": "tests/semantics/conformance/array-collected-cycle-reference.php",
+      "purpose": "Explicit collection removes the dead cycle owner; the remaining singleton reference unwraps during array copy.",
+      "obligations": [
+        "containers.embedded-references",
+        "lifecycle.uncollected-reference-owners",
+        "lifecycle.collection-control"
+      ],
+      "expected_stdout": "1:19",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before implementation; not derived from a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }

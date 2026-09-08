@@ -132,3 +132,13 @@ mismatch and reviewed rationale.
 
 Intentional departures from engine defects are recorded separately in
 [DISCREPANCIES](DISCREPANCIES.md); they never count as differential agreement.
+
+Array ownership must retain observable uncollected-cycle state. The independent
+`array-uncollected-cycle-reference` and `array-collected-cycle-reference` targets
+show that an unreachable cycle can retain an embedded reference owner: copying
+an array then mutating it shares that reference before collection and separates
+it after explicit collection. Reachability alone cannot determine wrapper
+ownership. Similarly, `array-literal-occurrence-identity` observes shared identity
+when one constant-array literal occurrence executes twice, but distinct identity
+for two occurrences; NaN strict comparison exposes this distinction. These are
+pending semantic obligations, backed by pinned oracle targets only.

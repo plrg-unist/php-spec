@@ -20,6 +20,8 @@ def main():
     watched = [PHP, PROFILE, CATALOG, Path(__file__)] + [ROOT / c['file'] for c in catalog['cases']]
     def fingerprints():
         return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
+    watched += [ROOT / 'vendor/php-src/Zend' / name for name in
+                ('zend_compile.c', 'zend_operators.c', 'zend_hash.c', 'zend_gc.c')]
     before = fingerprints()
     flags = [x for k, v in profile.items() for x in ('-d', k + '=' + v)]
     environment = dict(os.environ, LC_ALL='C', TZ='UTC')

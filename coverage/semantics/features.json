@@ -11,7 +11,7 @@
     "metadata": "Independent review establishes no standalone dynamic action; contextual obligations still apply."
   },
   "constructor_count": 169,
-  "runtime_obligation_count": 304,
+  "runtime_obligation_count": 306,
   "constructors": [
     {
       "node": "Arg",
@@ -6886,6 +6886,49 @@
         "tests/semantics/conformance/http-parameter-scope.php"
       ],
       "notes": "Literal http_response_header reads may warn at compilation; per-scope prior compiled writes/parameter declarations suppress the warning even if no runtime assignment occurs. Computed names remain ordinary. Preserve compiler diagnostic order and source line."
+    },
+    {
+      "id": "containers.literal-occurrence-identity",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [
+        "coercion.identity"
+      ],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null,
+      "notes": "Constant-array identity is associated with the source literal occurrence; repeating its evaluation can share identity while distinct occurrences do not. NaN strict comparison makes this observable even with OPcache disabled.",
+      "planned_source_tests": [
+        "tests/semantics/conformance/array-literal-occurrence-identity.php"
+      ]
+    },
+    {
+      "id": "lifecycle.uncollected-reference-owners",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [
+        "containers.embedded-references",
+        "lifecycle.cycles",
+        "lifecycle.collection-control"
+      ],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c",
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null,
+      "notes": "Unreachable cycles awaiting collection retain reference-wrapper owners and can change array-copy unwrapping. Reachability-only owner counting is insufficient; explicit collection changes ordinary array mutation observations.",
+      "planned_source_tests": [
+        "tests/semantics/conformance/array-uncollected-cycle-reference.php",
+        "tests/semantics/conformance/array-collected-cycle-reference.php"
+      ]
     }
   ],
   "intentional_divergences": [
