@@ -932,6 +932,48 @@
       "expected_exit_status": 0,
       "provenance": "independently authored before implementation; not derived from a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "parameter-global-relative-null",
+      "file": "tests/semantics/conformance/parameter-global-relative-null.php",
+      "purpose": "Global namespace-relative null is a literal null default and causes implicit nullable deprecation.",
+      "obligations": [
+        "calls.defaults",
+        "static.constant-expression"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Deprecated: f(): Implicitly marking parameter $x as nullable is deprecated, the explicit nullable type must be used instead in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored review regression; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "parameter-global-relative-true",
+      "file": "tests/semantics/conformance/parameter-global-relative-true.php",
+      "purpose": "Global namespace-relative true is a boolean default and fails the int parameter default check.",
+      "obligations": [
+        "calls.defaults",
+        "static.constant-expression"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot use bool as default value for parameter $x of type int in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored review regression; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "parameter-named-relative-true",
+      "file": "tests/semantics/conformance/parameter-named-relative-true.php",
+      "purpose": "Named namespace-relative true remains an unresolved namespaced constant until default materialization.",
+      "obligations": [
+        "calls.defaults",
+        "static.constant-expression"
+      ],
+      "expected_stdout": "declared",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored review regression; not derived from a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }

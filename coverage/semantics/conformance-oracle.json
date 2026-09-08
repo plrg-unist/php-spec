@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "5ad83fdec171393e658c6466bcc8881bb3db9e1b9a63a99cc40d77ebf4e410fa",
+    "tests/semantics/conformance/cases.json": "be2de4b18192ace95a338ea5ed855f938468b3d7ca41cb2628a538eac87d1cce",
     "tests/semantics/conformance/oracle.py": "614590577b5db260b33a917071dfb5b5bbfe39184c47afd4271021bf96ce4295",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -114,6 +114,9 @@
     "tests/semantics/conformance/array-literal-occurrence-identity.php": "dc7414e548226e15c8c12f39f8ffd9f84618b6e6354e66ab3e969554edb8c407",
     "tests/semantics/conformance/array-uncollected-cycle-reference.php": "1f636f0995bc7cd3c7ea4fb0ecddfb63141dff321dba8b48d0318125a9c79fe8",
     "tests/semantics/conformance/array-collected-cycle-reference.php": "e4ba85fb6a5fbdccbdb4203044283088e96995e16de4a21af4afaa93fa8a8ac9",
+    "tests/semantics/conformance/parameter-global-relative-null.php": "9a93d67973a787da780ca51da9e5bacfc0275cf45f0a1765574f43720d2162d0",
+    "tests/semantics/conformance/parameter-global-relative-true.php": "8e74dd9d476634eda480f52cfc4f49884208b67890fd6fd0578218053c5a5332",
+    "tests/semantics/conformance/parameter-named-relative-true.php": "8bdd99c6186fcecda9d59bd9bd7a6f26988bdb93fcfbcaed5c17260b7da78996",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
@@ -766,6 +769,36 @@
       "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-collected-cycle-reference.php",
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "MToxOQ==",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "parameter-global-relative-null",
+      "source_sha256": "9a93d67973a787da780ca51da9e5bacfc0275cf45f0a1765574f43720d2162d0",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/parameter-global-relative-null.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RGVwcmVjYXRlZDogZigpOiBJbXBsaWNpdGx5IG1hcmtpbmcgcGFyYW1ldGVyICR4IGFzIG51bGxhYmxlIGlzIGRlcHJlY2F0ZWQsIHRoZSBleHBsaWNpdCBudWxsYWJsZSB0eXBlIG11c3QgYmUgdXNlZCBpbnN0ZWFkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9wYXJhbWV0ZXItZ2xvYmFsLXJlbGF0aXZlLW51bGwucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "parameter-global-relative-true",
+      "source_sha256": "8e74dd9d476634eda480f52cfc4f49884208b67890fd6fd0578218053c5a5332",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/parameter-global-relative-true.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgYm9vbCBhcyBkZWZhdWx0IHZhbHVlIGZvciBwYXJhbWV0ZXIgJHggb2YgdHlwZSBpbnQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3BhcmFtZXRlci1nbG9iYWwtcmVsYXRpdmUtdHJ1ZS5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "parameter-named-relative-true",
+      "source_sha256": "8bdd99c6186fcecda9d59bd9bd7a6f26988bdb93fcfbcaed5c17260b7da78996",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/parameter-named-relative-true.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "ZGVjbGFyZWQ=",
       "stderr": "",
       "exit_status": 0,
       "expected_match": true

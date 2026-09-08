@@ -64,7 +64,7 @@ timeouts and interrupted campaigns never count as validation passes.
   24 intended relative-static interpretations, 34 parser rejects and one known
   frontend compile restriction. This is helper evidence; declaration activation
   and reconciliation of direct-void frontend rejection remain pending.
-- **65 independent oracle targets**, 15 integrated into the reviewed source
+- **68 independent oracle targets**, 15 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Delayed names, self-assignment capture, cyclic arrays and NaN sharing identity
   have retained discriminators. Operator compile lines differ from AST/LHS lines.
