@@ -43,7 +43,7 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Evidence and decisions
 
-- Inventory: exact 169 constructors and 302 unique runtime obligations, all
+- Inventory: exact 169 constructors and 303 unique runtime obligations, all
   still pending/partial at full-core scope. Contracts began in `69868bac`.
 - Independently reviewed/repeated helpers: numeric `4d343899` (1,976 differential
   +8 symbolic cases), integer `7d48a580` (1,025), numeric text `9cc4ecef` (350).
@@ -55,8 +55,8 @@ timeouts and interrupted campaigns never count as validation passes.
   `coverage/results-semantic-source.jsonl`. Phase0 report is historical.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
   dynamic-write initialization, eliminated discarded CV reads and warning lines.
-- 31 independent source targets in `tests/semantics/conformance` match the oracle;
-  only two are currently integrated into semantic tests. Oracle-only evidence is
+- 35 independent source targets in `tests/semantics/conformance` match the oracle;
+  only three are currently integrated into semantic tests. Oracle-only evidence is
   `coverage/semantics/conformance-oracle.json`; it never implies implementation.
 - Fixed profile includes `E_ALL=30719`, original identity and byte-exact channels.
   Weak/GC, closure/call introspection, output buffers and ticks stay core. Ordinary

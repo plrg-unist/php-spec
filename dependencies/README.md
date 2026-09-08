@@ -41,7 +41,7 @@ It uses only the pinned PHP headers and ordinary C compiler.
 The PHP build is CLI, NTS, 64-bit on this host, with tokenizer, JSON, mbstring and ctype (the grammar generator uses ctype).
 Bundled libmbfl supports source-encoding profiles; mbregex is disabled to avoid
 an unnecessary external regex dependency. Normal calls use `-n` plus explicit
-syntax-relevant INI settings. This is a syntax oracle, not an application runtime.
+syntax-relevant INI settings. This build is the syntax oracle and the fresh-process execution oracle for core semantic fixtures.
 
 For the complete Linux isolation audit, run `scripts/portable-check.sh`. It needs
 `sudo`, mount and network namespaces. It copies source inputs without Git or build

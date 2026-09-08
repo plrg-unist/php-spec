@@ -445,6 +445,62 @@
       "expected_exit_status": 0,
       "provenance": "authored from pinned zend_compile_assign/assign_ref investigation; independently oracle-checked",
       "semantic_status": "pending"
+    },
+    {
+      "id": "array-singleton-reference-copy",
+      "file": "tests/semantics/conformance/array-singleton-reference-copy.php",
+      "purpose": "An array copy dereferences a singleton wrapper when separation occurs.",
+      "obligations": [
+        "containers.array-copy",
+        "containers.embedded-references"
+      ],
+      "expected_stdout": "12",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-late-singleton-reference",
+      "file": "tests/semantics/conformance/array-late-singleton-reference.php",
+      "purpose": "Dropping the external reference after assignment affects later separation; eager alias duplication cannot count as an extra runtime wrapper owner.",
+      "obligations": [
+        "containers.array-copy",
+        "containers.embedded-references"
+      ],
+      "expected_stdout": "12",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-after-copy",
+      "file": "tests/semantics/conformance/array-reference-after-copy.php",
+      "purpose": "Acquiring a reference after a shared copy separates the accessed array first.",
+      "obligations": [
+        "containers.array-copy",
+        "containers.embedded-references"
+      ],
+      "expected_stdout": "121",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-duplicate-reference-copy",
+      "file": "tests/semantics/conformance/array-duplicate-reference-copy.php",
+      "purpose": "Two source entries sharing one cell preserve that alias through separation even without an external variable.",
+      "obligations": [
+        "containers.array-copy",
+        "containers.embedded-references"
+      ],
+      "expected_stdout": "2222",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before array implementation; not derived from a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }

@@ -11,7 +11,7 @@
     "metadata": "Independent review establishes no standalone dynamic action; contextual obligations still apply."
   },
   "constructor_count": 169,
-  "runtime_obligation_count": 302,
+  "runtime_obligation_count": 303,
   "constructors": [
     {
       "node": "Arg",
@@ -414,7 +414,8 @@
       "constructor": "NExprBinaryOpDiv",
       "obligations": [
         "numeric.division",
-        "expression.operand-order"
+        "expression.operand-order",
+        "static.constant-fold-diagnostics"
       ],
       "status": "pending",
       "implementation": [],
@@ -510,7 +511,8 @@
       "constructor": "NExprBinaryOpMinus",
       "obligations": [
         "numeric.arithmetic-result-types",
-        "expression.operand-order"
+        "expression.operand-order",
+        "static.constant-fold-diagnostics"
       ],
       "status": "pending",
       "implementation": [],
@@ -534,7 +536,8 @@
       "constructor": "NExprBinaryOpMul",
       "obligations": [
         "numeric.arithmetic-result-types",
-        "expression.operand-order"
+        "expression.operand-order",
+        "static.constant-fold-diagnostics"
       ],
       "status": "pending",
       "implementation": [],
@@ -582,7 +585,8 @@
       "constructor": "NExprBinaryOpPlus",
       "obligations": [
         "numeric.arithmetic-result-types",
-        "expression.operand-order"
+        "expression.operand-order",
+        "static.constant-fold-diagnostics"
       ],
       "status": "pending",
       "implementation": [],
@@ -1123,7 +1127,8 @@
       "constructor": "NExprUnaryMinus",
       "obligations": [
         "numeric.signed64",
-        "numeric.binary64-specials"
+        "numeric.binary64-specials",
+        "static.constant-fold-diagnostics"
       ],
       "status": "pending",
       "implementation": [],
@@ -1134,7 +1139,8 @@
       "node": "Expr_UnaryPlus",
       "constructor": "NExprUnaryPlus",
       "obligations": [
-        "coercion.arithmetic"
+        "coercion.arithmetic",
+        "static.constant-fold-diagnostics"
       ],
       "status": "pending",
       "implementation": [],
@@ -1146,7 +1152,8 @@
       "constructor": "NExprVariable",
       "obligations": [
         "storage.variable-names",
-        "storage.slots"
+        "storage.slots",
+        "static.constant-fold-diagnostics"
       ],
       "status": "partial",
       "implementation": [
@@ -2371,15 +2378,20 @@
     {
       "id": "numeric.binary64-comparison",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/04-numeric-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_context.py",
+        "coverage/semantics/numeric-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending."
     },
     {
       "id": "numeric.float-int-conversion",
@@ -2464,28 +2476,38 @@
     {
       "id": "numeric.float-formatting",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/03-numeric-format.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_format.py",
+        "coverage/semantics/numeric-format.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending."
     },
     {
       "id": "numeric.precision-profile",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/03-numeric-format.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_format.py",
+        "coverage/semantics/numeric-format.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending."
     },
     {
       "id": "bytes.byte-values",
@@ -2597,15 +2619,20 @@
     {
       "id": "coercion.cast-bool",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/04-numeric-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_context.py",
+        "coverage/semantics/numeric-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending."
     },
     {
       "id": "coercion.cast-int",
@@ -2613,43 +2640,56 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/01-integer.watsup"
+        "spec/semantics/01-integer.watsup",
+        "spec/semantics/04-numeric-context.watsup"
       ],
       "helper_tests": [
         "tests/semantics/integer.py",
-        "coverage/semantics/integer.json"
+        "coverage/semantics/integer.json",
+        "tests/semantics/numeric_context.py",
+        "coverage/semantics/numeric-context.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: rules and ordered notice contract reviewed; repeated 1025 helper comparisons passed (commit 7d48a580); source conversion/handlers pending."
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending."
     },
     {
       "id": "coercion.cast-float",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/04-numeric-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_context.py",
+        "coverage/semantics/numeric-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending."
     },
     {
       "id": "coercion.cast-string",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/03-numeric-format.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_format.py",
+        "coverage/semantics/numeric-format.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending."
     },
     {
       "id": "coercion.cast-array",
@@ -2693,15 +2733,20 @@
     {
       "id": "coercion.array-key",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/04-numeric-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_context.py",
+        "coverage/semantics/numeric-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending."
     },
     {
       "id": "coercion.weak-types",
@@ -2754,15 +2799,20 @@
     {
       "id": "coercion.identity",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/04-numeric-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/numeric_context.py",
+        "coverage/semantics/numeric-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -6411,6 +6461,23 @@
         "vendor/php-src/ext/standard/assert.c"
       ],
       "review": null
+    },
+    {
+      "id": "static.constant-fold-diagnostics",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [
+        "static.independent-compile-phase",
+        "static.constant-expression"
+      ],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null,
+      "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported."
     }
   ],
   "intentional_divergences": []

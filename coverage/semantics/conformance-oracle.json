@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "6edc7d792bd3dde1340b33027b9811459970b0e055a7a20fef1b34a66b980f24",
+    "tests/semantics/conformance/cases.json": "76bc6088f9fcd706db01bc4e1dabac951a9a72de24aee52096f70b861b35d8aa",
     "tests/semantics/conformance/oracle.py": "0f2b5ea748443ec4a545630713f4356fa6ffaee7b28ed9b3cf84042db4677add",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -79,7 +79,11 @@
     "tests/semantics/conformance/switch-match.php": "db0826832b49fd9445c845a184770c93aa767c18cbdb87e75c0cbf63d71783b7",
     "tests/semantics/conformance/declaration-timing.php": "c00e2ff7480c03f0ae7c8d86428206bf913198c65357674bc39085f7f0b2f33c",
     "tests/semantics/conformance/namespace-import.php": "67555a5b705e5633cafaca17185fac0b0dfcbebac88298875b901f06f1097b5a",
-    "tests/semantics/conformance/dynamic-name-delayed.php": "344d64b6d2875e79830be6eb469ecf03ab6b3459fc917ee7a88090ba86f8452a"
+    "tests/semantics/conformance/dynamic-name-delayed.php": "344d64b6d2875e79830be6eb469ecf03ab6b3459fc917ee7a88090ba86f8452a",
+    "tests/semantics/conformance/array-singleton-reference-copy.php": "391cc89d32f81334556a843467e254b468406e179cf556e329e98f57ea0840ef",
+    "tests/semantics/conformance/array-late-singleton-reference.php": "79ea71676170f45a08671dc645c6884a30283097263d78bb4b8ae09a4092aa25",
+    "tests/semantics/conformance/array-reference-after-copy.php": "db74d00b479ba0d80018a557e8ec8eb954912fca160d5776e005b32431ed7263",
+    "tests/semantics/conformance/array-duplicate-reference-copy.php": "9544ac7de8423ded46307159b67ff045d4f43522de2de54b396ebe8e64ecd862"
   },
   "results": [
     {
@@ -388,6 +392,46 @@
       "file": "/home/user/workspace/php-spec/tests/semantics/conformance/dynamic-name-delayed.php",
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "bm8tYS9i",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-singleton-reference-copy",
+      "source_sha256": "391cc89d32f81334556a843467e254b468406e179cf556e329e98f57ea0840ef",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-singleton-reference-copy.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTI=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-late-singleton-reference",
+      "source_sha256": "79ea71676170f45a08671dc645c6884a30283097263d78bb4b8ae09a4092aa25",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-late-singleton-reference.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTI=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-reference-after-copy",
+      "source_sha256": "db74d00b479ba0d80018a557e8ec8eb954912fca160d5776e005b32431ed7263",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-reference-after-copy.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTIx",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "array-duplicate-reference-copy",
+      "source_sha256": "9544ac7de8423ded46307159b67ff045d4f43522de2de54b396ebe8e64ecd862",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/array-duplicate-reference-copy.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MjIyMg==",
       "stderr": "",
       "exit_status": 0,
       "expected_match": true
