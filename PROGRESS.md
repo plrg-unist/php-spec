@@ -69,24 +69,14 @@ timeouts and interrupted campaigns never count as validation passes.
   [retained](coverage/semantics/reference-timing-disagreement.json).
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
-  Local types `531a8b40`/`9da9b012`, signatures `ac5bc703`, and class headers
-  `187b01f2` are reviewed helpers. Covariance `8a6c5708` passed **1,028**
-  checked return-type/oracle comparisons, 9 descriptors and 4 Unsupported checks;
-  expanded reviewer matrix: 1,928. [STATIC](docs/semantics/STATIC.md) retains
-  counts, source restrictions and expanded reviewer matrices. Edited compiler
-  checks do not repair frontend phase gaps. No source activation, default
-  materialization, body compilation, linking or call binding is claimed. The
-  covariance ancestry fixture correction `05745733` passed the same campaign
-  plus two explicit zero/one-ancestor shape checks; production rules are unchanged.
-  User-method helper `a7d79477`: **926** comparisons, 4 ordered pending descriptors,
-  12 Unsupported and 1 source-phase pending witness independently repeated;
-  expanded matrix 1,444. Exact declaration rendering is bounded by compiled
-  defaults and explicit comparison contexts; NaN warning context stays pending.
-- Structural source-unit helper `898f0152`: 169 constructor shapes, 1,086 domain
-  alternatives and 14 checked sources (1,497 assertions) independently repeated;
-  expanded 32 sources passed. Exact AST retention and unit/path identity are
-  representation checks, with no source compile/evaluation agreement claimed.
-  See [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md).
+  Reviewed type/signature/class-header/covariance/method helpers and their expanded
+  independent matrices are recorded in [STATIC](docs/semantics/STATIC.md).
+  Edited checks do not repair frontend gaps; source declaration/default/body
+  compilation, linking and call activation remain pending.
+- Structural source units `898f0152` retain exact checked ASTs and stable unit/path
+  identities across all 169 constructors. [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md)
+  records 1,497 structural assertions and expanded source checks. These are
+  representation checks, with no source compilation/evaluation claim.
 - Namespace/import compiler helper `891c2c95`: **211 original checked prefix
   comparisons** plus 64 independent alternates passed; 24 explicit seen-symbol
   inputs, 6 work barriers, 3 environments, 13 resumption/missing-brace cases and
@@ -113,8 +103,10 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review scalar/string dimension reads and subsequent writable/reference contexts,
-preserving key conversion, diagnostic and temporary-owner timing. Element-target
+Review pure scalar/string dimension helpers before source integration; preserve
+constant-array prepass folding and assignment barriers as well as key conversion,
+diagnostic and temporary-owner timing. All 16 new read/prepass oracle targets are
+mandatory in the next source gate; writable/reference string contexts follow. Element-target
 and array-prepass witnesses remain mandatory. The reviewed compiler helper uses name-derived import/namespace lines. Next
 repair missing anonymous-brace metadata and import-alias frontend acceptance,
 then independently validate the complete syntax corpus in an immutable snapshot.
