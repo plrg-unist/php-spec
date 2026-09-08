@@ -32,8 +32,8 @@ timeouts and interrupted campaigns never count as validation passes.
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
 - References agent owns source execution/storage after reviewed ownership `41e8fa2b`;
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
-  pruning `46772123` and owning reference results `751fbcff` are reviewed; next
-  conditional COW/singleton wrapper copying, then source embedded references.
+  pruning, owning reference results and COW/union `4f04ed97` are reviewed; next
+  by-reference array literals from variable/dynamic names, then element references.
 - Signatures agent owns method compatibility after reviewed covariance `8a6c5708`.
   Local types/signatures are reviewed helpers. They use explicit namespace,
   import, class, position and source contexts and ordered diagnostics; unresolved names remain explicit.
@@ -51,14 +51,15 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `751fbcff`: independently repeated **388 exact source comparisons
-  +25 negatives**; owning reference-result correction included, with 26 expanded
-  reviewer source probes. Ordinary array writes/unset and profile-name fixes remain.
+- Source machine `4f04ed97`: independently repeated **388 exact source comparisons
+  +25 negatives**; COW/union and owning reference results included. New source
+  constructors are admitted through separate gates; remaining ones stay Unsupported.
   `_SESSION` is ordinary here; HTTP compiler diagnostics remain pending.
-- Ownership through `751fbcff`: **617 graph +34 boundary cases**, 5,146 assertions,
-  independently repeated. Allocation graphs retain uncollected cycles; scoped
-  HELD roots, driver cleanup and owning result cells are reviewed. COW, source
-  embedded references and GC remain pending; see [handoff](docs/semantics/ARRAY-HANDOFF.md).
+- Ownership/COW `4f04ed97`: **617 graph +63 boundary cases**, 5,278 assertions,
+  independently repeated; 320 additional graph probes and 12 source NaN checks
+  passed. Allocated graphs retain uncollected cycles. Left-copy/RHS-merge wrapper
+  distinctions are reviewed helpers; source embedded references and GC remain
+  pending. See [handoff](docs/semantics/ARRAY-HANDOFF.md).
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
   Local types `531a8b40`/`9da9b012`, signatures `ac5bc703`, and class headers
@@ -67,8 +68,10 @@ timeouts and interrupted campaigns never count as validation passes.
   expanded reviewer matrix: 1,928. [STATIC](docs/semantics/STATIC.md) retains
   counts, source restrictions and expanded reviewer matrices. Edited compiler
   checks do not repair frontend phase gaps. No source activation, default
-  materialization, body compilation, linking or call binding is claimed.
-- **81 independent oracle targets**, 16 integrated into the reviewed source
+  materialization, body compilation, linking or call binding is claimed. The
+  covariance ancestry fixture has a queued empty-list encoding correction and
+  revalidation; production covariance rules are unchanged.
+- **83 independent oracle targets**, 16 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read
@@ -86,8 +89,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review conditional location COW and singleton wrapper copying before enabling
-source embedded references; preserve retained ownership/identity discriminators.
+Review by-reference array literals from variable/dynamic sources, including
+acquisition-before-delayed-key conversion and temporary reference ownership.
+Element references and broader writable places require later source gates.
 Method compatibility and class linking must preserve pinned phase ordering.
 Covariance remains a helper over supplied visible class graphs, with no source
 activation, autoload schedule or production declaration diagnostics.

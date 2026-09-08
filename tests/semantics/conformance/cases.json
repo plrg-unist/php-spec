@@ -1158,6 +1158,36 @@
       "expected_exit_status": 0,
       "provenance": "reviewer-authored and pinned-oracle checked before source embedded-reference integration; source paths zend_array_dup_value and zval_add_ref differ",
       "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-key-acquisition",
+      "file": "tests/semantics/conformance/array-reference-key-acquisition.php",
+      "purpose": "Reference acquisition initializes x before the delayed key read; null-key deprecation occurs without an undefined-variable warning.",
+      "obligations": [
+        "containers.embedded-references",
+        "expression.operand-order",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "Deprecated: Using null as an array offset is deprecated, use an empty string instead in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-authored pinned-oracle discriminator before source reference literals; zend_compile_array and ZEND_ADD_ARRAY_ELEMENT acquisition/key order",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "array-reference-delayed-key",
+      "file": "tests/semantics/conformance/array-reference-delayed-key.php",
+      "purpose": "A delayed key variable observes the name assignment performed while acquiring the dynamic reference value.",
+      "obligations": [
+        "containers.embedded-references",
+        "expression.operand-order",
+        "storage.temporary-lifetimes"
+      ],
+      "expected_stdout": "1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "reviewer-authored pinned-oracle discriminator before source reference literals; zend_compile_array and ZEND_ADD_ARRAY_ELEMENT acquisition/key order",
+      "semantic_status": "pending"
     }
   ]
 }

@@ -3462,9 +3462,13 @@
       "implementation": [
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/42-array-write-control.watsup",
-        "spec/semantics/36-arrays.watsup"
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
@@ -3472,7 +3476,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent reviewer: bounded writable-array commit f0b3c5ee; 308 source comparisons and 22 outcome negatives passed with stable acceptance fingerprint, plus 44 independent exploratory writes. Shallow graph copies preserve currently admitted reference-free entries, including scalar-alias cycles; embedded references and their topology remain pending.",
+      "review": "Independent COW/union review 4f04ed97: 388 exact admitted-source comparisons and 25 negatives; 617 graph plus 63 boundary helper cases (5278 assertions), 320 independent graph probes and 12 source NaN discriminators passed. Shared location arrays separate; singleton wrappers unwrap except left-copy source-self references. Union RHS zval_add_ref unwraps even source-self singleton wrappers; key conflicts skip copying. Source embedded-reference constructors, element references, callbacks and GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3505,7 +3509,9 @@
         "tests/semantics/conformance/array-union-left-singleton.php",
         "tests/semantics/conformance/array-union-left-self-reference.php",
         "tests/semantics/conformance/array-union-right-singleton.php",
-        "tests/semantics/conformance/array-union-right-self-reference.php"
+        "tests/semantics/conformance/array-union-right-self-reference.php",
+        "tests/semantics/conformance/array-reference-key-acquisition.php",
+        "tests/semantics/conformance/array-reference-delayed-key.php"
       ]
     },
     {
@@ -3553,9 +3559,13 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/39-ownership.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
@@ -3564,7 +3574,7 @@
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
+      "review": "Independent COW/union review 4f04ed97: 388 exact admitted-source comparisons and 25 negatives; 617 graph plus 63 boundary helper cases (5278 assertions), 320 independent graph probes and 12 source NaN discriminators passed. Shared location arrays separate; singleton wrappers unwrap except left-copy source-self references. Union RHS zval_add_ref unwraps even source-self singleton wrappers; key conflicts skip copying. Source embedded-reference constructors, element references, callbacks and GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-union-left-singleton.php",
         "tests/semantics/conformance/array-union-left-self-reference.php",
@@ -7044,7 +7054,7 @@
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_gc.c"
       ],
-      "review": "Independent allocation/RC foundation 41e8fa2b included 150 extra closure-oracle probes. Scoped HELD/driver pruning 46772123 and owning reference results 751fbcff are reviewed; latest helper gate: 617 graphs plus 34 boundary cases (5146 assertions). Conditional COW, embedded array references, callbacks and source GC remain pending; no source collection claim.",
+      "review": "Independent allocation/RC foundation 41e8fa2b included 150 closure-oracle probes. Scoped driver roots and COW/union 4f04ed97 now preserve uncollected cycle owners; 617 graph plus 63 boundary cases (5278 assertions) and 320 additional graph probes passed. Source embedded-reference constructors, callbacks, collection triggers/results and GC remain pending; no source collection claim.",
       "notes": "Unreachable cycles awaiting collection retain reference-wrapper owners and can change array-copy unwrapping. Reachability-only owner counting is insufficient; explicit collection changes ordinary array mutation observations.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-uncollected-cycle-reference.php",
