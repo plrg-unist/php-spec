@@ -141,10 +141,16 @@
         "storage.assignment",
         "expression.lvalue-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
     },
     {
       "node": "Expr_AssignOp_BitwiseAnd",
@@ -308,10 +314,16 @@
       "obligations": [
         "storage.reference-rebinding"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
     },
     {
       "node": "Expr_BinaryOp_BitwiseAnd",
@@ -1136,10 +1148,16 @@
         "storage.variable-names",
         "storage.slots"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
     },
     {
       "node": "Expr_Yield",
@@ -1957,10 +1975,16 @@
         "containers.unset",
         "storage.read-modes"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
     },
     {
       "node": "Stmt_Use",
@@ -2759,28 +2783,42 @@
     {
       "id": "storage.slots",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending."
     },
     {
       "id": "storage.absent-null",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/missing-null-access.php"
       ]
@@ -2788,15 +2826,22 @@
     {
       "id": "storage.read-modes",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-offset.php"
       ]
@@ -2804,15 +2849,22 @@
     {
       "id": "storage.variable-names",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-variable.php",
         "tests/semantics/conformance/dynamic-name-delayed.php"
@@ -2860,28 +2912,42 @@
     {
       "id": "storage.assignment",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending."
     },
     {
       "id": "storage.aliases",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/dynamic-variable.php",
@@ -2891,15 +2957,22 @@
     {
       "id": "storage.reference-rebinding",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php"
@@ -3258,15 +3331,22 @@
     {
       "id": "expression.delayed-reads",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/delayed-read.php",
         "tests/semantics/conformance/dynamic-name-delayed.php"
@@ -3275,15 +3355,22 @@
     {
       "id": "expression.lvalue-order",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-name-delayed.php"
       ]
@@ -5143,20 +5230,19 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "adapter/main.ml",
-        "bin/php-semantics",
-        "spec/semantics/10-bytes.watsup",
-        "spec/semantics/20-machine.watsup"
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/source.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending."
     },
     {
       "id": "diagnostics.renderer",
@@ -5164,20 +5250,19 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "adapter/main.ml",
-        "bin/php-semantics",
-        "spec/semantics/10-bytes.watsup",
-        "spec/semantics/20-machine.watsup"
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/source.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending."
     },
     {
       "id": "diagnostics.suppression",

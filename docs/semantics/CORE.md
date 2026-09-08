@@ -87,7 +87,8 @@ callback effects, and the deprecated `assert_options` controls. Source-backed
 assertion obligations remain pending; treating the API as an ordinary excluded
 library would hide these language effects.
 
-Intrinsic names do not bypass PHP argument/type checks or exception propagation.
+Each intrinsic follows the target's argument/type checks and exception propagation,
+including source-backed early-return cases such as disabled assertions.
 Unavailable ordinary-library calls produce explicit Unsupported when reached;
 unknown user names instead follow PHP's undefined-function/name semantics.
 Compile-time contextual checks still examine unexecuted code as required by PHP.
