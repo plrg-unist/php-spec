@@ -45,6 +45,16 @@ string casts will need their separate saturation rule. Source:
 helpers, including ordered diagnostic identities with test-only handler
 instrumentation; the message renderer and throwing handlers need evaluator tests.
 
-Remaining arithmetic obligations include numeric-string classification,
-context-dependent coercions, decimal parsing/formatting and power.
+`02-numeric-text.watsup` recognizes numeric byte strings as `NOTNUMERIC`,
+`FULLNUM pnumber` or `LEADNUM pnumber`. It preserves integer/float classification,
+signed zero, decimal/exponent grammar, whitespace, trailing data and binary64
+rounding. Huge exponents use conservative magnitude guards before exact rational
+conversion. Source: `zend_operators.c::_is_numeric_string_ex` and
+`zend_strtod.c::zend_strtod`. Run `python3 tests/semantics/numeric_text.py` for
+boundary strings and seeded decimal cases. The test uses unary plus to obtain the
+oracle value and separately checks `is_numeric` and leading-numeric warnings;
+these are test instrumentation, not implementations available to the semantics.
+
+Remaining arithmetic obligations include context-dependent coercions,
+decimal formatting and power.
 The passing first milestone does not establish complete arithmetic or core PHP.

@@ -1,0 +1,94 @@
+;; Numeric-string recognition over decoded bytes; never over transport base64.
+syntax pnumeric = NOTNUMERIC | FULLNUM pnumber | LEADNUM pnumber
+syntax ndigits = DIGITS nat nat nat*
+
+dec $ntspace(nat) : bool
+def $ntspace(n) = (n = 32 \/ n = 9 \/ n = 10 \/ n = 11 \/ n = 12 \/ n = 13)
+
+dec $nttrim(nat*) : nat*
+def $nttrim(eps) = eps
+def $nttrim(n :: n_t*) = $nttrim(n_t*) -- if $ntspace(n)
+def $nttrim(n :: n_t*) = n :: n_t* -- if ~$ntspace(n)
+
+dec $ntdigit(nat) : bool
+def $ntdigit(n) = ($(n >= 48) /\ $(n <= 57))
+
+dec $ntdigits(nat*, nat, nat) : ndigits
+def $ntdigits(eps, n_acc, n_count) = DIGITS n_acc n_count eps
+def $ntdigits(n :: n_t*, n_acc, n_count) = $ntdigits(n_t*, $nabs($(n_acc * 10 + n - 48)), $(n_count + 1)) -- if $ntdigit(n)
+def $ntdigits(n :: n_t*, n_acc, n_count) = DIGITS n_acc n_count (n :: n_t*) -- if ~$ntdigit(n)
+
+dec $ntsign(nat*) : (nat, nat*)
+def $ntsign(eps) = (0, eps)
+def $ntsign(43 :: n_t*) = (0, n_t*)
+def $ntsign(45 :: n_t*) = (1, n_t*)
+def $ntsign(n :: n_t*) = (0, n :: n_t*) -- if n =/= 43 -- if n =/= 45
+
+dec $ntfraction(nat*, nat) : (nat, nat, nat*, bool)
+def $ntfraction(46 :: n_t*, n_acc) = (n_value, n_count, n_rest*, true)
+  -- if DIGITS n_value n_count n_rest* = $ntdigits(n_t*, n_acc, 0)
+def $ntfraction(eps, n_acc) = (n_acc, 0, eps, false)
+def $ntfraction(n :: n_t*, n_acc) = (n_acc, 0, n :: n_t*, false) -- if n =/= 46
+
+dec $ntexponent_try(nat*, nat*) : (int, nat*, bool)
+def $ntexponent_try(n_orig*, n_t*) = (0, n_orig*, false)
+  -- if (n_s, n_u*) = $ntsign(n_t*)
+  -- if DIGITS n_value 0 n_rest* = $ntdigits(n_u*, 0, 0)
+def $ntexponent_try(n_orig*, n_t*) = ($nsigned(n_s, n_value), n_rest*, true)
+  -- if (n_s, n_u*) = $ntsign(n_t*)
+  -- if DIGITS n_value n_count n_rest* = $ntdigits(n_u*, 0, 0)
+  -- if $(n_count > 0)
+
+dec $ntexponent(nat*) : (int, nat*, bool)
+def $ntexponent(eps) = (0, eps, false)
+def $ntexponent(n :: n_t*) = $ntexponent_try(n :: n_t*, n_t*) -- if (n = 69 \/ n = 101)
+def $ntexponent(n :: n_t*) = (0, n :: n_t*, false) -- if n =/= 69 -- if n =/= 101
+
+dec $ntpow10(nat) : nat
+def $ntpow10(0) = 1
+def $ntpow10(n) = $(n_1 * n_1 * 10)
+  -- if $(n > 0) -- if $(n \ 2) = 1 -- if n_1 = $ntpow10($(n / 2))
+def $ntpow10(n) = $(n_1 * n_1)
+  -- if $(n > 0) -- if $(n \ 2) = 0 -- if n_1 = $ntpow10($(n / 2))
+
+dec $ntlog10(nat) : int
+def $ntlog10(n) = 0 -- if $(n > 0) -- if $(n < 10)
+def $ntlog10(n) = $($ntlog10($(n / 10)) + 1) -- if $(n >= 10)
+
+dec $ntscale(nat, nat, int) : (nat, nat)
+def $ntscale(n_1, n_2, i) = ($(n_1 * $ntpow10($nabs(i))), n_2) -- if $(i >= 0)
+def $ntscale(n_1, n_2, i) = (n_1, $(n_2 * $ntpow10($nabs(i)))) -- if $(i < 0)
+
+;; Conservative decimal magnitude guards avoid constructing enormous powers from
+;; exponent strings. Values near binary64's bounds still use exact rounding.
+dec $decimal_float(nat, nat, int) : nat
+def $decimal_float(n_s, 0, i) = $(n_s * 9223372036854775808)
+def $decimal_float(n_s, n, i) = $finfinity(n_s) -- if $(n > 0) -- if $(i + $ntlog10(n) > 310)
+def $decimal_float(n_s, n, i) = $(n_s * 9223372036854775808) -- if $(n > 0) -- if $(i + $ntlog10(n) < -325)
+def $decimal_float(n_s, n, i) = $float_round(n_s, n_1, n_2)
+  -- if $(n > 0)
+  -- if $(i + $ntlog10(n) <= 310)
+  -- if $(i + $ntlog10(n) >= -325)
+  -- if (n_1, n_2) = $ntscale(n, 1, i)
+
+dec $ntvalue(nat, nat, int, bool) : pnumber
+def $ntvalue(n_s, n, 0, false) = NINT $nsigned(n_s, n) -- if $long_range($nsigned(n_s, n))
+def $ntvalue(n_s, n, 0, false) = NFLOAT $decimal_float(n_s, n, 0) -- if ~$long_range($nsigned(n_s, n))
+def $ntvalue(n_s, n, i, true) = NFLOAT $decimal_float(n_s, n, i)
+
+dec $ntclass(pnumber, nat*) : pnumeric
+def $ntclass(pnumber, eps) = FULLNUM pnumber
+def $ntclass(pnumber, n :: n_t*) = LEADNUM pnumber
+
+dec $ntscan(nat, nat*) : pnumeric
+def $ntscan(n_s, n_t*) = NOTNUMERIC
+  -- if DIGITS n_acc 0 n_rest* = $ntdigits(n_t*, 0, 0)
+  -- if (n_value, 0, n_end*, b_dot) = $ntfraction(n_rest*, n_acc)
+def $ntscan(n_s, n_t*) = $ntclass($ntvalue(n_s, n_value, $(i_exp - n_frac), (b_dot \/ b_exp)), $nttrim(n_end*))
+  -- if DIGITS n_acc n_count n_rest* = $ntdigits(n_t*, 0, 0)
+  -- if (n_value, n_frac, n_after*, b_dot) = $ntfraction(n_rest*, n_acc)
+  -- if $(n_count + n_frac > 0)
+  -- if (i_exp, n_end*, b_exp) = $ntexponent(n_after*)
+
+dec $numeric_string(nat*) : pnumeric
+def $numeric_string(n_t*) = $ntscan(n_s, n_rest*) -- if (n_s, n_rest*) = $ntsign($nttrim(n_t*))
