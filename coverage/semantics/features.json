@@ -3288,15 +3288,20 @@
     {
       "id": "storage.temporary-lifetimes",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/39-ownership.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": null
+      "review": "Independent reviewer: allocation ownership41e8fa2b;617 pure graphs+15 boundary/machine cases5075 assertions, plus150 independent transitive-closure graph probes. Source machine regression371 exact comparisons+25negatives passed. Allocation pruning is not driver-enabled; internal HELD roots, conditional COW, embedded array references and source GC remain pending."
     },
     {
       "id": "containers.ordered-arrays",
@@ -6938,20 +6943,25 @@
     {
       "id": "lifecycle.uncollected-reference-owners",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [
         "containers.embedded-references",
         "lifecycle.cycles",
         "lifecycle.collection-control"
       ],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/39-ownership.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/ownership.py",
+        "coverage/semantics/ownership.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_gc.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: allocation ownership41e8fa2b;617 pure graphs+15 boundary/machine cases5075 assertions, plus150 independent transitive-closure graph probes. Source machine regression371 exact comparisons+25negatives passed. Allocation pruning is not driver-enabled; internal HELD roots, conditional COW, embedded array references and source GC remain pending.",
       "notes": "Unreachable cycles awaiting collection retain reference-wrapper owners and can change array-copy unwrapping. Reachability-only owner counting is insufficient; explicit collection changes ordinary array mutation observations.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-uncollected-cycle-reference.php",

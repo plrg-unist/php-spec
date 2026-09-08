@@ -16,8 +16,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
 | 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes/unset reviewed; embedded refs/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
-| 3b | Calls, closures, binding and independent static checks | In progress — local types/signatures reviewed; class headers active, calls/activation pending |
-| 4a | Class linking, inheritance, traits, visibility and clone | Pending |
+| 3b | Calls, closures, binding and independent static checks | Partial — local types/signatures reviewed; calls/activation pending |
+| 4a | Class linking, inheritance, traits, visibility and clone | In progress — local class-header helper under review; linking/activation pending |
 | 4b | Properties, modern declarations and internal protocols | Pending |
 | 5a | Checked dynamic sources, autoload and explicit services | Pending |
 | 5b | Generators/Fibers, lifetime, collection and callbacks | Pending |
@@ -30,13 +30,12 @@ timeouts and interrupted campaigns never count as validation passes.
 ## Assignments and interfaces
 
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
-- Runner owns source execution and storage/control. Next: explicit allocated-graph
-  ownership/RC helpers and temporary lifetimes, followed by source regressions.
-  After independent review and a committed handoff, replace the runner with a
-  fresh agent before source embedded references and conditional COW.
+- Fresh runner takes source execution/storage after reviewed ownership `41e8fa2b`;
+  read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Next audit internal HELD
+  roots before enabling pruning, conditional COW and source embedded references.
 - Signatures agent owns the class-header compiler, then class linking.
-  Local types/signatures are reviewed helpers. Type helpers use namespace/import/class/position/
-  source contexts and ordered diagnostics; unresolved names remain explicit.
+  Local types/signatures are reviewed helpers. They use explicit namespace,
+  import, class, position and source contexts and ordered diagnostics; unresolved names remain explicit.
   Activation, autoload and call binding are separate machine obligations.
 - Numeric helpers are pure; runner owns PHP values/effects. See NUMERICS.
   Storage uses cells, captured versus delayed operands and internal array IDs.
@@ -51,12 +50,14 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine through ordinary array unset `83c228cc`: independently repeated
-  **363 exact source comparisons +23 negatives**, plus separate reviewer probes.
-  Profile-name correction `94eb6cb3`: **8 selected comparisons +25 negatives**;
-  `source-selected.json` preserves the preceding full `source.json` report.
-  `_SESSION` is ordinary under this build; HTTP literal-read compiler diagnostics
-  remain pending under `static.special-variable-diagnostics`.
+- Source machine `41e8fa2b`: independently repeated **371 exact source comparisons
+  +25 negatives**; ordinary array writes/unset and profile-name fixes included.
+  `_SESSION` is ordinary here; HTTP compiler diagnostics remain pending.
+- Ownership `41e8fa2b`: **617 graph +15 machine/boundary helper cases**, 5,075
+  assertions, independently repeated; 150 extra reviewer graph probes passed.
+  Explicit allocated graphs preserve uncollected cycles; task captures move and
+  clear scratch fields. Driver pruning, internal HELD roots, COW and source
+  reference/GC integration remain pending.
 - Numeric, integer, parsing, formatting, coercion and string helpers independently
   reviewed/repeated; see NUMERICS and their reports. Power `4e9256ba` passed
   **3,660 bit-exact cases**; exact source/FMA contractions and 657 ELF data words
@@ -90,7 +91,8 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review exact array ownership/ref topology and the forthcoming class-header compiler.
+Review the local class-header compiler and the fresh runner’s internal ownership
+integration before enabling conditional COW and embedded references.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,
 mixed comparisons, handlers and configurable precision need integration.
 Control/calls/objects/dynamic sources/resumable execution/lifetime remain pending.
