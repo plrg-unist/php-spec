@@ -1,0 +1,158 @@
+;; Decimal output follows zend_gcvt, using exact rational decimal rounding.
+dec $ntunsigned(nat) : nat*
+def $ntunsigned(n) = $(48 + n) -- if $(n < 10)
+def $ntunsigned(n) = $ntunsigned($(n / 10)) ++ [$(48 + n \ 10)] -- if $(n >= 10)
+
+dec $ntsigned(int) : nat*
+def $ntsigned(i) = $ntunsigned($nabs(i)) -- if $(i >= 0)
+def $ntsigned(i) = 45 :: $ntunsigned($nabs(i)) -- if $(i < 0)
+
+dec $ntrepeat(nat, nat) : nat*
+def $ntrepeat(n, 0) = eps
+def $ntrepeat(n, n_count) = n :: $ntrepeat(n, $nabs($(n_count - 1))) -- if $(n_count > 0)
+
+dec $ntratio_exp(nat, nat) : int
+def $ntratio_exp(n_1, n_2) = i
+  -- if i = $($ntlog10(n_1) - $ntlog10(n_2))
+  -- if (n_3, n_4) = $ntscale(n_1, n_2, $(-i))
+  -- if $(n_3 >= n_4)
+def $ntratio_exp(n_1, n_2) = $(i - 1)
+  -- if i = $($ntlog10(n_1) - $ntlog10(n_2))
+  -- if (n_3, n_4) = $ntscale(n_1, n_2, $(-i))
+  -- if $(n_3 < n_4)
+
+dec $ntcarry(nat, int, nat) : (nat, int)
+def $ntcarry(n, i, n_p) = (n, i) -- if $(n < $ntpow10(n_p))
+def $ntcarry(n, i, n_p) = ($(n / 10), $(i + 1)) -- if $(n >= $ntpow10(n_p))
+
+dec $ntsignificant(nat, nat, nat) : (nat, int)
+def $ntsignificant(n_n, n_d, n_p) = $ntcarry($nround(n_1, n_2), i, n_p)
+  -- if i = $ntratio_exp(n_n, n_d)
+  -- if (n_1, n_2) = $ntscale(n_n, n_d, $(n_p - 1 - i))
+
+syntax decimalinterval = INTERVAL nat nat nat nat bool
+
+dec $ntup_exp(nat) : int
+def $ntup_exp(0) = -1074
+def $ntup_exp(n) = $(n - 1075) -- if $(n > 0)
+
+dec $ntdown_extra(nat) : int
+def $ntdown_extra(n) = 1
+  -- if $(n \ 4503599627370496) = 0
+  -- if $(n / 4503599627370496 > 1)
+def $ntdown_extra(n) = 0
+  -- if ($(n \ 4503599627370496) =/= 0 \/ $(n / 4503599627370496 <= 1))
+
+;; The rounding interval is asymmetric exactly at normal powers of two, except
+;; the minimum normal where the subnormal spacing remains the same.
+dec $ntinterval(nat, nat, nat) : decimalinterval
+def $ntinterval(n_bits, n_n, n_d) = INTERVAL n_low n_ld n_high n_hd ($(n_bits \ 2) = 0)
+  -- if i_e = $ntup_exp($(n_bits / 4503599627370496))
+  -- if (n_dn, n_dd) = $nscale(1, 1, $(i_e - $ntdown_extra(n_bits)))
+  -- if (n_un, n_ud) = $nscale(1, 1, i_e)
+  -- if n_low = $nabs($(2 * n_n * n_dd - n_dn * n_d))
+  -- if n_ld = $(2 * n_d * n_dd)
+  -- if n_high = $(2 * n_n * n_ud + n_un * n_d)
+  -- if n_hd = $(2 * n_d * n_ud)
+
+dec $ntinside(decimalinterval, nat, int) : bool
+def $ntinside(INTERVAL n_low n_ld n_high n_hd b, n_q, i) =
+  (($(n_n * n_ld > n_low * n_d) \/ (b /\ $(n_n * n_ld = n_low * n_d))) /\
+   ($(n_n * n_hd < n_high * n_d) \/ (b /\ $(n_n * n_hd = n_high * n_d))))
+  -- if (n_n, n_d) = $ntscale(n_q, 1, i)
+
+dec $ntsignificant_exp(nat, nat, nat, int) : (nat, int)
+def $ntsignificant_exp(n_n, n_d, n_p, i) = ($nround(n_1, n_2), i)
+  -- if (n_1, n_2) = $ntscale(n_n, n_d, $(n_p - 1 - i))
+
+dec $ntshortest(decimalinterval, nat, nat, nat, int) : (nat, int)
+def $ntshortest(decimalinterval, n_n, n_d, n_p, i_k) = (n_q, $($ntlog10(n_q) + i - n_p + 1))
+  -- if (n_q, i) = $ntsignificant_exp(n_n, n_d, n_p, i_k)
+  -- if $ntinside(decimalinterval, n_q, $(i - n_p + 1))
+def $ntshortest(decimalinterval, n_n, n_d, n_p, i_k) = (n_low, $($ntlog10(n_low) + i - n_p + 1))
+  -- if (n_q, i) = $ntsignificant_exp(n_n, n_d, n_p, i_k)
+  -- if ~$ntinside(decimalinterval, n_q, $(i - n_p + 1))
+  -- if n_low = $nabs($(n_q - 1))
+  -- if $ntinside(decimalinterval, n_low, $(i - n_p + 1))
+def $ntshortest(decimalinterval, n_n, n_d, n_p, i_k) = (n_high, $($ntlog10(n_high) + i - n_p + 1))
+  -- if (n_q, i) = $ntsignificant_exp(n_n, n_d, n_p, i_k)
+  -- if ~$ntinside(decimalinterval, n_q, $(i - n_p + 1))
+  -- if ~$ntinside(decimalinterval, $nabs($(n_q - 1)), $(i - n_p + 1))
+  -- if n_high = $(n_q + 1)
+  -- if $ntinside(decimalinterval, n_high, $(i - n_p + 1))
+def $ntshortest(decimalinterval, n_n, n_d, n_p, i_k) = $ntshortest(decimalinterval, n_n, n_d, $(n_p + 1), i_k)
+  -- if (n_q, i) = $ntsignificant_exp(n_n, n_d, n_p, i_k)
+  -- if ~$ntinside(decimalinterval, n_q, $(i - n_p + 1))
+  -- if ~$ntinside(decimalinterval, $nabs($(n_q - 1)), $(i - n_p + 1))
+  -- if ~$ntinside(decimalinterval, $(n_q + 1), $(i - n_p + 1))
+  -- if $(n_p < 17)
+
+dec $ntdropzeros(nat) : nat*
+def $ntdropzeros(n) = $ntunsigned(n) -- if $(n < 10)
+def $ntdropzeros(n) = $ntunsigned(n) -- if $(n >= 10) -- if $(n \ 10) =/= 0
+def $ntdropzeros(n) = $ntdropzeros($(n / 10)) -- if $(n >= 10) -- if $(n \ 10) = 0
+
+dec $ntfixed(nat*, int) : nat*
+def $ntfixed(n_t*, i) = [48, 46] ++ $ntrepeat(48, $nabs($(-i - 1))) ++ n_t* -- if $(i < 0)
+def $ntfixed(n_t*, i) = n_t* ++ $ntrepeat(48, $nabs($(i + 1 - |n_t*|)))
+  -- if $(i >= 0) -- if $(i + 1 >= |n_t*|)
+def $ntfixed(n_t*, i) = n_t*[0:n] ++ [46] ++ n_t*[n:$nabs($(|n_t*| - n))]
+  -- if $(i >= 0) -- if $(i + 1 < |n_t*|) -- if $(i + 1) = n
+
+dec $ntexpsign(int) : nat
+def $ntexpsign(i) = 43 -- if $(i >= 0)
+def $ntexpsign(i) = 45 -- if $(i < 0)
+
+dec $ntexp_fraction(nat*) : nat*
+def $ntexp_fraction(eps) = 48
+def $ntexp_fraction(n :: n_t*) = n :: n_t*
+
+dec $ntlayout(nat*, int, nat) : nat*
+def $ntlayout(n :: n_t*, i, n_p) = [n, 46] ++ $ntexp_fraction(n_t*) ++ [69, $ntexpsign(i)] ++ $ntunsigned($nabs(i))
+  -- if ($(i >= n_p) \/ $(i < -4))
+def $ntlayout(n_t*, i, n_p) = $ntfixed(n_t*, i) -- if $(i < n_p) -- if $(i >= -4)
+
+dec $ntprefix(nat, nat*) : nat*
+def $ntprefix(0, n_t*) = n_t*
+def $ntprefix(1, n_t*) = 45 :: n_t*
+
+dec $ntprecision32(int) : int
+def $ntprecision32(i) = n
+  -- if n = $($long_unsigned(i) \ 4294967296)
+  -- if $(n < 2147483648)
+def $ntprecision32(i) = $(n - 4294967296)
+  -- if n = $($long_unsigned(i) \ 4294967296)
+  -- if $(n >= 2147483648)
+
+dec $ntprecision(int) : nat
+def $ntprecision(i) = 17 -- if $(i < 0)
+def $ntprecision(0) = 1
+def $ntprecision(i) = $nabs(i) -- if $(i > 0)
+
+;; All finite binary64 exact decimal expansions need fewer than 1076 significant
+;; digits; larger configured precision affects only layout, not digit generation.
+dec $ntdigitlimit(nat) : nat
+def $ntdigitlimit(n) = n -- if $(n <= 1076)
+def $ntdigitlimit(n) = 1076 -- if $(n > 1076)
+
+dec $nttruncate(nat*, nat) : nat*
+def $nttruncate(n_t*, n) = n_t* -- if $(|n_t*| <= n)
+def $nttruncate(n_t*, n) = n_t*[0:n] -- if $(|n_t*| > n)
+
+dec $ftext_finite(nat, nat, nat, nat, int) : nat*
+def $ftext_finite(n_bits, n_s, 0, n_d, i_p) = $ntprefix(n_s, [48])
+def $ftext_finite(n_bits, n_s, n_n, n_d, i_p) = $ntprefix(n_s, $ntlayout($ntdropzeros(n_q), i, $ntprecision(i_p)))
+  -- if $(n_n > 0) -- if $(i_p >= 0)
+  -- if (n_q, i) = $ntsignificant(n_n, n_d, $ntdigitlimit($ntprecision(i_p)))
+def $ftext_finite(n_bits, n_s, n_n, n_d, i_p) = $ntprefix(n_s, $ntlayout($ntdropzeros(n_q), i, 17))
+  -- if $(n_n > 0) -- if $(i_p < 0)
+  -- if (n_q, i) = $ntshortest($ntinterval($(n_bits \ 9223372036854775808), n_n, n_d), n_n, n_d, 1, $ntratio_exp(n_n, n_d))
+
+dec $ftext_parts(nat, fparts, int) : (nat*, bool)
+def $ftext_parts(n_bits, NOTNUMBER n, i) = ($nttruncate([78, 65, 78], $ntprecision(i)), true)
+def $ftext_parts(n_bits, INFINITE n_s, i) = ($nttruncate($ntprefix(n_s, [73, 78, 70]), $ntprecision(i)), false)
+def $ftext_parts(n_bits, FINITE n_s n_n n_d, i) = ($ftext_finite(n_bits, n_s, n_n, n_d, i), false)
+
+dec $number_text(pnumber, int) : (nat*, bool)
+def $number_text(NINT i, i_p) = ($ntsigned(i), false)
+def $number_text(NFLOAT n, i_p) = $ftext_parts(n, $float_decode(n), $ntprecision32(i_p))

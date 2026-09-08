@@ -55,6 +55,26 @@ boundary strings and seeded decimal cases. The test uses unary plus to obtain th
 oracle value and separately checks `is_numeric` and leading-numeric warnings;
 these are test instrumentation, not implementations available to the semantics.
 
-Remaining arithmetic obligations include context-dependent coercions,
-decimal formatting and power.
-The passing first milestone does not establish complete arithmetic or core PHP.
+`03-numeric-format.watsup` supplies `number_text(pnumber, precision)`, returning
+decoded output bytes and a pending NaN-to-string warning flag. Positive precision
+uses exact significant-digit rounding; shortest mode tests increasing decimal
+precision and neighboring candidates against the binary64 rounding interval.
+Neighbor candidates matter at powers of two, where that interval is asymmetric.
+It follows `zend_gcvt` fixed/exponential layout, signed zero, configured precision
+and the target's conversion of precision to C `int`. Precision zero acts as one;
+negative converted precision selects shortest mode. The formatter bounds only
+digit generation after an exact binary64 decimal expansion is already possible.
+
+The pinned `zend_gcvt` truncates special-value spellings through
+`snprintf(buf, ndigit + 1, ...)`: precision 0/1 gives `I`, `-`, `N` for infinity,
+negative infinity and NaN; precision 2 gives `IN`, `-I`, `NA`; precision 3 gives
+`INF`, `-IN`, `NAN`. The specification follows this observed engine quirk, with
+no intentional disagreement. Default precision 14 prints the full spellings.
+`python3 tests/semantics/numeric_format.py` compares exact bytes and NaN-warning
+identity across boundary/generated values and the listed precision profiles,
+including every normal power-of-two boundary, decimal-decade neighbors and
+both adjacent bit patterns in shortest mode. The retained 8,826-case run took
+about 55 seconds on the development host. It does not establish every possible precision/value combination.
+
+Remaining arithmetic obligations include context-dependent coercions and power.
+The passing milestones do not establish complete arithmetic or core PHP.
