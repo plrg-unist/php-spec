@@ -2517,15 +2517,32 @@
     {
       "id": "numeric.power",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/06-power-prepare.watsup",
+        "spec/semantics/07-fma.watsup",
+        "spec/semantics/08-libm-data.watsup",
+        "spec/semantics/09-libm-power.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/power_prepare.py",
+        "tests/semantics/power.py",
+        "tests/semantics/fixtures/fma.watsup",
+        "tests/semantics/libm_data_evidence.py",
+        "coverage/semantics/power-prepare.json",
+        "coverage/semantics/power.json",
+        "coverage/semantics/libm-data.json"
+      ],
       "source_tests": [],
       "evidence": [
-        "vendor/php-src/Zend/zend_operators.c"
+        "vendor/php-src/Zend/zend_operators.c",
+        "docs/semantics/POWER-PROVENANCE.md",
+        "dependencies/libm-provenance.json",
+        "dependencies/libm-pow-disassembly.txt",
+        "vendor/libm-pow-source/sysdeps/ieee754/dbl-64/e_pow.c"
       ],
-      "review": null
+      "review": "Independent pure-helper review (4e9256ba; preparation54e90ae2, FMA57ac6be7, dataac315d39): integer overflow sequencing and selected libm FMA graph match source/disassembly; 600+1 preparation, 7 FMA identities, 657 table words and 3660 whole-power cases passed. Source power/coercion/notice handlers remain pending."
     },
     {
       "id": "numeric.numeric-text",
@@ -2602,7 +2619,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending."
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending.",
+      "observed_quirks": [
+        "Pinned zend_gcvt snprintf(ndigit+1) truncates INF/-INF/NAN at precision0/1/2/3; source-backed tests and NUMERICS.md retain exact outputs. Specification agrees with engine; no intentional divergence."
+      ]
     },
     {
       "id": "numeric.precision-profile",

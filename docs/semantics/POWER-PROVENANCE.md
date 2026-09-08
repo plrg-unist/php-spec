@@ -2,8 +2,9 @@
 
 PHP's floating `**` calls system `pow`; pinning PHP alone does not pin its last
 bit. This study's oracle uses Ubuntu amd64 glibc **2.39-0ubuntu8.8**, the FMA/AVX2
-variant, binary64 round-to-nearest ties-to-even. General power is still pending;
-this import establishes its implementation source, not validated semantics.
+variant, binary64 round-to-nearest ties-to-even. The pure general-power helper
+has been independently reviewed and validated; source operator integration and
+callback effects remain pending.
 
 [Machine provenance](../../dependencies/libm-provenance.json) records the exact
 library hash, source archives, selected files and Debian patch audit. The
@@ -16,7 +17,7 @@ modifies the selected files. Their unchanged bytes and modes are covered by
 `vendor/libm-pow-source` preserves full selected arithmetic/table files, wrapper,
 dispatch/rounding evidence and upstream license texts. It is a source-evidence
 closure, not a glibc build tree. No imported C code may supply semantic answers.
-The future reference must implement its operations and tables in pure `.watsup`.
+The reference implements its operations and tables in pure `.watsup`.
 Derived translations must preserve the source's LGPL-2.1-or-later attribution.
 The host libm remains an ordinary system prerequisite; a different library or
 CPU-dispatched variant needs separate differential evidence and a distinct pin.

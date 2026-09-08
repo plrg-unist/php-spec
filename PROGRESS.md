@@ -12,7 +12,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 0b | Checked AST runner and original-source differential harness | Complete — bounded bootstrap reviewed (`8b856a27`) |
 | 1a | Pure integers/bytes and result typing | Partial — helpers reviewed; scalar arithmetic source bridge reviewed |
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
-| 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context helpers reviewed; power pending |
+| 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
 | 2b | Arrays, strings, lvalues and sequencing | In progress — array storage, then reference topology and foreach |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
@@ -32,9 +32,14 @@ timeouts and interrupted campaigns never count as validation passes.
 - Reviewer owns this file, inventory, CORE, README/PLAN links and independent
   conformance witnesses; reviews each bounded implementation increment.
 - Runner owns checked execution, storage/control/arrays and source testing.
-- Numeric owns pure `.watsup` primitives and helper tests. The implemented numeric
-  domain is `NINT int | NFLOAT nat` (binary64 bits); add/sub/mul return numbers,
-  division returns `NUM number | DIVZERO`. Runner owns the PHP value domain.
+- Pure numeric domain: `NINT int | NFLOAT nat` (binary64 bits); add/sub/mul
+  return numbers, division returns `NUM number | DIVZERO`, power returns a
+  number plus a pending notice. Runner owns the PHP value domain and effects.
+- Next static/type agent owns separate descriptor/context/result types: checked
+  type AST plus namespace/import/class/position/source context to normalized
+  types and ordered compile diagnostics. Keep unresolved names explicit; no
+  autoload, declaration hoisting, pstate edits or bootstrap pcheck dependency.
+  Start local type legality, then signature descriptors; see NUMERICS and CORE.
 - Storage maps byte names to cells; operands distinguish captured values from
   delayed variable reads. Arrays will distinguish copied entries from aliases
   and retain append history. See `docs/semantics/DESIGN.md`.
@@ -66,14 +71,17 @@ timeouts and interrupted campaigns never count as validation passes.
   libraries, foreign resources and Reflection-created lazy objects are outside
   the explicit environment. Compiler-special assertions remain in scope.
 - Power provenance pins glibc 2.39-0ubuntu8.8 FMA/AVX2, including actual compiler
-  contractions and unchanged local source/license evidence. General power remains
-  pending; see `docs/semantics/POWER-PROVENANCE.md`.
+  contractions and unchanged local source/license evidence. General helper
+  `4e9256ba` passed 3,660 independent bit-exact cases; prep `54e90ae2` (600+1),
+  FMA `57ac6be7` (7 identities), data `ac315d39` (657 ELF words, `b73632b8`).
+  See `docs/semantics/POWER-PROVENANCE.md`.
 - No intentional engine disagreement.
 
 Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfinished
 entries and requires independent review plus source/helper evidence separately.
 Nine isolated evidence negatives reject source/binary/path drift and missing,
 escaping or unproved evidence; `make test-semantics` includes them.
-Next: review general power and array storage; after power, numeric owns separate
-static/type descriptors and ordered compile diagnostics (no machine-state edits);
-keep frame, callback and lifecycle obligations visible throughout.
+Next: review ordinary array literals/reads, then COW/reference topology; review
+local static/type rules independently. Phase1 remains partial: source power,
+remainder/shifts/bitwise/incdec/casts, mixed comparisons, handlers and configurable
+precision still need integration and evidence. Frames/lifecycle remain pending.
