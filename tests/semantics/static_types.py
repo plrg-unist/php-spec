@@ -119,7 +119,7 @@ def main():
     before = fingerprints()
     frontend = Worker([str(PHP), '-n', *FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')])
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)])
-    atoms = ['int', 'INT', 'string', 'float', 'bool', 'true', 'false', 'null', 'void', 'never', 'mixed', 'object', 'iterable', 'array', 'callable', 'A', 'a', 'Traversable', 'self', 'parent', 'static', 'integer', 'boolean', 'double', 'resource', 'Integer', '_', r'\int', r'\A', r'namespace\A', r'namespace\int', r'\self', r'namespace\self']
+    atoms = ['int', 'INT', 'string', 'float', 'bool', 'true', 'false', 'null', 'void', 'never', 'mixed', 'object', 'iterable', 'array', 'callable', 'A', 'a', 'Traversable', 'self', 'parent', 'static', 'integer', 'boolean', 'double', 'resource', 'Integer', '_', r'\int', r'\A', r'namespace\A', r'namespace\int', r'\self', r'namespace\self', r'\iterable', r'namespace\iterable', r'\ITERABLE', r'namespace\ITERABLE']
     types = atoms + ['?' + t for t in ['int', 'null', 'void', 'never', 'mixed', 'A', 'self', 'static']]
     types += [a + '|' + b for a in ['int', 'bool', 'false', 'true', 'null', 'mixed', 'void', 'never', 'object', 'iterable', 'array', 'callable', 'A', 'Traversable', 'self', 'static'] for b in ['int', 'bool', 'false', 'true', 'null', 'mixed', 'void', 'never', 'object', 'iterable', 'array', 'callable', 'Traversable', 'a', 'self', 'parent', 'static']]
     types += ['A&B', 'A&a', 'int&A', 'iterable&A', 'self&A', 'parent&A', 'integer&integer', '(A&B)|A', 'A|(B&A)', '(A&B)|(B&A)', '(A&B)|(A&B&C)', '(A&B&C)|(B&A)', '(A&B)|(B&C)', 'object|(A&B)', 'iterable|(Traversable&A)', '(A&B)|mixed', 'integer|int|INT', 'object|A|int|INT']
