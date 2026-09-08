@@ -17,7 +17,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes/unset reviewed; embedded refs/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Partial — local types/signatures reviewed; calls/activation pending |
-| 4a | Class linking, inheritance, traits, visibility and clone | In progress — local class-header helper under review; linking/activation pending |
+| 4a | Class linking, inheritance, traits, visibility and clone | Partial — local class headers reviewed; linking/activation pending |
 | 4b | Properties, modern declarations and internal protocols | Pending |
 | 5a | Checked dynamic sources, autoload and explicit services | Pending |
 | 5b | Generators/Fibers, lifetime, collection and callbacks | Pending |
@@ -30,10 +30,10 @@ timeouts and interrupted campaigns never count as validation passes.
 ## Assignments and interfaces
 
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
-- Fresh runner takes source execution/storage after reviewed ownership `41e8fa2b`;
+- References agent owns source execution/storage after reviewed ownership `41e8fa2b`;
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Next audit internal HELD
   roots before enabling pruning, conditional COW and source embedded references.
-- Signatures agent owns the class-header compiler, then class linking.
+- Signatures agent owns class linking/variance after reviewed local class headers.
   Local types/signatures are reviewed helpers. They use explicit namespace,
   import, class, position and source contexts and ordered diagnostics; unresolved names remain explicit.
   Activation, autoload and call binding are separate machine obligations.
@@ -73,8 +73,15 @@ timeouts and interrupted campaigns never count as validation passes.
   remain separate. Expanded independent matrix: 458 comparisons. Review fixed
   global namespace-relative special defaults and checked deferred-default lines.
   No declaration activation, default materialization or call binding is claimed.
+- Class headers `187b01f2`: **195 checked helper/lint comparisons**, 9 descriptors,
+  10 Unsupported, plus 57 exact frontend restrictions and 57 separate edited
+  compiler checks. Expanded independent matrix: 235 comparisons/13 descriptors.
+  Bodies are retained syntax; source activation and class linking remain pending.
 - **68 independent oracle targets**, 15 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
+- Known admitted mismatch under immediate repair: `($x=&$a)+($a=2)` with `$a=1`
+  gives PHP 4 versus spec 3. Reference-assignment results need owning reference
+  operands. The 371-case selection does not cover this failing source.
 - Delayed names, self-assignment capture, cyclic arrays and NaN sharing identity
   have retained discriminators. Operator compile lines differ from AST/LHS lines.
   Reference wrappers/temporary ownership must preserve these observations.
@@ -91,8 +98,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review the local class-header compiler and the fresh runner’s internal ownership
-integration before enabling conditional COW and embedded references.
+Review the references runner’s scoped HELD/driver integration, then fix the
+admitted reference-assignment-result mismatch before COW/embedded references.
+Class linking/variance must follow pinned source predicates and phase ordering.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,
 mixed comparisons, handlers and configurable precision need integration.
 Control/calls/objects/dynamic sources/resumable execution/lifetime remain pending.

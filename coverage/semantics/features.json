@@ -1650,10 +1650,16 @@
         "classes.linking",
         "classes.inheritance"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: named class/interface/trait header helper187b01f2;195 checked header/lint comparisons,9 descriptors,10 Unsupported and57 separate frontend compile restrictions with57 equivalent edited checked-header assertions. Expanded reviewer matrix235 comparisons/13 descriptors passed on unchanged DSL. Body compilation, source activation, class linking and correction of frontend phase gaps remain pending.",
+      "helper_tests": [
+        "tests/semantics/class_headers.py",
+        "coverage/semantics/class-headers.json"
+      ]
     },
     {
       "node": "Stmt_ClassConst",
@@ -1928,10 +1934,16 @@
       "obligations": [
         "classes.interfaces"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: named class/interface/trait header helper187b01f2;195 checked header/lint comparisons,9 descriptors,10 Unsupported and57 separate frontend compile restrictions with57 equivalent edited checked-header assertions. Expanded reviewer matrix235 comparisons/13 descriptors passed on unchanged DSL. Body compilation, source activation, class linking and correction of frontend phase gaps remain pending.",
+      "helper_tests": [
+        "tests/semantics/class_headers.py",
+        "coverage/semantics/class-headers.json"
+      ]
     },
     {
       "node": "Stmt_Label",
@@ -2025,10 +2037,16 @@
       "obligations": [
         "classes.traits"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent reviewer: named class/interface/trait header helper187b01f2;195 checked header/lint comparisons,9 descriptors,10 Unsupported and57 separate frontend compile restrictions with57 equivalent edited checked-header assertions. Expanded reviewer matrix235 comparisons/13 descriptors passed on unchanged DSL. Body compilation, source activation, class linking and correction of frontend phase gaps remain pending.",
+      "helper_tests": [
+        "tests/semantics/class_headers.py",
+        "coverage/semantics/class-headers.json"
+      ]
     },
     {
       "node": "Stmt_TraitUse",
@@ -4485,7 +4503,7 @@
         "vendor/php-src/Zend/zend_compile.c"
       ],
       "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending.",
-      "notes": "Frontend currently rejects direct void parameters before checked AST construction although native parsing accepts them; source integration must reconcile compiler phase/message, not classify this as parser agreement."
+      "notes": "Source activation must reconcile retained frontend early compile checks: direct void parameters, variadic defaults and reserved class declaration/reference names. Equivalent edited checked-AST witnesses do not establish source frontend agreement or repair these phase gaps."
     },
     {
       "id": "static.lvalue-rejection",
@@ -4520,19 +4538,22 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/16-static-types.watsup",
-        "spec/semantics/17-signatures.watsup"
+        "spec/semantics/17-signatures.watsup",
+        "spec/semantics/18-class-headers.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json",
         "tests/semantics/signatures.py",
-        "coverage/semantics/signatures.json"
+        "coverage/semantics/signatures.json",
+        "tests/semantics/class_headers.py",
+        "coverage/semantics/class-headers.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending. Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending. Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending. Independent reviewer: named class/interface/trait header helper187b01f2;195 checked header/lint comparisons,9 descriptors,10 Unsupported and57 separate frontend compile restrictions with57 equivalent edited checked-header assertions. Expanded reviewer matrix235 comparisons/13 descriptors passed on unchanged DSL. Body compilation, source activation, class linking and correction of frontend phase gaps remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-static-outside-class.php",
         "tests/semantics/conformance/type-parent-without-parent.php",
