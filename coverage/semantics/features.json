@@ -1682,10 +1682,19 @@
         "classes.visibility",
         "static.signature-variance"
       ],
-      "status": "pending",
-      "implementation": [],
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/17-signatures.watsup",
+        "spec/semantics/19-variance.watsup"
+      ],
       "source_tests": [],
-      "review": null
+      "review": "Independent covariance helper 8a6c5708: 1028 checked return-type/source-oracle comparisons, 9 symbolic descriptors and 4 Unsupported checks repeated; expanded 1928 comparisons passed. The fixture visible-class registry was corrected to include current C for prototype-context lookup. Production helper returns status/missing names under supplied visible class graphs; method compatibility, diagnostics, class linking, autoload, activation and call checks remain pending.",
+      "helper_tests": [
+        "tests/semantics/signatures.py",
+        "tests/semantics/variance.py",
+        "coverage/semantics/signatures.json",
+        "coverage/semantics/variance.json"
+      ]
     },
     {
       "node": "Stmt_Const",
@@ -4750,15 +4759,21 @@
     {
       "id": "static.signature-variance",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/19-variance.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/variance.py",
+        "coverage/semantics/variance.json"
+      ],
       "source_tests": [],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null,
+      "review": "Independent covariance helper 8a6c5708: 1028 checked return-type/source-oracle comparisons, 9 symbolic descriptors and 4 Unsupported checks repeated; expanded 1928 comparisons passed. The fixture visible-class registry was corrected to include current C for prototype-context lookup. Production helper returns status/missing names under supplied visible class graphs; method compatibility, diagnostics, class linking, autoload, activation and call checks remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",

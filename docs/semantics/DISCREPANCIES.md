@@ -50,7 +50,10 @@ variance rules must reproduce the pinned predicate instead of replacing it with
 logical set inclusion. [Oracle evidence](../../coverage/semantics/conformance-oracle.json)
 retains exact sources, diagnostics, process outcomes and source hashes; the
 [catalog](../../tests/semantics/conformance/cases.json) names each witness. No
-variance implementation or source-class coverage is established by these probes.
+source-class coverage is established by these probes. Covariance helper
+`8a6c5708` now reproduces the pinned predicate under supplied visible class graphs;
+its checked return-type/oracle comparisons are recorded separately in
+[variance evidence](../../coverage/semantics/variance.json).
 
 ## Reference-assignment result: resolved specification defect
 

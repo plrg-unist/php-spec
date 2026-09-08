@@ -34,7 +34,7 @@ timeouts and interrupted campaigns never count as validation passes.
   read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
   pruning `46772123` and owning reference results `751fbcff` are reviewed; next
   conditional COW/singleton wrapper copying, then source embedded references.
-- Signatures agent owns class linking/variance after reviewed local class headers.
+- Signatures agent owns method compatibility after reviewed covariance `8a6c5708`.
   Local types/signatures are reviewed helpers. They use explicit namespace,
   import, class, position and source contexts and ordered diagnostics; unresolved names remain explicit.
   Activation, autoload and call binding are separate machine obligations.
@@ -62,7 +62,9 @@ timeouts and interrupted campaigns never count as validation passes.
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
   Local types `531a8b40`/`9da9b012`, signatures `ac5bc703`, and class headers
-  `187b01f2` are reviewed helpers; [STATIC](docs/semantics/STATIC.md) retains
+  `187b01f2` are reviewed helpers. Covariance `8a6c5708` passed **1,028**
+  checked return-type/oracle comparisons, 9 descriptors and 4 Unsupported checks;
+  expanded reviewer matrix: 1,928. [STATIC](docs/semantics/STATIC.md) retains
   counts, source restrictions and expanded reviewer matrices. Edited compiler
   checks do not repair frontend phase gaps. No source activation, default
   materialization, body compilation, linking or call binding is claimed.
@@ -86,7 +88,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 Review conditional location COW and singleton wrapper copying before enabling
 source embedded references; preserve retained ownership/identity discriminators.
-Class linking/variance must follow pinned source predicates and phase ordering.
+Method compatibility and class linking must preserve pinned phase ordering.
+Covariance remains a helper over supplied visible class graphs, with no source
+activation, autoload schedule or production declaration diagnostics.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,
 mixed comparisons, handlers and configurable precision need integration.
 Control/calls/objects/dynamic sources/resumable execution/lifetime remain pending.
