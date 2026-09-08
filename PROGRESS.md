@@ -29,77 +29,64 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Assignments and interfaces
 
-- Reviewer owns this file, inventory, CORE, README/PLAN links and independent
-  conformance witnesses; reviews each bounded implementation increment.
-- Runner owns checked execution, storage/control/arrays and source testing.
-- Pure numeric domain: `NINT int | NFLOAT nat` (binary64 bits); add/sub/mul
-  return numbers, division returns `NUM number | DIVZERO`, power returns a
-  number plus a pending notice. Runner owns the PHP value domain and effects.
-- Fresh signatures agent owns the uncommitted signature helpers and next class
-  linking; reviewed local types remain its dependency. Interfaces: checked
-  type AST plus namespace/import/class/position/source context to normalized
-  types and ordered compile diagnostics. Keep unresolved names explicit; no
-  autoload, declaration hoisting, pstate edits or bootstrap pcheck dependency.
-  Start local type legality, then signature descriptors; see NUMERICS and CORE.
-- Storage maps byte names to cells; operands distinguish captured values from
-  delayed variable reads. Arrays retain ordered entries/history and internal IDs;
-  recursive dimension descriptors defer fetches through key effects. Shared-ID
-  identity shortcuts are observable with NaN, without PHP object identity.
-  Writable paths shallow-copy container graphs, including scalar-alias cycles.
-  Dimension unset preserves diagnostic modes/history and failed-delete separation.
-  Exact embedded-reference topology is next; see DESIGN.
+- Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
+- Runner owns source execution and storage/control. Next: exact ownership roots,
+  temporary lifetimes and conditional COW, then embedded array references.
+- Fresh signatures agent owns pending `17-signatures.watsup`/`signatures.py`,
+  then class linking. Type helpers use explicit namespace/import/class/position/
+  source contexts and ordered diagnostics; unresolved names remain explicit.
+  Activation, autoload and call binding are separate machine obligations.
+- Numeric helpers are pure; runner owns PHP values/effects. See NUMERICS.
+  Storage uses cells, captured versus delayed operands and internal array IDs.
+  Nested dimension descriptors preserve fetch timing; shallow graph copies are
+  reviewed only for currently admitted reference-free entries. See DESIGN.
 - Shared working tree: stage owned files only, never push. Baseline `082a3a2b`;
-  the workspace gitlink was already modified.
+  the workspace gitlink was already modified. Commit each reviewed increment.
 
-## Evidence and decisions
+## Current evidence and decisions
 
-- Inventory: exact 169 constructors and 304 unique runtime obligations, all
-  still pending/partial at full-core scope. Contracts began in `69868bac`.
-- Independently reviewed/repeated helpers: numeric `4d343899` (1,976 differential
-  +8 symbolic cases), integer `7d48a580` (1,025), numeric text `9cc4ecef` (350).
-  Formatter `99ebf273` (8,826), context `33e503aa` (921) also independently
-  repeated with stable fingerprints; string operators `81f151d7` (1,400).
-  Reports in `coverage/semantics/`.
-- Reviewed source machine: bootstrap `8b856a27` (8 comparisons +7 negatives),
-  scalar storage `5a083605` (53 comparisons +12 negatives), numeric bridge
-  `e3fbd6e8` (157 comparisons +16 negatives), ordinary array reads `eb48f793`
-  (251 comparisons +22 negatives), writable arrays `f0b3c5ee`
-  (308 comparisons +22 negatives; 44 additional reviewer probes), array unset
-  `83c228cc` (363 comparisons +23 negatives; 19 extra reviewer probes). Stable acceptance fingerprints;
-  current report `coverage/semantics/source.json`, raw observations in
-  `coverage/results-semantic-source.jsonl`. Phase0 report is historical.
-- Storage regressions preserve delayed dynamic names, reference rebinding,
-  dynamic-write initialization, eliminated discarded CV reads and warning lines.
-  Operator diagnostics use post-child compile lines, distinct from AST/LHS lines.
-- 62 independent source targets in `tests/semantics/conformance` match the oracle;
-  15 are integrated into the reviewed source harness. Oracle-only evidence is
-  `coverage/semantics/conformance-oracle.json`; it never implies implementation.
-- Fixed profile includes `E_ALL=30719`, original identity and byte-exact channels.
-  Weak/GC, closure/call introspection, output buffers and ticks stay core. Ordinary
-  libraries, foreign resources and Reflection-created lazy objects are outside
-  the explicit environment. Compiler-special assertions remain in scope.
-- Power provenance pins glibc 2.39-0ubuntu8.8 FMA/AVX2, including actual compiler
-  contractions and unchanged local source/license evidence. General helper
-  `4e9256ba` passed 3,660 independent bit-exact cases; prep `54e90ae2` (600+1),
-  FMA `57ac6be7` (7 identities), data `ac315d39` (657 ELF words, `b73632b8`).
-  See `docs/semantics/POWER-PROVENANCE.md`.
-- Intentional interpretation: namespace-relative `static` declaration types use
-  late-static semantics. The pinned engine crashes without a parent and wrongly
-  substitutes the parent otherwise; exact observations and rationale are in
-  `docs/semantics/DISCREPANCIES.md`. Crash reproduction is not conformance.
+- Inventory: 169 constructors and 304 runtime obligations, all pending/partial
+  at full-core scope. `coverage/semantics/` retains bounded reports; git history
+  records earlier milestone counts. Historical acceptance fingerprints are
+  explicit; later implementation changes require fresh applicable evidence.
+- Source machine through ordinary array unset `83c228cc`: independently repeated
+  **363 exact source comparisons +23 negatives**, plus separate reviewer probes.
+  Profile-name correction `94eb6cb3`: **8 selected comparisons +25 negatives**;
+  `source-selected.json` preserves the preceding full `source.json` report.
+  `_SESSION` is ordinary under this build; HTTP literal-read compiler diagnostics
+  remain pending under `static.special-variable-diagnostics`.
+- Numeric, integer, parsing, formatting, coercion and string helpers independently
+  reviewed/repeated; see NUMERICS and their reports. Power `4e9256ba` passed
+  **3,660 bit-exact cases**; exact source/FMA contractions and 657 ELF data words
+  audited against glibc 2.39-0ubuntu8.8. See POWER-PROVENANCE.
+- Local type helpers `531a8b40`/`9da9b012`: **694 retained comparisons**, expanded
+  reviewer matrix **743**, 9 descriptors and 7 negatives. Separately classified:
+  24 intended relative-static interpretations, 34 parser rejects and one known
+  frontend compile restriction. This is helper evidence; declaration activation
+  and reconciliation of direct-void frontend rejection remain pending.
+- **62 independent oracle targets**, 15 integrated into the reviewed source
+  harness. `conformance-oracle.json` alone never establishes semantic coverage.
+- Delayed names, self-assignment capture, cyclic arrays and NaN sharing identity
+  have retained discriminators. Operator compile lines differ from AST/LHS lines.
+  Reference wrappers/temporary ownership must preserve these observations.
+- Fixed environment and intrinsic scope remain in CORE. Weak/GC, closures,
+  introspection, output buffers, ticks and assertions stay core; no unfinished
+  family may be reclassified as an ordinary library.
+- Intentional interpretation: namespace-relative `static` uses late-static
+  semantics, avoiding the pinned compiler crash/accidental parent substitution.
+  Exact observations and rationale are in DISCREPANCIES. Crash reproduction is
+  not conformance; source activation requires its own intended-behavior witnesses.
 
-Final closure must check obligation-specific case IDs/current fingerprints and
-source witnesses for intentional divergences before any family is marked complete.
-Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfinished
-entries and requires independent review plus source/helper evidence separately.
+## Next gates
+
+Review exact array ownership/ref topology and local signature descriptors.
+Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,
+mixed comparisons, handlers and configurable precision need integration.
+Control/calls/objects/dynamic sources/resumable execution/lifetime remain pending.
+
+`python3 scripts/check-semantic-inventory.py --complete` rejects unfinished
+entries; source/helper evidence and independent review remain separate.
+Before the first family closes, strengthen this gate to check obligation-specific
+case IDs/current report fingerprints and intentional-divergence source evidence.
 Nine isolated evidence negatives reject source/binary/path drift and missing,
 escaping or unproved evidence; `make test-semantics` includes them.
-Next: review writable array locations/self-assignment, then COW/reference
-topology; local signature descriptors next. Local types `531a8b40` passed independent
-686-case exact diagnostic repeat, 9 descriptors and 7 Unsupported checks, with
-24 intended relative-static cases separate from oracle agreement; corrective
-`9da9b012` retains 694 cases and passed an expanded 743-case reviewer matrix.
-34 parser rejects
-and one known frontend restriction are explicit. Source declaration activation is pending. Phase1 remains partial: source power,
-remainder/shifts/bitwise/incdec/casts, mixed comparisons, handlers and configurable
-precision still need integration and evidence. Frames/lifecycle remain pending.
