@@ -1,0 +1,97 @@
+;; Integer-only operations after contextual coercion has completed.
+syntax pintresult = IRESULT int | INTZERO | NEGSHIFT
+syntax castnotice = RANGEWARNING | PRECISIONLOSS
+
+dec $long_unsigned(int) : nat
+def $long_unsigned(i) = $nabs(i) -- if $(i >= 0)
+def $long_unsigned(i) = $nabs($(i + 18446744073709551616)) -- if $(i < 0)
+
+dec $long_signed(nat) : int
+def $long_signed(n) = n -- if $(n < 9223372036854775808)
+def $long_signed(n) = $(n - 18446744073709551616) -- if $(n >= 9223372036854775808)
+
+dec $long_mod(int, int) : pintresult
+def $long_mod(i, 0) = INTZERO
+def $long_mod(i_1, i_2) = IRESULT $nsigned($nsign(i_1), $($nabs(i_1) \ $nabs(i_2))) -- if i_2 =/= 0
+
+dec $long_shl(int, int) : pintresult
+def $long_shl(i_1, i_2) = NEGSHIFT -- if $(i_2 < 0)
+def $long_shl(i_1, i_2) = IRESULT 0 -- if $(i_2 >= 64)
+def $long_shl(i_1, i_2) = IRESULT $long_signed($($long_unsigned(i_1) * $npow2($nabs(i_2)) \ 18446744073709551616))
+  -- if $(i_2 >= 0)
+  -- if $(i_2 < 64)
+
+dec $long_shr(int, int) : pintresult
+def $long_shr(i_1, i_2) = NEGSHIFT -- if $(i_2 < 0)
+def $long_shr(i_1, i_2) = IRESULT 0 -- if $(i_2 >= 64) -- if $(i_1 >= 0)
+def $long_shr(i_1, i_2) = IRESULT $(-1) -- if $(i_2 >= 64) -- if $(i_1 < 0)
+def $long_shr(i_1, i_2) = IRESULT $(i_1 / $npow2($nabs(i_2)))
+  -- if $(i_1 >= 0)
+  -- if $(i_2 >= 0)
+  -- if $(i_2 < 64)
+def $long_shr(i_1, i_2) = IRESULT $(-(($nabs(i_1) + n - 1) / n))
+  -- if $(i_1 < 0)
+  -- if $(i_2 >= 0)
+  -- if $(i_2 < 64)
+  -- if n = $npow2($nabs(i_2))
+
+;; n_op = 0 AND, 1 OR, 2 XOR. Recursion visits each low-order bit.
+dec $bit_digit(nat, nat, nat) : nat
+def $bit_digit(0, n_1, n_2) = $(n_1 * n_2)
+def $bit_digit(1, n_1, n_2) = $nabs($(n_1 + n_2 - n_1 * n_2))
+def $bit_digit(2, n_1, n_2) = $((n_1 + n_2) \ 2)
+
+dec $bit_combine(nat, nat, nat) : nat
+def $bit_combine(n_op, 0, 0) = 0
+def $bit_combine(n_op, n_1, n_2) = $($bit_digit(n_op, $(n_1 \ 2), $(n_2 \ 2)) + 2 * $bit_combine(n_op, $(n_1 / 2), $(n_2 / 2)))
+  -- if (n_1 =/= 0 \/ n_2 =/= 0)
+
+dec $long_and(int, int) : int
+def $long_and(i_1, i_2) = $long_signed($bit_combine(0, $long_unsigned(i_1), $long_unsigned(i_2)))
+dec $long_or(int, int) : int
+def $long_or(i_1, i_2) = $long_signed($bit_combine(1, $long_unsigned(i_1), $long_unsigned(i_2)))
+dec $long_xor(int, int) : int
+def $long_xor(i_1, i_2) = $long_signed($bit_combine(2, $long_unsigned(i_1), $long_unsigned(i_2)))
+dec $long_not(int) : int
+def $long_not(i) = $(-i - 1)
+
+;; PHP 8.5 warns for nonfinite/out-of-range float casts, including explicit casts.
+;; These notices are pending effects. A caller must run handlers before committing
+;; the returned integer, and stop if a handler causes abrupt completion.
+dec $fparts_integer(fparts) : int
+def $fparts_integer(INFINITE n) = 0
+def $fparts_integer(NOTNUMBER n) = 0
+def $fparts_integer(FINITE n_s n_n n_d) = $long_signed($long_unsigned($nsigned(n_s, $((n_n / n_d) \ 18446744073709551616))))
+
+dec $float_to_int(nat) : int
+def $float_to_int(n) = $fparts_integer($float_decode(n))
+
+dec $fparts_fits(fparts) : bool
+def $fparts_fits(INFINITE n) = false
+def $fparts_fits(NOTNUMBER n) = false
+def $fparts_fits(FINITE 0 n_n n_d) = $(n_n < 9223372036854775808 * n_d)
+def $fparts_fits(FINITE 1 n_n n_d) = $(n_n <= 9223372036854775808 * n_d)
+
+dec $fparts_integral(fparts) : bool
+def $fparts_integral(INFINITE n) = false
+def $fparts_integral(NOTNUMBER n) = false
+def $fparts_integral(FINITE n_s n_n n_d) = ($(n_n \ n_d) = 0)
+
+dec $fcast_notices(fparts, bool) : castnotice*
+def $fcast_notices(NOTNUMBER n, false) = RANGEWARNING
+def $fcast_notices(NOTNUMBER n, true) = [RANGEWARNING, PRECISIONLOSS]
+def $fcast_notices(INFINITE n, b) = RANGEWARNING
+def $fcast_notices(FINITE n_s n_n n_d, b) = RANGEWARNING
+  -- if ~$fparts_fits(FINITE n_s n_n n_d)
+def $fcast_notices(FINITE n_s n_n n_d, false) = eps
+  -- if $fparts_fits(FINITE n_s n_n n_d)
+def $fcast_notices(FINITE n_s n_n n_d, true) = eps
+  -- if $fparts_fits(FINITE n_s n_n n_d)
+  -- if $fparts_integral(FINITE n_s n_n n_d)
+def $fcast_notices(FINITE n_s n_n n_d, true) = PRECISIONLOSS
+  -- if $fparts_fits(FINITE n_s n_n n_d)
+  -- if ~$fparts_integral(FINITE n_s n_n n_d)
+
+dec $float_long(nat, bool) : (int, castnotice*)
+def $float_long(n, b) = ($fparts_integer(fparts), $fcast_notices(fparts, b))
+  -- if fparts = $float_decode(n)

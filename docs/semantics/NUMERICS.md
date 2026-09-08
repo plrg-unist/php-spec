@@ -32,7 +32,19 @@ The report in `coverage/semantics/numeric.json` records the fixed profile, seed,
 case-manifest hash and unchanged before/after implementation fingerprints.
 
 This is helper validation; checked PHP source execution must also validate these
-operations when the evaluator integrates them. Remaining arithmetic obligations
-include integer bitwise/shift/remainder and conversion rules, numeric-string
-classification, context-dependent coercions, decimal parsing/formatting and power.
+operations when the evaluator integrates them. `01-integer.watsup` additionally supplies signed bitwise operations, shifts,
+remainder and float-to-integer conversion. `float_long(bits, implicit)` returns
+an integer and ordered pending `castnotice` values. The evaluator must run each
+notice's handler before committing the result and must propagate abrupt effects.
+PHP 8.5 warns even for explicit out-of-range/nonfinite float casts; implicit NaN
+casts also deprecate precision loss. Float casts wrap modulo 2^64, whereas numeric
+string casts will need their separate saturation rule. Source:
+`zend_operators.c` (`shift_left_function`, `shift_right_function`, `mod_function`,
+`zend_dval_to_lval_slow`) and `zend_operators.h` (`zend_dval_to_lval`,
+`zend_dval_to_lval_safe`). `python3 tests/semantics/integer.py` validates these
+helpers, including ordered diagnostic identities with test-only handler
+instrumentation; the message renderer and throwing handlers need evaluator tests.
+
+Remaining arithmetic obligations include numeric-string classification,
+context-dependent coercions, decimal parsing/formatting and power.
 The passing first milestone does not establish complete arithmetic or core PHP.
