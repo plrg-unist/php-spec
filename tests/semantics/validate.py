@@ -28,6 +28,29 @@ CASES = {
     'discard': b'<?php "unused"; 72; true; echo "end";',
     'undefined': b'<?php\necho "prefix", UNKNOWN_CONST; echo "unreachable";',
     'static-break': b'<?php echo "unreachable";\nbreak;',
+    'numeric-types': b'<?php echo (6/3)===2,":",(5/2)===2.5,":",(6.0/3)===2.0,":",(6.0/3)!==2,":",(PHP_INT_MAX+1)===9223372036854775808.0;',
+    'numeric-special-identity': b'<?php echo 0.0===-0.0,":",NAN===NAN,":",NAN!==NAN,":",INF===INF;',
+    'scalar-strict-identity': b'<?php echo false===null,":",false!==null,":",1!==true,":","1"!==1,":","a"==="a";',
+    'numeric-lines-binary': b'<?php\n$a="2x";\n$b="3x";\necho $a\n+\n$b;',
+    'numeric-lines-unary': b'<?php\n$a="2x";\necho -\n$a;',
+    'numeric-lines-both-missing': b'<?php\necho $a\n+\n$b;',
+    'numeric-lines-unary-missing': b'<?php\necho -\n$a;',
+    'numeric-lines-division': b'<?php\necho 1\n/\n0;',
+    'numeric-lines-rhs-assignment': b'<?php\necho $missing+($a=\n2);',
+    'numeric-basic': b'<?php echo 6/3,":",5/2,":",6.0/3,":",(2+3)*4;',
+    'numeric-overflow': b'<?php echo PHP_INT_MAX+1,":",PHP_INT_MIN/-1,":",PHP_INT_MAX*PHP_INT_MAX;',
+    'numeric-strings': b'<?php echo "01"+1,":"," 1e2 "+1,":","2tail"+3;',
+    'numeric-string-error': b'<?php echo "prefix","x"+1;',
+    'numeric-string-order': b'<?php echo "2tail"+"x";',
+    'numeric-zero-divisor': b'<?php echo "prefix",1/0;',
+    'numeric-unary': b'<?php $a="2tail"; echo -$a,":",+true,":",-0.0,":",+null;',
+    'numeric-unary-error': b'<?php $a="x"; echo -$a;',
+    'numeric-float-literals': b'<?php echo 1.2345678901234567,":",1e-300,":",5e-324,":",1e309;',
+    'numeric-nan-output': b'<?php echo NAN,":",INF,":",-INF;',
+    'numeric-nan-variable-name': b'<?php $n=NAN; $$n=1; echo $$n; unset($$n);',
+    'numeric-nan-reference-name': b'<?php $n=NAN; $a=&$$n; $a=7; echo $$n;',
+    'numeric-delayed-read': b'<?php $a=1;echo $a+($a=2),":",$a;',
+    'numeric-captured-read': b'<?php $a=1;$n="a";echo $$n+($a=2),":",$a;',
     'assignment-chain': b'<?php $a=$b=42; echo $a,$b;',
     'assignment-copy': b'<?php $a=1; $b=$a; $a=7; echo $a,$b;',
     'alias-write': b'<?php $a=1; $b=&$a; $c=&$b; $a=7; echo $a,$b,$c;',
@@ -56,7 +79,7 @@ CASES = {
 
 
 # Independent review-authored witnesses keep their original provenance.
-CONFORMANCE = ['reference-rebind', 'dynamic-variable']
+CONFORMANCE = ['reference-rebind', 'dynamic-variable', 'delayed-read']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -79,6 +102,16 @@ for number in range(20):
             statements.append(f'$n="{left}"; $$n=${right};')
         statements.append('echo $a,$b,$c,";";')
     CASES[f'generated-alias-{number:02}'] = '\n'.join(statements).encode()
+
+
+# Review-authored scalar cross-product seed, independent of evaluator clauses.
+scalar_values = ['null', 'false', 'true', '0', '-1', 'PHP_INT_MAX', 'PHP_INT_MIN',
+                 '0.0', '-0.0', '1.5', 'INF', 'NAN', '""', '"x"', '"2tail"', '" 3 "', '"1e999"']
+rng = random.Random(6614)
+for number in range(80):
+    left, right = rng.choice(scalar_values), rng.choice(scalar_values)
+    operator = rng.choice(['+', '-', '*', '/', '===', '!=='])
+    CASES[f'generated-scalar-{number:02}'] = f'<?php\n$a={left};$b={right};echo $a {operator} $b;'.encode()
 
 
 def fingerprint():
@@ -115,7 +148,7 @@ def main():
         negatives.append({"source": base64.b64encode(path.read_bytes()).decode(), "command": result.args,
                           "exit_status": result.returncode, "observation": json.loads(result.stdout)})
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'unsupported'
-        path.write_bytes(b'<?php echo PHP_INT_MAX;')
+        path.write_bytes(b'<?php echo PHP_VERSION;')
         result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True, env=ENV, timeout=35, cwd=directory)
         negatives.append({'source': base64.b64encode(path.read_bytes()).decode(), 'command': result.args, 'exit_status': result.returncode, 'observation': json.loads(result.stdout)})
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'unsupported'
@@ -134,7 +167,8 @@ def main():
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'runner_failure'
         for source in [b'<?php echo $argc;', b'<?php $a=&$argc;',
                        b'<?php $n="argc"; $a=&$$n;', b'<?php unset($GLOBALS);',
-                       b'<?php $n="GLOBALS"; unset($$n);']:
+                       b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
+                       b'<?php echo $missing; ${INF-INF}=1;']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
@@ -155,6 +189,20 @@ def main():
             response = syntax_validation.wire.loads(result.stdout)
             assert response.get('ok') and response['state']['COMPLETION']['tag'] == 'UNSUPPORTED', response
             negatives.append({'input': payload, 'exit_status': result.returncode, 'observation': response})
+    # Numeric warnings/errors also require source context on edited checked ASTs.
+    for expression in [
+        {'node': 'Scalar_Float', 'fields': [{'float': '7ff8000000000000'}], 'meta': {}},
+        {'node': 'Expr_BinaryOp_Div', 'fields': [
+            {'node': 'Scalar_Int', 'fields': [{'int': '1'}], 'meta': {}},
+            {'node': 'Scalar_Int', 'fields': [{'int': '0'}], 'meta': {}}], 'meta': {}}]:
+        payload = {'op': 'execute', 'steps': 100, 'ast': {'version': 1, 'program': [
+            {'node': 'Stmt_Echo', 'fields': [[expression]], 'meta': {}}]}}
+        result = subprocess.run([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)],
+                                input=syntax_validation.wire.dumps(payload), text=True,
+                                capture_output=True, timeout=35, env=ENV)
+        response = syntax_validation.wire.loads(result.stdout)
+        assert response.get('ok') and response['state']['COMPLETION']['tag'] == 'UNSUPPORTED', response
+        negatives.append({'input': payload, 'exit_status': result.returncode, 'observation': response})
     oracle_info = subprocess.run([str(PHP), '-n', *FLAGS, '-r',
         'echo json_encode(["version"=>PHP_VERSION,"sapi"=>PHP_SAPI,"int_size"=>PHP_INT_SIZE,"zts"=>PHP_ZTS,"extensions"=>get_loaded_extensions()]);'],
         capture_output=True, check=True, env=ENV, timeout=30)
@@ -163,7 +211,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seed': 85010, 'scope': 'authored scalar and variable-storage checked execution fixtures', 'profile': PROFILE,
+    report = {'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614}, 'scope': 'authored scalar and variable-storage checked execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage/results-semantic-source.jsonl'

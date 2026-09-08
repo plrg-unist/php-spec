@@ -1,46 +1,58 @@
 ;; Transport decoding and decimal output use mathematical integers only.
-var b : nat
-var i : int
+var octet : nat
+var decimalinput : int
 
 dec $base64_digit(text, nat) : nat
-def $base64_digit(text, b) = b
-  -- if text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[b:1]
-def $base64_digit(text, b) = $base64_digit(text, $(b + 1))
-  -- if text =/= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[b:1]
+def $base64_digit(text, octet) = octet
+  -- if text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[octet:1]
+def $base64_digit(text, octet) = $base64_digit(text, $(octet + 1))
+  -- if text =/= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[octet:1]
 
 dec $base64(text) : nat*
 def $base64("") = eps
-def $base64(text) = [$(b_1 * 4 + b_2 / 16)]
+def $base64(text) = [$(octet_1 * 4 + octet_2 / 16)]
   -- if |text| = 4
   -- if text[2:2] = "=="
-  -- if b_1 = $base64_digit(text[0:1], 0)
-  -- if b_2 = $base64_digit(text[1:1], 0)
-def $base64(text) = [$(b_1 * 4 + b_2 / 16), $((b_2 \ 16) * 16 + b_3 / 4)]
+  -- if octet_1 = $base64_digit(text[0:1], 0)
+  -- if octet_2 = $base64_digit(text[1:1], 0)
+def $base64(text) = [$(octet_1 * 4 + octet_2 / 16), $((octet_2 \ 16) * 16 + octet_3 / 4)]
   -- if |text| = 4
   -- if text[2:1] =/= "="
   -- if text[3:1] = "="
-  -- if b_1 = $base64_digit(text[0:1], 0)
-  -- if b_2 = $base64_digit(text[1:1], 0)
-  -- if b_3 = $base64_digit(text[2:1], 0)
-def $base64(text) = [$(b_1 * 4 + b_2 / 16), $((b_2 \ 16) * 16 + b_3 / 4), $((b_3 \ 4) * 64 + b_4)] ++ $base64(text[4:b_rest])
+  -- if octet_1 = $base64_digit(text[0:1], 0)
+  -- if octet_2 = $base64_digit(text[1:1], 0)
+  -- if octet_3 = $base64_digit(text[2:1], 0)
+def $base64(text) = [$(octet_1 * 4 + octet_2 / 16), $((octet_2 \ 16) * 16 + octet_3 / 4), $((octet_3 \ 4) * 64 + octet_4)] ++ $base64(text[4:octet_rest])
   -- if $(|text| >= 4)
-  -- if b_rest = $(|text| - 4)
+  -- if octet_rest = $(|text| - 4)
   -- if text[3:1] =/= "="
-  -- if b_1 = $base64_digit(text[0:1], 0)
-  -- if b_2 = $base64_digit(text[1:1], 0)
-  -- if b_3 = $base64_digit(text[2:1], 0)
-  -- if b_4 = $base64_digit(text[3:1], 0)
+  -- if octet_1 = $base64_digit(text[0:1], 0)
+  -- if octet_2 = $base64_digit(text[1:1], 0)
+  -- if octet_3 = $base64_digit(text[2:1], 0)
+  -- if octet_4 = $base64_digit(text[3:1], 0)
 
 dec $decimal_unsigned(nat) : nat*
-def $decimal_unsigned(b) = [$(48 + b)]
-  -- if $(b < 10)
-def $decimal_unsigned(b) = $decimal_unsigned($(b / 10)) ++ [$(48 + b \ 10)]
-  -- if $(b >= 10)
+def $decimal_unsigned(octet) = [$(48 + octet)]
+  -- if $(octet < 10)
+def $decimal_unsigned(octet) = $decimal_unsigned($(octet / 10)) ++ [$(48 + octet \ 10)]
+  -- if $(octet >= 10)
 
 dec $decimal_integer(int) : nat*
-def $decimal_integer(i) = $decimal_unsigned(b)
-  -- if $(i >= 0)
-  -- if i = b
-def $decimal_integer(i) = [45] ++ $decimal_unsigned(b)
-  -- if $(i < 0)
-  -- if $(-i) = b
+def $decimal_integer(decimalinput) = $decimal_unsigned(octet)
+  -- if $(decimalinput >= 0)
+  -- if decimalinput = octet
+def $decimal_integer(decimalinput) = [45] ++ $decimal_unsigned(octet)
+  -- if $(decimalinput < 0)
+  -- if $(-decimalinput) = octet
+
+dec $hex_digit(text, nat) : nat
+def $hex_digit(text, octet) = octet
+  -- if text = "0123456789abcdef"[octet:1]
+def $hex_digit(text, octet) = $hex_digit(text, $(octet + 1))
+  -- if text =/= "0123456789abcdef"[octet:1]
+
+dec $hex_bits(text, nat) : nat
+def $hex_bits("", octet) = octet
+def $hex_bits(text, octet) = $hex_bits(text[1:octet_rest], $(octet * 16 + $hex_digit(text[0:1], 0)))
+  -- if $(|text| > 0)
+  -- if octet_rest = $(|text| - 1)

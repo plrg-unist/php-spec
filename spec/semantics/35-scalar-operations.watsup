@@ -1,0 +1,176 @@
+syntax pcoercion = COERCED pnumber bool | BADNUMBER
+
+dec $number_value(pnumber) : pvalue
+def $number_value(NINT i) = PINT i
+def $number_value(NFLOAT n) = PFLOAT n
+
+dec $coerce_string(pnumeric) : pcoercion
+def $coerce_string(FULLNUM pnumber) = COERCED pnumber false
+def $coerce_string(LEADNUM pnumber) = COERCED pnumber true
+def $coerce_string(NOTNUMERIC) = BADNUMBER
+
+dec $coerce_number(pvalue) : pcoercion
+def $coerce_number(PNULL) = COERCED (NINT 0) false
+def $coerce_number(PBOOL false) = COERCED (NINT 0) false
+def $coerce_number(PBOOL true) = COERCED (NINT 1) false
+def $coerce_number(PINT i) = COERCED (NINT i) false
+def $coerce_number(PFLOAT n) = COERCED (NFLOAT n) false
+def $coerce_number(PSTRING n*) = $coerce_string($numeric_string(n*))
+
+dec $type_bytes(pvalue) : nat*
+def $type_bytes(PNULL) = [110, 117, 108, 108]
+def $type_bytes(PBOOL b) = [98, 111, 111, 108]
+def $type_bytes(PINT i) = [105, 110, 116]
+def $type_bytes(PFLOAT n) = [102, 108, 111, 97, 116]
+def $type_bytes(PSTRING n*) = [115, 116, 114, 105, 110, 103]
+
+dec $operator_bytes(pbin) : nat*
+def $operator_bytes(ADD) = [43]
+def $operator_bytes(SUBTRACT) = [45]
+def $operator_bytes(MULTIPLY) = [42]
+def $operator_bytes(DIVIDE) = [47]
+
+dec $throw_scalar(pstate, text, nat*, int) : pstate
+def $throw_scalar(S, text, n_message*, z) = S[.COMPLETION = THROWN text n_message* z]
+  -- if $(z > 0)
+def $throw_scalar(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
+  -- if $(z <= 0)
+
+dec $type_failure(pstate, pbin, pvalue, pvalue, int) : pstate
+def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError", ([85,110,115,117,112,112,111,114,116,101,100,32,111,112,101,114,97,110,100,32,116,121,112,101,115,58,32] ++ $type_bytes(pvalue_1) ++ [32] ++ $operator_bytes(pbin) ++ [32] ++ $type_bytes(pvalue_2)), z)
+
+dec $leading_warning(pstate, bool, int) : pstate
+def $leading_warning(S, false, z) = S
+def $leading_warning(S, true, z) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" ([65,32,110,111,110,45,110,117,109,101,114,105,99,32,118,97,108,117,101,32,101,110,99,111,117,110,116,101,114,101,100]) z]]
+  -- if $(z > 0)
+def $leading_warning(S, true, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
+  -- if $(z <= 0)
+
+dec $number_binary(pbin, pnumber, pnumber) : pnumresult
+def $number_binary(ADD, pnumber_1, pnumber_2) = NUM $num_add(pnumber_1, pnumber_2)
+def $number_binary(SUBTRACT, pnumber_1, pnumber_2) = NUM $num_sub(pnumber_1, pnumber_2)
+def $number_binary(MULTIPLY, pnumber_1, pnumber_2) = NUM $num_mul(pnumber_1, pnumber_2)
+def $number_binary(DIVIDE, pnumber_1, pnumber_2) = $num_div(pnumber_1, pnumber_2)
+
+dec $number_result(pstate, pnumresult, int) : pstate
+def $number_result(S, NUM pnumber, z) = S[.RESULT = KNOWN $number_value(pnumber)]
+def $number_result(S, DIVZERO, z) = $throw_scalar(S, "DivisionByZeroError", [68,105,118,105,115,105,111,110,32,98,121,32,122,101,114,111], z)
+
+dec $arithmetic_operator(pbin) : bool
+def $arithmetic_operator(ADD) = true
+def $arithmetic_operator(SUBTRACT) = true
+def $arithmetic_operator(MULTIPLY) = true
+def $arithmetic_operator(DIVIDE) = true
+def $arithmetic_operator(pbin) = false
+  -- otherwise
+
+dec $strict_identical(pvalue, pvalue) : bool
+def $strict_identical(PFLOAT n_1, PFLOAT n_2) = $num_identical(NFLOAT n_1, NFLOAT n_2)
+def $strict_identical(pvalue_1, pvalue_2) = (pvalue_1 = pvalue_2)
+  -- otherwise
+
+dec $binary_apply(pstate, pbin, pvalue, pvalue, int) : pstate
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure(S, pbin, pvalue_1, pvalue_2, z)
+  -- if $arithmetic_operator(pbin)
+  -- if $coerce_number(pvalue_1) = BADNUMBER
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure(S_left, pbin, pvalue_1, pvalue_2, z)
+  -- if $arithmetic_operator(pbin)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 b_left
+  -- if S_left = $leading_warning(S, b_left, z)
+  -- if $coerce_number(pvalue_2) = BADNUMBER
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $number_result(S_right, $number_binary(pbin, pnumber_1, pnumber_2), z)
+  -- if $arithmetic_operator(pbin)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 b_left
+  -- if S_left = $leading_warning(S, b_left, z)
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 b_right
+  -- if S_right = $leading_warning(S_left, b_right, z)
+
+def $binary_apply(S, IDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL $strict_identical(pvalue_1, pvalue_2))]
+def $binary_apply(S, NOTIDENTICAL, pvalue_1, pvalue_2, z) = S[.RESULT = KNOWN (PBOOL (~$strict_identical(pvalue_1, pvalue_2)))]
+
+dec $unary_apply(pstate, punary, pvalue, int) : pstate
+def $unary_apply(S, punary, pvalue, z) = $type_failure(S, MULTIPLY, pvalue, PINT 1, z)
+  -- if $coerce_number(pvalue) = BADNUMBER
+def $unary_apply(S, POSITIVE, pvalue, z) = S_warned[.RESULT = KNOWN $number_value(pnumber)]
+  -- if $coerce_number(pvalue) = COERCED pnumber b_warning
+  -- if S_warned = $leading_warning(S, b_warning, z)
+def $unary_apply(S, NEGATIVE, pvalue, z) = S_warned[.RESULT = KNOWN $number_value($num_mul(pnumber, NINT $(-1)))]
+  -- if $coerce_number(pvalue) = COERCED pnumber b_warning
+  -- if S_warned = $leading_warning(S, b_warning, z)
+
+dec $stringify(pstate, pvalue, int) : pstate
+def $stringify(S, PFLOAT n, z) = S[.RESULT = KNOWN (PSTRING n_out*)]
+  -- if (n_out*, false) = $number_text(NFLOAT n, 14)
+def $stringify(S, PFLOAT n, z) = S[.RESULT = KNOWN (PSTRING n_out*)][.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" ([117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,115,116,114,105,110,103]) z]]
+  -- if (n_out*, true) = $number_text(NFLOAT n, 14)
+  -- if $(z > 0)
+def $stringify(S, PFLOAT n, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
+  -- if (n_out*, true) = $number_text(NFLOAT n, 14)
+  -- if $(z <= 0)
+def $stringify(S, PSTRING n*, z) = S[.RESULT = KNOWN (PSTRING n*)]
+def $stringify(S, PINT i, z) = S[.RESULT = KNOWN (PSTRING $decimal_integer(i))]
+def $stringify(S, PNULL, z) = S[.RESULT = KNOWN (PSTRING eps)]
+def $stringify(S, PBOOL b, z) = S[.RESULT = KNOWN (PSTRING $echo_value(PBOOL b))]
+
+;; Pure folding classification is used only to expose pending compile-time name
+;; diagnostics; it never replaces runtime evaluation with an oracle observation.
+dec $fold_scalar(expression) : pvalue?
+def $fold_scalar(NScalarInt (INTEGER i) metadata) = (PINT i)
+def $fold_scalar(NScalarFloat (FLOAT text) metadata) = (PFLOAT $hex_bits(text, 0))
+def $fold_scalar(NScalarString (BYTES text) metadata) = (PSTRING $base64(text))
+def $fold_scalar(NExprConstFetch (NName (BYTES text) metadata_1) metadata_2) = (pvalue)
+  -- if $constant(text, $base64(text), 1) = VALUE pvalue
+def $fold_scalar(NExprBinaryOpPlus expression_1 expression_2 metadata) = ($number_value(pnumber))
+  -- if $fold_scalar(expression_1) = (pvalue_1)
+  -- if $fold_scalar(expression_2) = (pvalue_2)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 false
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 false
+  -- if $number_binary(ADD, pnumber_1, pnumber_2) = NUM pnumber
+def $fold_scalar(NExprBinaryOpMinus expression_1 expression_2 metadata) = ($number_value(pnumber))
+  -- if $fold_scalar(expression_1) = (pvalue_1)
+  -- if $fold_scalar(expression_2) = (pvalue_2)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 false
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 false
+  -- if $number_binary(SUBTRACT, pnumber_1, pnumber_2) = NUM pnumber
+def $fold_scalar(NExprBinaryOpMul expression_1 expression_2 metadata) = ($number_value(pnumber))
+  -- if $fold_scalar(expression_1) = (pvalue_1)
+  -- if $fold_scalar(expression_2) = (pvalue_2)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 false
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 false
+  -- if $number_binary(MULTIPLY, pnumber_1, pnumber_2) = NUM pnumber
+def $fold_scalar(NExprBinaryOpDiv expression_1 expression_2 metadata) = ($number_value(pnumber))
+  -- if $fold_scalar(expression_1) = (pvalue_1)
+  -- if $fold_scalar(expression_2) = (pvalue_2)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 false
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 false
+  -- if $number_binary(DIVIDE, pnumber_1, pnumber_2) = NUM pnumber
+def $fold_scalar(NExprUnaryPlus expression metadata) = ($number_value(pnumber))
+  -- if $fold_scalar(expression) = (pvalue)
+  -- if $coerce_number(pvalue) = COERCED pnumber false
+def $fold_scalar(NExprUnaryMinus expression metadata) = ($number_value($num_mul(pnumber, NINT $(-1))))
+  -- if $fold_scalar(expression) = (pvalue)
+  -- if $coerce_number(pvalue) = COERCED pnumber false
+def $fold_scalar(NExprBinaryOpIdentical expression_1 expression_2 metadata) = (PBOOL $strict_identical(pvalue_1, pvalue_2))
+  -- if $fold_scalar(expression_1) = (pvalue_1)
+  -- if $fold_scalar(expression_2) = (pvalue_2)
+def $fold_scalar(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = (PBOOL (~$strict_identical(pvalue_1, pvalue_2)))
+  -- if $fold_scalar(expression_1) = (pvalue_1)
+  -- if $fold_scalar(expression_2) = (pvalue_2)
+def $fold_scalar(expression) = eps
+  -- otherwise
+
+def $name_fold_warning(phpType34) = true
+  -- if phpType34 = expression
+  -- if $fold_scalar(expression) = (PFLOAT n)
+  -- if (n_out*, true) = $number_text(NFLOAT n, 14)
+def $name_fold_warning(phpType34) = false
+  -- otherwise
+
+dec $resolve_name(pstate, poperand, int) : pstate
+def $resolve_name(S, poperand, z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $resolve_name(S, poperand, z) = $stringify(S_read, pvalue, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue

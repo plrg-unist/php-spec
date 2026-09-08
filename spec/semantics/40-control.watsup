@@ -9,6 +9,7 @@ def $cv_name(phpType34) = eps
 dec $atomic_expression(expression) : bool
 def $atomic_expression(NScalarString phpType35 metadata) = true
 def $atomic_expression(NScalarInt phpType24 metadata) = true
+def $atomic_expression(NScalarFloat phpType43 metadata) = true
 def $atomic_expression(NExprConstFetch name metadata) = true
 def $atomic_expression(expression) = false
   -- otherwise
@@ -17,7 +18,7 @@ dec $statement_tasks(statement*) : ptask*
 def $statement_tasks(statement_tail*) = (STMT statement_tail)*
 dec $echo_tasks(expression*) : ptask*
 def $echo_tasks(eps) = eps
-def $echo_tasks(expression :: expression_tail*) = [EVAL expression, EMIT] ++ $echo_tasks(expression_tail*)
+def $echo_tasks(expression :: expression_tail*) = [EVAL expression, EMIT $compiled_line(expression)] ++ $echo_tasks(expression_tail*)
 dec $unset_tasks(expression*) : ptask*
 def $unset_tasks(expression_tail*) = (UNSET expression_tail)*
 
@@ -51,28 +52,85 @@ rule PhpStep/environment-variable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
   -- if $environment_name(n_name*)
-rule PhpStep/dynamic-variable: S ~> S[.TODO = [EVAL expression, NAME_READ $expression_line(expression)] ++ ptask_tail*]
+rule PhpStep/dynamic-variable: S ~> S[.TODO = [EVAL expression, NAME_READ $compiled_line(expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
   -- if phpType34 = expression
 rule PhpStep/name-read: S ~> S_read[.TODO = ptask_tail*]
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
-  -- if S_name = $resolve(S, S.RESULT)
+  -- if S_name = $resolve_name(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_read = $read_name(S_name, $echo_value(pvalue), z)
 rule PhpStep/name-read-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
-  -- if S_name = $resolve(S, S.RESULT)
+  -- if S_name = $resolve_name(S, S.RESULT, z)
   -- if S_name.COMPLETION =/= NORMAL
-rule PhpStep/emit: S ~> S_read[.TODO = ptask_tail*][.EVENTS = S_read.EVENTS ++ [OUTPUT $echo_value(pvalue)]]
-  -- if S.TODO = EMIT :: ptask_tail*
+rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [OUTPUT n_text*]]
+  -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
-rule PhpStep/emit-abrupt: S ~> S_read[.TODO = eps]
-  -- if S.TODO = EMIT :: ptask_tail*
+  -- if S_text = $stringify(S_read, pvalue, z)
+  -- if S_text.COMPLETION = NORMAL
+  -- if S_text.RESULT = KNOWN (PSTRING n_text*)
+rule PhpStep/emit-stringify-abrupt: S ~> S_text[.TODO = eps]
+  -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_text = $stringify(S_read, pvalue, z)
+  -- if S_text.COMPLETION =/= NORMAL
+rule PhpStep/emit-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/binary-plus: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT ADD expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpPlus expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/binary-minus: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT SUBTRACT expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpMinus expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/binary-mul: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT MULTIPLY expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpMul expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/binary-div: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT DIVIDE expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpDiv expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/unary-plus: S ~> S[.TODO = [EVAL expression, UNARY POSITIVE $compiled_line(expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprUnaryPlus expression metadata)) :: ptask_tail*
+rule PhpStep/unary-minus: S ~> S[.TODO = [EVAL expression, UNARY NEGATIVE $compiled_line(expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprUnaryMinus expression metadata)) :: ptask_tail*
+rule PhpStep/binary-identical: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT IDENTICAL expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpIdentical expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/binary-notidentical: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT NOTIDENTICAL expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpNotIdentical expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/binary-left: S ~> S[.TODO = [EVAL expression, BINARY_RIGHT pbin S.RESULT z] ++ ptask_tail*]
+  -- if S.TODO = (BINARY_LEFT pbin expression z) :: ptask_tail*
+rule PhpStep/binary-right: S ~> S_out[.TODO = ptask_tail*]
+  -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if S_left = $resolve_at(S, poperand, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_left.RESULT = KNOWN pvalue_1
+  -- if S_right = $resolve_at(S_left, S.RESULT, z)
+  -- if S_right.COMPLETION = NORMAL
+  -- if S_right.RESULT = KNOWN pvalue_2
+  -- if S_out = $binary_apply(S_right, pbin, pvalue_1, pvalue_2, z)
+rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps]
+  -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if S_left = $resolve_at(S, poperand, z)
+  -- if S_left.COMPLETION =/= NORMAL
+rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps]
+  -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if S_left = $resolve_at(S, poperand, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_right = $resolve_at(S_left, S.RESULT, z)
+  -- if S_right.COMPLETION =/= NORMAL
+rule PhpStep/unary: S ~> S_out[.TODO = ptask_tail*]
+  -- if S.TODO = (UNARY punary z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_out = $unary_apply(S_read, punary, pvalue, z)
+rule PhpStep/unary-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (UNARY punary z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/assign-name: S ~> S[.TODO = [EVAL expression, WRITE_NAME n_name* $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssign (NExprVariable phpType34 metadata_1) expression metadata_2)) :: ptask_tail*
@@ -95,64 +153,64 @@ rule PhpStep/write-name-abrupt: S ~> S_read[.TODO = eps]
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/write-dynamic: S ~> S_cell[.TODO = (WRITE_NAME $echo_value(pvalue) z) :: ptask_tail*][.RESULT = S.RESULT]
   -- if S.TODO = (WRITE_DYNAMIC poperand z) :: ptask_tail*
-  -- if S_name = $resolve_at(S, poperand, z)
+  -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_cell = $acquire_name(S_name, $echo_value(pvalue))
 rule PhpStep/write-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (WRITE_DYNAMIC poperand z) :: ptask_tail*
-  -- if S_name = $resolve_at(S, poperand, z)
+  -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/reference-name: S ~> S[.TODO = [ACQUIRE expression, REF_NAME $base64(text)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssignRef (NExprVariable (BYTES text) metadata_1) expression metadata_2)) :: ptask_tail*
-rule PhpStep/reference-dynamic: S ~> S[.TODO = [EVAL expression_name, PREP_REF expression] ++ ptask_tail*]
+rule PhpStep/reference-dynamic: S ~> S[.TODO = [EVAL expression_name, PREP_REF expression $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssignRef (NExprVariable phpType34 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if phpType34 = expression_name
-rule PhpStep/prepare-reference: S ~> S[.TODO = [ACQUIRE expression, REF_DYNAMIC S.RESULT] ++ ptask_tail*]
-  -- if S.TODO = (PREP_REF expression) :: ptask_tail*
+rule PhpStep/prepare-reference: S ~> S[.TODO = [ACQUIRE expression, REF_DYNAMIC S.RESULT z] ++ ptask_tail*]
+  -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
 rule PhpStep/acquire-name: S ~> S_cell[.TODO = ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_cell = $acquire_name(S, $base64(text))
-rule PhpStep/acquire-dynamic: S ~> S[.TODO = [EVAL expression_name, ACQUIRE_DYNAMIC] ++ ptask_tail*]
+rule PhpStep/acquire-dynamic: S ~> S[.TODO = [EVAL expression_name, ACQUIRE_DYNAMIC $compiled_line(expression_name)] ++ ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if phpType34 = expression_name
 rule PhpStep/acquire-dynamic-cell: S ~> S_cell[.TODO = ptask_tail*]
-  -- if S.TODO = ACQUIRE_DYNAMIC :: ptask_tail*
-  -- if S_name = $resolve(S, S.RESULT)
+  -- if S.TODO = (ACQUIRE_DYNAMIC z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_cell = $acquire_name(S_name, $echo_value(pvalue))
 rule PhpStep/acquire-dynamic-abrupt: S ~> S_name[.TODO = eps]
-  -- if S.TODO = ACQUIRE_DYNAMIC :: ptask_tail*
-  -- if S_name = $resolve(S, S.RESULT)
+  -- if S.TODO = (ACQUIRE_DYNAMIC z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/bind-reference: S ~> S_bound[.TODO = ptask_tail*]
   -- if S.TODO = (REF_NAME n_name*) :: ptask_tail*
   -- if S_bound = $bind_reference(S, n_name*)
 rule PhpStep/bind-dynamic: S ~> S_name[.TODO = (REF_NAME $echo_value(pvalue)) :: ptask_tail*]
-  -- if S.TODO = (REF_DYNAMIC poperand) :: ptask_tail*
-  -- if S_name = $resolve(S, poperand)
+  -- if S.TODO = (REF_DYNAMIC poperand z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
 rule PhpStep/bind-dynamic-abrupt: S ~> S_name[.TODO = eps]
-  -- if S.TODO = (REF_DYNAMIC poperand) :: ptask_tail*
-  -- if S_name = $resolve(S, poperand)
+  -- if S.TODO = (REF_DYNAMIC poperand z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/unset-name: S ~> S_unset[.TODO = ptask_tail*]
   -- if S.TODO = (UNSET (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_unset = $unset_name(S, $base64(text))
-rule PhpStep/unset-dynamic: S ~> S[.TODO = [EVAL expression_name, UNSET_DYNAMIC] ++ ptask_tail*]
+rule PhpStep/unset-dynamic: S ~> S[.TODO = [EVAL expression_name, UNSET_DYNAMIC $compiled_line(expression_name)] ++ ptask_tail*]
   -- if S.TODO = (UNSET (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if phpType34 = expression_name
 rule PhpStep/unset-dynamic-name: S ~> S_unset[.TODO = ptask_tail*]
-  -- if S.TODO = UNSET_DYNAMIC :: ptask_tail*
-  -- if S_name = $resolve(S, S.RESULT)
+  -- if S.TODO = (UNSET_DYNAMIC z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_unset = $unset_name(S_name, $echo_value(pvalue))
 rule PhpStep/unset-dynamic-abrupt: S ~> S_name[.TODO = eps]
-  -- if S.TODO = UNSET_DYNAMIC :: ptask_tail*
-  -- if S_name = $resolve(S, S.RESULT)
+  -- if S.TODO = (UNSET_DYNAMIC z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
   -- if S_name.COMPLETION =/= NORMAL
 
 dec $drive(pstate, nat) : pstate

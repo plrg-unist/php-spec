@@ -4,7 +4,10 @@
     "worker_seconds": 30,
     "process_seconds": 35
   },
-  "seed": 85010,
+  "seeds": {
+    "alias": 85010,
+    "scalar": 6614
+  },
   "scope": "authored scalar and variable-storage checked execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
@@ -51,8 +54,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "5ff54648224a6de8fc99d612ebd04e3c38996fcdbd79ede227c0ab024484398d",
-    "files": 595,
+    "sha256": "f3a1a917b8ae5ad947e3182844e78ee2992de64dc917f25d7693f806e387e9d4",
+    "files": 612,
     "scope": [
       "frontend",
       "adapter",
@@ -115,6 +118,144 @@
       "id": "static-break",
       "source_sha256": "f917932e62c07853d5fe11d41c9fdc6c0d8e1928f6d9e2785d81fde1fbe37f43",
       "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-types",
+      "source_sha256": "f5417a0f4204158c4201413ac6f378fff1787f95af144e7c9ae62b7da8ea89b0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-special-identity",
+      "source_sha256": "6b0bf753e0d786cce1c5f7f40ce5b9e370199dead91f1b410987dc2e386f1649",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "scalar-strict-identity",
+      "source_sha256": "dd79c720e77d677645fabb312b7268525818a6ea9cefc293e1a25f302eada17e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-lines-binary",
+      "source_sha256": "88016f15f4591e2754b2b14a177588323cf8b279049fea137ae89cc8986b919b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-lines-unary",
+      "source_sha256": "a65098dff1ad1de0d22f5bb30118bebc0e4cebd5973ce8b6dd3c1d653a141d07",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-lines-both-missing",
+      "source_sha256": "148e8c6999421bdd097058c0f31e1a157e4982a5cd71b8278a8f2ac13bbb7c23",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-lines-unary-missing",
+      "source_sha256": "1b16aeccf9a45dfa374d0986765f606ee60a947bc4757b6a9b12dff5ce00fbf5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-lines-division",
+      "source_sha256": "8caf9326184853e041856d8d4cd6b4edcfaccb89e8c491dbdd3957ee49368473",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-lines-rhs-assignment",
+      "source_sha256": "c4b07c500d20f4f8493972e7af9dbb46a73551bea6ac943b8dd5d939df2c728c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-basic",
+      "source_sha256": "aec4c627f5e5f4aa7ad9cd64c11ba0eddad55eff4119085d1d8cce454867fe8d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-overflow",
+      "source_sha256": "3612c337e40ba143cd64d70513f2761512e71b0792d7c5dbb16863665ab7a54d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-strings",
+      "source_sha256": "68e6eaabaf29e07a9d124b558bd58ba150e5ade932ac0b0aa7be2c7ff3379b5f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-string-error",
+      "source_sha256": "88a67a5a5ff08d6f09683a96e80ba317f292039ee4b4c1c3713a8a3e0863b01a",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-string-order",
+      "source_sha256": "e177500dac9b99d2591b7fc0307e6584f36976c2091f1987084bc39bd42d4a18",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-zero-divisor",
+      "source_sha256": "beb5973b94771d07ce4fa758969d190de13b15f9f07cb1c4e8eff785095692d0",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-unary",
+      "source_sha256": "e957abbfc2bed741066c3fd840ed38c671215da3e636b3eb2365e4395a4d084f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-unary-error",
+      "source_sha256": "2de8d25d5048589c0c5033e1ef3e7695cc905f54eaea1b9fbf31c34a4456711f",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-float-literals",
+      "source_sha256": "ca71b2c00501fa66a599e5572e050c82f2040f8c93301c702446f4e8bf974587",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-nan-output",
+      "source_sha256": "780a692ea89f93c86cd3c12f501f5a2a94f9a7ebf6aad39bb9cb831df91923d5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-nan-variable-name",
+      "source_sha256": "dcae4fb47434d060a0bca5bc119a7e9f9336f4b75537c7b97951a7fada64743a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-nan-reference-name",
+      "source_sha256": "4d412afa9d6a1de576a38e0a875dd41c54c436f325a70f49ca56a678e89271b2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-delayed-read",
+      "source_sha256": "1794f03a0ceef4f6d90aa525978091cf8058c52a0312af5fb56d938359cda54a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "numeric-captured-read",
+      "source_sha256": "15a6662a8805175405285b5b98c1485a2bbd46621315dd2a4fcb67320eccac23",
+      "semantic_status": "normal",
       "comparison": "pass"
     },
     {
@@ -268,6 +409,12 @@
       "comparison": "pass"
     },
     {
+      "id": "conformance-delayed-read",
+      "source_sha256": "19295ebbb201e747edd5bcbbee4834acb0245c4eaca3ca8343e2e008bbfcb5ac",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
       "id": "generated-alias-00",
       "source_sha256": "20077d5b3e62a393fb6b63230a7fd227d40610e6e3de7ac3ab7f78e5b9a1d8e1",
       "semantic_status": "normal",
@@ -386,6 +533,486 @@
       "source_sha256": "17ce368d13f58ecbba1feb20fb15c18c1f4b273d3fd0b48547f3faa4ba43228f",
       "semantic_status": "normal",
       "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-00",
+      "source_sha256": "1d626c96f6b101e2bceef9a8f3d274e0a9838082125d0b1b4837115136bef6d8",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-01",
+      "source_sha256": "ef0339d2706721ccf1c6b279a426240556b5677d5b8cdc8f6a1cd9c9a31d51da",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-02",
+      "source_sha256": "c3a14826dedda4095a1da184610e33f7dc738148dc2c4d9fcbebfb5738b3e0d5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-03",
+      "source_sha256": "fba04f5333e925db028999f9e197c65e8b88cd1248eb242efff7bc6ecc81ccc9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-04",
+      "source_sha256": "1cf72f539305f838bc0dd6039a88f4509c9bd492f721ee01c94c63f72b0d017d",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-05",
+      "source_sha256": "f76af897fc126a045e9641e55bb5a45c2b6acdb4e44463230e4497dc68b1d289",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-06",
+      "source_sha256": "19cbd95844ff389645b02917657b286b0c92b942d9205ecbdc04d9502e9b3177",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-07",
+      "source_sha256": "5ba72c880c60e7c37c76e2929fb3deb6f6d2275b5569cb5f6755ae26a6cc2ae4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-08",
+      "source_sha256": "aaa000447db144efe00c3cee31403eec418c328c91d044e5a00d0ff13f0393c0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-09",
+      "source_sha256": "97718ccee72fed32e311365f89f1b92cabacbb616970cabfe3d432c7fefd8087",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-10",
+      "source_sha256": "b5fa35829a8bcd3bdc125f9e2d3ba72f94e6b16453ac3abfd711c93794049707",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-11",
+      "source_sha256": "71a8c95cae32ee7827f0436dfbe0c65aa3c6025ffc36ad2a88be0626b32fb92e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-12",
+      "source_sha256": "5bd30baf401a1f4ec226b462cfb9a0d04fdec8d01122d4b92e19c85d8a3fad48",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-13",
+      "source_sha256": "93d1634c52ac1aaafada0522cdb213d3b4469e545b625f3e9c3f3f67dbb1f2cd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-14",
+      "source_sha256": "f0adac2d768f85be41deb969b62d294f65c20a7201e912913515092dd9dcf429",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-15",
+      "source_sha256": "53a93646a16dac7674f8af36b3f6a34b4a5fb9080b439d92a35337c542dc2640",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-16",
+      "source_sha256": "cd4e9b104208987383550a487792087ff13b29a167dc2e22906d715bcdd35572",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-17",
+      "source_sha256": "de2acdf7f65cc75dde717871406e21e43cb748de044887b909b09fc10ea83daa",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-18",
+      "source_sha256": "4f026964ba8c9980ad9b42cd7bb9d6752667f022d2a1a18a941127b60ea2d861",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-19",
+      "source_sha256": "c809a4c3d8fa26c39973aeabaed7e3e0018ea1f7600c7dc92938cc8cf960b5e9",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-20",
+      "source_sha256": "563e1cce46d5373deed19b28b2bef58cb5a733d7e31fb0f3ce03b4254fd076fa",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-21",
+      "source_sha256": "c1feedeb030594e917c3875f44d4925f1c24cbded92a5a113d83eefd59a27e40",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-22",
+      "source_sha256": "ad58376ce3d08c1224b37a7ef0f9b7884cee8dff28956dae7b97072e04feffb5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-23",
+      "source_sha256": "2b7ff8b8904fd6771a8f533cd8958de9477f81dd1959010137b195d0b0cadcf4",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-24",
+      "source_sha256": "b3db52aaff17187051d457511159202e1125823162fd37d4597c1368ca73a79d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-25",
+      "source_sha256": "56eb448833f118cccb6ebff94f348636e48eaff92658d6af146af6dd6ef87c7d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-26",
+      "source_sha256": "c34b1884206e5e15b00fde01310aa9e1dd7697aec9cc3ad39ec2a19ab6cbc0b6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-27",
+      "source_sha256": "2ddfa5cfce33ff5e05bf980e5e84b93fcf0150f9414b934c0b5fd9158acbbe41",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-28",
+      "source_sha256": "cc16aea8cdc2fbc10496cdcf7d020480b90d5112cdd5269ebb5bb5820094e701",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-29",
+      "source_sha256": "5db20e66cdf0cd1a76859020e073d2170f02f0ef6ba6f3da918d1c1dda5f375d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-30",
+      "source_sha256": "299a872e5358c1955136133abf324d00073b125740118b8b280c249666a40e12",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-31",
+      "source_sha256": "1f34d9e2e8ea66947d5609a04e316e4fb52e6662e9909bc40819d9088c1abce8",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-32",
+      "source_sha256": "ad09876a7a3d38fcb69f21b4412d5fb1251ef16d640900d0587da6cbdb692080",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-33",
+      "source_sha256": "fb34822ab82869763cf46d4c7c3d7cdd8be97c3e22878b1b42c01b7370f39881",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-34",
+      "source_sha256": "1efae70913d9b722b8edd52ea4fd7564d2ab0f6fd53b31c83c91301867898db1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-35",
+      "source_sha256": "2ddfa5cfce33ff5e05bf980e5e84b93fcf0150f9414b934c0b5fd9158acbbe41",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-36",
+      "source_sha256": "19cbd95844ff389645b02917657b286b0c92b942d9205ecbdc04d9502e9b3177",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-37",
+      "source_sha256": "0aabd148edd7da16b1ef89170d4b9fff24555e22f940bc0f97d76db2671ed4a8",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-38",
+      "source_sha256": "7dd4d19de9577ef1db03e5c3fcbf75aa0bc29e12acb20e6e2668a3f577f4999e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-39",
+      "source_sha256": "b8e603288b233e548cdda3c5c1bd8810d697fbd5cd4ca15a099bfa84168bb7f2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-40",
+      "source_sha256": "c3f5bb2bdcf5090bcd7a4006f09e993a5f4d9d336aa5ccbf92a6e43b78b1718f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-41",
+      "source_sha256": "645a1fecf562d64a76f763d6cc9891779a57ebf8b289a07976f18a990c6455a7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-42",
+      "source_sha256": "5c23abe567003435a45a582966bf7ef2ef35778c353522c31ad0dccf51f6c122",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-43",
+      "source_sha256": "3ca636b7cadc54d596c941297ea0f36a40057b7ad455cf65908954ba82711700",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-44",
+      "source_sha256": "9fe85ddba6d6bbe35e8bc8a480c3ddc507365eaff9bf048db755e5f132127cf1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-45",
+      "source_sha256": "bda333ab69847c12ede7e5d40fdf413e21bafb6bcd1bf329a47a770920a5509b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-46",
+      "source_sha256": "13bdd366196c138554b7dbb8581a113a0e491193b6766a5e94c5920b80e6ce40",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-47",
+      "source_sha256": "da9867f14f36393454b32427299a998d375390839049d120eee71e6efc8f8cd8",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-48",
+      "source_sha256": "a641fda02373e39b3826e399271359a3fcb49a486aef6412b7e368463a14558c",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-49",
+      "source_sha256": "f2ce1dcc6263ddfb037ca5ed4911155c644b4cac0a58efa88d07c3fa7015a9d2",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-50",
+      "source_sha256": "cb6f626a802272200ee9882209b36a86a39f13e21ee4a59c4d66396a081a16d2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-51",
+      "source_sha256": "d4d856beae89662ff36feb7ac936e57f6f1cb640e7a4c8e7bc59f41c9264ace7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-52",
+      "source_sha256": "ae685614877246997204f7eda6060059b18f7cebc7390e33940fa229adc6acab",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-53",
+      "source_sha256": "143214ae3fa9e65c58aa370ef48a58f57148f6bd497c0d3b1700a74684c93fba",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-54",
+      "source_sha256": "d5aed31264a2b39c556442fea3724ef0f833b9e378737bf94bb4e121f52c5c06",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-55",
+      "source_sha256": "854a4dcb6782448fd627d25d540e55693001c00c330f8fc8a008494bf51fc859",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-56",
+      "source_sha256": "866a123e78d78559c98d9110927e245948280ed01eaf1f850d55dc834daa1ff8",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-57",
+      "source_sha256": "deef6872c42993ba3652461b36fba778627b424abd348f01b10293162b7cfa8e",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-58",
+      "source_sha256": "c517a27a4dc79ca5d5e05b2f24c93304c23c388f2f1586fa1506c43bb25bb2d5",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-59",
+      "source_sha256": "0527bf7c7d1dd3f7c42783e16573d9498b0d7106a35ee58e5c22c868d02d5752",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-60",
+      "source_sha256": "98ad81c667e7d47baab9281dbff5f29a8989ebbd1316c1684b331e0c09121900",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-61",
+      "source_sha256": "3f352a074bf71d382d1504fb5eb7399fddd7170ce3d05d60749ac1f4267e98a4",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-62",
+      "source_sha256": "ca8a6be1eed88b6034e8d159370c54a4dfa5aeaa6c048347dd6a86e40352d555",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-63",
+      "source_sha256": "6629a6001d8f2e299353d3c01966c3336a29cdc792828f94f885739b9b0c1247",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-64",
+      "source_sha256": "7170a84a8916460a6f553019a26692de737671d095abfacccbd81d464c15e7a9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-65",
+      "source_sha256": "9a1bed9173e47d524103749d66b42d74c82adf8d89c40a210f0bf082d4221ecf",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-66",
+      "source_sha256": "3270d5ed920d725026aab5d1f5672f28712a2443685ef6fcfe5a2da8a20c3b03",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-67",
+      "source_sha256": "d08ef67dddaf66e5c3bf2cb3b346bacc727e03a6130a422d67d4dc7c4cd17889",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-68",
+      "source_sha256": "a383b6fc7be628c01b51a109fa6aa0e689c751ae8f65303731a26d7f9a17ee87",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-69",
+      "source_sha256": "8751f663dd38cfbb56f7cdd4d6f1caadd04d289b3ecf07f2ef258080301641f5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-70",
+      "source_sha256": "29532d43c5c18ec7e11d0365387faaffccdd0ef6bde3a7d291529ca200c8ae27",
+      "semantic_status": "php_error",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-71",
+      "source_sha256": "e64e2add908af5c9d1c209271ea31b6c053e65afdd665a3cf934fccec06b3f14",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-72",
+      "source_sha256": "9aa2c569867dcd703b8429e45ae49fc5844056098b386db785c6a43f33d1b76f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-73",
+      "source_sha256": "30f2ed2bb31cfb68e1a6d594dbf038e0d1e6bd166fed95af2040ac89cc47936a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-74",
+      "source_sha256": "1bb64b5af06cc0289b14524d607ec317811414a9a50012eb78b73a15fde26066",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-75",
+      "source_sha256": "9bac399ee48d9cd2d236c56e61229b409df8855fc372b5ff25f8dd5004cebb93",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-76",
+      "source_sha256": "13e7e08dd57a6f8fe75acd305e65e90f2106b18ab9d9c48e717d262ed6a248dc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-77",
+      "source_sha256": "fa0eedf671db6708400460f53603c867c4859bc0a28fa77ce38734ad75508311",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-78",
+      "source_sha256": "57255c5b457f6339e91e7b706397e2709c66bb718aff2541bc474ea6f12103a3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "generated-scalar-79",
+      "source_sha256": "9c8cb4d52f3ce0e173bda0416d7b96e0b62a77af18c8bdb2645bda7bbb20f912",
+      "semantic_status": "normal",
+      "comparison": "pass"
     }
   ],
   "negative_checks": [
@@ -393,7 +1020,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-gt5qz4qt/unsupported.php"
+        "/tmp/php-semantics-zd4ebwdz/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -409,10 +1036,10 @@
       }
     },
     {
-      "source": "PD9waHAgZWNobyBQSFBfSU5UX01BWDs=",
+      "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-gt5qz4qt/unsupported.php"
+        "/tmp/php-semantics-zd4ebwdz/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -431,7 +1058,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-gt5qz4qt/unsupported.php",
+        "/tmp/php-semantics-zd4ebwdz/unsupported.php",
         "--steps",
         "0"
       ],
@@ -452,7 +1079,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-gt5qz4qt/unsupported.php",
+        "/tmp/php-semantics-zd4ebwdz/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -465,12 +1092,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-gt5qz4qt/unsupported.php.missing"
+        "/tmp/php-semantics-zd4ebwdz/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-gt5qz4qt/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-zd4ebwdz/unsupported.php.missing'"
       }
     },
     {
@@ -543,6 +1170,36 @@
         "exit_status": null,
         "diagnostic": null,
         "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkbWlzc2luZzsgJHtOQU59PTE7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time NaN name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkbWlzc2luZzsgJHtJTkYtSU5GfT0xOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time NaN name diagnostic",
         "events": [],
         "frontend": "accepted",
         "checked": "program"
@@ -667,11 +1324,138 @@
           "CELL": "0"
         }
       }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Scalar_Float",
+                    "fields": [
+                      {
+                        "float": "7ff8000000000000"
+                      }
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PFLOAT",
+                "args": [
+                  "9221120237041090560"
+                ]
+              }
+            ]
+          },
+          "CELL": "0"
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Expr_BinaryOp_Div",
+                    "fields": [
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "1"
+                          }
+                        ],
+                        "meta": {}
+                      },
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "0"
+                          }
+                        ],
+                        "meta": {}
+                      }
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing source line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PINT",
+                "args": [
+                  "0"
+                ]
+              }
+            ]
+          },
+          "CELL": "0"
+        }
+      }
     }
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "6f904d11e41ff33bd934f90d84fe400254817b19bdb0feb413260111e5f0b38d",
-    "records": 53
+    "sha256": "789e82b3b0bd6b3260c37b1c8d94a5cbb054b94d97509dc09937ff91f3458726",
+    "records": 157
   }
 }

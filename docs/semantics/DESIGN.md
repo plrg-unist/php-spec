@@ -20,7 +20,10 @@ name expressions can therefore retain a delayed read across RHS effects. A dynam
 write fetch initializes an absent cell to null before consuming its RHS operand;
 a direct variable assignment reads its RHS first. Discarded direct variable reads
 are eliminated by the pinned compiler, whereas dynamic fetches remain observable.
-These distinctions follow `zend_try_compile_cv`, `zend_compile_assign`,
+Diagnostic consumers also retain the compiler line after child compilation;
+ordinary assignment explicitly resets that line to its left variable. AST start
+lines alone are insufficient for multiline arithmetic. These distinctions follow
+`zend_try_compile_cv`, `zend_compile_assign`,
 `zend_compile_assign_ref`, the `ZEND_FETCH_*`/`ZEND_ASSIGN*` handlers, and
 `zend_assign_to_variable_ex`; minimized source cases retain their diagnostic order.
 
@@ -32,13 +35,28 @@ inventory. Access to an unimplemented request-owned variable is Unsupported,
 including reference acquisition and unset; it cannot fabricate an ordinary local.
 
 The implemented source paths handle empty statements, blocks, inline bytes, scalar
-output, assignments, reference rebinding, dynamic names and unset. Its independent static pass rejects a bare
-`break` outside loop/switch before output. Unknown constants produce an Error;
-known but unimplemented startup constants produce Unsupported. The startup names
+output, assignments, reference rebinding, dynamic names, unset and the numeric bridge below. Its independent static pass rejects a bare
+`break` outside loop/switch before output. Unknown constants produce an Error. Selected integer limits and INF/NAN have pure
+initial values; other known but unimplemented startup constants produce Unsupported. The startup names
 catalog records the pinned CLI environment (including excluded library names),
 not computed semantic values. `scripts/semantic-constant-names.py` regenerates the
 pure lookup. Source evidence is `zend_compile_break_continue`, `zend_compile_echo`,
 `ZEND_ECHO`, `ZEND_FETCH_CONSTANT`, and `zend_get_constant_ex` at the dependency pin.
+
+The numeric bridge decodes literal binary64 hex payloads in the specification,
+then dispatches scalar unary signs and addition/subtraction/multiplication/division
+to the pure numeric modules. Numeric-string conversion retains warning order and
+separate TypeError/DivisionByZeroError completions. Echo uses precision 14 and emits
+NaN conversion warnings. Strict scalar identity gives source tests a type observer,
+including exact versus nonexact division, int/float distinction, signed zero and
+NaN. See NUMERICS.md for helper evidence and still-pending numeric operations.
+
+Dynamic names use the same explicit scalar string conversion and warnings. A pure
+folding classifier detects NaN names whose warning belongs to compilation; those
+cases are currently Unsupported until the compile phase accumulates diagnostics.
+Emitting that warning at runtime would change its order. This pending case and
+missing source context remain distinct from modeled PHP failures. Array/operator
+protocol dispatch and callbacks are later obligations, not native fallbacks.
 
 The static pass currently rejects unsupported syntax before execution. This is a
 visible bootstrap limitation, not a claim that unsupported code always executes.

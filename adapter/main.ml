@@ -199,10 +199,12 @@ let semantic_paths () =
   List.map (fun path -> root ^ "/" ^ path) files
 let semantic_runner = lazy (
   let paths = semantic_paths () in
-  let source = String.concat "\n" (List.map read_all paths) in
+  let definitions = match Pass.elab paths with
+    | Ok definitions -> definitions
+    | Error error -> let at,msg = Pass.to_region_msg error in fail (Util.Error.string_of_error at msg) in
   List.iter (fun def -> match def.it with
     | TypD (id, [], deftyp, _) -> Hashtbl.replace definition_table id.it deftyp
-    | _ -> ()) (elab source);
+    | _ -> ()) definitions;
   let spec = match Backend_boot.Build.spec_of_mode Run.SL_mode paths with
     | Ok spec -> spec
     | Error error -> let at,msg = Pass.to_region_msg error in fail (Util.Error.string_of_error at msg) in

@@ -42,8 +42,12 @@ def observe(state, filename):
             name, line = bytes(map(int, event['args'][0])), int(event['args'][1])
             stderr += (b'Warning: Undefined variable $' + name + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
+        elif event['tag'] == 'DIAGNOSTIC':
+            severity, message, line = event['args']
+            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in ' + os.fsencode(filename)
+                       + b' on line ' + str(line).encode() + b'\n')
     diagnostic = None
-    status = {'NORMAL': 'normal', 'PHPERROR': 'php_error', 'STATICERROR': 'static_rejection',
+    status = {'NORMAL': 'normal', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
     exit_status = 0 if tag == 'NORMAL' else None
     if tag == 'PHPERROR':
@@ -53,6 +57,14 @@ def observe(state, filename):
         location = os.fsencode(filename)
         stderr += (b'Fatal error: Uncaught Error: ' + message + b' in ' + location + b':' + str(line).encode()
                   + b'\nStack trace:\n#0 {main}\n  thrown in ' + location + b' on line ' + str(line).encode() + b'\n')
+        exit_status = 255
+    elif tag == 'THROWN':
+        classname, message, line = fields[0], bytes(map(int, fields[1])), int(fields[2])
+        diagnostic = {'class': classname, 'message': b64(message), 'line': line}
+        location = os.fsencode(filename)
+        stderr += (b'Fatal error: Uncaught ' + classname.encode() + b': ' + message + b' in ' + location
+                   + b':' + str(line).encode() + b'\nStack trace:\n#0 {main}\n  thrown in ' + location
+                   + b' on line ' + str(line).encode() + b'\n')
         exit_status = 255
     elif tag == 'STATICERROR':
         message, line = fields[0].encode(), int(fields[1])

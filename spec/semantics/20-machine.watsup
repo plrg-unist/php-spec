@@ -1,10 +1,11 @@
 ;; Request state and pending work are explicit; PHP effects never use host I/O.
 syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat*
-syntax pevent = OUTPUT nat* | WARNING nat* int
-syntax pcompletion = NORMAL | PHPERROR nat* int | STATICERROR text int | UNSUPPORTED text | BUDGET
+syntax pevent = OUTPUT nat* | WARNING nat* int | DIAGNOSTIC text nat* int
+syntax pcompletion = NORMAL | PHPERROR nat* int | THROWN text nat* int | STATICERROR text int | UNSUPPORTED text | BUDGET
 syntax pcheck = READY | REJECT pcompletion
 syntax peval = VALUE pvalue | ABRUPT pcompletion
-var n : nat
+syntax pbin = ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
+syntax punary = POSITIVE | NEGATIVE
 var z : int
 
 dec $metadata_line(metadataEntry) : int
@@ -27,19 +28,49 @@ def $variable_line(phpType34, metadata) = $expression_line(expression)
   -- if phpType34 = expression
 def $expression_line(NScalarString phpType35 metadata) = $source_line(metadata)
 def $expression_line(NScalarInt phpType24 metadata) = $source_line(metadata)
+def $expression_line(NScalarFloat phpType43 metadata) = $source_line(metadata)
 def $expression_line(NExprConstFetch name metadata) = $source_line(metadata)
 def $expression_line(NExprVariable phpType34 metadata) = $variable_line(phpType34, metadata)
 def $expression_line(NExprAssign expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprAssignRef expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpPlus expression_1 expression_2 metadata) = $source_line(metadata)
+def $expression_line(NExprBinaryOpMinus expression_1 expression_2 metadata) = $source_line(metadata)
+def $expression_line(NExprBinaryOpMul expression_1 expression_2 metadata) = $source_line(metadata)
+def $expression_line(NExprBinaryOpDiv expression_1 expression_2 metadata) = $source_line(metadata)
+def $expression_line(NExprUnaryPlus expression metadata) = $source_line(metadata)
+def $expression_line(NExprUnaryMinus expression metadata) = $source_line(metadata)
+def $expression_line(NExprBinaryOpIdentical expression_1 expression_2 metadata) = $source_line(metadata)
+def $expression_line(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $source_line(metadata)
 def $expression_line(expression) = 0
+  -- otherwise
+
+;; Zend emits consumers with the current compiler line after child compilation.
+;; This differs from the AST start line and assignment's explicit LHS reset.
+dec $compiled_line(expression) : int
+def $compiled_line(NExprVariable (BYTES text) metadata) = $source_line(metadata)
+def $compiled_line(NExprVariable phpType34 metadata) = $compiled_line(expression)
+  -- if phpType34 = expression
+def $compiled_line(NExprAssign expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $compiled_line(NExprAssignRef expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprBinaryOpPlus expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprBinaryOpMinus expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprBinaryOpMul expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprBinaryOpDiv expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprBinaryOpIdentical expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $compiled_line(expression_2)
+def $compiled_line(NExprUnaryPlus expression metadata) = $compiled_line(expression)
+def $compiled_line(NExprUnaryMinus expression metadata) = $compiled_line(expression)
+def $compiled_line(expression) = $expression_line(expression)
   -- otherwise
 
 ;; This initial static pass checks supported statement forms before any effects.
 dec $check_lvalue(expression) : pcheck
 dec $check_variable(phpType34) : pcheck
+dec $name_fold_warning(phpType34) : bool
 dec $check_expression(expression) : pcheck
 def $check_expression(NScalarString (BYTES text) metadata) = READY
 def $check_expression(NScalarInt (INTEGER z) metadata) = READY
+def $check_expression(NScalarFloat (FLOAT text) metadata) = READY
 def $check_expression(NExprConstFetch (NName (BYTES text) metadata_1) metadata_2) = READY
 def $check_expression(NExprVariable phpType34 metadata) = $check_variable(phpType34)
 def $check_expression(NExprAssign expression_1 expression_2 metadata) = $check_expression(expression_2)
@@ -50,6 +81,32 @@ def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = $chec
   -- if $check_lvalue(expression_1) = READY
 def $check_expression(NExprAssignRef expression_1 expression_2 metadata) = REJECT pcompletion
   -- if $check_lvalue(expression_1) = REJECT pcompletion
+def $check_expression(NExprBinaryOpPlus expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprBinaryOpPlus expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_expression(expression_1) = REJECT pcompletion
+def $check_expression(NExprBinaryOpMinus expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprBinaryOpMinus expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_expression(expression_1) = REJECT pcompletion
+def $check_expression(NExprBinaryOpMul expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprBinaryOpMul expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_expression(expression_1) = REJECT pcompletion
+def $check_expression(NExprBinaryOpDiv expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprBinaryOpDiv expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_expression(expression_1) = REJECT pcompletion
+def $check_expression(NExprUnaryPlus expression metadata) = $check_expression(expression)
+def $check_expression(NExprUnaryMinus expression metadata) = $check_expression(expression)
+def $check_expression(NExprBinaryOpIdentical expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprBinaryOpIdentical expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_expression(expression_1) = REJECT pcompletion
+def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $check_expression(expression_2)
+  -- if $check_expression(expression_1) = READY
+def $check_expression(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = REJECT pcompletion
+  -- if $check_expression(expression_1) = REJECT pcompletion
 def $check_expression(expression) = REJECT (UNSUPPORTED "expression")
   -- otherwise
 
@@ -58,8 +115,11 @@ def $check_lvalue(expression) = REJECT (UNSUPPORTED "lvalue")
   -- otherwise
 
 def $check_variable(BYTES text) = READY
+def $check_variable(phpType34) = REJECT (UNSUPPORTED "compile-time NaN name diagnostic")
+  -- if $name_fold_warning(phpType34)
 def $check_variable(phpType34) = $check_expression(expression)
   -- if phpType34 = expression
+  -- if ~$name_fold_warning(phpType34)
 
 dec $check_unsets(expression*) : pcheck
 def $check_unsets(eps) = READY
@@ -104,7 +164,19 @@ def $lower_byte(n) = $(n + 32)
 def $lower_byte(n) = n
   -- otherwise
 
+dec $builtin_value(text) : pvalue?
+def $builtin_value("UEhQX0lOVF9NQVg=") = (PINT 9223372036854775807)
+def $builtin_value("UEhQX0lOVF9NSU4=") = (PINT $(-9223372036854775808))
+def $builtin_value("UEhQX0lOVF9TSVpF") = (PINT 8)
+def $builtin_value("RV9BTEw=") = (PINT 30719)
+def $builtin_value("SU5G") = (PFLOAT 9218868437227405312)
+def $builtin_value("TkFO") = (PFLOAT 9221120237041090560)
+def $builtin_value(text) = eps
+  -- otherwise
+
 dec $constant(text, nat*, int) : peval
+def $constant(text, n*, z) = VALUE pvalue
+  -- if $builtin_value(text) = (pvalue)
 def $constant(text, n*, z) = VALUE PNULL
   -- if ($lower_byte(n))* = [110, 117, 108, 108]
 def $constant(text, n*, z) = VALUE (PBOOL true)
@@ -113,6 +185,7 @@ def $constant(text, n*, z) = VALUE (PBOOL false)
   -- if ($lower_byte(n))* = [102, 97, 108, 115, 101]
 def $constant(text, n*, z) = ABRUPT (UNSUPPORTED "initial constant")
   -- if $initial_constant(text)
+  -- if $builtin_value(text) = eps
   -- if ($lower_byte(n))* =/= [110, 117, 108, 108]
   -- if ($lower_byte(n))* =/= [116, 114, 117, 101]
   -- if ($lower_byte(n))* =/= [102, 97, 108, 115, 101]
@@ -128,6 +201,7 @@ def $constant(text, n*, z) = ABRUPT (PHPERROR n* z)
 dec $evaluate(expression) : peval
 def $evaluate(NScalarString (BYTES text) metadata) = VALUE (PSTRING $base64(text))
 def $evaluate(NScalarInt (INTEGER z) metadata) = VALUE (PINT z)
+def $evaluate(NScalarFloat (FLOAT text) metadata) = VALUE (PFLOAT $hex_bits(text, 0))
 def $evaluate(NExprConstFetch (NName (BYTES text) metadata_1) metadata_2) = $constant(text, $base64(text), $source_line(metadata_2))
 def $evaluate(expression) = ABRUPT (UNSUPPORTED "expression")
   -- otherwise
@@ -138,4 +212,6 @@ def $echo_value(PBOOL false) = eps
 def $echo_value(PBOOL true) = [49]
 def $echo_value(PINT z) = $decimal_integer(z)
 def $echo_value(PSTRING n*) = n*
+def $echo_value(PFLOAT n) = n_out*
+  -- if (n_out*, b_warning) = $number_text(NFLOAT n, 14)
 
