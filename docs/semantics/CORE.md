@@ -121,3 +121,6 @@ Boundary decisions constrain the eventual claim, not the implementation schedule
 All supported environment cases of each core construct require rules, independent
 review and source evidence. There are currently no intentional engine divergences;
 any future departure must retain its exact mismatch and reviewed rationale.
+
+Intentional departures from engine defects are recorded separately in
+[DISCREPANCIES](DISCREPANCIES.md); they never count as differential agreement.

@@ -1,0 +1,101 @@
+{
+  "scope": "oracle-only engine defect observations; no semantic agreement claim",
+  "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "target": [
+    "8.5.10",
+    "cli",
+    8,
+    false
+  ],
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "cwd": "/home/user/workspace/php-spec",
+  "timeout_seconds": 5,
+  "fingerprints": {
+    "tests/semantics/engine_defects.py": "f15f54343702aa68cd1d35d5c0e2717a438d61874440a2e917ffafc2a2587b04",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+    "frontend/worker.php": "17fe6564504c73d19512658f31a3c08bcc5a076100033abe9e02859e7b65ed7d",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225"
+  },
+  "records": [
+    {
+      "id": "relative-static-no-parent",
+      "source": "<?php class C { function f(): namespace\\static {} }",
+      "source_sha256": "484446ee1e1e2fc0ed8dba44ced17bcea7a5d65efda859f0db8b83bb4457249f",
+      "mode": "lint",
+      "frontend_accepted": true,
+      "native_parser_accepted": true,
+      "stdout": "",
+      "stderr": "",
+      "returncode": -11,
+      "outcome": "engine-crash"
+    },
+    {
+      "id": "relative-static-parent",
+      "source": "<?php class P {} class C extends P { function f(): namespace\\static { return new P; } } echo ((new C)->f()) instanceof P;",
+      "source_sha256": "f6e891448d686a938190dc6529c2ceb2b2c56f6f9417d7dc366c90acf28e4506",
+      "mode": "execute",
+      "frontend_accepted": true,
+      "native_parser_accepted": true,
+      "stdout": "MQ==",
+      "stderr": "",
+      "returncode": 0,
+      "outcome": "normal"
+    },
+    {
+      "id": "bare-static-parent-control",
+      "source": "<?php class P {} class C extends P { function f(): static { return new P; } } echo ((new C)->f()) instanceof P;",
+      "source_sha256": "932d206e2fad9dad6f8b92e0865698a90c0923c6dcef5bd1d3092bf7c2909b5f",
+      "mode": "execute",
+      "frontend_accepted": true,
+      "native_parser_accepted": true,
+      "stdout": "",
+      "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQzo6ZigpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIEMsIFAgcmV0dXJuZWQgaW4gU3RhbmRhcmQgaW5wdXQgY29kZToxClN0YWNrIHRyYWNlOgojMCBTdGFuZGFyZCBpbnB1dCBjb2RlKDEpOiBDLT5mKCkKIzEge21haW59CiAgdGhyb3duIGluIFN0YW5kYXJkIGlucHV0IGNvZGUgb24gbGluZSAxCg==",
+      "returncode": 255,
+      "outcome": "php-error"
+    },
+    {
+      "id": "relative-static-global-control",
+      "source": "<?php function f(): namespace\\static {}",
+      "source_sha256": "1f7ef377bfa7d0cccf3bd187185ac7f85e9e0a0456cbddf173d2b32c671f4f0e",
+      "mode": "lint",
+      "frontend_accepted": true,
+      "native_parser_accepted": true,
+      "stdout": "RXJyb3JzIHBhcnNpbmcgU3RhbmRhcmQgaW5wdXQgY29kZQo=",
+      "stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgInN0YXRpYyIgd2hlbiBubyBjbGFzcyBzY29wZSBpcyBhY3RpdmUgaW4gU3RhbmRhcmQgaW5wdXQgY29kZSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "returncode": 255,
+      "outcome": "php-error"
+    },
+    {
+      "id": "relative-static-new-control",
+      "source": "<?php class C { function f() { return new namespace\\static; } } echo ((new C)->f()) instanceof C;",
+      "source_sha256": "ce29218598e536f1498f7f1957af47137818863d4834d2a4060555e31b3bcb56",
+      "mode": "execute",
+      "frontend_accepted": true,
+      "native_parser_accepted": true,
+      "stdout": "MQ==",
+      "stderr": "",
+      "returncode": 0,
+      "outcome": "normal"
+    }
+  ]
+}

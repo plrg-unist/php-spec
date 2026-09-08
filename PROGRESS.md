@@ -78,13 +78,18 @@ timeouts and interrupted campaigns never count as validation passes.
   `4e9256ba` passed 3,660 independent bit-exact cases; prep `54e90ae2` (600+1),
   FMA `57ac6be7` (7 identities), data `ac315d39` (657 ELF words, `b73632b8`).
   See `docs/semantics/POWER-PROVENANCE.md`.
-- No intentional engine disagreement.
+- Intentional interpretation: namespace-relative `static` declaration types use
+  late-static semantics. The pinned engine crashes without a parent and wrongly
+  substitutes the parent otherwise; exact observations and rationale are in
+  `docs/semantics/DISCREPANCIES.md`. Crash reproduction is not conformance.
 
 Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfinished
 entries and requires independent review plus source/helper evidence separately.
 Nine isolated evidence negatives reject source/binary/path drift and missing,
 escaping or unproved evidence; `make test-semantics` includes them.
 Next: review writable array locations/self-assignment, then COW/reference
-topology; review local static/type rules after harness evidence fixes. Phase1 remains partial: source power,
+topology; finish local type gate after the explicit relative-static correction. The initial
+686-case helper repeat passed exact diagnostics and stable closure; source declaration
+activation is still pending. Phase1 remains partial: source power,
 remainder/shifts/bitwise/incdec/casts, mixed comparisons, handlers and configurable
 precision still need integration and evidence. Frames/lifecycle remain pending.
