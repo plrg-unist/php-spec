@@ -118,3 +118,48 @@ def generated():
                 result.pop('expected')
                 result['ini'] = {'zend.multibyte': '1', 'internal_encoding': 'UTF-8', 'zend.script_encoding': encoding, 'mbstring.substitute_character': substitute}
                 yield result
+
+    for name, template in {
+        'method': 'class C {MOD function f() {}}',
+        'constant': 'class C {MOD const C=1;}',
+        'parameter': 'class C {function __construct(MOD $x){}}',
+        'hook': 'class C {public int $x {MOD get=>1;}}',
+        'property': 'class C {MOD $x;}',
+        'trait-alias': 'class C {use T {f as MOD g;}}',
+        'class': 'MOD class C{}',
+        'anonymous': 'new MOD class{};',
+    }.items():
+        for modifier in ['public', 'protected', 'private', 'abstract', 'final', 'static', 'readonly', 'public(set)', 'protected(set)', 'private(set)', 'var']:
+            result = item('<?php ' + template.replace('MOD', modifier), 'modifier-' + name)
+            result.pop('expected')
+            yield result
+
+    for expression in ['"UTF"."-8"', '("UTF".("-"."8"))', '"CP" . 932.1', '"SJIS" . ""', '"SJIS\\0ignored" . ""', '1', '1.2', '1 . 2', 'true', 'null', '-1', '+1', '1+2', '(string)1', '__FILE__']:
+        for precision in ['3', '14']:
+            result = item('<?php declare(encoding=' + expression + '); echo "\\u{1F600}";', 'encoding-literal-fold')
+            result.pop('expected')
+            result['ini'] = {'zend.multibyte': '1', 'internal_encoding': 'UTF-8', 'precision': precision}
+            yield result
+    for precision in ['3', '14']:
+        result = item(b'<?php declare(encoding="CP" . 932.1); echo "\x81\x5c";', 'encoding-precision-source')
+        result.pop('expected')
+        result['ini'] = {'zend.multibyte': '1', 'internal_encoding': 'UTF-8', 'precision': precision}
+        yield result
+
+    inventory = json.loads((ROOT / 'coverage/encoding-spellings.json').read_text())
+    for spelling in inventory['spellings']:
+        result = item(base64.b64decode(spelling['source_b64']), 'encoding-spelling-profile')
+        result.pop('expected')
+        result['ini'] = {'zend.multibyte': '1', 'internal_encoding': 'UTF-8', 'zend.script_encoding': spelling['name']}
+        yield result
+        source = '<?php declare(encoding="' + spelling['name'] + '"); echo "\\u{1F600}";'
+        result = item(source, 'encoding-spelling-declaration')
+        result.pop('expected')
+        result['ini'] = {'zend.multibyte': '1', 'internal_encoding': 'UTF-8'}
+        yield result
+
+    for comment in ['/* } comment */', '// } comment\n', '# } comment\n']:
+        for expression in ['$a COMMENT', '$a[3] COMMENT', '$a->COMMENT p', '$a[COMMENT 3]', '$a COMMENT [3]', '${a} COMMENT']:
+            inner = '{' + expression.replace('COMMENT', comment) + '}'
+            for source in ['<?php echo "' + inner + '";', '<?php echo `' + inner + '`;', '<?php echo <<<H\n' + inner + '\nH;']:
+                yield item(source, 'interpolation-comment-placement')

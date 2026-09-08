@@ -221,6 +221,21 @@ static void scan_file(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
 PHP_FUNCTION(php_spec_parse_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
 PHP_FUNCTION(php_spec_lex_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
+/* Use the exact pinned registry (canonical, MIME, then aliases), including
+ * its C-string declaration semantics. This reads metadata, never source code. */
+PHP_FUNCTION(php_spec_encoding_name) {
+    zend_string *name;
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_STR(name)
+    ZEND_PARSE_PARAMETERS_END();
+    const zend_encoding *encoding = zend_multibyte_fetch_encoding(ZSTR_VAL(name));
+    if (!encoding) RETURN_NULL();
+    RETURN_STRING(zend_multibyte_get_encoding_name(encoding));
+}
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_encoding_name, 0, 1, IS_STRING, 1)
+    ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_parse_file, 0, 1, _IS_BOOL, 0)
     ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -231,6 +246,7 @@ ZEND_END_ARG_INFO()
 static const zend_function_entry functions[] = {
     PHP_FE(php_spec_parse_file, arginfo_parse_file)
     PHP_FE(php_spec_lex_file, arginfo_lex_file)
+    PHP_FE(php_spec_encoding_name, arginfo_encoding_name)
     PHP_FE_END
 };
 zend_module_entry php_file_module_entry = {

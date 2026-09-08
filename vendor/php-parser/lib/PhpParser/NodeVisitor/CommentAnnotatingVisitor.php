@@ -125,6 +125,22 @@ class CommentAnnotatingVisitor extends NodeVisitorAbstract {
             if ($owner === null) {
                 throw new \LogicException('Comment has no syntax attachment');
             }
+            // A comment following an interpolated expression belongs to that
+            // expression even when its canonical {$...} span excludes the
+            // closing brace (the older ${...} span includes it).
+            if ($owner instanceof Node\Scalar\InterpolatedString
+                || $owner instanceof Node\Expr\ShellExec) {
+                foreach ($owner->parts as $part) {
+                    if (!$part instanceof Node\Expr || $part->getEndTokenPos() >= $pos) continue;
+                    $after = $part->getEndTokenPos() + 1;
+                    while (isset($this->tokens[$after]) && in_array($this->tokens[$after]->id,
+                        [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT], true)) ++$after;
+                    if ($after > $pos && $this->tokens[$after]->text === '}') {
+                        $owner = $part;
+                        break;
+                    }
+                }
+            }
             $token = $this->tokens[$pos];
             $class = $token->id === \T_DOC_COMMENT ? Comment\Doc::class : Comment::class;
             $comment = new $class($token->text, $token->line, $token->pos, $pos,

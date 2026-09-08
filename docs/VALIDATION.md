@@ -2,9 +2,10 @@
 
 The reference is the local PHP 8.5.10 source-file parser, invoked by the narrow
 native helper without compilation or evaluation. PHP-Parser receives a separate
-raw file-lexer token stream and applies its own grammar. `TOKEN_PARSE` string
-scanning and lint are separate observations; the former differs on BOMs,
-shebangs and encoding profiles, while the latter adds compilation checks.
+raw file-lexer token stream and applies its own grammar. Lint adds separate
+compilation checks. The worker also offers optional `oracle-string` diagnostics
+using `TOKEN_PARSE`; that operation differs on BOMs, shebangs and encoding
+profiles and is not the corpus reference or a retained full-corpus observation.
 The parsers share the lexer, so agreement is not independent lexical validation.
 
 Run `python3 tests/validate.py --elaborate` for targeted checked round trips and
@@ -12,14 +13,23 @@ Run `python3 tests/validate.py --elaborate` for targeted checked round trips and
 `python3 tests/wire_negative.py` for malformed deep-transport rejection.
 The corpus run adds `--corpus --lint-all --output coverage/results-corpus.jsonl`
 to `tests/validate.py`; bounded interaction cases use `--generated`.
+`python3 tests/parallel_validate.py --corpus --lint-all` runs the same checks
+in four isolated worker shards. It verifies every eligible source ordinal
+exactly once, matching fingerprints and counts, and restores the sequential
+record order. A failed or incomplete shard fails the combined run.
 Reports distinguish passes, parser rejections, compilation-phase differences,
 acceptance disagreements, conversion failures, and AST/printing instability.
 An interrupted run is exploratory evidence, never the completion report.
+Compilation-phase discrepancies require an exact source/configuration match
+in `tests/phase-discrepancies.json`, the reviewed frontend restriction and
+matching pinned lint diagnostic. An unrelated compilation error cannot excuse
+a frontend rejection; an unreviewed discrepancy fails the gate.
 
 Each successful source passes through fresh PHP-Parser nodes, a real SpecTec
 value checked against elaborated declarations, fresh reconstructed nodes, and
 the standard printer. The harness checks exact transport preservation in both
-directions, output parser acceptance, printing idempotence, and normalized AST
+directions on both branches, records original and printed parser observations,
+and checks output acceptance, printing idempotence, and normalized AST
 equality. Targeted runs additionally elaborate typed `.watsup` fixtures.
 Every parsed source compares its raw comment-token inventory with retained AST
 comments, preventing simultaneous loss in both round-trip branches.
@@ -36,7 +46,7 @@ are compared. This accounts for Standard's documented comment reformatting;
 the exact original comment bytes remain in the transport.
 Initial encoding selection, original spelling provenance and BOM spelling are
 ignored by canonical equality:
-wide canonical output gains a BOM to prevent Zend's content-sensitive heuristic
+Filtered wide canonical output gains a BOM to prevent Zend's content-sensitive heuristic
 from selecting a different character width after formatting. Retained original-spelling bytes
 and encoding/BOM metadata still pass through the checked value and reverse conversion.
 Candidate-list detection can select another initial encoding after byte escapes

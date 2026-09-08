@@ -1,7 +1,7 @@
 {
-  "tested": 86,
+  "tested": 93,
   "counts": {
-    "pass": 72,
+    "pass": 79,
     "parser_rejection": 14
   },
   "nodes": {
@@ -43,8 +43,8 @@
     ],
     "Scalar_InterpolatedString": [
       "tests/fixtures/bytes.php",
-      "tests/fixtures/grammar-gaps.php",
-      "tests/fixtures/interpolation.php"
+      "tests/fixtures/comments-interpolation-0.php",
+      "tests/fixtures/comments-interpolation-1.php"
     ],
     "Scalar_String": [
       "tests/fixtures/bytes.php",
@@ -78,7 +78,7 @@
     "Expr_ArrayDimFetch": [
       "tests/fixtures/calls-access.php",
       "tests/fixtures/comments-attachments.php",
-      "tests/fixtures/expressions.php"
+      "tests/fixtures/comments-interpolation-2.php"
     ],
     "Expr_ClassConstFetch": [
       "tests/fixtures/calls-access.php",
@@ -170,7 +170,7 @@
     "Expr_ConstFetch": [
       "tests/fixtures/classes.php",
       "tests/fixtures/comments-attachments.php",
-      "tests/fixtures/encoding-switch-nested.php"
+      "tests/fixtures/comments-interpolation-0.php"
     ],
     "NullableType": [
       "tests/fixtures/classes.php",
@@ -261,6 +261,11 @@
       "tests/fixtures/comments-attachments.php",
       "tests/fixtures/control-braced.php",
       "tests/fixtures/enums-types.php"
+    ],
+    "Expr_ShellExec": [
+      "tests/fixtures/comments-interpolation-6.php",
+      "tests/fixtures/grammar-gaps.php",
+      "tests/fixtures/interpolation.php"
     ],
     "Stmt_Break": [
       "tests/fixtures/compile-only.php",
@@ -579,10 +584,6 @@
     "Stmt_Static": [
       "tests/fixtures/functions.php"
     ],
-    "Expr_ShellExec": [
-      "tests/fixtures/grammar-gaps.php",
-      "tests/fixtures/interpolation.php"
-    ],
     "InterpolatedStringPart": [
       "tests/fixtures/grammar-gaps.php",
       "tests/fixtures/interpolation.php",
@@ -659,8 +660,8 @@
     ]
   },
   "implementation": {
-    "sha256": "06d1f99bd94d2766e788fde668b3df2f7fe7f3a8ab8607afb51046d479094b12",
-    "files": 499,
+    "sha256": "eac3c76525bef6d1683e5ed72c28e61a3bb1ab084ee1faa0f646d124904f61b4",
+    "files": 520,
     "scope": [
       "frontend",
       "adapter",
@@ -672,8 +673,10 @@
       "vendor/php-parser",
       "Makefile",
       "dune-project",
-      "runtime binaries"
+      "runtime binaries",
+      "encoding-spellings inventory"
     ]
   },
-  "stable_implementation": true
+  "stable_implementation": true,
+  "milestone": 4
 }

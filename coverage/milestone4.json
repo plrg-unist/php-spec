@@ -1,0 +1,155 @@
+{
+  "milestone": 4,
+  "status": "passed",
+  "implementation": {
+    "sha256": "eac3c76525bef6d1683e5ed72c28e61a3bb1ab084ee1faa0f646d124904f61b4",
+    "files": 520,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "stable_implementation": true,
+  "full_corpus": {
+    "tested": 30976,
+    "counts": {
+      "pass": 30666,
+      "parser_rejection": 254,
+      "compile_phase_difference": 42,
+      "redirect_container": 6,
+      "non_source": 8
+    },
+    "origins": {
+      "PHPT": {
+        "pass": 21527,
+        "parser_rejection": 161,
+        "compile_phase_difference": 42,
+        "redirect_container": 6,
+        "non_source": 8
+      },
+      "BolaRay": {
+        "pass": 9060,
+        "parser_rejection": 79
+      },
+      "targeted": {
+        "pass": 79,
+        "parser_rejection": 14
+      }
+    },
+    "passing_source_compilation": {
+      "compilation_accepted": 29959,
+      "parser_accepted_compilation_rejected": 707
+    },
+    "observations": [
+      {
+        "stage": "original",
+        "oracle": true,
+        "frontend": true,
+        "cases": 30666
+      },
+      {
+        "stage": "printed",
+        "oracle": true,
+        "frontend": true,
+        "cases": 30666
+      },
+      {
+        "stage": "original",
+        "oracle": false,
+        "frontend": false,
+        "cases": 254
+      },
+      {
+        "stage": "original",
+        "oracle": true,
+        "frontend": false,
+        "cases": 42
+      }
+    ],
+    "complete_unique_input_profiles": true,
+    "raw_report": "coverage/results-corpus-complete.jsonl",
+    "raw_report_sha256": "0a5997ceecb677c3e3e7302c41b68c808a1acc83e0b7d7c95b4f68f75a60e41a"
+  },
+  "source_validation": {
+    "targeted": {
+      "tested": 93,
+      "counts": {
+        "pass": 79,
+        "parser_rejection": 14
+      },
+      "passing_source_compilation": {
+        "compilation_accepted": 68,
+        "parser_accepted_compilation_rejected": 11
+      }
+    },
+    "generated": {
+      "tested": 4103,
+      "counts": {
+        "pass": 3781,
+        "parser_rejection": 320,
+        "invalid_program_roundtrip_difference": 2
+      },
+      "passing_source_compilation": {
+        "compilation_accepted": 3768,
+        "parser_accepted_compilation_rejected": 13
+      }
+    }
+  },
+  "reviewed_phase_ledger": {
+    "path": "tests/phase-discrepancies.json",
+    "cases": 42,
+    "restriction_groups": 22,
+    "independent_source_and_lint_review": true
+  },
+  "invalid_generated_ledger": {
+    "path": "tests/invalid-discrepancies.json",
+    "cases": 2
+  },
+  "coverage": {
+    "grammar_productions": 635,
+    "accepted_source_production_witnesses": 631,
+    "source_backed_dispositions": [
+      0,
+      71,
+      149,
+      200
+    ],
+    "scanner_rules": 191,
+    "scanner_token_alternatives": 264,
+    "witnessed_constructors": 169
+  },
+  "configuration": {
+    "syntax_ini_settings": 10,
+    "registered_codecs": 79,
+    "registered_name_spellings": 214,
+    "spelling_source_profiles_and_declarations": 428
+  },
+  "validation_helpers": {
+    "typed_malformed": 24,
+    "flat_wire_malformed": 33,
+    "encoded_mutation_properties": 3,
+    "phase_ledger_negative_cases": 7,
+    "phpt_extraction_reference_matches": 21744,
+    "parallel_shards": 4,
+    "parallel_integrity_negative_cases": 10,
+    "parallel_ordered_profile_rejection_parity": true,
+    "parallel_child_failure_and_timeout": true
+  },
+  "unresolved_failures": 0,
+  "initial_breadth": {
+    "raw_report": "coverage/results-corpus-final.jsonl",
+    "summary": "coverage/results-corpus-final.summary.json",
+    "status": "historical diagnostic run; seven defects subsequently corrected"
+  },
+  "review": "All final records match the independently enumerated input identity, hash and configuration. Every applicable pass retains original and printed observations and traverses real typed SpecTec checking, exact reverse conversion and fresh reconstruction on both branches. Every raw acceptance discrepancy is one of the exact independently reviewed invalid-program phase cases; no generic compiler-failure exemption."
+}

@@ -1095,7 +1095,15 @@ class Standard extends PrettyPrinterAbstract {
                 // The simple interpolation grammar stores signed offsets as Int nodes.
                 $return .= '$' . $element->var->name . '[' . $element->dim->value . ']';
             } else {
-                $return .= '{' . $this->p($element) . '}';
+                $comments = !$this->origTokens ? $element->getComments() : [];
+                // Complex interpolation must start with contiguous '{$'. A
+                // leading comment becomes string data, so put part comments
+                // after the variable and terminate possible line comments.
+                $printed = $comments
+                    ? $this->{'p' . $element->getType()}($element, self::MAX_PRECEDENCE, self::MAX_PRECEDENCE)
+                    : $this->p($element);
+                $return .= '{' . $printed
+                    . ($comments ? ' ' . $this->pComments($comments) . $this->nl : '') . '}';
             }
         }
 

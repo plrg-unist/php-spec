@@ -5,13 +5,16 @@ explicitly configured for PHP 8.5. The [native helper](../native/README.md) invo
 Zend's source-file parser without compilation or evaluation. Its separate raw
 file lexer supplies tokens to PHP-Parser's independent grammar. This preserves
 file-mode BOM, shebang and encoding behavior that `TOKEN_PARSE` string scanning
-misses. Raw `TOKEN_PARSE` and lint remain separate observations; lint adds
+misses. Raw `TOKEN_PARSE` is an optional worker observation; lint adds
 compilation checks. No input code is executed and no names are resolved.
 
 Source INI profiles apply to the native file scanner. In particular,
 `zend.script_encoding` is scoped around source reads so that it cannot decode
 the tooling files themselves. Encoding declarations are interpreted lexically
 without using Zend parser acceptance to gate the independent PHP-Parser parse.
+Encoding names use Zend's canonical/MIME/alias registry. Only literal scalar
+concatenation is folded for declaration lookup, matching Zend's parser action;
+the source `precision` setting therefore also matters for float operands.
 
 `spec/nodes.json` records explicit ordered field contracts from the pinned
 PHP-Parser node classes, including inherited declarations. The reviewed generator
@@ -42,11 +45,13 @@ marks generated declaration-header boundaries internally, converts each chunk
 under its active source encoding, and removes the markers. It uses no original
 source positions. When a new filter shortens the generated prefix, fresh spaces
 after the header absorb Zend's retained numeric cursor offset; the next token
-is preserved without replaying source text. Literal byte escapes preserve values unavailable as source
-characters. For configured replacement characters in comments or identifiers,
+is preserved without replaying source text. Byte escapes preserve literal values
+unavailable as source characters. When a codec decodes backslash as yen, an exact
+representable literal spelling replaces otherwise unrepresentable escape syntax.
+For configured replacement characters in comments or identifiers,
 the printer derives a byte preimage using the pinned converter and checks the
 entire inverse conversion; it never consults original spelling. Transfer-codec
-printing likewise preserves decoded bytes, including bare newlines. Wide encodings receive an unambiguous canonical BOM because Zend's
+printing likewise preserves decoded bytes, including bare newlines. Filtered wide encodings receive an unambiguous canonical BOM because Zend's
 BOMless width heuristic can change after formatting; exact original BOM metadata
 survives conversion, but canonical AST equality ignores this spelling choice.
 Initial source/lexer encoding names are likewise decoding provenance: candidate
@@ -55,7 +60,7 @@ Canonical equality ignores these initial names, BOM and original spelling;
 exact checked conversion retains them all. Preamble and AST payload bytes,
 including encoding directive literal values, remain strict.
 
-Deep values use a bounded-depth wire table with forward child indexes, keeping
+Deep values use a bounded-depth wire table with indexed child references, keeping
 the same typed AST while avoiding fixed JSON parser stack limits. All endpoints
 reject malformed references and table shapes before normal schema validation.
 

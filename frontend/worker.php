@@ -2,6 +2,7 @@
 // A JSON-line worker. It never evaluates submitted PHP programs.
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/FileLexer.php';
+require __DIR__ . '/encoding-literal.php';
 require __DIR__ . '/encoding.php';
 require __DIR__ . '/wire.php';
 require __DIR__ . '/target.php';

@@ -2,8 +2,9 @@
 
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
 PHP-Parser 5.8.0 to checked P4-SpecTec values. The complete grammar/scanner
-inventory and 169 constructors pass targeted validation; full corpus and
-portability gates are in progress. [PROGRESS.md](PROGRESS.md) records gates and
+inventory and 169 constructors pass validation. All 30,976 corpus records are
+classified with no unresolved failures; portable handoff is being finalized.
+[PROGRESS.md](PROGRESS.md) records gates and
 [PLAN.md](PLAN.md) defines scope. Evaluation semantics and BOLA verification are later research phases.
 
 All required non-system inputs are local and pinned. See
@@ -29,6 +30,7 @@ compilation checks are separate; PHP-Parser's version selection is best effort,
 so validation compares its raw outcomes with the pinned Zend parser.
 
 `make test` runs extraction, malformed-value, targeted syntax and generated
-interaction checks. `make validate` checks all imported source candidates;
+interaction checks. `make validate` checks all imported source candidates in
+four independently checked shards and verifies their complete ordered merge;
 `make inventory` regenerates source coverage evidence. See
 [validation](docs/VALIDATION.md) for classifications and normalization.

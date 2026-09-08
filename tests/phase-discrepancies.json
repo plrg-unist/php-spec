@@ -1,0 +1,556 @@
+[
+  {
+    "id": "vendor/php-src/Zend/tests/attributes/constants/multiple_constants_error.phpt",
+    "sha256": "19c530903bc055c71f9d1c1a84773b6d0aaf18efe0409da23d4b9550499ac531",
+    "frontend_message": "Cannot use attributes on multiple constants at once on line 3",
+    "lint_contains": "Cannot apply attributes to multiple constants at once",
+    "restriction": "attributes_multiple_constants",
+    "reason": "A single attribute group cannot attach to a multi-constant declaration.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9724",
+      "vendor/php-parser-source/grammar/php.y"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/bug75426.phpt",
+    "sha256": "144cc5b3d4a7d343ec580e455ca766b3b2854c3685ab6dfbe6dba65fde90711c",
+    "frontend_message": "Cannot use empty array elements in arrays on line 6",
+    "lint_contains": "Cannot use empty array elements in arrays",
+    "restriction": "array_holes",
+    "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:10105",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+      "vendor/php-src/Zend/zend_compile.c:10957"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/catch_static.phpt",
+    "sha256": "f89cc35e9e0160f1d5ee12ec5d62ceb9c65e769d1da29c20044ccb5edd04716a",
+    "frontend_message": "Syntax error, unexpected T_STATIC, expecting T_STRING or T_NAME_FULLY_QUALIFIED or T_NAME_QUALIFIED or T_NAME_RELATIVE on line 8",
+    "lint_contains": "Bad class name in the catch statement",
+    "restriction": "catch_static",
+    "reason": "The source catch type is static; Zend rejects this special class name during catch compilation.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6806",
+      "vendor/php-parser-source/grammar/php.y",
+      "vendor/php-src/Zend/zend_compile.c:1762"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/constexpr/gh9138.phpt",
+    "sha256": "ab9e15a9e8fe26ea91284b20456428b99946fa188b516c96535761fee617de88",
+    "frontend_message": "Cannot use empty array elements in arrays on line 3",
+    "lint_contains": "Cannot use empty array elements in arrays",
+    "restriction": "array_holes",
+    "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:10105",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+      "vendor/php-src/Zend/zend_compile.c:10957"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/constexpr/gh9138_2.phpt",
+    "sha256": "1217cdf9e390079614e80d1ac31fac060f24782e98f7dab865ad1518e9223862",
+    "frontend_message": "Cannot use empty array elements in arrays on line 3",
+    "lint_contains": "Cannot use empty array elements in arrays",
+    "restriction": "array_holes",
+    "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:10105",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+      "vendor/php-src/Zend/zend_compile.c:10957"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/enum/backed-type-no-union.phpt",
+    "sha256": "8e8aa8c268d48e066ba5e46923d6e4fbda88aa4a022ba02ad8fb40d6046b6c35",
+    "frontend_message": "Syntax error, unexpected '|', expecting '{' on line 3",
+    "lint_contains": "Enum backing type must be int or string, string|int given",
+    "restriction": "enum_union_backing",
+    "reason": "The source enum backing type is a union; only int/string backing types are valid.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9229",
+      "vendor/php-parser-source/grammar/php.y:502"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_028.phpt",
+    "sha256": "472584999c82198c9b5a04368a1046eff49bbd5937d129912077be9e1a11ffd8",
+    "frontend_message": "Cannot use 'self' as class name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"self\" as a class name as it is reserved",
+    "restriction": "reserved_class_name",
+    "reason": "The source declares/extends a class using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:248",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1113"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_029.phpt",
+    "sha256": "00988055e359cdff51c410bad61e0414c073dff07c1c3b28f650464ba959bda7",
+    "frontend_message": "Cannot use 'parent' as class name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"parent\" as a class name as it is reserved",
+    "restriction": "reserved_class_name",
+    "reason": "The source declares/extends a class using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:248",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1113"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_030.phpt",
+    "sha256": "5edc462a422e47d4389bda9069b355d6bb5b2a96c764727ac352392195e935e2",
+    "frontend_message": "Cannot use 'self' as class name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"self\" as class name, as it is reserved",
+    "restriction": "reserved_class_name",
+    "reason": "The source declares/extends a class using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:248",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1113"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_031.phpt",
+    "sha256": "0c49a09aee4a1c9d33d9dd1103138b593ff58dd8c54f43bc0128795893bc4164",
+    "frontend_message": "Cannot use 'parent' as class name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"parent\" as class name, as it is reserved",
+    "restriction": "reserved_class_name",
+    "reason": "The source declares/extends a class using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:248",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1113"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_032.phpt",
+    "sha256": "2de80c82e77e3e8424eab38f0873fb97ced6c6da2a27b7464898bca9d566a8d1",
+    "frontend_message": "Constructor __construct() cannot be static on line 5",
+    "lint_contains": "Method test::__construct() cannot be static",
+    "restriction": "static_magic_method",
+    "reason": "The source declares __construct, __destruct or __clone static; both checks concern that exact method flag.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_API.c:2764",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1159"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_033.phpt",
+    "sha256": "39681b07e5d03669fd7895e83735e0e3aa32e94ab1b962bb46536b0d38bb6f80",
+    "frontend_message": "Destructor __destruct() cannot be static on line 5",
+    "lint_contains": "Method test::__destruct() cannot be static",
+    "restriction": "static_magic_method",
+    "reason": "The source declares __construct, __destruct or __clone static; both checks concern that exact method flag.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_API.c:2764",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1159"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_034.phpt",
+    "sha256": "b3db2c61ed7950053a909e20542c8c901eea14bc4754a6836a10483844e217c1",
+    "frontend_message": "Clone method __clone() cannot be static on line 5",
+    "lint_contains": "Method test::__clone() cannot be static",
+    "restriction": "static_magic_method",
+    "reason": "The source declares __construct, __destruct or __clone static; both checks concern that exact method flag.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_API.c:2764",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1159"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_035.phpt",
+    "sha256": "0639833a6ba387e69d0ab6a6842f0729824d64f93a4c9c29501eb6bcf8ae3bbf",
+    "frontend_message": "Cannot use 'self' as interface name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"self\" as interface name, as it is reserved",
+    "restriction": "reserved_interface_name",
+    "reason": "The source declares/extends an interface using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1762",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1124"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_036.phpt",
+    "sha256": "bf40951269d9a98095efc52f1856214d2eea5309efbc5a4b3dfc01c80184f39c",
+    "frontend_message": "Cannot use 'parent' as interface name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"parent\" as interface name, as it is reserved",
+    "restriction": "reserved_interface_name",
+    "reason": "The source declares/extends an interface using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1762",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1124"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
+    "sha256": "c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62",
+    "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR on line 4",
+    "lint_contains": "Key element cannot be a reference",
+    "restriction": "foreach_reference_key",
+    "reason": "The source foreach key is by-reference, a form rejected by Zend compilation.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6109",
+      "vendor/php-parser-source/grammar/php.y:402"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
+    "sha256": "9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82",
+    "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting ')' on line 5",
+    "lint_contains": "Cannot use list as key element",
+    "restriction": "foreach_destructuring_key",
+    "reason": "The source foreach key is list destructuring, rejected by Zend compilation.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6112",
+      "vendor/php-parser-source/grammar/php.y:402"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/function_outside_namespace.phpt",
+    "sha256": "78a38e38f8ff4403f7c6730157041bb7222e6abffc47afc07d8478e548e86b93",
+    "frontend_message": "Namespace declaration statement has to be the very first statement in the script on line 5",
+    "lint_contains": "Namespace declaration statement has to be the very first statement or after any declare call in the script",
+    "restriction": "namespace_placement",
+    "reason": "A namespace declaration must precede non-declare statements/declarations in its file.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9770",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:673"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/interface_extends_static.phpt",
+    "sha256": "ae51d44cbdc445b54ba687d7386ba0d027151662f27608205290f899817571b4",
+    "frontend_message": "Cannot use 'static' as interface name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"static\" as interface name, as it is reserved",
+    "restriction": "reserved_interface_name",
+    "reason": "The source declares/extends an interface using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1762",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1124"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/list/list_012.phpt",
+    "sha256": "18f7e93bd6eac07c9d88e29bfedf8c4d0afd3a5f4e7e5aed5d7a792ddb3a2295",
+    "frontend_message": "Cannot use empty array elements in arrays on line 3",
+    "lint_contains": "Cannot use empty array elements in arrays",
+    "restriction": "array_holes",
+    "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:10105",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+      "vendor/php-src/Zend/zend_compile.c:10957"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/list/list_013.phpt",
+    "sha256": "31ae3197341d97eed174082c4abc18b73e709c65f6fc08bf80c28366489dee98",
+    "frontend_message": "Cannot use empty array elements in arrays on line 3",
+    "lint_contains": "Cannot use empty array elements in arrays",
+    "restriction": "array_holes",
+    "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:10105",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+      "vendor/php-src/Zend/zend_compile.c:10957"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/lsb/lsb_006.phpt",
+    "sha256": "69265a9bac9f4d83c7a5cf45076b50c52d07ccc3abd05511f3b0b0685c241514",
+    "frontend_message": "Cannot use 'static' as class name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"static\" as class name, as it is reserved",
+    "restriction": "reserved_class_name",
+    "reason": "The source declares/extends a class using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:248",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1113"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/lsb/lsb_007.phpt",
+    "sha256": "83b277dc7a021a21a86f945da44a970b69ed5e40b2c5903ce846daa337053909",
+    "frontend_message": "Cannot use 'static' as interface name as it is reserved on line 3",
+    "lint_contains": "Cannot use \"static\" as interface name, as it is reserved",
+    "restriction": "reserved_interface_name",
+    "reason": "The source declares/extends an interface using self, parent or static.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1762",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1124"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/namespaces/ns_068.phpt",
+    "sha256": "7bf82c71ee023486b0fa7bb63008f3ec5a4390c5ebb897fd30390a330897ae28",
+    "frontend_message": "Namespace declaration statement has to be the very first statement in the script on line 3",
+    "lint_contains": "Namespace declaration statement has to be the very first statement or after any declare call in the script",
+    "restriction": "namespace_placement",
+    "reason": "A namespace declaration must precede non-declare statements/declarations in its file.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9770",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:673"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/namespaces/ns_079.phpt",
+    "sha256": "1d71b3b2f9e755ce3f050b54f3f3fb03012950a2bcc8bc5997171b5947c71646",
+    "frontend_message": "Namespace declarations cannot be nested on line 3",
+    "lint_contains": "Namespace declarations cannot be nested",
+    "restriction": "namespace_nesting",
+    "reason": "The source nests a namespace declaration; ns_081 additionally mixes braced and unbraced styles, which Zend diagnoses first.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9763",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/namespaces/ns_081.phpt",
+    "sha256": "9c41284c235fb06e6e94669c0b6cf902184297d639e23e0aca6dbe8ef0853f4c",
+    "frontend_message": "Namespace declarations cannot be nested on line 9",
+    "lint_contains": "Cannot mix bracketed namespace declarations with unbracketed namespace declarations",
+    "restriction": "namespace_nesting",
+    "reason": "The source nests a namespace declaration; ns_081 additionally mixes braced and unbraced styles, which Zend diagnoses first.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9763",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php",
+      "vendor/php-src/Zend/zend_compile.c:9760",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1098"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/namespaces/ns_083.phpt",
+    "sha256": "a2baa591d147e6f71633f82a9736d8663b31c4fccb685e2bd6a506fdf294eb47",
+    "frontend_message": "Namespace declaration statement has to be the very first statement in the script on line 4",
+    "lint_contains": "Namespace declaration statement has to be the very first statement or after any declare call in the script",
+    "restriction": "namespace_placement",
+    "reason": "A namespace declaration must precede non-declare statements/declarations in its file.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9770",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:673"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/namespaces/ns_084.phpt",
+    "sha256": "800e08acec7d591c1c66d451255cd962ba56fa6e08596650adb9474518219987",
+    "frontend_message": "Cannot mix bracketed namespace declarations with unbracketed namespace declarations on line 9",
+    "lint_contains": "Cannot mix bracketed namespace declarations with unbracketed namespace declarations",
+    "restriction": "namespace_mixed_styles",
+    "reason": "The source mixes bracketed and unbracketed namespace declarations.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9753",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:681"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/namespaces/ns_087.phpt",
+    "sha256": "806e42bdffd9016f752845b02e8b63658dfc130af251c6f839e9407c3153d3a0",
+    "frontend_message": "No code may exist outside of namespace {} on line 10",
+    "lint_contains": "No code may exist outside of namespace {}",
+    "restriction": "namespace_outside_code",
+    "reason": "The source places statements outside bracketed namespace bodies.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:2169",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/pipe_operator/prec_001.phpt",
+    "sha256": "c75148700c4970a2bb40d89867d100edf922486770adbcd8b4b961db2e303902",
+    "frontend_message": "Arrow functions on the right hand side of |> must be parenthesized on line 5",
+    "lint_contains": "Arrow functions on the right hand side of |> must be parenthesized",
+    "restriction": "pipe_arrow_parentheses",
+    "reason": "The source places an unparenthesized arrow function on the right of the pipe operator.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6497",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1257"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/pipe_operator/prec_003.phpt",
+    "sha256": "0c78effca65cd8b086bd14cdd5f16d7dc7cbbc89250a0ba96ebb7310ff16ca76",
+    "frontend_message": "Arrow functions on the right hand side of |> must be parenthesized on line 5",
+    "lint_contains": "Arrow functions on the right hand side of |> must be parenthesized",
+    "restriction": "pipe_arrow_parentheses",
+    "reason": "The source places an unparenthesized arrow function on the right of the pipe operator.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6497",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1257"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/pipe_operator/prec_006.phpt",
+    "sha256": "48433a9e1612e4393dd4c9995655201ccdbe0ce47737014ef3ad8ae646c57a69",
+    "frontend_message": "Arrow functions on the right hand side of |> must be parenthesized on line 6",
+    "lint_contains": "Arrow functions on the right hand side of |> must be parenthesized",
+    "restriction": "pipe_arrow_parentheses",
+    "reason": "The source places an unparenthesized arrow function on the right of the pipe operator.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6497",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1257"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/property_hooks/invalid_empty_hooks.phpt",
+    "sha256": "44a8be894bda646e2afe7e3065ee0b2c0f7d01b54f47f56bb837e57975037128",
+    "frontend_message": "Property hook list cannot be empty on line 4",
+    "lint_contains": "Property hook list must not be empty",
+    "restriction": "empty_hook_list",
+    "reason": "The source property has an empty hook block.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:8666",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1215"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/property_hooks/no_get_parameters.phpt",
+    "sha256": "41ca9a5547473523f087dbf7139f907a54dcd35e2fb2d20deb39077be73707fa",
+    "frontend_message": "get hook must not have a parameter list on line 5",
+    "lint_contains": "get hook of property Test::$prop must not have a parameter list",
+    "restriction": "get_hook_parameters",
+    "reason": "The source get hook declares a parameter list.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:8731",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1228"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/property_hooks/unknown_hook.phpt",
+    "sha256": "9ac0805a46ff1f063cbe3c2cae4db10d090ae59410233a3000fe8922c605785b",
+    "frontend_message": "Unknown hook \"foobar\", expected \"get\" or \"set\" on line 5",
+    "lint_contains": "Unknown hook \"foobar\" for property Test::$prop, expected \"get\" or \"set\"",
+    "restriction": "unknown_property_hook",
+    "reason": "The source property hook name is neither get nor set.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:8709",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1223"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/property_hooks/unknown_hook_private.phpt",
+    "sha256": "8d4f917c3965411cadd1d215b75fc623fa7db841fed97945db4c2498b5e37bda",
+    "frontend_message": "Unknown hook \"foobar\", expected \"get\" or \"set\" on line 5",
+    "lint_contains": "Unknown hook \"foobar\" for property Test::$prop, expected \"get\" or \"set\"",
+    "restriction": "unknown_property_hook",
+    "reason": "The source property hook name is neither get nor set.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:8709",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1223"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/return_types/void_parameter.phpt",
+    "sha256": "b367c69cc3fc2f51260dfb8898157a8f90d6113030563c1701bf5ed42ce3f9bb",
+    "frontend_message": "void cannot be used as a parameter type on line 3",
+    "lint_contains": "void cannot be used as a parameter type",
+    "restriction": "void_parameter",
+    "reason": "The source uses void as a parameter type.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:7870",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1084"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/special_name_error2.phpt",
+    "sha256": "dccb13f5615ffae82cd7e8fbda1b44c3b66fd1fbc49ad460969a203c48328d0d",
+    "frontend_message": "Cannot use Foo\\Bar as self because 'self' is a special class name on line 3",
+    "lint_contains": "Cannot use Foo\\Bar as self because 'self' is a special class name",
+    "restriction": "reserved_import_alias",
+    "reason": "The source imports a class under the special alias self.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:9616",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1196"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/traits/static_in_trait_insteadof_reference.phpt",
+    "sha256": "f63db11464ab4317f82b19e995baa835cad7b6b7b487d3b073f5293550d53d03",
+    "frontend_message": "Syntax error, unexpected T_PAAMAYIM_NEKUDOTAYIM, expecting T_AS on line 9",
+    "lint_contains": "Cannot use \"static\" as trait name, as it is reserved",
+    "restriction": "static_trait_reference",
+    "reason": "The source uses static as a trait name in an insteadof method reference.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1762",
+      "vendor/php-parser-source/grammar/php.y:915"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/try/try_finally_004.phpt",
+    "sha256": "a2a0728b436158601fb7b026134dae5554edc25749df2410f8fe8b7079317aa4",
+    "frontend_message": "Cannot use try without catch or finally on line 3",
+    "lint_contains": "Cannot use try without catch or finally",
+    "restriction": "try_without_handler",
+    "reason": "The source try statement has neither catch nor finally.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6749",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1093"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/variadic/no_default_error.phpt",
+    "sha256": "f0729cfa6de51f7c6603153764219d52d260e51faa223f3834528156986906d0",
+    "frontend_message": "Variadic parameter cannot have a default value on line 3",
+    "lint_contains": "Variadic parameter cannot have a default value",
+    "restriction": "variadic_default",
+    "reason": "The source variadic parameter declares a default value.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:7826",
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1077"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/tests/lang/foreachLoop.006.phpt",
+    "sha256": "effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c",
+    "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR on line 3",
+    "lint_contains": "Key element cannot be a reference",
+    "restriction": "foreach_reference_key",
+    "reason": "The source foreach key is by-reference, a form rejected by Zend compilation.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:6109",
+      "vendor/php-parser-source/grammar/php.y:402"
+    ],
+    "ini": {}
+  }
+]

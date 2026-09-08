@@ -20,8 +20,8 @@ The current user request authorizes all five milestones, including commits.
 
 ## Settled decisions and current state
 
-- Target the released PHP **8.5.10**, selected on 2026-09-08. Pin its source
-  archive/commit and checksums during runtime provisioning. Do not silently
+- Target the released PHP **8.5.10**, selected on 2026-09-08. Its pinned source
+  archive/commit and checksums are recorded in the local dependency manifests. Do not silently
   follow a moving release or branch. The workspace's pre-existing PHP engine
   is 8.6.0-dev at `1364de0472b859917f5bc0be9193bd8068fc2061`; it is not the
   selected oracle or grammar. In particular, its partial-application syntax
@@ -83,7 +83,7 @@ dependency upgrade must be explicit, with refreshed provenance and validation.
 
 Inventory the selected release's `Zend/zend_language_scanner.l`,
 `Zend/zend_language_parser.y`, AST construction actions and relevant compiler
-checks. These paths refer to the PHP source snapshot to be imported locally.
+checks. These paths refer to the imported `vendor/php-src` snapshot.
 The manual explains features; the matching engine source and targeted tests
 resolve implementation details and disagreements. Do not substitute PHP 5
 semantics or a development grammar for the selected release.
@@ -142,7 +142,9 @@ PHP bytes
 1. Run PHP-Parser on the pinned PHP 8.5.10 CLI with tokenizer and JSON support.
    Select PHP 8.5 explicitly for both parser and printer. Use throwing error
    handling; a recovered partial AST is not successful parsing. Do not resolve
-   names, evaluate constants, execute includes/eval, or run application code.
+   names, perform general constant evaluation, execute includes/eval, or run
+   application code. The encoding helper reproduces only Zend's parser-time
+   literal-concatenation action, as documented in the design.
 2. Define the project's AST domains in `.watsup`. Map every supported parser
    node and field explicitly into those domains. Unknown nodes or malformed
    payloads must produce visible failures. Do not use unrestricted raw-text or
@@ -182,13 +184,13 @@ do not copy P4 architectures or evaluation phases into the syntax project.
 Prioritize PHP syntax artifacts; limit framework changes to demonstrated
 integration blockers rather than speculative refactoring.
 
-The studied framework revision is
-`da36ac3c434cd291940293a63da64544307730a3`. Treat it as a candidate pin to
-reproduce, with local provenance. Its core was previously built without the
+The pinned framework revision is
+`da36ac3c434cd291940293a63da64544307730a3`, with local provenance and a
+reproduced offline build. Its core builds without the
 P4 compiler submodule; the entire P4 test/compiler ecosystem is unnecessary.
 Public libraries include `p4spectec.pass`, `p4spectec.runtime` and
-`p4spectec.backend_boot`. A minimal vendored source dependency closure has not
-been demonstrated: establish a coherent build before attempting extraction.
+`p4spectec.backend_boot`. The retained core and complete 97-package OCaml source
+closure are documented in [dependencies/README.md](dependencies/README.md).
 
 The studied build used OCaml 5.1.0, Dune 3.24.2, Menhir/menhirLib 20240715,
 bignum/Core/core_unix v0.17.x, yojson 3.0.0 and ppx_deriving_yojson 3.9.1.
@@ -255,7 +257,8 @@ Validation exposed its string/file distinction for BOM, shebang and source
 encodings. The revised design uses a narrow [native helper](native/README.md)
 to invoke the pinned source-file `zendparse` without compilation or evaluation.
 A separate raw file lexer supplies tokens to PHP-Parser's independent grammar;
-raw `TOKEN_PARSE` remains a separately labelled observation. Ordinary raw
+raw `TOKEN_PARSE` remains an optional, separately labelled worker observation,
+not the full-corpus reference. Ordinary raw
 lexing does not establish acceptance. Keep `php -l` results separate: linting also
 performs compilation checks. Record acceptance, parser rejection, compile
 rejection where checked, adapter rejection, unsupported input, crash and

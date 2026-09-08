@@ -31,8 +31,8 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source): ?array {
                     $declarations = withLexerEncoding('UTF-8', static fn() =>
                         $prefixParser->parse($prefix . ';', new PhpParser\ErrorHandler\Throwing()));
                     foreach ($declarations[0]->declares as $item) {
-                        if (strcasecmp($item->key->name, 'encoding') === 0 && $item->value instanceof PhpParser\Node\Scalar\String_) {
-                            try { $declared = declarationEncoding($item->value->value); } catch (ValueError $error) {}
+                        if (strcasecmp($item->key->name, 'encoding') === 0 && ($literal = encodingLiteralValue($item->value)) !== null) {
+                            try { $declared = declarationEncoding((string) $literal); } catch (ValueError $error) {}
                         }
                     }
                 } catch (PhpParser\Error $error) {
@@ -224,16 +224,7 @@ function printEncoding(array $chunks, ?object $encoding): string {
 }
 
 function canonicalEncoding(string $name): string {
-    static $aliases = null;
-    if ($aliases === null) {
-        $aliases = [];
-        foreach (mb_list_encodings() as $encoding) {
-            foreach (array_merge([$encoding], withEncodingHelperDiagnostics(static fn() => mb_encoding_aliases($encoding))) as $alias) {
-                $aliases[strtolower($alias)] = $encoding;
-            }
-        }
-    }
-    return $aliases[strtolower($name)] ?? throw new ValueError('Unknown encoding');
+    return php_spec_encoding_name($name) ?? throw new ValueError('Unknown encoding');
 }
 
 function declarationEncoding(string $name): string {

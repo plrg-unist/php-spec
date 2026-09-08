@@ -1,8 +1,8 @@
 diff --git a/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php b/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php
-index 5e2aed31..5935a9a5 100644
+index 5e2aed31..c32977c1 100644
 --- a/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php
 +++ b/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php
-@@ -79,4 +79,63 @@ class CommentAnnotatingVisitor extends NodeVisitorAbstract {
+@@ -79,4 +79,79 @@ class CommentAnnotatingVisitor extends NodeVisitorAbstract {
  
          return null;
      }
@@ -52,6 +52,22 @@ index 5e2aed31..5935a9a5 100644
 +            if ($owner === null) {
 +                throw new \LogicException('Comment has no syntax attachment');
 +            }
++            // A comment following an interpolated expression belongs to that
++            // expression even when its canonical {$...} span excludes the
++            // closing brace (the older ${...} span includes it).
++            if ($owner instanceof Node\Scalar\InterpolatedString
++                || $owner instanceof Node\Expr\ShellExec) {
++                foreach ($owner->parts as $part) {
++                    if (!$part instanceof Node\Expr || $part->getEndTokenPos() >= $pos) continue;
++                    $after = $part->getEndTokenPos() + 1;
++                    while (isset($this->tokens[$after]) && in_array($this->tokens[$after]->id,
++                        [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT], true)) ++$after;
++                    if ($after > $pos && $this->tokens[$after]->text === '}') {
++                        $owner = $part;
++                        break;
++                    }
++                }
++            }
 +            $token = $this->tokens[$pos];
 +            $class = $token->id === \T_DOC_COMMENT ? Comment\Doc::class : Comment::class;
 +            $comment = new $class($token->text, $token->line, $token->pos, $pos,
@@ -67,7 +83,7 @@ index 5e2aed31..5935a9a5 100644
 +
  }
 diff --git a/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php b/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php
-index d7084377..86651b2d 100644
+index d7084377..016b3f92 100644
 --- a/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php
 +++ b/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php
 @@ -28,7 +28,7 @@ class Standard extends PrettyPrinterAbstract {
@@ -295,7 +311,7 @@ index d7084377..86651b2d 100644
          }
      }
  
-@@ -1072,6 +1088,12 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1072,8 +1088,22 @@ class Standard extends PrettyPrinterAbstract {
          foreach ($encapsList as $element) {
              if ($element instanceof Node\InterpolatedStringPart) {
                  $return .= $this->escapeString($element->value, $quote);
@@ -306,9 +322,20 @@ index d7084377..86651b2d 100644
 +                // The simple interpolation grammar stores signed offsets as Int nodes.
 +                $return .= '$' . $element->var->name . '[' . $element->dim->value . ']';
              } else {
-                 $return .= '{' . $this->p($element) . '}';
+-                $return .= '{' . $this->p($element) . '}';
++                $comments = !$this->origTokens ? $element->getComments() : [];
++                // Complex interpolation must start with contiguous '{$'. A
++                // leading comment becomes string data, so put part comments
++                // after the variable and terminate possible line comments.
++                $printed = $comments
++                    ? $this->{'p' . $element->getType()}($element, self::MAX_PRECEDENCE, self::MAX_PRECEDENCE)
++                    : $this->p($element);
++                $return .= '{' . $printed
++                    . ($comments ? ' ' . $this->pComments($comments) . $this->nl : '') . '}';
              }
-@@ -1146,7 +1168,8 @@ class Standard extends PrettyPrinterAbstract {
+         }
+ 
+@@ -1146,7 +1176,8 @@ class Standard extends PrettyPrinterAbstract {
      }
  
      protected function pDereferenceLhs(Node $node): string {
@@ -318,7 +345,7 @@ index d7084377..86651b2d 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1154,7 +1177,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1154,7 +1185,8 @@ class Standard extends PrettyPrinterAbstract {
      }
  
      protected function pStaticDereferenceLhs(Node $node): string {
@@ -328,7 +355,7 @@ index d7084377..86651b2d 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1162,7 +1186,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1162,7 +1194,8 @@ class Standard extends PrettyPrinterAbstract {
      }
  
      protected function pCallLhs(Node $node): string {
@@ -338,7 +365,7 @@ index d7084377..86651b2d 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1170,7 +1195,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1170,7 +1203,8 @@ class Standard extends PrettyPrinterAbstract {
      }
  
      protected function pNewOperand(Node $node): string {

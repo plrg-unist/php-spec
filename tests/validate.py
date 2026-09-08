@@ -112,6 +112,8 @@ class Worker:
             self.process.wait(timeout=2)
         except subprocess.TimeoutExpired:
             self.process.kill()
+            self.process.wait()
+        self.process.stdout.close()
         self.errors.close()
 
 
@@ -164,17 +166,19 @@ def validate(record, frontend, adapter, elaborate=False, observations=None):
     if observations is not None:
         observations.update(oracle=oracle["accepted"], oracle_detail=oracle)
     parsed = frontend.call(op="parse", source=source)
+    frontend_detail = {key: value for key, value in parsed.items() if key not in {"ast", "token_comments"}}
     if observations is not None:
-        observations.update(frontend=parsed.get("accepted"), frontend_detail={key: value for key, value in parsed.items() if key not in {"ast", "token_comments"}})
+        observations.update(frontend=parsed.get("accepted"), frontend_detail=frontend_detail)
     parsed = require(parsed, "frontend")
-    result = {"oracle": oracle["accepted"], "frontend": parsed["accepted"]}
+    result = {"oracle": oracle["accepted"], "frontend": parsed["accepted"],
+              "oracle_detail": oracle, "frontend_detail": frontend_detail}
     if "expected" in record and oracle["accepted"] != (record["expected"] == "accept"):
         return {**result, "status": "fixture_expectation_failure"}
     if oracle["accepted"] != parsed["accepted"]:
         compiled = lint(base64.b64decode(source), record.get("ini", {}))
-        result.update(lint=compiled, oracle_detail=oracle, frontend_detail=parsed)
-        result["status"] = "compile_phase_difference" if oracle["accepted"] and not compiled["accepted"] else "acceptance_mismatch"
-        return result
+        result.update(lint=compiled)
+        result["status"] = "unreviewed_phase_difference" if oracle["accepted"] and not compiled["accepted"] else "acceptance_mismatch"
+        return classify_phase_difference(record, result)
     if not oracle["accepted"]:
         return {**result, "status": "parser_rejection", "oracle_detail": oracle, "frontend_detail": parsed}
     ast = parsed["ast"]
@@ -192,13 +196,24 @@ def validate(record, frontend, adapter, elaborate=False, observations=None):
     if not structurally_equal(printed["ast"], first["ast"]):
         raise ValueError("fresh node reconstruction changed checked AST")
     out_oracle = require(frontend.call(op="oracle", source=printed["source"]), "output oracle")
+    result.update(printed_oracle=out_oracle["accepted"], printed_oracle_detail=out_oracle)
+    if observations is not None:
+        observations.update(result, printed_source=printed["source"])
     if not out_oracle["accepted"]:
         raise ValueError("canonical output rejected: " + json.dumps(out_oracle))
-    reparsed = require(frontend.call(op="parse", source=printed["source"]), "reparse")
+    reparsed = frontend.call(op="parse", source=printed["source"])
+    result.update(printed_frontend=reparsed.get("accepted"), printed_frontend_detail={key: value for key, value in reparsed.items() if key not in {"ast", "token_comments"}})
+    if observations is not None:
+        observations.update(result)
+    reparsed = require(reparsed, "reparse")
     if not reparsed["accepted"]:
         raise ValueError("canonical output rejected by frontend")
     second = require(adapter.call(op="check", ast=reparsed["ast"]), "second adapter")
+    if not structurally_equal(second["ast"], reparsed["ast"]):
+        raise ValueError("second forward/reverse transport changed reparsed AST")
     reprinted = require(frontend.call(op="print", ast=second["ast"]), "second fresh reconstruction")
+    if not structurally_equal(reprinted["ast"], second["ast"]):
+        raise ValueError("second fresh node reconstruction changed checked AST")
     if printed["source"] != reprinted["source"]:
         raise ValueError("canonical printing is not idempotent")
     if not structurally_equal(normalize(ast), normalize(second["ast"])):
@@ -207,17 +222,32 @@ def validate(record, frontend, adapter, elaborate=False, observations=None):
 
 
 
+def classify_phase_difference(record, result):
+    if result['status'] != 'unreviewed_phase_difference' or result.get('lint', {}).get('accepted') is not False:
+        return result
+    entries = json.loads((ROOT / 'tests/phase-discrepancies.json').read_text())
+    entry = next((entry for entry in entries if entry['id'] == record['id']), None)
+    if entry is None or entry['sha256'] != record['sha256'] or entry['ini'] != record.get('ini', {}):
+        return result
+    diagnostic = base64.b64decode(result['lint']['diagnostic_b64']).decode('utf-8', 'replace')
+    frontend_message = base64.b64decode(result['frontend_detail'].get('message', '')).decode('utf-8', 'replace')
+    if frontend_message != entry['frontend_message'] or entry['lint_contains'] not in diagnostic:
+        return result
+    return {**result, 'raw_status': result['status'], 'status': 'compile_phase_difference',
+            'disposition': entry['reason'], 'restriction': entry['restriction'], 'evidence': entry['evidence']}
+
+
 def implementation_fingerprint():
     roots = ['frontend', 'adapter', 'spec', 'native', 'tests', 'scripts', 'bin', 'vendor/php-parser']
     paths = [path for root in roots for path in (ROOT / root).rglob('*')
              if path.is_file() and '__pycache__' not in path.parts and path.suffix != '.pyc']
     paths += [ROOT / name for name in ['Makefile', 'dune-project', '.tools/php/bin/php',
-              '.tools/php-file.so', '_build/default/adapter/main.exe']]
+              '.tools/php-file.so', '_build/default/adapter/main.exe', 'coverage/encoding-spellings.json']]
     digest = hashlib.sha256()
     for path in sorted(set(paths)):
         digest.update(str(path.relative_to(ROOT)).encode() + b'\0')
         digest.update(hashlib.sha256(path.read_bytes()).digest())
-    return {'sha256': digest.hexdigest(), 'files': len(set(paths)), 'scope': roots + ['Makefile', 'dune-project', 'runtime binaries']}
+    return {'sha256': digest.hexdigest(), 'files': len(set(paths)), 'scope': roots + ['Makefile', 'dune-project', 'runtime binaries', 'encoding-spellings inventory']}
 
 
 def classify_documented_invalid(result):
@@ -241,7 +271,17 @@ def main():
     parser.add_argument("--elaborate", action="store_true")
     parser.add_argument("--retry", type=Path, help="Rerun unresolved source IDs from a previous report")
     parser.add_argument("--lint-all", action="store_true", help="Classify compilation separately for every parser-accepted source")
+    parser.add_argument("--shard", help="Zero-based deterministic shard i/n of eligible inputs")
     args = parser.parse_args()
+    shard = None
+    if args.shard:
+        try:
+            index, count = map(int, args.shard.split('/'))
+            if not 0 <= index < count:
+                raise ValueError()
+            shard = {'index': index, 'count': count}
+        except ValueError:
+            parser.error('--shard must be i/n with 0 <= i < n')
     fingerprint = implementation_fingerprint()
     retry = None
     if args.retry:
@@ -255,7 +295,7 @@ def main():
         records = generated()
     else:
         records = inputs()
-    seen = 0
+    seen, eligible = 0, 0
     try:
         with args.output.open("w") as output:
             for record in records:
@@ -265,16 +305,24 @@ def main():
                     continue
                 if retry is not None and record["id"] not in retry:
                     continue
-                if args.limit and seen >= args.limit:
+                if args.limit and eligible >= args.limit:
                     break
+                ordinal = eligible
+                eligible += 1
+                if shard and ordinal % shard['count'] != shard['index']:
+                    continue
                 seen += 1
                 identity = {key: value for key, value in record.items() if key != "source_b64"}
+                if shard:
+                    identity['_ordinal'] = ordinal
                 if record["status"] != "source":
                     result = identity
                 else:
                     ini = {"short_open_tag": "0", **record.get("ini", {})}
                     profile = tuple(sorted(ini.items()))
                     if profile not in workers:
+                        if len(workers) >= 16:
+                            workers.pop(next(iter(workers))).close()
                         command = [str(ROOT / ".tools/php/bin/php"), "-n", "-d", "memory_limit=-1", "-d", "display_errors=stderr"]
                         for key, value in profile:
                             command.extend(["-d", key + "=" + value])
@@ -307,11 +355,13 @@ def main():
     stable = fingerprint == final_fingerprint
     summary = {"tested": seen, "counts": counts, "nodes": node_witnesses,
                "implementation": fingerprint, "stable_implementation": stable}
+    if shard:
+        summary.update(shard=shard, eligible_count=eligible)
     if not stable:
         summary["implementation_after"] = final_fingerprint
     args.output.with_suffix(".summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, sort_keys=True))
-    return int(not stable or any(counts[key] for key in {"failure", "acceptance_mismatch", "ast_roundtrip_failure", "fixture_expectation_failure", "missing_fixture", "invalid_container"}))
+    return int(not stable or any(counts[key] for key in {"failure", "acceptance_mismatch", "unreviewed_phase_difference", "ast_roundtrip_failure", "fixture_expectation_failure", "missing_fixture", "invalid_container"}))
 
 
 if __name__ == "__main__":

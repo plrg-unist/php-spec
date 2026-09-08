@@ -14,6 +14,7 @@ BSD-3-Clause license.
 | Preserve signed integer offsets in simple interpolation | `interpolation.php`, Zend `bug72918.phpt`: braced interpolation otherwise becomes UnaryMinus |
 | Preserve comments on every node, including grouping, attributes and nonfinal empty statements | `comments-attachments.php`, generated operand combinations and minimized corpus regressions |
 | Attach otherwise unassigned token comments deterministically without losing declaration doc comments | `comments-parentheses.php`; independent token-comment retention assertion |
+| Keep interpolation comments inside the expression braces with a stable attachment | Seven `comments-interpolation-*` fixtures and the CodeMirror application example |
 
 `php-parser-grammar.patch` changes the source grammar. Run
 `scripts/rebuild-parser.sh` to regenerate in a disposable directory and compare

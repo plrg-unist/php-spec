@@ -17,6 +17,9 @@ and original attribution are retained in the C header and adjacent `LICENSE`
   by the independent frontend. It changes the filter immediately after that token,
   exactly as the Zend grammar does. Raw lexing never calls the parser or uses its
   feedback; emitted event records also contain the scanner byte offset.
+- `php_spec_encoding_name(name)` reads the pinned Zend/libmbfl registry and
+  returns its canonical name or null. It preserves canonical/MIME/alias priority,
+  case matching and C-string NUL termination without parsing or evaluating source.
 - `frontend/FileLexer.php` converts those tokens to PHP-Parser tokens and reuses
   upstream lexical postprocessing. Temporary files are read and then removed.
 

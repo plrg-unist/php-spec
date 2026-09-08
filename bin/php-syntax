@@ -41,7 +41,7 @@ try:
     source = sys.stdin.buffer.read() if args.file == '-' else Path(args.file).read_bytes()
     profile = {'short_open_tag': str(int(args.short_tags))}
     allowed = {'short_open_tag', 'zend.multibyte', 'zend.detect_unicode', 'zend.script_encoding',
-               'internal_encoding', 'mbstring.internal_encoding', 'mbstring.substitute_character', 'mbstring.language', 'default_charset'}
+               'internal_encoding', 'mbstring.internal_encoding', 'mbstring.substitute_character', 'mbstring.language', 'default_charset', 'precision'}
     for setting in args.ini:
         key, separator, value = setting.partition('=')
         if not separator or key not in allowed:

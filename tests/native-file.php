@@ -8,6 +8,13 @@ function parsed(string $source): bool {
     try { return withPhpSourceFile($source, 'php_spec_parse_file'); }
     catch (CompileError $error) { return false; }
 }
+foreach (['Shift_JIS' => 'SJIS', 'BIG5' => 'BIG-5', 'HZ-GB-2312' => 'HZ',
+          'x-uuencode' => 'UUENCODE', "uTf-8\0ignored" => 'UTF-8'] as $name => $expected) {
+    check(php_spec_encoding_name($name) === $expected, 'Native encoding lookup lost a MIME/case/NUL spelling');
+}
+foreach (['', 'pass', 'none', 'raw', ' UTF-8', 'UTF-8 ', "\0UTF-8"] as $name) {
+    check(php_spec_encoding_name($name) === null, 'Unknown encoding name was accepted');
+}
 $ordinary = [
     '<?php echo 1 + 2;',
     "\xef\xbb\xbf<?php echo 1;",

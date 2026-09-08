@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SYNTAX_INI = {"short_open_tag", "zend.multibyte", "zend.script_encoding",
               "zend.detect_unicode", "default_charset", "internal_encoding",
-              "mbstring.internal_encoding", "mbstring.substitute_character", "mbstring.language"}
+              "mbstring.internal_encoding", "mbstring.substitute_character", "mbstring.language", "precision"}
 PHP_TRIM = b" \t\n\r\0\v"
 
 

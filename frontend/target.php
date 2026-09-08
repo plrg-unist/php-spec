@@ -14,8 +14,18 @@ function checkTargetSyntax(array $ast, array $tokens): void {
             $reject = 'exit/die cannot be function declaration names';
         } elseif ($node instanceof PhpParser\Node\Stmt\Class_ && $node->name === null && ($node->flags & ~PhpParser\Modifiers::READONLY)) {
             $reject = 'Only readonly is an anonymous-class modifier';
-        } elseif ($node instanceof PhpParser\Node\Stmt\ClassMethod && ($node->flags & PhpParser\Modifiers::READONLY)) {
-            $reject = 'readonly is not a method modifier';
+        } elseif ($node instanceof PhpParser\Node\Stmt\ClassMethod
+            && ($node->flags & (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::VISIBILITY_SET_MASK))) {
+            $reject = 'readonly and set visibility are not method modifiers';
+        } elseif ($node instanceof PhpParser\Node\Stmt\ClassConst
+            && ($node->flags & PhpParser\Modifiers::VISIBILITY_SET_MASK)) {
+            $reject = 'Set visibility is not a class constant modifier';
+        } elseif ($node instanceof PhpParser\Node\Stmt\TraitUseAdaptation\Alias
+            && (($node->newModifier ?? 0) & (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::VISIBILITY_SET_MASK))) {
+            $reject = 'readonly and set visibility are not trait alias modifiers';
+        } elseif ($node instanceof PhpParser\Node\DeclareItem && strcasecmp($node->key->name, 'encoding') === 0
+            && encodingLiteralValue($node->value) === null) {
+            $reject = 'Encoding must be a literal';
         } elseif ($node instanceof PhpParser\Node\Expr\Cast\Void_) {
             $statement = $parent instanceof PhpParser\Node\Stmt\Expression
                 && $node->getStartTokenPos() === $parent->getStartTokenPos();
