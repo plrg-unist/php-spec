@@ -501,6 +501,144 @@
       "expected_exit_status": 0,
       "provenance": "independently authored before array implementation; not derived from a PHPT",
       "semantic_status": "pending"
+    },
+    {
+      "id": "type-duplicate-case",
+      "file": "tests/semantics/conformance/type-duplicate-case.php",
+      "purpose": "Class-name duplicate detection is case-insensitive while the diagnostic retains the second source spelling.",
+      "obligations": [
+        "static.union"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Duplicate type a is redundant in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-dnf-redundant",
+      "file": "tests/semantics/conformance/type-dnf-redundant.php",
+      "purpose": "A DNF intersection arm subsumed by a union arm is rejected locally without loading classes.",
+      "obligations": [
+        "static.dnf",
+        "static.intersection"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Type A&B is redundant as it is more restrictive than type A in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-iterable-global",
+      "file": "tests/semantics/conformance/type-iterable-global.php",
+      "purpose": "Global iterable already contains Traversable.",
+      "obligations": [
+        "static.union",
+        "static.namespaces"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Duplicate type Traversable is redundant in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-iterable-namespaced",
+      "file": "tests/semantics/conformance/type-iterable-namespaced.php",
+      "purpose": "Namespaced unqualified Traversable is distinct from the global interface inside iterable.",
+      "obligations": [
+        "static.union",
+        "static.namespaces"
+      ],
+      "expected_stdout": "ok",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-nullable-mixed",
+      "file": "tests/semantics/conformance/type-nullable-mixed.php",
+      "purpose": "Nullable mixed is rejected with its specific redundancy diagnostic.",
+      "obligations": [
+        "static.nullable",
+        "static.mixed-void-never"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Type mixed cannot be marked as nullable since mixed already includes null in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-static-outside-class",
+      "file": "tests/semantics/conformance/type-static-outside-class.php",
+      "purpose": "The static return type requires a class scope.",
+      "obligations": [
+        "static.declarations",
+        "calls.return-types"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot use \"static\" when no class scope is active in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-parent-without-parent",
+      "file": "tests/semantics/conformance/type-parent-without-parent.php",
+      "purpose": "Parent types require a declared parent even though no method is called.",
+      "obligations": [
+        "static.declarations",
+        "classes.inheritance"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Cannot use \"parent\" when current class scope has no parent in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-callable-property",
+      "file": "tests/semantics/conformance/type-callable-property.php",
+      "purpose": "Callable is forbidden in property declarations.",
+      "obligations": [
+        "static.declarations"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Property C::$x cannot have type callable in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-alias-duplicate",
+      "file": "tests/semantics/conformance/type-alias-duplicate.php",
+      "purpose": "Distinct imported aliases of the same class become a duplicate union type after resolution.",
+      "obligations": [
+        "static.union",
+        "static.namespaces"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Fatal error: Duplicate type A is redundant in {FILE} on line 2\nStack trace:\n#0 {main}\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "type-dnf-namespace-distinct",
+      "file": "tests/semantics/conformance/type-dnf-namespace-distinct.php",
+      "purpose": "Global imported A and namespaced unqualified A are distinct during local DNF redundancy checking.",
+      "obligations": [
+        "static.dnf",
+        "static.namespaces"
+      ],
+      "expected_stdout": "ok",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independently authored before static-type implementation; not derived from a PHPT",
+      "semantic_status": "pending"
     }
   ]
 }

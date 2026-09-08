@@ -63,7 +63,7 @@ timeouts and interrupted campaigns never count as validation passes.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
   dynamic-write initialization, eliminated discarded CV reads and warning lines.
   Operator diagnostics use post-child compile lines, distinct from AST/LHS lines.
-- 35 independent source targets in `tests/semantics/conformance` match the oracle;
+- 45 independent source targets in `tests/semantics/conformance` match the oracle;
   only three are currently integrated into semantic tests. Oracle-only evidence is
   `coverage/semantics/conformance-oracle.json`; it never implies implementation.
 - Fixed profile includes `E_ALL=30719`, original identity and byte-exact channels.

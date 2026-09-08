@@ -4146,7 +4146,8 @@
       ],
       "review": null,
       "planned_source_tests": [
-        "tests/semantics/conformance/weak-type.php"
+        "tests/semantics/conformance/weak-type.php",
+        "tests/semantics/conformance/type-static-outside-class.php"
       ]
     },
     {
@@ -4349,7 +4350,12 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-static-outside-class.php",
+        "tests/semantics/conformance/type-parent-without-parent.php",
+        "tests/semantics/conformance/type-callable-property.php"
+      ]
     },
     {
       "id": "static.namespaces",
@@ -4362,7 +4368,13 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-iterable-global.php",
+        "tests/semantics/conformance/type-iterable-namespaced.php",
+        "tests/semantics/conformance/type-alias-duplicate.php",
+        "tests/semantics/conformance/type-dnf-namespace-distinct.php"
+      ]
     },
     {
       "id": "static.strict-types",
@@ -4404,7 +4416,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-nullable-mixed.php"
+      ]
     },
     {
       "id": "static.union",
@@ -4417,7 +4432,13 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-duplicate-case.php",
+        "tests/semantics/conformance/type-iterable-global.php",
+        "tests/semantics/conformance/type-iterable-namespaced.php",
+        "tests/semantics/conformance/type-alias-duplicate.php"
+      ]
     },
     {
       "id": "static.intersection",
@@ -4430,7 +4451,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-dnf-redundant.php"
+      ]
     },
     {
       "id": "static.dnf",
@@ -4443,7 +4467,11 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-dnf-redundant.php",
+        "tests/semantics/conformance/type-dnf-namespace-distinct.php"
+      ]
     },
     {
       "id": "static.mixed-void-never",
@@ -4456,7 +4484,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-nullable-mixed.php"
+      ]
     },
     {
       "id": "static.signature-variance",
@@ -4521,7 +4552,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": null,
+      "planned_source_tests": [
+        "tests/semantics/conformance/type-parent-without-parent.php"
+      ]
     },
     {
       "id": "classes.interfaces",
