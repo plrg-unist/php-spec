@@ -1,0 +1,592 @@
+{
+  "source_package": "glibc",
+  "version": "2.39-0ubuntu8.8",
+  "architecture": "amd64",
+  "origin": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/",
+  "archive_hashes": {
+    "glibc_2.39-0ubuntu8.8.dsc": "69c09b540d03e56b3adea7c4af98b862bfc36789795c9e21d37e58e699f57b00",
+    "glibc_2.39.orig.tar.xz": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
+    "glibc_2.39-0ubuntu8.8.debian.tar.xz": "ff1aa3bb3eba4f302a99c9b957cacff6d79f26e9b0e663e379bf70a4f39d4283"
+  },
+  "source_authentication": "Archive SHA256 verified against official HTTPS .dsc; OpenPGP signature not independently verified.",
+  "selection": [
+    "COPYING",
+    "COPYING.LIB",
+    "LICENSES",
+    "sysdeps/ieee754/dbl-64/e_pow.c",
+    "sysdeps/ieee754/dbl-64/e_pow_log_data.c",
+    "sysdeps/ieee754/dbl-64/e_exp_data.c",
+    "sysdeps/ieee754/dbl-64/math_config.h",
+    "sysdeps/ieee754/dbl-64/math_err.c",
+    "sysdeps/ieee754/dbl-64/Makefile",
+    "sysdeps/x86_64/fpu/multiarch/e_pow.c",
+    "sysdeps/x86_64/fpu/multiarch/e_pow-fma.c",
+    "sysdeps/x86_64/fpu/multiarch/ifunc-fma4.h",
+    "sysdeps/x86_64/fpu/multiarch/Makefile",
+    "sysdeps/x86_64/fpu/multiarch/w_pow.c",
+    "math/w_pow.c",
+    "math/w_pow_template.c",
+    "include/math-narrow-eval.h",
+    "sysdeps/x86/fpu/math-barriers.h",
+    "sysdeps/generic/nan-high-order-bit.h",
+    "sysdeps/generic/math-type-macros-double.h",
+    "sysdeps/x86/init-arch.h"
+  ],
+  "distribution_patch_audit": {
+    "method": "All diff target headers in Debian patch files checked against selected source paths; no overlaps. Selected bytes are unchanged upstream 2.39.",
+    "patches": [
+      {
+        "path": "debian/patches/CVE-2025-15281.patch",
+        "sha256": "a4087a2a690843ef0b21c22908c25611ec272c310633ff9687f6460308c0bc45"
+      },
+      {
+        "path": "debian/patches/CVE-2026-0861.patch",
+        "sha256": "020fa4724be63709e8d318da941775a8db5fc34c477b1669304e2cfc3eb66d39"
+      },
+      {
+        "path": "debian/patches/CVE-2026-0915.patch",
+        "sha256": "c0c92ec7fac0150dfb665c9d6097e707c52431990f0b45aa39c7793f02b72acf"
+      },
+      {
+        "path": "debian/patches/CVE-2026-4046.patch",
+        "sha256": "d667852515f655a5d58cef8172387a8c4de8420dca35ff0eb69b9637ab4c1f4f"
+      },
+      {
+        "path": "debian/patches/CVE-2026-443x.patch",
+        "sha256": "59c52e8c98cddfe75232c6a35ff177df109d888e1f37f5a7e046237add36cde6"
+      },
+      {
+        "path": "debian/patches/CVE-2026-5435.patch",
+        "sha256": "69c72861f5ae95e625cad532a4a93ad3ce95921da32936a77712992c33ad0c81"
+      },
+      {
+        "path": "debian/patches/CVE-2026-5450.patch",
+        "sha256": "4afb5346f1ad7740f163ce01c53c517589b8c5bdb619b3c9d5c3bfadf3889687"
+      },
+      {
+        "path": "debian/patches/CVE-2026-5928.patch",
+        "sha256": "7cfc097fc0385866194304c8552f8e848ffc0005379e4ba01ca768e01d7ae672"
+      },
+      {
+        "path": "debian/patches/CVE-2026-6238-1.patch",
+        "sha256": "4c267d10ae7723d980dbb0d83a64c0da7cc5a76fe0c85075cf6cec7f52a0b45f"
+      },
+      {
+        "path": "debian/patches/CVE-2026-6238-2.patch",
+        "sha256": "c798a046f13debda797a5fa75555b84842dd7fd3e10bcb4fbf7491d85ce9a667"
+      },
+      {
+        "path": "debian/patches/CVE-2026-6238-pre1.patch",
+        "sha256": "7804d782ce7fd701f5530ff31bc561b77be38b07a0d427974e61b842ceff244d"
+      },
+      {
+        "path": "debian/patches/CVE-2026-6238-pre2.patch",
+        "sha256": "6987b50e0fe955c6f5deaf69a52b6f92754880f06170eebef8038fe84b2f55db"
+      },
+      {
+        "path": "debian/patches/CVE-2026-6238-pre3.patch",
+        "sha256": "c4cb1b054c03ebfc986c7cd563474fe7933ac15c5e0870bf0aef81922f1b30eb"
+      },
+      {
+        "path": "debian/patches/CVE-2026-6238-pre4.patch",
+        "sha256": "bf2ba64aae5d36e334cd6a89e6191829aa72caf40796f91d7fae029896254495"
+      },
+      {
+        "path": "debian/patches/README",
+        "sha256": "9a7bcd40b4f4cc9d0fb3f4a9395aac5d461fecbb18bda3f7b94a3a9efe455a41"
+      },
+      {
+        "path": "debian/patches/all/local-alias-et_EE.diff",
+        "sha256": "dcd995608e0ac2fc2f72d86b96ec044898ce4430eca77b4e86b98331fc3b8ff1"
+      },
+      {
+        "path": "debian/patches/all/local-ldd.diff",
+        "sha256": "221c95bcddc9535e62212eb8d5e4552533145ee27bc6da9b87492adc9b3b9bfd"
+      },
+      {
+        "path": "debian/patches/all/local-remove-manual.diff",
+        "sha256": "82d34d853893ddfe865eecb1f807554602bdc0a91ecd8015429e7b2f3c03bcf4"
+      },
+      {
+        "path": "debian/patches/all/local-ru_RU.diff",
+        "sha256": "f73fdd29b5d61fdfecfdc82d6292db6376200b9b53c96e82b13fd8fb230a1d80"
+      },
+      {
+        "path": "debian/patches/alpha/local-gcc4.1.diff",
+        "sha256": "9f2bb61ef79d39ebd75e2988541c5e0e7cdd52e2c8d0caa913e8ef457f9a4fed"
+      },
+      {
+        "path": "debian/patches/alpha/submitted-dl-support.diff",
+        "sha256": "e1f29d99b180314d205c04995ea9e66762307f549df579f9caa2040f8332952d"
+      },
+      {
+        "path": "debian/patches/alpha/submitted-fts64.diff",
+        "sha256": "fd5c7265ab941829881ee57a1e3b3ac26d55f5478430cd2a8f14bc6f8ee36998"
+      },
+      {
+        "path": "debian/patches/alpha/submitted-makecontext.diff",
+        "sha256": "850621247bac6c82a88d85b71b426accd277bda5b57c2c19708eca6a8e499f28"
+      },
+      {
+        "path": "debian/patches/any/CVE-2024-2961.patch",
+        "sha256": "2deb5c6aad803998208255872ce5bfc7dc21798f95d97070fdf0fb165b51ba36"
+      },
+      {
+        "path": "debian/patches/any/CVE-2024-33599.patch",
+        "sha256": "4356eb323ff692ad6ee4cc3a10dec77df3828e80a9c4603c808fba176679acad"
+      },
+      {
+        "path": "debian/patches/any/CVE-2024-33600_1.patch",
+        "sha256": "3aad9888e9314f74545cf4b079562a479658b85cdbf6a2f72fd5afaa63b8499a"
+      },
+      {
+        "path": "debian/patches/any/CVE-2024-33600_2.patch",
+        "sha256": "9efc09e762a646acf739f39f946964a01eab56a8b0be51934ccdc0efdbaa10fb"
+      },
+      {
+        "path": "debian/patches/any/CVE-2024-33601_33602.patch",
+        "sha256": "cbaa27fee3510fbb8c7a16a54a0547467cb8fe3bc58067b132b9e28170124024"
+      },
+      {
+        "path": "debian/patches/any/CVE-2025-0395.patch",
+        "sha256": "85f69b9503ecc60abddb5933a6cba28ca9b228f13008b4ba6cc3d7a3b357a574"
+      },
+      {
+        "path": "debian/patches/any/CVE-2025-5702.patch",
+        "sha256": "16257562cb4b25b2c5097adc529ff9627fce3d7466b1b552512bc99b2053024d"
+      },
+      {
+        "path": "debian/patches/any/CVE-2025-8058.patch",
+        "sha256": "d61a6d0e6b4d3fa2b4de3df85dd16b369c51c483f17819edde5fda874d40d2e5"
+      },
+      {
+        "path": "debian/patches/any/local-asserth-decls.diff",
+        "sha256": "226126f69c8097a5dffda444914b2c58e004f7100d228544d5f1d7d178192e91"
+      },
+      {
+        "path": "debian/patches/any/local-bootstrap-headers.diff",
+        "sha256": "4651f6bfd4bb62bd7e8372f970a1f5c4a6f4753c96d3577c29a35f123792469b"
+      },
+      {
+        "path": "debian/patches/any/local-cross.patch",
+        "sha256": "d5ef523c3e69d05f8722a0ce5193d4103f38a773c6c90f1945dc5f35486be8e7"
+      },
+      {
+        "path": "debian/patches/any/local-disable-libnss-db.diff",
+        "sha256": "3d9654f23dc0b65f5f91a06e07a9bbee188e1f47317351058a9f3078bc811ba3"
+      },
+      {
+        "path": "debian/patches/any/local-fhs-linux-paths.diff",
+        "sha256": "c1c2eff1d40d6913adfcb928176e1a9d9bb63a14a23a84dc576010fd1999b5b8"
+      },
+      {
+        "path": "debian/patches/any/local-fhs-nscd.diff",
+        "sha256": "9756e24882ac856b01bc9c9d3f2f5a19b41524970f4f918173e3255787fe0beb"
+      },
+      {
+        "path": "debian/patches/any/local-ld-multiarch.diff",
+        "sha256": "f7c72262826010174c8e432e93bee93254bf60beb96d0294f0418dfc9472b51a"
+      },
+      {
+        "path": "debian/patches/any/local-ldconfig-ignore-ld.so.diff",
+        "sha256": "d7f3513bf212a124f085bded16f012933c164fe3c500fc54b51b9d4a8787f613"
+      },
+      {
+        "path": "debian/patches/any/local-ldconfig-multiarch.diff",
+        "sha256": "214e510b8ac7624f2dac8983f2abc7db0a0c72e18f8c2abd0af0bb63d633ee58"
+      },
+      {
+        "path": "debian/patches/any/local-nss-overflow.diff",
+        "sha256": "17e5e2d97e30f27e8bcc2d891650cb68dce20827018a179a0a706d6c24f053fc"
+      },
+      {
+        "path": "debian/patches/any/local-revert-bz13979.diff",
+        "sha256": "f10c9b712b83b9430b22bc0b8a4d7553a94122f1e67d960b4270b5a5e2a4fc72"
+      },
+      {
+        "path": "debian/patches/any/local-stubs_h.diff",
+        "sha256": "37b1bfd845bdc7317b585c7bfc07079c18212a4c26f7ab70fcfdbf4f2066482c"
+      },
+      {
+        "path": "debian/patches/any/local-tcsetaddr.diff",
+        "sha256": "a14ce31bbe98ae08866feee53d7941a8fff9fa9a134c49876043351c7510e08a"
+      },
+      {
+        "path": "debian/patches/any/local-test-install.diff",
+        "sha256": "ecea70be891e06f0961f713b3dcd8851bc010db8b0c17bb336de00724fc7f167"
+      },
+      {
+        "path": "debian/patches/any/submitted-missing-etc-hosts.diff",
+        "sha256": "1a7d9783b9270b97dbe6df55441f8a47d0cab7ae443720259c75e8ce53f5b477"
+      },
+      {
+        "path": "debian/patches/any/submitted-nptl-invalid-td.patch",
+        "sha256": "b4d8993b2dbfaa9585acd2f88067a65538d4f75e4f97a838541af555c63ac6a2"
+      },
+      {
+        "path": "debian/patches/any/unsubmitted-ldso-machine-mismatch.diff",
+        "sha256": "5e79fa2421af1a2c6d9a055c7e6d2b0351eea5bf9a40c7ec5d3387f2f533ed63"
+      },
+      {
+        "path": "debian/patches/arm/local-arm-futex.diff",
+        "sha256": "627c5938baf5ccb990525e2ba2ee71de3db63a70fa1bc04000b5cbda439f710c"
+      },
+      {
+        "path": "debian/patches/arm/local-sigaction.diff",
+        "sha256": "3927c011f6971adf4f164cd5522976e3078d0efa3cfcf5c90cb930fb798701c6"
+      },
+      {
+        "path": "debian/patches/arm/local-vfp-sysdeps.diff",
+        "sha256": "7e86a2474c794fa529ff505c549ac4bddefc60be8221c13890b25d3b3e885a2e"
+      },
+      {
+        "path": "debian/patches/arm/unsubmitted-ldso-multilib.diff",
+        "sha256": "af842dd5fc858cefbcbeb7371c49d149f3f76d845cfc891a8905839100d3eae4"
+      },
+      {
+        "path": "debian/patches/git-updates.diff",
+        "sha256": "37915fc7320f7748e49bd3708bc0b3245a9758308d18e6342fa41c2b64a835b0"
+      },
+      {
+        "path": "debian/patches/hppa/local-inlining.diff",
+        "sha256": "300e1da19f1b2ec60846675a0ba88af58b52ae1621559e15dd5a72291f24bbbc"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-error_t.diff",
+        "sha256": "570847d10816b4046572f072cf02ba9f7df95e8ffba6e0b274164ef0d1fb4534"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-glob_dirent.diff",
+        "sha256": "f32b2580403a594ceafb94030dab9cc68ee25ad4da352b7be22f8c7fe04eb608"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-hidden_chk.diff",
+        "sha256": "32b06995fad3f6892dc1e437bbcc6fa6eabeec4ecc2e42a346d383611d1a64a1"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-jemalloc.diff",
+        "sha256": "31391df53bc7edde9fc14c5c98049633e269b22a3f050c9760349fe41d7ccff4"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-jemalloc2.diff",
+        "sha256": "a44ca6202fda30c6d998ca090be806db458d763d377da218accf688ff87a3760"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-main_stack.diff",
+        "sha256": "ee379b537c4a5225ccc38ff3456ba77e13ab577e0352f603893abdf4bce60e73"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-powerpc-longjmp.diff",
+        "sha256": "df2bfbc6177e30a1bba5d33f4911ff1129ded8489f6a336764205a4bf35d52be"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-realpath_NULL.diff",
+        "sha256": "ab0d44ccbdd3af5bfc83f804affc55d37910145a16c1f859f903d0d77f9842d4"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-tls_dtors.diff",
+        "sha256": "908dc53452aa7746cd1a01f443e5710dbbea0bdd0e8da2837020fccc9913e7c7"
+      },
+      {
+        "path": "debian/patches/hurd-i386/git-tst-realpath-toolong.diff",
+        "sha256": "3bdfdddb492644ecf4f09307f99fefb114fa57cd633af9e8719ca9f85de5aa4b"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-ED.diff",
+        "sha256": "f1a99a0f668ae4967f45257ddb3ddbf67fe9e825fbd95613175e35bc7210ae26"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-clock_gettime_MONOTONIC.diff",
+        "sha256": "85ac565d8d62311291939c1d216a6ccd6296461e63bc22326d90851c3f575f6e"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-disable-ioctls.diff",
+        "sha256": "87ff956297b6b9dacb95897c4f9899c73e00c5928391f53b4fb0f85922f32e65"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-enable-ldconfig.diff",
+        "sha256": "b023aa6e9b45b2e95d01fd1a8feb2b13cf13a6509f27f06d7f653008f3920556"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-exec_filename.diff",
+        "sha256": "b8fd2964cb6c65c8ed24e0b3bb5e28f8837f25fcadd018a3e9875cb2ac1c27b4"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-fix-nss.diff",
+        "sha256": "0d866ca84f07e54211a7a01a7582c8ac21c178f9d20f3abe4a9ffcdac1c0478a"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-madvise_warn.diff",
+        "sha256": "b9b226e5aa805bc6a884055f41ae8e013ac74f6299ce10fa29686fe78414527c"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-no-bootstrap-fs-access.2.diff",
+        "sha256": "a0471687b0783f2103ce288b6adab3d4d2d2a270229ab9b0114a31d8ad424223"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-no_unsupported_ioctls.diff",
+        "sha256": "0a711a3a2fe4859735cb895082c97f454b5946ac5fd35f4c4cd36f458dfb336e"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-stack_chk_guard.diff",
+        "sha256": "b48bcb278e62d1fb91a59ed56c654308c816c50c4a459171ff4f7da38abd9d83"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-static_pthread_setcancelstate.diff",
+        "sha256": "da3f6e55afa1e132320dc95c8d275b6be235b39ecfd08a959e0a0d2ac68fb97f"
+      },
+      {
+        "path": "debian/patches/hurd-i386/local-usr.diff",
+        "sha256": "3a5588b1f51b6083a703234524c0869a120cf89d3564b752631b2324be54aa36"
+      },
+      {
+        "path": "debian/patches/hurd-i386/proc_reauth.diff",
+        "sha256": "df5219e5cd401981ac9d12b699b78674b78bb91264944302915cb2b5005b3602"
+      },
+      {
+        "path": "debian/patches/hurd-i386/submitted-AF_LINK.diff",
+        "sha256": "99c1a5f299c7c5914b712398ab49b99f17bd45b34823070cc753c031763df85b"
+      },
+      {
+        "path": "debian/patches/hurd-i386/submitted-bind_umask2.diff",
+        "sha256": "c9c2201b455e3fdf44e32d8b5adc02866fe626dd5c63b51e3c78d5ab94063a31"
+      },
+      {
+        "path": "debian/patches/hurd-i386/submitted-net.diff",
+        "sha256": "94bf71b053932756f9baed30f95a7b361edf7c2f0f73d4d0ddd31e2143427cce"
+      },
+      {
+        "path": "debian/patches/hurd-i386/submitted-path_mounted.diff",
+        "sha256": "bf1d4aa6f8abc7190f20fe048e45fe887a0c31e4c0dc7407adf823214a54c4a3"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-bits_atomic.h_multiple_threads.diff",
+        "sha256": "0ec587b033db21729a49d013e251f7cc7c3cc6cc2f1c3b29331dc4d6dbcd2bfe"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-bootstrap.diff",
+        "sha256": "e17d0aa99e83a25772e6caf3e10f4dc55156905611b37733237d2fad8a89e0dc"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-hooks.diff",
+        "sha256": "25cec356880021b4749b58ea1b14b908544435d26e1f90fd2ac0ef4bd7f43ecc"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-ifaddrs_v6.diff",
+        "sha256": "559de18aad025e2d67d440644e7256ac1a255412c5c38dc9c76ad5aa88c9945e"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-libc_rwlock_recursive.diff",
+        "sha256": "d30527ddf52e46b6367a2c885fc4a92761d9abc8e6fed6842e792a1bb4017d7e"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-mach-hurd-link.diff",
+        "sha256": "58e3929cfb0dd3573e9bef0877a9d5480cedf451193bcfcb12adefff8193016b"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-sendmsg-SCM_CREDS.diff",
+        "sha256": "007ec5bbd04182e7c81797aae124d92f648a14e16874bcf43972aa7c98023a61"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-sysvshm.diff",
+        "sha256": "3a5e01327ef8895d2857eff9c5db6698a7f07a109815b520323e9992e9622dde"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-thread-cancel.diff",
+        "sha256": "864d1320e4c51e569bdf58e4b7747781e3559b9d392686cba901c00f158bf651"
+      },
+      {
+        "path": "debian/patches/hurd-i386/tg-unlockpt-chroot.diff",
+        "sha256": "fa1175fd4efa24ac64cb347304eedb38fef6de0c1ce0d38a5df69eb3fdcaad82"
+      },
+      {
+        "path": "debian/patches/hurd-i386/unsubmitted-clock_t_centiseconds.diff",
+        "sha256": "4cd0babeeedd5613f1ad9d88871a4dddd2973c8e90fbd2d36ce8aa6eac74536e"
+      },
+      {
+        "path": "debian/patches/hurd-i386/unsubmitted-getaux_at_secure.diff",
+        "sha256": "46158a7bc190a0282f248f4c0beda44a3054cfb1787c3f08273e9b658f339921"
+      },
+      {
+        "path": "debian/patches/hurd-i386/unsubmitted-prof-eintr.diff",
+        "sha256": "8005a41d97dd257940561de5de98e62e804bf67e72cec32e15694b142ad0f2c9"
+      },
+      {
+        "path": "debian/patches/i386/local-biarch.diff",
+        "sha256": "e04e9f90c9521a562706b0ae14f6fcaf683bec3418949d8c2cf81b5745813259"
+      },
+      {
+        "path": "debian/patches/i386/local-setcontext-revert-eax-ecx-edx.patch",
+        "sha256": "b6bc8717544f1f6832eeedde3a4a1e621194d07d77b276d4f02e9c1b8ee2c91b"
+      },
+      {
+        "path": "debian/patches/i386/unsubmitted-quiet-ldconfig.diff",
+        "sha256": "df57aa754ed41d31c41ed1ca1b4b87a2ee97f79a9139755600bb559c5b2ca081"
+      },
+      {
+        "path": "debian/patches/locale/LC_IDENTIFICATION-optional-fields.diff",
+        "sha256": "0d34232f355bcef85e0dbb2cd989b05b256338512b7d4f9955b3da2cd2143c1e"
+      },
+      {
+        "path": "debian/patches/locale/check-unknown-symbols.diff",
+        "sha256": "1e012e5e754684ace8d1906e350598a68e481bf04bae23721d114ea37f9a5860"
+      },
+      {
+        "path": "debian/patches/locale/locale-print-LANGUAGE.diff",
+        "sha256": "7380447b8f845724bb7aa66e6a5b30098e3aecad6d1c748d0391218891ecf033"
+      },
+      {
+        "path": "debian/patches/localedata/fo_FO-date_fmt.diff",
+        "sha256": "4f7c6c5644fe6669563584b770406005cac0d8edd7e8212242492fb1a0c05c96"
+      },
+      {
+        "path": "debian/patches/localedata/locale-en_DK.diff",
+        "sha256": "60886407b1a099a1944bee532ae7fa5e021bc6accaaee2e19c5806e79b03bcd9"
+      },
+      {
+        "path": "debian/patches/localedata/locale-eu_FR.diff",
+        "sha256": "ffb46b48511ee84cf343682f7bdadd1c19e278520c156fece975fd4064292fb3"
+      },
+      {
+        "path": "debian/patches/localedata/locale-ku_TR.diff",
+        "sha256": "1f0a65bb577914fbd506f089c8ab7f9ab6cd563b6e01b88f7b94c569f5e9ce62"
+      },
+      {
+        "path": "debian/patches/localedata/locale-zh_TW.diff",
+        "sha256": "da2a0d947d065fbfeb39f5ba69482e6fffb5340ba52d101a84dec4e2c2ba365a"
+      },
+      {
+        "path": "debian/patches/localedata/locales-fr.diff",
+        "sha256": "6553fa58f80b7f9202d8b32b32ca477e31c8dbda724235c13e28d84820d7c58e"
+      },
+      {
+        "path": "debian/patches/localedata/sort-UTF8-first.diff",
+        "sha256": "a722a913034af45edb8d876ac466e1d4ca83b78507baeb348258097c0b65d295"
+      },
+      {
+        "path": "debian/patches/localedata/submitted-es_MX-decimal_point.diff",
+        "sha256": "b16bf4fb56c3c8a48317a3e926bb742c94a52e38f02c516d61dda2c2bba3c455"
+      },
+      {
+        "path": "debian/patches/localedata/supported.diff",
+        "sha256": "f10d7153e7f2e91c6a078fd690e466250c60cb9b54f7967aa8ec70d4697cb91e"
+      },
+      {
+        "path": "debian/patches/localedata/tailor-iso14651_t1.diff",
+        "sha256": "6d0cd73fc196be181b8605f3db9417da3fd371d86f70365052c89ffafe5d6162"
+      },
+      {
+        "path": "debian/patches/m68k/local-dwarf2-buildfix.diff",
+        "sha256": "9f7f42d304bb629c5b807fa8460504d3861a5884e8f90fbc1c531419a5b6ed4e"
+      },
+      {
+        "path": "debian/patches/m68k/local-reloc.diff",
+        "sha256": "286055e52c8b7bd5677e99c1fdde1fe639f5e4dbca0f22cb707f053366c770df"
+      },
+      {
+        "path": "debian/patches/m68k/submitted-gcc34-seccomment.diff",
+        "sha256": "01208ec07d73e26bd251be97cd0345d8c5099439b87800b647279f1574a0b81a"
+      },
+      {
+        "path": "debian/patches/mips/submitted-rld_map.diff",
+        "sha256": "1ee338abf51f73f455040cb6d94d39bb77b456bcae7bf7a7279a41bcc79ddd9d"
+      },
+      {
+        "path": "debian/patches/powerpc/local-powerpc8xx-dcbz.diff",
+        "sha256": "c8f2edfc4fe17f0abf22290c0879a8d1b55f9b66bc9b82e7cd04869d7b6c16a3"
+      },
+      {
+        "path": "debian/patches/series",
+        "sha256": "589e5aea9145c9c1c5a09590242feeda7b4fb442f33cf82b2d27ed8ee3dbc1f0"
+      },
+      {
+        "path": "debian/patches/series.hurd-amd64",
+        "sha256": "5c6e34500d7bf31842877d471d9c23c15889eecf249665bbc7e98f49322a81ac"
+      },
+      {
+        "path": "debian/patches/series.hurd-i386",
+        "sha256": "5c6e34500d7bf31842877d471d9c23c15889eecf249665bbc7e98f49322a81ac"
+      },
+      {
+        "path": "debian/patches/sh4/local-fpscr_values.diff",
+        "sha256": "27454c3a56b3a1d115cfac1185e1e37d66976d1060cc54270b4ac6680d275ecd"
+      },
+      {
+        "path": "debian/patches/ubuntu/apparmor/0001-tests-gracefully-handle-AppArmor-userns-containment.patch",
+        "sha256": "8a73b1821d6ef95fd7f2e059060f1c54b0f2e7fe5598a6c0f9750a201a711e66"
+      },
+      {
+        "path": "debian/patches/ubuntu/apparmor/0002-tests-handle-AppArmor-userns-mitigation.patch",
+        "sha256": "9ddcfa6e3506ec5f6dec4bedbe75ac902b25d49eb3ebed515273cd05a170462f"
+      },
+      {
+        "path": "debian/patches/ubuntu/fix-fortify-source.patch",
+        "sha256": "0ef5bea98a2594a55070794fc5007814a3483355775cefcf98df70506a9dbf5c"
+      },
+      {
+        "path": "debian/patches/ubuntu/local-altlocaledir.diff",
+        "sha256": "9b205091df89a729fddbc3500ed1b2986e2f00f1fdf4ae59ed91604416529792"
+      },
+      {
+        "path": "debian/patches/ubuntu/local-disable-ld_audit.diff",
+        "sha256": "975571647e44c102713cf79f47caaf3deed189701787e453b997597a058ac77a"
+      },
+      {
+        "path": "debian/patches/ubuntu/local-disable-nscd-netgroup-caching.diff",
+        "sha256": "26128cc569981e1dea5ce106febf9ac9e14e1932f483a1201c7799ff02a0dda3"
+      },
+      {
+        "path": "debian/patches/ubuntu/local-fallback-to-monotonic.diff",
+        "sha256": "fd807b51c5d3dca0c8539406a0f595c943d8ec0f31d367f5a856e6f7afcc23b7"
+      },
+      {
+        "path": "debian/patches/ubuntu/local-pldd-root.diff",
+        "sha256": "92904b0dda1c4f3b5bef7e809d5b26aa839343d16eee45c57c697e3e5670b766"
+      },
+      {
+        "path": "debian/patches/ubuntu/localedata/en_IE-am_pm.diff",
+        "sha256": "1149b1022d5649e32ae9ff2a0818a9898aca0f44bafef63d41912d711a67e1d8"
+      },
+      {
+        "path": "debian/patches/ubuntu/localedata/eo_US.diff",
+        "sha256": "827c9f2c7325ad5ffe8d170d489f5be1a3da9126eaf37c9ff822184c671966ee"
+      },
+      {
+        "path": "debian/patches/ubuntu/localedata/es_DO-am_pm.diff",
+        "sha256": "c4315bc923bc801c57c0954d3de62cba635ec48684b17e7c46023416dbc46cf5"
+      },
+      {
+        "path": "debian/patches/ubuntu/localedata/sd_PK.diff",
+        "sha256": "0a7f176d68501f2e15aa897a2a866adce7813f09e51ddd982e862fe96fe0b77b"
+      },
+      {
+        "path": "debian/patches/ubuntu/localedata/ug_CN@latin.diff",
+        "sha256": "87457c46dbe407ad8598f9267412bc20e24a2c9f46a974fcab424f376e033c90"
+      },
+      {
+        "path": "debian/patches/ubuntu/sdt-headers.patch",
+        "sha256": "d2181b1415cc08bc50999c1d5a921a604383fdeda5a45fd035a120f03348c132"
+      },
+      {
+        "path": "debian/patches/ubuntu/submitted-broadcast-to-prevent-deadlock.diff",
+        "sha256": "f65277428255b60c4d4a1bfe393067186abcd46774cc3264c5b5597086cabb2c"
+      }
+    ]
+  },
+  "runtime": {
+    "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+    "sha256": "e9c4b28d340e415b8137480ec442662f981e1399386c5931dae0e886e3639e91",
+    "php_import": "pow@GLIBC_2.29",
+    "public_wrapper_elf_offset": "0x3a630",
+    "ifunc_symbol": "__pow_finite@GLIBC_2.15",
+    "resolver_elf_offset": "0x2bfb0",
+    "selected_elf_offset": "0x7a1e0",
+    "selected_source": "sysdeps/x86_64/fpu/multiarch/e_pow-fma.c",
+    "cpu_requirements": [
+      "FMA",
+      "AVX2"
+    ],
+    "arithmetic": "binary64 round-nearest ties-even, compiler contractions recorded separately"
+  },
+  "scope": "Selected arithmetic/table, wrapper, dispatch and rounding source evidence; not a complete glibc build tree. The semantic evaluator must not link or call these functions."
+}

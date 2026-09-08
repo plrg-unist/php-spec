@@ -12,9 +12,9 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 0b | Checked AST runner and original-source differential harness | Complete — bounded bootstrap reviewed (`8b856a27`) |
 | 1a | Pure integers/bytes and result typing | Partial — integer/bitwise/float-cast helpers reviewed; source integration pending |
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div helpers reviewed; source integration pending |
-| 1c | Numeric text, conversions, formatting, power | Partial — numeric text reviewed; formatter in progress |
+| 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context helpers reviewed; power pending |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | In progress — arrays first, foreach next |
+| 2b | Arrays, strings, lvalues and sequencing | In progress — scalar source bridge review, then arrays and foreach |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
@@ -47,7 +47,8 @@ timeouts and interrupted campaigns never count as validation passes.
   still pending/partial at full-core scope. Contracts began in `69868bac`.
 - Independently reviewed/repeated helpers: numeric `4d343899` (1,976 differential
   +8 symbolic cases), integer `7d48a580` (1,025), numeric text `9cc4ecef` (350).
-  Reports: `coverage/semantics/{numeric,integer,numeric-text}.json`.
+  Formatter `99ebf273` (8,826), context `33e503aa` (921) also independently
+  repeated with stable fingerprints. Reports in `coverage/semantics/`.
 - Reviewed source machine: bootstrap `8b856a27` (8 comparisons +7 negatives),
   scalar storage `5a083605` (53 comparisons +12 negatives). Stable fingerprints;
   current report `coverage/semantics/source.json`, raw observations in
@@ -61,11 +62,12 @@ timeouts and interrupted campaigns never count as validation passes.
   Weak/GC, closure/call introspection, output buffers and ticks stay core. Ordinary
   libraries, foreign resources and Reflection-created lazy objects are outside
   the explicit environment. Compiler-special assertions remain in scope.
-- Formatter's expanded midpoint/shortest-output sweep is still in progress;
-  exploratory/stale results are not current acceptance evidence.
+- Power provenance pins glibc 2.39-0ubuntu8.8 FMA/AVX2, including actual compiler
+  contractions and unchanged local source/license evidence. General power remains
+  pending; see `docs/semantics/POWER-PROVENANCE.md`.
 - No intentional engine disagreement.
 
 Gate: `python3 scripts/check-semantic-inventory.py`; `--complete` rejects unfinished
 entries and requires independent review plus source/helper evidence separately.
-Next: review array storage and the numeric source bridge, then formatter helpers;
+Next: review the numeric source bridge and byte-string helpers, then arrays;
 keep frame, callback and lifecycle obligations visible throughout.
