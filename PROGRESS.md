@@ -14,7 +14,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary literals/reads reviewed; writes/COW/references/foreach pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — ordinary reads/writes reviewed; unset/embedded refs/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | In progress — local type helpers reviewed; signatures active, calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Pending |
@@ -44,7 +44,8 @@ timeouts and interrupted campaigns never count as validation passes.
   delayed variable reads. Arrays retain ordered entries/history and internal IDs;
   recursive dimension descriptors defer fetches through key effects. Shared-ID
   identity shortcuts are observable with NaN, without PHP object identity.
-  Writes/COW and embedded reference topology are next; see DESIGN.
+  Writable paths shallow-copy container graphs, including scalar-alias cycles.
+  Dimension unset and exact embedded-reference topology are next; see DESIGN.
 - Shared working tree: stage owned files only, never push. Baseline `082a3a2b`;
   the workspace gitlink was already modified.
 
@@ -60,15 +61,15 @@ timeouts and interrupted campaigns never count as validation passes.
 - Reviewed source machine: bootstrap `8b856a27` (8 comparisons +7 negatives),
   scalar storage `5a083605` (53 comparisons +12 negatives), numeric bridge
   `e3fbd6e8` (157 comparisons +16 negatives), ordinary array reads `eb48f793`
-  (251 comparisons +22 negatives). Stable acceptance fingerprints;
+  (251 comparisons +22 negatives), writable arrays `f0b3c5ee`
+  (308 comparisons +22 negatives; 44 additional reviewer probes). Stable acceptance fingerprints;
   current report `coverage/semantics/source.json`, raw observations in
   `coverage/results-semantic-source.jsonl`. Phase0 report is historical.
 - Storage regressions preserve delayed dynamic names, reference rebinding,
   dynamic-write initialization, eliminated discarded CV reads and warning lines.
   Operator diagnostics use post-child compile lines, distinct from AST/LHS lines.
 - 57 independent source targets in `tests/semantics/conformance` match the oracle;
-  15 are integrated into the current source harness (12 await the writable-array
-  gate). Oracle-only evidence is
+  15 are integrated into the reviewed source harness. Oracle-only evidence is
   `coverage/semantics/conformance-oracle.json`; it never implies implementation.
 - Fixed profile includes `E_ALL=30719`, original identity and byte-exact channels.
   Weak/GC, closure/call introspection, output buffers and ticks stay core. Ordinary

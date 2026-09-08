@@ -3397,15 +3397,22 @@
     {
       "id": "containers.array-copy",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/36-arrays.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: bounded writable-array commit f0b3c5ee; 308 source comparisons and 22 outcome negatives passed with stable acceptance fingerprint, plus 44 independent exploratory writes. Shallow graph copies preserve currently admitted reference-free entries, including scalar-alias cycles; embedded references and their topology remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3452,15 +3459,22 @@
     {
       "id": "containers.cycles",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/36-arrays.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: bounded writable-array commit f0b3c5ee; 308 source comparisons and 22 outcome negatives passed with stable acceptance fingerprint, plus 44 independent exploratory writes. Shallow graph copies preserve currently admitted reference-free entries, including scalar-alias cycles; embedded references and their topology remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
@@ -3561,15 +3575,22 @@
     {
       "id": "containers.nested-write",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/37-array-locations.watsup",
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/36-arrays.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": "Independent reviewer: bounded writable-array commit f0b3c5ee; 308 source comparisons and 22 outcome negatives passed with stable acceptance fingerprint, plus 44 independent exploratory writes. Shallow graph copies preserve currently admitted reference-free entries, including scalar-alias cycles; embedded references and their topology remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-self-append.php",
         "tests/semantics/conformance/array-self-index.php",
