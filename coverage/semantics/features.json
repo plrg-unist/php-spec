@@ -1,0 +1,5849 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "PLAN.md and docs/semantics/CORE.md; ordinary-library exclusions never discharge core obligations",
+  "status_policy": {
+    "pending": "No reviewed executable implementation.",
+    "partial": "Some branches implemented; list remaining work.",
+    "implemented": "All obligation branches implemented; independent review or evidence still pending.",
+    "validated": "Independent review plus current source tests and relevant helper tests passed.",
+    "compile-rejected": "Independent static rules and source evidence establish target rejection.",
+    "metadata": "Independent review establishes no standalone dynamic action; contextual obligations still apply."
+  },
+  "constructor_count": 169,
+  "runtime_obligation_count": 297,
+  "constructors": [
+    {
+      "node": "Arg",
+      "constructor": "NArg",
+      "obligations": [
+        "calls.positional",
+        "calls.named",
+        "calls.unpack",
+        "calls.byref-argument"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "ArrayItem",
+      "constructor": "NArrayItem",
+      "obligations": [
+        "containers.key-normalization",
+        "containers.embedded-references",
+        "containers.unpack"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Attribute",
+      "constructor": "NAttribute",
+      "obligations": [
+        "declarations.attribute-metadata",
+        "declarations.attribute-targets"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "AttributeGroup",
+      "constructor": "NAttributeGroup",
+      "obligations": [
+        "declarations.attribute-repeatability"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "ClosureUse",
+      "constructor": "NClosureUse",
+      "obligations": [
+        "calls.captures"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Const",
+      "constructor": "NConst",
+      "obligations": [
+        "declarations.constants"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "DeclareItem",
+      "constructor": "NDeclareItem",
+      "obligations": [
+        "source.encodings",
+        "static.strict-types",
+        "lifecycle.ticks"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Array",
+      "constructor": "NExprArray",
+      "obligations": [
+        "containers.ordered-arrays"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_ArrayDimFetch",
+      "constructor": "NExprArrayDimFetch",
+      "obligations": [
+        "storage.read-modes",
+        "containers.nested-write",
+        "containers.string-offsets",
+        "protocols.ArrayAccess"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_ArrowFunction",
+      "constructor": "NExprArrowFunction",
+      "obligations": [
+        "calls.arrows"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Assign",
+      "constructor": "NExprAssign",
+      "obligations": [
+        "storage.assignment",
+        "expression.lvalue-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_BitwiseAnd",
+      "constructor": "NExprAssignOpBitwiseAnd",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_BitwiseOr",
+      "constructor": "NExprAssignOpBitwiseOr",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_BitwiseXor",
+      "constructor": "NExprAssignOpBitwiseXor",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Coalesce",
+      "constructor": "NExprAssignOpCoalesce",
+      "obligations": [
+        "expression.coalesce",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Concat",
+      "constructor": "NExprAssignOpConcat",
+      "obligations": [
+        "bytes.byte-concatenation",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Div",
+      "constructor": "NExprAssignOpDiv",
+      "obligations": [
+        "numeric.division",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Minus",
+      "constructor": "NExprAssignOpMinus",
+      "obligations": [
+        "numeric.arithmetic-result-types",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Mod",
+      "constructor": "NExprAssignOpMod",
+      "obligations": [
+        "numeric.remainder",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Mul",
+      "constructor": "NExprAssignOpMul",
+      "obligations": [
+        "numeric.arithmetic-result-types",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Plus",
+      "constructor": "NExprAssignOpPlus",
+      "obligations": [
+        "numeric.arithmetic-result-types",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_Pow",
+      "constructor": "NExprAssignOpPow",
+      "obligations": [
+        "numeric.power",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_ShiftLeft",
+      "constructor": "NExprAssignOpShiftLeft",
+      "obligations": [
+        "numeric.shifts",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignOp_ShiftRight",
+      "constructor": "NExprAssignOpShiftRight",
+      "obligations": [
+        "numeric.shifts",
+        "expression.compound-write"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_AssignRef",
+      "constructor": "NExprAssignRef",
+      "obligations": [
+        "storage.reference-rebinding"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_BitwiseAnd",
+      "constructor": "NExprBinaryOpBitwiseAnd",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_BitwiseOr",
+      "constructor": "NExprBinaryOpBitwiseOr",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_BitwiseXor",
+      "constructor": "NExprBinaryOpBitwiseXor",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_BooleanAnd",
+      "constructor": "NExprBinaryOpBooleanAnd",
+      "obligations": [
+        "expression.short-circuit",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_BooleanOr",
+      "constructor": "NExprBinaryOpBooleanOr",
+      "obligations": [
+        "expression.short-circuit",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Coalesce",
+      "constructor": "NExprBinaryOpCoalesce",
+      "obligations": [
+        "expression.coalesce",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Concat",
+      "constructor": "NExprBinaryOpConcat",
+      "obligations": [
+        "bytes.byte-concatenation",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Div",
+      "constructor": "NExprBinaryOpDiv",
+      "obligations": [
+        "numeric.division",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Equal",
+      "constructor": "NExprBinaryOpEqual",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Greater",
+      "constructor": "NExprBinaryOpGreater",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_GreaterOrEqual",
+      "constructor": "NExprBinaryOpGreaterOrEqual",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Identical",
+      "constructor": "NExprBinaryOpIdentical",
+      "obligations": [
+        "coercion.identity",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_LogicalAnd",
+      "constructor": "NExprBinaryOpLogicalAnd",
+      "obligations": [
+        "expression.short-circuit",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_LogicalOr",
+      "constructor": "NExprBinaryOpLogicalOr",
+      "obligations": [
+        "expression.short-circuit",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_LogicalXor",
+      "constructor": "NExprBinaryOpLogicalXor",
+      "obligations": [
+        "expression.short-circuit",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Minus",
+      "constructor": "NExprBinaryOpMinus",
+      "obligations": [
+        "numeric.arithmetic-result-types",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Mod",
+      "constructor": "NExprBinaryOpMod",
+      "obligations": [
+        "numeric.remainder",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Mul",
+      "constructor": "NExprBinaryOpMul",
+      "obligations": [
+        "numeric.arithmetic-result-types",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_NotEqual",
+      "constructor": "NExprBinaryOpNotEqual",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_NotIdentical",
+      "constructor": "NExprBinaryOpNotIdentical",
+      "obligations": [
+        "coercion.identity",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Pipe",
+      "constructor": "NExprBinaryOpPipe",
+      "obligations": [
+        "calls.pipe",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Plus",
+      "constructor": "NExprBinaryOpPlus",
+      "obligations": [
+        "numeric.arithmetic-result-types",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Pow",
+      "constructor": "NExprBinaryOpPow",
+      "obligations": [
+        "numeric.power",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_ShiftLeft",
+      "constructor": "NExprBinaryOpShiftLeft",
+      "obligations": [
+        "numeric.shifts",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_ShiftRight",
+      "constructor": "NExprBinaryOpShiftRight",
+      "obligations": [
+        "numeric.shifts",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Smaller",
+      "constructor": "NExprBinaryOpSmaller",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_SmallerOrEqual",
+      "constructor": "NExprBinaryOpSmallerOrEqual",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BinaryOp_Spaceship",
+      "constructor": "NExprBinaryOpSpaceship",
+      "obligations": [
+        "coercion.loose-comparison",
+        "expression.operand-order"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BitwiseNot",
+      "constructor": "NExprBitwiseNot",
+      "obligations": [
+        "numeric.integer-bitwise",
+        "bytes.string-bitwise"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_BooleanNot",
+      "constructor": "NExprBooleanNot",
+      "obligations": [
+        "coercion.cast-bool"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Array",
+      "constructor": "NExprCastArray",
+      "obligations": [
+        "coercion.cast-array"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Bool",
+      "constructor": "NExprCastBool",
+      "obligations": [
+        "coercion.cast-bool"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Double",
+      "constructor": "NExprCastDouble",
+      "obligations": [
+        "coercion.cast-float"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Int",
+      "constructor": "NExprCastInt",
+      "obligations": [
+        "coercion.cast-int"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Object",
+      "constructor": "NExprCastObject",
+      "obligations": [
+        "coercion.cast-object"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_String",
+      "constructor": "NExprCastString",
+      "obligations": [
+        "coercion.cast-string"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Unset",
+      "constructor": "NExprCastUnset",
+      "obligations": [
+        "static.lvalue-rejection"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Cast_Void",
+      "constructor": "NExprCastVoid",
+      "obligations": [
+        "coercion.cast-void"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_ClassConstFetch",
+      "constructor": "NExprClassConstFetch",
+      "obligations": [
+        "declarations.typed-class-constants",
+        "classes.static-lookup"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Clone",
+      "constructor": "NExprClone",
+      "obligations": [
+        "classes.clone",
+        "classes.clone-with-properties"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Closure",
+      "constructor": "NExprClosure",
+      "obligations": [
+        "calls.closures"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_ConstFetch",
+      "constructor": "NExprConstFetch",
+      "obligations": [
+        "declarations.constants",
+        "calls.namespace-fallback"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Empty",
+      "constructor": "NExprEmpty",
+      "obligations": [
+        "expression.empty"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_ErrorSuppress",
+      "constructor": "NExprErrorSuppress",
+      "obligations": [
+        "diagnostics.suppression"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Eval",
+      "constructor": "NExprEval",
+      "obligations": [
+        "dynamic.eval-mode",
+        "dynamic.eval-scope"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Exit",
+      "constructor": "NExprExit",
+      "obligations": [
+        "control.exit"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_FuncCall",
+      "constructor": "NExprFuncCall",
+      "obligations": [
+        "calls.name-resolution",
+        "calls.positional",
+        "calls.first-class-callable"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Include",
+      "constructor": "NExprInclude",
+      "obligations": [
+        "dynamic.include",
+        "dynamic.require",
+        "dynamic.include-once",
+        "dynamic.require-once"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Instanceof",
+      "constructor": "NExprInstanceof",
+      "obligations": [
+        "classes.instanceof"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Isset",
+      "constructor": "NExprIsset",
+      "obligations": [
+        "expression.isset"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_List",
+      "constructor": "NExprList",
+      "obligations": [
+        "containers.destructuring"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Match",
+      "constructor": "NExprMatch",
+      "obligations": [
+        "control.match"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_MethodCall",
+      "constructor": "NExprMethodCall",
+      "obligations": [
+        "classes.instance-lookup",
+        "classes.magic-call",
+        "calls.first-class-callable"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_New",
+      "constructor": "NExprNew",
+      "obligations": [
+        "classes.creation",
+        "classes.anonymous"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_NullsafeMethodCall",
+      "constructor": "NExprNullsafeMethodCall",
+      "obligations": [
+        "expression.nullsafe",
+        "classes.magic-call"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_NullsafePropertyFetch",
+      "constructor": "NExprNullsafePropertyFetch",
+      "obligations": [
+        "expression.nullsafe",
+        "properties.magic-get-set"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_PostDec",
+      "constructor": "NExprPostDec",
+      "obligations": [
+        "coercion.increment-decrement"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_PostInc",
+      "constructor": "NExprPostInc",
+      "obligations": [
+        "coercion.increment-decrement"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_PreDec",
+      "constructor": "NExprPreDec",
+      "obligations": [
+        "coercion.increment-decrement"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_PreInc",
+      "constructor": "NExprPreInc",
+      "obligations": [
+        "coercion.increment-decrement"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Print",
+      "constructor": "NExprPrint",
+      "obligations": [
+        "bytes.output-conversion"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_PropertyFetch",
+      "constructor": "NExprPropertyFetch",
+      "obligations": [
+        "properties.typed",
+        "properties.hooks",
+        "properties.magic-get-set"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_ShellExec",
+      "constructor": "NExprShellExec",
+      "obligations": [
+        "dynamic.shell-dispatch",
+        "environment.shell-provider"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_StaticCall",
+      "constructor": "NExprStaticCall",
+      "obligations": [
+        "classes.static-lookup",
+        "classes.late-static-binding"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_StaticPropertyFetch",
+      "constructor": "NExprStaticPropertyFetch",
+      "obligations": [
+        "properties.asymmetric-static",
+        "classes.static-lookup"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Ternary",
+      "constructor": "NExprTernary",
+      "obligations": [
+        "expression.ternary"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Throw",
+      "constructor": "NExprThrow",
+      "obligations": [
+        "control.throw"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_UnaryMinus",
+      "constructor": "NExprUnaryMinus",
+      "obligations": [
+        "numeric.signed64",
+        "numeric.binary64-specials"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_UnaryPlus",
+      "constructor": "NExprUnaryPlus",
+      "obligations": [
+        "coercion.arithmetic"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Variable",
+      "constructor": "NExprVariable",
+      "obligations": [
+        "storage.variable-names",
+        "storage.slots"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_Yield",
+      "constructor": "NExprYield",
+      "obligations": [
+        "resumable.yield",
+        "resumable.byref-yield"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Expr_YieldFrom",
+      "constructor": "NExprYieldFrom",
+      "obligations": [
+        "resumable.yield-from"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Identifier",
+      "constructor": "NIdentifier",
+      "obligations": [
+        "calls.name-resolution"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "InterpolatedStringPart",
+      "constructor": "NInterpolatedStringPart",
+      "obligations": [
+        "bytes.interpolation"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "IntersectionType",
+      "constructor": "NIntersectionType",
+      "obligations": [
+        "static.intersection"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "MatchArm",
+      "constructor": "NMatchArm",
+      "obligations": [
+        "control.match"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Name",
+      "constructor": "NName",
+      "obligations": [
+        "calls.name-resolution"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Name_FullyQualified",
+      "constructor": "NNameFullyQualified",
+      "obligations": [
+        "calls.name-resolution"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Name_Relative",
+      "constructor": "NNameRelative",
+      "obligations": [
+        "calls.name-resolution"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "NullableType",
+      "constructor": "NNullableType",
+      "obligations": [
+        "static.nullable"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Param",
+      "constructor": "NParam",
+      "obligations": [
+        "calls.defaults",
+        "calls.byref-argument",
+        "calls.variadic",
+        "properties.promotion"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "PropertyHook",
+      "constructor": "NPropertyHook",
+      "obligations": [
+        "properties.hooks",
+        "properties.hook-parent-call"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "PropertyItem",
+      "constructor": "NPropertyItem",
+      "obligations": [
+        "properties.typed",
+        "properties.backing-slots"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_Float",
+      "constructor": "NScalarFloat",
+      "obligations": [
+        "numeric.binary64-codec"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_Int",
+      "constructor": "NScalarInt",
+      "obligations": [
+        "numeric.signed64"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_InterpolatedString",
+      "constructor": "NScalarInterpolatedString",
+      "obligations": [
+        "bytes.interpolation"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Class",
+      "constructor": "NScalarMagicConstClass",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Dir",
+      "constructor": "NScalarMagicConstDir",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_File",
+      "constructor": "NScalarMagicConstFile",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Function",
+      "constructor": "NScalarMagicConstFunction",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Line",
+      "constructor": "NScalarMagicConstLine",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Method",
+      "constructor": "NScalarMagicConstMethod",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Namespace",
+      "constructor": "NScalarMagicConstNamespace",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Property",
+      "constructor": "NScalarMagicConstProperty",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_MagicConst_Trait",
+      "constructor": "NScalarMagicConstTrait",
+      "obligations": [
+        "source.magic-constants",
+        "source.context"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Scalar_String",
+      "constructor": "NScalarString",
+      "obligations": [
+        "bytes.byte-values"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "StaticVar",
+      "constructor": "NStaticVar",
+      "obligations": [
+        "storage.static-bindings"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Block",
+      "constructor": "NStmtBlock",
+      "obligations": [
+        "control.sequence"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Break",
+      "constructor": "NStmtBreak",
+      "obligations": [
+        "control.break-level",
+        "static.control-targets"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Case",
+      "constructor": "NStmtCase",
+      "obligations": [
+        "control.switch"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Catch",
+      "constructor": "NStmtCatch",
+      "obligations": [
+        "control.catch"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Class",
+      "constructor": "NStmtClass",
+      "obligations": [
+        "classes.linking",
+        "classes.inheritance"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_ClassConst",
+      "constructor": "NStmtClassConst",
+      "obligations": [
+        "declarations.typed-class-constants"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_ClassMethod",
+      "constructor": "NStmtClassMethod",
+      "obligations": [
+        "classes.visibility",
+        "static.signature-variance"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Const",
+      "constructor": "NStmtConst",
+      "obligations": [
+        "declarations.constants"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Continue",
+      "constructor": "NStmtContinue",
+      "obligations": [
+        "control.continue-level",
+        "static.control-targets"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Declare",
+      "constructor": "NStmtDeclare",
+      "obligations": [
+        "source.encodings",
+        "static.strict-types",
+        "lifecycle.ticks"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Do",
+      "constructor": "NStmtDo",
+      "obligations": [
+        "control.do"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Echo",
+      "constructor": "NStmtEcho",
+      "obligations": [
+        "bytes.output-conversion"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Else",
+      "constructor": "NStmtElse",
+      "obligations": [
+        "control.conditionals"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_ElseIf",
+      "constructor": "NStmtElseIf",
+      "obligations": [
+        "control.conditionals"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Enum",
+      "constructor": "NStmtEnum",
+      "obligations": [
+        "declarations.enums"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_EnumCase",
+      "constructor": "NStmtEnumCase",
+      "obligations": [
+        "declarations.cases"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Expression",
+      "constructor": "NStmtExpression",
+      "obligations": [
+        "control.sequence",
+        "declarations.NoDiscard"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Finally",
+      "constructor": "NStmtFinally",
+      "obligations": [
+        "control.finally-replacement"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_For",
+      "constructor": "NStmtFor",
+      "obligations": [
+        "control.for"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Foreach",
+      "constructor": "NStmtForeach",
+      "obligations": [
+        "containers.foreach-value",
+        "containers.foreach-reference",
+        "containers.foreach-mutation",
+        "protocols.Traversable"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Function",
+      "constructor": "NStmtFunction",
+      "obligations": [
+        "calls.declaration-timing",
+        "calls.return-types"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Global",
+      "constructor": "NStmtGlobal",
+      "obligations": [
+        "storage.globals"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Goto",
+      "constructor": "NStmtGoto",
+      "obligations": [
+        "control.goto",
+        "static.control-targets"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_GroupUse",
+      "constructor": "NStmtGroupUse",
+      "obligations": [
+        "source.imports"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_HaltCompiler",
+      "constructor": "NStmtHaltCompiler",
+      "obligations": [
+        "source.halt-payload"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_If",
+      "constructor": "NStmtIf",
+      "obligations": [
+        "control.conditionals"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_InlineHTML",
+      "constructor": "NStmtInlineHTML",
+      "obligations": [
+        "source.preamble"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Interface",
+      "constructor": "NStmtInterface",
+      "obligations": [
+        "classes.interfaces"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Label",
+      "constructor": "NStmtLabel",
+      "obligations": [
+        "control.labels"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Namespace",
+      "constructor": "NStmtNamespace",
+      "obligations": [
+        "source.namespaces",
+        "static.namespaces"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Nop",
+      "constructor": "NStmtNop",
+      "obligations": [
+        "control.sequence"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Property",
+      "constructor": "NStmtProperty",
+      "obligations": [
+        "properties.typed",
+        "properties.readonly",
+        "properties.asymmetric-instance"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Return",
+      "constructor": "NStmtReturn",
+      "obligations": [
+        "control.return",
+        "calls.byref-return"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Static",
+      "constructor": "NStmtStatic",
+      "obligations": [
+        "storage.static-bindings"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Switch",
+      "constructor": "NStmtSwitch",
+      "obligations": [
+        "control.switch"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Trait",
+      "constructor": "NStmtTrait",
+      "obligations": [
+        "classes.traits"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_TraitUse",
+      "constructor": "NStmtTraitUse",
+      "obligations": [
+        "classes.traits"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_TraitUseAdaptation_Alias",
+      "constructor": "NStmtTraitUseAdaptationAlias",
+      "obligations": [
+        "classes.trait-alias"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_TraitUseAdaptation_Precedence",
+      "constructor": "NStmtTraitUseAdaptationPrecedence",
+      "obligations": [
+        "classes.trait-precedence"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_TryCatch",
+      "constructor": "NStmtTryCatch",
+      "obligations": [
+        "control.catch",
+        "control.finally-replacement"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Unset",
+      "constructor": "NStmtUnset",
+      "obligations": [
+        "containers.unset",
+        "storage.read-modes"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_Use",
+      "constructor": "NStmtUse",
+      "obligations": [
+        "source.imports"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "Stmt_While",
+      "constructor": "NStmtWhile",
+      "obligations": [
+        "control.while"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "UnionType",
+      "constructor": "NUnionType",
+      "obligations": [
+        "static.union",
+        "static.dnf"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "UseItem",
+      "constructor": "NUseItem",
+      "obligations": [
+        "source.imports"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "VarLikeIdentifier",
+      "constructor": "NVarLikeIdentifier",
+      "obligations": [
+        "storage.variable-names"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    },
+    {
+      "node": "VariadicPlaceholder",
+      "constructor": "NVariadicPlaceholder",
+      "obligations": [
+        "calls.first-class-callable"
+      ],
+      "status": "pending",
+      "implementation": [],
+      "source_tests": [],
+      "review": null
+    }
+  ],
+  "runtime_obligations": [
+    {
+      "id": "source.context",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.encodings",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.preamble",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.magic-constants",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.halt-payload",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.namespaces",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "source.imports",
+      "milestone": "0b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.signed64",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.arithmetic-result-types",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.overflow-rounding",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.division",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.remainder",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.shifts",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.integer-bitwise",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.binary64-codec",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.binary64-rounding",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.binary64-add-sub",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.binary64-mul-div",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.binary64-specials",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.binary64-comparison",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.float-int-conversion",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.power",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.numeric-text",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.based-literals",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.decimal-rounding",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.float-formatting",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "numeric.precision-profile",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "bytes.byte-values",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "bytes.byte-concatenation",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "bytes.string-bitwise",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "bytes.string-increment",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "bytes.interpolation",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "bytes.output-conversion",
+      "milestone": "1a-1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.arithmetic",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-bool",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-int",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-float",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-string",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-array",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-object",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.cast-void",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.array-key",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.weak-types",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.strict-types",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.loose-comparison",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.identity",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "coercion.increment-decrement",
+      "milestone": "1c",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.slots",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.absent-null",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.read-modes",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.variable-names",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.globals",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.superglobals",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.globals-restrictions",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.assignment",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.aliases",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.reference-rebinding",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.typed-reference-sources",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.static-bindings",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "storage.temporary-lifetimes",
+      "milestone": "2a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.ordered-arrays",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.key-normalization",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.append-history",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.append-overflow",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.unset",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.array-copy",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.embedded-references",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.object-identities",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.cycles",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.union",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.comparison",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.destructuring",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.unpack",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.string-offsets",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.nested-write",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.foreach-value",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.foreach-reference",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.foreach-mutation",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "containers.residual-alias",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.operand-order",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.delayed-reads",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.lvalue-order",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.compound-write",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.short-circuit",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.coalesce",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.coalesce-write",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.ternary",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.nullsafe",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.isset",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "expression.empty",
+      "milestone": "2b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.sequence",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.conditionals",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.while",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.do",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.for",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.foreach",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.switch",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.match",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.labels",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.goto",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.break-level",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.continue-level",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.return",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.throw",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.catch",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.finally-replacement",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.exit",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "control.cleanup",
+      "milestone": "3a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.declaration-timing",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.name-resolution",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.namespace-fallback",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.positional",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.named",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.unpack",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.variadic",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.byref-argument",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.byref-return",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.defaults",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.return-types",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.closures",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.captures",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.arrows",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.first-class-callable",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.static-variables",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.recursion",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.pipe",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.callable-visibility",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.closure-binding",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "calls.argument-introspection",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.independent-compile-phase",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.lvalue-rejection",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.control-targets",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.declarations",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.namespaces",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.strict-types",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.constant-expression",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.nullable",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.union",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.intersection",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.dnf",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.mixed-void-never",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.signature-variance",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "static.never-return",
+      "milestone": "3b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.linking",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.availability",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.inheritance",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.interfaces",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.traits",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.trait-alias",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.trait-precedence",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.visibility",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.private-identities",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.anonymous",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.abstract",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.final",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.creation",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.object-identity",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.clone",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.clone-with-properties",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.static-lookup",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.instance-lookup",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.late-static-binding",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.instanceof",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.magic-call",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "classes.magic-string",
+      "milestone": "4a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.typed",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.uninitialized",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.readonly",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.dynamic",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.promotion",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.asymmetric-instance",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.asymmetric-static",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.hooks",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.hook-parent-call",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.virtual-properties",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.backing-slots",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.magic-get-set",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.magic-isset-unset",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.indirect-write",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "properties.reference-constraints",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.constants",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.typed-class-constants",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.constant-closures",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.enums",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.cases",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.backed-enums",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.generated-enum-methods",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.attribute-metadata",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.attribute-targets",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.attribute-repeatability",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.Attribute",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.ReturnTypeWillChange",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.AllowDynamicProperties",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.SensitiveParameter",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.SensitiveParameterValue",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.Override",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.Deprecated",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.NoDiscard",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "declarations.DelayedTargetValidation",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.stdClass",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Closure",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Throwable",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Exception",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Error",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.error-subclasses",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Traversable",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Iterator",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.IteratorAggregate",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.ArrayAccess",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.Stringable",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.UnitEnum",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.BackedEnum",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.native-declaration-checks",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "protocols.callback-reentry",
+      "milestone": "4b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.severity",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.message",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.source-location",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.renderer",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.suppression",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.error-reporting",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.error-handler-stack",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.exception-handler-stack",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.handler-throws",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.uncaught-throwable",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.runtime-fatal",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "diagnostics.compile-fatal",
+      "milestone": "3a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.eval-mode",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.eval-scope",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.eval-compile-error",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.include",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.require",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.include-once",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.require-once",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.source-identity",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.source-failure",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.included-declarations",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.included-return",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.autoload-registration",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.autoload-dispatch",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "dynamic.shell-dispatch",
+      "milestone": "5a",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.generator-creation",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.yield",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.yield-key",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.byref-yield",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.yield-from",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.send",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.throw",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.get-return",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.iterator-protocol",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.generator-close",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.generator-finally",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-creation",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-start",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-suspend",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-resume",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-throw",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-status",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.Fiber-return",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "resumable.suspension-cleanup",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.destructor-timing",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.destructor-reentry",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.shutdown-registration",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.shutdown-order",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.exit-unwind",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.cycles",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.collection-control",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.weak-reference",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.weak-map",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.resurrection",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.exception-cleanup",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.ticks",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "lifecycle.output-buffer-callbacks",
+      "milestone": "5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.request-inputs",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.argv-stdin",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.source-provider",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.shell-provider",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.config",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.initialization",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.output-destination",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.finite-fixtures",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "environment.resource-boundary",
+      "milestone": "5a-5b",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/main/main.c"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.checked-input",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.pure-reference",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.original-source",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.oracle-pin",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.outcome-separation",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.raw-byte-comparison",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.exception-observation",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.fingerprints",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.budgets",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.PHPT-sections",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.PHPT-matcher",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.generated-seeds",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.minimized-discrepancies",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.full-membership",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.offline-portability",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    },
+    {
+      "id": "validation.syntax-regression",
+      "milestone": "0b-6",
+      "status": "pending",
+      "dependencies": [],
+      "implementation": [],
+      "helper_tests": [],
+      "source_tests": [],
+      "evidence": [
+        "vendor/php-src/run-tests.php"
+      ],
+      "review": null
+    }
+  ],
+  "intentional_divergences": []
+}

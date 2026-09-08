@@ -7,7 +7,10 @@ classified with no unresolved failures. A fresh offline rebuild and complete
 validation also pass with workspace resources unavailable; see the
 [portability evidence](coverage/portability.json).
 The [validation report](coverage/milestone4.json) records coverage and classified
-outcomes. Evaluation semantics and BOLA verification are later research phases.
+outcomes. Executable core semantics are now being implemented; see the
+[plan](PLAN.md), [progress](PROGRESS.md) and [core contract](docs/semantics/CORE.md).
+The syntax reports above do not establish semantic coverage. BOLA verification
+remains later research.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

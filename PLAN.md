@@ -16,6 +16,10 @@ All paths below are relative to the project root containing this file. Commands
 are run from that root unless stated otherwise. Proposed files and interfaces
 are labeled as proposals; do not mistake them for existing commands.
 
+Implementation is now active. [PROGRESS.md](PROGRESS.md) records current
+milestones, assignments and validation evidence; the historical starting status
+above is retained to distinguish this plan from implementation results.
+
 ## 1. Objective and settled requirements
 
 The eventual objective is **all PHP language core semantics at the project's
