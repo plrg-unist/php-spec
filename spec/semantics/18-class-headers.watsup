@@ -1,0 +1,152 @@
+;; Local named declaration headers; body compilation and class linking follow.
+syntax pchraw = { KIND text, NAME phpType3, FLAGS int, PARENT phpType46,
+  INTERFACES phpType44, ATTRIBUTES phpType14, BODY phpType23 }
+syntax pchinput = PCHRAW pchraw | PCHINPUTUNSUPPORTED text
+syntax pchheader = { KIND text, NAME ptbytes, ABSTRACT bool, FINAL bool,
+  READONLY bool, PARENT ptbytes?, INTERFACES ptbytes*, BODY phpType23 }
+syntax pchdiagnostic = PCHDIAGNOSTIC text text ptbytes* ptcontext
+syntax pchresult = PCHOK pchheader pchdiagnostic* | PCHERROR pchdiagnostic* | PCHUNSUPPORTED text
+syntax pchrefs = PCHNAMES ptbytes* pchdiagnostic* | PCHREFERROR pchdiagnostic* | PCHREFUNSUPPORTED text
+
+dec $pchlower(statement) : pchinput
+dec $pchcompile(statement, bool, ptcontext) : pchresult
+dec $pchstart(pchinput, bool, ptcontext) : pchresult
+dec $pchname(pchraw, ptcontext) : pchresult
+dec $pchimportstage(pchraw, ptbytes, ptcontext) : pchresult
+dec $pchparentoption(ptbytes*) : ptbytes?
+dec $pchparentstage(pchraw, ptbytes, ptcontext, pchrefs) : pchresult
+dec $pchattributes(pchraw, pchheader, ptcontext) : pchresult
+dec $pchinterfaces(pchheader, pchrefs) : pchresult
+dec $pchprepend(pchdiagnostic*, pchresult) : pchresult
+dec $pchissue(ptcontext, text, text, ptbytes*) : pchdiagnostic
+dec $pcherror(ptcontext, text, ptbytes*) : pchresult
+dec $pchrole(text) : ptbytes
+dec $pchnamewarning(pchraw, ptbytes, ptcontext) : pchdiagnostic*
+dec $pchparent(phpType46, ptcontext) : pchrefs
+dec $pchref(name, text, ptcontext) : pchrefs
+dec $pchrefinput(ptinput, text, ptcontext) : pchrefs
+dec $pchrefvalid(ptqual, ptbytes, text, ptcontext) : pchrefs
+dec $pchrefs(name*, text, ptcontext) : pchrefs
+dec $pchrefappend(pchrefs, name*, text, ptcontext) : pchrefs
+dec $pchrefcombine(ptbytes*, pchdiagnostic*, pchrefs) : pchrefs
+dec $pchmessage(pchdiagnostic) : ptbytes
+
+def $pchlower(NStmtClass phpType14 (INTEGER int) phpType3 phpType46 phpType44 phpType23 metadata) = PCHRAW { KIND "class", NAME phpType3, FLAGS int, PARENT phpType46, INTERFACES phpType44, ATTRIBUTES phpType14, BODY phpType23 }
+def $pchlower(NStmtInterface phpType14 phpType3 phpType44 phpType23 metadata) = PCHRAW { KIND "interface", NAME phpType3, FLAGS 16, PARENT ABSENT, INTERFACES phpType44, ATTRIBUTES phpType14, BODY phpType23 }
+def $pchlower(NStmtTrait phpType14 phpType3 phpType23 metadata) = PCHRAW { KIND "trait", NAME phpType3, FLAGS 0, PARENT ABSENT, INTERFACES (SEQUENCE eps), ATTRIBUTES phpType14, BODY phpType23 }
+def $pchlower(statement) = PCHINPUTUNSUPPORTED "declaration kind is not a named class, interface or trait"
+  -- otherwise
+
+def $pchcompile(statement, bool, ptcontext) = PCHUNSUPPORTED "missing source file or class compiler line"
+  -- if ptcontext.FILE = eps \/ ptcontext.LINE = 0
+def $pchcompile(statement, bool, ptcontext) = $pchstart($pchlower(statement), bool, ptcontext)
+  -- if ptcontext.FILE =/= eps /\ ptcontext.LINE =/= 0
+
+def $pchstart(PCHINPUTUNSUPPORTED text, bool, ptcontext) = PCHUNSUPPORTED text
+def $pchstart(PCHRAW pchraw, bool, ptcontext) = PCHUNSUPPORTED "anonymous declaration requires generated class identity"
+  -- if pchraw.NAME = ABSENT
+  -- if pchraw.KIND = "class"
+def $pchstart(PCHRAW pchraw, bool, ptcontext) = PCHUNSUPPORTED "edited missing declaration name"
+  -- if pchraw.NAME = ABSENT
+  -- if pchraw.KIND =/= "class"
+def $pchstart(PCHRAW pchraw, true, ptcontext) = $pcherror(ptcontext, "nested-class", eps)
+  -- if pchraw.NAME =/= ABSENT
+def $pchstart(PCHRAW pchraw, false, ptcontext) = PCHUNSUPPORTED "edited invalid class modifiers"
+  -- if pchraw.NAME =/= ABSENT
+  -- if ~(pchraw.FLAGS <- [0,16,32,64,80,96])
+def $pchstart(PCHRAW pchraw, false, ptcontext) = $pchname(pchraw, ptcontext)
+  -- if pchraw.NAME =/= ABSENT
+  -- if pchraw.FLAGS <- [0,16,32,64,80,96]
+
+def $pchname(pchraw, ptcontext) = PCHUNSUPPORTED "edited invalid declaration name"
+  -- if pchraw.NAME = NVarLikeIdentifier phpType35 metadata
+def $pchname(pchraw, ptcontext) = PCHUNSUPPORTED "edited invalid declaration name"
+  -- if pchraw.NAME = NIdentifier (BYTES text) metadata
+  -- if ~($ptvalidname($base64(text), true) /\ ~(92 <- $base64(text)))
+def $pchname(pchraw, ptcontext) = $pcherror(ptcontext, "reserved-declaration-name", [ptbytes, $pchrole(pchraw.KIND)])
+  -- if pchraw.NAME = NIdentifier (BYTES text) metadata
+  -- if ptbytes = $base64(text)
+  -- if $ptvalidname(ptbytes, true) /\ ~(92 <- ptbytes)
+  -- if $ptbuiltin($ptlc(ptbytes)) =/= ""
+def $pchname(pchraw, ptcontext) = $pchprepend($pchnamewarning(pchraw, ptbytes, ptcontext), $pchimportstage(pchraw, ptbytes, ptcontext))
+  -- if pchraw.NAME = NIdentifier (BYTES text) metadata
+  -- if ptbytes = $base64(text)
+  -- if $ptvalidname(ptbytes, true) /\ ~(92 <- ptbytes)
+  -- if $ptbuiltin($ptlc(ptbytes)) = ""
+
+def $pchrole("class") = $ptascii("a class name")
+def $pchrole("interface") = $ptascii("an interface name")
+def $pchrole("trait") = $ptascii("a trait name")
+
+def $pchnamewarning(pchraw, ptbytes, ptcontext) = [$pchissue(ptcontext, "deprecated", "underscore-declaration", [$pchrole(pchraw.KIND)])]
+  -- if ptbytes = [95]
+def $pchnamewarning(pchraw, ptbytes, ptcontext) = eps
+  -- if ptbytes =/= [95]
+
+def $pchimportstage(pchraw, ptbytes, ptcontext) = $pcherror(ptcontext, "declaration-import-conflict", [$ptjoin(ptcontext.NAMESPACE, ptbytes)])
+  -- if $ptimport(ptcontext.IMPORTS, ptbytes) = ptbytes_import
+  -- if $ptlc(ptbytes_import) =/= $ptlc($ptjoin(ptcontext.NAMESPACE, ptbytes))
+def $pchimportstage(pchraw, ptbytes, ptcontext) = $pchparentstage(pchraw, $ptjoin(ptcontext.NAMESPACE, ptbytes), ptcontext, $pchparent(pchraw.PARENT, ptcontext))
+  -- otherwise
+
+def $pchparentoption(eps) = eps
+def $pchparentoption([ptbytes]) = ptbytes
+
+def $pchparentstage(pchraw, ptbytes, ptcontext, PCHREFERROR pchdiagnostic*) = PCHERROR pchdiagnostic*
+def $pchparentstage(pchraw, ptbytes, ptcontext, PCHREFUNSUPPORTED text) = PCHUNSUPPORTED text
+def $pchparentstage(pchraw, ptbytes, ptcontext, PCHNAMES ptbytes_parent* pchdiagnostic*) = $pchprepend(pchdiagnostic*, $pchattributes(pchraw, { KIND pchraw.KIND, NAME ptbytes, ABSTRACT (pchraw.FLAGS <- [16,80]), FINAL (pchraw.FLAGS <- [32,96]), READONLY (pchraw.FLAGS <- [64,80,96]), PARENT $pchparentoption(ptbytes_parent*), INTERFACES eps, BODY pchraw.BODY }, ptcontext))
+
+
+def $pchattributes(pchraw, pchheader, ptcontext) = PCHUNSUPPORTED "class attributes require attribute compilation"
+  -- if pchraw.ATTRIBUTES =/= SEQUENCE eps
+def $pchattributes(pchraw, pchheader, ptcontext) = $pchinterfaces(pchheader, $pchrefs(name*, "interface name", ptcontext))
+  -- if pchraw.ATTRIBUTES = SEQUENCE eps
+  -- if pchraw.INTERFACES = SEQUENCE name*
+
+def $pchinterfaces(pchheader, PCHNAMES ptbytes* pchdiagnostic*) = PCHOK pchheader[.INTERFACES = ptbytes*] pchdiagnostic*
+def $pchinterfaces(pchheader, PCHREFERROR pchdiagnostic*) = PCHERROR pchdiagnostic*
+def $pchinterfaces(pchheader, PCHREFUNSUPPORTED text) = PCHUNSUPPORTED text
+
+def $pchprepend(pchdiagnostic_old*, PCHOK pchheader pchdiagnostic*) = PCHOK pchheader (pchdiagnostic_old* ++ pchdiagnostic*)
+def $pchprepend(pchdiagnostic_old*, PCHERROR pchdiagnostic*) = PCHERROR (pchdiagnostic_old* ++ pchdiagnostic*)
+def $pchprepend(pchdiagnostic*, PCHUNSUPPORTED text) = PCHUNSUPPORTED text
+
+def $pchissue(ptcontext, text_level, text_code, ptbytes*) = PCHDIAGNOSTIC text_level text_code ptbytes* ptcontext
+def $pcherror(ptcontext, text, ptbytes*) = PCHERROR ([$pchissue(ptcontext, "fatal", text, ptbytes*)])
+
+def $pchparent(ABSENT, ptcontext) = PCHNAMES eps eps
+def $pchparent(name, ptcontext) = $pchref(name, "class name", ptcontext)
+
+def $pchref(name, text, ptcontext) = PCHREFUNSUPPORTED "missing source file or class compiler line"
+  -- if ptcontext.FILE = eps \/ ptcontext.LINE = 0
+def $pchref(name, text, ptcontext) = $pchrefinput($ptast(name), text, ptcontext)
+  -- if ptcontext.FILE =/= eps /\ ptcontext.LINE =/= 0
+
+def $pchrefinput(PTNAME ptqual ptbytes, text, ptcontext) = PCHREFUNSUPPORTED "edited invalid class reference"
+  -- if ~$ptvalidname(ptbytes, true)
+def $pchrefinput(PTNAME ptqual ptbytes, text, ptcontext) = $pchrefvalid(ptqual, ptbytes, text, ptcontext)
+  -- if $ptvalidname(ptbytes, true)
+
+def $pchrefvalid(ptqual, ptbytes, text, ptcontext) = PCHREFERROR ([$pchissue(ptcontext, "fatal", "reserved-class-reference", [ptbytes, $ptascii(text)])])
+  -- if ptqual =/= PTFULL
+  -- if $ptbuiltin($ptlc(ptbytes)) <- ["self", "parent", "static"]
+def $pchrefvalid(PTFULL, ptbytes, text, ptcontext) = PCHREFERROR ([$pchissue(ptcontext, "fatal", "invalid-class-reference", [[92] ++ ptbytes])])
+  -- if $ptbuiltin($ptlc(ptbytes)) <- ["self", "parent", "static"]
+def $pchrefvalid(ptqual, ptbytes, text, ptcontext) = PCHNAMES ([$ptresolve(ptcontext, ptqual, ptbytes)]) eps
+  -- if ~($ptbuiltin($ptlc(ptbytes)) <- ["self", "parent", "static"])
+
+def $pchrefs(eps, text, ptcontext) = PCHNAMES eps eps
+def $pchrefs(name :: name_rest*, text, ptcontext) = $pchrefappend($pchref(name, text, ptcontext), name_rest*, text, ptcontext)
+def $pchrefappend(PCHREFERROR pchdiagnostic*, name*, text, ptcontext) = PCHREFERROR pchdiagnostic*
+def $pchrefappend(PCHREFUNSUPPORTED text_reason, name*, text, ptcontext) = PCHREFUNSUPPORTED text_reason
+def $pchrefappend(PCHNAMES ptbytes* pchdiagnostic*, name*, text, ptcontext) = $pchrefcombine(ptbytes*, pchdiagnostic*, $pchrefs(name*, text, ptcontext))
+def $pchrefcombine(ptbytes_old*, pchdiagnostic_old*, PCHNAMES ptbytes* pchdiagnostic*) = PCHNAMES (ptbytes_old* ++ ptbytes*) (pchdiagnostic_old* ++ pchdiagnostic*)
+def $pchrefcombine(ptbytes*, pchdiagnostic_old*, PCHREFERROR pchdiagnostic*) = PCHREFERROR (pchdiagnostic_old* ++ pchdiagnostic*)
+def $pchrefcombine(ptbytes*, pchdiagnostic*, PCHREFUNSUPPORTED text) = PCHREFUNSUPPORTED text
+
+def $pchmessage(PCHDIAGNOSTIC text "nested-class" ptbytes* ptcontext) = $ptascii("Class declarations may not be nested")
+def $pchmessage(PCHDIAGNOSTIC text "reserved-declaration-name" ([ptbytes, ptbytes_role]) ptcontext) = $ptascii("Cannot use \"") ++ ptbytes ++ $ptascii("\" as ") ++ ptbytes_role ++ $ptascii(" as it is reserved")
+def $pchmessage(PCHDIAGNOSTIC text "underscore-declaration" ([ptbytes_role]) ptcontext) = $ptascii("Using \"_\" as ") ++ ptbytes_role ++ $ptascii(" is deprecated since 8.4")
+def $pchmessage(PCHDIAGNOSTIC text "declaration-import-conflict" ([ptbytes]) ptcontext) = $ptascii("Cannot redeclare class ") ++ ptbytes ++ $ptascii(" (previously declared as local import)")
+def $pchmessage(PCHDIAGNOSTIC text "reserved-class-reference" ([ptbytes, ptbytes_role]) ptcontext) = $ptascii("Cannot use \"") ++ ptbytes ++ $ptascii("\" as ") ++ ptbytes_role ++ $ptascii(", as it is reserved")
+def $pchmessage(PCHDIAGNOSTIC text "invalid-class-reference" ([ptbytes]) ptcontext) = $ptascii("'") ++ ptbytes ++ $ptascii("' is an invalid class name")

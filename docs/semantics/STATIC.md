@@ -175,3 +175,64 @@ Source evidence is `zend_compile_params`, `zend_is_valid_default_value`,
 `zend_resolve_const_name`, `zend_try_ct_eval_const`, `zend_const_expr_to_zval` and
 `zend_compile_func_decl` in the pinned `Zend/zend_compile.c`, together with
 `php_startup_auto_globals` in `main/php_variables.c`.
+
+`18-class-headers.watsup` adds `$pchcompile(statement, active-class, context)`
+for named class, interface and trait headers. `PCHOK` contains kind, fully
+qualified declaration name, abstract/final/readonly flags, optional parent,
+ordered interface names, the unchanged checked body and ordered diagnostics.
+`PCHERROR` retains earlier deprecations and the first fatal header diagnostic;
+`PCHUNSUPPORTED` identifies a pending phase or invalid edited input. An interface
+has its abstract flag set. The descriptor does not register a name, compile its
+body or establish inheritance validity. The caller must compile that retained
+body and perform the required linking before treating a declaration as usable.
+
+The active-class input means another class declaration is currently compiling;
+it is separate from the type helper's inherited runtime class scope. The caller
+also supplies the exact class-keyword compiler line. Modifiers and attributes
+can start on earlier lines than that keyword, while a name may start later;
+the helper never substitutes the PHP-Parser node's startLine. Missing file/line
+and edited invalid names/modifiers/references produce explicit Unsupported.
+
+Header checks preserve nesting, reserved declaration name, underscore deprecation,
+local-import conflict, parent-reference, attribute and interface-reference order.
+The underscore declaration deprecation also applies inside a namespace. Parent
+and interface references use `$pchref`, the separate constant class-reference
+rule derived from `zend_resolve_const_class_name_reference`. In these positions,
+`int` is an unresolved class name, and no type-normalization warning or primitive
+substitution applies. Bare and namespace-relative self/parent/static are rejected
+as reserved references; fully qualified forms receive the invalid-class-name
+error. This rule is distinct from the intentional namespace-relative static type
+interpretation described above. Namespace/class-import prefix replacement remains
+case insensitive, with original resolved byte spellings retained.
+
+Class attributes, anonymous identity generation and enum header compilation are
+pending. Body compilation, trait-use/adaptation rules, duplicate declarations,
+class-table lookup, autoload, inheritance/variance and activation are separate
+unfinished milestones. A retained `BODY` is an obligation to compile, not a claim
+that its members are valid. `PCHOK` deliberately allows unresolved parent and
+interface references, just as lint can succeed without those classes existing.
+
+Run `python3 tests/semantics/class_headers.py`. Empty declaration fixtures compare
+ordered exact lint diagnostics; descriptor cases check resolved names, flags,
+interface order and retained body syntax. Exact PHP-Parser early special-name
+rejections are reported separately with pinned lint evidence. Equivalent edited
+checked headers exercise those reference errors without claiming frontend
+agreement. Reports retain per-case source/AST hashes and IDs, source contexts,
+local runtime identity, budgets and dependency fingerprints. Evidence comes from
+`zend_compile_class_decl`, `zend_assert_valid_class_name`,
+`zend_resolve_const_class_name_reference`, `zend_resolve_class_name` and
+`zend_compile_implements` in the pinned `Zend/zend_compile.c`, and declaration
+keyword-line capture in `Zend/zend_language_parser.y`. These are header helper
+checks; they do not establish source declaration execution or complete class
+semantics.
+
+Oracle-only trait phase witnesses constrain the later binding work. At this pin,
+`trait T { function f(): self|C {} } class C { use T; }` declares successfully,
+while writing that method directly in `C` gives the duplicate-C type compile
+error. `trait T { function f(): parent {} } class C { use T; }` also declares
+successfully with no parent. Trait binding must therefore retain the accepted
+union structure and contextual markers rather than rerunning local redundancy
+or no-parent checks. These witnesses are not implemented trait semantics or
+runtime return-type validation. `zend_do_link_class` also loads parent, traits
+and interfaces before trait-member binding, parent inheritance and interface
+checks; eventual requests and resumptions must preserve that ordering.
