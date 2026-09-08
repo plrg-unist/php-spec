@@ -104,7 +104,11 @@ project-local PHP 8.5.10 binary only as an oracle, never as a semantic operation
 
 The first [checked source-occurrence gate](SOURCE-CONTEXT.md) provides generated
 typed child access, retained source units and stable unit-local structural paths.
-It does not yet supply lexical environments or a PHP compilation schedule.
+The ordered namespace/import helper adds lexical environments, compiler-prefix
+diagnostics and explicit ordinary-compilation work barriers. It does not compile
+or activate those declarations or bodies. Successful work resumptions require
+the matching occurrence identity, resulting environment and final compiler line;
+the halt post-statement namespace-verification exception is explicit.
 
 A useful next milestone is an ordered traversal producing explicit compiler
 contexts and pending descriptor work from checked ASTs. Carry all three import
