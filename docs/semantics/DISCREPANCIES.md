@@ -120,7 +120,7 @@ Anonymous namespace brace metadata remains an explicit Unsupported boundary when
 a diagnostic needs it. No intentional divergence or source activation is claimed.
 
 
-## Numeric-string boundary suffixes: specification defect under correction
+## Numeric-string boundary suffixes: resolved specification defect
 
 At the pinned `_is_numeric_string_ex`, the nineteen-significant-digit bound check
 uses `strcmp`, including any non-NUL suffix. Negative minimum text followed by
@@ -130,12 +130,13 @@ pointer: `9223372036854775808e+` becomes the minimum integer, and
 `-9223372036854775809e+` becomes the maximum integer after signed conversion.
 Larger prefixes can still compare above the shifted bound and remain floating.
 
-The shared numeric classifier currently omits these distinctions. This was found
+The previous shared numeric classifier omitted these distinctions. This was found
 in independent string-offset testing: the minimum text plus `tail` throws a
 TypeError in PHP, while the helper wrongly warns about an integer offset.
 [Raw arithmetic evidence](../../coverage/semantics/numeric-boundary-disagreement.json)
 retains 104 original-source observations, including 28 disagreements and their
 controls, exact bytes/outcomes and implementation fingerprints. Seven independent
-source fixtures retain the principal discriminators. Follow the pinned behavior;
-no intentional divergence is selected. The numeric correction and dimension
-helper remain subject to fresh independent gates.
+source fixtures retain the principal discriminators. Correction `9fc9628f` follows
+the pin and keeps explicit float casts separate from the numeric classifier. All
+104 observations now agree; the independent 514-source gate and expanded numeric
+helper campaigns pass. No intentional divergence or family closure is selected.

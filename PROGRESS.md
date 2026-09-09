@@ -67,10 +67,12 @@ timeouts and interrupted campaigns never count as validation passes.
   use delayed reads (PHP/spec 4). All nine witnesses are mandatory. The five
   original disagreements, four controls and accepted resolution remain
   [retained](coverage/semantics/reference-timing-disagreement.json).
-- New numeric-boundary defect blocks dimension-helper acceptance: negative minimum
-  text with suffixes and incomplete signed exponents have pinned typing/overflow
-  behavior absent from the shared numeric classifier. [104 raw source observations](coverage/semantics/numeric-boundary-disagreement.json)
-  retain 28 disagreements; correction and fresh applicable gates are required.
+- Numeric-boundary correction `9fc9628f` follows the pin’s suffix/NUL and invalid
+  signed-exponent behavior, including wrapped integer results. Independently
+  repeated **514 source comparisons +25 negatives**, 1,610 numeric-text, 5,961
+  conversion and 1,472 string-operation cases passed; expanded conversion matrix
+  6,681. [104 raw source observations](coverage/semantics/numeric-boundary-disagreement.json)
+  preserve 28 former disagreements; all now agree and seven witnesses are mandatory.
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
   Reviewed type/signature/class-header/covariance/method helpers and their expanded
@@ -89,7 +91,7 @@ timeouts and interrupted campaigns never count as validation passes.
   Anonymous brace locations and 12 valid function/constant alias frontend gaps
   remain pending. Edited helper cases do not close source gaps; body compilation
   and source runtime activation remain pending.
-- **138 independent oracle targets**, 55 integrated into the reviewed source
+- **138 independent oracle targets**, 62 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
   now gives PHP/spec 4. Owning reference operands retain the captured cell and read
