@@ -366,6 +366,22 @@ CASES.update({
 })
 
 # Independent review-authored witnesses keep their original provenance.
+CASES.update({
+    'string-compiler-line-quoted': b'<?php $u=1;\necho [\n$u,\n"a\nb"\n];',
+    'string-compiler-line-heredoc': b'<?php $u=1;\necho [\n$u,\n<<<TXT\na\nb\nTXT\n];',
+    'string-compiler-line-nowdoc': b"<?php $u=1;\necho [\n$u,\n<<<'TXT'\na\nb\nTXT\n];",
+    'string-compiler-line-empty-heredoc': b'<?php $u=1;\necho [\n$u,\n<<<TXT\nTXT\n];',
+    'string-compiler-line-empty-nowdoc': b"<?php $u=1;\necho [\n$u,\n<<<'TXT'\nTXT\n];",
+    'string-compiler-line-indented-heredoc': b'<?php $u=1;\necho [\n$u,\n<<<TXT\n  a\n  b\n  TXT\n];',
+    'string-compiler-line-empty-content-line': b'<?php $u=1;\necho [\n$u,\n<<<TXT\n\nTXT\n];',
+    'string-compiler-line-crlf': b'<?php $u=1;\necho [\n$u,\n<<<TXT\r\na\r\nb\r\nTXT\n];',
+    'string-compiler-line-binary-heredoc': b'<?php $u=1;\necho [\n$u,\nb<<<TXT\na\nTXT\n];',
+    'string-compiler-line-single-quoted': b"<?php $u=1;\necho [\n$u,\n'a\nb'\n];",
+    'string-compiler-line-indented-nowdoc': b"<?php $u=1;\necho [\n$u,\n<<<'TXT'\n    a\n    TXT\n];",
+    'string-compiler-line-crlf-empty-nowdoc': b"<?php $u=1;\necho [\n$u,\n<<<'TXT'\r\nTXT\n];",
+})
+
+
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
@@ -515,7 +531,7 @@ def main():
             expression = {'node': 'Expr_ConstFetch', 'fields': [
                 {'node': 'Name', 'fields': [{'bytes': base64.b64encode(b'UNKNOWN_CONST').decode()}], 'meta': {}}], 'meta': meta}
             ast = {'version': 1, 'program': [{'node': 'Stmt_Expression', 'fields': [expression], 'meta': {}}]}
-            payload = {'op': 'execute', 'ast': ast, 'steps': 100}
+            payload = {'op': 'execute', 'ast': ast, 'steps': 100, 'filename': base64.b64encode(os.fsencode(path)).decode()}
             result = subprocess.run([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)],
                                     input=syntax_validation.wire.dumps(payload), text=True,
                                     capture_output=True, timeout=35, env=ENV, cwd=directory)
@@ -529,7 +545,7 @@ def main():
         {'node': 'Expr_BinaryOp_Div', 'fields': [
             {'node': 'Scalar_Int', 'fields': [{'int': '1'}], 'meta': {}},
             {'node': 'Scalar_Int', 'fields': [{'int': '0'}], 'meta': {}}], 'meta': {}}]:
-        payload = {'op': 'execute', 'steps': 100, 'ast': {'version': 1, 'program': [
+        payload = {'op': 'execute', 'steps': 100, 'filename': base64.b64encode(b'/edited.php').decode(), 'ast': {'version': 1, 'program': [
             {'node': 'Stmt_Echo', 'fields': [[expression]], 'meta': {}}]}}
         result = subprocess.run([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)],
                                 input=syntax_validation.wire.dumps(payload), text=True,

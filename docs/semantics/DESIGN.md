@@ -1,8 +1,10 @@
 # Executable semantics design
 
 The checked syntax adapter now offers `execute`: it constructs and checks the
-actual `program` value before passing that value to `$php_run`. Authored modules
-are listed once, in dependency order, in `spec/semantics/modules.json`. The direct
+actual `program` value before passing it and the actual source filename to
+`$php_run`. The specification decodes checked base64 filename transport into the
+machine's per-unit `FILES` context without host character conversion. Authored
+modules are listed once, in dependency order, in `spec/semantics/modules.json`. The direct
 SL runner elaborates, checks executable bindings, and structures those modules
 through Result-returning library APIs. It disables caches and checks encountered
 alternative successes. No PHP evaluator computes semantic results.

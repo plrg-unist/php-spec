@@ -225,8 +225,9 @@ let rec semantic_json (value : V.t) =
 let execute value request =
   let budget = field "steps" request |> J.to_int in
   if budget < 0 then fail "negative transition budget";
+  let filename = bytes_value (field "filename" request) in
   let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
-  match Runner.Interp.eval_func "php_run" [] [value; V.Make.nat (Bigint.of_int budget)] with
+  match Runner.Interp.eval_func "php_run" [] [value; V.Make.nat (Bigint.of_int budget); filename] with
   | Run.Pass state -> check (typ "pstate") state;
       `Assoc ["ok", `Bool true; "state", semantic_json state]
   | Run.Fail (at,msg) ->

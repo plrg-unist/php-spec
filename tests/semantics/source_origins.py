@@ -153,8 +153,10 @@ def main():
                         f'S_budget{budget}.SOURCES = [U]', f'$drive(S_budget{budget}[.COMPLETION = NORMAL], 10000) = T.FINAL']
             if encoding_profile:
                 assert 'ENCODEDPROGRAM' in program
-                checks += [f'S_encoded = $php_run({program}, 0)', 'S_encoded.COMPLETION = BUDGET',
+                checks += [f'S_encoded = $php_run({program}, 0, "L29yaWdpbi5waHA=")', 'S_encoded.COMPLETION = BUDGET',
                     'S_encoded.SOURCES[0].AST = U.AST', 'S_encoded.SOURCES[0].ID = 0',
+                    'S_encoded.FILES = [SOURCEFILE 0 ([47,111,114,105,103,105,110,46,112,104,112])]',
+                    '$drive(S_encoded[.COMPLETION = NORMAL], 10000).FILES = S_encoded.FILES',
                     '$drive(S_encoded[.COMPLETION = NORMAL], 10000).EVENTS = T.FINAL.EVENTS']
             if i == 0:
                 stmt = occurrences.node_term(ast['program'][0])

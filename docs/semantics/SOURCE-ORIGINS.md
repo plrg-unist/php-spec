@@ -7,6 +7,16 @@ current task scope. `$php_run` creates unit zero for its initial source;
 catalog. The original `PROGRAM` or `ENCODEDPROGRAM` value remains in that unit.
 This stage does not install compiler facts or constant-array pools.
 
+The `execute` transport now requires the actual source filename as canonical
+base64 bytes alongside the checked AST and transition budget. `$php_run` decodes
+it in the specification and retains `SOURCEFILE unit bytes` in `S.FILES`, including
+budget and abrupt results. Empty and NUL-containing filenames are invalid context;
+other bytes are preserved, including non-UTF8 filesystem names. Syntax-only
+`check` and `elaborate` requests remain independent of this execution context.
+File-sensitive PHP constructs are still pending. The compiler bridge must pass
+this context into compilation before running tasks; this transport milestone
+currently records it around the existing source entry point.
+
 `AT origin task` enters a scope and appends `ORIGIN_RETURN` after its work. Child
 expression, acquisition and dimension-preparation tasks carry explicit schema
 field/index paths. Continuations execute in their parent's scope. Array literal

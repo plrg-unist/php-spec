@@ -95,7 +95,8 @@ def main():
     if not parsed.get('ok') or not parsed.get('accepted'):
         return {'status': 'frontend_failure', 'frontend': parsed}
     result = request([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)],
-                     {'op': 'execute', 'ast': parsed['ast'], 'steps': args.steps}, args.timeout)
+                     {'op': 'execute', 'ast': parsed['ast'], 'steps': args.steps,
+                      'filename': b64(os.fsencode(filename))}, args.timeout)
     if not result.get('ok'):
         return {'status': result.get('category', 'runner_failure'), 'detail': result}
     outcome = observe(result['state'], filename)
