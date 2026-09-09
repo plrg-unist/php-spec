@@ -39,6 +39,9 @@ The proposed optional primitive request record and value-based root list can
 express these rules. Final review must check repeated snapshot COW, alias and
 rebind behavior, both unset paths, missing-name omission, hidden-root retention,
 heap validity and complete budget resumption. Protocol controls must reject
-untransportable byte strings and clock ranges before PHP semantics. The initial
-absolute-file CLI profile must be explicit: invocation spelling and resolved
-script filename need separate facts when that profile expands.
+untransportable byte strings and clock ranges before PHP semantics. The CLI invocation spelling and checked source filename are separate facts.
+[Relative and symlink controls](../../coverage/semantics/request-path-independent-review.json)
+confirm SERVER path fields and argv retain the invocation spelling while
+diagnostics use the resolved source filename. The request record already
+separates these inputs. A combined magic file/directory source remains an explicit
+compiler boundary; it is not part of the two passing path comparisons.
