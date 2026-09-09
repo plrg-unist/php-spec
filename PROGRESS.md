@@ -34,7 +34,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md) and
   [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md).
 - Shared tree: stage owned files only, commit each independently reviewed increment,
-  never push. Workspace gitlink was already modified; project baseline `082a3a2b`.
+  never push.
 
 ## Accepted evidence
 
@@ -60,8 +60,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   comparisons plus 12 boundaries. Expanded independent matrices passed. These
   remain outside source dispatch; [DIMENSIONS](docs/semantics/DIMENSIONS.md) records
   key coercion, byte bounds, diagnostic order and delayed RHS contracts.
-- Constant helper `93eeb749`: 42 original observations plus 7 boundaries and 37
-  independent alternates passed. Partial facts, same-path reuse, distinct NaN-array
+- Constant helper `93eeb749` passed canonical and independent campaigns. Partial facts, same-path reuse, distinct NaN-array
   paths and isolated pool roots are reviewed. Source installation and consumption remain pending.
 - Ordered compiler `72d3a65d`: **561 native lint comparisons +15 emission-line
   observations**, 6 Unsupported contexts and metadata/export controls passed;
@@ -76,13 +75,16 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   alternates; seen-symbol, work-barrier, resumption and metadata controls passed.
   Anonymous brace locations and valid function/constant import aliases are fixed.
   Declaration/default/body compilation and runtime activation remain pending.
+- Name resolver `5a6de4ca`: 61 original sources +7 boundaries and 20 independent
+  probes passed. [Name resolution](docs/semantics/NAME-RESOLUTION.md) separates
+  resolved bytes/FULL/fallback descriptors from pending lookup and invocation.
 - [Full syntax repair audit](coverage/frontend-syntax-repair.json): **30,980 ordered
   records** — 30,671 pass, 254 parser rejections, 41 individually classified
   compile-phase differences, 6 redirect containers and 8 non-source records.
   Targeted/generated/deep and grammar/scanner checks passed; 539 final syntax inputs
   matched the immutable snapshot. Copied executables establish no fresh rebuild
   or portability claim. Earlier portability evidence remains historical.
-- Pure numeric and static helper campaigns are linked in
+- Numeric and static campaigns are linked in
   [NUMERICS](docs/semantics/NUMERICS.md) and [STATIC](docs/semantics/STATIC.md).
   Numeric boundary repair `9fc9628f` follows the pin's suffix/NUL and invalid
   signed-exponent behavior; all 104 retained source observations now agree.
