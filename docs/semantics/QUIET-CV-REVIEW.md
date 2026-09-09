@@ -1,10 +1,16 @@
 # Quiet access and CV review
 
-This is a design review for the next required core increment, not implementation
-acceptance. [28 independent native originals](../../coverage/semantics/quiet-cv-independent-originals.json)
-preserve exact PHP 8.5.10 source, lint and execution observations. The existing
-five quiet-access, one list/header and seven request-environment boundaries
-remain required work.
+Quiet variable/DIM coalescing and compiled header/name conversion are accepted
+at `a42fddfe`; [independent review](../../coverage/semantics/quiet-access-review.json)
+binds295 exact sources, author 8 state programs/3,760 assertions and independent 6/
+2,277. Earlier 286 independent source runs retain their original identity; nine added
+originals and nine canonical public CLI replays pass separately. Full checked/state
+observations are retained losslessly in the linked evidence. Three object quiet
+forms, request environment, `isset`/`empty` and `??=` remain source work.
+
+The [28 independent native originals](../../coverage/semantics/quiet-cv-independent-originals.json)
+preserve exact PHP 8.5.10 source, lint and execution observations for the broader
+continuation described below.
 
 `??=` uses the compiler's expression memoization protocol: evaluated temporary
 expressions are reused, while simple CV operands remain delayed reads. Thus
@@ -50,8 +56,8 @@ protocols. For a string base, key `"0x"` warns and reads offset zero with `??`,
 while `isset` is false and `empty` true silently. An array key throws with `??`
 but gives those same silent boolean results for a string base with `isset`/`empty`.
 A float key1.5 is silent with `??`, but `isset`/`empty` report lossy conversion.
-Array-base illegal-key diagnostic text also differs. Runtime4's retained198-source
-matrix supplies the next integration controls; this document makes no admission.
+Array-base illegal-key diagnostic text also differs. The retained198-source matrix distinguishes these protocols; the quiet
+publication admits only the `??` protocol. `isset`/`empty` remain pending.
 
 Twelve [reference-valued memoization originals](../../coverage/semantics/coalesce-assignment-reference-originals.json)
 show that a copied temporary can still contain a reference cell. `ZEND_COPY_TMP`

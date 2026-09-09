@@ -657,7 +657,9 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/65-coalesce-compiler.watsup",
-        "spec/semantics/66-nonvariable-coalesce.watsup"
+        "spec/semantics/66-nonvariable-coalesce.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/70-quiet-coalesce.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -665,9 +667,13 @@
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/quiet_access.py",
+        "tests/semantics/quiet_access_compiler.py",
+        "coverage/semantics/quiet-access-source.json",
+        "coverage/semantics/quiet-access-review.json"
       ],
-      "review": "Nonvariable-left coalesce now executes with left-once evaluation and copied selected results; existing constant prepass remains separate. Accepted77f8d3c0/destructuring-review.json. Five quiet variable/DIM/property/nullsafe/static-property forms and coalescing assignment remain explicit pending access-protocol work; no family closure."
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment and coalescing assignment remain pending; no family closure."
     },
     {
       "node": "Expr_BinaryOp_Concat",
@@ -1924,13 +1930,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/70-quiet-coalesce.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/quiet_access.py",
+        "tests/semantics/quiet_access_compiler.py",
+        "coverage/semantics/quiet-access-source.json",
+        "coverage/semantics/quiet-access-review.json"
       ],
-      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment and coalescing assignment remain pending; no family closure."
     },
     {
       "node": "Expr_Yield",
@@ -4161,7 +4173,8 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/53-incdec.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/70-quiet-coalesce.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -4177,12 +4190,16 @@
         "tests/semantics/conformance/boolean-variable-name-captured.php",
         "tests/semantics/conformance/reference-float-cv-initialization.php",
         "tests/semantics/incdec.py",
-        "tests/semantics/incdec_compiler.py"
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/quiet_access.py",
+        "tests/semantics/quiet_access_compiler.py",
+        "coverage/semantics/quiet-access-source.json",
+        "coverage/semantics/quiet-access-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure.",
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment and coalescing assignment remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-variable.php",
         "tests/semantics/conformance/dynamic-name-delayed.php",
@@ -5132,7 +5149,9 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/56-casts.watsup",
         "spec/semantics/65-coalesce-compiler.watsup",
-        "spec/semantics/66-nonvariable-coalesce.watsup"
+        "spec/semantics/66-nonvariable-coalesce.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/70-quiet-coalesce.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -5140,12 +5159,16 @@
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/quiet_access.py",
+        "tests/semantics/quiet_access_compiler.py",
+        "coverage/semantics/quiet-access-source.json",
+        "coverage/semantics/quiet-access-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Nonvariable-left coalesce now executes with left-once evaluation and copied selected results; existing constant prepass remains separate. Accepted77f8d3c0/destructuring-review.json. Five quiet variable/DIM/property/nullsafe/static-property forms and coalescing assignment remain explicit pending access-protocol work; no family closure.",
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment and coalescing assignment remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php",
         "tests/semantics/conformance/missing-null-access.php"
@@ -8535,12 +8558,15 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "coverage/semantics/runtime-compiler-review.json",
-        "tests/semantics/array_omissions.py"
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/quiet_access.py",
+        "tests/semantics/quiet_access_compiler.py",
+        "coverage/semantics/quiet-access-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
+      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet variable/DIM access and compiled name warning conversion are now reviewed at a42fddfe/quiet-access-review.json. Classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-read-literal-prepass.php",
@@ -8552,17 +8578,25 @@
     {
       "id": "static.special-variable-diagnostics",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [
         "static.independent-compile-phase"
       ],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/70-quiet-coalesce.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/quiet_access.py",
+        "tests/semantics/quiet_access_compiler.py",
+        "coverage/semantics/quiet-access-source.json",
+        "coverage/semantics/quiet-access-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment and coalescing assignment remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/http-read-before-write.php",
         "tests/semantics/conformance/http-write-before-read.php",

@@ -10,7 +10,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | --- | --- | --- |
 | 0a–b | Contracts, inventory, checked runner and source harness | Complete — bounded bootstrap |
 | 1a–c | Integers, bytes, binary64, conversions and power | Partial — scalar/array operator and cast source paths reviewed |
-| 2a | Slots, aliases, frames and access modes | Partial — bindings/references reviewed; quiet access and frames pending |
+| 2a | Slots, aliases, frames and access modes | Partial — bindings/references reviewed; quiet variable/DIM access reviewed; frames pending |
 | 2b | Arrays, strings, lvalues and sequencing | Partial — array unpack/list/foreach reviewed; quiet access and object protocols pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Partial — array loops/jumps reviewed; return/frames and exceptions pending |
 | 3b | Calls, closures and independent static checks | Partial — static helpers reviewed; source activation pending |
@@ -23,7 +23,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 - `runtime4`: storage/source integration, currently quiet access/CV/request-environment rules.
 - `compiler4`: paired compiler/frontend work, then declarations/frames and class lookup.
-- `review6`: independent evidence, inventory, phase ledger and concise status/docs.
+- `review7`: independent evidence, inventory, phase ledger and concise status/docs.
 - Root orchestrates; stage owned files, commit reviewed increments, never push.
   Use canonical-root Dune builds and coordinate shared binaries.
 
@@ -33,14 +33,25 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Latest accepted checkpoints
 
-The full container checkpoint passes **4,997 exact sources +24 outcome controls**
+The historical full container checkpoint passed **4,997 exact sources +24 outcome controls**
 on **`a0e3709a`** (819 public inputs), author evidence **`d71d4107`**.
 [Independent audit](coverage/semantics/container-campaign-audit.json) verifies every
 ordered source/outcome and actual native/semantic subprocess pair, 26 source archive
 groups, two separately scoped compiler archives and all 4,407 historical sources.
 The exclusive raw file starts **`f0fc89de`**; [stable source report](coverage/semantics/container-source.json)
-retains this checkpoint when later selections run. Sixteen required core controls
-and four parser controls remain separate. No full-core or final-syntax claim follows.
+retains this checkpoint when later selections run. Its sixteen required core controls and four parser controls remain separate in that
+immutable report. Quiet publication below retires four of those core controls;
+twelve remain. No full-core or final-syntax claim follows.
+
+Quiet variable/DIM coalescing and compiled header/name conversion code **`a42fddfe`**
+is accepted by [independent review](coverage/semantics/quiet-access-review.json):
+295 exact sources, 18 separate outcome controls, author 8 state programs/3,760
+assertions and independent 6/2,277. The previous286 independent source cases and
+nine new originals are bound by exact bytes; nine canonical public CLI replays
+also pass. Compiler gates cover5,336 lints plus focused 240 quiet,90 foreach and 111
+list cases. Previous full source reports are historical after these watched changes.
+The remaining old core controls are seven environment, three object quiet forms,
+return and one nullsafe-reference iterable compiler context.
 
 Array foreach code **`1f0e8810`**, runtime evidence **`7cdd513c`**, compiler evidence
 **`c409e4be`** and [targeted independent review](coverage/semantics/foreach-runtime-review.json)
@@ -74,9 +85,10 @@ retain source rebinding, table replacement, copy selection and abrupt-exit origi
 Complete request environment, named/class/magic lookup, quiet access and
 coalescing assignments before broader calls/frames, declarations, linked objects,
 exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
-One header diagnostic case, five quiet-coalescing cases and seven ordinary
-request-environment cases remain explicit Unsupported work; none count as source
-agreements. [Quiet/CV design review](docs/semantics/QUIET-CV-REVIEW.md) and 28 native
+Three object quiet-coalescing forms and seven ordinary request-environment
+cases remain explicit Unsupported work; none count as source agreements.
+Guarded coalescing-assignment runtime and GLOBALS compiler candidates have
+independent private evidence; their source publication remains pending. [Quiet/CV design review](docs/semantics/QUIET-CV-REVIEW.md) and 28 native
 originals distinguish delayed CV reads, temporary reuse and header compiler state.
 Ordinary-library exclusions cannot discharge required core behavior.
 

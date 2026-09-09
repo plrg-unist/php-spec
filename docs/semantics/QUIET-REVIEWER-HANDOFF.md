@@ -1,61 +1,42 @@
 # Quiet/CV independent review continuation
 
-Latest accepted full container audit/status is **96cbf051**, author **d71d4107**.
-Canonical freeze was released after that audit; runtime4 owns the next publication.
-This is private review progress, not source publication. Complete core remains
-unfinished. Root orchestrates; runtime4 implements, compiler4 pairs compiler rules,
-review6 owns independent evidence/status. Do not push or rebuild in private roots.
-After the accepted container checkpoint, canonical quiet publication requires final
-immutable byte binding and focused source/compiler/state gates. Keep all old snapshots.
+Quiet publication is accepted at **a42fddfe**, runtime evidence **608a8752**,
+compiler evidence **cd0f3d3f** and
+[canonical independent review](../../coverage/semantics/quiet-access-review.json).
+Root orchestrates; runtime4 hands off runtime, compiler4 continues compiler rules,
+review7 owns independent evidence/status. Full core remains unfinished. Do not push.
 
-## Quiet/name candidate
+## Accepted quiet/name publication
 
-`.tools/runtime4-name-pair/quiet-inputs.json` freezes826 files and four tools,
-SHA256 `48beeaca76f9a1faf56a2e7fbc24f8b9206801a649982197477ec80acd8dfbc7`.
-Module70 implements FETCH_DIM_IS/coalescing, explicitly excluding isset/empty and
-??=. Header state and constant-name conversion are included. Compiled name
-normalization suppresses a conversion warning only at that exact compiled child;
-it preserves original pooled facts and effects. Literal$this remains distinct from
-computed names. Nonvariable dimension bases compile as ordinary PPR; variable
-ancestors use PPIS, while keys retain ordinary evaluation effects.
+Canonical fingerprint **9c46ba66** has 822 public inputs. Final private 829 is
+`.tools/runtime4-quiet-final/candidate-inputs.json`, SHA256
+`b85c4dd5f9f896143718d12897990cd581299a51d51751ed4d4882c824b4178c`.
+The added read-only compiler reference is separately bound in 830. All 18 published
+paths,822 shared inputs and823 compiler dependencies were checked exactly.
 
-Independent PASS:
-- `.tools/review6-quiet-source/review.json`:286 exact native/source comparisons =
-  94 matrix+30 name+26 author extras+120 header originals+16 independent controls.
-  Every raw checked/result state is retained beside it; all826 inputs unchanged.
-- `.tools/review6-quiet-state-results.json`:6 programs/2,277 assertions, budgets0..48
-  plus64/96/128; complete resumed state, final ORIGIN/HELD/TODO/ITERATORS, heap and
-  source validity, pools/code unchanged. Missing names remain absent from ENV.
-  Exact fixtures `.tools/review6-quiet-state-1ncmv50r`.
-- `.tools/review6-name-first-failure/review.json`:25 original doubled-warning
-  defects and5 agreeing controls reproduced exactly under reconstructed original
-  modules. Original report `runtime4-name-pair/source-run-flpq4itq/results.json`,
-  exact old modules `before-normalization/spec`; never relabel these as agreements.
+- 295 exact sources +18 separate outcome controls; author 8 state programs/3,760
+assertions. Earlier 286 independent source originals plus nine added sources equal
+the final 295 multiset exactly. Fresh nine candidate and nine canonical public CLI
+comparisons pass. Six independent dense programs/2,277 assertions retain unchanged
+SpecTec/tool dependencies and their original 826 run identity.
+- Final compiler evidence covers 5,336 lints, focused 240 quiet +12 controls,90
+foreach +20 and 111 list +32. The first missing read-only compiler reference setup
+failure remains preserved; the later bound run passed.
+- `quiet-access-independent-evidence.json` retains checks, manifests, scripts and
+state fixtures. Its linked gzip losslessly retains all 286 checked/full-state raw
+observations. Independent 25 original doubled-warning defects and 5 controls remain
+separate; header 120 originals and 40 diagnostic-map partialities stay durable.
 
-Earlier compiler/header independent work:
-- `review6-header-frozen/review.json`:120 native/lint/checked originals,113 runtime
-  and compiler traces,40 diagnostic prefixes;7 quiet excluded in that old prototype.
-  First missing diagnostic-map failure reproduced. That prototype uses old foreach69;
-  current826 header120 replay supersedes its runtime scope, not its immutable history.
-- `review6-ppis-frozen/review.json`:393 frozen inputs,210 freshly checked compiler
-  traces =120 headers+66coalesce+24phase/base cases. No runtime admission.
-- Header originals120 and40 first mapping partialities are durable in coverage:
-  header-{context,constant-name,known-name,diagnostic-mapping}-originals.json,
-  mapping-inputs and header-originals-bindings (6a207484).
+Module70 implements FETCH_DIM_IS/coalescing, excluding isset/empty and ??=.
+Header compiler state and constant-name conversion are included. Compiled name
+normalization suppresses conversion warnings only at that exact compiled child;
+it preserves pooled facts and effects. Literal$this differs from computed names.
+Nonvariable dimension bases use ordinary PPR; variable ancestors use PPIS, and
+keys retain ordinary effects. Missing quiet names remain absent from ENV.
 
-At handoff runtime4 has a distinct `.tools/runtime4-quiet-publication/candidate-inputs.json`
-publication829 (manifest SHA256 `eaee7a65d73ef178b2979c33151ccdd02bb3c2c9b409363a7faf0d0d14a55331`):
-295 literal originals pass. The earlier286 independent review is
-a different selection, including16 reviewer extras; establish exact source-byte
-membership and dependency binding, not a count-based equivalence.
-Compiler durable `quiet_access_compiler.py` covers240 exact native lints and12
-flag/access/original-array/effect-marker controls. Three old test consumers still
-expect now-admitted Unsupported names/header/quiet cases. Compiler4 is preparing
-only test-expectation deltas in another immutable publication root. Verify exact
-selected-source/harness/semantic dependencies before retaining completed state
-runs; do not relabel829 runs as fresh on changed inputs. Canonical source admission
-and durable independent evidence copies are still pending. Ask runtime4 for the
-final manifest and exact proposed source retirement list before reviewing publication.
+Latest full container audit **96cbf051**, author **d71d4107**, is historical after
+quiet publication:4,997 exact sources +24 controls on 819 inputs/a0e3709a. Preserve
+its immutable originals/subprocess/raw audit and all 4,407 historical sources.
 
 ## Coalescing assignment
 
@@ -88,8 +69,8 @@ Independent guarded834 PASS:
   byte-exact;9 targeted nested CV/DIM missing/zero/duplicate guards pass74 assertions,
   reject before RHS binding/output and clear TODO/HELD/ORIGIN/ITERATORS.
 
-No ??= source publication yet. Runtime author8328dense/3,760 passed; confirm final
-834 author8 results before admission. CODEWRITE export and every consumer need
+No ??= source publication yet. Runtime author 8328dense/3,760 passed; confirm final
+834 author 8 results before admission. CODEWRITE export and every consumer need
 final canonical binding; compiler413 descriptor checks alone do not close runtime.
 
 Durable original research commits:
@@ -106,17 +87,19 @@ catalogues. QUIET-CV-REVIEW.md records source-backed design details.
 
 GLOBALS compiler `.tools/globals-name-compiler-checked/frozen-review-inputs.json`
 freezes428 (SHA256 `0bc5f23b53eabfc4c4e7dd9ed8d83824acc1544262439eb167ca0109ef7bece2`),
-author330 traces+8 metadata. It retains the first real
-GLOBALS-unset[] wrong-message state and direct-global-only correction. Independent
-review remains pending. No source/request-environment admission follows from lints.
+author 330 traces+8 metadata. Independent review7 freshly checked 64 native/lint/
+source compiler traces plus 8 malformed descriptors and reproduced the original
+GLOBALS-unset[] wrong-message state byte-exact. Durable compiler-only review is
+`coverage/semantics/globals-compiler-independent-review.json`; no source/request-
+environment admission follows from lints.
 VM ZEND_FETCH_GLOBALS always duplicates via zend_proptable_to_symtable; source tests
 must distinguish snapshot values, retained explicit references, numeric-string
 keys, undefined CV omission and symbol-table ordering. Do not alias the whole ENV
 as an ordinary array or invoke host PHP for runtime semantics.
 
 Finish quiet/CV/??=/GLOBALS/request environment and distinct isset/empty protocols
-before broader calls/frames. Container pending16 consists7 ordinary environment,
-5 quiet,1 list header,1 return and2 foreach compiler contexts. Retire each only with
+before broader calls/frames. The old container remaining 12 consist 7 ordinary environment,
+3 object quiet,1 return and1 foreach compiler context. Retire each only with
 exact native/source evidence; full return/frame/object work remains required.
 Final core inventory closure, full syntax audit and fresh offline rebuild are still
 mandatory. Namespace-relative static remains the sole intentional divergence,
