@@ -472,3 +472,14 @@ index 50a8e504..94fc8796 100644
          }
  
          /** @var Node|null $origNode */
+--- a/vendor/php-parser/lib/PhpParser/ParserAbstract.php
++++ b/vendor/php-parser/lib/PhpParser/ParserAbstract.php
+@@ -1019,7 +1019,7 @@
+             if ($item->value instanceof Array_) {
+                 return new Node\ArrayItem(
+                     $this->fixupArrayDestructuring($item->value),
+-                    $item->key, $item->byRef, $item->getAttributes());
++                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
+             }
+             return $item;
+         }, $node->items), ['kind' => Expr\List_::KIND_ARRAY] + $node->getAttributes());

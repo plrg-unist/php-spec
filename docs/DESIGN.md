@@ -55,6 +55,10 @@ or closing-tag start line as `statementTerminatorLine`; a comment Nop alone does
 not make a braced/alternative body a bare statement. These fields prepare exact
 control compilation; their transport does not enable control execution.
 
+Array-to-list conversion preserves each nested `ArrayItem.unpack` field,
+including otherwise compiler-invalid spread targets. Syntax checking and fresh
+printing retain these flags; compiler legality remains a separate phase.
+
 Ternaries retain boolean `parenthesizedConditional`, set by the actual grouping
 production and false at ternary construction. Call/control parentheses do not
 set it. This distinguishes otherwise identical nested trees for later compiler

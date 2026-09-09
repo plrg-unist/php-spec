@@ -1019,7 +1019,7 @@ abstract class ParserAbstract implements Parser {
             if ($item->value instanceof Array_) {
                 return new Node\ArrayItem(
                     $this->fixupArrayDestructuring($item->value),
-                    $item->key, $item->byRef, $item->getAttributes());
+                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
             }
             return $item;
         }, $node->items), ['kind' => Expr\List_::KIND_ARRAY] + $node->getAttributes());
