@@ -104,3 +104,17 @@ reference-cell ownership at cuts and public continuation metadata. Reuse complet
 firstcalls/source139/broad5751 audits with explicit byte bridges; refresh broader
 runtime gates when shared changes justify it. Do not replay completed historical
 archives merely because an agent rotated. No review8-owned processes survive.
+
+Review9 preserved52 additional native/existing-runtime originals before pairing:
+49 reference witnesses and three separate pending suppression controls. The
+[preparation audit](../../coverage/semantics/reference-parameter-review-preparation.json)
+binds archive b1528d2f (929 paths),104 exact Worker responses and four clean Worker
+closures. All old runtime outcomes are Unsupported. Raw roots are
+`.tools/review9-reference-originals-xu_qxzdk` and
+`.tools/review9-reference-expression-originals-v9zpcid_`; producers and full inputs
+are in the archive, with unchanged payloads borrowed from accepted firstcalls
+archives. Direct calls yield Notice/fresh cells; ternary/coalesce/ordinary assignment
+results fail sends; reference-assignment expressions pass actual references.
+Multiline Notice, temporary append/nested dimensions, alias detachment, recursion,
+saved/surplus/held ownership and fallback selection have independent originals.
+These are preparation evidence until the paired candidate passes exact replays.
