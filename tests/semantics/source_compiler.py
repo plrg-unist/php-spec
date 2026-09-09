@@ -59,6 +59,12 @@ ACCESS_CASES=[
 def oracle_record(source, checked, command, run):
     return {'source_base64':base64.b64encode(source).decode(), 'ast_sha256':hashlib.sha256(json.dumps(checked['ast'],sort_keys=True).encode()).hexdigest(), 'command':command, 'cwd':str(ROOT), 'status':run.returncode, 'stdout_base64':base64.b64encode(run.stdout).decode(), 'stderr_base64':base64.b64encode(run.stderr).decode()}
 
+def retain_failure(fingerprint,records,fixture,command,result):
+    failure=Path(tempfile.mkdtemp(prefix='source-compiler-failure-',dir=ROOT/'.tools'))
+    (failure/'cases.watsup').write_bytes(fixture.read_bytes())
+    (failure/'results.json').write_text(json.dumps({'fingerprint':fingerprint,'records':records,'command':command,'result':result},indent=2)+'\n')
+    return failure
+
 def main():
     # Oracle diagnostics are PHP bytes, including invalid UTF-8 and Unicode
     # separator sequences that must not be mistaken for physical output lines.
@@ -157,9 +163,14 @@ def main():
                 records.append({'id':'access-'+str(i),'kind':'compiler-access','oracle':oracle_record(source,checked,command,run),'expected_access':[{'path':occurrences.path_term(steps),'mode':mode} for steps,mode in probes]})
                 fixtures.append(body)
             file=Path(tmp)/'cases.watsup' ;file.write_text(prefix+'\n'.join(fixtures)+'\ndec $main() : bool\ndef $main() = true\n'+''.join(f'  -- if $case{i}()\n' for i in range(len(fixtures))))
-            run=subprocess.run([str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*map(str,SPECS),str(file)],capture_output=True,text=True,timeout=120)
+            command=[str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*map(str,SPECS),str(file)]
+            try:run=subprocess.run(command,capture_output=True,text=True,timeout=600)
+            except subprocess.TimeoutExpired as error:
+                failure=retain_failure(before,records,file,command,{'timeout_seconds':error.timeout,'stdout_base64':base64.b64encode(error.stdout or b'').decode(),'stderr_base64':base64.b64encode(error.stderr or b'').decode()})
+                raise AssertionError(('compiler aggregate timed out',str(failure))) from error
             if run.returncode or run.stdout.strip()!='true':
-                (ROOT/'.tools/source-compiler-failure.watsup').write_text(file.read_text());raise AssertionError((run.returncode,run.stdout,run.stderr))
+                failure=retain_failure(before,records,file,command,{'status':run.returncode,'stdout':run.stdout,'stderr':run.stderr})
+                raise AssertionError((str(failure),run.returncode,run.stdout,run.stderr))
             print(len(ACCESS_CASES),'access sources;',sum(len(probes) for source,probes in ACCESS_CASES),'access paths;',len(SOURCE_CASES),'compiler lint comparisons;',len(LINES),'emission-line observations; 2 Unsupported contexts; 7 metadata boundaries; constant export merge checks passed')
     finally:f.close();a.close()
     assert before==fingerprint(),'watched inputs changed'
