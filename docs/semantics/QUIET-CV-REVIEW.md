@@ -63,3 +63,9 @@ the retained cell to an array raises an illegal-key TypeError during writing.
 Memoization therefore retains the actual VALUE, including a REFERENCE; resolving
 all temporary operands early would lose this behavior. The non-null branch and
 throwing RHS need ownership cleanup for these retained wrappers.
+
+Sixteen [nested memoization and result-ownership originals](../../coverage/semantics/coalesce-assignment-nested-originals.json)
+cover independent nested memo tables, shared reference operands, selected and
+assigned array results, by-reference iteration of expression results, list effects
+and loop/throw cleanup. They retain native/lint/checked observations before the
+compiler-export guard correction; source/state acceptance remains separate.
