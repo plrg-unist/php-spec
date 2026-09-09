@@ -9,6 +9,32 @@ constructor and separate runtime obligations. A catalog entry is a requirement,
 not a claim that its implementation exists. Entries remain partial until their
 full implementation and evidence obligations close.
 
+## Closing individual obligations
+
+A completed obligation can close before its family or the whole core. Its scope
+must cover every branch of that obligation; selecting passing fixtures does not
+shrink the obligation. Partial constructors stay partial when contextual behavior
+is unfinished. Independent review, rather than a report total, establishes that
+implementation and branch coverage meet the stated scope.
+
+Finished inventory entries require a `closure` record containing `scope`, named
+`branches` with original-source `case_ids`, `source_report`, `independent_review`,
+and `divergences`. The source report uses the regular semantic campaign schema,
+including hashed raw JSONL observations. The separate review artifact records the
+entry ID, exact scope/branches/divergence list, accepted decision, reviewer, source
+report SHA256 and implementation SHA256. Existing numeric/byte/coercion helper
+requirements remain additional evidence; they never replace source cases.
+
+The checker verifies case membership, original-source hashes, target/profile,
+semantic outcomes and exact raw observations. Ordinary checking preserves valid
+historical review bindings; `--complete` additionally requires current executable
+and source fingerprints. It cannot infer full branch coverage or reviewer
+independence from strings: those remain explicit review responsibilities.
+Intentional-divergence cases have their own classification, exact intended semantic
+observation and ledger source/report/case binding. They cannot be relabeled as
+differential passes; helper-only or unintegrated divergence entries block complete
+closure. Unknown, Unsupported and tool outcomes are never closure evidence.
+
 ## Execution and observations
 
 Execution consumes checked SpecTec AST values and explicit original source
