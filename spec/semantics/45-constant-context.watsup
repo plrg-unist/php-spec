@@ -6,9 +6,9 @@ syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue?, E
 syntax pfshape = PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
-  | PFTERNARY expression phpType5 expression | PFSTOP | PFOTHER
+  | PFTERNARY expression phpType5 expression | PFMEMBER expression phpType20 | PFNEW phpType28 phpType6 | PFCAST pcast expression | PFCAST_OBJECT expression | PFCAST_UNSET | PFCOALESCE expression expression | PFCLASSCONST phpType19 phpType20 | PFCLASSNAME phpType19 | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
-syntax pfitem = PFITEM pvalue? pfkey bool
+syntax pfitem = PFITEM pvalue? pfkey bool | PFSPREAD pvalue?
 syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text
 var F : pfstate
 
@@ -67,7 +67,7 @@ def $pfshape(NScalarInt (INTEGER i) metadata) = PFSCALAR (PINT i) ($source_line(
 def $pfshape(NScalarFloat (FLOAT text) metadata) = PFSCALAR (PFLOAT $hex_bits(text, 0)) ($source_line(metadata))
 def $pfshape(NScalarString (BYTES text) metadata) = PFSCALAR (PSTRING $base64(text)) ($string_line(metadata))
 def $pfshape(NExprConstFetch name metadata) = PFNAME name
-def $pfshape(NExprVariable phpType34 metadata) = PFSTOP
+def $pfshape(NExprVariable phpType32 metadata) = PFSTOP
 def $pfshape(NExprAssign expression_1 expression_2 metadata) = PFSTOP
 def $pfshape(NExprAssignRef expression_1 expression_2 metadata) = PFSTOP
 def $pfshape(NExprAssignOpBitwiseAnd expression_1 expression_2 metadata) = PFSTOP
@@ -205,7 +205,7 @@ def $pfdim(F, pcpath, pvalue_1?, pvalue_2?, z) = F[.VALUE = eps]
 
 ;; Array pass one visits each value then its key, retaining all partial folds.
 ;; Only after every entry does pass two attempt constant table construction.
-dec $pfitems(pfstate, pcpath, nat, phpType13*, pfitem*, int) : pfstate
+dec $pfitems(pfstate, pcpath, nat, phpType13*, pfitem*, int, int) : pfstate
 dec $pfitemkey(pfstate, pcpath, phpType5, int) : pfstate
 dec $pfkey(phpType5, pvalue?) : pfkey
 dec $pfready(pfitem*) : bool
@@ -216,17 +216,25 @@ dec $pfinsert(pstate, nat, pkey?, pvalue, pfitem*, int) : pfbuild
 dec $pfinserted(pstate, nat, pfitem*, int) : pfbuild
 dec $pfbuilt(pfstate, pcpath, pfbuild, nat, int) : pfstate
 
-def $pfdispatch(F, pcpath, PFARRAY phpType13*, z) = $pfitems(F, pcpath, 0, phpType13*, eps, z)
-def $pfitems(F, pcpath, n, phpType13*, pfitem*, z) = F
+def $pfdispatch(F, pcpath, PFARRAY phpType13*, z) = $pfitems(F, pcpath, 0, phpType13*, eps, z, 0)
+def $pfitems(F, pcpath, n, phpType13*, pfitem*, z, z_previous) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfitems(F, pcpath, n, eps, pfitem*, z) = $pfarray(F, pcpath, pfitem*, z)
+def $pfitems(F, pcpath, n, eps, pfitem*, z, z_previous) = $pfarray(F, pcpath, pfitem*, z)
   -- if F.MEMORY.COMPLETION = NORMAL
-def $pfitems(F, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*, pfitem*, z) = $pfitems(F_key, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFITEM F_value.VALUE ($pfkey(phpType5, F_key.VALUE)) b], z)
+def $pfitems(F, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*, pfitem*, z, z_previous) = $pfitems(F_key, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFITEM F_value.VALUE ($pfkey(phpType5, F_key.VALUE)) b], z, $expression_line(expression))
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if pcpath_item = pcpath ++ [PCFIELD 0, PCINDEX n]
   -- if F_value = $pffold(F, pcpath_item ++ [PCFIELD 1], expression, z)
   -- if F_key = $pfitemkey(F_value, pcpath_item ++ [PCFIELD 0], phpType5, z)
-def $pfitems(F, pcpath, n, phpType13*, pfitem*, z) = $pfunsupported(F, "constant array unpack or edited item")
+def $pfitems(F, pcpath, n, ABSENT :: phpType13*, pfitem*, z, z_previous) = $pferror(F, "Cannot use empty array elements in arrays", z_previous)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if $(z_previous > 0)
+def $pfitems(F, pcpath, 0, ABSENT :: phpType13*, pfitem*, z, 0) = $pferror(F, "Cannot use empty array elements in arrays", z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfitems(F, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*, pfitem*, z, z_previous) = $pfitems(F_value, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFSPREAD F_value.VALUE], z, $expression_line(expression))
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F_value = $pffold(F, pcpath ++ [PCFIELD 0, PCINDEX n, PCFIELD 1], expression, z)
+def $pfitems(F, pcpath, n, phpType13*, pfitem*, z, z_previous) = $pfunsupported(F, "constant array unpack or edited item")
   -- otherwise
 
 def $pfitemkey(F, pcpath, ABSENT, z) = F[.VALUE = eps]
@@ -366,3 +374,185 @@ def $pfselecteddone(F, pcpath, pcpath_target) = $pfremember(F, pcpath, F.VALUE, 
   -- if $pffactline(F.FACTS, pcpath_target) = (z)
 def $pfselecteddone(F, pcpath, pcpath_target) = F
   -- otherwise
+
+def $pfshape(NExprBinaryOpConcat expression_1 expression_2 metadata) = PFSCALAR pvalue ($concat_line(metadata))
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (pvalue)
+  -- if $($concat_line(metadata) > 0)
+
+def $pfshape(NExprFuncCall phpType19 phpType6 metadata) = PFSTOP
+
+def $pfshape(NExprMethodCall expression phpType20 phpType6 metadata) = PFSTOP
+
+def $pfshape(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = PFSTOP
+
+def $pfshape(NExprStaticCall phpType19 phpType20 phpType6 metadata) = PFSTOP
+
+def $pfshape(NExprStaticPropertyFetch phpType19 phpType31 metadata) = PFSTOP
+
+def $pfshape(NScalarInterpolatedString phpType29 metadata) = PFSTOP
+
+def $pfshape(NExprInclude expression phpType24 metadata) = PFSTOP
+
+def $pfshape(NExprEval expression metadata) = PFSTOP
+
+def $pfshape(NExprErrorSuppress expression metadata) = PFSTOP
+
+def $pfshape(NExprPropertyFetch expression phpType20 metadata) = PFMEMBER expression phpType20
+def $pfshape(NExprNullsafePropertyFetch expression phpType20 metadata) = PFMEMBER expression phpType20
+def $pfshape(NExprNew phpType28 phpType6 metadata) = PFNEW phpType28 phpType6
+
+dec $pfmemberkey(pfstate, pcpath, phpType20, int) : pfstate
+def $pfmemberkey(F, pcpath, phpType20, z) = $pffold(F, pcpath, expression, z)
+  -- if phpType20 = expression
+def $pfmemberkey(F, pcpath, phpType20, z) = F[.VALUE = eps] -- otherwise
+def $pfdispatch(F, pcpath, PFMEMBER expression phpType20, z) = $pfmemberkey($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath ++ [PCFIELD 1], phpType20, z)[.VALUE = eps]
+
+dec $pfnewclass(pfstate, pcpath, phpType28, int) : pfstate
+def $pfnewclass(F, pcpath, phpType28, z) = $pffold(F, pcpath, expression, z)
+  -- if phpType28 = expression
+def $pfnewclass(F, pcpath, phpType28, z) = F[.VALUE = eps] -- otherwise
+dec $pfnewargs(pfstate, pcpath, nat, phpType7*, int) : pfstate
+def $pfnewargs(F, pcpath, n, phpType7*, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfnewargs(F, pcpath, n, eps, z) = F[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfnewargs(F, pcpath, n, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, z) = $pfnewargs($pffold(F, pcpath ++ [PCINDEX n, PCFIELD 1], expression, z), pcpath, $(n + 1), phpType7*, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfnewargs(F, pcpath, n, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, z) = $pfnewargs(F, pcpath, $(n + 1), phpType7*, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfnewargs(F, pcpath, n, (NVariadicPlaceholder metadata) :: phpType7*, z) = $pfnewargs(F, pcpath, $(n + 1), phpType7*, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfnewargs(F, pcpath, n, phpType7*, z) = $pfunsupported(F, "edited new argument") -- otherwise
+def $pfdispatch(F, pcpath, PFNEW phpType28 (SEQUENCE phpType7*), z) = $pfnewargs($pfnewclass(F, pcpath ++ [PCFIELD 0], phpType28, z), pcpath ++ [PCFIELD 1], 0, phpType7*, z)
+
+
+;; Constant casts follow zend_try_ct_eval_cast, not ordinary opcode folding.
+dec $pfcast_nan(pvalue) : bool
+def $pfcast_nan(PFLOAT n) = b_warning
+  -- if (b, b_warning) = $number_bool(NFLOAT n)
+def $pfcast_nan(pvalue) = false -- otherwise
+dec $pfcast_kind_allowed(pcast, pvalue) : bool
+def $pfcast_kind_allowed(CASTINT, PFLOAT n) = $fparts_fits($float_decode(n))
+def $pfcast_kind_allowed(CASTSTRING, PFLOAT n) = false
+def $pfcast_kind_allowed(CASTSTRING, PARRAY n) = false
+def $pfcast_kind_allowed(pcast, pvalue) = true -- otherwise
+dec $pfcast(pfstate, pcpath, pcast, int) : pfstate
+def $pfcast(F, pcpath, pcast, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfcast(F, pcpath, pcast, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if ~$pfcast_nan(pvalue)
+  -- if $pfcast_kind_allowed(pcast, pvalue)
+  -- if $constant_state($cast_apply(F.MEMORY, pcast, pvalue, z)) = (S)
+  -- if S.RESULT = KNOWN pvalue_result
+def $pfcast(F, pcpath, pcast, z) = F[.VALUE = eps] -- otherwise
+def $pfdispatch(F, pcpath, PFCAST pcast expression, z) = $pfcast($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, pcast, z)
+def $pfdispatch(F, pcpath, PFCAST_OBJECT expression, z) = $pffold(F, pcpath ++ [PCFIELD 0], expression, z)[.VALUE = eps]
+def $pfdispatch(F, pcpath, PFCAST_UNSET, z) = $pferror(F, "The (unset) cast is no longer supported", z)
+def $pfshape(NExprCastUnset expression metadata) = PFCAST_UNSET
+def $pfshape(NExprCastObject expression metadata) = PFCAST_OBJECT expression
+def $pfshape(NExprCastInt expression metadata) = PFCAST CASTINT expression
+def $pfshape(NExprCastBool expression metadata) = PFCAST CASTBOOL expression
+def $pfshape(NExprCastDouble expression metadata) = PFCAST CASTFLOAT expression
+def $pfshape(NExprCastString expression metadata) = PFCAST CASTSTRING expression
+def $pfshape(NExprCastArray expression metadata) = PFCAST CASTARRAY expression
+
+def $pfshape(NExprPrint expression metadata) = PFSTOP
+
+def $pfshape(NExprExit phpType5 metadata) = PFSTOP
+
+def $pfshape(NExprShellExec phpType29 metadata) = PFSTOP
+
+def $pfshape(NExprIsset phpType25 metadata) = PFSTOP
+
+def $pfshape(NExprEmpty expression metadata) = PFSTOP
+
+def $pfshape(NExprThrow expression metadata) = PFSTOP
+
+def $pfshape(NExprYield phpType5_1 phpType5_2 metadata) = PFSTOP
+
+def $pfshape(NExprYieldFrom expression metadata) = PFSTOP
+
+def $pfshape(NExprClone expression metadata) = PFSTOP
+
+def $pfshape(NExprInstanceof expression phpType19 metadata) = PFSTOP
+
+def $pfshape(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = PFSTOP
+
+def $pfshape(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = PFSTOP
+
+def $pfshape(NExprMatch expression phpType26 metadata) = PFSTOP
+
+def $pfshape(NExprBinaryOpPipe expression_1 expression_2 metadata) = PFSTOP
+
+
+
+
+def $pfshape(NExprAssignOpCoalesce expression_1 expression_2 metadata) = PFSTOP
+
+
+
+
+
+
+
+
+
+
+def $pfshape(NExprBinaryOpCoalesce expression_1 expression_2 metadata) = PFCOALESCE expression_1 expression_2
+dec $pfcoalesce(pfstate, pcpath, expression, int) : pfstate
+def $pfdispatch(F, pcpath, PFCOALESCE expression_left expression_right, z) = $pfcoalesce($pffold(F, pcpath ++ [PCFIELD 0], expression_left, z), pcpath, expression_right, z)
+def $pfcoalesce(F, pcpath, expression, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfcoalesce(F, pcpath, expression, z) = $pfselected(F, pcpath, pcpath ++ [PCFIELD 1], expression, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (PNULL)
+def $pfcoalesce(F, pcpath, expression, z) = $pfselecteddone($pfaddredirect(F, pcpath, pcpath ++ [PCFIELD 0]), pcpath, pcpath ++ [PCFIELD 0])
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if pvalue =/= PNULL
+def $pfcoalesce(F, pcpath, expression, z) = $pffold(F, pcpath ++ [PCFIELD 1], expression, z)[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = eps
+
+;; ::class is a distinct Zend AST node and does not walk a computed class child.
+dec $pfclassname_member(phpType20) : bool
+def $pfclassname_member(NIdentifier (BYTES text) metadata) = ($ptlc($base64(text)) = [99,108,97,115,115])
+def $pfclassname_member(phpType20) = false -- otherwise
+def $pfshape(NExprClassConstFetch phpType19 phpType20 metadata) = PFCLASSNAME phpType19
+  -- if $pfclassname_member(phpType20)
+def $pfshape(NExprClassConstFetch phpType19 phpType20 metadata) = PFCLASSCONST phpType19 phpType20
+  -- if ~$pfclassname_member(phpType20)
+dec $pfclasspart(pfstate, pcpath, phpType19, int) : pfstate
+def $pfclasspart(F, pcpath, phpType19, z) = $pffold(F, pcpath, expression, z)
+  -- if phpType19 = expression
+def $pfclasspart(F, pcpath, phpType19, z) = F[.VALUE = eps] -- otherwise
+dec $pfclass_known(phpType19, pvalue?) : bool
+def $pfclass_known(phpType19, pvalue?) = true
+  -- if phpType19 = name
+def $pfclass_known(phpType19, (pvalue)) = true
+def $pfclass_known(phpType19, pvalue?) = false -- otherwise
+dec $pfmember_known(phpType20, pvalue?) : bool
+def $pfmember_known(NIdentifier phpType33 metadata, pvalue?) = true
+def $pfmember_known(phpType20, (PSTRING n*)) = true
+def $pfmember_known(phpType20, pvalue?) = false -- otherwise
+dec $pfclassconstantdone(pfstate, bool) : pfstate
+def $pfclassconstantdone(F, b) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfclassconstantdone(F, true) = $pfunsupported(F, "constant class-constant lookup")
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfclassconstantdone(F, false) = F[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfdispatch(F, pcpath, PFCLASSCONST phpType19 phpType20, z) = $pfclassconstantdone(F_member, ($pfclass_known(phpType19, F_class.VALUE) /\ $pfmember_known(phpType20, F_member.VALUE)))
+  -- if F_class = $pfclasspart(F, pcpath ++ [PCFIELD 0], phpType19, z)
+  -- if F_member = $pfmemberkey(F_class, pcpath ++ [PCFIELD 1], phpType20, z)
+dec $pfclassdynamic(phpType19) : bool
+def $pfclassdynamic(phpType19) = true
+  -- if phpType19 = expression
+  -- if $parser_literal(expression) = eps
+def $pfclassdynamic(phpType19) = false -- otherwise
+def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
+  -- if $pfclassdynamic(phpType19)
+def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfunsupported(F, "constant class-name resolution")
+  -- if ~$pfclassdynamic(phpType19)

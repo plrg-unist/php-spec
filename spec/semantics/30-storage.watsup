@@ -27,8 +27,8 @@ syntax ptask = COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbi
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode* }
-dec $cv_name(phpType34) : (nat*)?
-dec $direct_this(phpType34) : bool
+dec $cv_name(phpType32) : (nat*)?
+dec $direct_this(phpType32) : bool
 dec $global_this_error(pstate, int) : pstate
 dec $this_name(nat*) : bool
 def $this_name(n*) = (n* = [116,104,105,115])

@@ -2294,7 +2294,7 @@ class Php8 extends \PhpParser\ParserAbstract
                  $self->semValue = new Expr\FuncCall(new Node\Name($self->semStack[$stackPos-(2-1)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)],  $self->tokenEndStack[$stackPos-(2-1)])), $self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos]));
             },
             429 => static function ($self, $stackPos) {
-                 $self->semValue = new Expr\Clone_($self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue = new Expr\Clone_($self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos])); $self->semValue->setAttribute('cloneExprLine', $self->tokens[$self->tokenPos]->line);
             },
             430 => static function ($self, $stackPos) {
                  $self->semValue = new Expr\AssignOp\Plus($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
@@ -2375,7 +2375,7 @@ class Php8 extends \PhpParser\ParserAbstract
                  $self->semValue = new Expr\BinaryOp\BitwiseXor($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
             },
             456 => static function ($self, $stackPos) {
-                 $self->semValue = new Expr\BinaryOp\Concat($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue = new Expr\BinaryOp\Concat($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos])); $self->semValue->setAttribute('concatExprLine', $self->tokens[$self->tokenPos]->line);
             },
             457 => static function ($self, $stackPos) {
                  $self->semValue = new Expr\BinaryOp\Plus($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
@@ -2536,7 +2536,7 @@ class Php8 extends \PhpParser\ParserAbstract
                  $self->semValue = new Expr\Print_($self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos]));
             },
             504 => static function ($self, $stackPos) {
-                 $self->semValue = new Expr\Yield_(null, null, $self->getAttributes($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue = new Expr\Yield_(null, null, $self->getAttributes($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); $self->semValue->setAttribute('nullaryExprLine', $self->tokens[$self->tokenPos]->line);
             },
             505 => static function ($self, $stackPos) {
                  $self->semValue = new Expr\Yield_($self->semStack[$stackPos-(2-2)], null, $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos]));

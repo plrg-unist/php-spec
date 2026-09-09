@@ -64,7 +64,7 @@ def $psstartline(MstartLine int) = true
 def $psstartline(metadataEntry) = false
   -- otherwise
 
-def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType39 metadata) = PSINPUT { NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), EXTRA (phpType14 =/= SEQUENCE eps \/ int =/= 0 \/ phpType39 =/= SEQUENCE eps) }
+def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = PSINPUT { NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), EXTRA (phpType14 =/= SEQUENCE eps \/ int =/= 0 \/ phpType37 =/= SEQUENCE eps) }
 def $pslower(phpType17) = PSINPUTUNSUPPORTED "edited dynamic parameter name"
   -- otherwise
 
@@ -84,8 +84,8 @@ def $psrequiredlater((PSINPUTUNSUPPORTED text) :: psinput*) = eps
 ;; conversion required when the consumer materializes that literal value.
 def $psdefault(ABSENT, ptcontext) = PSNONE
 def $psdefault(NScalarInt phpType24 metadata, ptcontext) = PSDEFAULT (NScalarInt phpType24 metadata) "int"
-def $psdefault(NScalarFloat phpType43 metadata, ptcontext) = PSDEFAULT (NScalarFloat phpType43 metadata) "float"
-def $psdefault(NScalarString phpType35 metadata, ptcontext) = PSDEFAULT (NScalarString phpType35 metadata) "string"
+def $psdefault(NScalarFloat phpType41 metadata, ptcontext) = PSDEFAULT (NScalarFloat phpType41 metadata) "float"
+def $psdefault(NScalarString phpType33 metadata, ptcontext) = PSDEFAULT (NScalarString phpType33 metadata) "string"
 def $psdefault(NExprArray (SEQUENCE eps) metadata, ptcontext) = PSDEFAULT (NExprArray (SEQUENCE eps) metadata) "array"
 def $psdefault(NExprConstFetch name metadata, ptcontext) = PSDEFAULT (NExprConstFetch name metadata) text
   -- if text = $psconstantkind(name, ptcontext)
@@ -95,7 +95,7 @@ def $psdefault(NExprUnaryPlus expression metadata, ptcontext) = $psnumericdefaul
 ;; Pure integer tracking suffices to classify numeric signs; binary64 operands
 ;; remain floats under either sign, including an overflowing decimal literal.
 def $psnumber(NScalarInt (INTEGER int) metadata) = PSINTEGER int
-def $psnumber(NScalarFloat phpType43 metadata) = PSFLOAT
+def $psnumber(NScalarFloat phpType41 metadata) = PSFLOAT
 def $psnumber(NExprUnaryPlus expression metadata) = $psnumber(expression)
 def $psnumber(NExprUnaryMinus expression metadata) = $psnegate($psnumber(expression))
 def $psnumber(expression) = PSNONNUMERIC

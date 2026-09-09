@@ -62,6 +62,9 @@ foreach ($classes as $class => $reflection) {
         if ($node->getType() === 'Stmt_Enum' && $field === 'scalarType') {
             $type = ['union' => [['atom' => 'null'], ['atom' => 'PhpParser\\Node\\Identifier'], ['atom' => 'PhpParser\\Node\\Name']]];
         }
+        if ($node->getType() === 'Expr_Array' && $field === 'items') {
+            $type = ['list' => ['union' => [['atom' => 'PhpParser\\Node\\ArrayItem'], ['atom' => 'null']]]];
+        }
         if ($node->getType() === 'Attribute' && $field === 'args') {
             $type = ['list' => ['union' => [['atom' => 'PhpParser\\Node\\Arg'], ['atom' => 'PhpParser\\Node\\VariadicPlaceholder']]]];
         }

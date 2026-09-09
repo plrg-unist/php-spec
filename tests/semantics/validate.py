@@ -518,6 +518,8 @@ from truth_expressions import CASES as TRUTH_CASES
 CASES.update(TRUTH_CASES)
 from comparison import CASES as COMPARISON_CASES
 CASES.update(COMPARISON_CASES)
+from array_omissions import CASES as OMISSION_CASES
+CASES.update({"array-omission-"+name:source for name,source in OMISSION_CASES.items()})
 from compound import CASES as COMPOUND_CASES
 CASES.update(COMPOUND_CASES)
 from incdec import CASES as INCDEC_CASES

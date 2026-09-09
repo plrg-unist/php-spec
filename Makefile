@@ -25,6 +25,10 @@ test: build
 	python3 tests/list_line_metadata.py
 	python3 tests/list_target_metadata.py
 	python3 tests/callable_line_metadata.py
+	python3 tests/array_omission_metadata.py
+	python3 tests/concat_line_metadata.py
+	python3 tests/nullary_line_metadata.py
+	python3 tests/clone_line_metadata.py
 	python3 tests/phase_ledger.py
 	python3 tests/parallel_validation_test.py
 	python3 tests/validate.py --elaborate --lint-all
@@ -55,4 +59,5 @@ test-semantics: build
 	python3 tests/semantics/incdec_compiler.py
 	python3 tests/semantics/compound.py
 	python3 tests/semantics/compound_compiler.py
+	python3 tests/semantics/array_omissions.py
 	python3 tests/semantics/validate.py

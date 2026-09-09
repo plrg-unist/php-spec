@@ -19,7 +19,7 @@ dec $ppternarycheck(ppstate, expression, phpType5) : ppstate
 dec $ppternarychain(ppstate, bool, bool) : ppstate
 
 dec $ppnamed(ppstate, pcpath, pnresult) : ppstate
-dec $ppcvcheck(phpType34) : pcheck
+dec $ppcvcheck(phpType32) : pcheck
 
 dec $ppterminator_tag(metadataEntry) : bool
 def $ppterminator_tag(MstatementTerminatorLine z) = true
@@ -116,8 +116,8 @@ def $ppexprs(P, pcpath, n, expression :: expression_tail*, ppmode) = $ppexprs($p
 ;; Only final unset variables reject $this; dimension bases still perform FETCH_THIS.
 def $ppunsetexprs(P, pcpath, n, eps) = P
 def $ppunsetexprs(P, pcpath, n, expression :: expression_tail*) = $ppunsetexprs($ppexpr($ppunsetcheck($pplocate(P, pcpath ++ [PCINDEX n], $expression_line(expression)), expression), pcpath ++ [PCINDEX n], expression, PPUNSET), pcpath, $(n + 1), expression_tail*)
-def $ppunsetcheck(P, NExprVariable phpType34 metadata) = $ppcheck(P, $context_error("Cannot unset $this", P.LOCATION.LINE))
-  -- if $cv_name(phpType34) = ([116,104,105,115])
+def $ppunsetcheck(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("Cannot unset $this", P.LOCATION.LINE))
+  -- if $cv_name(phpType32) = ([116,104,105,115])
 def $ppunsetcheck(P, expression) = P -- otherwise
 
 dec $ppeffective_line(pffact*, pcpath, expression, ppmode) : int
@@ -142,7 +142,7 @@ def $ppexprbody(P, pcpath, expression, PPR) = P[.FOLD = P.FOLD[.VALUE = (pvalue)
   -- if $pffact(P.FOLD.FACTS, pcpath) = (pvalue)
 
 dec $ppdispatch(ppstate, pcpath, expression, ppmode) : ppstate
-dec $ppvariable(ppstate, pcpath, phpType34, ppmode) : ppstate
+dec $ppvariable(ppstate, pcpath, phpType32, ppmode) : ppstate
 dec $ppvarname(ppstate) : ppstate
 dec $ppbinary(ppstate, pcpath, pbin, expression, expression) : ppstate
 dec $ppbinarydone(ppstate, pcpath, pbin, pvalue?) : ppstate
@@ -175,7 +175,7 @@ def $ppnullsafe(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) 
 def $ppnullsafe(NExprArrayDimFetch expression phpType5 metadata) = $ppnullsafe(expression)
 def $ppnullsafe(NExprPropertyFetch expression phpType20 metadata) = $ppnullsafe(expression)
 def $ppnullsafe(NExprMethodCall expression phpType20 phpType6 metadata) = $ppnullsafe(expression)
-def $ppnullsafe(NExprStaticPropertyFetch phpType19 phpType33 metadata) = $ppnullsafeclass(phpType19)
+def $ppnullsafe(NExprStaticPropertyFetch phpType19 phpType31 metadata) = $ppnullsafeclass(phpType19)
 def $ppnullsafe(NExprStaticCall phpType19 phpType20 phpType6 metadata) = $ppnullsafeclass(phpType19)
 def $ppnullsafe(expression) = false -- otherwise
 def $ppnullsafeclass(phpType19) = $ppnullsafe(expression)
@@ -188,8 +188,8 @@ def $ppupdatecheck(P, NExprStaticCall phpType19 phpType20 phpType6 metadata) = $
 def $ppupdatecheck(P, expression) = $ppupdateother(P, expression) -- otherwise
 def $ppupdateother(P, expression) = $ppcheck(P, $context_error("Can't use nullsafe operator in write context", P.LOCATION.LINE))
   -- if $ppnullsafe(expression)
-def $ppupdateother(P, NExprVariable phpType34 metadata) = $ppcheck(P, $context_error("$GLOBALS can only be modified using the $GLOBALS[$name] = $value syntax", P.LOCATION.LINE))
-  -- if $cv_name(phpType34) = ([71,76,79,66,65,76,83])
+def $ppupdateother(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("$GLOBALS can only be modified using the $GLOBALS[$name] = $value syntax", P.LOCATION.LINE))
+  -- if $cv_name(phpType32) = ([71,76,79,66,65,76,83])
 def $ppupdateother(P, expression) = P -- otherwise
 
 dec $pptemporary_shape(pfshape) : bool
@@ -233,7 +233,7 @@ def $ppdispatch(P, pcpath, NScalarInt (INTEGER i) metadata, PPR) = P[.FOLD = P.F
 def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PFLOAT $hex_bits(text, 0))]]
 def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
 def $ppdispatch(P, pcpath, NExprConstFetch name metadata, PPR) = $ppnamed(P, pcpath, $pnresolve(P.ENV, PLCONSTANT, name))
-def $ppdispatch(P, pcpath, NExprVariable phpType34 metadata, ppmode) = $ppvariable(P, pcpath, phpType34, ppmode)
+def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppvariable(P, pcpath, phpType32, ppmode)
 def $ppdispatch(P, pcpath, NExprAssign expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, false)
 def $ppdispatch(P, pcpath, NExprAssignRef expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, true)
 def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, expression_1, expression_2)
@@ -263,16 +263,16 @@ def $ppdispatch(P, pcpath, expression, ppmode) = $ppunsupported(P, "ordinary exp
 
 ;; Direct CV classification is shared with the machine. A computed name is
 ;; compiled normally even though enclosing constant evaluation stops at VAR.
-def $ppvariable(P, pcpath, phpType34, ppmode) = P[.FOLD = P.FOLD[.VALUE = eps]]
-  -- if $header_literal(phpType34)
+def $ppvariable(P, pcpath, phpType32, ppmode) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if $header_literal(phpType32)
   -- if ppmode =/= PPR
-def $ppvariable(P, pcpath, phpType34, ppmode) = $ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $ppcvcheck(phpType34))
-  -- if $cv_name(phpType34) = (n*)
-  -- if (~$header_literal(phpType34) \/ ppmode = PPR)
-def $ppvariable(P, pcpath, phpType34, ppmode) = $ppvarname($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
-  -- if $cv_name(phpType34) = eps
-  -- if phpType34 = expression
-  -- if ~$header_literal(phpType34)
+def $ppvariable(P, pcpath, phpType32, ppmode) = $ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $ppcvcheck(phpType32))
+  -- if $cv_name(phpType32) = (n*)
+  -- if (~$header_literal(phpType32) \/ ppmode = PPR)
+def $ppvariable(P, pcpath, phpType32, ppmode) = $ppvarname($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+  -- if $cv_name(phpType32) = eps
+  -- if phpType32 = expression
+  -- if ~$header_literal(phpType32)
 def $ppvarname(P) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppvarname(P) = $ppunsupported(P, "compile-time array name diagnostic")
@@ -318,21 +318,21 @@ def $ppcompound(P, pcpath, expression_1, expression_2) = $ppclearvalue($ppassign
 ;; assignment restores the target AST line; reference assignment does not.
 def $ppvaluemode(false) = PPR
 def $ppvaluemode(true) = PPW
-def $ppassign(P, pcpath, NExprVariable phpType34 metadata, expression_2, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
-  -- if $cv_name(phpType34) = ([116,104,105,115])
+def $ppassign(P, pcpath, NExprVariable phpType32 metadata, expression_2, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
+  -- if $cv_name(phpType32) = ([116,104,105,115])
 def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
   -- otherwise
 def $ppassignright(P, pcpath, expression_1, expression_2, b) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppassignright(P, pcpath, NExprArrayDimFetch expression_base phpType5 metadata, expression_2, false) = $ppdone($ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $ppcvcheck(phpType34)), pcpath ++ [PCFIELD 1], PPR)
+def $ppassignright(P, pcpath, NExprArrayDimFetch expression_base phpType5 metadata, expression_2, false) = $ppdone($ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $ppcvcheck(phpType32)), pcpath ++ [PCFIELD 1], PPR)
   -- if P.COMPLETION = PPCNORMAL
   -- if $assignment_self(NExprArrayDimFetch expression_base phpType5 metadata, expression_2)
-  -- if expression_2 = NExprVariable phpType34 metadata_rhs
+  -- if expression_2 = NExprVariable phpType32 metadata_rhs
 def $ppassignright(P, pcpath, expression_1, expression_2, b) = $ppexpr(P, pcpath ++ [PCFIELD 1], expression_2, $ppvaluemode(b))
   -- otherwise
 def $ppassignmentline(P, expression, b) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppassignmentline(P, NExprVariable phpType34 metadata, false) = $pplocate(P[.FOLD = P.FOLD[.VALUE = eps]], P.LOCATION.PATH, $variable_line(phpType34, metadata))
+def $ppassignmentline(P, NExprVariable phpType32 metadata, false) = $pplocate(P[.FOLD = P.FOLD[.VALUE = eps]], P.LOCATION.PATH, $variable_line(phpType32, metadata))
   -- if P.COMPLETION = PPCNORMAL
 def $ppassignmentline(P, expression, b) = P[.FOLD = P.FOLD[.VALUE = eps]]
   -- otherwise
@@ -415,11 +415,11 @@ def $ppnamed(P, pcpath, PNRESOLVED pnreference) = P[.FOLD = P.FOLD[.VALUE = (pva
 def $ppnamed(P, pcpath, PNRESOLVED pnreference) = P[.FOLD = P.FOLD[.VALUE = eps]][.NAMES = P.NAMES ++ [(pcpath, pnreference)]]
   -- if $pnfold(pnreference) = eps
 
-def $ppcvcheck(phpType34) = REJECT (UNSUPPORTED "compile-time http_response_header context")
-  -- if $header_literal(phpType34)
+def $ppcvcheck(phpType32) = REJECT (UNSUPPORTED "compile-time http_response_header context")
+  -- if $header_literal(phpType32)
 def $ppcvcheck(NScalarFloat (FLOAT text) metadata) = REJECT (UNSUPPORTED "compile-time NaN name diagnostic")
   -- if (n_out*, true) = $number_text(NFLOAT $hex_bits(text, 0), 14)
-def $ppcvcheck(phpType34) = READY
+def $ppcvcheck(phpType32) = READY
   -- otherwise
 
 ;; Compiler warnings share lexical diagnostic ordering and exact original paths.

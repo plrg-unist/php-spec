@@ -21,7 +21,7 @@ dec $plkey(plkind, ptbytes) : ptbytes
 dec $pltable(plkind, plenv) : (ptbytes, ptbytes)*
 dec $pllookup((ptbytes, ptbytes)*, ptbytes) : ptbytes?
 dec $plinsert(plenv, plimport) : plenv
-dec $plraw(phpType54, int, ptbytes) : plraw
+dec $plraw(phpType52, int, ptbytes) : plraw
 dec $plrawname(int, ptbytes, phpType3) : plraw
 dec $plrawalias(int, ptbytes, ptbytes, bool) : plraw
 dec $plkind(int) : plkind
@@ -29,8 +29,8 @@ dec $pluse(plenv, pllocation, plraw) : plimports
 dec $plusealias(plenv, pllocation, plimport) : plimports
 dec $pluseconflict(plenv, pllocation, plimport) : plimports
 dec $plimportprepend(pldiagnostic*, plimports) : plimports
-dec $pluses(plenv, pllocation, phpType54*, int, ptbytes) : plimports
-dec $plusesafter(plimports, pllocation, phpType54*, int, ptbytes) : plimports
+dec $pluses(plenv, pllocation, phpType52*, int, ptbytes) : plimports
+dec $plusesafter(plimports, pllocation, phpType52*, int, ptbytes) : plimports
 dec $plissue(pllocation, text, text, ptbytes*) : pldiagnostic
 dec $plmessage(pldiagnostic) : ptbytes
 dec $plkindmessage(plkind) : ptbytes
@@ -49,8 +49,8 @@ dec $plnode(plstate, pcoccurrence) : plresult
 dec $plordinary(pcnode) : bool
 dec $pldispatch(plstate, pcpath, pcnode, pllocation) : plresult
 dec $plimportafter(plstate, pllocation, plimports) : plresult
-dec $plnamespace(plstate, pcpath, phpType46, phpType23, nat, pllocation) : plresult
-dec $plnamespacename(plstate, pcpath, phpType46, phpType23, nat, pllocation) : plresult
+dec $plnamespace(plstate, pcpath, phpType44, phpType23, nat, pllocation) : plresult
+dec $plnamespacename(plstate, pcpath, phpType44, phpType23, nat, pllocation) : plresult
 dec $plnamespaceenter(plstate, pcpath, ptbytes, phpType23, nat) : plresult
 dec $plresume(plstate, plcompiled) : plresult
 dec $pltypecontext(plenv, ptscope, ptposition, ptbytes, ptbytes, pllocation) : ptcontext
@@ -80,11 +80,11 @@ def $plraw(NUseItem (INTEGER 0) (NName (BYTES text) metadata) phpType3 metadata_
   -- if int <- [1,2,3]
 def $plraw(NUseItem (INTEGER int) (NName (BYTES text) metadata) phpType3 metadata_use, 0, ptbytes) = $plrawname(int, $ptjoin(ptbytes, $base64(text)), phpType3)
   -- if int <- [1,2,3]
-def $plraw(phpType54, int, ptbytes) = PLRAWUNSUPPORTED "edited import kind or name shape"
+def $plraw(phpType52, int, ptbytes) = PLRAWUNSUPPORTED "edited import kind or name shape"
   -- otherwise
 def $plrawname(int, ptbytes, ABSENT) = $plrawalias(int, ptbytes, $ptlast(ptbytes), true)
 def $plrawname(int, ptbytes, NIdentifier (BYTES text) metadata) = $plrawalias(int, ptbytes, $base64(text), false)
-def $plrawname(int, ptbytes, NVarLikeIdentifier phpType35 metadata) = PLRAWUNSUPPORTED "edited import alias shape"
+def $plrawname(int, ptbytes, NVarLikeIdentifier phpType33 metadata) = PLRAWUNSUPPORTED "edited import alias shape"
 def $plrawalias(int, ptbytes, ptbytes_alias, bool) = PLRAW { KIND $plkind(int), NAME ptbytes, ALIAS ptbytes_alias, IMPLICIT bool }
   -- if $ptvalidname(ptbytes, true) /\ $ptvalidname(ptbytes_alias, true) /\ ~(92 <- ptbytes_alias)
 def $plrawalias(int, ptbytes, ptbytes_alias, bool) = PLRAWUNSUPPORTED "edited invalid import name"
@@ -112,10 +112,10 @@ def $pluseconflict(plenv, pllocation, plimport) = PLIMPORTED ($plinsert(plenv, p
   -- otherwise
 
 def $pluses(plenv, pllocation, eps, int, ptbytes) = PLIMPORTED plenv eps
-def $pluses(plenv, pllocation, phpType54 :: phpType54_tail*, int, ptbytes) = $plusesafter($pluse(plenv, pllocation, $plraw(phpType54, int, ptbytes)), pllocation, phpType54_tail*, int, ptbytes)
-def $plusesafter(PLIMPORTED plenv pldiagnostic*, pllocation, phpType54*, int, ptbytes) = $plimportprepend(pldiagnostic*, $pluses(plenv, pllocation, phpType54*, int, ptbytes))
-def $plusesafter(PLIMPORTERROR pldiagnostic*, pllocation, phpType54*, int, ptbytes) = PLIMPORTERROR pldiagnostic*
-def $plusesafter(PLIMPORTUNSUPPORTED text, pllocation, phpType54*, int, ptbytes) = PLIMPORTUNSUPPORTED text
+def $pluses(plenv, pllocation, phpType52 :: phpType52_tail*, int, ptbytes) = $plusesafter($pluse(plenv, pllocation, $plraw(phpType52, int, ptbytes)), pllocation, phpType52_tail*, int, ptbytes)
+def $plusesafter(PLIMPORTED plenv pldiagnostic*, pllocation, phpType52*, int, ptbytes) = $plimportprepend(pldiagnostic*, $pluses(plenv, pllocation, phpType52*, int, ptbytes))
+def $plusesafter(PLIMPORTERROR pldiagnostic*, pllocation, phpType52*, int, ptbytes) = PLIMPORTERROR pldiagnostic*
+def $plusesafter(PLIMPORTUNSUPPORTED text, pllocation, phpType52*, int, ptbytes) = PLIMPORTUNSUPPORTED text
 
 def $plkindmessage(PLCLASS) = eps
 def $plkindmessage(PLFUNCTION) = $ptascii(" function")
@@ -158,9 +158,9 @@ def $plendline((MendLine int) :: metadataEntry*) = 0
   -- if $(int < 0)
 def $plendline(metadataEntry :: metadataEntry_tail*) = $plendline(metadataEntry_tail*)
   -- if $plmetatag(metadataEntry) =/= "end-line"
-def $plcompileline(NStmtUse phpType24 (SEQUENCE ((NUseItem phpType24_item (NName phpType35 metadata_name) phpType3 metadata_item) :: phpType54*)) metadata) = $plline(metadata_name)
-def $plcompileline(NStmtGroupUse phpType24 (NName phpType35 metadata_name) phpType53 metadata) = $plline(metadata_name)
-def $plcompileline(NStmtNamespace (NName phpType35 metadata_name) phpType23 metadata) = $plline(metadata_name)
+def $plcompileline(NStmtUse phpType24 (SEQUENCE ((NUseItem phpType24_item (NName phpType33 metadata_name) phpType3 metadata_item) :: phpType52*)) metadata) = $plline(metadata_name)
+def $plcompileline(NStmtGroupUse phpType24 (NName phpType33 metadata_name) phpType51 metadata) = $plline(metadata_name)
+def $plcompileline(NStmtNamespace (NName phpType33 metadata_name) phpType23 metadata) = $plline(metadata_name)
 def $plcompileline(NStmtNamespace ABSENT phpType23 metadata) = pli
   -- if $plbraceline(metadata) = (pli)
 def $plcompileline(NStmtNamespace ABSENT phpType23 metadata) = $plline(metadata)
@@ -216,26 +216,26 @@ def $plprepend(pldiagnostic*, PLUNSUPPORTED text) = PLUNSUPPORTED text
 
 def $plnode(plstate, PCOCCURRENCE pcpath pcnode) = $pldispatch(plstate, pcpath, pcnode, { UNIT plstate.UNIT.ID, PATH pcpath, FILE plstate.FILE, LINE $plcompileline(pcnode) })
 
-def $plordinary(NStmtUse phpType24 phpType53 metadata) = false
-def $plordinary(NStmtGroupUse phpType24 name phpType53 metadata) = false
-def $plordinary(NStmtNamespace phpType46 phpType23 metadata) = false
-def $plordinary(NStmtHaltCompiler phpType35 metadata) = false
+def $plordinary(NStmtUse phpType24 phpType51 metadata) = false
+def $plordinary(NStmtGroupUse phpType24 name phpType51 metadata) = false
+def $plordinary(NStmtNamespace phpType44 phpType23 metadata) = false
+def $plordinary(NStmtHaltCompiler phpType33 metadata) = false
 def $plordinary(NStmtNop metadata) = false
-def $plordinary(NStmtDeclare phpType50 phpType49 metadata) = false
+def $plordinary(NStmtDeclare phpType48 phpType47 metadata) = false
 def $plordinary(pcnode) = true
   -- otherwise
 
-def $pldispatch(plstate, pcpath, NStmtUse (INTEGER int) (SEQUENCE phpType54*) metadata, pllocation) = $plimportafter(plstate[.FIRST = false], pllocation, $pluses(plstate.ENV, pllocation, phpType54*, int, eps))
-  -- if $(pllocation.LINE > 0) /\ int <- [1,2,3] /\ phpType54* =/= eps
-def $pldispatch(plstate, pcpath, NStmtGroupUse (INTEGER int) (NName (BYTES text) metadata_name) (SEQUENCE phpType54*) metadata, pllocation) = $plimportafter(plstate[.FIRST = false], pllocation, $pluses(plstate.ENV, pllocation, phpType54*, int, $base64(text)))
-  -- if $(pllocation.LINE > 0) /\ int <- [0,1,2,3] /\ phpType54* =/= eps
+def $pldispatch(plstate, pcpath, NStmtUse (INTEGER int) (SEQUENCE phpType52*) metadata, pllocation) = $plimportafter(plstate[.FIRST = false], pllocation, $pluses(plstate.ENV, pllocation, phpType52*, int, eps))
+  -- if $(pllocation.LINE > 0) /\ int <- [1,2,3] /\ phpType52* =/= eps
+def $pldispatch(plstate, pcpath, NStmtGroupUse (INTEGER int) (NName (BYTES text) metadata_name) (SEQUENCE phpType52*) metadata, pllocation) = $plimportafter(plstate[.FIRST = false], pllocation, $pluses(plstate.ENV, pllocation, phpType52*, int, $base64(text)))
+  -- if $(pllocation.LINE > 0) /\ int <- [0,1,2,3] /\ phpType52* =/= eps
   -- if $ptvalidname($base64(text), true)
-def $pldispatch(plstate, pcpath, NStmtNamespace phpType46 phpType23 metadata, pllocation) = $plnamespace(plstate, pcpath, phpType46, phpType23, $plstyle(metadata), pllocation)
+def $pldispatch(plstate, pcpath, NStmtNamespace phpType44 phpType23 metadata, pllocation) = $plnamespace(plstate, pcpath, phpType44, phpType23, $plstyle(metadata), pllocation)
   -- if $plstyle(metadata) <- [1,2]
-def $pldispatch(plstate, pcpath, NStmtHaltCompiler phpType35 metadata, pllocation) = PLWORK (PCOCCURRENCE pcpath (NStmtHaltCompiler phpType35 metadata)) (plstate[.FIRST = false][.TASKS = (PLVERIFY false pllocation[.LINE = 0]) :: plstate.TASKS]) eps
+def $pldispatch(plstate, pcpath, NStmtHaltCompiler phpType33 metadata, pllocation) = PLWORK (PCOCCURRENCE pcpath (NStmtHaltCompiler phpType33 metadata)) (plstate[.FIRST = false][.TASKS = (PLVERIFY false pllocation[.LINE = 0]) :: plstate.TASKS]) eps
 def $pldispatch(plstate, pcpath, NStmtNop metadata, pllocation) = PLNEXT plstate eps
 ;; All ordinary statement compilation is a barrier, including declares and bodies.
-def $pldispatch(plstate, pcpath, NStmtDeclare phpType50 phpType49 metadata, pllocation) = PLWORK (PCOCCURRENCE pcpath (NStmtDeclare phpType50 phpType49 metadata)) (plstate[.TASKS = (PLVERIFY true pllocation[.LINE = 0]) :: plstate.TASKS]) eps
+def $pldispatch(plstate, pcpath, NStmtDeclare phpType48 phpType47 metadata, pllocation) = PLWORK (PCOCCURRENCE pcpath (NStmtDeclare phpType48 phpType47 metadata)) (plstate[.TASKS = (PLVERIFY true pllocation[.LINE = 0]) :: plstate.TASKS]) eps
 def $pldispatch(plstate, pcpath, pcnode, pllocation) = PLWORK (PCOCCURRENCE pcpath pcnode) (plstate[.FIRST = false][.TASKS = (PLVERIFY true pllocation[.LINE = 0]) :: plstate.TASKS]) eps
   -- if $plordinary(pcnode)
 def $pldispatch(plstate, pcpath, pcnode, pllocation) = PLUNSUPPORTED "missing context metadata or edited namespace/import shape"
@@ -245,13 +245,13 @@ def $plimportafter(plstate, pllocation, PLIMPORTED plenv pldiagnostic*) = PLNEXT
 def $plimportafter(plstate, pllocation, PLIMPORTERROR pldiagnostic*) = PLERROR pldiagnostic*
 def $plimportafter(plstate, pllocation, PLIMPORTUNSUPPORTED text) = PLUNSUPPORTED text
 
-def $plnamespace(plstate, pcpath, phpType46, phpType23, pli, pllocation) = $plnamespaceerror(pllocation, "mixed-namespace", eps)
+def $plnamespace(plstate, pcpath, phpType44, phpType23, pli, pllocation) = $plnamespaceerror(pllocation, "mixed-namespace", eps)
   -- if plstate.STYLE =/= 0 /\ plstate.STYLE =/= pli
-def $plnamespace(plstate, pcpath, phpType46, phpType23, pli, pllocation) = $plnamespaceerror(pllocation, "nested-namespace", eps)
+def $plnamespace(plstate, pcpath, phpType44, phpType23, pli, pllocation) = $plnamespaceerror(pllocation, "nested-namespace", eps)
   -- if plstate.STYLE = 2 /\ pli = 2 /\ plstate.INSIDE
-def $plnamespace(plstate, pcpath, phpType46, phpType23, pli, pllocation) = $plnamespaceerror(pllocation, "namespace-first", eps)
+def $plnamespace(plstate, pcpath, phpType44, phpType23, pli, pllocation) = $plnamespaceerror(pllocation, "namespace-first", eps)
   -- if plstate.STYLE = 0 /\ ~plstate.FIRST
-def $plnamespace(plstate, pcpath, phpType46, phpType23, pli, pllocation) = $plnamespacename(plstate, pcpath, phpType46, phpType23, pli, pllocation)
+def $plnamespace(plstate, pcpath, phpType44, phpType23, pli, pllocation) = $plnamespacename(plstate, pcpath, phpType44, phpType23, pli, pllocation)
   -- otherwise
 
 def $plnamespacename(plstate, pcpath, ABSENT, phpType23, 2, pllocation) = $plnamespaceenter(plstate, pcpath, eps, phpType23, 2)
@@ -259,7 +259,7 @@ def $plnamespacename(plstate, pcpath, NName (BYTES text) metadata, phpType23, pl
   -- if $ptlc($base64(text)) = $ptascii("namespace")
 def $plnamespacename(plstate, pcpath, NName (BYTES text) metadata, phpType23, pli, pllocation) = $plnamespaceenter(plstate, pcpath, $base64(text), phpType23, pli)
   -- if $ptlc($base64(text)) =/= $ptascii("namespace") /\ $ptvalidname($base64(text), true)
-def $plnamespacename(plstate, pcpath, phpType46, phpType23, pli, pllocation) = PLUNSUPPORTED "edited invalid namespace name"
+def $plnamespacename(plstate, pcpath, phpType44, phpType23, pli, pllocation) = PLUNSUPPORTED "edited invalid namespace name"
   -- otherwise
 def $plnamespaceenter(plstate, pcpath, ptbytes, phpType23, pli) = PLNEXT (plstate[.ENV = ($plempty(plstate.ENV.STRICT))[.NAMESPACE = ptbytes]][.STYLE = pli][.INSIDE = true][.FIRST = false][.TASKS = (PLNODE pcoccurrence)* ++ [(PLENDNAMESPACE pli)] ++ plstate.TASKS]) eps
   -- if pcoccurrence* = $pcfield_phpType23(phpType23, pcpath ++ [(PCFIELD 1)])

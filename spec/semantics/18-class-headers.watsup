@@ -1,6 +1,6 @@
 ;; Local named declaration headers; body compilation and class linking follow.
-syntax pchraw = { KIND text, NAME phpType3, FLAGS int, PARENT phpType46,
-  INTERFACES phpType44, ATTRIBUTES phpType14, BODY phpType23 }
+syntax pchraw = { KIND text, NAME phpType3, FLAGS int, PARENT phpType44,
+  INTERFACES phpType42, ATTRIBUTES phpType14, BODY phpType23 }
 syntax pchinput = PCHRAW pchraw | PCHINPUTUNSUPPORTED text
 syntax pchheader = { KIND text, NAME ptbytes, ABSTRACT bool, FINAL bool,
   READONLY bool, PARENT ptbytes?, INTERFACES ptbytes*, BODY phpType23 }
@@ -22,7 +22,7 @@ dec $pchissue(ptcontext, text, text, ptbytes*) : pchdiagnostic
 dec $pcherror(ptcontext, text, ptbytes*) : pchresult
 dec $pchrole(text) : ptbytes
 dec $pchnamewarning(pchraw, ptbytes, ptcontext) : pchdiagnostic*
-dec $pchparent(phpType46, ptcontext) : pchrefs
+dec $pchparent(phpType44, ptcontext) : pchrefs
 dec $pchref(name, text, ptcontext) : pchrefs
 dec $pchrefinput(ptinput, text, ptcontext) : pchrefs
 dec $pchrefvalid(ptqual, ptbytes, text, ptcontext) : pchrefs
@@ -31,8 +31,8 @@ dec $pchrefappend(pchrefs, name*, text, ptcontext) : pchrefs
 dec $pchrefcombine(ptbytes*, pchdiagnostic*, pchrefs) : pchrefs
 dec $pchmessage(pchdiagnostic) : ptbytes
 
-def $pchlower(NStmtClass phpType14 (INTEGER int) phpType3 phpType46 phpType44 phpType23 metadata) = PCHRAW { KIND "class", NAME phpType3, FLAGS int, PARENT phpType46, INTERFACES phpType44, ATTRIBUTES phpType14, BODY phpType23 }
-def $pchlower(NStmtInterface phpType14 phpType3 phpType44 phpType23 metadata) = PCHRAW { KIND "interface", NAME phpType3, FLAGS 16, PARENT ABSENT, INTERFACES phpType44, ATTRIBUTES phpType14, BODY phpType23 }
+def $pchlower(NStmtClass phpType14 (INTEGER int) phpType3 phpType44 phpType42 phpType23 metadata) = PCHRAW { KIND "class", NAME phpType3, FLAGS int, PARENT phpType44, INTERFACES phpType42, ATTRIBUTES phpType14, BODY phpType23 }
+def $pchlower(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = PCHRAW { KIND "interface", NAME phpType3, FLAGS 16, PARENT ABSENT, INTERFACES phpType42, ATTRIBUTES phpType14, BODY phpType23 }
 def $pchlower(NStmtTrait phpType14 phpType3 phpType23 metadata) = PCHRAW { KIND "trait", NAME phpType3, FLAGS 0, PARENT ABSENT, INTERFACES (SEQUENCE eps), ATTRIBUTES phpType14, BODY phpType23 }
 def $pchlower(statement) = PCHINPUTUNSUPPORTED "declaration kind is not a named class, interface or trait"
   -- otherwise
@@ -59,7 +59,7 @@ def $pchstart(PCHRAW pchraw, false, ptcontext) = $pchname(pchraw, ptcontext)
   -- if pchraw.FLAGS <- [0,16,32,64,80,96]
 
 def $pchname(pchraw, ptcontext) = PCHUNSUPPORTED "edited invalid declaration name"
-  -- if pchraw.NAME = NVarLikeIdentifier phpType35 metadata
+  -- if pchraw.NAME = NVarLikeIdentifier phpType33 metadata
 def $pchname(pchraw, ptcontext) = PCHUNSUPPORTED "edited invalid declaration name"
   -- if pchraw.NAME = NIdentifier (BYTES text) metadata
   -- if ~($ptvalidname($base64(text), true) /\ ~(92 <- $base64(text)))

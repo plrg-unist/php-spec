@@ -35,12 +35,12 @@ def $choose(S, ptask_true*, ptask_false*, z) = S_value[.TODO = ptask_false* ++ S
 rule PhpStep/choose: S ~> $choose(S[.TODO = ptask_tail*], ptask_true*, ptask_false*, z)
   -- if S.TODO = (CHOOSE ptask_true* ptask_false* z) :: ptask_tail*
 
-dec $if_tail(pstate, phpType56*, phpType57, nat) : ptask*
+dec $if_tail(pstate, phpType54*, phpType55, nat) : ptask*
 def $if_tail(S, eps, ABSENT, n) = eps
 def $if_tail(S, eps, NStmtElse (SEQUENCE statement*) metadata, n) = $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 3, PCFIELD 0]), 0)
-def $if_tail(S, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType56*, phpType57, n) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 2, PCINDEX n, PCFIELD 0]), EVAL expression), CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 2, PCINDEX n, PCFIELD 1]), 0) $if_tail(S, phpType56*, phpType57, $(n + 1)) $runtime_line(S, [PCFIELD 2, PCINDEX n, PCFIELD 0], expression)]
-rule PhpStep/conditional: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) $if_tail(S, phpType56*, phpType57, 0) $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
-  -- if S.TODO = (STMT (NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType56*) phpType57 metadata)) :: ptask_tail*
+def $if_tail(S, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType54*, phpType55, n) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 2, PCINDEX n, PCFIELD 0]), EVAL expression), CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 2, PCINDEX n, PCFIELD 1]), 0) $if_tail(S, phpType54*, phpType55, $(n + 1)) $runtime_line(S, [PCFIELD 2, PCINDEX n, PCFIELD 0], expression)]
+rule PhpStep/conditional: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) $if_tail(S, phpType54*, phpType55, 0) $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata)) :: ptask_tail*
 
 ;; Sequence consumers discard all but the final condition operand.
 dec $discard_expressions(expression*, porigin?, nat) : ptask*

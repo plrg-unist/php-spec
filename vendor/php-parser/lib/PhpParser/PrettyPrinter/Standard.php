@@ -626,10 +626,14 @@ class Standard extends PrettyPrinterAbstract {
     protected function pExpr_Array(Expr\Array_ $node): string {
         $syntax = $node->getAttribute('kind',
             $this->shortArraySyntax ? Expr\Array_::KIND_SHORT : Expr\Array_::KIND_LONG);
+        $items = $this->pMaybeMultiline($node->items, true);
+        if ($node->items && end($node->items) === null && !$this->hasNodeWithComments($node->items)) {
+            $items .= ',';
+        }
         if ($syntax === Expr\Array_::KIND_SHORT) {
-            return '[' . $this->pMaybeMultiline($node->items, true) . ']';
+            return '[' . $items . ']';
         } else {
-            return 'array(' . $this->pMaybeMultiline($node->items, true) . ')';
+            return 'array(' . $items . ')';
         }
     }
 

@@ -56,3 +56,13 @@ def $hex_bits("", octet) = octet
 def $hex_bits(text, octet) = $hex_bits(text[1:octet_rest], $(octet * 16 + $hex_digit(text[0:1], 0)))
   -- if $(|text| > 0)
   -- if octet_rest = $(|text| - 1)
+
+;; ASCII name folding shared by lexical/compiler context projections.
+dec $ptlower(nat) : nat
+def $ptlower(octet) = $(octet + 32)
+  -- if $(octet >= 65) /\ $(octet <= 90)
+def $ptlower(octet) = octet
+  -- if $(octet < 65) \/ $(octet > 90)
+
+dec $ptlc(nat*) : nat*
+def $ptlc(octet*) = ($ptlower(octet))*

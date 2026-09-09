@@ -1,8 +1,6 @@
-diff --git a/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php b/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php
-index 5e2aed31..c32977c1 100644
 --- a/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php
 +++ b/vendor/php-parser/lib/PhpParser/NodeVisitor/CommentAnnotatingVisitor.php
-@@ -79,4 +79,79 @@ class CommentAnnotatingVisitor extends NodeVisitorAbstract {
+@@ -79,4 +79,79 @@
  
          return null;
      }
@@ -151,7 +149,25 @@ index 5e2aed31..c32977c1 100644
          }
      }
  
-@@ -662,7 +677,9 @@
+@@ -611,10 +626,14 @@
+     protected function pExpr_Array(Expr\Array_ $node): string {
+         $syntax = $node->getAttribute('kind',
+             $this->shortArraySyntax ? Expr\Array_::KIND_SHORT : Expr\Array_::KIND_LONG);
++        $items = $this->pMaybeMultiline($node->items, true);
++        if ($node->items && end($node->items) === null && !$this->hasNodeWithComments($node->items)) {
++            $items .= ',';
++        }
+         if ($syntax === Expr\Array_::KIND_SHORT) {
+-            return '[' . $this->pMaybeMultiline($node->items, true) . ']';
+-        } else {
+-            return 'array(' . $this->pMaybeMultiline($node->items, true) . ')';
++            return '[' . $items . ']';
++        } else {
++            return 'array(' . $items . ')';
+         }
+     }
+ 
+@@ -662,7 +681,9 @@
      }
  
      protected function pExpr_StaticPropertyFetch(Expr\StaticPropertyFetch $node): string {
@@ -162,7 +178,7 @@ index 5e2aed31..c32977c1 100644
      }
  
      protected function pExpr_ShellExec(Expr\ShellExec $node): string {
-@@ -718,7 +735,9 @@
+@@ -718,7 +739,9 @@
      protected function pExpr_New(Expr\New_ $node): string {
          if ($node->class instanceof Stmt\Class_) {
              $args = $node->args ? '(' . $this->pMaybeMultiline($node->args) . ')' : '';
@@ -173,7 +189,7 @@ index 5e2aed31..c32977c1 100644
          }
          return 'new ' . $this->pNewOperand($node->class)
              . '(' . $this->pMaybeMultiline($node->args) . ')';
-@@ -779,13 +798,13 @@
+@@ -779,13 +802,13 @@
      }
  
      protected function pStmt_GroupUse(Stmt\GroupUse $node): string {
@@ -189,7 +205,7 @@ index 5e2aed31..c32977c1 100644
      }
  
      protected function pUseType(int $type): string {
-@@ -795,32 +814,32 @@
+@@ -795,32 +818,32 @@
  
      protected function pStmt_Interface(Stmt\Interface_ $node): string {
          return $this->pAttrGroups($node->attrGroups)
@@ -227,7 +243,7 @@ index 5e2aed31..c32977c1 100644
               . ($node->expr ? ' = ' . $this->p($node->expr) : '')
               . ';';
      }
-@@ -833,15 +852,15 @@
+@@ -833,15 +856,15 @@
      }
  
      protected function pStmt_TraitUseAdaptation_Precedence(Stmt\TraitUseAdaptation\Precedence $node): string {
@@ -246,7 +262,7 @@ index 5e2aed31..c32977c1 100644
               . ';';
      }
  
-@@ -854,14 +873,14 @@
+@@ -854,14 +877,14 @@
      }
  
      protected function pPropertyItem(Node\PropertyItem $node): string {
@@ -263,7 +279,7 @@ index 5e2aed31..c32977c1 100644
               . ($node->params ? '(' . $this->pParams($node->params) . ')' : '')
               . (\is_array($node->body) ? ' {' . $this->pStmts($node->body) . $this->nl . '}'
                  : ($node->body !== null ? ' => ' . $this->p($node->body) : '') . ';');
-@@ -870,7 +889,7 @@
+@@ -870,7 +893,7 @@
      protected function pStmt_ClassMethod(Stmt\ClassMethod $node): string {
          return $this->pAttrGroups($node->attrGroups)
               . $this->pModifiers($node->flags)
@@ -272,7 +288,7 @@ index 5e2aed31..c32977c1 100644
               . '(' . $this->pParams($node->params) . ')'
               . (null !== $node->returnType ? ': ' . $this->p($node->returnType) : '')
               . (null !== $node->stmts
-@@ -888,7 +907,7 @@
+@@ -888,7 +911,7 @@
  
      protected function pStmt_Function(Stmt\Function_ $node): string {
          return $this->pAttrGroups($node->attrGroups)
@@ -281,7 +297,7 @@ index 5e2aed31..c32977c1 100644
               . '(' . $this->pParams($node->params) . ')'
               . (null !== $node->returnType ? ': ' . $this->p($node->returnType) : '')
               . $this->nl . '{' . $this->pStmts($node->stmts) . $this->nl . '}';
-@@ -906,7 +925,7 @@
+@@ -906,7 +929,7 @@
      }
  
      protected function pDeclareItem(Node\DeclareItem $node): string {
@@ -290,7 +306,7 @@ index 5e2aed31..c32977c1 100644
      }
  
      // Control flow
-@@ -995,11 +1014,11 @@
+@@ -995,11 +1018,11 @@
      }
  
      protected function pStmt_Label(Stmt\Label $node): string {
@@ -304,7 +320,7 @@ index 5e2aed31..c32977c1 100644
      }
  
      // Other
-@@ -1062,7 +1081,7 @@
+@@ -1062,7 +1085,7 @@
              return '{' . $this->p($node) . '}';
          } else {
              assert($node instanceof Node\Identifier);
@@ -313,7 +329,7 @@ index 5e2aed31..c32977c1 100644
          }
      }
  
-@@ -1072,8 +1091,22 @@
+@@ -1072,8 +1095,22 @@
          foreach ($encapsList as $element) {
              if ($element instanceof Node\InterpolatedStringPart) {
                  $return .= $this->escapeString($element->value, $quote);
@@ -337,7 +353,7 @@ index 5e2aed31..c32977c1 100644
              }
          }
  
-@@ -1146,7 +1179,8 @@
+@@ -1146,7 +1183,8 @@
      }
  
      protected function pDereferenceLhs(Node $node): string {
@@ -347,7 +363,7 @@ index 5e2aed31..c32977c1 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1154,7 +1188,8 @@
+@@ -1154,7 +1192,8 @@
      }
  
      protected function pStaticDereferenceLhs(Node $node): string {
@@ -357,7 +373,7 @@ index 5e2aed31..c32977c1 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1162,7 +1197,8 @@
+@@ -1162,7 +1201,8 @@
      }
  
      protected function pCallLhs(Node $node): string {
@@ -367,7 +383,7 @@ index 5e2aed31..c32977c1 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1170,7 +1206,8 @@
+@@ -1170,7 +1210,8 @@
      }
  
      protected function pNewOperand(Node $node): string {
@@ -377,11 +393,9 @@ index 5e2aed31..c32977c1 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-diff --git a/vendor/php-parser/lib/PhpParser/PrettyPrinterAbstract.php b/vendor/php-parser/lib/PhpParser/PrettyPrinterAbstract.php
-index 50a8e504..94fc8796 100644
 --- a/vendor/php-parser/lib/PhpParser/PrettyPrinterAbstract.php
 +++ b/vendor/php-parser/lib/PhpParser/PrettyPrinterAbstract.php
-@@ -195,6 +195,9 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
+@@ -195,6 +195,9 @@
       */
      public function __construct(array $options = []) {
          $this->phpVersion = $options['phpVersion'] ?? PhpVersion::fromComponents(7, 4);
@@ -391,7 +405,7 @@ index 50a8e504..94fc8796 100644
  
          $this->newline = $options['newline'] ?? "\n";
          if ($this->newline !== "\n" && $this->newline != "\r\n") {
-@@ -355,16 +358,13 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
+@@ -355,16 +358,13 @@
          }
  
          $result = '';
@@ -414,7 +428,7 @@ index 50a8e504..94fc8796 100644
          }
  
          if ($indent) {
-@@ -507,11 +507,6 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
+@@ -507,11 +507,6 @@
          $lastIdx = count($nodes) - 1;
          foreach ($nodes as $idx => $node) {
              if ($node !== null) {
@@ -426,7 +440,7 @@ index 50a8e504..94fc8796 100644
                  $result .= $this->nl . $this->p($node);
              } else {
                  $result .= $this->nl;
-@@ -536,7 +531,29 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
+@@ -536,7 +531,29 @@
          $formattedComments = [];
  
          foreach ($comments as $comment) {
@@ -457,7 +471,7 @@ index 50a8e504..94fc8796 100644
          }
  
          return implode($this->nl, $formattedComments);
-@@ -607,7 +624,15 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
+@@ -607,7 +624,15 @@
      ): string {
          // No orig tokens means this is a normal pretty print without preservation of formatting
          if (!$this->origTokens) {
@@ -476,14 +490,41 @@ index 50a8e504..94fc8796 100644
          /** @var Node|null $origNode */
 --- a/vendor/php-parser/lib/PhpParser/ParserAbstract.php
 +++ b/vendor/php-parser/lib/PhpParser/ParserAbstract.php
-@@ -1013,2 +1013,6 @@
+@@ -192,14 +192,14 @@
+         $this->tokens = $this->lexer->tokenize($code, $this->errorHandler);
+         $result = $this->doParse();
+ 
+-        // Report errors for any empty elements used inside arrays. This is delayed until after the main parse,
+-        // because we don't know a priori whether a given array expression will be used in a destructuring context
+-        // or not.
++        // Empty array slots are syntax; compilation rejects only visited arrays.
+         foreach ($this->createdArrays as $node) {
+-            foreach ($node->items as $item) {
++            if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error) {
++                $node->setAttribute('arrayFirstHoleLine', $node->items[0]->value->getStartLine());
++            }
++            foreach ($node->items as $i => $item) {
+                 if ($item->value instanceof Expr\Error) {
+-                    $this->errorHandler->handleError(
+-                        new Error('Cannot use empty array elements in arrays', $item->getAttributes()));
++                    $node->items[$i] = null;
+                 }
+             }
+         }
+@@ -1011,6 +1011,10 @@
+ 
+     protected function fixupArrayDestructuring(Array_ $node): Expr\List_ {
          $this->createdArrays->offsetUnset($node);
 +        if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error
 +            && $this->tokens[$node->items[0]->value->getStartTokenPos()]->text === ',') {
 +            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
 +        }
          return new Expr\List_(array_map(function (Node\ArrayItem $item) {
-@@ -1021,6 +1025,7 @@
+             if ($item->value instanceof Expr\Error) {
+                 // We used Error as a placeholder for empty elements, which are legal for destructuring.
+@@ -1019,17 +1023,26 @@
+             if ($item->value instanceof Array_) {
+                 return new Node\ArrayItem(
                      $this->fixupArrayDestructuring($item->value),
 -                    $item->key, $item->byRef, $item->getAttributes());
 +                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
@@ -493,17 +534,30 @@ index 50a8e504..94fc8796 100644
 +        }, $node->items), ['kind' => Expr\List_::KIND_ARRAY,
 +            'destructuringArrayKind' => $node->getAttribute('kind')] + $node->getAttributes());
      }
-@@ -1028,2 +1033,6 @@
+ 
      protected function postprocessList(Expr\List_ $node): void {
 +        if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error
 +            && $this->tokens[$node->items[0]->value->getStartTokenPos()]->text === ',') {
 +            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
 +        }
          foreach ($node->items as $i => $item) {
-@@ -1032,2 +1041,6 @@
+             if ($item->value instanceof Expr\Error) {
+                 // We used Error as a placeholder for empty elements, which are legal for destructuring.
                  $node->items[$i] = null;
 +            } else if ($item->value instanceof Array_) {
 +                $node->items[$i] = new Node\ArrayItem(
 +                    $this->fixupArrayDestructuring($item->value),
 +                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
              }
+         }
+     }
+@@ -1293,6 +1306,9 @@
+         if ($this->isSimpleExit($args)) {
+             // Create Exit node for backwards compatibility.
+             $attrs['kind'] = strtolower($name) === 'exit' ? Expr\Exit_::KIND_EXIT : Expr\Exit_::KIND_DIE;
++            if ($attrs['startTokenPos'] === $attrs['endTokenPos']) {
++                $attrs['nullaryExprLine'] = $this->tokens[$this->tokenPos]->line;
++            }
+             return new Expr\Exit_(\count($args) === 1 ? $args[0]->value : null, $attrs);
+         }
+         return new Expr\FuncCall(new Name($name, $this->getAttributesAt($namePos)), $args, $attrs);

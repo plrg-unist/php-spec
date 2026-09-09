@@ -31,7 +31,7 @@ dec $pchparentdisplay(ptbytes?) : ptbytes
 def $pchparentdisplay(eps) = eps
 def $pchparentdisplay(ptbytes) = ptbytes
 dec $pchbody(program) : phpType23
-def $pchbody(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType46 phpType44 phpType23 metadata)])) = phpType23
+def $pchbody(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)])) = phpType23
 dec $pchkeptbody(pchresult) : phpType23
 def $pchkeptbody(PCHOK pchheader pchdiagnostic*) = pchheader.BODY
 '''

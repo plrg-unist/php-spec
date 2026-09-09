@@ -14,16 +14,16 @@ ROOT,HERE,PHP=types.ROOT,types.HERE,types.PHP
 SPECS=[ROOT/'spec/php.watsup']+[ROOT/('spec/semantics/'+name+'.watsup') for name in ['00-numeric','01-integer','02-numeric-text','03-numeric-format','10-bytes','16-static-types','17-signatures','19-variance','19-method-signatures']]
 PREFIX='''
 dec $pmfixture(program,ptcontext) : pmmethod
-def $pmfixture(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType46 phpType44 (SEQUENCE ([(NStmtClassMethod phpType14_method phpType24_method (BOOLEAN bool) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType49 metadata_method)])) metadata)]),ptcontext) = {OWNER ptcontext.OWNER,NAME ($base64(text)),SIGNATURE pssignature,CONTEXT ptcontext}
+def $pmfixture(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE ([(NStmtClassMethod phpType14_method phpType24_method (BOOLEAN bool) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata_method)])) metadata)]),ptcontext) = {OWNER ptcontext.OWNER,NAME ($base64(text)),SIGNATURE pssignature,CONTEXT ptcontext}
   -- if $pscompile(phpType16,phpType18,bool,ptcontext) = PSOK pssignature psdiagnostic*
 dec $pmcompileevents(program,ptcontext) : (text,ptbytes,ptbytes,nat)*
-def $pmcompileevents(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType46 phpType44 (SEQUENCE ([(NStmtClassMethod phpType14_method phpType24_method (BOOLEAN bool) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType49 metadata_method)])) metadata)]),ptcontext) = ($pmcompileevent(psdiagnostic))*
+def $pmcompileevents(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE ([(NStmtClassMethod phpType14_method phpType24_method (BOOLEAN bool) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata_method)])) metadata)]),ptcontext) = ($pmcompileevent(psdiagnostic))*
   -- if $pscompile(phpType16,phpType18,bool,ptcontext) = PSOK pssignature psdiagnostic*
 dec $pmcompileevent(psdiagnostic) : (text,ptbytes,ptbytes,nat)
 def $pmcompileevent(PSTYPEDIAGNOSTIC (PTDIAGNOSTIC text_level text_code ptbranch* ptcontext)) = (text_level,$ptmessage(PTDIAGNOSTIC text_level text_code ptbranch* ptcontext),ptcontext.FILE,ptcontext.LINE)
 def $pmcompileevent(PSDIAGNOSTIC text_level text_code ptbytes* ptcontext) = (text_level,$psmessage(PSDIAGNOSTIC text_level text_code ptbytes* ptcontext),ptcontext.FILE,ptcontext.LINE)
 dec $pmlocalfixture(program,ptcontext) : psresult
-def $pmlocalfixture(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType46 phpType44 (SEQUENCE ([(NStmtClassMethod phpType14_method phpType24_method (BOOLEAN bool) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType49 metadata_method)])) metadata)]),ptcontext) = $pscompile(phpType16,phpType18,bool,ptcontext)
+def $pmlocalfixture(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE ([(NStmtClassMethod phpType14_method phpType24_method (BOOLEAN bool) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata_method)])) metadata)]),ptcontext) = $pscompile(phpType16,phpType18,bool,ptcontext)
 dec $pmtestevent(pmdiagresult) : (text,ptbytes,ptbytes,nat)
 def $pmtestevent(PMDIAGNOSTIC pmdiagnostic) = (pmdiagnostic.LEVEL,pmdiagnostic.MESSAGE,pmdiagnostic.FILE,pmdiagnostic.LINE)
 '''

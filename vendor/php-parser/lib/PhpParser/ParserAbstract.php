@@ -192,14 +192,14 @@ abstract class ParserAbstract implements Parser {
         $this->tokens = $this->lexer->tokenize($code, $this->errorHandler);
         $result = $this->doParse();
 
-        // Report errors for any empty elements used inside arrays. This is delayed until after the main parse,
-        // because we don't know a priori whether a given array expression will be used in a destructuring context
-        // or not.
+        // Empty array slots are syntax; compilation rejects only visited arrays.
         foreach ($this->createdArrays as $node) {
-            foreach ($node->items as $item) {
+            if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error) {
+                $node->setAttribute('arrayFirstHoleLine', $node->items[0]->value->getStartLine());
+            }
+            foreach ($node->items as $i => $item) {
                 if ($item->value instanceof Expr\Error) {
-                    $this->errorHandler->handleError(
-                        new Error('Cannot use empty array elements in arrays', $item->getAttributes()));
+                    $node->items[$i] = null;
                 }
             }
         }
@@ -1306,6 +1306,9 @@ abstract class ParserAbstract implements Parser {
         if ($this->isSimpleExit($args)) {
             // Create Exit node for backwards compatibility.
             $attrs['kind'] = strtolower($name) === 'exit' ? Expr\Exit_::KIND_EXIT : Expr\Exit_::KIND_DIE;
+            if ($attrs['startTokenPos'] === $attrs['endTokenPos']) {
+                $attrs['nullaryExprLine'] = $this->tokens[$this->tokenPos]->line;
+            }
             return new Expr\Exit_(\count($args) === 1 ? $args[0]->value : null, $attrs);
         }
         return new Expr\FuncCall(new Name($name, $this->getAttributesAt($namePos)), $args, $attrs);

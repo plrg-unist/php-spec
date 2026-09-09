@@ -10,6 +10,7 @@ syntax pcheck = READY | REJECT pcompletion
 syntax peval = VALUE pvalue | ABRUPT pcompletion
 syntax pbin = MODULO | SHIFTLEFT | SHIFTRIGHT | BITAND | BITOR | BITXOR | POWER | CONCAT | EQUAL | NOTEQUAL | LESS | LESSEQUAL | GREATER | GREATEREQUAL | SPACESHIP | LOGICALXOR | ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
 syntax punary = POSITIVE | NEGATIVE
+syntax pcast = CASTBOOL | CASTINT | CASTFLOAT | CASTSTRING | CASTARRAY
 syntax pcomparison = COMPARED bool | RECURSIVE
 var z : int
 
@@ -65,15 +66,15 @@ def $string_line(metadata) = 0
   -- otherwise
 
 dec $expression_line(expression) : int
-dec $variable_line(phpType34, metadata) : int
+dec $variable_line(phpType32, metadata) : int
 def $variable_line(BYTES text, metadata) = $source_line(metadata)
-def $variable_line(phpType34, metadata) = $expression_line(expression)
-  -- if phpType34 = expression
-def $expression_line(NScalarString phpType35 metadata) = $string_line(metadata)
+def $variable_line(phpType32, metadata) = $expression_line(expression)
+  -- if phpType32 = expression
+def $expression_line(NScalarString phpType33 metadata) = $string_line(metadata)
 def $expression_line(NScalarInt phpType24 metadata) = $source_line(metadata)
-def $expression_line(NScalarFloat phpType43 metadata) = $source_line(metadata)
+def $expression_line(NScalarFloat phpType41 metadata) = $source_line(metadata)
 def $expression_line(NExprConstFetch name metadata) = $source_line(metadata)
-def $expression_line(NExprVariable phpType34 metadata) = $variable_line(phpType34, metadata)
+def $expression_line(NExprVariable phpType32 metadata) = $variable_line(phpType32, metadata)
 def $expression_line(NExprAssign expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprAssignRef expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprBinaryOpPlus expression_1 expression_2 metadata) = $expression_line(expression_1)
@@ -102,9 +103,9 @@ def $expression_line(NExprBinaryOpGreater expression_1 expression_2 metadata) = 
 def $expression_line(NExprBinaryOpGreaterOrEqual expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprBinaryOpSpaceship expression_1 expression_2 metadata) = $expression_line(expression_1)
 dec $name_expression_line(phpType19) : int
-def $name_expression_line(NName phpType35 metadata) = $source_line(metadata)
-def $name_expression_line(NNameFullyQualified phpType35 metadata) = $source_line(metadata)
-def $name_expression_line(NNameRelative phpType35 metadata) = $source_line(metadata)
+def $name_expression_line(NName phpType33 metadata) = $source_line(metadata)
+def $name_expression_line(NNameFullyQualified phpType33 metadata) = $source_line(metadata)
+def $name_expression_line(NNameRelative phpType33 metadata) = $source_line(metadata)
 def $name_expression_line(phpType19) = $expression_line(expression)
   -- if phpType19 = expression
 def $expression_line(NExprPreInc expression metadata) = $expression_line(expression)
@@ -130,7 +131,7 @@ def $expression_line(NExprNullsafeMethodCall expression phpType20 phpType6 metad
 def $expression_line(NExprPropertyFetch expression phpType20 metadata) = $expression_line(expression)
 def $expression_line(NExprNullsafePropertyFetch expression phpType20 metadata) = $expression_line(expression)
 def $expression_line(NExprStaticCall phpType19 phpType20 phpType6 metadata) = $name_expression_line(phpType19)
-def $expression_line(NExprStaticPropertyFetch phpType19 phpType33 metadata) = $name_expression_line(phpType19)
+def $expression_line(NExprStaticPropertyFetch phpType19 phpType31 metadata) = $name_expression_line(phpType19)
 def $expression_line(NExprAssignOpBitwiseAnd expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprAssignOpBitwiseOr expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprAssignOpBitwiseXor expression_1 expression_2 metadata) = $expression_line(expression_1)
@@ -148,10 +149,10 @@ def $expression_line(expression) = 0
 
 dec $assignment_self(expression, expression) : bool
 
-dec $header_literal(phpType34) : bool
+dec $header_literal(phpType32) : bool
 def $header_literal(BYTES text) = ($base64(text) = [104,116,116,112,95,114,101,115,112,111,110,115,101,95,104,101,97,100,101,114])
 def $header_literal(NScalarString (BYTES text) metadata) = $header_literal(BYTES text)
-def $header_literal(phpType34) = false
+def $header_literal(phpType32) = false
   -- otherwise
 
 dec $context_error(text, int) : pcheck
@@ -239,3 +240,156 @@ def $echo_value(PINT z) = $decimal_integer(z)
 def $echo_value(PSTRING n*) = n*
 def $echo_value(PFLOAT n) = n_out*
   -- if (n_out*, b_warning) = $number_text(NFLOAT n, 14)
+
+;; Parser-created ZVALs are narrower than compiler constant facts.
+dec $parser_literal_text(pvalue) : nat*?
+dec $parser_literal(expression) : pvalue?
+def $parser_literal(NScalarInt (INTEGER i) metadata) = (PINT i)
+def $parser_literal(NScalarFloat (FLOAT text) metadata) = (PFLOAT $hex_bits(text, 0))
+def $parser_literal(NScalarString (BYTES text) metadata) = (PSTRING $base64(text))
+def $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING (n_1* ++ n_2*))
+  -- if $parser_literal(expression_1) = (pvalue_1)
+  -- if $parser_literal(expression_2) = (pvalue_2)
+  -- if $parser_literal_text(pvalue_1) = (n_1*)
+  -- if $parser_literal_text(pvalue_2) = (n_2*)
+def $parser_literal(expression) = eps -- otherwise
+def $parser_literal_text(PINT i) = ($decimal_integer(i))
+def $parser_literal_text(PSTRING n*) = (n*)
+def $parser_literal_text(PFLOAT n) = (n_text*)
+  -- if (n_text*, false) = $number_text(NFLOAT n, 14)
+def $parser_literal_text(pvalue) = eps -- otherwise
+
+dec $metadata_array_hole_line(metadataEntry) : int
+def $metadata_array_hole_line(MarrayFirstHoleLine z) = z
+def $metadata_array_hole_line(metadataEntry) = 0 -- otherwise
+dec $array_hole_line(metadata) : int
+def $array_hole_line(eps) = 0
+def $array_hole_line(metadataEntry :: metadataEntry_tail*) = $metadata_array_hole_line(metadataEntry)
+  -- if $($metadata_array_hole_line(metadataEntry) > 0)
+def $array_hole_line(metadataEntry :: metadataEntry_tail*) = $array_hole_line(metadataEntry_tail*)
+  -- if $($metadata_array_hole_line(metadataEntry) <= 0)
+def $expression_line(NExprArray (SEQUENCE (ABSENT :: phpType13_tail*)) metadata) = $array_hole_line(metadata)
+
+dec $metadata_concat_line(metadataEntry) : int
+def $metadata_concat_line(MconcatExprLine z) = z
+def $metadata_concat_line(metadataEntry) = 0 -- otherwise
+dec $concat_line(metadata) : int
+def $concat_line(eps) = 0
+def $concat_line(metadataEntry :: metadataEntry_tail*) = $metadata_concat_line(metadataEntry)
+  -- if $($metadata_concat_line(metadataEntry) > 0)
+def $concat_line(metadataEntry :: metadataEntry_tail*) = $concat_line(metadataEntry_tail*)
+  -- if $($metadata_concat_line(metadataEntry) <= 0)
+def $expression_line(NExprBinaryOpConcat expression_1 expression_2 metadata) = $concat_line(metadata)
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (pvalue)
+def $expression_line(NExprBinaryOpConcat expression_1 expression_2 metadata) = $expression_line(expression_1)
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = eps
+
+;; Lines of additional known nonconstant prepass forms remain original AST lines.
+def $expression_line(NExprInclude expression phpType24 metadata) = $expression_line(expression)
+def $expression_line(NExprEval expression metadata) = $expression_line(expression)
+def $expression_line(NExprErrorSuppress expression metadata) = $expression_line(expression)
+dec $interpolated_part_line(phpType30) : int
+def $interpolated_part_line(NInterpolatedStringPart phpType33 metadata) = $source_line(metadata)
+def $interpolated_part_line(phpType30) = $expression_line(expression)
+  -- if phpType30 = expression
+def $expression_line(NScalarInterpolatedString (SEQUENCE (phpType30 :: phpType30_tail*)) metadata) = $interpolated_part_line(phpType30)
+dec $new_class_line(phpType28) : int
+def $new_class_line(NName phpType33 metadata) = $source_line(metadata)
+def $new_class_line(NNameFullyQualified phpType33 metadata) = $source_line(metadata)
+def $new_class_line(NNameRelative phpType33 metadata) = $source_line(metadata)
+def $new_class_line(phpType28) = $expression_line(expression)
+  -- if phpType28 = expression
+def $new_class_line(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = $source_line(metadata)
+def $expression_line(NExprNew phpType28 phpType6 metadata) = $new_class_line(phpType28)
+def $expression_line(NExprCastInt expression metadata) = $expression_line(expression)
+def $expression_line(NExprCastBool expression metadata) = $expression_line(expression)
+def $expression_line(NExprCastDouble expression metadata) = $expression_line(expression)
+def $expression_line(NExprCastString expression metadata) = $expression_line(expression)
+def $expression_line(NExprCastArray expression metadata) = $expression_line(expression)
+def $expression_line(NExprCastObject expression metadata) = $expression_line(expression)
+def $expression_line(NExprCastUnset expression metadata) = $expression_line(expression)
+
+;; Only nullary yield and bare exit need otherwise lost parser lookahead context.
+dec $metadata_nullary_line(metadataEntry) : int
+def $metadata_nullary_line(MnullaryExprLine z) = z
+def $metadata_nullary_line(metadataEntry) = 0 -- otherwise
+dec $nullary_line(metadata) : int
+def $nullary_line(eps) = 0
+def $nullary_line(metadataEntry :: metadataEntry_tail*) = $metadata_nullary_line(metadataEntry)
+  -- if $($metadata_nullary_line(metadataEntry) > 0)
+def $nullary_line(metadataEntry :: metadataEntry_tail*) = $nullary_line(metadataEntry_tail*)
+  -- if $($metadata_nullary_line(metadataEntry) <= 0)
+dec $metadata_token_start(metadataEntry) : int?
+def $metadata_token_start(MstartTokenPos z) = (z)
+def $metadata_token_start(metadataEntry) = eps -- otherwise
+dec $metadata_token_end(metadataEntry) : int?
+def $metadata_token_end(MendTokenPos z) = (z)
+def $metadata_token_end(metadataEntry) = eps -- otherwise
+dec $source_token_start(metadata) : int?
+dec $source_token_end(metadata) : int?
+def $source_token_start(metadataEntry :: metadataEntry_tail*) = (z)
+  -- if $metadata_token_start(metadataEntry) = (z)
+def $source_token_start(eps) = eps
+def $source_token_start(metadataEntry :: metadataEntry_tail*) = $source_token_start(metadataEntry_tail*)
+  -- if $metadata_token_start(metadataEntry) = eps
+def $source_token_end(metadataEntry :: metadataEntry_tail*) = (z)
+  -- if $metadata_token_end(metadataEntry) = (z)
+def $source_token_end(eps) = eps
+def $source_token_end(metadataEntry :: metadataEntry_tail*) = $source_token_end(metadataEntry_tail*)
+  -- if $metadata_token_end(metadataEntry) = eps
+def $expression_line(NExprExit ABSENT metadata) = $nullary_line(metadata)
+  -- if $source_token_start(metadata) = (z)
+  -- if $source_token_end(metadata) = (z)
+  -- if $(z >= 0)
+def $expression_line(NExprExit ABSENT metadata) = $source_end_line(metadata)
+  -- if $source_token_start(metadata) = (z_start)
+  -- if $source_token_end(metadata) = (z_end)
+  -- if $(0 <= z_start /\ z_start < z_end)
+def $expression_line(NExprExit expression metadata) = $source_end_line(metadata)
+def $expression_line(NExprYield phpType5 expression metadata) = $expression_line(expression)
+def $expression_line(NExprYield ABSENT ABSENT metadata) = $nullary_line(metadata)
+def $expression_line(NExprPrint expression metadata) = $expression_line(expression)
+def $expression_line(NExprEmpty expression metadata) = $expression_line(expression)
+def $expression_line(NExprThrow expression metadata) = $expression_line(expression)
+def $expression_line(NExprYieldFrom expression metadata) = $expression_line(expression)
+dec $clone_line(metadata) : int
+def $expression_line(NExprClone expression metadata) = $clone_line(metadata)
+def $expression_line(NExprInstanceof expression phpType19 metadata) = $expression_line(expression)
+def $expression_line(NExprIsset (SEQUENCE (expression :: expression_tail*)) metadata) = $expression_line(expression)
+def $expression_line(NExprMatch expression phpType26 metadata) = $expression_line(expression)
+def $expression_line(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = $source_line(metadata)
+def $expression_line(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = $source_line(metadata)
+def $expression_line(NExprShellExec (SEQUENCE (phpType30 :: phpType30_tail*)) metadata) = $interpolated_part_line(phpType30)
+def $expression_line(NExprBinaryOpCoalesce expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpPipe expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprClassConstFetch phpType19 phpType20 metadata) = $name_expression_line(phpType19)
+
+
+
+
+def $expression_line(NExprAssignOpCoalesce expression_1 expression_2 metadata) = $expression_line(expression_1)
+
+
+
+
+
+
+
+
+
+
+;; PHP8.5 lowers keyword calls to synthetic names at their parser reduction.
+dec $synthetic_keyword_call(phpType19) : bool
+def $synthetic_keyword_call(NName (BYTES text) metadata) = ($ptlc($base64(text)) <- [[101,120,105,116], [100,105,101], [99,108,111,110,101]])
+def $synthetic_keyword_call(phpType19) = false -- otherwise
+def $call_expression_line(phpType19, metadata) = $source_end_line(metadata)
+  -- if $synthetic_keyword_call(phpType19)
+dec $metadata_clone_line(metadataEntry) : int
+def $metadata_clone_line(McloneExprLine z) = z
+def $metadata_clone_line(metadataEntry) = 0 -- otherwise
+def $clone_line(eps) = 0
+def $clone_line(metadataEntry :: metadataEntry_tail*) = $metadata_clone_line(metadataEntry)
+  -- if $($metadata_clone_line(metadataEntry) > 0)
+def $clone_line(metadataEntry :: metadataEntry_tail*) = $clone_line(metadataEntry_tail*)
+  -- if $($metadata_clone_line(metadataEntry) <= 0)
+def $expression_line(NExprShellExec (SEQUENCE eps) metadata) = $source_end_line(metadata)

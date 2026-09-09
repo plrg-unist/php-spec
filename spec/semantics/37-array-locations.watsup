@@ -229,13 +229,13 @@ def $assign_array_reference_cv(S, pbase, n_source*, z) = $bind_element_reference
   -- if S_cell.COMPLETION = NORMAL
 
 dec $root_cv(expression) : (nat*)?
-def $root_cv(NExprVariable phpType34 metadata) = $cv_name(phpType34)
+def $root_cv(NExprVariable phpType32 metadata) = $cv_name(phpType32)
 def $root_cv(NExprArrayDimFetch expression phpType5 metadata) = $root_cv(expression)
 def $root_cv(expression) = eps
   -- otherwise
 
-def $assignment_self(expression, NExprVariable phpType34 metadata) = true
+def $assignment_self(expression, NExprVariable phpType32 metadata) = true
   -- if $root_cv(expression) = (n_name*)
-  -- if $cv_name(phpType34) = (n_name*)
+  -- if $cv_name(phpType32) = (n_name*)
 def $assignment_self(expression_1, expression_2) = false
   -- otherwise

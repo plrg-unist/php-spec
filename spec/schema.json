@@ -235,7 +235,14 @@
           "name": "items",
           "type": {
             "list": {
-              "atom": "PhpParser\\Node\\ArrayItem"
+              "union": [
+                {
+                  "atom": "PhpParser\\Node\\ArrayItem"
+                },
+                {
+                  "atom": "null"
+                }
+              ]
             }
           },
           "domain": "phpType12"
@@ -2096,7 +2103,7 @@
               ]
             }
           },
-          "domain": "phpType26"
+          "domain": "phpType12"
         }
       ],
       "constructor": "NExprList"
@@ -2124,7 +2131,7 @@
               "atom": "PhpParser\\Node\\MatchArm"
             }
           },
-          "domain": "phpType28"
+          "domain": "phpType26"
         }
       ],
       "constructor": "NExprMatch"
@@ -2204,7 +2211,7 @@
               }
             ]
           },
-          "domain": "phpType30"
+          "domain": "phpType28"
         },
         {
           "name": "args",
@@ -2459,7 +2466,7 @@
               ]
             }
           },
-          "domain": "phpType31"
+          "domain": "phpType29"
         }
       ],
       "constructor": "NExprShellExec"
@@ -2556,7 +2563,7 @@
               }
             ]
           },
-          "domain": "phpType33"
+          "domain": "phpType31"
         }
       ],
       "constructor": "NExprStaticPropertyFetch"
@@ -2679,7 +2686,7 @@
               }
             ]
           },
-          "domain": "phpType34"
+          "domain": "phpType32"
         }
       ],
       "constructor": "NExprVariable"
@@ -2756,7 +2763,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NIdentifier"
@@ -2774,7 +2781,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NInterpolatedStringPart"
@@ -2802,7 +2809,7 @@
               ]
             }
           },
-          "domain": "phpType36"
+          "domain": "phpType34"
         }
       ],
       "constructor": "NIntersectionType"
@@ -2829,7 +2836,7 @@
               }
             ]
           },
-          "domain": "phpType38"
+          "domain": "phpType36"
         },
         {
           "name": "body",
@@ -2854,7 +2861,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NName"
@@ -2873,7 +2880,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NNameFullyQualified"
@@ -2892,7 +2899,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NNameRelative"
@@ -2918,7 +2925,7 @@
               }
             ]
           },
-          "domain": "phpType37"
+          "domain": "phpType35"
         }
       ],
       "constructor": "NNullableType"
@@ -3016,7 +3023,7 @@
               "atom": "PhpParser\\Node\\PropertyHook"
             }
           },
-          "domain": "phpType39"
+          "domain": "phpType37"
         }
       ],
       "constructor": "NParam"
@@ -3085,7 +3092,7 @@
               }
             ]
           },
-          "domain": "phpType41"
+          "domain": "phpType39"
         }
       ],
       "constructor": "NPropertyHook"
@@ -3103,7 +3110,7 @@
           "type": {
             "atom": "PhpParser\\Node\\VarLikeIdentifier"
           },
-          "domain": "phpType42"
+          "domain": "phpType40"
         },
         {
           "name": "default",
@@ -3137,7 +3144,7 @@
           "type": {
             "atom": "float"
           },
-          "domain": "phpType43"
+          "domain": "phpType41"
         }
       ],
       "constructor": "NScalarFloat"
@@ -3186,7 +3193,7 @@
               ]
             }
           },
-          "domain": "phpType31"
+          "domain": "phpType29"
         }
       ],
       "constructor": "NScalarInterpolatedString"
@@ -3323,7 +3330,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NScalarString"
@@ -3458,7 +3465,7 @@
               "atom": "PhpParser\\Node\\Name"
             }
           },
-          "domain": "phpType44"
+          "domain": "phpType42"
         },
         {
           "name": "var",
@@ -3472,7 +3479,7 @@
               }
             ]
           },
-          "domain": "phpType45"
+          "domain": "phpType43"
         },
         {
           "name": "stmts",
@@ -3538,7 +3545,7 @@
               }
             ]
           },
-          "domain": "phpType46"
+          "domain": "phpType44"
         },
         {
           "name": "implements",
@@ -3547,7 +3554,7 @@
               "atom": "PhpParser\\Node\\Name"
             }
           },
-          "domain": "phpType44"
+          "domain": "phpType42"
         },
         {
           "name": "stmts",
@@ -3613,7 +3620,7 @@
               "atom": "PhpParser\\Node\\Const_"
             }
           },
-          "domain": "phpType47"
+          "domain": "phpType45"
         }
       ],
       "constructor": "NStmtClassConst"
@@ -3700,7 +3707,7 @@
               }
             ]
           },
-          "domain": "phpType49"
+          "domain": "phpType47"
         }
       ],
       "constructor": "NStmtClassMethod"
@@ -3730,7 +3737,7 @@
               "atom": "PhpParser\\Node\\Const_"
             }
           },
-          "domain": "phpType47"
+          "domain": "phpType45"
         }
       ],
       "constructor": "NStmtConst"
@@ -3777,7 +3784,7 @@
               "atom": "PhpParser\\Node\\DeclareItem"
             }
           },
-          "domain": "phpType50"
+          "domain": "phpType48"
         },
         {
           "name": "stmts",
@@ -3793,7 +3800,7 @@
               }
             ]
           },
-          "domain": "phpType49"
+          "domain": "phpType47"
         }
       ],
       "constructor": "NStmtDeclare"
@@ -3944,7 +3951,7 @@
               }
             ]
           },
-          "domain": "phpType52"
+          "domain": "phpType50"
         },
         {
           "name": "implements",
@@ -3953,7 +3960,7 @@
               "atom": "PhpParser\\Node\\Name"
             }
           },
-          "domain": "phpType44"
+          "domain": "phpType42"
         },
         {
           "name": "stmts",
@@ -4296,7 +4303,7 @@
               "atom": "PhpParser\\Node\\UseItem"
             }
           },
-          "domain": "phpType53"
+          "domain": "phpType51"
         }
       ],
       "constructor": "NStmtGroupUse"
@@ -4315,7 +4322,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NStmtHaltCompiler"
@@ -4352,7 +4359,7 @@
               "atom": "PhpParser\\Node\\Stmt\\ElseIf_"
             }
           },
-          "domain": "phpType55"
+          "domain": "phpType53"
         },
         {
           "name": "else",
@@ -4366,7 +4373,7 @@
               }
             ]
           },
-          "domain": "phpType57"
+          "domain": "phpType55"
         }
       ],
       "constructor": "NStmtIf"
@@ -4385,7 +4392,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NStmtInlineHTML"
@@ -4430,7 +4437,7 @@
               "atom": "PhpParser\\Node\\Name"
             }
           },
-          "domain": "phpType44"
+          "domain": "phpType42"
         },
         {
           "name": "stmts",
@@ -4484,7 +4491,7 @@
               }
             ]
           },
-          "domain": "phpType46"
+          "domain": "phpType44"
         },
         {
           "name": "stmts",
@@ -4561,7 +4568,7 @@
               "atom": "PhpParser\\Node\\PropertyItem"
             }
           },
-          "domain": "phpType58"
+          "domain": "phpType56"
         },
         {
           "name": "hooks",
@@ -4570,7 +4577,7 @@
               "atom": "PhpParser\\Node\\PropertyHook"
             }
           },
-          "domain": "phpType39"
+          "domain": "phpType37"
         }
       ],
       "constructor": "NStmtProperty"
@@ -4617,7 +4624,7 @@
               "atom": "PhpParser\\Node\\StaticVar"
             }
           },
-          "domain": "phpType60"
+          "domain": "phpType58"
         }
       ],
       "constructor": "NStmtStatic"
@@ -4645,7 +4652,7 @@
               "atom": "PhpParser\\Node\\Stmt\\Case_"
             }
           },
-          "domain": "phpType62"
+          "domain": "phpType60"
         }
       ],
       "constructor": "NStmtSwitch"
@@ -4711,7 +4718,7 @@
               "atom": "PhpParser\\Node\\Name"
             }
           },
-          "domain": "phpType44"
+          "domain": "phpType42"
         },
         {
           "name": "adaptations",
@@ -4720,7 +4727,7 @@
               "atom": "PhpParser\\Node\\Stmt\\TraitUseAdaptation"
             }
           },
-          "domain": "phpType64"
+          "domain": "phpType62"
         }
       ],
       "constructor": "NStmtTraitUse"
@@ -4747,7 +4754,7 @@
               }
             ]
           },
-          "domain": "phpType46"
+          "domain": "phpType44"
         },
         {
           "name": "method",
@@ -4768,7 +4775,7 @@
               }
             ]
           },
-          "domain": "phpType66"
+          "domain": "phpType64"
         },
         {
           "name": "newName",
@@ -4809,7 +4816,7 @@
               }
             ]
           },
-          "domain": "phpType46"
+          "domain": "phpType44"
         },
         {
           "name": "method",
@@ -4825,7 +4832,7 @@
               "atom": "PhpParser\\Node\\Name"
             }
           },
-          "domain": "phpType44"
+          "domain": "phpType42"
         }
       ],
       "constructor": "NStmtTraitUseAdaptationPrecedence"
@@ -4855,7 +4862,7 @@
               "atom": "PhpParser\\Node\\Stmt\\Catch_"
             }
           },
-          "domain": "phpType67"
+          "domain": "phpType65"
         },
         {
           "name": "finally",
@@ -4869,7 +4876,7 @@
               }
             ]
           },
-          "domain": "phpType69"
+          "domain": "phpType67"
         }
       ],
       "constructor": "NStmtTryCatch"
@@ -4918,7 +4925,7 @@
               "atom": "PhpParser\\Node\\UseItem"
             }
           },
-          "domain": "phpType53"
+          "domain": "phpType51"
         }
       ],
       "constructor": "NStmtUse"
@@ -4977,7 +4984,7 @@
               ]
             }
           },
-          "domain": "phpType70"
+          "domain": "phpType68"
         }
       ],
       "constructor": "NUnionType"
@@ -5035,7 +5042,7 @@
           "type": {
             "atom": "string"
           },
-          "domain": "phpType35"
+          "domain": "phpType33"
         }
       ],
       "constructor": "NVarLikeIdentifier"
@@ -5064,6 +5071,10 @@
     "statementBodyLine": "int",
     "destructuringArrayKind": "int",
     "listFirstHoleLine": "int",
+    "arrayFirstHoleLine": "int",
+    "concatExprLine": "int",
+    "cloneExprLine": "int",
+    "nullaryExprLine": "int",
     "callableExprLine": "int",
     "rawValue": "text",
     "docLabel": "text",
@@ -6176,6 +6187,9 @@
           [
             "node",
             "ArrayItem"
+          ],
+          [
+            "null"
           ]
         ]
       ]
@@ -6184,6 +6198,9 @@
       [
         "node",
         "ArrayItem"
+      ],
+      [
+        "null"
       ]
     ],
     "phpType14": [
@@ -7731,10 +7748,7 @@
         [
           [
             "node",
-            "ArrayItem"
-          ],
-          [
-            "null"
+            "MatchArm"
           ]
         ]
       ]
@@ -7742,30 +7756,10 @@
     "phpType27": [
       [
         "node",
-        "ArrayItem"
-      ],
-      [
-        "null"
-      ]
-    ],
-    "phpType28": [
-      [
-        "list",
-        [
-          [
-            "node",
-            "MatchArm"
-          ]
-        ]
-      ]
-    ],
-    "phpType29": [
-      [
-        "node",
         "MatchArm"
       ]
     ],
-    "phpType30": [
+    "phpType28": [
       [
         "node",
         "Expr_Array"
@@ -8195,7 +8189,7 @@
         "Stmt_Class"
       ]
     ],
-    "phpType31": [
+    "phpType29": [
       [
         "list",
         [
@@ -8618,7 +8612,7 @@
         ]
       ]
     ],
-    "phpType32": [
+    "phpType30": [
       [
         "node",
         "Expr_Array"
@@ -9036,7 +9030,7 @@
         "Scalar_String"
       ]
     ],
-    "phpType33": [
+    "phpType31": [
       [
         "node",
         "Expr_Array"
@@ -9454,7 +9448,7 @@
         "VarLikeIdentifier"
       ]
     ],
-    "phpType34": [
+    "phpType32": [
       [
         "node",
         "Expr_Array"
@@ -9871,12 +9865,12 @@
         "string"
       ]
     ],
-    "phpType35": [
+    "phpType33": [
       [
         "string"
       ]
     ],
-    "phpType36": [
+    "phpType34": [
       [
         "list",
         [
@@ -9903,7 +9897,7 @@
         ]
       ]
     ],
-    "phpType37": [
+    "phpType35": [
       [
         "node",
         "Identifier"
@@ -9925,7 +9919,7 @@
         "VarLikeIdentifier"
       ]
     ],
-    "phpType38": [
+    "phpType36": [
       [
         "list",
         [
@@ -10347,7 +10341,7 @@
         "null"
       ]
     ],
-    "phpType39": [
+    "phpType37": [
       [
         "list",
         [
@@ -10358,13 +10352,13 @@
         ]
       ]
     ],
-    "phpType40": [
+    "phpType38": [
       [
         "node",
         "PropertyHook"
       ]
     ],
-    "phpType41": [
+    "phpType39": [
       [
         "list",
         [
@@ -10958,18 +10952,18 @@
         "null"
       ]
     ],
-    "phpType42": [
+    "phpType40": [
       [
         "node",
         "VarLikeIdentifier"
       ]
     ],
-    "phpType43": [
+    "phpType41": [
       [
         "float"
       ]
     ],
-    "phpType44": [
+    "phpType42": [
       [
         "list",
         [
@@ -10988,7 +10982,7 @@
         ]
       ]
     ],
-    "phpType45": [
+    "phpType43": [
       [
         "node",
         "Expr_Variable"
@@ -10997,7 +10991,7 @@
         "null"
       ]
     ],
-    "phpType46": [
+    "phpType44": [
       [
         "node",
         "Name"
@@ -11014,7 +11008,7 @@
         "null"
       ]
     ],
-    "phpType47": [
+    "phpType45": [
       [
         "list",
         [
@@ -11025,13 +11019,13 @@
         ]
       ]
     ],
-    "phpType48": [
+    "phpType46": [
       [
         "node",
         "Const"
       ]
     ],
-    "phpType49": [
+    "phpType47": [
       [
         "list",
         [
@@ -11213,7 +11207,7 @@
         "null"
       ]
     ],
-    "phpType50": [
+    "phpType48": [
       [
         "list",
         [
@@ -11224,13 +11218,13 @@
         ]
       ]
     ],
-    "phpType51": [
+    "phpType49": [
       [
         "node",
         "DeclareItem"
       ]
     ],
-    "phpType52": [
+    "phpType50": [
       [
         "node",
         "Identifier"
@@ -11255,7 +11249,7 @@
         "null"
       ]
     ],
-    "phpType53": [
+    "phpType51": [
       [
         "list",
         [
@@ -11266,13 +11260,13 @@
         ]
       ]
     ],
-    "phpType54": [
+    "phpType52": [
       [
         "node",
         "UseItem"
       ]
     ],
-    "phpType55": [
+    "phpType53": [
       [
         "list",
         [
@@ -11283,13 +11277,13 @@
         ]
       ]
     ],
-    "phpType56": [
+    "phpType54": [
       [
         "node",
         "Stmt_ElseIf"
       ]
     ],
-    "phpType57": [
+    "phpType55": [
       [
         "node",
         "Stmt_Else"
@@ -11298,7 +11292,7 @@
         "null"
       ]
     ],
-    "phpType58": [
+    "phpType56": [
       [
         "list",
         [
@@ -11309,13 +11303,13 @@
         ]
       ]
     ],
-    "phpType59": [
+    "phpType57": [
       [
         "node",
         "PropertyItem"
       ]
     ],
-    "phpType60": [
+    "phpType58": [
       [
         "list",
         [
@@ -11326,13 +11320,13 @@
         ]
       ]
     ],
-    "phpType61": [
+    "phpType59": [
       [
         "node",
         "StaticVar"
       ]
     ],
-    "phpType62": [
+    "phpType60": [
       [
         "list",
         [
@@ -11343,13 +11337,13 @@
         ]
       ]
     ],
-    "phpType63": [
+    "phpType61": [
       [
         "node",
         "Stmt_Case"
       ]
     ],
-    "phpType64": [
+    "phpType62": [
       [
         "list",
         [
@@ -11364,7 +11358,7 @@
         ]
       ]
     ],
-    "phpType65": [
+    "phpType63": [
       [
         "node",
         "Stmt_TraitUseAdaptation_Alias"
@@ -11374,7 +11368,7 @@
         "Stmt_TraitUseAdaptation_Precedence"
       ]
     ],
-    "phpType66": [
+    "phpType64": [
       [
         "int"
       ],
@@ -11382,7 +11376,7 @@
         "null"
       ]
     ],
-    "phpType67": [
+    "phpType65": [
       [
         "list",
         [
@@ -11393,13 +11387,13 @@
         ]
       ]
     ],
-    "phpType68": [
+    "phpType66": [
       [
         "node",
         "Stmt_Catch"
       ]
     ],
-    "phpType69": [
+    "phpType67": [
       [
         "node",
         "Stmt_Finally"
@@ -11408,7 +11402,7 @@
         "null"
       ]
     ],
-    "phpType70": [
+    "phpType68": [
       [
         "list",
         [
@@ -11439,7 +11433,7 @@
         ]
       ]
     ],
-    "phpType71": [
+    "phpType69": [
       [
         "node",
         "Identifier"

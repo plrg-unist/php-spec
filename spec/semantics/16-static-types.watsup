@@ -12,15 +12,6 @@ syntax ptresult = PTOK ptbranch* ptdiagnostic* | PTERROR ptdiagnostic* | PTUNSUP
 syntax ptinput = PTNAME ptqual ptbytes | PTNULLABLE ptinput | PTUNION ptinput* | PTINTER ptinput* | PTABSENT | PTINVALID
 var ptbyte : nat
 
-dec $ptlower(nat) : nat
-def $ptlower(ptbyte) = $(ptbyte + 32)
-  -- if $(ptbyte >= 65) /\ $(ptbyte <= 90)
-def $ptlower(ptbyte) = ptbyte
-  -- if $(ptbyte < 65) \/ $(ptbyte > 90)
-
-dec $ptlc(ptbytes) : ptbytes
-def $ptlc(ptbyte*) = ($ptlower(ptbyte))*
-
 dec $ptfirst(ptbytes) : ptbytes
 def $ptfirst(eps) = eps
 def $ptfirst(92 :: ptbyte*) = eps
@@ -153,11 +144,11 @@ def $ptast(NIdentifier (BYTES text) metadata) = PTNAME PTPLAIN ($base64(text))
 def $ptast(NName (BYTES text) metadata) = PTNAME PTPLAIN ($base64(text))
 def $ptast(NNameFullyQualified (BYTES text) metadata) = PTNAME PTFULL ($base64(text))
 def $ptast(NNameRelative (BYTES text) metadata) = PTNAME PTRELATIVE ($base64(text))
-def $ptast(NNullableType phpType37 metadata) = PTNULLABLE ($ptast(phpType37))
-def $ptast(NUnionType (SEQUENCE phpType71*) metadata) = PTUNION ($ptast(phpType71))*
-def $ptast(NIntersectionType (SEQUENCE phpType37*) metadata) = PTINTER ($ptast(phpType37))*
+def $ptast(NNullableType phpType35 metadata) = PTNULLABLE ($ptast(phpType35))
+def $ptast(NUnionType (SEQUENCE phpType69*) metadata) = PTUNION ($ptast(phpType69))*
+def $ptast(NIntersectionType (SEQUENCE phpType35*) metadata) = PTINTER ($ptast(phpType35))*
 def $ptast(ABSENT) = PTABSENT
-def $ptast(NVarLikeIdentifier phpType35 metadata) = PTINVALID
+def $ptast(NVarLikeIdentifier phpType33 metadata) = PTINVALID
 
 ;; Masks are finite sets of primitive alternatives; class identities stay byte names.
 dec $ptmask(ptatom) : text*

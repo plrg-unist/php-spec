@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / "frontend"))
 import wire
 
 IGNORED_META = {"startLine", "endLine", "startFilePos", "endFilePos", "startTokenPos",
-                "endTokenPos", "kind", "rawValue", "docLabel", "docIndentation", "hasLeadingNewline", "namespaceBraceLine", "statementTerminatorLine", "statementBodyLine", "parenthesizedConditional", "destructuringArrayKind", "listFirstHoleLine", "callableExprLine"}
+                "endTokenPos", "kind", "rawValue", "docLabel", "docIndentation", "hasLeadingNewline", "namespaceBraceLine", "statementTerminatorLine", "statementBodyLine", "parenthesizedConditional", "destructuringArrayKind", "listFirstHoleLine", "arrayFirstHoleLine", "concatExprLine", "cloneExprLine", "nullaryExprLine", "callableExprLine"}
 
 
 def normalize(value):

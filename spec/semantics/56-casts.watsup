@@ -1,0 +1,46 @@
+dec $cast_array_notice(pstate, pvalue, int) : pstate
+dec $cast_apply(pstate, pcast, pvalue, int) : pstate
+dec $cast_value(pstate, pcast, pvalue, int) : pstate
+dec $cast_truth_kind(pvalue) : bool
+dec $cast_truth_int(pstate, pvalue) : int
+
+;; Explicit casts over the six current value kinds; object conversion needs the
+;; object model. The compiler owns constant-cast eligibility and source timing.
+def $cast_apply(S, pcast, pvalue, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $cast_apply(S, pcast, pvalue, z) = $cast_value(S, pcast, pvalue, z)
+  -- if S.COMPLETION = NORMAL
+
+def $cast_value(S, CASTBOOL, pvalue, z) = $truth_value(S, pvalue, z)
+def $cast_value(S, CASTSTRING, pvalue, z) = $stringify(S, pvalue, z)
+def $cast_value(S, CASTINT, PFLOAT n, z) = $cast_notices(S, castnotice*, n, z)[.RESULT = KNOWN (PINT i)]
+  -- if (i, castnotice*) = $float_long(n, false)
+def $cast_value(S, CASTINT, PSTRING n*, z) = S[.RESULT = KNOWN (PINT $string_cast_integer(n*))]
+def $cast_value(S, CASTINT, PINT i, z) = S[.RESULT = KNOWN (PINT i)]
+def $cast_value(S, CASTINT, pvalue, z) = S[.RESULT = KNOWN (PINT $cast_truth_int(S, pvalue))]
+  -- if $cast_truth_kind(pvalue)
+def $cast_value(S, CASTFLOAT, PFLOAT n, z) = S[.RESULT = KNOWN (PFLOAT n)]
+def $cast_value(S, CASTFLOAT, PSTRING n*, z) = S[.RESULT = KNOWN (PFLOAT $string_cast_float(n*))]
+def $cast_value(S, CASTFLOAT, PINT i, z) = S[.RESULT = KNOWN (PFLOAT $float_of_int(i))]
+def $cast_value(S, CASTFLOAT, pvalue, z) = S[.RESULT = KNOWN (PFLOAT $float_of_int($cast_truth_int(S, pvalue)))]
+  -- if $cast_truth_kind(pvalue)
+def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
+def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_array(S, $array_empty())
+def $cast_value(S, CASTARRAY, pvalue, z) = $allocate_array($cast_array_notice(S, pvalue, z), {ITEMS ([ENTRY (KINT 0) (DIRECT pvalue)]), NEXT 1})
+  -- if ~($is_array_value(pvalue) \/ pvalue = PNULL)
+
+def $cast_truth_kind(PNULL) = true
+def $cast_truth_kind(PBOOL b) = true
+def $cast_truth_kind(PARRAY n) = true
+def $cast_truth_kind(pvalue) = false
+  -- otherwise
+
+def $cast_truth_int(S, pvalue) = 1
+  -- if $truth(S, pvalue)
+def $cast_truth_int(S, pvalue) = 0
+  -- if ~$truth(S, pvalue)
+
+def $cast_array_notice(S, PFLOAT n, z) = $diagnostic(S, "Warning", [117, 110, 101, 120, 112, 101, 99, 116, 101, 100, 32, 78, 65, 78, 32, 118, 97, 108, 117, 101, 32, 119, 97, 115, 32, 99, 111, 101, 114, 99, 101, 100, 32, 116, 111, 32, 97, 114, 114, 97, 121], z)
+  -- if $fparts_nan($float_decode(n))
+def $cast_array_notice(S, pvalue, z) = S
+  -- otherwise

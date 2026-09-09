@@ -109,11 +109,11 @@ def $ppifbody(P, pcpath, expression, statement*, metadata, b) = $ppafterifbody(P
   -- if P_cond = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
   -- if P_body = $ppcontrolbody(P_cond, pcpath ++ [PCFIELD 1], statement*, metadata)
 
-dec $ppiftail(ppstate, pcpath, nat, phpType56*, phpType57) : ppstate
+dec $ppiftail(ppstate, pcpath, nat, phpType54*, phpType55) : ppstate
 def $ppiftail(P, pcpath, n, eps, ABSENT) = P
 def $ppiftail(P, pcpath, n, eps, NStmtElse (SEQUENCE statement*) metadata) = $ppcontrolbody(P, pcpath ++ [PCFIELD 3, PCFIELD 0], statement*, metadata)
-def $ppiftail(P, pcpath, n, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType56*, phpType57) = $ppiftail(P_branch, pcpath, $(n + 1), phpType56*, phpType57)
-  -- if P_branch = $ppifbody(P, pcpath ++ [PCFIELD 2, PCINDEX n], expression, statement*, metadata, (phpType56* = eps /\ phpType57 = ABSENT))
-def $ppstatement(P, pcpath, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType56*) phpType57 metadata) = $ppiftail(P_branch, pcpath, 0, phpType56*, phpType57)
+def $ppiftail(P, pcpath, n, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType54*, phpType55) = $ppiftail(P_branch, pcpath, $(n + 1), phpType54*, phpType55)
+  -- if P_branch = $ppifbody(P, pcpath ++ [PCFIELD 2, PCINDEX n], expression, statement*, metadata, (phpType54* = eps /\ phpType55 = ABSENT))
+def $ppstatement(P, pcpath, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata) = $ppiftail(P_branch, pcpath, 0, phpType54*, phpType55)
   -- if P.COMPLETION = PPCNORMAL
-  -- if P_branch = $ppifbody(P, pcpath, expression, statement*, metadata, (phpType56* = eps /\ phpType57 = ABSENT))
+  -- if P_branch = $ppifbody(P, pcpath, expression, statement*, metadata, (phpType54* = eps /\ phpType55 = ABSENT))

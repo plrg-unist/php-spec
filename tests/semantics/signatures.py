@@ -88,10 +88,10 @@ def main():
     prefix = '''
  dec $psfixture(program, ptcontext) : psresult
  def $psfixture(PROGRAM ([(NStmtFunction phpType14 (BOOLEAN bool) phpType11 phpType16 phpType18 phpType23 metadata)]), ptcontext) = $pscompile(phpType16, phpType18, bool, ptcontext)
- def $psfixture(PROGRAM ([(NStmtNamespace phpType46 (SEQUENCE statement*) metadata)]), ptcontext) = $psfixture(PROGRAM statement*,ptcontext)
- def $psfixture(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType46 phpType44 (SEQUENCE statement*) metadata)]), ptcontext) = $psmethodfixture(statement*,ptcontext)
+ def $psfixture(PROGRAM ([(NStmtNamespace phpType44 (SEQUENCE statement*) metadata)]), ptcontext) = $psfixture(PROGRAM statement*,ptcontext)
+ def $psfixture(PROGRAM ([(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata)]), ptcontext) = $psmethodfixture(statement*,ptcontext)
  dec $psmethodfixture(statement*,ptcontext) : psresult
- def $psmethodfixture([(NStmtClassMethod phpType14 phpType24 (BOOLEAN bool) phpType11 phpType16 phpType18 phpType49 metadata)],ptcontext) = $pscompile(phpType16,phpType18,bool,ptcontext)
+ def $psmethodfixture([(NStmtClassMethod phpType14 phpType24 (BOOLEAN bool) phpType11 phpType16 phpType18 phpType47 metadata)],ptcontext) = $pscompile(phpType16,phpType18,bool,ptcontext)
  dec $pstest_params(psresult) : (ptbytes,ptbytes,bool,bool,bool,text)*
  def $pstest_params(PSOK pssignature psdiagnostic*) = ($pstest_param(psparam))*
    -- if psparam* = pssignature.PARAMETERS
@@ -103,7 +103,7 @@ def main():
  dec $pstest_defaults(program) : phpType5*
  def $pstest_defaults(PROGRAM ([(NStmtFunction phpType14 (BOOLEAN bool) phpType11 (SEQUENCE phpType17*) phpType18 phpType23 metadata)])) = ($pstest_defaultast(phpType17))*
  dec $pstest_defaultast(phpType17) : phpType5
- def $pstest_defaultast(NParam phpType14 phpType24 phpType18 phpType4 phpType4_var phpType10 phpType5 phpType39 metadata) = phpType5
+ def $pstest_defaultast(NParam phpType14 phpType24 phpType18 phpType4 phpType4_var phpType10 phpType5 phpType37 metadata) = phpType5
  dec $pstest_keptdefaults(psresult) : phpType5*
  def $pstest_keptdefaults(PSOK pssignature psdiagnostic*) = ($pstest_keptdefault(psparam.DEFAULT))*
    -- if psparam* = pssignature.PARAMETERS

@@ -21,6 +21,16 @@
 -          { $$ = Node\UseItem[$1, $3, Stmt\Use_::TYPE_UNKNOWN]; $this->checkUseUse($$, #3); }
 +          { $$ = Node\UseItem[$1, $3, Stmt\Use_::TYPE_UNKNOWN]; }
  ;
+@@ -1041,3 +1041,3 @@
+     | T_CLONE clone_argument_list                           { $$ = Expr\FuncCall[new Node\Name($1, stackAttributes(#1)), $2]; }
+-    | T_CLONE expr                                          { $$ = Expr\Clone_[$2]; }
++    | T_CLONE expr                                          { $$ = Expr\Clone_[$2]; $$->setAttribute('cloneExprLine', $this->tokens[$this->tokenPos]->line); }
+     | variable T_PLUS_EQUAL expr                            { $$ = Expr\AssignOp\Plus      [$1, $3]; }
+@@ -1068,3 +1068,3 @@
+     | expr '^' expr                                         { $$ = Expr\BinaryOp\BitwiseXor[$1, $3]; }
+-    | expr '.' expr                                         { $$ = Expr\BinaryOp\Concat    [$1, $3]; }
++    | expr '.' expr                                         { $$ = Expr\BinaryOp\Concat    [$1, $3]; $$->setAttribute('concatExprLine', $this->tokens[$this->tokenPos]->line); }
+     | expr '+' expr                                         { $$ = Expr\BinaryOp\Plus      [$1, $3]; }
 @@ -1102,5 +1102,8 @@
            }
 +          if ($$ instanceof Expr\Ternary) {
@@ -32,6 +42,11 @@
 +    | expr '?' expr ':' expr                                { $$ = Expr\Ternary[$1, $3,   $5]; $$->setAttribute('parenthesizedConditional', false); }
 +    | expr '?' ':' expr                                     { $$ = Expr\Ternary[$1, null, $4]; $$->setAttribute('parenthesizedConditional', false); }
      | expr T_COALESCE expr                                  { $$ = Expr\BinaryOp\Coalesce[$1, $3]; }
+@@ -1139,3 +1142,3 @@
+     | T_PRINT expr                                          { $$ = Expr\Print_[$2]; }
+-    | T_YIELD                                               { $$ = Expr\Yield_[null, null]; }
++    | T_YIELD                                               { $$ = Expr\Yield_[null, null]; $$->setAttribute('nullaryExprLine', $this->tokens[$this->tokenPos]->line); }
+     | T_YIELD expr                                          { $$ = Expr\Yield_[$2, null]; }
 @@ -1210,3 +1213,3 @@
      | name_readonly argument_list                           { $$ = Expr\FuncCall[$1, $2]; }
 -    | callable_expr argument_list                           { $$ = Expr\FuncCall[$1, $2]; }
