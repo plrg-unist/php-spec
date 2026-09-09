@@ -1,0 +1,66 @@
+# Full-core successor checklist
+
+Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
+has169 constructors and306 obligations:118 partial,187 pending,1 validated
+(oracle identity). Only6 obligation rows currently record dependency edges.
+Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
+and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
+claim that the inventory dependency graph is complete.
+
+## Checkpoint and next acceptance units
+
+- [ ] Finish firstcalls' current final state/reviewer gate and exact canonical
+  publication bridge. Its5751-lint/5783-assertion broad compiler gate is reviewed;
+  it does not replace full runtime/syntax/offline gates. Preserve firstcall versus
+  historical quiet/request identities and newly retired control source hashes.
+- [ ] Pair positional reference parameters with runtime sends, cell binding,
+  temporary-reference diagnostics, ownership and public resume integrity.
+  [Successor handoff](RUNTIME-CALLS-HANDOFF.md) binds frozen869,
+  five-path delta,48 phases and archive3cc3c691. Publish compiler/runtime/admission
+  atomically after firstcalls; author/reference interface review alone is insufficient.
+- [ ] Complete defaults, parameter/return types and reference returns. Reuse
+  existing signature/type/constant helpers; preserve caller/body strictness,
+  original default context, folding/diagnostic order and materialization ownership.
+  The [separate callable-stage plan](CALLS-ACTIVATION-PLAN.md) retains defaults
+  as subsequent work;114 earlier and12 additional observations remain preparation,
+  with no defaults activation.
+- [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
+  first-class/dynamic callables, function statics, pipe and argument introspection.
+  Use the same call/ownership protocol; object-bound callable cases join objects.
+
+## Remaining dependency lanes
+
+| Lane | Required work and dependencies | Evidence/exit route |
+| --- | --- | --- |
+| Existing scalar/container closure | Remaining numeric/byte/interpolation/string-increment, source encoding/preamble/halt, access/COW/typed-reference and object-coercion branches remain open. Preserve reviewed scalar/array behavior while completing dependent objects/types. | [Array omissions](../../docs/semantics/ARRAY-OMISSIONS.md), [numerics](../../docs/semantics/NUMERICS.md), inventory phase0b–2b |
+| Control and diagnostics | Switch/match, labels/goto, throw/catch/finally, suppression/handler stacks and exit remain explicit. Throwable objects and callbacks depend on minimal objects plus calls; nested cleanup must use shared unwinding. | Inventory3a/diagnostics; [CORE execution](../../docs/semantics/CORE.md) |
+| Objects/declarations | Ordered member compilation/linking/availability, inheritance/interfaces/traits/visibility, identity/creation/clone, method invocation and late-static scope; then typed/readonly/asymmetric/hooked/magic properties, enums, attributes and constants. | [Linking handoff](../../docs/semantics/LINKING-HANDOFF.md); source activation and alias/type-source/reentry gates, not header helpers alone |
+| Required intrinsics/protocols | Implement the reviewed CORE catalog through ordinary calls: Throwable/Closure, iteration/ArrayAccess/Stringable, exit/clone, assertions, introspection, registration APIs and builtin attribute behavior. Registered-name780/arginfo metadata is not builtin execution. | [Exact catalog](../../docs/semantics/CORE.md); no ordinary-library exclusion may discharge a core obligation |
+| Dynamic sources/environment | Checked eval/include/require/once, source identity/scope/failure, dynamic declarations and autoload; explicit finite shell/source services. Two later-eval request callback witnesses remain pending. | Inventory5a/environment; actual source-service→compile→execution path, no Zend evaluation fallback |
+| Resumption/lifetime | Generators/yield-from/Fibers, suspension/finally/throw, destructors/reentry, shutdown/ticks/output callbacks, cycle collection/weak references/resurrection. Depend on calls, objects and shared unwind/ownership. | Inventory5b and CORE protocols; retained-root and resumed/error/source interaction tests |
+
+## Parallel work boundaries
+
+Root coordinates two implementers plus an independent reviewer. While runtime
+pairs a frozen compiler stage, compiler work may independently capture the next
+header/default originals or research object declaration/linking semantics.
+Object research can produce source-backed tables and interface proposals before
+method/property runtime exists; it cannot claim source admission. Assign shared
+state/compiler/emitter/registry files explicitly before integration. Keep private
+roots and copied tools separate; no concurrent shared build/index mutation.
+Reviewer owns checkpoint PROGRESS/inventory corrections and accepts each exact
+combined candidate independently.
+
+## Closure gates
+
+- [ ] Update PROGRESS's historical5753/current5750 compiler paragraph and pending
+  frame/return/call rows only with checkpoint acceptance; leave later stages explicit.
+- [ ] Populate/audit dependencies and every obligation's remaining branches.
+  Namespace-relative static remains the sole intentional divergence, confined to
+  the pending class-scope declaration-type branch.
+- [ ] Run current all-source campaigns at the combined callable checkpoint, or
+  sooner for unresolved shared regressions. Preserve raw failures and all source
+  identities; Unsupported, timeouts and tool errors never pass.
+- [ ] Finish complete inventory/review, full syntax, and a fresh network-isolated
+  offline rebuild/audit against actual final inputs. No full-core completion report
+  until every required obligation and dependency closes. Never push.
