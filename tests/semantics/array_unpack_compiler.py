@@ -9,6 +9,7 @@ CASES={name:source for name,source in array_unpack.CASES.items() if name.startsw
 PREFIX=compiler.PREFIX+'''
 dec $unpack_record(ppexprdone*, pcpath) : ppexprdone?
 def $unpack_record(eps, pcpath) = eps
+def $unpack_record((PPCEFFECT pcpath_effect) :: ppexprdone*, pcpath) = $unpack_record(ppexprdone*, pcpath)
 def $unpack_record((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = (PPCEXPR pcpath n pvalue?)
 def $unpack_record((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $unpack_record(ppexprdone*, pcpath)
   -- if pcpath_other =/= pcpath
@@ -61,6 +62,8 @@ def main():
                 else:item['fields'][0]=parse(b'<?php 1;')['program'][0]['fields'][0]
                 boundary('edited-spread-'+kind,ast,['P.COMPLETION = PPCABRUPT (UNSUPPORTED "constant array unpack or edited item")'])
             root='([PCINDEX 0, PCFIELD 0, PCFIELD 1])';child='([PCINDEX 0, PCFIELD 0, PCFIELD 1, PCFIELD 0, PCINDEX 0, PCFIELD 1])'
+            spread_path='([PCINDEX 0, PCFIELD 0, PCFIELD 1, PCFIELD 0, PCINDEX 0, PCFIELD 1])'
+            boundary('list-under-unpack',parse(b'<?php $a=[...(list($b)=[[7]])];'),['P.COMPLETION = PPCNORMAL','$unpack_record(P.EXPRESSIONS, '+spread_path+') = (PPCEXPR '+spread_path+' 1 (PARRAY n))','$ppaccess(P, '+spread_path+') = (PPR)'])
             boundary('constant-pool-occurrences',parse(b'<?php $a=[...[7,8]];'),['P.COMPLETION = PPCNORMAL','$pffact(P.FOLD.FACTS, '+root+') = (PARRAY n_root)','$pffact(P.FOLD.FACTS, '+child+') = (PARRAY n_child)','n_root =/= n_child'])
             for name,source in [('overflow',b'<?php $a=[9223372036854775807=>1,...[2]];'),('dynamic-scalar',b'<?php $a=[...1,$x];')]:
                 boundary('defer-'+name,parse(source),['P.COMPLETION = PPCNORMAL','$pffact(P.FOLD.FACTS, '+root+') = eps'])

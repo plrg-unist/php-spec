@@ -629,6 +629,8 @@ for number in range(40):
         f'echo $a[{first}],$a[{second}],$a[{third}];').encode()
 
 
+from destructuring import CASES as LIST_CASES
+CASES.update(LIST_CASES)
 from array_unpack import CASES as UNPACK_CASES
 CASES.update(UNPACK_CASES)
 CASES['unpack-retired-outcome-negative'] = b'<?php $a=[...[]];'

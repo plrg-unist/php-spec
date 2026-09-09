@@ -1,0 +1,112 @@
+dec $list_value_cv(expression) : (nat*)?
+def $list_value_cv(NExprVariable phpType32 metadata) = $cv_name(phpType32)
+def $list_value_cv(expression) = eps -- otherwise
+dec $list_item_reference(expression, bool) : bool
+dec $list_fetched_tasks(pstate, poperand, nat, expression, bool, phpType13*, int) : ptask*
+dec $list_following_line(pstate, nat, expression, bool, int) : int
+;; Compiler admission must validate style/targets and publish exact target/key
+;; ending lines. These tasks consume checked occurrences, never synthetic ASTs.
+rule PhpStep/list-assignment-value: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_rhs), LIST_CAPTURE expression_pattern false $runtime_line(S, [PCFIELD 1], expression_rhs)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if ~$list_references(phpType13*)
+  -- if $list_value_cv(expression_rhs) = eps
+rule PhpStep/list-assignment-value-cv: S ~> S[.TODO = (LIST_CAPTURE expression_pattern false z) :: ptask_tail*][.RESULT = VARIABLE n_name* z]
+  -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if ~$list_references(phpType13*)
+  -- if $list_value_cv(expression_rhs) = (n_name*)
+  -- if z = $runtime_line(S, [PCFIELD 1], expression_rhs)
+rule PhpStep/list-assignment-reference: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression_rhs), LIST_CAPTURE expression_pattern true $runtime_line(S, [PCFIELD 1], expression_rhs)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if $list_references(phpType13*)
+rule PhpStep/list-capture-value: S ~> S_read[.TODO = $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), LIST_PATTERN expression S_read.RESULT z) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_CAPTURE expression false z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/list-capture-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (LIST_CAPTURE expression false z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/list-capture-reference: S ~> S[.TODO = $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), LIST_PATTERN expression (REFERENCE S.CELL) z) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_CAPTURE expression true z) :: ptask_tail*
+rule PhpStep/list-pattern: S ~> S[.TODO = (LIST_NEXT poperand 0 phpType13* z) :: ptask_tail*]
+  -- if S.TODO = (LIST_PATTERN expression poperand z) :: ptask_tail*
+  -- if $list_pattern(expression) = (phpType13*)
+rule PhpStep/list-finished: S ~> S[.TODO = ptask_tail*][.RESULT = poperand]
+  -- if S.TODO = (LIST_NEXT poperand n eps z) :: ptask_tail*
+rule PhpStep/list-hole: S ~> S[.TODO = (LIST_NEXT poperand $(n + 1) phpType13* z) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_NEXT poperand n (ABSENT :: phpType13*) z) :: ptask_tail*
+rule PhpStep/list-unkeyed: S ~> S[.TODO = (LIST_FETCH poperand n expression b_ref phpType13* z) :: ptask_tail*][.RESULT = KNOWN (PINT n)]
+  -- if S.TODO = (LIST_NEXT poperand n ((NArrayItem ABSENT expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*) z) :: ptask_tail*
+  -- if b_ref = $list_item_reference(expression, b)
+rule PhpStep/list-keyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX n, PCFIELD 0]), EVAL expression_key), LIST_FETCH poperand n expression b_ref phpType13* $runtime_line(S, [PCFIELD 0, PCINDEX n, PCFIELD 0], expression_key)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_NEXT poperand n ((NArrayItem expression_key expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*) z) :: ptask_tail*
+  -- if b_ref = $list_item_reference(expression, b)
+rule PhpStep/list-fetch-value: S ~> S_read[.TODO = $list_fetched_tasks(S_read, poperand, n, expression, false, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_FETCH poperand n expression false phpType13* z) :: ptask_tail*
+  -- if S_read = $list_read(S, poperand, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/list-fetch-reference: S ~> S_ref[.TODO = $list_fetched_tasks(S_ref[.RESULT = REFERENCE S_ref.CELL], REFERENCE n_source, n, expression, true, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
+  -- if S_ref = $list_acquire(S, n_source, S.RESULT, z)
+  -- if S_ref.COMPLETION = NORMAL
+rule PhpStep/list-fetch-value-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (LIST_FETCH poperand n expression false phpType13* z) :: ptask_tail*
+  -- if S_read = $list_read(S, poperand, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/list-fetch-reference-abrupt: S ~> S_ref[.TODO = eps]
+  -- if S.TODO = (LIST_FETCH (REFERENCE n_source) n expression true phpType13* z) :: ptask_tail*
+  -- if S_ref = $list_acquire(S, n_source, S.RESULT, z)
+  -- if S_ref.COMPLETION =/= NORMAL
+
+;; Each active source has one task owner. Fetch-result ownership moves into
+;; the target task, while the outer source stays in its next-item continuation.
+def $list_item_reference(expression, b) = $list_references(phpType13*)
+  -- if $list_pattern(expression) = (phpType13*)
+def $list_item_reference(expression, b) = b -- otherwise
+def $list_fetched_tasks(S, poperand, n, expression, b, phpType13*, z) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX n, PCFIELD 1]), LIST_PATTERN expression S.RESULT z), LIST_NEXT poperand $(n + 1) phpType13* $list_following_line(S, n, expression, b, z)]
+  -- if $list_pattern(expression) = (phpType13_nested*)
+def $list_fetched_tasks(S, poperand, n, expression, b, phpType13*, z) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX n, PCFIELD 1]), LIST_STORE expression S.RESULT b $runtime_line(S, [PCFIELD 0, PCINDEX n, PCFIELD 1], expression)), LIST_NEXT poperand $(n + 1) phpType13* $list_following_line(S, n, expression, b, z)]
+  -- if $list_pattern(expression) = eps
+
+rule PhpStep/list-store-name-value: S ~> $write_name(S, n_name*, pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) (KNOWN pvalue) false z) :: ptask_tail*
+  -- if $cv_name(phpType32) = (n_name*)
+rule PhpStep/list-store-name-reference: S ~> $bind_reference(S[.CELL = n_source], n_name*)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) (REFERENCE n_source) true z) :: ptask_tail*
+  -- if $cv_name(phpType32) = (n_name*)
+rule PhpStep/list-store-computed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), LIST_STORE_NAME poperand b z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) poperand b z) :: ptask_tail*
+  -- if $cv_name(phpType32) = eps
+  -- if phpType32 = expression
+rule PhpStep/list-store-computed-value: S ~> $write_name(S_name, $echo_value(pvalue_name), pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE_NAME (KNOWN pvalue) false z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+rule PhpStep/list-store-computed-reference: S ~> $bind_reference(S_name[.CELL = n_source], $echo_value(pvalue_name))[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE_NAME (REFERENCE n_source) true z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+rule PhpStep/list-store-computed-abrupt: S ~> S_name[.TODO = eps]
+  -- if S.TODO = (LIST_STORE_NAME poperand b z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name.COMPLETION =/= NORMAL
+rule PhpStep/list-store-dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), LIST_STORE_DIM poperand b z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE (NExprArrayDimFetch expression phpType5 metadata) poperand b z) :: ptask_tail*
+rule PhpStep/list-store-dimension-value: S ~> S_out[.TODO = ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE_DIM poperand false z) :: ptask_tail*
+  -- if S_out = $assign_array($hold_task_inputs(S), S.BASE, poperand, z)
+rule PhpStep/list-store-dimension-reference: S ~> S_out[.TODO = ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_STORE_DIM (REFERENCE n_source) true z) :: ptask_tail*
+  -- if S_out = $assign_array_reference($hold_task_inputs(S), S.BASE, n_source, z)
+
+;; Assignment from Zend's synthetic RHS restores the fetch context; only an
+;; ordinary variable assignment then resets it to the target's original line.
+def $list_following_line(S, n, expression, b, z) = $runtime_line(S, [PCFIELD 0, PCINDEX n, PCFIELD 1], expression)
+  -- if $list_pattern(expression) = (phpType13*)
+def $list_following_line(S, n, NExprVariable phpType32 metadata, false, z) = $source_line(metadata)
+def $list_following_line(S, n, expression, b, z) = z -- otherwise

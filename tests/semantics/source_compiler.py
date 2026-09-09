@@ -29,6 +29,7 @@ def $access_paths(eps) = eps
 def $access_paths((pcpath, ppmode) :: (pcpath_tail, ppmode_tail)*) = pcpath :: $access_paths((pcpath_tail, ppmode_tail)*)
 dec $expression_paths(ppexprdone*) : pcpath*
 def $expression_paths(eps) = eps
+def $expression_paths((PPCEFFECT pcpath) :: ppexprdone*) = $expression_paths(ppexprdone*)
 def $expression_paths((PPCEXPR pcpath n pvalue?) :: ppexprdone*) = pcpath :: $expression_paths(ppexprdone*)
 '''
 LINES=[b'<?php $u=7;\necho [$u, \"abc\"[\n\"1x\"]];',b'<?php $u=7;\necho \"abc\"[\n\"1x\"];',b'<?php $u=7;\necho [\"abc\"[\n\"-1x\"]];',b'<?php $u=7;\necho [$u=[\"abc\"[\n\"1x\"]]];',b'<?php $u=[NAN];\necho ($u[\n0]=$u);']
@@ -79,6 +80,7 @@ def main():
     prefix=PREFIX+'''
     dec $pprecord(ppexprdone*, pcpath) : ppexprdone?
     def $pprecord(eps, pcpath) = eps
+    def $pprecord((PPCEFFECT pcpath_effect) :: ppexprdone*, pcpath) = $pprecord(ppexprdone*, pcpath)
     def $pprecord((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = (PPCEXPR pcpath n pvalue?)
     def $pprecord((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $pprecord(ppexprdone*, pcpath)
             -- if pcpath_other =/= pcpath

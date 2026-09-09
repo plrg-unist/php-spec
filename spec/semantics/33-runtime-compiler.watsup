@@ -7,6 +7,7 @@ def $code_at(pcode :: pcode_tail*, n) = (pcode)
 def $code_at(pcode :: pcode_tail*, n) = $code_at(pcode_tail*, n)
   -- if pcode.UNIT =/= n
 dec $code_expression(pcodeexpr*, pcpath) : (int, bool)?
+def $code_expression((CODEEFFECT pcpath_effect) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
 def $code_expression(eps, pcpath) = eps
 def $code_expression((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath) = ((z, b))
 def $code_expression((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
@@ -30,6 +31,58 @@ def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
 def $compiled_read(S, porigin) = eps
   -- otherwise
+
+;; Known operand kind does not erase earlier emitted assignments. Effects name
+;; original occurrences; replay excludes a nested root already covered by an
+;; ancestor, while preserving the compiler's ordering of independent roots.
+dec $effect_below(pcpath, pcpath) : bool
+def $effect_below(pcpath_parent, pcpath_child) = (pcpath_child[0:|pcpath_parent|] = pcpath_parent)
+  -- if $(|pcpath_parent| <= |pcpath_child|)
+def $effect_below(pcpath_parent, pcpath_child) = false
+  -- if $(|pcpath_parent| > |pcpath_child|)
+dec $effect_ancestor(pcodeexpr*, pcpath, pcpath) : bool
+def $effect_ancestor(eps, pcpath_parent, pcpath_child) = false
+def $effect_ancestor((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_parent, pcpath_child) = true
+  -- if $effect_below(pcpath_parent, pcpath)
+  -- if $effect_below(pcpath, pcpath_child)
+  -- if pcpath =/= pcpath_child
+def $effect_ancestor((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_ancestor((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+  -- if ~($effect_below(pcpath_parent, pcpath) /\ $effect_below(pcpath, pcpath_child) /\ pcpath =/= pcpath_child)
+dec $effect_select(pcodeexpr*, pcodeexpr*, pcpath) : pcodeexpr*
+def $effect_select(eps, pcodeexpr_all*, pcpath_parent) = eps
+def $effect_select((CODEEFFECT pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = (CODEEFFECT pcpath) :: $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+  -- if $effect_below(pcpath_parent, pcpath)
+  -- if ~$effect_ancestor(pcodeexpr_all*, pcpath_parent, pcpath)
+def $effect_select((CODEEXPR pcpath z b) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $effect_select((CODEEFFECT pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+  -- if ~($effect_below(pcpath_parent, pcpath) /\ ~$effect_ancestor(pcodeexpr_all*, pcpath_parent, pcpath))
+dec $effect_unique(pcodeexpr*, pcodeexpr*) : pcodeexpr*
+def $effect_unique(eps, pcodeexpr_seen*) = eps
+def $effect_unique(pcodeexpr :: pcodeexpr_tail*, pcodeexpr_seen*) = pcodeexpr :: $effect_unique(pcodeexpr_tail*, pcodeexpr :: pcodeexpr_seen*)
+  -- if ~(pcodeexpr <- pcodeexpr_seen*)
+def $effect_unique(pcodeexpr :: pcodeexpr_tail*, pcodeexpr_seen*) = $effect_unique(pcodeexpr_tail*, pcodeexpr_seen*)
+  -- if pcodeexpr <- pcodeexpr_seen*
+dec $compiled_effects(pstate, porigin) : pcodeexpr*
+def $compiled_effects(S, PORIGIN n pcpath) = $effect_unique($effect_select(pcode.EXPRESSIONS, pcode.EXPRESSIONS, pcpath), eps)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $compiled_effects(S, porigin) = eps -- otherwise
+dec $effect_tasks(pstate, nat, pcodeexpr*) : ptask*
+def $effect_tasks(S, n, eps) = eps
+def $effect_tasks(S, n, (CODEEFFECT pcpath) :: pcodeexpr*) = [AT (PORIGIN n pcpath) EVAL_EFFECT, DISCARD] ++ $effect_tasks(S, n, pcodeexpr*)
+
+dec $effect_expression(pstate, porigin) : expression?
+def $effect_expression(S, porigin) = (expression)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $effect_expression(S, porigin) = eps -- otherwise
+dec $effect_outside(pcodeexpr*, pcpath) : pcodeexpr*
+def $effect_outside(eps, pcpath_target) = eps
+def $effect_outside((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_target) = $effect_outside(pcodeexpr*, pcpath_target)
+  -- if $effect_below(pcpath_target, pcpath)
+def $effect_outside((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_target) = (CODEEFFECT pcpath) :: $effect_outside(pcodeexpr*, pcpath_target)
+  -- if ~$effect_below(pcpath_target, pcpath)
+dec $redirect_effect_tasks(pstate, porigin, porigin) : ptask*
+def $redirect_effect_tasks(S, PORIGIN n pcpath, PORIGIN n pcpath_target) = $effect_tasks(S, n, $effect_outside($compiled_effects(S, PORIGIN n pcpath), pcpath_target))
 
 dec $code_name(pcodename*, pcpath) : (nat*, (nat*)?)?
 def $code_name(eps, pcpath) = eps
@@ -64,28 +117,52 @@ def $redirect_tasks(porigin, expression, false, true, z) = [AT porigin (DIM_PREP
 def $redirect_tasks(porigin, expression, true, false, z) = [AT porigin (EVAL expression), TRUTH_RESULT false z]
 def $redirect_tasks(porigin, expression, true, true, z) = [AT porigin (EVAL expression), TRUTH_RESULT false z, DIM_CAPTURE]
 
-def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_tasks(porigin_target, expression_target, b, false, z) ++ ptask*]
+def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, b, false, z) ++ ptask*]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, b, z))
-def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_tasks(porigin_target, expression_target, b, true, z) ++ ptask*]
+def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, b, true, z) ++ ptask*]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, b, z))
 
 def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
   -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_effects(S, porigin) = eps
 def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE (KNOWN pvalue)][.RESULT = KNOWN PNULL]
   -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_effects(S, porigin) = eps
 def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_name(S, porigin) = (VALUE pvalue)
 def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = eps][.COMPLETION = pcompletion]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_name(S, porigin) = (ABRUPT pcompletion)
+def $enter_compiled_task(S, PORIGIN n pcpath, EVAL expression, ptask*) = S[.TODO = $effect_tasks(S, n, pcodeexpr*) ++ [AT (PORIGIN n pcpath) (COMPILED_RESULT false)] ++ ptask*]
+  -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
+  -- if pcodeexpr* = $compiled_effects(S, PORIGIN n pcpath)
+  -- if pcodeexpr* =/= eps
+def $enter_compiled_task(S, PORIGIN n pcpath, DIM_PREP expression, ptask*) = S[.TODO = $effect_tasks(S, n, pcodeexpr*) ++ [AT (PORIGIN n pcpath) (COMPILED_RESULT true)] ++ ptask*]
+  -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
+  -- if pcodeexpr* = $compiled_effects(S, PORIGIN n pcpath)
+  -- if pcodeexpr* =/= eps
+;; This one occurrence bypasses the constant shortcut. Its original children
+;; retain their ordinary occurrence-bound descriptors and pooled reads.
+def $enter_compiled_task(S, porigin, EVAL_EFFECT, ptask*) = S[.TODO = [EVAL expression, ORIGIN_RETURN S.ORIGIN] ++ ptask*][.ORIGIN = (porigin)]
+  -- if $effect_expression(S, porigin) = (expression)
+def $enter_compiled_task(S, porigin, EVAL_EFFECT, ptask*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled effect occurrence"]
+  -- if $effect_expression(S, porigin) = eps
+def $enter_compiled_task(S, porigin, COMPILED_RESULT b, ptask*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled result"]
+  -- if $compiled_read(S, porigin) = eps
+def $enter_compiled_task(S, porigin, COMPILED_RESULT false, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $enter_compiled_task(S, porigin, COMPILED_RESULT true, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE (KNOWN pvalue)][.RESULT = KNOWN PNULL]
+  -- if $compiled_read(S, porigin) = (pvalue)
+
 def $enter_compiled_task(S, porigin, ptask, ptask_tail*) = S[.TODO = [ptask, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
   -- otherwise
 
 dec $compiled_operands(ppstate, ppexprdone*) : pcodeexpr*
 def $compiled_operands(P, eps) = eps
+def $compiled_operands(P, (PPCEFFECT pcpath) :: ppexprdone*) = (CODEEFFECT pcpath) :: $compiled_operands(P, ppexprdone*)
 def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = (CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps)) :: $compiled_operands(P, ppexprdone*)
 dec $compiled_names((pcpath, pnreference)*) : pcodename*
 def $compiled_names(eps) = eps

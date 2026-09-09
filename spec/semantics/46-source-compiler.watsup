@@ -2,7 +2,7 @@
 syntax ppmode = PPR | PPW | PPRW | PPUNSET
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
-syntax ppexprdone = PPCEXPR pcpath nat pvalue?
+syntax ppexprdone = PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath
 syntax ppstate = { LOOPS nat, FOLD pfstate, ENV plenv, LOCATION pllocation,
   COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate
@@ -384,6 +384,7 @@ def $ppmergefacts(ppconstants, (PFFACT pcpath pvalue z) :: pffact*) = PPCINVALID
   -- if $(z <= 0)
 dec $ppmergeoperands(ppconstants, ppexprdone*) : ppconstants
 def $ppmergeoperands(ppconstants, eps) = ppconstants
+def $ppmergeoperands(ppconstants, (PPCEFFECT pcpath) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
 def $ppmergeoperands(ppconstants, (PPCEXPR pcpath n eps) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
   -- if $(n > 0)
 def $ppmergeoperands(ppconstants, (PPCEXPR pcpath n (pvalue)) :: ppexprdone*) = $ppmergeoperands($ppput(ppconstants, pcpath, pvalue), ppexprdone*)

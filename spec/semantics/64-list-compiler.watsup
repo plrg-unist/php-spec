@@ -1,0 +1,129 @@
+dec $pplist_compile(ppstate, pcpath, expression) : ppstate
+dec $pplist_result(ppstate, pcpath, pvalue?) : ppstate
+;; List assignment is lowered after its RHS, without constructing checked ASTs.
+dec $pplist_keyed(phpType13*) : bool
+def $pplist_keyed(eps) = false
+def $pplist_keyed(ABSENT :: phpType13*) = $pplist_keyed(phpType13*)
+def $pplist_keyed((NArrayItem phpType5 expression phpType4_1 (BOOLEAN false) metadata) :: phpType13*) = (phpType5 =/= ABSENT)
+def $pplist_keyed(phpType13*) = false -- otherwise
+
+dec $pplist_variable_or_call(expression) : bool
+def $pplist_variable_or_call(NExprVariable phpType32 metadata) = true
+def $pplist_variable_or_call(NExprArrayDimFetch expression phpType5 metadata) = true
+def $pplist_variable_or_call(NExprPropertyFetch expression phpType20 metadata) = true
+def $pplist_variable_or_call(NExprNullsafePropertyFetch expression phpType20 metadata) = true
+def $pplist_variable_or_call(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
+def $pplist_variable_or_call(NExprFuncCall phpType19 phpType6 metadata) = true
+def $pplist_variable_or_call(NExprMethodCall expression phpType20 phpType6 metadata) = true
+def $pplist_variable_or_call(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
+def $pplist_variable_or_call(NExprStaticCall phpType19 phpType20 phpType6 metadata) = true
+def $pplist_variable_or_call(NExprBinaryOpPipe expression_1 expression_2 metadata) = true
+def $pplist_variable_or_call(expression) = false -- otherwise
+
+dec $pplist_writable(expression) : bool
+def $pplist_writable(NExprArrayDimFetch expression phpType5 metadata) = $pplist_writable(expression)
+def $pplist_writable(NExprPropertyFetch expression phpType20 metadata) = $pplist_writable(expression)
+def $pplist_writable(expression) = ($pplist_variable_or_call(expression) /\ ~$ppnullsafe(expression)) -- otherwise
+
+dec $pplist_rhscheck(ppstate, expression, bool) : ppstate
+def $pplist_rhscheck(P, expression, true) = $ppcheck(P, $context_error("Cannot assign reference to non referenceable value", P.LOCATION.LINE))
+  -- if ~$pplist_variable_or_call(expression)
+def $pplist_rhscheck(P, expression, true) = $ppcheck(P, $context_error("Cannot take reference of a nullsafe chain", P.LOCATION.LINE))
+  -- if $pplist_variable_or_call(expression)
+  -- if $ppnullsafe(expression)
+def $pplist_rhscheck(P, expression, b) = P -- otherwise
+
+dec $pplist_rhs(ppstate, pcpath, expression, bool) : ppstate
+def $pplist_rhs(P, pcpath, NExprVariable phpType32 metadata, false) = $ppdone($ppvariable(P, pcpath, phpType32, PPR), pcpath, PPR)
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_rhs(P, pcpath, expression, b) = $ppexpr(P, pcpath, expression, $ppvaluemode(b)) -- otherwise
+
+dec $pplist_assignment(ppstate, pcpath, expression, expression, phpType13*) : ppstate
+def $ppassign(P, pcpath, NExprList (SEQUENCE phpType13*) metadata, expression_rhs, false) = $pplist_assignment(P, pcpath, NExprList (SEQUENCE phpType13*) metadata, expression_rhs, phpType13*)
+def $pplist_assignment(P, pcpath, expression_pattern, expression_rhs, phpType13*) = $pplist_result($pplist_compile(P_rhs, pcpath ++ [PCFIELD 0], expression_pattern), pcpath, P_rhs.FOLD.VALUE)
+  -- if b = $list_references(phpType13*)
+  -- if P_rhs = $pplist_rhs($pplist_rhscheck(P, expression_rhs, b), pcpath ++ [PCFIELD 1], expression_rhs, b)
+
+dec $pplist_items(ppstate, pcpath, int, nat, phpType13*, bool, bool) : ppstate
+dec $pplist_target(ppstate, pcpath, int, expression, bool) : ppstate
+dec $pplist_targetcheck(ppstate, int, expression) : ppstate
+dec $pplist_store(ppstate, pcpath, expression, bool) : ppstate
+dec $pplist_storecheck(ppstate, expression) : ppstate
+dec $pplist_storeline(ppstate, pcpath, expression, bool, nat) : ppstate
+
+def $pplist_compile(P, pcpath, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplist_compile(P, pcpath, expression) = $ppunsupported(P, "missing list syntax context")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pplist_style(expression) = 0
+def $pplist_compile(P, pcpath, expression) = $ppdone($pplist_items(P, pcpath ++ [PCFIELD 0], z_style, 0, phpType13*, $pplist_keyed(phpType13*), false), pcpath, PPW)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if z_style = $pplist_style(expression)
+  -- if $(z_style > 0)
+  -- if $list_pattern(expression) = (phpType13*)
+
+def $pplist_items(P, pcpath, z_style, n, phpType13*, b_keyed, b_seen) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplist_items(P, pcpath, z_style, n, eps, b_keyed, true) = $ppclearvalue(P)
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_items(P, pcpath, z_style, n, eps, b_keyed, false) = $ppcheck(P, $context_error("Cannot use empty list", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_items(P, pcpath, z_style, n, ABSENT :: phpType13*, false, b_seen) = $pplist_items(P, pcpath, z_style, $(n + 1), phpType13*, false, b_seen)
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_items(P, pcpath, z_style, n, ABSENT :: phpType13*, true, b_seen) = $ppcheck(P, $context_error("Cannot use empty array entries in keyed array assignment", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_items(P, pcpath, z_style, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN true) metadata) :: phpType13*, b_keyed, b_seen) = $ppcheck(P, $context_error("Spread operator is not supported in assignments", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_items(P, pcpath, z_style, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*, b_keyed, b_seen) = $ppcheck(P, $context_error("Cannot mix keyed and unkeyed array entries in assignments", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if b_keyed =/= (phpType5 =/= ABSENT)
+def $pplist_items(P, pcpath, z_style, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*, b_keyed, b_seen) = $pplist_items($pplist_target($ppitemkey(P, pcpath ++ [PCINDEX n, PCFIELD 0], phpType5), pcpath ++ [PCINDEX n, PCFIELD 1], z_style, expression, b), pcpath, z_style, $(n + 1), phpType13*, b_keyed, true)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if b_keyed = (phpType5 =/= ABSENT)
+
+def $pplist_targetcheck(P, z_style, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplist_targetcheck(P, z_style, expression) = $ppunsupported(P, "missing list syntax context")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $list_pattern(expression) = (phpType13*)
+  -- if $pplist_style(expression) = 0
+def $pplist_targetcheck(P, z_style, expression) = $ppcheck(P, $context_error("Cannot assign to array(), use [] instead", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pplist_style(expression) = 1
+def $pplist_targetcheck(P, z_style, expression) = $ppcheck(P, $context_error("Cannot mix [] and list()", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $list_pattern(expression) = (phpType13*)
+  -- if z_target = $pplist_style(expression)
+  -- if $(z_target > 1 /\ z_target =/= z_style)
+def $pplist_targetcheck(P, z_style, expression) = $ppcheck(P, $context_error("Assignments can only happen to writable values", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $list_pattern(expression) = eps
+  -- if ~$pplist_writable(expression)
+def $pplist_targetcheck(P, z_style, expression) = P -- otherwise
+
+def $pplist_target(P, pcpath, z_style, expression, b) = $pplist_compile($pplist_targetcheck(P, z_style, expression), pcpath, expression)
+  -- if $list_pattern(expression) = (phpType13*)
+def $pplist_target(P, pcpath, z_style, expression, b) = $pplist_store($pplist_targetcheck(P, z_style, expression), pcpath, expression, b)
+  -- if $list_pattern(expression) = eps
+
+def $pplist_store(P, pcpath, expression, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplist_store(P, pcpath, expression, b) = $pplist_storeline($ppexpr($pplist_storecheck($pplocate(P, pcpath, $expression_line(expression)), expression), pcpath, expression, PPW), pcpath, expression, b, P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_storecheck(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
+  -- if $cv_name(phpType32) = ([116,104,105,115])
+def $pplist_storecheck(P, expression) = $ppupdatecheck(P, expression) -- otherwise
+
+def $pplist_storeline(P, pcpath, expression, b, n) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplist_storeline(P, pcpath, NExprVariable phpType32 metadata, false, n) = $ppclearvalue($pplocate(P, pcpath, $source_line(metadata)))
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_storeline(P, pcpath, expression, b, n) = $ppclearvalue($pplocate(P, pcpath, n)) -- otherwise
+
+;; A known operand can have emitted effects. It is not a replaceable PF fact.
+def $pplist_result(P, pcpath, pvalue?) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplist_result(P, pcpath, (pvalue)) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]][.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEFFECT pcpath]]
+  -- if P.COMPLETION = PPCNORMAL
+def $pplist_result(P, pcpath, eps) = $ppclearvalue(P)
+  -- if P.COMPLETION = PPCNORMAL

@@ -64,3 +64,6 @@ dec $origin_next_item(porigin?, phpType13*) : porigin?
 def $origin_next_item(eps, phpType13*) = eps
 def $origin_next_item((porigin), eps) = (porigin)
 def $origin_next_item((PORIGIN n pcpath), phpType13 :: phpType13_tail*) = (PORIGIN n $next_index_path(pcpath))
+
+def $task_source_node(LIST_PATTERN expression poperand z) = (expression)
+def $task_source_node(LIST_STORE expression poperand b z) = (expression)

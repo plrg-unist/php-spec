@@ -1,0 +1,55 @@
+;; List fetches differ from ordinary DIM reads: string offsets are not read,
+;; null is silent, and other scalars warn once per fetch after a delayed key read.
+dec $list_scalar_value(pstate, pvalue, int) : pstate
+def $list_scalar_value(S, PNULL, z) = S[.RESULT = KNOWN PNULL]
+def $list_scalar_value(S, pvalue, z) = $diagnostic(S, "Warning", [67,97,110,110,111,116,32,117,115,101,32] ++ $type_bytes(pvalue) ++ [32,97,115,32,97,114,114,97,121], z)[.RESULT = KNOWN PNULL]
+  -- otherwise
+
+dec $list_value_read(pstate, pvalue, poperand, int) : pstate
+def $list_value_read(S, PARRAY n, poperand, z) = $array_read(S, PARRAY n, poperand, z)
+def $list_value_read(S, pvalue, poperand, z) = S_key
+  -- if ~$is_array_value(pvalue)
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $list_value_read(S, pvalue, poperand, z) = $list_scalar_value(S_key, pvalue, z)
+  -- if ~$is_array_value(pvalue)
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+
+dec $list_read(pstate, poperand, poperand, int) : pstate
+def $list_read(S, poperand_source, poperand_key, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $list_read(S, poperand_source, poperand_key, z) = S_source
+  -- if S.COMPLETION = NORMAL
+  -- if S_source = $resolve_at(S, poperand_source, z)
+  -- if S_source.COMPLETION =/= NORMAL
+def $list_read(S, poperand_source, poperand_key, z) = $list_value_read(S_source, pvalue, poperand_key, z)
+  -- if S.COMPLETION = NORMAL
+  -- if S_source = $resolve_at(S, poperand_source, z)
+  -- if S_source.COMPLETION = NORMAL
+  -- if S_source.RESULT = KNOWN pvalue
+
+dec $list_acquire(pstate, nat, poperand, int) : pstate
+dec $list_reference_at(pstate) : pstate
+def $list_acquire(S, n_source, poperand_key, z) = $list_reference_at($dimension_location(S[.LOCATION = ROOT n_source], (poperand_key), STRINGREFERENCE, z))
+def $list_reference_at(S) = S
+  -- if S.COMPLETION =/= NORMAL
+def $list_reference_at(S) = $element_reference(S, n_array, pkey)
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = ELEMENT n_array pkey
+
+;; Reference requirements propagate from leaves through every nested pattern.
+dec $list_pattern(expression) : phpType13*?
+def $list_pattern(NExprList (SEQUENCE phpType13*) metadata) = (phpType13*)
+def $list_pattern(NExprArray (SEQUENCE phpType13*) metadata) = (phpType13*)
+def $list_pattern(expression) = eps -- otherwise
+dec $list_references(phpType13*) : bool
+def $list_references(eps) = false
+def $list_references(ABSENT :: phpType13*) = $list_references(phpType13*)
+def $list_references((NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN b_spread) metadata) :: phpType13*) = ($list_references(phpType13_nested*) \/ $list_references(phpType13*))
+  -- if $list_pattern(expression) = (phpType13_nested*)
+def $list_references((NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*) = (b \/ $list_references(phpType13*))
+  -- if $list_pattern(expression) = eps
+
+def $list_references((NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN true) metadata) :: phpType13*) = $list_references(phpType13*)
+  -- if $list_pattern(expression) = eps

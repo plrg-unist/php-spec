@@ -1,0 +1,44 @@
+;; Existing checked metadata preserves the Zend array/list syntax designation.
+dec $pplist_meta_kind_tag(metadataEntry) : bool
+def $pplist_meta_kind_tag(Mkind z) = true
+def $pplist_meta_kind_tag(metadataEntry) = false -- otherwise
+dec $pplist_meta_kind(metadata) : int
+def $pplist_meta_kind(eps) = 0
+def $pplist_meta_kind((Mkind z) :: metadata) = z
+def $pplist_meta_kind(metadataEntry :: metadata) = $pplist_meta_kind(metadata)
+  -- if ~$pplist_meta_kind_tag(metadataEntry)
+dec $pplist_meta_original_tag(metadataEntry) : bool
+def $pplist_meta_original_tag(MdestructuringArrayKind z) = true
+def $pplist_meta_original_tag(metadataEntry) = false -- otherwise
+dec $pplist_meta_original(metadata) : int
+def $pplist_meta_original(eps) = 0
+def $pplist_meta_original((MdestructuringArrayKind z) :: metadata) = z
+def $pplist_meta_original(metadataEntry :: metadata) = $pplist_meta_original(metadata)
+  -- if ~$pplist_meta_original_tag(metadataEntry)
+dec $pplist_style(expression) : int
+def $pplist_style(NExprList phpType12 metadata) = 3
+  -- if $pplist_meta_kind(metadata) = 1
+def $pplist_style(NExprList phpType12 metadata) = z
+  -- if $pplist_meta_kind(metadata) = 2
+  -- if z = $pplist_meta_original(metadata)
+  -- if $(z = 1 \/ z = 2)
+def $pplist_style(NExprArray phpType12 metadata) = z
+  -- if z = $pplist_meta_kind(metadata)
+  -- if $(z = 1 \/ z = 2)
+def $pplist_style(expression) = 0 -- otherwise
+
+dec $pplist_hole_line_tag(metadataEntry) : bool
+def $pplist_hole_line_tag(MlistFirstHoleLine z) = true
+def $pplist_hole_line_tag(metadataEntry) = false -- otherwise
+dec $pplist_hole_line(metadata) : int
+def $pplist_hole_line(eps) = 0
+def $pplist_hole_line((MlistFirstHoleLine z) :: metadata) = z
+def $pplist_hole_line(metadataEntry :: metadata) = $pplist_hole_line(metadata)
+  -- if ~$pplist_hole_line_tag(metadataEntry)
+def $expression_line(NExprList (SEQUENCE eps) metadata) = $source_end_line(metadata)
+dec $pplist_first_line(phpType13*, metadata) : int
+def $pplist_first_line(eps, metadata) = $source_end_line(metadata)
+  -- if $pplist_meta_kind(metadata) = 1
+def $pplist_first_line(phpType13*, metadata) = $pplist_hole_line(metadata) -- otherwise
+def $expression_line(NExprList (SEQUENCE (ABSENT :: phpType13*)) metadata) = $pplist_first_line(phpType13*, metadata)
+def $expression_line(NExprList (SEQUENCE ((NArrayItem phpType5 expression phpType4_1 phpType4_2 metadata_item) :: phpType13*)) metadata) = $expression_line(expression)

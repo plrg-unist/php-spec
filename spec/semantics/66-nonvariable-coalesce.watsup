@@ -1,0 +1,20 @@
+;; Ordinary expression coalesce preserves its selected value as a copy. Quiet
+;; variable/location reads require a separate access protocol in the compiler.
+dec $coalesce_result(pstate, expression, int, int) : pstate
+def $coalesce_result(S, expression, z_left, z_right) = S_read[.TODO = eps]
+  -- if S_read = $resolve_at(S, S.RESULT, z_left)
+  -- if S_read.COMPLETION =/= NORMAL
+def $coalesce_result(S, expression, z_left, z_right) = S_read[.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_read = $resolve_at(S, S.RESULT, z_left)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if pvalue =/= PNULL
+def $coalesce_result(S, expression, z_left, z_right) = S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), VALUE_COPY z_right] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_read = $resolve_at(S, S.RESULT, z_left)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN PNULL
+rule PhpStep/coalesce-result: S ~> $coalesce_result(S[.TODO = ptask_tail*], expression, z_left, z_right)
+  -- if S.TODO = (COALESCE_RESULT expression z_left z_right) :: ptask_tail*
+rule PhpStep/coalesce-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_left), COALESCE_RESULT expression_right $runtime_line(S, [PCFIELD 0], expression_left) $runtime_line(S, [PCFIELD 1], expression_right)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpCoalesce expression_left expression_right metadata)) :: ptask_tail*
+  -- if ~$coalesce_quiet_operand(expression_left)

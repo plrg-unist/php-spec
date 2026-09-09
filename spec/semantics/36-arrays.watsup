@@ -58,6 +58,7 @@ def $cast_notices(S, PRECISIONLOSS :: castnotice_tail*, n_bits, z) = $cast_notic
   -- if (n_text*, b) = $number_text(NFLOAT n_bits, $(-1))
   -- if S_warned = $diagnostic(S, "Deprecated", [73,109,112,108,105,99,105,116,32,99,111,110,118,101,114,115,105,111,110,32,102,114,111,109,32,102,108,111,97,116,32] ++ n_text* ++ [32,116,111,32,105,110,116,32,108,111,115,101,115,32,112,114,101,99,105,115,105,111,110], z)
 
+dec $dimension_key_value(pstate, pvalue, int) : pstate
 dec $key_value(pstate, pvalue, bool, int) : pstate
 def $key_value(S, PINT i, b, z) = S[.KEY = KINT i]
 def $key_value(S, PBOOL false, b, z) = S[.KEY = KINT 0]
@@ -72,7 +73,7 @@ def $key_value(S, PNULL, false, z) = S_warned[.KEY = KSTRING eps]
 def $key_value(S, PFLOAT n, b, z) = S_warned[.KEY = KINT i]
   -- if (i, castnotice*) = $float_long(n, true)
   -- if S_warned = $cast_notices(S, castnotice*, n, z)
-def $key_value(S, PARRAY n, b, z) = S[.COMPLETION = UNSUPPORTED "array-key error compilation"]
+def $key_value(S, PARRAY n, b, z) = $dimension_key_value(S, PARRAY n, z)
 
 dec $undefined_operand(pstate, poperand) : bool
 def $undefined_operand(S, VARIABLE n* z) = true
@@ -119,7 +120,6 @@ def $c_string(0 :: n_tail*) = eps
 def $c_string(n :: n_tail*) = n :: $c_string(n_tail*)
   -- if n =/= 0
 
-dec $dimension_key_value(pstate, pvalue, int) : pstate
 dec $dimension_key(pstate, poperand, int) : pstate
 dec $array_read(pstate, pvalue, poperand, int) : pstate
 def $array_read(S, PARRAY n, poperand, z) = S_key

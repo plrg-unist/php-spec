@@ -227,3 +227,10 @@ def $separate_location_array(S, n) = $allocate_array(S_live, S_live.ARRAYS[n][.I
 ;; tool observation and must retain the interrupted machine state.
 dec $release_temporaries(pstate) : pstate
 def $release_temporaries(S) = S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
+
+def $task_nodes(LIST_PATTERN expression poperand z) = $operand_nodes(poperand)
+def $task_nodes(LIST_NEXT poperand n phpType13* z) = $operand_nodes(poperand)
+def $task_nodes(LIST_FETCH poperand n expression b phpType13* z) = $operand_nodes(poperand)
+def $task_nodes(LIST_STORE expression poperand b z) = $operand_nodes(poperand)
+def $task_nodes(LIST_STORE_NAME poperand b z) = $operand_nodes(poperand)
+def $task_nodes(LIST_STORE_DIM poperand b z) = $operand_nodes(poperand)
