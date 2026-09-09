@@ -21,6 +21,15 @@ dec $ppexpr(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppexprbody(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppdone(ppstate, pcpath, ppmode) : ppstate
 dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
+dec $ppimportedprefix(plenv, ptbytes) : bool
+
+;; Temporary admission boundary until the ordinary constant fetch consumes
+;; pnreference. Zend substitutes a case-insensitive class-import prefix here.
+def $ppimportedprefix(plenv, ptbytes) = true
+  -- if 92 <- ptbytes
+  -- if $pllookup(plenv.CLASSES, $ptlc($ptfirst(ptbytes))) = ptbytes_import
+def $ppimportedprefix(plenv, ptbytes) = false
+  -- otherwise
 
 def $ppstart(n, program, ptbytes) = $pplexical({ FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, EXPRESSIONS eps, ACCESS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
@@ -133,6 +142,11 @@ def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD =
 def $ppdispatch(P, pcpath, NExprConstFetch (NName (BYTES text) metadata_name) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = $fold_scalar(NExprConstFetch (NName (BYTES text) metadata_name) metadata)]]
   -- if P.ENV.NAMESPACE = eps
   -- if P.ENV.CONSTANTS = eps
+  -- if ~$ppimportedprefix(P.ENV, $base64(text))
+def $ppdispatch(P, pcpath, NExprConstFetch (NName (BYTES text) metadata_name) metadata, PPR) = $ppunsupported(P, "qualified constant import resolution pending")
+  -- if P.ENV.NAMESPACE = eps
+  -- if P.ENV.CONSTANTS = eps
+  -- if $ppimportedprefix(P.ENV, $base64(text))
 def $ppdispatch(P, pcpath, NExprVariable phpType34 metadata, ppmode) = $ppvariable(P, pcpath, phpType34, ppmode)
 def $ppdispatch(P, pcpath, NExprAssign expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, false)
 def $ppdispatch(P, pcpath, NExprAssignRef expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, true)

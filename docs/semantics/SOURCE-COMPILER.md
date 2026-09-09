@@ -3,7 +3,8 @@
 `46-source-compiler.watsup` combines the checked source-unit identity, ordered
 namespace/import context and constant-expression helpers for the source statements
 and expressions currently admitted by the runtime. It produces compiler work and
-operand descriptors from the retained AST. It is not yet the runtime entry point.
+operand descriptors from the retained AST. The source runtime invokes it before
+executing recorded work through `33-runtime-compiler.watsup`.
 
 `$ppstart(id, program, file)` constructs a checked source unit and returns:
 
@@ -61,12 +62,12 @@ operands. This structural export check does not re-prove constant evaluation or
 replace the runtime installer's checked unit/path and array-graph validation.
 
 Both kinds of constant array value remain rooted in the isolated compiler store,
-including constant array-union operands. Runtime installation must remap tables
-into a disjoint runtime allocation range and register permanent compiled-unit
-roots. The runtime's temporary `HELD` list is cleared by cleanup and is not an
-adequate permanent pool owner. Pool installation and runtime consumption are
-separate pending work; no pool is allocated again merely because a loop or
-function executes the same source occurrence again.
+including constant array-union operands. The runtime installer remaps tables into
+a disjoint allocation range and registers permanent compiled-unit roots. It keeps
+compact operand metadata, not the isolated compiler state. Temporary `HELD` roots
+are cleared by cleanup, while compiled pools remain rooted. A compiled occurrence
+is looked up in its installed pool; source loops and functions remain unsupported,
+so their execution is not established by this installation milestone.
 
 Expression records preserve the current compiler line after children, including
 partial-fold line effects and assignment's explicit target-line reset. A direct
@@ -82,8 +83,8 @@ inside writable paths; DIM bases inherit the surrounding mode. The current
 reference forms use the same write-fetch mode as ordinary targets. Runtime tasks
 retain their separate reference-acquisition protocol.
 
-The runtime consumer may intercept a pooled value only for a `PPR` occurrence;
-it must preserve write and unset path preparation. Constant facts beneath an
+The runtime consumer intercepts pooled values only for `PPR` occurrences with a
+constant operand, preserving write and unset path preparation. Constant facts beneath an
 entirely folded parent can have no ordinary expression/access descriptor because
 normal compilation never enters those children. They remain constant-store
 owners, not executable entry points. Missing access or unsuccessful compilation
@@ -112,10 +113,13 @@ The supported ordinary statements are expression statements, echo, unset, blocks
 inline output and no-ops, with out-of-context bare `break` rejection. Expressions
 cover the current scalar/global-constant, variable, assignment/reference,
 `+ - * / === !==`, unary sign, array and dimension subset. Namespaced or imported
-constant resolution, arrays under those unresolved lexical contexts, compile-time
+constant resolution (including a qualified name with a matching class-import
+prefix), arrays under those unresolved lexical contexts, compile-time
 computed-name warnings and HTTP-variable assignment flags remain Unsupported.
 Functions/classes, declare effects, loops and other statements still stop the
-ordinary compiler explicitly. These are pending core obligations. Removing the
-old `20-machine.watsup` prepass and `36-arrays.watsup` classifier requires the
-reviewed runtime consumer to install the pool and use expression end-line and
-constant-result descriptors before that replacement is made.
+ordinary compiler explicitly. These are pending core obligations. Namespace and
+import diagnostics are emitted before recorded work executes, but constant-name
+consumers of `22-name-resolution.watsup` remain pending. The old whole-program
+check and recursive array-fold classifier are no longer the public source
+compilation path. Their legacy helper definitions, and the compiler's remaining
+direct-CV/bare-break checker dependencies, still require coordinated retirement.

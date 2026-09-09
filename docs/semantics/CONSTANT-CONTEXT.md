@@ -2,8 +2,10 @@
 
 `45-constant-context.watsup` supplies an internal compiler helper for the admitted
 global scalar, arithmetic, identity, array and dimension expressions. It retains
-partial constant folds as facts about exact checked source occurrences. It is not
-yet installed in the source compiler or runtime module catalog.
+partial constant folds as facts about exact checked source occurrences. The
+ordered source compiler uses it through `46-source-compiler.watsup`, and
+`33-runtime-compiler.watsup` installs and consumes its values for the admitted
+source subset.
 
 The source is PHP 8.5.10 `vendor/php-src/Zend/zend_compile.c`:
 `zend_eval_const_expr` (12088 onwards), `zend_try_ct_eval_array` (10085 onwards),
@@ -27,19 +29,23 @@ occurrences and exact selected expression equality, including metadata. A forged
 path, a changed selected expression, missing compiler line or unsupported lexical
 context does not become a successful fold. Earlier unsuccessful completion is
 preserved. The current constant-name resolver is explicitly restricted to empty
-namespace and constant-import tables. Class/function imports do not affect this
-admitted expression subset. Namespaced resolution must later consume the same
-lexical environment, rather than duplicate a separate name-resolution model.
+namespace and constant-import tables. Ordinary compilation temporarily rejects
+compound constant names whose first segment matches a class import, including
+ASCII case variants. Unqualified constants and unmatched compound prefixes remain
+admitted. The current startup constants are all unqualified, so the partial
+prepass cannot fold an imported compound name before this ordinary check. This
+boundary remains a pending source obligation: constant fetches must consume the
+shared `22-name-resolution.watsup` descriptors and the same lexical environment.
 
 Each successful value is cached at its structural path. A later compiler visit
 to that occurrence reuses it; a distinct occurrence has a distinct fact. Each
 retained array fact also contributes a persistent `MEMORY.HELD` owner root, so
 replacing the transient result or pruning the heap cannot erase an earlier pool
 value. Temporary failed array construction is discarded, while its previously
-folded child facts remain. The runtime must install and retain this compiled-unit
-pool once, then reuse values across execution. Creating a new pool on each loop
-iteration or function call would lose literal occurrence identity, observably for
-arrays containing NaN.
+folded child facts remain. Runtime installation remaps the tables once and retains
+permanent compiled-unit roots separately from runtime temporary roots. Reuse is
+by source occurrence, rather than by expression equality. Source loops/functions
+remain unsupported; their future execution must reuse the installed pool.
 
 Constant evaluation visits both operands of admitted binary operators, and visits
 a dimension's base then key. An absent dimension key errors before either child
@@ -53,8 +59,8 @@ array key raises the compile-time `Illegal offset type` error.
 
 Variables, assignments and reference assignments stop this constant-evaluation
 invocation without visiting their children. This is not an ordinary compilation
-barrier: the source compiler must still compile their children using the correct
-operand rules and invoke constant evaluation for each subsequently compiled array.
+barrier: the source compiler compiles their children using the appropriate
+operand rules and invokes constant evaluation for each subsequently compiled array.
 The helper does not infer ordinary compilation order from structural preorder.
 Unimplemented constant-evaluation kinds, including unpacking, are explicit
 Unsupported; this helper does not claim all PHP constant expressions. Empty array
@@ -72,13 +78,15 @@ repeated occurrence reuse, and distinct paths for identical NaN array literals.
 These are helper/compiler-context observations, not completed source-machine
 execution comparisons.
 
-The next integration must thread source-unit IDs and occurrence paths through
-ordinary compiler work and runtime tasks, install the persistent pool, and consume
-partial facts before evaluating remaining children. Only then should this helper
-replace `20-machine.watsup`'s bounded constant-read prepass and
-`36-arrays.watsup`'s recursive classifier. Their current source behavior remains
-in force until that coordinated replacement; string/scalar source reads and
-loop/function literal-pool behavior are still pending.
+Source-unit IDs and occurrence paths now travel through ordinary compilation and
+runtime tasks. The source consumer installs the persistent pool and uses compiled
+read values and ending lines before evaluating remaining children. The old
+whole-program constant-read prepass and recursive array-fold classifier are no
+longer the public source compilation path; legacy helper definitions and remaining
+leaf-checker dependencies await coordinated retirement. Generic scalar/string
+runtime reads and source loop/function behavior are still pending. A string DIM
+folded by this prepass can execute through its constant value without establishing
+those generic runtime reads.
 
 Each `PFFACT` retains the effective line of its constant AST node. Original integer, float and string leaves keep their source lines. Actual constant-expression rewrites use the invocation compiler line, matching `zend_eval_const_expr` replacing the node with `zend_ast_create_zval` (`zend_compile.c:12380`, `zend_ast.c:88`). The original checked syntax remains unchanged. `$pffactline` exposes this provenance to ordinary compilation; cached facts retain the first rewrite line across repeated evaluation.
 
