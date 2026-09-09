@@ -74,7 +74,11 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   metadata `64e320b0` corrects all 14 bare-break line witnesses; 20 metadata
   profiles/200 checks, eight alternate sources/five mutations, schema parity,
   bounded syntax tests and inventory passed. Full declaration,
-  default and body compilation remain incomplete. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
+  default and body compilation remain incomplete. Control body metadata `3a137a36` also
+  passes 43 profiles/430 checks, 12 independent profiles/96 checks, deterministic
+  schema regeneration and bounded syntax tests;
+  [review evidence](coverage/semantics/control-metadata-review.json) distinguishes
+  single statements from synthetic brace/colon bodies. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
   +15 descriptor checks,43 independent sources and19 runtime states passed.
   [Namespace evidence](coverage/semantics/namespace-constants-review.json) retains
   qualification, fallback timing, cache contexts and resumed origins.
