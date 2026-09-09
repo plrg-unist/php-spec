@@ -1,125 +1,119 @@
 # Independent review continuation
 
 Read PLAN, PROGRESS, applicable AGENTS and the php/php-spec/p4-spectec skills first.
-Root orchestrates; runtime owns execution/storage, compiler owns static/frontend
-work, reviewer owns independent evidence, inventory, PROGRESS and concise docs.
-Never push. Coordinate file ownership, Git index and Dune starts. Complete core
-remains unfinished; no constructor or PHP semantic family closes here.
+Root orchestrates. Runtime3 owns execution/storage, compiler4 owns compiler/frontend,
+and compiler3 owns independent review, evidence, inventory and concise status/docs.
+Never push. Coordinate the index and canonical Dune starts. Complete core remains
+unfinished; no constructor or PHP semantic family closes here.
 
-## Accepted compound checkpoint
+## Accepted nullable/context prerequisite
 
-Code `63028b5a`, reports `76129823` and review `d61eccde`
-([evidence](../../coverage/semantics/compound-review.json)) pass **2,639 exact sources
-+25 negatives** on `c394a6e74ba417b846a720371a0eb9b381921ea8e8e478df22c9772e415ed8e8`.
-The independent raw audit binds all ordered IDs, exact source bytes/hashes and
-stdout/stderr/status, plus every old wrapper/incdec and new compound original.
-Independent gates pass 277 programs/5,393 assertions and 324 compiler sources/156
-access paths/six line checks; three loops resume identically at every budget0–100.
-Canonical gates pass 951 runtime programs/13,454 assertions and 289 lints/34 paths/
-24 emission observations/12 contexts. Broad compiler 2,681, prior incdec 108 compiler
-and 154 runtime, wrappers, write-fetch, origins 25/333, bridge 15/148 and ownership
-617+96/5,434 all have the same current closure. Helper collection is not source GC.
+Code `9b82507a`, author reports `22b36687`, review `91f035e0` accept the bounded
+[ordinary omission prerequisite](../../coverage/semantics/array-omission-review.json)
+on `1ff3da3bd8705de5705d721bdfdb1223230b25c4d5d50b4b528f8d2c26be6a74`.
+Production gates pass262 exact sources/lints,2,135 resumption assertions,62 contexts,
+25 cast facts, five separately pending lookup cases,2,943 compiler lints and106
+metadata profiles/1,751 checks. Independent gates pass176 current sources,32 extra
+sources,136 metadata boundaries,24 fresh encoding/print profiles and277 preserved
+compound programs/5,393 assertions. Source observations are not all distinct bytes.
 
-The twelve compound forms capture target/name/key access once, preserving delayed
-CV versus forced RHS evaluation, self-DIM scheduling, alias rebinding and array
-union COW/reference ownership. Two actual draft defects were exposed independently:
-compound direct/literal `$this` is lint-valid and globally fails at eager FETCH_THIS;
-final DIM operation diagnostics use target opcode lines while the compiler descriptor
-retains its final RHS context. Never restore the old static-this guard or rewind
-ordinary compiler LOCATION.72 this originals,72 compiler controls and three actual
-runtime failures remain unchanged, separately resolved in the passing catalog.
+Publication binds43 code/ledger files and four canonical tools. Reviewed private
+snapshot `.tools/array-omission-final` binds41 paths/44 modules/four tools. Two extra
+EOF newlines in10/16 were removed at publication; explicit bytewise normalization
+binds them, with no fingerprint relabeling. The private compound rebase report keeps
+its old host fingerprint; actual loaded modules are separately hash-bound. Canonical
+production source/metadata/compiler reports have the current prerequisite fingerprint.
+Private Dune once changed numeric_runner build-path bytes; the original0787d143 was
+restored, incident retained, and affected gates rerun. Use canonical-root builds only.
 
-An infrastructure failure used operator-bearing source IDs as paths. The harness
-now materializes every source under a unique ordinal path before any subprocess,
-retaining logical IDs and bytes. Independent path review tests all 2,639 catalog IDs
-plus ten adversarial IDs, including slash collisions, NUL, Unicode/surrogates and
-long names. The original traceback remains separate from semantic defects.
+Array.items now shares nullable List.items domains:169 constructors remain,72 domains
+merge to70. Original indices and trailing holes survive checking/printing. A visited
+hole uses the prior original value line or active compiler context when first.
+Skipped holes can be legal; raw ARRAY_NEXT ABSENT remains explicit Unsupported.
+All generated-type consumers were remapped over accepted compound code, preserving
+06–09/54/55 and ownership. Existing ASCII ptlower/ptlc moved16→10 with only equivalent
+alias/variable spelling; independent body comparison and static gates pass.
 
-Independent preflight passed 15 identity/three path/17 closure negatives and nine
-ignored-log invariances. New source helpers embed literals, adding no consumed
-archive dependencies. Inventory 169 constructors/306 obligations remains partial;
-only validation.oracle-pin closes. Previous incdec code `7d5718fb`/review `a3cee6bd` and
-1,484-source d399263a reports remain historical evidence, never relabeled current.
+Four metadata fields preserve initial-hole, concat, bare yield/exit and clone
+reduction context. Complete-identical-AST/different-native-line originals justify
+nullaryExprLine/cloneExprLine. Bare exit designation uses valid token spans; wider
+parenthesized exit uses endLine. Missing/nonpositive required context is Unsupported.
+Only unqualified synthetic exit/die/clone calls use closing lines; qualified and
+namespace-relative calls retain name lines. Empty shell uses endLine. Typed metadata
+acceptance is not proof of original parser provenance. Compiler facts never imply
+parser-literal designation. Five old array-hole syntax exemptions are retired, with
+literal negative checks; exact entries and five PHPT source observations are retained.
 
-## Preserve corrective history
+Known classconstant lookup cannot simply clear VALUE: three retained Attribute/
+literal-class witnesses selected the wrong static error in the old draft. They are
+now explicit pending lookup boundaries, not resolved source passes. Dynamic class/
+member traversal remains distinct. Shared cast folding follows zend_try_ct_eval_cast:
+all NaNs defer; float→int must fit; float/array→string defer; object visits but does
+not fold; unset fails before visiting its child. Actual lookup and full prepass remain
+required. See ARRAY-OMISSIONS.md and DISCREPANCIES.md for exact scope/history.
 
-- Wrapper identity `3585707a`/review `5b0dc0f2` repaired five FETCH/UNSET differences,
-  then ordinary WRITE_DYNAMIC was found incorrectly marking references.
-  Correction `84d70299`, reports `fa691044`, review `24c681d7` separates initialized
-  writable fetching from actual acquisition. All seven acquire_name call sites
-  were inspected; WRITE_DYNAMIC alone is ordinary. All 28 retained originals
-  (12 mismatches/16 controls) resolve, with 12 independent extra sources, 79 prior
-  wrapper sources and 49 marker/state checks. Current full source gate refreshes
-  all canonical originals. Preserve initialized self-target timing and copied
-  reference-result assignment without creating a fresh wrapper.
-- REFCELLS stores stable cell history independently of owners/roots. Writes and
-  singleton unset preserve it; fresh ordinary bindings remain unmarked. COW/union
-  may unwrap copied ALIAS entries independently. Markers retain no storage and
-  cannot enter isolated compiler pools. Generic FETCH/intermediate UNSET warnings
-  differ from final ASSIGN_DIM/UNSET_DIM. Cycles remain observable before collection.
-- Incdec prepass originals retain two old Unsupported gaps and a control; all four
-  update shapes now have explicit nontraversing PFSTOP barriers. Ordinary visits
-  still compile operands. Nullsafe-call overlapping-rule failure is retained as
-  an interpreter failure, never a PHP error or pass; direct call checks now precede
-  disjoint fallback checks. Seven computed-line originals retain four draft
-  mismatches/three controls, now source-integrated and resolved.
-- Callable metadata `c6a7d67d`/review `1d32e9be` retains eight old-AST originals:
-  an identical pair needs native lines 3/2. `callableExprLine` preserves dynamic
-  invocation opening-token context; name calls retain their name line. Optional
-  integer transport differs from semantic requiredness/range checking. Missing/
-  nonpositive context remains Unsupported; positive edited lines are consumed.
-- First-hole metadata `87341500`/review `79951ad4`, unpack `d4706937` and original
-  array kind `09f33419` remain accepted. Genuine-list conversion `5c756e5e`/review
-  `861020db` passes 20 skipped sources; 14 reached originals remain Unsupported.
-  First-hole compiler consumption and full destructuring remain open.
+## Last complete source campaign and preserved contracts
 
-## Next independent gates
+The prerequisite does not refresh the complete source campaign. The last full gate
+is compound code63028b5a/reports76129823/reviewd61eccde:2,639 exact sources+25 negatives
+on historical c394a6e7. Its audit binds all ordered IDs/bytes/hashes/outcomes and every
+retained wrapper/incdec/compound original. Twelve compound forms capture RW locations
+once, preserve delayed/eager reads, self-DIM scheduling, array union COW and copied
+results. Direct global this uses eager FETCH_THIS without an invented static compound
+guard; computed rebinding uses its separate protocol. Final DIM diagnostics use the
+captured opcode line; parent compiler endingline keeps final RHS context.
 
-Use the current [runtime](RUNTIME-SUCCESSOR-HANDOFF.md) and
-[compiler](COMPILER-HANDOFF.md) handoffs. Runtime private 56 checked casts, 57 bitnot,
-30/39 task changes and 58/59 ordinary/concat schedulers are hash-bound in
-`.tools/runtime-next-inputs.json`.155 native cast inputs/496 assertions pass;
-independent ten core-only NaN attribution cases and62 owner/cycle/allocation/abrupt
-state assertions pass. Scalar NaN-to-array really warns; an array containing NaN
-is a different case. Bitnot31 author and19 independent inputs pass. Task drafts
-have only elaborated;805 exact native originals await joint source execution.
-No helper evidence admits source casts, object conversion or ordinary operators.
+Wrapper correction84d70299/review24c681d7 separates ordinary writable fetch from
+actual reference acquisition. REFCELLS history adds no roots; COW can unwrap copied
+aliases independently. Generic fetch/intermediate unset differs from final mutation.
+Incdec7d5718fb/reviewa3cee6bd preserves copied results and callable/root-line contexts.
+Occurrences, ACCESS, FACTS, redirects, permanent POOLS and held operands remain
+separate. Helper ownership/collection is not source GC. Namespace-relative static
+remains the sole intentional engine divergence, with source activation pending.
 
-Compiler4 owns `.tools/array-omission-draft`, based on incdec generated domains.
-The frozen 107-source candidate passes 107 native/compiler cases,2,135 dense assertions,
-18 metadata/context/index/rawstate checks and25 CTcast fact/no-warning assertions.
-Independent review repeats 68 revised originals and verifies all 34 files, plus earlier
-16 omission-line/six phase/21 concat-context originals. Nullable Array_.items merges
-domains 72→70 without adding a constructor; rebase all 18 generated-type consumers
-over current compound production. Do not copy its old20/30/39/45/46 over compound.
-Initial 32-path snapshot is retained in `.tools/omission-first-candidate`.
+## Immediate ordinary and destructuring gates
 
-A further 15 exact prepass gaps are retained in
-`.tools/omission-extra-context-originals.json`.13 default barriers (print,exit,shell,
-isset,empty,throw,yield/from,clone,instanceof,arrow/closure,match) should permit the
-later hole to fail; coalesce and classconstant need exact recursive prepass behavior
-and earlier illegal-offset priority. Compiler4 is preparing a distinct revision;
-independently repeat it before publication. Unknown constructors must never be
-silently treated as nonconstant. Full call/closure/object execution stays pending.
+Runtime3's `.tools/runtime-ordinary-final/ordinary-final-inputs.json` binds the next
+47-module snapshot and canonical1,506 source selections. Earlier source gates pass833
+initial and673 expanded observations;25 state programs/2,875 assertions include five
+loops at every budget0–100. Independent final-snapshot62 originals pass in
+`.tools/ordinary-final-independent-source-review.json`: delayed CV versus computed/
+dimension/cast operands, alias/cycle casts, NaN compiler-warning priority, multiline
+array concat and parser-literal versus unary/ternary name classification.
 
-Holes retain original indices. Their line is the previous nonempty value's original
-AST line or caller compiler line when first; initial ordinary traversal needs checked
-arrayFirstHoleLine. Unpack/keyed/concat/nested cases distinguish these contexts.
-Parser concatExprLine records reduction lookahead, not proof of folding. Pure
-parser_literal accepts only parser ZVAL-producing shapes under the no-warning guard;
-never classify a computed name from arbitrary compiler FACTS. CTcast eligibility
-is exactly zend_try_ct_eval_cast: all NaNs defer; float→int must fit; float/array→string
-defer; object casts walk children but never fold; unset rejects before its child.
-Shared56 performs permitted conversions, avoiding duplicate approximate rules.
+Unchanged805/28/680 original archives are prepared under coverage/semantics. The
+seven request-environment outcomes remain explicitly open, not agreement: computed
+this plain write/unset and parser-concat GLOBALS read/discard/string-cast/write/unset.
+The expanded raw campaign's overall result is fail with673 exact agreements; its
+boundary report preserves that classification. Canonical source helpers embed literal
+sources and exclude these seven until real environment behavior is implemented.
 
-Preserve old syntax discrepancy entries as resolved history after acceptance, and
-repeat metadata/printer/checked-domain tests plus final complete syntax/fresh offline
-build. Computed plain-write/reference/unset names, quiet ??=, reached destructuring,
-full unpack and foreach remain open. Occurrences, ACCESS, FACTS, redirects, POOLS
-and held operands stay separate. Namespace-relative static remains the sole
-intentional divergence, with source activation pending. Calls/frames, linking/
-objects, exceptions, dynamic sources, callbacks and lifetime remain unfinished.
+After prerequisite review release, runtime3 may save the13 ordinary paths, then
+freeze all combined inputs. Run identity/inventory and catalog path/write preflight
+before the one combined4,407-source campaign. Compiler4 owns full compiler gates;
+runtime3 owns source/state; reviewer reruns independent62 and audits all source bytes,
+ordered IDs, raw outcomes, original bindings and current fingerprints. Do not count
+private or stale reports as a complete current closure.
 
-Before expensive campaigns, save watched bytes and run evidence/inventory preflight.
-Never relabel fingerprints or count Unsupported, tool failures or budgets as agreement.
-Copied executables establish no portability claim. Complete core remains the goal.
+Next list probes are `.tools/list-compiler-line-originals.json`20 and
+`.tools/list-rhs-line-originals.json`12. Pinned3515ff direct nonreference CV RHS skips
+compile_expr and inherits pattern context, including special global this behavior;
+literal concat names differ from ternary-computed names. Independently repeat before
+source admission. Runtime list/unpack tasks have private value/ownership/resumption
+gates; a harness that forced THROWN back to NORMAL was repaired to resume only BUDGET.
+That was a test error, not a semantic correction. Keep source admission separate.
+
+## Completion discipline
+
+Inventory169/306 has only oracle identity closed. New prepass-only constructor
+entries are partial, never ordinary execution claims. Identity/path/closure negatives
+and ignored-log invariances pass. Save watched inputs before long gates; do not add
+untracked archive dependencies or conceal drift by editing fingerprints. Unified
+patch empty context lines are valid data; parser regeneration/all handpatch replay
+must remain exact. Non-patch whitespace checks pass.
+
+Required work still includes request environment, class/named/magic lookup, quiet
+coalescing assignment, complete unpack/destructuring/foreach, calls/frames/declarations/
+classes, exceptions, dynamic sources, generators/Fibers, lifetime and core intrinsics.
+Final full syntax validation and a fresh offline rebuild remain mandatory. Unsupported,
+timeouts, tool failures and interrupted runs never count as source passes.

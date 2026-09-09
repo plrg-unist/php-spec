@@ -12,7 +12,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 0b | Checked AST runner and original-source harness | Complete — bounded bootstrap |
 | 1a–c | Integers, bytes, binary64, conversions and power | Partial — helpers and arithmetic/update source paths reviewed |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/references reviewed; frames and properties pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/references/updates reviewed; omissions, unpack and foreach pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/references/updates and omissions reviewed; unpack/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Partial — conditionals/loops/jumps reviewed; exceptions pending |
 | 3b | Calls, closures and independent static checks | Partial — type/signature/compiler helpers reviewed; activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Partial — local headers/relations reviewed; linking pending |
@@ -24,7 +24,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 ## Ownership and handoffs
 
 - `runtime3`: remaining ordinary operators/casts, then unpack/destructuring/foreach; accepted compound handoff `3b3a7cd6` preserves exact private draft hashes.
-- `compiler4`: nullable ordinary-array frontend/schema and exact prepass traversal, then paired operator and declaration/frame compilation.
+- `compiler4`: paired ordinary operator and destructuring compilation, then declarations/frames and class lookup.
 - `compiler3`: independent review, discrepancy history, inventory and concise documentation.
 - Stage owned files, commit reviewed increments, never push. Run evidence/inventory preflight after watched changes and before long campaigns.
 
@@ -32,44 +32,43 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 [compiler](docs/semantics/COMPILER-HANDOFF.md) and
 [reviewer](docs/semantics/REVIEWER-HANDOFF.md) handoffs retain exact interfaces.
 
-## Latest accepted checkpoint
+## Current accepted checkpoints
 
-Compound code `63028b5a`, reports `76129823` and review `d61eccde`
-([independent evidence](coverage/semantics/compound-review.json)) pass **2,639 exact
-sources +25 outcome negatives** on `c394a6e7`. The raw audit checks every ordered
-catalog ID, original byte string/hash, stdout/stderr/status and retained regression
-binding. All previous 1,484 inc/dec checkpoint sources remain present unchanged;
-older reports retain historical fingerprints.
+Nullable-array/context prerequisite code `9b82507a`, author reports `22b36687` and review `91f035e0`
+([independent evidence](coverage/semantics/array-omission-review.json)) pass **262 exact
+sources/lints**, 2,135 resumption assertions, 2,943 compiler lints and 106 metadata
+profiles/1,751 checks on `1ff3da3b`. Independent gates add 176 current source
+observations, 32 extra sources, 136 metadata boundaries, 24 fresh encoding/print
+profiles and 277 preserved compound programs/5,393 assertions. All 41 publication
+paths, 44 loaded modules and four tools are bound; two redundant EOF newlines are
+the only explicit private-to-production byte adjustments.
 
-All twelve compound assignments now use captured RW locations for the current
-six values and direct/computed variable, dimension and append targets. Names/keys
-are evaluated once; delayed CV reads, alias rebinding, array union ownership and
-copied results preserve PHP ordering. Direct global `$this` uses eager FETCH_THIS;
-computed-name rebinding has a distinct runtime protocol. No static compound-this
-rejection is invented. Final DIM diagnostics use captured target opcode lines;
-compiler descriptors retain their final context after RHS compilation.
+Ordinary Array.items now shares nullable List.items domains, preserving indices
+and trailing omissions. Visited holes fail using the previous original expression
+line or active compiler context; skipped holes remain legal. Four narrow metadata
+fields preserve first-hole, concat, nullary and clone reduction context. Complete
+identical-AST/different-native-line witnesses justify the added fields. Synthetic
+unqualified exit/die/clone calls use closing lines; qualified/relative calls retain
+name lines. Five retired syntax exemptions now have literal regression checks.
+Classconstant lookup remains explicitly pending where its value can affect branch
+selection; replacing the wrong nonconstant result with Unsupported is not a pass.
 
-Independent gates pass **277 source programs/5,393 assertions**, including three
-loops at every budget 0–100, plus **324 compiler sources/156 access paths/six line
-checks**. Canonical compound gates pass 951 runtime programs/13,454 assertions,
-289 compiler lints/34 paths/24 emission observations/12 contexts. Broad compiler
-validation passes 2,681 lints; inc/dec, writable-fetch, wrappers, origins, bridge
-and ownership all refresh on the same closure.
-
-Two real draft defects are resolved with unchanged evidence: 72 `$this` phase
-originals and three actual runtime DIM-line failures with 72 compiler controls.
-Every original occurs byte-for-byte in the full passing catalog. A separate harness
-failure treated `/=` in logical IDs as a path: fixtures now use unique ordinal
-filenames, with every source written before subprocess execution. Independent
-preflight verifies 2,639 catalog IDs plus ten hostile IDs and preserves the exact
-infrastructure traceback. No engine disagreement was introduced.
+This prerequisite **does not refresh the full source campaign**. The last complete
+campaign remains compound code `63028b5a`, reports `76129823`, review `d61eccde`:
+**2,639 exact sources +25 negatives** on historical `c394a6e7`. Its raw audit verifies
+every ordered ID, original byte/hash and exact stdout/stderr/status, including all
+retained wrapper/incdec/compound originals. Twelve compound forms preserve captured
+locations, delayed reads, array union ownership, eager global `$this` and the split
+between target opcode diagnostics and final compiler context. Original phase/line
+failures and the ordinal-filename infrastructure correction remain documented.
 
 Evidence preflight independently passes 15 identity, three path and 17 closure
-negatives plus nine ignored-log changes. New helpers embed source literals without
-new archive dependencies. The inventory remains **169 constructors/306 runtime
-obligations**; twelve compound constructors become partial. Only oracle identity
-closes. Governance `ffdc131d` requires current original-source evidence and review;
-`--complete` must reject unfinished or stale entries.
+negatives plus nine ignored-log changes. Helpers embed literal sources without new
+archive dependencies. Inventory remains **169 constructors/306 runtime obligations**,
+with 70 field domains. New prepass-only constructor entries are partial and do not
+admit their ordinary execution. Only oracle identity closes. Governance `ffdc131d`
+requires current original-source evidence and independent review; `--complete` must
+reject unfinished or stale entries.
 
 ## Retained contracts
 
@@ -81,27 +80,27 @@ closes. Governance `ffdc131d` requires current original-source evidence and revi
 
 ## Next gates and decisions
 
-Nullable ordinary Array_.items uses the existing list(ArrayItem|null) domain,
-keeping original indices and exact first-hole context; no ArrayHole node is needed.
-Parser concat metadata records reduction lookahead lines, while pure parser-literal
-classification remains separate from compiler constant facts. The frozen private
-195-source snapshot passes author lint/runtime/resumption/metadata gates; independent
-review adds 117 retained and 32 new source observations, 72 metadata boundaries and
-all 35 file hashes. Classconstant lookup-as-nonconstant errors are preserved and
-replaced by explicit pending lookup, not claimed agreement. A final keyword audit
-found eleven clone/exit/die diagnostic-line errors plus an empty-shell boundary;
-raw originals are retained. Identical-checked-AST source pairs prove narrow clone
-reduction metadata is necessary. Compiler4 is correcting a distinct snapshot before
-publication and rebasing generated domains over accepted compound code.
+Runtime3's private ordinary operator/cast/concat gates pass 833 initial and 673
+expanded source observations; its canonical helper embeds 1,506 admitted selections.
+The 25 state programs pass 2,875 assertions, including five loops at every budget
+0–100. Independent review adds 62 source controls for delayed/eager operands,
+alias/cycle casts, compiler-warning priority and parser-literal versus computed
+names. Frozen native archives contain 805 initial, 28 timing and 680 expanded
+observations; seven request-environment cases remain explicitly Unsupported.
+Computed `$this` write/unset and parser-concat `$GLOBALS` read/discard/cast/write/
+unset require real environment semantics. Quiet `??=` remains separate. Final
+combined publication and a single 4,407-source campaign are next; no draft report
+is relabeled as a complete current source closure.
 
 Shared cast helpers pass 155 native inputs/496 assertions; independent checks add
 NaN diagnostic attribution and 62 alias/cycle/allocation/abrupt-state assertions.
-Bitnot passes 31 author and 19 independent inputs. Ordinary operator/cast/concat
-runtime task drafts pass 833 initial and 673 expanded exact source observations,
-with seven environment cases explicitly Unsupported; final pairing/review remains
-pending. Five dense loops pass every budget 0–100. Cast CT eligibility differs from runtime conversion; parser designation
-must never follow arbitrary constant-fact equality. Quiet `??=` and computed plain
-write/reference/unset name protocols remain separate boundaries.
+Bitnot passes 31 author and 19 independent inputs. Ordinary cast execution is not
+inferred from accepted CT folding. Required classconstant/named-class/magic-context
+lookup remains assigned; arbitrary constant facts never imply parser designation.
+Private unpack/list helpers have additional source/state/resumption probes, but
+source compiler pairing and independent review remain necessary. New multiline
+list/RHS originals preserve direct-CV versus computed-expression line and `$this`
+distinctions for the next bounded activation.
 
 Then complete unpack/destructuring keys/copies/references/errors and foreach cursor
 ownership. Calls/frames, linking/objects, modern properties, exceptions, dynamic

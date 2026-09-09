@@ -400,4 +400,11 @@ all [independently reproduced](../../coverage/semantics/omission-keyword-call-in
 Synthetic keyword calls need their closing line; unary clone needs reduction
 lookahead. [Eight checked-AST witnesses](../../coverage/semantics/omission-clone-reduction-review-originals.json)
 prove the missing clone context while qualified/relative calls remain controls.
-Corrections are still private. No engine divergence is intended.
+Code `9b82507a` repairs these line protocols; [independent review](../../coverage/semantics/array-omission-review.json)
+passes current production source and metadata gates. No engine divergence is intended.
+
+Five former ordinary-array frontend exemptions are retired from the active syntax
+ledger. Their [exact historical entries and PHPT observations](../../coverage/semantics/array-hole-frontend-phase-history.json)
+remain unchanged evidence: parsing/checked elaboration/fresh printing now agree,
+while native lint still rejects reached holes. Literal regression checks prevent
+the retired exemptions from masking a future frontend regression.
