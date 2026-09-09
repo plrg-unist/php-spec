@@ -1,0 +1,61 @@
+{
+  "scope": "Independent pre-repair selected-target/source metadata integrity failures on frozen private calls-next856/9dfd9227; no source-call acceptance.",
+  "defects": [
+    {
+      "id": "wrong-signature-parameter",
+      "root": ".tools/review8-call-signature-v2mp_d9t",
+      "native_control": "stdout1, empty stderr, status0",
+      "mutation": "Replace f.SIGNATURE with g.SIGNATURE while retaining f checked body and source.",
+      "observed": "NORMAL completion, undefined $x warning and empty output."
+    },
+    {
+      "id": "wrong-embedded-selected-target",
+      "root": ".tools/review8-call-embedded-0r4m4qcr",
+      "budget_cut": 10,
+      "mutation": "Replace only CALL_ARGS embedded f descriptor with fully valid registered g descriptor; FUNCTIONS/CALLABLES remain unchanged.",
+      "native_control": "1",
+      "observed": "NORMAL output2",
+      "implication": "Registry membership alone does not bind the selected source call target."
+    },
+    {
+      "id": "scope-check-bypass-on-resume",
+      "root": ".tools/review8-scope-resume-0wt55nho",
+      "mutation": "Clear CODE.GLOBALS after original compilation and invoke public drive.",
+      "native_control": "A",
+      "observed": "NORMAL outputL",
+      "original_source_binding": {
+        "commit": "b16ec243",
+        "report": "coverage/semantics/call-scope-unwind-integrity-originals.json"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "id": "cv-erased",
+      "root": ".tools/review8-call-signature-v2mp_d9t",
+      "observed": "Still prints1; metadata inconsistency without observable disagreement in this particular case."
+    },
+    {
+      "id": "namespace-fallback-selected-before-shadow",
+      "root": ".tools/review8-call-fallback-shadow-eba4pqhh",
+      "native_and_unmutated": "GN, status0, empty stderr",
+      "implication": "First call selects global fallback before an argument creates namespace primary. Re-resolving active binding after arguments would incorrectly change selected target; subsequent source call selects new namespace primary."
+    }
+  ],
+  "reviewer_setup_failures": [
+    {
+      "root": ".tools/review8-call-embedded-ff0cve09",
+      "reason": "Same scalar/list tail binder caused empty-iteration elaboration failure."
+    },
+    {
+      "root": ".tools/review8-call-embedded-kdcmwk_w",
+      "reason": "Recursive helper with otherwise caused non-pure premise elaboration failure; split pure single-task matcher before successful run."
+    }
+  ],
+  "raw_archive": {
+    "path": "coverage/semantics/call-selected-target-originals-raw.json.gz",
+    "sha256": "d3472e8c290c8e980d706bcfa89debf8b1f71211d9b7c6e15a9c3db8c75153cb",
+    "files": 161,
+    "validation": "Every archived payload decoded and exact byte/hash/length compared against originals. Exact loaded SpecTec modules, checked ASTs, sources, primitive input links, commands, outcomes and tool hashes retained."
+  }
+}
