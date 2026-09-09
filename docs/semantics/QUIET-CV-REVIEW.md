@@ -75,3 +75,21 @@ cover independent nested memo tables, shared reference operands, selected and
 assigned array results, by-reference iteration of expression results, list effects
 and loop/throw cleanup. They retain native/lint/checked observations before the
 compiler-export guard correction; source/state acceptance remains separate.
+
+Twenty [GLOBALS snapshot originals](../../coverage/semantics/globals-snapshot-originals.json)
+now pin copy and symbol-table behavior before request-environment implementation.
+`ZEND_FETCH_GLOBALS` always duplicates through `zend_proptable_to_symtable`: numeric
+string keys become integers, undefined CVs are omitted, shared reference wrappers
+remain shared, and singleton wrappers detach. Ordinary nested arrays retain COW.
+Compiled CV order is visible even when the first write is in a dead branch; unset
+and reassignment preserve that position. A dynamically inserted name can follow
+a later initialized CV. `zend_attach_symbol_table`, `zend_rebuild_symbol_table`
+and `ZEND_UNSET_CV` explain these distinctions.
+
+`is_globals_fetch` recognizes the parser-designated name. A runtime computed name
+`GLOBALS` is an ordinary variable: it is initially undefined and may be assigned
+an independent array. For example, `$n="GLOBALS"; $$n=["x"=>7];` makes
+`${$n}["x"]` equal 7 while direct `$GLOBALS["x"] ?? 0` remains 0. The source
+originals retain both warnings from reading the absent computed variable and the
+separate direct-whole-reference compile rejection. These are native observations,
+not runtime admission.
