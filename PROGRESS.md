@@ -28,57 +28,35 @@ phase controls. These compiler facts implement no builtin bodies. The source
 originals, intermediate disagreements, interrupted state run and setup failures
 remain separately archived. No family is closed by this increment.
 
-The first actual [source calls](docs/semantics/SOURCE-CALLS.md) remain the historical
-accepted prerequisite at **f3149e32** on **869/c946394c**. Code **a8fdac1e**, runtime author
-**d907c5db** and compiler author **04ac151f** retain their separate evidence.
-Named declarations activate at their compiler/runtime
-phase; untyped positional value calls execute through real local frames, including
-recursion, global/superglobal access, returns and fatal unwinding. The paired
-compiler/runtime change retains deferred argument fetch timing and source-derived
-resume metadata. Builtin registration/signature tables supply compiler facts;
-their bodies remain separate required work.
-
-The [independent review](coverage/semantics/calls-final-review.json) binds 139 exact
-source/native comparisons, fresh complete recorded responses on 866 and 870, and
-an explicit 870→869 production bridge. All loaded modules and five tools are
-identical across that last bridge. Nine then-current production state programs check
-2,079 assertions: heap/frame/iterator ownership, request roots, adjacent-step
-resumption, selected full resumes and final cleanup. Forty protocol fixtures cover
-source-derived metadata and controls; fresh production saved-target/fallback and
-20 no-call full-response checks supplement the audit. Eight public CLI sources
-match the retained native profiles. Original defects, setup failures, transport
-bytes, process outcomes and immutable input snapshots remain archived.
-
-The historical broad compiler checkpoint on 866 has **5,751 native lint comparisons
-and 5,783 aggregate assertions**. Its complete 70,239-file archive retains exact
-native/SpecTec subprocess bytes and 11,561 decoded Worker exchanges. Those older
-Worker records are not exact transport wire; the independent 139 source bridge
-provides separate exact-wire evidence. Focused compiler groups add 848 phase
-comparisons, with emission/context assertions counted separately. Historical
-compiler 5753/5786 and its 5750 subset retain their original identities.
+The historical first-call prerequisite remains **f3149e32** on **869/c946394c**
+(code **a8fdac1e**, runtime **d907c5db**, compiler **04ac151f**). Its
+[review](coverage/semantics/calls-final-review.json) retains 139 source comparisons,
+40 protocols, state9/2,079, CLI8 and the exact 870→869 bridge. The historical broad
+compiler checkpoint on866 retains 5,751 native lints/5,783 assertions in its
+70,239-file archive; decoded Worker records and exact transport evidence remain
+explicitly distinguished. These historical identities are not relabelled current.
 
 The [reviewer handoff](docs/semantics/FIRST-CALLS-REVIEWER-HANDOFF.md) and
 [runtime handoff](docs/semantics/RUNTIME-CALLS-HANDOFF.md) give exact continuation inputs.
-Next complete defaults, parameter/return types and reference returns, then the
-remaining argument and callable protocols in the
-[calls plan](docs/semantics/CALLS-ACTIVATION-PLAN.md). The earlier reference
-[pre-repair originals](coverage/semantics/reference-parameter-review-preparation.json)
+The next [untyped-default phase plan](docs/semantics/DEFAULTS-ACTIVATION-PLAN.md)
+first completes the necessary user-constant declaration/lookup/storage prerequisite
+(compiler88/runtime89), then omitted-default receives (compiler90/runtime91).
+Default arguments must use declaration context, skip supplied values, preserve
+fresh parameter/array ownership and observable deferred-value caching. Native
+originals show scalar/empty results can warn only on the first omitted call,
+while refcounted array/string results can warn on every call. Signature17's private
+suspension prototype remains historical877 helper preparation, with no defaults
+source activation. Types, reference returns and remaining callable protocols follow.
+The earlier reference [originals](coverage/semantics/reference-parameter-review-preparation.json)
 and [DIM diagnosis](coverage/semantics/reference-parameter-review-diagnosis.json)
-retain their exact older Unsupported and disagreement states. All seven existing
-pending signature controls remain pending; no reference-parameter control existed
-to retire.
+retain their original Unsupported/disagreement states. All seven existing pending
+signature controls remain pending at this checkpoint.
 The [core continuation checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md)
 keeps switch/match/labels/goto, objects/properties, exceptions, dynamic sources,
 generators/fibers, observable lifetime, core intrinsics and source-input gaps
 explicit. Global function `namespace\static` signature
 rejection matches the pin; the sole intentional divergence remains the pending
 class-scope relative-static branch.
-
-The exact old nested-foreach return witness now prints 13, returns 7, clears both
-iterator roots and preserves `v`/`w` aliases. Four old property/nullsafe container
-controls remain pending, plus two later-eval ENV/REQUEST callback witnesses; four
-parser controls remain separate. This source witness retires its old boundary
-case without closing the complete return or function family.
 
 The full quiet/request checkpoint remains accepted **historical 846/14d17662**:
 5,706 ordinary comparisons plus 263 explicit-request comparisons and 21 separate
@@ -147,8 +125,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-Runtime6 owns positional reference-parameter runtime integration; compiler5 owns
-paired compiler work; review9 owns independent evidence/inventory/docs. Runtime5
+Runtime6 owns user-constant storage and default receives; compiler5 owns the
+paired constant/default compiler and shared signature adapter; review9 owns independent evidence/inventory/docs. Runtime5
 and review8 authored/reviewed the historical checkpoints above. Root orchestrates. Stage
 owned files, commit reviewed increments and never push. Use canonical-root Dune
 builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-CALLS-HANDOFF.md),
