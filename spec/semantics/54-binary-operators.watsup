@@ -1,0 +1,99 @@
+;; Integer, byte and power operators after capture of both PHP values.
+dec $integer_operator(pbin) : bool
+def $integer_operator(MODULO) = true
+def $integer_operator(SHIFTLEFT) = true
+def $integer_operator(SHIFTRIGHT) = true
+def $integer_operator(BITAND) = true
+def $integer_operator(BITOR) = true
+def $integer_operator(BITXOR) = true
+def $integer_operator(pbin) = false -- otherwise
+def $operator_bytes(MODULO) = [37]
+def $operator_bytes(SHIFTLEFT) = [60,60]
+def $operator_bytes(SHIFTRIGHT) = [62,62]
+def $operator_bytes(BITAND) = [38]
+def $operator_bytes(BITOR) = [124]
+def $operator_bytes(BITXOR) = [94]
+def $operator_bytes(POWER) = [42,42]
+def $operator_bytes(CONCAT) = [46]
+
+dec $long_convertible(pvalue) : bool
+def $long_convertible(PARRAY n) = false
+def $long_convertible(PSTRING n*) = ($string_long(n*) =/= STRINTERROR)
+def $long_convertible(pvalue) = true -- otherwise
+
+dec $long_string_notices(pstate, strcastnotice*, nat*, int) : pstate
+def $long_string_notices(S, eps, n*, z) = S
+def $long_string_notices(S, LEADINGNUMBER :: strcastnotice_tail*, n*, z) = $long_string_notices($leading_warning(S, true, z), strcastnotice_tail*, n*, z)
+def $long_string_notices(S, STRINGPRECISIONLOSS :: strcastnotice_tail*, n*, z) = $long_string_notices($diagnostic(S, "Deprecated", [73,109,112,108,105,99,105,116,32,99,111,110,118,101,114,115,105,111,110,32,102,114,111,109,32,102,108,111,97,116,45,115,116,114,105,110,103,32,34] ++ $c_string(n*) ++ [34,32,116,111,32,105,110,116,32,108,111,115,101,115,32,112,114,101,99,105,115,105,111,110], z), strcastnotice_tail*, n*, z)
+
+dec $integer_coerce(pstate, pvalue, int) : pstate
+def $integer_coerce(S, PINT i, z) = S[.RESULT = KNOWN (PINT i)]
+def $integer_coerce(S, PNULL, z) = S[.RESULT = KNOWN (PINT 0)]
+def $integer_coerce(S, PBOOL false, z) = S[.RESULT = KNOWN (PINT 0)]
+def $integer_coerce(S, PBOOL true, z) = S[.RESULT = KNOWN (PINT 1)]
+def $integer_coerce(S, PFLOAT n, z) = $cast_notices(S, castnotice*, n, z)[.RESULT = KNOWN (PINT i)]
+  -- if (i, castnotice*) = $float_long(n, true)
+def $integer_coerce(S, PSTRING n*, z) = $long_string_notices(S, strcastnotice*, n*, z)[.RESULT = KNOWN (PINT i)]
+  -- if $string_long(n*) = STRINT i strcastnotice*
+
+dec $integer_binary(pbin, int, int) : pintresult
+def $integer_binary(MODULO, i_1, i_2) = $long_mod(i_1, i_2)
+def $integer_binary(SHIFTLEFT, i_1, i_2) = $long_shl(i_1, i_2)
+def $integer_binary(SHIFTRIGHT, i_1, i_2) = $long_shr(i_1, i_2)
+def $integer_binary(BITAND, i_1, i_2) = IRESULT $long_and(i_1, i_2)
+def $integer_binary(BITOR, i_1, i_2) = IRESULT $long_or(i_1, i_2)
+def $integer_binary(BITXOR, i_1, i_2) = IRESULT $long_xor(i_1, i_2)
+dec $integer_result(pstate, pintresult, int) : pstate
+def $integer_result(S, IRESULT i, z) = S[.RESULT = KNOWN (PINT i)]
+def $integer_result(S, INTZERO, z) = $throw_scalar(S, "DivisionByZeroError", [77,111,100,117,108,111,32,98,121,32,122,101,114,111], z)
+def $integer_result(S, NEGSHIFT, z) = $throw_scalar(S, "ArithmeticError", [66,105,116,32,115,104,105,102,116,32,98,121,32,110,101,103,97,116,105,118,101,32,110,117,109,98,101,114], z)
+
+dec $byte_binary(pbin, nat*, nat*) : nat*
+def $byte_binary(BITAND, n_1*, n_2*) = $string_and(n_1*, n_2*)
+def $byte_binary(BITOR, n_1*, n_2*) = $string_or(n_1*, n_2*)
+def $byte_binary(BITXOR, n_1*, n_2*) = $string_xor(n_1*, n_2*)
+dec $byte_operator(pbin, pvalue, pvalue) : bool
+def $byte_operator(pbin, PSTRING n_1*, PSTRING n_2*) = true
+  -- if (pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR)
+def $byte_operator(pbin, pvalue_1, pvalue_2) = false -- otherwise
+
+def $binary_apply(S, pbin, PSTRING n_1*, PSTRING n_2*, z) = S[.RESULT = KNOWN (PSTRING $byte_binary(pbin, n_1*, n_2*))]
+  -- if $byte_operator(pbin, PSTRING n_1*, PSTRING n_2*)
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure(S, pbin, pvalue_1, pvalue_2, z)
+  -- if $integer_operator(pbin)
+  -- if ~$byte_operator(pbin, pvalue_1, pvalue_2)
+  -- if ~$long_convertible(pvalue_1)
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure($integer_coerce(S, pvalue_1, z), pbin, pvalue_1, pvalue_2, z)
+  -- if $integer_operator(pbin)
+  -- if ~$byte_operator(pbin, pvalue_1, pvalue_2)
+  -- if $long_convertible(pvalue_1)
+  -- if ~$long_convertible(pvalue_2)
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $integer_result(S_right, $integer_binary(pbin, i_1, i_2), z)
+  -- if $integer_operator(pbin)
+  -- if ~$byte_operator(pbin, pvalue_1, pvalue_2)
+  -- if $long_convertible(pvalue_1)
+  -- if $long_convertible(pvalue_2)
+  -- if S_left = $integer_coerce(S, pvalue_1, z)
+  -- if S_left.RESULT = KNOWN (PINT i_1)
+  -- if S_right = $integer_coerce(S_left, pvalue_2, z)
+  -- if S_right.RESULT = KNOWN (PINT i_2)
+
+def $binary_apply(S, CONCAT, pvalue_1, pvalue_2, z) = S_right[.RESULT = KNOWN (PSTRING (n_1* ++ n_2*))]
+  -- if S_left = $stringify(S, pvalue_1, z)
+  -- if S_left.RESULT = KNOWN (PSTRING n_1*)
+  -- if S_right = $stringify(S_left, pvalue_2, z)
+  -- if S_right.RESULT = KNOWN (PSTRING n_2*)
+
+dec $power_result(pstate, pnumber, pnumber, int) : pstate
+def $power_result(S, pnumber_1, pnumber_2, z) = $diagnostic(S, "Deprecated", [80,111,119,101,114,32,111,102,32,98,97,115,101,32,48,32,97,110,100,32,110,101,103,97,116,105,118,101,32,101,120,112,111,110,101,110,116,32,105,115,32,100,101,112,114,101,99,97,116,101,100], z)[.RESULT = KNOWN $number_value(pnumber)]
+  -- if (pnumber, true) = $power_complete($power_prepare(pnumber_1, pnumber_2))
+def $power_result(S, pnumber_1, pnumber_2, z) = S[.RESULT = KNOWN $number_value(pnumber)]
+  -- if (pnumber, false) = $power_complete($power_prepare(pnumber_1, pnumber_2))
+def $binary_apply(S, POWER, pvalue_1, pvalue_2, z) = $type_failure(S, POWER, pvalue_1, pvalue_2, z)
+  -- if $coerce_number(pvalue_1) = BADNUMBER
+def $binary_apply(S, POWER, pvalue_1, pvalue_2, z) = $type_failure($leading_warning(S, b, z), POWER, pvalue_1, pvalue_2, z)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber b
+  -- if $coerce_number(pvalue_2) = BADNUMBER
+def $binary_apply(S, POWER, pvalue_1, pvalue_2, z) = $power_result($leading_warning($leading_warning(S, b_1, z), b_2, z), pnumber_1, pnumber_2, z)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 b_1
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 b_2

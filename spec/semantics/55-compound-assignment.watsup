@@ -1,0 +1,117 @@
+;; Compound updates separate generic intermediate FETCH_RW from final DIM_OP.
+def $string_fetch_message(STRINGCOMPOUND) = [67,97,110,110,111,116,32,117,115,101,32,97,115,115,105,103,110,45,111,112,32,111,112,101,114,97,116,111,114,115,32,119,105,116,104,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]
+
+dec $compound_scalar(pslot) : bool
+def $compound_scalar(DEFINED (PBOOL true)) = true
+def $compound_scalar(DEFINED (PINT i)) = true
+def $compound_scalar(DEFINED (PFLOAT n)) = true
+def $compound_scalar(pslot) = false -- otherwise
+
+dec $compound_scalar_key(pstate, poperand?, int) : pstate
+def $compound_scalar_key(S, eps, z) = $location_array(S, S.LOCATION, z)
+def $compound_scalar_key(S, (poperand), z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $compound_scalar_key(S, (poperand), z) = $location_array(S_read, S.LOCATION, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+
+dec $compound_dimension(pstate, poperand?, int) : pstate
+def $compound_dimension(S, poperand?, z) = S -- if S.COMPLETION =/= NORMAL
+def $compound_dimension(S, poperand?, z) = $string_dimension_fetch(S, poperand?, STRINGCOMPOUND, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n*)
+def $compound_dimension(S, poperand?, z) = $compound_scalar_key(S, poperand?, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $compound_scalar($location_slot(S, S.LOCATION))
+def $compound_dimension(S, poperand?, z) = $rw_array_dimension($location_array(S, S.LOCATION, z), poperand?, z) -- otherwise
+
+dec $compound_location(pstate, pbase, int) : pstate
+def $compound_location(S, BASE_DIM pbase poperand z_key, z) = $compound_dimension($rw_base(S, pbase, STRINGNESTED, z_key), (poperand), z_key)
+def $compound_location(S, BASE_APPEND pbase z_key, z) = $compound_dimension($rw_base(S, pbase, STRINGNESTED, z_key), eps, z_key)
+def $compound_location(S, pbase, z) = $rw_base(S, pbase, STRINGCOMPOUND, z) -- otherwise
+
+;; += uses an in-place union. Identical table operands take Zend's no-op fast
+;; path; otherwise separation precedes merging and singleton-ref inspection.
+dec $compound_value(pstate, pbin, pvalue, pvalue, int) : pstate
+def $compound_value(S, ADD, PARRAY n, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
+def $compound_value(S, ADD, PARRAY n_1, PARRAY n_2, z) = $array_union(S_written, n_target, S_written.ARRAYS[n_2].ITEMS)
+  -- if n_1 =/= n_2
+  -- if S_copy = $separate_location_array(S, n_1)
+  -- if S_copy.RESULT = KNOWN (PARRAY n_target)
+  -- if S_written = $prune_allocations($location_write(S_copy, S.LOCATION, PARRAY n_target))
+def $compound_value(S, pbin, pvalue_1, pvalue_2, z) = $binary_apply(S, pbin, pvalue_1, pvalue_2, z) -- otherwise
+
+dec $compound_store(pstate, pstate) : pstate
+def $compound_store(S, S_changed) = S_changed -- if S_changed.COMPLETION =/= NORMAL
+def $compound_store(S, S_changed) = $location_write(S_changed, S.LOCATION, pvalue)
+  -- if S_changed.COMPLETION = NORMAL
+  -- if S_changed.RESULT = KNOWN pvalue
+
+dec $compound_operands(pstate, pbin, poperand, int) : pstate
+def $compound_operands(S, pbin, poperand, z) = S -- if S.COMPLETION =/= NORMAL
+def $compound_operands(S, pbin, poperand, z) = S_read
+  -- if S.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $compound_operands(S, pbin, poperand, z) = $compound_store(S_read, $compound_value(S_read, pbin, pvalue_left, pvalue_right, z))
+  -- if S.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, S.LOCATION) = DEFINED pvalue_left
+  -- if S_read.RESULT = KNOWN pvalue_right
+
+dec $compound_target(pstate, pbin, pbase, poperand, int) : pstate
+def $compound_target(S, pbin, BASE_VALUE (VARIABLE n_name* z_name), poperand, z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $compound_target(S, pbin, BASE_VALUE (VARIABLE n_name* z_name), poperand, z) = $compound_operands($rw_name(S_read, n_name*, z), pbin, S_read.RESULT, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+def $compound_target(S, pbin, pbase, poperand, z) = $compound_operands($compound_location(S, pbase, z), pbin, poperand, z) -- otherwise
+
+;; Delayed DIM_OP reuses the target opcode line; ordinary ASSIGN_OP is emitted
+;; after the RHS. Keep this distinct from the compiler's final traversal line.
+dec $compound_opcode_line(pbase, int) : int
+def $compound_opcode_line(BASE_DIM pbase poperand z_key, z) = z_key
+def $compound_opcode_line(BASE_APPEND pbase z_key, z) = z_key
+def $compound_opcode_line(pbase, z) = z -- otherwise
+
+rule PhpStep/compound-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), COMPOUND_APPLY pbin S.BASE $assignment_self(expression_target, expression) $compound_opcode_line(S.BASE, z)] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (COMPOUND_PREP pbin expression_target expression z) :: ptask_tail*
+rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
+  -- if S.TODO = (COMPOUND_APPLY pbin pbase false z) :: ptask_tail*
+  -- if S_updated = $compound_target($hold_task_inputs(S), pbin, pbase, S.RESULT, z)
+rule PhpStep/compound-self: S ~> S_updated[.HELD = S.HELD]
+  -- if S.TODO = (COMPOUND_APPLY pbin pbase true z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_updated = $compound_target($hold_task_inputs(S_read), pbin, pbase, S_read.RESULT, z)
+rule PhpStep/compound-self-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (COMPOUND_APPLY pbin pbase true z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/compound-Plus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP ADD expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpPlus expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpPlus expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-Minus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP SUBTRACT expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpMinus expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpMinus expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-Mul: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP MULTIPLY expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpMul expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpMul expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-Div: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP DIVIDE expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpDiv expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpDiv expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-Mod: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP MODULO expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpMod expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpMod expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-Pow: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP POWER expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpPow expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpPow expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-ShiftLeft: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP SHIFTLEFT expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpShiftLeft expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpShiftLeft expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-ShiftRight: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP SHIFTRIGHT expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpShiftRight expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpShiftRight expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-BitwiseAnd: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP BITAND expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpBitwiseAnd expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpBitwiseAnd expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-BitwiseOr: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP BITOR expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpBitwiseOr expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpBitwiseOr expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-BitwiseXor: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP BITXOR expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpBitwiseXor expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpBitwiseXor expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/compound-Concat: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_1), COMPOUND_PREP CONCAT expression_1 expression_2 $runtime_line(S, eps, NExprAssignOpConcat expression_1 expression_2 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpConcat expression_1 expression_2 metadata)) :: ptask_tail*

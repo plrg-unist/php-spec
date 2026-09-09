@@ -103,8 +103,7 @@ normal compilation never enters those children. They remain constant-store
 owners, not executable entry points. Missing access or unsuccessful compilation
 returns no mode. The current checked compiler constructs one matching access
 record per expression descriptor; this internal API does not accept arbitrary
-forged compiler states. Quiet access, compound operators and dynamic argument
-modes require explicit later extensions.
+forged compiler states. Quiet access and dynamic argument modes require explicit later extensions.
 
 The source anchors are the pinned PHP 8.5.10 `Zend/zend_compile.c`:
 `zend_compile_expr_inner` (11804), `zend_compile_var_inner` (11955),
@@ -203,3 +202,12 @@ only a final unset variable rejects statically. Dimension bases and reference
 sources retain runtime acquisition. These checks preserve skipped branches and
 earlier failures. Literal-concat CV classification remains an explicit separate
 parser-folding/source-line obligation with concat activation.
+
+
+Twelve compound assignments also use PPRW targets and read RHS operands, with
+explicit nontraversing prepass barriers. Direct/literal `$this` remains compile-valid;
+its runtime acquisition follows the ordinary direct/computed distinction. The
+expression descriptor retains the final compiler line after RHS compilation. A delayed dimension
+opcode separately retains its target descriptor line, consumed by runtime for
+operator diagnostics and delayed RHS reads. `compound_compiler.py` checks both
+lines against original native observations, along with target/RHS rejection order.

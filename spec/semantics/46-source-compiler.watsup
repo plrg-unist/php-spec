@@ -151,6 +151,7 @@ dec $ppdim(ppstate, pcpath, phpType5, ppmode) : ppstate
 dec $ppassign(ppstate, pcpath, expression, expression, bool) : ppstate
 dec $ppassignright(ppstate, pcpath, expression, expression, bool) : ppstate
 dec $ppassignmentline(ppstate, expression, bool) : ppstate
+dec $ppcompound(ppstate, pcpath, expression, expression) : ppstate
 dec $pparray(ppstate, pcpath, phpType13*) : ppstate
 dec $ppitems(ppstate, pcpath, nat, phpType13*) : ppstate
 dec $ppitemkey(ppstate, pcpath, phpType5) : ppstate
@@ -210,6 +211,18 @@ def $pptemporary(NExprPreInc expression metadata) = true
 def $pptemporary(NExprPreDec expression metadata) = true
 def $pptemporary(NExprPostInc expression metadata) = true
 def $pptemporary(NExprPostDec expression metadata) = true
+def $pptemporary(NExprAssignOpBitwiseAnd expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpBitwiseOr expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpBitwiseXor expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpConcat expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpDiv expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpMinus expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpMod expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpMul expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpPlus expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpPow expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpShiftLeft expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignOpShiftRight expression_1 expression_2 metadata) = true
 def $pptemporary(expression) = $pptemporary_shape($pfshape(expression)) -- otherwise
 
 def $ppdispatch(P, pcpath, expression, ppmode) = $ppcheck(P, $context_error("Cannot use temporary expression in write context", P.LOCATION.LINE))
@@ -233,6 +246,18 @@ def $ppdispatch(P, pcpath, NExprPreInc expression metadata, PPR) = $ppclearvalue
 def $ppdispatch(P, pcpath, NExprPreDec expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
 def $ppdispatch(P, pcpath, NExprPostInc expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
 def $ppdispatch(P, pcpath, NExprPostDec expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
+def $ppdispatch(P, pcpath, NExprAssignOpBitwiseAnd expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpBitwiseOr expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpBitwiseXor expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpConcat expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpDiv expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpMinus expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpMod expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpMul expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpPlus expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpPow expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpShiftLeft expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
+def $ppdispatch(P, pcpath, NExprAssignOpShiftRight expression_1 expression_2 metadata, PPR) = $ppcompound(P, pcpath, expression_1, expression_2)
 def $ppdispatch(P, pcpath, expression, ppmode) = $ppunsupported(P, "ordinary expression or writable operand compilation")
   -- otherwise
 
@@ -286,6 +311,8 @@ def $ppdim(P, pcpath, phpType5, ppmode) = P_key[.FOLD = P_key.FOLD[.VALUE = eps]
   -- if P.COMPLETION = PPCNORMAL
   -- if phpType5 = expression
   -- if P_key = $ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR)
+
+def $ppcompound(P, pcpath, expression_1, expression_2) = $ppclearvalue($ppassignright($ppexpr($ppupdatecheck(P, expression_1), pcpath ++ [PCFIELD 0], expression_1, PPRW), pcpath, expression_1, expression_2, false))
 
 ;; Assignment compiles its delayed target before the source. Direct variable
 ;; assignment restores the target AST line; reference assignment does not.

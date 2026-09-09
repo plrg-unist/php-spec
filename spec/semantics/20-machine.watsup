@@ -8,7 +8,7 @@ syntax pevent = OUTPUT nat* | WARNING nat* int | DIAGNOSTIC text nat* int
 syntax pcompletion = NORMAL | PHPERROR nat* int | THROWN text nat* int | STATICERROR text int | STATICBYTES nat* int | UNSUPPORTED text | BUDGET
 syntax pcheck = READY | REJECT pcompletion
 syntax peval = VALUE pvalue | ABRUPT pcompletion
-syntax pbin = EQUAL | NOTEQUAL | LESS | LESSEQUAL | GREATER | GREATEREQUAL | SPACESHIP | LOGICALXOR | ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
+syntax pbin = MODULO | SHIFTLEFT | SHIFTRIGHT | BITAND | BITOR | BITXOR | POWER | CONCAT | EQUAL | NOTEQUAL | LESS | LESSEQUAL | GREATER | GREATEREQUAL | SPACESHIP | LOGICALXOR | ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
 syntax punary = POSITIVE | NEGATIVE
 syntax pcomparison = COMPARED bool | RECURSIVE
 var z : int
@@ -131,6 +131,18 @@ def $expression_line(NExprPropertyFetch expression phpType20 metadata) = $expres
 def $expression_line(NExprNullsafePropertyFetch expression phpType20 metadata) = $expression_line(expression)
 def $expression_line(NExprStaticCall phpType19 phpType20 phpType6 metadata) = $name_expression_line(phpType19)
 def $expression_line(NExprStaticPropertyFetch phpType19 phpType33 metadata) = $name_expression_line(phpType19)
+def $expression_line(NExprAssignOpBitwiseAnd expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpBitwiseOr expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpBitwiseXor expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpConcat expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpDiv expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpMinus expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpMod expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpMul expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpPlus expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpPow expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpShiftLeft expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprAssignOpShiftRight expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(expression) = 0
   -- otherwise
 

@@ -518,6 +518,8 @@ from truth_expressions import CASES as TRUTH_CASES
 CASES.update(TRUTH_CASES)
 from comparison import CASES as COMPARISON_CASES
 CASES.update(COMPARISON_CASES)
+from compound import CASES as COMPOUND_CASES
+CASES.update(COMPOUND_CASES)
 from incdec import CASES as INCDEC_CASES
 CASES.update(INCDEC_CASES)
 from write_fetch import CASES as WRITE_FETCH_CASES
@@ -637,9 +639,14 @@ def main():
     results = []
     negatives = []
     with tempfile.TemporaryDirectory(prefix='php-semantics-') as directory:
-        for name, source in selected.items():
-            path = Path(directory) / (name + '.php')
+        # Logical IDs may contain operators or path separators. Materialize every
+        # source under an independent, unique filename before running any case.
+        paths = []
+        for index, (name, source) in enumerate(selected.items()):
+            path = Path(directory) / f'case-{index:05}.php'
             path.write_bytes(source)
+            paths.append(path)
+        for (name, source), path in zip(selected.items(), paths, strict=True):
             semantic = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)],
                                       capture_output=True, env=ENV, timeout=35, cwd=directory)
             actual = json.loads(semantic.stdout)
