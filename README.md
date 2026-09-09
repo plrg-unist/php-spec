@@ -94,7 +94,12 @@ binds 166 exact source replays, 61 independent original agreements, 283 shared
 destructuring regressions and eight independent state programs with 1,868 assertions.
 [Reference sends and temporary DIM/list behavior](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md)
 preserve alias cells, COW, diagnostic phases and checked continuation ownership.
-Defaults, types, reference returns and remaining callable protocols are pending.
+[Ordinary user constants](docs/semantics/SOURCE-USER-CONSTANTS.md) now preserve
+ordered activation, namespace/import lookup, initializer diagnostics and array
+ownership. [Their independent review](coverage/semantics/user-constant-review.json)
+binds source, allocation-class, state/resume and shared quiet/call checks.
+Default receives/caching, types, reference returns and remaining callable protocols
+are pending; allocation classes supply the necessary default-caching provenance.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

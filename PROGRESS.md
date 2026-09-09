@@ -6,56 +6,63 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-The [positional reference parameter](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md)
-increment is independently accepted at **3956fbe1**: code **31640654**,
-compiler evidence **7263bf5b**, runtime evidence **7aed92c3**. Final author/reviewer
-gates retain **882/4b5e15e4**; an explicit unchanged two-file bridge binds canonical
-**884/7399e812**. [Independent evidence](coverage/semantics/reference-parameter-review.json)
-records 61 original reference agreements and three separate pending suppression
-controls, 166 exact author-source replays, 283 fresh native destructuring regressions,
-and eight state programs with 1,868 assertions. Author gates add 139 first-call
-comparisons, 40 existing protocol fixtures, five reference protocol groups and six
-state programs with 1,413 assertions. Each dense state program checks 35 cuts,
-adjacent public resumes and seven full resumes. Canonical CLI8 passes.
+The [user-constant prerequisite](docs/semantics/SOURCE-USER-CONSTANTS.md) is
+independently accepted at **3341519d** in the [review](coverage/semantics/user-constant-review.json).
+Code **5151608e** installs **899/ca3c06e5**; compiler evidence is **41b2c1a2**
+and runtime evidence is **06b64f88**. Source and independent gates retain
+**899/e7d552ec**; the explicit bridge changes only one state-test expectation to
+retain initial request roots after an initializer error. Runtime/compiler bytes
+and modes are identical. Original fixture and metadata failures remain archived.
 
-Reference sends preserve caller cells through later argument effects, parameter
-rebinding, saved calls, surplus values and fatal cleanup. Literal/TMP sends throw;
-value-call/VAR sends can emit a Notice and create a temporary reference. Shared
-call-result DIM writes and reference destructuring preserve temporary ownership,
-COW and exact diagnostics. Compiler preparation retains 48 phase/16 descriptor
-checks, 12 send-kind/36 context checks, and 91 optimized builtin write-context
-phase controls. These compiler facts implement no builtin bodies. The source
-originals, intermediate disagreements, interrupted state run and setup failures
-remain separately archived. No family is closed by this increment.
+Ordinary declarations activate in order, preserve namespace/import/fallback and
+name case, evaluate duplicate initializers before warning, and retain constant
+array ownership across copies, calls and abrupt cleanup. Nonowning allocation
+classes follow actual compiler/runtime operations. Conditional observations use
+recorded operands; public guards reject inconsistent branch or pooled-class
+facts while accepting legitimate changed runtime values.
 
-The historical first-call prerequisite remains **f3149e32** on **869/c946394c**
-(code **a8fdac1e**, runtime **d907c5db**, compiler **04ac151f**). Its
-[review](coverage/semantics/calls-final-review.json) retains 139 source comparisons,
-40 protocols, state9/2,079, CLI8 and the exact 870→869 bridge. The historical broad
-compiler checkpoint on866 retains 5,751 native lints/5,783 assertions in its
-70,239-file archive; decoded Worker records and exact transport evidence remain
-explicitly distinguished. These historical identities are not relabelled current.
+Independent gates pass 42 retained constant sources, 75 exact author-source replays,
+24 existing quiet regressions, four constant state programs/1,082 assertions,
+two quiet state programs/676, and branch 6/126. Each dense state program checks 35
+cuts, adjacent public resumes and seven full resumes. Two accepted reference-call
+programs preserve complete historical 882 states at six selected cuts/full after
+removing only the new empty constant fields. Compiler review adds 15 retained
+class projections/195 assertions and 12 boundary controls/26 assertions; its
+original 889 gates and focused shared 45 regressions retain their own identity.
+Author gates pass 75 source profiles / 46 class assertions, table 14 / context 14,
+branch 6/126, and corrected state 3/821. Canonical CLI 8 passes. Three PHP_VERSION
+value-read controls remain separate Unsupported boundaries. No family closes.
 
-The [reviewer handoff](docs/semantics/FIRST-CALLS-REVIEWER-HANDOFF.md) and
-[runtime handoff](docs/semantics/RUNTIME-CALLS-HANDOFF.md) give exact continuation inputs.
+The positional-reference checkpoint remains historical **3956fbe1**: code
+**31640654**, compiler **7263bf5b**, runtime **7aed92c3**, tested882/4b5e15e4 and
+installed884/7399e812 through an unchanged two-file bridge. Its
+[review](coverage/semantics/reference-parameter-review.json) retains166 author
+sources,61 independent agreements,283 shared destructuring regressions,
+state8/1,868, author state6/1,413,139 first-call sources,40 existing protocols,
+five reference groups and CLI 8. The earlier first-call checkpoint remains
+**f3149e32** on869/c946394c (codea8fdac1e, runtimed907c5db, compiler04ac151f);
+[its review](coverage/semantics/calls-final-review.json) records139 sources,
+40 protocols, state9/2,079 and the870→869 bridge. Its broad compiler checkpoint
+on866 retains5,751 native lints/5,783 assertions and70,239 archived files.
+Historical gates are not relabelled current.
+
+The [compiler handoff](docs/semantics/CONSTANTS-COMPILER-HANDOFF.md) and
+[runtime handoff](docs/semantics/RUNTIME-DEFAULTS-HANDOFF.md) give exact continuation inputs.
 The next [untyped-default phase plan](docs/semantics/DEFAULTS-ACTIVATION-PLAN.md)
-first completes the necessary user-constant declaration/lookup/storage prerequisite
-(compiler88/runtime89), then omitted-default receives (compiler90/runtime91).
-Default arguments must use declaration context, skip supplied values, preserve
-fresh parameter/array ownership and observable deferred-value caching. Native
-originals show scalar/empty results can warn only on the first omitted call,
-while refcounted array/string results can warn on every call. Signature17's private
-suspension prototype remains historical877 helper preparation, with no defaults
-source activation. Types, reference returns and remaining callable protocols follow.
-Independent [preparation](coverage/semantics/default-review-preparation.json) retains
-106 native/current884 originals; the separate
-[diagnosis](coverage/semantics/constant-review-diagnosis.json) adds 56 originals and
-frozen887 compiler boundary failures. Allocation rules remain under review.
+now proceeds from accepted user constants (compiler88/runtime89) to omitted
+untyped-default receives (compiler90/runtime91). Supplied arguments skip defaults;
+omitted arguments use declaration context, fresh parameter/array ownership and
+observable deferred-value caching. Allocation provenance is implemented, but
+receive caching is not. Independent preparation retains 119 later default/cache
+originals: 108 from the [162-source preparation/diagnosis](coverage/semantics/constant-review-diagnosis.json)
+and 11 [literal-constructor controls](coverage/semantics/literal-class-review-preparation.json).
+The historical 877 signature 17 suspension prototype and paused default compiler
+are preserved in the [successor archive](coverage/semantics/default-compiler-preparation.json),
+not admitted source semantics. Types, reference returns and remaining callable
+protocols follow. All seven existing pending signature controls remain pending.
 The earlier reference [originals](coverage/semantics/reference-parameter-review-preparation.json)
 and [DIM diagnosis](coverage/semantics/reference-parameter-review-diagnosis.json)
-retain their original Unsupported/disagreement states. All seven existing pending
-signature controls remain pending at this checkpoint.
-The [core continuation checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md)
+retain their original Unsupported/disagreement states. The [core continuation checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md)
 keeps switch/match/labels/goto, objects/properties, exceptions, dynamic sources,
 generators/fibers, observable lifetime, core intrinsics and source-input gaps
 explicit. Global function `namespace\static` signature
@@ -90,13 +97,13 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, first returns and fatal frame cleanup reviewed; exceptions pending |
 | 3b: calls, closures and static checks | Partial; named positional value/reference calls reviewed; remaining call protocols pending |
-| 4a–b: linking, objects, traits and properties | Partial; header/relation helpers reviewed, execution pending |
+| 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records123 partial,182 pending and one validated
-obligation; accepted positional reference activation is reflected in its call rows.
+The runtime inventory now records124 partial,181 pending and one validated
+obligation; accepted user constants are reflected in declaration rows, which remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 
@@ -133,9 +140,9 @@ Runtime6 owns user-constant storage and default receives; compiler5 owns the
 paired constant/default compiler and shared signature adapter; review9 owns independent evidence/inventory/docs. Runtime5
 and review8 authored/reviewed the historical checkpoints above. Root orchestrates. Stage
 owned files, commit reviewed increments and never push. Use canonical-root Dune
-builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-CALLS-HANDOFF.md),
-[compiler](docs/semantics/COMPILER-HANDOFF.md) and
-[reviewer](docs/semantics/FIRST-CALLS-REVIEWER-HANDOFF.md) handoffs retain interfaces.
+builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-DEFAULTS-HANDOFF.md) and
+[compiler](docs/semantics/CONSTANTS-COMPILER-HANDOFF.md) handoffs retain the default
+interfaces; the [review](coverage/semantics/user-constant-review.json) binds this checkpoint.
 
 Each coherent increment needs native/source originals, focused phase/line checks,
 appropriate state/ownership/resumption gates and independent review. Run early
