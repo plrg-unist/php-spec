@@ -1,0 +1,1516 @@
+{
+  "decision": "accepted",
+  "reviewer": "independent review6",
+  "scope": "Array-valued unpacking and scalar rejection in current checked scalar/array semantics; full spread family remains partial",
+  "code_commit": "4ca826d2",
+  "author_evidence_commit": "7ac2519f",
+  "implementation_fingerprint": {
+    "sha256": "6b7006dc090111f7ea7f6e559ef2b84bce6897d13944c32cbd177861a46959ca",
+    "files": 803,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_report_sha256": "cf50f48340ea8afaf166edac43fea41a54fec3765ca50f035ae0fd21b2b24c63",
+  "raw_results": {
+    "path": "coverage/results-semantic-source-selected-1b41lw3f.jsonl",
+    "sha256": "6095d2dd7e33d4495631854a7979921a094fcfe0d0182f2093d6738d245914fe",
+    "records": 155
+  },
+  "canonical_report_hashes": {
+    "coverage/semantics/array-unpack-source.json": "cf50f48340ea8afaf166edac43fea41a54fec3765ca50f035ae0fd21b2b24c63",
+    "coverage/semantics/array_unpack.json": "d69db7cbec6bffdaf300c6ee5b22c0ba5b77dc3eda7c4f2893acf51dc224e1f7",
+    "coverage/semantics/array-unpack-compiler.json": "3ae2449b23b19041693c42d5bda92bfb75305d0c0da1045fd84b68101aed8c89"
+  },
+  "source_cases": 155,
+  "outcome_negatives": 24,
+  "state_cases": 31,
+  "state_assertions": 2454,
+  "compiler_lints": 42,
+  "compiler_controls": 10,
+  "published_semantics_equal_reviewed_candidate": {
+    "spec/semantics/modules.json": "315a0fee28ef527a892aa1bbe47f708f863505f5fc8d2ef36f563d2d43662990",
+    "spec/php.watsup": "4d88880caaee8a2b5e74969ae3cf94b17beff36e391f4bb9823ebec80d9d8a36",
+    "spec/semantics/11-source-occurrences.watsup": "68bab3c795f62e36e61a178ec636b70e0bb6c447e8d8d5197391176628646e67",
+    "spec/semantics/00-numeric.watsup": "f7d962c8314711ddbd0a0e6b5302ff0d7c61c0c38b454d225e7e8b4d0cf42652",
+    "spec/semantics/01-integer.watsup": "d1955f4f435421fbb8d1ffdda1587be0f62a3509994bcb4bfd20eb74a4ab55ef",
+    "spec/semantics/02-numeric-text.watsup": "84986b275e0c1e3aceac6fbce873fa2fe72f8d20406fd061929d7f9c367f1574",
+    "spec/semantics/03-numeric-format.watsup": "9ce53fca5a4316cb79676aa89d8e1a05826a090e6b883cb8d45cf30875f345ca",
+    "spec/semantics/04-numeric-context.watsup": "0218f142bfe9e03c25833f37cacceda4ce1ba4e1a4a09f397b4ff67405f654e0",
+    "spec/semantics/05-string-operators.watsup": "312801d36acd2c1587b087d6a45f232e6a07763ca71eaa5779f9efac0e40c55d",
+    "spec/semantics/06-power-prepare.watsup": "484988253f36edfcafb88ac20de72ae540f34251babe582a5336a6e38cc08eb6",
+    "spec/semantics/07-fma.watsup": "4a2fbb46bfd7c81fcb05bf91ee02c6bbdc2905a2f74e9242fa71fcc1fb3d360b",
+    "spec/semantics/08-libm-data.watsup": "7933bc24cbf67cb984dd99a5a17c4086d78520d00330ca5eacb2553b871493f3",
+    "spec/semantics/09-libm-power.watsup": "2ad2f0c863474841c09bc4624554f30cec9ddfa776e9598fe87e93834de5a24a",
+    "spec/semantics/10-bytes.watsup": "ece37a558435431cc368122be74ae3fa1d192a98d5669300e6e899bca7df8585",
+    "spec/semantics/15-constant-names.watsup": "57aa5a92fb78842b926894af7fc4f7747c1aa069ce93689f3c7d574d1f009a3a",
+    "spec/semantics/20-machine.watsup": "2978c00157dc98560c9caa7d7fed93e42c867f191aedd6e5555814067ea10aa8",
+    "spec/semantics/30-storage.watsup": "b5963a090d67ea3d45eccdd696fb7dabbdbff2660e4dd09178dc019de59adc3e",
+    "spec/semantics/31-source-origins.watsup": "7faf4a74a5fafa4a424c307e73781c00f81415900be033990f04738b593ca008",
+    "spec/semantics/35-scalar-operations.watsup": "9403c3bb24fa89085f40a0c7652724a999f2d8765db1b9cea97ebea5f4286cf8",
+    "spec/semantics/36-arrays.watsup": "5809f5d87b897e43d14d05fac1bba1cffcfacd8092b293dfae2a3e1cc74ce422",
+    "spec/semantics/37-array-locations.watsup": "142ec8ace1dcf16b6366e47014a05ad83ef981f93772124749656c9e873b6a5b",
+    "spec/semantics/38-array-unset.watsup": "4744f4bb42032935d3a321fe87d6e703d7bc10a1a65cb86944058b474ad4feae",
+    "spec/semantics/39-ownership.watsup": "3da5abab929619b956bb52c621da746c79bbdaa7c27b41e75137f94a88ed8230",
+    "spec/semantics/32-compiled-pools.watsup": "3eec8a6aa389b13d2032e6752386ba389da501e4987cdef363213fb43460ea3e",
+    "spec/semantics/16-static-types.watsup": "f6f259382a9e9a51fe9acc7c3aec8ff3a4f089911840660bbae6a44f4c560aa5",
+    "spec/semantics/21-source-context.watsup": "f68dda7b4e62fc62b09e96a8f8c7b8cd02f8597e7a41447e0e8b61756a7821bb",
+    "spec/semantics/22-name-resolution.watsup": "9f9dd44d1f444e8d05c376321ab4112066e6f9886cbf361f1fd6ad4ec051578a",
+    "spec/semantics/23-named-constants.watsup": "88e05728f18905b758b5c09254953635097244c92fdfd1e5bf1a9c4080e73438",
+    "spec/semantics/44-dimension-read.watsup": "f86f9bd85dc53ac227995b504ee53edeec2ef42b4e80846c9548e12c067ca9cb",
+    "spec/semantics/45-dimension-write.watsup": "c863bbac52fd9f6abdb26325a36f6d15be3e83ddb66f09e894c3f544a26dccdb",
+    "spec/semantics/56-casts.watsup": "a491681335f3366488d4c2a6efdb0fa5fa6dac96b3a9012c47130dd4601f8a98",
+    "spec/semantics/57-bitnot.watsup": "74afb1285d7b7b9156c4216d673914934c38347d4c894daea54bf13248b7a762",
+    "spec/semantics/60-array-unpack.watsup": "3b2beff14d82e3e129c1d3b24d9fd1ac51fa13ee3ea7e3c789780de5c4ca70da",
+    "spec/semantics/45-constant-context.watsup": "6850aaa953aaa975e2bd5a35736b75510489d8119124a5f211ee5eab3e589684",
+    "spec/semantics/46-source-compiler.watsup": "041531887ff6dcd46da449de895816fb0c79494ae97e62128a56c2922c8e9b42",
+    "spec/semantics/47-control-compiler.watsup": "a3e5bab449365c62e368dc4448cb3fec92bb3a4228d60b6db30c4c51268794a2",
+    "spec/semantics/33-runtime-compiler.watsup": "7c01752cbd94cf6cde5f8b3a9b52ce6102c97a38af0dc9974e7cb6b166bec26c",
+    "spec/semantics/40-control.watsup": "58cedbc1ef0c9ce7b8d7de42d9abee5e6f7c9c0c18ed657e211edeadc15455ec",
+    "spec/semantics/41-array-control.watsup": "f81948389be101b53627cdf6633e1c0031f20d679c4ba9b7bca1186731141da5",
+    "spec/semantics/42-array-write-control.watsup": "4bfdbe4f841f4fef42c9eddbc60e571fca840d7e090b2aa65c954e81c0e1c893",
+    "spec/semantics/43-array-unset-control.watsup": "3c25d2fca48080c07ff9c1121805b3f9fab1db05143bf518b962561b3b715306",
+    "spec/semantics/50-control-flow.watsup": "50999cefc35aae6baef3a6c7d747ebd09c870980561d3586ba88bc9bea9614a4",
+    "spec/semantics/51-truth-expressions.watsup": "16d2580a7171304abce7db060883189f06d5fa06b46ef53b65978e27b102d7d4",
+    "spec/semantics/52-comparison.watsup": "38d0e3815bc4b319a59828d08f88c9a47634283f48f641744b547785ccaffb77",
+    "spec/semantics/53-incdec.watsup": "07fc0a57b78183e999447994271a2494bf7abc4f74656aa89b2142c094dfa8b8",
+    "spec/semantics/54-binary-operators.watsup": "ec59b71b8570043063a85db73972bbb02486e6f59b12e44ee4a44e1f6e6be82e",
+    "spec/semantics/55-compound-assignment.watsup": "9687061c9f718d60c579fcf50bde64f5a5573c17303bc2a6beeee5b80cb7aeba",
+    "spec/semantics/58-ordinary-expressions.watsup": "12a296d7b069538d9d7579c580d3b4eb492c19186925b6ae70ba0645efd1c042",
+    "spec/semantics/59-concat-expressions.watsup": "4b4eabd13e711f11b83b85cbe14155f8e3ede4f47eb562275203891fddc2eb72",
+    "spec/semantics/61-array-unpack-control.watsup": "404d391705816b782d38ea6d58457e1ef010c2f886b80d0a09412c3535aaa1d3",
+    "frontend/FileLexer.php": "8873db38927d43785d2547c4ff1956abdf9fb5691fd0e1b0a53f7ade99a9119b",
+    "frontend/worker.php": "35be2bbb340a2f9b1d740013d4479de0fe6bcade2be27eaa8e307646b6e8a5a8",
+    "frontend/encoding-literal.php": "5ecc4630214dbc5fb87e3684cd7c2635a5e7c31af55ded64dcb5d47bd2566ca4",
+    "frontend/encoding.php": "cf510c894a1b46ce681fb78f8f83bda439e49eb53a011a903501686cabeda730",
+    "frontend/target.php": "eeec72dbc799d6d57b4ebf75d7793a68d6db8bee9cc2da7750c87f2ffaf0a5e0",
+    "frontend/SourcePrinter.php": "d0ca0f4b9c8229376e11d4f220f6e21c37433324379946d0c697a3723136049e",
+    "frontend/wire.php": "12494a23564a2a93e9abd2806aa7750ada85d4aa696e691db00d22ac881968d9",
+    "frontend/autoload.php": "62fb415f31f4fe839b30589b3d88456a63b5f2e1d1d71996bda1d5b521d248db",
+    "spec/schema.json": "fa06db23f91a84622957db50172524eef0de00cf85174c360cc586077a638bc6"
+  },
+  "independent_source_state": {
+    "records": [
+      {
+        "id": "review-unpack-replaced-reference",
+        "source_base64": "PD9waHAgJHg9MTskYT1bImsiPT4mJHhdOyRiPVsuLi4kYSwiayI9PjJdOyRiWyJrIl09MztlY2hvICR4LCRhWyJrIl0sJGJbImsiXTs=",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-0.php",
+        "native": {
+          "stdout": "MTEz",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "2e71f8178cb515029fa79f1a296e956c00937c63ef85821ec19013485e45584a",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-singleton-string",
+        "source_base64": "PD9waHAgJHg9MTskYT1bImsiPT4mJHhdO3Vuc2V0KCR4KTskYj1bLi4uJGFdOyRiWyJrIl09NDtlY2hvICRhWyJrIl0sJGJbImsiXTs=",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-1.php",
+        "native": {
+          "stdout": "MTQ=",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "fc7e6e2c62bd2d1bcf97f16fa7318b4787d9740b59f81b1fbdf50a0b697576ba",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-shared-cow",
+        "source_base64": "PD9waHAgJHg9MTskYT1bImsiPT4mJHhdOyRjPSRhO3Vuc2V0KCR4KTskYj1bLi4uJGFdOyRiWyJrIl09NDtlY2hvICRhWyJrIl0sJGNbImsiXSwkYlsiayJdOw==",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-2.php",
+        "native": {
+          "stdout": "MTE0",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "7c4b96deb852e1a9e2656f072e2de6aa6494efa0153842f1fd28a910c6a33e15",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-rebind-operand",
+        "source_base64": "PD9waHAgJGE9WzFdOyRyPSYkYTskYj1bLi4uJHIsLi4uKCRyPVsyXSksLi4uJGFdO2VjaG8gJGJbMF0sJGJbMV0sJGJbMl0sJGFbMF07",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-3.php",
+        "native": {
+          "stdout": "MTIyMg==",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "4f123f62b4d2f033fc76939c0c32aa5d7890f55b3af00b5259c1cebf4415dc73",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-nested-cow",
+        "source_base64": "PD9waHAgJGE9W1sxXV07JGI9Wy4uLiRhXTskYlswXVswXT0yO2VjaG8gJGFbMF1bMF0sJGJbMF1bMF07",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-4.php",
+        "native": {
+          "stdout": "MTI=",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "4f3e4fa4fa805ecc30f2cd6d604cb1938b26709a5bea97d5ce613ee9013e656f",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-overflow-stop",
+        "source_base64": "PD9waHAgJGE9WzEsInMiPT4yXTskYj1bUEhQX0lOVF9NQVg9PjMsLi4uJGEsJG1pc3NpbmddOw==",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-5.php",
+        "native": {
+          "stdout": "",
+          "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWRkIGVsZW1lbnQgdG8gdGhlIGFycmF5IGFzIHRoZSBuZXh0IGVsZW1lbnQgaXMgYWxyZWFkeSBvY2N1cGllZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ni11bnBhY2stZmluYWwvZGVuc2UtNS5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc2LXVucGFjay1maW5hbC9kZW5zZS01LnBocCBvbiBsaW5lIDEK",
+          "exit_status": 255
+        },
+        "fixture_sha256": "5e956598ccdc4bfb46cfd57f7e03fe9d1566a4e2c1f0531e9e53c7ba9c4ebc7f",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-key-history",
+        "source_base64": "PD9waHAgJGE9Wy05PT4xLFBIUF9JTlRfTUFYPT4yLCIwMSI9PjNdOyRiPVsuLi4kYSw0XTtlY2hvICRiWzBdLCRiWzFdLCRiWyIwMSJdLCRiWzJdOw==",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-6.php",
+        "native": {
+          "stdout": "MTIzNA==",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "76aa2fdb1a3f43f6d0bf3f2b302dd61e6f5931b91657b22f1ef80b8e1364edd9",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      },
+      {
+        "id": "review-unpack-loop-owned",
+        "source_base64": "PD9waHAgJHg9MTskYT1bJiR4XTskaT0wO3doaWxlKCRpKys8Mil7JGI9Wy4uLiRhLC4uLiRhXTskYlsxXSs9MTtlY2hvICR4LCRiWzBdO30=",
+        "context": "/home/user/workspace/php-spec/.tools/review6-unpack-final/dense-7.php",
+        "native": {
+          "stdout": "MjIzMw==",
+          "stderr": "",
+          "exit_status": 0
+        },
+        "fixture_sha256": "445aedbcfc35ecb2945c89adbd0e541696d83a71c3e82a906ddc0ac2fac03776",
+        "assertions": 171,
+        "result": {
+          "status": 0,
+          "stdout": "true\n",
+          "stderr": ""
+        }
+      }
+    ]
+  },
+  "independent_source_cases": 8,
+  "independent_state_assertions": 1368,
+  "independent_budget_range": [
+    0,
+    31
+  ],
+  "source_archive_audit": {
+    "result": "pass",
+    "scope": "private exact155 source catalogue/raw membership, original154 preservation and native-semantic outcome audit;24 negative controls remain distinct",
+    "raw_results": {
+      "path": "coverage/results-semantic-source-selected-1b41lw3f.jsonl",
+      "sha256": "6095d2dd7e33d4495631854a7979921a094fcfe0d0182f2093d6738d245914fe",
+      "records": 155
+    },
+    "selected_report_sha256": "cf50f48340ea8afaf166edac43fea41a54fec3765ca50f035ae0fd21b2b24c63",
+    "archive_sha256": {
+      "coverage/semantics/array-unpack-runtime-originals.json": "dc97ab77789f0fe0576d9bc4536c9d11f329615a9e562a27e41c05da20471ad3",
+      "coverage/semantics/array-unpack-compiler-originals.json": "f01e12ca196575b331261a7686a66c160e3e7db7adba4f2dac2de354f83a8996"
+    },
+    "retained": [
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-0",
+        "source_sha256": "d37eac9281b1130595e9fcfbcfbcb10ca503eb53ada3584ceb71239225eed954",
+        "admitted_ids": [
+          "unpack-unpack-state-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-1",
+        "source_sha256": "fded09edb8db323f00a48e7c5416bba9adaaef9c2b4dbb65c6c13e4593d639ce",
+        "admitted_ids": [
+          "unpack-unpack-state-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-2",
+        "source_sha256": "295959a6f34d9ad9f182b5341b3ce5cc162914a47c5849e8ee92b2d2a989320a",
+        "admitted_ids": [
+          "unpack-unpack-state-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-3",
+        "source_sha256": "f402892c3ba4fce7d5d4e8ee0ab656502c8d50d32c822378fa7aded5dbcf7922",
+        "admitted_ids": [
+          "unpack-unpack-state-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-4",
+        "source_sha256": "c98b16d65eecc67ad8a494c4fe0dbe47de83f4fd86953f9443673877bbe3b62d",
+        "admitted_ids": [
+          "unpack-unpack-state-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-5",
+        "source_sha256": "1df9b7bd886f923a04093a174d0ba86cf4967055699f244977d54ea62c9799a8",
+        "admitted_ids": [
+          "unpack-unpack-state-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-6",
+        "source_sha256": "ad4c8da12cf27308bb882954987994b9d323fc25393e4a284f4d1a7e6ab5aa58",
+        "admitted_ids": [
+          "unpack-unpack-state-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-7",
+        "source_sha256": "ae63a3709bd994b2a0d7af6beef3d1921a3c5983ffabf31cee70c6ca663b3f96",
+        "admitted_ids": [
+          "unpack-unpack-state-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-8",
+        "source_sha256": "76d35971175cfcfa3d28d66c9a6b64d6d496ba3b62d2c283209886daa26c1322",
+        "admitted_ids": [
+          "unpack-unpack-state-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-9",
+        "source_sha256": "a3749d4a84e551a0312a48de2b0f0532428b701a5c9d67896a1e2d2b475cd1eb",
+        "admitted_ids": [
+          "unpack-unpack-state-9"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-10",
+        "source_sha256": "0f2040244b0a6bb4204a0a92d103481c08972029a1f48ec0ab9682fb52b967d0",
+        "admitted_ids": [
+          "unpack-unpack-state-10"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-11",
+        "source_sha256": "c44d7dfeddbf124bf395c8d7481c40d27ed9a71ddc255d95fc9432b6dbc2995d",
+        "admitted_ids": [
+          "unpack-unpack-state-11"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-12",
+        "source_sha256": "eb12f5fe22fec56dbb6ceb80fc5b53a1f3441a26600ef491c9fca9349ea4d2ee",
+        "admitted_ids": [
+          "unpack-unpack-state-12"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-13",
+        "source_sha256": "fe300011ceac7ff63e6d81ca75ea7e9dfe86a15062c857ae2f19abc540ed5997",
+        "admitted_ids": [
+          "unpack-unpack-state-13"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-14",
+        "source_sha256": "eb51f4fddd081487e13c9e8a4de3b695ecd0cb551cd074c4cac504e4b7cccaee",
+        "admitted_ids": [
+          "unpack-unpack-state-14"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-15",
+        "source_sha256": "be20a88ca09acd206282e2a0ff0fa2aacc6f21b0d15606a5f0b060d614fbed55",
+        "admitted_ids": [
+          "unpack-unpack-state-15"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-16",
+        "source_sha256": "1376b445cb3a92c49df2c80d9accd16940222e1b9554d340f9e58a641f965b55",
+        "admitted_ids": [
+          "unpack-unpack-state-16"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-17",
+        "source_sha256": "8f98f10e44e27fd7bc324896c4a9fffacd3565c3c2764eec2b6a9afdca1a84fa",
+        "admitted_ids": [
+          "unpack-unpack-state-17"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-18",
+        "source_sha256": "cbcdf2e95601a112b5d36fe15962178df3ae479c2ffb107a28a00c5b4c6869ff",
+        "admitted_ids": [
+          "unpack-unpack-state-18"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-19",
+        "source_sha256": "0ba6cad5da7487a66658052360abdaa9e46d663156139cc3c36c37616b400e84",
+        "admitted_ids": [
+          "unpack-unpack-state-19"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-20",
+        "source_sha256": "18dfb654d262696039ee528ce92bfa8333f0f9e783e15b540f03d11c50ca5e74",
+        "admitted_ids": [
+          "unpack-unpack-state-20"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-21",
+        "source_sha256": "27a1c91a202175e5d10f89b1ebeaa5576ea4e905e999685e9cf87675e85c85cc",
+        "admitted_ids": [
+          "unpack-unpack-state-21"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-22",
+        "source_sha256": "2d0893eed6132257741bcb61f3ad079ed69662b8ad89e2c89db5024a2bb83063",
+        "admitted_ids": [
+          "unpack-unpack-state-22"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-23",
+        "source_sha256": "fc3b2c8cbc8c1776b445520e8daf2a22374c4bf896bf7e5cbf798071e4f01970",
+        "admitted_ids": [
+          "unpack-unpack-state-23"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-24",
+        "source_sha256": "42555d5d195958f914fa06f60d7ad561f44a7d755ca38f82b67010d839fb04fc",
+        "admitted_ids": [
+          "unpack-unpack-state-24"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-25",
+        "source_sha256": "0b13c22a03467d7fd3062621c32362fb85861301483b3bbe37b31cee2eb764d1",
+        "admitted_ids": [
+          "unpack-unpack-state-25"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-state-26",
+        "source_sha256": "f7b3603627614592f1ba7b17209fec1484d4381a67f223d970df37b218eea275",
+        "admitted_ids": [
+          "unpack-unpack-state-26"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-0",
+        "source_sha256": "baeeab9deaf153235ae084aa3e36557222d9fbc5998735cc31109558124026d4",
+        "admitted_ids": [
+          "unpack-unpack-value-0-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-1",
+        "source_sha256": "2d3f4a2e005d56d77cc3caed22cb77c11fa391b1bd165dcb6f42434f2459e774",
+        "admitted_ids": [
+          "unpack-unpack-value-0-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-2",
+        "source_sha256": "94d8354354e956410646a5590823ddc013e470f0cf11ef651073eac0d3854890",
+        "admitted_ids": [
+          "unpack-unpack-value-0-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-3",
+        "source_sha256": "f9b85bd2fda0c3ee9e7a9d262146c6ff4346c8073befb8d26ad7d624ab1e195c",
+        "admitted_ids": [
+          "unpack-unpack-value-0-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-4",
+        "source_sha256": "d8757cc2a105c3ef135a66f0a063fc372c4d6d9dc8064278afe0f3c60cee6718",
+        "admitted_ids": [
+          "unpack-unpack-value-0-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-5",
+        "source_sha256": "6546c2ee693eec6881b571bd3540ebf899fb1996ac8194f892fa444d2e633349",
+        "admitted_ids": [
+          "unpack-unpack-value-0-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-6",
+        "source_sha256": "b2779673b2b2faaafeb674aab86b43eda5b2abd21975d14a998f12082714f1b1",
+        "admitted_ids": [
+          "unpack-unpack-value-0-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-7",
+        "source_sha256": "63a2aed5ffe344b73ee4c66e6da8e8eab3b2df60df4ba25f0b9b20e958a15fee",
+        "admitted_ids": [
+          "unpack-unpack-value-0-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-0-8",
+        "source_sha256": "c8ceb49be36c2345eeaf9b828aa0867620ebd3c4131c45d4a72d9395de0fc693",
+        "admitted_ids": [
+          "unpack-unpack-value-0-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-0",
+        "source_sha256": "6ba05d38ec9f5ecec2393f4bce9e2f1c445608974101e883e5bf3851d157828d",
+        "admitted_ids": [
+          "unpack-unpack-value-1-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-1",
+        "source_sha256": "9cdf599c9c5ec2f1f965e659affd644488f5d51a2d9c8fd5eb85155c9dedc35f",
+        "admitted_ids": [
+          "unpack-unpack-value-1-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-2",
+        "source_sha256": "2728e495eef9cb66ffa7cee10aaa162e1c26ea224292aaf1327da806daed08e0",
+        "admitted_ids": [
+          "unpack-unpack-value-1-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-3",
+        "source_sha256": "bb61baac0ad5bfed094b8e6ac69966ad3e0287e10ba3ab9bac12c24f01f81243",
+        "admitted_ids": [
+          "unpack-unpack-value-1-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-4",
+        "source_sha256": "32aa5175ab7ee398bf78c7445e5063526758a93ed2724c58d46ce1922f650e2c",
+        "admitted_ids": [
+          "unpack-unpack-value-1-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-5",
+        "source_sha256": "8cba0b38a30721a3109893e79f183ddf91b8b9e49bda3cc57ce9a549d86cc08c",
+        "admitted_ids": [
+          "unpack-unpack-value-1-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-6",
+        "source_sha256": "bd98d0ee171e99ff2f9728df83d980b1911dc8621560b61f672c80a07ec29c01",
+        "admitted_ids": [
+          "unpack-unpack-value-1-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-7",
+        "source_sha256": "25845d98c5e737498c9d9a2541d6d983addddd57ff18ad5e32fa7cea7947aea0",
+        "admitted_ids": [
+          "unpack-unpack-value-1-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-1-8",
+        "source_sha256": "5bbf462f2c02ef90adc5b3aba3eda09a97ff354421acccd82bcf3e6b2b6ff350",
+        "admitted_ids": [
+          "unpack-unpack-value-1-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-0",
+        "source_sha256": "9adb5bde3748e13d76d8dc1c33f27eef6cfc62db04d63cf31e840e20d4c66e4c",
+        "admitted_ids": [
+          "unpack-unpack-value-2-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-1",
+        "source_sha256": "9fe14e1df3e5a3870c6bb920a2d79aa499c794ac8b51282df8a53000c781f52c",
+        "admitted_ids": [
+          "unpack-unpack-value-2-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-2",
+        "source_sha256": "83a748ff9b1c71503dd6407eaa6f1160860d2b3c83efbb895674c36afb05dd65",
+        "admitted_ids": [
+          "unpack-unpack-value-2-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-3",
+        "source_sha256": "a8d3953b268096c579f8459ae8dbd7ac6642aac1d79522465da5e4031bd5f6a1",
+        "admitted_ids": [
+          "unpack-unpack-value-2-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-4",
+        "source_sha256": "49928b822950a8204d2bc2f0022dc344b1a88c6d1f887ca7aeb16aced4c48e50",
+        "admitted_ids": [
+          "unpack-unpack-value-2-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-5",
+        "source_sha256": "62dcbac363cda112a697ff8534e85b6e3fa9abb549279e2b78faeb2cc553f122",
+        "admitted_ids": [
+          "unpack-unpack-value-2-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-6",
+        "source_sha256": "3ac8caae0eee4f20a0b7b4ffa8e9fca0115c81eefe96be4fb6c8c98538b21238",
+        "admitted_ids": [
+          "unpack-unpack-value-2-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-7",
+        "source_sha256": "8dddaee54c11b18fd4e878b1e02ac9d48424bf912c587404df56b4f296ce2afb",
+        "admitted_ids": [
+          "unpack-unpack-value-2-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-2-8",
+        "source_sha256": "0c7bf9fd52cd1d89017b263a90598cc8ebbecbfa5b88d81733e17dcffa3d138b",
+        "admitted_ids": [
+          "unpack-unpack-value-2-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-0",
+        "source_sha256": "288149df4fdb8592b39287196381379317a8ce7d7a125f7b532c2792d543c554",
+        "admitted_ids": [
+          "unpack-unpack-value-3-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-1",
+        "source_sha256": "a4704f7641e3c16ae836ad3f90c5aba54dafe11d50c5519a2c9f5db6f1aa4200",
+        "admitted_ids": [
+          "unpack-unpack-value-3-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-2",
+        "source_sha256": "c98c137d006847d7570d1cb1a4fc5bdd119b0f43a8757ca71d80c340dcacdbd7",
+        "admitted_ids": [
+          "unpack-unpack-value-3-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-3",
+        "source_sha256": "a41822ad135662d08a10cb2d0575ee458f9ed2824ed3d0b10742528a9f867fb2",
+        "admitted_ids": [
+          "unpack-unpack-value-3-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-4",
+        "source_sha256": "dce9555f814f2c179acfd326230fd9fdf3987e5363ece3fdb4bcc1ec80450b38",
+        "admitted_ids": [
+          "unpack-unpack-value-3-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-5",
+        "source_sha256": "fe678561cede2b4c75801926cd0b6ee8f016a094209a392120c5422768982405",
+        "admitted_ids": [
+          "unpack-unpack-value-3-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-6",
+        "source_sha256": "ff53fec368916da63ac336784f208ec1a7a66c5ac1d720ce79efe2d71833ca9c",
+        "admitted_ids": [
+          "unpack-unpack-value-3-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-7",
+        "source_sha256": "9caf940a654556a2d8f521ca44607bf22493252745139b6b06b0b600c5a57f78",
+        "admitted_ids": [
+          "unpack-unpack-value-3-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-3-8",
+        "source_sha256": "dcc65ff7f19898de5b06c968e7c2acaacf22215fe5a6c114b5f239a2674ab1ea",
+        "admitted_ids": [
+          "unpack-unpack-value-3-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-0",
+        "source_sha256": "c238ebd73812943f6d6a3120ac478a09645e348407cfc1112477b10127baf573",
+        "admitted_ids": [
+          "unpack-unpack-value-4-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-1",
+        "source_sha256": "a4a6551b2e4fa183adbedbbd9ac1f87053beca9e012646d4027bcd51073e7e44",
+        "admitted_ids": [
+          "unpack-unpack-value-4-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-2",
+        "source_sha256": "aaab2ffb8962756aa88a5446c8aaecb46f03222c45e410c74b13875dfa458ac1",
+        "admitted_ids": [
+          "unpack-unpack-value-4-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-3",
+        "source_sha256": "21516de60eb7bcd66fabc4b77ebde6a0373822e30e7d170928cacc588c5ab508",
+        "admitted_ids": [
+          "unpack-unpack-value-4-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-4",
+        "source_sha256": "6412a396b6b681e19110e1cf52c0f0e5d8f9c5acf7d6872b8d4c199702921e0b",
+        "admitted_ids": [
+          "unpack-unpack-value-4-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-5",
+        "source_sha256": "75dd8f0332e7a01c6bc8a21a54928e19ce20512e688f09de1a237994b9f16aaf",
+        "admitted_ids": [
+          "unpack-unpack-value-4-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-6",
+        "source_sha256": "91d384a04a4bd9ee6252cc777d879017021a175c21a95015491bfbcd88e7a663",
+        "admitted_ids": [
+          "unpack-unpack-value-4-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-7",
+        "source_sha256": "e14e1e04d7cd1393e98daf94eab1a9899256ac3a0ac301932cfc5d7f39189c71",
+        "admitted_ids": [
+          "unpack-unpack-value-4-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-4-8",
+        "source_sha256": "8cef79ceb363307fc33bc0debe8002da3fd7a82cf10037dfa0481ff8a10172d0",
+        "admitted_ids": [
+          "unpack-unpack-value-4-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-0",
+        "source_sha256": "6fef9c0b50d22e592c4d0e01f3ebd6814c1522dac8e74da7354c7d073951c614",
+        "admitted_ids": [
+          "unpack-unpack-value-5-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-1",
+        "source_sha256": "2ec089bd8e941f74d463142d4de9417b3a7a008be9e5e770e4706b4d85a2571b",
+        "admitted_ids": [
+          "unpack-unpack-value-5-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-2",
+        "source_sha256": "47350edbe670ea10d6100e04a0e1d14ad5597a3e3c3d66898064e349fea4e834",
+        "admitted_ids": [
+          "unpack-unpack-value-5-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-3",
+        "source_sha256": "dc4dd7a2ed99b5109e888dfd90de82f27ac7907ab97fac0a5e7262075ff5a6d1",
+        "admitted_ids": [
+          "unpack-unpack-value-5-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-4",
+        "source_sha256": "5f016aab0ba46010e390499b3260fed9b6c2f8bee182e7b49002030a7d18fc2b",
+        "admitted_ids": [
+          "unpack-unpack-value-5-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-5",
+        "source_sha256": "3d10824d05a39390d73e42b1d9c754d293f7f5911d9198245dd61331d0300cfb",
+        "admitted_ids": [
+          "unpack-unpack-value-5-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-6",
+        "source_sha256": "8dbaf54eb8356d8ed41fcff47a372c9e867ed6b6d3f6c65490afa43c34356dc8",
+        "admitted_ids": [
+          "unpack-unpack-value-5-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-7",
+        "source_sha256": "d3eae74f880cff71836c9e3056222d8b182821f5b283eb18ead2ec32d517d3f5",
+        "admitted_ids": [
+          "unpack-unpack-value-5-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-5-8",
+        "source_sha256": "c7a8cbdf1c744b35757920374d3cd775d47adbe4a5e613018130690f432fd78a",
+        "admitted_ids": [
+          "unpack-unpack-value-5-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-0",
+        "source_sha256": "20c8d098971c51fbbaffa084fcef5be1fc25c8aa52915d1777db13d252c02306",
+        "admitted_ids": [
+          "unpack-unpack-value-6-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-1",
+        "source_sha256": "4bf8ee2c6d09dce6c2a04171634b7f7c82630458a7ce6ea6bb05654412e17bbd",
+        "admitted_ids": [
+          "unpack-unpack-value-6-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-2",
+        "source_sha256": "c7eb3f143f980aaf9526f9731711ca5999d97308b7513082051144c146350517",
+        "admitted_ids": [
+          "unpack-unpack-value-6-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-3",
+        "source_sha256": "b306a4380ec3d8c27d81df1246d9d05926ac62c0efe4b439d7a085d5d415c8e2",
+        "admitted_ids": [
+          "unpack-unpack-value-6-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-4",
+        "source_sha256": "9bdfddd1bfe1635234d63b441fcf6ffe9006defc9f3140646d04e63873c7c481",
+        "admitted_ids": [
+          "unpack-unpack-value-6-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-5",
+        "source_sha256": "b9c0f376f5923bb8d8e2934939f0017cf56e622359f6e68b508acf5c54fcb9da",
+        "admitted_ids": [
+          "unpack-unpack-value-6-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-6",
+        "source_sha256": "3e55f1318a43b2e7de7acb970a0fdabd2d895ef6c5a96e4234e34528fb028a6a",
+        "admitted_ids": [
+          "unpack-unpack-value-6-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-7",
+        "source_sha256": "d6b8c3fd44e8aa8dd0d59d79ec3258b3a36d2fd0ddaafaabf78e63c27816dd04",
+        "admitted_ids": [
+          "unpack-unpack-value-6-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-6-8",
+        "source_sha256": "d2f3053699305df6f242f8080485e3de165d23f48c88749d9a3653c039995386",
+        "admitted_ids": [
+          "unpack-unpack-value-6-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-0",
+        "source_sha256": "861ebcdd4adc92d5edd22a6a74a2d9bcdab2573a8162504e1a8ef6f4222ae8fd",
+        "admitted_ids": [
+          "unpack-unpack-value-7-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-1",
+        "source_sha256": "087fac227a80fdba779e9c96353943c89386381861cc7ff6b49bbe271e674534",
+        "admitted_ids": [
+          "unpack-unpack-value-7-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-2",
+        "source_sha256": "65e604773937134b1fdd29fe10350a92e6c3efe9477581565caa66ffba99c429",
+        "admitted_ids": [
+          "unpack-unpack-value-7-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-3",
+        "source_sha256": "d76eacb59ea66880487181d72db786c2e93e7d5984d5fcd59db87757a9738711",
+        "admitted_ids": [
+          "unpack-unpack-value-7-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-4",
+        "source_sha256": "a1b45e337cbca916b8d4f7b362abf8705161f5235c7caae54026cb50cfa3581d",
+        "admitted_ids": [
+          "unpack-unpack-value-7-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-5",
+        "source_sha256": "ea77b29a39353b81d0ccea65145ba43953990f6f11e6030a192d60aa304250be",
+        "admitted_ids": [
+          "unpack-unpack-value-7-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-6",
+        "source_sha256": "d30b835201e4f082db5c8e76cfc5fbc1627f3770e9f1de1fcbda5562014615d7",
+        "admitted_ids": [
+          "unpack-unpack-value-7-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-7",
+        "source_sha256": "10860553527a608f2f55b93901998bf863f928f5bcb34f6bf976e3d846a68a9b",
+        "admitted_ids": [
+          "unpack-unpack-value-7-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-7-8",
+        "source_sha256": "6e5d2cf17ce6c6ad14245cfffdc00ce3a45f329862cbab9b5cd28087a1011fea",
+        "admitted_ids": [
+          "unpack-unpack-value-7-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-0",
+        "source_sha256": "371142272ec9e273fcabe280f87d7655b1bc5e62d37ffc928599fd9e8b8db09c",
+        "admitted_ids": [
+          "unpack-unpack-value-8-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-1",
+        "source_sha256": "69533b96ce6ecf64f7d776a5fe77f1ede312b12a36d759e86348e9821fcc480e",
+        "admitted_ids": [
+          "unpack-unpack-value-8-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-2",
+        "source_sha256": "d1d2076f06aca5c7a5d172adec8c4df1f068fcce2ea3f7723c614d9f95b84f8c",
+        "admitted_ids": [
+          "unpack-unpack-value-8-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-3",
+        "source_sha256": "6365fca10ec31eb97e0122285e2b4053444b299e895c51d4ad6a0b2c4ef77d99",
+        "admitted_ids": [
+          "unpack-unpack-value-8-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-4",
+        "source_sha256": "73d4e0ed7157a82a0b805845ef86102a14e6186238678e804224921e5d35329d",
+        "admitted_ids": [
+          "unpack-unpack-value-8-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-5",
+        "source_sha256": "5765629586d811d9304b4d6f176960ff8b435639665aec56343916805aa76415",
+        "admitted_ids": [
+          "unpack-unpack-value-8-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-6",
+        "source_sha256": "fe92431b8248a5d60798c51e86954926bd4910822640144ed55c91fca34b248a",
+        "admitted_ids": [
+          "unpack-unpack-value-8-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-7",
+        "source_sha256": "791728bdf027eaf98462ffc1b2c5b100cc585cf739c735f24629ebeb20b8e9dc",
+        "admitted_ids": [
+          "unpack-unpack-value-8-7"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "unpack-value-8-8",
+        "source_sha256": "a2694f024c5493a8fd2b65e7bd8f57c2120a7639e02acadc7aba01cd52e42613",
+        "admitted_ids": [
+          "unpack-unpack-value-8-8"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "loop-unpack-0",
+        "source_sha256": "d4ca9efd5511fc117430ebd960ea743284bf682415aadccde67e5c5037baa30e",
+        "admitted_ids": [
+          "unpack-loop-unpack-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "loop-unpack-1",
+        "source_sha256": "e63061cf50bef46c04584b9922d39fa318fc68123b8dc0a3e366bc0d0a7b84ce",
+        "admitted_ids": [
+          "unpack-loop-unpack-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "loop-unpack-2",
+        "source_sha256": "9330c8930b0ba5e90bf135f3eb007c467a7f2b1e9c94d70ce246800bd38a5c77",
+        "admitted_ids": [
+          "unpack-loop-unpack-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-runtime-originals.json",
+        "id": "loop-unpack-3",
+        "source_sha256": "1c1e302fc121efd625fad520f33e611677255dbca0ad1aab17180c5c433dafdb",
+        "admitted_ids": [
+          "unpack-loop-unpack-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "empty",
+        "source_sha256": "6d57eaacf16b74f948d127f253609f5f9bac0abe3e9242e0f68608d61cf0bc34",
+        "admitted_ids": [
+          "unpack-compiler-empty"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "intkeys",
+        "source_sha256": "4cf2ec18370d1546836cbfa1d9837236d4ad4a55f432dbe13aff0d42ed504ae1",
+        "admitted_ids": [
+          "unpack-compiler-intkeys"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "stringkeys",
+        "source_sha256": "014030da8c1bd7dc00c5e0e487ef051a53a2024b3ddd41ede0b184adfebeea01",
+        "admitted_ids": [
+          "unpack-compiler-stringkeys"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "numericstrings",
+        "source_sha256": "1fdb6a01294986870676bac89d4118f683e4317b4792865f4a0ef8bcce25f8b1",
+        "admitted_ids": [
+          "unpack-compiler-numericstrings"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "multispread",
+        "source_sha256": "007e718a611fd98d68be680aff876359b9434c86665a2fccd2ce87fecf9f4e36",
+        "admitted_ids": [
+          "unpack-compiler-multispread"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "nested",
+        "source_sha256": "b73d1ad6df6c86919c82a7838ef486e928466b649889d6d5435007093a886627",
+        "admitted_ids": [
+          "unpack-compiler-nested"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "cow",
+        "source_sha256": "c861006e618add4099930632ecd86d15407ec6b2fb517786eb4450d9cc0f5066",
+        "admitted_ids": [
+          "unpack-compiler-cow"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "sharedref",
+        "source_sha256": "f97a31335b336299e4681e2fad540a5db8a7dc8d1dd0eabbf3117edb069b6f88",
+        "admitted_ids": [
+          "unpack-compiler-sharedref"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "singletonref",
+        "source_sha256": "8b95ba441155242f7e05745a06cafc8b8b0268c3b0b2e51d3aa45fd6e3da50e8",
+        "admitted_ids": [
+          "unpack-compiler-singletonref"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "sharednested",
+        "source_sha256": "7271d32192965df3ee257a7f3f5b493655d1a73f3f234a4064fb39baab27a1ac",
+        "admitted_ids": [
+          "unpack-compiler-sharednested"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "replacementref",
+        "source_sha256": "3f11de829005f9fe296655b792c47caf58f7489f7d143f4ebf2215abdc2b1a4f",
+        "admitted_ids": [
+          "unpack-compiler-replacementref"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-read",
+        "source_sha256": "32bc4145cfc54b8a806dd8481b5b696255a6143ffcc404f3d134a8e80583aba6",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-read"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "append-overflow",
+        "source_sha256": "30a697810ffba0abee9d53149185fafaf987238d698ec61d266b10bd0db65743",
+        "admitted_ids": [
+          "unpack-compiler-append-overflow"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "append-overflow-empty",
+        "source_sha256": "5e8ff8ce977eb86ad113d586c0bf0e4fa66416ab4cde0f7a3a7207c022afb35e",
+        "admitted_ids": [
+          "unpack-compiler-append-overflow-empty"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "append-overflow-string",
+        "source_sha256": "3905da8e0da97370f9b680b8298a97d10b15ce4d080e9cc30e3996cc481b70c2",
+        "admitted_ids": [
+          "unpack-compiler-append-overflow-string"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-0",
+        "source_sha256": "bcb5a3c66ee4d8175a8fb4aec60c854fbb74e1b64c5c437e013d4ef17bc7b476",
+        "admitted_ids": [
+          "unpack-compiler-scalar-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-0",
+        "source_sha256": "7695dacf2b8e31f861a4de774c7ff1bbf5eae36d9d5474314e7c256ff701a1a8",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-0"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-1",
+        "source_sha256": "3dd29c87691dff4540b725d2406c3de11293865f3f5f8727a16c6b0a9a34cbfc",
+        "admitted_ids": [
+          "unpack-compiler-scalar-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-1",
+        "source_sha256": "9d0c01628045579f2bb392a2eeca73bff313a44a0712987ee643e5e95af639c9",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-1"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-2",
+        "source_sha256": "fbfcafd37824f009e6d31b3b254517a0206cecd4974a8496ef45264e02f95bb8",
+        "admitted_ids": [
+          "unpack-compiler-scalar-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-2",
+        "source_sha256": "d66d743ec5fd8ef4964e6f1a1f7b42445569423396ae5750b758b9c97a8c14f1",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-2"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-3",
+        "source_sha256": "62bbeb31ea1231fd109f37716251e29ddcf8679f863b4dd33b3ee83d940f7fcb",
+        "admitted_ids": [
+          "unpack-compiler-scalar-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-3",
+        "source_sha256": "96469b8f746bafa3fac9aa95c94bd02019d34585948d00c94e6f8c8306c8f19a",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-3"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-4",
+        "source_sha256": "8340884eb27feca67bb05191b009e4106950213bd2a38666f6efcee229a28e75",
+        "admitted_ids": [
+          "unpack-compiler-scalar-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-4",
+        "source_sha256": "ece1196de9e673849a6b36d658568b40363cd12dba581f9fd7a77a68e02ecf58",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-4"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-5",
+        "source_sha256": "778d5427a5ea84ebdc4b5a927ada0765be1e0d95fbb31add5685c58e83eee25c",
+        "admitted_ids": [
+          "unpack-compiler-scalar-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-5",
+        "source_sha256": "cc77e25e6cdff6069c675b4e51d66659387d02f9045f939a869ae964517619e1",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-5"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "scalar-6",
+        "source_sha256": "fd04328883e0bb943dfb4a78416719a2f5e0e12cdba2de2a116ec08069f9dde3",
+        "admitted_ids": [
+          "unpack-compiler-scalar-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "dynamic-scalar-6",
+        "source_sha256": "8f1eebfdec909c3c0168dbe796d2f3b4492ddc2d72d554a354f9e150b6b93122",
+        "admitted_ids": [
+          "unpack-compiler-dynamic-scalar-6"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "later-dynamic",
+        "source_sha256": "21980f7041e7a42e70b948f93af5a743fa273ae5bb6e6cb6d89be90049d52c8d",
+        "admitted_ids": [
+          "unpack-compiler-later-dynamic"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "earlier-dynamic",
+        "source_sha256": "599f023b1369be3387bcf1fb83c09c2781525426fa881ef8f19ffd4cf0d8236e",
+        "admitted_ids": [
+          "unpack-compiler-earlier-dynamic"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "later-hole",
+        "source_sha256": "71670b5b94a92ae000f6660f49e4a1082bd74bea3330e87bdc88aa08693978eb",
+        "admitted_ids": [
+          "unpack-compiler-later-hole"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "earlier-hole",
+        "source_sha256": "76caf8caef93e49f12a291460b6bea27414c14c69f557d836266268f31aef395",
+        "admitted_ids": [
+          "unpack-compiler-earlier-hole"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "key-warning-first",
+        "source_sha256": "ae094fffc140356db9a0acc7548dadd514491683a190bb599d988ab824925a8d",
+        "admitted_ids": [
+          "unpack-compiler-key-warning-first"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "key-warning-last",
+        "source_sha256": "1844fbd785ee8d1c224dedb543951e68b30aa1424a26149bee85858d1285e5d6",
+        "admitted_ids": [
+          "unpack-compiler-key-warning-last"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "key-error-first",
+        "source_sha256": "5557754259693698c2103cf1b4b756f89460715a126e6f19eb9ae2998f1e73f0",
+        "admitted_ids": [
+          "unpack-compiler-key-error-first"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "key-error-last",
+        "source_sha256": "7ff14dd1fc37014755e79d965aca8a9bb66a8bdb2bfaa248bd1bd6297fdacd0f",
+        "admitted_ids": [
+          "unpack-compiler-key-error-last"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "nested-scalar",
+        "source_sha256": "e30e6b809d56d8eca64d1b58b9ba29fedf6caed8f403612884ced422f026350c",
+        "admitted_ids": [
+          "unpack-compiler-nested-scalar"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "skipped-and",
+        "source_sha256": "993e1228b8184493722f8919eceb36ac7d47cb98884d6b1e8c185511e04e2316",
+        "admitted_ids": [
+          "unpack-compiler-skipped-and"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "prepass-selected",
+        "source_sha256": "d684e26ce36d963b8f7b8ab9deb233b67c718a9bca0a58180354ce53f89447ff",
+        "admitted_ids": [
+          "unpack-compiler-prepass-selected"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "multiline-scalar",
+        "source_sha256": "1b4da5b753094479ee5fb5204922cb41a02af0b5ee8ce31b1173ddecd919b89c",
+        "admitted_ids": [
+          "unpack-compiler-multiline-scalar"
+        ]
+      },
+      {
+        "archive": "coverage/semantics/array-unpack-compiler-originals.json",
+        "id": "multiline-dynamic",
+        "source_sha256": "e39df3f71e9410767e3e7d1bd6f80ac3fbbaaad27f0a6c9fe6b132c34b4f800b",
+        "admitted_ids": [
+          "unpack-compiler-multiline-dynamic"
+        ]
+      }
+    ]
+  },
+  "preserved_invalidation": {
+    "path": ".tools/review6-unpack/invalidation.json",
+    "sha256": "f0b985a3604ce7a155bfcd184fbb60689d7b51cea9bf882287481abd2b62a302",
+    "reason": "Initial independent run final fingerprint rejected a concurrent validate.py test-catalogue change. Only the repeated frozen run supplies acceptance."
+  },
+  "contracts": [
+    "Integer source keys append in traversal order; string keys replace entries in place.",
+    "Builder/source roots survive operand evaluation and transfer; shared embedded references remain aliases while singleton copies unwrap.",
+    "Runtime scalar rejection and constant-array compiler rejection retain distinct phases; append overflow defers and stops before later operands.",
+    "Operands use original checked occurrences and compiler source lines; edited keyed/reference spread items reject."
+  ],
+  "pending": [
+    "Traversable object iteration and callbacks",
+    "Argument unpacking and call frames",
+    "Combined container full source campaign",
+    "Final full syntax and fresh offline rebuild"
+  ],
+  "intentional_divergences_added": []
+}

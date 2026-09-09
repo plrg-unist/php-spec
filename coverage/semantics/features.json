@@ -42,13 +42,18 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/20-machine.watsup",
         "spec/semantics/37-array-locations.watsup",
-        "spec/semantics/42-array-write-control.watsup"
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/60-array-unpack.watsup",
+        "spec/semantics/61-array-unpack-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/array_unpack.py",
+        "tests/semantics/array_unpack_compiler.py",
+        "coverage/semantics/array-unpack-source.json"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -127,15 +132,20 @@
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/60-array-unpack.watsup",
+        "spec/semantics/61-array-unpack-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/array_omissions.py",
-        "tests/array_omission_metadata.py"
+        "tests/array_omission_metadata.py",
+        "tests/semantics/array_unpack.py",
+        "tests/semantics/array_unpack_compiler.py",
+        "coverage/semantics/array-unpack-source.json"
       ],
-      "review": "Prior element-target/ownership semantics remain; nullable ordinary slots preserve indices and exact visited/skipped compiler errors. The omission prerequisite passes262 source/lint cases,2135 resumption assertions, independent176 retained+32 new sources,136 edited-metadata boundaries,24 fresh encoding/print profiles and277 compound rebase programs/5393 assertions. Full source closure refresh follows ordinary activation. Unpack/destructuring/foreach and complete prepass lookup/context remain pending. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -4688,15 +4698,29 @@
     {
       "id": "containers.unpack",
       "milestone": "2b",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
+      "status": "partial",
+      "dependencies": [
+        "protocols.Traversable"
+      ],
+      "implementation": [
+        "spec/semantics/60-array-unpack.watsup",
+        "spec/semantics/61-array-unpack-control.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/39-ownership.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/array_unpack.py",
+        "tests/semantics/array_unpack_compiler.py",
+        "coverage/semantics/array-unpack-source.json"
+      ],
       "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": null,
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-unpack.php"
       ]

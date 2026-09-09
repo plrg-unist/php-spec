@@ -59,6 +59,10 @@ records 2,639 exact source comparisons and the corrected diagnostic phases.
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
 seven preserved request-environment boundaries remain separate unfinished work.
+[Array unpacking](docs/semantics/ARRAY-UNPACK.md) now preserves key order, copied
+values, reference history and compiler/runtime rejection phases. Its
+[independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
+sources; Traversable objects and argument unpacking remain unfinished.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Reached destructuring and required
 class-constant lookup remain unfinished.

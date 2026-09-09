@@ -32,6 +32,16 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Latest accepted checkpoint
 
+Array-unpack code **`4ca826d2`** and author evidence **`7ac2519f`** pass
+**155 exact sources +24 outcome negatives**, 31 state programs/2,454 assertions
+and 42 compiler lints plus 10 metadata/descriptor controls.
+[Independent acceptance](coverage/semantics/array-unpack-review.json) verifies
+all ordered raw rows, 154 original memberships, and eight additional source/state
+programs/1,368 assertions. The formerly Unsupported empty spread is now a source
+pass. Array spread is partial until Traversable objects/callbacks are implemented;
+argument unpacking is separate. Full current source validation follows the combined
+container checkpoint; the full ordinary report below remains historical.
+
 Ordinary operator/cast code **`dba21cee`**, reports `a3290ae3`/`e397b137` and
 independent review `2ab579eb` pass **4,407 exact sources +25
 outcome negatives** on `a8f6aa0c` (799 inputs). Independent
@@ -72,7 +82,7 @@ The accepted full campaign above is historical after this harness change; its
 semantic rules are unchanged. The earlier exact
 [recovery proof](coverage/semantics/ordinary-selected-raw-recovery.json) remains preserved.
 
-The immutable `.tools/runtime-list-candidate` contains unpublished unpack/list,
+The immutable `.tools/runtime-list-candidate` contains unpublished list,
 constant-result effects and nonvariable-coalesce rules. Independent 44 source
 controls pass. Further [independent review](coverage/semantics/list-mechanism-review.json)
 reproduces 263 archived agreements plus the recorded header Unsupported, passes
@@ -86,10 +96,11 @@ A list assignment may return a compiler-known constant while still emitting
 writes. Parent folding must retain ordered effects separately; casts/coalesce and
 AST prepass traversal have different folding rules. Four actual draft failures
 and independent effect/line controls are retained. This mechanism is not yet
-production-admitted, and ownership, resumption and occurrence checks remain gates.
+production-admitted. Its independent ownership, resumption and occurrence gates
+pass; final compiler-consumer integration remains a publication gate.
 
 Then complete request environment, named/class/magic lookup, quiet assignments,
-unpack/destructuring/foreach, calls/frames/declarations, linked objects/properties,
+destructuring/foreach and object unpacking, calls/frames/declarations, linked objects/properties,
 exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
 Ordinary-library exclusions cannot discharge required core behavior.
 
