@@ -67,8 +67,8 @@ including constant array-union operands. The runtime installer remaps tables int
 a disjoint allocation range and registers permanent compiled-unit roots. It keeps
 compact operand metadata, not the isolated compiler state. Temporary `HELD` roots
 are cleared by cleanup, while compiled pools remain rooted. A compiled occurrence
-is looked up in its installed pool; source loops and functions remain unsupported,
-so their execution is not established by this installation milestone.
+is looked up in its installed pool, including repeated while/do/for execution.
+Function declaration/call execution remains a separate pending obligation.
 
 Constant reads use the same lexical environment as their containing work.
 `22-name-resolution.watsup` supplies the resolved bytes, qualification flag and
@@ -122,19 +122,19 @@ recorded separately. Reports retain source bytes, AST hashes, exact commands,
 working directory, status and raw output channels.
 
 The supported ordinary statements are expression statements, echo, unset, blocks,
-inline output and no-ops, with out-of-context bare `break` rejection. Expressions
+inline output and no-ops, plus the control statements described below. Expressions
 cover the current scalar/named-constant, variable, assignment/reference,
 `+ - * / === !==`, unary sign, array and dimension subset. Namespace and all import
 kinds supply lexical context; admitted constant fetches and array prepasses consume
 it. Compile-time computed-name warnings and HTTP-variable assignment flags remain
-Unsupported. Functions/classes, declare effects, loops and other statements still
+Unsupported. Functions/classes, declare effects and other unimplemented statements still
 stop ordinary compilation explicitly. Declaration publication, user constants and
 source magic constants remain pending core obligations. Namespace/import
 diagnostics are emitted before recorded work executes. The old whole-program
 check and recursive array-fold classifier are no longer the public source
-compilation path. Their legacy definitions await coordinated retirement; ordinary
-compilation now uses its own narrow direct-CV check and the shared source-line
-error helper for bare break.
+compilation path; their obsolete definitions were retired in `846dc3d2`. Ordinary
+compilation uses its narrow direct-CV check, and the control module owns jump
+legality and diagnostic positions.
 
 A bare `break` has no operand child in Zend's AST, so its compiler line is the
 terminator token's start line (`zend_ast_create_1`, `zend_ast.c:173`, and
@@ -147,8 +147,9 @@ statement start/end positions; it does not authenticate edited metadata against
 unavailable original source. Syntax reconstruction retains positive edited values,
 and printing derives fresh source from checked syntax rather than these positions.
 The fourteen original-source regressions retain semicolon and closing-tag failures
-and controls. Explicit break depths and continue remain part of pending source-control
-activation; their token locations are transported without claiming that activation.
+and controls. The control compiler consumes the same token field for bare continue. Explicit
+depth operands use their own Zend AST line and literal-kind checks, described in
+[CONTROL-COMPILER](CONTROL-COMPILER.md).
 
 Temporary scalar, array, named-constant, admitted arithmetic/unary and assignment
 expressions cannot be used as writable or unset operands. Ordinary compilation
@@ -159,3 +160,10 @@ This admits exact static rejection for literal dimension targets such as
 surrounding assignment still compiles its right operand first, so an earlier
 right-side compile error retains priority. Call and property variable branches
 remain separate pending syntax; the default rejection does not classify them.
+
+The control compiler extends ordinary statement work with if/elseif/else and
+while/do/for. It compiles all branches and loop children in Zend's compile order,
+records existing structural occurrence paths, and validates break/continue depth
+before runtime begins. [CONTROL-COMPILER](CONTROL-COMPILER.md) describes order,
+metadata and remaining boundaries. Runtime continuations consume the same checked
+source occurrences and installed constant pools.

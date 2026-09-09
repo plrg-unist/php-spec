@@ -1,0 +1,3953 @@
+{
+  "scope": "source control compile order, literal jump legality and checked context; runtime source observations are separate",
+  "fingerprint": {
+    "closure": {
+      "sha256": "ff73f0181b1fb5b61beb3427967cc05c20bc78d91f3957eba10f0ab4654dd7af",
+      "files": 767,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "direct": {
+      "spec/php.watsup": "13781df96c48b4259c923d2b4135758517ec6265dd37924108d1934e8a92ebb8",
+      "spec/semantics/11-source-occurrences.watsup": "dee3b76b313751b631c8ad48ea06e2a25e1b375b167262db4f0d85a879dc025f",
+      "spec/semantics/00-numeric.watsup": "f7d962c8314711ddbd0a0e6b5302ff0d7c61c0c38b454d225e7e8b4d0cf42652",
+      "spec/semantics/01-integer.watsup": "d1955f4f435421fbb8d1ffdda1587be0f62a3509994bcb4bfd20eb74a4ab55ef",
+      "spec/semantics/02-numeric-text.watsup": "84986b275e0c1e3aceac6fbce873fa2fe72f8d20406fd061929d7f9c367f1574",
+      "spec/semantics/03-numeric-format.watsup": "9ce53fca5a4316cb79676aa89d8e1a05826a090e6b883cb8d45cf30875f345ca",
+      "spec/semantics/04-numeric-context.watsup": "0218f142bfe9e03c25833f37cacceda4ce1ba4e1a4a09f397b4ff67405f654e0",
+      "spec/semantics/10-bytes.watsup": "7a01fb92f9f93c0508dbc99579e8e3e44e2637afc115ded1a2390e069f1e2a1b",
+      "spec/semantics/15-constant-names.watsup": "57aa5a92fb78842b926894af7fc4f7747c1aa069ce93689f3c7d574d1f009a3a",
+      "spec/semantics/20-machine.watsup": "101c3743adab83eedfe97a43628fbe95bb43004c36d2df13e8d7fd0c3df3bb91",
+      "spec/semantics/30-storage.watsup": "bdb2fab179f9bcaae0e0366e3e114298d66ce1df20685990e812ee4ea21a2608",
+      "spec/semantics/31-source-origins.watsup": "7faf4a74a5fafa4a424c307e73781c00f81415900be033990f04738b593ca008",
+      "spec/semantics/35-scalar-operations.watsup": "9403c3bb24fa89085f40a0c7652724a999f2d8765db1b9cea97ebea5f4286cf8",
+      "spec/semantics/36-arrays.watsup": "c8e25d36fc0acfbc0840970ae3a53c64b952f07ac1077a888ae69162c2f058f4",
+      "spec/semantics/37-array-locations.watsup": "a8bb0c7ab7c7c19f27fe0a0b2f660330570fd6a75d5bb7148626244e67ca204e",
+      "spec/semantics/38-array-unset.watsup": "7a0f7488ede140f297fa3460229cbd18fa9162ff5559aa4e33f8c4c418ddb02e",
+      "spec/semantics/39-ownership.watsup": "e0839de4ab4db8799a1a370c2736b54d4bb5a0d8d14df29eeb35cb8d1a9105a1",
+      "spec/semantics/32-compiled-pools.watsup": "3eec8a6aa389b13d2032e6752386ba389da501e4987cdef363213fb43460ea3e",
+      "spec/semantics/16-static-types.watsup": "f5eaf8d1e2d0cceabe9159a098582e78e5353df9ac735f9d5e8ac4900e258f19",
+      "spec/semantics/21-source-context.watsup": "c4f52e5e6921b4c3020043d365d5b7bf3b394fba2d3a2f5beda5d62296d4169d",
+      "spec/semantics/22-name-resolution.watsup": "9f9dd44d1f444e8d05c376321ab4112066e6f9886cbf361f1fd6ad4ec051578a",
+      "spec/semantics/23-named-constants.watsup": "88e05728f18905b758b5c09254953635097244c92fdfd1e5bf1a9c4080e73438",
+      "spec/semantics/44-dimension-read.watsup": "f86f9bd85dc53ac227995b504ee53edeec2ef42b4e80846c9548e12c067ca9cb",
+      "spec/semantics/45-dimension-write.watsup": "c863bbac52fd9f6abdb26325a36f6d15be3e83ddb66f09e894c3f544a26dccdb",
+      "spec/semantics/45-constant-context.watsup": "92e382e5d3ce940cc129c8063d2081500c1b9e3cf1a9b204701de866bb25e8da",
+      "spec/semantics/46-source-compiler.watsup": "496c14fad269a5a41ca42c2fe7884424b46967a9f8e61d084a8a1d7c7f328ede",
+      "spec/semantics/47-control-compiler.watsup": "bf8d240a75ccbd6ba19db1107ea9aa74ca3ed722cb2f495d5a8b595ac32fa49b",
+      "spec/semantics/33-runtime-compiler.watsup": "d38e843512a769365bb7d602a297999e50e11805ad93d649af4cf043e3512d0b",
+      "spec/semantics/40-control.watsup": "271e7288bd6bbb5b5c7b523bcb7ddda872b74bc0bb5d457eaa16ff29707bc098",
+      "spec/semantics/41-array-control.watsup": "97ef55dfd2c9580cc8ec2cd9c0f3e91c24917824a4588322a04d201fb42f5056",
+      "spec/semantics/42-array-write-control.watsup": "4bfdbe4f841f4fef42c9eddbc60e571fca840d7e090b2aa65c954e81c0e1c893",
+      "spec/semantics/43-array-unset-control.watsup": "3c25d2fca48080c07ff9c1121805b3f9fab1db05143bf518b962561b3b715306",
+      "spec/semantics/50-control-flow.watsup": "4b9f530a1e346b7ef673271aeae845c41bfe4e52ca5a3f1d9408fc334efb5026",
+      "tests/semantics/control_compiler.py": "5a798788d4ccfebbe26b55ca52e9dde7e36f076310cfc2fb3f3b625377b2ef80",
+      "tests/semantics/source_compiler.py": "3bf60179425c4df5780a7770e124c3a517fbf813a858a267e1cb985ae9fd3829",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225"
+    }
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "identity": [
+    "8.5.10",
+    "cli",
+    8,
+    false,
+    {
+      "allow_url_fopen": "1",
+      "allow_url_include": "0",
+      "arg_separator.input": "&",
+      "arg_separator.output": "&",
+      "assert.active": "1",
+      "assert.bail": "0",
+      "assert.callback": null,
+      "assert.exception": "1",
+      "assert.warning": "1",
+      "auto_append_file": null,
+      "auto_detect_line_endings": "0",
+      "auto_globals_jit": "1",
+      "auto_prepend_file": null,
+      "browscap": null,
+      "date.default_latitude": "31.7667",
+      "date.default_longitude": "35.2333",
+      "date.sunrise_zenith": "90.833333",
+      "date.sunset_zenith": "90.833333",
+      "date.timezone": "UTC",
+      "default_charset": "UTF-8",
+      "default_mimetype": "text/html",
+      "default_socket_timeout": "60",
+      "disable_functions": "",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "doc_root": null,
+      "docref_ext": "",
+      "docref_root": "",
+      "enable_dl": "1",
+      "enable_post_data_reading": "1",
+      "error_append_string": null,
+      "error_log": null,
+      "error_log_mode": "0644",
+      "error_prepend_string": null,
+      "error_reporting": "30719",
+      "expose_php": "1",
+      "extension_dir": "/home/user/workspace/php-spec/.tools/php-build/../php/lib/php/extensions/no-debug-non-zts-20250925",
+      "fatal_error_backtraces": "1",
+      "fiber.stack_size": null,
+      "file_uploads": "1",
+      "from": null,
+      "hard_timeout": "2",
+      "highlight.comment": "#FF8000",
+      "highlight.default": "#0000BB",
+      "highlight.html": "#000000",
+      "highlight.keyword": "#007700",
+      "highlight.string": "#DD0000",
+      "html_errors": "0",
+      "ignore_repeated_errors": "0",
+      "ignore_repeated_source": "0",
+      "ignore_user_abort": "0",
+      "implicit_flush": "1",
+      "include_path": ".:",
+      "input_encoding": null,
+      "internal_encoding": null,
+      "log_errors": "0",
+      "mail.add_x_header": "0",
+      "mail.cr_lf_mode": "crlf",
+      "mail.force_extra_parameters": null,
+      "mail.log": null,
+      "mail.mixed_lf_and_crlf": "0",
+      "max_execution_time": "0",
+      "max_file_uploads": "20",
+      "max_input_nesting_level": "64",
+      "max_input_time": "-1",
+      "max_input_vars": "1000",
+      "max_memory_limit": "-1",
+      "max_multipart_body_parts": "-1",
+      "mbstring.detect_order": null,
+      "mbstring.encoding_translation": "0",
+      "mbstring.http_input": null,
+      "mbstring.http_output": null,
+      "mbstring.http_output_conv_mimetypes": "^(text/|application/xhtml\\+xml)",
+      "mbstring.internal_encoding": null,
+      "mbstring.language": "neutral",
+      "mbstring.strict_detection": "0",
+      "mbstring.substitute_character": null,
+      "memory_limit": "128M",
+      "opcache.blacklist_filename": "",
+      "opcache.dups_fix": "0",
+      "opcache.enable": "1",
+      "opcache.enable_cli": "0",
+      "opcache.enable_file_override": "0",
+      "opcache.error_log": "",
+      "opcache.file_cache": null,
+      "opcache.file_cache_consistency_checks": "1",
+      "opcache.file_cache_only": "0",
+      "opcache.file_cache_read_only": "0",
+      "opcache.file_update_protection": "2",
+      "opcache.force_restart_timeout": "180",
+      "opcache.huge_code_pages": "0",
+      "opcache.interned_strings_buffer": "8",
+      "opcache.jit": "disable",
+      "opcache.jit_bisect_limit": "0",
+      "opcache.jit_blacklist_root_trace": "16",
+      "opcache.jit_blacklist_side_trace": "8",
+      "opcache.jit_buffer_size": "64M",
+      "opcache.jit_debug": "0",
+      "opcache.jit_hot_func": "127",
+      "opcache.jit_hot_loop": "61",
+      "opcache.jit_hot_return": "8",
+      "opcache.jit_hot_side_exit": "8",
+      "opcache.jit_max_exit_counters": "8192",
+      "opcache.jit_max_loop_unrolls": "8",
+      "opcache.jit_max_polymorphic_calls": "2",
+      "opcache.jit_max_recursive_calls": "2",
+      "opcache.jit_max_recursive_returns": "2",
+      "opcache.jit_max_root_traces": "1024",
+      "opcache.jit_max_side_traces": "128",
+      "opcache.jit_max_trace_length": "1024",
+      "opcache.jit_prof_threshold": "0.005",
+      "opcache.lockfile_path": "/tmp",
+      "opcache.log_verbosity_level": "1",
+      "opcache.max_accelerated_files": "10000",
+      "opcache.max_file_size": "0",
+      "opcache.max_wasted_percentage": "5",
+      "opcache.memory_consumption": "128",
+      "opcache.opt_debug_level": "0",
+      "opcache.optimization_level": "0x7FFEBFFF",
+      "opcache.preferred_memory_model": "",
+      "opcache.preload": "",
+      "opcache.preload_user": "",
+      "opcache.protect_memory": "0",
+      "opcache.record_warnings": "0",
+      "opcache.restrict_api": "",
+      "opcache.revalidate_freq": "2",
+      "opcache.revalidate_path": "0",
+      "opcache.save_comments": "1",
+      "opcache.use_cwd": "1",
+      "opcache.validate_permission": "0",
+      "opcache.validate_root": "0",
+      "opcache.validate_timestamps": "1",
+      "open_basedir": null,
+      "output_buffering": "0",
+      "output_encoding": null,
+      "output_handler": null,
+      "pcre.backtrack_limit": "1000000",
+      "pcre.jit": "1",
+      "pcre.recursion_limit": "100000",
+      "post_max_size": "8M",
+      "precision": "14",
+      "realpath_cache_size": "4096K",
+      "realpath_cache_ttl": "120",
+      "register_argc_argv": "0",
+      "report_memleaks": "1",
+      "report_zend_debug": "0",
+      "request_order": null,
+      "sendmail_from": null,
+      "sendmail_path": "/usr/sbin/sendmail -t -i",
+      "serialize_precision": "-1",
+      "session.trans_sid_hosts": "",
+      "session.trans_sid_tags": "a=href,area=href,frame=src,form=",
+      "short_open_tag": "1",
+      "SMTP": "localhost",
+      "smtp_port": "25",
+      "sys_temp_dir": null,
+      "syslog.facility": "LOG_USER",
+      "syslog.filter": "no-ctrl",
+      "syslog.ident": "php",
+      "unserialize_callback_func": null,
+      "unserialize_max_depth": "4096",
+      "upload_max_filesize": "2M",
+      "upload_tmp_dir": null,
+      "url_rewriter.hosts": "",
+      "url_rewriter.tags": "form=",
+      "user_agent": null,
+      "user_dir": null,
+      "user_ini.cache_ttl": "300",
+      "user_ini.filename": ".user.ini",
+      "variables_order": "EGPCS",
+      "xmlrpc_error_number": "0",
+      "xmlrpc_errors": "0",
+      "zend.assertions": "1",
+      "zend.detect_unicode": "1",
+      "zend.enable_gc": "1",
+      "zend.exception_ignore_args": "0",
+      "zend.exception_string_param_max_len": "15",
+      "zend.max_allowed_stack_size": "0",
+      "zend.multibyte": "0",
+      "zend.reserved_stack_size": "0",
+      "zend.script_encoding": null,
+      "zend.signal_check": "0"
+    }
+  ],
+  "source_cases": 46,
+  "metadata_mutations": [
+    {
+      "source_base64": "PD9waHAgaWYodHJ1ZSkKewp9",
+      "key": "statementBodyLine",
+      "value": null,
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_If",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "12"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "9"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "12"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "9"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [],
+              [],
+              null
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "17"
+              },
+              "endLine": {
+                "int": "3"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing control body token line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgaWYodHJ1ZSkKewp9",
+      "key": "statementBodyLine",
+      "value": "-1",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_If",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "12"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "9"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "12"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "9"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [],
+              [],
+              null
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "17"
+              },
+              "endLine": {
+                "int": "3"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "-1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgaWYodHJ1ZSkKewp9",
+      "key": "statementBodyLine",
+      "value": "99",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_If",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "12"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "9"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "12"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "9"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [],
+              [],
+              null
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "17"
+              },
+              "endLine": {
+                "int": "3"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "99"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgaWYodHJ1ZSkKewp9",
+      "key": "statementBodyLine",
+      "value": "0",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_If",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "12"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "9"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "12"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "9"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [],
+              [],
+              null
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "17"
+              },
+              "endLine": {
+                "int": "3"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "0"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "P.LOCATION.LINE = 1"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgaWYodHJ1ZSkKewp9",
+      "key": "statementBodyLine",
+      "value": "2",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_If",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "12"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "9"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "12"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "9"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [],
+              [],
+              null
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "17"
+              },
+              "endLine": {
+                "int": "3"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "2"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "P.LOCATION.LINE = 2"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgaWYodHJ1ZSkKewp9",
+      "key": "statementBodyLine",
+      "value": "3",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_If",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "12"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "9"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "12"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "9"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [],
+              [],
+              null
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "17"
+              },
+              "endLine": {
+                "int": "3"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "3"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "P.LOCATION.LINE = 3"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgZm9yKDs7KQo7",
+      "key": "statementTerminatorLine",
+      "value": null,
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_For",
+            "fields": [
+              [],
+              [],
+              [],
+              []
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "14"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "7"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "0"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgZm9yKDs7KQo7",
+      "key": "statementTerminatorLine",
+      "value": "-1",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_For",
+            "fields": [
+              [],
+              [],
+              [],
+              []
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "14"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "7"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "0"
+              },
+              "statementTerminatorLine": {
+                "int": "-1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgZm9yKDs7KQo7",
+      "key": "statementTerminatorLine",
+      "value": "0",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_For",
+            "fields": [
+              [],
+              [],
+              [],
+              []
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "14"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "7"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "0"
+              },
+              "statementTerminatorLine": {
+                "int": "0"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgZm9yKDs7KQo7",
+      "key": "statementTerminatorLine",
+      "value": "99",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_For",
+            "fields": [
+              [],
+              [],
+              [],
+              []
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "14"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "7"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "0"
+              },
+              "statementTerminatorLine": {
+                "int": "99"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgZm9yKDs7KQo7",
+      "key": "statementTerminatorLine",
+      "value": "2",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_For",
+            "fields": [
+              [],
+              [],
+              [],
+              []
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "14"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "7"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "0"
+              },
+              "statementTerminatorLine": {
+                "int": "2"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "P.LOCATION.LINE = 2"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsKO30=",
+      "key": "statementTerminatorLine",
+      "value": null,
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_While",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "15"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "12"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "15"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "12"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [
+                {
+                  "node": "Stmt_Break",
+                  "fields": [
+                    null
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "8"
+                    },
+                    "startFilePos": {
+                      "int": "18"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "6"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "25"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "9"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsKO30=",
+      "key": "statementTerminatorLine",
+      "value": "-1",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_While",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "15"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "12"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "15"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "12"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [
+                {
+                  "node": "Stmt_Break",
+                  "fields": [
+                    null
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "8"
+                    },
+                    "startFilePos": {
+                      "int": "18"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "6"
+                    },
+                    "statementTerminatorLine": {
+                      "int": "-1"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "25"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "9"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsKO30=",
+      "key": "statementTerminatorLine",
+      "value": "0",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_While",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "15"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "12"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "15"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "12"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [
+                {
+                  "node": "Stmt_Break",
+                  "fields": [
+                    null
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "8"
+                    },
+                    "startFilePos": {
+                      "int": "18"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "6"
+                    },
+                    "statementTerminatorLine": {
+                      "int": "0"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "25"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "9"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsKO30=",
+      "key": "statementTerminatorLine",
+      "value": "99",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_While",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "15"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "12"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "15"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "12"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [
+                {
+                  "node": "Stmt_Break",
+                  "fields": [
+                    null
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "8"
+                    },
+                    "startFilePos": {
+                      "int": "18"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "6"
+                    },
+                    "statementTerminatorLine": {
+                      "int": "99"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "25"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "9"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing ordinary compiler line\")"
+      ]
+    },
+    {
+      "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsKO30=",
+      "key": "statementTerminatorLine",
+      "value": "2",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_While",
+            "fields": [
+              {
+                "node": "Expr_ConstFetch",
+                "fields": [
+                  {
+                    "node": "Name",
+                    "fields": [
+                      {
+                        "bytes": "dHJ1ZQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "15"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "startFilePos": {
+                        "int": "12"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "15"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "3"
+                  },
+                  "startFilePos": {
+                    "int": "12"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "3"
+                  }
+                }
+              },
+              [
+                {
+                  "node": "Stmt_Break",
+                  "fields": [
+                    null
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "2"
+                    },
+                    "endTokenPos": {
+                      "int": "8"
+                    },
+                    "startFilePos": {
+                      "int": "18"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "6"
+                    },
+                    "statementTerminatorLine": {
+                      "int": "2"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "25"
+              },
+              "endLine": {
+                "int": "2"
+              },
+              "endTokenPos": {
+                "int": "9"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              },
+              "statementBodyLine": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "assertions": [
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL"
+      ]
+    }
+  ],
+  "path_order_checks": 2,
+  "cases": [
+    {
+      "id": "if-elseif",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoZmFsc2Upe2VjaG8gImEiO31lbHNlaWYoZmFsc2Upe2VjaG8gImIiO31lbHNlaWYodHJ1ZSl7ZWNobyAiYyI7fWVsc2V7ZWNobyAiZCI7fWVjaG8gImUiOw==",
+        "ast_sha256": "331be84822dc9d32d31defff93e0b760a5ec04710788ebe54b22d728d211ddc1",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-else",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoMCllY2hvICJhIjtlbHNlaWYoMCllY2hvICJiIjtlbHNlIGVjaG8gImMiOw==",
+        "ast_sha256": "1a5459c8c5ad0e0ee50a65a3ffc4097216738494afa764cfdb5243b6b94ff80e",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-none",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoMCllY2hvICJhIjtlY2hvICJiIjs=",
+        "ast_sha256": "e750ebf539b996af99e9ee0686206e48bf801cbb953d361e5148f827933355e8",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-missing",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoJG1pc3NpbmcpZWNobyAiYSI7ZWxzZSBlY2hvICJiIjs=",
+        "ast_sha256": "2351e11812caac024900afdd94039bda03737ed0d5705ac874b829bed8c97671",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-runtime-skip",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoZmFsc2Upe2VjaG8gMS8wO31lbHNle2VjaG8gImIiO30=",
+        "ast_sha256": "9dea0256f8b0ad1880bb23a99c3503bed33c29137948a9860fc7e8832bb10e24",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-while",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDt3aGlsZSgkaSE9PTMpe2VjaG8gJGk7JGk9JGkrMTt9ZWNobyAiZW5kIjs=",
+        "ast_sha256": "90b33afa833cfe02360bad21c4d8aa10c8295566bb43de31a710012bf12126cf",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-do",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDtkb3tlY2hvICRpOyRpPSRpKzE7fXdoaWxlKCRpIT09Myk7ZWNobyAiZW5kIjs=",
+        "ast_sha256": "6b36d7ebffced93e28e6781e42037bcf7f8282f3c322deed2473a5e7cd781ecc",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-do-once",
+      "oracle": {
+        "source_base64": "PD9waHAgZG97ZWNobyAib25jZSI7fXdoaWxlKGZhbHNlKTtlY2hvICJlbmQiOw==",
+        "ast_sha256": "9130bbcd55ccf1928246ab37019870bc7556022c14f2f3ab82080dc9a0eb9eda",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-for",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKCRpPTA7JGkhPT0zOyRpPSRpKzEpe2VjaG8gJGk7fWVjaG8gImVuZCI7",
+        "ast_sha256": "8dc4f4496fee3df78144a1d6880c64114266b2fae585f2aac669db43cd5e568c",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-for-multi",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKCRpPTAsJGo9MDskaj0kaisxLCRpIT09MzskaT0kaSsxKXtlY2hvICRpLCI6IiwkaiwiOyI7fWVjaG8gJGo7",
+        "ast_sha256": "dd5da9741d876601ba81419828d6960d32a4ecb603f29e0938c05fdeb4f768d7",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-empty-for",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDtmb3IoOzspeyRpPSRpKzE7aWYoJGk9PT0zKWJyZWFrO2VjaG8gJGk7fWVjaG8gImVuZCI7",
+        "ast_sha256": "18b1916e7705ce3423a89fe591d351f50730e8db1856d2e3d494a7334554c805",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-continue",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDt3aGlsZSgkaSE9PTMpeyRpPSRpKzE7aWYoJGk9PT0yKWNvbnRpbnVlO2VjaG8gJGk7fWVjaG8gImVuZCI7",
+        "ast_sha256": "09b0783b57436abf4f6d0542ec06f0a93a2a904029f39608dfc97906101b648b",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-for-continue",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKCRpPTA7JGkhPT0zOyRpPSRpKzEpe2lmKCRpPT09MSljb250aW51ZTtlY2hvICRpO31lY2hvICJlbmQiOw==",
+        "ast_sha256": "68b3a8f7d6f3b7ff1e05c37b97bccb0b25f9ecf3f7dd8d335437e1243d85be20",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-do-continue",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDtkb3skaT0kaSsxO2lmKCRpPT09Miljb250aW51ZTtlY2hvICRpO313aGlsZSgkaSE9PTMpO2VjaG8gImVuZCI7",
+        "ast_sha256": "01f99ed442017b6ce19cad882a6788ba85203eaf48206248eb3a114006869f42",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-break-two",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDt3aGlsZSgkaSE9PTMpeyRpPSRpKzE7d2hpbGUodHJ1ZSl7ZWNobyAkaTticmVhayAyO31lY2hvICJiYWQiO31lY2hvICJlbmQiOw==",
+        "ast_sha256": "67fb8c4d300b10d79d0bdb872074be8fbbe0e773427aea61a873cf3d5fb13a2f",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-continue-two",
+      "oracle": {
+        "source_base64": "PD9waHAgJGk9MDt3aGlsZSgkaSE9PTMpeyRpPSRpKzE7JGo9MDt3aGlsZSgkaiE9PTMpeyRqPSRqKzE7aWYoJGo9PT0yKWNvbnRpbnVlIDI7ZWNobyAkaSwkajt9ZWNobyAiYmFkIjt9ZWNobyAiZW5kIjs=",
+        "ast_sha256": "8a9cd5ddaf165811d64bfcd6321cf992d99a429e73d00250e099d69ffa4d93dd",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-for-continue-two",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKCRpPTA7JGkhPT0zOyRpPSRpKzEpe2Rve2VjaG8gJGk7Y29udGludWUgMjt9d2hpbGUodHJ1ZSk7ZWNobyAiYmFkIjt9ZWNobyAiZW5kIjs=",
+        "ast_sha256": "dc8f1b1b2bff1f88cf7b38773f6fa9cf683dcea77facf068f36f9d84923b0b56",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "loop-condition-array",
+      "oracle": {
+        "source_base64": "PD9waHAgJGE9WzFdO3doaWxlKCRhKXtlY2hvICRhWzBdOyRhPVtdO31lY2hvICJlbmQiOw==",
+        "ast_sha256": "0750209ba48c6c87c73bd100e7be997b4d304bd1d0a59de47efc95982353e4eb",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "while-empty",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUoZmFsc2Upe30=",
+        "ast_sha256": "4df846747c09814abf89933ee455ba96cbd88f91fb461c072f13b881d236906b",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-empty",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KTs=",
+        "ast_sha256": "44c56af3841e7f7ac47bd07dd76ab0255b7a334d75c0f29fa1ecae629c877de5",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-close-tag",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KSA/Pgo=",
+        "ast_sha256": "1cde7c3e0813305b4d3db9a68ef4a6b62f0316a97c3d55298d599def28b4e164",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-empty-comment",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KS8qY29tbWVudCovOw==",
+        "ast_sha256": "cc1f88c42beaec9d44c76ba402798b475e8a299e8e76d1e6317442b31cbf5b5c",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-brace-comment",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KXsvKmNvbW1lbnQqL30=",
+        "ast_sha256": "23ba3c72f3cd96a0599011191d508763376ce98b5b4bd4775b12b5259726fd31",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-alt-comment",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KTovKmNvbW1lbnQqL2VuZGZvcjs=",
+        "ast_sha256": "e69081a9b5bbb15d62afc7fa8048a94c6abf4414455b806f5a7b3159264dd54e",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-braced-empty",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KXt9",
+        "ast_sha256": "b9240f6c1e6fd2df489604ba5d279a57f7a1677f9dfd1fe3c386c43ab6cc8b99",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "for-alt-empty",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDs7KTplbmRmb3I7",
+        "ast_sha256": "1d5f15d4462be6790168b28f7fe6df4547b0dc8aa3c01d08bfb5ef20f1f95d2a",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-empty",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYodHJ1ZSl7fQ==",
+        "ast_sha256": "46fe07fa87dfca7d2b0ac5a489af0623fd73cde7e0a344540186599589d006b9",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-nop",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYodHJ1ZSk7",
+        "ast_sha256": "d3196b2533999619043d554ab5072874dbd83455a2707e347b6470c34ab8ef23",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "if-else-empty",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYodHJ1ZSl7fWVsc2V7fQ==",
+        "ast_sha256": "76400d01f84c3f9e556a532f81eb0f5f5ac093fc6a455a3275f8512b4664e04e",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    },
+    {
+      "id": "break-outside",
+      "oracle": {
+        "source_base64": "PD9waHAgYnJlYWsKOw==",
+        "ast_sha256": "58c128e818c6fe4fa835747ee74d7345ffe53103c61a6edcdd4b5a84688e75ac",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwIG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,110,111,116,32,105,110,32,116,104,101,32,39,108,111,111,112,39,32,111,114,32,39,115,119,105,116,99,104,39,32,99,111,110,116,101,120,116],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],2)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "continue-outside",
+      "oracle": {
+        "source_base64": "PD9waHAgY29udGludWUgPz4K",
+        "ast_sha256": "37821857977ccf84f84f31f734f8124e4f9c9ffd46096b3ebd6a0c0e4212c01d",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdjb250aW51ZScgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,99,111,110,116,105,110,117,101,39,32,110,111,116,32,105,110,32,116,104,101,32,39,108,111,111,112,39,32,111,114,32,39,115,119,105,116,99,104,39,32,99,111,110,116,101,120,116],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-break-zero",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsgMDt9",
+        "ast_sha256": "96483090f39ab3c6ff1c3ca675d9740a0fa3a2a453486fa6ca0087eb80e87189",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgb3BlcmF0b3IgYWNjZXB0cyBvbmx5IHBvc2l0aXZlIGludGVnZXJzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,111,112,101,114,97,116,111,114,32,97,99,99,101,112,116,115,32,111,110,108,121,32,112,111,115,105,116,105,118,101,32,105,110,116,101,103,101,114,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-break-negative",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsgLTE7fQ==",
+        "ast_sha256": "3e53a1628064c35cd4ba966ce9ccfd3fb2a66d129097b37b194820fc463d8782",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgb3BlcmF0b3Igd2l0aCBub24taW50ZWdlciBvcGVyYW5kIGlzIG5vIGxvbmdlciBzdXBwb3J0ZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,111,112,101,114,97,116,111,114,32,119,105,116,104,32,110,111,110,45,105,110,116,101,103,101,114,32,111,112,101,114,97,110,100,32,105,115,32,110,111,32,108,111,110,103,101,114,32,115,117,112,112,111,114,116,101,100],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-break-string",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsgIjIiO30=",
+        "ast_sha256": "c6ddce63f18e0e638eb28cf71af8c042bdb2d38555e166926de7550a8a17602e",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgb3BlcmF0b3IgYWNjZXB0cyBvbmx5IHBvc2l0aXZlIGludGVnZXJzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,111,112,101,114,97,116,111,114,32,97,99,99,101,112,116,115,32,111,110,108,121,32,112,111,115,105,116,105,118,101,32,105,110,116,101,103,101,114,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-break-constant",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsgdHJ1ZTt9",
+        "ast_sha256": "e98112a8aae9c070dfbeb110567178793500123788f5680d8faefe675d27d317",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgb3BlcmF0b3Igd2l0aCBub24taW50ZWdlciBvcGVyYW5kIGlzIG5vIGxvbmdlciBzdXBwb3J0ZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,111,112,101,114,97,116,111,114,32,119,105,116,104,32,110,111,110,45,105,110,116,101,103,101,114,32,111,112,101,114,97,110,100,32,105,115,32,110,111,32,108,111,110,103,101,114,32,115,117,112,112,111,114,116,101,100],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-break-many",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7YnJlYWsgMjt9",
+        "ast_sha256": "a8cc5dc9055fecff5e3c13be21ef392b58fc4762d35e406c4eeb989ab817d062",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCAnYnJlYWsnIDIgbGV2ZWxzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,39,98,114,101,97,107,39,32,50,32,108,101,118,101,108,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-continue-many",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUodHJ1ZSl7Y29udGludWUgMjt9",
+        "ast_sha256": "369e660a2e5449441e5daaf5c45c14cce7b7ab9d9a704946c30a6c99910350da",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCAnY29udGludWUnIDIgbGV2ZWxzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,39,99,111,110,116,105,110,117,101,39,32,50,32,108,101,118,101,108,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "while-order",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUoWyYkeFtdXSl7YnJlYWsgMjt9",
+        "ast_sha256": "226530231a1bf9346d126029d6197c04f0750939d96c697968603d7c6fd04c7f",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCAnYnJlYWsnIDIgbGV2ZWxzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,39,98,114,101,97,107,39,32,50,32,108,101,118,101,108,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "do-order",
+      "oracle": {
+        "source_base64": "PD9waHAgZG97YnJlYWsgMjt9d2hpbGUoWyYkeFtdXSk7",
+        "ast_sha256": "a83229cfeab6f53f8f0f3bae54dd3baf53c3e0fac062339897a0221db9ba10ed",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCAnYnJlYWsnIDIgbGV2ZWxzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,39,98,114,101,97,107,39,32,50,32,108,101,118,101,108,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "for-body-order",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDtbJiR4W11dO1smJHlbXV0pe2JyZWFrIDI7fQ==",
+        "ast_sha256": "424fb67a416c160ad61b0cf7ff608cf691d4ee5ff3046bcbcc2e5a5d9e2bb1a5",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCAnYnJlYWsnIDIgbGV2ZWxzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5X2p1azJpOS9pbnB1dC5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,39,98,114,101,97,107,39,32,50,32,108,101,118,101,108,115],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "for-init-order",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKFsmJHpbXV07WyYkeFtdXTtbJiR5W11dKXticmVhayAyO30=",
+        "ast_sha256": "a6f4cc1b40cb77a8b5c5fe2b1efc63c175b8e9632cc7e2e9d5bc4af7c9ae8c67",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,91,93,32,102,111,114,32,114,101,97,100,105,110,103],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "for-step-order",
+      "oracle": {
+        "source_base64": "PD9waHAgZm9yKDtbJiR4W11dO1smJHlbXV0pe30=",
+        "ast_sha256": "5e3672cf4158d9d8e814766ac683c26b864473f62c8d7bdbcc650bae60ecb640",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,91,93,32,102,111,114,32,114,101,97,100,105,110,103],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "if-branch-order",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoZmFsc2Upe2JyZWFrIDI7fWVsc2V7ZWNobyBbJiR4W11dO30=",
+        "ast_sha256": "fbffe085ea19c775074707116689b7ca2346af853742a28f214134878b1bd25b",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,110,111,116,32,105,110,32,116,104,101,32,39,108,111,111,112,39,32,111,114,32,39,115,119,105,116,99,104,39,32,99,111,110,116,101,120,116],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "if-second-order",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoZmFsc2Upe31lbHNlaWYoWyYkeFtdXSl7YnJlYWsgMjt9",
+        "ast_sha256": "98cd02033dbe99dd330dd7e854b76be848513396ff35de26803ffd88ca3ffaa4",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,91,93,32,102,111,114,32,114,101,97,100,105,110,103],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "after-loop-depth",
+      "oracle": {
+        "source_base64": "PD9waHAgd2hpbGUoZmFsc2Upe30gYnJlYWs7",
+        "ast_sha256": "2737df5706da48675f838b8c38e7eb46c532dce2f2d01c70002288864a0a74ff",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlfanVrMmk5L2lucHV0LnBocAo=",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      },
+      "assertions": [
+        "$pptrace(P) = [(\"fatal\",[39,98,114,101,97,107,39,32,110,111,116,32,105,110,32,116,104,101,32,39,108,111,111,112,39,32,111,114,32,39,115,119,105,116,99,104,39,32,99,111,110,116,101,120,116],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,121,95,106,117,107,50,105,57,47,105,110,112,117,116,46,112,104,112],1)]",
+        "P.LOOPS = 0"
+      ]
+    },
+    {
+      "id": "if-nan-runtime",
+      "oracle": {
+        "source_base64": "PD9waHAgaWYoTkFOKXtlY2hvIDE7fQ==",
+        "ast_sha256": "0d51e1c2340b377bf213648018802896bb08954e045861eea3b19534438cfd9e",
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-l",
+          "/home/user/workspace/php-spec/.tools/tmpy_juk2i9/input.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "Tm8gc3ludGF4IGVycm9ycyBkZXRlY3RlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1weV9qdWsyaTkvaW5wdXQucGhwCg==",
+        "stderr_base64": ""
+      },
+      "assertions": [
+        "$pptrace(P) = []",
+        "P.LOOPS = 0",
+        "P.COMPLETION = PPCNORMAL",
+        "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+      ]
+    }
+  ]
+}

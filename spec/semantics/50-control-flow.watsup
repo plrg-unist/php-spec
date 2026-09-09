@@ -1,0 +1,122 @@
+;; Branch operands are resolved once and released before the chosen continuation.
+dec $truth(pstate, pvalue) : bool
+def $truth(S, PNULL) = false
+def $truth(S, PBOOL b) = b
+def $truth(S, PINT i) = (i =/= 0)
+def $truth(S, PFLOAT n) = b
+  -- if (b, b_warning) = $number_bool(NFLOAT n)
+def $truth(S, PSTRING n*) = (n* =/= eps /\ n* =/= [48])
+def $truth(S, PARRAY n) = (S.ARRAYS[n].ITEMS =/= eps)
+
+dec $truth_value(pstate, pvalue, int) : pstate
+def $truth_value(S, PFLOAT n, z) = $diagnostic(S[.RESULT = KNOWN (PBOOL b)], "Warning", [117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,98,111,111,108], z)
+  -- if (b, true) = $number_bool(NFLOAT n)
+def $truth_value(S, pvalue, z) = S[.RESULT = KNOWN (PBOOL $truth(S, pvalue))]
+  -- otherwise
+dec $condition(pstate, int) : pstate
+def $condition(S, z) = S_value
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+def $condition(S, z) = $truth_value(S_value, pvalue, z)
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+
+dec $choose(pstate, ptask*, ptask*, int) : pstate
+def $choose(S, ptask_true*, ptask_false*, z) = S_value[.TODO = eps]
+  -- if S_value = $condition(S, z)
+  -- if S_value.COMPLETION =/= NORMAL
+def $choose(S, ptask_true*, ptask_false*, z) = S_value[.TODO = ptask_true* ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_value = $condition(S, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PBOOL true)
+def $choose(S, ptask_true*, ptask_false*, z) = S_value[.TODO = ptask_false* ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_value = $condition(S, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PBOOL false)
+rule PhpStep/choose: S ~> $choose(S[.TODO = ptask_tail*], ptask_true*, ptask_false*, z)
+  -- if S.TODO = (CHOOSE ptask_true* ptask_false* z) :: ptask_tail*
+
+dec $if_tail(pstate, phpType56*, phpType57, nat) : ptask*
+def $if_tail(S, eps, ABSENT, n) = eps
+def $if_tail(S, eps, NStmtElse (SEQUENCE statement*) metadata, n) = $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 3, PCFIELD 0]), 0)
+def $if_tail(S, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType56*, phpType57, n) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 2, PCINDEX n, PCFIELD 0]), EVAL expression), CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 2, PCINDEX n, PCFIELD 1]), 0) $if_tail(S, phpType56*, phpType57, $(n + 1)) $runtime_line(S, [PCFIELD 2, PCINDEX n, PCFIELD 0], expression)]
+rule PhpStep/conditional: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) $if_tail(S, phpType56*, phpType57, 0) $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType56*) phpType57 metadata)) :: ptask_tail*
+
+;; Sequence consumers discard all but the final condition operand.
+dec $discard_expressions(expression*, porigin?, nat) : ptask*
+def $discard_expressions(eps, porigin?, n) = eps
+def $discard_expressions(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), DISCARD] ++ $discard_expressions(expression_tail*, porigin?, $(n + 1))
+dec $condition_expressions(expression*, porigin?, nat) : ptask*
+def $condition_expressions([expression], porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression)]
+def $condition_expressions(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), DISCARD] ++ $condition_expressions(expression_tail*, porigin?, $(n + 1))
+  -- if expression_tail* =/= eps
+dec $last_condition_line(pstate, expression*, nat) : int
+def $last_condition_line(S, [expression], n) = $runtime_line(S, [PCFIELD 1, PCINDEX n], expression)
+def $last_condition_line(S, expression :: expression_tail*, n) = $last_condition_line(S, expression_tail*, $(n + 1))
+  -- if expression_tail* =/= eps
+
+dec $loop_body(statement) : statement*
+def $loop_body(NStmtWhile expression (SEQUENCE statement*) metadata) = statement*
+def $loop_body(NStmtDo (SEQUENCE statement*) expression metadata) = statement*
+def $loop_body(NStmtFor phpType25_1 phpType25_2 phpType25_3 (SEQUENCE statement*) metadata) = statement*
+dec $loop_body_field(statement) : nat
+def $loop_body_field(NStmtWhile expression phpType23 metadata) = 1
+def $loop_body_field(NStmtDo phpType23 expression metadata) = 0
+def $loop_body_field(NStmtFor phpType25_1 phpType25_2 phpType25_3 phpType23 metadata) = 3
+dec $loop_body_tasks(statement, porigin?) : ptask*
+def $loop_body_tasks(statement, porigin?) = $statement_tasks($loop_body(statement), $origin_child(porigin?, [PCFIELD $loop_body_field(statement)]), 0) ++ [LOOP_NEXT statement porigin?]
+
+rule PhpStep/while-start: S ~> S[.TODO = [LOOP_TEST (NStmtWhile expression phpType23 metadata) S.ORIGIN] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtWhile expression phpType23 metadata)) :: ptask_tail*
+rule PhpStep/do-start: S ~> S[.TODO = $loop_body_tasks(NStmtDo phpType23 expression metadata, S.ORIGIN) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtDo phpType23 expression metadata)) :: ptask_tail*
+rule PhpStep/for-start: S ~> S[.TODO = $discard_expressions(expression*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ [LOOP_TEST (NStmtFor (SEQUENCE expression*) phpType25_2 phpType25_3 phpType23 metadata) S.ORIGIN] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtFor (SEQUENCE expression*) phpType25_2 phpType25_3 phpType23 metadata)) :: ptask_tail*
+
+rule PhpStep/while-test: S ~> S_loop[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 0]), EVAL expression), CHOOSE $loop_body_tasks(NStmtWhile expression phpType23 metadata, porigin?) eps $runtime_line(S_loop, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (LOOP_TEST (NStmtWhile expression phpType23 metadata) porigin?) :: ptask_tail*
+  -- if S_loop = S[.ORIGIN = porigin?]
+rule PhpStep/while-next: S ~> S[.ORIGIN = porigin?][.TODO = [LOOP_TEST (NStmtWhile expression phpType23 metadata) porigin?] ++ ptask_tail*]
+  -- if S.TODO = (LOOP_NEXT (NStmtWhile expression phpType23 metadata) porigin?) :: ptask_tail*
+rule PhpStep/do-next: S ~> S_loop[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1]), EVAL expression), CHOOSE $loop_body_tasks(NStmtDo phpType23 expression metadata, porigin?) eps $runtime_line(S_loop, [PCFIELD 1], expression)] ++ ptask_tail*]
+  -- if S.TODO = (LOOP_NEXT (NStmtDo phpType23 expression metadata) porigin?) :: ptask_tail*
+  -- if S_loop = S[.ORIGIN = porigin?]
+rule PhpStep/for-test-empty: S ~> S[.ORIGIN = porigin?][.TODO = $loop_body_tasks(NStmtFor phpType25_1 (SEQUENCE eps) phpType25_3 phpType23 metadata, porigin?) ++ ptask_tail*]
+  -- if S.TODO = (LOOP_TEST (NStmtFor phpType25_1 (SEQUENCE eps) phpType25_3 phpType23 metadata) porigin?) :: ptask_tail*
+rule PhpStep/for-test: S ~> S_loop[.TODO = $condition_expressions(expression*, $origin_child(porigin?, [PCFIELD 1]), 0) ++ [CHOOSE $loop_body_tasks(NStmtFor phpType25_1 (SEQUENCE expression*) phpType25_3 phpType23 metadata, porigin?) eps $last_condition_line(S_loop, expression*, 0)] ++ ptask_tail*]
+  -- if S.TODO = (LOOP_TEST (NStmtFor phpType25_1 (SEQUENCE expression*) phpType25_3 phpType23 metadata) porigin?) :: ptask_tail*
+  -- if expression* =/= eps
+  -- if S_loop = S[.ORIGIN = porigin?]
+rule PhpStep/for-next: S ~> S[.ORIGIN = porigin?][.TODO = $discard_expressions(expression*, $origin_child(porigin?, [PCFIELD 2]), 0) ++ [LOOP_TEST (NStmtFor phpType25_1 phpType25_2 (SEQUENCE expression*) phpType23 metadata) porigin?] ++ ptask_tail*]
+  -- if S.TODO = (LOOP_NEXT (NStmtFor phpType25_1 phpType25_2 (SEQUENCE expression*) phpType23 metadata) porigin?) :: ptask_tail*
+
+;; Compiler-validated jumps discard inner continuations and restore loop origin.
+dec $jump_depth(phpType5) : nat
+def $jump_depth(ABSENT) = 1
+def $jump_depth(NScalarInt (INTEGER i) metadata) = $nabs(i)
+  -- if $(i > 0)
+dec $loop_marker(ptask) : bool
+dec $jump_loop(pstate, nat, bool) : pstate
+def $jump_loop(S, 1, false) = S[.TODO = ptask_tail*][.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
+def $jump_loop(S, 1, true) = S[.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
+def $jump_loop(S, n, b) = $jump_loop(S[.TODO = ptask_tail*], $nabs($(n - 1)), b)
+  -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
+  -- if $(n > 1)
+def $jump_loop(S, n, b) = $jump_loop(S[.TODO = ptask_tail*], n, b)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$loop_marker(ptask)
+def $jump_loop(S, n, b) = S[.COMPLETION = UNSUPPORTED "invalid loop continuation"]
+  -- if S.TODO = eps
+def $loop_marker(LOOP_NEXT statement porigin?) = true
+def $loop_marker(ptask) = false -- otherwise
+rule PhpStep/break: S ~> $jump_loop(S[.TODO = ptask_tail*], $jump_depth(phpType5), false)
+  -- if S.TODO = (STMT (NStmtBreak phpType5 metadata)) :: ptask_tail*
+rule PhpStep/continue: S ~> $jump_loop(S[.TODO = ptask_tail*], $jump_depth(phpType5), true)
+  -- if S.TODO = (STMT (NStmtContinue phpType5 metadata)) :: ptask_tail*
+
+;; Nested continuation lists can carry live operands in constructed machine states.
+def $task_nodes(CHOOSE ptask_true* ptask_false* z) = $tasks_nodes(ptask_true*) ++ $tasks_nodes(ptask_false*)

@@ -197,9 +197,10 @@ separately counted and do not count as prefix agreement. The unchanged upstream
 grammar, checked-in correction and deterministic parser regeneration retain the
 source provenance of this phase correction.
 
-Strict-types compilation, encoding/tick declare effects, function/class/declaration
-contexts, function/class keyword metadata, body compilation, default compilation, registration,
-linking and source-machine integration remain pending. These are core obligations,
-not exclusions. The next stage must consume and resume the work descriptors with
-source-evidenced compiler rules before claiming that these contexts drive ordinary
-source execution.
+The ordinary source compiler now consumes and resumes these work descriptors,
+including source namespaces/imports and control bodies. Strict-types compilation,
+encoding/tick declare effects, function/class/declaration contexts, function/class
+keyword metadata, declaration-body/default compilation, registration and linking
+remain pending core obligations. Their future source integration must preserve
+ordered diagnostics and explicit publication, rather than treating a helper
+completion or the structural occurrence list as completed compilation.

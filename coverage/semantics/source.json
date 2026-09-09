@@ -10,7 +10,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and array literal/read/write/unset plus variable and element reference-source checked execution fixtures",
+  "scope": "authored scalar, storage, array, reference, namespace constant and if/while/do/for/jump checked source execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -56,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "57bff379390b781cf115e65da85ebdc2c0852d7c07282f8be99c0cc058cac266",
-    "files": 763,
+    "sha256": "ff73f0181b1fb5b61beb3427967cc05c20bc78d91f3957eba10f0ab4654dd7af",
+    "files": 767,
     "scope": [
       "frontend",
       "adapter",
@@ -2835,6 +2835,372 @@
       "comparison": "pass"
     },
     {
+      "id": "control-if-elseif",
+      "source_sha256": "678f955c47d9b6aa04c62e733043e47bfff23dc2db1b497360886ea77f0b42ff",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-else",
+      "source_sha256": "0860e0dc304dd50b9f679a067ebe14b07c4ebcc463e890b0c1079b967c8c0708",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-none",
+      "source_sha256": "39bed86dc1a71a8bc51029f9018f123520dce367164d8a1e58ca611ad803975d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-missing",
+      "source_sha256": "1aa185394a7ba808ffe481f1bb67da48c62981945b2dcc4252cdefd12f83ec91",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-runtime-skip",
+      "source_sha256": "11b7eb3cf7c9384ac2ca395fca1d108f8e12bd0a986185315f7ca7cfe30fc177",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-while",
+      "source_sha256": "0f47e0d1a3957de2f6a278562ce5e16a494cb648e8ad55d072664c2cf2438393",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-do",
+      "source_sha256": "975e9dfe7edd33a47cdfa19ddc3b8f751b7e5d22d8567f85b56441cc7656d77e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-do-once",
+      "source_sha256": "56b2fbf934b1dddd050ead0380f0b1f0e43e78e7eb8a57ca11bb6dbbee59ece1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-for",
+      "source_sha256": "5087f2cb72f564fc1869aaace9acd11679251883c337835b695e25de51795dd6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-for-multi",
+      "source_sha256": "c149b611d6cf75fa76bfe6e4a2f2b9d315b9669fb5c51fb08047d176e4e5e2d0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-empty-for",
+      "source_sha256": "c4116ef78f99316752b273164ec95f232bcb40f09e49481b3da2b1ed529dd445",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-continue",
+      "source_sha256": "b0b9268ef870da3696f121baeff467e36cc9c5dc04c470306d05bece5d38cf3b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-for-continue",
+      "source_sha256": "caf613875a01cf302d382083fa2f5cdc64764008f24f6b2a07b0a85e139c0c19",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-do-continue",
+      "source_sha256": "dfc0faafc2878972112130a9d7ed3123b154ec889e38f1d37c0c9902ace6a926",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-break-two",
+      "source_sha256": "934282af69ea98734f8ae2c8c1c26295850db18a93135da6223fa9e3621378df",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-continue-two",
+      "source_sha256": "26face9fe1e616d5b204f848294c8addfc50a7f14427dbf8a7efffe93f0b7c31",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-for-continue-two",
+      "source_sha256": "e4548d0d72f9f366dbcf9af415afcab20a75bfe672928a59b270644e0e4d6f31",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-condition-array",
+      "source_sha256": "22e892c04d5c5820e511df3c3a8b9ef294818d447551b7946e2fad38c5ff46d1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-0",
+      "source_sha256": "0c7ac4b2837667987a1c18b61649f87b2ebbb99d01e39af4bcb942029af369c7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-1",
+      "source_sha256": "a84f248bbcac25e744e5766125fc0d325eb5824cfece78cfdfc2c069e962154d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-2",
+      "source_sha256": "0a10bd7af22b185b46750eb97787cc2cfef96e81e53c97a345b6e3b49ade2ffb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-3",
+      "source_sha256": "9265676fe0535d12beb05272dbfeacaecf76ff51d44bb0bf53472cd64f082937",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-4",
+      "source_sha256": "7c9e66c47a6fc4ea447488d40efb5db4af7b655b1b553a4bb7516033d65d9fb7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-5",
+      "source_sha256": "5f7580546314e7190c73613a2e50ca060c0c520061025189486909b781c1fad7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-6",
+      "source_sha256": "539e0ff061121b6d901ddec700348efb9de3c682793ef98e1ee5c57fe35bbadd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-7",
+      "source_sha256": "03d705b42b825af52979270c779549d0782943dfe51d658098d90d618db48c48",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-8",
+      "source_sha256": "28011201aa9f77df989785a6823e8976e6d1387b8b43ef52b6d860014d0cb222",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-9",
+      "source_sha256": "19e36b565910daf9eb32bdbde2efc9ff6fa20f0dbf01eeeb1c66c8ef93e023ef",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-10",
+      "source_sha256": "f1e9585da0d321379297e7036cf63dd3a13434370df379bc95b26214f781e143",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-11",
+      "source_sha256": "ead3615610b2b1c923579efc0a761483d764f18b59a13596a7173e8727e7c8b1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-12",
+      "source_sha256": "f891b937a961521b59c2322f6404c333f288ea1040268afba118ad6e623350dd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-13",
+      "source_sha256": "22cfb8df1fb113b3d5eda87ef2598eb8bd18bdd7466cc4b22f41762e8ac62bda",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-14",
+      "source_sha256": "2e9857c128084f415a731571b64dbd5fa04e8c7e8e015e1997e06b8f671eef43",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-truth-15",
+      "source_sha256": "4243c348094cc43619832f590276667a9598bc04ff468ef69c2c11db000fb554",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-pool-reuse",
+      "source_sha256": "5dfca5abaeee5ba2c9dfe16bae2e542a468d781f177c78b2e0d6e8dd8326dc90",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-namespace-late-array",
+      "source_sha256": "a3bb33268b65378991cfa35073124ca5c058b6c699970a97e15656d9a629b9bf",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-namespace-imported-array",
+      "source_sha256": "762c7fdc3ed84818aa33b629101f64ef39a5feec18464d53221ede449b040ad9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-string-write-cow",
+      "source_sha256": "4e50af19469ae6a4a4ce0195f3fcdb34487d24f72d01d1344da6993724721ac3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-reference-array",
+      "source_sha256": "fcc6adcaad5373b2255deadd30186447ba58d67efc417d8fbfea682ca47d0296",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-loop-namespace-warning",
+      "source_sha256": "5c1408b341a2ea0414a80e88e400e470400b8fe5c152a04833a74c8e76ea4b15",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-empty",
+      "source_sha256": "a0864a2f790d4d344716b21a344db32abc31fc37dcb4ac322db4776763357ddb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-empty",
+      "source_sha256": "000cf7f1fd83f8bd07a20fe0787b6c8161f0c4b63e317b2ade28e7afba30731c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-nop",
+      "source_sha256": "3c85345adee0ae0d596b59a0e15b2fbb1d39cb7a8e7dba32ee7ab48cdd625c8d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-else-empty",
+      "source_sha256": "36a92bb0e049097de7452cc103207ef8d8b88cfa179ca18258fca94c65e62f78",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-break-outside",
+      "source_sha256": "ff68675767115e0f08cfba920a5d2d953cb8942c31bca5daf6e8d2620f68c639",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-continue-outside",
+      "source_sha256": "23a99d9558651e050eae0726022659d3d7fb73735bf9311a0f428250ac7e3ec8",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-break-zero",
+      "source_sha256": "1681e4755e18e9861a5e2f44e2b04bab6924a4c9824815815c6d7b1ac3224449",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-break-negative",
+      "source_sha256": "6814bfe9bd48099d93d0e9f73422c4b34fc33088ecf4d5b6506a1b91d7311fcb",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-break-string",
+      "source_sha256": "3d547f8644aa7413150c6aef9698ed55769f2a570b2cc4775c21372a64bb3541",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-break-constant",
+      "source_sha256": "380cf33b1cade3ac77a346e3e8b30f01c0db6810a5ab7a5313c649bfebbe85e2",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-break-many",
+      "source_sha256": "c365a357a0c2081b68d2ee102e38a9dd097d7f2e6add08d464d64de5d734d037",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-continue-many",
+      "source_sha256": "d44bead322b922c39904caccbc6f28809a74046542675282dd4e8db56986b5ae",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-while-order",
+      "source_sha256": "0462b5ec96a2fcb64ab6af77ca0469a0ea4590659f5264e73aa07f8ce0f3f91e",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-do-order",
+      "source_sha256": "b63569e13dd483aa4351286ff4c4d2f60460a15624cd8bf3131264893770f04f",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-for-body-order",
+      "source_sha256": "da7f1693b3eb46cb5440c73c994e11a9e487dfd09851099d8dd2ed312e13f8db",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-for-init-order",
+      "source_sha256": "7908725a2c1ec2d3f25deec74c6ef7b9b1c90cc8b7774690196187de80047930",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-for-step-order",
+      "source_sha256": "5abe806f504f9f32876c976dd862f6ed9cd5899b513e8f8ad4235d1be5dec2cf",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-branch-order",
+      "source_sha256": "a1459b8045b0cacc4e5cb9a0a2f2df8bb82e0ad1177a0e6bd176f079f40b5917",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-second-order",
+      "source_sha256": "7538b8d36d142b8a5a84d6bdbf7f1c1aaf884fae4b6c3f341a14adea0d8b67b2",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-after-loop-depth",
+      "source_sha256": "ee8e938f2a0ff7d7923c0930946e119e4f63121538c3a9bc9f3628dac5563cc2",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "control-if-nan-runtime",
+      "source_sha256": "042274dfe371b5dc98cb411437140f8f399919eb6771c9037e59b688e9d13414",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
       "id": "conformance-reference-rebind",
       "source_sha256": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
       "semantic_status": "normal",
@@ -4196,7 +4562,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kbkovceb/unsupported.php"
+        "/tmp/php-semantics-46_ng4_8/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -4215,7 +4581,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kbkovceb/unsupported.php"
+        "/tmp/php-semantics-46_ng4_8/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -4234,7 +4600,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kbkovceb/unsupported.php",
+        "/tmp/php-semantics-46_ng4_8/unsupported.php",
         "--steps",
         "0"
       ],
@@ -4255,7 +4621,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kbkovceb/unsupported.php",
+        "/tmp/php-semantics-46_ng4_8/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -4268,12 +4634,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-kbkovceb/unsupported.php.missing"
+        "/tmp/php-semantics-46_ng4_8/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-kbkovceb/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-46_ng4_8/unsupported.php.missing'"
       }
     },
     {
@@ -4487,6 +4853,27 @@
       }
     },
     {
+      "source": "PD9waHAgZm9yKDs7KTs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-46_ng4_8/unsupported.php",
+        "--steps",
+        "40"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
       "input": {
         "op": "execute",
         "ast": {
@@ -4516,7 +4903,7 @@
           ]
         },
         "steps": 100,
-        "filename": "L3RtcC9waHAtc2VtYW50aWNzLWtia292Y2ViL3Vuc3VwcG9ydGVkLnBocA=="
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLTQ2X25nNF84L3Vuc3VwcG9ydGVkLnBocA=="
       },
       "exit_status": 0,
       "observation": {
@@ -4747,14 +5134,14 @@
                   "99",
                   "115",
                   "45",
-                  "107",
-                  "98",
-                  "107",
-                  "111",
-                  "118",
-                  "99",
-                  "101",
-                  "98",
+                  "52",
+                  "54",
+                  "95",
+                  "110",
+                  "103",
+                  "52",
+                  "95",
+                  "56",
                   "47",
                   "117",
                   "110",
@@ -4813,7 +5200,7 @@
           ]
         },
         "steps": 100,
-        "filename": "L3RtcC9waHAtc2VtYW50aWNzLWtia292Y2ViL3Vuc3VwcG9ydGVkLnBocA=="
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLTQ2X25nNF84L3Vuc3VwcG9ydGVkLnBocA=="
       },
       "exit_status": 0,
       "observation": {
@@ -5065,14 +5452,14 @@
                   "99",
                   "115",
                   "45",
-                  "107",
-                  "98",
-                  "107",
-                  "111",
-                  "118",
-                  "99",
-                  "101",
-                  "98",
+                  "52",
+                  "54",
+                  "95",
+                  "110",
+                  "103",
+                  "52",
+                  "95",
+                  "56",
                   "47",
                   "117",
                   "110",
@@ -5919,7 +6306,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "1d7c0bcd2c60747a73005959c312e4a4c068f80df647f9f6d2144b8102656a31",
-    "records": 686
+    "sha256": "0da2a503e540ce1968f147f3ef2e89469d0283525b89a9194734203676bb85be",
+    "records": 747
   }
 }

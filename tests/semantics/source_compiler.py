@@ -19,6 +19,11 @@ def $pptrace(P) = ($pltestevent(pldiagnostic))* ++ [("fatal",$ptascii(text),P.LO
   -- if z = n
 '''
 PREFIX+='''
+def $pptrace(P) = ($pltestevent(pldiagnostic))* ++ [("fatal",ptbytes,P.LOCATION.FILE,n)]
+  -- if P.DIAGNOSTICS = pldiagnostic*
+  -- if P.COMPLETION = PPCABRUPT (STATICBYTES ptbytes z)
+  -- if z = n
+
 dec $access_paths((pcpath, ppmode)*) : pcpath*
 def $access_paths(eps) = eps
 def $access_paths((pcpath, ppmode) :: (pcpath_tail, ppmode_tail)*) = pcpath :: $access_paths((pcpath_tail, ppmode_tail)*)
@@ -126,7 +131,7 @@ def main():
                 if line is None:node['meta'].pop('statementTerminatorLine')
                 else:node['meta']['statementTerminatorLine']={'int':line}
                 checked=a.request({'op':'check','ast':ast,'fixture':True});i=len(fixtures)
-                fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED "missing source line")\n')
+                fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED "missing ordinary compiler line")\n')
             source=b'<?php echo [[NAN],[NAN]];'
             parsed=f.request({'op':'parse','source':base64.b64encode(source).decode()})
             checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})

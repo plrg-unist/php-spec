@@ -48,9 +48,9 @@ lines alone are insufficient for multiline arithmetic. These distinctions follow
 The driver spends one budget unit per task transition, including expression
 continuations. PHP values distinguish null, booleans, signed integers, float bits
 byte sequences and internal array-container IDs. Base64 decoding and integer
-decimal output are pure `.watsup`. Calls, objects, handlers and resumable control
-remain pending in the feature
-inventory. Access to an unimplemented request-owned variable is Unsupported,
+decimal output are pure `.watsup`. Calls, objects, handlers and general resumable
+control remain pending in the feature inventory. The active control rules handle
+if/elseif/else, while/do/for and loop break/continue. Access to an unimplemented request-owned variable is Unsupported,
 including reference acquisition and unset; it cannot fabricate an ordinary local.
 The guard follows this pinned startup profile; `_SESSION` is ordinary because the
 session extension is absent. `http_response_header` is locally scoped: computed
@@ -59,8 +59,9 @@ Unsupported until the compiler tracks its per-scope assignment/deprecation state
 (`zend_try_compile_cv`). No extension behavior is inferred from name spelling.
 
 The implemented source paths handle empty statements, blocks, inline bytes, scalar
-output, assignments, reference rebinding, dynamic names, unset and the numeric bridge below. Its independent static pass rejects a bare
-`break` outside loop/switch before output. Unknown constants produce an Error. Selected integer limits and INF/NAN have pure
+output, assignments, reference rebinding, dynamic names, unset and the numeric
+bridge below. Ordered compilation rejects invalid literal break/continue depth
+before any runtime output. Unknown constants produce an Error. Selected integer limits and INF/NAN have pure
 initial values; other known but unimplemented startup constants produce Unsupported. The startup names
 catalog records the pinned CLI environment (including excluded library names),
 not computed semantic values. `scripts/semantic-constant-names.py` regenerates the
@@ -152,8 +153,8 @@ uncollected cycles survive. This is temporary cleanup in the current machine
 without catch/finally or call frames, not effectful PHP request shutdown or future
 exception unwinding. Budget exhaustion preserves the interrupted state and roots.
 Source-unit/compiled-occurrence identities now travel with runtime tasks.
-Source activation of the permanent pool installer and fact consumption are still
-required before repeated literal execution in loops/calls.
+The active permanent pool installer and occurrence-based fact consumption retain
+constant array identity across repeated execution; calls still need their own frames.
 `tests/semantics/ownership.py` checks graph invariants separately from source claims.
 Source anchors are `i_zval_ptr_dtor`, `zend_array_dup_value`, and `zend_gc_collect_cycles`.
 
@@ -232,8 +233,10 @@ The compiler rejects unfinished syntax before source execution. This is a visibl
 implementation boundary, not a claim that every unsupported expression would run.
 `tests/semantics/runtime_compiler.py` checks compiled execution, pool ownership,
 per-occurrence identity and constructed interruption/re-entry states; it does not
-claim loop or function execution. Existing original-source comparisons separately
-validate the admitted behavior against the pinned engine.
+claim loop or function execution. The separate `control_flow.py` checks
+loop execution, repeated pools and exact small-budget resumption, including heap
+roots nested inside branch continuations. Original-source comparisons separately
+validate admitted behavior against the pinned engine.
 
 `bin/php-semantics FILE` emits a JSON observation: status, base64 stdout/stderr,
 exit status, diagnostics, events, and unsupported reason. Modeled PHP failure is

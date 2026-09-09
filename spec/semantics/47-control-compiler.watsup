@@ -1,0 +1,119 @@
+;; Ordered control compilation and literal jump legality from zend_compile.c:5813,5986-6230.
+syntax ppdepth = PPDEPTH nat | PPDEPTHNONINTEGER | PPDEPTHINVALID
+
+dec $ppdepth(phpType5) : ppdepth
+def $ppdepth(ABSENT) = PPDEPTH 1
+def $ppdepth(NScalarInt (INTEGER i) metadata) = PPDEPTH $nabs(i)
+  -- if $(i > 0)
+def $ppdepth(NScalarInt (INTEGER i) metadata) = PPDEPTHINVALID
+  -- if $(i <= 0)
+def $ppdepth(NScalarFloat (FLOAT text) metadata) = PPDEPTHINVALID
+def $ppdepth(NScalarString (BYTES text) metadata) = PPDEPTHINVALID
+def $ppdepth(phpType5) = PPDEPTHNONINTEGER -- otherwise
+
+dec $ppjumpline(phpType5, metadata) : int
+def $ppjumpline(ABSENT, metadata) = $ppterminator(metadata)
+def $ppjumpline(expression, metadata) = $expression_line(expression)
+
+dec $ppjumpcheck(nat, ppdepth, ptbytes) : ptbytes?
+def $ppjumpcheck(n, PPDEPTHNONINTEGER, ptbytes) = ($ptascii("'") ++ ptbytes ++ $ptascii("' operator with non-integer operand is no longer supported"))
+def $ppjumpcheck(n, PPDEPTHINVALID, ptbytes) = ($ptascii("'") ++ ptbytes ++ $ptascii("' operator accepts only positive integers"))
+def $ppjumpcheck(0, PPDEPTH n_depth, ptbytes) = ($ptascii("'") ++ ptbytes ++ $ptascii("' not in the 'loop' or 'switch' context"))
+def $ppjumpcheck(n, PPDEPTH n_depth, ptbytes) = ($ptascii("Cannot '") ++ ptbytes ++ $ptascii("' ") ++ $ntunsigned(n_depth) ++ $ptascii(" levels"))
+  -- if $(n > 0 /\ n_depth > n)
+def $ppjumpcheck(n, PPDEPTH n_depth, ptbytes) = eps
+  -- if $(n > 0 /\ n_depth <= n)
+
+dec $ppjumpresult(ppstate, ptbytes?) : ppstate
+def $ppjumpresult(P, eps) = P
+def $ppjumpresult(P, (ptbytes)) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes P.LOCATION.LINE)]
+dec $ppjump(ppstate, pcpath, phpType5, metadata, ptbytes) : ppstate
+def $ppjump(P, pcpath, phpType5, metadata, ptbytes) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppjump(P, pcpath, phpType5, metadata, ptbytes) = $ppjumpresult(P_line, $ppjumpcheck(P.LOOPS, $ppdepth(phpType5), ptbytes))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_line = $pplocate(P, pcpath, $ppjumpline(phpType5, metadata))
+  -- if P_line.COMPLETION = PPCNORMAL
+def $ppjump(P, pcpath, phpType5, metadata, ptbytes) = P_line
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_line = $pplocate(P, pcpath, $ppjumpline(phpType5, metadata))
+  -- if P_line.COMPLETION =/= PPCNORMAL
+
+;; A positive body-token line denotes a Zend synthetic statement list; zero
+;; denotes a single statement. Absence is missing compiler input, not a guess.
+dec $ppbodytag(metadataEntry) : bool
+def $ppbodytag(MstatementBodyLine z) = true
+def $ppbodytag(metadataEntry) = false -- otherwise
+dec $ppbodyline(metadata) : int?
+def $ppbodyline(eps) = eps
+def $ppbodyline((MstatementBodyLine z) :: metadata) = (z)
+def $ppbodyline(metadataEntry :: metadata) = $ppbodyline(metadata)
+  -- if ~$ppbodytag(metadataEntry)
+dec $ppbodylocated(ppstate, pcpath, metadata, int?) : ppstate
+def $ppbodylocated(P, pcpath, metadata, (z)) = P
+  -- if $(z = 0)
+def $ppbodylocated(P, pcpath, metadata, (z)) = $pplocate(P, pcpath, $ppterminator_range(z, $source_line(metadata), $source_end_line(metadata)))
+  -- if $(z < 0 \/ z > 0)
+def $ppbodylocated(P, pcpath, metadata, eps) = $ppunsupported(P, "missing control body token line")
+dec $ppcontrolbody(ppstate, pcpath, statement*, metadata) : ppstate
+def $ppcontrolbody(P, pcpath, statement*, metadata) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcontrolbody(P, pcpath, statement*, metadata) = $ppstatements($ppbodylocated(P, pcpath, metadata, $ppbodyline(metadata)), pcpath, 0, statement*)
+  -- if P.COMPLETION = PPCNORMAL
+
+dec $pploopbody(ppstate, pcpath, statement*, metadata) : ppstate
+def $pploopbody(P, pcpath, statement*, metadata) = $ppcontrolbody(P[.LOOPS = $(P.LOOPS + 1)], pcpath, statement*, metadata)
+
+def $ppstatement(P, pcpath, NStmtBreak phpType5 metadata) = $ppjump(P, pcpath, phpType5, metadata, $ptascii("break"))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtContinue phpType5 metadata) = $ppjump(P, pcpath, phpType5, metadata, $ptascii("continue"))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtWhile expression (SEQUENCE statement*) metadata) = P_end[.LOOPS = P.LOOPS]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_body = $pploopbody(P, pcpath ++ [PCFIELD 1], statement*, metadata)
+  -- if P_end = $ppexpr(P_body, pcpath ++ [PCFIELD 0], expression, PPR)
+def $ppstatement(P, pcpath, NStmtDo (SEQUENCE statement*) expression metadata) = P_end[.LOOPS = P.LOOPS]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_body = $pploopbody(P, pcpath ++ [PCFIELD 0], statement*, metadata)
+  -- if P_end = $ppexpr(P_body, pcpath ++ [PCFIELD 1], expression, PPR)
+dec $ppnullbody(statement*) : bool
+def $ppnullbody(eps) = true
+def $ppnullbody([NStmtNop metadata]) = true
+def $ppnullbody(statement*) = false -- otherwise
+dec $ppforbegin(ppstate, pcpath, expression*, expression*, expression*, statement*, metadata) : ppstate
+def $ppforbegin(P, pcpath, eps, eps, eps, statement*, metadata) = $pplocate(P, pcpath, $ppterminator(metadata))
+  -- if $ppbodyline(metadata) = (z)
+  -- if $(z = 0)
+  -- if $ppnullbody(statement*)
+def $ppforbegin(P, pcpath, expression_init*, expression_cond*, expression_step*, statement*, metadata) = P
+  -- otherwise
+def $ppstatement(P, pcpath, NStmtFor (SEQUENCE expression_init*) (SEQUENCE expression_cond*) (SEQUENCE expression_step*) (SEQUENCE statement*) metadata) = P_end[.LOOPS = P.LOOPS]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_begin = $ppforbegin(P, pcpath, expression_init*, expression_cond*, expression_step*, statement*, metadata)
+  -- if P_init = $ppexprs(P_begin, pcpath ++ [PCFIELD 0], 0, expression_init*, PPR)
+  -- if P_body = $pploopbody(P_init, pcpath ++ [PCFIELD 3], statement*, metadata)
+  -- if P_step = $ppexprs(P_body, pcpath ++ [PCFIELD 2], 0, expression_step*, PPR)
+  -- if P_end = $ppexprs(P_step, pcpath ++ [PCFIELD 1], 0, expression_cond*, PPR)
+
+dec $ppafterifbody(ppstate, pcpath, expression, bool) : ppstate
+def $ppafterifbody(P, pcpath, expression, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppafterifbody(P, pcpath, expression, b) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if b
+def $ppafterifbody(P, pcpath, expression, b) = $pplocate(P, pcpath, $expression_line(expression))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~b
+dec $ppifbody(ppstate, pcpath, expression, statement*, metadata, bool) : ppstate
+def $ppifbody(P, pcpath, expression, statement*, metadata, b) = $ppafterifbody(P_body, pcpath, expression, b)
+  -- if P_cond = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
+  -- if P_body = $ppcontrolbody(P_cond, pcpath ++ [PCFIELD 1], statement*, metadata)
+
+dec $ppiftail(ppstate, pcpath, nat, phpType56*, phpType57) : ppstate
+def $ppiftail(P, pcpath, n, eps, ABSENT) = P
+def $ppiftail(P, pcpath, n, eps, NStmtElse (SEQUENCE statement*) metadata) = $ppcontrolbody(P, pcpath ++ [PCFIELD 3, PCFIELD 0], statement*, metadata)
+def $ppiftail(P, pcpath, n, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType56*, phpType57) = $ppiftail(P_branch, pcpath, $(n + 1), phpType56*, phpType57)
+  -- if P_branch = $ppifbody(P, pcpath ++ [PCFIELD 2, PCINDEX n], expression, statement*, metadata, (phpType56* = eps /\ phpType57 = ABSENT))
+def $ppstatement(P, pcpath, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType56*) phpType57 metadata) = $ppiftail(P_branch, pcpath, 0, phpType56*, phpType57)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_branch = $ppifbody(P, pcpath, expression, statement*, metadata, (phpType56* = eps /\ phpType57 = ABSENT))

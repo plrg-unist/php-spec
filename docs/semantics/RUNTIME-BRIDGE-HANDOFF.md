@@ -207,19 +207,21 @@ need compact resolved-name/fallback descriptors; basic named calls subsequently
 need frames, argument/reference binding and declaration activation. General callbacks,
 objects and lifecycle remain further core work. The full-core objective is unchanged.
 
-## Control implementation draft
+## Accepted control source activation
 
 Prerequisites: accepted string writes and reviewed legacy checker/classifier
 retirement. The unchecked trace wrapper stays in the test fixture only. Compiler owns
 if/while/do/for traversal and static break/continue legality; runtime owns 30 task
-domains, 39 task-root projection, and new control rules registered after43.
+domains and new 50 rules, including the extension to task-root projection.
+The registered source path joins compiler 47 with runtime 50.
 
 Compiler order is observable even for runtime-unselected code: while/do compile
 body before condition; for compiles init, body, step, condition. If clauses compile
 condition/body in clause order. Preserve each child's structural occurrence path.
 Do not infer break/continue legal depth by arbitrary scalar folding. Statement
 terminator lines need exact checked token context, especially close tags consuming
-newlines. Loop body ending context may separately need checked frontend metadata.
+newlines. Accepted prerequisite 3a137a36 transports exact token-derived statementBodyLine
+for synthetic statement-list diagnostic context.
 
 Runtime conditional tasks can store true/false continuation lists and a consumer
 line. Evaluate condition at its own AT origin, resolve its delayed operand, apply
@@ -257,16 +259,37 @@ semantics. A list-index cursor is insufficient. Function bodies and defaults nee
 compiler/declaration activation and call frames separately; this control slice is
 not a complete-core claim.
 
-Draft implementation and smoke: .tools/50-control-flow.watsup and
-.tools/probe-control-bare.py currently pass34 original-source bare-AST cases/428
-assertions. The alternate .tools/30-control-flow.watsup is a disposable elaboration
-snapshot. After legacy cleanup, apply only its new CHOOSE/LOOP_TEST/LOOP_NEXT task
-domain delta to current30; never copy stale whole-file snapshots over the cleanup.
-Likewise regenerate .tools/draft-legacy-cleanup.py outputs after all prerequisites
-are committed before publishing cleanup. No compiled-source control claim yet.
+The accepted implementation uses CHOOSE/LOOP_TEST/LOOP_NEXT tasks and the public
+compiled source entry. `tests/semantics/control_flow.py` retains 40 normal sources,
+21 additional finite compiler-order/error sources, exact state resumption at seven
+small budgets, unchanged pools/CODE, heap validity and nested branch operand roots.
+The final gate passed 747 exact source observations and 25 outcome negatives,
+including an infinite-loop budget boundary. Infinite native loops are never run
+as positives. Independent review repeated 67 alternate original sources and
+three programs across 163 budgets each (2,493 state assertions), plus canonical
+control 40/41/1,231, ownership 617+96/5,434, origins 25/333, and bridge 15/148.
+Compiler validation passed 789 lint sources and 46 dedicated control sources,
+16 edited metadata contexts and two structural compilation-order checks.
 
-The joint alternate control frontend/schema/compiler/runtime also passed 40
-original-source cases with 668 assertions through `$php_run` initialization and
-resumption. This includes global/imported constant pool reuse, namespace late NaN
-arrays, loop string writes/COW and reference owners. Reproducer:
-`.tools/probe-control-compiled.py`; this remains unpublished source admission.
+The earlier alternate checked frontend/compiler/runtime smoke passed 40 original
+sources/668 assertions before publication and remains historical evidence. Foreach
+and broader expression dispatch remain next work.
+
+Next source activation sequence, agreed with the parent after this control slice:
+
+1. Truth consumers (`!`, short-circuit boolean/logical operators, ternary) and
+   comparisons. Reuse runtime truth conversion, preserving warning timing and
+   delayed operands. General array/nonnumeric comparisons need their own rules;
+   the existing `num_compare` helper alone does not define PHP comparison.
+2. Increment/decrement and compound assignment on captured lvalues, followed by
+   modulo, shifts, bitwise operators and casts. Existing numeric helpers cover
+   machine arithmetic but do not establish source operand conversion, diagnostic
+   order, nonnumeric string behavior or assignment result ownership.
+3. Array unpack/destructure compilation and execution can advance independently
+   with an explicit compiler/runtime descriptor contract. Foreach then needs
+   stable bucket identity and cursor/owner semantics under mutation. Declaration
+   and call-frame interfaces remain parallel compiler work.
+
+Current source arithmetic admission is only `+`, `-`, `*`, `/`, `===`, `!==`
+and unary `+`/`-`; never infer broader source support from registered numeric
+helpers. Preserve the full-core objective while publishing bounded reviewed changes.

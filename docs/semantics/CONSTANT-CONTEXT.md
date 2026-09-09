@@ -45,8 +45,9 @@ replacing the transient result or pruning the heap cannot erase an earlier pool
 value. Temporary failed array construction is discarded, while its previously
 folded child facts remain. Runtime installation remaps the tables once and retains
 permanent compiled-unit roots separately from runtime temporary roots. Reuse is
-by source occurrence, rather than by expression equality. Source loops/functions
-remain unsupported; their future execution must reuse the installed pool.
+by source occurrence, rather than by expression equality. While/do/for source
+execution reuses installed pools; future function execution must preserve the
+same compiled-source ownership contract.
 
 Constant evaluation visits both operands of admitted binary operators, and visits
 a dimension's base then key. An absent dimension key errors before either child
@@ -84,9 +85,9 @@ runtime tasks. The source consumer installs the persistent pool and uses compile
 read values and ending lines before evaluating remaining children. The old
 whole-program constant-read prepass and recursive array-fold classifier are no
 longer the public source compilation path. The ordered compiler no longer depends
-on their direct-variable/bare-break checks; unused legacy definitions await
-coordinated retirement. Generic scalar/string reads are separately connected to
-the source runtime. Source loop/function behavior remains pending.
+on their direct-variable/bare-break checks; obsolete definitions were retired in
+`846dc3d2`. Generic scalar/string reads and while/do/for continuations consume the
+compiled source descriptors. Function compilation and execution remain pending.
 
 Each `PFFACT` retains the effective line of its constant AST node. Original integer, float and string leaves keep their source lines. Actual constant-expression rewrites use the invocation compiler line, matching `zend_eval_const_expr` replacing the node with `zend_ast_create_zval` (`zend_compile.c:12380`, `zend_ast.c:88`). The original checked syntax remains unchanged. `$pffactline` exposes this provenance to ordinary compilation; cached facts retain the first rewrite line across repeated evaluation.
 
