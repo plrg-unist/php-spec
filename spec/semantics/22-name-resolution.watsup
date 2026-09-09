@@ -1,0 +1,37 @@
+;; Non-class lexical names. Resolution never performs lookup or autoload.
+syntax pnreference = { ORIGINAL name, KIND plkind, RESOLVED ptbytes,
+  FULL bool, FALLBACK ptbytes? }
+syntax pnresult = PNRESOLVED pnreference | PNUNSUPPORTED text
+
+dec $pnresolve(plenv, plkind, name) : pnresult
+dec $pnqualify(plenv, plkind, name, ptqual, ptbytes) : pnresult
+dec $pncompound(plenv, plkind, name, ptbytes) : pnresult
+
+def $pnresolve(plenv, plkind, name) = $pnqualify(plenv, plkind, name, ptqual, ptbytes)
+  -- if (plkind = PLFUNCTION \/ plkind = PLCONSTANT)
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if $ptvalidname(ptbytes, true)
+def $pnresolve(plenv, plkind, name) = PNUNSUPPORTED "invalid or unsupported non-class name resolution"
+  -- otherwise
+
+def $pnqualify(plenv, plkind, name, PTFULL, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED ptbytes, FULL true, FALLBACK eps }
+def $pnqualify(plenv, plkind, name, PTRELATIVE, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED $ptjoin(plenv.NAMESPACE, ptbytes), FULL true, FALLBACK eps }
+def $pnqualify(plenv, plkind, name, PTPLAIN, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED ptbytes_import, FULL true, FALLBACK eps }
+  -- if $pllookup($pltable(plkind, plenv), $plkey(plkind, ptbytes)) = ptbytes_import
+def $pnqualify(plenv, plkind, name, PTPLAIN, ptbytes) = $pncompound(plenv, plkind, name, ptbytes)
+  -- if $pllookup($pltable(plkind, plenv), $plkey(plkind, ptbytes)) = eps
+
+def $pncompound(plenv, plkind, name, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED (ptbytes_import ++ ptbytes[ptbyte_i:ptbyte_n]), FULL true, FALLBACK eps }
+  -- if 92 <- ptbytes
+  -- if $pllookup(plenv.CLASSES, $ptlc($ptfirst(ptbytes))) = ptbytes_import
+  -- if ptbyte_i = |$ptfirst(ptbytes)|
+  -- if ptbyte_n = $(|ptbytes| - ptbyte_i)
+def $pncompound(plenv, plkind, name, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED $ptjoin(plenv.NAMESPACE, ptbytes), FULL true, FALLBACK eps }
+  -- if 92 <- ptbytes
+  -- if $pllookup(plenv.CLASSES, $ptlc($ptfirst(ptbytes))) = eps
+def $pncompound(plenv, plkind, name, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED ptbytes, FULL false, FALLBACK eps }
+  -- if ~(92 <- ptbytes)
+  -- if plenv.NAMESPACE = eps
+def $pncompound(plenv, plkind, name, ptbytes) = PNRESOLVED { ORIGINAL name, KIND plkind, RESOLVED $ptjoin(plenv.NAMESPACE, ptbytes), FULL false, FALLBACK (ptbytes) }
+  -- if ~(92 <- ptbytes)
+  -- if plenv.NAMESPACE =/= eps
