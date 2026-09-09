@@ -6,35 +6,32 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Variable/DIM `isset` and `empty` are independently accepted at **16035534** after
-code **701e39fa**, runtime evidence **65cefcc1** and compiler evidence **72c30740**.
-Current inputs: **835/afbaa198**. The [review](coverage/semantics/isset-empty-review.json)
-binds232 exact sources +22 separate controls, author9 state programs/4,230 assertions,
-independent7/2,655 and12 fresh canonical CLI comparisons. Four GLOBALS temporary/key
-cases remain Unsupported. [Contract](docs/semantics/ISSET-EMPTY-REVIEW.md) records
-terminal string rules, quiet ancestors, effects, static rejection and cleanup.
+Explicit-input request bootstrap, GLOBALS access/snapshots and top-level magic
+constants are accepted at **652d10b7**, with author evidence **d3dfb87a** and
+compiler evidence **ca3ac883**. The [independent review](coverage/semantics/request-environment-review.json)
+binds current **845/1d206c8e** to263 request sources and44 ordinary magic sources.
+The263 union retains260 parent and3 consumer-successor observations; canonical
+smokes and exact adapter/state bridges are separate, not a fresh canonical263 run.
+Eight independent state programs/1,936 assertions bridge through72 final states;
+six final author programs pass2,619 assertions. [Input](docs/semantics/REQUEST-INPUTS.md)
+and [state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts distinguish explicit
+external facts, PG ownership, CV order, callback replacement and source identity.
 
-Next, complete request bootstrap and GLOBALS access/snapshots. Ordered CV compiler
-facts are reviewed; compiler AUTOGLOBALS642 activation ordering has
-[compiler-only independent acceptance](coverage/semantics/autoglobal-compiler-independent-review.json)
-at a2953bce. Its canonical/runtime pairing remains pending. The [request provider](docs/semantics/REQUEST-INPUTS.md) supplies
-explicit external clock/environment inputs, with native transport accepted at
-be12200b/9a5b11e1. Its two fresh copied-source builds passed in separate network
-namespaces with identical provider bytes. This does not admit PHP bootstrap rules
-or replace the eventual whole-project offline audit.
-The frozen private840 request/GLOBALS candidate has [246 independent exact source
-comparisons](coverage/semantics/request-environment-independent-source-review.json)
-and20 descriptor controls. [Eight state programs/1,936 assertions](coverage/semantics/request-environment-independent-state-review.json)
-and the isolated callback replacement are reviewed; final magic/CWD pairing
-remains pending. These do not change the canonical835 checkpoint.
+Next, run full quiet/CV integration with a frozen catalogue and explicit invocation
+profiles before [calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md). Preserve
+ordinary uninstrumented results and count new shared-input observations separately.
+The five remaining old container controls are three object quiet forms, return
+and nullsafe-reference iterable compilation; four parser controls stay separate.
+Seven old request-environment controls, four isset/empty GLOBALS controls and the
+guarded GLOBALS original now have explicit-request witnesses. Their original
+Unsupported outcomes remain unchanged history. Two later-eval callback witnesses
+still await dynamic-source execution. Ordinary-library exclusions cannot close core work.
 
-After the paired request/GLOBALS increment, run the full quiet/CV integration
-checkpoint before broader calls/frames. Then continue declarations, linked objects,
-exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
-The twelve old container controls remain required: seven request-environment,
-three object quiet forms, return and nullsafe-reference iterable compilation.
-The guarded `??=` GLOBALS original and four isset/empty GLOBALS controls also remain
-separate pending observations. Ordinary-library exclusions cannot discharge core work.
+The actual private full compiler gate passes5,753 lints/5,786 aggregate assertions;
+current5,750 is its exact ordered subset after three magic sources moved profiles.
+The [compiler binding](coverage/semantics/request-compiler-group.json) retains the
+missing-reference setup, first120s timeout and unused canonical-wrapper failure
+separately. Source/tool bridges do not replace the required broad integration run.
 
 ## Milestones
 
@@ -42,7 +39,7 @@ separate pending observations. Ordinary-library exclusions cannot discharge core
 | --- | --- |
 | 0a–b: contracts, inventory, checked runner, source harness | Complete for bounded bootstrap |
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
-| 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and object protocols pending |
+| 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS reviewed, frame/object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps reviewed, return/frames and exceptions pending |
 | 3b: calls, closures and static checks | Partial; source activation pending |
 | 4a–b: linking, objects, traits and properties | Partial; header/relation helpers reviewed, execution pending |
@@ -61,10 +58,14 @@ exact originals, subprocesses, failures and scope.
 - [Full container audit](coverage/semantics/container-campaign-audit.json):4,997 exact
   sources +24 controls on819/a0e3709a; author d71d4107, acceptance96cbf051. It checks26
   source archives, two compiler scopes and all4,407 earlier sources. Raw f0fc89de is
-  immutable. Four of its16 core controls retired at quiet publication;12 remain.
+  immutable. Four of its16 core controls retired at quiet publication; seven more now have
+  explicit-request witnesses, leaving five core controls.
 - [Quiet/name access](coverage/semantics/quiet-access-review.json):a42fddfe/f3235689,
   295 sources +18 controls, author8/3,760 and independent6/2,277 state assertions.
   Compiler5,336 lints remain historical.
+- [Isset/empty](coverage/semantics/isset-empty-review.json):701e39fa/16035534,
+  232 sources +22 controls, author9/4,230 and independent7/2,655 on835/afbaa198.
+  Four historical GLOBALS boundaries now have explicit-request witnesses.
 - [Coalescing assignment](coverage/semantics/coalesce-assignment-review.json):
   f073c750/1fe36808,137 sources +18 controls, author8/3,760, independent7/3,024 and
   nine descriptor controls/74 assertions;826/cc1d3e5e retained guarded834 dependencies.

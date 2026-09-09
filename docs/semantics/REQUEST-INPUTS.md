@@ -3,8 +3,9 @@
 The request fixture provider is infrastructure, not PHP bootstrap semantics.
 `be12200b` adds the provider; native/build evidence is `add0e4c1` and independent
 transport checks are in [the review](../../coverage/semantics/request-provider-independent-review.json).
-Request initialization, auto-global callbacks and their source admission remain
-pending. Existing ordinary oracle invocations continue to use the sole pinned
+Request initialization and auto-global source rules are now independently
+[accepted](../../coverage/semantics/request-environment-review.json) at652d10b7
+under an explicit request profile. Existing ordinary oracle invocations use the sole pinned
 `.tools/php/bin/php` without this provider.
 
 A controlled fixture invocation loads `.tools/request-clock.so` through LD_PRELOAD
@@ -58,11 +59,11 @@ The initial unprivileged namespace rejection is preserved separately. This is a
 provider-only offline check; the mandatory final whole-project offline rebuild,
 full syntax/source audit and core closure remain outstanding.
 
-The broader request record is still being implemented. It must explicitly carry
-configuration, argument/stdin bytes, source/cwd identities and finite service
-facts alongside clock and ordered environment entries. Missing required facts
-remain Unsupported until provided. Shared fixture inputs cannot be replaced by
-hardcoded sample globals or native output-derived semantic defaults.
+The admitted record carries effective variables_order/JIT configuration, argv,
+invocation filename, optional cwd, clock and ordered environment entries. Stdin
+and broader finite services remain future core work. Missing required facts
+remain Unsupported. Shared fixture inputs cannot be replaced by hardcoded sample
+globals or native output-derived semantic defaults.
 
 ## Bootstrap originals
 
@@ -75,20 +76,22 @@ are overwritten without changing their existing insertion positions; later
 script metadata keys append. CLI argc/argv remain present even with
 `register_argc_argv=0`; omitting S from `variables_order` leaves SERVER empty while
 global argc/argv remain. The JIT-disabled registration order is also retained.
-These source-backed observations are requirements for bootstrap semantics, not
-semantic agreements. The [binding](../../coverage/semantics/request-bootstrap-independent-binding.json)
+These original captures precede runtime admission; later exact source agreement
+is recorded separately in the current request review. The [binding](../../coverage/semantics/request-bootstrap-independent-binding.json)
 retains the exact capture script and immutable original hash.
 
 ## Checked adapter request transport
 
 The [private adapter review](../../coverage/semantics/request-adapter-independent-review.json)
-binds370 inputs and a fresh61-control replay, including eight retained source
-observations. It does not accept canonical runtime publication. An execute request
-may contain an optional `request` object with exactly `env`, `argv`, `file`,
-`seconds`, `microseconds`, `variables` and `jit`. Env is an ordered list of
+binds370 historical inputs and61 controls. The current publication separately
+replays71 controls against the canonical Dune adapter and binds its exact full
+states to the reviewed private build. An execute request may contain an optional
+`request` object with required `env`, `argv`, `file`, `seconds`, `microseconds`,
+`variables` and `jit`, plus optional `cwd`; other or duplicate fields reject. Env is an ordered list of
 base64 name/value pairs; argv is a list of base64 byte strings. File and effective
 variables_order are base64 strings, seconds is a canonical signed64 decimal
-string, microseconds is a JSON nonnegative integer, and jit is boolean.
+string, microseconds is a JSON nonnegative integer, and jit is boolean. Cwd is a
+canonical base64 byte string; omission becomes an absent semantic field.
 
 The adapter checks transport shape and builds a typed SpecTec request record.
 Pure runtime rules check native input admissibility, including NUL/byte ranges,
@@ -96,8 +99,10 @@ environment-name separators, argv/file agreement and microsecond bounds. Invalid
 transport is a runner rejection; invalid primitive facts are explicit Unsupported.
 Both are protocol controls. Omitting request selects the unchanged ordinary
 `php_run` path. The adapter contains no PHP bootstrap computations or source
-execution shortcut. Canonical pairing and complete request state/source review
-remain separate acceptance steps.
+execution shortcut. Request-bearing execution selects `php_request_run`; pure
+SpecTec derives bootstrap arrays and clock conversions. Canonical publication
+binds263 request literals and44 ordinary magic literals across exact preserved
+run scopes, with fresh canonical smokes and state/adapter bridges.
 
 [Two independent path controls](../../coverage/semantics/request-path-independent-review.json)
 confirm that `file`/argv[0] may carry relative or symlink invocation spelling,
@@ -105,5 +110,5 @@ while the execute request's filename supplies the resolved source context.
 PHP_SELF, SCRIPT_NAME, SCRIPT_FILENAME and PATH_TRANSLATED retain the former;
 diagnostics retain the latter. The initial combined probe also contained
 `__FILE__`/`__DIR__` and exposed a required ordinary compiler-line boundary.
-Its native/checked/full-state observation remains separate from the two passing
-transport comparisons.
+Its original native/checked/full-state failure remains separate history. The
+combined magic controls now pass with resolved source context and explicit cwd.

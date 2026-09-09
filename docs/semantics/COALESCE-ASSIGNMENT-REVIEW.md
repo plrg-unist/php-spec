@@ -47,3 +47,7 @@ the author also reran the durable eight-program harness on current canonical
 inputs. Focused compiler gates pass84 traces/22 descriptor controls/8 malformed
 metadata cases, plus current quiet240, foreach90 and list111 checks. These do not
 replace the eventual full quiet/CV checkpoint or full-core/syntax/offline closure.
+
+The retained guarded GLOBALS boundary now has an explicit-request source witness
+in [request publication](../../coverage/semantics/request-environment-review.json)
+at652d10b7. Its original absent-request outcome is unchanged historical evidence.

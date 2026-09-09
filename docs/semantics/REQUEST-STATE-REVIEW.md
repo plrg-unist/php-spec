@@ -2,7 +2,11 @@
 
 The private840 runtime has [246 independent exact source comparisons](../../coverage/semantics/request-environment-independent-source-review.json)
 and [eight state programs/1,936 assertions](../../coverage/semantics/request-environment-independent-state-review.json).
-Canonical publication and the final magic/CWD bridge remain pending. The earlier
+The [canonical publication review](../../coverage/semantics/request-environment-review.json)
+accepts652d10b7/845 inputs. It checks72 old-to-new states after removing only the
+new absent REQUEST.CWD field, then72 exact private-to-canonical full states without
+projection. Six final author programs pass2,619 assertions, with cuts0..64 and
+128/256/512, next-step equality and nine full resumed completions each. The earlier
 [design evidence](../../coverage/semantics/request-state-design-review.json)
 retains the draft model and six native controls. Existing
 [GLOBALS originals](../../coverage/semantics/globals-snapshot-originals.json)
@@ -48,5 +52,18 @@ untransportable byte strings and clock ranges before PHP semantics. The CLI invo
 [Relative and symlink controls](../../coverage/semantics/request-path-independent-review.json)
 confirm SERVER path fields and argv retain the invocation spelling while
 diagnostics use the resolved source filename. The request record already
-separates these inputs. A combined magic file/directory source remains an explicit
-compiler boundary; it is not part of the two passing path comparisons.
+separates these inputs. Combined magic file/directory controls now pass in the paired publication; their
+original compiler boundary remains retained separately.
+
+`BASE_GLOBAL` captures GLOBALS keys using variable-name conversion, including its
+warnings, rather than ordinary array-key conversion. Direct or compile-time
+folded literal GLOBALS remains special; runtime-computed names can refer to an
+ordinary variable named GLOBALS. Compiled write metadata belongs to the actual
+GLOBALS dimension occurrence. Twenty descriptor controls preserve the distinction
+between required fetch/write markers and benign unused literal-base descriptors.
+Computed `this` reads, assignment/reference errors, terminal unset and ancestor
+unset retain their distinct source-line diagnostics.
+
+This publication covers the top-level request symbol table. Function frame locals,
+later-unit source execution, object protocols and broader services remain pending.
+No inventory family closes from these bounded source/state checks.

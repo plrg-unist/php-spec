@@ -4,8 +4,10 @@ Code `701e39fa` admits scalar/array/string `isset` and `empty` through checked
 source execution. [Independent review](../../coverage/semantics/isset-empty-review.json)
 binds 232 exact source outcomes, 22 separate controls, nine author state programs/
 4,230 assertions and seven independent programs/2,655 assertions. Twelve fresh
-canonical CLI comparisons pass. Four GLOBALS temporary/key sources stay explicitly
-Unsupported; request bootstrap, snapshots and object access remain required work.
+canonical CLI comparisons pass. The four original GLOBALS temporary/key Unsupported
+observations are retained. They now have explicit-request witnesses in the
+[request publication](../../coverage/semantics/request-environment-review.json)
+at652d10b7; object access and broader core work remain pending.
 Earlier full source campaigns remain historical.
 
 Module73 compiles all operands in source order, even when runtime multi-`isset`
@@ -40,7 +42,8 @@ FETCH does not. Autoglobals are excluded. Ordinary `$this` bypasses the path,
 while non-reference list RHS compilation has the native direct-try exception.
 Fresh34 native/lint/checked controls and34 ordered descriptor assertions pass,
 plus188 isset compiler traces and10 metadata/two pending controls. This records
-compiler facts; runtime symbol-table initialization is a subsequent increment.
+compiler facts; runtime symbol-table initialization is accepted separately in the
+request publication.
 
 All frozen831 semantic modules and executable bytes equal canonical835. The
 232-source catalogue matches the independent source multiset exactly; original
