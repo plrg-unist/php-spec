@@ -158,8 +158,12 @@ Independent error originals `.tools/review8-call-error-iterator-o2qomkrj` have
 correct final cleanup, but `.tools/review8-error-iterator-cuts-yeh5k6ic` retains
 orphan iterator metadata at budget 33 (1 iterator/0 continuations) and 50 (2/1).
 Runtime5's repaired 12-cut snapshot is `error-iterator-8yzh5_86`; author dense
-2-program/564-assertion gate is `error-dense-xyetj986`. Independent repair review
-is pending; original states must remain archived.
+2-program/564-assertion gate is `error-dense-xyetj986`. Independent replay passes all 564 assertions at
+`.tools/review8-error-iterator-repair-cx2yj92a`; original states remain archived
+in **b16ec243**. That commit also retains both global-binding defects and
+`.tools/review8-call-integrity-8fu0saqo`: changing only CALLABLES f to an existing
+g origin silently runs g (output2 versus control1). BODY-path and duplicate-origin
+controls already reject via source-occurrence checks. Runtime5 owns the mapping fix.
 
 Independent literal/computed-known `global $_ENV` originals are at
 `.tools/review8-global-binding-originals-nqcjz_0r`: native A versus candidate L
@@ -169,12 +173,13 @@ fixture syntax failures remain separately preserved. Compiler5 owns the fix in
 `.tools/compiler5-superglobals` and also verifies activated dynamic names retain
 local binding. Do not mistake the inactive-ENV dynamicA control for a scope proof.
 
-The builtin occupancy prerequisite is independently acceptable at the frozen
+The builtin occupancy prerequisite is independently accepted after canonical
+implementation **87519651** and author evidence **dd4aee65**, matching the frozen
 `.tools/compiler5-calls/builtin-prerequisite-manifest.json`: 780 names derived
 from 238 configured source inputs, 13 preprocessed tables and 1,569 pure checks.
 Author 322-file archive is `builtin-function-originals.tar.xz`, SHAb9584a85.
-Independent review is staged under `.tools/review8-builtin-stage` for publication
-after author files; it retains 68 lossless review files and reproduction proof.
+`coverage/semantics/builtin-functions-review.json` binds 71 lossless reviewer
+files, independent source reproduction and all nine canonical bridge payloads.
 Its producer root is canonical; private tools/spec/test roots are explicit.
 It implements no builtin bodies. Preserve first missing-mbstring command
 nonretention, injected timeouts and reviewer setup failures as separate limits.
