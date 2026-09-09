@@ -1,0 +1,103 @@
+{
+  "scope": "Compiler902 to paired909 copied-file/mode/schema/module projection bridge; runtime acceptance separate.",
+  "compiler": {
+    "sha256": "9b36dbb43d89805bfd9960d4d6c8acd665d463a274928efe18a5fd18594cc27b",
+    "files": 902,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "paired": {
+    "sha256": "e25eb2b920c4e2d2a5468fb4ccdf0c95e2a1671a68c3b2d397067d1e474201bb",
+    "files": 909,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "copied_exact_files": {
+    "spec/semantics/17-signatures.watsup": {
+      "sha256": "9e14e13763754e07af836602f287d86e931ccf10901f5514993d1d2cedc810cc",
+      "mode": 436
+    },
+    "spec/semantics/45-constant-context.watsup": {
+      "sha256": "9ba29520404ff72cfbfedfc0f8283508a3d4e3320671d0047651076a7cdd2da4",
+      "mode": 436
+    },
+    "spec/semantics/46-source-compiler.watsup": {
+      "sha256": "4e77dc119e2484a1bfc5db263a9ff4355dacbf5709dcac0fc9a0fcf4c96ffa35",
+      "mode": 436
+    },
+    "spec/semantics/78-function-compiler.watsup": {
+      "sha256": "e8e34953fdc5c6bee2bffac1f404b973105fdf3c3f4c9172a44611ddc2846be4",
+      "mode": 436
+    },
+    "spec/semantics/90-parameter-defaults.watsup": {
+      "sha256": "e82b47159c25fa2f38d6f91b1b0f824ad86a4f21f7ed17dec7f47dc4b28556ef",
+      "mode": 436
+    },
+    "tests/semantics/default_parameter_cases.json": {
+      "sha256": "fbce66f17b270c1c9803b9a8f88de26a19724a4203548e2c72657964f43aadb2",
+      "mode": 436
+    },
+    "tests/semantics/default_parameter_compiler.py": {
+      "sha256": "7e4ff8d24f7df3a0642d9ab8cb50064bbb944499d12083a61d48ed9649219984",
+      "mode": 436
+    },
+    "tests/semantics/function_compiler.py": {
+      "sha256": "d5e088a17fa2c2832a6f0053cd046b6751e65c6a78a2bb1172d85ce852f069b7",
+      "mode": 436
+    }
+  },
+  "merged_runtime_schema": {
+    "pdefaultkind": {
+      "compiler": "syntax pdefaultkind = PDSTORED | PDDEFERRED",
+      "paired": "syntax pdefaultkind = PDSTORED | PDDEFERRED",
+      "exact_bytes": true,
+      "identical_whitespace_separated_tokens": true
+    },
+    "pdefault": {
+      "compiler": "syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }",
+      "paired": "syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }",
+      "exact_bytes": true,
+      "identical_whitespace_separated_tokens": true
+    },
+    "pfunction": {
+      "compiler": "syntax pfunction = { DEFAULTS pdefault*,  ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat }",
+      "paired": "syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat }",
+      "exact_bytes": false,
+      "identical_whitespace_separated_tokens": true
+    }
+  },
+  "schema_setup": "Initial audit asserted byte-identical pfunction declaration; runtime merger removed one duplicated space after DEFAULTS field. Exact texts retained above, tokens match; neither candidate altered.",
+  "registry": {
+    "ordered_compiler_modules_preserved": true,
+    "runtime_additions": [
+      "spec/semantics/91-default-parameters.watsup"
+    ]
+  },
+  "compiler_evidence_archive": "bdc640125c9b60e794e3675b629597b6dae3e448917fade3f77d3a0191a191bf"
+}
