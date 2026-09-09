@@ -1,133 +1,133 @@
-# Independent review handoff
+# Independent review continuation
 
-Continue the complete-core goal with small independently reviewed commits; never
-push. [PROGRESS](../../PROGRESS.md) is the current checkpoint. Runtime bridge owns
-storage/tasks/source dispatch; compiler owns lexical and ordinary compilation,
-frontend/schema changes and compiler descriptors. Reviewer owns independent
-evidence, discrepancy history, inventory and progress. Coordinate watched-file
-freezes and stage only owned files. Selected tests do not close a family.
+Read PLAN.md, PROGRESS.md, applicable AGENTS.md and the php/php-spec/p4-spectec
+skills first. Continue complete core semantics; root orchestrates, runtime_next
+implements runtime/storage, compiler_next owns compiler/frontend, and the reviewer
+owns independent evidence, discrepancy history, inventory, PROGRESS and README.
+Never push. Stage owned files and coordinate Git index, build starts and freezes.
+No PHP semantic family closes from the bounded checkpoints below.
 
-## Current gate
+## Current accepted checkpoint
 
-Source truth activation `e7dac829` passed **854 exact source comparisons +25
-outcome negatives**. Independent review adds 44 exact sources, 44 alternate
-compiler cases, five redirect/access checks and three grouping controls. Canonical
-truth checks pass 71 sources/states and 1,344 assertions; dense replay adds 3,316
-assertions over 163 budgets for each of four reference/pool/NaN programs.
-Compiler 896 lint cases +15 emission observations, truth79/3/3, constant42/5,
-ownership617+96/5,434, origins25/333 and runtime compiler15/148 share the final
-closure. See [truth review](../../coverage/semantics/truth-review.json).
-Accepted fingerprint: `10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e`. Control `d87f3f9f`, traversal retirement
-`846dc3d2`, temporary-lvalue rejection `32d4163a`, body metadata `3a137a36` and
-grouping metadata `6005090b` remain covered.
+Comparison implementation `0e065cc6` and author reports `c94459fd`
+pass **1,142 exact source observations +25 outcome negatives** on `ba6075cd569573bc5f19ec661e4da74a07079a0f9b87873b8544994d3f1f07f2`.
+[Comparison review](../../coverage/semantics/comparison-review.json) adds 38 public
+source alternatives, 34 compiler alternatives plus 24 access checks, and six
+programs across 163 budgets each (4,974 assertions), including thrown recursion
+errors. A separate 83-pair/166-assertion string-order helper gate has exact loaded
+specification bytes matching production; it is not 83 source-runtime comparisons.
+Author comparison 232/3,388, comparison compiler 48/8/24, broad compiler 1,184/15,
+origins 25/333, runtime compiler 15/148 and ownership 617+96/5,434 pass the final
+closure. Both retained overflow mismatches now agree through public source; all
+four originals and 48 phase originals remain byte-identical and source-integrated.
 
-Subsequent frontend prerequisite `d4706937` preserves nested unpack flags, with
-16 author profiles/96 checks, ten independent profiles/80 checks and bounded
-syntax/inventory/patch reconstruction on `108f3eda`. It changes the watched
-closure without claiming a refreshed full source campaign. Original long-array syntax kind subsequently passes `09f33419`: 35 author
-profiles/437 checks, 12 independent profiles/88 checks, bounded syntax/inventory
-and exact patch reconstruction on `e5b10450`. First-hole comma context and the
-retained genuine-list early-check phase gap remain pending. Runtime ownership now
-passes through [successor handoff](RUNTIME-SUCCESSOR-HANDOFF.md) `6873f110`.
+The earlier candidate passed semantic gates but failed evidence.py because both
+isolated fixture roots omitted newly mandatory comparison archives. The final
+fixture repair seeds them and rejects changed/missing inputs. Preflight passes
+15 identity, three path and 17 closure negatives; nine build-log changes are
+ignored. Actual one-byte mutation/restoration of each consumed archive changes
+shared and both helper fingerprints. Earlier successful runs are historical.
 
-The inventory contains 169 constructors and 306 obligations. Only
-`validation.oracle-pin` closes, against the archived six-case source evidence
-and independent review at `6b5981cc`. That scope establishes oracle selection,
-measured runtime identity/hash and supplied profile plus recorded build
-provenance. It does not establish effective INI measurements from that source
-campaign, a fresh rebuild, or a PHP semantic family.
+Truth `e7dac829`/review `682bcba0`, control `d87f3f9f`, scalar/array/string lvalues,
+ordered compiler/pool bridging and namespace constants remain covered. Frontend
+unpack preservation `d4706937`/review `d4231d20` and array syntax kind
+`09f33419`/review `b0f11653` precede comparisons. Detailed contracts and latest
+drafts are in [runtime continuation](RUNTIME-SUCCESSOR-HANDOFF.md) and
+[compiler continuation](COMPILER-HANDOFF.md).
 
-## Evidence and commands
+## Immediate open admitted defect: false reference FETCH
 
-Run from the project root. `.tools/php/bin/php` is the sole native oracle:
-PHP 8.5.10 CLI NTS 64-bit, source pin
-`34308a6666b2d489c509541ea9befea9e2b42348`. Never substitute host PHP. Runtime
-semantics remain pure `.watsup`; host services do not evaluate PHP operations.
+[Originals and independent repeats](../../coverage/semantics/false-reference-fetch-review.json)
+retain **three admitted mismatches and four matching controls**. After
+`$a=false;$r=&$a`, nested `$a[0][0]=1` and `$x=&$a[0]` omit the pinned conversion
+deprecation but the current model emits it. The difference survives `unset($r)`.
+Final `$a[0]=1` assignment still warns in both implementations. This is an
+existing source defect, not a comparison regression; the runtime is not globally
+clean. Repair it before admitting inc/dec or compound mutations.
 
-- `python3 tests/semantics/validate.py`: full original-source campaign. Compare
-  exact stdout, stderr and status; native success alone is insufficient.
-- `python3 tests/semantics/source_compiler.py`: ordered compile diagnostics,
-  descriptor roles, effective lines and malformed metadata/export boundaries.
-- `python3 tests/semantics/namespace_constants.py`, `constant_context.py`,
-  `runtime_compiler.py`, `control_flow.py`, `control_compiler.py`,
-  `truth_expressions.py`, `truth_compiler.py`,
-  `source_origins.py`, `compiled_pools.py`, `ownership.py`,
-  `dimension_read.py`, `dimension_write.py`: applicable helper/source contracts
-  under `tests/semantics/`. Helpers build their runner briefly at startup;
-  serialize builds. Source validation can run alongside a stable helper gate.
-- `python3 tests/source_context_metadata.py` and
-  `python3 tests/semantics/source_occurrences.py`: checked metadata and occurrence
-  transport. Use actual byte/encoding profiles, not edited ASTs as source evidence.
-- `make test`, `make inventory`: bounded syntax/metadata checks. The 30,980-record
-  audit in `coverage/frontend-syntax-repair.json` is historical after metadata
-  changes. Its copied binaries establish no rebuild or portability claim. Full
-  final syntax validation and offline closure audit remain required.
-- `python3 scripts/check-semantic-inventory.py` and
-  `python3 tests/semantics/evidence.py`: evidence integrity and rejection tests.
-  `--complete` must reject unfinished entries and stale closure fingerprints.
+Runtime scratch `30/33/37/40-reference-wrappers.watsup` proposes REFCELLS history
+on stable cell IDs, separate from owner counts/roots. It is **not independently
+approved**. Audit acquisition/binding, ordinary writes, singleton unset, root and
+element rebinding, fresh ordinary bindings, ALIAS/DIRECT COW transitions, cycles,
+cleanup and resumption. Markers must not become GC roots or leak compiler reference
+state into permanent pools. Preserve wrapper identity on the original while a
+COW copy may unwrap a singleton. Generic FETCH versus final ASSIGN_DIM must remain
+distinct. Recheck all seven raw originals, expanded state graphs and full source;
+add resolution evidence separately without overwriting originals.
 
-Reports record exact commands, source bytes, raw process streams/status and
-implementation fingerprints. Every final acceptance needs a stable current
-closure; interrupted runs and reports predating watched edits are historical.
-The checker enforces evidence bindings, not semantic branch completeness or
-reviewer independence. Human review establishes those. Preserve original failed
-observations and append resolutions separately; never rerun a script that
-overwrites a tracked discrepancy capture.
+A further author-only four-source capture in
+`.tools/false-reference-unset-disagreement.json` reports two nested UNSET fetch
+mismatches and two controls. Preserve and independently repeat it next; generic
+UNSET fetch in module38 also needs wrapper-history review. Final UNSET_DIM must
+retain its own warning behavior. These new cases are not part of the seven
+independently repeated originals above.
 
-## High-risk next witnesses
+## Compiler/frontend prerequisites and next interfaces
 
-- Ordered compilation must finish before runtime WORK executes. Compile failure
-  suppresses preceding runtime output while retaining earlier compile warnings.
-  Structural preorder is an occurrence index, not PHP compiler order.
-- Constant prepass FACTS, ordinary code-generation EXPRESSIONS and actual ACCESS
-  roles are distinct. Only compiled PPR operands consume pool constants. Skipped
-  children have no executable roles. Partial rewrites retain their effective
-  compiler lines; cached occurrences retain their first rewrite provenance.
-- Units and paths select occurrence identity. Equal AST metadata cannot choose
-  identity. Repeated loop execution must reuse the same installed literal while
-  distinct NaN-array occurrences remain distinct. Test global `NAN`, imported
-  constant aliases and namespace late fallback separately.
-- Permanent unit pools retain roots across cleanup and budget resumption.
-  Compiler store/cells/environment cannot enter a pool. IDs are remapped before
-  runtime use. Uncollected cycles retain reference-owner multiplicities; do not
-  simulate collection by pruning reachable-owner information.
-- Reference assignment targets replace an element's alias rather than write through its previous
-  cell. CV reference sources initialize after target acquisition; non-CV source
-  captures own their cell across target COW. String targets coerce keys before
-  a delayed CV RHS is read; too-negative writes return NULL before RHS conversion, and
-  reference/nested errors have distinct ordering. Preserve captured locations.
-- Bare `break` uses the exact terminator token start line. Closing-tag tokens may
-  contain a newline. Explicit depth expressions have a different Zend AST shape:
-  negative syntax is unary, and compile_break_continue does not first fold it.
-  Do not apply bare-statement line rules indiscriminately to depth expressions.
-- Checked body metadata distinguishes brace/colon synthetic lists from single
-  statements, including empty/comment-only for bodies. Preserve its token-derived
-  transport and explicit semantic consumption; do not guess from nearby nodes.
-  Metadata type/range checks do not authenticate edited in-range source positions.
+- First-hole metadata draft `.tools/ParserAbstract-first-hole.php` retains an
+  actual first comma token line before Error placeholders become null. Empty
+  list() has a placeholder at ')', which is not a leading omission. Two retained
+  sources have identical old checked ASTs but native errors on lines 1 and 2.
+  Gate this separately with source encodings, malformed/edited context and bounded
+  syntax. Original 28 loss witnesses and partial resolutions remain in the ledger.
+- Genuine-list target conversion is a separate phase repair. Sixteen retained
+  originals include native-valid skipped logical/prepass arms. Preserve earlier
+  outer-style, spread, RHS read and RHS referenceability errors before long-array
+  rejection. Keep original array kind, unpack and omitted entries. The previously archived single phase-gap witness is independently reviewed;
+  expanded author captures are linked below and await independent repetition.
+- Ordinary array omissions have a broader six-source gap: native-valid skipped
+  `[,$x]` branches are rejected by the frontend. A metadata-bearing ArrayHole item
+  is only a proposal. Independently assess minimal faithful omission/token-line
+  representation, typed adapter/printer contracts and inventory effects; avoiding
+  generated type renumbering is not a sufficient reason to choose it. This work
+  is distinct from genuine-list conversion and first-hole metadata.
+- After wrapper repair, pair four inc/dec forms with compiler PPRW access, then
+  twelve compound forms and remaining numeric/string dispatch. Preserve key reads,
+  append legality, evaluation/error lines, captured locations and copied pre/post
+  results. Coalescing assignment needs its own memoized quiet-read/write path.
+  Compiler retains 48 update originals; 47 parse, one is a matching parser rejection.
+  Runtime53 and compiler46 update drafts are unpublished.
+- Array unpack/destructuring must pair compile traversal and construction with
+  runtime copying/references, keys and errors. Compiler18 unpack originals remain
+  scratch. Foreach needs persistent bucket/cursor identity through deletion,
+  reinsertion and ownership changes. Calls/frames, declarations/defaults, classes,
+  dynamic sources, callbacks, collection and resumable lifetime remain open.
 
-- Truth operators preserve separate compiler/runtime decisions: constant-left
-  false&& and true|| may skip RHS compilation, while a runtime variable does not.
-  Global NaN short-circuit conversion warnings may occur at compile time; unary
-  not/ternary and namespace late NaN differ. The 63 tracked
-  [oracle witnesses](../../coverage/semantics/truth-oracle-review.json) cover phase,
-  prepass, selected-child copy/identity and grouping effects. Array prepass can
-  replace a ternary with a nonconstant child, preserving delayed reads; ordinary
-  ternary materializes a value. Checked `parenthesizedConditional` metadata now
-  distinguishes grouping for ordinary static checks after applicable rewrites.
+Expanded frontend originals are retained in
+[phase archive review](../../coverage/semantics/frontend-phase-originals-review.json):
+16 genuine-list and six ordinary-array-hole captures, author evidence pending
+independent repetition.
 
-## Remaining boundaries
+## Review discipline and commands
 
-Runtime next connects comparisons, then compound
-lvalues and remaining numeric operations/casts. The compiler successor coordinates
-further folding before unpack/destructuring and declaration/default/frame work.
-Array unpack/destructuring precedes foreach cursor/ownership integration. Retained
-next-step frontend probes expose lost nested unpack flags and array() versus []
-destructuring provenance; repair transport before source admission. Objects, linking, dynamic
-sources, callbacks, collection and resumable lifetime remain incomplete.
-Frontend early compile restrictions (including some parameter/type restrictions)
-still need proper source-phase treatment. The intentional namespace-relative
-`static` divergence remains separately recorded with source activation proof
-pending. See [DISCREPANCIES](DISCREPANCIES.md) for unchanged raw failures and
-resolutions. Production no longer exposes bare `run_source`/`run_statements` or recursive
-availability/classification traversals. Source-origin fixtures alone define an
-explicitly unchecked task wrapper; public execution uses full ordered compilation.
+Use only `.tools/php/bin/php` (PHP8.5.10 CLI NTS64) and the pinned profile from
+`tests/semantics/static_types.py`; source pin is
+`34308a6666b2d489c509541ea9befea9e2b42348`. Semantics stay pure `.watsup`.
+Original source bytes/streams/status, edited checked ASTs and helper values are
+separate evidence classes. Unsupported, budget exhaustion, crashes and timeouts
+never count as agreement.
+
+Run evidence/inventory **before long source campaigns whenever catalog, archive
+inputs or harnesses change**. Serialize Dune build starts, finish author smoke and
+save all watched bytes before the authoritative freeze. Then run one full source
+campaign plus independent alternatives and applicable state/ownership gates.
+Do not mutate consumed archives while gates run; test copies first and coordinate
+any actual mutation/restoration. Never rewrite report fingerprints to hide drift.
+
+- `python3 tests/semantics/evidence.py`; `python3 scripts/check-semantic-inventory.py`.
+- `python3 tests/semantics/validate.py`: exact source stdout/stderr/status and
+  negative outcomes. Independently audit raw ordered source IDs/bytes/hashes,
+  accepted outcome categories, archive bindings and current fingerprints.
+- `comparison.py`, `comparison_compiler.py`, `source_compiler.py`,
+  `source_origins.py`, `runtime_compiler.py`, `ownership.py` under tests/semantics;
+  add other applicable helpers when changed contracts justify them.
+- `make test`, `make inventory`, parser regeneration/distribution patch
+  reconstruction for frontend changes. The 30,980-record full syntax audit is
+  historical; final full corpus validation and fresh offline rebuild remain required.
+
+Current inventory is 169 constructors/306 obligations; only validation.oracle-pin
+closes. No constructor closes. CORE's environment/intrinsic boundary remains
+fixed. Preserve the sole intentional namespace-relative static divergence; its
+source activation proof is pending. All other irregularities currently follow the
+pin. Commit coherent implementation, author evidence, then reviewed status; keep
+hand-off prose concise and current.

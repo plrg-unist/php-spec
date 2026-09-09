@@ -1,120 +1,73 @@
-# Runtime successor handoff
+# Runtime continuation
 
-Read PLAN.md, PROGRESS.md, applicable AGENTS and php/php-spec/p4-spectec skills
-first. Root orchestrates; compiler_next owns compiler/static/frontend work and
-review4 performs independent review. The full-core objective remains open. Never
-push. Semantics after checked AST remain pure .watsup; pinned local PHP 8.5.10 is
-only the oracle. The pending comparison overflow defect must follow the pin; it is
-not an intentional divergence. Existing separately documented ledger decisions,
-including namespace-relative static behavior, remain unchanged.
+Read PLAN, PROGRESS, AGENTS and the php/php-spec/p4-spectec skills first. Root
+orchestrates; compiler owns static/frontend work and reviewer owns independent
+evidence/PROGRESS. Never push. The sole oracle remains local PHP 8.5.10 CLI NTS,
+64-bit; semantic answers after checked syntax are pure executable `.watsup`.
+Complete core remains unfinished. Read [runtime interfaces](RUNTIME-BRIDGE-HANDOFF.md)
+and [compiler continuation](COMPILER-HANDOFF.md) before rediscovering old work.
 
-## Accepted checkpoint
+## Comparison checkpoint
 
-Current source implementation e7dac829 and independent review 682bcba0 passed
-854 exact source observations + 25 negatives on closure 10a40a12. The final helper
-archive-input hash repair and mutation rejection are included; earlier 854 evidence
-is historical only. Independent 44 originals, four programs across 163 budgets
-(3,316 assertions), runtime 71/1,344, compiler 79/896, constants 42+5 and canonical
-origins/bridge/ownership all passed. Do not rerun unchanged accepted gates.
-See [RUNTIME-BRIDGE-HANDOFF.md](RUNTIME-BRIDGE-HANDOFF.md) for precise prior
-control/write/namespace/pool checkpoints, current source contracts and evidence.
+Source compilation and execution now connect `==`, `!=`, `<`, `<=`, `>`, `>=`
+and `<=>` for the six current values. [COMPARISONS](COMPARISONS.md) explains the
+contract. Author gates pass 1,142 exact source observations plus 25 negatives,
+232 comparison source/state cases with 3,388 assertions, 48 original comparison
+compiler cases, 1,184 broad lint cases and 15 emission-line observations. Independent
+review and the separately open fetch discrepancy are recorded by the reviewer.
+No semantic family is complete. The four raw overflow draft records remain
+byte-identical; all four exact originals now pass through the public source path.
 
-Runtime 20/30/33/35–43/50/51/52, source harnesses/reports and runtime docs transfer to
-successor. Coordinate any 02/04 numeric helper edits explicitly; compiler_next
-owns 45/46 plus comparison mappings. Reviewer owns inventory/PROGRESS/README and
-review artifacts. Stage only owned/explicitly handed files; atomic compiler/runtime
-source commits prevent an intermediate wrong-admission HEAD. Serialize Dune build
-starts. Freeze all watched bytes before authoritative source/helper gates.
+`tests/semantics/comparison.py` and `comparison_compiler.py` consume the retained
+comparison phase archive. Their direct fingerprints and the shared source closure
+also bind archive bytes. Never overwrite the original disagreement archive or
+rewrite fingerprints to make evidence appear current.
 
-The sole public source path is `$php_run` through ordered compilation. Old source
-checkers and runners are removed; the unchecked trace wrapper is test-only. Read
-[RUNTIME-BRIDGE-HANDOFF.md](RUNTIME-BRIDGE-HANDOFF.md) before changing runtime 33:
-raw prepass redirects must preserve delayed CV/reference/base results, boolean
-redirects consume only RHS truth, and ordinary ternary arms use VALUE_COPY. Pools,
-CODE and explicit structural origins survive cleanup/resumption. No AST rewriting
-or equality-based occurrence lookup is permitted.
+## Immediate corrective prerequisite: reference wrapper history
 
-## Immediate next source slice: comparisons
+Before inc/dec or compound source activation, repair the existing false-to-array
+FETCH diagnostic mismatch. Starting with `$a=false;$r=&$a`, both nested
+`$a[0][0]=1` and reference acquisition `$x=&$a[0]` skip the false conversion
+deprecation in the pinned engine; the current model warns. Unsetting `$r`
+first still skips it: live owner count cannot recover surviving wrapper identity.
+Plain false controls and final `$a[0]=1` assignment do warn. The engine's generic
+`zend_fetch_dimension_address` reference branch differs from final ASSIGN_DIM.
+Follow this behavior; it is not an intentional disagreement.
 
-All comparison files below are **unpublished .tools drafts**. Production still
-returns Unsupported for ==/!=/</<=/>/>=/<=>. Root agreed to complete comparisons
-next, then increment/decrement/compound assignment and remaining numeric operators/
-casts, alongside paired unpack/destructure and later foreach. Do not expand the
-current comparison gate into unrelated operators.
+Unpublished repair drafts are under `.tools/30-reference-wrappers.watsup`,
+`33-reference-wrappers.watsup`, `37-reference-wrappers.watsup` and
+`40-reference-wrappers.watsup`, generated by `draft-reference-wrappers.py`.
+They add explicit `REFCELLS` history on stable cell IDs, separate from heap roots
+and owner multiplicities. Acquisition/binding marks wrappers; singleton unset
+and writes retain markers. COW may unwrap an ALIAS into a DIRECT copied value
+without erasing the original cell wrapper. Fresh ordinary bindings are unmarked.
+Markers never create graph edges; retired IDs are never reused. Generic dimension
+FETCH queries wrapper identity, while final assignment retains its own warning.
+The source compiler rejects isolated reference-marker state in permanent pools.
 
-- .tools/20-comparison.watsup: production 20 plus pbin EQUAL NOTEQUAL LESS LESSEQUAL
-  GREATER GREATEREQUAL SPACESHIP and narrow first-child source-line projections.
-  Apply its small delta to current 20; do not overwrite later unrelated changes.
-- .tools/52-comparison.watsup: substantive six-value comparator and seven runtime
-  rules. Reuses BINARY_LEFT/RIGHT delayed reads and HELD input roots. Greater forms
-  evaluate original left/right order, then compare reversed values with less/<=.
-  Pure porder is ORDER int or ORDERRECURSIVE. The wrapper maps recursion to the
-  existing Error at the consumer line. Object/resource/callback comparisons and
-  engine stack exhaustion remain separate pending scope.
-- .tools/45-comparison-compiler.watsup, compiler-owned generator
-  .tools/draft-comparison-compiler.py: seven pfshape mappings and warning-permitting
-  compile folding. Existing 46 binary traversal is retained.
-- .tools/probe-comparison-source.py and .tools/comparison-source-smoke.json:
-  actual checked-source alternate 20/45/52 campaign passed 117 programs/1,638
-  assertions, with actual draft-spec hashes. 91 programs compare seven operators
-  in both orientations; 26 exercise constant array prepass. This is smoke, not
-  acceptance of comparison semantics.
-- .tools/comparison-phase-originals.json and .tools/comparison-compiler-checks.json:
-  compiler_next retained 48 original phase/line programs and passed their lint
-  gate plus access/export controls. Include these exact bytes in the source gate.
-- .tools/COMPARISON-RUNTIME-NOTES.md: source anchors and intended type/array rules.
+The exploratory `probe-reference-wrappers.py` passes 15 exact original sources
+and 210 state assertions covering the original mismatch, singletons, rebinding,
+value copies, COW, cycles and final-write controls. These drafts still need fresh
+independent transition review, explicit metadata/pool rejection, collection/owner
+invariants, resumption and full source validation before publication. Original raw
+records are preserved separately; never replace them with repaired observations.
 
-Critical comparison boundaries are detailed in .tools/COMPARISON-RUNTIME-NOTES.md:
-NaN/missing-key arrays are non-antisymmetric; NaN/null/bool has no coercion warning;
-string overflow/infinity fallbacks use scanner provenance; arrays use same-ID fast
-paths, left-only recursion protection and unordered exact-key lookup. Preserve
-original left-to-right evaluation even when greater compares reversed values.
+## Following update operators and arrays
 
-## Confirmed unpublished draft defect: overflow prefix with suffix
+`.tools/53-incdec.watsup` is a pure captured value/location update draft generated
+by `draft-incdec.py`; it consumes existing pure05 string helpers. It does not yet
+admit source updates. Compiler drafts `46-incdec-compiler.watsup` and
+`46-update-compiler.watsup` add PPRW target access and preserve key reads, append
+legality and compiler order. Their 48 original static controls live in
+`.tools/update-compiler-originals.json`. Four incdec forms precede twelve compound
+forms paired with remaining numeric/string dispatch. `??=` needs its own quiet
+read and memoized write path. Source context, missing-target warnings, nested
+FETCH versus final INCDEC string errors, copied pre/post results, and captured
+locations require explicit tests. Call/property target line projections matter
+even when the target is statically rejected. Coordinate 20/30/45/46 ownership.
 
-`coverage/semantics/comparison-overflow-draft-disagreement.json` retains four exact
-original sources, checked ASTs, native process bytes, model numeric-list terms and
-decoded output bytes, plus the actual draft hashes. Two are disagreements:
-
-- `echo "10000000000000000000e-19" <=> "2";`: pinned PHP outputs 1; draft outputs -1.
-- `echo "-10000000000000000000e-19" <=> "-2";`: pinned PHP outputs -1; draft outputs 1.
-
-The nineteen-digit exponent control and twenty-digit decimal-large control match.
-No production behavior is affected because comparison admission is still absent.
-Reproducer: .tools/capture-comparison-overflow.py. Fix only after retaining the raw
-report; no fix has been made. `_is_numeric_string_ex` stops its long digit scan at
-MAX_LENGTH_OF_LONG, sets oflow_info, then parses the remaining decimal/exponent
-suffix as double. The suffix can rescale the final value back into integer range,
-while the earlier overflow flag still controls comparison. The draft
-string_integer_overflow incorrectly requires a purely integer spelling. Track the
-actual scanner provenance (including leading zeros, signs, nineteen-digit bounds
-and suffixes); do not infer it from final float bits.
-
-Before source publication: fix and independently probe this edge, retain both
-old mismatches as passing cases, expand recursive-array/copy/delayed greater-order
-cases and source warning/line/prepass contexts. Rebase mappings as needed, register
-52 and source witnesses atomically, then run exact full source plus relevant helper
-and independent state/origin/ownership gates under one final frozen fingerprint.
-Never relabel or discard prior disagreements, and never mutate report fingerprints.
-
-## Parallel compiler work and next arrays
-
-Compiler_next has .tools/45-unpack-compiler.watsup /46-unpack-compiler.watsup and
-18 exact source phase originals in .tools/unpack-compiler-originals.json, with a
-passing compiler probe. Unpack visits all array operands in the constant pass
-before construction; scalar unpack is static only for a fully constant array,
-otherwise a runtime Error. Integer keys append, string keys replace, and append
-overflow defers to runtime. Rebase these drafts atop accepted comparison changes.
-
-Reviewer deed0416 archives 28 destructuring metadata witnesses. Compiler_next is
-starting compatible frontend prerequisites: nested unpack-flag preservation,
-long-array syntax and first-hole comma token line. Coordinate their publication/
-build/freeze windows before activating comparisons, avoiding invalidated campaigns.
-Foreach subsequently needs stable bucket identity/cursors and owner semantics
-under deletion/reinsertion, not a list-index iterator. Declarations/call frames and
-broader object/request/callback behavior remain open core work.
-
-At handoff all runtime-owned production changes are committed; no runtime process
-or source gate remains active. Comparison drafts and the reproduced defect remain
-for the successor. Compiler/reviewer may publish their explicitly owned metadata
-work during rotation; preserve it.
+Compiler's unpack/destructure and first-hole metadata drafts remain separate.
+Foreach subsequently needs stable cursor/bucket identity and mutation ownership.
+Declarations, frames/calls, linking, objects, dynamic sources, callbacks, collection
+and resumable lifetime remain pending. Keep the separately documented relative
+`static` intentional divergence unchanged; its source activation is still pending.

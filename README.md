@@ -47,6 +47,10 @@ source execution regressions; unfinished behavior returns explicit Unsupported.
 Reviewed truth/logical operators and ternary preserve PHP's distinct compiler
 and runtime phases; [truth evidence](coverage/semantics/truth-review.json) records
 source comparisons, selected-value copying and budget resumption.
+[Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
+and array values, with [independent evidence](coverage/semantics/comparison-review.json).
+A retained [false-reference fetch discrepancy](coverage/semantics/false-reference-fetch-review.json)
+remains the next corrective prerequisite.
 See [semantic design](docs/semantics/DESIGN.md) and
 [numeric reference](docs/semantics/NUMERICS.md) and
 [static checks](docs/semantics/STATIC.md) for interfaces and helper checks.

@@ -25,14 +25,15 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Active ownership
 
-- Runtime successor: comparisons, then compound/numeric operations and arrays/foreach.
-- Compiler: unpack/destructuring preservation and descriptors, then declarations/defaults/frames.
-- Reviewer: independent gates, discrepancy history, inventory, progress and closure evidence.
+- Runtime successor: false-reference FETCH repair, then updates/compound operations and arrays/foreach.
+- Compiler: remaining frontend provenance/phase repairs and update descriptors, then arrays/declarations/frames.
+- Fresh reviewer: wrapper-state review first; independent gates, discrepancy history, inventory and progress.
 - Shared tree: stage owned files, commit reviewed increments, never push. Coordinate final watched freezes.
 
-[Runtime handoff](docs/semantics/RUNTIME-SUCCESSOR-HANDOFF.md) `6873f110` records
-accepted contracts, comparison drafts and a retained scanner-overflow defect.
-[Reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) records commands and risks.
+[Runtime handoff](docs/semantics/RUNTIME-SUCCESSOR-HANDOFF.md),
+[compiler handoff](docs/semantics/COMPILER-HANDOFF.md) and
+[reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) record accepted contracts,
+remaining drafts, commands and risks.
 
 ## Latest accepted checkpoints
 
@@ -42,28 +43,31 @@ no constructor or PHP semantic family closes. Closure governance `ffdc131d`
 requires exact original-source/raw-byte bindings, independent review and current
 fingerprints. `--complete` must reject unfinished or stale entries.
 
-Source truth/logical operators and full/shorthand ternary `e7dac829`, independently
-reviewed in `682bcba0`, passed **854 exact sources +25 outcome negatives** on
-`10a40a12`. All 63 archived phase/copy/grouping originals are integrated. Review
-adds 44 exact sources, 44 alternate compiler cases, five redirect/access and three
-grouping checks; dense replay adds 3,316 assertions over 163 budgets for each of
-four programs. [Truth evidence](coverage/semantics/truth-review.json) also binds
-the compiler's consumed oracle archive and its mutation-rejection test.
+Comparison implementation `0e065cc6` and reports `c94459fd` pass
+**1,142 exact sources +25 outcome negatives** on `ba6075cd`. The
+[independent review](coverage/semantics/comparison-review.json) adds 38 sources,
+34 compiler alternatives plus 24 access checks, and six dense replay programs
+with 4,974 assertions. A separate 83-pair/166-check string-order helper gate is
+helper evidence only. All four retained overflow and 48 phase originals are
+unchanged and integrated; both draft overflow differences now agree.
 
-At that source checkpoint, canonical truth 71/1,344, compiler 896 lint +15 emission
-observations, truth compiler 79/3/3, constant 42/5, origins 25/333, runtime bridge 15/148
-and ownership 617+96/5,434 passed. Descriptor roles and edited metadata remain
-separate from original-source execution evidence.
+Canonical comparison 232 states/3,388 assertions, compiler 1,184 lint +15 emission
+observations, comparison compiler 48/8/24, origins 25/333, runtime bridge 15/148
+and ownership 617+96/5,434 pass the final closure. Strict result-type sources,
+recursive errors, delayed greater operands, pool identity and resumption were
+independently checked. Evidence preflight passes 15 identity, three path and 17
+closure negatives. A required isolated-fixture repair invalidated the provisional
+campaign; corrected gates were repeated, preserving earlier evidence as historical.
 
+[Truth review](coverage/semantics/truth-review.json) `e7dac829`/`682bcba0` retains
+all 63 original phase/copy/grouping cases and compiler redirect/archive integrity.
 Frontend prerequisites preserve nested unpack flags (`d4706937`,
 [review](coverage/semantics/destructuring-unpack-review.json)) and original array
 syntax kind (`09f33419`, [review](coverage/semantics/destructuring-array-kind-review.json)).
-The latest gate passes 35 author profiles/437 checks, 12 independent profiles/88
-checks, bounded syntax/inventory and exact patch reconstruction on `e5b10450`.
-This new watched closure claims no refreshed full source campaign. First-hole
-comma context and a genuine-list early-check phase gap remain pending; all
+First-hole comma context and array-omission phase gaps remain pending. Their
 [original loss witnesses](coverage/semantics/destructuring-metadata-disagreement.json)
-remain beside their partial resolutions.
+and [expanded author captures](coverage/semantics/frontend-phase-originals-review.json)
+remain alongside partial resolutions; the expanded 22 captures await independent repetition.
 
 ## Retained evidence and contracts
 
@@ -92,12 +96,14 @@ remain beside their partial resolutions.
 
 ## Next gates and decisions
 
-Finish the comparison draft's two retained integer-prefix overflow disagreements
-before admission. A later exponent can rescale the float into range while the
-scanner's earlier overflow flag still changes smart string comparison. Preserve
-original left-to-right operand evaluation for greater comparisons, NaN/array
-non-antisymmetry and recursion/ownership behavior. No intentional divergence is
-selected for these draft defects.
+Repair the [open false-reference FETCH discrepancy](coverage/semantics/false-reference-fetch-review.json)
+before update operators: three independent source mismatches and four controls
+persist on the final comparison closure. Singleton unset retains observable
+reference-wrapper history; generic dimension FETCH and final ASSIGN_DIM warn
+differently. Runtime's proposed marker state remains unapproved. Fresh review must
+cover binding, COW, cycles, lifetime, pools and resumption. Four further author
+nested-UNSET observations are linked in the handoff for independent confirmation.
+The current admitted runtime is not globally clean; no new divergence is selected.
 
 Complete remaining destructuring provenance prerequisites, then pair compiler
 and runtime unpack/destructuring. Foreach needs persistent bucket/cursor and
@@ -125,5 +131,6 @@ executables establish no new portability claim. Final full syntax validation and
 fresh offline rebuild remain required.
 
 Unsupported, crashes, timeouts and interrupted runs never count as passes.
-Run evidence-integrity negatives with inventory checks; finish every core
+Run evidence/inventory preflight before long campaigns whenever catalogs, archive
+inputs or harnesses change; finish every core
 obligation and independently review full scope before closing the project.

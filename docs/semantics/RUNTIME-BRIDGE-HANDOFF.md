@@ -336,11 +336,20 @@ evidence uses the fresh 10a40a12 closure. The earlier `.tools` runs remain scrat
 evidence; the production catalog and final frozen reports are authoritative.
 
 
-Immediate next comparison work is isolated under `.tools`: `20-comparison.watsup`,
-`45-comparison-compiler.watsup` and `52-comparison.watsup`; the paired source probe
-passed 117 original programs/1,638 assertions, not a production admission. Preserve
-non-antisymmetric NaN/array order, silent NaN-versus-bool/null comparison, and
-integer-overflow provenance in numeric-string comparison. The current comparison
-draft still needs the twenty-digit decimal/exponent overflow flag refinement and
-additional recursion/ownership/phase probes before publication. Runtime owns20/52;
-compiler owns45 mappings; shared02/04 helper changes require explicit coordination.
+## Comparison source activation
+
+The source compiler/runtime now admit seven non-strict comparison operators for
+the six current value forms. See [COMPARISONS](COMPARISONS.md) for scanner overflow
+provenance, unordered NaN/array results, recursion order and reversed greater
+comparison after original operand evaluation. Canonical source validation passes
+1,142 exact observations plus 25 outcome negatives. The comparison state gate
+passes 232 original programs and 3,388 assertions; the compiler gate retains all
+48 phase originals, with 1,184 broad lint cases and 15 emission-line observations.
+Independent review is recorded separately in coverage/semantics/comparison-review.json.
+
+The retained four comparison overflow draft originals now all agree. Their old
+failure archive remains unchanged; there is no intentional engine disagreement.
+A separately discovered pre-existing false-to-array FETCH warning discrepancy
+requires explicit reference-wrapper history before increment/decrement source
+activation. Direct final dimension assignment has different warning behavior.
+See [runtime continuation](RUNTIME-SUCCESSOR-HANDOFF.md) for this next prerequisite.

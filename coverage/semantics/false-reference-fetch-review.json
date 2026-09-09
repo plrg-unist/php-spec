@@ -1,0 +1,90 @@
+{
+  "status": "open admitted source discrepancy; immediate corrective prerequisite after comparisons",
+  "scope": "false-to-array deprecation in reference-wrapped intermediate dimension fetches and element reference acquisition",
+  "fingerprint": {
+    "sha256": "d4752c7bce85f60a794be6a19973fc326398e469cff5e591ebc63304d6ee2929",
+    "files": 777,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "originals": [
+    {
+      "path": "coverage/semantics/false-reference-fetch-originals.json",
+      "sha256": "e0237c51f640615eba734b1eb2265540058546830bae4dec9a2273f4b02e8125"
+    },
+    {
+      "path": "coverage/semantics/false-reference-final-write-controls.json",
+      "sha256": "6bf161ec20a1e4ddfb8c27dfd31b423b4f7f90748f2592d628f4531e8584a193"
+    }
+  ],
+  "independent_repeat": {
+    "path": "coverage/semantics/false-reference-fetch-source-review.jsonl",
+    "sha256": "66b4c844c60b72b78c752a132cddaa7d76bd3bdd629172c7056b12c494a215a5",
+    "sources": 7,
+    "admitted_disagreements": 3,
+    "matching_controls": 4
+  },
+  "findings": [
+    "Explicit reference wrapping suppresses the pinned deprecation during intermediate false-to-array fetch and element reference acquisition; the model currently emits it.",
+    "The difference survives removal of the other alias, so current owner count alone cannot recover reference-wrapper history.",
+    "Final dimension writes still emit the deprecation regardless of wrapping; all three final-write controls match."
+  ],
+  "limits": [
+    "Existing source behavior is affected; this is not a new comparison regression.",
+    "No intentional divergence selected. Preserve original records unchanged and add resolution evidence separately."
+  ],
+  "final_comparison_confirmation": {
+    "fingerprint": {
+      "sha256": "ba6075cd569573bc5f19ec661e4da74a07079a0f9b87873b8544994d3f1f07f2",
+      "files": 777,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "source_observations_identical_to_original_review": true,
+    "sources": 7,
+    "admitted_disagreements": 3,
+    "matching_controls": 4,
+    "raw_sha256": "66b4c844c60b72b78c752a132cddaa7d76bd3bdd629172c7056b12c494a215a5"
+  }
+}

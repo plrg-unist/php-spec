@@ -160,7 +160,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending.",
+      "review": "Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -513,10 +513,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BinaryOp_Greater",
@@ -525,10 +536,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BinaryOp_GreaterOrEqual",
@@ -537,10 +559,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BinaryOp_Identical",
@@ -692,10 +725,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BinaryOp_NotIdentical",
@@ -791,10 +835,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BinaryOp_SmallerOrEqual",
@@ -803,10 +858,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BinaryOp_Spaceship",
@@ -815,10 +881,21 @@
         "coercion.loose-comparison",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ]
     },
     {
       "node": "Expr_BitwiseNot",
@@ -3336,15 +3413,25 @@
     {
       "id": "coercion.loose-comparison",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/52-comparison.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null,
+      "review": "Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -3456,7 +3543,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-offset.php",
         "tests/semantics/conformance/string-read-numeric-keys.php",
@@ -4140,7 +4227,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-self-append.php",
         "tests/semantics/conformance/array-self-index.php",
@@ -4229,11 +4316,15 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/51-truth-expressions.watsup"
+        "spec/semantics/51-truth-expressions.watsup",
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/52-comparison.watsup"
       ],
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
-        "tests/semantics/truth_expressions.py"
+        "tests/semantics/truth_expressions.py",
+        "tests/semantics/comparison.py",
+        "tests/semantics/comparison_compiler.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -4242,7 +4333,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. Reviewed original-source loose/ordered comparison for null, bool, int, float, bytes and arrays, including overflow provenance, greater operand order, recursive errors and result types: comparison-review.json. Object contexts, callbacks and broader source integration remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/delayed-read.php"
       ]

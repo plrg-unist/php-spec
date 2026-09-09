@@ -266,3 +266,36 @@ First-hole token context remains pending. A separate [genuine-list phase witness
 records `list(array(,$x))=$a`: the frontend rejects empty array entries early,
 while the pinned compiler rejects the long-array assignment target. Repair its
 phase before source destructuring admission; no divergence is selected.
+
+## Reference-wrapped false dimension fetch: open source mismatch
+
+[Seven independently repeated originals and controls](../../coverage/semantics/false-reference-fetch-review.json)
+show three admitted mismatches. After `$r=&$a` wraps false `$a`, nested dimension
+fetch and `$x=&$a[0]` omit the pinned false-to-array deprecation, but the model
+emits it. The difference survives `unset($r)`, so live owner count cannot replace
+reference-wrapper history. Final dimension assignment still warns in both
+implementations. Preserve that operation distinction when repairing state.
+
+This existing source discrepancy is the immediate corrective prerequisite after
+the bounded comparison checkpoint; comparison results do not establish a
+globally clean runtime. Original observations remain unchanged. No intentional
+divergence is selected.
+
+
+## Smart string comparison overflow: resolved draft defect
+
+The [unchanged four original observations](../../coverage/semantics/comparison-overflow-draft-disagreement.json)
+retain two draft disagreements and two controls. Twenty significant integer-prefix
+digits can set overflow before an exponent rescales the float into range. Preserving
+that scanner history repairs smart string comparison in `0e065cc6`; all four now
+agree through original-source execution. [Independent comparison review](../../coverage/semantics/comparison-review.json)
+records source and helper boundaries separately. No intentional divergence is selected.
+
+## Expanded array-omission phase gaps: pending review and repair
+
+[Retained author captures](../../coverage/semantics/frontend-phase-originals-review.json)
+add 16 genuine-list and six ordinary-array omission sources, including native-valid
+skipped branches currently rejected by the frontend. These expanded captures await
+independent repetition; the earlier single genuine-list witness is independently
+reviewed. Genuine-list conversion, first-hole token context and ordinary Array_
+omission representation are separate prerequisites. No repair or admission is claimed.

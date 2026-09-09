@@ -1,0 +1,47 @@
+{
+  "result": "pass",
+  "scope": "actual consumed comparison archive bytes mutate and restore; shared and both helper fingerprints detect each change",
+  "command": [
+    "python3",
+    ".tools/review4-comparison-input-negative.py"
+  ],
+  "fingerprint": {
+    "sha256": "ba6075cd569573bc5f19ec661e4da74a07079a0f9b87873b8544994d3f1f07f2",
+    "files": 777,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "checks": [
+    {
+      "path": "coverage/semantics/comparison-phase-originals.json",
+      "original_sha256": "0cbff32fcd94f3f472473677e4da3e30ac47fac4e96b6a8b962b2d64f9a47d9c",
+      "mutated_sha256": "dc9c56dc6a53442156c2b15d73986c33cb44ce56e8543e70e28ace6f3a547b91",
+      "shared_changed": true,
+      "runtime_changed": true,
+      "compiler_changed": true,
+      "exact_restoration": true
+    },
+    {
+      "path": "coverage/semantics/comparison-overflow-draft-disagreement.json",
+      "original_sha256": "245e1ebcaab6d40ca80c2676b65a6c2a90713bf3c0a365d9fc224819353aae28",
+      "mutated_sha256": "c27db4208ab72b05b36f70846d1464dc7a9013b396345ee4b3ab6dfe53c76bff",
+      "shared_changed": true,
+      "runtime_changed": true,
+      "compiler_changed": true,
+      "exact_restoration": true
+    }
+  ]
+}

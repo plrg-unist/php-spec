@@ -177,3 +177,10 @@ Variable-source literal references and scalar singleton union witnesses are
 reviewed in `4b954dfa`; element reference targets and both self-reference union
 witnesses are reviewed in `f56e12bc`. Explicit collection and repeated literal-
 occurrence identity remain pending.
+
+
+Reference wrapper identity can outlive other aliases. Owner counts alone cannot
+recover the pinned false-to-array FETCH diagnostic behavior after singleton unset;
+[retained source differences](../../coverage/semantics/false-reference-fetch-review.json)
+require explicit history and separate final-assignment behavior. This admitted
+runtime defect remains open after the bounded comparison checkpoint.
