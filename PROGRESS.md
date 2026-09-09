@@ -136,9 +136,10 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-Runtime6 owns user-constant storage and default receives; compiler5 owns the
-paired constant/default compiler and shared signature adapter; review9 owns independent evidence/inventory/docs. Runtime5
-and review8 authored/reviewed the historical checkpoints above. Root orchestrates. Stage
+Runtime6 owns current default receives; compiler6 owns the paired default
+compiler and shared signature adapter; review9 owns independent evidence/inventory/docs.
+Compiler5 authored the accepted constant and historical default preparation.
+Runtime5 and review8 authored/reviewed earlier checkpoints. Root orchestrates. Stage
 owned files, commit reviewed increments and never push. Use canonical-root Dune
 builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-DEFAULTS-HANDOFF.md) and
 [compiler](docs/semantics/CONSTANTS-COMPILER-HANDOFF.md) handoffs retain the default
