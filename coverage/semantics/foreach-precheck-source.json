@@ -1,0 +1,1923 @@
+{
+  "selection_prefix": "foreach-precheck-",
+  "budgets": {
+    "transitions": 100000,
+    "worker_seconds": 30,
+    "process_seconds": 35
+  },
+  "seeds": {
+    "alias": 85010,
+    "scalar": 6614,
+    "array_keys": 7116
+  },
+  "scope": "authored source fixtures for currently admitted core semantics",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "oracle": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ],
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "fingerprints": {
+    "sha256": "ac2aaca606866f359fdbdc6eac38f4412a336d1c75528fb5876a8c8feaae70be",
+    "files": 815,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "results": [
+    {
+      "id": "foreach-precheck-key-ref",
+      "source_sha256": "8e1d66292ea11a2e8b9fe739fb9546cd6cb461c3998ef0d31e7dd744098b2b33",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-ref-both",
+      "source_sha256": "0e127e9ee560457d15c8d10d5d99f3997679c2fda70dbb65a05dad02bbcce708",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-ref-before-iterable",
+      "source_sha256": "ca6a8f4efceaf0ce6c34771264171fc5a13ffeecf3b3f22443a3a73f8a015766",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-ref-before-list-spread",
+      "source_sha256": "d8b8094af5493262231736a5f99a6a27f3c009277a85fe59d3b7fc4402398a0e",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-ref-dim",
+      "source_sha256": "086dbb8b50aa60f52a7532bb530c556687fb0f4500467c0792e39a094ddb06c7",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-list",
+      "source_sha256": "2d36963d59545fc4b8ca01fdcc81dc018f1a73518737869502cb50192ab3ab0b",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-list-empty",
+      "source_sha256": "f5ad952ede90933a56989cbcd5100508650be6e16171bf096aae421fc5874de9",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-list-holes",
+      "source_sha256": "43d69641aabbe4a77b9824c10e3581ac8ae9105c5f2864bd7b4fc45677180a07",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-short-list",
+      "source_sha256": "36f306342ee76adbc2ec3f4fca090d8b050d2ce92e7f5998a19a59171dbb5a67",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-short-holes",
+      "source_sha256": "9795ec21f63ce3d59969156892d92a1dc426cb31fe63de640ad201b716900278",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-list-ref",
+      "source_sha256": "864522497eac586d22b179145a43f13eb6b5d9a6372a81129d6b764869395341",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-list-unpack",
+      "source_sha256": "0c46ce92bbce64dddb44eef4f6953c40e203f3066bf205931c71c56cea8ebc58",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-list-before-iterable",
+      "source_sha256": "b1b377913469e9cde7a260f8d965e1a5abe0c8d5e920987c0a910b3f1d60b257",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-key-ref-multiline",
+      "source_sha256": "9849ab59ce756e2a692fef6b34179380886cc6ae210b47e33ebc329d78c73d2d",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
+      "source_sha256": "c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
+      "source_sha256": "9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "foreach-precheck-vendor/php-src/tests/lang/foreachLoop.006.phpt",
+      "source_sha256": "effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    }
+  ],
+  "negative_checks": [
+    {
+      "source": "PD9waHAgc3RybGVuKCJhIik7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-w99amh4z/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "ordinary expression or writable operand compilation",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-w99amh4z/unsupported.php"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "initial constant",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-w99amh4z/unsupported.php",
+        "--steps",
+        "0"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-w99amh4z/unsupported.php",
+        "--timeout",
+        "0.000001"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "timeout"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAieCI7",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-w99amh4z/unsupported.php.missing"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "runner_failure",
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-w99amh4z/unsupported.php.missing'"
+      }
+    },
+    {
+      "source": "PD9waHAgZigpWzBdPSJYIjs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "ordinary expression or writable operand compilation",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkYXJnYzs=",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9JiRhcmdjOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJG49ImFyZ2MiOyAkYT0mJCRuOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgdW5zZXQoJEdMT0JBTFMpOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJG49IkdMT0JBTFMiOyB1bnNldCgkJG4pOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "request environment variable",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkbWlzc2luZzsgJHtOQU59PTE7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time NaN name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkbWlzc2luZzsgJHtJTkYtSU5GfT0xOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time NaN name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBNSVNTSU5HOyAke1tdfT0xOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time array name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyBNSVNTSU5HOyAke1sxXStbMl19PTE7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time array name diagnostic",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGE9ImFiYyI7dW5zZXQoJGFbMF1bMF0pOw==",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "intermediate string offset unset",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZWNobyAkaHR0cF9yZXNwb25zZV9oZWFkZXI7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time http_response_header context",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgJGh0dHBfcmVzcG9uc2VfaGVhZGVyPTE7ZWNobyAkaHR0cF9yZXNwb25zZV9oZWFkZXI7",
+      "exit_status": 1,
+      "observation": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "compile-time http_response_header context",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "source": "PD9waHAgZm9yKDs7KTs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-w99amh4z/unsupported.php",
+        "--steps",
+        "40"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {}
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100,
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLXc5OWFtaDR6L3Vuc3VwcG9ydGVkLnBocA=="
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing ordinary compiler line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "REFCELLS": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          },
+          "ALLOCATIONS": [],
+          "HELD": [],
+          "SOURCES": [
+            {
+              "ID": "0",
+              "AST": {
+                "tag": "PROGRAM",
+                "args": [
+                  [
+                    {
+                      "tag": "NStmtExpression",
+                      "args": [
+                        {
+                          "tag": "NExprConstFetch",
+                          "args": [
+                            {
+                              "tag": "NName",
+                              "args": [
+                                {
+                                  "tag": "BYTES",
+                                  "args": [
+                                    "VU5LTk9XTl9DT05TVA=="
+                                  ]
+                                },
+                                []
+                              ]
+                            },
+                            []
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                ]
+              },
+              "OCCURRENCES": [
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NStmtExpression",
+                      "args": [
+                        {
+                          "tag": "NExprConstFetch",
+                          "args": [
+                            {
+                              "tag": "NName",
+                              "args": [
+                                {
+                                  "tag": "BYTES",
+                                  "args": [
+                                    "VU5LTk9XTl9DT05TVA=="
+                                  ]
+                                },
+                                []
+                              ]
+                            },
+                            []
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NExprConstFetch",
+                      "args": [
+                        {
+                          "tag": "NName",
+                          "args": [
+                            {
+                              "tag": "BYTES",
+                              "args": [
+                                "VU5LTk9XTl9DT05TVA=="
+                              ]
+                            },
+                            []
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NName",
+                      "args": [
+                        {
+                          "tag": "BYTES",
+                          "args": [
+                            "VU5LTk9XTl9DT05TVA=="
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ORIGIN": null,
+          "POOLS": [],
+          "FILES": [
+            {
+              "tag": "SOURCEFILE",
+              "args": [
+                "0",
+                [
+                  "47",
+                  "116",
+                  "109",
+                  "112",
+                  "47",
+                  "112",
+                  "104",
+                  "112",
+                  "45",
+                  "115",
+                  "101",
+                  "109",
+                  "97",
+                  "110",
+                  "116",
+                  "105",
+                  "99",
+                  "115",
+                  "45",
+                  "119",
+                  "57",
+                  "57",
+                  "97",
+                  "109",
+                  "104",
+                  "52",
+                  "122",
+                  "47",
+                  "117",
+                  "110",
+                  "115",
+                  "117",
+                  "112",
+                  "112",
+                  "111",
+                  "114",
+                  "116",
+                  "101",
+                  "100",
+                  "46",
+                  "112",
+                  "104",
+                  "112"
+                ]
+              ]
+            }
+          ],
+          "CODE": []
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VU5LTk9XTl9DT05TVA=="
+                        }
+                      ],
+                      "meta": {}
+                    }
+                  ],
+                  "meta": {
+                    "startLine": {
+                      "int": "-1"
+                    }
+                  }
+                }
+              ],
+              "meta": {}
+            }
+          ]
+        },
+        "steps": 100,
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLXc5OWFtaDR6L3Vuc3VwcG9ydGVkLnBocA=="
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing ordinary compiler line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "REFCELLS": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          },
+          "ALLOCATIONS": [],
+          "HELD": [],
+          "SOURCES": [
+            {
+              "ID": "0",
+              "AST": {
+                "tag": "PROGRAM",
+                "args": [
+                  [
+                    {
+                      "tag": "NStmtExpression",
+                      "args": [
+                        {
+                          "tag": "NExprConstFetch",
+                          "args": [
+                            {
+                              "tag": "NName",
+                              "args": [
+                                {
+                                  "tag": "BYTES",
+                                  "args": [
+                                    "VU5LTk9XTl9DT05TVA=="
+                                  ]
+                                },
+                                []
+                              ]
+                            },
+                            [
+                              {
+                                "tag": "MstartLine",
+                                "args": [
+                                  "-1"
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                ]
+              },
+              "OCCURRENCES": [
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NStmtExpression",
+                      "args": [
+                        {
+                          "tag": "NExprConstFetch",
+                          "args": [
+                            {
+                              "tag": "NName",
+                              "args": [
+                                {
+                                  "tag": "BYTES",
+                                  "args": [
+                                    "VU5LTk9XTl9DT05TVA=="
+                                  ]
+                                },
+                                []
+                              ]
+                            },
+                            [
+                              {
+                                "tag": "MstartLine",
+                                "args": [
+                                  "-1"
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NExprConstFetch",
+                      "args": [
+                        {
+                          "tag": "NName",
+                          "args": [
+                            {
+                              "tag": "BYTES",
+                              "args": [
+                                "VU5LTk9XTl9DT05TVA=="
+                              ]
+                            },
+                            []
+                          ]
+                        },
+                        [
+                          {
+                            "tag": "MstartLine",
+                            "args": [
+                              "-1"
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NName",
+                      "args": [
+                        {
+                          "tag": "BYTES",
+                          "args": [
+                            "VU5LTk9XTl9DT05TVA=="
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ORIGIN": null,
+          "POOLS": [],
+          "FILES": [
+            {
+              "tag": "SOURCEFILE",
+              "args": [
+                "0",
+                [
+                  "47",
+                  "116",
+                  "109",
+                  "112",
+                  "47",
+                  "112",
+                  "104",
+                  "112",
+                  "45",
+                  "115",
+                  "101",
+                  "109",
+                  "97",
+                  "110",
+                  "116",
+                  "105",
+                  "99",
+                  "115",
+                  "45",
+                  "119",
+                  "57",
+                  "57",
+                  "97",
+                  "109",
+                  "104",
+                  "52",
+                  "122",
+                  "47",
+                  "117",
+                  "110",
+                  "115",
+                  "117",
+                  "112",
+                  "112",
+                  "111",
+                  "114",
+                  "116",
+                  "101",
+                  "100",
+                  "46",
+                  "112",
+                  "104",
+                  "112"
+                ]
+              ]
+            }
+          ],
+          "CODE": []
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "filename": "L2VkaXRlZC5waHA=",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Expr_Array",
+                    "fields": [
+                      []
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing ordinary compiler line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "REFCELLS": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          },
+          "ALLOCATIONS": [],
+          "HELD": [],
+          "SOURCES": [
+            {
+              "ID": "0",
+              "AST": {
+                "tag": "PROGRAM",
+                "args": [
+                  [
+                    {
+                      "tag": "NStmtEcho",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            [
+                              {
+                                "tag": "NExprArray",
+                                "args": [
+                                  {
+                                    "tag": "SEQUENCE",
+                                    "args": [
+                                      []
+                                    ]
+                                  },
+                                  []
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                ]
+              },
+              "OCCURRENCES": [
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NStmtEcho",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            [
+                              {
+                                "tag": "NExprArray",
+                                "args": [
+                                  {
+                                    "tag": "SEQUENCE",
+                                    "args": [
+                                      []
+                                    ]
+                                  },
+                                  []
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NExprArray",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            []
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ORIGIN": null,
+          "POOLS": [],
+          "FILES": [
+            {
+              "tag": "SOURCEFILE",
+              "args": [
+                "0",
+                [
+                  "47",
+                  "101",
+                  "100",
+                  "105",
+                  "116",
+                  "101",
+                  "100",
+                  "46",
+                  "112",
+                  "104",
+                  "112"
+                ]
+              ]
+            }
+          ],
+          "CODE": []
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "filename": "L2VkaXRlZC5waHA=",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Scalar_Float",
+                    "fields": [
+                      {
+                        "float": "7ff8000000000000"
+                      }
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing ordinary compiler line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "REFCELLS": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          },
+          "ALLOCATIONS": [],
+          "HELD": [],
+          "SOURCES": [
+            {
+              "ID": "0",
+              "AST": {
+                "tag": "PROGRAM",
+                "args": [
+                  [
+                    {
+                      "tag": "NStmtEcho",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            [
+                              {
+                                "tag": "NScalarFloat",
+                                "args": [
+                                  {
+                                    "tag": "FLOAT",
+                                    "args": [
+                                      "7ff8000000000000"
+                                    ]
+                                  },
+                                  []
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                ]
+              },
+              "OCCURRENCES": [
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NStmtEcho",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            [
+                              {
+                                "tag": "NScalarFloat",
+                                "args": [
+                                  {
+                                    "tag": "FLOAT",
+                                    "args": [
+                                      "7ff8000000000000"
+                                    ]
+                                  },
+                                  []
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NScalarFloat",
+                      "args": [
+                        {
+                          "tag": "FLOAT",
+                          "args": [
+                            "7ff8000000000000"
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ORIGIN": null,
+          "POOLS": [],
+          "FILES": [
+            {
+              "tag": "SOURCEFILE",
+              "args": [
+                "0",
+                [
+                  "47",
+                  "101",
+                  "100",
+                  "105",
+                  "116",
+                  "101",
+                  "100",
+                  "46",
+                  "112",
+                  "104",
+                  "112"
+                ]
+              ]
+            }
+          ],
+          "CODE": []
+        }
+      }
+    },
+    {
+      "input": {
+        "op": "execute",
+        "steps": 100,
+        "filename": "L2VkaXRlZC5waHA=",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Expr_BinaryOp_Div",
+                    "fields": [
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "1"
+                          }
+                        ],
+                        "meta": {}
+                      },
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "0"
+                          }
+                        ],
+                        "meta": {}
+                      }
+                    ],
+                    "meta": {}
+                  }
+                ]
+              ],
+              "meta": {}
+            }
+          ]
+        }
+      },
+      "exit_status": 0,
+      "observation": {
+        "ok": true,
+        "state": {
+          "TODO": [],
+          "EVENTS": [],
+          "COMPLETION": {
+            "tag": "UNSUPPORTED",
+            "args": [
+              "missing ordinary compiler line"
+            ]
+          },
+          "ENV": [],
+          "STORE": [],
+          "REFCELLS": [],
+          "RESULT": {
+            "tag": "KNOWN",
+            "args": [
+              {
+                "tag": "PNULL",
+                "args": []
+              }
+            ]
+          },
+          "CELL": "0",
+          "ARRAYS": [],
+          "KEY": {
+            "tag": "KINT",
+            "args": [
+              "0"
+            ]
+          },
+          "BASE": {
+            "tag": "BASE_VALUE",
+            "args": [
+              {
+                "tag": "KNOWN",
+                "args": [
+                  {
+                    "tag": "PNULL",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "LOCATION": {
+            "tag": "ROOT",
+            "args": [
+              "0"
+            ]
+          },
+          "ALLOCATIONS": [],
+          "HELD": [],
+          "SOURCES": [
+            {
+              "ID": "0",
+              "AST": {
+                "tag": "PROGRAM",
+                "args": [
+                  [
+                    {
+                      "tag": "NStmtEcho",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            [
+                              {
+                                "tag": "NExprBinaryOpDiv",
+                                "args": [
+                                  {
+                                    "tag": "NScalarInt",
+                                    "args": [
+                                      {
+                                        "tag": "INTEGER",
+                                        "args": [
+                                          "1"
+                                        ]
+                                      },
+                                      []
+                                    ]
+                                  },
+                                  {
+                                    "tag": "NScalarInt",
+                                    "args": [
+                                      {
+                                        "tag": "INTEGER",
+                                        "args": [
+                                          "0"
+                                        ]
+                                      },
+                                      []
+                                    ]
+                                  },
+                                  []
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                ]
+              },
+              "OCCURRENCES": [
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NStmtEcho",
+                      "args": [
+                        {
+                          "tag": "SEQUENCE",
+                          "args": [
+                            [
+                              {
+                                "tag": "NExprBinaryOpDiv",
+                                "args": [
+                                  {
+                                    "tag": "NScalarInt",
+                                    "args": [
+                                      {
+                                        "tag": "INTEGER",
+                                        "args": [
+                                          "1"
+                                        ]
+                                      },
+                                      []
+                                    ]
+                                  },
+                                  {
+                                    "tag": "NScalarInt",
+                                    "args": [
+                                      {
+                                        "tag": "INTEGER",
+                                        "args": [
+                                          "0"
+                                        ]
+                                      },
+                                      []
+                                    ]
+                                  },
+                                  []
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NExprBinaryOpDiv",
+                      "args": [
+                        {
+                          "tag": "NScalarInt",
+                          "args": [
+                            {
+                              "tag": "INTEGER",
+                              "args": [
+                                "1"
+                              ]
+                            },
+                            []
+                          ]
+                        },
+                        {
+                          "tag": "NScalarInt",
+                          "args": [
+                            {
+                              "tag": "INTEGER",
+                              "args": [
+                                "0"
+                              ]
+                            },
+                            []
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NScalarInt",
+                      "args": [
+                        {
+                          "tag": "INTEGER",
+                          "args": [
+                            "1"
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "PCOCCURRENCE",
+                  "args": [
+                    [
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCINDEX",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "tag": "PCFIELD",
+                        "args": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    {
+                      "tag": "NScalarInt",
+                      "args": [
+                        {
+                          "tag": "INTEGER",
+                          "args": [
+                            "0"
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ORIGIN": null,
+          "POOLS": [],
+          "FILES": [
+            {
+              "tag": "SOURCEFILE",
+              "args": [
+                "0",
+                [
+                  "47",
+                  "101",
+                  "100",
+                  "105",
+                  "116",
+                  "101",
+                  "100",
+                  "46",
+                  "112",
+                  "104",
+                  "112"
+                ]
+              ]
+            }
+          ],
+          "CODE": []
+        }
+      }
+    }
+  ],
+  "raw_results": {
+    "path": "coverage/results-semantic-source-selected-9u15ip0y.jsonl",
+    "sha256": "cd460d17f7c44b88e6278e6abf2094ff32dc0077ca05cbd5a0a0fb5d7c591188",
+    "records": 17
+  }
+}

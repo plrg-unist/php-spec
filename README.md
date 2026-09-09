@@ -71,6 +71,9 @@ sources; Traversable objects and argument unpacking remain unfinished.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 class-constant lookup remain unfinished.
+[Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
+and list keys through checked printing and report exact compiler errors. Normal
+foreach execution remains in progress.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the
