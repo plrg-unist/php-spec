@@ -14,18 +14,20 @@ def $find_location(S, n_name*) = NOWHERE
   -- if $lookup(S.ENV, n_name*) = eps
 
 dec $find_name(pstate, nat*, int, bool) : pstate
+def $find_name(S, n_name*, z, b) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,117,110,115,101,116,32,36,116,104,105,115], z)
+  -- if $this_name(n_name*)
 def $find_name(S, n_name*, z, b) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
 def $find_name(S, n_name*, z, b) = S[.LOCATION = plocation][.RESULT = KNOWN pvalue]
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if plocation = $find_location(S, n_name*)
   -- if $location_slot(S, plocation) = DEFINED pvalue
 def $find_name(S, n_name*, z, false) = S[.LOCATION = plocation][.RESULT = KNOWN PNULL]
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if plocation = $find_location(S, n_name*)
   -- if $location_slot(S, plocation) = UNDEFINED
 def $find_name(S, n_name*, z, true) = S_missing[.LOCATION = plocation]
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if plocation = $find_location(S, n_name*)
   -- if $location_slot(S, plocation) = UNDEFINED
   -- if S_missing = $missing(S, n_name*, z)

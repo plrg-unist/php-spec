@@ -69,6 +69,11 @@ test-semantics: build
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
+	python3 tests/semantics/magic_constants_compiler.py
+	python3 tests/semantics/request_adapter.py
+	python3 tests/semantics/request_environment.py
+	python3 tests/semantics/request_environment_protocol.py
+	python3 tests/semantics/request_environment_state.py
 	python3 tests/semantics/isset_empty.py
 	python3 tests/semantics/isset_empty_compiler.py
 	python3 tests/semantics/coalesce_assignment.py

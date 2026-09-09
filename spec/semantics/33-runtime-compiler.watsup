@@ -220,12 +220,15 @@ def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :
 def $compiler_diagnostics(S, (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Deprecated" $plmessage(PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) pllocation.LINE]], pldiagnostic*)
 def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.COMPLETION = STATICBYTES $plmessage(PLDIAGNOSTIC "fatal" text ptbytes* pllocation) pllocation.LINE], pldiagnostic*)
 
+dec $request_compile(pstate, ppstate) : pstate
+dec $compile_source_ready(pstate, ppstate) : pstate
 dec $compile_source(pstate, ppstate) : pstate
-def $compile_source(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
+def $compile_source(S, P) = $compile_source_ready($request_compile(S, P), P)
+def $compile_source_ready(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
   -- if P.COMPLETION = PPCABRUPT pcompletion
-def $compile_source(S, P) = $compiler_diagnostics(S[.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
+def $compile_source_ready(S, P) = $compiler_diagnostics(S[.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
   -- if P.COMPLETION = PPCNAMESPACE
-def $compile_source(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS), P, $ppconstants(P))
+def $compile_source_ready(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS), P, $ppconstants(P))
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]

@@ -1,0 +1,94 @@
+;; Magic constants use the compiled source identity and lexical namespace.
+;; The admitted statement compiler runs at top level; declaration bodies remain
+;; barriers until their distinct function/class/property contexts are installed.
+dec $pmagic_strip_slashes(ptbytes) : ptbytes
+dec $pmagic_stripped(nat, ptbytes) : ptbytes
+def $pmagic_strip_slashes(eps) = eps
+def $pmagic_strip_slashes(n :: ptbytes_tail) = $pmagic_stripped(n, $pmagic_strip_slashes(ptbytes_tail))
+def $pmagic_stripped(47, eps) = eps
+def $pmagic_stripped(n, ptbytes) = n :: ptbytes -- otherwise
+
+dec $pmagic_dirscan(ptbytes, ptbytes, ptbytes?) : ptbytes?
+def $pmagic_dirscan(eps, ptbytes, ptbytes_parent?) = ptbytes_parent?
+def $pmagic_dirscan(47 :: ptbytes_tail, ptbytes, ptbytes_parent?) = $pmagic_dirscan(ptbytes_tail, ptbytes ++ [47], ($pmagic_strip_slashes(ptbytes)))
+def $pmagic_dirscan(n :: ptbytes_tail, ptbytes, ptbytes_parent?) = $pmagic_dirscan(ptbytes_tail, ptbytes ++ [n], ptbytes_parent?)
+  -- if n =/= 47
+
+dec $pmagic_dirname(ptbytes) : ptbytes
+def $pmagic_dirname(eps) = eps
+def $pmagic_dirname(ptbytes) = [47]
+  -- if ptbytes =/= eps
+  -- if $pmagic_strip_slashes(ptbytes) = eps
+def $pmagic_dirname(ptbytes) = [46]
+  -- if $pmagic_dirscan($pmagic_strip_slashes(ptbytes), eps, eps) = eps
+  -- if $pmagic_strip_slashes(ptbytes) =/= eps
+def $pmagic_dirname(ptbytes) = [47]
+  -- if $pmagic_dirscan($pmagic_strip_slashes(ptbytes), eps, eps) = (eps)
+def $pmagic_dirname(ptbytes) = ptbytes_parent
+  -- if $pmagic_dirscan($pmagic_strip_slashes(ptbytes), eps, eps) = (ptbytes_parent)
+  -- if ptbytes_parent =/= eps
+
+dec $pmagic_directory(ptbytes, ptbytes?) : peval
+def $pmagic_directory(ptbytes, ptbytes_cwd?) = VALUE (PSTRING ptbytes_parent)
+  -- if ptbytes_parent = $pmagic_dirname(ptbytes)
+  -- if ptbytes_parent =/= [46]
+def $pmagic_directory(ptbytes, (ptbytes_cwd)) = VALUE (PSTRING ptbytes_cwd)
+  -- if $pmagic_dirname(ptbytes) = [46]
+  -- if $source_filename(ptbytes_cwd)
+def $pmagic_directory(ptbytes, ptbytes_cwd?) = ABRUPT (UNSUPPORTED "missing magic directory working-directory context") -- otherwise
+
+dec $pmagic_value(pmagic, ptbytes?, ptbytes?, plenv, int) : peval
+def $pmagic_value(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, z) = ABRUPT (UNSUPPORTED "missing magic constant line")
+  -- if $(z <= 0)
+def $pmagic_value(MAGICLINE, ptbytes_file?, ptbytes_cwd?, plenv, z) = VALUE (PINT z)
+  -- if $(z > 0)
+def $pmagic_value(MAGICFILE, (ptbytes_file), ptbytes_cwd?, plenv, z) = VALUE (PSTRING ptbytes_file)
+  -- if $(z > 0)
+  -- if $source_filename(ptbytes_file)
+def $pmagic_value(MAGICDIR, (ptbytes_file), ptbytes_cwd?, plenv, z) = $pmagic_directory(ptbytes_file, ptbytes_cwd?)
+  -- if $(z > 0)
+  -- if $source_filename(ptbytes_file)
+def $pmagic_value(MAGICNAMESPACE, ptbytes_file?, ptbytes_cwd?, plenv, z) = VALUE (PSTRING plenv.NAMESPACE)
+  -- if $(z > 0)
+def $pmagic_value(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, z) = VALUE (PSTRING eps)
+  -- if $(z > 0)
+  -- if pmagic <- [MAGICCLASS, MAGICFUNCTION, MAGICMETHOD, MAGICTRAIT, MAGICPROPERTY]
+def $pmagic_value(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, z) = ABRUPT (UNSUPPORTED "missing magic constant source-file context") -- otherwise
+
+dec $pfmagic(pfstate, pcpath, peval, int) : pfstate
+def $pfmagic(F, pcpath, VALUE pvalue, z) = $pfremember(F, pcpath, (pvalue), z)
+def $pfmagic(F, pcpath, ABRUPT pcompletion, z) = F[.MEMORY = F.MEMORY[.COMPLETION = pcompletion]][.VALUE = eps]
+def $pfdispatch(F, pcpath, PFMAGIC pmagic z_leaf, z) = $pfmagic(F, pcpath, $pmagic_value(pmagic, F.FILE, F.CWD, F.ENV, z_leaf), z_leaf)
+
+dec $ppmagic(ppstate, peval) : ppstate
+def $ppmagic(P, VALUE pvalue) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
+def $ppmagic(P, ABRUPT pcompletion) = $ppcheck(P, REJECT pcompletion)
+def $ppdispatch(P, pcpath, expression, PPR) = $ppmagic(P, $pmagic_value(pmagic, P.FOLD.FILE, P.FOLD.CWD, P.ENV, z))
+  -- if $pfshape(expression) = PFMAGIC pmagic z
+
+def $expression_line(NScalarMagicConstFile metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstFile metadata) = PFMAGIC MAGICFILE ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstDir metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstDir metadata) = PFMAGIC MAGICDIR ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstLine metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstLine metadata) = PFMAGIC MAGICLINE ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstNamespace metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstNamespace metadata) = PFMAGIC MAGICNAMESPACE ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstClass metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstClass metadata) = PFMAGIC MAGICCLASS ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstFunction metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstFunction metadata) = PFMAGIC MAGICFUNCTION ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstMethod metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstMethod metadata) = PFMAGIC MAGICMETHOD ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstTrait metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstTrait metadata) = PFMAGIC MAGICTRAIT ($source_line(metadata))
+
+def $expression_line(NScalarMagicConstProperty metadata) = $source_line(metadata)
+def $pfshape(NScalarMagicConstProperty metadata) = PFMAGIC MAGICPROPERTY ($source_line(metadata))

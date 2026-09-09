@@ -22,9 +22,9 @@ def $location_write(S, ELEMENT n pkey, pvalue) = S[.ARRAYS = $array_replace(S.AR
 
 dec $location_name(pstate, nat*) : pstate
 def $location_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*)
 def $location_name(S, n_name*) = S_cell[.LOCATION = ROOT S_cell.CELL]
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if S_cell = $ensure(S, n_name*)
 
 ;; A location borrows RESULT. The mutation caller holds live inputs explicitly
@@ -112,7 +112,7 @@ def $base_acquire(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $location_name(S
 def $base_acquire(S, BASE_NAME poperand z_name, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION =/= NORMAL
-def $base_acquire(S, BASE_NAME poperand z_name, z) = $location_name(S_name, n_name*)
+def $base_acquire(S, BASE_NAME poperand z_name, z) = $location_name_at(S_name, n_name*, z_name)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
@@ -239,3 +239,7 @@ def $assignment_self(expression, NExprVariable phpType32 metadata) = true
   -- if $cv_name(phpType32) = (n_name*)
 def $assignment_self(expression_1, expression_2) = false
   -- otherwise
+
+def $location_name_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
+  -- if $this_name(n_name*)
+def $location_name_at(S, n_name*, z) = $location_name(S, n_name*) -- if ~$this_name(n_name*)

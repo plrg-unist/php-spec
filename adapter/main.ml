@@ -216,18 +216,49 @@ let rec semantic_json (value : V.t) =
   | BoolV b -> `Bool b
   | NumV (`Int n) | NumV (`Nat n) -> `String (Bigint.to_string n)
   | TextV s -> `String s
-  | ListV values -> `List (List.map semantic_json values)
+  | ListV values | TupleV values -> `List (List.map semantic_json values)
   | OptV None -> `Null
   | OptV (Some v) -> semantic_json v
   | StructV fields -> `Assoc (List.map (fun (key,v) -> Domain.Atom.string_of_atom key.it, semantic_json v) fields)
   | CaseV _ -> let tag,args = split value in `Assoc ["tag", `String tag; "args", `List (List.map semantic_json args)]
   | _ -> fail "unexpected semantic result shape"
+let import_request (module Runner : Run.RUNNER) json =
+  let keys = ["env"; "argv"; "file"; "seconds"; "microseconds"; "variables"; "jit"] in
+  exact (if List.mem_assoc "cwd" (assoc json) then keys @ ["cwd"] else keys) json;
+  let bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let pair_type = T.tuple [typ "preqbytes"; typ "preqbytes"] in
+  let env = list (field "env" json) |> List.map (function
+    | `List [name; value] -> V.Make.tuple pair_type [bytes name; bytes value]
+    | _ -> fail "request environment entry must be a pair") in
+  let argv = list (field "argv" json) |> List.map bytes in
+  let microseconds = field "microseconds" json |> J.to_int in
+  if microseconds < 0 then fail "negative request microseconds";
+  let fields = [
+    "ENV", V.Make.list (T.list pair_type) env;
+    "ARGV", V.Make.list (T.list (typ "preqbytes")) argv;
+    "FILE", bytes (field "file" json);
+    "SECONDS", int_value (field "seconds" json);
+    "MICROSECONDS", V.Make.nat (Bigint.of_int microseconds);
+    "VARIABLES", bytes (field "variables" json);
+    "JIT", V.Make.bool (J.to_bool (field "jit" json));
+    "CWD", V.Make.opt (T.opt (typ "preqbytes")) (Option.map bytes (List.assoc_opt "cwd" (assoc json)))] in
+  let value = V.Make.str (typ "prequest") (List.map (fun (name,value) -> (Domain.Atom.Keyword name $ no_region, value)) fields) in
+  check (typ "prequest") value;
+  value
 let execute value request =
   let budget = field "steps" request |> J.to_int in
   if budget < 0 then fail "negative transition budget";
   let filename = bytes_value (field "filename" request) in
   let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
-  match Runner.Interp.eval_func "php_run" [] [value; V.Make.nat (Bigint.of_int budget); filename] with
+  let arguments = [value; V.Make.nat (Bigint.of_int budget); filename] in
+  let name, arguments = match List.filter (fun (key,_) -> key = "request") (assoc request) with
+    | [] -> "php_run", arguments
+    | [(_,json)] -> "php_request_run", arguments @ [import_request (module Runner) json]
+    | _ -> fail "duplicate request field" in
+  match Runner.Interp.eval_func name [] arguments with
   | Run.Pass state -> check (typ "pstate") state;
       `Assoc ["ok", `Bool true; "state", semantic_json state]
   | Run.Fail (at,msg) ->

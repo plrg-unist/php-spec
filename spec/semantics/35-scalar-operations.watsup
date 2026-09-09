@@ -130,3 +130,15 @@ def $resolve_name(S, poperand, z) = $stringify(S_read, pvalue, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+
+def $fetch_write_name_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
+  -- if $this_name(n_name*)
+def $fetch_write_name_at(S, n_name*, z) = $fetch_write_name(S, n_name*) -- if ~$this_name(n_name*)
+
+def $acquire_name_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
+  -- if $this_name(n_name*)
+def $acquire_name_at(S, n_name*, z) = $acquire_name(S, n_name*) -- if ~$this_name(n_name*)
+
+def $bind_reference_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
+  -- if $this_name(n_name*)
+def $bind_reference_at(S, n_name*, z) = $bind_reference(S, n_name*) -- if ~$this_name(n_name*)
