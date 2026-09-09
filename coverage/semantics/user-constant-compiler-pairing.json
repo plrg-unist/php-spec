@@ -1,0 +1,370 @@
+{
+  "scope": "Exact compiler889 to frozen and installed899 input/API bridge. Historical compiler gates remain889; runtime acceptance is recorded independently.",
+  "compiler": {
+    "sha256": "cb31d858d43fec8224c84d2b2a29132f576483454113ef145f501003d88ea513",
+    "files": 889,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "paired": {
+    "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+    "files": 899,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "compiler_archive": {
+    "path": "coverage/semantics/user-constant-compiler-originals.tar.xz",
+    "sha256": "5b707daa7c0e97098bcbc4e6d91771ad432036a448f10d5252f56265e914b4cf"
+  },
+  "exact_owned_files": {
+    "spec/semantics/30-value-classes.watsup": "670a7b0eb2e08920b3c71180c3329fd1758814858fb820303a81200a22b74aa6",
+    "spec/semantics/45-constant-context.watsup": "d0654f4881fb75fef0d356ca0a2e3e8e3533ae2e8cfab1344c1dd9136808813f",
+    "spec/semantics/88-user-constant-compiler.watsup": "2ea6eedb76d9de8bfc564809d2a468ae60374b044c5a4f1b743c3230561a8d4d",
+    "tests/semantics/constant_class_compiler.py": "030b8f8a0d75a773427dc5fff7029c44f2c0f45511a72c3091b6665d337473ec",
+    "tests/semantics/user_constant_compiler.py": "7a93e42f206dcfd22acbe670e5463cf24bbad284414351249fd687883bcd8119",
+    "tests/semantics/user_constant_cases.json": "431077a8c4ff2543e567a4f1ed3eb0574726458816013398fd5c3c1a4adca2f0"
+  },
+  "syntax_merge": [
+    "syntax pvstage = PVFOLD | PVEXEC",
+    "syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)*",
+    "syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass"
+  ],
+  "source_class_export_sha256": "de6ea3c0ee1e7d112d61bae86e9cc99fcc56f7cb00257cd6524bcce2232ce7fd",
+  "pool_export_lines": [
+    "  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))",
+    "  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))"
+  ],
+  "runtime_module_extensions": [
+    "spec/semantics/89-user-constants.watsup",
+    "spec/semantics/89-constant-classes.watsup"
+  ],
+  "shared_changes": {
+    "Makefile": {
+      "compiler889": "e4cad122b3e2ee69d6d1d78a1e2221f444cb2ea963057a3b2a1056f3f44fbde7",
+      "paired899": "b6d45949a214481969274c6e5c2e5e42cd38104e4a755f7e306558998b457b45"
+    },
+    "spec/semantics/30-storage.watsup": {
+      "compiler889": "946a3fbdf42675b78b57fc5dc13217efd5353ffb5bd4b8a24ef35ae71a35121b",
+      "paired899": "40734165392cde1e94333855cc981c1761fffeebd4609f7b3cfb9b5b86709959"
+    },
+    "spec/semantics/32-compiled-pools.watsup": {
+      "compiler889": "42919dd3520aebe2e85834bd76f9e1883f5f5f0a7edcfcb7fbc1a780d3e7ea98",
+      "paired899": "81991201382dcb5af617c1815494750ed8de4248883b8448c5b390433c84d401"
+    },
+    "spec/semantics/33-runtime-compiler.watsup": {
+      "compiler889": "eaeb398f070cee65d291607ffd1283d4a39e48b410fa23485dfacb4d9309c61a",
+      "paired899": "d8ff57fc8a74ef8fbd7f8962a8868e335a1104694033057118ac1090106d2438"
+    },
+    "spec/semantics/39-ownership.watsup": {
+      "compiler889": "56e42c3d91eef441320531bfeaa8788e9178ec0929460fba4c2cc8b95b78d9e1",
+      "paired899": "add9ef719121ca7584e49670f23811573d9a5e2288c40fe798569350fbfa5298"
+    },
+    "spec/semantics/40-control.watsup": {
+      "compiler889": "e56eab7e171c3aace19e5d54c1b6f863357eadf63ee8d75e09c50da7cdc4bca4",
+      "paired899": "93c86d99f294ade041141578a65b3c179c6a46c7b9d106f2208d3b164dbb4acd"
+    },
+    "spec/semantics/70-quiet-coalesce.watsup": {
+      "compiler889": "05e5a0e93c9d7a6ad4b94189d1fe2e9859c03cce9575a3b7be906a32cb46b286",
+      "paired899": "70a8060719052aa8942acb0c36f2e66fe488f2c327350769da877b1d618ac87c"
+    },
+    "spec/semantics/84-call-integrity.watsup": {
+      "compiler889": "646a2ff99ecba6b7716724c856b70ffef09baabec32e12296d17a69a30542f22",
+      "paired899": "3d0cd0689acec039f73adbd14ef31c277f1b40d5d61864d0881835095542b9a5"
+    },
+    "spec/semantics/modules.json": {
+      "compiler889": "fa65b37e76c48b40cebcc44ff1e7a8f71ff38b7ce94ccd066bebe715563e75b6",
+      "paired899": "746bab89a9bbc5c6c7564688a76176d716ca8e3bd5ab6e652f2271102d4c4a32"
+    }
+  },
+  "unchanged_common_files": 880,
+  "runtime_added_files": {
+    "spec/semantics/89-constant-classes.watsup": "002fbcc9a4bac47abaa6a935f5e05eee99692ac27eafaed89667d42a833c402c",
+    "spec/semantics/89-user-constants.watsup": "3c06c58bd289cfa0ac7d5210a179461ca0a3705bbf7371cd04bd07468dcf6ee3",
+    "tests/semantics/user_constant_branch_protocol.py": "874dcdb8d9b9e1953c4c82fe455d51cc92d05d4d7e73ebac991bbfdfcb55f772",
+    "tests/semantics/user_constant_class_cases.json": "802347ce7a42e762fa576bc8643007161ba13766ca68e49983ac3eaf67ccbb46",
+    "tests/semantics/user_constant_context_protocol.py": "2cc98267c16c25d6906c514af1922b4c6c6c9f015cd3014c7dc6a0d5b2e9f812",
+    "tests/semantics/user_constant_protocol.py": "9e7a45d6a45e4221573e90f8e05f8ec2c3ddf5affe16b16bb0b513e9a1cf1f17",
+    "tests/semantics/user_constant_runtime_cases.json": "fd2dd6c327bc5e3d987d4dc8d9108533ee2a85507708894c978ede5eede48823",
+    "tests/semantics/user_constant_runtime_pending.json": "91eab539fb949fcfc91ceba0f8485224e96e35998435d2f473f53930eabd75a0",
+    "tests/semantics/user_constant_state.py": "b6a69ce9eb4fbd6fcda8ca41f3fc43298973b075edbdea0d760ac2abf52c6895",
+    "tests/semantics/user_constants.py": "d5c78cefa8d4e4e65f29d8ca5075998c542d7b5241aaa982f56b594f82a56e1d"
+  },
+  "ownership": "Runtime owns30 state/tasks and32/33 fetch/line/source guards; exact compiler30 syntax and33 class-export fragment preserved. Values/classes in runtime state are validated structurally, not recomputed from source.",
+  "compiler_gates": {
+    "source_phases": 45,
+    "pending": 10,
+    "declaration_assertions": 29,
+    "class_source_phases": 40,
+    "class_assertions": 120,
+    "independent_class_sources": 15,
+    "independent_class_assertions": 195,
+    "independent_boundary_sources": 12,
+    "independent_boundary_assertions": 26
+  },
+  "default_preparation": {
+    "archive": "coverage/semantics/default-compiler-preparation.tar.xz",
+    "sha256": "ac28dcfc5f35a08b093a17f1ea2eb80a0841c9fe07a06b1c06c53a27393dc10d",
+    "scope": "Historical877 helper preparation, no default source admission."
+  },
+  "historical_paired": {
+    "scope": "Exact compiler889 to paired899 input/API bridge; historical compiler gates remain889 and this metadata bridge is not runtime acceptance. Canonical installation/independent paired approval remain separate.",
+    "compiler": {
+      "sha256": "cb31d858d43fec8224c84d2b2a29132f576483454113ef145f501003d88ea513",
+      "files": 889,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "paired": {
+      "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "compiler_archive": {
+      "path": "coverage/semantics/user-constant-compiler-originals.tar.xz",
+      "sha256": "5b707daa7c0e97098bcbc4e6d91771ad432036a448f10d5252f56265e914b4cf"
+    },
+    "exact_owned_files": {
+      "spec/semantics/30-value-classes.watsup": "670a7b0eb2e08920b3c71180c3329fd1758814858fb820303a81200a22b74aa6",
+      "spec/semantics/45-constant-context.watsup": "d0654f4881fb75fef0d356ca0a2e3e8e3533ae2e8cfab1344c1dd9136808813f",
+      "spec/semantics/88-user-constant-compiler.watsup": "2ea6eedb76d9de8bfc564809d2a468ae60374b044c5a4f1b743c3230561a8d4d",
+      "tests/semantics/constant_class_compiler.py": "030b8f8a0d75a773427dc5fff7029c44f2c0f45511a72c3091b6665d337473ec",
+      "tests/semantics/user_constant_compiler.py": "7a93e42f206dcfd22acbe670e5463cf24bbad284414351249fd687883bcd8119",
+      "tests/semantics/user_constant_cases.json": "431077a8c4ff2543e567a4f1ed3eb0574726458816013398fd5c3c1a4adca2f0"
+    },
+    "syntax_merge": [
+      "syntax pvstage = PVFOLD | PVEXEC",
+      "syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)*",
+      "syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass"
+    ],
+    "source_class_export_sha256": "de6ea3c0ee1e7d112d61bae86e9cc99fcc56f7cb00257cd6524bcce2232ce7fd",
+    "pool_export_lines": [
+      "  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))",
+      "  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))"
+    ],
+    "runtime_module_extensions": [
+      "spec/semantics/89-user-constants.watsup",
+      "spec/semantics/89-constant-classes.watsup"
+    ],
+    "shared_changes": {
+      "Makefile": {
+        "compiler889": "e4cad122b3e2ee69d6d1d78a1e2221f444cb2ea963057a3b2a1056f3f44fbde7",
+        "paired899": "b6d45949a214481969274c6e5c2e5e42cd38104e4a755f7e306558998b457b45"
+      },
+      "spec/semantics/30-storage.watsup": {
+        "compiler889": "946a3fbdf42675b78b57fc5dc13217efd5353ffb5bd4b8a24ef35ae71a35121b",
+        "paired899": "40734165392cde1e94333855cc981c1761fffeebd4609f7b3cfb9b5b86709959"
+      },
+      "spec/semantics/32-compiled-pools.watsup": {
+        "compiler889": "42919dd3520aebe2e85834bd76f9e1883f5f5f0a7edcfcb7fbc1a780d3e7ea98",
+        "paired899": "81991201382dcb5af617c1815494750ed8de4248883b8448c5b390433c84d401"
+      },
+      "spec/semantics/33-runtime-compiler.watsup": {
+        "compiler889": "eaeb398f070cee65d291607ffd1283d4a39e48b410fa23485dfacb4d9309c61a",
+        "paired899": "d8ff57fc8a74ef8fbd7f8962a8868e335a1104694033057118ac1090106d2438"
+      },
+      "spec/semantics/39-ownership.watsup": {
+        "compiler889": "56e42c3d91eef441320531bfeaa8788e9178ec0929460fba4c2cc8b95b78d9e1",
+        "paired899": "add9ef719121ca7584e49670f23811573d9a5e2288c40fe798569350fbfa5298"
+      },
+      "spec/semantics/40-control.watsup": {
+        "compiler889": "e56eab7e171c3aace19e5d54c1b6f863357eadf63ee8d75e09c50da7cdc4bca4",
+        "paired899": "93c86d99f294ade041141578a65b3c179c6a46c7b9d106f2208d3b164dbb4acd"
+      },
+      "spec/semantics/70-quiet-coalesce.watsup": {
+        "compiler889": "05e5a0e93c9d7a6ad4b94189d1fe2e9859c03cce9575a3b7be906a32cb46b286",
+        "paired899": "70a8060719052aa8942acb0c36f2e66fe488f2c327350769da877b1d618ac87c"
+      },
+      "spec/semantics/84-call-integrity.watsup": {
+        "compiler889": "646a2ff99ecba6b7716724c856b70ffef09baabec32e12296d17a69a30542f22",
+        "paired899": "3d0cd0689acec039f73adbd14ef31c277f1b40d5d61864d0881835095542b9a5"
+      },
+      "spec/semantics/modules.json": {
+        "compiler889": "fa65b37e76c48b40cebcc44ff1e7a8f71ff38b7ce94ccd066bebe715563e75b6",
+        "paired899": "746bab89a9bbc5c6c7564688a76176d716ca8e3bd5ab6e652f2271102d4c4a32"
+      }
+    },
+    "unchanged_common_files": 880,
+    "runtime_added_files": {
+      "spec/semantics/89-constant-classes.watsup": "002fbcc9a4bac47abaa6a935f5e05eee99692ac27eafaed89667d42a833c402c",
+      "spec/semantics/89-user-constants.watsup": "3c06c58bd289cfa0ac7d5210a179461ca0a3705bbf7371cd04bd07468dcf6ee3",
+      "tests/semantics/user_constant_branch_protocol.py": "874dcdb8d9b9e1953c4c82fe455d51cc92d05d4d7e73ebac991bbfdfcb55f772",
+      "tests/semantics/user_constant_class_cases.json": "802347ce7a42e762fa576bc8643007161ba13766ca68e49983ac3eaf67ccbb46",
+      "tests/semantics/user_constant_context_protocol.py": "2cc98267c16c25d6906c514af1922b4c6c6c9f015cd3014c7dc6a0d5b2e9f812",
+      "tests/semantics/user_constant_protocol.py": "9e7a45d6a45e4221573e90f8e05f8ec2c3ddf5affe16b16bb0b513e9a1cf1f17",
+      "tests/semantics/user_constant_runtime_cases.json": "fd2dd6c327bc5e3d987d4dc8d9108533ee2a85507708894c978ede5eede48823",
+      "tests/semantics/user_constant_runtime_pending.json": "91eab539fb949fcfc91ceba0f8485224e96e35998435d2f473f53930eabd75a0",
+      "tests/semantics/user_constant_state.py": "08911ad0a7f4a3e479fe2f61e84a4cd68a4ce5b59c594d20682372be3945e5c1",
+      "tests/semantics/user_constants.py": "d5c78cefa8d4e4e65f29d8ca5075998c542d7b5241aaa982f56b594f82a56e1d"
+    },
+    "ownership": "Runtime owns30 state/tasks and32/33 fetch/line/source guards; exact compiler30 syntax and33 class-export fragment preserved. Values/classes in runtime state are validated structurally, not recomputed from source.",
+    "compiler_gates": {
+      "source_phases": 45,
+      "pending": 10,
+      "declaration_assertions": 29,
+      "class_source_phases": 40,
+      "class_assertions": 120,
+      "independent_class_sources": 15,
+      "independent_class_assertions": 195,
+      "independent_boundary_sources": 12,
+      "independent_boundary_assertions": 26
+    },
+    "default_preparation": {
+      "archive": "coverage/semantics/default-compiler-preparation.tar.xz",
+      "sha256": "ac28dcfc5f35a08b093a17f1ea2eb80a0841c9fe07a06b1c06c53a27393dc10d",
+      "scope": "Historical877 helper preparation, no default source admission."
+    }
+  },
+  "test_only_correction": {
+    "before": {
+      "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "after": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changes": {
+      "tests/semantics/user_constant_state.py": {
+        "before": "08911ad0a7f4a3e479fe2f61e84a4cd68a4ce5b59c594d20682372be3945e5c1",
+        "after": "b6a69ce9eb4fbd6fcda8ca41f3fc43298973b075edbdea0d760ac2abf52c6895"
+      }
+    },
+    "reason": "Partial-error owner fixture now compares remaining allocations to the initial request owners instead of requiring an empty allocation set. No semantics/compiler code changed. Runtime preserves original jeiuyo0o failure.",
+    "metadata_setup": "setup-failure.json retains old-manifest copy race before successful copy from runtime final-inputs.pre-state-fixture.json."
+  },
+  "metadata_setup_failure": {
+    "status": "assertion-failure",
+    "action": "Attempted copying old runtime final-inputs after notification of fixture correction",
+    "expected_fingerprint": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+    "observed_fingerprint": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "scope": "Metadata copy race, not semantic failure; original pairing report/script already copied successfully.",
+    "tool_output_copied_from_transcript": "Traceback (most recent call last):\n  File \"<stdin>\", line 3, in <module>\nAssertionError\n",
+    "exit_status": 1
+  },
+  "canonical": {
+    "code_commit": "5151608e",
+    "fingerprint": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "files_and_modes_exact": 899,
+    "runtime_installation_manifest_sha256": "96bf3107740fe12b6582a214151bbf66e9587c3c13d994077163dcdcde402fd0",
+    "scope": "Exact installed bytes/modes only; canonical CLI and independent runtime acceptance reported separately."
+  }
+}
