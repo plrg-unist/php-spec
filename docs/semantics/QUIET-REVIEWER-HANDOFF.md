@@ -1,5 +1,7 @@
 # Quiet/CV independent review continuation
 
+Latest accepted full container audit/status is **96cbf051**, author **d71d4107**.
+Canonical freeze was released after that audit; runtime4 owns the next publication.
 This is private review progress, not source publication. Complete core remains
 unfinished. Root orchestrates; runtime4 implements, compiler4 pairs compiler rules,
 review6 owns independent evidence/status. Do not push or rebuild in private roots.
@@ -8,7 +10,8 @@ immutable byte binding and focused source/compiler/state gates. Keep all old sna
 
 ## Quiet/name candidate
 
-`.tools/runtime4-name-pair/quiet-inputs.json` freezes826 files and four tools.
+`.tools/runtime4-name-pair/quiet-inputs.json` freezes826 files and four tools,
+SHA256 `48beeaca76f9a1faf56a2e7fbc24f8b9206801a649982197477ec80acd8dfbc7`.
 Module70 implements FETCH_DIM_IS/coalescing, explicitly excluding isset/empty and
 ??=. Header state and constant-name conversion are included. Compiled name
 normalization suppresses a conversion warning only at that exact compiled child;
@@ -40,7 +43,11 @@ Earlier compiler/header independent work:
   header-{context,constant-name,known-name,diagnostic-mapping}-originals.json,
   mapping-inputs and header-originals-bindings (6a207484).
 
-At handoff runtime4 has a distinct publication829:295 literal originals pass.
+At handoff runtime4 has a distinct `.tools/runtime4-quiet-publication/candidate-inputs.json`
+publication829 (manifest SHA256 `eaee7a65d73ef178b2979c33151ccdd02bb3c2c9b409363a7faf0d0d14a55331`):
+295 literal originals pass. The earlier286 independent review is
+a different selection, including16 reviewer extras; establish exact source-byte
+membership and dependency binding, not a count-based equivalence.
 Compiler durable `quiet_access_compiler.py` covers240 exact native lints and12
 flag/access/original-array/effect-marker controls. Three old test consumers still
 expect now-admitted Unsupported names/header/quiet cases. Compiler4 is preparing
@@ -62,7 +69,8 @@ its setup error and script remain in `review6-coalesce-compiler`.
 Original runtime `.tools/runtime4-coalesce-assign/candidate-inputs.json`832 is
 immutable. Missing/zero/duplicate internal CODEWRITE descriptors used to continue;
 exact raw states are `codewrite-first-63grjenw`. Corrected immutable
-`.tools/runtime4-coalesce-guarded/candidate-inputs.json`834 adds a recursive guard
+`.tools/runtime4-coalesce-guarded/candidate-inputs.json`834
+(SHA256 `8ca3f2738f83897b6b8d8a0a376054320bcb2669e4c0ca98c74405fbce7f102c`) adds a recursive guard
 for a unique positive descriptor at every VAR/DIM occurrence before quiet read/RHS.
 A suspected temporary-LHS compiler gap proved unreachable source syntax; no patch:
 compiler25 controls comprise16 accepted exact cases and9 parser rejections.
@@ -97,7 +105,8 @@ catalogues. QUIET-CV-REVIEW.md records source-backed design details.
 ## Remaining work and next checks
 
 GLOBALS compiler `.tools/globals-name-compiler-checked/frozen-review-inputs.json`
-freezes428 (0bc5f23b), author330 traces+8 metadata. It retains the first real
+freezes428 (SHA256 `0bc5f23b53eabfc4c4e7dd9ed8d83824acc1544262439eb167ca0109ef7bece2`),
+author330 traces+8 metadata. It retains the first real
 GLOBALS-unset[] wrong-message state and direct-global-only correction. Independent
 review remains pending. No source/request-environment admission follows from lints.
 VM ZEND_FETCH_GLOBALS always duplicates via zend_proptable_to_symtable; source tests
