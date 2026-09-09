@@ -9,16 +9,16 @@ freezes and stage only owned files. Selected tests do not close a family.
 
 ## Current gate
 
-String write/reference-error activation `8f1b47a2`, after exact terminator metadata
-`64e320b0`, passed **664 original-source comparisons +23 outcome negatives**.
-Namespace source lookup was accepted in `d5d28dc6`. Independent write evidence
-retains 103 exact sources and one explicit compiler Unsupported boundary:
-`<?php "abc"[0]="X";` is rejected by native PHP during compilation. Compiler owns
-that temporary-lvalue admission and error-order work in the next milestone.
-All 14 retained bare-break line observations now agree. See
-[write review](../../coverage/semantics/dimension-write-review.json) for the final
-helper gates and metadata evidence. Accepted implementation fingerprint:
-`e3483738a1669d7ffbcb16291c9f8886bf00875ae5845dcdba580304e4b89e18` (763 files).
+Legacy production source traversal/classifiers are retired in `846dc3d2` after string writes
+`8f1b47a2`. Temporary-lvalue rejection `32d4163a` preserves surrounding RHS compile
+priority and rejects temporary children before visiting them. The final gate passed
+**686 exact source comparisons +24 outcome negatives**, with independent 38 exact
+alternates plus two call/property Unsupported boundaries. Independent origins
+25/333 and compiler bridge 15/148 repeats passed; compiler 728 lint +15 emission
+observations and ownership 617+96/5,434 share the same closure. See
+[review evidence](../../coverage/semantics/traversal-temporary-review.json).
+Accepted fingerprint: `57bff379390b781cf115e65da85ebdc2c0852d7c07282f8be99c0cc058cac266`
+(763 files). Control compiler/runtime drafts follow this checkpoint.
 
 The inventory contains 169 constructors and 306 obligations. Only
 `validation.oracle-pin` closes, against the archived six-case source evidence
@@ -102,7 +102,6 @@ Frontend early compile restrictions (including some parameter/type restrictions)
 still need proper source-phase treatment. The intentional namespace-relative
 `static` divergence remains separately recorded with source activation proof
 pending. See [DISCREPANCIES](DISCREPANCIES.md) for unchanged raw failures and
-resolutions. The obsolete bare source/checker traversal has a runtime-owner
-cleanup draft that removes production `run_source`/`run_statements` and moves
-the unchecked wrapper into the source-origins fixture. Until reviewed, those
-legacy helpers remain separate from the public compiler/pool execution path.
+resolutions. Production no longer exposes bare `run_source`/`run_statements` or recursive
+availability/classification traversals. Source-origin fixtures alone define an
+explicitly unchecked task wrapper; public execution uses full ordered compilation.

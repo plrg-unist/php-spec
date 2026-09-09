@@ -26,8 +26,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 ## Active ownership
 
 - Reviewer: independent source/helper gates, discrepancy history, inventory and closure evidence.
-- Runtime bridge: legacy traversal cleanup, control/loops, then unpack/destructuring/foreach.
-- Compiler: control ordering/body metadata and writable-context checks, then declarations/defaults and calls.
+- Runtime bridge: control/loops, then unpack/destructuring/foreach.
+- Compiler: control ordering/body metadata, then declarations/defaults and calls.
 - Shared tree: stage owned files, commit independently reviewed increments, never push.
 
 ## Accepted evidence
@@ -37,18 +37,20 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   reviewed at `6b5981cc`. No constructor or PHP semantic family closes. Governance
   `ffdc131d` binds closure to source cases/raw bytes and independent review;
   `--complete` additionally rejects stale fingerprints and unfinished obligations.
-- Source machine **`8f1b47a2`** passed **664 exact source comparisons
-  +23 outcome negatives**. Compiler/pool bridge `537d13de` makes full compilation
+- Source machine passed **686 exact source comparisons +24 outcome negatives**
+  after legacy traversal retirement `846dc3d2` and temporary-lvalue errors `32d4163a`.
+  [Independent review](coverage/semantics/traversal-temporary-review.json) records
+  38 alternate exact sources plus two Unsupported boundaries at `57bff379`. Compiler/pool bridge `537d13de` makes full compilation
   precede execution; real filename bytes are bound before compilation, failed
   compilation suppresses recorded work, and successful work executes once with
   lexical origins. Permanent pools supply compiled read operands with effective lines and byte diagnostics.
   [Independent evidence](coverage/semantics/runtime-compiler-review.json) retains source, state and byte probes.
   Generic scalar/string reads are now active, with 64 additional exact source
   probes in [read evidence](coverage/semantics/dimension-read-review.json).
-  String writes/reference errors passed 103 alternate exact sources; one temporary
-  lvalue remains explicit Unsupported. [Write evidence](coverage/semantics/dimension-write-review.json)
+  String writes/reference errors passed 103 alternate exact sources. Temporary
+  scalar/array/expression targets now reject during compilation with correct ordering. [Write evidence](coverage/semantics/dimension-write-review.json)
   retains ordering, captured locations/COW and the final helper gates.
-- Ordered compiler/access and constant helpers passed **706 native lint cases,
+- Ordered compiler/access and constant helpers passed **728 native lint cases,
   15 emission-line observations, 4 Unsupported contexts**, 8 sources/24 access
   roles, metadata/export controls and independent alternates. Partial AST facts,
   ordinary code-generation values and executable access descriptors stay distinct.
@@ -92,9 +94,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Next gates and retained decisions
 
-Runtime proceeds through legacy traversal cleanup, control/loops, then
-unpack/destructuring/foreach. Compiler handles control ordering/body metadata and
-temporary-expression write checks before declarations/defaults and calls. The
+Runtime proceeds through control/loops, then unpack/destructuring/foreach. Compiler
+handles control ordering/body metadata before declarations/defaults and calls. The
 [qualified constant alias discrepancy](coverage/semantics/qualified-constant-alias-disagreement.json)
 is resolved by `d5d28dc6`: all seven originals agree, including preceding output
 before missing-name errors. Original failures and temporary guard `ff941f17`
@@ -108,7 +109,8 @@ prepass barriers; preserve key coercion, delayed reads and owner timing.
 Uncollected cycles retain observable reference owners. Constant occurrences reuse
 installed values; distinct NaN-array occurrences retain distinct identity.
 Collection and original-source repeated loop/function execution remain pending.
-Legacy bare source helpers and residual checker dependencies require retirement.
+Production bare source helpers and recursive classifiers are retired; unchecked
+origin tracing exists only in the test fixture.
 The reviewed [reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) records exact
 commands, ownership and high-risk next witnesses.
 

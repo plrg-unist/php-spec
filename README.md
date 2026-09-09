@@ -1,11 +1,11 @@
 # PHP syntax in P4-SpecTec
 
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
-PHP-Parser 5.8.0 to checked P4-SpecTec values. The complete grammar/scanner
-inventory and 169 constructors pass validation. All 30,980 corpus records are
-classified with no unresolved failures; the [frontend repair audit](coverage/frontend-syntax-repair.json)
-records the full campaign and exact final syntax-input equality with its isolated
-validation snapshot. The earlier [portability evidence](coverage/portability.json)
+PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory contains 169 constructors. The historical
+[frontend repair audit](coverage/frontend-syntax-repair.json) classified all
+30,980 corpus records with no unresolved failures and recorded exact syntax-input
+equality with its isolated validation snapshot. Later source-metadata changes
+have bounded regression evidence; a fresh full corpus audit remains pending. The earlier [portability evidence](coverage/portability.json)
 records a fresh offline rebuild before this frontend repair; the new audit uses
 copied executables and makes no new rebuild or portability claim.
 Executable core semantics are now being implemented; see the

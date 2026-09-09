@@ -151,13 +151,16 @@
         "spec/semantics/41-array-control.watsup",
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/39-ownership.watsup",
-        "spec/semantics/42-array-write-control.watsup"
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/44-dimension-read.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -190,7 +193,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
+      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json."
     },
     {
       "node": "Expr_AssignOp_BitwiseAnd",
@@ -2167,7 +2170,7 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json"
       ],
-      "review": "Independent scalar-storage review accepted commit 5a083605; composite places and broader contexts pending."
+      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json."
     },
     {
       "node": "Stmt_Use",
@@ -2289,12 +2292,13 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "coverage/semantics/traversal-temporary-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution."
+      "review": "Public execution completes ordered compilation, installs permanent per-unit pools and consumes exact occurrence descriptors for constants, names and effective lines. Namespace constant source lookup and scalar/string dimensions are active. Legacy production source traversal/classifiers are retired; unchecked trace execution exists only in test fixtures. Independent review records source, origin/resumption, pool and compiler gates. Declarations/defaults, source loops/functions and dynamic units remain pending."
     },
     {
       "id": "source.encodings",
@@ -4908,15 +4912,23 @@
     {
       "id": "static.lvalue-rejection",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/source_compiler.py",
+        "coverage/semantics/source-compiler.json"
+      ],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/traversal-temporary-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": "Temporary scalar, array, named-constant, admitted arithmetic/unary and assignment write/unset operands reject before children, preserving surrounding assignment RHS compile priority. Independent 38 exact alternate sources and two explicit call/property boundaries passed. Broader lvalue contexts, calls/properties, destructuring and readonly/type constraints remain pending."
     },
     {
       "id": "static.control-targets",
