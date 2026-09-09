@@ -90,8 +90,9 @@ restored loop context. Checked position type/range is not source authenticity.
    before changing these draft hashes. Old `.tools/46-update-compiler.watsup` and
    its generator predate incdec/this/nullsafe corrections and must not overwrite
    accepted files. The fresh draft adds 12 explicit PFSTOP barriers and temporary
-   shapes. Target is PPRW before RHS; keys are PPR, direct `$this` rebinding rejects
-   (unlike inc/dec), parent ending line follows RHS, and existing potential-self
+   shapes. Target is PPRW before RHS; keys are PPR. Compound `$this` is lint-valid
+   like inc/dec; the old draft guard was wrong (see retained compound originals).
+   Parent ending line follows RHS, and existing potential-self
    DIM/CV handling remains. Runtime distinguishes direct-CV RHS reading, dynamic-name
    FETCH_RW before delayed RHS CV reading and final DIM location acquisition before delayed
    RHS read. Gate these against retained `.tools/update-compiler-originals.json`.

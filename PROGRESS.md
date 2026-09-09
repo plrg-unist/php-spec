@@ -26,7 +26,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 ## Active ownership
 
 - Runtime: compound operations and remaining numeric dispatch, then arrays/foreach.
-- Compiler: compound descriptors and ordinary-array omission repair, then declarations/frames.
+- Compiler: nullable ordinary-array omission representation, then declarations/frames.
 - Reviewer: independent gates, discrepancy history, inventory, concise docs and progress.
 - Stage owned files, commit reviewed increments, never push. Save watched bytes and run evidence/inventory preflight before long campaigns.
 
@@ -84,7 +84,11 @@ must reject unfinished or stale entries.
 Pair twelve compound assignments with checked PPRW/PFSTOP order, captured targets,
 delayed CV RHS reads, array `+=` and exact diagnostics. The rebased private prototype
 passes 81 author originals/1,204 assertions, with additional timing controls; it
-still needs independent and dedicated compiler gates. Remaining numeric/byte/power
+still needs production admission. Independent review found an incorrect early
+compound `$this` rejection and a delayed DIM diagnostic-line error; immutable
+originals are linked in the discrepancy ledger. A corrected compiler guard passes
+324 phase probes, and 133 independent runtime originals/3,377 state assertions
+pass its bounded draft. DIM opcode-line correction and full gates remain pending. Remaining numeric/byte/power
 operators, casts and literal-concat variable-name classification are separate
 source work. Computed plain-write/reference/unset environment-name protocols remain
 prior explicit boundaries. `??=` requires quiet reads and memoized writes.

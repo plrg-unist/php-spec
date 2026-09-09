@@ -352,3 +352,24 @@ variables use the dimension opcode's line instead. Both lines already exist in
 checked access descriptors; runtime correction `7d5718fb` now preserves both. All seven originals pass in the
 [independently audited source gate](../../coverage/semantics/incdec-review.json),
 with 71 additional context replays. No intentional divergence is selected.
+
+## Compound draft corrections: follow the pin
+
+Independent review found an incorrect early `$this` rejection in the unpublished
+compound compiler draft. Unlike assignment and reference rebinding, compound
+updates compile `$this` normally; a global direct fetch then raises the missing
+object-context error. An invalid RHS can fail during compilation first.
+[72 originals](../../coverage/semantics/compound-this-originals.json) preserve
+both native phases and the rejected draft's exact completion trace. The correction
+uses `zend_compile_compound_assign` and `zend_compile_simple_var`; no engine
+divergence is intended. Production admission and resolution evidence remain pending.
+
+A second draft error used the final compiler line for a delayed dimension opcode.
+[Three runtime originals](../../coverage/semantics/compound-line-runtime-originals.json)
+retain a native arithmetic warning on line 3 versus the draft's line 5;
+[72 compiler controls](../../coverage/semantics/compound-line-originals.json)
+separate final compiler context from the earlier target opcode's line. The parent
+expression descriptor correctly retains final compiler context. Final DIM compound
+conversion and delayed RHS reads must use the captured target opcode line, while
+forced RHS expressions retain their own diagnostics. Production resolution remains
+pending; `zend_delayed_compile_end` explains the distinction.
