@@ -25,6 +25,7 @@ if [[ "$phase" == all || "$phase" == php ]]; then
         !extension_loaded("mbstring") || !extension_loaded("ctype")) exit(1);
     echo "PHP ", PHP_VERSION, " CLI; tokenizer/JSON/mbstring/ctype enabled\n";'
   scripts/build-file-helper.sh
+  scripts/build-request-provider.sh
 fi
 if [[ "$phase" == all || "$phase" == opam ]]; then
   opam_root="$project_dir/.tools/opam"
