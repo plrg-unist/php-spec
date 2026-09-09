@@ -14,6 +14,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tests'))
 import validate
 
+ARCHIVES = ['coverage/semantics/comparison-phase-originals.json',
+            'coverage/semantics/comparison-overflow-draft-disagreement.json']
+
 
 def check_inventory_paths():
     with tempfile.TemporaryDirectory(prefix='php-inventory-') as directory:
@@ -70,7 +73,7 @@ def check_closure_bindings():
             target.write_bytes((ROOT / name).read_bytes())
         for name in ('Makefile', 'dune-project', '.tools/php/bin/php', '.tools/php-file.so',
                      '_build/default/adapter/main.exe', 'coverage/encoding-spellings.json',
-                     'spec/rule.watsup'):
+                     'spec/rule.watsup', *ARCHIVES):
             target = root / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(b'fixture')
@@ -189,7 +192,7 @@ def main():
                  '.tools/php-file.so', '_build/default/adapter/main.exe',
                  'coverage/encoding-spellings.json']
         helper_name = 'tests/semantics/_build/default/numeric_runner.exe'
-        for name in fixed + [helper_name, 'spec/semantics/rules.watsup', 'tests/fixture.php',
+        for name in fixed + ARCHIVES + [helper_name, 'spec/semantics/rules.watsup', 'tests/fixture.php',
                              'tests/semantics/dune', 'tests/semantics/data.json']:
             path = root / name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -243,11 +246,21 @@ def main():
                 log.unlink()
                 assert before == validate.implementation_fingerprint(), 'build log removal changed identity'
             for name in ('tests/semantics/dune', 'tests/semantics/data.json',
-                         '_build/default/adapter/main.exe', helper_name):
+                         '_build/default/adapter/main.exe', helper_name, *ARCHIVES):
                 artifact = root / name
                 artifact.write_bytes(b'modified')
                 assert before != validate.implementation_fingerprint(), f'changed input ignored: {name}'
                 artifact.write_bytes(b'original')
+            for name in ARCHIVES:
+                archive = root / name
+                archive.unlink()
+                try:
+                    validate.implementation_fingerprint()
+                except FileNotFoundError:
+                    pass
+                else:
+                    raise AssertionError(f'missing mandatory archive accepted: {name}')
+                archive.write_bytes(b'original')
             helper = root / helper_name
             helper.unlink()
             assert before != validate.implementation_fingerprint(), 'deleted helper binary ignored'
@@ -257,7 +270,7 @@ def main():
             validate.ROOT = original_root
     check_inventory_paths()
     check_closure_bindings()
-    print('11 stale-identity, 3 invalid-path and 17 invalid-closure checks rejected; valid source/divergence bindings passed; 9 build-log changes ignored')
+    print('15 stale-identity, 3 invalid-path and 17 invalid-closure checks rejected; valid source/divergence bindings passed; 9 build-log changes ignored')
 
 
 if __name__ == '__main__':

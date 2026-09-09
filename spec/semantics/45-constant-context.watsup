@@ -12,6 +12,9 @@ syntax pfitem = PFITEM pvalue? pfkey bool
 syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text
 var F : pfstate
 
+dec $pfwarning_binary(pbin) : bool
+def $pfwarning_binary(pbin) = (pbin <- [LOGICALXOR, EQUAL, NOTEQUAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, SPACESHIP])
+
 dec $pfredirect((pcpath, pcpath)*, pcpath) : pcpath?
 dec $pfwarning_events(pevent*, pcpath) : (pcpath, ptbytes, int)*
 dec $pfwarned(pfstate, pcpath, pstate) : pfstate
@@ -73,6 +76,13 @@ def $pfshape(NExprBinaryOpMul expression_1 expression_2 metadata) = PFBINARY MUL
 def $pfshape(NExprBinaryOpDiv expression_1 expression_2 metadata) = PFBINARY DIVIDE expression_1 expression_2
 def $pfshape(NExprBinaryOpIdentical expression_1 expression_2 metadata) = PFBINARY IDENTICAL expression_1 expression_2
 def $pfshape(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = PFBINARY NOTIDENTICAL expression_1 expression_2
+def $pfshape(NExprBinaryOpEqual expression_1 expression_2 metadata) = PFBINARY EQUAL expression_1 expression_2
+def $pfshape(NExprBinaryOpNotEqual expression_1 expression_2 metadata) = PFBINARY NOTEQUAL expression_1 expression_2
+def $pfshape(NExprBinaryOpSmaller expression_1 expression_2 metadata) = PFBINARY LESS expression_1 expression_2
+def $pfshape(NExprBinaryOpSmallerOrEqual expression_1 expression_2 metadata) = PFBINARY LESSEQUAL expression_1 expression_2
+def $pfshape(NExprBinaryOpGreater expression_1 expression_2 metadata) = PFBINARY GREATER expression_1 expression_2
+def $pfshape(NExprBinaryOpGreaterOrEqual expression_1 expression_2 metadata) = PFBINARY GREATEREQUAL expression_1 expression_2
+def $pfshape(NExprBinaryOpSpaceship expression_1 expression_2 metadata) = PFBINARY SPACESHIP expression_1 expression_2
 def $pfshape(NExprBooleanNot expression metadata) = PFNOT expression
 def $pfshape(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = PFSHORT false expression_1 expression_2
 def $pfshape(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = PFSHORT false expression_1 expression_2
@@ -130,7 +140,7 @@ def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue), z)
   -- if F.MEMORY.COMPLETION = NORMAL
-  -- if pbin =/= LOGICALXOR
+  -- if ~$pfwarning_binary(pbin)
   -- if $constant_state($binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z)) = (S)
   -- if S.RESULT = KNOWN pvalue
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F[.VALUE = eps]
@@ -268,10 +278,12 @@ def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNIN
   -- if S.RESULT = KNOWN pvalue
 def $pftruth(F, pcpath, pvalue, z) = $pfwarned(F, pcpath, $truth_value(F.MEMORY, pvalue, z))
 
-;; Unlike arithmetic guards, constant XOR permits its Boolean coercion warnings.
-def $pfbinary(F, pcpath, LOGICALXOR, (pvalue_left), (pvalue_right), z) = $pfremember(F_result, pcpath, F_result.VALUE, z)
+;; Constant Boolean/comparison operations permit their coercion warnings;
+;; arithmetic operations retain their separate error-producing operand guard.
+def $pfbinary(F, pcpath, pbin, (pvalue_left), (pvalue_right), z) = $pfremember(F_result, pcpath, F_result.VALUE, z)
   -- if F.MEMORY.COMPLETION = NORMAL
-  -- if S = $binary_apply(F.MEMORY, LOGICALXOR, pvalue_left, pvalue_right, z)
+  -- if $pfwarning_binary(pbin)
+  -- if S = $binary_apply(F.MEMORY, pbin, pvalue_left, pvalue_right, z)
   -- if S.COMPLETION = NORMAL
   -- if F_result = $pfwarned(F, pcpath, S)
 

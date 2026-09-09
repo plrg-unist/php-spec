@@ -44,4 +44,6 @@ test-semantics: build
 	python3 tests/semantics/source_context.py
 	python3 tests/semantics/truth_compiler.py
 	python3 tests/semantics/truth_expressions.py
+	python3 tests/semantics/comparison_compiler.py
+	python3 tests/semantics/comparison.py
 	python3 tests/semantics/validate.py

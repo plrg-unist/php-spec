@@ -243,7 +243,9 @@ def implementation_fingerprint():
              if path.is_file() and not {'__pycache__', '_build'}.intersection(path.relative_to(ROOT).parts)
              and path.suffix != '.pyc']
     paths += [ROOT / name for name in ['Makefile', 'dune-project', '.tools/php/bin/php',
-              '.tools/php-file.so', '_build/default/adapter/main.exe', 'coverage/encoding-spellings.json']]
+              '.tools/php-file.so', '_build/default/adapter/main.exe', 'coverage/encoding-spellings.json',
+              'coverage/semantics/comparison-phase-originals.json',
+              'coverage/semantics/comparison-overflow-draft-disagreement.json']]
     # Dune bookkeeping is generated, but executed artifacts remain evidence
     # inputs. Syntax-only builds need not have built the semantic helper yet;
     # helper campaigns also require and fingerprint this binary directly.
@@ -254,7 +256,7 @@ def implementation_fingerprint():
     for path in sorted(set(paths)):
         digest.update(str(path.relative_to(ROOT)).encode() + b'\0')
         digest.update(hashlib.sha256(path.read_bytes()).digest())
-    return {'sha256': digest.hexdigest(), 'files': len(set(paths)), 'scope': roots + ['Makefile', 'dune-project', 'runtime binaries', 'encoding-spellings inventory']}
+    return {'sha256': digest.hexdigest(), 'files': len(set(paths)), 'scope': roots + ['Makefile', 'dune-project', 'runtime binaries', 'encoding-spellings inventory', 'comparison oracle archives']}
 
 
 def classify_documented_invalid(result):

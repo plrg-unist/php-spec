@@ -1,0 +1,164 @@
+;; Six-value comparison. Sources: zend_operators.c:2260-2468,
+;; 3421-3498 and zend_hash.c:3104-3236. Callback/object comparisons are separate.
+syntax porder = ORDER int | ORDERRECURSIVE
+
+;; The scanner overflows after twenty significant integer-prefix digits, before
+;; inspecting a decimal/exponent suffix. Rescaling does not erase this provenance.
+;; Shorter prefixes overflow only on the integer path (including its boundary
+;; suffix comparison), already distinguished by numeric_string result typing.
+dec $string_integer_overflow(nat*) : int
+def $string_integer_overflow(n*) = $nsigned(n_sign, 1)
+  -- if $numeric_string(n*) = FULLNUM (NFLOAT n_float)
+  -- if (n_sign, n_digits*) = $ntsign($nttrim(n*))
+  -- if DIGITS n_value n_count n_rest* = $ntdigits(n_digits*, 0, 0)
+  -- if $(n_count > 0)
+  -- if $(n_value >= 10000000000000000000) \/ $nttrim(n_rest*) = eps
+def $string_integer_overflow(n*) = 0 -- otherwise
+
+dec $string_numeric_fallback(nat*, nat*, pnumber, pnumber) : bool
+def $string_numeric_fallback(n_left*, n_right*, NFLOAT n_left_bits, NFLOAT n_right_bits) = true
+  -- if i = $string_integer_overflow(n_left*)
+  -- if i =/= 0
+  -- if i = $string_integer_overflow(n_right*)
+  -- if $num_zero(NFLOAT $float_sub(n_left_bits, n_right_bits))
+def $string_numeric_fallback(n_left*, n_right*, NFLOAT n_left_bits, NFLOAT n_right_bits) = true
+  -- if $float_decode(n_left_bits) = INFINITE n_sign
+  -- if $float_decode(n_right_bits) = INFINITE n_sign
+def $string_numeric_fallback(n_left*, n_right*, pnumber_left, pnumber_right) = false -- otherwise
+
+dec $string_numeric_order(nat*, nat*, pnumber, pnumber) : int
+def $string_numeric_order(n_left*, n_right*, pnumber_left, pnumber_right) = $ntbyte_compare(n_left*, n_right*)
+  -- if $string_numeric_fallback(n_left*, n_right*, pnumber_left, pnumber_right)
+def $string_numeric_order(n_left*, n_right*, NINT i, NFLOAT n) = $(-i_overflow)
+  -- if i_overflow = $string_integer_overflow(n_right*)
+  -- if i_overflow =/= 0
+def $string_numeric_order(n_left*, n_right*, NFLOAT n, NINT i) = i_overflow
+  -- if i_overflow = $string_integer_overflow(n_left*)
+  -- if i_overflow =/= 0
+def $string_numeric_order(n_left*, n_right*, pnumber_left, pnumber_right) = $num_compare(pnumber_left, pnumber_right) -- otherwise
+
+dec $string_order(nat*, nat*) : int
+def $string_order(n_left*, n_right*) = $string_numeric_order(n_left*, n_right*, pnumber_left, pnumber_right)
+  -- if $numeric_string(n_left*) = FULLNUM pnumber_left
+  -- if $numeric_string(n_right*) = FULLNUM pnumber_right
+def $string_order(n_left*, n_right*) = $ntbyte_compare(n_left*, n_right*) -- otherwise
+
+dec $number_string_order(pnumber, nat*) : int
+def $number_string_order(pnumber, n*) = $num_compare(pnumber, pnumber_string)
+  -- if $numeric_string(n*) = FULLNUM pnumber_string
+def $number_string_order(pnumber, n*) = $ntbyte_compare($echo_value($number_value(pnumber)), n*) -- otherwise
+
+dec $bool_order(bool, bool) : int
+def $bool_order(b, b) = 0
+def $bool_order(false, true) = $(-1)
+def $bool_order(true, false) = 1
+dec $boolish(pvalue) : bool
+def $boolish(PNULL) = true
+def $boolish(PBOOL b) = true
+def $boolish(pvalue) = false -- otherwise
+
+dec $null_string_pair(pvalue, pvalue) : bool
+def $null_string_pair(PNULL, PSTRING n*) = true
+def $null_string_pair(PSTRING n*, PNULL) = true
+def $null_string_pair(pvalue_left, pvalue_right) = false -- otherwise
+dec $scalar_order(pstate, pvalue, pvalue) : int
+def $scalar_order(S, PSTRING n_left*, PSTRING n_right*) = $string_order(n_left*, n_right*)
+def $scalar_order(S, PNULL, PSTRING eps) = 0
+def $scalar_order(S, PSTRING eps, PNULL) = 0
+def $scalar_order(S, PNULL, PSTRING (n :: n_tail*)) = $(-1)
+def $scalar_order(S, PSTRING (n :: n_tail*), PNULL) = 1
+;; Pure truth intentionally suppresses NaN coercion notices here, matching
+;; zend_compare's explicit NaN/null/bool compatibility branch.
+def $scalar_order(S, pvalue_left, pvalue_right) = $bool_order($truth(S, pvalue_left), $truth(S, pvalue_right))
+  -- if $boolish(pvalue_left) \/ $boolish(pvalue_right)
+  -- if ~$null_string_pair(pvalue_left, pvalue_right)
+def $scalar_order(S, PINT i_left, PINT i_right) = $compare_int(i_left, i_right)
+def $scalar_order(S, PFLOAT n, PINT i) = $num_compare(NFLOAT n, NINT i)
+def $scalar_order(S, PINT i, PFLOAT n) = $num_compare(NINT i, NFLOAT n)
+def $scalar_order(S, PFLOAT n_left, PFLOAT n_right) = $float_compare(n_left, n_right)
+def $scalar_order(S, PINT i, PSTRING n*) = $number_string_order(NINT i, n*)
+def $scalar_order(S, PSTRING n*, PINT i) = $(-$number_string_order(NINT i, n*))
+def $scalar_order(S, PFLOAT n, PSTRING n_string*) = 1
+  -- if $fparts_nan($float_decode(n))
+def $scalar_order(S, PSTRING n_string*, PFLOAT n) = 1
+  -- if $fparts_nan($float_decode(n))
+def $scalar_order(S, PFLOAT n, PSTRING n_string*) = $number_string_order(NFLOAT n, n_string*)
+  -- if ~$fparts_nan($float_decode(n))
+def $scalar_order(S, PSTRING n_string*, PFLOAT n) = $(-$number_string_order(NFLOAT n, n_string*))
+  -- if ~$fparts_nan($float_decode(n))
+def $scalar_order(S, PARRAY n, pvalue) = 1
+  -- if ~$boolish(pvalue)
+  -- if $type_bytes(pvalue) =/= [97,114,114,97,121]
+def $scalar_order(S, pvalue, PARRAY n) = $(-1)
+  -- if ~$boolish(pvalue)
+  -- if $type_bytes(pvalue) =/= [97,114,114,97,121]
+
+dec $value_order(pstate, pvalue, pvalue, nat*) : porder
+dec $entries_order(pstate, pentry*, pentry*, nat*) : porder
+def $entries_order(S, eps, pentry_right*, n_seen*) = ORDER 0
+def $entries_order(S, (ENTRY pkey pitem) :: pentry_left*, pentry_right*, n_seen*) = ORDER 1
+  -- if $entry_lookup(pentry_right*, pkey) = eps
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, n_seen*) = $entries_order(S, pentry_left*, pentry_right*, n_seen*)
+  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), n_seen*) = ORDER 0
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, n_seen*) = ORDER i
+  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), n_seen*) = ORDER i
+  -- if i =/= 0
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, n_seen*) = ORDERRECURSIVE
+  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
+  -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), n_seen*) = ORDERRECURSIVE
+
+def $value_order(S, PARRAY n, PARRAY n, n_seen*) = ORDER 0
+def $value_order(S, PARRAY n_left, PARRAY n_right, n_seen*) = ORDERRECURSIVE
+  -- if n_left =/= n_right
+  -- if n_left <- n_seen*
+def $value_order(S, PARRAY n_left, PARRAY n_right, n_seen*) = ORDER $compare_int(|S.ARRAYS[n_left].ITEMS|, |S.ARRAYS[n_right].ITEMS|)
+  -- if n_left =/= n_right
+  -- if ~(n_left <- n_seen*)
+  -- if |S.ARRAYS[n_left].ITEMS| =/= |S.ARRAYS[n_right].ITEMS|
+def $value_order(S, PARRAY n_left, PARRAY n_right, n_seen*) = $entries_order(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, n_left :: n_seen*)
+  -- if n_left =/= n_right
+  -- if ~(n_left <- n_seen*)
+  -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
+def $value_order(S, pvalue_left, pvalue_right, n_seen*) = ORDER $scalar_order(S, pvalue_left, pvalue_right) -- otherwise
+
+dec $comparison_operator(pbin) : bool
+def $comparison_operator(pbin) = (pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, SPACESHIP])
+dec $comparison_value(pbin, int) : pvalue
+def $comparison_value(EQUAL, i) = PBOOL (i = 0)
+def $comparison_value(NOTEQUAL, i) = PBOOL (i =/= 0)
+def $comparison_value(LESS, i) = PBOOL $(i < 0)
+def $comparison_value(LESSEQUAL, i) = PBOOL $(i <= 0)
+def $comparison_value(GREATER, i) = PBOOL $(i < 0)
+def $comparison_value(GREATEREQUAL, i) = PBOOL $(i <= 0)
+def $comparison_value(SPACESHIP, i) = PINT i
+dec $comparison_result(pstate, pbin, porder, int) : pstate
+def $comparison_result(S, pbin, ORDER i, z) = S[.RESULT = KNOWN $comparison_value(pbin, i)]
+def $comparison_result(S, pbin, ORDERRECURSIVE, z) = $throw_scalar(S, "Error", [78,101,115,116,105,110,103,32,108,101,118,101,108,32,116,111,111,32,100,101,101,112,32,45,32,114,101,99,117,114,115,105,118,101,32,100,101,112,101,110,100,101,110,99,121,63], z)
+def $binary_apply(S, pbin, pvalue_left, pvalue_right, z) = $comparison_result(S, pbin, $value_order(S, pvalue_right, pvalue_left, eps), z)
+  -- if pbin = GREATER \/ pbin = GREATEREQUAL
+def $binary_apply(S, pbin, pvalue_left, pvalue_right, z) = $comparison_result(S, pbin, $value_order(S, pvalue_left, pvalue_right, eps), z)
+  -- if $comparison_operator(pbin)
+  -- if pbin =/= GREATER /\ pbin =/= GREATEREQUAL
+
+rule PhpStep/comparison-equal: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT EQUAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpEqual expression_1 expression_2 metadata)) :: ptask_tail*
+
+rule PhpStep/comparison-notequal: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT NOTEQUAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpNotEqual expression_1 expression_2 metadata)) :: ptask_tail*
+
+rule PhpStep/comparison-less: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT LESS expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpSmaller expression_1 expression_2 metadata)) :: ptask_tail*
+
+rule PhpStep/comparison-lessequal: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT LESSEQUAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpSmallerOrEqual expression_1 expression_2 metadata)) :: ptask_tail*
+
+rule PhpStep/comparison-greater: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT GREATER expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpGreater expression_1 expression_2 metadata)) :: ptask_tail*
+
+rule PhpStep/comparison-greaterequal: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT GREATEREQUAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpGreaterOrEqual expression_1 expression_2 metadata)) :: ptask_tail*
+
+rule PhpStep/comparison-spaceship: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT SPACESHIP expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpSpaceship expression_1 expression_2 metadata)) :: ptask_tail*

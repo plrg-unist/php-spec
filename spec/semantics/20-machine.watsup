@@ -8,7 +8,7 @@ syntax pevent = OUTPUT nat* | WARNING nat* int | DIAGNOSTIC text nat* int
 syntax pcompletion = NORMAL | PHPERROR nat* int | THROWN text nat* int | STATICERROR text int | STATICBYTES nat* int | UNSUPPORTED text | BUDGET
 syntax pcheck = READY | REJECT pcompletion
 syntax peval = VALUE pvalue | ABRUPT pcompletion
-syntax pbin = LOGICALXOR | ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
+syntax pbin = EQUAL | NOTEQUAL | LESS | LESSEQUAL | GREATER | GREATEREQUAL | SPACESHIP | LOGICALXOR | ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
 syntax punary = POSITIVE | NEGATIVE
 syntax pcomparison = COMPARED bool | RECURSIVE
 var z : int
@@ -94,6 +94,13 @@ def $expression_line(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) 
 def $expression_line(NExprBinaryOpLogicalXor expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprBooleanNot expression metadata) = $expression_line(expression)
 def $expression_line(NExprTernary expression_1 phpType5 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpEqual expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpNotEqual expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpSmaller expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpSmallerOrEqual expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpGreater expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpGreaterOrEqual expression_1 expression_2 metadata) = $expression_line(expression_1)
+def $expression_line(NExprBinaryOpSpaceship expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(expression) = 0
   -- otherwise
 
