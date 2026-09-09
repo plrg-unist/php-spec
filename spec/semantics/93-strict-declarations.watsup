@@ -1,0 +1,14 @@
+;; Only strict_types directives without a body have executable declaration work.
+;; Placement and unit/function flags are checked by the source compiler projection.
+dec $strict_work_items(phpType49*) : bool
+def $strict_work_items(eps) = true
+def $strict_work_items((NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) :: phpType49*) = true
+  -- if $ptlc($base64(text)) = $ptascii("strict_types")
+  -- if $parser_literal(expression) = (PINT z)
+  -- if z = 0 \/ z = 1
+  -- if $strict_work_items(phpType49*)
+def $strict_work_items(phpType49*) = false -- otherwise
+
+rule PhpStep/strict-declare: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) ABSENT metadata)) :: ptask_tail*
+  -- if $strict_work_items(phpType49*)

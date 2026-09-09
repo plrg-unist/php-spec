@@ -1,0 +1,10 @@
+{
+  "strict-zero-call": "<?php declare(strict_types=0);function f($x){return $x+1;}echo f(\"2\");",
+  "strict-one-call": "<?php declare(strict_types=1);function f($x){return $x+1;}echo f(\"2\");",
+  "strict-reference-default-cow": "<?php declare(strict_types=1);function f(&$x=[1]){$r=&$x[0];$r+=1;return $x;}$a=f();$b=f();$a[0]=7;echo $a[0],$b[0];",
+  "strict-default-cache": "<?php declare(strict_types=1);function f($x=1+\"2a\"){echo $x;}f();f();",
+  "strict-missing-argument-line": "<?php declare(strict_types=1);\nfunction f(\n$x,\n$y=3\n){}\nf();",
+  "strict-namespace-constant": "<?php declare(strict_types=1);namespace A {const C=\"abc\";}namespace B {use const A\\C as D;function f($x=D){echo $x;}f();f();}",
+  "strict-nested-call-owner": "<?php declare(strict_types=1);function g($x=[1]){$x[0]=3;return $x;}function f($x=[2]){$y=g();echo $x[0],$y[0];return $x;}$a=f();echo $a[0];",
+  "strict-one-then-zero": "<?php declare(strict_types=1);declare(strict_types=0);function f($x=3){echo $x;}f();f(7);"
+}

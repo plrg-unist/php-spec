@@ -244,7 +244,7 @@ def $compile_source_ready(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGN
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_functions(S_installed, P.FUNCTIONS)[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_functions(S_installed, P.FUNCTIONS)[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if P.FOLD.MEMORY.REFCELLS = eps

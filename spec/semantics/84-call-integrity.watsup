@@ -12,6 +12,7 @@ dec $call_declaration_node(pcnode) : bool
 def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
 def $call_declaration_node(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
 def $call_declaration_node(NConst phpType11 expression metadata) = true
+def $call_declaration_node(NStmtDeclare phpType48 phpType47 metadata) = true
 def $call_declaration_node(NExprConstFetch name metadata) = true
 def $call_declaration_node(pcnode) = false -- otherwise
 dec $call_declarations(pcoccurrence*) : bool
@@ -57,6 +58,7 @@ dec $constant_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $call_unit_names_valid(pstate, ppstate) : bool
 def $call_unit_names_valid(S, P) = true
   -- if $code_at(S.CODE, P.FOLD.SOURCE.ID) = (pcode)
+  -- if pcode.STRICT = P.ENV.STRICT
   -- if $call_name_entries_valid(S, P, pcode, pcode.NAMES ++ $compiled_names(P.NAMES))
   -- if $call_argument_paths(pcode.EXPRESSIONS) = $call_argument_paths($compiled_operands(P, P.EXPRESSIONS))
   -- if $constant_unit_code_valid(S, P, pcode)
@@ -66,6 +68,7 @@ dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
 def $call_unit_projection(S, pcunit) = FUNCTIONCHECK eps
   -- if ~$call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)
   -- if $code_at(S.CODE, pcunit.ID) = (pcode)
+  -- if ~pcode.STRICT
   -- if $call_argument_paths(pcode.EXPRESSIONS) = eps
 def $call_unit_projection(S, pcunit) = FUNCTIONCHECK P.FUNCTIONS
   -- if $call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)

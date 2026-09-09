@@ -99,6 +99,10 @@ test-semantics: build
 	python3 tests/semantics/default_parameter_protocol.py
 	python3 tests/semantics/default_readiness_protocol.py
 	python3 tests/semantics/default_parameter_state.py
+	python3 tests/semantics/strict_declaration_compiler.py
+	python3 tests/semantics/strict_declarations.py
+	python3 tests/semantics/strict_declaration_protocol.py
+	python3 tests/semantics/strict_declaration_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

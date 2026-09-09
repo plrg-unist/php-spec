@@ -1,0 +1,61 @@
+;; Private strict_types compiler prerequisite; runtime directive work is unpaired.
+dec $ppstrict_line(phpType49*) : int
+dec $ppstrict_items(ppstate, pcpath, phpType47, phpType49*) : ppstate
+dec $ppstrict_item(ppstate, pcpath, phpType47, phpType49) : ppstate
+dec $ppstrict_place(ppstate, pcpath, phpType47, pvalue) : ppstate
+dec $ppstrict_value(ppstate, pvalue) : ppstate
+dec $ppstrict_first(program, pcpath) : bool
+dec $ppstrict_prefix(statement*, nat) : bool
+dec $ppstrict_preceding(statement) : bool
+
+def $ppstatement(P, pcpath, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = $ppstrict_items($pplocate(P, pcpath, $ppstrict_line(phpType49*)), pcpath, phpType47, phpType49*)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppstrict_items(P, pcpath, phpType47, phpType49*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppstrict_items(P, pcpath, phpType47, eps) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstrict_items(P, pcpath, phpType47, phpType49 :: phpType49_tail*) = $ppstrict_items($ppstrict_item(P, pcpath, phpType47, phpType49), pcpath, phpType47, phpType49_tail*)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppconstant_error(P, $ptascii("declare(") ++ $base64(text) ++ $ptascii(") value must be a literal"), P.LOCATION.LINE)
+  -- if $parser_literal(expression) = eps
+def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppstrict_place(P, pcpath, phpType47, pvalue)
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $ptlc($base64(text)) = $ptascii("strict_types")
+def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppunsupported(P, "other declare directive compilation")
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $ptlc($base64(text)) =/= $ptascii("strict_types")
+def $ppstrict_item(P, pcpath, phpType47, phpType49) = $ppunsupported(P, "edited declare item")
+  -- otherwise
+
+def $ppstrict_place(P, pcpath, phpType47, pvalue) = $ppconstant_error(P, $ptascii("strict_types declaration must be the very first statement in the script"), P.LOCATION.LINE)
+  -- if ~$ppstrict_first(P.FOLD.SOURCE.AST, pcpath)
+def $ppstrict_place(P, pcpath, phpType47, pvalue) = $ppconstant_error(P, $ptascii("strict_types declaration must not use block mode"), P.LOCATION.LINE)
+  -- if $ppstrict_first(P.FOLD.SOURCE.AST, pcpath)
+  -- if phpType47 =/= ABSENT
+def $ppstrict_place(P, pcpath, ABSENT, pvalue) = $ppstrict_value(P, pvalue)
+  -- if $ppstrict_first(P.FOLD.SOURCE.AST, pcpath)
+
+def $ppstrict_value(P, PINT 0) = P
+def $ppstrict_value(P, PINT 1) = P[.ENV.STRICT = true]
+def $ppstrict_value(P, pvalue) = $ppconstant_error(P, $ptascii("strict_types declaration must have 0 or 1 as its value"), P.LOCATION.LINE)
+  -- otherwise
+
+;; Zend checks the original file list, allowing preceding null statements and
+;; any declare, but never treating a nested directive as a file-list member.
+def $ppstrict_first(program, [PCINDEX n]) = $ppstrict_prefix($pcprogram(program), n)
+def $ppstrict_first(program, pcpath) = false -- otherwise
+def $ppstrict_prefix(statement*, 0) = true
+def $ppstrict_prefix(statement :: statement_tail*, n) = ($ppstrict_preceding(statement) /\ $ppstrict_prefix(statement_tail*, n_previous))
+  -- if $(n > 0)
+  -- if n_previous = $(n - 1)
+def $ppstrict_prefix(eps, n) = false -- if $(n > 0)
+def $ppstrict_preceding(NStmtNop metadata) = true
+def $ppstrict_preceding(NStmtDeclare phpType48 phpType47 metadata) = true
+def $ppstrict_preceding(statement) = false -- otherwise
+
+;; Zend's declaration list inherits the first item's source line, including
+;; errors in later entries; the value expression's line does not replace it.
+def $ppstrict_line((NDeclareItem phpType11 expression metadata) :: phpType49*) = $source_line(metadata)
+def $ppstrict_line(eps) = 0
