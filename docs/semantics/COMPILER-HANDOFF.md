@@ -1,119 +1,166 @@
 # Compiler continuation
 
-Continue PLAN and PROGRESS toward complete core; never push. Read the php,
-php-spec and p4-spectec skills and DESIGN/VALIDATION. Use only local pinned
-PHP 8.5.10 CLI NTS64 and vendor/php-src. Runtime meaning belongs in pure `.watsup`;
-engine compile/eval answers are differential evidence only. Retain original bytes,
-raw failures and stable fingerprints. Unsupported, crashes and budget exhaustion
-are not passes. No semantic family is closed; only validation.oracle-pin is closed.
-The 30,980-record syntax audit is historical after metadata changes. Final complete
-syntax and fresh offline rebuild audits remain required.
+Read PLAN, current PROGRESS and the php/php-spec/p4-spectec skills first. Never
+push. Use only pinned PHP 8.5.10 CLI NTS64 and vendor/php-src as the oracle;
+meaning belongs in pure `.watsup`, not host eval. Original sources, raw failures
+and current fingerprints are required. Unsupported/tool failure/budget exhaustion
+are not passes. No PHP constructor or semantic family is closed; only the oracle
+pin obligation closes. Final complete syntax and fresh offline rebuild audits remain.
 
-## Current checkpoint and ownership
+## Accepted state and ownership
 
-Truth source activation is `e7dac829`, reviewed in `682bcba0`: 854 originals plus
-25 negatives. Compatible destructuring spread preservation is `d4706937`, original
-array-kind preservation `09f33419`, independently reviewed in `d4231d20` and
-`b0f11653`. The reviewed comparison implementation validates 1,142 originals plus 25 negatives,
-1,184 compiler lints and 48 dedicated phase lints; consult PROGRESS for its
-commit and independent evidence.
-First-hole metadata also preserves the actual leading comma line through checked
-transport; `tests/list_line_metadata.py` covers 31 source/encoding profiles and
-409 boundaries. Empty `list()` is excluded. Compiler consumption remains pending.
-Dynamic calls additionally retain `callableExprLine`, the opening argument-list
-token line captured by Zend's `callable_expr` reduction. Named calls use their
-name line. Two archived identical old checked trees require different native
-write-context errors; metadata transport alone does not admit call execution.
+See PROGRESS for current source counts and exact implementation/review commits.
+Truth, comparisons and explicit reference-wrapper fetch history are source-active.
+The wrapper correction is `3585707a`/`eebf79e9`, reviewed in `5b0dc0f2`; singleton
+explicit wrappers survive owner-count changes and generic FETCH differs from final
+ASSIGN_DIM. Runtime REF marker history is not an extra memory root.
+Ordinary computed-name write fetching is corrected separately in `84d70299`,
+reports `fa691044`, reviewed in `24c681d7`: creating a writable location does
+not itself create an explicit reference wrapper. Preserve this distinction when
+adding compound, destructuring, argument and frame acquisition paths.
 
-Compiler owns 11/15–19/21–23/45-constant-context/46/47, metadata and compiler tests.
-Runtime owns 20/30–44/45-dimension-write/50–53, execution and source tests. Reviewer
-owns independent evidence, PROGRESS, inventory and discrepancy status. Coordinate
-shared files, Git index and Dune build starts. Source admission and its runtime
-consumers commit atomically; compatible metadata prerequisites may land first.
+Destructuring prerequisites preserve nested unpack (`d4706937`), original array
+kind (`09f33419`) and leading-hole line (`87341500`). Genuine-list early conversion
+is `5c756e5e`, reviewed in `861020db`: 20 exact skipped sources pass, while 14
+retained reached targets remain explicitly Unsupported. Callable creation-line
+metadata is `c6a7d67d`, reviewed in `1d32e9be`; two identical old checked trees
+need different native diagnostic lines. No call execution was admitted by metadata.
 
-- 11 retains exact checked AST and source occurrences. Identity is compiled-instance
-  ID plus FIELD/INDEX path, never AST equality or filename.
-- 21/22/23 preserve compiler order, lexical namespace/import context and exact name
-  resolution. Namespace fallback is late; known-unmodeled primary names never fall
-  through. Do not introduce an AST-wide visible declaration registry.
-- 45 distinguishes partial prepass FACTS, raw selected-child REDIRECTS and queued
-  WARNINGS. Array prepass visits logical children eagerly, but ordinary short-circuit
-  compilation may skip RHS. Prepass ternary selects even a dynamic child; ordinary
-  ternary compiles both arms. VAR/ASSIGN/ASSIGN_REF stop a prepass invocation.
-- 46 separately exports ordinary expressions(path,endline,value?), access modes,
-  executable PPR redirects(parent,target,Boolean-coercion flag), names and work.
-  Skipped facts/redirects do not become executable. Ordinary ternary copies selected
-  values; a raw prepass redirect preserves delayed CV/reference access. Grouping
-  legality is checked only when ordinary ternary compilation is reached.
-- 33 resolves redirects through canonical same-unit occurrences, not tree rewriting;
-  constant pools precede redirects. Permanent POOLS remain distinct from temporary
-  HELD roots. `$ppconstants` rejects conflicting bits/types/array IDs and missing
-  required lines. Only PPR reads constants. New compiled instances get distinct IDs.
-- 47 preserves literal loop legality, compiler order and loop-context restoration.
-  Exact body/terminator metadata and effective ending lines are required; type/range
-  checks do not authenticate edited positions.
+Inc/dec/global-this source activation is `7d5718fb`, author reports `5b24a5f8`:
+**1,484 exact sources +25 outcome negatives**, independently accepted on closure
+`d399263a1c9f33bb445c958d624392ffc83d49df1c247df72b0c23ce59855d35`.
+Compiler gates pass 1,526 native lints/15 emission observations and dedicated
+108 lints/32 access paths/eight emission observations/12 context checks. Runtime
+validates 154 source/state programs; independent dense resumption covers eight
+programs/4,152 assertions at all 101 budgets. Final review checkpoint: `a3cee6bd`.
 
-See CONSTANT-CONTEXT, SOURCE-COMPILER, CONTROL-COMPILER and COMPARISONS for the
-accepted rules. Comparison folding permits its engine coercion warnings while
-arithmetic keeps separate error-producing operand guards. Both comparison archives
-are direct helper inputs and explicit inputs of the broad source fingerprint.
 
-## Immediate continuation
+Compiler owns 11/15–19/21–23/45-constant-context/46/47, checked metadata/schema,
+compiler helpers and docs. Runtime owns 20/30–44/45-dimension-write/50–53 and source
+execution. Reviewer owns independent evidence, PROGRESS, inventory and discrepancy
+history. Coordinate shared CASES/Makefile edits, Git index and Dune build starts.
+Save all watched inputs, then run full evidence/inventory preflight before expensive
+source campaigns; adding an archive without seeding isolated evidence fixtures
+previously forced an entire final comparison rerun.
 
-Reference-wrapper acquisition is corrected in `3585707a`, reports `eebf79e9`,
-review `5b0dc0f2`: 1,163 exact sources plus 25 negatives and 1,205 compiler lints.
-Singleton explicit wrapper history survives owner-count changes; generic FETCH
-and final ASSIGN_DIM keep their distinct diagnostics. New mutation source
-operators still need paired compiler/runtime activation.
+## Retained interfaces
 
-Compiler scratch preparations, all outside watched inputs:
+- Occurrence identity is compiled-instance ID plus FIELD/INDEX path, never AST
+  equality or filename. 11 retains exact checked nodes and structural occurrence
+  catalogs. 21/22/23 carry lexical namespace/import/compiler order; no AST-wide
+  declaration registry. Existing unmodeled names never fall through as missing.
+- 45 separates partial FACTS, raw selected-child REDIRECTS and queued WARNINGS.
+  Array prepass visits logical children eagerly; ordinary short-circuit compilation
+  may skip them. Prepass ternary selects even a dynamic child; ordinary ternary
+  compiles both. Variables, assignments/references and all four updates are explicit
+  nontraversing prepass barriers, followed by ordinary child compilation if reached.
+- 46 exports expression(path,endline,value?), ACCESS modes and executable redirects.
+  Only visited PPR reads export redirects/use constants. Raw facts under folded
+  parents are roots, not executable entries. Ordinary ternary copies selected
+  values; raw prepass redirect preserves delayed CV/reference access.
+- 33 resolves same-unit redirect targets in canonical source catalogs; pooled values
+  precede redirects. Permanent POOLS differ from HELD temporaries. Constant export
+  rejects conflicting scalar/array identities and missing operand/fact lines.
+- PPRW update targets preserve nested base modes, read keys and allow append [].
+  Direct call-return rejection precedes nullsafe-chain rejection and operand visits;
+  a separate fallback makes those rules disjoint. `$this++` lint is accepted;
+  missing object context is a runtime acquisition error, never a static rejection.
+  Direct/literal assignment/reference rebinding and final unset reject statically
+  before operands, while dimension bases/reference RHS retain runtime FETCH_THIS.
+- `callableExprLine` is the actual argument-list opening token line for dynamic
+  function calls, matching Zend's explicit `callable_expr` mid-rule capture.
+  Named calls use the name line. Missing/nonpositive context is Unsupported;
+  an edited positive value changes the diagnostic line. 20 includes the required
+  call/static/nullsafe/property-chain line projections, not only admitted runtime
+  value forms. Ordinary call execution remains a separate obligation.
 
-1. `.tools/46-incdec-compiler.watsup` adds PPRW for four updates, permits append [],
-   preserves key PPR access and rejects direct call returns/nullsafe chains/GLOBALS
-   before traversal. `.tools/46-update-compiler.watsup` also has 12 compound operators:
-   target before RHS, RHS ending line, existing DIM self-CV special compilation.
-   Coalesce assignment requires a separate memoized quiet-read/write design.
-   `.tools/draft-update-compiler.py` generates both. The retained 48 originals are
-   `.tools/update-compiler-originals.json`; 47 parse and pass scratch lint/invariant
-   checks, one temporary target is a matching parser rejection. Additional explicit
-   PPRW access probes are in `.tools/probe-update-compiler.py`. These are not runtime
-   admission. Runtime must supply exact expression-line projections; call-target
-   fallback zero otherwise prevents the intended static rejection.
-2. Genuine-list nested array conversion now precedes the global ordinary-array
-   omission check. `tests/list_target_metadata.py` binds all 16 immutable originals
-   and checks plain/UTF-16BE checked and fresh-printed diagnostic families; 20
-   native-valid skipped sources are in the source campaign. Reached destructuring
-   compilation remains pending: preserve outer style, spread, RHS read and
-   referenceability errors before long-array rejection.
-3. The global empty-array checker also rejects valid skipped ordinary array holes:
-   `coverage/semantics/array-hole-phase-originals.json` retains six originals, three native-valid
-   short-circuit/prepass-skipped cases and three visited-error controls. After the
-   first-hole/genuine-list prerequisites, introduce a faithful checked Array_
-   omission representation and defer rejection to exact compiler visits. This is
-   an outstanding source-completeness gap, not an acceptable parser exclusion.
-4. Unpack drafts `.tools/45-unpack-compiler.watsup` and
-   `.tools/46-unpack-compiler.watsup` passed 18 original lints/invariant controls;
-   rebase them onto comparisons before use. Traverse every operand before constant
-   construction; scalar unpack is static only for a fully constant array. A dynamic
-   entry/reference defers it to runtime. Integer keys append, string keys replace,
-   append overflow defers, and partial facts keep roots. Actual runtime/source
-   consumers remain pending.
+Read SOURCE-COMPILER, CONSTANT-CONTEXT, COMPARISONS, CONTROL-COMPILER and
+COMPILED-POOLS for tested rules. 47 preserves loop legality, compiler order and
+restored loop context. Checked position type/range is not source authenticity.
 
-## Remaining source contexts
+## Next compiler work
 
-Destructuring follows zend_verify_list_assign_target / zend_compile_list_assign:
-propagate references and validate RHS first, evaluate RHS once with correct
-snapshot/reference ownership, then keys/fetches/targets in compiler order. Retain
-per-item fetch emission lines before compiling target assignments. Converted
-Expr_List keeps List.kind plus destructuringArrayKind (original long=1, short=2);
-long-array rejection must precede mixed-style classification. Foreach also needs
-cursor/mutation ownership and loop context.
+1. Pair compound operators with runtime captured locations and remaining numeric/
+   string operations. Fresh `.tools/{20,45,46}-compound-compiler.watsup` drafts,
+   generated by `.tools/rebase-compound-compiler.py`, rebase onto the current incdec
+   accepted incdec files. A paired private runtime replay passes 81 originals/1,204 assertions
+   (`.tools/compound-rebased-source.json`), but independent and dedicated compiler
+   phase/access/PFSTOP gates remain pending. Runtime's 588-source value expansion
+   (`.tools/probe-compound-values.py`) is active at turnover; coordinate its finish
+   before changing these draft hashes. Old `.tools/46-update-compiler.watsup` and
+   its generator predate incdec/this/nullsafe corrections and must not overwrite
+   accepted files. The fresh draft adds 12 explicit PFSTOP barriers and temporary
+   shapes. Target is PPRW before RHS; keys are PPR, direct `$this` rebinding rejects
+   (unlike inc/dec), parent ending line follows RHS, and existing potential-self
+   DIM/CV handling remains. Runtime distinguishes direct-CV RHS reading, dynamic-name
+   FETCH_RW before delayed RHS CV reading and final DIM location acquisition before delayed
+   RHS read. Gate these against retained `.tools/update-compiler-originals.json`.
+   Four `.tools/compound-fetch-timing-originals.json` sources confirm eager RHS
+   `$missing+1` diagnostics precede dynamic-name/DIM target fetch; the paired
+   timing report passes 56 assertions, still pending independent review.
+   `??=` needs separate quiet-read and memoized-write semantics.
+   `coverage/semantics/concat-cv-originals.json` records an existing literal-concat
+   CV gap. Zend's parser folds concat when both operands satisfy its ZVAL predicate
+   and `zend_binary_op_produces_error` guard (zend_ast.c484ff); ternary/compiler
+   FACTS are not equivalent. Probe unary/folded literal contexts too. Preserve exact
+   parser-created ZVAL line and classification when activating concat names.
+2. Reached destructuring remains open. Preserve the 16 exact originals in
+   `coverage/semantics/destructuring-list-target-originals.json` and their explicit
+   14 reached Unsupported observations. `zend_verify_list_assign_target` validates
+   RHS/referenceability before RHS compilation; outer mixed style, spread, RHS
+   static read and referenceability can precede nested long-array rejection.
+   Propagate nested reference requirements, evaluate RHS once, then process keys/
+   fetches/targets with exact copy/reference ownership and emission-line changes.
+   Converted Expr_List keeps List.kind plus destructuringArrayKind (original long1,
+   short2); long-array rejection must precede mixed-style classification. First-hole
+   compiler consumption remains pending, despite accepted metadata transport.
+3. Ordinary Array_ omissions need a separate schema/compiler phase repair. Six
+   immutable originals in `coverage/semantics/array-hole-phase-originals.json`
+   include native-valid skipped logical/prepass branches. Do not exclude them as
+   parser failures. Reviewer/root favor nullable Array_.items plus exact initial
+   omission context; an ArrayHole constructor has no demonstrated need.
+   Zend `zend_try_ct_eval_array` visits values before keys, continues past dynamic
+   entries, and reports a visited null using the previous nonempty element's
+   ORIGINAL AST line, or current compiler line when first. Do not use comma line
+   for every hole or a folded child line. Add multiline keyed/unpack/folded/first
+   nested-array witnesses before selecting the exact context transport. The 16
+   author-only observations `.tools/array-hole-line-originals.json` now retain
+   those cases: keyed value4, unpack3, original arithmetic2, parser-folded concat4
+   or grouped concat5, nested first omission outercontext2 versus assignment
+   barrier4. Repeat independently and archive unchanged before implementation.
+4. Nullable schema change is manageable but cross-cutting. Current Array_.items is
+   phpType12=list(ArrayItem), item phpType13; List.items is nullable phpType26/27.
+   Making Array_.items nullable merges old26->new12 and old27->new13; later numbered
+   domains shift by two (currently maximum71, 72 total domains including statement/
+   expression). Confirm by normalized domain keys after generating; never assume
+   IDs from position. Old13 widens and array consumers need explicit ABSENT handling.
+   Remap both bare type names and variable suffixes. At least 18 production semantic/
+   helper files mention old26+ types, including 11/16–18/20–21/30/36–37/40–41/45–47/50.
+   Also regenerate schema/occurrence walkers and inspect all repository consumers.
+   Preserve nullable item indices and fresh trailing-hole commas, with no invented
+   expression values. Gate original→checked→printer→frontend and exact skipped/
+   visited compiler behavior together; syntax acceptance change is intentional.
+5. Unpack drafts `.tools/45-unpack-compiler.watsup`, `46-unpack-compiler.watsup` and
+   18 originals predate comparisons; rebase before use. Prepass all values/unpack
+   operands before constant construction. Scalar unpack fails statically only for
+   a fully constant array; dynamic/reference entries defer to runtime. Integer keys
+   append, string keys replace, append overflow defers, partial facts remain roots.
+   Foreach requires persistent buckets/cursors and mutation/COW/reference lifetime.
+6. Declaration/default/frame and call integration follows LINKING-HANDOFF and the
+   reviewed pure static/signature helpers. Actual functions/closures/classes,
+   properties, exceptions/unwinding, generators/Fibers, dynamic sources, callbacks
+   and collection remain open; helper success is not source activation.
 
-Then activate ordered declaration/default descriptors, exact keyword lines and
-lexical contexts; compile body errors before runtime output, reset loop scopes and
-distinguish top-level from conditional binding. Calls need evaluation/capture,
-reference binding, returns and frame restoration. Existing signature/type helpers
-are not source admission. Continue LINKING-HANDOFF for classes, visibility, loading
-and variance. HTTP-header assignment flags, computed-name warnings, magic constants,
-strict/declare effects and remaining frontend early-check phase gaps are pending.
-Preserve the intentional namespace-relative static divergence in DISCREPANCIES.
+## Evidence and scope discipline
+
+The incdec compiler helper embeds original bytes rather than reading oracle archives;
+source catalog copies those literals to avoid a `source_compiler` import cycle.
+Keep author and independent source/state/resumption gates separate. Retained prepass,
+callable-line and nullsafe-overlap failures must remain immutable with explicit
+resolution evidence. Header assignment flags, computed plain-write/reference/unset environment-name
+protocols and broad frame/object contexts are still assigned obligations, not inferred from update tests.
+
+The namespace-relative `static` discrepancy remains the sole intentional divergence,
+with source activation evidence pending. All other irregularities follow the pin.
+The historical 30,980-record syntax audit must be rerun at final closure after all
+metadata/schema changes; copied binaries do not establish offline portability.
