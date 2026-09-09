@@ -103,6 +103,10 @@ test-semantics: build
 	python3 tests/semantics/strict_declarations.py
 	python3 tests/semantics/strict_declaration_protocol.py
 	python3 tests/semantics/strict_declaration_state.py
+	python3 tests/semantics/typed_function_compiler.py
+	python3 tests/semantics/typed_functions.py
+	python3 tests/semantics/typed_function_protocol.py
+	python3 tests/semantics/typed_function_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

@@ -17,14 +17,14 @@ def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE 
   -- if P.COMPLETION = PPCNORMAL
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSERROR psdiagnostic*)) = $ppsignature_diagnostics(P, psdiagnostic*)
   -- if P.COMPLETION = PPCNORMAL
-def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "function type, reference return or variadic activation")
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent function type, reference return or variadic activation")
   -- if P.COMPLETION = PPCNORMAL
-  -- if ~$ppplain_signature(pssignature)
+  -- if ~$ppsupported_signature(pssignature)
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppfunction_finish(P_outer, P_body, pcpath, ptbytes, pssignature, metadata)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $ppplain_signature(pssignature)
+  -- if $ppsupported_signature(pssignature)
   -- if psparam* = pssignature.PARAMETERS
-  -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+  -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_body = $ppstatements(P_header, pcpath ++ [PCFIELD 5], 0, statement*)
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppdefaults_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL

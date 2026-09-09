@@ -1,0 +1,161 @@
+;; Receives run in parameter order after all argument expressions and binding.
+;; By-reference aliases may change earlier parameters, so no value history is kept.
+def $typed_parameters(eps) = false
+def $typed_parameters(psparam :: psparam_tail*) = (psparam.TYPE =/= eps \/ $typed_parameters(psparam_tail*))
+dec $typed_caller_strict(pstate) : bool
+def $typed_caller_strict(S) = pfunction.CODE.STRICT
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+def $typed_caller_strict(S) = pcode.STRICT
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.CONTEXT = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+
+dec $typed_parameter_value(pstate, pfunction, nat, pvalue) : pstate
+def $typed_parameter_value(S, pfunction, n, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n))
+  -- if ptypeconversion = $typed_conversion(pfunction.SIGNATURE.PARAMETERS[n].TYPE, pvalue, $typed_caller_strict(S))
+  -- if ptypeconversion =/= TYPEREJECT
+def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n))
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if $typed_conversion(psparam.TYPE, pvalue, $typed_caller_strict(S)) = TYPEREJECT
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+
+def $typed_default_store(S, pfunction, n, pvalue) = $default_store(S_value, pfunction, n, pvalue_new)
+  -- if S_value = $typed_parameter_value(S, pfunction, n, pvalue)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue_new
+def $typed_default_store(S, pfunction, n, pvalue) = S_value
+  -- if S_value = $typed_parameter_value(S, pfunction, n, pvalue)
+  -- if S_value.COMPLETION =/= NORMAL
+def $typed_stored_default(PSDEFAULT phpType5 "float", PINT i) = PFLOAT $float_of_int(i)
+def $typed_stored_default(psdefault, pvalue) = pvalue -- otherwise
+
+rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, pvalue)
+  -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < pcallcontext.ARGC)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
+  -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n >= pcallcontext.ARGC)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+
+;; Value returns resolve their source operand but never write coercions back to it.
+def $typed_fallthrough(pfunction) = RETURN_NULL -- if pfunction.SIGNATURE.RETURNS = eps
+def $typed_fallthrough(pfunction) = TYPE_FALLTHROUGH pfunction.ORIGIN -- if pfunction.SIGNATURE.RETURNS =/= eps
+def $typed_return_line(S, z) = z_return
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if n = pfunction.CODE.UNIT
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z_return, false))
+def $typed_return_line(S, z) = z -- otherwise
+
+dec $typed_return_check(pstate, int) : pstate
+def $typed_return_value(S, z) = $typed_return_check($resolve_at(S, S.RESULT, z), z)
+def $typed_return_check(S, z) = S -- if S.COMPLETION =/= NORMAL
+def $typed_return_check(S, z) = S -- if S.COMPLETION = NORMAL /\ S.CURRENT = eps
+def $typed_return_check(S, z) = $typed_apply(S, ptypeconversion, z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S.RESULT = KNOWN pvalue
+  -- if ptypeconversion = $typed_conversion(pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT)
+  -- if ptypeconversion =/= TYPEREJECT
+def $typed_return_check(S, z) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" returned"), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $typed_conversion(pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT) = TYPEREJECT
+rule PhpStep/type-fallthrough-void: S ~> S[.TODO = RETURN_NULL :: ptask*]
+  -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if "void" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
+rule PhpStep/type-fallthrough-never: S ~> $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): never-returning function must not implicitly return"), pfunction.ENDLINE)
+  -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
+rule PhpStep/type-fallthrough-value: S ~> $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", none returned"), pfunction.ENDLINE)
+  -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if ~("void" <- $ptmasks(pfunction.SIGNATURE.RETURNS) \/ "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+
+;; Source-bound stages constrain metadata, not the values already received.
+dec $typed_receive_valid(pstate, porigin, nat) : bool
+def $typed_receive_valid(S, porigin, n) = true
+  -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask*
+  -- if ptask* = eps
+  -- if S.CONSTCONTEXT = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if S.ORIGIN = (porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $typed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, n)
+def $typed_receive_valid(S, porigin, n) = false -- otherwise
+
+dec $typed_fallthrough_valid(pstate, porigin) : bool
+def $typed_fallthrough_valid(S, porigin) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+def $typed_fallthrough_valid(S, porigin) = false -- otherwise
+
+dec $typed_return_task_valid(pstate, int) : bool
+def $typed_return_task_valid(S, z) = true
+  -- if S.CURRENT = eps
+def $typed_return_task_valid(S, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS = eps
+def $typed_return_task_valid(S, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if n = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtReturn expression metadata)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, false))
+def $typed_return_task_valid(S, z) = false -- otherwise
+
+def $call_task_valid(S, TYPE_RECEIVE porigin n) = $typed_receive_valid(S, porigin, n)
+def $call_task_valid(S, TYPE_FALLTHROUGH porigin) = $typed_fallthrough_valid(S, porigin)
+def $call_task_valid(S, RETURN_VALUE z) = $typed_return_task_valid(S, z)
+
+;; The unit projection retains each actual return instruction as well as the
+;; function-owned copy used for return verification.
+dec $typed_return_node(pcnode) : bool
+def $typed_return_node(NStmtReturn phpType5 metadata) = true
+def $typed_return_node(pcnode) = false -- otherwise
+dec $typed_return_root(pcoccurrence*, pcpath) : bool
+def $typed_return_root(eps, pcpath) = false
+def $typed_return_root((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath) = ((pcpath_other = pcpath /\ $typed_return_node(pcnode)) \/ $typed_return_root(pcoccurrence*, pcpath))
+
+dec $typed_return_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $typed_return_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $typed_return_root(pcoccurrence*, pcpath)
+def $typed_return_entry(pcoccurrence*, CODEEXPR pcpath z b) = eps
+  -- if ~$typed_return_root(pcoccurrence*, pcpath)
+def $typed_return_entry(pcoccurrence*, CODEARG pcpath) = eps
+def $typed_return_entry(pcoccurrence*, CODEWRITE pcpath z) = eps
+def $typed_return_entry(pcoccurrence*, CODEEFFECT pcpath) = eps
+dec $typed_return_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $typed_return_code(pcoccurrence*, eps) = eps
+def $typed_return_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $typed_return_entry(pcoccurrence*, pcodeexpr) ++ $typed_return_code(pcoccurrence*, pcodeexpr_tail*)
+
+def $typed_unit_code_valid(P, pcode) = ($typed_return_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $typed_return_code(P.FOLD.SOURCE.OCCURRENCES, $compiled_operands(P, P.EXPRESSIONS)))
