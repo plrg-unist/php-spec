@@ -124,13 +124,18 @@
         "spec/semantics/41-array-control.watsup",
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/39-ownership.watsup",
-        "spec/semantics/42-array-write-control.watsup"
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/array_omissions.py",
+        "tests/array_omission_metadata.py"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Prior element-target/ownership semantics remain; nullable ordinary slots preserve indices and exact visited/skipped compiler errors. The omission prerequisite passes262 source/lint cases,2135 resumption assertions, independent176 retained+32 new sources,136 edited-metadata boundaries,24 fresh encoding/print profiles and277 compound rebase programs/5393 assertions. Full source closure refresh follows ordinary activation. Unpack/destructuring/foreach and complete prepass lookup/context remain pending. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -172,10 +177,16 @@
       "obligations": [
         "calls.arrows"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Assign",
@@ -265,10 +276,16 @@
         "expression.coalesce",
         "expression.compound-write"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_AssignOp_Concat",
@@ -577,10 +594,16 @@
         "expression.coalesce",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_BinaryOp_Concat",
@@ -589,10 +612,16 @@
         "bytes.byte-concatenation",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_BinaryOp_Div",
@@ -875,10 +904,16 @@
         "calls.pipe",
         "expression.operand-order"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_BinaryOp_Plus",
@@ -1046,10 +1081,17 @@
       "obligations": [
         "coercion.cast-array"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/56-casts.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_Bool",
@@ -1057,10 +1099,17 @@
       "obligations": [
         "coercion.cast-bool"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/56-casts.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_Double",
@@ -1068,10 +1117,17 @@
       "obligations": [
         "coercion.cast-float"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/56-casts.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_Int",
@@ -1079,10 +1135,17 @@
       "obligations": [
         "coercion.cast-int"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/56-casts.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_Object",
@@ -1090,10 +1153,16 @@
       "obligations": [
         "coercion.cast-object"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_String",
@@ -1101,10 +1170,17 @@
       "obligations": [
         "coercion.cast-string"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/56-casts.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_Unset",
@@ -1112,10 +1188,16 @@
       "obligations": [
         "static.lvalue-rejection"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Cast_Void",
@@ -1135,10 +1217,16 @@
         "declarations.typed-class-constants",
         "classes.static-lookup"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Clone",
@@ -1147,10 +1235,16 @@
         "classes.clone",
         "classes.clone-with-properties"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Closure",
@@ -1158,10 +1252,16 @@
       "obligations": [
         "calls.closures"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_ConstFetch",
@@ -1186,10 +1286,16 @@
       "obligations": [
         "expression.empty"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_ErrorSuppress",
@@ -1197,10 +1303,16 @@
       "obligations": [
         "diagnostics.suppression"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Eval",
@@ -1209,10 +1321,16 @@
         "dynamic.eval-mode",
         "dynamic.eval-scope"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Exit",
@@ -1220,10 +1338,16 @@
       "obligations": [
         "control.exit"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_FuncCall",
@@ -1236,10 +1360,16 @@
         "source.assertion-description",
         "protocols.assert"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Include",
@@ -1250,10 +1380,16 @@
         "dynamic.include-once",
         "dynamic.require-once"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Instanceof",
@@ -1261,10 +1397,16 @@
       "obligations": [
         "classes.instanceof"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Isset",
@@ -1272,10 +1414,16 @@
       "obligations": [
         "expression.isset"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_List",
@@ -1294,10 +1442,16 @@
       "obligations": [
         "control.match"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_MethodCall",
@@ -1307,10 +1461,16 @@
         "classes.magic-call",
         "calls.first-class-callable"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_New",
@@ -1319,10 +1479,16 @@
         "classes.creation",
         "classes.anonymous"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_NullsafeMethodCall",
@@ -1331,10 +1497,16 @@
         "expression.nullsafe",
         "classes.magic-call"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_NullsafePropertyFetch",
@@ -1343,10 +1515,16 @@
         "expression.nullsafe",
         "properties.magic-get-set"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_PostDec",
@@ -1430,10 +1608,16 @@
       "obligations": [
         "bytes.output-conversion"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_PropertyFetch",
@@ -1443,10 +1627,16 @@
         "properties.hooks",
         "properties.magic-get-set"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_ShellExec",
@@ -1455,10 +1645,16 @@
         "dynamic.shell-dispatch",
         "environment.shell-provider"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_StaticCall",
@@ -1467,10 +1663,16 @@
         "classes.static-lookup",
         "classes.late-static-binding"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_StaticPropertyFetch",
@@ -1479,10 +1681,16 @@
         "properties.asymmetric-static",
         "classes.static-lookup"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_Ternary",
@@ -1513,10 +1721,16 @@
       "obligations": [
         "control.throw"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_UnaryMinus",
@@ -1584,10 +1798,16 @@
         "resumable.yield",
         "resumable.byref-yield"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Expr_YieldFrom",
@@ -1595,10 +1815,16 @@
       "obligations": [
         "resumable.yield-from"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Identifier",
@@ -1784,10 +2010,16 @@
       "obligations": [
         "bytes.interpolation"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
     },
     {
       "node": "Scalar_MagicConst_Class",
@@ -4623,15 +4855,21 @@
     {
       "id": "expression.coalesce",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/56-casts.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/array_omissions.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php",
         "tests/semantics/conformance/missing-null-access.php"
@@ -5424,7 +5662,8 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/56-casts.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_compiler.py",
@@ -5436,12 +5675,13 @@
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "tests/semantics/array_omissions.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
+      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
       "notes": "Source activation must reconcile retained frontend early compile checks: direct void parameters, variadic defaults and reserved class declaration/reference names. Equivalent edited checked-AST witnesses do not establish source frontend agreement or repair these phase gaps."
     },
     {
@@ -5591,7 +5831,9 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/22-name-resolution.watsup",
-        "spec/semantics/23-named-constants.watsup"
+        "spec/semantics/23-named-constants.watsup",
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/56-casts.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -5609,12 +5851,13 @@
         "coverage/semantics/runtime-compiler-review.json",
         "tests/semantics/namespace_constants.py",
         "coverage/semantics/namespace-constants.json",
-        "coverage/semantics/namespace-constants-review.json"
+        "coverage/semantics/namespace-constants-review.json",
+        "tests/semantics/array_omissions.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending.",
+      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",
@@ -7987,7 +8230,9 @@
       "implementation": [
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/56-casts.watsup"
       ],
       "helper_tests": [
         "tests/semantics/constant_context.py",
@@ -8000,12 +8245,13 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "tests/semantics/array_omissions.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
+      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-read-literal-prepass.php",

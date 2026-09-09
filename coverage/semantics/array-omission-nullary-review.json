@@ -1,0 +1,820 @@
+{
+  "status": "pass",
+  "checks": 72,
+  "inputs": {
+    "Makefile": "237b8e1ad5d07e48c1813ab433d69d7abd1e597383a7994d0ae49ddd1c4d16de",
+    "README.md": "7735b4a13f5ead06e2a2548388138d7a0a73fb2177460cec3a025e430870b3d6",
+    "docs/semantics/ARRAY-OMISSIONS.md": "ddf2a39300c150fc4541b855038f17cbdf41485254227235106cc04a68be9f7a",
+    "patches/php-parser-grammar.patch": "65463b0bee52309456abde5ebaa5c4d766667b2856405bf66bfb8559a5c11894",
+    "patches/php-parser-printer.patch": "0b24f2ddd0b08b9cb9a985cda3ae8ce498a41acb4bfc22ce48eb3c36073a011a",
+    "scripts/generate-schema.py": "c96407d29315e6668e0080f7834b31ca451c07eb295971f1c638987a65cc9e07",
+    "scripts/node-inventory.php": "619df6330f4922eb63bff80e3f394280d1d736f01e66b090c0dfee28656dc945",
+    "spec/nodes.json": "7c0071aefa26dc1e9e45127b6577bc5671b310485c42f66fb3473530f6ffb397",
+    "spec/php.watsup": "4d88880caaee8a2b5e74969ae3cf94b17beff36e391f4bb9823ebec80d9d8a36",
+    "spec/schema.json": "fa06db23f91a84622957db50172524eef0de00cf85174c360cc586077a638bc6",
+    "spec/semantics/10-bytes.watsup": "ef1e38720671cb61f66f427409c6d6059a1e0ad68b40fd5407519d1516ab568c",
+    "spec/semantics/11-source-occurrences.watsup": "68bab3c795f62e36e61a178ec636b70e0bb6c447e8d8d5197391176628646e67",
+    "spec/semantics/16-static-types.watsup": "aa449be5bb1e81a1db28fa44dbe8106a77397fa1cdaa53e5e02ae8c0e2747721",
+    "spec/semantics/17-signatures.watsup": "1e7de9179ede893c39e1e006b0a7332da2687b66bc26c5a99816f9748def55f9",
+    "spec/semantics/18-class-headers.watsup": "ca3b95217292783e5c26b919a5697ae24bc98e4673c0e1bb68f7ec3323019b2b",
+    "spec/semantics/20-machine.watsup": "86627baac857d00f976cf6ea2c64ad803a19d35dfcfc16474512be6e35c067e0",
+    "spec/semantics/21-source-context.watsup": "f68dda7b4e62fc62b09e96a8f8c7b8cd02f8597e7a41447e0e8b61756a7821bb",
+    "spec/semantics/30-storage.watsup": "2d54bc6fdec10c3b08ecff18e34869895ea1b2aac70bada4070d8eea6e25f43a",
+    "spec/semantics/36-arrays.watsup": "5809f5d87b897e43d14d05fac1bba1cffcfacd8092b293dfae2a3e1cc74ce422",
+    "spec/semantics/37-array-locations.watsup": "142ec8ace1dcf16b6366e47014a05ad83ef981f93772124749656c9e873b6a5b",
+    "spec/semantics/40-control.watsup": "6ad99b834480da59a91f8b764f1f251b1d072482cf7ffb0b01ac37da7fb30994",
+    "spec/semantics/41-array-control.watsup": "f81948389be101b53627cdf6633e1c0031f20d679c4ba9b7bca1186731141da5",
+    "spec/semantics/45-constant-context.watsup": "45058cc4d658208e396800e6ca5e896e09df0d1456efe2711179519166aa302d",
+    "spec/semantics/46-source-compiler.watsup": "f66d81fcbeb022df063a302c7f4a1396d7030725ec7b730065385c41c3b320bd",
+    "spec/semantics/47-control-compiler.watsup": "a3e5bab449365c62e368dc4448cb3fec92bb3a4228d60b6db30c4c51268794a2",
+    "spec/semantics/50-control-flow.watsup": "50999cefc35aae6baef3a6c7d747ebd09c870980561d3586ba88bc9bea9614a4",
+    "spec/semantics/56-casts.watsup": "a491681335f3366488d4c2a6efdb0fa5fa6dac96b3a9012c47130dd4601f8a98",
+    "spec/semantics/modules.json": "eeb881eef142e999cf56a1256acc1bdf753d4654f1303983ad1743d37aa43fbe",
+    "tests/array_omission_metadata.py": "fc4e4f789eeee11a2b656f68e22b2f2a155ca3ee5b76083f8e38749b004c33d7",
+    "tests/clone_line_metadata.py": "a7e60c24a068f749e7b45b45f52ccc6c4ebfb6d30e6f5a8e5ad7087ba7ab8d47",
+    "tests/concat_line_metadata.py": "9a2bee9767b3aaabb28fe45ba5755e20d23e2d7f0d2614fe9558ca62a786165d",
+    "tests/nullary_line_metadata.py": "559e61f33cda9d32cb82e59a23c06f23f9f91072a8d0c72396ec47dc5ccf65d7",
+    "tests/semantics/array_omissions.py": "2015254240bdb07e53aa32df253e803c09351ec93846ef3989885ea37de34c00",
+    "tests/semantics/class_headers.py": "1493b02b6fd78c6cc65fb63594f2ce58cd965ab969007e615d5fa739ecce88e3",
+    "tests/semantics/method_signatures.py": "c397072d734e25106fd5f8899237ce912d4fa8aaa3f79787977a7a726532a4c9",
+    "tests/semantics/signatures.py": "8cbc58d31736900f2c4d6f22ad8c8477e2bf4fc07f8caf4e3554e3b6f403418a",
+    "tests/semantics/validate.py": "b78471efd1a1cee9f298336a3924b42a3e5df9fcd23d158133d22892e43b9e68",
+    "tests/validate.py": "461b4bfa5b95ec614111c9b5b7afb627aa1073866575535a6c90b65923ab4829",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php": "59b571dc1ce6f04fed65192881391f4a4df7f3c47457248adb01a7de56e5d6a3",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php": "1c1184479caab83c305b0605a7c4eb2c1c8d9264c2d96aeb073608c5e1cb62e6",
+    "vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php": "d8c6f2847c94ce5e72f32650b0b26f91810c5bdc4bc75464a9977347a1fb7fa1"
+  },
+  "records": [
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "checked_ast_sha256": "c0e5a2f801ca4654cdf199a2554219785cfc0e4e2bafab9c1722666d8e3d2eb2",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "nullaryExprLine": -2
+      },
+      "checked_ast_sha256": "a55ed72eac869ed6fe4c178948d46faa3e808febe9db10f9b50ddb191d3467b4",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "nullaryExprLine": 0
+      },
+      "checked_ast_sha256": "48b2c1bfa6840295274cee8c18d1176b82811f34aec288dd0527248a47072af9",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "nullaryExprLine": 97
+      },
+      "checked_ast_sha256": "9e6d6012850a19157f2f9bbd202ebb901c2192049260b3f4ee472edbf738e28e",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "97"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "startTokenPos": null,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "a0154864f310a6b4b43480152e2d50066896b39e2ed442715878c6c327a07202",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "startTokenPos": 2,
+        "endTokenPos": null
+      },
+      "checked_ast_sha256": "d76415cd134f73a13cb4670e75acedb179b126cdf430183c702e8d319ad9b777",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "startTokenPos": -1,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "209da10cdef7416afd30d526bb0fbca3241666e6b9127f032a1c1a154860af6d",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "startTokenPos": 5,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "6f1f42463e1f0ba7073a2f6f20c9b21d322ad7934418e264d2aa37062efb8e9e",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "startTokenPos": 0,
+        "endTokenPos": 0
+      },
+      "checked_ast_sha256": "6327cd821571fddce2d09e5800c1584e20cf813dc6f0ba65b55ddbcfc6ed94c6",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQKLCxdOw==",
+      "edit": {
+        "startTokenPos": 0,
+        "endTokenPos": 5
+      },
+      "checked_ast_sha256": "367bc5ef264c1d638bedf6b499f5037a0d57c9556b2ffa61af238579d2c5c8c4",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "1"
+        ]
+      }
+    },
+    {
+      "edit": {
+        "nullaryExprLine": true
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": "2"
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "int": "02"
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "bytes": "Mg=="
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "source_base64": "PD9waHAgW3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "checked_ast_sha256": "906d326ecf971809e3eb3c83da2f2d26dd797504d91d4daf0b0c8ad1e8746f7d",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": -2
+      },
+      "checked_ast_sha256": "8ba089f7d8287c1cb912a9bb1bf92f49ea91b911ee394e70ad0813eca28addcf",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": 0
+      },
+      "checked_ast_sha256": "b35ebabf34bc95ac50d9a9417a00b72a4ce51f71a4393adb717c52e8c1d042e6",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": 97
+      },
+      "checked_ast_sha256": "d63eb025a35fdcfbe665eac71d615fb9eddc7a79b556965f561deadea33cbe31",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "97"
+        ]
+      }
+    },
+    {
+      "edit": {
+        "nullaryExprLine": true
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": "2"
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "int": "02"
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "bytes": "Mg=="
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "checked_ast_sha256": "51408df50e3c3e6c45fc38ce1c64a02bef915a6e65638bc7635384eb69279fa8",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "nullaryExprLine": -2
+      },
+      "checked_ast_sha256": "aa35417f7734d917c0671c67694beec541e10d34257e66d33d453e9c329a3377",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "nullaryExprLine": 0
+      },
+      "checked_ast_sha256": "dd8d42cb08d6074728da2e3e572990dee425a64874f87a1dce185f92d3855c94",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "nullaryExprLine": 97
+      },
+      "checked_ast_sha256": "9daea445a8837c19c9467bec634514ef13cb7c1af557b9e8bef48970ad03043f",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "startTokenPos": null,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "2a125d8b4c1902719b537f6e46733330318c6105e50b4ba842eb90e3e88ae594",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "startTokenPos": 2,
+        "endTokenPos": null
+      },
+      "checked_ast_sha256": "0ed4468cc7b6bc6fd27b75ed862e019a0fb070efd85b64900127644426d29d7e",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "startTokenPos": -1,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "aa687b9456f780bb20f1ab9b5c4e7a5b8d7a4c79e83580f83660732c34ccd980",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "startTokenPos": 5,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "fb3eadad8c51641519767a474bdcb5037c4be169784fe434c8938ade347a0829",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "startTokenPos": 0,
+        "endTokenPos": 0
+      },
+      "checked_ast_sha256": "809afb77c442711292061a3c54f576baae592259017c8b9e2e2654a51a8a5b08",
+      "completion": {
+        "tag": "UNSUPPORTED",
+        "args": [
+          "missing ordinary compiler line"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoCiksLF07",
+      "edit": {
+        "startTokenPos": 0,
+        "endTokenPos": 5
+      },
+      "checked_ast_sha256": "05f74d9b78d7a76aabbaa77d15f763564511e4ba2792dd6146b44d94a54ba6ef",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "edit": {
+        "nullaryExprLine": true
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": "2"
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "int": "02"
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "bytes": "Mg=="
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "checked_ast_sha256": "d2f1581e37a7595abe3d3954fc2891890f0bbb1fe287bdaa321963638c968a97",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "nullaryExprLine": -2
+      },
+      "checked_ast_sha256": "a2a086c911ad66f0fd544ab02811c7bd76b3672356b2d7fc4d76d0720c995cdc",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "nullaryExprLine": 0
+      },
+      "checked_ast_sha256": "033baf45d103117d734af81c857cebd884c79d07683c01a30a6011eb0c83dbe4",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "nullaryExprLine": 97
+      },
+      "checked_ast_sha256": "eb2a274c62122a6e0627d4bd63cade6312dd94b44caa6105d9dc522b412b8070",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "startTokenPos": null,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "96fa7557949d384eb5b16640fcf489ae8103f51d283900806dde7253f11b210e",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "startTokenPos": 2,
+        "endTokenPos": null
+      },
+      "checked_ast_sha256": "270c9b3dcca8acf97d45ae312b8e69f8724b9c0b7dce5a391f97314ba21b8a35",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "startTokenPos": -1,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "e51bbfa15e287b9acdbbe4310f659d0526f6eb077d22e68ccb6324d8916ead02",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "startTokenPos": 5,
+        "endTokenPos": 2
+      },
+      "checked_ast_sha256": "86627498f9a42f99a0b8b5bef10c6b17346a02037661c235c5ee14c34b684439",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "startTokenPos": 0,
+        "endTokenPos": 0
+      },
+      "checked_ast_sha256": "4db929f56e834299c489313a0bc4af6616b181621460098f30136d75783f99d6",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "source_base64": "PD9waHAgW2V4aXQoMQopLCxdOw==",
+      "edit": {
+        "startTokenPos": 0,
+        "endTokenPos": 5
+      },
+      "checked_ast_sha256": "2c972224d90c44298103b7b12cb74016e480d4ff8b9b565db194b1e2b4feeca5",
+      "completion": {
+        "tag": "STATICERROR",
+        "args": [
+          "Cannot use empty array elements in arrays",
+          "2"
+        ]
+      }
+    },
+    {
+      "edit": {
+        "nullaryExprLine": true
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": "2"
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "int": "02"
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "bytes": "Mg=="
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "source_base64": "PD9waHAgZmFsc2UmJltleGl0CiwsXTs=",
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "checked_ast_sha256": "e00e920aa1fed8b4faa71999baf7b624c569d42508bf596ad1f254a0441e7bbb",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "source_base64": "PD9waHAgZmFsc2UmJltleGl0CiwsXTs=",
+      "edit": {
+        "nullaryExprLine": -2
+      },
+      "checked_ast_sha256": "dc96fbb5d69d3d166b7739de81322a7d11e560dede6269612aaa1f3feb98c4ef",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "source_base64": "PD9waHAgZmFsc2UmJltleGl0CiwsXTs=",
+      "edit": {
+        "nullaryExprLine": 0
+      },
+      "checked_ast_sha256": "639bad6ae3090c63f75f4e1be4aebe2d6ef9451cb651bb36df9ac2369eef8c94",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "source_base64": "PD9waHAgZmFsc2UmJltleGl0CiwsXTs=",
+      "edit": {
+        "nullaryExprLine": 97
+      },
+      "checked_ast_sha256": "6705f1d04ed927010dfedfb60072ca68841e92a871f297145404ea7ceacd6132",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "edit": {
+        "nullaryExprLine": true
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": "2"
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "int": "02"
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "bytes": "Mg=="
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "source_base64": "PD9waHAgdHJ1ZXx8W3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "checked_ast_sha256": "ca7aff06e44fa3d2ce459bf0831a14114c7af3e2d517d7d88ee0dbbe4340ee4b",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "source_base64": "PD9waHAgdHJ1ZXx8W3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": -2
+      },
+      "checked_ast_sha256": "0808aa438dd8ea3855f996fa98ce295cd4278d8c2268abf43cdbd614a9bef4ec",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "source_base64": "PD9waHAgdHJ1ZXx8W3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": 0
+      },
+      "checked_ast_sha256": "86d835020e37720f335627f85f410ba07fbf792ed1c9aaec117c58851794988d",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "source_base64": "PD9waHAgdHJ1ZXx8W3lpZWxkCiwsXTs=",
+      "edit": {
+        "nullaryExprLine": 97
+      },
+      "checked_ast_sha256": "61c9b4c0ab3d146086f79f5f997574b34becfddb635e85b84bd7188d55ad2789",
+      "completion": {
+        "tag": "NORMAL",
+        "args": []
+      }
+    },
+    {
+      "edit": {
+        "nullaryExprLine": true
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": null
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": "2"
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "int": "02"
+        }
+      },
+      "typed_result": "rejected"
+    },
+    {
+      "edit": {
+        "nullaryExprLine": {
+          "bytes": "Mg=="
+        }
+      },
+      "typed_result": "rejected"
+    }
+  ]
+}

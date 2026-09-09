@@ -1,0 +1,121 @@
+{
+  "status": "accepted bounded nullable-array and compiler-context prerequisite",
+  "implementation": "9b82507a",
+  "author_reports": "22b36687",
+  "fingerprint": {
+    "sha256": "1ff3da3bd8705de5705d721bdfdb1223230b25c4d5d50b4b528f8d2c26be6a74",
+    "files": 795,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "publication": {
+    "path": "coverage/semantics/array-omission-publication.json",
+    "sha256": "ceb93c82a7bc3ae132c2845228a275f302cee8aebba12901d51e8155ca2d249c"
+  },
+  "scope": "Nullable ordinary Array.items, exact omission prepass/line contexts, parser concat/nullary/clone metadata, explicit constructor traversal/barriers, selected coalesce redirects and eligible shared cast facts. No broad constructor or full-core closure.",
+  "production_gates": {
+    "source_lints": 262,
+    "exact_source_comparisons": 262,
+    "resumption_assertions": 2135,
+    "context_checks": 62,
+    "cast_fact_checks": 25,
+    "pending_lookup_boundaries": 5,
+    "full_compiler_lints": 2943,
+    "metadata_profiles": 106,
+    "metadata_checks": 1751,
+    "phase_ledger": "one active known exemption;seven unrelated and five retired observations rejected",
+    "malformed_values": 24,
+    "wire_checks": 33,
+    "regenerated_parser_and_four_handpatches": "exact"
+  },
+  "independent": {
+    "current_production_sources": 176,
+    "source_review": {
+      "path": "coverage/semantics/array-omission-source-review.json",
+      "sha256": "b4c118c9429e7487a0720ba0e8b9a26937804d6da39f05d973deb989501a3b67"
+    },
+    "extra_frozen_sources": 32,
+    "extra_review": {
+      "path": "coverage/semantics/array-omission-extra-source-review.json",
+      "sha256": "c4d6d57b3ad06da777c322fe4e6e8de56f5dcaa34457ee7f4ac273dbc84bcd46"
+    },
+    "nullary_boundaries": 72,
+    "nullary_review": {
+      "path": "coverage/semantics/array-omission-nullary-review.json",
+      "sha256": "7469ddc4e34e22c488a8f92241646d8f089216c05c4b2ef00d0b8ee072d36683"
+    },
+    "clone_keyword_boundaries": 64,
+    "clone_review": {
+      "path": "coverage/semantics/array-omission-clone-review.json",
+      "sha256": "51358040bd2dd585efd2acf7f528be343816384e4597d3b7e5692280497aaa90"
+    },
+    "encoding_fresh_print_profiles": 24,
+    "encoding_review": {
+      "path": "coverage/semantics/array-omission-encoding-review.json",
+      "sha256": "465ae4ca3a7434d4ad31da179960db1f60a11bc03d0bbd0437a5c4c1b0dc31ea"
+    },
+    "rebase_files": 41,
+    "loaded_modules": 44,
+    "canonical_tools": 4,
+    "rebase_review": {
+      "path": "coverage/semantics/array-omission-rebase-review.json",
+      "sha256": "2222b16fba9c093aff4c455033af5d76637fac0980fdd5261c24ff657f05d2a9"
+    },
+    "compound_programs": 277,
+    "compound_assertions": 5393,
+    "compound_replay": {
+      "path": "coverage/semantics/array-omission-compound-review.json",
+      "sha256": "881ed2c7d426c38d788320343e661700bc834f1ea45f6d7e03a2a3a32022e2c6"
+    }
+  },
+  "preserved_history": {
+    "phase_exemptions": {
+      "path": "coverage/semantics/array-hole-frontend-phase-history.json",
+      "sha256": "cb4b8a1fd61cbd87d115a1b5f266cef848213c56338e1bfa254045c6d04534bb"
+    },
+    "class_lookup": {
+      "path": "coverage/semantics/omission-classconstant-originals.json",
+      "sha256": "d650601b18cfbef73e79734c9dfa7eb558844311c8fb21c5323e135b8de44370"
+    },
+    "keyword_lines": {
+      "path": "coverage/semantics/omission-keyword-call-originals.json",
+      "sha256": "d33395a7c16e520f0a0bdc14d0fe9f3065486c8e567a8541cae246a3c51312a2"
+    },
+    "clone_necessity": {
+      "path": "coverage/semantics/omission-clone-reduction-review-originals.json",
+      "sha256": "5ccc567006de3ddd1cfd4fa8f74d6f81ef4ef867864cb157a2c122d5335768cb"
+    },
+    "extra_contexts": {
+      "path": "coverage/semantics/omission-extra-context-originals.json",
+      "sha256": "b47c6457f55ab453b301008e281a431bfb87c76b68251f8c11d5a309728228ed"
+    }
+  },
+  "design": [
+    "Array.items shares nullable List.items domains;169 constructors remain and72 domains merge to70. Original indices and trailing omitted slots survive checked/print transport.",
+    "Visited hole errors use previous original value line or active compiler context for initial holes. Skipped source holes remain legal; raw ARRAY_NEXT ABSENT is explicit Unsupported.",
+    "Parser reduction metadata and literal designation are independent of compiler constant facts. Bare exit designation requires valid token spans; missing/nonpositive required context remains Unsupported.",
+    "Clone reduction context is independently proven necessary by complete-identical-AST/different-native-line witnesses. Only synthetic unqualified exit/die/clone calls use closing-line context; qualified/relative calls keep name lines.",
+    "Existing pure ASCII folding helpers move16\u219210 unchanged except alias/variable spelling. Four patch reproductions and generated parser are exact; patch blank context lines remain valid data.",
+    "Known class lookup remains explicit pending when a value could affect branch selection. The earlier lookup-as-nonconstant mismatches are preserved; their replacement by Unsupported is not advertised as source agreement."
+  ],
+  "full_source_campaign": "Not refreshed by this prerequisite. Last complete accepted campaign remains compound2639+25 on c394; the combined ordinary milestone must rerun the full catalog.",
+  "remaining": [
+    "Known classconstant/named-class/magic-context lookup and complete prepass coverage.",
+    "Ordinary operators/casts/concat activation and seven request-environment boundaries;quiet ??= remains separate.",
+    "Unpack, reached destructuring, foreach, calls/frames/declarations/classes, exceptions, dynamic sources, generators/Fibers, lifetime and required intrinsics.",
+    "Final complete syntax validation and fresh offline rebuild. No new intentional engine divergence."
+  ]
+}

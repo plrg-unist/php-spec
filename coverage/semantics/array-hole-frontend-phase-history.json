@@ -1,0 +1,372 @@
+{
+  "status": "resolved syntax phase history; semantic declaration execution is not claimed",
+  "original_active_entries": [
+    {
+      "id": "vendor/php-src/Zend/tests/bug75426.phpt",
+      "sha256": "144cc5b3d4a7d343ec580e455ca766b3b2854c3685ab6dfbe6dba65fde90711c",
+      "frontend_message": "Cannot use empty array elements in arrays on line 6",
+      "lint_contains": "Cannot use empty array elements in arrays",
+      "restriction": "array_holes",
+      "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c:10105",
+        "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+        "vendor/php-src/Zend/zend_compile.c:10957"
+      ],
+      "ini": {}
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/constexpr/gh9138.phpt",
+      "sha256": "ab9e15a9e8fe26ea91284b20456428b99946fa188b516c96535761fee617de88",
+      "frontend_message": "Cannot use empty array elements in arrays on line 3",
+      "lint_contains": "Cannot use empty array elements in arrays",
+      "restriction": "array_holes",
+      "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c:10105",
+        "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+        "vendor/php-src/Zend/zend_compile.c:10957"
+      ],
+      "ini": {}
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/constexpr/gh9138_2.phpt",
+      "sha256": "1217cdf9e390079614e80d1ac31fac060f24782e98f7dab865ad1518e9223862",
+      "frontend_message": "Cannot use empty array elements in arrays on line 3",
+      "lint_contains": "Cannot use empty array elements in arrays",
+      "restriction": "array_holes",
+      "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c:10105",
+        "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+        "vendor/php-src/Zend/zend_compile.c:10957"
+      ],
+      "ini": {}
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/list/list_012.phpt",
+      "sha256": "18f7e93bd6eac07c9d88e29bfedf8c4d0afd3a5f4e7e5aed5d7a792ddb3a2295",
+      "frontend_message": "Cannot use empty array elements in arrays on line 3",
+      "lint_contains": "Cannot use empty array elements in arrays",
+      "restriction": "array_holes",
+      "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c:10105",
+        "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+        "vendor/php-src/Zend/zend_compile.c:10957"
+      ],
+      "ini": {}
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/list/list_013.phpt",
+      "sha256": "31ae3197341d97eed174082c4abc18b73e709c65f6fc08bf80c28366489dee98",
+      "frontend_message": "Cannot use empty array elements in arrays on line 3",
+      "lint_contains": "Cannot use empty array elements in arrays",
+      "restriction": "array_holes",
+      "reason": "Omitted array items are allowed for destructuring, not ordinary array literals.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c:10105",
+        "vendor/php-parser/lib/PhpParser/ParserAbstract.php:202",
+        "vendor/php-src/Zend/zend_compile.c:10957"
+      ],
+      "ini": {}
+    }
+  ],
+  "new_observations": [
+    {
+      "id": "vendor/php-src/Zend/tests/bug75426.phpt",
+      "source_base64": "PD9waHAKJGEgPSBbCiAgICAxLAogICAgMiwKICAgIDMsCiAgICAsCiAgICA1LAogICAgNiwKXTsKPz4K",
+      "source_sha256": "144cc5b3d4a7d343ec580e455ca766b3b2854c3685ab6dfbe6dba65fde90711c",
+      "syntax_check": {
+        "oracle": true,
+        "frontend": true,
+        "oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_oracle": true,
+        "printed_oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_frontend": true,
+        "printed_frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "status": "pass",
+        "nodes": [
+          "ArrayItem",
+          "Expr_Array",
+          "Expr_Assign",
+          "Expr_Variable",
+          "Scalar_Int",
+          "Stmt_Expression"
+        ]
+      },
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-l",
+        "/home/user/workspace/php-spec/.tools/array-phase-history.php"
+      ],
+      "native_status": 255,
+      "native_stdout": "CkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGVtcHR5IGFycmF5IGVsZW1lbnRzIGluIGFycmF5cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvYXJyYXktcGhhc2UtaGlzdG9yeS5waHAgb24gbGluZSA1ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KRXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2FycmF5LXBoYXNlLWhpc3RvcnkucGhwCg==",
+      "native_stderr": ""
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/constexpr/gh9138.phpt",
+      "source_base64": "PD9waHAKCiNbQXR0cmlidXRlKFssXS0+ZSldCmNsYXNzIEZvbyB7fQoKPz4K",
+      "source_sha256": "ab9e15a9e8fe26ea91284b20456428b99946fa188b516c96535761fee617de88",
+      "syntax_check": {
+        "oracle": true,
+        "frontend": true,
+        "oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_oracle": true,
+        "printed_oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_frontend": true,
+        "printed_frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "status": "pass",
+        "nodes": [
+          "Arg",
+          "Attribute",
+          "AttributeGroup",
+          "Expr_Array",
+          "Expr_PropertyFetch",
+          "Identifier",
+          "Name",
+          "Stmt_Class"
+        ]
+      },
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-l",
+        "/home/user/workspace/php-spec/.tools/array-phase-history.php"
+      ],
+      "native_status": 255,
+      "native_stdout": "CkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGVtcHR5IGFycmF5IGVsZW1lbnRzIGluIGFycmF5cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvYXJyYXktcGhhc2UtaGlzdG9yeS5waHAgb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KRXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2FycmF5LXBoYXNlLWhpc3RvcnkucGhwCg==",
+      "native_stderr": ""
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/constexpr/gh9138_2.phpt",
+      "source_base64": "PD9waHAKCiNbQXR0cmlidXRlKFssXT8tPmUpXQpjbGFzcyBGb28ge30KCj8+Cg==",
+      "source_sha256": "1217cdf9e390079614e80d1ac31fac060f24782e98f7dab865ad1518e9223862",
+      "syntax_check": {
+        "oracle": true,
+        "frontend": true,
+        "oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_oracle": true,
+        "printed_oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_frontend": true,
+        "printed_frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "status": "pass",
+        "nodes": [
+          "Arg",
+          "Attribute",
+          "AttributeGroup",
+          "Expr_Array",
+          "Expr_NullsafePropertyFetch",
+          "Identifier",
+          "Name",
+          "Stmt_Class"
+        ]
+      },
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-l",
+        "/home/user/workspace/php-spec/.tools/array-phase-history.php"
+      ],
+      "native_status": 255,
+      "native_stdout": "CkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGVtcHR5IGFycmF5IGVsZW1lbnRzIGluIGFycmF5cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvYXJyYXktcGhhc2UtaGlzdG9yeS5waHAgb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KRXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2FycmF5LXBoYXNlLWhpc3RvcnkucGhwCg==",
+      "native_stderr": ""
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/list/list_012.phpt",
+      "source_base64": "PD9waHAKCnZhcl9kdW1wKFssIDEsIDJdKTsKCj8+Cg==",
+      "source_sha256": "18f7e93bd6eac07c9d88e29bfedf8c4d0afd3a5f4e7e5aed5d7a792ddb3a2295",
+      "syntax_check": {
+        "oracle": true,
+        "frontend": true,
+        "oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_oracle": true,
+        "printed_oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_frontend": true,
+        "printed_frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "status": "pass",
+        "nodes": [
+          "Arg",
+          "ArrayItem",
+          "Expr_Array",
+          "Expr_FuncCall",
+          "Name",
+          "Scalar_Int",
+          "Stmt_Expression"
+        ]
+      },
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-l",
+        "/home/user/workspace/php-spec/.tools/array-phase-history.php"
+      ],
+      "native_status": 255,
+      "native_stdout": "CkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGVtcHR5IGFycmF5IGVsZW1lbnRzIGluIGFycmF5cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvYXJyYXktcGhhc2UtaGlzdG9yeS5waHAgb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KRXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2FycmF5LXBoYXNlLWhpc3RvcnkucGhwCg==",
+      "native_stderr": ""
+    },
+    {
+      "id": "vendor/php-src/Zend/tests/list/list_013.phpt",
+      "source_base64": "PD9waHAKCnZhcl9kdW1wKFsxLCAyLCAsXSk7Cgo/Pgo=",
+      "source_sha256": "31ae3197341d97eed174082c4abc18b73e709c65f6fc08bf80c28366489dee98",
+      "syntax_check": {
+        "oracle": true,
+        "frontend": true,
+        "oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_oracle": true,
+        "printed_oracle_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "printed_frontend": true,
+        "printed_frontend_detail": {
+          "ok": true,
+          "diagnostics": [],
+          "accepted": true
+        },
+        "status": "pass",
+        "nodes": [
+          "Arg",
+          "ArrayItem",
+          "Expr_Array",
+          "Expr_FuncCall",
+          "Name",
+          "Scalar_Int",
+          "Stmt_Expression"
+        ]
+      },
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-l",
+        "/home/user/workspace/php-spec/.tools/array-phase-history.php"
+      ],
+      "native_status": 255,
+      "native_stdout": "CkZhdGFsIGVycm9yOiBDYW5ub3QgdXNlIGVtcHR5IGFycmF5IGVsZW1lbnRzIGluIGFycmF5cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvYXJyYXktcGhhc2UtaGlzdG9yeS5waHAgb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KRXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2FycmF5LXBoYXNlLWhpc3RvcnkucGhwCg==",
+      "native_stderr": ""
+    }
+  ],
+  "candidate_inputs": {
+    "Makefile": "237b8e1ad5d07e48c1813ab433d69d7abd1e597383a7994d0ae49ddd1c4d16de",
+    "README.md": "7735b4a13f5ead06e2a2548388138d7a0a73fb2177460cec3a025e430870b3d6",
+    "docs/semantics/ARRAY-OMISSIONS.md": "ddf2a39300c150fc4541b855038f17cbdf41485254227235106cc04a68be9f7a",
+    "patches/php-parser-grammar.patch": "65463b0bee52309456abde5ebaa5c4d766667b2856405bf66bfb8559a5c11894",
+    "patches/php-parser-printer.patch": "0b24f2ddd0b08b9cb9a985cda3ae8ce498a41acb4bfc22ce48eb3c36073a011a",
+    "scripts/generate-schema.py": "c96407d29315e6668e0080f7834b31ca451c07eb295971f1c638987a65cc9e07",
+    "scripts/node-inventory.php": "619df6330f4922eb63bff80e3f394280d1d736f01e66b090c0dfee28656dc945",
+    "spec/nodes.json": "7c0071aefa26dc1e9e45127b6577bc5671b310485c42f66fb3473530f6ffb397",
+    "spec/php.watsup": "4d88880caaee8a2b5e74969ae3cf94b17beff36e391f4bb9823ebec80d9d8a36",
+    "spec/schema.json": "fa06db23f91a84622957db50172524eef0de00cf85174c360cc586077a638bc6",
+    "spec/semantics/10-bytes.watsup": "ef1e38720671cb61f66f427409c6d6059a1e0ad68b40fd5407519d1516ab568c",
+    "spec/semantics/11-source-occurrences.watsup": "68bab3c795f62e36e61a178ec636b70e0bb6c447e8d8d5197391176628646e67",
+    "spec/semantics/16-static-types.watsup": "aa449be5bb1e81a1db28fa44dbe8106a77397fa1cdaa53e5e02ae8c0e2747721",
+    "spec/semantics/17-signatures.watsup": "1e7de9179ede893c39e1e006b0a7332da2687b66bc26c5a99816f9748def55f9",
+    "spec/semantics/18-class-headers.watsup": "ca3b95217292783e5c26b919a5697ae24bc98e4673c0e1bb68f7ec3323019b2b",
+    "spec/semantics/20-machine.watsup": "86627baac857d00f976cf6ea2c64ad803a19d35dfcfc16474512be6e35c067e0",
+    "spec/semantics/21-source-context.watsup": "f68dda7b4e62fc62b09e96a8f8c7b8cd02f8597e7a41447e0e8b61756a7821bb",
+    "spec/semantics/30-storage.watsup": "2d54bc6fdec10c3b08ecff18e34869895ea1b2aac70bada4070d8eea6e25f43a",
+    "spec/semantics/36-arrays.watsup": "5809f5d87b897e43d14d05fac1bba1cffcfacd8092b293dfae2a3e1cc74ce422",
+    "spec/semantics/37-array-locations.watsup": "142ec8ace1dcf16b6366e47014a05ad83ef981f93772124749656c9e873b6a5b",
+    "spec/semantics/40-control.watsup": "6ad99b834480da59a91f8b764f1f251b1d072482cf7ffb0b01ac37da7fb30994",
+    "spec/semantics/41-array-control.watsup": "f81948389be101b53627cdf6633e1c0031f20d679c4ba9b7bca1186731141da5",
+    "spec/semantics/45-constant-context.watsup": "45058cc4d658208e396800e6ca5e896e09df0d1456efe2711179519166aa302d",
+    "spec/semantics/46-source-compiler.watsup": "f66d81fcbeb022df063a302c7f4a1396d7030725ec7b730065385c41c3b320bd",
+    "spec/semantics/47-control-compiler.watsup": "a3e5bab449365c62e368dc4448cb3fec92bb3a4228d60b6db30c4c51268794a2",
+    "spec/semantics/50-control-flow.watsup": "50999cefc35aae6baef3a6c7d747ebd09c870980561d3586ba88bc9bea9614a4",
+    "spec/semantics/56-casts.watsup": "a491681335f3366488d4c2a6efdb0fa5fa6dac96b3a9012c47130dd4601f8a98",
+    "spec/semantics/modules.json": "eeb881eef142e999cf56a1256acc1bdf753d4654f1303983ad1743d37aa43fbe",
+    "tests/array_omission_metadata.py": "fc4e4f789eeee11a2b656f68e22b2f2a155ca3ee5b76083f8e38749b004c33d7",
+    "tests/clone_line_metadata.py": "a7e60c24a068f749e7b45b45f52ccc6c4ebfb6d30e6f5a8e5ad7087ba7ab8d47",
+    "tests/concat_line_metadata.py": "9a2bee9767b3aaabb28fe45ba5755e20d23e2d7f0d2614fe9558ca62a786165d",
+    "tests/nullary_line_metadata.py": "559e61f33cda9d32cb82e59a23c06f23f9f91072a8d0c72396ec47dc5ccf65d7",
+    "tests/semantics/array_omissions.py": "2015254240bdb07e53aa32df253e803c09351ec93846ef3989885ea37de34c00",
+    "tests/semantics/class_headers.py": "1493b02b6fd78c6cc65fb63594f2ce58cd965ab969007e615d5fa739ecce88e3",
+    "tests/semantics/method_signatures.py": "c397072d734e25106fd5f8899237ce912d4fa8aaa3f79787977a7a726532a4c9",
+    "tests/semantics/signatures.py": "8cbc58d31736900f2c4d6f22ad8c8477e2bf4fc07f8caf4e3554e3b6f403418a",
+    "tests/semantics/validate.py": "b78471efd1a1cee9f298336a3924b42a3e5df9fcd23d158133d22892e43b9e68",
+    "tests/validate.py": "461b4bfa5b95ec614111c9b5b7afb627aa1073866575535a6c90b65923ab4829",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php": "59b571dc1ce6f04fed65192881391f4a4df7f3c47457248adb01a7de56e5d6a3",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php": "1c1184479caab83c305b0605a7c4eb2c1c8d9264c2d96aeb073608c5e1cb62e6",
+    "vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php": "d8c6f2847c94ce5e72f32650b0b26f91810c5bdc4bc75464a9977347a1fb7fa1"
+  },
+  "resolution": "Ordinary omitted slots are represented in checked nullable Array.items. Parsing/checked elaboration/fresh printing agree with the pinned parser; native lint still rejects reached omissions. These retired frontend exemptions must no longer excuse regressions."
+}
