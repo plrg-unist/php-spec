@@ -71,45 +71,54 @@ implementation work, not ordinary-library exclusions or source agreements.
 Coalesce currently handles only nonvariable left operands; full quiet access,
 request environment/CV diagnostics and ??= follow containers before broader calls.
 
-## Foreach next
+## Foreach targeted acceptance and active campaign
 
-Foreach representation/key-precheck code **75672577** publishes exactly the frozen
-`.tools/foreach-publication/candidate-inputs.json` prerequisite: ac2aaca6/815 inputs,
-17 changed files, 56 modules and four tools. `foreach-publication-review.json`
-reproduces33 old frontend/native lints,29 checked roundtrips,17 exact prechecks,
-26 metadata assertions and seven edited boundaries. Twelve normal-compilation
-Unsupported controls remain explicitly pending. Canonical66 plain/UTF16 profiles,
-18 typed/printer controls and17 source/24 negative outcomes pass; matching private
-closure also passes4,884 compiler lints,694 static tests and169 occurrence domains.
+Code **1f0e8810**, author evidence **7cdd513c**, bounded independent review
+`foreach-runtime-review.json` accepts array iteration. Full 4,997 sources/24 negatives
+are running; no full current closure yet. Never modify canonical watched bytes or
+build tools during that run. Docs/coverage updates are safe. Root orchestrates.
 
-Appended keyByRef is FIELD5; FIELD0–4 and all70 domains stay unchanged. List keys
-inhabit existing expression syntax. An edited true flag with no target is
-structurally checked but rejected by printer and explicitly Unsupported by
-compiler. Exactly three phase exemptions are retired; their full old entries and
-source bytes remain in the independent prerequisite review/originals. Reviewer
-still owns the phase ledger; literal old observations remain negative regressions.
+Original `.tools/runtime4-foreach/final-inputs.json`819 is immutable. Independent
+output replay passed143, but dense `independent-holder-element-rebound` exposed a
+stale final ORIGIN. Original input reconstruction and exact failing state are durable
+in `foreach-origin-first-{inputs,failure}.json` (0e13c5da). Corrected immutable
+`.tools/runtime4-foreach-corrected/final-inputs.json`820 restores S.TODO before shared
+DIM reset, retaining acquired LOCATION and caller HELD. Independent143 source and
+8 dense programs/3,096 assertions pass; author9/6,498 pass. Public CURSOR state also
+serializes at budget35. Three earlier AssignRef wrong outcomes, dead-map budget50,
+raw-tuple serializer failure and the 300-second exploratory timeout remain failures
+in the original archives; none count as source agreements.
 
-Full foreach compiler work is a separate mutable draft, with69 exact cases and
-two pending contexts at last message. A later20-producer control gate covers
-statementBodyLine for foreach, including nested parentheses/comments, alternate
-bodies and UTF16. Request the complete immutable full compiler/runtime manifest
-before independent execution; preserve earlier prototype/tool failures separately.
+Final `.tools/runtime4-foreach-publication/final-inputs.json`820 adds only12 CASES
+literals. Exact selected sources, all non-CASES harness bytes, fixtures, semantics
+and tools bind completed corrected state runs to current publication, without
+claiming a fresh aggregate. Its819 public files equal canonical. Runtime literals
+155 plus17 prechecks give172 selected cases. Full catalogue4997 adds155 unpack,
+263 list,17 prechecks and155 foreach to historical4407. `foreach-runtime-bindings.json`
+and `foreach-independent-evidence.json` preserve exact bridges and raw review.
 
-Runtime4's `.tools/runtime4-foreach` is a mutable next draft, not an accepted or
-frozen candidate. Its68 cursor design adds insertion POSITIONS/SERIAL per array,
-per-iterator current-table/saved-copy classes and no extra heap owners. COW hooks
-include location separation/union; empty copies omit iterator inheritance. Read
-`FOREACH-REVIEW.md` for source-backed risks/interfaces and the independent18 native
-cursor/alias originals and12 copy/unwind originals, plus earlier30 history originals under
-`.tools/runtime-foreach-next/history-originals.json`. Runtime4 also preserved36
-setup cases under `.tools/runtime4-foreach-setup-*`. Do not approximate cursors by
-keys or global ancestry. Selecting one iterator's descendant discards only its
-alternates. By-value owns HARRAY, by-reference owns acquired HCELL. Unwinding must
-remove cursor metadata while retaining value-variable aliases. Three reference-valued
-AssignRef iterable reset defects were captured before wrapper correction; the
-extra top-level return source remains Unsupported pending return/frame activation.
-Next quiet/CV originals28 and compiler-state notes are in `QUIET-CV-REVIEW.md`;
-those observations make no implementation/admission claim.
+The accepted prerequisite75672577/ac2aaca6 preserves FIELD0–4 and appends keyByRef
+FIELD5, with70 unchanged domains. Three historical parser exceptions remain retired;
+reviewer owns phase ledger. All12 previously Unsupported normal-compilation originals
+are now retained unchanged in the155-source catalogue; four genuine parser controls
+remain separate. Full compiler89/metadata20 has two explicit pending contexts:
+header target diagnostic and nullsafe property iterable. Producer20 plain/UTF16
+source/body-line and20 metadata controls passed independent replay.
+
+Next review: audit full raw ordered membership with
+`.tools/review6-container-campaign-audit.py` after runtime publishes current summary;
+compare historical4407 raw hash and exact original archives. Compiler current report
+should cover5039 lints after final12 additions. Preserve old5027 run as historical
+with explicit correction/catalogue proof. Then update concise current status.
+
+Quiet/CV next remains required: seven ordinary request environment, five quiet,
+one list header, one return and two foreach compiler contexts are explicit work.
+`QUIET-CV-REVIEW.md` and28 native originals distinguish delayed CV rereads, temporary
+reuse and header write state. Independent next header prototype review passed120
+native/lint/checked originals,113 source/compiler and40 compile diagnostic prefixes,
+seven quiet excluded; first partial diagnostic-map failure reproduced. Its immutable
+`.tools/header-runtime-checked` still uses old foreach69 and must rebase before
+admission. No next-family source admission is implied.
 
 ## Historical ordinary closure and validation discipline
 

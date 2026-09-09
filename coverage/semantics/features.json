@@ -2617,13 +2617,17 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/67-foreach-compiler.watsup"
+        "spec/semantics/67-foreach-compiler.watsup",
+        "spec/semantics/68-array-cursors.watsup",
+        "spec/semantics/69-foreach-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/foreach_compiler.py",
-        "coverage/semantics/foreach-publication-review.json"
+        "coverage/semantics/foreach-publication-review.json",
+        "tests/semantics/foreach.py",
+        "coverage/semantics/foreach-runtime-review.json"
       ],
-      "review": "Reviewed syntax/key-precheck prerequisite 75672577: appended keyByRef field preserves existing indices; 17 exact original static source errors and three retired phase exceptions. Normal foreach compilation, execution and all iteration protocols remain pending; 12 Unsupported boundary controls are not source admissions."
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Full4997 source campaign pending; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json."
     },
     {
       "node": "Stmt_Function",
@@ -4876,15 +4880,24 @@
     {
       "id": "containers.foreach-value",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+      "implementation": [
+        "spec/semantics/67-foreach-compiler.watsup",
+        "spec/semantics/68-array-cursors.watsup",
+        "spec/semantics/69-foreach-control.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "source_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c",
+        "coverage/semantics/foreach-runtime-review.json"
+      ],
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Full4997 source campaign pending; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-value-mutation.php",
         "tests/semantics/conformance/foreach-residual-alias.php"
@@ -4893,15 +4906,24 @@
     {
       "id": "containers.foreach-reference",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+      "implementation": [
+        "spec/semantics/67-foreach-compiler.watsup",
+        "spec/semantics/68-array-cursors.watsup",
+        "spec/semantics/69-foreach-control.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "source_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c",
+        "coverage/semantics/foreach-runtime-review.json"
+      ],
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Full4997 source campaign pending; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-reference-mutation.php"
       ]
@@ -4909,15 +4931,24 @@
     {
       "id": "containers.foreach-mutation",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+      "implementation": [
+        "spec/semantics/67-foreach-compiler.watsup",
+        "spec/semantics/68-array-cursors.watsup",
+        "spec/semantics/69-foreach-control.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "source_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c",
+        "coverage/semantics/foreach-runtime-review.json"
+      ],
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Full4997 source campaign pending; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-value-mutation.php",
         "tests/semantics/conformance/foreach-reference-mutation.php"
@@ -4926,15 +4957,24 @@
     {
       "id": "containers.residual-alias",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+      "implementation": [
+        "spec/semantics/67-foreach-compiler.watsup",
+        "spec/semantics/68-array-cursors.watsup",
+        "spec/semantics/69-foreach-control.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "source_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c",
+        "coverage/semantics/foreach-runtime-review.json"
+      ],
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Full4997 source campaign pending; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-reference-mutation.php",
         "tests/semantics/conformance/foreach-residual-alias.php"
@@ -5247,7 +5287,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.while",
@@ -5270,7 +5310,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.do",
@@ -5293,7 +5333,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.for",
@@ -5316,7 +5356,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence.",
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence.",
       "planned_source_tests": [
         "tests/semantics/conformance/nested-control.php"
       ]
@@ -5324,15 +5364,24 @@
     {
       "id": "control.foreach",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/67-foreach-compiler.watsup",
+        "spec/semantics/68-array-cursors.watsup",
+        "spec/semantics/69-foreach-control.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "source_tests": [
+        "tests/semantics/foreach.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/foreach-runtime-review.json"
+      ],
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Full4997 source campaign pending; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json."
     },
     {
       "id": "control.switch",
@@ -5413,7 +5462,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.continue-level",
@@ -5436,7 +5485,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence.",
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence.",
       "planned_source_tests": [
         "tests/semantics/conformance/nested-control.php"
       ]
@@ -5969,7 +6018,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "static.declarations",

@@ -11,8 +11,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 0a–b | Contracts, inventory, checked runner and source harness | Complete — bounded bootstrap |
 | 1a–c | Integers, bytes, binary64, conversions and power | Partial — scalar/array operator and cast source paths reviewed |
 | 2a | Slots, aliases, frames and access modes | Partial — bindings/references reviewed; quiet access and frames pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — unpack/list and retained expression effects reviewed; foreach next |
-| 3a | Control, exceptions, diagnostics and unwinding | Partial — conditionals/loops/jumps reviewed; foreach and exceptions pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — array unpack/list/foreach reviewed; quiet access and object protocols pending |
+| 3a | Control, exceptions, diagnostics and unwinding | Partial — array loops/jumps reviewed; return/frames and exceptions pending |
 | 3b | Calls, closures and independent static checks | Partial — static helpers reviewed; source activation pending |
 | 4a–b | Linking, objects, traits, properties and internal protocols | Partial — local headers/relations reviewed; execution pending |
 | 5a | Dynamic sources, autoload and explicit services | Pending |
@@ -21,7 +21,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Ownership and handoffs
 
-- `runtime4`: storage/source integration, currently foreach cursor/ownership rules.
+- `runtime4`: storage/source integration, currently quiet access/CV/request-environment rules.
 - `compiler4`: paired compiler/frontend work, then declarations/frames and class lookup.
 - `review6`: independent evidence, inventory, phase ledger and concise status/docs.
 - Root orchestrates; stage owned files, commit reviewed increments, never push.
@@ -33,14 +33,26 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Latest accepted checkpoints
 
+Array foreach code **`1f0e8810`**, author evidence **`7cdd513c`** has
+[bounded independent acceptance](coverage/semantics/foreach-runtime-review.json):
+155 exact sources, nine author state programs/6,498 assertions and eight independent
+programs/3,096 assertions. Independent source replay covers 143 originals; the 12
+added prerequisite originals also agree. The catalogue-only bridge preserves all
+selected state sources, fixtures and executable inputs. Public tagged cursors,
+reference ownership, copy history and cleanup pass; four original defect classes
+remain preserved, including a stale ORIGIN invisible in final output comparisons.
+The fresh **4,997-source +24-negative campaign is running**, not yet accepted.
+Objects/Traversable, frames/return and two compiler contexts remain unfinished.
+
 Foreach syntax/key-precheck code **`75672577`** preserves reference/list key
 designations and retires exactly three historical parser exceptions. The frozen
 private and canonical inputs match **`ac2aaca6`** (815 inputs): 17 exact source
 static errors +24 outcome negatives, 66 parser profiles, 18 typed/printer checks,
 26 compiler metadata controls and the 4,884-source compiler gate pass.
 [Independent review](coverage/semantics/foreach-publication-review.json) reproduces
-33 original observations and verifies all three retirements. Normal foreach
-compilation and execution remain pending; 12 Unsupported controls are not admissions.
+33 original observations and verifies all three retirements. At that checkpoint normal foreach
+compilation remained pending. All 12 original Unsupported controls are now retained
+unchanged in the later 155-source runtime catalogue.
 
 Destructuring/effect/coalesce code **`77f8d3c0`**, compiler reports **`c2893aea`**
 and runtime reports **`54bda2fa`** share **`f1699a75`** (812 inputs).
@@ -74,15 +86,12 @@ syntax acceptance do not close ordinary source-execution families.
 
 ## Next bounded work
 
-Complete array iteration with persistent insertion
-occurrences, per-iterator saved copy positions and explicit ownership/unwinding.
-[Independent design review](docs/semantics/FOREACH-REVIEW.md) and
-[18 cursor originals](coverage/semantics/foreach-independent-cursor-originals.json)
-and [12 copy/unwind originals](coverage/semantics/foreach-independent-copy-unwind-originals.json)
-distinguish array replacement, source rebinding/unset, nested iterators and aliases.
-Normal foreach execution remains unadmitted.
+Finish the current container campaign raw audit. Array iteration now retains
+persistent insertion occurrences, per-iterator saved copy positions and explicit
+ownership/unwinding. [Contract and independent review](docs/semantics/FOREACH-REVIEW.md)
+retain source rebinding, table replacement, copy selection and abrupt-exit originals.
 
-Then complete request environment, named/class/magic lookup, quiet access and
+Complete request environment, named/class/magic lookup, quiet access and
 coalescing assignments before broader calls/frames, declarations, linked objects,
 exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
 One header diagnostic case, five quiet-coalescing cases and seven ordinary

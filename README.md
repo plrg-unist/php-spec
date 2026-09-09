@@ -74,8 +74,11 @@ class-constant lookup remain unfinished.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies
-the original sources and retired exceptions. Normal foreach compilation and
-execution remain unfinished.
+the original sources and retired exceptions. [Array foreach execution](docs/semantics/FOREACH-REVIEW.md)
+now retains captured values/reference cells, saved copy positions and abrupt-exit
+cleanup. [Targeted acceptance](coverage/semantics/foreach-runtime-review.json) binds
+155 sources and complementary dense state checks; the full 4,997-source campaign
+is pending. Objects, frames and two compiler contexts remain unfinished.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the

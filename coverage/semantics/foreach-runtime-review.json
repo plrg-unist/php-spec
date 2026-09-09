@@ -1,0 +1,53 @@
+{
+  "result": "pass",
+  "scope": "Bounded array foreach source/compiler/state acceptance at 1f0e8810; full current 4,997-source campaign still pending. Whole core and object/frame-dependent iteration remain partial. No Unsupported, timeout or tool failure counted as an agreement.",
+  "code_commit": "1f0e8810",
+  "runtime_evidence_commit": "7cdd513c",
+  "source_cases": 155,
+  "independent_source_cases": 143,
+  "added_original_cases": 12,
+  "author_state": {
+    "programs": 9,
+    "assertions": 6498
+  },
+  "independent_state": {
+    "programs": 8,
+    "assertions": 3096,
+    "budgets": "0..48,64,96,128,160",
+    "predicates": "Exact resumed state; final ORIGIN/HELD/TODO/ITERATORS empty; source validity, cursor registry/task bijection, heap ownership, live insertion occurrences, owner/mode consistency, unchanged CODE/POOLS."
+  },
+  "bridge": {
+    "corrected_manifest_sha256": "63a2b969708b230617da362a1280db958d77a4ee918f5492c4483251cc74753a",
+    "publication_manifest_sha256": "517dfe580554ca5fb246d241549628f25d18787ec32a84e4c4e4dfb240a5918b",
+    "public_inputs": 819,
+    "only_changed_path": "tests/semantics/foreach.py",
+    "change": "Twelve CASES literals added; all non-CASES test bytes, selected sources, generated fixtures, semantic modules and tools unchanged. Completed corrected-state runs remain explicitly historical runs whose dependencies match final publication."
+  },
+  "corrected_defects": [
+    "AssignRef iterable must retain acquired reference cell, before resolving its value.",
+    "Dead allocated-table saved cursor maps must be pruned.",
+    "Public semantic state requires tagged CURSOR records; raw tuple serialization failed.",
+    "DIM reference acquisition must restore caller TODO before shared reset, retaining acquired LOCATION and caller HELD. Source output alone did not expose leaked ORIGIN."
+  ],
+  "originals": [
+    "coverage/semantics/foreach-origin-first-failure.json",
+    "coverage/semantics/foreach-origin-first-inputs.json",
+    "coverage/semantics/foreach-runtime-first-failures.json"
+  ],
+  "pending": [
+    "Top-level/function return activation and frame-dependent unwinding.",
+    "Object/Traversable iteration, callbacks and object/frame-dependent targets.",
+    "Foreach header deprecation and nullsafe-property iterable compiler contexts.",
+    "Full current source campaign and final full syntax/offline/core audits."
+  ],
+  "evidence": {
+    "coverage/semantics/foreach-independent-evidence.json": "ccd4fae9b08539701a44a65dd844811000aea9b47bc6d282b803e57dc3e01d24",
+    "coverage/semantics/foreach.json": "c5804532ab3db0b501e367214c5ac93087b609c64e8f18a3a6de817aa059c62f",
+    "coverage/semantics/foreach-runtime-bindings.json": "c0ed88a6009128fc947b58f854ed8dd24515ad141813cb4d95d2e3c58f5567cd",
+    "coverage/semantics/foreach-state-fixtures.json": "049eb831464d97109e5a351d240fe88e33bdb2a014a137e0f5b6cd9300e93833",
+    "coverage/semantics/foreach-runtime-originals.json": "2441b38c5140b8d57f801bb1d544105f192c0acf067f9281e5db86f0d66706b6",
+    "coverage/semantics/foreach-multiline-originals.json": "9577f2f95b9897d7a35c0180157b186aa3fc65eb98e49083a3b7958c5ac76473",
+    "coverage/semantics/foreach-prerequisite-runtime-originals.json": "4d5d329ee2507e875a0d157f95bdc3ad6c7f919788cef6329b43325a8a3a8966",
+    "coverage/semantics/foreach-runtime-first-failures.json": "4e85c2f65f9675d3ce8deb00a973d7e63b023646872f97458f8b84bcb0f5e178"
+  }
+}

@@ -1,7 +1,10 @@
 # Foreach representation review
 
-This is an independent, source-backed design review, not runtime acceptance.
-Array foreach execution remains pending. The pinned engine is PHP 8.5.10;
+Array foreach code **1f0e8810** has [bounded runtime acceptance](../../coverage/semantics/foreach-runtime-review.json):
+155 exact sources, nine author state programs/6,498 assertions and eight independent
+programs/3,096 assertions. The full 4,997-source campaign is pending. Object and
+Traversable protocols, return/frames and header/nullsafe compiler contexts remain
+unfinished. The pinned engine is PHP 8.5.10;
 [18 native originals](../../coverage/semantics/foreach-independent-cursor-originals.json)
 retain exact source bytes and observations before implementation. A further
 [12 native originals](../../coverage/semantics/foreach-independent-copy-unwind-originals.json)
@@ -55,3 +58,28 @@ metadata is not an additional array/reference owner.
 
 The later object/Traversable protocol must preserve ordinary callback execution,
 exceptions and cleanup. This review does not discharge that pending obligation.
+
+## Accepted state protocol and preserved repairs
+
+Arrays retain live `(key, serial)` insertion occurrences: overwrite preserves an
+occurrence, deletion removes it, reinsertion receives a new monotonically increasing
+serial. Each iterator keeps its own tagged CURSOR saved positions. These records
+are metadata, not heap owners. Dead table maps are pruned; table IDs are not reused.
+By-value iterators own captured arrays; by-reference iterators own the acquired
+cell, including a reference-valued AssignRef temporary. Selecting one descendant
+discards only that iterator's alternative positions. Completion and abrupt loop
+exits release iterator metadata while leaving the last value-variable alias intact.
+
+The [original failures](../../coverage/semantics/foreach-runtime-first-failures.json)
+retain three wrong AssignRef outcomes, a dead saved map and a public raw-tuple
+serialization failure. The separate [DIM origin failure](../../coverage/semantics/foreach-origin-first-failure.json)
+retains exact pre-fix inputs and the final state: output agreed, but an ORIGIN
+continuation was lost. Restoring the setup TODO before shared reset preserves the
+caller continuation and acquired location. The unchanged failing fixture now passes.
+Independent dense replay checks complete state, ownership and cleanup; only BUDGET
+is changed when resuming. Earlier timeouts and tool failures remain failures.
+
+The final catalogue adds twelve unchanged prerequisite sources to the corrected
+candidate. Exact non-CASES harness bytes, selected sources, fixtures, modules and
+tools bind the completed state runs to publication; this does not relabel those
+runs as a fresh aggregate campaign. Current full source acceptance awaits its raw audit.
