@@ -30,7 +30,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   consumers. Read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md) and
   [SOURCE-ORIGINS](docs/semantics/SOURCE-ORIGINS.md).
 - Compiler: ordered ordinary compilation, lexical context and retained constant
-  facts. Read [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md),
+  facts; ordered helper `72d3a65d` is reviewed. Read [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md),
   [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md) and
   [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md).
 - Shared tree: stage owned files only, commit each independently reviewed increment,
@@ -61,6 +61,14 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   independent alternates passed. Partial facts, same-path reuse, distinct NaN-array
   paths and isolated pool roots are reviewed. Ordinary compiler scheduling and
   runtime pool installation remain pending.
+- Ordered compiler `72d3a65d`: **549 native lint comparisons +15 emission-line
+  observations**, 6 Unsupported contexts and metadata/export controls passed;
+  independent alternates and exact-bit conflict probes passed. Constant replacement
+  lines are corrected; [raw history](coverage/semantics/constant-rewrite-line-disagreement.json)
+  preserves six prior failures and all ten resolved observations. Work, lexical
+  resumption, AST facts and code-generation constants are distinct. Runtime entry
+  still uses the prior checker; [SOURCE-COMPILER](docs/semantics/SOURCE-COMPILER.md)
+  describes the pending consumer.
 - Compiler/frontend `9658958c`: 233 checked prefix comparisons plus 64 independent
   alternates; seen-symbol, work-barrier, resumption and metadata controls passed.
   Anonymous brace locations and valid function/constant import aliases are fixed.
@@ -80,11 +88,9 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Next gates and retained decisions
 
-Review ordered compiler work, then install permanent compiled-unit pools before
-source dimensions. The draft currently loses effective lines on constant AST
-replacements: six raw disagreements and four controls are retained in
-[DISCREPANCIES](docs/semantics/DISCREPANCIES.md); correction is required before
-compiler acceptance. Pool roots must survive temporary cleanup; installation must
+Install and independently review permanent compiled-unit pools, then integrate
+the ordered compiler before source dimensions. Pool roots must survive temporary
+cleanup; installation must
 reserve disjoint allocation IDs. Runtime tasks consume facts by unit/path, while
 ordinary compilation still visits children below constant-prepass assignment
 barriers. Preserve compiler lines, key conversion, delayed reads and owner timing.

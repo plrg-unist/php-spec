@@ -4807,9 +4807,14 @@
         "adapter/main.ml",
         "bin/php-semantics",
         "spec/semantics/10-bytes.watsup",
-        "spec/semantics/20-machine.watsup"
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/source_compiler.py",
+        "coverage/semantics/source-compiler.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json"
@@ -4817,7 +4822,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending.",
+      "review": "Independent ordered compiler helper72d3a65d:549 native lint comparisons plus15 emission-line observations,6 Unsupported contexts and metadata/export controls;16 alternate lint plus5 emission observations and9 extra exact-value merge probes passed. All10 retained replacement-line probes now agree; six original failures remain in constant-rewrite-line-disagreement.json. Actual AST replacements retain invocation compiler lines; original scalar leaves retain source lines and cached visits preserve provenance. Ordinary compilation enters assignment/variable children below prepass barriers and retains separate AST facts/codegen constants. Runtime source entry, complete declaration/body/namespace compilation and permanent pool consumption remain pending.",
       "notes": "Source activation must reconcile retained frontend early compile checks: direct void parameters, variadic defaults and reserved class declaration/reference names. Equivalent edited checked-AST witnesses do not establish source frontend agreement or repair these phase gaps."
     },
     {
@@ -4926,19 +4931,22 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/17-signatures.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json",
         "tests/semantics/constant_context.py",
-        "coverage/semantics/constant-context.json"
+        "coverage/semantics/constant-context.json",
+        "tests/semantics/source_compiler.py",
+        "coverage/semantics/source-compiler.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent constant-expression helper review 93eeb749: 42 original source observations plus 7 boundaries and 37 expanded observations passed. Explicit checked-occurrence invocation retains partial folds, same-path reuse, distinct NaN-array paths and persistent pool owner roots; nested compile-error order/lines and assignment barriers are checked. Original source, exact oracle streams/status/commands and implementation fingerprints are retained. Ordinary compiler scheduling, runtime pool installation, complete constant-expression kinds and source occurrence-identity witnesses remain pending.",
+      "review": "Independent ordered compiler helper72d3a65d:549 native lint comparisons plus15 emission-line observations,6 Unsupported contexts and metadata/export controls;16 alternate lint plus5 emission observations and9 extra exact-value merge probes passed. All10 retained replacement-line probes now agree; six original failures remain in constant-rewrite-line-disagreement.json. Actual AST replacements retain invocation compiler lines; original scalar leaves retain source lines and cached visits preserve provenance. Ordinary compilation enters assignment/variable children below prepass barriers and retains separate AST facts/codegen constants. Runtime source entry, complete declaration/body/namespace compilation and permanent pool consumption remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",
@@ -7261,17 +7269,20 @@
         "static.constant-expression"
       ],
       "implementation": [
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/constant_context.py",
-        "coverage/semantics/constant-context.json"
+        "coverage/semantics/constant-context.json",
+        "tests/semantics/source_compiler.py",
+        "coverage/semantics/source-compiler.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent constant-expression helper review 93eeb749: 42 original source observations plus 7 boundaries and 37 expanded observations passed. Explicit checked-occurrence invocation retains partial folds, same-path reuse, distinct NaN-array paths and persistent pool owner roots; nested compile-error order/lines and assignment barriers are checked. Original source, exact oracle streams/status/commands and implementation fingerprints are retained. Ordinary compiler scheduling, runtime pool installation, complete constant-expression kinds and source occurrence-identity witnesses remain pending.",
+      "review": "Independent ordered compiler helper72d3a65d:549 native lint comparisons plus15 emission-line observations,6 Unsupported contexts and metadata/export controls;16 alternate lint plus5 emission observations and9 extra exact-value merge probes passed. All10 retained replacement-line probes now agree; six original failures remain in constant-rewrite-line-disagreement.json. Actual AST replacements retain invocation compiler lines; original scalar leaves retain source lines and cached visits preserve provenance. Ordinary compilation enters assignment/variable children below prepass barriers and retains separate AST facts/codegen constants. Runtime source entry, complete declaration/body/namespace compilation and permanent pool consumption remain pending.",
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-read-literal-prepass.php",

@@ -144,7 +144,7 @@ the pin and keeps explicit float casts separate from the numeric classifier. All
 helper campaigns pass. No intentional divergence or family closure is selected.
 
 
-## Constant replacement lines: unresolved compiler-helper defect
+## Constant replacement lines: resolved compiler-helper defect
 
 The ordered compiler draft locates a folded expression using its original AST
 line. Zend's `zend_eval_const_expr` instead creates its replacement ZVAL with
@@ -160,5 +160,8 @@ arithmetic and unary rewrites; four controls cover whole arrays, original scalar
 literals, nonfolding arithmetic and assignment barriers. Original scalar literals
 retain their original line, so assigning one surrounding line to every fact is
 incorrect. The ordered compiler and runtime fact consumer are not yet activated;
-this is an implementation defect to fix before their acceptance, not an
-intentional divergence or a failure of the accepted origin-only runtime gate.
+commit `72d3a65d` fixes the defect by retaining effective lines in each fact and
+using them during ordinary compilation. All ten original probes now agree; the
+report preserves the six old failures beside the accepted resolution. Cached
+revisits preserve the first replacement line. Runtime fact consumption remains
+pending; no intentional divergence is claimed.
