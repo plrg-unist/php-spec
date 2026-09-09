@@ -165,3 +165,19 @@ using them during ordinary compilation. All ten original probes now agree; the
 report preserves the six old failures beside the accepted resolution. Cached
 revisits preserve the first replacement line. Runtime fact consumption remains
 pending; no intentional divergence is claimed.
+
+
+## Heredoc and nowdoc scalar lines: unresolved specification defect
+
+For a dynamic array ending with a heredoc or nowdoc opened on line 4, the
+pinned runtime emits its array-to-string warning on line 5. The current source
+machine and ordered compiler helper both use line 4. Quoted multiline strings
+correctly retain line 4. This is an admitted source behavior defect, distinct
+from the corrected constant-replacement provenance above.
+
+[Twelve independent original-source observations](../../coverage/semantics/heredoc-line-disagreement.json)
+retain ten failures covering heredoc, nowdoc, empty bodies, indentation, CRLF
+and binary prefixes, plus two quoted controls. Exact original bytes, checked
+ASTs, native/runtime/helper commands, streams, statuses and fingerprints are
+preserved. A narrow scalar-line correction and fresh source/helper gates are
+required before compiler activation; no intentional divergence is selected.

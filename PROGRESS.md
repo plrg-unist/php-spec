@@ -41,13 +41,16 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 - Inventory: **169 constructors, 306 runtime obligations; zero closed**. Every
   family remains pending/partial at full-core scope. Reports retain historical
   acceptance fingerprints; changed inputs require fresh applicable evidence.
-- Current source machine `cb02399c`: independently repeated **514 exact source
-  comparisons +25 negatives**, about 167 seconds. Origin propagation passed
+- Current source machine `0df3d175`: independently repeated **514 exact source
+  comparisons +25 negatives**, about 169 seconds. Origin propagation passed
   25 canonical traces/331 assertions, 41 expanded traces/491 assertions, explicit
   equal-metadata path sequences, multiple source IDs, UTF-16LE retention and
   budget resumption. Unit/path lookup validates the selected node; node equality
   never selects occurrence identity. Ownership: **617 graph +96 boundary cases**,
-  5,434 assertions. Permanent pool consumption is not installed.
+  5,434 assertions. Pool representation `0df3d175` passed 24 boundaries +100 graphs
+  (1,623 assertions), plus 250 expanded graphs (4,825 assertions). Disjoint
+  installation and permanent cleanup roots are reviewed; source consumption is
+  pending. See [COMPILED-POOLS](docs/semantics/COMPILED-POOLS.md).
 - Element-reference targets `f56e12bc` preserve entry alias replacement,
   target-before-CV initialization, owning captured sources across COW and cycles.
   Earlier CV/reference-result defects and their mandatory regressions are resolved;
@@ -59,8 +62,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   key coercion, byte bounds, diagnostic order and delayed RHS contracts.
 - Constant helper `93eeb749`: 42 original observations plus 7 boundaries and 37
   independent alternates passed. Partial facts, same-path reuse, distinct NaN-array
-  paths and isolated pool roots are reviewed. Runtime pool installation and
-  source consumption remain pending.
+  paths and isolated pool roots are reviewed. Source installation and consumption remain pending.
 - Ordered compiler `72d3a65d`: **549 native lint comparisons +15 emission-line
   observations**, 6 Unsupported contexts and metadata/export controls passed;
   independent alternates and exact-bit conflict probes passed. Constant replacement
@@ -88,10 +90,11 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Next gates and retained decisions
 
-Install and independently review permanent compiled-unit pools, then integrate
-the ordered compiler before source dimensions. Pool roots must survive temporary
-cleanup; installation must
-reserve disjoint allocation IDs. Runtime tasks consume facts by unit/path, while
+Correct the newly retained heredoc/nowdoc diagnostic-line defect, review compiler
+access descriptors, then integrate the ordered compiler and pools before source
+dimensions. The [raw line evidence](coverage/semantics/heredoc-line-disagreement.json)
+retains ten native/runtime/helper mismatches and two quoted controls. Runtime
+tasks consume facts by unit/path, while
 ordinary compilation still visits children below constant-prepass assignment
 barriers. Preserve compiler lines, key conversion, delayed reads and owner timing.
 All 16 read/prepass and eight write/error-order witnesses, plus existing array and

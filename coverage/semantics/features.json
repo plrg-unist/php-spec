@@ -2285,7 +2285,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent runtime occurrence propagation cb02399c: 514 exact source comparisons plus 25 negatives passed unchanged; 25 trace sources/331 assertions, 41 expanded sources/491 assertions, seven explicit equal-metadata path sequences and multiunit/root probes passed. Canonical checked PROGRAM/ENCODEDPROGRAM units and explicit task origins persist through execution and budget resumption. Invalid unit/path/node tags reject; wrappers preserve existing root projection (617 graph plus 96 boundary cases, 5434 assertions). Structural inventory remains169 constructors/1086 alternatives. Ordered compiler scheduling, permanent constant pools, dynamic source instances and repeated literal execution remain pending."
+      "review": "Independent runtime occurrence propagation cb02399c: 514 exact source comparisons plus 25 negatives passed unchanged; 25 trace sources/331 assertions, 41 expanded sources/491 assertions, seven explicit equal-metadata path sequences and multiunit/root probes passed. Canonical checked PROGRAM/ENCODEDPROGRAM units and explicit task origins persist through execution and budget resumption. Invalid unit/path/node tags reject; wrappers preserve existing root projection (617 graph plus 96 boundary cases, 5434 assertions). Structural inventory remains169 constructors/1086 alternatives. Permanent pool representation 0df3d175 passed the unchanged 514-source plus 25-negative gate; source compiler/pool activation, dynamic source instances and repeated literal execution remain pending."
     },
     {
       "id": "source.encodings",
@@ -7322,18 +7322,21 @@
         "coercion.identity"
       ],
       "implementation": [
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/32-compiled-pools.watsup"
       ],
       "helper_tests": [
         "tests/semantics/constant_context.py",
-        "coverage/semantics/constant-context.json"
+        "coverage/semantics/constant-context.json",
+        "tests/semantics/compiled_pools.py",
+        "coverage/semantics/compiled-pools.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent constant-expression helper review 93eeb749: 42 original source observations plus 7 boundaries and 37 expanded observations passed. Explicit checked-occurrence invocation retains partial folds, same-path reuse, distinct NaN-array paths and persistent pool owner roots; nested compile-error order/lines and assignment barriers are checked. Original source, exact oracle streams/status/commands and implementation fingerprints are retained. Ordinary compiler scheduling, runtime pool installation, complete constant-expression kinds and source occurrence-identity witnesses remain pending.",
+      "review": "Independent constant helper 93eeb749 and corrected ordered compiler 72d3a65d retain partial facts, same-path reuse, distinct NaN-array paths and effective rewrite lines. Permanent unit pool representation 0df3d175 passed 24 boundaries +100 graphs/1623 assertions; independent 250 expanded graphs/4825 assertions covered disjoint remapping, sparse history, permanent cleanup roots, COW and unit/path rejection. Ownership617+96/5434 and source514+25 passed unchanged. Source compiler/pool installation and consumption, full constant kinds, dynamic instances and repeated literal execution remain pending.",
       "notes": "Constant-array identity is associated with the source literal occurrence; repeating its evaluation can share identity while distinct occurrences do not. NaN strict comparison makes this observable even with OPcache disabled.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-literal-occurrence-identity.php"
