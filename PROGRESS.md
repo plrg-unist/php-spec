@@ -6,8 +6,30 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-The first actual [source calls](docs/semantics/SOURCE-CALLS.md) are independently
-accepted at **f3149e32** on **869/c946394c**. Code **a8fdac1e**, runtime author
+The [positional reference parameter](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md)
+increment is independently accepted at **3956fbe1**: code **31640654**,
+compiler evidence **7263bf5b**, runtime evidence **7aed92c3**. Final author/reviewer
+gates retain **882/4b5e15e4**; an explicit unchanged two-file bridge binds canonical
+**884/7399e812**. [Independent evidence](coverage/semantics/reference-parameter-review.json)
+records 61 original reference agreements and three separate pending suppression
+controls, 166 exact author-source replays, 283 fresh native destructuring regressions,
+and eight state programs with 1,868 assertions. Author gates add 139 first-call
+comparisons, 40 existing protocol fixtures, five reference protocol groups and six
+state programs with 1,413 assertions. Each dense state program checks 35 cuts,
+adjacent public resumes and seven full resumes. Canonical CLI8 passes.
+
+Reference sends preserve caller cells through later argument effects, parameter
+rebinding, saved calls, surplus values and fatal cleanup. Literal/TMP sends throw;
+value-call/VAR sends can emit a Notice and create a temporary reference. Shared
+call-result DIM writes and reference destructuring preserve temporary ownership,
+COW and exact diagnostics. Compiler preparation retains 48 phase/16 descriptor
+checks, 12 send-kind/36 context checks, and 91 optimized builtin write-context
+phase controls. These compiler facts implement no builtin bodies. The source
+originals, intermediate disagreements, interrupted state run and setup failures
+remain separately archived. No family is closed by this increment.
+
+The first actual [source calls](docs/semantics/SOURCE-CALLS.md) remain the historical
+accepted prerequisite at **f3149e32** on **869/c946394c**. Code **a8fdac1e**, runtime author
 **d907c5db** and compiler author **04ac151f** retain their separate evidence.
 Named declarations activate at their compiler/runtime
 phase; untyped positional value calls execute through real local frames, including
@@ -19,7 +41,7 @@ their bodies remain separate required work.
 The [independent review](coverage/semantics/calls-final-review.json) binds 139 exact
 source/native comparisons, fresh complete recorded responses on 866 and 870, and
 an explicit 870→869 production bridge. All loaded modules and five tools are
-identical across that last bridge. Nine current production state programs check
+identical across that last bridge. Nine then-current production state programs check
 2,079 assertions: heap/frame/iterator ownership, request roots, adjacent-step
 resumption, selected full resumes and final cleanup. Forty protocol fixtures cover
 source-derived metadata and controls; fresh production saved-target/fallback and
@@ -27,7 +49,7 @@ source-derived metadata and controls; fresh production saved-target/fallback and
 match the retained native profiles. Original defects, setup failures, transport
 bytes, process outcomes and immutable input snapshots remain archived.
 
-The fresh broad compiler checkpoint on 866 has **5,751 native lint comparisons
+The historical broad compiler checkpoint on 866 has **5,751 native lint comparisons
 and 5,783 aggregate assertions**. Its complete 70,239-file archive retains exact
 native/SpecTec subprocess bytes and 11,561 decoded Worker exchanges. Those older
 Worker records are not exact transport wire; the independent 139 source bridge
@@ -37,14 +59,14 @@ compiler 5753/5786 and its 5750 subset retain their original identities.
 
 The [reviewer handoff](docs/semantics/FIRST-CALLS-REVIEWER-HANDOFF.md) and
 [runtime handoff](docs/semantics/RUNTIME-CALLS-HANDOFF.md) give exact continuation inputs.
-Next complete positional reference parameters, then the remaining argument,
-return, type/default and callable protocols in the
-[calls plan](docs/semantics/CALLS-ACTIVATION-PLAN.md). Private reference-parameter
-preparation has 48 compiler phase comparisons and 16 descriptor checks; runtime
-send/bind/ownership pairing and source acceptance remain pending. Independent
+Next complete defaults, parameter/return types and reference returns, then the
+remaining argument and callable protocols in the
+[calls plan](docs/semantics/CALLS-ACTIVATION-PLAN.md). The earlier reference
 [pre-repair originals](coverage/semantics/reference-parameter-review-preparation.json)
-retain 49 additional reference witnesses and three separate suppression controls;
-all 52 old runtime outcomes are Unsupported, with no new acceptance claim.
+and [DIM diagnosis](coverage/semantics/reference-parameter-review-diagnosis.json)
+retain their exact older Unsupported and disagreement states. All seven existing
+pending signature controls remain pending; no reference-parameter control existed
+to retire.
 The [core continuation checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md)
 keeps switch/match/labels/goto, objects/properties, exceptions, dynamic sources,
 generators/fibers, observable lifetime, core intrinsics and source-input gaps
@@ -85,14 +107,14 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, first returns and fatal frame cleanup reviewed; exceptions pending |
-| 3b: calls, closures and static checks | Partial; plain named source calls reviewed; remaining call protocols pending |
+| 3b: calls, closures and static checks | Partial; named positional value/reference calls reviewed; remaining call protocols pending |
 | 4a–b: linking, objects, traits and properties | Partial; header/relation helpers reviewed, execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records122 partial,183 pending and one validated
-obligation; accepted first-call activation is reflected in its call/return rows.
+The runtime inventory now records123 partial,182 pending and one validated
+obligation; accepted positional reference activation is reflected in its call rows.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 

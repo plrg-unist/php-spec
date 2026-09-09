@@ -1,5 +1,19 @@
 # First source calls: independent review continuation
 
+Current successor checkpoint: positional reference parameters are accepted in
+code **31640654**, independently reviewed at **3956fbe1**, with frozen **882/4b5e15e4** and an explicit canonical
+**884/7399e812** bridge. See [reference contract](SOURCE-REFERENCE-PARAMETERS.md)
+and [independent evidence](../../coverage/semantics/reference-parameter-review.json).
+Independent166 exact author-source replays,61 original agreements and283 shared
+regressions pass; three suppression controls remain pending. Independent state8
+passes1,868 assertions; author state6 passes1,413. PREP/FETCH source-derived guard
+checks and active/saved surplus checks pass; arbitrary legitimate values remain
+allowed. Canonical CLI8 passes. Next defaults/types/reference returns and remaining
+callables, then the other full-core lanes. The firstcalls production869 and
+preparation statements below are historical; consult this checkpoint and
+PROGRESS.md for current scope. Only oracle identity closes.
+
+
 Read AGENTS.md, PLAN.md, PROGRESS.md, CORE.md and the php/php-spec/p4-spectec
 skills before work. Root orchestrates; runtime6/compiler5 implement the
 positional-reference successor and review9 reviews independently. Runtime5/review8

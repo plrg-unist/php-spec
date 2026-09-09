@@ -43,9 +43,11 @@ whole-GLOBALS assignment rejection or header write flags.
 
 Return statements compile their actual expression, including dead returns; bare
 return uses the return token line. Call names use the existing function import
-and namespace fallback rules, and arguments compile left to right. An earlier
+and namespace fallback rules, and ordinary arguments compile left to right. The pinned in_array constant
+haystack prepass and builtin write-result checks are specified in
+[the builtin compiler contract](BUILTIN-CALL-COMPILER.md). An earlier
 compiler error survives later unsupported argument forms. Normalized signatures
-with types, defaults, references or variadics remain explicit activation
+with types, defaults, reference returns or variadics remain explicit activation
 boundaries until their runtime checks and bindings are connected. Nonliteral
 defaults retain the existing constant-expression boundary. These are assigned
 next work, not permanent exclusions or native agreements.
@@ -57,6 +59,8 @@ The pinned source routes are `zend_compile_top_stmt`, `zend_compile_func_decl_ex
 compares exact ordered native lint diagnostics and phases, checks body context
 and constant export, and keeps pending signature controls separate. It retains
 source bytes, checked fixtures, native output, compiler fixtures and failures.
+Untyped positional reference parameters follow the
+[reference compiler contract](REFERENCE-PARAMETER-COMPILER.md).
 The paired [runtime contract](SOURCE-CALLS.md) and
 [independent acceptance](../../coverage/semantics/calls-final-review.json) bind
 actual source execution and ownership evidence separately from compiler fixtures.
