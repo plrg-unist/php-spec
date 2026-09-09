@@ -75,9 +75,9 @@ NaN conversion warnings. Strict scalar identity gives source tests a type observ
 including exact versus nonexact division, int/float distinction, signed zero and
 NaN. See NUMERICS.md for helper evidence and still-pending numeric operations.
 
-Dynamic names use the same explicit scalar string conversion and warnings. A pure
-folding classifier detects NaN and array names whose warning belongs to compilation; those
-cases are currently Unsupported until the compile phase accumulates diagnostics.
+Dynamic names use the same explicit scalar string conversion and warnings. The
+ordered compiler detects folded NaN and array names whose warning belongs to
+compilation; those cases remain Unsupported until it accumulates those diagnostics.
 Emitting that warning at runtime would change its order. This pending case and
 missing source context remain distinct from modeled PHP failures. Object/operator
 protocol dispatch and callbacks are later obligations, not native fallbacks.
@@ -213,11 +213,11 @@ temporary cleanup and budget resumption, without allocating another literal.
 
 Runtime consumers obtain compiler lines by the current unit/path and explicit child
 path. Missing descriptors in a compiled unit produce missing context, not an AST
-line substitute. Internal bare-state fixtures may still use the legacy AST line
-helper and `$run_source` trace wrapper; neither is the public source entry point.
-The old whole-source availability traversal remains only for that internal test
-path; ordinary compilation now uses its own narrow direct-CV predicate. Retirement
-of the legacy trace traversal and classifier remains pending. Namespace constants
+line substitute. Internal bare-state fixtures project a direct source location
+through `$expression_line`; they do not reconstruct compiler lines. The unchecked
+origin trace wrapper exists only in its test fixture. Production no longer exposes
+`$run_source` or `$run_statements`, and the obsolete whole-source checker and
+recursive scalar/array classifier are removed. Namespace constants
 retain resolved name bytes and optional global fallback in tagged `CODENAME`
 descriptors. Nonfolded constant reads use these names at the recorded ending line,
 including names reached through a dimension base. Ordinary string/scalar reads use the reviewed dimension helper through delayed

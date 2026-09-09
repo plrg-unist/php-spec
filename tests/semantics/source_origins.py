@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bare checked task traces plus compiled-entry encoded-program resumption."""
+"""Unchecked task traces with explicit source locations, plus compiled-entry resumption."""
 import base64
 import copy
 import hashlib
@@ -15,6 +15,13 @@ import static_types as types
 import source_occurrences as occurrences
 
 PREFIX = r'''
+;; Test-only unchecked execution of known task fixtures. This does not compile source.
+dec $run_unchecked_trace(pcunit, nat) : pstate
+def $run_unchecked_trace(pcunit, n) = $drive($initial_state(NORMAL)[.SOURCES = [pcunit]][.TODO = $statement_tasks($pcprogram(pcunit.AST), (PORIGIN pcunit.ID eps), 0)], n)
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+def $run_unchecked_trace(pcunit, n) = $initial_state(UNSUPPORTED "invalid compiled source unit")
+  -- if pcunit =/= $pcsource(pcunit.ID, pcunit.AST)
+
 syntax ptracevisit = PTRACE text porigin
 syntax ptrace = { FINAL pstate, VALID bool, VISITS ptracevisit* }
 var T : ptrace
@@ -134,7 +141,7 @@ def main():
             uterm = '{ID '+str(unit)+', AST '+program+', OCCURRENCES '+occurrences.occurrence_term(expected)+'}'
             initial = '$initial_state(NORMAL)[.SOURCES = [U]][.TODO = $statement_tasks($pcprogram(U.AST), (PORIGIN U.ID eps), 0)]'
             checks = [f'U = {uterm}', f'U = $pcsource({unit}, {program})', f'S = {initial}',
-                'T = $trace_origins(S, U, 10000)', 'T.VALID', 'T.FINAL = $run_source(U, 10000)',
+                'T = $trace_origins(S, U, 10000)', 'T.VALID', 'T.FINAL = $run_unchecked_trace(U, 10000)',
                 'T.FINAL.ORIGIN = eps', 'T.FINAL.SOURCES = [U]', 'T.FINAL.COMPLETION =/= BUDGET', 'T.VISITS =/= eps']
             orders = None
             if i == 0:
@@ -163,7 +170,7 @@ def main():
                 for origin in (f'PORIGIN {unit+1000} ([PCINDEX 0])', f'PORIGIN {unit} ([PCINDEX 999])', f'PORIGIN {unit} ([PCINDEX 1])'):
                     checks += [f'S_bad = $drive(S[.TODO = [AT ({origin}) (STMT {stmt})]], 100)',
                         'S_bad.COMPLETION = UNSUPPORTED "invalid task source occurrence"', 'S_bad.ORIGIN = eps', 'S_bad.SOURCES = [U]']
-                checks.append('$run_source(U[.OCCURRENCES = eps], 100).COMPLETION = UNSUPPORTED "invalid compiled source unit"')
+                checks.append('$run_unchecked_trace(U[.OCCURRENCES = eps], 100).COMPLETION = UNSUPPORTED "invalid compiled source unit"')
                 checks.append('$task_nodes(AT (PORIGIN U.ID ([PCINDEX 0])) (BINARY_RIGHT ADD (REFERENCE 0) 1)) = [HCELL 0]')
             fixtures.append('dec $case'+str(i)+'() : bool\ndef $case'+str(i)+'() = true\n'+''.join('  -- if '+c+'\n' for c in checks))
             records.append({'source_base64': base64.b64encode(source).decode(), 'checked_ast': ast, 'unit': unit,

@@ -24,7 +24,6 @@ syntax ptask = AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode* }
 dec $cv_name(phpType34) : (nat*)?
-dec $fold_constant(pstate, expression) : pstate?
 dec $initial_state(pcompletion) : pstate
 dec $separate_location_array(pstate, nat) : pstate
 var S : pstate

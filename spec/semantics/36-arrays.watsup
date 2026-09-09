@@ -190,77 +190,12 @@ def $binary_apply(S, ADD, PARRAY n_1, PARRAY n_2, z) = S_union[.HELD = S.HELD]
 def $stringify(S, PARRAY n, z) = S_warned[.RESULT = KNOWN (PSTRING ([65,114,114,97,121]))]
   -- if S_warned = $diagnostic(S, "Warning", [65,114,114,97,121,32,116,111,32,115,116,114,105,110,103,32,99,111,110,118,101,114,115,105,111,110], z)
 
-;; Compile-time array classification reuses pure operations on an isolated state.
-;; It only accepts successful computations without diagnostics or variable reads.
+;; The constant compiler accepts successful pure operations without diagnostics.
 dec $constant_state(pstate) : pstate?
 def $constant_state(S) = (S)
   -- if S.COMPLETION = NORMAL
   -- if S.EVENTS = eps
 def $constant_state(S) = eps
-  -- otherwise
-
-dec $fold_binary(pstate, pbin, expression, expression) : pstate?
-dec $fold_items(pstate, nat, phpType13*) : pstate?
-def $fold_constant(S, expression) = (S[.RESULT = KNOWN pvalue])
-  -- if $fold_scalar(expression) = (pvalue)
-def $fold_constant(S, NExprArray (SEQUENCE phpType13*) metadata) = $fold_items(S_new, n, phpType13*)
-  -- if S_new = $allocate_array(S, $array_empty())
-  -- if S_new.RESULT = KNOWN (PARRAY n)
-def $fold_constant(S, NExprBinaryOpPlus expression_1 expression_2 metadata) = $fold_binary(S, ADD, expression_1, expression_2)
-  -- if $fold_scalar(NExprBinaryOpPlus expression_1 expression_2 metadata) = eps
-def $fold_constant(S, NExprBinaryOpIdentical expression_1 expression_2 metadata) = $fold_binary(S, IDENTICAL, expression_1, expression_2)
-  -- if $fold_scalar(NExprBinaryOpIdentical expression_1 expression_2 metadata) = eps
-def $fold_constant(S, NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = $fold_binary(S, NOTIDENTICAL, expression_1, expression_2)
-  -- if $fold_scalar(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = eps
-def $fold_constant(S, NExprBinaryOpMinus expression_1 expression_2 metadata) = $fold_binary(S, SUBTRACT, expression_1, expression_2)
-  -- if $fold_scalar(NExprBinaryOpMinus expression_1 expression_2 metadata) = eps
-def $fold_constant(S, NExprBinaryOpMul expression_1 expression_2 metadata) = $fold_binary(S, MULTIPLY, expression_1, expression_2)
-  -- if $fold_scalar(NExprBinaryOpMul expression_1 expression_2 metadata) = eps
-def $fold_constant(S, NExprBinaryOpDiv expression_1 expression_2 metadata) = $fold_binary(S, DIVIDE, expression_1, expression_2)
-  -- if $fold_scalar(NExprBinaryOpDiv expression_1 expression_2 metadata) = eps
-def $fold_constant(S, NExprUnaryPlus expression metadata) = $constant_state($unary_apply(S_value, POSITIVE, pvalue, 1))
-  -- if $fold_scalar(NExprUnaryPlus expression metadata) = eps
-  -- if $fold_constant(S, expression) = (S_value)
-  -- if S_value.RESULT = KNOWN pvalue
-def $fold_constant(S, NExprUnaryMinus expression metadata) = $constant_state($unary_apply(S_value, NEGATIVE, pvalue, 1))
-  -- if $fold_scalar(NExprUnaryMinus expression metadata) = eps
-  -- if $fold_constant(S, expression) = (S_value)
-  -- if S_value.RESULT = KNOWN pvalue
-def $fold_constant(S, NExprArrayDimFetch expression phpType5 metadata) = $constant_state($array_read(S_key, pvalue, S_key.RESULT, 1))
-  -- if phpType5 = expression_key
-  -- if $fold_constant(S, expression) = (S_array)
-  -- if S_array.RESULT = KNOWN pvalue
-  -- if $fold_constant(S_array, expression_key) = (S_key)
-def $fold_constant(S, expression) = eps
-  -- otherwise
-
-def $fold_binary(S, pbin, expression_1, expression_2) = $constant_state($binary_apply(S_right, pbin, pvalue_1, pvalue_2, 1))
-  -- if $fold_constant(S, expression_1) = (S_left)
-  -- if S_left.RESULT = KNOWN pvalue_1
-  -- if $fold_constant(S_left, expression_2) = (S_right)
-  -- if S_right.RESULT = KNOWN pvalue_2
-def $fold_binary(S, pbin, expression_1, expression_2) = eps
-  -- otherwise
-
-def $fold_items(S, n, eps) = (S[.RESULT = KNOWN (PARRAY n)])
-def $fold_items(S, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $fold_items(S_insert, n, phpType13_tail*)
-  -- if $fold_constant(S, expression) = (S_value)
-  -- if S_value.RESULT = KNOWN pvalue
-  -- if $constant_state($literal_insert(S_value, n, eps, pvalue, 1)) = (S_insert)
-def $fold_items(S, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $fold_items(S_insert, n, phpType13_tail*)
-  -- if phpType5 = expression_key
-  -- if $fold_constant(S, expression_key) = (S_key)
-  -- if S_key.RESULT = KNOWN pvalue_key
-  -- if $constant_state($key_value(S_key, pvalue_key, false, 1)) = (S_converted)
-  -- if $fold_constant(S_converted, expression) = (S_value)
-  -- if S_value.RESULT = KNOWN pvalue
-  -- if S_insert = $literal_insert(S_value, n, (S_converted.KEY), pvalue, 1)
-def $fold_items(S, n, phpType13*) = eps
-  -- otherwise
-
-def $array_is_constant(expression) = true
-  -- if $fold_constant($initial_state(NORMAL), expression) = (S)
-def $array_is_constant(expression) = false
   -- otherwise
 
 def $dimension_key(S, poperand, z) = S_read
@@ -270,13 +205,6 @@ def $dimension_key(S, poperand, z) = $dimension_key_value(S_read, pvalue, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
-
-def $array_name_fold_warning(phpType34) = true
-  -- if phpType34 = expression
-  -- if $fold_constant($initial_state(NORMAL), expression) = (S)
-  -- if S.RESULT = KNOWN (PARRAY n)
-def $array_name_fold_warning(phpType34) = false
-  -- otherwise
 
 ;; Delayed variable/dimension fetches preserve name operands across key effects.
 dec $delayed_base(expression) : bool

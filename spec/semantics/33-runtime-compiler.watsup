@@ -20,7 +20,8 @@ def $runtime_line(S, pcpath, expression) = 0
   -- if S.ORIGIN = (PORIGIN n pcpath_parent)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = eps
-def $runtime_line(S, pcpath, expression) = $compiled_line(expression)
+;; Uncompiled internal task fixtures carry direct source locations only.
+def $runtime_line(S, pcpath, expression) = $expression_line(expression)
   -- otherwise
 
 dec $compiled_read(pstate, porigin) : pvalue?

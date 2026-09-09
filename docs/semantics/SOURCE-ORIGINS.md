@@ -2,11 +2,13 @@
 
 The machine retains canonical checked `pcunit` values in `SOURCES`. An optional
 `ORIGIN` carries the compiled instance ID and structural occurrence path of the
-current task scope. `$php_run` creates unit zero for its initial source;
-`$run_source` accepts an explicit canonical unit, and rejects a forged occurrence
-catalog. The original `PROGRAM` or `ENCODEDPROGRAM` value remains in that unit.
-The public entry now completes ordered compilation and installs a permanent pool;
-`$run_source` remains an internal bare-task trace fixture.
+current task scope. `$php_run` creates unit zero for its initial source, completes
+ordered compilation and installs permanent pools. The original `PROGRAM` or
+`ENCODEDPROGRAM` value remains in that unit. Production no longer contains a
+second source runner or availability checker. The origin test fixture alone defines
+`$run_unchecked_trace`: it validates occurrence catalog structure and executes known
+task fixtures without compiling them. Its direct source-location projection is not
+a compiler-line model. Public execution always consumes compiler descriptors.
 
 The `execute` transport now requires the actual source filename as canonical
 base64 bytes alongside the checked AST and transition budget. `$php_run` decodes

@@ -17,14 +17,14 @@ The compiler/pool source activation is described in
 ## Entry points
 
 - `20-machine.watsup`: PHP values/completions, static availability checks and
-  source/compiler line functions. `30-storage`: cells, operand/base/path/task
+  source-location functions; effective compiler lines are retained separately in33. `30-storage`: cells, operand/base/path/task
   domains, state, variable binding operations. `31-source-origins` supplies
   checked unit/path task scopes; see [runtime origins](SOURCE-ORIGINS.md).
 - `32-compiled-pools`: internal per-unit constant storage, disjoint array-ID
   installation and permanent roots; see [compiled pools](COMPILED-POOLS.md).
   Source execution invokes it through `33-runtime-compiler`.
 - `36-arrays`: ordered entries/history, key coercions, reads, identity, union,
-  isolated constant classifier. `37-array-locations`: location acquisition and
+  pure operations shared with the constant compiler. `37-array-locations`: location acquisition and
   conditional shallow path copying. `38-array-unset`: unset contexts.
 - `39-ownership`: allocation graph, root projection, owner counts, RC pruning,
   separate mathematical cycle collection. Source driver prunes completed tasks.

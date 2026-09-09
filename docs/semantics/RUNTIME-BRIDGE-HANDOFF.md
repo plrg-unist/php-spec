@@ -48,9 +48,10 @@ lexical context remains separate from runtime variable storage.
 
 31 and 40–42 source consumers use recorded occurrence ending lines; a compiled
 unit never recovers a missing descriptor from AST equality or source metadata.
-The old `$run_source` traversal remains an internal bare-task trace fixture,
-excluded from public `$php_run`. The compiler now uses its own narrow direct-CV check. Retirement of
-the legacy test traversal and its recursive classifier remains pending. Module44 is registered and `$base_read` now delegates ordinary array/string/scalar
+The obsolete source traversal, recursive scalar/array classifier and production
+`$run_source`/`$run_statements` helpers are removed. Origin tests define their own
+explicitly unchecked fixture wrapper with direct source locations. The compiler
+uses its own narrow direct-CV check. Module44 is registered and `$base_read` now delegates ordinary array/string/scalar
 reads to `$dimension_read`. Module45 write helpers now update captured source locations and model reference/nested errors.
 
 The reviewed bridge passed 546 exact source comparisons and 28 explicit negative
@@ -154,6 +155,14 @@ metadata controls. The 2,220 write cases/12 boundaries, ownership 617/96, origin
 metadata/occurrence transport campaigns also passed. These are bounded source and
 helper results, not closure of a PHP semantic family.
 
+Legacy traversal/classifier retirement and known temporary-target compile errors
+passed 686 exact source comparisons plus 24 outcome negatives. Independent review
+verified the full raw source report, repeated 38 additional temporary-target sources
+and two explicit call/property boundaries, and repeated origin 25/333 and runtime
+bridge 15/148 checks. Ownership 617/96 and compiler 728/emission/metadata checks
+passed the same closure. Production source execution has one compiler path; the
+unchecked origin runner is defined only in its test fixture.
+
 ## Following gates and commands
 
 Ordinary scalar/string reads through 44 are connected, with all 16 retained
@@ -200,8 +209,8 @@ objects and lifecycle remain further core work. The full-core objective is uncha
 
 ## Control implementation draft
 
-Prerequisites: accepted string writes, then separately reviewed retirement of the
-legacy checker/classifier and test-only unchecked trace wrapper. Compiler owns
+Prerequisites: accepted string writes and reviewed legacy checker/classifier
+retirement. The unchecked trace wrapper stays in the test fixture only. Compiler owns
 if/while/do/for traversal and static break/continue legality; runtime owns 30 task
 domains, 39 task-root projection, and new control rules registered after43.
 
@@ -255,3 +264,9 @@ snapshot. After legacy cleanup, apply only its new CHOOSE/LOOP_TEST/LOOP_NEXT ta
 domain delta to current30; never copy stale whole-file snapshots over the cleanup.
 Likewise regenerate .tools/draft-legacy-cleanup.py outputs after all prerequisites
 are committed before publishing cleanup. No compiled-source control claim yet.
+
+The joint alternate control frontend/schema/compiler/runtime also passed 40
+original-source cases with 668 assertions through `$php_run` initialization and
+resumption. This includes global/imported constant pool reuse, namespace late NaN
+arrays, loop string writes/COW and reference owners. Reproducer:
+`.tools/probe-control-compiled.py`; this remains unpublished source admission.
