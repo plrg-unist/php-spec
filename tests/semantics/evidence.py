@@ -20,6 +20,9 @@ def check_inventory_paths():
         root = Path(directory) / 'project'
         features = json.loads((ROOT / 'coverage/semantics/features.json').read_text())
         for entry in features['constructors'] + features['runtime_obligations']:
+            # This fixture isolates path checks; closure observations are tested
+            # separately below, with real synthetic report contents.
+            entry['status'] = 'pending'
             for field in ('implementation', 'source_tests', 'helper_tests'):
                 for name in entry.get(field, []):
                     path = root / name

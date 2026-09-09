@@ -1,0 +1,45 @@
+{
+  "entry": "validation.oracle-pin",
+  "scope": "Original-source differential campaigns invoke only the project-local PHP 8.5.10 CLI NTS 64-bit oracle, measure its runtime identity and binary hash, retain recorded pinned build-source provenance, supply the fixed profile/environment, and reject changed implementation or oracle identity. This validates oracle selection and evidence identity; it does not measure a binary source commit at runtime, query effective INI values, rebuild the oracle, or establish tested PHP semantics.",
+  "branches": [
+    {
+      "name": "project-local executable and measured CLI/NTS/64-bit runtime identity",
+      "case_ids": [
+        "empty",
+        "integers",
+        "numeric-overflow"
+      ]
+    },
+    {
+      "name": "supplied byte and diagnostic profile with recorded source and binary provenance",
+      "case_ids": [
+        "bytes",
+        "compiler-byte-import-conflict",
+        "dimension-read-emission-01"
+      ]
+    },
+    {
+      "name": "before/after implementation stability and wrong-target rejection; supplemented by evidence.py mutation controls",
+      "case_ids": [
+        "empty"
+      ]
+    }
+  ],
+  "source_report_sha256": "b65146d1b4bf98468eb08212a2361390a2c2253dd4ad0fb916f7246427c3547f",
+  "implementation_sha256": "232647293cf75a3a43691e5180935da9320cc28c63e1d4050ee17d8ecf93a8d9",
+  "divergences": [],
+  "reviewer": "compile_context (independent of review3 author)",
+  "decision": "accepted",
+  "source_checkpoint": "6b5981cc",
+  "evidence": [
+    "Six archived observations independently matched original full576 campaign bytes and accepted native/model outcomes.",
+    "Independently checked local CLI selection, fixed flags/environment, measured runtime identity and before/after actual-binary fingerprint sites.",
+    "scripts/verify-inputs.py independently verified 64872 pinned import files/links; local build route and dependency source provenance inspected.",
+    "Actual PHP binary SHA matches the previously accepted phase0 oracle; canonical identity/path/closure mutation tests and15 independent closure negatives passed."
+  ],
+  "limits": [
+    "Only the validation.oracle-pin evidence/selection obligation closes; no PHP semantic family or constructor closes.",
+    "Source commit is recorded build provenance; it is not measured from binary execution. Profile is supplied flags/environment, not a query of effective INI settings.",
+    "No fresh rebuild, portability or full-core completion claim. This is acceptance at the retained576-source implementation fingerprint; --complete requires fresh current evidence."
+  ]
+}

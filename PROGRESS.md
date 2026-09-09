@@ -32,19 +32,22 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Accepted evidence
 
-- **169 constructors, 306 runtime obligations; zero currently closed**. This is an
-  obligation-specific assessment, not a requirement to wait for global completion.
-  Strengthening closure evidence and assessing completed scopes is active work.
-- Source compiler/pool bridge **`537d13de`** passed **546 exact source comparisons
-  +28 outcome negatives**, independently repeated in 217 seconds. Full compilation
-  precedes execution; real filename bytes are bound before compilation, failed
+- **169 constructors, 306 runtime obligations; one obligation closed**:
+  [oracle selection/identity](coverage/semantics/oracle-pin-review.json), independently
+  reviewed at `6b5981cc`. No constructor or PHP semantic family closes. Governance
+  `ffdc131d` binds closure to source cases/raw bytes and independent review;
+  `--complete` additionally rejects stale fingerprints and unfinished obligations.
+- Source machine **`6b5981cc`** passed **576 exact source comparisons
+  +28 outcome negatives**. Compiler/pool bridge `537d13de` makes full compilation
+  precede execution; real filename bytes are bound before compilation, failed
   compilation suppresses recorded work, and successful work executes once with
   lexical origins. Permanent per-unit pools remap array IDs and supply only compiled
   read operands; effective lines and byte diagnostics survive execution.
   [Independent evidence](coverage/semantics/runtime-compiler-review.json) retains
   16 alternate sources, 16 constructed states/138 assertions and four byte probes.
-  Source admission includes folded string dimensions, not generic runtime offsets.
-- Ordered compiler/access and constant helpers passed **582 native lint cases,
+  Generic scalar/string reads are now active, with 64 additional exact source
+  probes in [read evidence](coverage/semantics/dimension-read-review.json).
+- Ordered compiler/access and constant helpers passed **612 native lint cases,
   15 emission-line observations, 10 Unsupported contexts**, 8 sources/24 access
   roles, metadata/export controls and independent alternates. Partial AST facts,
   ordinary code-generation values and executable access descriptors stay distinct.
@@ -61,7 +64,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md) retains reviewed contracts.
   Pure dimension reads `9ec050a1` and writes/errors `9990d23e` passed 583 and
   2,220 runtime comparisons plus compiler/boundary controls and independent
-  matrices. Generic source dispatch remains next; see
+  matrices. Read dispatch is active; string writes/reference errors remain next; see
   [DIMENSIONS](docs/semantics/DIMENSIONS.md).
 - Compiler/frontend `9658958c` passed 233 checked prefixes plus 64 independent
   alternates, seen-symbol/barrier/resumption controls and four encoding profiles.
@@ -79,13 +82,13 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   [DISCREPANCIES](docs/semantics/DISCREPANCIES.md); relevant regressions remain in
   current source/helper campaigns. Numeric/static detail is linked through
   [NUMERICS](docs/semantics/NUMERICS.md) and [STATIC](docs/semantics/STATIC.md).
-- **146 independent oracle targets; 63 integrated**. Edited helper checks and
+- **146 independent oracle targets; 78 integrated**. Edited helper checks and
   oracle-only observations establish no source runtime coverage.
 
 ## Next gates and retained decisions
 
-Runtime proceeds through generic scalar/string reads, string writes/reference
-errors, control/loops, then unpack/destructuring/foreach. Compiler proceeds through
+Runtime proceeds through string writes/reference errors, control/loops, then
+unpack/destructuring/foreach. Compiler proceeds through
 namespace constant lookup, declarations/defaults and calls. The
 [qualified constant alias discrepancy](coverage/semantics/qualified-constant-alias-disagreement.json)
 has temporary guard `ff941f17`: four original failures now return Unsupported,

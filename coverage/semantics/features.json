@@ -3886,7 +3886,9 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/44-dimension-read.watsup",
-        "spec/semantics/45-dimension-write.watsup"
+        "spec/semantics/45-dimension-write.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/36-arrays.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_read.py",
@@ -3894,12 +3896,16 @@
         "tests/semantics/dimension_write.py",
         "coverage/semantics/dimension-write.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/dimension-read-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent pure dimension-read helper review 9ec050a1: 583 runtime comparisons, 10 compiler leaves and 5 boundaries (2318 assertions), plus 1456 expanded runtime pairs passed. Numeric key coercion, warning/type-error ordering and byte bounds are reviewed. The helper is unregistered in the source machine; source reads, shared constant-prepass traversal, writes, references and callbacks remain pending. Pure write/reference-fetch helper 9990d23e independently passed 2220 runtime plus 12 boundaries (12040 assertions), with 2056 expanded comparisons. Key-before-RHS timing, negative bounds, first-byte writes and reference/nested errors are helper-only; source location commits remain pending.",
+      "review": "Independent source read activation6b5981cc: 576 exact source comparisons +28 outcome negatives, all16 mandatory scalar/string read/prepass witnesses and15 compiler emission sources;64 alternate original sources passed. Read helper583+10leaf+5boundary/2318, ownership617+96/5434, origins25/333, runtimecompiler11/105 and orderedcompiler612+15+10Unsupported passed. Delayed key/base reads, scalar ignored coercion, negative byte bounds, numeric suffix/NUL behavior, warning/error order and compiler folding barriers are covered. String writes/reference errors, ArrayAccess and broader contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-offset.php",
         "tests/semantics/conformance/string-read-numeric-keys.php",
@@ -7061,23 +7067,59 @@
     {
       "id": "validation.oracle-pin",
       "milestone": "0b-6",
-      "status": "partial",
+      "status": "validated",
       "dependencies": [],
       "implementation": [
-        "adapter/main.ml",
-        "bin/php-semantics",
-        "spec/semantics/10-bytes.watsup",
-        "spec/semantics/20-machine.watsup"
+        "tests/semantics/validate.py",
+        "tests/semantics/profile.json",
+        "tests/validate.py",
+        "scripts/check-semantic-inventory.py",
+        "scripts/build-deps.sh",
+        "scripts/verify-inputs.py"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/evidence.py"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/oracle-pin-source.json"
       ],
       "evidence": [
-        "vendor/php-src/run-tests.php"
+        "dependencies/README.md",
+        "dependencies/files.jsonl",
+        "coverage/semantics/phase0.json"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending."
+      "review": "Independent compiler reviewer accepted the oracle selection/evidence identity obligation at source checkpoint6b5981cc. Six exact original-source cases are archived from the passed576 campaign with immutable report/raw hashes; identity/path/closure mutation checks and15 independent variants passed. Build provenance and fixed supplied flags are distinguished from runtime-measured version/SAPI/NTS/width/hash. No semantic constructor/family, effective-INI query, rebuild or portability claim.",
+      "closure": {
+        "scope": "Original-source differential campaigns invoke only the project-local PHP 8.5.10 CLI NTS 64-bit oracle, measure its runtime identity and binary hash, retain recorded pinned build-source provenance, supply the fixed profile/environment, and reject changed implementation or oracle identity. This validates oracle selection and evidence identity; it does not measure a binary source commit at runtime, query effective INI values, rebuild the oracle, or establish tested PHP semantics.",
+        "branches": [
+          {
+            "name": "project-local executable and measured CLI/NTS/64-bit runtime identity",
+            "case_ids": [
+              "empty",
+              "integers",
+              "numeric-overflow"
+            ]
+          },
+          {
+            "name": "supplied byte and diagnostic profile with recorded source and binary provenance",
+            "case_ids": [
+              "bytes",
+              "compiler-byte-import-conflict",
+              "dimension-read-emission-01"
+            ]
+          },
+          {
+            "name": "before/after implementation stability and wrong-target rejection; supplemented by evidence.py mutation controls",
+            "case_ids": [
+              "empty"
+            ]
+          }
+        ],
+        "source_report": "coverage/semantics/oracle-pin-source.json",
+        "independent_review": "coverage/semantics/oracle-pin-review.json",
+        "divergences": []
+      }
     },
     {
       "id": "validation.outcome-separation",
