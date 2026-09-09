@@ -55,7 +55,11 @@ priority defects, now corrected in a private recheck. **4f639832** adds eight
 paired native ownership witnesses (77 with retained roots,17 without them).
 Literal/computed autoglobal binding and intermediate error-iterator defects are
 retained before repair. The source-derived 780-name builtin occupancy prerequisite
-has separate review; it implements no builtin bodies and closes no core obligation.
+is now published as a standalone pure predicate, source generator and focused test.
+Its [source audit](docs/semantics/BUILTIN-FUNCTIONS.md) derives 780 names from 13
+configured C registration tables and 238 actual source/configuration inputs.
+It implements no builtin bodies and closes no core obligation; declaration and
+call consumers remain in the private paired milestone.
 
 ## Milestones
 
