@@ -25,7 +25,6 @@ dec $psconstantkind(name, ptcontext) : text
 dec $psplainconstant(ptbytes) : text
 dec $psissue(ptcontext, text, text, ptbytes*) : psdiagnostic
 dec $pserror(ptcontext, text, ptbytes*) : psoneresult
-dec $psautoglobal(ptbytes) : bool
 dec $psprepend(psdiagnostic*, psoneresult) : psoneresult
 dec $psnullable(ptcontext, phpType18, psdefault, ptresult) : ptresult
 dec $psisnulldefault(psdefault) : bool
@@ -127,7 +126,6 @@ def $psissue(ptcontext, text_level, text_code, ptbytes*) = PSDIAGNOSTIC text_lev
 
 def $pserror(ptcontext, text, ptbytes*) = PSONEERROR ([$psissue(ptcontext, "fatal", text, ptbytes*)])
 
-def $psautoglobal(ptbytes) = ptbytes <- [$ptascii("GLOBALS"), $ptascii("_SERVER"), $ptascii("_GET"), $ptascii("_POST"), $ptascii("_FILES"), $ptascii("_COOKIE"), $ptascii("_REQUEST"), $ptascii("_ENV")]
 
 def $psprepend(psdiagnostic_old*, PSONE psparam psdiagnostic*) = PSONE psparam (psdiagnostic_old* ++ psdiagnostic*)
 def $psprepend(psdiagnostic_old*, PSONEERROR psdiagnostic*) = PSONEERROR (psdiagnostic_old* ++ psdiagnostic*)

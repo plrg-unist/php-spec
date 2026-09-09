@@ -1,3 +1,4 @@
+dec $position_delete(pposition*, pkey) : pposition*
 ;; Unset does not create missing slots; its final key conversion is distinct
 ;; from intermediate dimension access (notably for null keys and warning order).
 dec $entry_delete(pentry*, pkey) : pentry*
@@ -112,7 +113,7 @@ def $unset_final(S, PARRAY n, plocation, poperand, z) = S_key
   -- if S_array = $location_array(S, plocation, z)
   -- if S_key = $unset_key(S_array, poperand, z)
   -- if S_key.COMPLETION =/= NORMAL
-def $unset_final(S, PARRAY n, plocation, poperand, z) = S_key[.ARRAYS = $array_replace(S_key.ARRAYS, n_copy, parray[.ITEMS = $entry_delete(parray.ITEMS, S_key.KEY)])]
+def $unset_final(S, PARRAY n, plocation, poperand, z) = S_key[.ARRAYS = $array_replace(S_key.ARRAYS, n_copy, parray[.ITEMS = $entry_delete(parray.ITEMS, S_key.KEY)][.POSITIONS = $position_delete(parray.POSITIONS, S_key.KEY)])]
   -- if S_array = $location_array(S, plocation, z)
   -- if S_array.RESULT = KNOWN (PARRAY n_copy)
   -- if S_key = $unset_key(S_array, poperand, z)

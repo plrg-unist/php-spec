@@ -26,7 +26,7 @@ def $cast_value(S, CASTFLOAT, pvalue, z) = S[.RESULT = KNOWN (PFLOAT $float_of_i
   -- if $cast_truth_kind(pvalue)
 def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
 def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_array(S, $array_empty())
-def $cast_value(S, CASTARRAY, pvalue, z) = $allocate_array($cast_array_notice(S, pvalue, z), {ITEMS ([ENTRY (KINT 0) (DIRECT pvalue)]), NEXT 1})
+def $cast_value(S, CASTARRAY, pvalue, z) = $allocate_array($cast_array_notice(S, pvalue, z), {ITEMS ([ENTRY (KINT 0) (DIRECT pvalue)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if ~($is_array_value(pvalue) \/ pvalue = PNULL)
 
 def $cast_truth_kind(PNULL) = true

@@ -81,7 +81,7 @@ foreach (json_decode(stream_get_contents(STDIN),true) as [$cv,$kv]) {
         assert oracle.returncode == 0 and not oracle.stderr, (oracle.returncode, oracle.stderr)
         results = [json.loads(row) for row in oracle.stdout.splitlines()]
         assert len(results) == len(cases)
-        initial = '($initial_state(NORMAL))[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 7))]), NEXT 1}]][.ALLOCATIONS = [HARRAY 0]]'
+        initial = '($initial_state(NORMAL))[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 7))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]][.ALLOCATIONS = [HARRAY 0]]'
         for (container, key), result in zip(cases, results):
             cp = 'VARIABLE ([99]) ' + str(line) if container[0] == 'u' else 'KNOWN (' + value(container) + ')'
             kp = 'VARIABLE ([107]) ' + str(line) if key[0] == 'u' else 'KNOWN (' + value(key) + ')'

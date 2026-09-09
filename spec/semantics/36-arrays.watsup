@@ -1,7 +1,7 @@
 ;; Ordered containers have internal IDs, never PHP object identity. Mutating
 ;; shared containers will separate them; literal builders own their fresh ID.
 dec $array_empty() : parray
-def $array_empty() = {ITEMS eps, NEXT $(-9223372036854775808)}
+def $array_empty() = {ITEMS eps, NEXT $(-9223372036854775808), POSITIONS eps, SERIAL 0}
 
 dec $entry_lookup(pentry*, pkey) : pitem?
 def $entry_lookup(eps, pkey) = eps
@@ -26,6 +26,9 @@ def $next_history(i, KINT 9223372036854775807) = 9223372036854775807
 
 dec $array_insert(parray, pkey, pitem) : parray
 def $array_insert(parray, pkey, pitem) = parray[.ITEMS = $entry_insert(parray.ITEMS, pkey, pitem)][.NEXT = $next_history(parray.NEXT, pkey)]
+  -- if $entry_lookup(parray.ITEMS, pkey) = (pitem_old)
+def $array_insert(parray, pkey, pitem) = parray[.ITEMS = $entry_insert(parray.ITEMS, pkey, pitem)][.NEXT = $next_history(parray.NEXT, pkey)][.POSITIONS = parray.POSITIONS ++ [POSITION pkey parray.SERIAL]][.SERIAL = $(parray.SERIAL + 1)]
+  -- if $entry_lookup(parray.ITEMS, pkey) = eps
 
 dec $array_append_key(parray) : pkey
 def $array_append_key(parray) = KINT 0
@@ -168,6 +171,7 @@ def $identity_apply(S, b_negate, pvalue_1, pvalue_2, z) = $throw_scalar(S, "Erro
   -- if $strict_check(S, pvalue_1, pvalue_2, eps) = RECURSIVE
 
 dec $duplicate_entries(pstate, nat, pentry*) : pentry*
+dec $duplicate_array(pstate, nat) : pstate
 dec $merge_item(pstate, pitem) : pitem
 dec $array_union(pstate, nat, pentry*) : pstate
 def $array_union(S, n_target, eps) = S
@@ -183,7 +187,7 @@ def $array_union(S, n_target, (ENTRY pkey pitem) :: pentry_tail*) = $array_union
 ;; the cell-owner counts used here. Restore the caller's roots after merging.
 def $binary_apply(S, ADD, PARRAY n_1, PARRAY n_2, z) = S_union[.HELD = S.HELD]
   -- if S_inputs = S[.HELD = S.HELD ++ [HARRAY n_1, HARRAY n_2]]
-  -- if S_copy = $allocate_array(S_inputs, S.ARRAYS[n_1][.ITEMS = $duplicate_entries(S_inputs, n_1, S.ARRAYS[n_1].ITEMS)])
+  -- if S_copy = $duplicate_array(S_inputs, n_1)
   -- if S_copy.RESULT = KNOWN (PARRAY n_target)
   -- if S_union = $array_union(S_copy, n_target, S.ARRAYS[n_2].ITEMS)
 

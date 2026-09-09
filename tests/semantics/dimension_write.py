@@ -60,7 +60,7 @@ foreach (json_decode(stream_get_contents(STDIN),true) as [$mode,$cv,$kv,$vv]) {
         assert oracle.returncode == 0 and not oracle.stderr, (oracle.returncode, oracle.stderr)
         results = [json.loads(row) for row in oracle.stdout.splitlines()]
         assert len(results) == len(cases)
-        initial = '($initial_state(NORMAL))[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 7))]), NEXT 1}]][.ALLOCATIONS = [HARRAY 0]][.HELD = [HARRAY 0]]'
+        initial = '($initial_state(NORMAL))[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 7))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]][.ALLOCATIONS = [HARRAY 0]][.HELD = [HARRAY 0]]'
         for (mode, container, key, val), result in zip(cases, results):
             kp = 'eps' if key[0] == 'append' else ('(VARIABLE ([107]) ' + str(line) + ')' if key[0] == 'u' else '(KNOWN (' + value(key) + '))')
             vp = 'VARIABLE ([118]) ' + str(line) if val[0] == 'u' else 'KNOWN (' + value(val) + ')'

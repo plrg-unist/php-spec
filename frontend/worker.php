@@ -138,7 +138,7 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($token->id !== ord(';') && $token->id !== T_CLOSE_TAG) throw new RuntimeException('Loop control terminator token is missing');
                         $node->setAttribute('statementTerminatorLine', $token->line);
                     }
-                    if ($node instanceof PhpParser\Node\Stmt\If_ || $node instanceof PhpParser\Node\Stmt\ElseIf_ || $node instanceof PhpParser\Node\Stmt\Else_ || $node instanceof PhpParser\Node\Stmt\While_ || $node instanceof PhpParser\Node\Stmt\Do_ || $node instanceof PhpParser\Node\Stmt\For_) {
+                    if ($node instanceof PhpParser\Node\Stmt\If_ || $node instanceof PhpParser\Node\Stmt\ElseIf_ || $node instanceof PhpParser\Node\Stmt\Else_ || $node instanceof PhpParser\Node\Stmt\While_ || $node instanceof PhpParser\Node\Stmt\Do_ || $node instanceof PhpParser\Node\Stmt\For_ || $node instanceof PhpParser\Node\Stmt\Foreach_) {
                         $index = $node->getStartTokenPos() + 1;
                         if (!($node instanceof PhpParser\Node\Stmt\Do_) && !($node instanceof PhpParser\Node\Stmt\Else_)) {
                             while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;

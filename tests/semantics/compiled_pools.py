@@ -19,7 +19,7 @@ def seq(items): return '([' + ', '.join(items) + '])' if items else 'eps'
 def path(index): return f'([PCINDEX {index}, PCFIELD 0])'
 def constant(index, value): return f'PCONSTANT {path(index)} ({value})'
 def array(values):
-    return '{ITEMS '+seq([f'ENTRY (KINT {i}) (DIRECT ({v}))' for i,v in enumerate(values)])+', NEXT '+str(len(values))+'}'
+    return '{ITEMS '+seq([f'ENTRY (KINT {i}) (DIRECT ({v}))' for i,v in enumerate(values)])+', NEXT '+str(len(values))+', POSITIONS '+seq([f'POSITION (KINT {i}) {i}' for i in range(len(values))])+', SERIAL '+str(len(values))+'}'
 
 
 def main():
@@ -44,7 +44,7 @@ def main():
     arrays = [array([nan]),array([nan]),array(['PARRAY 0','PARRAY 0']),array([]),array(['PINT 9'])]
     nodes = ['HARRAY 0','HARRAY 1','HARRAY 2','HARRAY 4']
     facts = [constant(0,'PARRAY 2'),constant(1,'PARRAY 0'),constant(2,'PARRAY 1')]
-    existing = (initial+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 0)]), NEXT 1}, $array_empty(), $array_empty()]]'
+    existing = (initial+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 0)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}, $array_empty(), $array_empty()]]'
         '[.STORE = [DEFINED (PARRAY 0)]][.ENV = [BIND ([97]) 0]][.ALLOCATIONS = [HCELL 0, HARRAY 0, HARRAY 2]]'
         '[.HELD = [HARRAY 2]][.RESULT = KNOWN (PARRAY 2)][.TODO = [DISCARD]][.ORIGIN = (PORIGIN 8 eps)]')
     install = f'$install_pool(S, U, {seq(arrays)}, {seq(nodes)}, {seq(facts)})'
@@ -111,8 +111,8 @@ def main():
         ('U',seq(arrays),'[HCELL 0]', 'eps'),
         ('U',seq(arrays),'[HARRAY 99]', 'eps'),
         ('U',seq([array(['PARRAY 1'])]),'[HARRAY 0]',seq([constant(0,'PARRAY 0')])),
-        ('U','[{ITEMS ([ENTRY (KINT 0) (ALIAS 0)]), NEXT 1}]','[HARRAY 0]',seq([constant(0,'PARRAY 0')])),
-        ('U','[{ITEMS ([ENTRY (KINT 0) UNINITIALIZED]), NEXT 1}]','[HARRAY 0]',seq([constant(0,'PARRAY 0')])),
+        ('U','[{ITEMS ([ENTRY (KINT 0) (ALIAS 0)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]','[HARRAY 0]',seq([constant(0,'PARRAY 0')])),
+        ('U','[{ITEMS ([ENTRY (KINT 0) UNINITIALIZED]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]','[HARRAY 0]',seq([constant(0,'PARRAY 0')])),
     ]
     for u,arr,ns,fs in invalid:
         cases += [[f'U = {unit}',f'S = {existing}',f'$install_pool(S, {u}, {arr}, {ns}, {fs}) = {bad}']]

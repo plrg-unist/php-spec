@@ -487,3 +487,7 @@ def $ptmessage(PTDIAGNOSTIC text "invalid-class-name" ptbranch* ptcontext) = $pt
 
 ;; Intentional correction of the namespace-relative static compiler inconsistency.
 def $ptmessage(PTDIAGNOSTIC text "static-return-only" ptbranch* ptcontext) = $ptascii("static can only be used as a return type")
+
+;; Shared Zend automatic-global designation for signatures and CV compilation.
+dec $psautoglobal(ptbytes) : bool
+def $psautoglobal(ptbytes) = ptbytes <- [$ptascii("GLOBALS"), $ptascii("_SERVER"), $ptascii("_GET"), $ptascii("_POST"), $ptascii("_FILES"), $ptascii("_COOKIE"), $ptascii("_REQUEST"), $ptascii("_ENV")]

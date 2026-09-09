@@ -1,0 +1,78 @@
+;; Insertion occurrences survive COW and differ from PHP keys. Deleting and
+;; reinserting a key creates a later occurrence; overwriting retains its order.
+dec $position_lookup(pposition*, pkey) : nat?
+def $position_lookup(eps, pkey) = eps
+def $position_lookup((POSITION pkey n) :: pposition*, pkey) = (n)
+def $position_lookup((POSITION pkey_other n) :: pposition*, pkey) = $position_lookup(pposition*, pkey)
+  -- if pkey_other =/= pkey
+
+def $position_delete(eps, pkey) = eps
+def $position_delete((POSITION pkey n) :: pposition*, pkey) = pposition*
+def $position_delete((POSITION pkey_other n) :: pposition*, pkey) = (POSITION pkey_other n) :: $position_delete(pposition*, pkey)
+  -- if pkey_other =/= pkey
+
+dec $position_next(pposition*, nat) : (pkey, nat)?
+def $position_next(eps, n) = eps
+def $position_next((POSITION pkey n_position) :: pposition*, n) = (pkey, n_position)
+  -- if $(n_position >= n)
+def $position_next((POSITION pkey n_position) :: pposition*, n) = $position_next(pposition*, n)
+  -- if $(n_position < n)
+
+;; Cursor copies are metadata, not heap owners. Advancing one table never
+;; advances a saved descendant. Selecting a descendant discards other copies.
+dec $cursor_position(pcursor*, nat) : nat?
+def $cursor_position(eps, n) = eps
+def $cursor_position((CURSOR n n_position) :: (CURSOR n_table n_saved)*, n) = (n_position)
+def $cursor_position((CURSOR n_other n_position) :: (CURSOR n_table n_saved)*, n) = $cursor_position((CURSOR n_table n_saved)*, n)
+  -- if n_other =/= n
+
+dec $cursor_set(pcursor*, nat, nat) : pcursor*
+def $cursor_set(eps, n, n_position) = [(CURSOR n n_position)]
+def $cursor_set((CURSOR n n_old) :: (CURSOR n_table n_saved)*, n, n_position) = (CURSOR n n_position) :: (CURSOR n_table n_saved)*
+def $cursor_set((CURSOR n_other n_old) :: (CURSOR n_table n_saved)*, n, n_position) = (CURSOR n_other n_old) :: $cursor_set((CURSOR n_table n_saved)*, n, n_position)
+  -- if n_other =/= n
+
+dec $iterator_lookup(piterator*, nat) : piterator?
+def $iterator_lookup(eps, n) = eps
+def $iterator_lookup((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = (ITERATOR n n_array b (CURSOR n_table n_saved)*)
+def $iterator_lookup((ITERATOR n_other n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = $iterator_lookup(piterator*, n)
+  -- if n_other =/= n
+
+dec $iterator_set(piterator*, piterator) : piterator*
+def $iterator_set(eps, piterator) = [piterator]
+def $iterator_set((ITERATOR n n_old b_old (CURSOR n_table_old n_position_old)*) :: piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*) = (ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*
+def $iterator_set((ITERATOR n_other n_old b_old (CURSOR n_table_old n_position_old)*) :: piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*) = (ITERATOR n_other n_old b_old (CURSOR n_table_old n_position_old)*) :: $iterator_set(piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*)
+  -- if n_other =/= n
+
+dec $iterator_remove(piterator*, nat) : piterator*
+def $iterator_remove(eps, n) = eps
+def $iterator_remove((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = piterator*
+def $iterator_remove((ITERATOR n_other n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = (ITERATOR n_other n_array b (CURSOR n_table n_saved)*) :: $iterator_remove(piterator*, n)
+  -- if n_other =/= n
+
+dec $iterator_copy(piterator, nat, nat) : piterator
+def $iterator_copy(ITERATOR n n_array true (CURSOR n_table n_saved)*, n_source, n_target) = ITERATOR n n_array true ($cursor_set((CURSOR n_table n_saved)*, n_target, n_position))
+  -- if $cursor_position((CURSOR n_table n_saved)*, n_source) = (n_position)
+def $iterator_copy(piterator, n_source, n_target) = piterator -- otherwise
+
+dec $iterator_copies(piterator*, nat, nat) : piterator*
+def $iterator_copies(eps, n_source, n_target) = eps
+def $iterator_copies(piterator :: piterator_tail*, n_source, n_target) = $iterator_copy(piterator, n_source, n_target) :: $iterator_copies(piterator_tail*, n_source, n_target)
+
+def $duplicate_array(S, n_source) = S_copy
+  -- if S_copy = $allocate_array(S, S.ARRAYS[n_source][.ITEMS = $duplicate_entries(S, n_source, S.ARRAYS[n_source].ITEMS)])
+  -- if S.ARRAYS[n_source].ITEMS = eps
+def $duplicate_array(S, n_source) = S_copy[.ITERATORS = $iterator_copies(S.ITERATORS, n_source, |S.ARRAYS|)]
+  -- if S_copy = $allocate_array(S, S.ARRAYS[n_source][.ITEMS = $duplicate_entries(S, n_source, S.ARRAYS[n_source].ITEMS)])
+  -- if S.ARRAYS[n_source].ITEMS =/= eps
+
+;; Destruction poisons native iterator table pointers. Stable array IDs are never
+;; reused: retain the old current ID until fetch, but discard its selectable map.
+dec $cursor_prune(pcursor*, pnode*) : pcursor*
+def $cursor_prune(eps, pnode*) = eps
+def $cursor_prune((CURSOR n_table n_saved) :: (CURSOR n_tail n_position)*, pnode*) = (CURSOR n_table n_saved) :: $cursor_prune((CURSOR n_tail n_position)*, pnode*)
+  -- if $heap_member(HARRAY n_table, pnode*)
+def $cursor_prune((CURSOR n_table n_saved) :: (CURSOR n_tail n_position)*, pnode*) = $cursor_prune((CURSOR n_tail n_position)*, pnode*)
+  -- if ~$heap_member(HARRAY n_table, pnode*)
+def $iterators_prune(eps, pnode*) = eps
+def $iterators_prune((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, pnode*) = (ITERATOR n n_array b ($cursor_prune((CURSOR n_table n_saved)*, pnode*))) :: $iterators_prune(piterator*, pnode*)

@@ -184,7 +184,9 @@ def $hold_literal_reference(S) = S_inputs[.HELD = S_inputs.HELD ++ [HCELL S.CELL
 ;; Called on completed task states and the explicit location-separation boundary
 ;; below. Other helpers may borrow RESULT and must not prune without holding inputs.
 dec $prune_allocations(pstate) : pstate
-def $prune_allocations(S) = S[.ALLOCATIONS = $heap_prune($heap_graph(S)).NODES]
+dec $iterators_prune(piterator*, pnode*) : piterator*
+def $prune_allocations(S) = S[.ALLOCATIONS = pnode_live*][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
+  -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to
 ;; the source array. Count surviving incoming edges, including uncollected cycles
@@ -218,7 +220,7 @@ def $merge_item(S, pitem) = pitem
 def $separate_location_array(S, n) = S_live[.RESULT = KNOWN (PARRAY n)]
   -- if S_live = $prune_allocations(S[.RESULT = KNOWN PNULL])
   -- if $heap_owners($heap_graph(S_live), HARRAY n) = 1
-def $separate_location_array(S, n) = $allocate_array(S_live, S_live.ARRAYS[n][.ITEMS = $duplicate_entries(S_live, n, S_live.ARRAYS[n].ITEMS)])
+def $separate_location_array(S, n) = $duplicate_array(S_live, n)
   -- if S_live = $prune_allocations(S[.RESULT = KNOWN PNULL])
   -- if $($heap_owners($heap_graph(S_live), HARRAY n) > 1)
 
@@ -226,7 +228,7 @@ def $separate_location_array(S, n) = $allocate_array(S_live, S_live.ARRAYS[n][.I
 ;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a
 ;; tool observation and must retain the interrupted machine state.
 dec $release_temporaries(pstate) : pstate
-def $release_temporaries(S) = S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
+def $release_temporaries(S) = S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
 
 def $task_nodes(LIST_PATTERN expression poperand z) = $operand_nodes(poperand)
 def $task_nodes(LIST_NEXT poperand n phpType13* z) = $operand_nodes(poperand)

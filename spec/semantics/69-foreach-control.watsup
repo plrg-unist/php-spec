@@ -1,0 +1,203 @@
+dec $foreach_reset_location(pstate, statement, int) : pstate
+;; Array foreach owns a snapshot value or an actual reference wrapper. The
+;; compiler has already visited iterable, value target, key target and body.
+dec $foreach_warning(pstate, pvalue, int) : pstate
+def $foreach_warning(S, pvalue, z) = $diagnostic(S, "Warning", [102,111,114,101,97,99,104,40,41,32,97,114,103,117,109,101,110,116,32,109,117,115,116,32,98,101,32,111,102,32,116,121,112,101,32,97,114,114,97,121,124,111,98,106,101,99,116,44,32] ++ $unpack_type_bytes(pvalue) ++ [32,103,105,118,101,110], z)
+
+dec $foreach_reference_at(pstate, plocation, pvalue) : pstate
+def $foreach_reference_at(S, ROOT n, pvalue) = $reference_cell(S, n)[.CELL = n]
+def $foreach_reference_at(S, ELEMENT n pkey, pvalue) = $element_reference(S, n, pkey)
+def $foreach_reference_at(S, NOWHERE, pvalue) = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]], n)[.CELL = n]
+  -- if n = |S.STORE|
+
+dec $foreach_start(pstate, statement, plocation, bool, int) : pstate
+def $foreach_start(S, statement, plocation, false, z) = S[.TODO = (FOREACH_NEXT n_iterator (HARRAY n_array) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [ITERATOR n_iterator n_array false ([(CURSOR n_array 0)])]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN (PARRAY n_array)
+  -- if n_iterator = S.NEXTITER
+def $foreach_start(S, statement, plocation, true, z) = S_array[.TODO = (FOREACH_NEXT n_iterator (HCELL n_cell) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S_array.ITERATORS ++ [ITERATOR n_iterator n_array true ([(CURSOR n_array 0)])]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN (PARRAY n_value)
+  -- if S_ref = $foreach_reference_at(S, plocation, PARRAY n_value)
+  -- if n_cell = S_ref.CELL
+  -- if S_array = $location_array(S_ref[.HELD = S.HELD ++ [HCELL n_cell]][.BASE = BASE_VALUE (KNOWN PNULL)], ROOT n_cell, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n_array)
+  -- if n_iterator = S.NEXTITER
+def $foreach_start(S, statement, plocation, b, z) = $foreach_warning(S, pvalue, z)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+
+rule PhpStep/foreach-value: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_iterable), FOREACH_RESET (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) NOWHERE false z] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)) :: ptask_tail*
+  -- if ~$ppforeach_references(expression_value, b_ref)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression_iterable)
+rule PhpStep/foreach-reference: S ~> S[.TODO = (FOREACH_PREP (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) z) :: ptask_tail*]
+  -- if S.TODO = (STMT (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)) :: ptask_tail*
+  -- if $ppforeach_references(expression_value, b_ref)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression_iterable)
+rule PhpStep/foreach-prep-cv: S ~> S[.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*][.RESULT = VARIABLE n_name* z]
+  -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
+  -- if statement = NStmtForeach (NExprVariable phpType32 metadata_var) phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if ~$this_name(n_name*)
+rule PhpStep/foreach-prep-this: S ~> $global_this_error(S, z)
+  -- if S.TODO = (FOREACH_PREP (NStmtForeach (NExprVariable phpType32 metadata_var) phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) z) :: ptask_tail*
+  -- if $direct_this(phpType32)
+rule PhpStep/foreach-prep-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCFIELD 0]), EVAL expression_name), FOREACH_NAME statement z] ++ ptask_tail*]
+  -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
+  -- if statement = NStmtForeach (NExprVariable phpType32 metadata_var) phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if $cv_name(phpType32) = eps
+  -- if phpType32 = expression_name
+rule PhpStep/foreach-prep-dim: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_iterable), FOREACH_DIM statement z] ++ ptask_tail*]
+  -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if expression_iterable = NExprArrayDimFetch expression phpType5_index metadata_dim
+rule PhpStep/foreach-prep-temporary: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_iterable), FOREACH_RESET statement NOWHERE true z] ++ ptask_tail*]
+  -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if ~$coalesce_quiet_operand(expression_iterable)
+
+rule PhpStep/foreach-cv-array: S ~> $foreach_start(S_cell, statement, ROOT S_cell.CELL, true, z)
+  -- if S.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n_array)
+  -- if S_cell = $ensure(S_read, n_name*)
+rule PhpStep/foreach-cv-scalar: S ~> $foreach_start(S_read, statement, NOWHERE, true, z)
+  -- if S.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/foreach-cv-abrupt: S ~> S_read
+  -- if S.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+
+rule PhpStep/foreach-name: S ~> $foreach_reset_location(S_fetched, statement, z)
+  -- if S.TODO = (FOREACH_NAME statement z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_cell = $fetch_write_name(S_name, n_name*)
+  -- if S_fetched = S_cell[.LOCATION = ROOT S_cell.CELL]
+rule PhpStep/foreach-name-abrupt: S ~> S_name
+  -- if S.TODO = (FOREACH_NAME statement z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name.COMPLETION =/= NORMAL
+rule PhpStep/foreach-dim: S ~> $foreach_reset_location(S_fetched[.TODO = S.TODO][.HELD = S.HELD], statement, z)
+  -- if S.TODO = (FOREACH_DIM statement z) :: ptask_tail*
+  -- if S_fetched = $reference_acquire($hold_task_inputs(S), S.BASE, z)
+
+def $foreach_reset_location(S, statement, z) = S -- if S.COMPLETION =/= NORMAL
+def $foreach_reset_location(S, statement, z) = $foreach_start(S[.RESULT = KNOWN pvalue], statement, S.LOCATION, true, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue
+def $foreach_reset_location(S, statement, z) = $foreach_start($location_write(S, S.LOCATION, PNULL)[.RESULT = KNOWN PNULL], statement, S.LOCATION, true, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = UNDEFINED
+
+dec $foreach_reset_target(plocation, bool, poperand) : plocation
+def $foreach_reset_target(NOWHERE, true, REFERENCE n) = ROOT n
+def $foreach_reset_target(plocation, b, poperand) = plocation -- otherwise
+
+rule PhpStep/foreach-reset: S ~> $foreach_start(S_read, statement, $foreach_reset_target(plocation, b, S.RESULT), b, z)
+  -- if S.TODO = (FOREACH_RESET statement plocation b z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/foreach-reset-abrupt: S ~> S_read
+  -- if S.TODO = (FOREACH_RESET statement plocation b z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+
+;; Dispatch is completed below: cursor selection, value/key binding and cleanup.
+dec $foreach_owner_value(pstate, pnode) : pvalue
+def $foreach_owner_value(S, HARRAY n) = PARRAY n
+def $foreach_owner_value(S, HCELL n) = pvalue -- if S.STORE[n] = DEFINED pvalue
+
+dec $foreach_select(pstate, nat, pnode, int) : pstate
+def $foreach_select(S, n, HARRAY n_array, z) = S
+def $foreach_select(S, n, HCELL n_cell, z) = S
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $iterator_lookup(S.ITERATORS, n) = (ITERATOR n n_array true (CURSOR n_table n_saved)*)
+def $foreach_select(S, n, HCELL n_cell, z) = S[.ITERATORS = $iterator_set(S.ITERATORS, ITERATOR n n_array true ([(CURSOR n_array n_position)]))]
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $iterator_lookup(S.ITERATORS, n) = (ITERATOR n n_old true (CURSOR n_table n_saved)*)
+  -- if n_array =/= n_old
+  -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = (n_position)
+def $foreach_select(S, n, HCELL n_cell, z) = S_array[.ITERATORS = $iterator_set(S_array.ITERATORS, ITERATOR n n_new true ([(CURSOR n_new 0)]))][.RESULT = KNOWN PNULL]
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $iterator_lookup(S.ITERATORS, n) = (ITERATOR n n_old true (CURSOR n_table n_saved)*)
+  -- if n_array =/= n_old
+  -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = eps
+  -- if S_array = $location_array(S, ROOT n_cell, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n_new)
+
+dec $foreach_advance(pstate, nat, nat, nat) : pstate
+def $foreach_advance(S, n, n_array, n_position) = S[.ITERATORS = $iterator_set(S.ITERATORS, ITERATOR n n_array b ($cursor_set((CURSOR n_table n_saved)*, n_array, n_position)))]
+  -- if $iterator_lookup(S.ITERATORS, n) = (ITERATOR n n_array b (CURSOR n_table n_saved)*)
+
+dec $foreach_value_task(pstate, expression, poperand, bool, int) : ptask
+def $foreach_value_task(S, expression, poperand, b, z) = $at_task($origin_child(S.ORIGIN, [PCFIELD 3]), LIST_PATTERN expression poperand z)
+  -- if $list_pattern(expression) = (phpType13*)
+def $foreach_value_task(S, expression, poperand, b, z) = $at_task($origin_child(S.ORIGIN, [PCFIELD 3]), LIST_STORE expression poperand b $runtime_line(S, [PCFIELD 3], expression))
+  -- if $list_pattern(expression) = eps
+
+dec $foreach_key_value(pkey) : pvalue
+def $foreach_key_value(KINT i) = PINT i
+def $foreach_key_value(KSTRING n*) = PSTRING n*
+dec $foreach_key_tasks(pstate, phpType5, pkey) : ptask*
+def $foreach_key_tasks(S, ABSENT, pkey) = eps
+def $foreach_key_tasks(S, expression, pkey) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), LIST_STORE expression (KNOWN $foreach_key_value(pkey)) false $runtime_line(S, [PCFIELD 1], expression))]
+
+dec $foreach_body(pstate, nat, pnode, statement, int, pkey, poperand, bool) : pstate
+def $foreach_body(S, n, pnode, statement_foreach, z, pkey, poperand, b) = S[.TODO = [$foreach_value_task(S, expression_value, poperand, b, z)] ++ $foreach_key_tasks(S, phpType5, pkey) ++ $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 4]), 0) ++ [(FOREACH_NEXT n pnode statement_foreach S.ORIGIN z)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if statement_foreach = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value (SEQUENCE statement*) (BOOLEAN false) metadata
+
+dec $foreach_finish(pstate, nat) : pstate
+def $foreach_finish(S, n) = S[.TODO = ptask_tail*][.ITERATORS = $iterator_remove(S.ITERATORS, n)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+
+rule PhpStep/foreach-fetch-scalar: S ~> $foreach_finish($foreach_warning(S[.ORIGIN = porigin?], pvalue, z), n)
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
+  -- if pvalue = $foreach_owner_value(S, pnode)
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/foreach-fetch-end: S ~> $foreach_finish(S_selected, n)
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
+  -- if $foreach_owner_value(S, pnode) = PARRAY n_original
+  -- if S_selected = $foreach_select(S[.ORIGIN = porigin?], n, pnode, z)
+  -- if $foreach_owner_value(S_selected, pnode) = PARRAY n_array
+  -- if $iterator_lookup(S_selected.ITERATORS, n) = (ITERATOR n n_array b (CURSOR n_table n_saved)*)
+  -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = (n_position)
+  -- if $position_next(S_selected.ARRAYS[n_array].POSITIONS, n_position) = eps
+rule PhpStep/foreach-fetch-value: S ~> $foreach_body(S_next, n, HARRAY n_array, statement, z, pkey, KNOWN $entry_value(S_next, pitem), false)
+  -- if S.TODO = (FOREACH_NEXT n (HARRAY n_array) statement porigin? z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (ITERATOR n n_array false (CURSOR n_table n_saved)*)
+  -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = (n_position)
+  -- if $position_next(S.ARRAYS[n_array].POSITIONS, n_position) = (pkey, n_serial)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (pitem)
+  -- if S_next = $foreach_advance(S[.ORIGIN = porigin?], n, n_array, $(n_serial + 1))
+rule PhpStep/foreach-fetch-reference: S ~> $foreach_body(S_ref, n, HCELL n_cell, statement, z, pkey, REFERENCE S_ref.CELL, true)
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement porigin? z) :: ptask_tail*
+  -- if $foreach_owner_value(S, HCELL n_cell) = PARRAY n_original
+  -- if S_selected = $foreach_select(S[.ORIGIN = porigin?], n, HCELL n_cell, z)
+  -- if $foreach_owner_value(S_selected, HCELL n_cell) = PARRAY n_array
+  -- if $iterator_lookup(S_selected.ITERATORS, n) = (ITERATOR n n_array true (CURSOR n_table n_saved)*)
+  -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = (n_position)
+  -- if $position_next(S_selected.ARRAYS[n_array].POSITIONS, n_position) = (pkey, n_serial)
+  -- if S_next = $foreach_advance(S_selected, n, n_array, $(n_serial + 1))
+  -- if S_ref = $element_reference(S_next, n_array, pkey)
+
+;; Unwinding drops this iterator's saved copies, not the surviving value alias.
+def $loop_marker(FOREACH_NEXT n pnode statement porigin? z) = true
+def $jump_loop(S, 1, false) = $foreach_finish(S[.ORIGIN = porigin?], n)
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
+def $jump_loop(S, 1, true) = S[.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
+def $jump_loop(S, n_depth, b) = $jump_loop($foreach_finish(S, n), $nabs($(n_depth - 1)), b)
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
+  -- if $(n_depth > 1)
+
+def $task_nodes(FOREACH_NEXT n pnode statement porigin? z) = [pnode]

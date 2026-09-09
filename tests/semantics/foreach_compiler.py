@@ -67,7 +67,7 @@ def main():
             for field in ['kind','destructuringArrayKind','listFirstHoleLine']:
                 for value in [None,0,91]:boundary(b'<?php foreach(1 as [, $k]=>$v){}','key',field,value,'PPCABRUPT (STATICERROR "Cannot use list as key element" 1)')
             boundary(b'<?php foreach(1 as [$k]=>$v){}','keyref','bool',True,'PPCABRUPT (STATICERROR "Key element cannot be a reference" 1)')
-            boundary(b'<?php foreach(1 as &$k=>$v){}','keyref','bool',False,'PPCABRUPT (UNSUPPORTED "foreach source compilation")')
+            boundary(b'<?php foreach(1 as &$k=>$v){}','keyref','bool',False,'PPCNORMAL')
             boundary(b'<?php foreach(1 as &$k=>$v){}','absent-key','key',None,'PPCABRUPT (UNSUPPORTED "reference foreach key without target")')
             script=Path(tmp)/'compiler.watsup';script.write_text(compiler.PREFIX+'\n'.join(fixtures)+'\ndec $main() : bool\ndef $main() = true\n'+''.join(f'  -- if $case{i}()\n' for i in range(len(fixtures))))
             run=subprocess.run([str(runner),*map(str,compiler.SPECS),str(script)],capture_output=True,text=True,cwd=ROOT,timeout=120)
@@ -77,7 +77,7 @@ def main():
                 raise AssertionError((str(failure),run.stdout,run.stderr))
     finally:frontend.close();adapter.close()
     assert before==fingerprint(),'foreach compiler inputs changed'
-    report={'scope':'foreach key-reference/list-key source prechecks; normal foreach compilation and execution pending','fingerprint':before,'profile':types.PROFILE,'source_cases':len(records),'boundaries':boundaries,'records':records}
+    report={'scope':'foreach key-reference/list-key source prechecks; full foreach compilation; scalar/array runtime admission gated separately','fingerprint':before,'profile':types.PROFILE,'source_cases':len(records),'boundaries':boundaries,'records':records}
     (ROOT/'coverage/semantics/foreach-compiler.json').write_text(json.dumps(report,indent=2)+'\n');print(len(records),'native key-precheck lints;',len(boundaries),'semantic metadata boundaries passed')
 
 if __name__=='__main__':main()

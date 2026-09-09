@@ -14,7 +14,7 @@ syntax pcoderedirect = CODEREDIRECT pcpath pcpath bool
 syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr*, NAMES pcodename*, REDIRECTS pcoderedirect* }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pupdate = INCREMENT | DECREMENT
-syntax ptask = COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
+syntax ptask = FOREACH_PREP statement int | FOREACH_CV statement nat* int | FOREACH_NAME statement int | FOREACH_DIM statement int | FOREACH_RESET statement plocation bool int | FOREACH_NEXT nat pnode statement porigin? int | COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
   | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
@@ -25,8 +25,10 @@ syntax ptask = COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESUL
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
+syntax pcursor = CURSOR nat nat
+syntax piterator = ITERATOR nat nat bool pcursor*
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode* }
+  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $cv_name(phpType32) : (nat*)?
 dec $direct_this(phpType32) : bool
 dec $global_this_error(pstate, int) : pstate

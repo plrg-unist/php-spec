@@ -12,11 +12,60 @@ def $ppforeach_keycheck(P, expression, false) = $ppcheck(P, $context_error("Cann
 def $ppforeach_keycheck(P, phpType5, b) = P
   -- otherwise
 
-dec $ppforeach_pending(ppstate) : ppstate
-def $ppforeach_pending(P) = $ppunsupported(P, "foreach source compilation")
+dec $ppforeach_references(expression, bool) : bool
+def $ppforeach_references(expression, b) = (b \/ $list_references(phpType13*))
+  -- if $list_pattern(expression) = (phpType13*)
+def $ppforeach_references(expression, b) = b
+  -- if $list_pattern(expression) = eps
+
+dec $ppforeach_mode(expression, bool) : ppmode
+def $ppforeach_mode(expression, true) = PPW
+  -- if $coalesce_quiet_operand(expression)
+  -- if $pplist_writable(expression)
+def $ppforeach_mode(expression, b) = PPR -- otherwise
+
+dec $ppforeach_cv(phpType32) : bool
+def $ppforeach_cv(phpType32) = ~$psautoglobal(n*)
+  -- if $cv_name(phpType32) = (n*)
+def $ppforeach_cv(phpType32) = false
+  -- if $cv_name(phpType32) = eps
+
+dec $ppforeach_value(ppstate, pcpath, expression, bool) : ppstate
+def $ppforeach_value(P, pcpath, expression, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppforeach_value(P, pcpath, NExprVariable phpType32 metadata, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
   -- if P.COMPLETION = PPCNORMAL
-def $ppforeach_pending(P) = P
+  -- if $cv_name(phpType32) = ([116,104,105,115])
+def $ppforeach_value(P, pcpath, NExprVariable phpType32 metadata, b) = $ppdone($ppvariable(P, pcpath, phpType32, PPR), pcpath, PPW)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $cv_name(phpType32) =/= ([116,104,105,115])
+  -- if $ppforeach_cv(phpType32)
+def $ppforeach_value(P, pcpath, expression, b) = $pplist_compile(P, pcpath, expression)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $list_pattern(expression) = (phpType13*)
+def $ppforeach_value(P, pcpath, expression, b) = $pplist_store(P, pcpath, expression, b)
+  -- otherwise
+
+dec $ppforeach_key(ppstate, pcpath, phpType5) : ppstate
+def $ppforeach_key(P, pcpath, ABSENT) = P
+def $ppforeach_key(P, pcpath, expression) = $pplist_store(P, pcpath, expression, false)
+
+dec $ppforeach_finish(ppstate, pcpath, expression, nat) : ppstate
+def $ppforeach_finish(P, pcpath, expression, n) = $ppclearvalue($pplocate(P[.LOOPS = n], pcpath, $expression_line(expression)))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppforeach_finish(P, pcpath, expression, n) = P[.LOOPS = n]
   -- if P.COMPLETION =/= PPCNORMAL
 
-def $ppstatement(P, pcpath, NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value (SEQUENCE statement*) (BOOLEAN b_keyref) metadata) = $ppforeach_pending($ppforeach_keycheck($pplocate(P, pcpath, $expression_line(expression_iterable)), phpType5, b_keyref))
+dec $ppforeach_compile(ppstate, pcpath, expression, phpType5, expression, bool, statement*, metadata) : ppstate
+def $ppforeach_compile(P, pcpath, expression_iterable, phpType5, expression_value, b, statement*, metadata) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppforeach_compile(P, pcpath, expression_iterable, phpType5, expression_value, b, statement*, metadata) = $ppforeach_finish(P_body, pcpath, expression_iterable, P.LOOPS)
   -- if P.COMPLETION = PPCNORMAL
+  -- if P_iterable = $ppexpr(P, pcpath ++ [PCFIELD 0], expression_iterable, $ppforeach_mode(expression_iterable, b))
+  -- if P_value = $ppforeach_value(P_iterable, pcpath ++ [PCFIELD 3], expression_value, b)
+  -- if P_key = $ppforeach_key(P_value, pcpath ++ [PCFIELD 1], phpType5)
+  -- if P_body = $pploopbody(P_key, pcpath ++ [PCFIELD 4], statement*, metadata)
+
+def $ppstatement(P, pcpath, NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value (SEQUENCE statement*) (BOOLEAN b_keyref) metadata) = $ppforeach_compile(P_keycheck, pcpath, expression_iterable, phpType5, expression_value, $ppforeach_references(expression_value, b_ref), statement*, metadata)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_keycheck = $ppforeach_keycheck($pplocate(P, pcpath, $expression_line(expression_iterable)), phpType5, b_keyref)

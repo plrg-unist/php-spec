@@ -53,7 +53,7 @@ STATE_CHECKS = [
     'S_new = $write_name($prune_allocations(S_dead), [97], PBOOL false)',
     '$lookup(S_new.ENV, [97]) = (1)',
     '$location_reference(S_new, ROOT 1) = false',
-    'S_cycle = $initial_state(NORMAL)[.STORE = [DEFINED (PARRAY 0)]][.REFCELLS = [0]][.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 0)]), NEXT 1}]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]',
+    'S_cycle = $initial_state(NORMAL)[.STORE = [DEFINED (PARRAY 0)]][.REFCELLS = [0]][.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 0)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]',
     '$heap_valid($heap_graph(S_cycle))',
     '$heap_prune($heap_graph(S_cycle)).NODES = [HCELL 0, HARRAY 0]',
     '$heap_collect($heap_graph(S_cycle)).NODES = eps',

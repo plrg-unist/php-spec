@@ -90,8 +90,8 @@ def main():
         cases.append(assertions)
     initial = '($initial_state(NORMAL))'
     base = (initial+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PINT 1)]]'
-            '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 1), ENTRY (KINT 1) (ALIAS 1)]), NEXT 2}, '
-            '{ITEMS ([ENTRY (KINT 0) (DIRECT (PARRAY 1))]), NEXT 1}]]'
+            '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 1), ENTRY (KINT 1) (ALIAS 1)]), NEXT 2, POSITIONS ([POSITION (KINT 0) 0, POSITION (KINT 1) 1]), SERIAL 2}, '
+            '{ITEMS ([ENTRY (KINT 0) (DIRECT (PARRAY 1))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]]'
             '[.ENV = [BIND ([97]) 0, BIND ([98]) 0]][.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]]')
     # ARRAY1 is a historical self-cycle, never allocated in this state: neither
     # edge counting nor collection may resurrect it. Two aliases root cell0,
@@ -102,7 +102,7 @@ def main():
                f'$heap_owners($heap_graph({base}), HARRAY 0) = 1',
                f'$heap_owners($heap_graph({base}), HARRAY 1) = 0',
                f'$prune_allocations({base}[.ENV = eps]).ALLOCATIONS = eps']]
-    cyclic = (base+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 1), ENTRY (KINT 1) (DIRECT (PARRAY 0))]), NEXT 2}]]'
+    cyclic = (base+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 1), ENTRY (KINT 1) (DIRECT (PARRAY 0))]), NEXT 2, POSITIONS ([POSITION (KINT 0) 0, POSITION (KINT 1) 1]), SERIAL 2}]]'
               '[.ENV = eps]')
     cases += [[f'$prune_allocations({cyclic}).ALLOCATIONS = [HCELL 1, HARRAY 0]',
                f'$heap_owners($heap_graph($prune_allocations({cyclic})), HCELL 1) = 1',
@@ -134,7 +134,7 @@ def main():
                'S_next.RESULT = KNOWN PNULL', 'S_next.BASE = BASE_VALUE (KNOWN PNULL)',
                '$machine_roots(S_next) = [HARRAY 3, HCELL 4, HARRAY 2, HARRAY 0, HARRAY 1]']]
     live = (initial+'[.STORE = [DEFINED (PARRAY 0)]]'
-            '[.ARRAYS = [{ITEMS eps, NEXT 0}]]'
+            '[.ARRAYS = [{ITEMS eps, NEXT 0, POSITIONS eps, SERIAL 0}]]'
             '[.ENV = [BIND ([97]) 0]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]')
     for captured in (False, True):
         operand = 'KNOWN (PARRAY 0)' if captured else 'VARIABLE ([97]) 1'
@@ -190,7 +190,7 @@ def main():
     # Separation observes surviving incoming owners, not backing vectors or the
     # number of names that alias one cell. These are helper-only embedded refs.
     copying = (initial+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 0), DEFINED (PINT 1)]]'
-               '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}]]'
+               '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]]'
                '[.ENV = [BIND ([97]) 0, BIND ([98]) 1]]'
                '[.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0]]')
     for suffix in ('', '[.RESULT = KNOWN (PARRAY 0)]', '[.ENV = [BIND ([97]) 0, BIND ([98]) 0]]'):
@@ -203,7 +203,7 @@ def main():
                 ('[.ENV = [BIND ([97]) 0, BIND ([98]) 1, BIND ([120]) 2]]', 'ALIAS 2'),
                 ('[.HELD = [HCELL 2]]', 'ALIAS 2'),
                 ('[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 0), DEFINED (PARRAY 0)]]', 'ALIAS 2'),
-                ('[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 2)]), NEXT 2}]]', 'ALIAS 2'),
+                ('[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 2)]), NEXT 2, POSITIONS ([POSITION (KINT 0) 0, POSITION (KINT 1) 1]), SERIAL 2}]]', 'ALIAS 2'),
                 ('[.ENV = [BIND ([97]) 0]][.HELD = [HARRAY 0]]', 'DIRECT (PINT 1)')]
     for suffix, item in variants:
         cases.append([f'S_next = $location_array({copying+suffix}, ROOT 0, 1)',
@@ -217,8 +217,8 @@ def main():
                       '$heap_valid($heap_graph(S_next))'])
     for cycle in (False, True):
         extra = ', ENTRY (KINT 1) (DIRECT (PARRAY 1))' if cycle else ''
-        dead = (copying+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, '
-                '{ITEMS ([ENTRY (KINT 0) (ALIAS 2)'+extra+']), NEXT 2}]]'
+        dead = (copying+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}, '
+                '{ITEMS ([ENTRY (KINT 0) (ALIAS 2)'+extra+']), NEXT 2, POSITIONS ([POSITION (KINT 0) 0'+(', POSITION (KINT 1) 1' if cycle else '')+']), SERIAL ' + str(2 if cycle else 1) + '}]]'
                 '[.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0, HARRAY 1]]')
         item = 'ALIAS 2' if cycle else 'DIRECT (PINT 1)'
         cases.append([f'S_next = $location_array({dead}, ROOT 0, 1)',
@@ -234,8 +234,8 @@ def main():
                       f'$heap_member(HARRAY 1, S_next.ALLOCATIONS) = {str(cycle).lower()}',
                       '$heap_valid($heap_graph(S_next))'])
     merging = (copying+'[.STORE = [DEFINED (PARRAY 0), DEFINED (PARRAY 1), DEFINED (PINT 1)]]'
-               '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, '
-               '{ITEMS ([ENTRY (KINT 2) (DIRECT (PINT 3))]), NEXT 3}]]'
+               '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}, '
+               '{ITEMS ([ENTRY (KINT 2) (DIRECT (PINT 3))]), NEXT 3, POSITIONS ([POSITION (KINT 2) 0]), SERIAL 1}]]'
                '[.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0, HARRAY 1]]')
     cases += [[f'S_next = $binary_apply({merging}, ADD, PARRAY 1, PARRAY 0, 1)',
                '$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = (DIRECT (PINT 1))',
@@ -256,9 +256,9 @@ def main():
         cases.append([f'S_next = $binary_apply({merging+suffix}, ADD, PARRAY 1, PARRAY 0, 1)',
                       '$entry_lookup(S_next.ARRAYS[2].ITEMS, KINT 0) = (ALIAS 2)',
                       '$heap_valid($heap_graph(S_next))'])
-    conflict = merging+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, {ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 3))]), NEXT 1}]]'
+    conflict = merging+'[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}, {ITEMS ([ENTRY (KINT 0) (DIRECT (PINT 3))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}]]'
     local = (merging+'[.ENV = eps]'
-             '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1}, {ITEMS ([ENTRY (KINT 1) (ALIAS 2)]), NEXT 2}]]')
+             '[.ARRAYS = [{ITEMS ([ENTRY (KINT 0) (ALIAS 2)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}, {ITEMS ([ENTRY (KINT 1) (ALIAS 2)]), NEXT 2, POSITIONS ([POSITION (KINT 1) 0]), SERIAL 1}]]')
     cases += [[f'S_next = $binary_apply({conflict}, ADD, PARRAY 1, PARRAY 0, 1)',
                'S_next.ARRAYS[2].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 3))]',
                '$heap_owners($heap_graph(S_next), HCELL 2) = 1'],
@@ -267,7 +267,7 @@ def main():
                'S_next.ARRAYS[2].ITEMS = [ENTRY (KINT 0) (ALIAS 2), ENTRY (KINT 1) (ALIAS 2)]',
                '$heap_valid($heap_graph(S_next))']]
     literal = (initial+'[.STORE = [DEFINED (PINT 1)]][.ENV = [BIND ([120]) 0]]'
-               '[.ARRAYS = [{ITEMS eps, NEXT 0}]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]'
+               '[.ARRAYS = [{ITEMS eps, NEXT 0, POSITIONS eps, SERIAL 0}]][.ALLOCATIONS = [HCELL 0, HARRAY 0]]'
                '[.TODO = [ARRAY_REF_VALUE 0 eps eps 1]]')
     cases += [[f'S_next = $hold_literal_reference({literal})',
                'S_next.HELD = [HARRAY 0, HCELL 0]',
@@ -287,10 +287,10 @@ def main():
     cases += [[f'S_next = $ownership_step({literal}[.HELD = [HCELL 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN PNULL) eps 1]])',
                'S_next.COMPLETION = NORMAL', 'S_next.HELD = [HCELL 0]',
                '|S_next.EVENTS| = 1', 'S_next.ARRAYS[0].ITEMS = [ENTRY (KSTRING eps) (ALIAS 0)]'],
-              [f'S_next = $drive({literal}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT (PINT 0))]), NEXT 9223372036854775807}}]], 1)',
+              [f'S_next = $drive({literal}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT (PINT 0))]), NEXT 9223372036854775807, POSITIONS ([POSITION (KINT 9223372036854775807) 0]), SERIAL 1}}]], 1)',
                'S_next.COMPLETION =/= NORMAL', 'S_next.ALLOCATIONS = [HCELL 0]',
                'S_next.HELD = eps', '$heap_valid($heap_graph(S_next))'],
-              [f'S_next = $prune_allocations($ownership_step({literal}[.STORE = [DEFINED (PINT 1), DEFINED (PINT 2)]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN (PINT 0)) eps 1]]))',
+              [f'S_next = $prune_allocations($ownership_step({literal}[.STORE = [DEFINED (PINT 1), DEFINED (PINT 2)]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HARRAY 0]][.TODO = [ARRAY_REF_VALUE 0 (KNOWN (PINT 0)) eps 1]]))',
                'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]',
                'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 0)]', '$heap_valid($heap_graph(S_next))']]
     cases += [[f'S_next = $ownership_step({initial}[.TODO = [REF_DYNAMIC_CV (VARIABLE ([120]) 3) ([120]) 3]])',
@@ -334,7 +334,7 @@ def main():
         cases.append([f'S_next = $drive({acquire}[.BASE = BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN ({key})) {line}][.TODO = [ACQUIRE_ARRAY {line}]][.HELD = [HCELL 0]], 1)',
                       'S_next.COMPLETION =/= NORMAL', '|S_next.STORE| = 1',
                       'S_next.HELD = eps', 'S_next.RESULT = KNOWN PNULL', '$heap_valid($heap_graph(S_next))'])
-    cases += [[f'S_next = $drive({acquire}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT PNULL)]), NEXT 9223372036854775807}}]][.BASE = BASE_APPEND (BASE_VALUE (VARIABLE ([97]) 1)) 1], 1)',
+    cases += [[f'S_next = $drive({acquire}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT PNULL)]), NEXT 9223372036854775807, POSITIONS ([POSITION (KINT 9223372036854775807) 0]), SERIAL 1}}]][.BASE = BASE_APPEND (BASE_VALUE (VARIABLE ([97]) 1)) 1], 1)',
                'S_next.COMPLETION =/= NORMAL', '|S_next.STORE| = 1',
                'S_next.HELD = eps', '$heap_valid($heap_graph(S_next))'],
               [f'S_acquired = $ownership_step({acquire})',
@@ -367,10 +367,10 @@ def main():
     cases += [[f'S_next = $drive({captured}[.TODO = [REF_ARRAY ({target}) 1 1]], 1)',
                'S_next.RESULT = REFERENCE 1', 'S_next.ARRAYS[0].ITEMS = [ENTRY (KINT 0) (ALIAS 1)]',
                '$heap_owners($heap_graph(S_next), HCELL 1) = 2', '$heap_valid($heap_graph(S_next))'],
-              [f'S_next = $drive({captured}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT PNULL)]), NEXT 9223372036854775807}}]][.TODO = [REF_ARRAY (BASE_APPEND (BASE_VALUE (VARIABLE ([97]) 1)) 1) 1 1]], 1)',
+              [f'S_next = $drive({captured}[.ARRAYS = [{{ITEMS ([ENTRY (KINT 9223372036854775807) (DIRECT PNULL)]), NEXT 9223372036854775807, POSITIONS ([POSITION (KINT 9223372036854775807) 0]), SERIAL 1}}]][.TODO = [REF_ARRAY (BASE_APPEND (BASE_VALUE (VARIABLE ([97]) 1)) 1) 1 1]], 1)',
                'S_next.COMPLETION =/= NORMAL', 'S_next.ALLOCATIONS = [HCELL 0, HARRAY 0]',
                'S_next.HELD = eps', '$heap_valid($heap_graph(S_next))'],
-              [f'S_next = $ownership_step({captured}[.STORE = [DEFINED (PARRAY 0), DEFINED (PINT 9), DEFINED (PARRAY 0)]][.ENV = [BIND ([97]) 0, BIND ([98]) 2]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0]][.TODO = [REF_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 1)) 1) 1 1]])',
+              [f'S_next = $ownership_step({captured}[.STORE = [DEFINED (PARRAY 0), DEFINED (PINT 9), DEFINED (PARRAY 0)]][.ENV = [BIND ([97]) 0, BIND ([98]) 2]][.ARRAYS = [{{ITEMS ([ENTRY (KINT 0) (ALIAS 1)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1}}]][.ALLOCATIONS = [HCELL 0, HCELL 1, HCELL 2, HARRAY 0]][.TODO = [REF_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 1)) 1) 1 1]])',
                'S_next.STORE[0] = DEFINED (PARRAY 1)',
                'S_next.ARRAYS[1].ITEMS = [ENTRY (KINT 0) (ALIAS 1), ENTRY (KINT 1) (ALIAS 1)]',
                '$heap_owners($heap_graph(S_next), HCELL 1) = 4', '$heap_valid($heap_graph(S_next))']]
