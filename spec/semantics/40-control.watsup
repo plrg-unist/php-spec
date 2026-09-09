@@ -5,8 +5,14 @@ def $cv_name(NScalarFloat (FLOAT text) metadata) = ($echo_value(PFLOAT $hex_bits
 def $cv_name(phpType34) = eps
   -- otherwise
 
+;; Current source execution is global: direct FETCH_THIS cannot obtain an object.
+;; Computed local names retain FETCH_R/RW behavior instead of using this opcode.
+def $direct_this(phpType34) = ($cv_name(phpType34) = ([116,104,105,115]))
+def $global_this_error(S, z) = $throw_scalar(S, "Error", [85,115,105,110,103,32,36,116,104,105,115,32,119,104,101,110,32,110,111,116,32,105,110,32,111,98,106,101,99,116,32,99,111,110,116,101,120,116], z)
+
 dec $reference_cv(expression) : (nat*)?
 def $reference_cv(NExprVariable phpType34 metadata) = $cv_name(phpType34)
+  -- if ~$direct_this(phpType34)
 def $reference_cv(expression) = eps
   -- otherwise
 
@@ -55,10 +61,14 @@ rule PhpStep/variable: S ~> S[.TODO = ptask_tail*][.RESULT = VARIABLE n_name* $v
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
   -- if ~$environment_name(n_name*)
+rule PhpStep/global-this-read: S ~> $global_this_error(S, $runtime_line(S, eps, NExprVariable phpType34 metadata))[.TODO = eps]
+  -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
+  -- if $direct_this(phpType34)
 rule PhpStep/environment-variable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
   -- if $environment_name(n_name*)
+  -- if ~$this_name(n_name*)
 rule PhpStep/dynamic-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), NAME_READ $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
@@ -184,12 +194,17 @@ rule PhpStep/prepare-reference: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN,
 rule PhpStep/prepare-reference-cv: S ~> S[.TODO = (REF_DYNAMIC_CV S.RESULT n_name* z) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
   -- if $reference_cv(expression) = (n_name*)
+rule PhpStep/global-this-reference: S ~> $global_this_error(S, $runtime_line(S, eps, NExprVariable phpType34 metadata))[.TODO = eps]
+  -- if S.TODO = (ACQUIRE (NExprVariable phpType34 metadata)) :: ptask_tail*
+  -- if $direct_this(phpType34)
 rule PhpStep/acquire-name: S ~> S_cell[.TODO = ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable (BYTES text) metadata)) :: ptask_tail*
+  -- if ~$this_name($base64(text))
   -- if S_cell = $acquire_name(S, $base64(text))
 rule PhpStep/acquire-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_name), ACQUIRE_DYNAMIC $runtime_line(S, [PCFIELD 0], expression_name)] ++ ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if phpType34 = expression_name
+  -- if ~$direct_this(phpType34)
 rule PhpStep/acquire-dynamic-cell: S ~> S_cell[.TODO = ptask_tail*]
   -- if S.TODO = (ACQUIRE_DYNAMIC z) :: ptask_tail*
   -- if S_name = $resolve_name(S, S.RESULT, z)

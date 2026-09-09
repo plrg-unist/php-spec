@@ -1,5 +1,5 @@
 ;; Ordered ordinary compilation for the currently admitted source subset.
-syntax ppmode = PPR | PPW | PPUNSET
+syntax ppmode = PPR | PPW | PPRW | PPUNSET
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
 syntax ppexprdone = PPCEXPR pcpath nat pvalue?
@@ -51,6 +51,8 @@ dec $ppexpr(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppexprbody(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppdone(ppstate, pcpath, ppmode) : ppstate
 dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
+dec $ppunsetexprs(ppstate, pcpath, nat, expression*) : ppstate
+dec $ppunsetcheck(ppstate, expression) : ppstate
 def $ppstart(n, program, ptbytes) = $pplexical({ LOOPS 0, FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -99,7 +101,7 @@ def $ppstatement(P, pcpath, NStmtExpression expression metadata) = $ppexpr(P, pc
   -- if P.COMPLETION = PPCNORMAL
 def $ppstatement(P, pcpath, NStmtEcho (SEQUENCE expression*) metadata) = $ppexprs(P, pcpath ++ [PCFIELD 0], 0, expression*, PPR)
   -- if P.COMPLETION = PPCNORMAL
-def $ppstatement(P, pcpath, NStmtUnset (SEQUENCE expression*) metadata) = $ppexprs($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 0], 0, expression*, PPUNSET)
+def $ppstatement(P, pcpath, NStmtUnset (SEQUENCE expression*) metadata) = $ppunsetexprs($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 0], 0, expression*)
   -- if P.COMPLETION = PPCNORMAL
 def $ppstatement(P, pcpath, NStmtBlock (SEQUENCE statement*) metadata) = $ppstatements($pplocate(P, pcpath, $source_end_line(metadata)), pcpath ++ [PCFIELD 0], 0, statement*)
   -- if P.COMPLETION = PPCNORMAL
@@ -110,6 +112,13 @@ def $ppstatements(P, pcpath, n, eps) = P
 def $ppstatements(P, pcpath, n, statement :: statement_tail*) = $ppstatements($ppstatement(P, pcpath ++ [PCINDEX n], statement), pcpath, $(n + 1), statement_tail*)
 def $ppexprs(P, pcpath, n, eps, ppmode) = P
 def $ppexprs(P, pcpath, n, expression :: expression_tail*, ppmode) = $ppexprs($ppexpr(P, pcpath ++ [PCINDEX n], expression, ppmode), pcpath, $(n + 1), expression_tail*, ppmode)
+
+;; Only final unset variables reject $this; dimension bases still perform FETCH_THIS.
+def $ppunsetexprs(P, pcpath, n, eps) = P
+def $ppunsetexprs(P, pcpath, n, expression :: expression_tail*) = $ppunsetexprs($ppexpr($ppunsetcheck($pplocate(P, pcpath ++ [PCINDEX n], $expression_line(expression)), expression), pcpath ++ [PCINDEX n], expression, PPUNSET), pcpath, $(n + 1), expression_tail*)
+def $ppunsetcheck(P, NExprVariable phpType34 metadata) = $ppcheck(P, $context_error("Cannot unset $this", P.LOCATION.LINE))
+  -- if $cv_name(phpType34) = ([116,104,105,115])
+def $ppunsetcheck(P, expression) = P -- otherwise
 
 dec $ppeffective_line(pffact*, pcpath, expression, ppmode) : int
 def $ppeffective_line(pffact*, pcpath, expression, PPR) = z
@@ -155,6 +164,33 @@ def $ppexprbody(P, pcpath, expression, ppmode) = $ppdispatch(P, pcpath, expressi
   -- if P.COMPLETION = PPCNORMAL
   -- if ppmode =/= PPR
 
+;; Updates reject non-writable calls/nullsafe chains before compiling operands.
+dec $ppupdatecheck(ppstate, expression) : ppstate
+dec $ppupdateother(ppstate, expression) : ppstate
+dec $ppnullsafe(expression) : bool
+dec $ppnullsafeclass(phpType19) : bool
+def $ppnullsafe(NExprNullsafePropertyFetch expression phpType20 metadata) = true
+def $ppnullsafe(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
+def $ppnullsafe(NExprArrayDimFetch expression phpType5 metadata) = $ppnullsafe(expression)
+def $ppnullsafe(NExprPropertyFetch expression phpType20 metadata) = $ppnullsafe(expression)
+def $ppnullsafe(NExprMethodCall expression phpType20 phpType6 metadata) = $ppnullsafe(expression)
+def $ppnullsafe(NExprStaticPropertyFetch phpType19 phpType33 metadata) = $ppnullsafeclass(phpType19)
+def $ppnullsafe(NExprStaticCall phpType19 phpType20 phpType6 metadata) = $ppnullsafeclass(phpType19)
+def $ppnullsafe(expression) = false -- otherwise
+def $ppnullsafeclass(phpType19) = $ppnullsafe(expression)
+  -- if phpType19 = expression
+def $ppnullsafeclass(phpType19) = false -- otherwise
+def $ppupdatecheck(P, NExprFuncCall phpType19 phpType6 metadata) = $ppcheck(P, $context_error("Can't use function return value in write context", P.LOCATION.LINE))
+def $ppupdatecheck(P, NExprMethodCall expression phpType20 phpType6 metadata) = $ppcheck(P, $context_error("Can't use method return value in write context", P.LOCATION.LINE))
+def $ppupdatecheck(P, NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = $ppcheck(P, $context_error("Can't use method return value in write context", P.LOCATION.LINE))
+def $ppupdatecheck(P, NExprStaticCall phpType19 phpType20 phpType6 metadata) = $ppcheck(P, $context_error("Can't use method return value in write context", P.LOCATION.LINE))
+def $ppupdatecheck(P, expression) = $ppupdateother(P, expression) -- otherwise
+def $ppupdateother(P, expression) = $ppcheck(P, $context_error("Can't use nullsafe operator in write context", P.LOCATION.LINE))
+  -- if $ppnullsafe(expression)
+def $ppupdateother(P, NExprVariable phpType34 metadata) = $ppcheck(P, $context_error("$GLOBALS can only be modified using the $GLOBALS[$name] = $value syntax", P.LOCATION.LINE))
+  -- if $cv_name(phpType34) = ([71,76,79,66,65,76,83])
+def $ppupdateother(P, expression) = P -- otherwise
+
 dec $pptemporary_shape(pfshape) : bool
 def $pptemporary_shape(PFBINARY pbin expression_1 expression_2) = true
 def $pptemporary_shape(PFUNARY punary expression) = true
@@ -170,6 +206,10 @@ def $pptemporary(NExprConstFetch name metadata) = true
 def $pptemporary(NExprArray phpType12 metadata) = true
 def $pptemporary(NExprAssign expression_1 expression_2 metadata) = true
 def $pptemporary(NExprAssignRef expression_1 expression_2 metadata) = true
+def $pptemporary(NExprPreInc expression metadata) = true
+def $pptemporary(NExprPreDec expression metadata) = true
+def $pptemporary(NExprPostInc expression metadata) = true
+def $pptemporary(NExprPostDec expression metadata) = true
 def $pptemporary(expression) = $pptemporary_shape($pfshape(expression)) -- otherwise
 
 def $ppdispatch(P, pcpath, expression, ppmode) = $ppcheck(P, $context_error("Cannot use temporary expression in write context", P.LOCATION.LINE))
@@ -189,6 +229,10 @@ def $ppdispatch(P, pcpath, expression_outer, PPR) = $ppunarydone($ppexpr(P, pcpa
   -- if $pfshape(expression_outer) = PFUNARY punary expression
 def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppdim($ppexpr(P, pcpath ++ [PCFIELD 0], expression, ppmode), pcpath, phpType5, ppmode)
 def $ppdispatch(P, pcpath, NExprArray (SEQUENCE phpType13*) metadata, PPR) = $pparray($ppfoldresult(P, $pfprepare(P.FOLD, pcpath, NExprArray (SEQUENCE phpType13*) metadata, P.ENV, P.LOCATION.LINE)), pcpath, phpType13*)
+def $ppdispatch(P, pcpath, NExprPreInc expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
+def $ppdispatch(P, pcpath, NExprPreDec expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
+def $ppdispatch(P, pcpath, NExprPostInc expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
+def $ppdispatch(P, pcpath, NExprPostDec expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
 def $ppdispatch(P, pcpath, expression, ppmode) = $ppunsupported(P, "ordinary expression or writable operand compilation")
   -- otherwise
 
@@ -235,8 +279,9 @@ def $ppdim(P, pcpath, ABSENT, PPR) = $ppcheck(P, $context_error("Cannot use [] f
   -- if P.COMPLETION = PPCNORMAL
 def $ppdim(P, pcpath, ABSENT, PPUNSET) = $ppcheck(P, $context_error("Cannot use [] for unsetting", P.LOCATION.LINE))
   -- if P.COMPLETION = PPCNORMAL
-def $ppdim(P, pcpath, ABSENT, PPW) = P[.FOLD = P.FOLD[.VALUE = eps]]
+def $ppdim(P, pcpath, ABSENT, ppmode) = P[.FOLD = P.FOLD[.VALUE = eps]]
   -- if P.COMPLETION = PPCNORMAL
+  -- if (ppmode = PPW \/ ppmode = PPRW)
 def $ppdim(P, pcpath, phpType5, ppmode) = P_key[.FOLD = P_key.FOLD[.VALUE = eps]]
   -- if P.COMPLETION = PPCNORMAL
   -- if phpType5 = expression
@@ -246,7 +291,10 @@ def $ppdim(P, pcpath, phpType5, ppmode) = P_key[.FOLD = P_key.FOLD[.VALUE = eps]
 ;; assignment restores the target AST line; reference assignment does not.
 def $ppvaluemode(false) = PPR
 def $ppvaluemode(true) = PPW
+def $ppassign(P, pcpath, NExprVariable phpType34 metadata, expression_2, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
+  -- if $cv_name(phpType34) = ([116,104,105,115])
 def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
+  -- otherwise
 def $ppassignright(P, pcpath, expression_1, expression_2, b) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppassignright(P, pcpath, NExprArrayDimFetch expression_base phpType5 metadata, expression_2, false) = $ppdone($ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $ppcvcheck(phpType34)), pcpath ++ [PCFIELD 1], PPR)

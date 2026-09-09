@@ -518,6 +518,8 @@ from truth_expressions import CASES as TRUTH_CASES
 CASES.update(TRUTH_CASES)
 from comparison import CASES as COMPARISON_CASES
 CASES.update(COMPARISON_CASES)
+from incdec import CASES as INCDEC_CASES
+CASES.update(INCDEC_CASES)
 from write_fetch import CASES as WRITE_FETCH_CASES
 CASES.update(WRITE_FETCH_CASES)
 from reference_wrappers import CASES as REFERENCE_WRAPPER_CASES

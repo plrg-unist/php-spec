@@ -61,7 +61,8 @@ by value. Failed arithmetic, diagnostic-producing key conversion and missing DIM
 values remain for ordinary compilation/execution. An array used as a constant
 array key raises the compile-time `Illegal offset type` error.
 
-Variables, assignments and reference assignments stop this constant-evaluation
+Variables, assignments, reference assignments and all four increment/decrement
+forms stop this constant-evaluation
 invocation without visiting their children. This is not an ordinary compilation
 barrier: the source compiler compiles their children using the appropriate
 operand rules and invokes constant evaluation for each subsequently compiled array.

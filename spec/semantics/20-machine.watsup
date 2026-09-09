@@ -101,6 +101,36 @@ def $expression_line(NExprBinaryOpSmallerOrEqual expression_1 expression_2 metad
 def $expression_line(NExprBinaryOpGreater expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprBinaryOpGreaterOrEqual expression_1 expression_2 metadata) = $expression_line(expression_1)
 def $expression_line(NExprBinaryOpSpaceship expression_1 expression_2 metadata) = $expression_line(expression_1)
+dec $name_expression_line(phpType19) : int
+def $name_expression_line(NName phpType35 metadata) = $source_line(metadata)
+def $name_expression_line(NNameFullyQualified phpType35 metadata) = $source_line(metadata)
+def $name_expression_line(NNameRelative phpType35 metadata) = $source_line(metadata)
+def $name_expression_line(phpType19) = $expression_line(expression)
+  -- if phpType19 = expression
+def $expression_line(NExprPreInc expression metadata) = $expression_line(expression)
+def $expression_line(NExprPreDec expression metadata) = $expression_line(expression)
+def $expression_line(NExprPostInc expression metadata) = $expression_line(expression)
+def $expression_line(NExprPostDec expression metadata) = $expression_line(expression)
+dec $metadata_callable_line(metadataEntry) : int
+def $metadata_callable_line(McallableExprLine z) = z
+def $metadata_callable_line(metadataEntry) = 0 -- otherwise
+dec $callable_line(metadata) : int
+def $callable_line(eps) = 0
+def $callable_line(metadataEntry :: metadataEntry_tail*) = $metadata_callable_line(metadataEntry)
+  -- if $($metadata_callable_line(metadataEntry) > 0)
+def $callable_line(metadataEntry :: metadataEntry_tail*) = $callable_line(metadataEntry_tail*)
+  -- if $($metadata_callable_line(metadataEntry) <= 0)
+dec $call_expression_line(phpType19, metadata) : int
+def $call_expression_line(phpType19, metadata) = $callable_line(metadata)
+  -- if phpType19 = expression
+def $call_expression_line(phpType19, metadata) = $name_expression_line(phpType19) -- otherwise
+def $expression_line(NExprFuncCall phpType19 phpType6 metadata) = $call_expression_line(phpType19, metadata)
+def $expression_line(NExprMethodCall expression phpType20 phpType6 metadata) = $expression_line(expression)
+def $expression_line(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = $expression_line(expression)
+def $expression_line(NExprPropertyFetch expression phpType20 metadata) = $expression_line(expression)
+def $expression_line(NExprNullsafePropertyFetch expression phpType20 metadata) = $expression_line(expression)
+def $expression_line(NExprStaticCall phpType19 phpType20 phpType6 metadata) = $name_expression_line(phpType19)
+def $expression_line(NExprStaticPropertyFetch phpType19 phpType33 metadata) = $name_expression_line(phpType19)
 def $expression_line(expression) = 0
   -- otherwise
 

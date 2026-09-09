@@ -1,0 +1,137 @@
+;; Captured scalar updates; source location acquisition follows separately.
+;; Pinned zend_operators.c increment_function/decrement_function.
+
+dec $update_number(pupdate, pnumber) : pnumber
+def $update_number(INCREMENT, pnumber) = $num_add(pnumber, NINT 1)
+def $update_number(DECREMENT, pnumber) = $num_sub(pnumber, NINT 1)
+dec $update_string(pupdate, nat*) : (stringupdate, stringupdatenotice*)
+def $update_string(INCREMENT, n*) = $string_increment(n*)
+def $update_string(DECREMENT, n*) = $string_decrement(n*)
+dec $update_string_value(stringupdate) : pvalue
+def $update_string_value(UPDATEDSTRING n*) = PSTRING n*
+def $update_string_value(UPDATEDNUMBER pnumber) = $number_value(pnumber)
+
+dec $update_notice(stringupdatenotice) : nat*
+def $update_notice(STRINGINCREMENT) = [73,110,99,114,101,109,101,110,116,32,111,110,32,110,111,110,45,110,117,109,101,114,105,99,32,115,116,114,105,110,103,32,105,115,32,100,101,112,114,101,99,97,116,101,100,44,32,117,115,101,32,115,116,114,95,105,110,99,114,101,109,101,110,116,40,41,32,105,110,115,116,101,97,100]
+def $update_notice(STRINGDECREMENT) = [68,101,99,114,101,109,101,110,116,32,111,110,32,110,111,110,45,110,117,109,101,114,105,99,32,115,116,114,105,110,103,32,104,97,115,32,110,111,32,101,102,102,101,99,116,32,97,110,100,32,105,115,32,100,101,112,114,101,99,97,116,101,100]
+def $update_notice(EMPTYDECREMENT) = [68,101,99,114,101,109,101,110,116,32,111,110,32,101,109,112,116,121,32,115,116,114,105,110,103,32,105,115,32,100,101,112,114,101,99,97,116,101,100,32,97,115,32,110,111,110,45,110,117,109,101,114,105,99]
+dec $update_notices(pstate, stringupdatenotice*, int) : pstate
+def $update_notices(S, eps, z) = S
+def $update_notices(S, stringupdatenotice :: stringupdatenotice_tail*, z) = $update_notices($diagnostic(S, "Deprecated", $update_notice(stringupdatenotice), z), stringupdatenotice_tail*, z)
+
+dec $update_verb(pupdate) : nat*
+def $update_verb(INCREMENT) = [73,110,99,114,101,109,101,110,116]
+def $update_verb(DECREMENT) = [68,101,99,114,101,109,101,110,116]
+dec $update_value(pstate, pupdate, pvalue, int) : pstate
+def $update_value(S, pupdate, PINT i, z) = S[.RESULT = KNOWN $number_value($update_number(pupdate, NINT i))]
+def $update_value(S, pupdate, PFLOAT n, z) = S[.RESULT = KNOWN $number_value($update_number(pupdate, NFLOAT n))]
+def $update_value(S, INCREMENT, PNULL, z) = S[.RESULT = KNOWN (PINT 1)]
+def $update_value(S, pupdate, PSTRING n*, z) = S_warned[.RESULT = KNOWN $update_string_value(stringupdate)]
+  -- if (stringupdate, stringupdatenotice*) = $update_string(pupdate, n*)
+  -- if S_warned = $update_notices(S, stringupdatenotice*, z)
+def $update_value(S, pupdate, PBOOL b, z) = $diagnostic(S, "Warning", $update_verb(pupdate) ++ [32,111,110,32,116,121,112,101,32,98,111,111,108,32,104,97,115,32,110,111,32,101,102,102,101,99,116,44,32,116,104,105,115,32,119,105,108,108,32,99,104,97,110,103,101,32,105,110,32,116,104,101,32,110,101,120,116,32,109,97,106,111,114,32,118,101,114,115,105,111,110,32,111,102,32,80,72,80], z)[.RESULT = KNOWN (PBOOL b)]
+def $update_value(S, DECREMENT, PNULL, z) = $diagnostic(S, "Warning", $update_verb(DECREMENT) ++ [32,111,110,32,116,121,112,101,32,110,117,108,108,32,104,97,115,32,110,111,32,101,102,102,101,99,116,44,32,116,104,105,115,32,119,105,108,108,32,99,104,97,110,103,101,32,105,110,32,116,104,101,32,110,101,120,116,32,109,97,106,111,114,32,118,101,114,115,105,111,110,32,111,102,32,80,72,80], z)[.RESULT = KNOWN (PNULL)]
+def $update_value(S, INCREMENT, PARRAY n, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,105,110,99,114,101,109,101,110,116,32,97,114,114,97,121], z)
+def $update_value(S, DECREMENT, PARRAY n, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,100,101,99,114,101,109,101,110,116,32,97,114,114,97,121], z)
+
+;; The pre/post expression owns a copied scalar value, never the updated cell.
+dec $update_location(pstate, pupdate, bool, int) : pstate
+def $update_location(S, pupdate, b_post, z) = S_changed
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
+  -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
+  -- if S_changed.COMPLETION =/= NORMAL
+def $update_location(S, pupdate, false, z) = $location_write(S_changed, S.LOCATION, pvalue)
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
+  -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
+  -- if S_changed.COMPLETION = NORMAL
+  -- if S_changed.RESULT = KNOWN pvalue
+def $update_location(S, pupdate, true, z) = $location_write(S_changed, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue_old]
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
+  -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
+  -- if S_changed.COMPLETION = NORMAL
+  -- if S_changed.RESULT = KNOWN pvalue
+
+;; RW acquisition warns and initializes missing names and explicit keys. Appends
+;; allocate a null slot without an undefined-key diagnostic.
+def $string_fetch_message(STRINGINCDEC) = [67,97,110,110,111,116,32,105,110,99,114,101,109,101,110,116,47,100,101,99,114,101,109,101,110,116,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]
+
+dec $rw_name(pstate, nat*, int) : pstate
+def $rw_name(S, [116,104,105,115], z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
+def $rw_name(S, n_name*, z) = S_name
+  -- if ~$this_name(n_name*)
+  -- if S_name = $location_name(S, n_name*)
+  -- if S_name.COMPLETION =/= NORMAL
+def $rw_name(S, n_name*, z) = S_name
+  -- if ~$this_name(n_name*)
+  -- if S_name = $location_name(S, n_name*)
+  -- if S_name.COMPLETION = NORMAL
+  -- if $location_slot(S_name, S_name.LOCATION) = DEFINED pvalue
+def $rw_name(S, n_name*, z) = $location_write($read_name(S_name, n_name*, z), S_name.LOCATION, PNULL)
+  -- if ~$this_name(n_name*)
+  -- if S_name = $location_name(S, n_name*)
+  -- if S_name.COMPLETION = NORMAL
+  -- if $location_slot(S_name, S_name.LOCATION) = UNDEFINED
+
+dec $rw_element(pstate, nat, pkey, int) : pstate
+def $rw_element(S, n, pkey, z) = $element_location(S, n, pkey)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+def $rw_element(S, n, pkey, z) = $location_write(S_warned, ELEMENT n pkey, PNULL)[.LOCATION = ELEMENT n pkey]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = eps
+  -- if S_warned = $diagnostic(S, "Warning", [85,110,100,101,102,105,110,101,100,32,97,114,114,97,121,32,107,101,121,32] ++ $missing_key_bytes(pkey), z)
+
+dec $rw_array_dimension(pstate, poperand?, int) : pstate
+def $rw_array_dimension(S, poperand?, z) = S -- if S.COMPLETION =/= NORMAL
+def $rw_array_dimension(S, eps, z) = S_appended
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_appended = $append_location(S, n, z)
+  -- if S_appended.COMPLETION =/= NORMAL
+def $rw_array_dimension(S, eps, z) = $location_write(S_appended, S_appended.LOCATION, PNULL)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_appended = $append_location(S, n, z)
+  -- if S_appended.COMPLETION = NORMAL
+def $rw_array_dimension(S, (poperand), z) = S_key
+  -- if S.COMPLETION = NORMAL
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $rw_array_dimension(S, (poperand), z) = $rw_element(S_key, n, S_key.KEY, z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+
+dec $rw_dimension(pstate, poperand?, pstringfetch, int) : pstate
+def $rw_dimension(S, poperand?, pstringfetch, z) = S -- if S.COMPLETION =/= NORMAL
+def $rw_dimension(S, poperand?, pstringfetch, z) = $string_dimension_fetch(S, poperand?, pstringfetch, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n*)
+def $rw_dimension(S, poperand?, pstringfetch, z) = $rw_array_dimension($fetch_location_array(S, S.LOCATION, z), poperand?, z) -- otherwise
+
+dec $rw_base(pstate, pbase, pstringfetch, int) : pstate
+def $rw_base(S, BASE_VALUE (VARIABLE n_name* z_name), pstringfetch, z) = $rw_name(S, n_name*, z)
+def $rw_base(S, BASE_NAME poperand z_name, pstringfetch, z) = S_name
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $rw_base(S, BASE_NAME poperand z_name, pstringfetch, z) = $rw_name(S_name, n_name*, z_name)
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $rw_base(S, BASE_DIM pbase poperand z_key, pstringfetch, z) = $rw_dimension($rw_base(S, pbase, STRINGNESTED, z_key), (poperand), pstringfetch, z_key)
+def $rw_base(S, BASE_APPEND pbase z_key, pstringfetch, z) = $rw_dimension($rw_base(S, pbase, STRINGNESTED, z_key), eps, pstringfetch, z_key)
+
+dec $update_acquired(pstate, pupdate, bool, int) : pstate
+def $update_acquired(S, pupdate, bool, z) = S -- if S.COMPLETION =/= NORMAL
+def $update_acquired(S, pupdate, bool, z) = $update_location(S, pupdate, bool, z) -- if S.COMPLETION = NORMAL
+
+rule PhpStep/update-apply: S ~> S_updated[.HELD = S.HELD]
+  -- if S.TODO = (UPDATE_PREP pupdate bool z) :: ptask_tail*
+  -- if S_updated = $update_acquired($rw_base($hold_task_inputs(S), S.BASE, STRINGINCDEC, z), pupdate, bool, z)
+rule PhpStep/update-PreInc: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP INCREMENT false $runtime_line(S, eps, NExprPreInc expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprPreInc expression metadata)) :: ptask_tail*
+rule PhpStep/update-PostInc: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP INCREMENT true $runtime_line(S, eps, NExprPostInc expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprPostInc expression metadata)) :: ptask_tail*
+rule PhpStep/update-PreDec: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP DECREMENT false $runtime_line(S, eps, NExprPreDec expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprPreDec expression metadata)) :: ptask_tail*
+rule PhpStep/update-PostDec: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP DECREMENT true $runtime_line(S, eps, NExprPostDec expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprPostDec expression metadata)) :: ptask_tail*

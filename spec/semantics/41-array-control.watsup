@@ -59,9 +59,13 @@ rule PhpStep/array-reference-key-abrupt: S ~> S_key[.TODO = eps][.HELD = S.HELD]
 rule PhpStep/dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), DIM_FETCH $runtime_line(S, [PCFIELD 1], expression_key)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key
+rule PhpStep/global-this-dimension: S ~> $global_this_error(S, $runtime_line(S, eps, NExprVariable phpType34 metadata))[.TODO = eps]
+  -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
+  -- if $direct_this(phpType34)
 rule PhpStep/dimension-prepare-cv: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (VARIABLE n_name* $variable_line(phpType34, metadata))][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
+  -- if ~$direct_this(phpType34)
 rule PhpStep/dimension-prepare-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DIM_NAME $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps

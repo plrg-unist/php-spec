@@ -89,7 +89,7 @@ Emission-line tests observe native runtime warnings because those reveal the
 line attached by compilation; they do not claim that this helper executes PHP.
 
 `$ppaccess(state, path)` exposes `PPR` (read), `PPW` (write fetch, including
-reference acquisition), or `PPUNSET` for successfully compiled expressions. These
+reference acquisition), `PPRW` (read/write fetch), or `PPUNSET` for successfully compiled expressions. These
 modes are recorded from the actual compiler call, independently of the retained
 AST node's kind. Array keys and computed variable-name expressions are reads even
 inside writable paths; DIM bases inherit the surrounding mode. The current
@@ -103,8 +103,8 @@ normal compilation never enters those children. They remain constant-store
 owners, not executable entry points. Missing access or unsuccessful compilation
 returns no mode. The current checked compiler constructs one matching access
 record per expression descriptor; this internal API does not accept arbitrary
-forged compiler states. Quiet access, compound read/write operators and dynamic
-argument modes require explicit later extensions.
+forged compiler states. Quiet access, compound operators and dynamic argument
+modes require explicit later extensions.
 
 The source anchors are the pinned PHP 8.5.10 `Zend/zend_compile.c`:
 `zend_compile_expr_inner` (11804), `zend_compile_var_inner` (11955),
@@ -186,3 +186,20 @@ preserve delayed CV/reference results because prepass removed the value-copying
 conditional. Logical redirects convert the right result once. These contracts are
 checked by the source truth and compiler campaigns, including skipped compile
 errors, NaN warning phase/count, grouping and reference/array identity interactions.
+
+Four increment/decrement forms acquire their target in `PPRW`; dimension bases
+inherit that mode, keys remain reads, and append dimensions remain legal. Direct
+call returns reject before argument compilation; nullsafe-chain rejection follows
+that call check. Dynamic function-call diagnostics consume required positive
+`callableExprLine` context; named calls use their name line. Missing context is
+Unsupported, while edited positive context changes the diagnostic line.
+
+`tests/semantics/incdec_compiler.py` checks 108 original lints, eight native emission
+observations, 32 access paths and 12 source context boundaries. The `$this++`
+lint is accepted: its missing-object-context error belongs to runtime acquisition.
+
+Direct/literal `$this` assignment and reference binding reject before operands;
+only a final unset variable rejects statically. Dimension bases and reference
+sources retain runtime acquisition. These checks preserve skipped branches and
+earlier failures. Literal-concat CV classification remains an explicit separate
+parser-folding/source-line obligation with concat activation.
