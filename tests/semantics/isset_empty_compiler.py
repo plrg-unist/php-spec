@@ -213,8 +213,9 @@ BOUNDARIES = [('isset-globals', b'<?php isset($GLOBALS);', ['P.FOLD.VALUE = (PBO
  ('empty-coalesce-list', b'<?php empty((list($a)=[])??[1]);', ['P.FOLD.VALUE = eps']),
  ('empty-comparison-list', b'<?php empty((list($a)=[])===[]);', ['P.FOLD.VALUE = (PBOOL false)'])]
 
-PENDING = [('empty-call-pending', b'<?php echo empty(foo());'),
- ('isset-nullsafe-pending', b'<?php echo isset($x?->p);')]
+SOURCES.append(('empty-call', b'<?php echo empty(foo());'))
+
+PENDING = [('isset-nullsafe-pending', b'<?php echo isset($x?->p);')]
 
 PREFIX = compiler.PREFIX + r"""
 dec $ieeffect(ppexprdone*, pcpath) : bool
@@ -291,8 +292,8 @@ def main():
         frontend.close();adapter.close()
     assert before==inputs(),'inputs changed during isset/empty compiler checks'
     REPORT.parent.mkdir(parents=True,exist_ok=True)
-    REPORT.write_text(json.dumps({'scope':'188 exact isset/empty compiler traces,10 known/access/effect controls,10 edited metadata boundaries and2 explicit pending call/object cases; runtime execution tested separately','fingerprint':before,'profile':types.PROFILE,'records':records,'boundaries':boundaries,'metadata':metadata,'pending':pending},indent=2)+'\n')
-    print('Isset/empty compiler: 188 native lints,10 known/access/effect,10 metadata and2 explicit pending controls passed')
+    REPORT.write_text(json.dumps({'scope':'189 exact isset/empty compiler traces,10 known/access/effect controls,10 edited metadata boundaries and1 explicit pending object case; runtime execution tested separately','fingerprint':before,'profile':types.PROFILE,'records':records,'boundaries':boundaries,'metadata':metadata,'pending':pending},indent=2)+'\n')
+    print('Isset/empty compiler: 189 native lints,10 known/access/effect,10 metadata and1 explicit pending control passed')
 
 if __name__=='__main__':
     main()

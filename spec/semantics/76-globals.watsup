@@ -19,7 +19,8 @@ def $globals_entries(S, preqbytes :: preqbytes_tail*, parray) = $globals_entries
   -- if S.STORE[n] = UNDEFINED
 
 dec $globals_snapshot(pstate) : pstate
-def $globals_snapshot(S) = $allocate_array(S, $globals_entries(S, S.SYMBOLS, $array_empty()))
+def $globals_snapshot(S) = $global_table_view($allocate_array(S_view, $globals_entries(S_view, S_view.SYMBOLS, $array_empty())))
+  -- if S_view = $global_table_view(S)
 
 rule PhpStep/globals-read: S ~> S_snapshot[.TODO = ptask_tail*]
   -- if S.TODO = (EVAL expression) :: ptask_tail*
@@ -46,25 +47,34 @@ rule PhpStep/globals-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_GLOBAL $capt
 def $base_nodes(BASE_GLOBAL poperand z) = $operand_nodes(poperand)
 def $memoized_write_base(S, BASE_GLOBAL poperand z, pcpath) = BASE_GLOBAL poperand $runtime_write_line(S, pcpath)
 
+
+dec $global_read_local(pstate, nat*, int) : pstate
+dec $global_location_local(pstate, nat*, int) : pstate
+dec $global_quiet_name(pstate, nat*) : pstate
+dec $global_find_name(pstate, nat*, int) : pstate
+dec $global_assign_name(pstate, nat*, poperand, int) : pstate
+dec $global_acquire_name(pstate, nat*) : pstate
+dec $global_bind_name(pstate, nat*) : pstate
+
 dec $global_missing(pstate, nat*, int) : pstate
 dec $global_read_name(pstate, nat*, int) : pstate
-def $global_read_name(S, n_name*, z) = $read_name(S, n_name*, z) -- if $this_name(n_name*)
-def $global_read_name(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
+def $global_read_local(S, n_name*, z) = $read_name(S, n_name*, z) -- if $this_name(n_name*)
+def $global_read_local(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
   -- if ~$this_name(n_name*)
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if S.STORE[n] = DEFINED pvalue
-def $global_read_name(S, n_name*, z) = $global_missing(S, n_name*, z)
+def $global_read_local(S, n_name*, z) = $global_missing(S, n_name*, z)
   -- if ~$this_name(n_name*)
   -- if $lookup(S.ENV, n_name*) = eps
-def $global_read_name(S, n_name*, z) = $global_missing(S, n_name*, z)
+def $global_read_local(S, n_name*, z) = $global_missing(S, n_name*, z)
   -- if ~$this_name(n_name*)
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if S.STORE[n] = UNDEFINED
 def $global_missing(S, n_name*, z) = $diagnostic(S, "Warning", [85,110,100,101,102,105,110,101,100,32,103,108,111,98,97,108,32,118,97,114,105,97,98,108,101,32,36] ++ n_name*, z)[.RESULT = KNOWN PNULL]
 
 dec $global_location(pstate, nat*, int) : pstate
-def $global_location(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z) -- if $this_name(n_name*)
-def $global_location(S, n_name*, z) = $location_name(S, n_name*) -- if ~$this_name(n_name*)
+def $global_location_local(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z) -- if $this_name(n_name*)
+def $global_location_local(S, n_name*, z) = $location_name(S, n_name*) -- if ~$this_name(n_name*)
 
 dec $global_rw(pstate, nat*, int) : pstate
 def $global_rw(S, n_name*, z) = S_name
@@ -81,7 +91,7 @@ def $global_rw(S, n_name*, z) = $location_write($global_read_name(S_name, n_name
 
 dec $global_unset(pstate, nat*) : pstate
 def $global_unset(S, n_name*) = S -- if $this_name(n_name*)
-def $global_unset(S, n_name*) = $unset_name(S, n_name*) -- if ~$this_name(n_name*)
+def $global_unset(S, n_name*) = $global_table_view($unset_name($global_table_view(S), n_name*)) -- if ~$this_name(n_name*)
 
 def $base_read(S, BASE_GLOBAL poperand z_name, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
@@ -102,7 +112,7 @@ def $base_acquire(S, BASE_GLOBAL poperand z_name, z) = $global_location(S_name, 
 def $quiet_base(S, BASE_GLOBAL poperand z_name, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION =/= NORMAL
-def $quiet_base(S, BASE_GLOBAL poperand z_name, z) = $quiet_name(S_name, n_name*)
+def $quiet_base(S, BASE_GLOBAL poperand z_name, z) = $global_quiet_name(S_name, n_name*)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
@@ -110,7 +120,7 @@ def $quiet_base(S, BASE_GLOBAL poperand z_name, z) = $quiet_name(S_name, n_name*
 def $base_find(S, BASE_GLOBAL poperand z_name, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION =/= NORMAL
-def $base_find(S, BASE_GLOBAL poperand z_name, z) = $find_name(S_name, n_name*, z_name, false)
+def $base_find(S, BASE_GLOBAL poperand z_name, z) = $global_find_name(S_name, n_name*, z_name)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
@@ -126,7 +136,7 @@ def $rw_base(S, BASE_GLOBAL poperand z_name, pstringfetch, z) = $global_rw(S_nam
 def $coalesce_assign(S, BASE_GLOBAL poperand z_name, poperand_value, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION =/= NORMAL
-def $coalesce_assign(S, BASE_GLOBAL poperand z_name, poperand_value, z) = $coalesce_assign_name(S_name, n_name*, poperand_value, z_name)
+def $coalesce_assign(S, BASE_GLOBAL poperand z_name, poperand_value, z) = $global_assign_name(S_name, n_name*, poperand_value, z_name)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
@@ -134,7 +144,7 @@ def $coalesce_assign(S, BASE_GLOBAL poperand z_name, poperand_value, z) = $coale
 def $assign_array(S, BASE_GLOBAL poperand z_name, poperand_value, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION =/= NORMAL
-def $assign_array(S, BASE_GLOBAL poperand z_name, poperand_value, z) = $coalesce_assign_name(S_name, n_name*, poperand_value, z_name)
+def $assign_array(S, BASE_GLOBAL poperand z_name, poperand_value, z) = $global_assign_name(S_name, n_name*, poperand_value, z_name)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
@@ -150,21 +160,21 @@ def $unset_array(S, BASE_GLOBAL poperand z_name) = $global_unset(S_name, n_name*
 def $isset_base(S, BASE_GLOBAL poperand z_name, b, z) = $isset_simple(S, BASE_GLOBAL poperand z_name, b, z)
 
 def $reference_acquire(S, BASE_GLOBAL poperand z_name, z) = $base_acquire(S, BASE_GLOBAL poperand z_name, z)
-def $acquire_array_reference(S, BASE_GLOBAL poperand z_name, z) = $acquire_name(S_place, n_name*)
+def $acquire_array_reference(S, BASE_GLOBAL poperand z_name, z) = $global_acquire_name(S_place, n_name*)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
   -- if S_place = $global_location(S_name, n_name*, z_name)
   -- if S_place.COMPLETION = NORMAL
 
-def $assign_array_reference(S, BASE_GLOBAL poperand z_name, n_source, z) = $bind_reference(S_place[.CELL = n_source], n_name*)
+def $assign_array_reference(S, BASE_GLOBAL poperand z_name, n_source, z) = $global_bind_name(S_place[.CELL = n_source], n_name*)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
   -- if S_place = $global_location(S_name, n_name*, z_name)
   -- if S_place.COMPLETION = NORMAL
 
-def $assign_array_reference_cv(S, BASE_GLOBAL poperand z_name, n_source*, z) = $bind_reference(S_cell, n_name*)
+def $assign_array_reference_cv(S, BASE_GLOBAL poperand z_name, n_source*, z) = $global_bind_name(S_cell, n_name*)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)

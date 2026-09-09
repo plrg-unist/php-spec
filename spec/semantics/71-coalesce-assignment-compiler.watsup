@@ -60,10 +60,10 @@ def $pprefetchbody(P, pcpath, expression) = $ppunsupported(P, "memoized writable
 
 def $pprefetchname(P, pcpath, phpType32) = $ppclearvalue(P)
   -- if $cv_name(phpType32) = ([71,76,79,66,65,76,83])
-def $pprefetchname(P, pcpath, phpType32) = $ppcv(P, phpType32, PPW)
+def $pprefetchname(P, pcpath, phpType32) = $ppcv(P, pcpath, phpType32, PPW)
   -- if $cv_name(phpType32) = (n*)
   -- if n* =/= [71,76,79,66,65,76,83]
-def $pprefetchname(P, pcpath, phpType32) = $ppvarname($ppmemo(P, pcpath ++ [PCFIELD 0], expression), PPW)
+def $pprefetchname(P, pcpath, phpType32) = $ppvarname($ppmemo(P, pcpath ++ [PCFIELD 0], expression), pcpath, PPW)
   -- if $cv_name(phpType32) = eps
   -- if phpType32 = expression
 def $pprefetchdim(P, pcpath, phpType5) = P

@@ -1,0 +1,62 @@
+;; FETCH_GLOBAL is a compiler fact about one original variable occurrence.
+;; Equal names obtained at runtime retain local FETCH semantics.
+def $scope_global(S, pcpath) = (pcpath_parent ++ pcpath) <- pcode.GLOBALS
+  -- if S.ORIGIN = (PORIGIN n pcpath_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $scope_global(S, pcpath) = false -- otherwise
+
+def $scope_read_operand(S, pcpath, n_name*, z) = $global_read_name(S, n_name*, z)
+  -- if $scope_global(S, pcpath)
+def $scope_read_operand(S, pcpath, n_name*, z) = S[.RESULT = VARIABLE n_name* z]
+  -- if ~$scope_global(S, pcpath)
+def $scope_read_name(S, pcpath, n_name*, z) = $global_read_name(S, n_name*, z) -- if $scope_global(S, pcpath)
+def $scope_read_name(S, pcpath, n_name*, z) = $read_name(S, n_name*, z) -- if ~$scope_global(S, pcpath)
+def $scope_write_name(S, pcpath, n_name*, pvalue) = $global_table_view($write_name($global_table_view(S), n_name*, pvalue)) -- if $scope_global(S, pcpath)
+def $scope_write_name(S, pcpath, n_name*, pvalue) = $write_name(S, n_name*, pvalue) -- if ~$scope_global(S, pcpath)
+def $scope_fetch_name(S, pcpath, n_name*, z) = $global_table_view($fetch_write_name_at($global_table_view(S), n_name*, z)) -- if $scope_global(S, pcpath)
+def $scope_fetch_name(S, pcpath, n_name*, z) = $fetch_write_name_at(S, n_name*, z) -- if ~$scope_global(S, pcpath)
+def $scope_acquire_name(S, pcpath, n_name*, z) = $global_table_view($acquire_name_at($global_table_view(S), n_name*, z)) -- if $scope_global(S, pcpath)
+def $scope_acquire_name(S, pcpath, n_name*, z) = $acquire_name_at(S, n_name*, z) -- if ~$scope_global(S, pcpath)
+def $scope_bind_name(S, pcpath, n_name*, z) = $global_table_view($bind_reference_at($global_table_view(S), n_name*, z)) -- if $scope_global(S, pcpath)
+def $scope_bind_name(S, pcpath, n_name*, z) = $bind_reference_at(S, n_name*, z) -- if ~$scope_global(S, pcpath)
+def $scope_unset_name(S, pcpath, n_name*) = $global_unset(S, n_name*) -- if $scope_global(S, pcpath)
+def $scope_unset_name(S, pcpath, n_name*) = $unset_name(S, n_name*) -- if ~$scope_global(S, pcpath)
+def $scope_base(S, pcpath, poperand, z, b) = BASE_GLOBAL poperand z -- if $scope_global(S, pcpath)
+def $scope_base(S, pcpath, KNOWN (PSTRING n_name*), z, true) = BASE_VALUE (VARIABLE n_name* z) -- if ~$scope_global(S, pcpath)
+def $scope_base(S, pcpath, poperand, z, false) = BASE_NAME poperand z -- if ~$scope_global(S, pcpath)
+
+;; Validate descriptors against original AST nodes and compiled constant-name
+;; operands. Direct GLOBALS snapshot lowering bypasses ordinary FETCH, except
+;; try-CV probes in global statements and non-reference list RHS compilation.
+def $scope_source_name(S, porigin) = (n_name*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable phpType32 metadata)
+  -- if $cv_name(phpType32) = (n_name*)
+def $scope_source_name(S, PORIGIN n pcpath) = (n_name*)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable phpType32 metadata)
+  -- if $cv_name(phpType32) = eps
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PSTRING n_name*)
+def $scope_source_name(S, porigin) = eps -- otherwise
+
+def $scope_markers_valid(S, n, eps) = true
+def $scope_markers_valid(S, n, pcpath :: pcpath_tail*) = true
+  -- if ~(pcpath <- pcpath_tail*)
+  -- if $scope_source_name(S, PORIGIN n pcpath) = (n_name*)
+  -- if $psautoglobal(n_name*)
+  -- if $scope_markers_valid(S, n, pcpath_tail*)
+def $scope_markers_valid(S, n, pcpath*) = false -- otherwise
+
+def $scope_expression_valid(S, pcode, pcpath) = (pcpath <- pcode.GLOBALS)
+  -- if $scope_source_name(S, PORIGIN pcode.UNIT pcpath) = (n_name*)
+  -- if $psautoglobal(n_name*)
+  -- if n_name* =/= [71,76,79,66,65,76,83]
+def $scope_expression_valid(S, pcode, pcpath) = true -- otherwise
+def $scope_expressions_valid(S, pcode, eps) = true
+def $scope_expressions_valid(S, pcode, (CODEEXPR pcpath z b) :: pcodeexpr*) = ($scope_expression_valid(S, pcode, pcpath) /\ $scope_expressions_valid(S, pcode, pcodeexpr*))
+def $scope_expressions_valid(S, pcode, (CODEWRITE pcpath z) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $scope_expressions_valid(S, pcode, (CODEEFFECT pcpath) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $scope_codes_valid(S, eps) = true
+def $scope_codes_valid(S, pcode :: pcode_tail*) = ($scope_markers_valid(S, pcode.UNIT, pcode.GLOBALS) /\ $scope_expressions_valid(S, pcode, pcode.EXPRESSIONS) /\ $scope_codes_valid(S, pcode_tail*))
+def $scope_check(S) = S -- if $scope_codes_valid(S, S.CODE)
+def $scope_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled global designation"] -- if ~$scope_codes_valid(S, S.CODE)
+
+def $scope_expressions_valid(S, pcode, (CODEARG pcpath) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)

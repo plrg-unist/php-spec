@@ -1,0 +1,48 @@
+;; Global helpers select the request table only around the name operation.
+;; Delayed operands resolve in the caller's active local scope first.
+def $global_read_name(S, n_name*, z) = $global_table_view($global_read_local($global_table_view(S), n_name*, z))
+def $global_location(S, n_name*, z) = $global_table_view($global_location_local($global_table_view(S), n_name*, z))
+def $global_quiet_name(S, n_name*) = $global_table_view($quiet_name($global_table_view(S), n_name*))
+def $global_find_name(S, n_name*, z) = $global_table_view($find_name($global_table_view(S), n_name*, z, false))
+def $global_acquire_name(S, n_name*) = $global_table_view($acquire_name($global_table_view(S), n_name*))
+def $global_bind_name(S, n_name*) = $global_table_view($bind_reference($global_table_view(S), n_name*))
+def $global_assign_name(S, n_name*, poperand, z) = $coalesce_assign_name(S, n_name*, poperand, z) -- if $this_name(n_name*)
+def $global_assign_name(S, n_name*, poperand, z) = S_read
+  -- if ~$this_name(n_name*)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $global_assign_name(S, n_name*, poperand, z) = $global_table_view($write_name($global_table_view(S_read), n_name*, pvalue))
+  -- if ~$this_name(n_name*)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+dec $global_binding(pstate, nat*, int) : pstate
+def $global_binding(S, n_name*, z) = $global_location(S, n_name*, z) -- if $this_name(n_name*)
+def $global_binding(S, n_name*, z) = S_cell -- if ~$this_name(n_name*) -- if S_cell = $global_acquire_name(S, n_name*) -- if S_cell.COMPLETION =/= NORMAL
+def $global_binding(S, n_name*, z) = $scope_bind_name(S_cell, eps, n_name*, z)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$this_name(n_name*)
+  -- if S_cell = $global_acquire_name(S, n_name*)
+  -- if S_cell.COMPLETION = NORMAL
+dec $global_bind_tasks(expression*, porigin?, nat) : ptask*
+def $global_bind_tasks(eps, porigin?, n) = eps
+def $global_bind_tasks(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCFIELD 0, PCINDEX n]), GLOBAL_BIND expression $expression_line(expression))] ++ $global_bind_tasks(expression_tail*, porigin?, $(n + 1))
+def $task_source_node(GLOBAL_BIND expression z) = (expression)
+rule PhpStep/global-statement: S ~> S[.TODO = $global_bind_tasks(expression*, S.ORIGIN, 0) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtGlobal (SEQUENCE expression*) metadata)) :: ptask_tail*
+rule PhpStep/global-bind-literal: S ~> $global_binding(S[.TODO = ptask_tail*], n_name*, z)
+  -- if S.TODO = (GLOBAL_BIND (NExprVariable phpType32 metadata) z) :: ptask_tail*
+  -- if $cv_name(phpType32) = (n_name*)
+rule PhpStep/global-bind-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), GLOBAL_BIND_NAME z] ++ ptask_tail*]
+  -- if S.TODO = (GLOBAL_BIND (NExprVariable phpType32 metadata) z) :: ptask_tail*
+  -- if $cv_name(phpType32) = eps
+  -- if phpType32 = expression
+rule PhpStep/global-bind-name: S ~> $global_binding(S_name[.TODO = ptask_tail*], n_name*, z)
+  -- if S.TODO = (GLOBAL_BIND_NAME z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+rule PhpStep/global-bind-name-abrupt: S ~> S_name
+  -- if S.TODO = (GLOBAL_BIND_NAME z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
+  -- if S_name.COMPLETION =/= NORMAL

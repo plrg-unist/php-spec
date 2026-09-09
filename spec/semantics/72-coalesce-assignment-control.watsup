@@ -84,3 +84,5 @@ rule PhpStep/coalesce-assignment-self-abrupt: S ~> S_read[.TODO = eps]
 rule PhpStep/coalesce-assignment-invalid-code: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid memoized write descriptor"]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
   -- if ~$memoized_write_ready(S, S.BASE, [PCFIELD 0])
+
+def $code_write_lines((CODEARG pcpath_other) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)

@@ -11,7 +11,7 @@ rule PhpStep/list-assignment-value: S ~> S[.TODO = [$at_task($origin_child(S.ORI
   -- if $list_pattern(expression_pattern) = (phpType13*)
   -- if ~$list_references(phpType13*)
   -- if $list_value_cv(expression_rhs) = eps
-rule PhpStep/list-assignment-value-cv: S ~> S[.TODO = (LIST_CAPTURE expression_pattern false z) :: ptask_tail*][.RESULT = VARIABLE n_name* z]
+rule PhpStep/list-assignment-value-cv: S ~> $scope_read_operand(S, [PCFIELD 1], n_name*, z)[.TODO = (LIST_CAPTURE expression_pattern false z) :: ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
   -- if $list_pattern(expression_pattern) = (phpType13*)
   -- if ~$list_references(phpType13*)
@@ -71,22 +71,22 @@ def $list_fetched_tasks(S, poperand, n, expression, b, phpType13*, z) = [$at_tas
 def $list_fetched_tasks(S, poperand, n, expression, b, phpType13*, z) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX n, PCFIELD 1]), LIST_STORE expression S.RESULT b $runtime_line(S, [PCFIELD 0, PCINDEX n, PCFIELD 1], expression)), LIST_NEXT poperand $(n + 1) phpType13* $list_following_line(S, n, expression, b, z)]
   -- if $list_pattern(expression) = eps
 
-rule PhpStep/list-store-name-value: S ~> $write_name(S, n_name*, pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/list-store-name-value: S ~> $scope_write_name(S, eps, n_name*, pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) (KNOWN pvalue) false z) :: ptask_tail*
   -- if $cv_name(phpType32) = (n_name*)
-rule PhpStep/list-store-name-reference: S ~> $bind_reference(S[.CELL = n_source], n_name*)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/list-store-name-reference: S ~> $scope_bind_name(S[.CELL = n_source], eps, n_name*, z)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) (REFERENCE n_source) true z) :: ptask_tail*
   -- if $cv_name(phpType32) = (n_name*)
 rule PhpStep/list-store-computed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), LIST_STORE_NAME poperand b z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) poperand b z) :: ptask_tail*
   -- if $cv_name(phpType32) = eps
   -- if phpType32 = expression
-rule PhpStep/list-store-computed-value: S ~> $write_name(S_name, $echo_value(pvalue_name), pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/list-store-computed-value: S ~> $scope_write_name(S_name, eps, $echo_value(pvalue_name), pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE_NAME (KNOWN pvalue) false z) :: ptask_tail*
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue_name
-rule PhpStep/list-store-computed-reference: S ~> $bind_reference(S_name[.CELL = n_source], $echo_value(pvalue_name))[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/list-store-computed-reference: S ~> $scope_bind_name(S_name[.CELL = n_source], eps, $echo_value(pvalue_name), z)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE_NAME (REFERENCE n_source) true z) :: ptask_tail*
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL

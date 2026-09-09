@@ -1,0 +1,172 @@
+dec $call_argument_paths(pcodeexpr*) : pcpath*
+def $call_argument_paths(eps) = eps
+def $call_argument_paths((CODEARG pcpath) :: pcodeexpr*) = [pcpath] ++ $call_argument_paths(pcodeexpr*)
+def $call_argument_paths((CODEEXPR pcpath z b) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $call_argument_paths((CODEWRITE pcpath z) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $call_argument_paths((CODEEFFECT pcpath) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+;; Public drive/resume validates immutable compiler descriptors once. Internal
+;; steps preserve them; no duplicate trusted registry or host evaluation exists.
+syntax pfunctioncheck = FUNCTIONCHECK pfunction* | FUNCTIONINVALID
+
+dec $call_declaration_node(pcnode) : bool
+def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
+def $call_declaration_node(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+def $call_declaration_node(pcnode) = false -- otherwise
+dec $call_declarations(pcoccurrence*) : bool
+def $call_declarations(eps) = false
+def $call_declarations((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($call_declaration_node(pcnode) \/ $call_declarations(pcoccurrence*))
+dec $call_request_cwd(prequest?) : preqbytes?
+def $call_request_cwd(eps) = eps
+def $call_request_cwd((Q)) = Q.CWD
+dec $call_source_node(pstate, nat, pcpath) : bool
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+def $call_source_node(S, n, pcpath) = false -- otherwise
+dec $call_name_count(pcodename*, pcpath) : nat
+def $call_name_count(eps, pcpath) = 0
+def $call_name_count((CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*, pcpath) = $(1 + $call_name_count(pcodename*, pcpath))
+def $call_name_count((CODENAME pcpath_other preqbytes preqbytes_fallback?) :: pcodename*, pcpath) = $call_name_count(pcodename*, pcpath)
+  -- if pcpath_other =/= pcpath
+dec $call_expr_match(pcodeexpr, pcpath) : nat
+def $call_expr_match(CODEEXPR pcpath z b, pcpath) = 1
+def $call_expr_match(pcodeexpr, pcpath) = 0 -- otherwise
+dec $call_expr_count(pcodeexpr*, pcpath) : nat
+def $call_expr_count(eps, pcpath) = 0
+def $call_expr_count(pcodeexpr :: pcodeexpr_tail*, pcpath) = $($call_expr_match(pcodeexpr, pcpath) + $call_expr_count(pcodeexpr_tail*, pcpath))
+dec $call_name_entry_valid(pstate, ppstate, pcode, pcpath) : bool
+def $call_name_entry_valid(S, P, pcode, pcpath) = true
+  -- if ~$call_source_node(S, pcode.UNIT, pcpath)
+def $call_name_entry_valid(S, P, pcode, pcpath) = true
+  -- if $call_source_node(S, pcode.UNIT, pcpath)
+  -- if $call_name_count(pcode.NAMES, pcpath) = 1
+  -- if $call_name_count($compiled_names(P.NAMES), pcpath) = 1
+  -- if $code_name(pcode.NAMES, pcpath) = $code_name($compiled_names(P.NAMES), pcpath)
+  -- if $call_expr_count(pcode.EXPRESSIONS, pcpath) = 1
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = $code_expression($compiled_operands(P, P.EXPRESSIONS), pcpath)
+def $call_name_entry_valid(S, P, pcode, pcpath) = false -- otherwise
+dec $call_name_entries_valid(pstate, ppstate, pcode, pcodename*) : bool
+def $call_name_entries_valid(S, P, pcode, eps) = true
+def $call_name_entries_valid(S, P, pcode, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = ($call_name_entry_valid(S, P, pcode, pcpath) /\ $call_name_entries_valid(S, P, pcode, pcodename*))
+dec $call_unit_names_valid(pstate, ppstate) : bool
+def $call_unit_names_valid(S, P) = true
+  -- if $code_at(S.CODE, P.FOLD.SOURCE.ID) = (pcode)
+  -- if $call_name_entries_valid(S, P, pcode, pcode.NAMES ++ $compiled_names(P.NAMES))
+  -- if $call_argument_paths(pcode.EXPRESSIONS) = $call_argument_paths($compiled_operands(P, P.EXPRESSIONS))
+def $call_unit_names_valid(S, P) = false -- otherwise
+
+dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
+def $call_unit_projection(S, pcunit) = FUNCTIONCHECK eps
+  -- if ~$call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)
+  -- if $code_at(S.CODE, pcunit.ID) = (pcode)
+  -- if $call_argument_paths(pcode.EXPRESSIONS) = eps
+def $call_unit_projection(S, pcunit) = FUNCTIONCHECK P.FUNCTIONS
+  -- if $call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)
+  -- if P = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $call_unit_names_valid(S, P)
+def $call_unit_projection(S, pcunit) = FUNCTIONINVALID -- otherwise
+dec $call_projection(pstate, pcunit*) : pfunctioncheck
+def $call_projection(S, eps) = FUNCTIONCHECK eps
+def $call_projection(S, pcunit :: pcunit_tail*) = FUNCTIONCHECK (pfunction* ++ pfunction_tail*)
+  -- if $call_unit_projection(S, pcunit) = FUNCTIONCHECK pfunction*
+  -- if $call_projection(S, pcunit_tail*) = FUNCTIONCHECK pfunction_tail*
+def $call_projection(S, pcunit*) = FUNCTIONINVALID -- otherwise
+
+dec $call_registry_valid(pfunction*, (preqbytes, porigin)*) : bool
+def $call_registry_valid(pfunction_registry*, eps) = true
+def $call_registry_valid(pfunction_registry*, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = true
+  -- if $function_at(pfunction_registry*, porigin) = (pfunction)
+  -- if preqbytes = $ptlc(pfunction.NAME)
+  -- if $callable_at((preqbytes_tail, porigin_tail)*, preqbytes) = eps
+  -- if $call_registry_valid(pfunction_registry*, (preqbytes_tail, porigin_tail)*)
+def $call_registry_valid(pfunction_registry*, (preqbytes, porigin)*) = false -- otherwise
+dec $call_early_bound((preqbytes, porigin)*, pfunction) : bool
+def $call_early_bound((preqbytes, porigin)*, pfunction) = (~pfunction.EARLY \/ $callable_at((preqbytes, porigin)*, $ptlc(pfunction.NAME)) = (pfunction.ORIGIN))
+dec $call_early_bindings((preqbytes, porigin)*, pfunction*) : bool
+def $call_early_bindings((preqbytes, porigin)*, eps) = true
+def $call_early_bindings((preqbytes, porigin)*, pfunction :: pfunction_tail*) = ($call_early_bound((preqbytes, porigin)*, pfunction) /\ $call_early_bindings((preqbytes, porigin)*, pfunction_tail*))
+
+dec $call_candidate(preqbytes, preqbytes, preqbytes?) : bool
+def $call_candidate(preqbytes_name, preqbytes_primary, eps) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary))
+def $call_candidate(preqbytes_name, preqbytes_primary, (preqbytes_fallback)) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary) \/ $ptlc(preqbytes_name) = $ptlc(preqbytes_fallback))
+dec $call_selected_valid(pstate, porigin, porigin?) : bool
+def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+def $call_selected_valid(S, porigin_function, porigin?) = false -- otherwise
+dec $call_line_valid(pstate, porigin?, int) : bool
+def $call_line_valid(S, (PORIGIN n pcpath), z) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $call_line_valid(S, porigin?, z) = false -- otherwise
+dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
+def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if n_index = |poperand*|
+  -- if n_offset = $(n_index + n_sent)
+  -- if $(n_offset <= |phpType7*|)
+  -- if n_remaining = $(|phpType7*| - n_offset)
+  -- if phpType7_remaining* = phpType7*[n_offset:n_remaining]
+def $call_arguments_valid(S, porigin?, n_index, phpType7*, poperand*, n_sent) = false -- otherwise
+dec $call_arity_valid(pstate, pcallcontext) : bool
+def $call_arity_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if pcallcontext.ARGC = |phpType7*|
+  -- if n_received = $call_received(pcallcontext.ARGC, |pcallcontext.PARAMS|)
+  -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
+def $call_arity_valid(S, pcallcontext) = false -- otherwise
+dec $call_task_valid(pstate, ptask) : bool
+def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S, ptask)
+def $call_task_valid(S, CALL_ARGS porigin_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, porigin_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0))
+def $call_task_valid(S, CALL_SEND porigin_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, porigin_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 1))
+def $call_task_valid(S, ptask) = true -- otherwise
+dec $call_tasks_valid(pstate, ptask*) : bool
+def $call_tasks_valid(S, eps) = true
+def $call_tasks_valid(S, ptask :: ptask_tail*) = ($call_task_valid(S, ptask) /\ $call_tasks_valid(S, ptask_tail*))
+dec $call_context_valid(pstate, pcallcontext, preqbytes*) : bool
+def $call_context_valid(S, pcallcontext, preqbytes*) = true
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pcallcontext.NAME = pfunction.NAME
+  -- if psparam* = pfunction.SIGNATURE.PARAMETERS
+  -- if pcallcontext.PARAMS = (psparam.NAME)*
+  -- if preqbytes* = pfunction.CVS
+  -- if $call_selected_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE)
+  -- if $call_arity_valid(S, pcallcontext)
+def $call_context_valid(S, pcallcontext, preqbytes*) = false -- otherwise
+dec $call_current_valid(pstate) : bool
+def $call_current_valid(S) = true -- if S.CURRENT = eps /\ S.FRAMES = eps
+def $call_current_valid(S) = $call_context_valid(S, pcallcontext, S.CVS)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES =/= eps
+def $call_current_valid(S) = false -- otherwise
+dec $call_saved_context_valid(pstate, pframe) : bool
+def $call_saved_context_valid(S, pframe) = true -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
+def $call_saved_context_valid(S, pframe) = $call_context_valid(S, pcallcontext, psymboltable.CVS)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pframe.LOCALS = (psymboltable)
+def $call_saved_context_valid(S, pframe) = false -- otherwise
+dec $call_frames_valid(pstate, pframe*) : bool
+def $call_frames_valid(S, eps) = true
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S, pframe.TODO) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
+dec $call_descriptors_valid(pstate) : bool
+def $call_descriptors_valid(S) = true
+  -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
+  -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
+  -- if $call_early_bindings(S.CALLABLES, S.FUNCTIONS)
+  -- if $call_tasks_valid(S, S.TODO)
+  -- if $call_frames_valid(S, S.FRAMES)
+  -- if $call_current_valid(S)
+def $call_descriptors_valid(S) = false -- otherwise
+
+def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL
+def $call_entry_check(S) = S -- if S.COMPLETION = NORMAL /\ $scope_codes_valid(S, S.CODE) /\ $call_descriptors_valid(S)
+def $call_entry_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled global designation"]
+  -- if S.COMPLETION = NORMAL /\ ~$scope_codes_valid(S, S.CODE)
+def $call_entry_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"]
+  -- if S.COMPLETION = NORMAL /\ $scope_codes_valid(S, S.CODE) /\ ~$call_descriptors_valid(S)
