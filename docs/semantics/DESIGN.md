@@ -15,12 +15,15 @@ and a variable environment mapping byte names to cell identities. Cells contain
 Ordinary assignment copies a value into the designated cell. Reference rebinding
 changes one name's cell identity, leaving other aliases attached to their original
 cell. Unset removes the binding. Writable paths designate either a variable cell
-or an element in an internal array container. Property type sources remain pending.
+or an element in an internal array container. `REFCELLS` retains explicit wrapper
+identity independently of owner counts and roots; [wrapper rules](REFERENCE-WRAPPERS.md)
+explain singleton lifetime and dimension diagnostics. Property type sources remain pending.
 Checked source units and structural occurrence paths now travel with task scopes;
 [Source origins](SOURCE-ORIGINS.md) describes retention, validation and budget
 restoration. The internal [compiled pool installer](COMPILED-POOLS.md) retains
 permanent per-unit roots and remaps array IDs above existing backing storage.
-Source execution does not yet install pools or consume compiler facts.
+Source execution installs checked compiler pools and consumes only authorized
+compiled read descriptors, retaining partial facts separately.
 
 An operand is a captured value, a delayed compiled-variable read, or an owning
 reference-result cell. `ZEND_ASSIGN_REF` copies the reference wrapper into its

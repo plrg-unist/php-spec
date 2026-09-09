@@ -1,0 +1,139 @@
+{
+  "status": "accepted bounded corrective implementation",
+  "implementation": "3585707a",
+  "author_reports": "eebf79e9",
+  "fingerprint": {
+    "sha256": "1f71f10d643374f0d0ff046d2139315e8d9692f5c0ec1a07a6e4849ccf0776ec",
+    "files": 779,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "scope": "Explicit reference wrapper history and generic dimension FETCH/UNSET conversion diagnostics; no update operator or source GC admission",
+  "full_source_gate": {
+    "sources": 1163,
+    "outcome_negatives": 25,
+    "audit": {
+      "path": "coverage/semantics/reference-wrapper-campaign-audit.json",
+      "sha256": "cab3232929ee3811a295bf349c6d5da88da199f08f2eb203a1a74927306034df"
+    }
+  },
+  "independent_public_source": {
+    "sources": 79,
+    "raw": {
+      "path": "coverage/semantics/reference-wrapper-source-review.json",
+      "sha256": "678e08ab665790bf5aa07f674a8ef25a780ac977719ad9a13e837bf4abdce15f"
+    }
+  },
+  "independent_states": {
+    "expanded_source_replay_programs": 72,
+    "replay_assertions": 1288,
+    "additional_constructed_state_assertions": 45,
+    "raw": {
+      "path": "coverage/semantics/reference-wrapper-state-review.json",
+      "sha256": "3d7ade29dec7c739c384a0096f03fc0c81bbab6a4133cb2195b0c69f30668e0b"
+    },
+    "actual_specification_bytes_verified_equal_to_production": true
+  },
+  "canonical_gates": {
+    "reference_wrappers": "21 source, 22 state programs, 396 assertions",
+    "compiler": "1205 lint, 15 emission-line observations, 8 source/24 access checks",
+    "origins": "25 sources, 333 assertions",
+    "runtime_compiler": "15 cases, 148 assertions",
+    "ownership": "617 graph plus 96 machine/boundary cases, 5434 assertions",
+    "evidence_preflight": "15 identity, 3 path, 17 closure negatives; 9 build-log invariances"
+  },
+  "resolution": {
+    "retained_sources": 11,
+    "prior_mismatches": 5,
+    "prior_controls": 6,
+    "all_originals_byte_identical_and_integrated": true,
+    "bindings": [
+      {
+        "path": "coverage/semantics/false-reference-fetch-originals.json",
+        "sha256": "e0237c51f640615eba734b1eb2265540058546830bae4dec9a2273f4b02e8125",
+        "sources": 4,
+        "current_source_case_ids": [
+          [
+            "reference-wrapper-nested-reference"
+          ],
+          [
+            "reference-wrapper-nested-singleton-reference"
+          ],
+          [
+            "reference-wrapper-nested-plain-control"
+          ],
+          [
+            "reference-wrapper-reference-fetch"
+          ]
+        ]
+      },
+      {
+        "path": "coverage/semantics/false-reference-final-write-controls.json",
+        "sha256": "6bf161ec20a1e4ddfb8c27dfd31b423b4f7f90748f2592d628f4531e8584a193",
+        "sources": 3,
+        "current_source_case_ids": [
+          [
+            "reference-wrapper-final-reference"
+          ],
+          [
+            "reference-wrapper-final-singleton-reference"
+          ],
+          [
+            "reference-wrapper-final-plain"
+          ]
+        ]
+      },
+      {
+        "path": "coverage/semantics/false-reference-unset-originals.json",
+        "sha256": "30aac61260543d0649a801600376dae640943743e4d0137496005a55396ae241",
+        "sources": 4,
+        "current_source_case_ids": [
+          [
+            "reference-wrapper-nested-unset-reference"
+          ],
+          [
+            "reference-wrapper-nested-unset-singleton"
+          ],
+          [
+            "reference-wrapper-nested-unset-plain"
+          ],
+          [
+            "reference-wrapper-final-unset-reference"
+          ]
+        ]
+      }
+    ]
+  },
+  "reviewed_invariants": [
+    "Root wrapper identity survives singleton unset and writes; newly allocated ordinary bindings are unmarked.",
+    "Element reference acquisition and both root/element reference replacement mark the backing cell at the existing acquisition time. Direct CV source acquisition follows target FETCH; computed-name capture can precede it.",
+    "ALIAS entries represent wrappers; singleton COW/union copies may become DIRECT while original wrapper identity remains.",
+    "REFCELLS creates no roots or graph edges; owning temporaries and uncollected cycles continue to affect copy decisions independently of marker presence.",
+    "Valid constant-pool installation preserves runtime markers; isolated compiler reference state is rejected.",
+    "Generic nested/reference FETCH and intermediate UNSET skip false conversion deprecation through wrappers; final dimension assignment and final UNSET preserve warnings."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_execute.c: zend_fetch_dimension_address",
+    "vendor/php-src/Zend/zend_execute.h: zend_assign_to_variable",
+    "vendor/php-src/Zend/zend_hash.c: zend_array_dup_value",
+    "vendor/php-src/Zend/zend_variables.c: zval_add_ref"
+  ],
+  "limits": [
+    "No PHP semantic family or constructor closes.",
+    "Collection assertions exercise pure ownership graph helpers; gc_collect_cycles source calls, callbacks and destructor semantics remain pending.",
+    "No intentional engine divergence selected; previous raw mismatches remain unchanged."
+  ]
+}

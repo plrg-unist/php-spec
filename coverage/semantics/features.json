@@ -3717,7 +3717,9 @@
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
-        "coverage/semantics/ownership.json"
+        "coverage/semantics/ownership.json",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-state-review.json"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -3727,12 +3729,14 @@
         "tests/semantics/conformance/reference-cv-source-multiline.php",
         "tests/semantics/conformance/reference-dynamic-target-initialization.php",
         "tests/semantics/conformance/reference-dynamic-source-initialization.php",
-        "tests/semantics/conformance/reference-float-cv-initialization.php"
+        "tests/semantics/conformance/reference-float-cv-initialization.php",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-source-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php",
@@ -3942,16 +3946,20 @@
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
-        "coverage/semantics/ownership.json"
+        "coverage/semantics/ownership.json",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-state-review.json"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-source-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3980,17 +3988,21 @@
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
-        "coverage/semantics/ownership.json"
+        "coverage/semantics/ownership.json",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-state-review.json"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-source-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/destructure-reference.php",
@@ -7901,14 +7913,19 @@
       ],
       "helper_tests": [
         "tests/semantics/ownership.py",
-        "coverage/semantics/ownership.json"
+        "coverage/semantics/ownership.json",
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-state-review.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/reference_wrappers.py",
+        "coverage/semantics/reference-wrapper-source-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_gc.c"
       ],
-      "review": "Independent allocation/RC foundation 41e8fa2b included 150 closure-oracle probes. Scoped driver roots and COW/union 4f04ed97 now preserve uncollected cycle owners; 617 graph plus 63 boundary cases (5278 assertions) and 320 additional graph probes passed. Source embedded-reference constructors, callbacks, collection triggers/results and GC remain pending; no source collection claim.",
+      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
       "notes": "Unreachable cycles awaiting collection retain reference-wrapper owners and can change array-copy unwrapping. Reachability-only owner counting is insufficient; explicit collection changes ordinary array mutation observations.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-uncollected-cycle-reference.php",

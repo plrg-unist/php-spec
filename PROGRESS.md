@@ -25,15 +25,14 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Active ownership
 
-- Runtime successor: false-reference FETCH repair, then updates/compound operations and arrays/foreach.
-- Compiler: remaining frontend provenance/phase repairs and update descriptors, then arrays/declarations/frames.
-- Fresh reviewer: wrapper-state review first; independent gates, discrepancy history, inventory and progress.
-- Shared tree: stage owned files, commit reviewed increments, never push. Coordinate final watched freezes.
+- Runtime: inc/dec, compound operations and remaining numeric dispatch, then arrays/foreach.
+- Compiler: genuine-list and ordinary-array omission phase repairs, update descriptors, then declarations/frames.
+- Reviewer: independent gates, discrepancy history, inventory, concise docs and progress.
+- Stage owned files, commit reviewed increments, never push. Save watched bytes and run evidence/inventory preflight before long campaigns.
 
 [Runtime handoff](docs/semantics/RUNTIME-SUCCESSOR-HANDOFF.md),
 [compiler handoff](docs/semantics/COMPILER-HANDOFF.md) and
-[reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) record accepted contracts,
-remaining drafts, commands and risks.
+[reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) retain interfaces and next gates.
 
 ## Latest accepted checkpoints
 
@@ -43,98 +42,76 @@ no constructor or PHP semantic family closes. Closure governance `ffdc131d`
 requires exact original-source/raw-byte bindings, independent review and current
 fingerprints. `--complete` must reject unfinished or stale entries.
 
-Comparison implementation `0e065cc6` and reports `c94459fd` pass
-**1,142 exact sources +25 outcome negatives** on `ba6075cd`. The
-[independent review](coverage/semantics/comparison-review.json) adds 38 sources,
-34 compiler alternatives plus 24 access checks, and six dense replay programs
-with 4,974 assertions. A separate 83-pair/166-check string-order helper gate is
-helper evidence only. All four retained overflow and 48 phase originals are
-unchanged and integrated; both draft overflow differences now agree.
+Reference-wrapper correction `3585707a` and reports `eebf79e9` pass
+**1,163 exact sources +25 outcome negatives** on `1f71f10d`.
+[Independent review](coverage/semantics/reference-wrapper-review.json) verifies
+79 public sources, 72 replay programs/1,288 assertions and 45 additional state
+checks. All eleven retained FETCH/final-write/UNSET originals remain unchanged
+and integrated; five prior mismatches now agree. Singleton wrapper history adds
+no roots, COW/union copies can unwrap independently, and intermediate FETCH/UNSET
+warnings remain distinct from final dimension mutation. No divergence was added.
 
-Canonical comparison 232 states/3,388 assertions, compiler 1,184 lint +15 emission
-observations, comparison compiler 48/8/24, origins 25/333, runtime bridge 15/148
-and ownership 617+96/5,434 pass the final closure. Strict result-type sources,
-recursive errors, delayed greater operands, pool identity and resumption were
-independently checked. Evidence preflight passes 15 identity, three path and 17
-closure negatives. A required isolated-fixture repair invalidated the provisional
-campaign; corrected gates were repeated, preserving earlier evidence as historical.
+The stable closure also passes canonical wrappers 21 sources/396 assertions,
+compiler 1,205 lints +15 emission observations, origins 25/333, bridge 15/148 and
+ownership 617+96/5,434. The raw audit checks every ordered source ID, byte string,
+hash and exact stdout/stderr/status. Preflight passes 15 identity, three path and
+17 closure negatives, plus nine build-log invariances. The new helper embeds its
+source bytes; it introduces no consumed archive dependency. Source GC remains pending.
 
-[Truth review](coverage/semantics/truth-review.json) `e7dac829`/`682bcba0` retains
-all 63 original phase/copy/grouping cases and compiler redirect/archive integrity.
-Frontend prerequisites preserve nested unpack flags (`d4706937`,
-[review](coverage/semantics/destructuring-unpack-review.json)) and original array
-syntax kind (`09f33419`, [review](coverage/semantics/destructuring-array-kind-review.json)).
-First-hole comma metadata `87341500` is independently reviewed (31 author profiles/409
-checks plus 20 independent profiles/140 checks); compiler consumption and array-omission
-phase gaps remain pending. Their
-[original loss witnesses](coverage/semantics/destructuring-metadata-disagreement.json)
-and [expanded author captures](coverage/semantics/frontend-phase-originals-review.json)
-remain alongside partial resolutions; all expanded 22 captures are independently repeated.
+[Comparison review](coverage/semantics/comparison-review.json) retains `0e065cc6`:
+38 independent sources, 34 compiler alternatives/24 access checks and six dense
+replays/4,974 assertions. Both overflow draft mismatches and all 48 phase originals
+remain resolved and source-integrated. Earlier comparison campaigns are historical
+fingerprints; the current source gate includes their cases.
 
-## Retained evidence and contracts
+First-hole metadata `87341500` is independently accepted in `79951ad4`:
+31 author profiles/409 checks, 20 additional profiles/140 checks, and 12 exact
+original line witnesses. Nested unpack (`d4706937`) and original array kind
+(`09f33419`) remain reviewed prerequisites. All 16 genuine-list and six ordinary
+array-hole [phase originals](coverage/semantics/frontend-phase-originals-review.json)
+are independently repeated; their phase repairs remain unpublished. First-hole
+compiler consumption is still pending.
 
-- [Control review](coverage/semantics/control-review.json): source `d87f3f9f`
-  covers if/elseif/else, while/do/for and literal-depth jumps; 67 independent
-  sources, compiler metadata/order controls and dense nested/COW resumption pass.
-  Exceptions, switch/goto, foreach and lifecycle remain pending.
-- [Read](coverage/semantics/dimension-read-review.json),
-  [write](coverage/semantics/dimension-write-review.json) and
-  [traversal retirement](coverage/semantics/traversal-temporary-review.json)
-  evidence retain scalar/array/string lvalues, captured ownership, delayed reads,
-  reference errors and temporary-target compiler errors. Production unchecked
-  source traversal/classifiers are retired; only test fixtures retain a wrapper.
-- [Compiler](docs/semantics/SOURCE-COMPILER.md),
-  [constant context](docs/semantics/CONSTANT-CONTEXT.md),
-  [pools](docs/semantics/COMPILED-POOLS.md) and
-  [namespace review](coverage/semantics/namespace-constants-review.json) retain
-  ordered compilation, structural origins, effective lines and reusable constant
-  occurrences. FACTS, ordinary code-generation values and executable ACCESS roles
-  remain distinct. Only actual compiled reads consume pooled values/redirects.
-- [Numeric](docs/semantics/NUMERICS.md), [static](docs/semantics/STATIC.md) and
-  [linking handoff](docs/semantics/LINKING-HANDOFF.md) retain earlier helper
-  contracts; source context and declaration/frame integration remain partial.
-- **146 independent oracle targets; 86 integrated**. Oracle-only and edited-helper
-  evidence establish no additional source runtime coverage.
+## Retained contracts
+
+- [Truth](coverage/semantics/truth-review.json) `e7dac829`/`682bcba0` preserves all 63 phase/copy/grouping originals. Ordinary ternary copies selected values; raw prepass redirects can preserve delayed operands.
+- [Control](coverage/semantics/control-review.json) `d87f3f9f` covers conditionals, while/do/for and literal-depth jumps, with 67 independent sources and dense resumption. Exceptions, switch/goto, foreach and lifecycle remain pending.
+- [Read](coverage/semantics/dimension-read-review.json), [write](coverage/semantics/dimension-write-review.json) and [traversal retirement](coverage/semantics/traversal-temporary-review.json) retain scalar/array/string lvalues, delayed reads, captured ownership and reference/compiler errors. Production unchecked source traversal is retired.
+- [Compiler](docs/semantics/SOURCE-COMPILER.md), [constant context](docs/semantics/CONSTANT-CONTEXT.md), [pools](docs/semantics/COMPILED-POOLS.md) and [namespace review](coverage/semantics/namespace-constants-review.json) distinguish structural origins, partial FACTS, ordinary values, executable ACCESS and redirects. Only actual compiled reads consume pooled values; distinct NaN occurrences retain distinct array identity.
+- [Numeric](docs/semantics/NUMERICS.md), [static](docs/semantics/STATIC.md) and [linking handoff](docs/semantics/LINKING-HANDOFF.md) retain reviewed pure helpers; source contexts, declarations and frames remain partial.
+- **146 independent oracle targets; 86 integrated**. Oracle-only and edited-helper evidence establishes no additional source runtime coverage.
 
 ## Next gates and decisions
 
-Repair the [open false-reference FETCH discrepancy](coverage/semantics/false-reference-fetch-review.json)
-before update operators: three independent source mismatches and four controls
-persist on the final comparison closure. Singleton unset retains observable
-reference-wrapper history; generic dimension FETCH and final ASSIGN_DIM warn
-differently. Runtime's proposed marker state remains under review. Independent scratch gates pass
-72 expanded sources/1,288 assertions, alongside author source and graph gates.
-[Four nested-UNSET originals](coverage/semantics/false-reference-unset-review.json)
-are independently confirmed: two admitted mismatches and two controls. Production
-publication and the full stable source gate remain required.
-The current admitted runtime is not globally clean; no new divergence is selected.
+Pair four inc/dec forms with compiler PPRW access, then compound lvalues and the
+remaining numeric/string operations. The private 77-source update draft is not
+admitted. Preserve acquisition timing, copied pre/post results, error lines,
+append legality and held locations. Coalescing assignment needs a separate quiet
+read and memoized write path.
 
-Complete remaining destructuring provenance prerequisites, then pair compiler
-and runtime unpack/destructuring. Foreach needs persistent bucket/cursor and
-ownership rules. Compound lvalues, remaining numeric operators/casts, calls,
-classes/objects, dynamic sources, callbacks and resumable lifetime remain open.
-CORE's environment/intrinsic boundary is unchanged; ordinary-library exclusions
-cannot discharge core obligations.
+Genuine-list early conversion has a narrow private candidate and 18 independent
+skipped-phase sources. Publish and validate separately after the wrapper checkpoint.
+Ordinary Array_ omissions should use nullable items with required first-omission
+context; the engine stores null holes and uses prior-element/compiler lines.
+No ArrayHole constructor is justified by current evidence. Gate checked schema,
+mechanical consumer remapping, printer and exact compiler visits together.
 
-Preserve all retained read/prepass, write/error, phase/copy and emission-line
-witnesses when their branches activate. Ordinary ternary copies selected values;
-raw prepass redirects preserve delayed operands. Uncollected cycles retain
-observable owners. Constant occurrences reuse installed values; distinct NaN
-arrays retain distinct identity. Source collection and repeated function
-execution remain pending.
+Then pair unpack/destructuring compile traversal with runtime copying/references,
+keys and errors. Foreach requires persistent bucket/cursor identities and mutation
+ownership. Calls, classes/objects, modern properties, dynamic sources, callbacks
+and resumable lifetime remain open. CORE's intrinsic/environment boundary is fixed;
+ordinary-library exclusions cannot discharge unfinished core obligations.
 
-[Discrepancies](docs/semantics/DISCREPANCIES.md) preserve raw failures and later
+[Discrepancies](docs/semantics/DISCREPANCIES.md) retain raw failures and separate
 resolutions. Namespace-relative `static` remains the sole intentional divergence,
-with source activation proof pending; other observed irregularities follow the
-pin. The qualified import-prefix discrepancy is resolved by `d5d28dc6`.
+with source activation evidence pending. Other observed irregularities follow the
+pin, including numeric boundary scanning and singleton wrapper diagnostics.
 
-The [30,980-record full syntax audit](coverage/frontend-syntax-repair.json) is
-historical after metadata changes: 30,671 pass, 254 parser rejections, 41 classified
-compile-phase differences, six redirects and eight non-source records. Copied
-executables establish no new portability claim. Final full syntax validation and
-fresh offline rebuild remain required.
+The [30,980-record syntax audit](coverage/frontend-syntax-repair.json) is historical
+after metadata changes: 30,671 pass, 254 parser rejections, 41 classified compile
+phase differences, six redirects and eight non-source records. Final full syntax
+validation and a fresh offline rebuild remain required. Copied executables alone
+establish no portability claim.
 
 Unsupported, crashes, timeouts and interrupted runs never count as passes.
-Run evidence/inventory preflight before long campaigns whenever catalogs, archive
-inputs or harnesses change; finish every core
-obligation and independently review full scope before closing the project.
+Finish and independently review every core obligation before closing the project.

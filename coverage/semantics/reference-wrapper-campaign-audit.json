@@ -1,0 +1,89 @@
+{
+  "status": "pass",
+  "fingerprint": {
+    "sha256": "1f71f10d643374f0d0ff046d2139315e8d9692f5c0ec1a07a6e4849ccf0776ec",
+    "files": 779,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_cases": 1163,
+  "outcome_negatives": 25,
+  "source_report_sha256": "7a02a10aaeb0054d7b2241573dee90591037a2c65605e007b4ac44cdfbe899e8",
+  "raw_results": {
+    "path": "coverage/results-semantic-source.jsonl",
+    "sha256": "a3fb80c71d799c447fdce1f918ea2343c10b8c1eebe3e2d8bb9af1cd9a56a067",
+    "records": 1163
+  },
+  "exact_ordered_source_bytes_and_outcomes_verified": true,
+  "archive_resolution_bindings": [
+    {
+      "path": "coverage/semantics/false-reference-fetch-originals.json",
+      "sha256": "e0237c51f640615eba734b1eb2265540058546830bae4dec9a2273f4b02e8125",
+      "sources": 4,
+      "current_source_case_ids": [
+        [
+          "reference-wrapper-nested-reference"
+        ],
+        [
+          "reference-wrapper-nested-singleton-reference"
+        ],
+        [
+          "reference-wrapper-nested-plain-control"
+        ],
+        [
+          "reference-wrapper-reference-fetch"
+        ]
+      ]
+    },
+    {
+      "path": "coverage/semantics/false-reference-final-write-controls.json",
+      "sha256": "6bf161ec20a1e4ddfb8c27dfd31b423b4f7f90748f2592d628f4531e8584a193",
+      "sources": 3,
+      "current_source_case_ids": [
+        [
+          "reference-wrapper-final-reference"
+        ],
+        [
+          "reference-wrapper-final-singleton-reference"
+        ],
+        [
+          "reference-wrapper-final-plain"
+        ]
+      ]
+    },
+    {
+      "path": "coverage/semantics/false-reference-unset-originals.json",
+      "sha256": "30aac61260543d0649a801600376dae640943743e4d0137496005a55396ae241",
+      "sources": 4,
+      "current_source_case_ids": [
+        [
+          "reference-wrapper-nested-unset-reference"
+        ],
+        [
+          "reference-wrapper-nested-unset-singleton"
+        ],
+        [
+          "reference-wrapper-nested-unset-plain"
+        ],
+        [
+          "reference-wrapper-final-unset-reference"
+        ]
+      ]
+    }
+  ],
+  "new_canonical_helper_archive_dependencies": [],
+  "dependency_reason": "reference_wrappers.py embeds authored source byte literals and consumes no external archive; tests and direct/broad specification fingerprints cover it."
+}

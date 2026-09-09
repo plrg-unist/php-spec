@@ -270,23 +270,20 @@ records `list(array(,$x))=$a`: the frontend rejects empty array entries early,
 while the pinned compiler rejects the long-array assignment target. Repair its
 phase before source destructuring admission; no divergence is selected.
 
-## Reference-wrapped false dimension fetch: open source mismatch
+## Reference-wrapped false dimension fetch: resolved source mismatch
 
-[Seven independently repeated originals and controls](../../coverage/semantics/false-reference-fetch-review.json)
-show three admitted mismatches. After `$r=&$a` wraps false `$a`, nested dimension
-fetch and `$x=&$a[0]` omit the pinned false-to-array deprecation, but the model
-emits it. The difference survives `unset($r)`, so live owner count cannot replace
-reference-wrapper history. Final dimension assignment still warns in both
-implementations. Preserve that operation distinction when repairing state.
+[Seven original FETCH/final-write observations](../../coverage/semantics/false-reference-fetch-review.json)
+and [four nested-UNSET observations](../../coverage/semantics/false-reference-unset-review.json)
+retain five prior mismatches and six controls. Reference wrappers survive singleton
+unset, and generic dimension fetch through wrapped false skips the deprecation.
+Final ASSIGN_DIM and UNSET_DIM still warn. Owner count alone could not recover
+that distinction.
 
-[Four nested-UNSET originals](../../coverage/semantics/false-reference-unset-review.json)
-independently confirm two more mismatches and two controls: intermediate UNSET
-fetch suppresses the warning through a wrapper, while final UNSET_DIM still warns.
-
-This existing source discrepancy is the immediate corrective prerequisite after
-the bounded comparison checkpoint; comparison results do not establish a
-globally clean runtime. Original observations remain unchanged. No intentional
-divergence is selected.
+`3585707a` records wrapper identity independently of owners and roots. The
+[review](../../coverage/semantics/reference-wrapper-review.json) confirms all eleven
+unchanged originals now agree within 1,163 exact sources, with 79 independent
+source comparisons and separate COW, lifetime and resumption checks. No intentional
+divergence is selected; source collection and later mutation operators remain pending.
 
 
 ## Smart string comparison overflow: resolved draft defect

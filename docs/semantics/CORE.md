@@ -166,8 +166,8 @@ an array then mutating it shares that reference before collection and separates
 it after explicit collection. Reachability alone cannot determine wrapper
 ownership. Similarly, `array-literal-occurrence-identity` observes shared identity
 when one constant-array literal occurrence executes twice, but distinct identity
-for two occurrences; NaN strict comparison exposes this distinction. These are
-pending semantic obligations, backed by pinned oracle targets only.
+for two occurrences; NaN strict comparison exposes this distinction. Uncollected-owner behavior and constant occurrence reuse now have bounded source
+evidence; explicit source collection remains pending.
 
 The `array-union-{left,right}-{singleton,self-reference}` targets distinguish
 the two union copy paths. Both unwrap singleton scalar references. Left-array
@@ -175,12 +175,13 @@ duplication preserves a singleton reference back to its source array; right-side
 merging unwraps even that wrapper (`zend_array_dup_value` versus `zval_add_ref`).
 Variable-source literal references and scalar singleton union witnesses are
 reviewed in `4b954dfa`; element reference targets and both self-reference union
-witnesses are reviewed in `f56e12bc`. Explicit collection and repeated literal-
-occurrence identity remain pending.
+witnesses are reviewed in `f56e12bc`. Explicit source collection remains pending; constant occurrence identity is
+reviewed through compiler-pool installation and loop source execution.
 
 
 Reference wrapper identity can outlive other aliases. Owner counts alone cannot
 recover the pinned false-to-array FETCH diagnostic behavior after singleton unset;
-[retained source differences](../../coverage/semantics/false-reference-fetch-review.json)
-require explicit history and separate final-assignment behavior. This admitted
-runtime defect remains open after the bounded comparison checkpoint.
+the [reviewed wrapper state](REFERENCE-WRAPPERS.md) records that history without
+adding heap roots. [Independent resolution](../../coverage/semantics/reference-wrapper-review.json)
+preserves the original differences and confirms intermediate FETCH/UNSET versus
+final mutation warnings. This introduces no new intrinsic or environment boundary.
