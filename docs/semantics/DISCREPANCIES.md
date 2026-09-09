@@ -167,11 +167,11 @@ revisits preserve the first replacement line. Runtime fact consumption remains
 pending; no intentional divergence is claimed.
 
 
-## Heredoc and nowdoc scalar lines: unresolved specification defect
+## Heredoc and nowdoc scalar lines: resolved specification defect
 
 For a dynamic array ending with a heredoc or nowdoc opened on line 4, the
 pinned runtime emits its array-to-string warning on line 5. The current source
-machine and ordered compiler helper both use line 4. Quoted multiline strings
+machine and ordered compiler helper both originally used line 4. Quoted multiline strings
 correctly retain line 4. This is an admitted source behavior defect, distinct
 from the corrected constant-replacement provenance above.
 
@@ -179,5 +179,9 @@ from the corrected constant-replacement provenance above.
 retain ten failures covering heredoc, nowdoc, empty bodies, indentation, CRLF
 and binary prefixes, plus two quoted controls. Exact original bytes, checked
 ASTs, native/runtime/helper commands, streams, statuses and fingerprints are
-preserved. A narrow scalar-line correction and fresh source/helper gates are
-required before compiler activation; no intentional divergence is selected.
+preserved unchanged. Correction `4297dadf` follows the scanner increment after
+the opener; empty bodies follow the same line. All twelve original probes now
+agree. The independent 526-source gate plus 25 negatives passed; `0270197e`
+retains the twelve regular regressions and byte-preserving filename transport.
+Missing or invalid ambiguous metadata rejects explicitly. Source compiler/pool
+activation remains pending; no intentional divergence is selected.

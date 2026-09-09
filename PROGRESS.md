@@ -41,9 +41,9 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 - Inventory: **169 constructors, 306 runtime obligations; zero closed**. Every
   family remains pending/partial at full-core scope. Reports retain historical
   acceptance fingerprints; changed inputs require fresh applicable evidence.
-- Current source machine `0df3d175`: independently repeated **514 exact source
-  comparisons +25 negatives**, about 169 seconds. Origin propagation passed
-  25 canonical traces/331 assertions, 41 expanded traces/491 assertions, explicit
+- Current source machine `0270197e`: independently repeated **526 exact source
+  comparisons +25 negatives**, about 176 seconds. Origin propagation passed
+  25 canonical traces/333 assertions, 41 expanded traces/491 assertions, explicit
   equal-metadata path sequences, multiple source IDs, UTF-16LE retention and
   budget resumption. Unit/path lookup validates the selected node; node equality
   never selects occurrence identity. Ownership: **617 graph +96 boundary cases**,
@@ -63,7 +63,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 - Constant helper `93eeb749`: 42 original observations plus 7 boundaries and 37
   independent alternates passed. Partial facts, same-path reuse, distinct NaN-array
   paths and isolated pool roots are reviewed. Source installation and consumption remain pending.
-- Ordered compiler `72d3a65d`: **549 native lint comparisons +15 emission-line
+- Ordered compiler `72d3a65d`: **561 native lint comparisons +15 emission-line
   observations**, 6 Unsupported contexts and metadata/export controls passed;
   independent alternates and exact-bit conflict probes passed. Constant replacement
   lines are corrected; [raw history](coverage/semantics/constant-rewrite-line-disagreement.json)
@@ -90,11 +90,12 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Next gates and retained decisions
 
-Correct the newly retained heredoc/nowdoc diagnostic-line defect, review compiler
-access descriptors, then integrate the ordered compiler and pools before source
-dimensions. The [raw line evidence](coverage/semantics/heredoc-line-disagreement.json)
-retains ten native/runtime/helper mismatches and two quoted controls. Runtime
-tasks consume facts by unit/path, while
+Heredoc/nowdoc lines are corrected in `4297dadf`; the
+[raw evidence](coverage/semantics/heredoc-line-disagreement.json) retains ten prior
+failures and twelve resolved observations. Filename transport `0270197e` passed
+16 canonical and 24 expanded byte/metadata checks. Review compiler access
+descriptors, then integrate the ordered compiler and pools before source
+dimensions. Runtime tasks consume facts by unit/path, while
 ordinary compilation still visits children below constant-prepass assignment
 barriers. Preserve compiler lines, key conversion, delayed reads and owner timing.
 All 16 read/prepass and eight write/error-order witnesses, plus existing array and
