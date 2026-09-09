@@ -15,9 +15,13 @@ f073c750/1fe36808,137 sources,8 author/3760 and7 independent/3024 assertions.
 The request provider is accepted atbe12200b/9a5b11e1 with explicit external facts
 only; [request contract](REQUEST-INPUTS.md) excludes bootstrap admission.
 
-Next: review compiler AUTOGLOBALS642 frozen manifest in
-`.tools/autoglobal-compiler-checked/frozen-review-inputs.json`, then paired
-request/bootstrap and GLOBALS snapshot runtime originals. Compiler4 has the
+Next: pair request/bootstrap and GLOBALS snapshot runtime originals with the
+compiler AUTOGLOBALS642 frozen manifest in
+`.tools/autoglobal-compiler-checked/frozen-review-inputs.json`. Compiler-only review
+a2953bce passes33 originals+12 independent order controls and reproduces the exact
+first full descriptor state; canonical/runtime publication remains pending. Eight
+additional primitive request originals are durable at1da7d073, including duplicate
+HTTP_PROXY and reserved SERVER-key ordering. Compiler4 has the
 activation-order original prediction failures and actual first descriptor failure;
 runtime5 is retaining authored primitive request matrices before implementation.
 Isset232/4pending and7dense2655 raw evidence is durable. Preserve all12 old

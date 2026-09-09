@@ -15,8 +15,9 @@ cases remain Unsupported. [Contract](docs/semantics/ISSET-EMPTY-REVIEW.md) recor
 terminal string rules, quiet ancestors, effects, static rejection and cleanup.
 
 Next, complete request bootstrap and GLOBALS access/snapshots. Ordered CV compiler
-facts are reviewed; compiler AUTOGLOBALS642 activation-order evidence is undergoing
-independent review. The [request provider](docs/semantics/REQUEST-INPUTS.md) supplies
+facts are reviewed; compiler AUTOGLOBALS642 activation ordering has
+[compiler-only independent acceptance](coverage/semantics/autoglobal-compiler-independent-review.json)
+at a2953bce. Its canonical/runtime pairing remains pending. The [request provider](docs/semantics/REQUEST-INPUTS.md) supplies
 explicit external clock/environment inputs, with native transport accepted at
 be12200b/9a5b11e1. Its two fresh copied-source builds passed in separate network
 namespaces with identical provider bytes. This does not admit PHP bootstrap rules
