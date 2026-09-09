@@ -356,7 +356,7 @@ def main():
                '$heap_owners($heap_graph(S_next), HCELL 0) = 3', '$heap_owners($heap_graph(S_next), HARRAY 0) = 1',
                '$heap_valid($heap_graph(S_next))'],
               [f'S_next = $drive({live}[.STORE = [DEFINED (PSTRING ([120]))]][.TODO = [REF_ARRAY_CV ({target}) ([120]) 1]], 1)',
-               'S_next.COMPLETION = UNSUPPORTED "string offset write"', '|S_next.STORE| = 1',
+               'S_next.COMPLETION = THROWN "Error" ([67,97,110,110,111,116,32,99,114,101,97,116,101,32,114,101,102,101,114,101,110,99,101,115,32,116,111,47,102,114,111,109,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]) 1', '|S_next.STORE| = 1',
                'S_next.ALLOCATIONS = [HCELL 0]', '$lookup(S_next.ENV, [120]) = eps'],
               [f'S_next = $drive({live}[.TODO = [REF_ARRAY_CV ({target}) ([95,71,69,84]) 1]], 1)',
                'S_next.COMPLETION = UNSUPPORTED "request environment variable"', '|S_next.STORE| = 1',

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pure string writes and reference/nested fetch errors; source integration pending."""
+"""Pure string write and reference/nested fetch comparisons; source dispatch is also integrated."""
 import base64
 import hashlib
 import json

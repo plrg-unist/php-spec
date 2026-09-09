@@ -192,7 +192,7 @@ null-key deprecation; intermediate dimension access retains it. False/scalar
 containers also differ in when they consume a missing key. These distinctions
 follow `ZEND_UNSET_DIM` and `ZEND_FETCH_DIM_UNSET`, with independent byte/line/order
 fixtures. Empty `[]` reads and unsets are rejected statically before output;
-intermediate string offsets remain pending with the string access protocol.
+intermediate string unset remains pending.
 
 Public `$php_run` binds actual filename bytes before invoking the ordered compiler.
 `33-runtime-compiler.watsup` completes compilation before starting any `PPCWORK`
@@ -216,14 +216,17 @@ path. Missing descriptors in a compiled unit produce missing context, not an AST
 line substitute. Internal bare-state fixtures may still use the legacy AST line
 helper and `$run_source` trace wrapper; neither is the public source entry point.
 The old whole-source availability traversal remains only for that internal test
-path. Ordinary compilation still shares its direct-CV predicate, which invokes
-the old constant classifier on literal name forms; retiring that narrow dependency
-and the legacy trace traversal is pending. Namespace/import work currently
-executes only expressions admitted by the ordered compiler; unresolved namespace
-constant lookup remains Unsupported. Ordinary string/scalar reads use the reviewed dimension helper through delayed
+path; ordinary compilation now uses its own narrow direct-CV predicate. Retirement
+of the legacy trace traversal and classifier remains pending. Namespace constants
+retain resolved name bytes and optional global fallback in tagged `CODENAME`
+descriptors. Nonfolded constant reads use these names at the recorded ending line,
+including names reached through a dimension base. Ordinary string/scalar reads use the reviewed dimension helper through delayed
 base resolution. The compiler uses a separate constant-read leaf, preserving
-prepass suppression of warnings inside array literals. String writes/reference
-errors remain a separate activation gate.
+prepass suppression of warnings inside array literals. String writes resolve the
+writable prefix once and commit updated bytes to the captured location. Key errors,
+append and invalid negative bounds can precede a delayed RHS read. Final reference
+fetches and intermediate nested fetches preserve their distinct errors after key
+conversion. The machine continues to own mutation inputs across these operations.
 
 The compiler rejects unfinished syntax before source execution. This is a visible
 implementation boundary, not a claim that every unsupported expression would run.

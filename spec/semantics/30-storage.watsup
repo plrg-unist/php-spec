@@ -134,3 +134,7 @@ def $unset_name(S, n_name*) = S[.ENV = $unbind(S.ENV, n_name*)]
 dec $runtime_line(pstate, pcpath, expression) : int
 dec $enter_compiled_task(pstate, porigin, ptask, ptask*) : pstate
 dec $dimension_read(pstate, pvalue, poperand, int) : pstate
+
+syntax pstringfetch = STRINGREFERENCE | STRINGNESTED
+dec $string_dimension_write(pstate, nat*, poperand?, poperand, int) : (pstate, nat*)
+dec $string_dimension_fetch(pstate, poperand?, pstringfetch, int) : pstate

@@ -3,8 +3,8 @@
 `44-dimension-read.watsup` supplies pure runtime R-fetch helpers. Delayed source dimension reads now delegate to it after resolving their base.
 The ordered compiler separately uses its string constant-read leaf.
 Array containers delegate to the existing array-read rules. Reference assignment and
-acquisition now cover writable array elements; string-offset reference/write
-contexts remain separate pending work.
+acquisition cover writable array elements. String writes update their captured
+locations; string-offset reference and nested fetches produce their PHP errors.
 
 `$dimension_read(state, container_value, key_operand, line)` returns state with
 `RESULT`, ordered `EVENTS` and `COMPLETION`. It delegates arrays to `$array_read`.
@@ -51,7 +51,7 @@ in `validate.py`; it does not establish complete dimension or callback behavior.
 
 
 `45-dimension-write.watsup` supplies separate callback-free write and reference
-fetch helpers, outside the source module catalog. `$string_dimension_write`
+fetch helpers registered in the source module catalog. `$string_dimension_write`
 returns a state and updated container bytes. It resolves/converts the key first;
 an index below the negative bound warns and returns null before fetching a
 delayed RHS. Otherwise it stringifies the RHS, rejects empty strings, warns for
@@ -72,13 +72,23 @@ The pinned source anchors are `zend_assign_to_string_offset`,
 no temporary roots because they acquire none and never prune internally; callers
 must preserve the input operands while consuming them. Handler suspension and
 string replacement during warnings need an explicit resumable ownership protocol
-before callbacks are admitted. Source integration must commit returned bytes to
-the correct captured location and preserve delayed RHS timing.
+before callbacks are admitted. Source integration resolves the writable prefix
+once, then commits returned string bytes to that captured root or element location.
+An intermediate string dimension uses the nested fetch error; the final reference
+dimension uses the reference error. Existing array paths retain COW and delayed
+key/RHS timing, including RHS-before-overflow ordering for array append.
 
 Run `python3 tests/semantics/dimension_write.py`. The canonical matrix compares
 2,220 writes/reference/nested fetches with the pinned oracle, checking updated
 container bytes, assignment results, ordered diagnostic bytes/levels/lines and
 exact exceptions. Twelve additional boundaries check missing source positions,
 request-environment rejection, borrowed reference operands and preservation of
-prior held roots. This validation does not admit new source syntax or establish
-callback behavior.
+prior held roots. Source validation additionally includes all eight retained
+write/error-order conformance fixtures and 20 original-source ownership, capture
+and multiline regressions. Nested string unset and callback behavior remain pending.
+
+The reviewed source write activation passed the 664-case source campaign plus
+23 outcome negatives and 103 independent additional write sources. One temporary
+literal lvalue remains explicitly unsupported by the compiler; it is not counted
+as a modeled PHP error. The helper matrix and ownership/origin campaigns were
+repeated against the same implementation closure.

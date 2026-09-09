@@ -1,6 +1,6 @@
 ;; Pure callback-free string W-fetch helpers. The returned bytes are the updated
 ;; container; RESULT is the assignment expression's one-byte result (or NULL).
-;; Source location commits and compiled occurrence facts are separate callers.
+;; Source callers commit the returned bytes to their captured writable location.
 dec $string_replace_byte(nat*, nat, nat) : nat*
 def $string_replace_byte(n_bytes*, n_index, n_byte) = n_bytes*[0:n_index] ++ [n_byte] ++ n_bytes*[n_after:n_count]
   -- if $(n_index < |n_bytes*|)
@@ -57,7 +57,6 @@ def $string_write_key(S, n_bytes*, pvalue_key, poperand_value, z) = $string_writ
   -- if S_key.COMPLETION = NORMAL
   -- if S_key.KEY = KINT i
 
-dec $string_dimension_write(pstate, nat*, poperand?, poperand, int) : (pstate, nat*)
 def $string_dimension_write(S, n_bytes*, eps, poperand_value, z) = ($throw_scalar(S, "Error", [91,93,32,111,112,101,114,97,116,111,114,32,110,111,116,32,115,117,112,112,111,114,116,101,100,32,102,111,114,32,115,116,114,105,110,103,115], z), n_bytes*)
 def $string_dimension_write(S, n_bytes*, (poperand_key), poperand_value, z) = (S_key, n_bytes*)
   -- if S_key = $resolve_at(S, poperand_key, z)
@@ -68,7 +67,6 @@ def $string_dimension_write(S, n_bytes*, (poperand_key), poperand_value, z) = $s
   -- if S_key.RESULT = KNOWN pvalue_key
 
 ;; Reference and nested-array fetches check the key, but never byte bounds.
-syntax pstringfetch = STRINGREFERENCE | STRINGNESTED
 
 dec $string_fetch_message(pstringfetch) : nat*
 def $string_fetch_message(STRINGREFERENCE) = [67,97,110,110,111,116,32,99,114,101,97,116,101,32,114,101,102,101,114,101,110,99,101,115,32,116,111,47,102,114,111,109,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]
@@ -82,7 +80,6 @@ def $string_fetch_key(S, pvalue, pstringfetch, z) = $throw_scalar(S_key, "Error"
   -- if S_key = $string_offset(S, pvalue, z)
   -- if S_key.COMPLETION = NORMAL
 
-dec $string_dimension_fetch(pstate, poperand?, pstringfetch, int) : pstate
 def $string_dimension_fetch(S, eps, pstringfetch, z) = $throw_scalar(S, "Error", [91,93,32,111,112,101,114,97,116,111,114,32,110,111,116,32,115,117,112,112,111,114,116,101,100,32,102,111,114,32,115,116,114,105,110,103,115], z)
 def $string_dimension_fetch(S, (poperand), pstringfetch, z) = S_key
   -- if S_key = $resolve_at(S, poperand, z)

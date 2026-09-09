@@ -51,7 +51,7 @@ unit never recovers a missing descriptor from AST equality or source metadata.
 The old `$run_source` traversal remains an internal bare-task trace fixture,
 excluded from public `$php_run`. The compiler now uses its own narrow direct-CV check. Retirement of
 the legacy test traversal and its recursive classifier remains pending. Module44 is registered and `$base_read` now delegates ordinary array/string/scalar
-reads to `$dimension_read`. Module45 write helpers remain a separate activation gate.
+reads to `$dimension_read`. Module45 write helpers now update captured source locations and model reference/nested errors.
 
 The reviewed bridge passed 546 exact source comparisons and 28 explicit negative
 outcomes after the imported-class-prefix guard `ff941f17`. Independent review
@@ -145,12 +145,21 @@ lookup/multiunit/DIM resumption cases with 187 assertions. Canonical namespace
 checks, runtime bridge 15/148 and origin/ownership campaigns also passed. The four
 temporary alias guards are removed; their exact original sources now agree.
 
+String write/reference activation and exact bare-break terminator lines passed
+664 source comparisons and 23 explicit outcome negatives. Independent review
+repeated 103 additional write sources plus one retained temporary-lvalue compiler
+boundary, all 14 original break failures/controls and eight alternate sources/five
+metadata controls. The 2,220 write cases/12 boundaries, ownership 617/96, origins
+25/333, runtime bridge 15/148, namespace 40/15, constant 42/5, compiler 706 and
+metadata/occurrence transport campaigns also passed. These are bounded source and
+helper results, not closure of a PHP semantic family.
+
 ## Following gates and commands
 
 Ordinary scalar/string reads through 44 are connected, with all 16 retained
 read/prepass conformance fixtures and 15 compiler emission-line source cases.
-Next: 45 string writes/reference/nested errors and eight retained source ordering
-witnesses. Key conversion, negative bounds and append may stop before a delayed RHS
+String writes/reference/nested errors through 45 are connected, with all eight retained
+source ordering witnesses. Key conversion, negative bounds and append may stop before a delayed RHS
 is resolved; do not uniformly evaluate it first. Array unpack/destructuring and foreach/general control follow. Call frames,
 objects/properties, callbacks, source GC and lifecycle remain further core work.
 
@@ -188,3 +197,61 @@ function declarations while these runtime steps proceed. Runtime namespace reads
 need compact resolved-name/fallback descriptors; basic named calls subsequently
 need frames, argument/reference binding and declaration activation. General callbacks,
 objects and lifecycle remain further core work. The full-core objective is unchanged.
+
+## Control implementation draft
+
+Prerequisites: accepted string writes, then separately reviewed retirement of the
+legacy checker/classifier and test-only unchecked trace wrapper. Compiler owns
+if/while/do/for traversal and static break/continue legality; runtime owns 30 task
+domains, 39 task-root projection, and new control rules registered after43.
+
+Compiler order is observable even for runtime-unselected code: while/do compile
+body before condition; for compiles init, body, step, condition. If clauses compile
+condition/body in clause order. Preserve each child's structural occurrence path.
+Do not infer break/continue legal depth by arbitrary scalar folding. Statement
+terminator lines need exact checked token context, especially close tags consuming
+newlines. Loop body ending context may separately need checked frontend metadata.
+
+Runtime conditional tasks can store true/false continuation lists and a consumer
+line. Evaluate condition at its own AT origin, resolve its delayed operand, apply
+PHP truthiness (null/false/zero signed integers/both float zeros/empty or "0"
+string/empty array false; NaN and nonempty arrays true). NaN conversion must emit
+the runtime warning from number_bool; native lint does not emit it for if(NAN).
+Clear the condition result,
+then install the selected continuation. Any nested task lists must participate in
+39's root traversal even though ordinary generated branches contain ASTs only.
+
+Loop continuation markers must retain the loop's source origin and AST. While tests
+before body; do tests after body; for runs init once, tests the last condition (true
+for an empty condition sequence), then body and step. All earlier condition/step
+expressions execute and discard normally. Re-enter each compiled occurrence through
+AT tasks; do not recompile or allocate replacement literal pools.
+
+Break/continue scan loop markers with a validated depth. Discard nested continuation
+work, restore the selected loop's saved origin, and either discard its marker
+(break) or execute its next condition/step phase (continue). Existing ORIGIN_RETURN
+frames outside the loop remain intact. Clear consumed scratch values and preserve
+permanent pool roots. Try/finally, switch-specific continue warnings, generators and
+callbacks need their own later control/lifetime rules; do not silently unwind them.
+
+Required source witnesses: true/false/elseif/else selection; false conditions still
+fully compiled; warning/error ordering and skipped runtime branches; while/do/for
+iteration order; init/body/step/condition compile diagnostic precedence; literal
+break/continue depth; nested loop origin restoration; runtime budgets at every
+phase; repeated compiled array literal occurrences (including NaN identity), same
+occurrence reused versus distinct occurrences; namespaced late NAN array reads
+remaining runtime allocation; temporary cleanup and COW through loop assignments.
+
+Foreach follows unpack/destructuring prerequisites and requires persistent bucket
+identity/cursors under deletion/reinsertion, plus value/reference iteration owner
+semantics. A list-index cursor is insufficient. Function bodies and defaults need
+compiler/declaration activation and call frames separately; this control slice is
+not a complete-core claim.
+
+Draft implementation and smoke: .tools/50-control-flow.watsup and
+.tools/probe-control-bare.py currently pass34 original-source bare-AST cases/428
+assertions. The alternate .tools/30-control-flow.watsup is a disposable elaboration
+snapshot. After legacy cleanup, apply only its new CHOOSE/LOOP_TEST/LOOP_NEXT task
+domain delta to current30; never copy stale whole-file snapshots over the cleanup.
+Likewise regenerate .tools/draft-legacy-cleanup.py outputs after all prerequisites
+are committed before publishing cleanup. No compiled-source control claim yet.

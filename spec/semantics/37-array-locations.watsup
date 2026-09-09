@@ -68,13 +68,30 @@ def $append_location(S, n, z) = $literal_insert(S, n, eps, PNULL, z)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
 
 dec $base_acquire(pstate, pbase, int) : pstate
-dec $array_acquire(pstate, pbase, int) : pstate
-def $array_acquire(S, pbase, z) = S_base
-  -- if S_base = $base_acquire(S, pbase, z)
-  -- if S_base.COMPLETION =/= NORMAL
-def $array_acquire(S, pbase, z) = $location_array(S_base, S_base.LOCATION, z)
-  -- if S_base = $base_acquire(S, pbase, z)
-  -- if S_base.COMPLETION = NORMAL
+dec $array_dimension_location(pstate, poperand?, int) : pstate
+def $array_dimension_location(S, poperand?, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $array_dimension_location(S, eps, z) = $append_location(S, n, z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $array_dimension_location(S, (poperand), z) = S_key
+  -- if S.COMPLETION = NORMAL
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $array_dimension_location(S, (poperand), z) = $element_location(S_key, n, S_key.KEY)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_key = $dimension_key(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+
+dec $dimension_location(pstate, poperand?, pstringfetch, int) : pstate
+def $dimension_location(S, poperand?, pstringfetch, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $dimension_location(S, poperand?, pstringfetch, z) = $string_dimension_fetch(S, poperand?, pstringfetch, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n*)
+def $dimension_location(S, poperand?, pstringfetch, z) = $array_dimension_location($location_array(S, S.LOCATION, z), poperand?, z)
+  -- otherwise
 
 def $base_acquire(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $location_name(S, n_name*)
 def $base_acquire(S, BASE_NAME poperand z_name, z) = S_name
@@ -84,58 +101,63 @@ def $base_acquire(S, BASE_NAME poperand z_name, z) = $location_name(S_name, n_na
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
-def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = S_array
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION =/= NORMAL
-def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = S_key
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION = NORMAL
-  -- if S_key = $dimension_key(S_array, poperand, z_key)
-  -- if S_key.COMPLETION =/= NORMAL
-def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = $element_location(S_key, n, S_key.KEY)
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION = NORMAL
-  -- if S_array.RESULT = KNOWN (PARRAY n)
-  -- if S_key = $dimension_key(S_array, poperand, z_key)
-  -- if S_key.COMPLETION = NORMAL
-def $base_acquire(S, BASE_APPEND pbase z_key, z) = S_array
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION =/= NORMAL
-def $base_acquire(S, BASE_APPEND pbase z_key, z) = $append_location(S_array, n, z_key)
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION = NORMAL
-  -- if S_array.RESULT = KNOWN (PARRAY n)
+def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = $dimension_location($base_acquire(S, pbase, z_key), (poperand), STRINGNESTED, z_key)
+def $base_acquire(S, BASE_APPEND pbase z_key, z) = $dimension_location($base_acquire(S, pbase, z_key), eps, STRINGNESTED, z_key)
+
+;; The final reference dimension differs from an intermediate nested W-fetch.
+dec $reference_acquire(pstate, pbase, int) : pstate
+def $reference_acquire(S, BASE_DIM pbase poperand z_key, z) = $dimension_location($base_acquire(S, pbase, z_key), (poperand), STRINGREFERENCE, z_key)
+def $reference_acquire(S, BASE_APPEND pbase z_key, z) = $dimension_location($base_acquire(S, pbase, z_key), eps, STRINGREFERENCE, z_key)
+
+dec $write_operand(pstate, poperand, int) : pstate
+def $write_operand(S, poperand, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $write_operand(S, poperand, z) = S_read
+  -- if S.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $write_operand(S, poperand, z) = $location_write(S_read, S.LOCATION, pvalue)
+  -- if S.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+dec $assign_array_operand(pstate, poperand?, poperand, int, int) : pstate
+def $assign_array_operand(S, poperand_key?, poperand, z_key, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $assign_array_operand(S, (poperand_key), poperand, z_key, z) = $write_operand($array_dimension_location(S, (poperand_key), z_key), poperand, z)
+  -- if S.COMPLETION = NORMAL
+def $assign_array_operand(S, eps, poperand, z_key, z) = S_read
+  -- if S.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $assign_array_operand(S, eps, poperand, z_key, z) = $literal_insert(S_read, n, eps, pvalue, z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+;; Resolve the prefix once; retain its captured location across delayed operands.
+dec $assign_dimension(pstate, poperand?, poperand, int, int) : pstate
+def $assign_dimension(S, poperand_key?, poperand, z_key, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $assign_dimension(S, poperand_key?, poperand, z_key, z) = S_written
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n_bytes*)
+  -- if (S_written, n_new*) = $string_dimension_write(S, n_bytes*, poperand_key?, poperand, z_key)
+  -- if S_written.COMPLETION =/= NORMAL
+def $assign_dimension(S, poperand_key?, poperand, z_key, z) = $location_write(S_written, S.LOCATION, PSTRING n_new*)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n_bytes*)
+  -- if (S_written, n_new*) = $string_dimension_write(S, n_bytes*, poperand_key?, poperand, z_key)
+  -- if S_written.COMPLETION = NORMAL
+def $assign_dimension(S, poperand_key?, poperand, z_key, z) = $assign_array_operand($location_array(S, S.LOCATION, z_key), poperand_key?, poperand, z_key, z)
+  -- otherwise
 
 dec $assign_array(pstate, pbase, poperand, int) : pstate
-def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = S_place
-  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand_key z_key, z)
-  -- if S_place.COMPLETION =/= NORMAL
-def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = S_read
-  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand_key z_key, z)
-  -- if S_place.COMPLETION = NORMAL
-  -- if S_read = $resolve_at(S_place, poperand, z)
-  -- if S_read.COMPLETION =/= NORMAL
-def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = $location_write(S_read, S_place.LOCATION, pvalue)
-  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand_key z_key, z)
-  -- if S_place.COMPLETION = NORMAL
-  -- if S_read = $resolve_at(S_place, poperand, z)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN pvalue
-def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = S_array
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION =/= NORMAL
-def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = S_read
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION = NORMAL
-  -- if S_read = $resolve_at(S_array, poperand, z)
-  -- if S_read.COMPLETION =/= NORMAL
-def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = $literal_insert(S_read, n, eps, pvalue, z)
-  -- if S_array = $array_acquire(S, pbase, z_key)
-  -- if S_array.COMPLETION = NORMAL
-  -- if S_array.RESULT = KNOWN (PARRAY n)
-  -- if S_read = $resolve_at(S_array, poperand, z)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN pvalue
+def $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z) = $assign_dimension($base_acquire(S, pbase, z_key), (poperand_key), poperand, z_key, z)
+def $assign_array(S, BASE_APPEND pbase z_key, poperand, z) = $assign_dimension($base_acquire(S, pbase, z_key), eps, poperand, z_key, z)
 
 ;; W-fetch separates the source path before turning its final slot into a
 ;; reference. The returned CELL borrows the entry's owner; MAKE_REF or literal
@@ -154,10 +176,10 @@ def $element_reference(S, n, pkey) = S[.CELL = n_cell][.STORE = S.STORE ++ [pslo
 
 dec $acquire_array_reference(pstate, pbase, int) : pstate
 def $acquire_array_reference(S, pbase, z) = S_place
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION =/= NORMAL
 def $acquire_array_reference(S, pbase, z) = $element_reference(S_place, n, pkey)
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION = NORMAL
   -- if S_place.LOCATION = ELEMENT n pkey
 
@@ -168,24 +190,24 @@ def $bind_element_reference(S, n, pkey, n_source) = S[.ARRAYS = $array_replace(S
 
 dec $assign_array_reference(pstate, pbase, nat, int) : pstate
 def $assign_array_reference(S, pbase, n_source, z) = S_place
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION =/= NORMAL
 def $assign_array_reference(S, pbase, n_source, z) = $bind_element_reference(S_place, n, pkey, n_source)
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION = NORMAL
   -- if S_place.LOCATION = ELEMENT n pkey
 
 dec $assign_array_reference_cv(pstate, pbase, nat*, int) : pstate
 def $assign_array_reference_cv(S, pbase, n_source*, z) = S_place
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION =/= NORMAL
 def $assign_array_reference_cv(S, pbase, n_source*, z) = S_cell
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION = NORMAL
   -- if S_cell = $acquire_name(S_place, n_source*)
   -- if S_cell.COMPLETION =/= NORMAL
 def $assign_array_reference_cv(S, pbase, n_source*, z) = $bind_element_reference(S_cell, n, pkey, S_cell.CELL)
-  -- if S_place = $base_acquire(S, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION = NORMAL
   -- if S_place.LOCATION = ELEMENT n pkey
   -- if S_cell = $acquire_name(S_place, n_source*)

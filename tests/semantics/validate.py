@@ -439,6 +439,53 @@ CASES.update({
     'dimension-read-emission-14': b'<?php $u=1;\necho [\n $u,\n ($v="abc"[\n "1x"\n ])\n];',
 })
 
+# Original-source string write ownership and diagnostic-order regressions.
+CASES.update({
+    "string-write-regression-00": b'<?php $s="abc";$t=$s;$s[1]="Z";echo $s,":",$t;',
+    "string-write-regression-01": b'<?php $a=["abc"];$b=$a;$a[0][1]="Z";echo $a[0],":",$b[0];',
+    "string-write-regression-02": b'<?php $x="abc";$a=[&$x];$b=$a;$a[0][1]="Z";echo $x,":",$a[0],":",$b[0];',
+    "string-write-regression-03": b'<?php $k=0;$s="abc";$s[$k]=($k=1);echo $s;',
+    "string-write-regression-04": b'<?php $a=["abc"];$a[0][0]=($a=["xyz"]);echo $a[0];',
+    "string-write-regression-05": b'<?php $n="a";$a="abc";$b="xyz";$$n[0]=($n="b");echo $a,":",$b;',
+    "string-write-regression-06": b'<?php $s="abc";$s[0]=$s;echo $s;',
+    "string-write-regression-07": b'<?php $a=["abc"];$a[0][0]=$a[0];echo $a[0];',
+    "string-write-regression-08": b'<?php $s="abc";$s[0]=&$missing;',
+    "string-write-regression-09": b'<?php $s="abc";$r=&$s[0][0];',
+    "string-write-regression-10": b'<?php $s="abc";$s[[]]=$missing;',
+    "string-write-regression-11": b'<?php $s="abc";$s[[]]=1/0;',
+    "string-write-regression-12": b'<?php $s="abc";$s[]=[7];',
+    "string-write-regression-13": b'<?php $s="abc";$s[-4]=($u=[7]);echo $u;',
+    "string-write-regression-14": b'<?php $s="abc";\n$s[\nnull\n]="";',
+    "string-write-regression-15": b'<?php $s="abc";\n$s[\n0\n]=$missing;',
+    "string-write-regression-16": b'<?php $s="abc";\n$r=&$s[\nnull\n];',
+    "string-write-regression-17": b'<?php $s="abc";\n$s[\nnull\n][0]=7;',
+    "string-write-regression-18": b'<?php $s="abc";$s[-1]="\x00Q";echo $s;',
+    "string-write-regression-19": b'<?php $s="abc";$x=&$s;$x[1]="Y";echo $s;',
+    "string-write-reference-admission": b'<?php $a="abc";$x=&$a[0];',
+})
+
+# Retained original-source bare-break diagnostic line discrepancies and controls.
+CASES.update({
+    'compiler-break-line-same-line': b'<?php break;',
+    'compiler-break-line-newline': b'<?php break\n;',
+    'compiler-break-line-blank-line': b'<?php break\n\n;',
+    'compiler-break-line-comment': b'<?php break /* one\ntwo */;',
+    'compiler-break-line-crlf': b'<?php break\r\n;',
+    'compiler-break-line-preceding-output': b'<?php echo "hidden";break\n;',
+    'compiler-break-line-block': b'<?php {break\n;}',
+    'compiler-break-line-leading-newline': b'<?php\nbreak;',
+})
+
+# Retained closing-tag terminator-line failures and comment controls.
+CASES.update({
+    'compiler-break-terminator-closing-tag': b'<?php break ?>\na',
+    'compiler-break-terminator-comment-closing-tag': b'<?php break /*x*/ ?>\n',
+    'compiler-break-terminator-hash-comment': b'<?php break #a\n;',
+    'compiler-break-terminator-slash-crlf': b'<?php break //a\r\n;',
+    'compiler-break-terminator-trailing-newline': b'<?php break;\n',
+    'compiler-break-terminator-trailing-comment': b'<?php break\n; /*\n*/',
+})
+
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
@@ -467,6 +514,7 @@ CONFORMANCE += ['numeric-min-trailing-space', 'numeric-min-nul-control',
                 'numeric-incomplete-exponent-overflow-control']
 CONFORMANCE += ['string-read-dynamic-literal-prepass']
 CONFORMANCE += ['scalar-read-ignores-key-coercion', 'scalar-read-undefined-order', 'string-read-array-key-error', 'string-read-assignment-prepass-barrier', 'string-read-delayed-base', 'string-read-float-casts', 'string-read-float-text-error', 'string-read-literal-prepass', 'string-read-missing-key', 'string-read-negative-bounds', 'string-read-negative-literal-prepass', 'string-read-null-bool-casts', 'string-read-numeric-keys', 'string-read-reference-key', 'string-read-trailing-key']
+CONFORMANCE += ['string-write-array-rhs-order', 'string-write-negative-before-rhs', 'string-write-append-before-rhs', 'string-write-empty-after-key', 'string-write-extension-result', 'string-write-key-warning-before-bound', 'string-reference-key-before-error', 'string-nested-key-before-error']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -573,7 +621,7 @@ def main():
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $a="abc";$x=&$a[0];', b'<?php $a="abc";unset($a[0][0]);',
+                       b'<?php $a="abc";unset($a[0][0]);',
                        b'<?php $a=[...[]];',
                        b'<?php echo $http_response_header;',
                        b'<?php $http_response_header=1;echo $http_response_header;']:

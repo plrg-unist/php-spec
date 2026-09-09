@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pure R-fetch helper comparisons; source string dispatch/prepass is not integrated."""
+"""Pure R-fetch helper comparisons alongside the separate original-source gate."""
 import base64
 import hashlib
 import importlib.util

@@ -2,10 +2,10 @@
 
 Read PLAN.md, PROGRESS.md, DESIGN.md and the php/php-spec/p4-spectec skills first.
 The current source machine supports ordinary ordered arrays, delayed array/string/scalar dimension
-reads, simple/nested array writes, append and unset. Variable-cell aliases and literal
+reads, simple/nested array and string writes, array append and unset. Variable-cell aliases and literal
 references to direct/dynamic variables and writable array elements work, including
-element reference assignment targets. String-offset references, foreach, callbacks
-and source GC are still pending. Do not infer
+element reference assignment targets. String-offset reference and nested writes
+produce their required errors. Foreach, callbacks and source GC remain pending. Do not infer
 those paths from the ALIAS constructor or pure ownership helpers.
 Reference-assignment expressions now return owning `REFERENCE` operands. Their
 cell identity is captured but their contained value is read by the consumer;
@@ -53,11 +53,10 @@ The compiler/pool source activation is described in
 - Literal reference entries acquire an owning temporary before delayed key
   conversion, then transfer it into the entry. The compiler constant-expression
   prepass has a distinct traversal, including append rejection; see below.
-- Next: [scalar/string dimension helpers](DIMENSIONS.md), exact compiler prepass
-  integration, string write/reference errors, array unpack and destructuring.
+- [Scalar/string dimensions](DIMENSIONS.md) and the ordered compiler prepass are
+  integrated. Next: control/loops, array unpack, destructuring and foreach.
   Runtime tasks now retain [source-unit occurrence identities](SOURCE-ORIGINS.md);
-  before foreach/general loops, connect the permanent pool installer and consume
-  compiler facts by those identities. Pool roots are separate from task `HELD`
+  permanent pools consume compiler facts by those identities. Pool roots are separate from task `HELD`
   and survive temporary cleanup. Equal subtrees and editable metadata are not
   occurrence identities. Foreach additionally needs persistent bucket/cursor
   state and mutation/reference interaction tests.
