@@ -183,8 +183,8 @@ preserved unchanged. Correction `4297dadf` follows the scanner increment after
 the opener; empty bodies follow the same line. All twelve original probes now
 agree. The independent 526-source gate plus 25 negatives passed; `0270197e`
 retains the twelve regular regressions and byte-preserving filename transport.
-Missing or invalid ambiguous metadata rejects explicitly. Source compiler/pool
-activation remains pending; no intentional divergence is selected.
+Missing or invalid ambiguous metadata rejects explicitly. The subsequent source compiler/pool bridge preserves these corrected lines;
+no intentional divergence is selected.
 
 
 ## Qualified constant import prefixes: pending source resolution
@@ -200,6 +200,8 @@ include four admitted disagreements: an exact alias, ASCII case-folded alias,
 preceding output and a partial array. Unmatched-prefix and unqualified names are
 matching controls; fully qualified names remain an explicit Unsupported boundary.
 Original source bytes, checked ASTs and exact native/runtime process observations
-are preserved. A precise temporary Unsupported guard is required before bridge
-acceptance, followed by the resolver consumer. The guard establishes no source
+are preserved. The precise temporary guard `ff941f17` now returns Unsupported for the four
+matching-prefix sources, suppressing execution, while both controls still agree.
+The report retains these boundary observations separately from the original
+failures. The resolver consumer remains required: the guard establishes no source
 conformance for these names and does not resolve the four discrepancies.

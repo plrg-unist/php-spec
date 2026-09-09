@@ -2270,7 +2270,9 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/41-array-control.watsup",
-        "spec/semantics/42-array-write-control.watsup"
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_occurrences.py",
@@ -2280,16 +2282,19 @@
         "tests/semantics/execute_context.py",
         "coverage/semantics/execute-context.json",
         "tests/semantics/string_lines.py",
-        "coverage/semantics/string-lines.json"
+        "coverage/semantics/string-lines.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent runtime occurrence propagation cb02399c: 514 exact source comparisons plus 25 negatives passed unchanged; 25 trace sources/331 assertions, 41 expanded sources/491 assertions, seven explicit equal-metadata path sequences and multiunit/root probes passed. Canonical checked PROGRAM/ENCODEDPROGRAM units and explicit task origins persist through execution and budget resumption. Invalid unit/path/node tags reject; wrappers preserve existing root projection (617 graph plus 96 boundary cases, 5434 assertions). Structural inventory remains169 constructors/1086 alternatives. Permanent pool representation 0df3d175 passed the unchanged 514-source plus 25-negative gate; source compiler/pool activation, dynamic source instances and repeated literal execution remain pending. Filename transport 0270197e passed 16 canonical and24 expanded byte/metadata cases, origins25/333 and full526 source+25 negatives. Heredoc/nowdoc scalar-line correction4297dadf resolves all12 retained source/helper observations; raw failures remain in the discrepancy ledger."
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution."
     },
     {
       "id": "source.encodings",
@@ -2350,17 +2355,25 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/11-source-occurrences.watsup",
-        "spec/semantics/21-source-context.watsup"
+        "spec/semantics/21-source-context.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_context.py",
-        "coverage/semantics/source-context.json"
+        "coverage/semantics/source-context.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent compiler/frontend review 9658958c: 233 original checked prefixes plus 64 independent alternates, 24 explicit seen-symbol inputs, 6 barriers, 3 environments, 13 resumptions and 4 negatives passed. Checked anonymous-brace locations and valid function/constant import aliases now pass the source frontend; four encoding profiles and 40 metadata checks passed. Full 30980-record syntax validation, inventory and final 539-input equality are retained in coverage/frontend-syntax-repair.json; these establish no source runtime semantics. Ordinary statement/body/default compilation, complete namespace diagnostics and activation remain pending.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php",
         "tests/semantics/conformance/constant-import-mixed-namespace.php",
@@ -2375,17 +2388,25 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/11-source-occurrences.watsup",
-        "spec/semantics/21-source-context.watsup"
+        "spec/semantics/21-source-context.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_context.py",
-        "coverage/semantics/source-context.json"
+        "coverage/semantics/source-context.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent compiler/frontend review 9658958c: 233 original checked prefixes plus 64 independent alternates, 24 explicit seen-symbol inputs, 6 barriers, 3 environments, 13 resumptions and 4 negatives passed. Checked anonymous-brace locations and valid function/constant import aliases now pass the source frontend; four encoding profiles and 40 metadata checks passed. Full 30980-record syntax validation, inventory and final 539-input equality are retained in coverage/frontend-syntax-repair.json; these establish no source runtime semantics. Ordinary statement/body/default compilation, complete namespace diagnostics and activation remain pending.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php",
         "tests/semantics/conformance/constant-import-mixed-namespace.php",
@@ -4825,20 +4846,25 @@
         "spec/semantics/10-bytes.watsup",
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_compiler.py",
-        "coverage/semantics/source-compiler.json"
+        "coverage/semantics/source-compiler.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/phase0.json",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent ordered compiler helper 72d3a65d: 561 native lint comparisons plus 15 emission-line observations, 6 Unsupported contexts and metadata/export controls; 16 alternate lint plus 5 emission observations and 9 extra exact-value merge probes passed. All 10 retained replacement-line probes now agree; six original failures remain in constant-rewrite-line-disagreement.json. Actual AST replacements retain invocation compiler lines; original scalar leaves retain source lines and cached visits preserve provenance. Ordinary compilation enters assignment/variable children below prepass barriers and retains separate AST facts/codegen constants. Runtime source entry, complete declaration/body/namespace compilation and permanent pool consumption remain pending. Access descriptor extension 00e27843 passed 8 source/24 role checks and 5 independent sources/17 roles, including read/write/unset propagation, skipped children and suppression after unsuccessful compilation.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
       "notes": "Source activation must reconcile retained frontend early compile checks: direct void parameters, variadic defaults and reserved class declaration/reference names. Equivalent edited checked-AST witnesses do not establish source frontend agreement or repair these phase gaps."
     },
     {
@@ -4905,7 +4931,9 @@
         "spec/semantics/16-static-types.watsup",
         "spec/semantics/11-source-occurrences.watsup",
         "spec/semantics/21-source-context.watsup",
-        "spec/semantics/22-name-resolution.watsup"
+        "spec/semantics/22-name-resolution.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
@@ -4913,13 +4941,19 @@
         "tests/semantics/source_context.py",
         "coverage/semantics/source-context.json",
         "tests/semantics/name_resolution.py",
-        "coverage/semantics/name-resolution.json"
+        "coverage/semantics/name-resolution.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent compiler/frontend review 9658958c: 233 original checked prefixes plus 64 independent alternates, 24 explicit seen-symbol inputs, 6 barriers, 3 environments, 13 resumptions and 4 negatives passed. Checked anonymous-brace locations and valid function/constant import aliases now pass the source frontend; four encoding profiles and 40 metadata checks passed. Full 30980-record syntax validation, inventory and final 539-input equality are retained in coverage/frontend-syntax-repair.json; these establish no source runtime semantics. Ordinary statement/body/default compilation, complete namespace diagnostics and activation remain pending. Independent lexical non-class resolver 5a6de4ca: 61 original-source observations plus 7 edited boundaries and 20 independent source probes passed. Function/constant alias casing, qualified class-prefix imports, namespace resets, original checked names and FULL/fallback descriptors are reviewed against the pinned resolver and native diagnostics/controls. Symbol lookup, special-constant folding, runtime namespace fallback, invocation and source activation remain pending.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-iterable-global.php",
         "tests/semantics/conformance/type-iterable-namespaced.php",
@@ -4951,7 +4985,8 @@
       "implementation": [
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -4959,13 +4994,19 @@
         "tests/semantics/constant_context.py",
         "coverage/semantics/constant-context.json",
         "tests/semantics/source_compiler.py",
-        "coverage/semantics/source-compiler.json"
+        "coverage/semantics/source-compiler.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent ordered compiler helper 72d3a65d: 561 native lint comparisons plus 15 emission-line observations, 6 Unsupported contexts and metadata/export controls; 16 alternate lint plus 5 emission observations and 9 extra exact-value merge probes passed. All 10 retained replacement-line probes now agree; six original failures remain in constant-rewrite-line-disagreement.json. Actual AST replacements retain invocation compiler lines; original scalar leaves retain source lines and cached visits preserve provenance. Ordinary compilation enters assignment/variable children below prepass barriers and retains separate AST facts/codegen constants. Runtime source entry, complete declaration/body/namespace compilation and permanent pool consumption remain pending. Access descriptor extension 00e27843 passed 8 source/24 role checks and 5 independent sources/17 roles, including read/write/unset propagation, skipped children and suppression after unsuccessful compilation.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",
@@ -6099,17 +6140,23 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending."
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution."
     },
     {
       "id": "diagnostics.renderer",
@@ -6119,17 +6166,23 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
+      ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending."
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution."
     },
     {
       "id": "diagnostics.suppression",
@@ -7289,19 +7342,26 @@
       ],
       "implementation": [
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/constant_context.py",
         "coverage/semantics/constant-context.json",
         "tests/semantics/source_compiler.py",
-        "coverage/semantics/source-compiler.json"
+        "coverage/semantics/source-compiler.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent ordered compiler helper 72d3a65d: 561 native lint comparisons plus 15 emission-line observations, 6 Unsupported contexts and metadata/export controls; 16 alternate lint plus 5 emission observations and 9 extra exact-value merge probes passed. All 10 retained replacement-line probes now agree; six original failures remain in constant-rewrite-line-disagreement.json. Actual AST replacements retain invocation compiler lines; original scalar leaves retain source lines and cached visits preserve provenance. Ordinary compilation enters assignment/variable children below prepass barriers and retains separate AST facts/codegen constants. Runtime source entry, complete declaration/body/namespace compilation and permanent pool consumption remain pending. Access descriptor extension 00e27843 passed 8 source/24 role checks and 5 independent sources/17 roles, including read/write/unset propagation, skipped children and suppression after unsuccessful compilation.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-read-literal-prepass.php",
@@ -7342,20 +7402,28 @@
       ],
       "implementation": [
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/32-compiled-pools.watsup"
+        "spec/semantics/32-compiled-pools.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/constant_context.py",
         "coverage/semantics/constant-context.json",
         "tests/semantics/compiled_pools.py",
-        "coverage/semantics/compiled-pools.json"
+        "coverage/semantics/compiled-pools.json",
+        "tests/semantics/runtime_compiler.py",
+        "coverage/semantics/runtime-compiler.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json",
+        "coverage/semantics/runtime-compiler-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent constant helper 93eeb749 and corrected ordered compiler 72d3a65d retain partial facts, same-path reuse, distinct NaN-array paths and effective rewrite lines. Permanent unit pool representation 0df3d175 passed 24 boundaries +100 graphs/1623 assertions; independent 250 expanded graphs/4825 assertions covered disjoint remapping, sparse history, permanent cleanup roots, COW and unit/path rejection. Ownership617+96/5434 and source514+25 passed unchanged. Source compiler/pool installation and consumption, full constant kinds, dynamic instances and repeated literal execution remain pending.",
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution. Distinct literal occurrences and constructed repeated execution share the installed pool as appropriate; original-source repeated loop/function occurrence remains pending.",
       "notes": "Constant-array identity is associated with the source literal occurrence; repeating its evaluation can share identity while distinct occurrences do not. NaN strict comparison makes this observable even with OPcache disabled.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-literal-occurrence-identity.php"

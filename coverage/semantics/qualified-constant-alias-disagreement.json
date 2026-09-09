@@ -2156,5 +2156,412 @@
     "admitted_disagreements": 4,
     "exact_controls": 2,
     "existing_unsupported_boundaries": 1
+  },
+  "temporary_boundary": {
+    "commit": "ff941f17",
+    "status": "four original admitted disagreements are now Unsupported; source name resolution remains pending",
+    "evidence": {
+      "status": "temporary Unsupported boundary; no name-lookup conformance claimed",
+      "scope": "new source compiler admission loses matching class import prefix in compound constant names; fully qualified case remains an explicit Unsupported boundary",
+      "fingerprint": {
+        "sha256": "d1afed41db5c6a779bbaeda46faba123574b9de520105a6d589774b466a4ed76",
+        "files": 761,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory"
+        ]
+      },
+      "profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "records": [
+        {
+          "id": "matching-alias",
+          "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBBXE1pc3Npbmc7",
+          "match": false,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/matching-alias.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS9tYXRjaGluZy1hbGlhcy5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS9tYXRjaGluZy1hbGlhcy5waHAgb24gbGluZSAxCg=="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/matching-alias.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 1,
+            "stdout_base64": "eyJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLCAic3Rkb3V0IjogIiIsICJzdGRlcnIiOiAiIiwgImV4aXRfc3RhdHVzIjogbnVsbCwgImRpYWdub3N0aWMiOiBudWxsLCAicmVhc29uIjogInF1YWxpZmllZCBjb25zdGFudCBpbXBvcnQgcmVzb2x1dGlvbiBwZW5kaW5nIiwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+            "stderr_base64": ""
+          }
+        },
+        {
+          "id": "casefolded-alias",
+          "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEFsaWFzO2VjaG8gYUxpQXNcTWlzc2luZzs=",
+          "match": false,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/casefolded-alias.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS9jYXNlZm9sZGVkLWFsaWFzLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcDhkdjdueXo1L2Nhc2Vmb2xkZWQtYWxpYXMucGhwIG9uIGxpbmUgMQo="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/casefolded-alias.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 1,
+            "stdout_base64": "eyJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLCAic3Rkb3V0IjogIiIsICJzdGRlcnIiOiAiIiwgImV4aXRfc3RhdHVzIjogbnVsbCwgImRpYWdub3N0aWMiOiBudWxsLCAicmVhc29uIjogInF1YWxpZmllZCBjb25zdGFudCBpbXBvcnQgcmVzb2x1dGlvbiBwZW5kaW5nIiwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+            "stderr_base64": ""
+          }
+        },
+        {
+          "id": "prefix-output",
+          "source_base64": "PD9waHAgZWNobyAiYmVmb3JlIjt1c2UgVmVuZG9yXFBhY2thZ2UgYXMgQTtlY2hvIEFcTWlzc2luZzs=",
+          "match": false,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/prefix-output.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "YmVmb3Jl",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS9wcmVmaXgtb3V0cHV0LnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcDhkdjdueXo1L3ByZWZpeC1vdXRwdXQucGhwIG9uIGxpbmUgMQo="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/prefix-output.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 1,
+            "stdout_base64": "eyJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLCAic3Rkb3V0IjogIiIsICJzdGRlcnIiOiAiIiwgImV4aXRfc3RhdHVzIjogbnVsbCwgImRpYWdub3N0aWMiOiBudWxsLCAicmVhc29uIjogInF1YWxpZmllZCBjb25zdGFudCBpbXBvcnQgcmVzb2x1dGlvbiBwZW5kaW5nIiwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+            "stderr_base64": ""
+          }
+        },
+        {
+          "id": "partial-array",
+          "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7JHU9MTskYT1bJHUsQVxNaXNzaW5nXTs=",
+          "match": false,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/partial-array.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS9wYXJ0aWFsLWFycmF5LnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcDhkdjdueXo1L3BhcnRpYWwtYXJyYXkucGhwIG9uIGxpbmUgMQo="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/partial-array.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 1,
+            "stdout_base64": "eyJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLCAic3Rkb3V0IjogIiIsICJzdGRlcnIiOiAiIiwgImV4aXRfc3RhdHVzIjogbnVsbCwgImRpYWdub3N0aWMiOiBudWxsLCAicmVhc29uIjogInF1YWxpZmllZCBjb25zdGFudCBpbXBvcnQgcmVzb2x1dGlvbiBwZW5kaW5nIiwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+            "stderr_base64": ""
+          }
+        },
+        {
+          "id": "unmatched-prefix-control",
+          "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBCXE1pc3Npbmc7",
+          "match": true,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/unmatched-prefix-control.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkJcTWlzc2luZyIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcDhkdjdueXo1L3VubWF0Y2hlZC1wcmVmaXgtY29udHJvbC5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS91bm1hdGNoZWQtcHJlZml4LWNvbnRyb2wucGhwIG9uIGxpbmUgMQo="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/unmatched-prefix-control.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 0,
+            "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJa0pjVFdsemMybHVaeUlnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjRGhrZGpkdWVYbzFMM1Z1YldGMFkyaGxaQzF3Y21WbWFYZ3RZMjl1ZEhKdmJDNXdhSEE2TVFwVGRHRmpheUIwY21GalpUb0tJekFnZTIxaGFXNTlDaUFnZEdoeWIzZHVJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQTRaSFkzYm5sNk5TOTFibTFoZEdOb1pXUXRjSEpsWm1sNExXTnZiblJ5YjJ3dWNHaHdJRzl1SUd4cGJtVWdNUW89IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiRXJyb3IiLCAibWVzc2FnZSI6ICJWVzVrWldacGJtVmtJR052Ym5OMFlXNTBJQ0pDWEUxcGMzTnBibWNpIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+            "stderr_base64": ""
+          }
+        },
+        {
+          "id": "unqualified-control",
+          "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBNaXNzaW5nOw==",
+          "match": true,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/unqualified-control.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS91bnF1YWxpZmllZC1jb250cm9sLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcDhkdjdueXo1L3VucXVhbGlmaWVkLWNvbnRyb2wucGhwIG9uIGxpbmUgMQo="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/unqualified-control.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 0,
+            "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJazFwYzNOcGJtY2lJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQTRaSFkzYm5sNk5TOTFibkYxWVd4cFptbGxaQzFqYjI1MGNtOXNMbkJvY0RveENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLSUNCMGFISnZkMjRnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjRGhrZGpkdWVYbzFMM1Z1Y1hWaGJHbG1hV1ZrTFdOdmJuUnliMnd1Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSk5hWE56YVc1bklnPT0iLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+            "stderr_base64": ""
+          }
+        },
+        {
+          "id": "fully-qualified-boundary",
+          "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBcQVxNaXNzaW5nOw==",
+          "match": false,
+          "oracle": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/fully-qualified-boundary.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 255,
+            "stdout_base64": "",
+            "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkFcTWlzc2luZyIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcDhkdjdueXo1L2Z1bGx5LXF1YWxpZmllZC1ib3VuZGFyeS5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXA4ZHY3bnl6NS9mdWxseS1xdWFsaWZpZWQtYm91bmRhcnkucGhwIG9uIGxpbmUgMQo="
+          },
+          "runtime": {
+            "command": [
+              "/home/user/workspace/php-spec/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/tmp8dv7nyz5/fully-qualified-boundary.php"
+            ],
+            "cwd": "/home/user/workspace/php-spec",
+            "status": 1,
+            "stdout_base64": "eyJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLCAic3Rkb3V0IjogIiIsICJzdGRlcnIiOiAiIiwgImV4aXRfc3RhdHVzIjogbnVsbCwgImRpYWdub3N0aWMiOiBudWxsLCAicmVhc29uIjogIm9yZGluYXJ5IGV4cHJlc3Npb24gb3Igd3JpdGFibGUgb3BlcmFuZCBjb21waWxhdGlvbiIsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+            "stderr_base64": ""
+          }
+        }
+      ]
+    }
   }
 }

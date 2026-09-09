@@ -1,0 +1,2619 @@
+{
+  "status": "accepted bounded source integration",
+  "implementation_commit": "537d13de",
+  "compiler_guard_commit": "ff941f17",
+  "source_gate": {
+    "report": "coverage/semantics/source.json",
+    "cases": 546,
+    "negative_outcomes": 28,
+    "wall_seconds": 217.161
+  },
+  "scope": "Actual public source compilation before execution, permanent pool installation, PPR-only compiled operands and exact source diagnostic bytes/lines. Generic string/scalar runtime dimensions, complete namespace name lookup, loops/functions and full core remain pending.",
+  "independent_sources": {
+    "fingerprint": {
+      "sha256": "d1afed41db5c6a779bbaeda46faba123574b9de520105a6d589774b466a4ed76",
+      "files": 761,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "records": [
+      {
+        "id": "namespace-block-work",
+        "source_base64": "PD9waHAgbmFtZXNwYWNlIHtlY2hvIDE7e2VjaG8gMjt9fSBuYW1lc3BhY2UgTiB7ZWNobyAzO30=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/namespace-block-work-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "MTIz",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/namespace-block-work-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNVEl6IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbIjUwIl1dfSwgeyJ0YWciOiAiT1VUUFVUIiwgImFyZ3MiOiBbWyI1MSJdXX1dLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "namespace-import-reset",
+        "source_base64": "PD9waHAgbmFtZXNwYWNlIE4ge3VzZSBBXEI7ZWNobyAxO30gbmFtZXNwYWNlIHt1c2UgQTtlY2hvIDI7fQ==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/namespace-import-reset-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "MTI=",
+          "stderr_base64": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvbmFtZXNwYWNlLWltcG9ydC1yZXNldC3/LnBocCBvbiBsaW5lIDEK"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/namespace-import-reset-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNVEk9IiwgInN0ZGVyciI6ICJWMkZ5Ym1sdVp6b2dWR2hsSUhWelpTQnpkR0YwWlcxbGJuUWdkMmwwYUNCdWIyNHRZMjl0Y0c5MWJtUWdibUZ0WlNBblFTY2dhR0Z6SUc1dklHVm1abVZqZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3ZFhKamRXbGplak12Ym1GdFpYTndZV05sTFdsdGNHOXlkQzF5WlhObGRDMy9MbkJvY0NCdmJpQnNhVzVsSURFSyIsICJleGl0X3N0YXR1cyI6IDAsICJkaWFnbm9zdGljIjogbnVsbCwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbeyJ0YWciOiAiRElBR05PU1RJQyIsICJhcmdzIjogWyJXYXJuaW5nIiwgWyI4NCIsICIxMDQiLCAiMTAxIiwgIjMyIiwgIjExNyIsICIxMTUiLCAiMTAxIiwgIjMyIiwgIjExNSIsICIxMTYiLCAiOTciLCAiMTE2IiwgIjEwMSIsICIxMDkiLCAiMTAxIiwgIjExMCIsICIxMTYiLCAiMzIiLCAiMTE5IiwgIjEwNSIsICIxMTYiLCAiMTA0IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMTEwIiwgIjQ1IiwgIjk5IiwgIjExMSIsICIxMDkiLCAiMTEyIiwgIjExMSIsICIxMTciLCAiMTEwIiwgIjEwMCIsICIzMiIsICIxMTAiLCAiOTciLCAiMTA5IiwgIjEwMSIsICIzMiIsICIzOSIsICI2NSIsICIzOSIsICIzMiIsICIxMDQiLCAiOTciLCAiMTE1IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMzIiLCAiMTAxIiwgIjEwMiIsICIxMDIiLCAiMTAxIiwgIjk5IiwgIjExNiJdLCAiMSJdfSwgeyJ0YWciOiAiT1VUUFVUIiwgImFyZ3MiOiBbWyI0OSJdXX0sIHsidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTAiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "byte-alias-conflict",
+        "source_base64": "PD9waHAgZWNobyAiYWJzZW50Ijt1c2Ug/1xOYW1lIGFzIFg7dXNlIP5cTmFtZSBhcyB4Ow==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/byte-alias-conflict-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ug/lxOYW1lIGFzIHggYmVjYXVzZSB0aGUgbmFtZSBpcyBhbHJlYWR5IGluIHVzZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvYnl0ZS1hbGlhcy1jb25mbGljdC3/LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/byte-alias-conflict-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUVOaGJtNXZkQ0IxYzJVZy9seE9ZVzFsSUdGeklIZ2dZbVZqWVhWelpTQjBhR1VnYm1GdFpTQnBjeUJoYkhKbFlXUjVJR2x1SUhWelpTQnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd2RYSmpkV2xqZWpNdllubDBaUzFoYkdsaGN5MWpiMjVtYkdsamRDMy9MbkJvY0NCdmJpQnNhVzVsSURFS1UzUmhZMnNnZEhKaFkyVTZDaU13SUh0dFlXbHVmUW89IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiUTJGdWJtOTBJSFZ6WlNEK1hFNWhiV1VnWVhNZ2VDQmlaV05oZFhObElIUm9aU0J1WVcxbElHbHpJR0ZzY21WaFpIa2dhVzRnZFhObCIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "warning-suppresses-runtime-read",
+        "source_base64": "PD9waHAgZWNobyAkbWlzc2luZzt1c2UgQTt1c2UgQTs=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/warning-suppresses-runtime-read-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvd2FybmluZy1zdXBwcmVzc2VzLXJ1bnRpbWUtcmVhZC3/LnBocCBvbiBsaW5lIDEKV2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvd2FybmluZy1zdXBwcmVzc2VzLXJ1bnRpbWUtcmVhZC3/LnBocCBvbiBsaW5lIDEKRmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgQSBhcyBBIGJlY2F1c2UgdGhlIG5hbWUgaXMgYWxyZWFkeSBpbiB1c2UgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHVyY3VpY3ozL3dhcm5pbmctc3VwcHJlc3Nlcy1ydW50aW1lLXJlYWQt/y5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/warning-suppresses-runtime-read-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJWMkZ5Ym1sdVp6b2dWR2hsSUhWelpTQnpkR0YwWlcxbGJuUWdkMmwwYUNCdWIyNHRZMjl0Y0c5MWJtUWdibUZ0WlNBblFTY2dhR0Z6SUc1dklHVm1abVZqZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3ZFhKamRXbGplak12ZDJGeWJtbHVaeTF6ZFhCd2NtVnpjMlZ6TFhKMWJuUnBiV1V0Y21WaFpDMy9MbkJvY0NCdmJpQnNhVzVsSURFS1YyRnlibWx1WnpvZ1ZHaGxJSFZ6WlNCemRHRjBaVzFsYm5RZ2QybDBhQ0J1YjI0dFkyOXRjRzkxYm1RZ2JtRnRaU0FuUVNjZ2FHRnpJRzV2SUdWbVptVmpkQ0JwYmlBdmFHOXRaUzkxYzJWeUwzZHZjbXR6Y0dGalpTOXdhSEF0YzNCbFl5OHVkRzl2YkhNdmRHMXdkWEpqZFdsamVqTXZkMkZ5Ym1sdVp5MXpkWEJ3Y21WemMyVnpMWEoxYm5ScGJXVXRjbVZoWkMzL0xuQm9jQ0J2YmlCc2FXNWxJREVLUm1GMFlXd2daWEp5YjNJNklFTmhibTV2ZENCMWMyVWdRU0JoY3lCQklHSmxZMkYxYzJVZ2RHaGxJRzVoYldVZ2FYTWdZV3h5WldGa2VTQnBiaUIxYzJVZ2FXNGdMMmh2YldVdmRYTmxjaTkzYjNKcmMzQmhZMlV2Y0dod0xYTndaV012TG5SdmIyeHpMM1J0Y0hWeVkzVnBZM296TDNkaGNtNXBibWN0YzNWd2NISmxjM05sY3kxeWRXNTBhVzFsTFhKbFlXUXQveTV3YUhBZ2IyNGdiR2x1WlNBeENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiUTJGdWJtOTBJSFZ6WlNCQklHRnpJRUVnWW1WallYVnpaU0IwYUdVZ2JtRnRaU0JwY3lCaGJISmxZV1I1SUdsdUlIVnpaUT09IiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbeyJ0YWciOiAiRElBR05PU1RJQyIsICJhcmdzIjogWyJXYXJuaW5nIiwgWyI4NCIsICIxMDQiLCAiMTAxIiwgIjMyIiwgIjExNyIsICIxMTUiLCAiMTAxIiwgIjMyIiwgIjExNSIsICIxMTYiLCAiOTciLCAiMTE2IiwgIjEwMSIsICIxMDkiLCAiMTAxIiwgIjExMCIsICIxMTYiLCAiMzIiLCAiMTE5IiwgIjEwNSIsICIxMTYiLCAiMTA0IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMTEwIiwgIjQ1IiwgIjk5IiwgIjExMSIsICIxMDkiLCAiMTEyIiwgIjExMSIsICIxMTciLCAiMTEwIiwgIjEwMCIsICIzMiIsICIxMTAiLCAiOTciLCAiMTA5IiwgIjEwMSIsICIzMiIsICIzOSIsICI2NSIsICIzOSIsICIzMiIsICIxMDQiLCAiOTciLCAiMTE1IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMzIiLCAiMTAxIiwgIjEwMiIsICIxMDIiLCAiMTAxIiwgIjk5IiwgIjExNiJdLCAiMSJdfSwgeyJ0YWciOiAiRElBR05PU1RJQyIsICJhcmdzIjogWyJXYXJuaW5nIiwgWyI4NCIsICIxMDQiLCAiMTAxIiwgIjMyIiwgIjExNyIsICIxMTUiLCAiMTAxIiwgIjMyIiwgIjExNSIsICIxMTYiLCAiOTciLCAiMTE2IiwgIjEwMSIsICIxMDkiLCAiMTAxIiwgIjExMCIsICIxMTYiLCAiMzIiLCAiMTE5IiwgIjEwNSIsICIxMTYiLCAiMTA0IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMTEwIiwgIjQ1IiwgIjk5IiwgIjExMSIsICIxMDkiLCAiMTEyIiwgIjExMSIsICIxMTciLCAiMTEwIiwgIjEwMCIsICIzMiIsICIxMTAiLCAiOTciLCAiMTA5IiwgIjEwMSIsICIzMiIsICIzOSIsICI2NSIsICIzOSIsICIzMiIsICIxMDQiLCAiOTciLCAiMTE1IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMzIiLCAiMTAxIiwgIjEwMiIsICIxMDIiLCAiMTAxIiwgIjk5IiwgIjExNiJdLCAiMSJdfV0sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "multiline-key-error",
+        "source_base64": "PD9waHAgZWNobyAiYWJzZW50IjsKJGE9WwpbXSA9PgoxCl07",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/multiline-key-error-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IElsbGVnYWwgb2Zmc2V0IHR5cGUgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHVyY3VpY3ozL211bHRpbGluZS1rZXktZXJyb3It/y5waHAgb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/multiline-key-error-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUVsc2JHVm5ZV3dnYjJabWMyVjBJSFI1Y0dVZ2FXNGdMMmh2YldVdmRYTmxjaTkzYjNKcmMzQmhZMlV2Y0dod0xYTndaV012TG5SdmIyeHpMM1J0Y0hWeVkzVnBZM296TDIxMWJIUnBiR2x1WlMxclpYa3RaWEp5YjNJdC95NXdhSEFnYjI0Z2JHbHVaU0EwQ2xOMFlXTnJJSFJ5WVdObE9nb2pNQ0I3YldGcGJuMEsiLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJDb21waWxlRXJyb3IiLCAibWVzc2FnZSI6ICJTV3hzWldkaGJDQnZabVp6WlhRZ2RIbHdaUT09IiwgImxpbmUiOiA0fSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "multiline-warning-and-error",
+        "source_base64": "PD9waHAgdXNlCkE7ZWNobyAiYWJzZW50IjsKJGE9W1tdPT4xXTs=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/multiline-warning-and-error-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvbXVsdGlsaW5lLXdhcm5pbmctYW5kLWVycm9yLf8ucGhwIG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogSWxsZWdhbCBvZmZzZXQgdHlwZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvbXVsdGlsaW5lLXdhcm5pbmctYW5kLWVycm9yLf8ucGhwIG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/multiline-warning-and-error-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJWMkZ5Ym1sdVp6b2dWR2hsSUhWelpTQnpkR0YwWlcxbGJuUWdkMmwwYUNCdWIyNHRZMjl0Y0c5MWJtUWdibUZ0WlNBblFTY2dhR0Z6SUc1dklHVm1abVZqZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3ZFhKamRXbGplak12YlhWc2RHbHNhVzVsTFhkaGNtNXBibWN0WVc1a0xXVnljbTl5TGY4dWNHaHdJRzl1SUd4cGJtVWdNZ3BHWVhSaGJDQmxjbkp2Y2pvZ1NXeHNaV2RoYkNCdlptWnpaWFFnZEhsd1pTQnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd2RYSmpkV2xqZWpNdmJYVnNkR2xzYVc1bExYZGhjbTVwYm1jdFlXNWtMV1Z5Y205eUxmOHVjR2h3SUc5dUlHeHBibVVnTXdwVGRHRmpheUIwY21GalpUb0tJekFnZTIxaGFXNTlDZz09IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiU1d4c1pXZGhiQ0J2Wm1aelpYUWdkSGx3WlE9PSIsICJsaW5lIjogM30sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIkRJQUdOT1NUSUMiLCAiYXJncyI6IFsiV2FybmluZyIsIFsiODQiLCAiMTA0IiwgIjEwMSIsICIzMiIsICIxMTciLCAiMTE1IiwgIjEwMSIsICIzMiIsICIxMTUiLCAiMTE2IiwgIjk3IiwgIjExNiIsICIxMDEiLCAiMTA5IiwgIjEwMSIsICIxMTAiLCAiMTE2IiwgIjMyIiwgIjExOSIsICIxMDUiLCAiMTE2IiwgIjEwNCIsICIzMiIsICIxMTAiLCAiMTExIiwgIjExMCIsICI0NSIsICI5OSIsICIxMTEiLCAiMTA5IiwgIjExMiIsICIxMTEiLCAiMTE3IiwgIjExMCIsICIxMDAiLCAiMzIiLCAiMTEwIiwgIjk3IiwgIjEwOSIsICIxMDEiLCAiMzIiLCAiMzkiLCAiNjUiLCAiMzkiLCAiMzIiLCAiMTA0IiwgIjk3IiwgIjExNSIsICIzMiIsICIxMTAiLCAiMTExIiwgIjMyIiwgIjEwMSIsICIxMDIiLCAiMTAyIiwgIjEwMSIsICI5OSIsICIxMTYiXSwgIjIiXX1dLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "partial-fold-first",
+        "source_base64": "PD9waHAgJHg9OTskYT1bImFiYyJbIjF4Il0sJHhdO2VjaG8gJGFbMF0sJGFbMV07",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/partial-fold-first-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "Yjk=",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/partial-fold-first-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJZams9IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siOTgiXV19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbIjU3Il1dfV0sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "partial-fold-key",
+        "source_base64": "PD9waHAgJHg9OTskYT1bImFiYyJbIjF4Il09PiR4XTtlY2hvICRhWyJiIl07",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/partial-fold-key-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "OQ==",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/partial-fold-key-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJPUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTciXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "nested-fold-assignment",
+        "source_base64": "PD9waHAgJGE9WygkYj1bImFiY2QiWyIyeCJdXSldO2VjaG8gJGFbMF1bMF0sJGJbMF07",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/nested-fold-assignment-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "Y2M=",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/nested-fold-assignment-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJZMk09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siOTkiXV19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbIjk5Il1dfV0sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "fold-reference-key",
+        "source_base64": "PD9waHAgJHg9MzskYT1bImFiYyJbIjF4Il09PiYkeF07JHg9NDtlY2hvICRhWyJiIl07",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/fold-reference-key-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "NA==",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/fold-reference-key-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJOQT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNTIiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "pool-detached-child",
+        "source_base64": "PD9waHAgJGE9W1tOQU5dXTskYj0kYVswXTt1bnNldCgkYSk7ZWNobyAkYj09PSRiOyRjPSRiOyRiWzBdPTE7ZWNobyAkYz09PSRiOw==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/pool-detached-child-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "MQ==",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/pool-detached-child-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "pool-ref-first-mutation",
+        "source_base64": "PD9waHAgJGE9W1tOQU5dXTskYj0kYTskeD0mJGFbMF07JHhbMF09MTtlY2hvICRhWzBdWzBdLCRhPT09JGI7",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/pool-ref-first-mutation-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "MQ==",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/pool-ref-first-mutation-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "empty-namespace",
+        "source_base64": "PD9waHAgbmFtZXNwYWNlIE4ge30gbmFtZXNwYWNlIHtlY2hvIDE7fQ==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/empty-namespace-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "MQ==",
+          "stderr_base64": ""
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/empty-namespace-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAibm9ybWFsIiwgInN0ZG91dCI6ICJNUT09IiwgInN0ZGVyciI6ICIiLCAiZXhpdF9zdGF0dXMiOiAwLCAiZGlhZ25vc3RpYyI6IG51bGwsICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siNDkiXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "undefined-before-constant-compile-error",
+        "source_base64": "PD9waHAgZWNobyAkbWlzc2luZzsgJGE9WzEvMF07",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/undefined-before-constant-compile-error-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRtaXNzaW5nIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB1cmN1aWN6My91bmRlZmluZWQtYmVmb3JlLWNvbnN0YW50LWNvbXBpbGUtZXJyb3It/y5waHAgb24gbGluZSAxCkZhdGFsIGVycm9yOiBVbmNhdWdodCBEaXZpc2lvbkJ5WmVyb0Vycm9yOiBEaXZpc2lvbiBieSB6ZXJvIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB1cmN1aWN6My91bmRlZmluZWQtYmVmb3JlLWNvbnN0YW50LWNvbXBpbGUtZXJyb3It/y5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB1cmN1aWN6My91bmRlZmluZWQtYmVmb3JlLWNvbnN0YW50LWNvbXBpbGUtZXJyb3It/y5waHAgb24gbGluZSAxCg=="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/undefined-before-constant-compile-error-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlYyRnlibWx1WnpvZ1ZXNWtaV1pwYm1Wa0lIWmhjbWxoWW14bElDUnRhWE56YVc1bklHbHVJQzlvYjIxbEwzVnpaWEl2ZDI5eWEzTndZV05sTDNCb2NDMXpjR1ZqTHk1MGIyOXNjeTkwYlhCMWNtTjFhV042TXk5MWJtUmxabWx1WldRdFltVm1iM0psTFdOdmJuTjBZVzUwTFdOdmJYQnBiR1V0WlhKeWIzSXQveTV3YUhBZ2IyNGdiR2x1WlNBeENrWmhkR0ZzSUdWeWNtOXlPaUJWYm1OaGRXZG9kQ0JFYVhacGMybHZia0o1V21WeWIwVnljbTl5T2lCRWFYWnBjMmx2YmlCaWVTQjZaWEp2SUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OTBiWEIxY21OMWFXTjZNeTkxYm1SbFptbHVaV1F0WW1WbWIzSmxMV052Ym5OMFlXNTBMV052YlhCcGJHVXRaWEp5YjNJdC95NXdhSEE2TVFwVGRHRmpheUIwY21GalpUb0tJekFnZTIxaGFXNTlDaUFnZEdoeWIzZHVJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQjFjbU4xYVdONk15OTFibVJsWm1sdVpXUXRZbVZtYjNKbExXTnZibk4wWVc1MExXTnZiWEJwYkdVdFpYSnliM0l0L3k1d2FIQWdiMjRnYkdsdVpTQXhDZz09IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiRGl2aXNpb25CeVplcm9FcnJvciIsICJtZXNzYWdlIjogIlJHbDJhWE5wYjI0Z1lua2dlbVZ5Ync9PSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIldBUk5JTkciLCAiYXJncyI6IFtbIjEwOSIsICIxMDUiLCAiMTE1IiwgIjExNSIsICIxMDUiLCAiMTEwIiwgIjEwMyJdLCAiMSJdfSwgeyJ0YWciOiAiT1VUUFVUIiwgImFyZ3MiOiBbW11dfV0sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "runtime-error-after-compile-warning",
+        "source_base64": "PD9waHAgdXNlIEE7IGVjaG8gJG1pc3Npbmc7IGVjaG8gMS8wOw==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/runtime-error-after-compile-warning-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvcnVudGltZS1lcnJvci1hZnRlci1jb21waWxlLXdhcm5pbmct/y5waHAgb24gbGluZSAxCldhcm5pbmc6IFVuZGVmaW5lZCB2YXJpYWJsZSAkbWlzc2luZyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvcnVudGltZS1lcnJvci1hZnRlci1jb21waWxlLXdhcm5pbmct/y5waHAgb24gbGluZSAxCkZhdGFsIGVycm9yOiBVbmNhdWdodCBEaXZpc2lvbkJ5WmVyb0Vycm9yOiBEaXZpc2lvbiBieSB6ZXJvIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB1cmN1aWN6My9ydW50aW1lLWVycm9yLWFmdGVyLWNvbXBpbGUtd2FybmluZy3/LnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHVyY3VpY3ozL3J1bnRpbWUtZXJyb3ItYWZ0ZXItY29tcGlsZS13YXJuaW5nLf8ucGhwIG9uIGxpbmUgMQo="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/runtime-error-after-compile-warning-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlYyRnlibWx1WnpvZ1ZHaGxJSFZ6WlNCemRHRjBaVzFsYm5RZ2QybDBhQ0J1YjI0dFkyOXRjRzkxYm1RZ2JtRnRaU0FuUVNjZ2FHRnpJRzV2SUdWbVptVmpkQ0JwYmlBdmFHOXRaUzkxYzJWeUwzZHZjbXR6Y0dGalpTOXdhSEF0YzNCbFl5OHVkRzl2YkhNdmRHMXdkWEpqZFdsamVqTXZjblZ1ZEdsdFpTMWxjbkp2Y2kxaFpuUmxjaTFqYjIxd2FXeGxMWGRoY201cGJtY3QveTV3YUhBZ2IyNGdiR2x1WlNBeENsZGhjbTVwYm1jNklGVnVaR1ZtYVc1bFpDQjJZWEpwWVdKc1pTQWtiV2x6YzJsdVp5QnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd2RYSmpkV2xqZWpNdmNuVnVkR2x0WlMxbGNuSnZjaTFoWm5SbGNpMWpiMjF3YVd4bExYZGhjbTVwYm1jdC95NXdhSEFnYjI0Z2JHbHVaU0F4Q2taaGRHRnNJR1Z5Y205eU9pQlZibU5oZFdkb2RDQkVhWFpwYzJsdmJrSjVXbVZ5YjBWeWNtOXlPaUJFYVhacGMybHZiaUJpZVNCNlpYSnZJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQjFjbU4xYVdONk15OXlkVzUwYVcxbExXVnljbTl5TFdGbWRHVnlMV052YlhCcGJHVXRkMkZ5Ym1sdVp5My9MbkJvY0RveENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLSUNCMGFISnZkMjRnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjSFZ5WTNWcFkzb3pMM0oxYm5ScGJXVXRaWEp5YjNJdFlXWjBaWEl0WTI5dGNHbHNaUzEzWVhKdWFXNW5MZjh1Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJEaXZpc2lvbkJ5WmVyb0Vycm9yIiwgIm1lc3NhZ2UiOiAiUkdsMmFYTnBiMjRnWW5rZ2VtVnlidz09IiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbeyJ0YWciOiAiRElBR05PU1RJQyIsICJhcmdzIjogWyJXYXJuaW5nIiwgWyI4NCIsICIxMDQiLCAiMTAxIiwgIjMyIiwgIjExNyIsICIxMTUiLCAiMTAxIiwgIjMyIiwgIjExNSIsICIxMTYiLCAiOTciLCAiMTE2IiwgIjEwMSIsICIxMDkiLCAiMTAxIiwgIjExMCIsICIxMTYiLCAiMzIiLCAiMTE5IiwgIjEwNSIsICIxMTYiLCAiMTA0IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMTEwIiwgIjQ1IiwgIjk5IiwgIjExMSIsICIxMDkiLCAiMTEyIiwgIjExMSIsICIxMTciLCAiMTEwIiwgIjEwMCIsICIzMiIsICIxMTAiLCAiOTciLCAiMTA5IiwgIjEwMSIsICIzMiIsICIzOSIsICI2NSIsICIzOSIsICIzMiIsICIxMDQiLCAiOTciLCAiMTE1IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMzIiLCAiMTAxIiwgIjEwMiIsICIxMDIiLCAiMTAxIiwgIjk5IiwgIjExNiJdLCAiMSJdfSwgeyJ0YWciOiAiV0FSTklORyIsICJhcmdzIjogW1siMTA5IiwgIjEwNSIsICIxMTUiLCAiMTE1IiwgIjEwNSIsICIxMTAiLCAiMTAzIl0sICIxIl19LCB7InRhZyI6ICJPVVRQVVQiLCAiYXJncyI6IFtbXV19XSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "constant-error-before-later-import",
+        "source_base64": "PD9waHAgdXNlIEE7ICRhPVsxLzBdOyB1c2UgQjs=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/constant-error-before-later-import-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "V2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQScgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvY29uc3RhbnQtZXJyb3ItYmVmb3JlLWxhdGVyLWltcG9ydC3/LnBocCBvbiBsaW5lIDEKV2FybmluZzogVGhlIHVzZSBzdGF0ZW1lbnQgd2l0aCBub24tY29tcG91bmQgbmFtZSAnQicgaGFzIG5vIGVmZmVjdCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wdXJjdWljejMvY29uc3RhbnQtZXJyb3ItYmVmb3JlLWxhdGVyLWltcG9ydC3/LnBocCBvbiBsaW5lIDEKRmF0YWwgZXJyb3I6IFVuY2F1Z2h0IERpdmlzaW9uQnlaZXJvRXJyb3I6IERpdmlzaW9uIGJ5IHplcm8gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHVyY3VpY3ozL2NvbnN0YW50LWVycm9yLWJlZm9yZS1sYXRlci1pbXBvcnQt/y5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB1cmN1aWN6My9jb25zdGFudC1lcnJvci1iZWZvcmUtbGF0ZXItaW1wb3J0Lf8ucGhwIG9uIGxpbmUgMQo="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpurcuicz3/constant-error-before-later-import-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlYyRnlibWx1WnpvZ1ZHaGxJSFZ6WlNCemRHRjBaVzFsYm5RZ2QybDBhQ0J1YjI0dFkyOXRjRzkxYm1RZ2JtRnRaU0FuUVNjZ2FHRnpJRzV2SUdWbVptVmpkQ0JwYmlBdmFHOXRaUzkxYzJWeUwzZHZjbXR6Y0dGalpTOXdhSEF0YzNCbFl5OHVkRzl2YkhNdmRHMXdkWEpqZFdsamVqTXZZMjl1YzNSaGJuUXRaWEp5YjNJdFltVm1iM0psTFd4aGRHVnlMV2x0Y0c5eWRDMy9MbkJvY0NCdmJpQnNhVzVsSURFS1YyRnlibWx1WnpvZ1ZHaGxJSFZ6WlNCemRHRjBaVzFsYm5RZ2QybDBhQ0J1YjI0dFkyOXRjRzkxYm1RZ2JtRnRaU0FuUWljZ2FHRnpJRzV2SUdWbVptVmpkQ0JwYmlBdmFHOXRaUzkxYzJWeUwzZHZjbXR6Y0dGalpTOXdhSEF0YzNCbFl5OHVkRzl2YkhNdmRHMXdkWEpqZFdsamVqTXZZMjl1YzNSaGJuUXRaWEp5YjNJdFltVm1iM0psTFd4aGRHVnlMV2x0Y0c5eWRDMy9MbkJvY0NCdmJpQnNhVzVsSURFS1JtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVJwZG1semFXOXVRbmxhWlhKdlJYSnliM0k2SUVScGRtbHphVzl1SUdKNUlIcGxjbThnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjSFZ5WTNWcFkzb3pMMk52Ym5OMFlXNTBMV1Z5Y205eUxXSmxabTl5WlMxc1lYUmxjaTFwYlhCdmNuUXQveTV3YUhBNk1RcFRkR0ZqYXlCMGNtRmpaVG9LSXpBZ2UyMWhhVzU5Q2lBZ2RHaHliM2R1SUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OTBiWEIxY21OMWFXTjZNeTlqYjI1emRHRnVkQzFsY25KdmNpMWlaV1p2Y21VdGJHRjBaWEl0YVcxd2IzSjBMZjh1Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJEaXZpc2lvbkJ5WmVyb0Vycm9yIiwgIm1lc3NhZ2UiOiAiUkdsMmFYTnBiMjRnWW5rZ2VtVnlidz09IiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbeyJ0YWciOiAiRElBR05PU1RJQyIsICJhcmdzIjogWyJXYXJuaW5nIiwgWyI4NCIsICIxMDQiLCAiMTAxIiwgIjMyIiwgIjExNyIsICIxMTUiLCAiMTAxIiwgIjMyIiwgIjExNSIsICIxMTYiLCAiOTciLCAiMTE2IiwgIjEwMSIsICIxMDkiLCAiMTAxIiwgIjExMCIsICIxMTYiLCAiMzIiLCAiMTE5IiwgIjEwNSIsICIxMTYiLCAiMTA0IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMTEwIiwgIjQ1IiwgIjk5IiwgIjExMSIsICIxMDkiLCAiMTEyIiwgIjExMSIsICIxMTciLCAiMTEwIiwgIjEwMCIsICIzMiIsICIxMTAiLCAiOTciLCAiMTA5IiwgIjEwMSIsICIzMiIsICIzOSIsICI2NSIsICIzOSIsICIzMiIsICIxMDQiLCAiOTciLCAiMTE1IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMzIiLCAiMTAxIiwgIjEwMiIsICIxMDIiLCAiMTAxIiwgIjk5IiwgIjExNiJdLCAiMSJdfSwgeyJ0YWciOiAiRElBR05PU1RJQyIsICJhcmdzIjogWyJXYXJuaW5nIiwgWyI4NCIsICIxMDQiLCAiMTAxIiwgIjMyIiwgIjExNyIsICIxMTUiLCAiMTAxIiwgIjMyIiwgIjExNSIsICIxMTYiLCAiOTciLCAiMTE2IiwgIjEwMSIsICIxMDkiLCAiMTAxIiwgIjExMCIsICIxMTYiLCAiMzIiLCAiMTE5IiwgIjEwNSIsICIxMTYiLCAiMTA0IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMTEwIiwgIjQ1IiwgIjk5IiwgIjExMSIsICIxMDkiLCAiMTEyIiwgIjExMSIsICIxMTciLCAiMTEwIiwgIjEwMCIsICIzMiIsICIxMTAiLCAiOTciLCAiMTA5IiwgIjEwMSIsICIzMiIsICIzOSIsICI2NiIsICIzOSIsICIzMiIsICIxMDQiLCAiOTciLCAiMTE1IiwgIjMyIiwgIjExMCIsICIxMTEiLCAiMzIiLCAiMTAxIiwgIjEwMiIsICIxMDIiLCAiMTAxIiwgIjk5IiwgIjExNiJdLCAiMSJdfV0sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      }
+    ]
+  },
+  "independent_states": {
+    "result": "pass",
+    "classification": "checked-source compilation and constructed execution/resumption states; no loop support claim",
+    "cases": 16,
+    "assertions": 138,
+    "records": [
+      {
+        "source_base64": "PD9waHAgW05BTl07W05BTl07",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Array",
+                  "fields": [
+                    [
+                      {
+                        "node": "ArrayItem",
+                        "fields": [
+                          null,
+                          {
+                            "node": "Expr_ConstFetch",
+                            "fields": [
+                              {
+                                "node": "Name",
+                                "fields": [
+                                  {
+                                    "bytes": "TkFO"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "9"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "2"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "9"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "2"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          false,
+                          false
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "9"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "2"
+                          },
+                          "startFilePos": {
+                            "int": "7"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "2"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "10"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "3"
+                    },
+                    "kind": {
+                      "int": "2"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "11"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "4"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            },
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Array",
+                  "fields": [
+                    [
+                      {
+                        "node": "ArrayItem",
+                        "fields": [
+                          null,
+                          {
+                            "node": "Expr_ConstFetch",
+                            "fields": [
+                              {
+                                "node": "Name",
+                                "fields": [
+                                  {
+                                    "bytes": "TkFO"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "15"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "6"
+                                  },
+                                  "startFilePos": {
+                                    "int": "13"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "6"
+                                  }
+                                }
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "15"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "6"
+                              },
+                              "startFilePos": {
+                                "int": "13"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "6"
+                              }
+                            }
+                          },
+                          false,
+                          false
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "15"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "6"
+                          },
+                          "startFilePos": {
+                            "int": "13"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "6"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "16"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "kind": {
+                      "int": "2"
+                    },
+                    "startFilePos": {
+                      "int": "12"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "5"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "17"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "8"
+                },
+                "startFilePos": {
+                  "int": "12"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "5"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "source_base64": "PD9waHAgJHU9NzskYT1bJHUsImFiYyJbIjF4Il1dOyRhWzBdPTE7dW5zZXQoJGFbMF0pOw==",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Assign",
+                  "fields": [
+                    {
+                      "node": "Expr_Variable",
+                      "fields": [
+                        {
+                          "bytes": "dQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "7"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "1"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Scalar_Int",
+                      "fields": [
+                        {
+                          "int": "7"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "9"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "kind": {
+                          "int": "10"
+                        },
+                        "rawValue": {
+                          "bytes": "Nw=="
+                        },
+                        "startFilePos": {
+                          "int": "9"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "9"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "3"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "10"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "4"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            },
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Assign",
+                  "fields": [
+                    {
+                      "node": "Expr_Variable",
+                      "fields": [
+                        {
+                          "bytes": "YQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "12"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "5"
+                        },
+                        "startFilePos": {
+                          "int": "11"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "5"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_Variable",
+                                "fields": [
+                                  {
+                                    "bytes": "dQ=="
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "16"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "8"
+                                  },
+                                  "startFilePos": {
+                                    "int": "15"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "8"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "16"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "8"
+                              },
+                              "startFilePos": {
+                                "int": "15"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "8"
+                              }
+                            }
+                          },
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_ArrayDimFetch",
+                                "fields": [
+                                  {
+                                    "node": "Scalar_String",
+                                    "fields": [
+                                      {
+                                        "bytes": "YWJj"
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "22"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "10"
+                                      },
+                                      "kind": {
+                                        "int": "2"
+                                      },
+                                      "rawValue": {
+                                        "bytes": "ImFiYyI="
+                                      },
+                                      "startFilePos": {
+                                        "int": "18"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "10"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "node": "Scalar_String",
+                                    "fields": [
+                                      {
+                                        "bytes": "MXg="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "27"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "12"
+                                      },
+                                      "kind": {
+                                        "int": "2"
+                                      },
+                                      "rawValue": {
+                                        "bytes": "IjF4Ig=="
+                                      },
+                                      "startFilePos": {
+                                        "int": "24"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "12"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "28"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "13"
+                                  },
+                                  "startFilePos": {
+                                    "int": "18"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "10"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "28"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "13"
+                              },
+                              "startFilePos": {
+                                "int": "18"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "10"
+                              }
+                            }
+                          }
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "29"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "14"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "14"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "29"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "14"
+                    },
+                    "startFilePos": {
+                      "int": "11"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "5"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "30"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "15"
+                },
+                "startFilePos": {
+                  "int": "11"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "5"
+                }
+              }
+            },
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Assign",
+                  "fields": [
+                    {
+                      "node": "Expr_ArrayDimFetch",
+                      "fields": [
+                        {
+                          "node": "Expr_Variable",
+                          "fields": [
+                            {
+                              "bytes": "YQ=="
+                            }
+                          ],
+                          "meta": {
+                            "endFilePos": {
+                              "int": "32"
+                            },
+                            "endLine": {
+                              "int": "1"
+                            },
+                            "endTokenPos": {
+                              "int": "16"
+                            },
+                            "startFilePos": {
+                              "int": "31"
+                            },
+                            "startLine": {
+                              "int": "1"
+                            },
+                            "startTokenPos": {
+                              "int": "16"
+                            }
+                          }
+                        },
+                        {
+                          "node": "Scalar_Int",
+                          "fields": [
+                            {
+                              "int": "0"
+                            }
+                          ],
+                          "meta": {
+                            "endFilePos": {
+                              "int": "34"
+                            },
+                            "endLine": {
+                              "int": "1"
+                            },
+                            "endTokenPos": {
+                              "int": "18"
+                            },
+                            "kind": {
+                              "int": "10"
+                            },
+                            "rawValue": {
+                              "bytes": "MA=="
+                            },
+                            "startFilePos": {
+                              "int": "34"
+                            },
+                            "startLine": {
+                              "int": "1"
+                            },
+                            "startTokenPos": {
+                              "int": "18"
+                            }
+                          }
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "35"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "19"
+                        },
+                        "startFilePos": {
+                          "int": "31"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "16"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Scalar_Int",
+                      "fields": [
+                        {
+                          "int": "1"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "37"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "21"
+                        },
+                        "kind": {
+                          "int": "10"
+                        },
+                        "rawValue": {
+                          "bytes": "MQ=="
+                        },
+                        "startFilePos": {
+                          "int": "37"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "21"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "37"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "21"
+                    },
+                    "startFilePos": {
+                      "int": "31"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "16"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "38"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "22"
+                },
+                "startFilePos": {
+                  "int": "31"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "16"
+                }
+              }
+            },
+            {
+              "node": "Stmt_Unset",
+              "fields": [
+                [
+                  {
+                    "node": "Expr_ArrayDimFetch",
+                    "fields": [
+                      {
+                        "node": "Expr_Variable",
+                        "fields": [
+                          {
+                            "bytes": "YQ=="
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "46"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "25"
+                          },
+                          "startFilePos": {
+                            "int": "45"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "25"
+                          }
+                        }
+                      },
+                      {
+                        "node": "Scalar_Int",
+                        "fields": [
+                          {
+                            "int": "0"
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "48"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "27"
+                          },
+                          "kind": {
+                            "int": "10"
+                          },
+                          "rawValue": {
+                            "bytes": "MA=="
+                          },
+                          "startFilePos": {
+                            "int": "48"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "27"
+                          }
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "49"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "28"
+                      },
+                      "startFilePos": {
+                        "int": "45"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "25"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "51"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "30"
+                },
+                "startFilePos": {
+                  "int": "39"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "23"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "source_base64": "PD9waHAgW1tOQU5dLFtOQU5dXTs=",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Array",
+                  "fields": [
+                    [
+                      {
+                        "node": "ArrayItem",
+                        "fields": [
+                          null,
+                          {
+                            "node": "Expr_Array",
+                            "fields": [
+                              [
+                                {
+                                  "node": "ArrayItem",
+                                  "fields": [
+                                    null,
+                                    {
+                                      "node": "Expr_ConstFetch",
+                                      "fields": [
+                                        {
+                                          "node": "Name",
+                                          "fields": [
+                                            {
+                                              "bytes": "TkFO"
+                                            }
+                                          ],
+                                          "meta": {
+                                            "endFilePos": {
+                                              "int": "10"
+                                            },
+                                            "endLine": {
+                                              "int": "1"
+                                            },
+                                            "endTokenPos": {
+                                              "int": "3"
+                                            },
+                                            "startFilePos": {
+                                              "int": "8"
+                                            },
+                                            "startLine": {
+                                              "int": "1"
+                                            },
+                                            "startTokenPos": {
+                                              "int": "3"
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "meta": {
+                                        "endFilePos": {
+                                          "int": "10"
+                                        },
+                                        "endLine": {
+                                          "int": "1"
+                                        },
+                                        "endTokenPos": {
+                                          "int": "3"
+                                        },
+                                        "startFilePos": {
+                                          "int": "8"
+                                        },
+                                        "startLine": {
+                                          "int": "1"
+                                        },
+                                        "startTokenPos": {
+                                          "int": "3"
+                                        }
+                                      }
+                                    },
+                                    false,
+                                    false
+                                  ],
+                                  "meta": {
+                                    "endFilePos": {
+                                      "int": "10"
+                                    },
+                                    "endLine": {
+                                      "int": "1"
+                                    },
+                                    "endTokenPos": {
+                                      "int": "3"
+                                    },
+                                    "startFilePos": {
+                                      "int": "8"
+                                    },
+                                    "startLine": {
+                                      "int": "1"
+                                    },
+                                    "startTokenPos": {
+                                      "int": "3"
+                                    }
+                                  }
+                                }
+                              ]
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "11"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "4"
+                              },
+                              "kind": {
+                                "int": "2"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          false,
+                          false
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "11"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "4"
+                          },
+                          "startFilePos": {
+                            "int": "7"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "2"
+                          }
+                        }
+                      },
+                      {
+                        "node": "ArrayItem",
+                        "fields": [
+                          null,
+                          {
+                            "node": "Expr_Array",
+                            "fields": [
+                              [
+                                {
+                                  "node": "ArrayItem",
+                                  "fields": [
+                                    null,
+                                    {
+                                      "node": "Expr_ConstFetch",
+                                      "fields": [
+                                        {
+                                          "node": "Name",
+                                          "fields": [
+                                            {
+                                              "bytes": "TkFO"
+                                            }
+                                          ],
+                                          "meta": {
+                                            "endFilePos": {
+                                              "int": "16"
+                                            },
+                                            "endLine": {
+                                              "int": "1"
+                                            },
+                                            "endTokenPos": {
+                                              "int": "7"
+                                            },
+                                            "startFilePos": {
+                                              "int": "14"
+                                            },
+                                            "startLine": {
+                                              "int": "1"
+                                            },
+                                            "startTokenPos": {
+                                              "int": "7"
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "meta": {
+                                        "endFilePos": {
+                                          "int": "16"
+                                        },
+                                        "endLine": {
+                                          "int": "1"
+                                        },
+                                        "endTokenPos": {
+                                          "int": "7"
+                                        },
+                                        "startFilePos": {
+                                          "int": "14"
+                                        },
+                                        "startLine": {
+                                          "int": "1"
+                                        },
+                                        "startTokenPos": {
+                                          "int": "7"
+                                        }
+                                      }
+                                    },
+                                    false,
+                                    false
+                                  ],
+                                  "meta": {
+                                    "endFilePos": {
+                                      "int": "16"
+                                    },
+                                    "endLine": {
+                                      "int": "1"
+                                    },
+                                    "endTokenPos": {
+                                      "int": "7"
+                                    },
+                                    "startFilePos": {
+                                      "int": "14"
+                                    },
+                                    "startLine": {
+                                      "int": "1"
+                                    },
+                                    "startTokenPos": {
+                                      "int": "7"
+                                    }
+                                  }
+                                }
+                              ]
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "17"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "8"
+                              },
+                              "kind": {
+                                "int": "2"
+                              },
+                              "startFilePos": {
+                                "int": "13"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "6"
+                              }
+                            }
+                          },
+                          false,
+                          false
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "17"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "8"
+                          },
+                          "startFilePos": {
+                            "int": "13"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "6"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "18"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "9"
+                    },
+                    "kind": {
+                      "int": "2"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "19"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "10"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "source_base64": "PD9waHAgW05BTl07",
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Expression",
+              "fields": [
+                {
+                  "node": "Expr_Array",
+                  "fields": [
+                    [
+                      {
+                        "node": "ArrayItem",
+                        "fields": [
+                          null,
+                          {
+                            "node": "Expr_ConstFetch",
+                            "fields": [
+                              {
+                                "node": "Name",
+                                "fields": [
+                                  {
+                                    "bytes": "TkFO"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "9"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "2"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "9"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "2"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          false,
+                          false
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "9"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "2"
+                          },
+                          "startFilePos": {
+                            "int": "7"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "2"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "10"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "3"
+                    },
+                    "kind": {
+                      "int": "2"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "11"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "4"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "fingerprint": {
+      "sha256": "d1afed41db5c6a779bbaeda46faba123574b9de520105a6d589774b466a4ed76",
+      "files": 761,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    }
+  },
+  "byte_diagnostics": {
+    "fingerprint": {
+      "sha256": "d1afed41db5c6a779bbaeda46faba123574b9de520105a6d589774b466a4ed76",
+      "files": 761,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "records": [
+      {
+        "id": 0,
+        "source_base64": "PD9waHAgdXNlIEFcQiBhcyBYO3VzZSBW/1xUYXJnZXQgYXMgeDs=",
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/0-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgVv9cVGFyZ2V0IGFzIHggYmVjYXVzZSB0aGUgbmFtZSBpcyBhbHJlYWR5IGluIHVzZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wZXByNm4xcXQvMC3/LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/0-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUVOaGJtNXZkQ0IxYzJVZ1Z2OWNWR0Z5WjJWMElHRnpJSGdnWW1WallYVnpaU0IwYUdVZ2JtRnRaU0JwY3lCaGJISmxZV1I1SUdsdUlIVnpaU0JwYmlBdmFHOXRaUzkxYzJWeUwzZHZjbXR6Y0dGalpTOXdhSEF0YzNCbFl5OHVkRzl2YkhNdmRHMXdaWEJ5Tm00eGNYUXZNQzMvTG5Cb2NDQnZiaUJzYVc1bElERUtVM1JoWTJzZ2RISmhZMlU2Q2lNd0lIdHRZV2x1ZlFvPSIsICJleGl0X3N0YXR1cyI6IDI1NSwgImRpYWdub3N0aWMiOiB7ImNsYXNzIjogIkNvbXBpbGVFcnJvciIsICJtZXNzYWdlIjogIlEyRnVibTkwSUhWelpTQlcvMXhVWVhKblpYUWdZWE1nZUNCaVpXTmhkWE5sSUhSb1pTQnVZVzFsSUdseklHRnNjbVZoWkhrZ2FXNGdkWE5sIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": 1,
+        "source_base64": "PD9waHAgdXNlIEFcQiBhcyBYO3VzZSBWwoVcVGFyZ2V0IGFzIHg7",
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/1-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgVsKFXFRhcmdldCBhcyB4IGJlY2F1c2UgdGhlIG5hbWUgaXMgYWxyZWFkeSBpbiB1c2UgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcGVwcjZuMXF0LzEt/y5waHAgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/1-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUVOaGJtNXZkQ0IxYzJVZ1ZzS0ZYRlJoY21kbGRDQmhjeUI0SUdKbFkyRjFjMlVnZEdobElHNWhiV1VnYVhNZ1lXeHlaV0ZrZVNCcGJpQjFjMlVnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjR1Z3Y2padU1YRjBMekV0L3k1d2FIQWdiMjRnYkdsdVpTQXhDbE4wWVdOcklIUnlZV05sT2dvak1DQjdiV0ZwYm4wSyIsICJleGl0X3N0YXR1cyI6IDI1NSwgImRpYWdub3N0aWMiOiB7ImNsYXNzIjogIkNvbXBpbGVFcnJvciIsICJtZXNzYWdlIjogIlEyRnVibTkwSUhWelpTQld3b1ZjVkdGeVoyVjBJR0Z6SUhnZ1ltVmpZWFZ6WlNCMGFHVWdibUZ0WlNCcGN5QmhiSEpsWVdSNUlHbHVJSFZ6WlE9PSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": 2,
+        "source_base64": "PD9waHAgdXNlIEFcQiBhcyBYO3VzZSBW4oCoXFRhcmdldCBhcyB4Ow==",
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/2-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgVuKAqFxUYXJnZXQgYXMgeCBiZWNhdXNlIHRoZSBuYW1lIGlzIGFscmVhZHkgaW4gdXNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBlcHI2bjFxdC8yLf8ucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/2-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUVOaGJtNXZkQ0IxYzJVZ1Z1S0FxRnhVWVhKblpYUWdZWE1nZUNCaVpXTmhkWE5sSUhSb1pTQnVZVzFsSUdseklHRnNjbVZoWkhrZ2FXNGdkWE5sSUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OTBiWEJsY0hJMmJqRnhkQzh5TGY4dWNHaHdJRzl1SUd4cGJtVWdNUXBUZEdGamF5QjBjbUZqWlRvS0l6QWdlMjFoYVc1OUNnPT0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJDb21waWxlRXJyb3IiLCAibWVzc2FnZSI6ICJRMkZ1Ym05MElIVnpaU0JXNG9Db1hGUmhjbWRsZENCaGN5QjRJR0psWTJGMWMyVWdkR2hsSUc1aGJXVWdhWE1nWVd4eVpXRmtlU0JwYmlCMWMyVT0iLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": 3,
+        "source_base64": "PD9waHAgdXNlIEFcQiBhcyBYO3VzZSBW/8KF4oCoXFRhcmdldCBhcyB4Ow==",
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/3-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgVv/CheKAqFxUYXJnZXQgYXMgeCBiZWNhdXNlIHRoZSBuYW1lIGlzIGFscmVhZHkgaW4gdXNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBlcHI2bjFxdC8zLf8ucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/3-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUVOaGJtNXZkQ0IxYzJVZ1Z2L0NoZUtBcUZ4VVlYSm5aWFFnWVhNZ2VDQmlaV05oZFhObElIUm9aU0J1WVcxbElHbHpJR0ZzY21WaFpIa2dhVzRnZFhObElHbHVJQzlvYjIxbEwzVnpaWEl2ZDI5eWEzTndZV05sTDNCb2NDMXpjR1ZqTHk1MGIyOXNjeTkwYlhCbGNISTJiakZ4ZEM4ekxmOHVjR2h3SUc5dUlHeHBibVVnTVFwVGRHRmpheUIwY21GalpUb0tJekFnZTIxaGFXNTlDZz09IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiUTJGdWJtOTBJSFZ6WlNCVy84S0Y0b0NvWEZSaGNtZGxkQ0JoY3lCNElHSmxZMkYxYzJVZ2RHaGxJRzVoYldVZ2FYTWdZV3h5WldGa2VTQnBiaUIxYzJVPSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      }
+    ],
+    "helper": {
+      "fixture": "dec $pltestok(plresult) : bool\ndec $pltestevents(plresult) : (text,ptbytes,ptbytes,nat)*\ndec $pltestevent(pldiagnostic) : (text,ptbytes,ptbytes,nat)\ndec $pltestimportok(plimports) : bool\ndec $pltestimportevents(plimports) : (text,ptbytes,ptbytes,nat)*\ndec $pltestenv(plresult) : plenv\ndec $pltestwork(plresult) : pcoccurrence\ndec $pltestlocation(plstate) : pllocation\ndec $plteststate(plresult) : plstate\n\ndef $pltestok(PLDONE plstate pldiagnostic*) = true\ndef $pltestok(PLERROR pldiagnostic*) = false\ndef $pltestevents(PLDONE plstate pldiagnostic*) = ($pltestevent(pldiagnostic))*\ndef $pltestevents(PLERROR pldiagnostic*) = ($pltestevent(pldiagnostic))*\ndef $pltestevents(PLWORK pcoccurrence plstate pldiagnostic*) = ($pltestevent(pldiagnostic))*\ndef $pltestevent(PLDIAGNOSTIC text_level text_code ptbytes* pllocation) = (text_level,$plmessage(PLDIAGNOSTIC text_level text_code ptbytes* pllocation),pllocation.FILE,pllocation.LINE)\ndef $pltestimportok(PLIMPORTED plenv pldiagnostic*) = true\ndef $pltestimportok(PLIMPORTERROR pldiagnostic*) = false\ndef $pltestimportevents(PLIMPORTED plenv pldiagnostic*) = ($pltestevent(pldiagnostic))*\ndef $pltestimportevents(PLIMPORTERROR pldiagnostic*) = ($pltestevent(pldiagnostic))*\ndef $pltestenv(PLDONE plstate pldiagnostic*) = plstate.ENV\ndef $pltestenv(PLWORK pcoccurrence plstate pldiagnostic*) = plstate.ENV\ndef $pltestwork(PLWORK pcoccurrence plstate pldiagnostic*) = pcoccurrence\ndef $pltestlocation(plstate) = pllocation\n  -- if plstate.TASKS = (PLVERIFY bool pllocation) :: pltask*\ndef $plteststate(PLWORK pcoccurrence plstate pldiagnostic*) = plstate\ndef $plteststate(PLDONE plstate pldiagnostic*) = plstate\ndec $case0() : bool\ndef $case0() = true\n  -- if plresult = $plstart(91, (PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"QVxC\"))) ([(MendFilePos (12)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"WA==\"))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (17)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"Vv9cVGFyZ2V0\"))) ([(MendFilePos (31)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))) ((NIdentifier ((BYTES (\"eA==\"))) ([(MendFilePos (36)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (36)), (MstartLine (1)), (MstartTokenPos (15))]))) ([(MendFilePos (36)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (37)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (19)), (MstartLine (1)), (MstartTokenPos (9))]))])), [47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,48,45,255,46,112,104,112])\n  -- if $pltestevents(plresult) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,86,255,92,84,97,114,103,101,116,32,97,115,32,120,32,98,101,99,97,117,115,101,32,116,104,101,32,110,97,109,101,32,105,115,32,97,108,114,101,97,100,121,32,105,110,32,117,115,101],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,48,45,255,46,112,104,112],1)]\n\ndec $case1() : bool\ndef $case1() = true\n  -- if plresult = $plstart(91, (PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"QVxC\"))) ([(MendFilePos (12)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"WA==\"))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (17)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VsKFXFRhcmdldA==\"))) ([(MendFilePos (32)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))) ((NIdentifier ((BYTES (\"eA==\"))) ([(MendFilePos (37)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (37)), (MstartLine (1)), (MstartTokenPos (15))]))) ([(MendFilePos (37)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (38)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (19)), (MstartLine (1)), (MstartTokenPos (9))]))])), [47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,49,45,255,46,112,104,112])\n  -- if $pltestevents(plresult) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,86,194,133,92,84,97,114,103,101,116,32,97,115,32,120,32,98,101,99,97,117,115,101,32,116,104,101,32,110,97,109,101,32,105,115,32,97,108,114,101,97,100,121,32,105,110,32,117,115,101],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,49,45,255,46,112,104,112],1)]\n\ndec $case2() : bool\ndef $case2() = true\n  -- if plresult = $plstart(91, (PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"QVxC\"))) ([(MendFilePos (12)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"WA==\"))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (17)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VuKAqFxUYXJnZXQ=\"))) ([(MendFilePos (33)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))) ((NIdentifier ((BYTES (\"eA==\"))) ([(MendFilePos (38)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (38)), (MstartLine (1)), (MstartTokenPos (15))]))) ([(MendFilePos (38)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (39)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (19)), (MstartLine (1)), (MstartTokenPos (9))]))])), [47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,50,45,255,46,112,104,112])\n  -- if $pltestevents(plresult) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,86,226,128,168,92,84,97,114,103,101,116,32,97,115,32,120,32,98,101,99,97,117,115,101,32,116,104,101,32,110,97,109,101,32,105,115,32,97,108,114,101,97,100,121,32,105,110,32,117,115,101],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,50,45,255,46,112,104,112],1)]\n\ndec $case3() : bool\ndef $case3() = true\n  -- if plresult = $plstart(91, (PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"QVxC\"))) ([(MendFilePos (12)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"WA==\"))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (17)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (17)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"Vv/CheKAqFxUYXJnZXQ=\"))) ([(MendFilePos (36)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))) ((NIdentifier ((BYTES (\"eA==\"))) ([(MendFilePos (41)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (41)), (MstartLine (1)), (MstartTokenPos (15))]))) ([(MendFilePos (41)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (23)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (42)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (19)), (MstartLine (1)), (MstartTokenPos (9))]))])), [47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,51,45,255,46,112,104,112])\n  -- if $pltestevents(plresult) = [(\"fatal\",[67,97,110,110,111,116,32,117,115,101,32,86,255,194,133,226,128,168,92,84,97,114,103,101,116,32,97,115,32,120,32,98,101,99,97,117,115,101,32,116,104,101,32,110,97,109,101,32,105,115,32,97,108,114,101,97,100,121,32,105,110,32,117,115,101],[47,104,111,109,101,47,117,115,101,114,47,119,111,114,107,115,112,97,99,101,47,112,104,112,45,115,112,101,99,47,46,116,111,111,108,115,47,116,109,112,101,112,114,54,110,49,113,116,47,51,45,255,46,112,104,112],1)]\n\ndec $main() : bool\ndef $main() = true\n  -- if $case0()\n  -- if $case1()\n  -- if $case2()\n  -- if $case3()\n",
+      "command": [
+        "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+        "/home/user/workspace/php-spec/spec/php.watsup",
+        "/home/user/workspace/php-spec/spec/semantics/11-source-occurrences.watsup",
+        "/home/user/workspace/php-spec/spec/semantics/10-bytes.watsup",
+        "/home/user/workspace/php-spec/spec/semantics/16-static-types.watsup",
+        "/home/user/workspace/php-spec/spec/semantics/21-source-context.watsup",
+        "/home/user/workspace/php-spec/.tools/tmpepr6n1qt/cases.watsup"
+      ],
+      "cwd": "/home/user/workspace/php-spec",
+      "status": 0,
+      "stdout_base64": "dHJ1ZQo=",
+      "stderr_base64": ""
+    }
+  }
+}
