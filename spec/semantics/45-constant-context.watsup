@@ -2,15 +2,48 @@
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
-syntax pfstate = { FUNCTION ptbytes, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
+syntax pfstate = { CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
   | PFTERNARY expression phpType5 expression | PFMEMBER expression phpType20 | PFNEW phpType28 phpType6 | PFCAST pcast expression | PFCAST_OBJECT expression | PFCAST_UNSET | PFBITNOT expression | PFCOALESCE expression expression | PFCLASSCONST phpType19 phpType20 | PFCLASSNAME phpType19 | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
-syntax pfitem = PFITEM pvalue? pfkey bool | PFSPREAD pvalue?
-syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
+syntax pfitem = PFITEM pvalue? pfkey bool pvalueclass? | PFSPREAD pvalue? pvalueclass?
+syntax pfbuild = PFBUILT pstate pvalueclass? | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
+
+;; Append/spread use the successful operation's existing NEXT history. Failure
+;; diagnostics and values remain the responsibility of that operation.
+dec $pvclass_append_key(int) : pkey
+def $pvclass_append_key(i) = KINT 0
+  -- if i = $(-9223372036854775808)
+def $pvclass_append_key(i) = KINT i
+  -- if i =/= $(-9223372036854775808)
+dec $pvclass_insert(pvalueclass, int, pkey?, pvalueclass) : (pvalueclass, int)
+def $pvclass_insert(pvalueclass, i, (pkey), pvalueclass_item) = ($pvclass_put(pvalueclass, pkey, pvalueclass_item), $next_history(i, pkey))
+def $pvclass_insert(pvalueclass, i, eps, pvalueclass_item) = $pvclass_insert(pvalueclass, i, ($pvclass_append_key(i)), pvalueclass_item)
+dec $pvclass_spread(pvalueclass, int, pvalueclass) : (pvalueclass, int)
+dec $pvclass_spread_entries(pvalueclass, int, (pkey, pvalueclass)*) : (pvalueclass, int)
+def $pvclass_spread(pvalueclass, i, PVARRAY b (pkey, pvalueclass_item)*) = $pvclass_spread_entries(pvalueclass, i, (pkey, pvalueclass_item)*)
+def $pvclass_spread_entries(pvalueclass, i, eps) = (pvalueclass, i)
+def $pvclass_spread_entries(pvalueclass, i, (KINT i_key, pvalueclass_item) :: (pkey_tail, pvalueclass_tail)*) = $pvclass_spread_entries(pvalueclass_next, i_next, (pkey_tail, pvalueclass_tail)*)
+  -- if (pvalueclass_next, i_next) = $pvclass_insert(pvalueclass, i, eps, pvalueclass_item)
+def $pvclass_spread_entries(pvalueclass, i, (KSTRING ptbytes, pvalueclass_item) :: (pkey_tail, pvalueclass_tail)*) = $pvclass_spread_entries(pvalueclass_next, i_next, (pkey_tail, pvalueclass_tail)*)
+  -- if (pvalueclass_next, i_next) = $pvclass_insert(pvalueclass, i, (KSTRING ptbytes), pvalueclass_item)
+
+dec $pfclass_at((pcpath, pvalueclass)*, pcpath) : pvalueclass?
+dec $pfclass_record(pfstate, pcpath, pvalueclass?) : pfstate
+dec $pfclass_finish(pfstate, pcpath, expression) : pfstate
+dec $pfclass_result(pfstate, pcpath, expression, pvalue) : pvalueclass?
+dec $pfclass_shape(pfstate, pcpath, pfshape) : pvalueclass?
+dec $pfclass_array_start(bool, bool) : pvalueclass?
+dec $pfclass_insert(pvalueclass?, int, pkey?, pvalueclass?) : pvalueclass?
+dec $pfclass_spread(pvalueclass?, int, pvalueclass?) : pvalueclass?
+dec $pfclass_scalar(pvalue) : bool
+dec $pfclass_literal(expression) : pvalueclass?
+dec $pfclass_raw(metadata) : ptbytes?
+dec $pfclass_raw_entry(metadataEntry) : ptbytes?
+dec $pfclass_quoted(ptbytes) : bool
 
 dec $pfwarning_binary(pbin) : bool
 def $pfwarning_binary(pbin) = (pbin <- [LOGICALXOR, EQUAL, NOTEQUAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, SPACESHIP])
@@ -34,7 +67,7 @@ dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { FUNCTION eps, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
+def $pfbegin(n, program) = { CLASSFACTS eps, CONSTANT false, FUNCTION eps, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -127,7 +160,7 @@ def $pfprepare(F, pcpath, expression, plenv, z) = $pfunsupported(F, "invalid con
   -- otherwise
 def $pffold(F, pcpath, expression, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pffold(F, pcpath, expression, z) = $pftracked($pfcontextualize(F, pcpath), pcpath, expression, z)
+def $pffold(F, pcpath, expression, z) = $pfclass_finish($pftracked($pfcontextualize(F, pcpath), pcpath, expression, z), pcpath, expression)
   -- if F.MEMORY.COMPLETION = NORMAL
 
 def $pftracked(F, pcpath, expression, z) = F
@@ -146,6 +179,9 @@ def $pfnamed(F, pcpath, PNRESOLVED pnreference, z) = $pfremember(F, pcpath, $pnf
 def $pfnamed(F, pcpath, PNUNSUPPORTED text, z) = $pfunsupported(F, text)
 def $pfdispatch(F, pcpath, PFSTOP, z) = F[.VALUE = eps]
 def $pfdispatch(F, pcpath, PFOTHER, z) = $pfunsupported(F, "constant-expression kind")
+  -- if ~F.CONSTANT
+def $pfdispatch(F, pcpath, PFOTHER, z) = F[.VALUE = eps]
+  -- if F.CONSTANT
 
 ;; Both children are visited even when the first cannot fold.
 dec $pfbinary(pfstate, pcpath, pbin, pvalue?, pvalue?, int) : pfstate
@@ -210,10 +246,10 @@ dec $pfitemkey(pfstate, pcpath, phpType5, int) : pfstate
 dec $pfkey(phpType5, pvalue?) : pfkey
 dec $pfready(pfitem*) : bool
 dec $pfarray(pfstate, pcpath, pfitem*, int) : pfstate
-dec $pfconstruct(pstate, nat, pfitem*, int) : pfbuild
-dec $pfconstructkey(pstate, nat, pvalue, pfkey, pfitem*, int) : pfbuild
-dec $pfinsert(pstate, nat, pkey?, pvalue, pfitem*, int) : pfbuild
-dec $pfinserted(pstate, nat, pfitem*, int) : pfbuild
+dec $pfconstruct(pstate, nat, pfitem*, int, pvalueclass?) : pfbuild
+dec $pfconstructkey(pstate, nat, pvalue, pfkey, pfitem*, int, pvalueclass?, pvalueclass?) : pfbuild
+dec $pfinsert(pstate, nat, pkey?, pvalue, pfitem*, int, pvalueclass?, pvalueclass?) : pfbuild
+dec $pfinserted(pstate, nat, pfitem*, int, pvalueclass?) : pfbuild
 dec $pfbuilt(pfstate, pcpath, pfbuild, nat, int) : pfstate
 
 def $pfdispatch(F, pcpath, PFARRAY phpType13*, z) = $pfitems(F, pcpath, 0, phpType13*, eps, z, 0)
@@ -221,7 +257,7 @@ def $pfitems(F, pcpath, n, phpType13*, pfitem*, z, z_previous) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfitems(F, pcpath, n, eps, pfitem*, z, z_previous) = $pfarray(F, pcpath, pfitem*, z)
   -- if F.MEMORY.COMPLETION = NORMAL
-def $pfitems(F, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*, pfitem*, z, z_previous) = $pfitems(F_key, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFITEM F_value.VALUE ($pfkey(phpType5, F_key.VALUE)) b], z, $expression_line(expression))
+def $pfitems(F, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*, pfitem*, z, z_previous) = $pfitems(F_key, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFITEM F_value.VALUE ($pfkey(phpType5, F_key.VALUE)) b ($pfclass_at(F_value.CLASSFACTS, pcpath_item ++ [PCFIELD 1]))], z, $expression_line(expression))
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if pcpath_item = pcpath ++ [PCFIELD 0, PCINDEX n]
   -- if F_value = $pffold(F, pcpath_item ++ [PCFIELD 1], expression, z)
@@ -231,7 +267,7 @@ def $pfitems(F, pcpath, n, ABSENT :: phpType13*, pfitem*, z, z_previous) = $pfer
   -- if $(z_previous > 0)
 def $pfitems(F, pcpath, 0, ABSENT :: phpType13*, pfitem*, z, 0) = $pferror(F, "Cannot use empty array elements in arrays", z)
   -- if F.MEMORY.COMPLETION = NORMAL
-def $pfitems(F, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*, pfitem*, z, z_previous) = $pfitems(F_value, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFSPREAD F_value.VALUE], z, $expression_line(expression))
+def $pfitems(F, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*, pfitem*, z, z_previous) = $pfitems(F_value, pcpath, $(n + 1), phpType13*, pfitem* ++ [PFSPREAD F_value.VALUE ($pfclass_at(F_value.CLASSFACTS, pcpath ++ [PCFIELD 0, PCINDEX n, PCFIELD 1]))], z, $expression_line(expression))
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F_value = $pffold(F, pcpath ++ [PCFIELD 0, PCINDEX n, PCFIELD 1], expression, z)
 def $pfitems(F, pcpath, n, phpType13*, pfitem*, z, z_previous) = $pfunsupported(F, "constant array unpack or edited item")
@@ -244,32 +280,32 @@ def $pfkey(ABSENT, pvalue?) = PFNO_KEY
 def $pfkey(phpType5, pvalue?) = PFKEY pvalue?
   -- if phpType5 = expression
 def $pfready(eps) = true
-def $pfready((PFITEM (pvalue) PFNO_KEY false) :: pfitem*) = $pfready(pfitem*)
-def $pfready((PFITEM (pvalue) (PFKEY (pvalue_key)) false) :: pfitem*) = $pfready(pfitem*)
+def $pfready((PFITEM (pvalue) PFNO_KEY false pvalueclass?) :: pfitem*) = $pfready(pfitem*)
+def $pfready((PFITEM (pvalue) (PFKEY (pvalue_key)) false pvalueclass?) :: pfitem*) = $pfready(pfitem*)
 def $pfready(pfitem*) = false
   -- otherwise
 
 def $pfarray(F, pcpath, pfitem*, z) = F[.VALUE = eps]
   -- if ~$pfready(pfitem*)
-def $pfarray(F, pcpath, pfitem*, z) = $pfbuilt(F, pcpath, $pfconstruct(S, n, pfitem*, z), n, z)
+def $pfarray(F, pcpath, pfitem*, z) = $pfbuilt(F, pcpath, $pfconstruct(S, n, pfitem*, z, $pfclass_array_start(F.CONSTANT, pfitem* = eps)), n, z)
   -- if $pfready(pfitem*)
   -- if S = $allocate_array(F.MEMORY, $array_empty())
   -- if S.RESULT = KNOWN (PARRAY n)
-def $pfconstruct(S, n, eps, z) = PFBUILT S
-def $pfconstruct(S, n, (PFITEM (pvalue) pfkey false) :: pfitem*, z) = $pfconstructkey(S, n, pvalue, pfkey, pfitem*, z)
-def $pfconstructkey(S, n, pvalue, PFNO_KEY, pfitem*, z) = $pfinsert(S, n, eps, pvalue, pfitem*, z)
-def $pfconstructkey(S, n, pvalue, PFKEY (PARRAY n_key), pfitem*, z) = PFSTATIC "Illegal offset type"
-def $pfconstructkey(S, n, pvalue, PFKEY (pvalue_key), pfitem*, z) = $pfinsert(S_key, n, (S_key.KEY), pvalue, pfitem*, z)
+def $pfconstruct(S, n, eps, z, pvalueclass?) = PFBUILT S pvalueclass?
+def $pfconstruct(S, n, (PFITEM (pvalue) pfkey false pvalueclass_item?) :: pfitem*, z, pvalueclass?) = $pfconstructkey(S, n, pvalue, pfkey, pfitem*, z, pvalueclass?, pvalueclass_item?)
+def $pfconstructkey(S, n, pvalue, PFNO_KEY, pfitem*, z, pvalueclass?, pvalueclass_item?) = $pfinsert(S, n, eps, pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?)
+def $pfconstructkey(S, n, pvalue, PFKEY (PARRAY n_key), pfitem*, z, pvalueclass?, pvalueclass_item?) = PFSTATIC "Illegal offset type"
+def $pfconstructkey(S, n, pvalue, PFKEY (pvalue_key), pfitem*, z, pvalueclass?, pvalueclass_item?) = $pfinsert(S_key, n, (S_key.KEY), pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?)
   -- if $constant_state($key_value(S, pvalue_key, false, z)) = (S_key)
-def $pfconstructkey(S, n, pvalue, pfkey, pfitem*, z) = PFDEFER
+def $pfconstructkey(S, n, pvalue, pfkey, pfitem*, z, pvalueclass?, pvalueclass_item?) = PFDEFER
   -- otherwise
-def $pfinsert(S, n, pkey?, pvalue, pfitem*, z) = $pfinserted($literal_insert(S, n, pkey?, pvalue, z), n, pfitem*, z)
-def $pfinserted(S, n, pfitem*, z) = $pfconstruct(S, n, pfitem*, z)
+def $pfinsert(S, n, pkey?, pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?) = $pfinserted($literal_insert(S, n, pkey?, pvalue, z), n, pfitem*, z, $pfclass_insert(pvalueclass?, S.ARRAYS[n].NEXT, pkey?, pvalueclass_item?))
+def $pfinserted(S, n, pfitem*, z, pvalueclass?) = $pfconstruct(S, n, pfitem*, z, pvalueclass?)
   -- if S.COMPLETION = NORMAL
   -- if S.EVENTS = eps
-def $pfinserted(S, n, pfitem*, z) = PFDEFER
+def $pfinserted(S, n, pfitem*, z, pvalueclass?) = PFDEFER
   -- otherwise
-def $pfbuilt(F, pcpath, PFBUILT S, n, z) = $pfremember(F[.MEMORY = S], pcpath, (PARRAY n), z)
+def $pfbuilt(F, pcpath, PFBUILT S pvalueclass?, n, z) = $pfclass_record($pfremember(F[.MEMORY = S], pcpath, (PARRAY n), z), pcpath, pvalueclass?)
 def $pfbuilt(F, pcpath, PFDEFER, n, z) = F[.VALUE = eps]
 def $pfbuilt(F, pcpath, PFSTATIC text, n, z) = $pferror(F, text, z)
 
@@ -542,6 +578,10 @@ def $pfclassconstantdone(F, b) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfclassconstantdone(F, true) = $pfunsupported(F, "constant class-constant lookup")
   -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ~F.CONSTANT
+def $pfclassconstantdone(F, true) = F[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.CONSTANT
 def $pfclassconstantdone(F, false) = F[.VALUE = eps]
   -- if F.MEMORY.COMPLETION = NORMAL
 def $pfdispatch(F, pcpath, PFCLASSCONST phpType19 phpType20, z) = $pfclassconstantdone(F_member, ($pfclass_known(phpType19, F_class.VALUE) /\ $pfmember_known(phpType20, F_member.VALUE)))
@@ -581,8 +621,136 @@ def $pfbitnot(F, pcpath, z) = F[.VALUE = eps]
 
 ;; All operands were visited by pass one. A scalar spread is a compile error
 ;; only when every element is constant; append overflow defers to execution.
-def $pfready((PFSPREAD (pvalue)) :: pfitem*) = $pfready(pfitem*)
-def $pfconstruct(S, n, (PFSPREAD (PARRAY n_source)) :: pfitem*, z) = $pfinserted($array_unpack(S, n, PARRAY n_source, z), n, pfitem*, z)
-def $pfconstruct(S, n, (PFSPREAD (pvalue)) :: pfitem*, z) = PFSTATICBYTES ($unpack_error_bytes(pvalue))
+def $pfready((PFSPREAD (pvalue) pvalueclass?) :: pfitem*) = $pfready(pfitem*)
+def $pfconstruct(S, n, (PFSPREAD (PARRAY n_source) pvalueclass_source?) :: pfitem*, z, pvalueclass?) = $pfinserted($array_unpack(S, n, PARRAY n_source, z), n, pfitem*, z, $pfclass_spread(pvalueclass?, S.ARRAYS[n].NEXT, pvalueclass_source?))
+def $pfconstruct(S, n, (PFSPREAD (pvalue) pvalueclass_source?) :: pfitem*, z, pvalueclass?) = PFSTATICBYTES ($unpack_error_bytes(pvalue))
   -- if ~$is_array_value(pvalue)
 def $pfbuilt(F, pcpath, PFSTATICBYTES ptbytes, n, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ptbytes z]][.VALUE = eps]
+
+;; Class facts accompany successful folds; they never evaluate another value.
+
+def $pfclass_at(eps, pcpath) = eps
+def $pfclass_at((pcpath, pvalueclass) :: (pcpath_tail, pvalueclass_tail)*, pcpath) = (pvalueclass)
+def $pfclass_at((pcpath_other, pvalueclass) :: (pcpath_tail, pvalueclass_tail)*, pcpath) = $pfclass_at((pcpath_tail, pvalueclass_tail)*, pcpath)
+  -- if pcpath_other =/= pcpath
+
+def $pfclass_record(F, pcpath, eps) = F
+def $pfclass_record(F, pcpath, (pvalueclass)) = F[.CLASSFACTS = F.CLASSFACTS ++ [(pcpath, pvalueclass)]]
+  -- if $pfclass_at(F.CLASSFACTS, pcpath) = eps
+def $pfclass_record(F, pcpath, (pvalueclass)) = F
+  -- if $pfclass_at(F.CLASSFACTS, pcpath) = (pvalueclass)
+
+def $pfclass_finish(F, pcpath, expression) = $pfclass_record(F, pcpath, $pfclass_result(F, pcpath, expression, pvalue))
+  -- if F.CONSTANT
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if $pfclass_at(F.CLASSFACTS, pcpath) = eps
+  -- if $pfclass_result(F, pcpath, expression, pvalue) = (pvalueclass)
+def $pfclass_finish(F, pcpath, expression) = $pfunsupported(F, "missing constant allocation class source fact")
+  -- if F.CONSTANT
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if $pfclass_at(F.CLASSFACTS, pcpath) = eps
+  -- if $pfclass_result(F, pcpath, expression, pvalue) = eps
+def $pfclass_finish(F, pcpath, expression) = F
+  -- otherwise
+
+def $pfclass_scalar(PSTRING ptbytes) = false
+def $pfclass_scalar(PARRAY n) = false
+def $pfclass_scalar(pvalue) = true
+  -- otherwise
+
+def $pfclass_result(F, pcpath, expression, pvalue) = (PVSCALAR)
+  -- if $pfclass_scalar(pvalue)
+def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_at(F.CLASSFACTS, pcpath_target)
+  -- if ~$pfclass_scalar(pvalue)
+  -- if $pfredirect(F.REDIRECTS, pcpath) = (pcpath_target)
+def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_literal(expression)
+  -- if ~$pfclass_scalar(pvalue)
+  -- if $pfredirect(F.REDIRECTS, pcpath) = eps
+  -- if $pfclass_literal(expression) = (pvalueclass)
+def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_shape(F, pcpath, $pfshape(expression))
+  -- if ~$pfclass_scalar(pvalue)
+  -- if $pfredirect(F.REDIRECTS, pcpath) = eps
+  -- if $pfclass_literal(expression) = eps
+
+def $pfclass_shape(F, pcpath, PFBINARY pbin expression_left expression_right) = ($pvclass_binary(pbin, $pvclass_operand(pvalue_left), pvalueclass_left, $pvclass_operand(pvalue_right), pvalueclass_right))
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (pvalue_left)
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 1]) = (pvalue_right)
+  -- if $pfclass_at(F.CLASSFACTS, pcpath ++ [PCFIELD 0]) = (pvalueclass_left)
+  -- if $pfclass_at(F.CLASSFACTS, pcpath ++ [PCFIELD 1]) = (pvalueclass_right)
+def $pfclass_shape(F, pcpath, PFCAST pcast expression) = ($pvclass_cast(PVFOLD, pcast, $pvclass_operand(pvalue), pvalueclass))
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (pvalue)
+  -- if $pfclass_at(F.CLASSFACTS, pcpath ++ [PCFIELD 0]) = (pvalueclass)
+def $pfclass_shape(F, pcpath, PFBITNOT expression) = ($pvclass_bitnot($pvclass_operand(pvalue)))
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (pvalue)
+def $pfclass_shape(F, pcpath, PFDIM expression phpType5) = (PVSTRING true)
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (PSTRING ptbytes)
+def $pfclass_shape(F, pcpath, PFDIM expression phpType5) = $pvclass_get(pvalueclass, pkey)
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (PARRAY n)
+  -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 1]) = (pvalue_key)
+  -- if $pfarraykey(pvalue_key) = (pkey)
+  -- if $pfclass_at(F.CLASSFACTS, pcpath ++ [PCFIELD 0]) = (pvalueclass)
+def $pfclass_shape(F, pcpath, pfshape) = eps
+  -- otherwise
+
+def $pfclass_array_start(false, b) = eps
+def $pfclass_array_start(true, b) = (PVARRAY b eps)
+def $pfclass_insert(eps, i, pkey?, pvalueclass?) = eps
+def $pfclass_insert((pvalueclass), i, pkey?, (pvalueclass_item)) = (pvalueclass_next)
+  -- if (pvalueclass_next, i_next) = $pvclass_insert(pvalueclass, i, pkey?, pvalueclass_item)
+def $pfclass_spread(eps, i, pvalueclass?) = eps
+def $pfclass_spread((pvalueclass), i, (pvalueclass_source)) = (pvalueclass_next)
+  -- if (pvalueclass_next, i_next) = $pvclass_spread(pvalueclass, i, pvalueclass_source)
+
+def $pfclass_raw_entry(MrawValue text) = ($base64(text))
+def $pfclass_raw_entry(metadataEntry) = eps
+  -- otherwise
+def $pfclass_raw(eps) = eps
+def $pfclass_raw(metadataEntry :: metadataEntry_tail*) = (ptbytes)
+  -- if $pfclass_raw_entry(metadataEntry) = (ptbytes)
+def $pfclass_raw(metadataEntry :: metadataEntry_tail*) = $pfclass_raw(metadataEntry_tail*)
+  -- if $pfclass_raw_entry(metadataEntry) = eps
+
+def $pfclass_quoted(n :: ptbytes) = $(|ptbytes| <= 3)
+  -- if n = 98 \/ n = 66
+def $pfclass_quoted(ptbytes) = $(|ptbytes| <= 3)
+  -- otherwise
+
+def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $pfclass_quoted(ptbytes))
+  -- if $string_kind(metadata) = (z)
+  -- if z = 1 \/ z = 2
+  -- if $pfclass_raw(metadata) = (ptbytes)
+def $pfclass_literal(NScalarInt (INTEGER i) metadata) = (PVSCALAR)
+def $pfclass_literal(NScalarFloat (FLOAT text) metadata) = (PVSCALAR)
+def $pfclass_literal(NExprBinaryOpConcat expression_left expression_right metadata) = ($pvclass_concat($pvclass_operand(pvalue_left), pvalueclass_left, $pvclass_operand(pvalue_right), pvalueclass_right))
+  -- if $parser_literal(expression_left) = (pvalue_left)
+  -- if $parser_literal(expression_right) = (pvalue_right)
+  -- if $pfclass_literal(expression_left) = (pvalueclass_left)
+  -- if $pfclass_literal(expression_right) = (pvalueclass_right)
+def $pfclass_literal(expression) = eps
+  -- otherwise
+
+
+;; Namespace/function names preserve scanner one-byte identifiers; qualified
+;; names allocate. File copies and directory construction remain refcounted.
+def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING false)
+  -- if pmagic <- [MAGICFILE, MAGICDIR]
+def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING $(|ptbytes| <= 1))
+  -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
+  -- if pmagic <- [MAGICNAMESPACE, MAGICFUNCTION, MAGICMETHOD]
+def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
+  -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
+  -- if ptbytes = eps
+  -- if pmagic <- [MAGICCLASS, MAGICTRAIT, MAGICPROPERTY]
+
+def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $(|ptbytes| <= 1))
+  -- if $string_kind(metadata) = (z)
+  -- if z = 3
+  -- if $pfclass_raw(metadata) = (ptbytes)
+def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING b)
+  -- if $string_kind(metadata) = (z)
+  -- if z = 4
+  -- if $source_token_start(metadata) = (z_start)
+  -- if $source_token_end(metadata) = (z_end)
+  -- if b = (z_end = $(z_start + 1))

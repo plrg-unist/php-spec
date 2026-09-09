@@ -166,7 +166,8 @@ dec $frames_roots(pframe*) : pnode*
 dec $call_context_roots(pcallcontext?) : pnode*
 dec $machine_roots(pstate) : pnode*
 dec $pools_nodes(ppool*) : pnode*
-def $machine_roots(S) = $trace_roots(S.TRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
+dec $user_constant_roots(puserconstant*) : pnode*
+def $machine_roots(S) = $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}
@@ -234,7 +235,7 @@ def $separate_location_array(S, n) = $duplicate_array(S_live, n)
 ;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a
 ;; tool observation and must retain the interrupted machine state.
 dec $release_temporaries(pstate) : pstate
-def $release_temporaries(S) = S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
+def $release_temporaries(S) = S[.CONSTCONTEXT = eps][.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
 
 def $task_nodes(LIST_PATTERN expression poperand z) = $operand_nodes(poperand)
 def $task_nodes(LIST_NEXT poperand n phpType13* z) = $operand_nodes(poperand)

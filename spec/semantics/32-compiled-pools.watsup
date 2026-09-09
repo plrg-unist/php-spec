@@ -1,3 +1,4 @@
+dec $constant_class_origin_allowed(pcunit, pcpath) : bool
 ;; Compiled constants outlive task temporaries. This internal installation API
 ;; consumes compiler-proved values; structural validation does not re-prove
 ;; constant evaluation. Ordered source compilation installs each unit before execution.
@@ -104,3 +105,26 @@ def $install_pool(S, pcunit, parray_tail*, pnode*, pconstant*) = S[.SOURCES = pc
   -- if n = |S.ARRAYS|
 def $install_pool(S, pcunit, parray_tail*, pnode*, pconstant*) = S[.COMPLETION = UNSUPPORTED "invalid compiled constant pool"]
   -- otherwise
+
+;; Allocation classes are source facts, never heap owners.
+dec $constant_class_at(pconstant*, pcpath) : pvalueclass?
+def $constant_class_at(eps, pcpath) = eps
+def $constant_class_at((PCCLASS pcpath pvalueclass) :: pconstant*, pcpath) = (pvalueclass)
+def $constant_class_at((PCCLASS pcpath_other pvalueclass) :: pconstant*, pcpath) = $constant_class_at(pconstant*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $constant_class_at((PCONSTANT pcpath_other pvalue) :: pconstant*, pcpath) = $constant_class_at(pconstant*, pcpath)
+dec $pool_class(ppool*, porigin) : pvalueclass?
+def $pool_class(ppool_tail*, PORIGIN n pcpath) = $constant_class_at(ppool.CONSTANTS, pcpath)
+  -- if $pool_at(ppool_tail*, n) = (ppool)
+def $pool_class(ppool_tail*, PORIGIN n pcpath) = eps
+  -- if $pool_at(ppool_tail*, n) = eps
+
+def $constant_at((PCCLASS pcpath_class pvalueclass) :: pconstant*, pcpath) = $constant_at(pconstant*, pcpath)
+def $constants_nodes((PCCLASS pcpath pvalueclass) :: pconstant*) = $constants_nodes(pconstant*)
+def $pool_shift_constants((PCCLASS pcpath pvalueclass) :: pconstant*, n) = (PCCLASS pcpath pvalueclass) :: $pool_shift_constants(pconstant*, n)
+def $constants_valid(pcunit, (PCCLASS pcpath pvalueclass) :: pconstant*, pnode*) = true
+  -- if $constant_class_origin_allowed(pcunit, pcpath)
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (pcnode)
+  -- if $constant_occurrence(pcnode)
+  -- if $constant_class_at(pconstant*, pcpath) = eps
+  -- if $constants_valid(pcunit, pconstant*, pnode*)

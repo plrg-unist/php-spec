@@ -11,6 +11,8 @@ syntax pfunctioncheck = FUNCTIONCHECK pfunction* | FUNCTIONINVALID
 dec $call_declaration_node(pcnode) : bool
 def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
 def $call_declaration_node(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+def $call_declaration_node(NConst phpType11 expression metadata) = true
+def $call_declaration_node(NExprConstFetch name metadata) = true
 def $call_declaration_node(pcnode) = false -- otherwise
 dec $call_declarations(pcoccurrence*) : bool
 def $call_declarations(eps) = false
@@ -21,6 +23,10 @@ def $call_request_cwd((Q)) = Q.CWD
 dec $call_source_node(pstate, nat, pcpath) : bool
 def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
 def $call_source_node(S, n, pcpath) = false -- otherwise
 dec $call_name_count(pcodename*, pcpath) : nat
 def $call_name_count(eps, pcpath) = 0
@@ -47,11 +53,13 @@ def $call_name_entry_valid(S, P, pcode, pcpath) = false -- otherwise
 dec $call_name_entries_valid(pstate, ppstate, pcode, pcodename*) : bool
 def $call_name_entries_valid(S, P, pcode, eps) = true
 def $call_name_entries_valid(S, P, pcode, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = ($call_name_entry_valid(S, P, pcode, pcpath) /\ $call_name_entries_valid(S, P, pcode, pcodename*))
+dec $constant_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $call_unit_names_valid(pstate, ppstate) : bool
 def $call_unit_names_valid(S, P) = true
   -- if $code_at(S.CODE, P.FOLD.SOURCE.ID) = (pcode)
   -- if $call_name_entries_valid(S, P, pcode, pcode.NAMES ++ $compiled_names(P.NAMES))
   -- if $call_argument_paths(pcode.EXPRESSIONS) = $call_argument_paths($compiled_operands(P, P.EXPRESSIONS))
+  -- if $constant_unit_code_valid(S, P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -192,6 +200,8 @@ def $call_saved_context_valid(S, pframe) = false -- otherwise
 dec $call_frames_valid(pstate, pframe*) : bool
 def $call_frames_valid(S, eps) = true
 def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN], pframe.TODO) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
+dec $user_constants_valid(pstate, puserconstant*) : bool
+dec $constant_context_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
@@ -201,6 +211,8 @@ def $call_descriptors_valid(S) = true
   -- if $call_frames_valid(S, S.FRAMES)
   -- if $call_current_valid(S)
   -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $user_constants_valid(S, S.USERCONSTANTS)
+  -- if $constant_context_valid(S)
 def $call_descriptors_valid(S) = false -- otherwise
 
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL

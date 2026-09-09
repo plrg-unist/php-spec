@@ -1,3 +1,4 @@
+dec $constant_quiet_capture(pstate) : pstate
 ;; BP_VAR_IS fetches retain key/name expression effects, while absent locations
 ;; return null. This is distinct from ISSET_ISEMPTY's terminal string protocol.
 dec $quiet_name(pstate, nat*) : pstate
@@ -95,7 +96,7 @@ def $quiet_base(S, BASE_DIM pbase poperand z_key, z) = $quiet_dimension(S_base, 
 rule PhpStep/coalesce-quiet: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_left), COALESCE_QUIET expression_right $runtime_line(S, [PCFIELD 0], expression_left) $runtime_line(S, [PCFIELD 1], expression_right)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpCoalesce expression_left expression_right metadata)) :: ptask_tail*
   -- if $coalesce_quiet_operand(expression_left)
-rule PhpStep/coalesce-quiet-result: S ~> $coalesce_result(S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], expression, z_left, z_right)
+rule PhpStep/coalesce-quiet-result: S ~> $coalesce_result($constant_quiet_capture(S_read)[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], expression, z_left, z_right)
   -- if S.TODO = (COALESCE_QUIET expression z_left z_right) :: ptask_tail*
   -- if S_read = $quiet_base(S, S.BASE, z_left)
   -- if S_read.COMPLETION = NORMAL

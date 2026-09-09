@@ -1,0 +1,145 @@
+dec $constant_branches_valid(pstate) : bool
+dec $constant_unit_classes_valid(pstate, ppstate) : bool
+dec $constant_value_class_valid(pstate, pvalue, pvalueclass) : bool
+dec $constant_facts_valid(pstate, porigin, pconstantfact*) : bool
+dec $constant_received_class(pstate, porigin) : pvalueclass
+dec $constant_declaration(pstate, porigin) : (preqbytes, int)?
+;; Ordinary constant declarations activate after their initializer completes.
+dec $user_constant_key(preqbytes) : preqbytes
+def $user_constant_key(n*) = n* -- if ~(92 <- n*)
+def $user_constant_key(n*) = $ptlc($ptfirst(n*)) ++ [92] ++ $user_constant_key(n*[n_i:n_tail])
+  -- if 92 <- n*
+  -- if n_i = $(|$ptfirst(n*)| + 1)
+  -- if n_tail = $(|n*| - n_i)
+dec $user_constant_at(puserconstant*, preqbytes) : puserconstant?
+def $user_constant_at(eps, preqbytes) = eps
+def $user_constant_at(puserconstant :: puserconstant_tail*, preqbytes) = (puserconstant)
+  -- if puserconstant.NAME = preqbytes
+def $user_constant_at(puserconstant :: puserconstant_tail*, preqbytes) = $user_constant_at(puserconstant_tail*, preqbytes)
+  -- if puserconstant.NAME =/= preqbytes
+dec $source_constant_lookup(pstate, preqbytes) : peval?
+def $source_constant_lookup(S, preqbytes) = (VALUE puserconstant.VALUE)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+def $source_constant_lookup(S, preqbytes) = $constant_lookup_bytes(preqbytes)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+dec $source_constant_candidates(pstate, preqbytes, preqbytes?) : peval?
+def $source_constant_candidates(S, preqbytes, preqbytes_fallback?) = (peval)
+  -- if $source_constant_lookup(S, preqbytes) = (peval)
+def $source_constant_candidates(S, preqbytes, (preqbytes_fallback)) = $source_constant_lookup(S, preqbytes_fallback)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+def $source_constant_candidates(S, preqbytes, eps) = eps
+  -- if $source_constant_lookup(S, preqbytes) = eps
+def $source_constant_fetch(S, preqbytes, preqbytes_fallback?, z) = peval
+  -- if $source_constant_candidates(S, preqbytes, preqbytes_fallback?) = (peval)
+def $source_constant_fetch(S, preqbytes, preqbytes_fallback?, z) = $constant_fetch(preqbytes, preqbytes_fallback?, z)
+  -- if $source_constant_candidates(S, preqbytes, preqbytes_fallback?) = eps
+
+def $user_constant_roots(eps) = eps
+def $user_constant_roots(puserconstant :: puserconstant_tail*) = $value_nodes(puserconstant.VALUE) ++ $user_constant_roots(puserconstant_tail*)
+dec $constant_statement_tasks(phpType46*, porigin?, nat) : ptask*
+def $constant_statement_tasks(eps, porigin?, n) = eps
+def $constant_statement_tasks((NConst phpType11 expression metadata) :: phpType46*, porigin?, n) = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n]), CONSTANT_INIT expression)] ++ $constant_statement_tasks(phpType46*, porigin?, $(n + 1))
+rule PhpStep/constant-statement: S ~> S[.TODO = $constant_statement_tasks(phpType46*, S.ORIGIN, 0) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata)) :: ptask_tail*
+rule PhpStep/constant-initializer: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin, LINE z, FACTS eps})][.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), CONSTANT_BIND porigin] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (CONSTANT_INIT expression) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+def $constant_declaration(S, PORIGIN n pcpath) = ((preqbytes, z))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+def $constant_declaration(S, porigin) = eps -- otherwise
+
+dec $constant_activate(pstate, porigin, preqbytes, pvalue, pvalueclass, int) : pstate
+def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]]
+  -- if $source_constant_lookup(S, preqbytes) = eps
+def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" ($ptascii("Constant ") ++ $user_constant_key(preqbytes) ++ $ptascii(" already defined, this will be an error in PHP 9")) z]]
+  -- if $source_constant_lookup(S, preqbytes) = (peval)
+rule PhpStep/constant-bind: S ~> $constant_activate(S_value[.CONSTCONTEXT = eps][.TODO = ptask_tail*][.RESULT = KNOWN PNULL], porigin, preqbytes, pvalue, $constant_received_class(S_value, porigin), z)
+  -- if S.TODO = (CONSTANT_BIND porigin) :: ptask_tail*
+  -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/constant-bind-abrupt: S ~> S_value
+  -- if S.TODO = (CONSTANT_BIND porigin) :: ptask_tail*
+  -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+
+def $constant_runtime_line(S, z) = pconstantcontext.LINE
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $constant_runtime_line(S, z) = z
+  -- if S.CONSTCONTEXT = eps
+
+;; Compiler designations and active constant roots are checked without replaying
+;; their values or reconstructing declaration history.
+dec $constant_node_below(pcnode, pcpath, pcpath) : bool
+def $constant_node_below(NConst phpType11 expression metadata, pcpath_decl, pcpath) = $effect_below(pcpath_decl, pcpath)
+def $constant_node_below(pcnode, pcpath_decl, pcpath) = false -- otherwise
+dec $constant_below(pcoccurrence*, pcpath) : bool
+def $constant_below(eps, pcpath) = false
+def $constant_below((PCOCCURRENCE pcpath_decl pcnode) :: pcoccurrence*, pcpath) = ($constant_node_below(pcnode, pcpath_decl, pcpath) \/ $constant_below(pcoccurrence*, pcpath))
+dec $constant_codepath(pcodeexpr) : pcpath
+def $constant_codepath(CODEEXPR pcpath z b) = pcpath
+def $constant_codepath(CODEWRITE pcpath z) = pcpath
+def $constant_codepath(CODEARG pcpath) = pcpath
+def $constant_codepath(CODEEFFECT pcpath) = pcpath
+dec $constant_codeexprs(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $constant_codeexprs(pcoccurrence*, eps) = eps
+def $constant_codeexprs(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = pcodeexpr :: $constant_codeexprs(pcoccurrence*, pcodeexpr_tail*)
+  -- if $constant_below(pcoccurrence*, $constant_codepath(pcodeexpr))
+def $constant_codeexprs(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $constant_codeexprs(pcoccurrence*, pcodeexpr_tail*)
+  -- if ~$constant_below(pcoccurrence*, $constant_codepath(pcodeexpr))
+def $constant_unit_code_valid(S, P, pcode) = ($constant_unit_classes_valid(S, P) /\ $constant_codeexprs(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $constant_codeexprs(P.FOLD.SOURCE.OCCURRENCES, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)))
+
+def $user_constants_valid(S, eps) = true
+def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
+  -- if $constant_declaration(S, puserconstant.ORIGIN) = ((preqbytes, z))
+  -- if puserconstant.NAME = $user_constant_key(preqbytes)
+  -- if ~$initial_constant_bytes(puserconstant.NAME)
+  -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
+  -- if $heap_subset($value_nodes(puserconstant.VALUE), S.ALLOCATIONS)
+  -- if $constant_value_class_valid(S, puserconstant.VALUE, puserconstant.CLASS)
+  -- if $user_constants_valid(S, puserconstant_tail*)
+def $user_constants_valid(S, puserconstant*) = false -- otherwise
+
+dec $constant_initializer_valid(pstate, expression) : bool
+def $constant_initializer_valid(S, expression) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+  -- if $origin_node(S.SOURCES, porigin) = (NConst phpType11 expression metadata)
+def $constant_initializer_valid(S, expression) = false -- otherwise
+def $call_task_valid(S, CONSTANT_INIT expression) = $constant_initializer_valid(S, expression)
+dec $constant_bind_valid(pstate, porigin) : bool
+def $constant_bind_valid(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+def $constant_bind_valid(S, porigin) = false -- otherwise
+def $call_task_valid(S, CONSTANT_BIND porigin) = $constant_bind_valid(S, porigin)
+
+dec $constant_binding(ptask) : porigin*
+def $constant_binding(CONSTANT_BIND porigin) = [porigin]
+def $constant_binding(AT porigin ptask) = $constant_binding(ptask)
+def $constant_binding(ptask) = eps -- otherwise
+dec $constant_bindings(ptask*) : porigin*
+def $constant_bindings(eps) = eps
+def $constant_bindings(ptask :: ptask_tail*) = $constant_binding(ptask) ++ $constant_bindings(ptask_tail*)
+def $constant_context_valid(S) = ($constant_bindings(S.TODO) = eps)
+  -- if S.CONSTCONTEXT = eps
+def $constant_context_valid(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_declaration(S, pconstantcontext.ORIGIN) = ((preqbytes, pconstantcontext.LINE))
+  -- if $constant_bindings(S.TODO) = [pconstantcontext.ORIGIN]
+  -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
+  -- if $constant_branches_valid(S)
+def $constant_context_valid(S) = false -- otherwise
+
+def $constant_class_origin_allowed(pcunit, pcpath) = $constant_below(pcunit.OCCURRENCES, pcpath)
+
+;; Validation scans the remaining continuation in the same declaration order.
+def $call_after_origin(S, CONSTANT_BIND porigin) = S[.CONSTCONTEXT = eps]

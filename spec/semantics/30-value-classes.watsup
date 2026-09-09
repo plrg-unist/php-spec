@@ -1,0 +1,94 @@
+;; Non-owning allocation classes. Values, keys and effects come from the ordinary
+;; operation; these helpers only propagate observable constant-cache provenance.
+dec $pvclass_operand(pvalue) : pvalue?
+dec $pvclass_string(pvalue?, pvalueclass) : bool
+dec $pvclass_empty_string(pvalue?) : bool
+dec $pvclass_concat(pvalue?, pvalueclass, pvalue?, pvalueclass) : pvalueclass
+dec $pvclass_binary(pbin, pvalue?, pvalueclass, pvalue?, pvalueclass) : pvalueclass
+dec $pvclass_bitnot(pvalue?) : pvalueclass
+dec $pvclass_cast(pvstage, pcast, pvalue?, pvalueclass) : pvalueclass
+dec $pvclass_get(pvalueclass, pkey) : pvalueclass?
+dec $pvclass_entries_get((pkey, pvalueclass)*, pkey) : pvalueclass?
+dec $pvclass_put(pvalueclass, pkey, pvalueclass) : pvalueclass
+dec $pvclass_entries_put((pkey, pvalueclass)*, pkey, pvalueclass) : (pkey, pvalueclass)*
+dec $pvclass_union(pvalueclass, pvalueclass) : pvalueclass
+dec $pvclass_union_entries(pvalueclass, (pkey, pvalueclass)*) : pvalueclass
+dec $pvclass_intern(pvalueclass) : pvalueclass
+
+def $pvclass_operand(PARRAY n) = eps
+def $pvclass_operand(pvalue) = (pvalue)
+  -- otherwise
+
+def $pvclass_string((PSTRING ptbytes), PVSTRING b) = b
+def $pvclass_string(eps, PVARRAY b (pkey, pvalueclass)*) = true
+def $pvclass_string((PINT i), PVSCALAR) = $(i >= 0) /\ $(i <= 9)
+def $pvclass_string((PFLOAT n), PVSCALAR) = false
+def $pvclass_string((pvalue), PVSCALAR) = true
+  -- if pvalue = PNULL
+def $pvclass_string((PBOOL b), PVSCALAR) = true
+
+def $pvclass_empty_string((pvalue)) = true
+  -- if pvalue = PNULL
+def $pvclass_empty_string((pvalue)) = true
+  -- if pvalue = PBOOL false
+def $pvclass_empty_string((PSTRING ptbytes)) = true
+  -- if ptbytes = eps
+def $pvclass_empty_string(pvalue?) = false
+  -- otherwise
+
+;; concat_function checks the left empty operand first, including two empties.
+def $pvclass_concat(pvalue_left?, pvalueclass_left, pvalue_right?, pvalueclass_right) = PVSTRING $pvclass_string(pvalue_right?, pvalueclass_right)
+  -- if $pvclass_empty_string(pvalue_left?)
+def $pvclass_concat(pvalue_left?, pvalueclass_left, pvalue_right?, pvalueclass_right) = PVSTRING $pvclass_string(pvalue_left?, pvalueclass_left)
+  -- if ~$pvclass_empty_string(pvalue_left?)
+  -- if $pvclass_empty_string(pvalue_right?)
+def $pvclass_concat(pvalue_left?, pvalueclass_left, pvalue_right?, pvalueclass_right) = PVSTRING false
+  -- if ~$pvclass_empty_string(pvalue_left?)
+  -- if ~$pvclass_empty_string(pvalue_right?)
+
+def $pvclass_binary(CONCAT, pvalue_left?, pvalueclass_left, pvalue_right?, pvalueclass_right) = $pvclass_concat(pvalue_left?, pvalueclass_left, pvalue_right?, pvalueclass_right)
+def $pvclass_binary(ADD, eps, PVARRAY b_left (pkey_left, pvalueclass_left)*, eps, PVARRAY b_right (pkey_right, pvalueclass_right)*) = $pvclass_union(PVARRAY b_left (pkey_left, pvalueclass_left)*, PVARRAY b_right (pkey_right, pvalueclass_right)*)
+def $pvclass_binary(pbin, (PSTRING ptbytes_left), PVSTRING b_left, (PSTRING ptbytes_right), PVSTRING b_right) = PVSTRING (|ptbytes_left| = 1 /\ |ptbytes_right| = 1)
+  -- if pbin <- [BITAND, BITOR, BITXOR]
+def $pvclass_binary(pbin, pvalue_left?, pvalueclass_left, pvalue_right?, pvalueclass_right) = PVSCALAR
+  -- otherwise
+
+def $pvclass_bitnot((PSTRING ptbytes)) = PVSTRING (|ptbytes| = 1)
+def $pvclass_bitnot(pvalue?) = PVSCALAR
+  -- otherwise
+
+def $pvclass_cast(pvstage, CASTSTRING, pvalue?, pvalueclass) = PVSTRING $pvclass_string(pvalue?, pvalueclass)
+def $pvclass_cast(pvstage, CASTARRAY, eps, PVARRAY b (pkey, pvalueclass)*) = PVARRAY b (pkey, pvalueclass)*
+def $pvclass_cast(PVEXEC, CASTARRAY, (pvalue), PVSCALAR) = PVARRAY true eps
+  -- if pvalue = PNULL
+def $pvclass_cast(PVFOLD, CASTARRAY, (pvalue), PVSCALAR) = PVARRAY false eps
+  -- if pvalue = PNULL
+def $pvclass_cast(pvstage, CASTARRAY, (pvalue), pvalueclass) = PVARRAY false ([(KINT 0, pvalueclass)])
+  -- if pvalue =/= PNULL
+def $pvclass_cast(pvstage, pcast, pvalue?, pvalueclass) = PVSCALAR
+  -- if pcast <- [CASTBOOL, CASTINT, CASTFLOAT]
+
+def $pvclass_get(PVARRAY b (pkey, pvalueclass)*, pkey_find) = $pvclass_entries_get((pkey, pvalueclass)*, pkey_find)
+def $pvclass_entries_get(eps, pkey) = eps
+def $pvclass_entries_get((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, pkey) = (pvalueclass)
+def $pvclass_entries_get((pkey_other, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, pkey) = $pvclass_entries_get((pkey_tail, pvalueclass_tail)*, pkey)
+  -- if pkey_other =/= pkey
+
+def $pvclass_put(PVARRAY b (pkey, pvalueclass)*, pkey_new, pvalueclass_new) = PVARRAY false $pvclass_entries_put((pkey, pvalueclass)*, pkey_new, pvalueclass_new)
+def $pvclass_entries_put(eps, pkey, pvalueclass) = [(pkey, pvalueclass)]
+def $pvclass_entries_put((pkey, pvalueclass_old) :: (pkey_tail, pvalueclass_tail)*, pkey, pvalueclass) = (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*
+def $pvclass_entries_put((pkey_old, pvalueclass_old) :: (pkey_tail, pvalueclass_tail)*, pkey, pvalueclass) = (pkey_old, pvalueclass_old) :: $pvclass_entries_put((pkey_tail, pvalueclass_tail)*, pkey, pvalueclass)
+  -- if pkey_old =/= pkey
+
+;; Array union duplicates the left container, then keeps left keys on conflict.
+def $pvclass_union(PVARRAY b_left (pkey_left, pvalueclass_left)*, PVARRAY b_right (pkey_right, pvalueclass_right)*) = $pvclass_union_entries(PVARRAY false (pkey_left, pvalueclass_left)*, (pkey_right, pvalueclass_right)*)
+def $pvclass_union_entries(pvalueclass, eps) = pvalueclass
+def $pvclass_union_entries(pvalueclass, (pkey, pvalueclass_right) :: (pkey_tail, pvalueclass_tail)*) = $pvclass_union_entries($pvclass_put(pvalueclass, pkey, pvalueclass_right), (pkey_tail, pvalueclass_tail)*)
+  -- if $pvclass_get(pvalueclass, pkey) = eps
+def $pvclass_union_entries(pvalueclass, (pkey, pvalueclass_right) :: (pkey_tail, pvalueclass_tail)*) = $pvclass_union_entries(pvalueclass, (pkey_tail, pvalueclass_tail)*)
+  -- if $pvclass_get(pvalueclass, pkey) = (pvalueclass_old)
+
+;; zend_insert_literal interns only the direct string, never array children.
+def $pvclass_intern(PVSTRING b) = PVSTRING true
+def $pvclass_intern(pvalueclass) = pvalueclass
+  -- otherwise
