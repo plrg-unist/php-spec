@@ -12,6 +12,7 @@ BSD-3-Clause license.
 | Retain ternary grouping as checked boolean metadata at the actual grouping reduction | `ternary_metadata.py`: parentheses in calls/control headers are not expression grouping; independent compiler checks consume the distinction |
 | Select PHP 8 concatenation precedence between shifts and pipe | `precedence.php`: `('x' . 1) + 2` previously changed grouping |
 | Retain a trailing comma for singleton positional `clone` call nodes | `clone85.php`: `clone($a,)` otherwise reparsed as unary clone |
+| Retain original array syntax on converted destructuring lists and print it faithfully | `destructuring_metadata.py`: nested `array(...)` otherwise became square syntax, erasing a distinct compiler rejection; list storage retains omitted slots |
 | Preserve nested destructuring spread flags when converting array nodes into lists | `destructuring_metadata.py`: nested spreads otherwise became ordinary list entries before checked transport |
 | Retain final omitted destructuring slots | `optional` fixture: `[,]` otherwise printed `[]` |
 | Preserve signed integer offsets in simple interpolation | `interpolation.php`, Zend `bug72918.phpt`: braced interpolation otherwise becomes UnaryMinus |

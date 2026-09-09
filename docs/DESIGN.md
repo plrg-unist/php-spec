@@ -58,6 +58,11 @@ control compilation; their transport does not enable control execution.
 Array-to-list conversion preserves each nested `ArrayItem.unpack` field,
 including otherwise compiler-invalid spread targets. Syntax checking and fresh
 printing retain these flags; compiler legality remains a separate phase.
+Converted lists also retain integer `destructuringArrayKind`, the original
+`Array_` long/short kind (1/2). Their existing `kind` continues to distinguish
+`list()` from converted array targets. Keeping the list representation preserves
+omitted slots; the additional field lets fresh printing retain otherwise-invalid
+nested `array(...)` targets without changing frontend acceptance.
 
 Ternaries retain boolean `parenthesizedConditional`, set by the actual grouping
 production and false at ternary construction. Call/control parentheses do not

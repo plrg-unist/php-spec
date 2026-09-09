@@ -1022,7 +1022,8 @@ abstract class ParserAbstract implements Parser {
                     $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
             }
             return $item;
-        }, $node->items), ['kind' => Expr\List_::KIND_ARRAY] + $node->getAttributes());
+        }, $node->items), ['kind' => Expr\List_::KIND_ARRAY,
+            'destructuringArrayKind' => $node->getAttribute('kind')] + $node->getAttributes());
     }
 
     protected function postprocessList(Expr\List_ $node): void {

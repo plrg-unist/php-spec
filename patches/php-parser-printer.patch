@@ -82,11 +82,9 @@ index 5e2aed31..c32977c1 100644
 +    }
 +
  }
-diff --git a/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php b/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php
-index d7084377..016b3f92 100644
 --- a/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php
 +++ b/vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php
-@@ -28,7 +28,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -28,7 +28,7 @@
      }
  
      protected function pArg(Node\Arg $node): string {
@@ -95,7 +93,7 @@ index d7084377..016b3f92 100644
               . ($node->byRef ? '&' : '') . ($node->unpack ? '...' : '')
               . $this->p($node->value);
      }
-@@ -38,7 +38,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -38,7 +38,7 @@
      }
  
      protected function pConst(Node\Const_ $node): string {
@@ -104,7 +102,7 @@ index d7084377..016b3f92 100644
      }
  
      protected function pNullableType(Node\NullableType $node): string {
-@@ -537,8 +537,16 @@ class Standard extends PrettyPrinterAbstract {
+@@ -537,8 +537,16 @@
      // Function calls and similar constructs
  
      protected function pExpr_FuncCall(Expr\FuncCall $node): string {
@@ -123,7 +121,7 @@ index d7084377..016b3f92 100644
      }
  
      protected function pExpr_MethodCall(Expr\MethodCall $node): string {
-@@ -557,7 +565,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -557,7 +565,7 @@
                  ? ($node->name instanceof Expr\Variable
                     ? $this->p($node->name)
                     : '{' . $this->p($node->name) . '}')
@@ -132,7 +130,7 @@ index d7084377..016b3f92 100644
               . '(' . $this->pMaybeMultiline($node->args) . ')';
      }
  
-@@ -587,10 +595,14 @@ class Standard extends PrettyPrinterAbstract {
+@@ -587,10 +595,17 @@
      protected function pExpr_List(Expr\List_ $node): string {
          $syntax = $node->getAttribute('kind',
              $this->phpVersion->supportsShortArrayDestructuring() ? Expr\List_::KIND_ARRAY : Expr\List_::KIND_LIST);
@@ -142,14 +140,18 @@ index d7084377..016b3f92 100644
 +        }
          if ($syntax === Expr\List_::KIND_ARRAY) {
 -            return '[' . $this->pMaybeMultiline($node->items, true) . ']';
-+            return '[' . $items . ']';
-         } else {
+-        } else {
 -            return 'list(' . $this->pMaybeMultiline($node->items, true) . ')';
++            if ($node->getAttribute('destructuringArrayKind') === Expr\Array_::KIND_LONG) {
++                return 'array(' . $items . ')';
++            }
++            return '[' . $items . ']';
++        } else {
 +            return 'list(' . $items . ')';
          }
      }
  
-@@ -662,7 +674,9 @@ class Standard extends PrettyPrinterAbstract {
+@@ -662,7 +677,9 @@
      }
  
      protected function pExpr_StaticPropertyFetch(Expr\StaticPropertyFetch $node): string {
@@ -160,7 +162,7 @@ index d7084377..016b3f92 100644
      }
  
      protected function pExpr_ShellExec(Expr\ShellExec $node): string {
-@@ -718,7 +732,9 @@ class Standard extends PrettyPrinterAbstract {
+@@ -718,7 +735,9 @@
      protected function pExpr_New(Expr\New_ $node): string {
          if ($node->class instanceof Stmt\Class_) {
              $args = $node->args ? '(' . $this->pMaybeMultiline($node->args) . ')' : '';
@@ -171,7 +173,7 @@ index d7084377..016b3f92 100644
          }
          return 'new ' . $this->pNewOperand($node->class)
              . '(' . $this->pMaybeMultiline($node->args) . ')';
-@@ -779,13 +795,13 @@ class Standard extends PrettyPrinterAbstract {
+@@ -779,13 +798,13 @@
      }
  
      protected function pStmt_GroupUse(Stmt\GroupUse $node): string {
@@ -187,7 +189,7 @@ index d7084377..016b3f92 100644
      }
  
      protected function pUseType(int $type): string {
-@@ -795,32 +811,32 @@ class Standard extends PrettyPrinterAbstract {
+@@ -795,32 +814,32 @@
  
      protected function pStmt_Interface(Stmt\Interface_ $node): string {
          return $this->pAttrGroups($node->attrGroups)
@@ -225,7 +227,7 @@ index d7084377..016b3f92 100644
               . ($node->expr ? ' = ' . $this->p($node->expr) : '')
               . ';';
      }
-@@ -833,15 +849,15 @@ class Standard extends PrettyPrinterAbstract {
+@@ -833,15 +852,15 @@
      }
  
      protected function pStmt_TraitUseAdaptation_Precedence(Stmt\TraitUseAdaptation\Precedence $node): string {
@@ -244,7 +246,7 @@ index d7084377..016b3f92 100644
               . ';';
      }
  
-@@ -854,14 +870,14 @@ class Standard extends PrettyPrinterAbstract {
+@@ -854,14 +873,14 @@
      }
  
      protected function pPropertyItem(Node\PropertyItem $node): string {
@@ -261,7 +263,7 @@ index d7084377..016b3f92 100644
               . ($node->params ? '(' . $this->pParams($node->params) . ')' : '')
               . (\is_array($node->body) ? ' {' . $this->pStmts($node->body) . $this->nl . '}'
                  : ($node->body !== null ? ' => ' . $this->p($node->body) : '') . ';');
-@@ -870,7 +886,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -870,7 +889,7 @@
      protected function pStmt_ClassMethod(Stmt\ClassMethod $node): string {
          return $this->pAttrGroups($node->attrGroups)
               . $this->pModifiers($node->flags)
@@ -270,7 +272,7 @@ index d7084377..016b3f92 100644
               . '(' . $this->pParams($node->params) . ')'
               . (null !== $node->returnType ? ': ' . $this->p($node->returnType) : '')
               . (null !== $node->stmts
-@@ -888,7 +904,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -888,7 +907,7 @@
  
      protected function pStmt_Function(Stmt\Function_ $node): string {
          return $this->pAttrGroups($node->attrGroups)
@@ -279,7 +281,7 @@ index d7084377..016b3f92 100644
               . '(' . $this->pParams($node->params) . ')'
               . (null !== $node->returnType ? ': ' . $this->p($node->returnType) : '')
               . $this->nl . '{' . $this->pStmts($node->stmts) . $this->nl . '}';
-@@ -906,7 +922,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -906,7 +925,7 @@
      }
  
      protected function pDeclareItem(Node\DeclareItem $node): string {
@@ -288,7 +290,7 @@ index d7084377..016b3f92 100644
      }
  
      // Control flow
-@@ -995,11 +1011,11 @@ class Standard extends PrettyPrinterAbstract {
+@@ -995,11 +1014,11 @@
      }
  
      protected function pStmt_Label(Stmt\Label $node): string {
@@ -302,7 +304,7 @@ index d7084377..016b3f92 100644
      }
  
      // Other
-@@ -1062,7 +1078,7 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1062,7 +1081,7 @@
              return '{' . $this->p($node) . '}';
          } else {
              assert($node instanceof Node\Identifier);
@@ -311,7 +313,7 @@ index d7084377..016b3f92 100644
          }
      }
  
-@@ -1072,8 +1088,22 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1072,8 +1091,22 @@
          foreach ($encapsList as $element) {
              if ($element instanceof Node\InterpolatedStringPart) {
                  $return .= $this->escapeString($element->value, $quote);
@@ -335,7 +337,7 @@ index d7084377..016b3f92 100644
              }
          }
  
-@@ -1146,7 +1176,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1146,7 +1179,8 @@
      }
  
      protected function pDereferenceLhs(Node $node): string {
@@ -345,7 +347,7 @@ index d7084377..016b3f92 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1154,7 +1185,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1154,7 +1188,8 @@
      }
  
      protected function pStaticDereferenceLhs(Node $node): string {
@@ -355,7 +357,7 @@ index d7084377..016b3f92 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1162,7 +1194,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1162,7 +1197,8 @@
      }
  
      protected function pCallLhs(Node $node): string {
@@ -365,7 +367,7 @@ index d7084377..016b3f92 100644
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1170,7 +1203,8 @@ class Standard extends PrettyPrinterAbstract {
+@@ -1170,7 +1206,8 @@
      }
  
      protected function pNewOperand(Node $node): string {
@@ -474,12 +476,13 @@ index 50a8e504..94fc8796 100644
          /** @var Node|null $origNode */
 --- a/vendor/php-parser/lib/PhpParser/ParserAbstract.php
 +++ b/vendor/php-parser/lib/PhpParser/ParserAbstract.php
-@@ -1019,7 +1019,7 @@
-             if ($item->value instanceof Array_) {
-                 return new Node\ArrayItem(
+@@ -1021,6 +1021,7 @@
                      $this->fixupArrayDestructuring($item->value),
 -                    $item->key, $item->byRef, $item->getAttributes());
 +                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
              }
              return $item;
-         }, $node->items), ['kind' => Expr\List_::KIND_ARRAY] + $node->getAttributes());
+-        }, $node->items), ['kind' => Expr\List_::KIND_ARRAY] + $node->getAttributes());
++        }, $node->items), ['kind' => Expr\List_::KIND_ARRAY,
++            'destructuringArrayKind' => $node->getAttribute('kind')] + $node->getAttributes());
+     }

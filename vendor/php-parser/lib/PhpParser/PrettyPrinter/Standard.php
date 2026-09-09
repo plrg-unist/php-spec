@@ -600,6 +600,9 @@ class Standard extends PrettyPrinterAbstract {
             $items .= ',';
         }
         if ($syntax === Expr\List_::KIND_ARRAY) {
+            if ($node->getAttribute('destructuringArrayKind') === Expr\Array_::KIND_LONG) {
+                return 'array(' . $items . ')';
+            }
             return '[' . $items . ']';
         } else {
             return 'list(' . $items . ')';

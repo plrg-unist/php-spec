@@ -44,7 +44,7 @@ comments, preventing simultaneous loss in both round-trip branches.
 Malformed tests exercise the strict checker and typed elaboration separately;
 they also change a checked scalar and require changed output.
 
-Canonical syntax equality ignores source positions (including `namespaceBraceLine`, `statementTerminatorLine` and `statementBodyLine`), ternary grouping, literal spelling/kind,
+Canonical syntax equality ignores source positions (including `namespaceBraceLine`, `statementTerminatorLine` and `statementBodyLine`), ternary grouping and original destructuring array kind, literal spelling/kind,
 heredoc delimiters/indentation, and the inline-HTML leading-newline printing
 hint. These remain in the transport. `tests/source_context_metadata.py` checks exact
 namespace-brace, control-body and break/continue/empty-for terminator metadata
@@ -56,6 +56,9 @@ payload rejection.
 `tests/ternary_metadata.py` independently distinguishes expression grouping from
 call/control parentheses, retains the boolean through checked reconstruction,
 and rejects malformed payloads across plain and encoded source profiles.
+`tests/destructuring_metadata.py` checks nested spread fields and long/short/list
+syntax through actual source, checked values and fresh printing, including omitted
+slots, edited kind fields and invalid payloads in plain and encoded sources.
 The compiler-context campaign separately mutates a positive brace line and requires
 the diagnostic location to change; semantic validation does not normalize it away.
 The ordinary compiler rejects missing, nonpositive and out-of-range terminator
