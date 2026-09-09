@@ -59,8 +59,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   key coercion, byte bounds, diagnostic order and delayed RHS contracts.
 - Constant helper `93eeb749`: 42 original observations plus 7 boundaries and 37
   independent alternates passed. Partial facts, same-path reuse, distinct NaN-array
-  paths and isolated pool roots are reviewed. Ordinary compiler scheduling and
-  runtime pool installation remain pending.
+  paths and isolated pool roots are reviewed. Runtime pool installation and
+  source consumption remain pending.
 - Ordered compiler `72d3a65d`: **549 native lint comparisons +15 emission-line
   observations**, 6 Unsupported contexts and metadata/export controls passed;
   independent alternates and exact-bit conflict probes passed. Constant replacement
