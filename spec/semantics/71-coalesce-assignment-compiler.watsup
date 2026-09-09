@@ -48,6 +48,10 @@ def $pprefetchbody(P, pcpath, NExprVariable phpType32 metadata) = $pprefetchname
   -- if P.COMPLETION = PPCNORMAL
 def $pprefetchbody(P, pcpath, NExprArrayDimFetch expression phpType5 metadata) = $pprefetchdim($pprefetch(P, pcpath ++ [PCFIELD 0], expression), pcpath, phpType5)
   -- if P.COMPLETION = PPCNORMAL
+  -- if ~$ppglobals_base(expression)
+def $pprefetchbody(P, pcpath, NExprArrayDimFetch expression_base expression_key metadata) = $ppglobalname($ppmemo($pprefetch(P, pcpath ++ [PCFIELD 0], expression_base), pcpath ++ [PCFIELD 1], expression_key))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppglobals_base(expression_base)
 def $pprefetchbody(P, pcpath, expression) = $ppcheck(P, $context_error("Cannot use temporary expression in write context", P.LOCATION.LINE))
   -- if P.COMPLETION = PPCNORMAL
   -- if $pptemporary(expression)

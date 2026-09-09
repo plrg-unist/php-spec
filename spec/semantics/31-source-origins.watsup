@@ -24,6 +24,7 @@ def $origin_node(pcunit :: pcunit_tail*, PORIGIN n pcpath) = $origin_node(pcunit
 dec $task_source_node(ptask) : pcnode?
 def $task_source_node(STMT statement) = (statement)
 def $task_source_node(EVAL expression) = (expression)
+def $task_source_node(ISSET_PREP expression b) = (expression)
 def $task_source_node(ACQUIRE expression) = (expression)
 def $task_source_node(DIM_PREP expression) = (expression)
 def $task_source_node(UNSET expression) = (expression)

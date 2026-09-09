@@ -3,7 +3,7 @@ syntax ppmode = PPR | PPW | PPRW | PPUNSET | PPIS
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
 syntax ppexprdone = PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath
-syntax ppstate = { LOOPS nat, HEADERASSIGNED bool, FOLD pfstate, ENV plenv, LOCATION pllocation,
+syntax ppstate = { LOOPS nat, HEADERASSIGNED bool, CVS ptbytes*, FOLD pfstate, ENV plenv, LOCATION pllocation,
   COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, WRITES (pcpath, nat)*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate
 
@@ -20,6 +20,7 @@ dec $ppternarychain(ppstate, bool, bool) : ppstate
 
 dec $ppnamed(ppstate, pcpath, pnresult) : ppstate
 dec $ppcv(ppstate, phpType32, ppmode) : ppstate
+dec $ppcvrecord(ppstate, ptbytes) : ppstate
 dec $ppcvconverted(ppstate, phpType32) : ppstate
 dec $ppnamecast(ppstate, ppmode, pvalue?) : ppstate
 dec $ppnamecasted(ppstate, ppmode) : ppstate
@@ -58,7 +59,7 @@ dec $ppdone(ppstate, pcpath, ppmode) : ppstate
 dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
 dec $ppunsetexprs(ppstate, pcpath, nat, expression*) : ppstate
 dec $ppunsetcheck(ppstate, expression) : ppstate
-def $ppstart(n, program, ptbytes) = $pplexical({ LOOPS 0, HEADERASSIGNED false, FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
+def $ppstart(n, program, ptbytes) = $pplexical({ LOOPS 0, HEADERASSIGNED false, CVS eps, FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $pplexical(P, PLDONE plstate pldiagnostic*) = P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*]
@@ -154,6 +155,9 @@ dec $ppbinarydone(ppstate, pcpath, pbin, pvalue?) : ppstate
 dec $ppunarydone(ppstate, pcpath, punary) : ppstate
 dec $ppdim(ppstate, pcpath, phpType5, ppmode) : ppstate
 dec $ppbasemode(expression, ppmode) : ppmode
+dec $ppglobals_base(expression) : bool
+dec $ppglobaldim(ppstate, pcpath, phpType5) : ppstate
+dec $ppglobalname(ppstate) : ppstate
 dec $coalesce_quiet_operand(expression) : bool
 dec $ppassign(ppstate, pcpath, expression, expression, bool) : ppstate
 dec $ppassignright(ppstate, pcpath, expression, expression, bool) : ppstate
@@ -240,7 +244,10 @@ def $ppdispatch(P, pcpath, NScalarInt (INTEGER i) metadata, PPR) = P[.FOLD = P.F
 def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PFLOAT $hex_bits(text, 0))]]
 def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
 def $ppdispatch(P, pcpath, NExprConstFetch name metadata, PPR) = $ppnamed(P, pcpath, $pnresolve(P.ENV, PLCONSTANT, name))
+def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppclearvalue(P)
+  -- if $cv_name(phpType32) = ([116,104,105,115])
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppvariable(P, pcpath, phpType32, ppmode)
+  -- if $cv_name(phpType32) =/= ([116,104,105,115])
 def $ppdispatch(P, pcpath, NExprAssign expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, false)
 def $ppdispatch(P, pcpath, NExprAssignRef expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, true)
 def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, expression_1, expression_2)
@@ -248,6 +255,9 @@ def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, express
 def $ppdispatch(P, pcpath, expression_outer, PPR) = $ppunarydone($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, punary)
   -- if $pfshape(expression_outer) = PFUNARY punary expression
 def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppdim($ppexpr(P, pcpath ++ [PCFIELD 0], expression, $ppbasemode(expression, ppmode)), pcpath, phpType5, ppmode)
+  -- if ~$ppglobals_base(expression)
+def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppglobaldim($ppexpr(P, pcpath ++ [PCFIELD 0], expression, ppmode), pcpath, phpType5)
+  -- if $ppglobals_base(expression)
 def $ppdispatch(P, pcpath, NExprArray (SEQUENCE phpType13*) metadata, PPR) = $pparray($ppfoldresult(P, $pfprepare(P.FOLD, pcpath, NExprArray (SEQUENCE phpType13*) metadata, P.ENV, P.LOCATION.LINE)), pcpath, phpType13*)
 def $ppdispatch(P, pcpath, NExprPreInc expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
 def $ppdispatch(P, pcpath, NExprPreDec expression metadata, PPR) = $ppclearvalue($ppexpr($ppupdatecheck(P, expression), pcpath ++ [PCFIELD 0], expression, PPRW))
@@ -522,7 +532,7 @@ def $ppitems(P, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEA
 ;; FETCH_R emits its deprecation independently of that compilation-unit flag.
 def $ppcv(P, phpType32, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppcv(P, phpType32, ppmode) = $ppheader($ppclearvalue($ppcvconverted(P, phpType32)), n*, ppmode, true)
+def $ppcv(P, phpType32, ppmode) = $ppcvrecord($ppheader($ppclearvalue($ppcvconverted(P, phpType32)), n*, ppmode, true), n*)
   -- if P.COMPLETION = PPCNORMAL
   -- if $cv_name(phpType32) = (n*)
 def $ppheader(P, n*, ppmode, b_cv) = P
@@ -556,3 +566,41 @@ def $ppnamecasted(P, ppmode) = $ppheader($ppclearvalue(P), n*, ppmode, false)
   -- if P.FOLD.VALUE = (PSTRING n*)
 def $ppnamecasted(P, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
+
+;; A literal GLOBALS base lowers its key as a global variable name. This
+;; conversion does not use locally scoped header-deprecation state.
+def $ppglobals_base(NExprVariable phpType32 metadata) = true
+  -- if $cv_name(phpType32) = ([71,76,79,66,65,76,83])
+def $ppglobals_base(expression) = false -- otherwise
+def $ppglobaldim(P, pcpath, phpType5) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppglobaldim(P, pcpath, ABSENT) = $ppcheck(P, $context_error("Cannot append to $GLOBALS", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppglobaldim(P, pcpath, expression) = $ppglobalname($ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppglobalname(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppglobalname(P) = $ppclearvalue(P)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = eps
+def $ppglobalname(P) = $ppclearvalue($ppoperandresult(P, $pfwarned(P.FOLD, P.LOCATION.PATH, $stringify(P.FOLD.MEMORY, pvalue, P.LOCATION.LINE))))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+
+;; The direct global-unset lowering checks its absent name before ordinary
+;; dimension compilation. Nested GLOBALS[] bases still use append rejection.
+def $ppunsetcheck(P, NExprArrayDimFetch expression ABSENT metadata) = $ppcheck(P, $context_error("Cannot use [] for unsetting", P.LOCATION.LINE))
+  -- if $ppglobals_base(expression)
+
+;; zend_try_compile_cv allocates each AST-ZVAL name once in actual compiler
+;; order. Computed constant-name FETCH instructions never allocate a CV. Ordinary
+;; FETCH_THIS bypasses this path; non-reference list RHS deliberately does not.
+def $ppcvrecord(P, ptbytes) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcvrecord(P, ptbytes) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ($psautoglobal(ptbytes) \/ (ptbytes <- P.CVS))
+def $ppcvrecord(P, ptbytes) = P[.CVS = P.CVS ++ [ptbytes]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~$psautoglobal(ptbytes)
+  -- if ~(ptbytes <- P.CVS)

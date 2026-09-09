@@ -637,6 +637,8 @@ from foreach import CASES as FOREACH_CASES
 CASES.update({"foreach-"+name:source for name,source in FOREACH_CASES.items()})
 from coalesce_assignment import CASES as COALESCE_ASSIGNMENT_CASES
 CASES.update({"coalesce-assignment-"+name:source for name,source in COALESCE_ASSIGNMENT_CASES.items()})
+from isset_empty import CASES as ISSET_EMPTY_CASES, PENDING_GLOBALS as ISSET_PENDING_GLOBALS
+CASES.update({"isset-empty-"+name:source for name,source in ISSET_EMPTY_CASES.items()})
 from quiet_access import CASES as QUIET_CASES
 CASES.update({"quiet-"+name:source for name,source in QUIET_CASES.items()})
 from array_unpack import CASES as UNPACK_CASES
@@ -707,7 +709,8 @@ def main():
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'runner_failure'
         for source in [b'<?php f()[0]="X";', b'<?php echo $argc;', b'<?php $a=&$argc;',
                        b'<?php $n="argc"; $a=&$$n;', b'<?php unset($GLOBALS);',
-                       b'<?php $n="GLOBALS"; unset($$n);', b'<?php $a="abc";unset($a[0][0]);']:
+                       b'<?php $n="GLOBALS"; unset($$n);', b'<?php $a="abc";unset($a[0][0]);',
+                       *ISSET_PENDING_GLOBALS.values()]:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
