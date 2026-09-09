@@ -57,6 +57,9 @@ def $unset_intermediate(S, PARRAY n, plocation, poperand, z) = $find_element(S_k
   -- if S_key.COMPLETION = NORMAL
 def $unset_intermediate(S, PNULL, plocation, poperand, z) = $unset_skip_key(S, poperand, z)
 def $unset_intermediate(S, PBOOL false, plocation, poperand, z) = $unset_skip_key($unset_false(S, z), poperand, z)
+  -- if ~$location_reference(S, plocation)
+def $unset_intermediate(S, PBOOL false, plocation, poperand, z) = $unset_skip_key(S, poperand, z)
+  -- if $location_reference(S, plocation)
 def $unset_intermediate(S, PSTRING n*, plocation, poperand, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
 def $unset_intermediate(S, pvalue, plocation, poperand, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
   -- otherwise

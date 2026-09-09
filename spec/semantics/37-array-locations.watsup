@@ -53,6 +53,21 @@ def $location_array(S, plocation, z) = S[.COMPLETION = UNSUPPORTED "string offse
 def $location_array(S, plocation, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,115,101,32,97,32,115,99,97,108,97,114,32,118,97,108,117,101,32,97,115,32,97,110,32,97,114,114,97,121]), z)
   -- otherwise
 
+dec $location_reference(pstate, plocation) : bool
+def $location_reference(S, ROOT n) = (n <- S.REFCELLS)
+def $location_reference(S, ELEMENT n pkey) = $alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
+def $location_reference(S, NOWHERE) = false
+
+;; Generic dimension FETCH through a reference skips the false conversion
+;; deprecation. Final ASSIGN_DIM uses location_array and retains its warning.
+dec $fetch_location_array(pstate, plocation, int) : pstate
+def $fetch_location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+  -- if $location_reference(S, plocation)
+  -- if $location_slot(S, plocation) = DEFINED (PBOOL false)
+  -- if S_new = $allocate_array(S, $array_empty())
+  -- if S_new.RESULT = KNOWN pvalue
+def $fetch_location_array(S, plocation, z) = $location_array(S, plocation, z) -- otherwise
+
 dec $element_location(pstate, nat, pkey) : pstate
 def $element_location(S, n, pkey) = S[.LOCATION = ELEMENT n pkey]
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
@@ -90,7 +105,7 @@ def $dimension_location(S, poperand?, pstringfetch, z) = S
 def $dimension_location(S, poperand?, pstringfetch, z) = $string_dimension_fetch(S, poperand?, pstringfetch, z)
   -- if S.COMPLETION = NORMAL
   -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n*)
-def $dimension_location(S, poperand?, pstringfetch, z) = $array_dimension_location($location_array(S, S.LOCATION, z), poperand?, z)
+def $dimension_location(S, poperand?, pstringfetch, z) = $array_dimension_location($fetch_location_array(S, S.LOCATION, z), poperand?, z)
   -- otherwise
 
 def $base_acquire(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $location_name(S, n_name*)
@@ -167,9 +182,9 @@ def $reference_slot(DEFINED pvalue) = DEFINED pvalue
 def $reference_slot(UNDEFINED) = DEFINED PNULL
 
 dec $element_reference(pstate, nat, pkey) : pstate
-def $element_reference(S, n, pkey) = S[.CELL = n_cell]
+def $element_reference(S, n, pkey) = $reference_cell(S, n_cell)[.CELL = n_cell]
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
-def $element_reference(S, n, pkey) = S[.CELL = n_cell][.STORE = S.STORE ++ [pslot]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]][.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, ALIAS n_cell))]
+def $element_reference(S, n, pkey) = $reference_cell(S, n_cell)[.CELL = n_cell][.STORE = S.STORE ++ [pslot]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]][.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, ALIAS n_cell))]
   -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
   -- if pslot = $reference_slot($location_slot(S, ELEMENT n pkey))
   -- if n_cell = |S.STORE|
@@ -186,7 +201,7 @@ def $acquire_array_reference(S, pbase, z) = $element_reference(S_place, n, pkey)
 ;; Reference assignment replaces the entry's binding; an old ALIAS cell is
 ;; not written through. A CV source is initialized only after target W-fetch.
 dec $bind_element_reference(pstate, nat, pkey, nat) : pstate
-def $bind_element_reference(S, n, pkey, n_source) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, ALIAS n_source))][.RESULT = REFERENCE n_source]
+def $bind_element_reference(S, n, pkey, n_source) = $reference_cell(S, n_source)[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, ALIAS n_source))][.RESULT = REFERENCE n_source]
 
 dec $assign_array_reference(pstate, pbase, nat, int) : pstate
 def $assign_array_reference(S, pbase, n_source, z) = S_place

@@ -25,7 +25,7 @@ syntax ptask = TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VA
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode* }
+  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode* }
 dec $cv_name(phpType34) : (nat*)?
 dec $initial_state(pcompletion) : pstate
 dec $separate_location_array(pstate, nat) : pstate
@@ -67,14 +67,21 @@ def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.EN
   -- if $lookup(S.ENV, n_name*) = eps
   -- if n_cell = |S.STORE|
 
+;; Explicit reference wrappers survive becoming singleton owners. This marker
+;; carries no heap edge and stable cell IDs are never recycled. Array copies may
+;; unwrap an ALIAS into DIRECT while the original cell's wrapper remains intact.
+dec $reference_cell(pstate, nat) : pstate
+def $reference_cell(S, n) = S -- if n <- S.REFCELLS
+def $reference_cell(S, n) = S[.REFCELLS = n :: S.REFCELLS] -- if ~(n <- S.REFCELLS)
+
 dec $acquire_name(pstate, nat*) : pstate
 def $acquire_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_name(n_name*)
-def $acquire_name(S, n_name*) = S_found
+def $acquire_name(S, n_name*) = $reference_cell(S_found, S_found.CELL)
   -- if ~$environment_name(n_name*)
   -- if S_found = $ensure(S, n_name*)
   -- if S_found.STORE[S_found.CELL] = DEFINED pvalue
-def $acquire_name(S, n_name*) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED PNULL)]
+def $acquire_name(S, n_name*) = $reference_cell(S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED PNULL)], S_found.CELL)
   -- if ~$environment_name(n_name*)
   -- if S_found = $ensure(S, n_name*)
   -- if S_found.STORE[S_found.CELL] = UNDEFINED
@@ -123,7 +130,7 @@ def $bind_reference(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environme
   -- if $environment_name(n_name*)
 ;; ZEND_ASSIGN_REF returns an owning reference wrapper when its value is used.
 ;; Consumers dereference this captured cell, even if a name is later rebound.
-def $bind_reference(S, n_name*) = S[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.RESULT = REFERENCE S.CELL]
+def $bind_reference(S, n_name*) = $reference_cell(S, S.CELL)[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.RESULT = REFERENCE S.CELL]
   -- if ~$environment_name(n_name*)
   -- if S.STORE[S.CELL] = DEFINED pvalue
 

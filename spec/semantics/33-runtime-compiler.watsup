@@ -118,12 +118,14 @@ def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
 def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
+  -- if P.FOLD.MEMORY.REFCELLS = eps
   -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))
   -- if S_installed.COMPLETION = NORMAL
 def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
+  -- if P.FOLD.MEMORY.REFCELLS = eps
   -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))
   -- if S_installed.COMPLETION =/= NORMAL
 def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S[.COMPLETION = UNSUPPORTED "compiler variable storage in constant pool"]
-  -- if (P.FOLD.MEMORY.ENV =/= eps \/ P.FOLD.MEMORY.STORE =/= eps)
+  -- if (P.FOLD.MEMORY.ENV =/= eps \/ P.FOLD.MEMORY.STORE =/= eps \/ P.FOLD.MEMORY.REFCELLS =/= eps)
