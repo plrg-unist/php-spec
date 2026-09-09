@@ -1,0 +1,52 @@
+# Foreach representation review
+
+This is an independent, source-backed design review, not runtime acceptance.
+Array foreach execution remains pending. The pinned engine is PHP 8.5.10;
+[18 native originals](../../coverage/semantics/foreach-independent-cursor-originals.json)
+retain exact source bytes and observations before implementation.
+
+Each active by-reference iterator needs its own class of saved positions across
+copy-on-write descendants. `zend_array_dup_ht_iterators` copies each iterator's
+current position. `zend_hash_iterator_find_copy_pos` selects one saved copy and
+removes that iterator's other copies. It does not remove another active iterator's
+saved positions. Once a discarded descendant is selected later, the old saved
+position is unavailable; `zend_hash_iterator_pos_ex` uses that table's current
+internal pointer, separating a shared table as needed.
+
+The `nested-copy-selected` original produces `o01i01i12o12o28:8`: inner progress
+does not advance the outer iterator's saved position. `reference-descendant-choice`
+produces `0:1;1:2;1:2;0:1;1:2;2:9;end`: selecting one descendant discards the
+alternative's saved position. A single global array-ancestry cursor cannot express
+both behaviors.
+
+A by-value continuation owns the captured array. `ZEND_FE_RESET_R` stores a value
+and uses its own position; references inside that captured array can still change.
+The `alias-tail-byvalue` source retains the previous reference-loop value variable
+and observes `x1y2z2:122`. Copying the container does not erase embedded aliases.
+
+A by-reference continuation owns the acquired reference cell, including temporary
+iterable wrappers. It must not re-read a source name or dimension path. The
+`holder-replaced`, `holder-element-rebound` and `holder-element-unset` sources all
+finish iterating `123` while the new holder contains `78`. Conversely, replacing
+the value in the same acquired cell with an integer causes a warning at the next
+fetch and leaves the last value-variable alias alive (`replace-with-scalar`).
+`ZEND_FE_RESET_RW` and `ZEND_FE_FETCH_RW` distinguish these cases. An unsuccessful
+scalar reset does not acquire the array wrapper used on the successful path.
+
+Positions must distinguish insertion occurrences and the end boundary, rather
+than only current keys or a count of live entries. Deleting a last bucket invokes
+`zend_hash_iterators_clamp_max` for every saved position attached to that table.
+Rehashing translates saved positions and the old end sentinel so subsequent
+appends remain visible. Empty-array duplication does not copy iterators.
+These details are in `zend_hash.c`'s deletion, rehash and array-duplication paths.
+
+Loop continuations should own iteration roots exactly once. Break, return, throw
+and multi-level continue must remove the iterator metadata whose continuation is
+unwound, while preserving the last bound value variable. Continuing an outer loop
+removes the inner iterator but retains the outer one. Dense state gates should
+check correspondence between active continuations and iterator metadata, as well
+as heap validity, source origins, held roots and exact resumed state. Saved cursor
+metadata is not an additional array/reference owner.
+
+The later object/Traversable protocol must preserve ordinary callback execution,
+exceptions and cleanup. This review does not discharge that pending obligation.

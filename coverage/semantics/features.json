@@ -44,16 +44,24 @@
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/60-array-unpack.watsup",
-        "spec/semantics/61-array-unpack-control.watsup"
+        "spec/semantics/61-array-unpack-control.watsup",
+        "spec/semantics/62-list-values.watsup",
+        "spec/semantics/63-list-control.watsup",
+        "spec/semantics/64-list-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/array_unpack.py",
         "tests/semantics/array_unpack_compiler.py",
-        "coverage/semantics/array-unpack-source.json"
+        "coverage/semantics/array-unpack-source.json",
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
       ],
-      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -134,7 +142,11 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/60-array-unpack.watsup",
-        "spec/semantics/61-array-unpack-control.watsup"
+        "spec/semantics/61-array-unpack-control.watsup",
+        "spec/semantics/62-list-values.watsup",
+        "spec/semantics/63-list-control.watsup",
+        "spec/semantics/64-list-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -143,9 +155,13 @@
         "tests/array_omission_metadata.py",
         "tests/semantics/array_unpack.py",
         "tests/semantics/array_unpack_compiler.py",
-        "coverage/semantics/array-unpack-source.json"
+        "coverage/semantics/array-unpack-source.json",
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
       ],
-      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -208,13 +224,21 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/62-list-values.watsup",
+        "spec/semantics/63-list-control.watsup",
+        "spec/semantics/64-list-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
       ],
-      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json."
+      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json. Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending."
     },
     {
       "node": "Expr_AssignOp_BitwiseAnd",
@@ -631,13 +655,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/65-coalesce-compiler.watsup",
+        "spec/semantics/66-nonvariable-coalesce.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Nonvariable-left coalesce now executes with left-once evaluation and copied selected results; existing constant prepass remains separate. Accepted77f8d3c0/destructuring-review.json. Five quiet variable/DIM/property/nullsafe/static-property forms and coalescing assignment remain explicit pending access-protocol work; no family closure."
     },
     {
       "node": "Expr_BinaryOp_Concat",
@@ -1532,10 +1562,20 @@
       "obligations": [
         "containers.destructuring"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/62-list-values.watsup",
+        "spec/semantics/63-list-control.watsup",
+        "spec/semantics/64-list-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
+      ],
+      "review": "Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending."
     },
     {
       "node": "Expr_Match",
@@ -4682,15 +4722,28 @@
     {
       "id": "containers.destructuring",
       "milestone": "2b",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+      "status": "partial",
+      "dependencies": [
+        "protocols.ArrayAccess"
       ],
-      "review": null,
+      "implementation": [
+        "spec/semantics/62-list-values.watsup",
+        "spec/semantics/63-list-control.watsup",
+        "spec/semantics/64-list-compiler.watsup",
+        "spec/semantics/33-runtime-compiler.watsup"
+      ],
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": "Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/destructure-reference.php"
       ]
@@ -5032,16 +5085,22 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/56-casts.watsup"
+        "spec/semantics/56-casts.watsup",
+        "spec/semantics/65-coalesce-compiler.watsup",
+        "spec/semantics/66-nonvariable-coalesce.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
-        "tests/semantics/array_omissions.py"
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/destructuring.py",
+        "tests/semantics/destructuring_compiler.py",
+        "tests/semantics/destructuring_mechanism.py",
+        "coverage/semantics/destructuring-source.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
+      "review": "Nonvariable-left coalesce now executes with left-once evaluation and copied selected results; existing constant prepass remains separate. Accepted77f8d3c0/destructuring-review.json. Five quiet variable/DIM/property/nullsafe/static-property forms and coalescing assignment remain explicit pending access-protocol work; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php",
         "tests/semantics/conformance/missing-null-access.php"

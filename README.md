@@ -59,12 +59,17 @@ records 2,639 exact source comparisons and the corrected diagnostic phases.
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
 seven preserved request-environment boundaries remain separate unfinished work.
+[Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
+now execute current scalar/array list patterns and nonvariable-left coalescing.
+[Independent acceptance](coverage/semantics/destructuring-review.json) binds 263
+new source cases, effect ordering, aliases and dense resumption. Quiet coalescing,
+header diagnostics and object/frame-dependent targets remain unfinished.
 [Array unpacking](docs/semantics/ARRAY-UNPACK.md) now preserves key order, copied
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
 sources; Traversable objects and argument unpacking remain unfinished.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
-slots and exact compiler diagnostic context. Reached destructuring and required
+slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 class-constant lookup remain unfinished.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
