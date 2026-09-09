@@ -140,6 +140,10 @@ a finite shell service supplies explicit response bytes/failure/effects. Missing
 service yields Unsupported. Implementing the process library is outside this
 boundary. Includes similarly need a source provider, not every filesystem stream.
 Fixture inputs/services must be reviewed, finite and shared by both executions.
+The [request fixture transport](REQUEST-INPUTS.md) supplies explicit clock and
+ordered environment bytes to instrumented native runs, separately from ordinary
+uninstrumented oracle invocations. It does not supply PHP bootstrap answers;
+request initialization and auto-global source semantics remain pending.
 
 | Borderline family | Decision and reason |
 | --- | --- |

@@ -43,6 +43,14 @@ retains this checkpoint when later selections run. Its sixteen required core con
 immutable report. Quiet publication below retires four of those core controls;
 twelve remain. No full-core or final-syntax claim follows.
 
+Request fixture transport **`be12200b`** and evidence **`add0e4c1`** are
+[independently reviewed](coverage/semantics/request-provider-independent-review.json).
+It supplies explicit native clock/environment facts; PHP bootstrap/source semantics
+remain pending. Both fresh copied-source builds passed under separate network
+namespaces with identical provider bytes. The closure is now 830 inputs/`96c18e4d`;
+prior 826 source reports retain their historical identity. Final whole-project
+offline validation remains required.
+
 Variable/DIM coalescing assignment code **`f073c750`**, runtime evidence
 **`784492ab`** and compiler evidence **`012cd357`** are accepted by
 [independent review](coverage/semantics/coalesce-assignment-review.json):137 exact

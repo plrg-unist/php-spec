@@ -1,0 +1,870 @@
+{
+  "result": "pass",
+  "scope": "Independent native request fixture transport, not request/bootstrap/source semantic admission. Ordinary and instrumented pinned CLI invocations remain distinct.",
+  "code_commit": "be12200b",
+  "author_evidence_commit": "add0e4c1",
+  "fd_transport": {
+    "path": ".tools/review7-clock-provider-fd/review.json",
+    "sha256": "738bfa144fa23b41a750a547b5f9b1403d21af26613e564691eee0637ad4aa9c",
+    "content": {
+      "result": "pass",
+      "scope": "Independent FD clock/environment provider transport only: exact arbitrary ordered byte inputs, collisions, descriptor closure,12 clock controls,7 paired nonclock checks,monotonic and timeout,9 malformed packets. No request semantic admission.",
+      "files": {
+        "request_clock.c": "a1d27e828cd3fe1069cbe59ff4254cb385fecc468153a6e223ebc0762dfe2881",
+        "request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "check.py": "5c576b35e595f7a796873d7dba90aa2d42ea40be3f12e4087732dd622cd85f52",
+        "probe.c": "8cf7b3f9040493ae43a5e197742668ea45040a1b324458324b7568900e182c41",
+        "probe": "a34f3f4fa7294f0e03efa2f543f9da858752156855795576624509608621eeb5",
+        "review.py": "7ffbfe1f132ec7aca04cef37127daa5091ca6cd2ec074667a450530251a70ced"
+      },
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "rows": [
+        {
+          "kind": "native-external-input",
+          "entries_base64": [],
+          "observation": {
+            "status": 0,
+            "stdout": "MSAxIC0xIDUwMDAwMAo=",
+            "stderr": ""
+          },
+          "checks": "FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8."
+        },
+        {
+          "kind": "native-external-input",
+          "entries_base64": [
+            "TENfQUxMPUM=",
+            "VFo9VVRD",
+            "RklSU1Q9b25l",
+            "U0VDT05EPXR3bw=="
+          ],
+          "observation": {
+            "status": 0,
+            "stdout": "MSAxIC0xIDUwMDAwMAo0YzQzNWY0MTRjNGMzZDQzCjU0NWEzZDU1NTQ0Mwo0NjQ5NTI1MzU0M2Q2ZjZlNjUKNTM0NTQzNGY0ZTQ0M2Q3NDc3NmYK",
+            "stderr": ""
+          },
+          "checks": "FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8."
+        },
+        {
+          "kind": "native-external-input",
+          "entries_base64": [
+            "TERfUFJFTE9BRD1maXJzdA==",
+            "UEhQX1NQRUNfUkVRVUVTVF9DTE9DSz1sb2dpY2Fs",
+            "TERfUFJFTE9BRD1sYXN0",
+            "RU1QVFk9"
+          ],
+          "observation": {
+            "status": 0,
+            "stdout": "MSAxIC0xIDUwMDAwMAo0YzQ0NWY1MDUyNDU0YzRmNDE0NDNkNjY2OTcyNzM3NAo1MDQ4NTA1ZjUzNTA0NTQzNWY1MjQ1NTE1NTQ1NTM1NDVmNDM0YzRmNDM0YjNkNmM2ZjY3Njk2MzYxNmMKNGM0NDVmNTA1MjQ1NGM0ZjQxNDQzZDZjNjE3Mzc0CjQ1NGQ1MDU0NTkzZAo=",
+            "stderr": ""
+          },
+          "checks": "FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8."
+        },
+        {
+          "kind": "native-external-input",
+          "entries_base64": [
+            "PWVtcHR5LW5hbWU=",
+            "RFVQPWZpcnN0",
+            "UkFXPf/+",
+            "RFVQPWxhc3Q=",
+            "VkFMVUU9eD15"
+          ],
+          "observation": {
+            "status": 0,
+            "stdout": "MSAxIC0xIDUwMDAwMAozZDY1NmQ3MDc0NzkyZDZlNjE2ZDY1CjQ0NTU1MDNkNjY2OTcyNzM3NAo1MjQxNTczZGZmZmUKNDQ1NTUwM2Q2YzYxNzM3NAo1NjQxNGM1NTQ1M2Q3ODNkNzkK",
+            "stderr": ""
+          },
+          "checks": "FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8."
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            0,
+            0
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-0-0.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDAgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMCAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            0,
+            0
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-0-1.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDAgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMCAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            0,
+            1
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-1-0.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDEgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            0,
+            1
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-1-1.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDEgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            -1,
+            999999
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-2-0.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oLTEgKyA5OTk5OTkgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgtMSArIDk5OTk5OSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            -1,
+            999999
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-2-1.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oLTEgKyA5OTk5OTkgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgtMSArIDk5OTk5OSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            1700000000,
+            125000
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-3-0.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMCArIDEyNTAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDAgKyAxMjUwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            1700000000,
+            125000
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-3-1.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMCArIDEyNTAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDAgKyAxMjUwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            1700000001,
+            999999
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-4-0.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMSArIDk5OTk5OSAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDEgKyA5OTk5OTkgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            1700000001,
+            999999
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-4-1.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMSArIDk5OTk5OSAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDEgKyA5OTk5OTkgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            9007199254740993,
+            500000
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-5-0.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oOTAwNzE5OTI1NDc0MDk5MyArIDUwMDAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDkwMDcxOTkyNTQ3NDA5OTMgKyA1MDAwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": [
+            9007199254740993,
+            500000
+          ],
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/clock-5-1.php",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oOTAwNzE5OTI1NDc0MDk5MyArIDUwMDAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDkwMDcxOTkyNTQ3NDA5OTMgKyA1MDAwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "php-collisions",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/collisions.php",
+          "source_base64": "PD9waHAgZWNobyAkX0VOVlsiTERfUFJFTE9BRCJdLCI6IiwkX0VOVlsiUEhQX1NQRUNfUkVRVUVTVF9DTE9DSyJdLCI6IiwkX0VOVlsiRU1QVFkiXSwiOiIsJF9TRVJWRVJbIkxEX1BSRUxPQUQiXSwiOiIsJF9TRVJWRVJbIlBIUF9TUEVDX1JFUVVFU1RfQ0xPQ0siXTs=",
+          "observation": {
+            "status": 0,
+            "stdout": "bGFzdDpsb2dpY2FsOjpsYXN0OmxvZ2ljYWw=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "php-raw-env",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/raw-env-source-backed.php",
+          "source_base64": "PD9waHAgZWNobyAkX0VOVlsiU1BFQ0lBTC5OQU1FIl0/PyJEIiwkX0VOVlsiQSBCIl0/PyJTIiwkX0VOVlsiUkFXIl0sJF9FTlZbIlZBTFVFIl0sJF9FTlZbIkRVUCJdOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "RFP//ng9eWxhc3Q=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "env-order",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/env-order.php",
+          "source_base64": "PD9waHAgZm9yZWFjaCgkX0VOViBhcyAkaz0+JHYpe2VjaG8gJGssIj0iLCR2LCI7Ijt9",
+          "plain": {
+            "status": 0,
+            "stdout": "TENfQUxMPUM7VFo9VVRDO0ZJUlNUPW9uZTtTRUNPTkQ9dHdvOw==",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "TENfQUxMPUM7VFo9VVRDO0ZJUlNUPW9uZTtTRUNPTkQ9dHdvOw==",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "argv-path",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/argv-path.php",
+          "source_base64": "PD9waHAgZWNobyAkYXJnYywiOiIsJGFyZ3ZbMF0sIjoiLCRhcmd2WzFdLCI6IiwkYXJndlsyXSwiOiIsJF9TRVJWRVJbIlNDUklQVF9GSUxFTkFNRSJdLCI6IiwkX1NFUlZFUlsiUEhQX1NFTEYiXSwiOiIsX19GSUxFX18sIjoiLF9fRElSX187IA==",
+          "plain": {
+            "status": 0,
+            "stdout": "MzovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9hcmd2LXBhdGgucGhwOmFscGhhOmJldGE6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQvYXJndi1wYXRoLnBocDovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9hcmd2LXBhdGgucGhwOi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZkL2FyZ3YtcGF0aC5waHA6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQ=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "MzovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9hcmd2LXBhdGgucGhwOmFscGhhOmJldGE6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQvYXJndi1wYXRoLnBocDovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9hcmd2LXBhdGgucGhwOi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZkL2FyZ3YtcGF0aC5waHA6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQ=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "globals-order",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/globals-order.php",
+          "source_base64": "PD9waHAgZm9yZWFjaCgkR0xPQkFMUyBhcyAkaz0+JHYpe2VjaG8gJGssIjsiO30=",
+          "plain": {
+            "status": 0,
+            "stdout": "YXJndjthcmdjO19HRVQ7X1BPU1Q7X0NPT0tJRTtfRklMRVM7X1NFUlZFUjs=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "YXJndjthcmdjO19HRVQ7X1BPU1Q7X0NPT0tJRTtfRklMRVM7X1NFUlZFUjs=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "warning-order",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/warning-order.php",
+          "source_base64": "PD9waHAgZWNobyAkbWlzc2luZzske1tdfT03O2VjaG8gJHtbXX07",
+          "plain": {
+            "status": 0,
+            "stdout": "Nw==",
+            "stderr": "V2FybmluZzogQXJyYXkgdG8gc3RyaW5nIGNvbnZlcnNpb24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCldhcm5pbmc6IEFycmF5IHRvIHN0cmluZyBjb252ZXJzaW9uIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZkL3dhcm5pbmctb3JkZXIucGhwIG9uIGxpbmUgMQpXYXJuaW5nOiBVbmRlZmluZWQgdmFyaWFibGUgJG1pc3NpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCg=="
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "Nw==",
+            "stderr": "V2FybmluZzogQXJyYXkgdG8gc3RyaW5nIGNvbnZlcnNpb24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCldhcm5pbmc6IEFycmF5IHRvIHN0cmluZyBjb252ZXJzaW9uIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZkL3dhcm5pbmctb3JkZXIucGhwIG9uIGxpbmUgMQpXYXJuaW5nOiBVbmRlZmluZWQgdmFyaWFibGUgJG1pc3NpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmQvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCg=="
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "no-transport",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/no-transport.php",
+          "source_base64": "PD9waHAgZWNobyAkX0VOVlsiTERfUFJFTE9BRCJdPz8iWCIsJF9FTlZbIlBIUF9TUEVDX1JFUVVFU1RfQ0xPQ0siXT8/IlgiLCRfU0VSVkVSWyJMRF9QUkVMT0FEIl0/PyJYIiwkX1NFUlZFUlsiUEhQX1NQRUNfUkVRVUVTVF9DTE9DSyJdPz8iWCI7",
+          "plain": {
+            "status": 0,
+            "stdout": "WFhYWA==",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "WFhYWA==",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "lazy-dynamic",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/lazy-dynamic.php",
+          "source_base64": "PD9waHAgJG49Il9TRVJWRVIiO2VjaG8gJHskbn09PT1udWxsPyJudWxsIjoidmFsdWUiOw==",
+          "plain": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "lazy-dead-direct",
+          "context": "/home/user/workspace/php-spec/.tools/review7-clock-provider-fd/lazy-dead-direct.php",
+          "source_base64": "PD9waHAgJG49Il9TRVJWRVIiO2lmKGZhbHNlKXtlY2hvICRfU0VSVkVSO31lY2hvICR7JG59PT09bnVsbD8ibnVsbCI6InZhbHVlIjs=",
+          "plain": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "timeout-control",
+          "classification": "expected native process timeout; never source agreement",
+          "stdout": "c3RhcnRlZA=="
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDAAAAAAAAAAAAAAAAAAAAAA",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAAAAAAAAAAA=",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAAAAAAAAAAAAeA==",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAEBCDwAAAAAA",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAAAAAAABAAAABQAAAEE9eAB5",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAAAAAAABAAAADgAAAG1pc3NpbmdfZXF1YWxz",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAAAAAAACAAAA",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        },
+        {
+          "kind": "malformed",
+          "payload_base64": "UEhQUlEwMDEAAAAAAAAAAAAAAAABAAAA/////w==",
+          "observation": {
+            "status": 125,
+            "stdout": "",
+            "stderr": "cGhwLXNwZWMgcmVxdWVzdCBwcm92aWRlcjogaW52YWxpZCBmaXh0dXJlIHRyYW5zcG9ydAo="
+          },
+          "classification": "expected fixture transport failure; never PHP error/source agreement"
+        }
+      ]
+    }
+  },
+  "first_prototype": {
+    "path": ".tools/review7-clock-provider-first/review.json",
+    "sha256": "aa7e75b0c9282ea5acca7253b0bf4da8185c98e3e69e2980c5f995516c76e1c5",
+    "content": {
+      "result": "pass",
+      "scope": "Independent first clock-provider prototype:12 exact clock-field controls,7 paired non-clock native comparisons, monotonic progression and2 native timeout controls. Environment-collision transport remains unresolved, no publication/source semantics approval.",
+      "files": {
+        "request_clock.c": "a57e54db59a79336db2eedbb7ce8c3da9b572f94a55f609f05417b0da29b5bfb",
+        "request-clock.so": "a52918893dcc3aabc65a8b8c5fc92ac6edf425c9dc768194bc89bef46cfb2513",
+        "check.py": "46e50349be5cc7d7e922577a5c1371e77ea2ac9f09c75183b9e31fe78f40c7c4",
+        "results.json": "bdbf209c00bc3e078afb1670739846a8529c20cfe2eb06d4f7dd3597b220470e",
+        "review.py": "07c3b5c244b05f064b50e004bf526fa81e0ddc3c21ae1068964a78b760a8de81",
+        "monotonic.c": "72c2822e03bed729aceb5061678af604f9f618070524fb8e487993bee0383b07",
+        "monotonic": "6247bff11c8a2050ae9fa2838c20b9b15baf8041d7ab22cad1c1efeb168f9750"
+      },
+      "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC",
+        "FIRST": "one",
+        "SECOND": "two"
+      },
+      "rows": [
+        {
+          "kind": "clock",
+          "sample": "0:0",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDAgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMCAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "0:0",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDAgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMCAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "0:1",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDEgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "0:1",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMCArIDEgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgwICsgMSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "-1:999999",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oLTEgKyA5OTk5OTkgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgtMSArIDk5OTk5OSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "-1:999999",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oLTEgKyA5OTk5OTkgLyAxMDAwMDAwLjApLCI6IiwkX1NFUlZFUlsiUkVRVUVTVF9USU1FIl09PT0oaW50KSgtMSArIDk5OTk5OSAvIDEwMDAwMDAuMCk7",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "1700000000:125000",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMCArIDEyNTAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDAgKyAxMjUwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "1700000000:125000",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMCArIDEyNTAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDAgKyAxMjUwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "1700000001:999999",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMSArIDk5OTk5OSAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDEgKyA5OTk5OTkgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "1700000001:999999",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oMTcwMDAwMDAwMSArIDk5OTk5OSAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDE3MDAwMDAwMDEgKyA5OTk5OTkgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "9007199254740993:500000",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oOTAwNzE5OTI1NDc0MDk5MyArIDUwMDAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDkwMDcxOTkyNTQ3NDA5OTMgKyA1MDAwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "clock",
+          "sample": "9007199254740993:500000",
+          "source_base64": "PD9waHAgZWNobyAkX1NFUlZFUlsiUkVRVUVTVF9USU1FX0ZMT0FUIl09PT0oOTAwNzE5OTI1NDc0MDk5MyArIDUwMDAwMCAvIDEwMDAwMDAuMCksIjoiLCRfU0VSVkVSWyJSRVFVRVNUX1RJTUUiXT09PShpbnQpKDkwMDcxOTkyNTQ3NDA5OTMgKyA1MDAwMDAgLyAxMDAwMDAwLjApOw==",
+          "observation": {
+            "status": 0,
+            "stdout": "MTox",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "env-order",
+          "source_base64": "PD9waHAgZm9yZWFjaCgkX0VOViBhcyAkaz0+JHYpe2VjaG8gJGssIj0iLCR2LCI7Ijt9",
+          "extra": [],
+          "plain": {
+            "status": 0,
+            "stdout": "TENfQUxMPUM7VFo9VVRDO0ZJUlNUPW9uZTtTRUNPTkQ9dHdvOw==",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "TENfQUxMPUM7VFo9VVRDO0ZJUlNUPW9uZTtTRUNPTkQ9dHdvOw==",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "argv-path",
+          "source_base64": "PD9waHAgZWNobyAkYXJnYywiOiIsJGFyZ3ZbMF0sIjoiLCRhcmd2WzFdLCI6IiwkYXJndlsyXSwiOiIsJF9TRVJWRVJbIlNDUklQVF9GSUxFTkFNRSJdLCI6IiwkX1NFUlZFUlsiUEhQX1NFTEYiXSwiOiIsX19GSUxFX18sIjoiLF9fRElSX187IA==",
+          "extra": [],
+          "plain": {
+            "status": 0,
+            "stdout": "MzovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1maXJzdC9hcmd2LXBhdGgucGhwOmFscGhhOmJldGE6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3QvYXJndi1wYXRoLnBocDovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1maXJzdC9hcmd2LXBhdGgucGhwOi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZpcnN0L2FyZ3YtcGF0aC5waHA6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3Q=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "MzovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1maXJzdC9hcmd2LXBhdGgucGhwOmFscGhhOmJldGE6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3QvYXJndi1wYXRoLnBocDovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1maXJzdC9hcmd2LXBhdGgucGhwOi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZpcnN0L2FyZ3YtcGF0aC5waHA6L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3Q=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "globals-order",
+          "source_base64": "PD9waHAgZm9yZWFjaCgkR0xPQkFMUyBhcyAkaz0+JHYpe2VjaG8gJGssIjsiO30=",
+          "extra": [],
+          "plain": {
+            "status": 0,
+            "stdout": "YXJndjthcmdjO19HRVQ7X1BPU1Q7X0NPT0tJRTtfRklMRVM7X1NFUlZFUjs=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "YXJndjthcmdjO19HRVQ7X1BPU1Q7X0NPT0tJRTtfRklMRVM7X1NFUlZFUjs=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "warning-order",
+          "source_base64": "PD9waHAgZWNobyAkbWlzc2luZzske1tdfT03O2VjaG8gJHtbXX07",
+          "extra": [],
+          "plain": {
+            "status": 0,
+            "stdout": "Nw==",
+            "stderr": "V2FybmluZzogQXJyYXkgdG8gc3RyaW5nIGNvbnZlcnNpb24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3Qvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCldhcm5pbmc6IEFycmF5IHRvIHN0cmluZyBjb252ZXJzaW9uIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZpcnN0L3dhcm5pbmctb3JkZXIucGhwIG9uIGxpbmUgMQpXYXJuaW5nOiBVbmRlZmluZWQgdmFyaWFibGUgJG1pc3NpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3Qvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCg=="
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "Nw==",
+            "stderr": "V2FybmluZzogQXJyYXkgdG8gc3RyaW5nIGNvbnZlcnNpb24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3Qvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCldhcm5pbmc6IEFycmF5IHRvIHN0cmluZyBjb252ZXJzaW9uIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNsb2NrLXByb3ZpZGVyLWZpcnN0L3dhcm5pbmctb3JkZXIucGhwIG9uIGxpbmUgMQpXYXJuaW5nOiBVbmRlZmluZWQgdmFyaWFibGUgJG1pc3NpbmcgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2xvY2stcHJvdmlkZXItZmlyc3Qvd2FybmluZy1vcmRlci5waHAgb24gbGluZSAxCg=="
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "no-transport",
+          "source_base64": "PD9waHAgZWNobyAkX0VOVlsiTERfUFJFTE9BRCJdPz8iWCIsJF9FTlZbIlBIUF9TUEVDX1JFUVVFU1RfQ0xPQ0siXT8/IlgiLCRfU0VSVkVSWyJMRF9QUkVMT0FEIl0/PyJYIiwkX1NFUlZFUlsiUEhQX1NQRUNfUkVRVUVTVF9DTE9DSyJdPz8iWCI7",
+          "extra": [],
+          "plain": {
+            "status": 0,
+            "stdout": "WFhYWA==",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "WFhYWA==",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "lazy-dynamic",
+          "source_base64": "PD9waHAgJG49Il9TRVJWRVIiO2VjaG8gJHskbn09PT1udWxsPyJudWxsIjoidmFsdWUiOw==",
+          "extra": [
+            "-d",
+            "auto_globals_jit=1",
+            "-d",
+            "register_argc_argv=0"
+          ],
+          "plain": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "noninterference",
+          "id": "lazy-dead-direct",
+          "source_base64": "PD9waHAgJG49Il9TRVJWRVIiO2lmKGZhbHNlKXtlY2hvICRfU0VSVkVSO31lY2hvICR7JG59PT09bnVsbD8ibnVsbCI6InZhbHVlIjs=",
+          "extra": [
+            "-d",
+            "auto_globals_jit=1",
+            "-d",
+            "register_argc_argv=0"
+          ],
+          "plain": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          },
+          "instrumented": {
+            "status": 0,
+            "stdout": "dmFsdWU=",
+            "stderr": ""
+          }
+        },
+        {
+          "kind": "native-monotonic",
+          "status": 0,
+          "stdout": "MSAxNzAwMDAwMDAwIDEyNTAwMAo=",
+          "stderr": ""
+        },
+        {
+          "kind": "timeout-control",
+          "mode": "plain",
+          "classification": "expected native subprocess timeout, not PHP source agreement",
+          "stdout": "c3RhcnRlZA=="
+        },
+        {
+          "kind": "timeout-control",
+          "mode": "instrumented",
+          "classification": "expected native subprocess timeout, not PHP source agreement",
+          "stdout": "c3RhcnRlZA=="
+        }
+      ]
+    }
+  },
+  "offline_build": {
+    "path": ".tools/review7-clock-provider-fd/offline-build.json",
+    "sha256": "3b5596570dfaa9a71e9728a1f953db71d75adbc3035493421bcd8b3352a0e650",
+    "content": {
+      "result": "pass",
+      "scope": "Independent provider-only fresh copied-source build under distinct sudo unshare network namespace. Whole-project final offline rebuild remains pending.",
+      "root": "/tmp/review7-request-provider-offline-ziksb9i7",
+      "command": [
+        "sudo",
+        "-n",
+        "unshare",
+        "--net",
+        "bash",
+        "-c",
+        "readlink /proc/self/ns/net\nexec bash \"$1\"",
+        "provider-build",
+        "/tmp/review7-request-provider-offline-ziksb9i7/scripts/build-request-provider.sh"
+      ],
+      "parent_net_namespace": "net:[4026533729]",
+      "child_net_namespace": "net:[4026533788]",
+      "status": 0,
+      "stdout": "net:[4026533788]\n",
+      "stderr": "",
+      "inputs": {
+        "native/request_clock.c": "a1d27e828cd3fe1069cbe59ff4254cb385fecc468153a6e223ebc0762dfe2881",
+        "scripts/build-request-provider.sh": "27f023f7c4127034924245b5eff059ba7467aff40b4a572429576ae506867213"
+      },
+      "binary_sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064"
+    }
+  },
+  "original_reviewer_expectation_failures": [
+    {
+      "path": ".tools/review7-clock-provider-fd/raw-env-first-failure.json",
+      "sha256": "5a43108a41882a9a72c8216dd551b98dcae1e308bbbbc44e196358f559127adc",
+      "content": {
+        "scope": "First independent expected normalization assertion failed before script correction; raw native input and output retained, no provider/semantic agreement claim",
+        "status": 0,
+        "stdout": "//54PXlsYXN0",
+        "stderr": "V2FybmluZzogVW5kZWZpbmVkIGFycmF5IGtleSAiU1BFQ0lBTF9OQU1FIiBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9yYXctZW52LnBocCBvbiBsaW5lIDEKV2FybmluZzogVW5kZWZpbmVkIGFycmF5IGtleSAiQV9CIiBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9yYXctZW52LnBocCBvbiBsaW5lIDEK"
+      }
+    },
+    {
+      "path": ".tools/review7-clock-provider-fd/raw-env-second-failure.json",
+      "sha256": "46a3d56015a1403a5f07c70c2c7f5f5ca32defdb75637a2fd45da6b570cfceff",
+      "content": {
+        "scope": "Second independent env-name expectation before source-backed correction; first output and source retained separately",
+        "status": 0,
+        "stdout": "//54PXlsYXN0",
+        "stderr": "V2FybmluZzogVW5kZWZpbmVkIGFycmF5IGtleSAiU1BFQ0lBTC5OQU1FIiBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9yYXctZW52LXByZXNlcnZlZC1rZXlzLnBocCBvbiBsaW5lIDEKV2FybmluZzogVW5kZWZpbmVkIGFycmF5IGtleSAiQSBCIiBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jbG9jay1wcm92aWRlci1mZC9yYXctZW52LXByZXNlcnZlZC1rZXlzLnBocCBvbiBsaW5lIDEK"
+      }
+    }
+  ],
+  "scripts": {
+    ".tools/review7-clock-provider-fd/review.py": "from pathlib import Path\nimport base64,hashlib,json,os,struct,subprocess\nR=Path.cwd();D=R/'.tools/review7-clock-provider-fd';PHP=R/'.tools/php/bin/php';profile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[a for k,v in profile.items() for a in ['-d',k+'='+v]];rows=[]\nbase=[b'LC_ALL=C',b'TZ=UTC',b'FIRST=one',b'SECOND=two']\ndef packet(sec,usec,entries):return b'PHPRQ001'+struct.pack('<qII',sec,usec,len(entries))+b''.join(struct.pack('<I',len(x))+x for x in entries)\ndef invoke(name,command,data,timeout=5):\n p=D/(name+'.payload');p.write_bytes(data)\n with p.open('rb') as f:\n  os.dup2(f.fileno(),198)\n  try:return subprocess.run(command,env={'LD_PRELOAD':str(D/'request-clock.so')},cwd=D,pass_fds=(198,),capture_output=True,timeout=timeout)\n  finally:os.close(198)\ndef obs(r):return {'status':r.returncode,'stdout':base64.b64encode(r.stdout).decode(),'stderr':base64.b64encode(r.stderr).decode()}\ndef php(name,source,data,extra=()):\n p=D/(name+'.php')\n if p.exists():assert p.read_bytes()==source\n else:p.write_bytes(source)\n cmd=[str(PHP),'-n',*flags,'-d','variables_order=EGPCS',*extra,str(p),'alpha','beta'];return invoke(name,cmd,data),p,cmd\nfor i,entries in enumerate([[],base,[b'LD_PRELOAD=first',b'PHP_SPEC_REQUEST_CLOCK=logical',b'LD_PRELOAD=last',b'EMPTY='],[b'=empty-name',b'DUP=first',b'RAW=\\xff\\xfe',b'DUP=last',b'VALUE=x=y']]):\n r=invoke(f'probe-{i}',[str(D/'probe')],packet(-1,500000,entries));expected=b'1 1 -1 500000\\n'+b''.join(x.hex().encode()+b'\\n' for x in entries);assert r.returncode==0 and r.stdout==expected and not r.stderr;rows.append({'kind':'native-external-input','entries_base64':[base64.b64encode(e).decode() for e in entries],'observation':obs(r),'checks':'FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8.'})\nfor i,(sec,usec) in enumerate([(0,0),(0,1),(-1,999999),(1700000000,125000),(1700000001,999999),(9007199254740993,500000)]):\n expr=f'({sec} + {usec} / 1000000.0)';source=f'<?php echo $_SERVER[\"REQUEST_TIME_FLOAT\"]==={expr},\":\",$_SERVER[\"REQUEST_TIME\"]===(int){expr};'.encode()\n for repeat in range(2):\n  r,p,cmd=php(f'clock-{i}-{repeat}',source,packet(sec,usec,base));assert r.returncode==0 and r.stdout==b'1:1' and not r.stderr;rows.append({'kind':'clock','sample':[sec,usec],'context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nsource=b'<?php echo $_ENV[\"LD_PRELOAD\"],\":\",$_ENV[\"PHP_SPEC_REQUEST_CLOCK\"],\":\",$_ENV[\"EMPTY\"],\":\",$_SERVER[\"LD_PRELOAD\"],\":\",$_SERVER[\"PHP_SPEC_REQUEST_CLOCK\"];';r,p,_=php('collisions',source,packet(0,0,[b'LD_PRELOAD=first',b'PHP_SPEC_REQUEST_CLOCK=logical',b'LD_PRELOAD=last',b'EMPTY=']));assert r.returncode==0 and r.stdout==b'last:logical::last:logical' and not r.stderr;rows.append({'kind':'php-collisions','context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nsource=b'<?php echo $_ENV[\"SPECIAL.NAME\"]??\"D\",$_ENV[\"A B\"]??\"S\",$_ENV[\"RAW\"],$_ENV[\"VALUE\"],$_ENV[\"DUP\"];';r,p,_=php('raw-env-source-backed',source,packet(0,0,[b'DUP=first',b'SPECIAL.NAME=x',b'A B=y',b'RAW=\\xff\\xfe',b'VALUE=x=y',b'DUP=last']));assert r.returncode==0 and r.stdout==b'DS\\xff\\xfex=ylast' and not r.stderr;rows.append({'kind':'php-raw-env','context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nold=json.loads((R/'.tools/review7-clock-provider-first/review.json').read_text())\nfor row in old['rows']:\n if row['kind']!='noninterference':continue\n source=base64.b64decode(row['source_base64']);r,p,cmd=php(row['id'],source,packet(1700000000,125000,base),row['extra']);plain=subprocess.run(cmd,env=dict(x.decode().split('=',1) for x in base),cwd=D,capture_output=True,timeout=5);assert obs(r)==obs(plain);rows.append({'kind':'noninterference','id':row['id'],'context':str(p),'source_base64':row['source_base64'],'plain':obs(plain),'instrumented':obs(r)})\nloop=D/'timeout.php';loop.write_bytes(b'<?php echo \"started\";for(;;){}')\ntry:invoke('timeout',[str(PHP),'-n',str(loop)],packet(0,0,base),.2);raise AssertionError('loop terminated')\nexcept subprocess.TimeoutExpired as err:assert err.stdout==b'started';rows.append({'kind':'timeout-control','classification':'expected native process timeout; never source agreement','stdout':base64.b64encode(err.stdout).decode()})\nvalid=packet(0,0,[])\nfor i,data in enumerate([b'',b'PHPRQ000'+valid[8:],valid[:-1],valid+b'x',packet(0,1000000,[]),packet(0,0,[b'A=x\\0y']),packet(0,0,[b'missing_equals']),valid[:-4]+struct.pack('<I',2),valid[:-4]+struct.pack('<I',1)+struct.pack('<I',0xffffffff)]):\n r,p,_=php(f'malformed-{i}',b'<?php echo \"unexpected\";',data);assert r.returncode==125 and r.stdout==b'' and r.stderr==b'php-spec request provider: invalid fixture transport\\n';rows.append({'kind':'malformed','payload_base64':base64.b64encode(data).decode(),'observation':obs(r),'classification':'expected fixture transport failure; never PHP error/source agreement'})\nfiles=['request_clock.c','request-clock.so','check.py','probe.c','probe','review.py'];report={'result':'pass','scope':'Independent FD clock/environment provider transport only: exact arbitrary ordered byte inputs, collisions, descriptor closure,12 clock controls,7 paired nonclock checks,monotonic and timeout,9 malformed packets. No request semantic admission.','files':{p:hashlib.sha256((D/p).read_bytes()).hexdigest() for p in files},'php_sha256':hashlib.sha256(PHP.read_bytes()).hexdigest(),'rows':rows};(D/'review.json').write_text(json.dumps(report,indent=2)+'\\n');print('FD provider reviewed:',len(rows),'records;source semantics remains pending')\n",
+    ".tools/review7-clock-provider-fd/probe.c": "#include <errno.h>\n#include <fcntl.h>\n#include <stdio.h>\n#include <sys/time.h>\n#include <time.h>\nextern char **environ;\nint main(void) {\n    struct timespec start, end, pause = {0,30000000};\n    struct timeval wall;\n    int closed = fcntl(198, F_GETFD) == -1 && errno == EBADF;\n    if (clock_gettime(CLOCK_MONOTONIC, &start) || nanosleep(&pause,0) ||\n        clock_gettime(CLOCK_MONOTONIC, &end) || gettimeofday(&wall,0)) return 1;\n    long long elapsed=(end.tv_sec-start.tv_sec)*1000000000LL+end.tv_nsec-start.tv_nsec;\n    printf(\"%d %d %lld %ld\\n\",closed,elapsed>=10000000 && elapsed<2000000000,\n           (long long)wall.tv_sec,(long)wall.tv_usec);\n    for(char **item=environ;*item;item++) {\n        for(unsigned char *s=(unsigned char *)*item;*s;s++) printf(\"%02x\",*s);\n        putchar('\\n');\n    }\n    return 0;\n}\n",
+    ".tools/review7-clock-provider-fd/review-first-normalization-assumption.py": "from pathlib import Path\nimport base64,hashlib,json,os,struct,subprocess\nR=Path.cwd();D=R/'.tools/review7-clock-provider-fd';PHP=R/'.tools/php/bin/php';profile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[a for k,v in profile.items() for a in ['-d',k+'='+v]];rows=[]\nbase=[b'LC_ALL=C',b'TZ=UTC',b'FIRST=one',b'SECOND=two']\ndef packet(sec,usec,entries):return b'PHPRQ001'+struct.pack('<qII',sec,usec,len(entries))+b''.join(struct.pack('<I',len(x))+x for x in entries)\ndef invoke(name,command,data,timeout=5):\n p=D/(name+'.payload');p.write_bytes(data)\n with p.open('rb') as f:\n  os.dup2(f.fileno(),198)\n  try:return subprocess.run(command,env={'LD_PRELOAD':str(D/'request-clock.so')},cwd=D,pass_fds=(198,),capture_output=True,timeout=timeout)\n  finally:os.close(198)\ndef obs(r):return {'status':r.returncode,'stdout':base64.b64encode(r.stdout).decode(),'stderr':base64.b64encode(r.stderr).decode()}\ndef php(name,source,data,extra=()):\n p=D/(name+'.php')\n if p.exists():assert p.read_bytes()==source\n else:p.write_bytes(source)\n cmd=[str(PHP),'-n',*flags,'-d','variables_order=EGPCS',*extra,str(p),'alpha','beta'];return invoke(name,cmd,data),p,cmd\nfor i,entries in enumerate([[],base,[b'LD_PRELOAD=first',b'PHP_SPEC_REQUEST_CLOCK=logical',b'LD_PRELOAD=last',b'EMPTY='],[b'=empty-name',b'DUP=first',b'RAW=\\xff\\xfe',b'DUP=last',b'VALUE=x=y']]):\n r=invoke(f'probe-{i}',[str(D/'probe')],packet(-1,500000,entries));expected=b'1 1 -1 500000\\n'+b''.join(x.hex().encode()+b'\\n' for x in entries);assert r.returncode==0 and r.stdout==expected and not r.stderr;rows.append({'kind':'native-external-input','entries_base64':[base64.b64encode(e).decode() for e in entries],'observation':obs(r),'checks':'FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8.'})\nfor i,(sec,usec) in enumerate([(0,0),(0,1),(-1,999999),(1700000000,125000),(1700000001,999999),(9007199254740993,500000)]):\n expr=f'({sec} + {usec} / 1000000.0)';source=f'<?php echo $_SERVER[\"REQUEST_TIME_FLOAT\"]==={expr},\":\",$_SERVER[\"REQUEST_TIME\"]===(int){expr};'.encode()\n for repeat in range(2):\n  r,p,cmd=php(f'clock-{i}-{repeat}',source,packet(sec,usec,base));assert r.returncode==0 and r.stdout==b'1:1' and not r.stderr;rows.append({'kind':'clock','sample':[sec,usec],'context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nsource=b'<?php echo $_ENV[\"LD_PRELOAD\"],\":\",$_ENV[\"PHP_SPEC_REQUEST_CLOCK\"],\":\",$_ENV[\"EMPTY\"],\":\",$_SERVER[\"LD_PRELOAD\"],\":\",$_SERVER[\"PHP_SPEC_REQUEST_CLOCK\"];';r,p,_=php('collisions',source,packet(0,0,[b'LD_PRELOAD=first',b'PHP_SPEC_REQUEST_CLOCK=logical',b'LD_PRELOAD=last',b'EMPTY=']));assert r.returncode==0 and r.stdout==b'last:logical::last:logical' and not r.stderr;rows.append({'kind':'php-collisions','context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nsource=b'<?php echo $_ENV[\"SPECIAL_NAME\"],$_ENV[\"A_B\"],$_ENV[\"RAW\"],$_ENV[\"VALUE\"],$_ENV[\"DUP\"];';r,p,_=php('raw-env',source,packet(0,0,[b'DUP=first',b'SPECIAL.NAME=x',b'A B=y',b'RAW=\\xff\\xfe',b'VALUE=x=y',b'DUP=last']));assert r.returncode==0 and r.stdout==b'xy\\xff\\xfex=ylast' and not r.stderr;rows.append({'kind':'php-raw-env','context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nold=json.loads((R/'.tools/review7-clock-provider-first/review.json').read_text())\nfor row in old['rows']:\n if row['kind']!='noninterference':continue\n source=base64.b64decode(row['source_base64']);r,p,cmd=php(row['id'],source,packet(1700000000,125000,base),row['extra']);plain=subprocess.run(cmd,env=dict(x.decode().split('=',1) for x in base),cwd=D,capture_output=True,timeout=5);assert obs(r)==obs(plain);rows.append({'kind':'noninterference','id':row['id'],'context':str(p),'source_base64':row['source_base64'],'plain':obs(plain),'instrumented':obs(r)})\nloop=D/'timeout.php';loop.write_bytes(b'<?php echo \"started\";for(;;){}')\ntry:invoke('timeout',[str(PHP),'-n',str(loop)],packet(0,0,base),.2);raise AssertionError('loop terminated')\nexcept subprocess.TimeoutExpired as err:assert err.stdout==b'started';rows.append({'kind':'timeout-control','classification':'expected native process timeout; never source agreement','stdout':base64.b64encode(err.stdout).decode()})\nvalid=packet(0,0,[])\nfor i,data in enumerate([b'',b'PHPRQ000'+valid[8:],valid[:-1],valid+b'x',packet(0,1000000,[]),packet(0,0,[b'A=x\\0y']),packet(0,0,[b'missing_equals']),valid[:-4]+struct.pack('<I',2),valid[:-4]+struct.pack('<I',1)+struct.pack('<I',0xffffffff)]):\n r,p,_=php(f'malformed-{i}',b'<?php echo \"unexpected\";',data);assert r.returncode==125 and r.stdout==b'' and r.stderr==b'php-spec request provider: invalid fixture transport\\n';rows.append({'kind':'malformed','payload_base64':base64.b64encode(data).decode(),'observation':obs(r),'classification':'expected fixture transport failure; never PHP error/source agreement'})\nfiles=['request_clock.c','request-clock.so','check.py','probe.c','probe','review.py'];report={'result':'pass','scope':'Independent FD clock/environment provider transport only: exact arbitrary ordered byte inputs, collisions, descriptor closure,12 clock controls,7 paired nonclock checks,monotonic and timeout,9 malformed packets. No request semantic admission.','files':{p:hashlib.sha256((D/p).read_bytes()).hexdigest() for p in files},'php_sha256':hashlib.sha256(PHP.read_bytes()).hexdigest(),'rows':rows};(D/'review.json').write_text(json.dumps(report,indent=2)+'\\n');print('FD provider reviewed:',len(rows),'records;source semantics remains pending')\n",
+    ".tools/review7-clock-provider-fd/review-second-key-assumption.py": "from pathlib import Path\nimport base64,hashlib,json,os,struct,subprocess\nR=Path.cwd();D=R/'.tools/review7-clock-provider-fd';PHP=R/'.tools/php/bin/php';profile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[a for k,v in profile.items() for a in ['-d',k+'='+v]];rows=[]\nbase=[b'LC_ALL=C',b'TZ=UTC',b'FIRST=one',b'SECOND=two']\ndef packet(sec,usec,entries):return b'PHPRQ001'+struct.pack('<qII',sec,usec,len(entries))+b''.join(struct.pack('<I',len(x))+x for x in entries)\ndef invoke(name,command,data,timeout=5):\n p=D/(name+'.payload');p.write_bytes(data)\n with p.open('rb') as f:\n  os.dup2(f.fileno(),198)\n  try:return subprocess.run(command,env={'LD_PRELOAD':str(D/'request-clock.so')},cwd=D,pass_fds=(198,),capture_output=True,timeout=timeout)\n  finally:os.close(198)\ndef obs(r):return {'status':r.returncode,'stdout':base64.b64encode(r.stdout).decode(),'stderr':base64.b64encode(r.stderr).decode()}\ndef php(name,source,data,extra=()):\n p=D/(name+'.php')\n if p.exists():assert p.read_bytes()==source\n else:p.write_bytes(source)\n cmd=[str(PHP),'-n',*flags,'-d','variables_order=EGPCS',*extra,str(p),'alpha','beta'];return invoke(name,cmd,data),p,cmd\nfor i,entries in enumerate([[],base,[b'LD_PRELOAD=first',b'PHP_SPEC_REQUEST_CLOCK=logical',b'LD_PRELOAD=last',b'EMPTY='],[b'=empty-name',b'DUP=first',b'RAW=\\xff\\xfe',b'DUP=last',b'VALUE=x=y']]):\n r=invoke(f'probe-{i}',[str(D/'probe')],packet(-1,500000,entries));expected=b'1 1 -1 500000\\n'+b''.join(x.hex().encode()+b'\\n' for x in entries);assert r.returncode==0 and r.stdout==expected and not r.stderr;rows.append({'kind':'native-external-input','entries_base64':[base64.b64encode(e).decode() for e in entries],'observation':obs(r),'checks':'FD198 closed, monotonic advances, exact clock and ordered raw environ including duplicates/empty names/nonUTF8.'})\nfor i,(sec,usec) in enumerate([(0,0),(0,1),(-1,999999),(1700000000,125000),(1700000001,999999),(9007199254740993,500000)]):\n expr=f'({sec} + {usec} / 1000000.0)';source=f'<?php echo $_SERVER[\"REQUEST_TIME_FLOAT\"]==={expr},\":\",$_SERVER[\"REQUEST_TIME\"]===(int){expr};'.encode()\n for repeat in range(2):\n  r,p,cmd=php(f'clock-{i}-{repeat}',source,packet(sec,usec,base));assert r.returncode==0 and r.stdout==b'1:1' and not r.stderr;rows.append({'kind':'clock','sample':[sec,usec],'context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nsource=b'<?php echo $_ENV[\"LD_PRELOAD\"],\":\",$_ENV[\"PHP_SPEC_REQUEST_CLOCK\"],\":\",$_ENV[\"EMPTY\"],\":\",$_SERVER[\"LD_PRELOAD\"],\":\",$_SERVER[\"PHP_SPEC_REQUEST_CLOCK\"];';r,p,_=php('collisions',source,packet(0,0,[b'LD_PRELOAD=first',b'PHP_SPEC_REQUEST_CLOCK=logical',b'LD_PRELOAD=last',b'EMPTY=']));assert r.returncode==0 and r.stdout==b'last:logical::last:logical' and not r.stderr;rows.append({'kind':'php-collisions','context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nsource=b'<?php echo $_ENV[\"SPECIAL.NAME\"],$_ENV[\"A B\"],$_ENV[\"RAW\"],$_ENV[\"VALUE\"],$_ENV[\"DUP\"];';r,p,_=php('raw-env-preserved-keys',source,packet(0,0,[b'DUP=first',b'SPECIAL.NAME=x',b'A B=y',b'RAW=\\xff\\xfe',b'VALUE=x=y',b'DUP=last']));assert r.returncode==0 and r.stdout==b'xy\\xff\\xfex=ylast' and not r.stderr;rows.append({'kind':'php-raw-env','context':str(p),'source_base64':base64.b64encode(source).decode(),'observation':obs(r)})\nold=json.loads((R/'.tools/review7-clock-provider-first/review.json').read_text())\nfor row in old['rows']:\n if row['kind']!='noninterference':continue\n source=base64.b64decode(row['source_base64']);r,p,cmd=php(row['id'],source,packet(1700000000,125000,base),row['extra']);plain=subprocess.run(cmd,env=dict(x.decode().split('=',1) for x in base),cwd=D,capture_output=True,timeout=5);assert obs(r)==obs(plain);rows.append({'kind':'noninterference','id':row['id'],'context':str(p),'source_base64':row['source_base64'],'plain':obs(plain),'instrumented':obs(r)})\nloop=D/'timeout.php';loop.write_bytes(b'<?php echo \"started\";for(;;){}')\ntry:invoke('timeout',[str(PHP),'-n',str(loop)],packet(0,0,base),.2);raise AssertionError('loop terminated')\nexcept subprocess.TimeoutExpired as err:assert err.stdout==b'started';rows.append({'kind':'timeout-control','classification':'expected native process timeout; never source agreement','stdout':base64.b64encode(err.stdout).decode()})\nvalid=packet(0,0,[])\nfor i,data in enumerate([b'',b'PHPRQ000'+valid[8:],valid[:-1],valid+b'x',packet(0,1000000,[]),packet(0,0,[b'A=x\\0y']),packet(0,0,[b'missing_equals']),valid[:-4]+struct.pack('<I',2),valid[:-4]+struct.pack('<I',1)+struct.pack('<I',0xffffffff)]):\n r,p,_=php(f'malformed-{i}',b'<?php echo \"unexpected\";',data);assert r.returncode==125 and r.stdout==b'' and r.stderr==b'php-spec request provider: invalid fixture transport\\n';rows.append({'kind':'malformed','payload_base64':base64.b64encode(data).decode(),'observation':obs(r),'classification':'expected fixture transport failure; never PHP error/source agreement'})\nfiles=['request_clock.c','request-clock.so','check.py','probe.c','probe','review.py'];report={'result':'pass','scope':'Independent FD clock/environment provider transport only: exact arbitrary ordered byte inputs, collisions, descriptor closure,12 clock controls,7 paired nonclock checks,monotonic and timeout,9 malformed packets. No request semantic admission.','files':{p:hashlib.sha256((D/p).read_bytes()).hexdigest() for p in files},'php_sha256':hashlib.sha256(PHP.read_bytes()).hexdigest(),'rows':rows};(D/'review.json').write_text(json.dumps(report,indent=2)+'\\n');print('FD provider reviewed:',len(rows),'records;source semantics remains pending')\n",
+    ".tools/review7-clock-provider-first/review.py": "from pathlib import Path\nimport base64,hashlib,json,subprocess\nR=Path.cwd();D=R/'.tools/review7-clock-provider-first';PHP=R/'.tools/php/bin/php';profile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[a for k,v in profile.items() for a in ['-d',k+'='+v]];env={'LC_ALL':'C','TZ':'UTC','FIRST':'one','SECOND':'two'};rows=[]\ndef run(name,source,sample=None,extra=()):\n p=D/(name+'.php')\n if p.exists():assert p.read_bytes()==source\n else:p.write_bytes(source)\n e=env.copy()\n if sample is not None:e.update(LD_PRELOAD=str(D/'request-clock.so'),PHP_SPEC_REQUEST_CLOCK=sample)\n q=subprocess.run([str(PHP),'-n',*flags,'-d','variables_order=EGPCS',*extra,str(p),'alpha','beta'],env=e,cwd=D,capture_output=True,timeout=10);return {'status':q.returncode,'stdout':base64.b64encode(q.stdout).decode(),'stderr':base64.b64encode(q.stderr).decode()}\nfor i,sample in enumerate(['0:0','0:1','-1:999999','1700000000:125000','1700000001:999999','9007199254740993:500000']):\n sec,usec=sample.split(':');expr=f'({sec} + {usec} / 1000000.0)';source=f'<?php echo $_SERVER[\"REQUEST_TIME_FLOAT\"]==={expr},\":\",$_SERVER[\"REQUEST_TIME\"]===(int){expr};'.encode()\n for repeat in range(2):\n  r=run(f'clock-{i}-{repeat}',source,sample);assert r=={'status':0,'stdout':'MTox','stderr':''},(sample,r);rows.append({'kind':'clock','sample':sample,'source_base64':base64.b64encode(source).decode(),'observation':r})\ncases={\n'env-order':b'<?php foreach($_ENV as $k=>$v){echo $k,\"=\",$v,\";\";}',\n'argv-path':b'<?php echo $argc,\":\",$argv[0],\":\",$argv[1],\":\",$argv[2],\":\",$_SERVER[\"SCRIPT_FILENAME\"],\":\",$_SERVER[\"PHP_SELF\"],\":\",__FILE__,\":\",__DIR__; ',\n'globals-order':b'<?php foreach($GLOBALS as $k=>$v){echo $k,\";\";}',\n'warning-order':b'<?php echo $missing;${[]}=7;echo ${[]};',\n'no-transport':b'<?php echo $_ENV[\"LD_PRELOAD\"]??\"X\",$_ENV[\"PHP_SPEC_REQUEST_CLOCK\"]??\"X\",$_SERVER[\"LD_PRELOAD\"]??\"X\",$_SERVER[\"PHP_SPEC_REQUEST_CLOCK\"]??\"X\";',\n'lazy-dynamic':b'<?php $n=\"_SERVER\";echo ${$n}===null?\"null\":\"value\";',\n'lazy-dead-direct':b'<?php $n=\"_SERVER\";if(false){echo $_SERVER;}echo ${$n}===null?\"null\":\"value\";',\n}\nfor name,source in cases.items():\n extra=('-d','auto_globals_jit=1','-d','register_argc_argv=0') if name.startswith('lazy') else ()\n plain=run(name,source,extra=extra);instrumented=run(name,source,'1700000000:125000',extra);assert plain==instrumented,(name,plain,instrumented)\n if name=='no-transport':assert base64.b64decode(instrumented['stdout'])==b'XXXX'\n rows.append({'kind':'noninterference','id':name,'source_base64':base64.b64encode(source).decode(),'extra':extra,'plain':plain,'instrumented':instrumented})\ne=env|{'LD_PRELOAD':str(D/'request-clock.so'),'PHP_SPEC_REQUEST_CLOCK':'1700000000:125000'};p=subprocess.run([str(D/'monotonic')],env=e,capture_output=True,timeout=4);assert p.returncode==0 and p.stdout==b'1 1700000000 125000\\n' and not p.stderr;rows.append({'kind':'native-monotonic','status':p.returncode,'stdout':base64.b64encode(p.stdout).decode(),'stderr':base64.b64encode(p.stderr).decode()})\nloop=D/'timeout.php';loop.write_bytes(b'<?php echo \"started\";for(;;){}')\nfor mode,e in [('plain',env),('instrumented',e)]:\n try:subprocess.run([str(PHP),'-n',str(loop)],env=e,capture_output=True,timeout=.2);raise AssertionError('loop terminated')\n except subprocess.TimeoutExpired as err:\n  assert err.stdout==b'started';rows.append({'kind':'timeout-control','mode':mode,'classification':'expected native subprocess timeout, not PHP source agreement','stdout':base64.b64encode(err.stdout).decode()})\nfiles=['request_clock.c','request-clock.so','check.py','results.json','review.py','monotonic.c','monotonic'];report={'result':'pass','scope':'Independent first clock-provider prototype:12 exact clock-field controls,7 paired non-clock native comparisons, monotonic progression and2 native timeout controls. Environment-collision transport remains unresolved, no publication/source semantics approval.','files':{p:hashlib.sha256((D/p).read_bytes()).hexdigest() for p in files},'php_sha256':hashlib.sha256(PHP.read_bytes()).hexdigest(),'environment':env,'rows':rows};(D/'review.json').write_text(json.dumps(report,indent=2)+'\\n');print('12 exact clock;7 paired nonclock;monotonic+2timeouts pass;collision transport pending')\n",
+    ".tools/review7-clock-provider-first/request_clock.c": "/* Fixture transport for one external request-clock sample. No PHP evaluation. */\n#define _GNU_SOURCE\n#include <errno.h>\n#include <inttypes.h>\n#include <stdlib.h>\n#include <string.h>\n#include <sys/time.h>\n#include <unistd.h>\n\nstatic struct timeval request_clock;\nstatic int request_clock_ready;\n\nstatic void invalid_clock(void)\n{\n    static const char message[] = \"php-spec request clock: invalid fixture transport\\n\";\n    (void) write(STDERR_FILENO, message, sizeof(message) - 1);\n    _exit(125);\n}\n\n__attribute__((constructor)) static void load_request_clock(void)\n{\n    const char *sample = getenv(\"PHP_SPEC_REQUEST_CLOCK\");\n    char *end;\n    intmax_t seconds, microseconds;\n    if (sample == NULL || (*sample != '-' && (*sample < '0' || *sample > '9')))\n        invalid_clock();\n    errno = 0;\n    seconds = strtoimax(sample, &end, 10);\n    if (errno || end == sample || *end != ':')\n        invalid_clock();\n    sample = end + 1;\n    if (*sample < '0' || *sample > '9')\n        invalid_clock();\n    errno = 0;\n    microseconds = strtoimax(sample, &end, 10);\n    if (errno || *end != '\\0' || microseconds > 999999)\n        invalid_clock();\n    request_clock.tv_sec = (time_t) seconds;\n    request_clock.tv_usec = (suseconds_t) microseconds;\n    if ((intmax_t) request_clock.tv_sec != seconds ||\n        unsetenv(\"PHP_SPEC_REQUEST_CLOCK\") || unsetenv(\"LD_PRELOAD\"))\n        invalid_clock();\n    request_clock_ready = 1;\n}\n\nint gettimeofday(struct timeval *restrict value, void *restrict timezone)\n{\n    if (!request_clock_ready || timezone != NULL)\n        invalid_clock();\n    *value = request_clock;\n    return 0;\n}\n"
+  },
+  "payloads": {
+    "clock-4-1.payload": "UEhQUlEwMDEB8VNlAAAAAD9CDwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "collisions.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAEAAAAEAAAAExEX1BSRUxPQUQ9Zmlyc3QeAAAAUEhQX1NQRUNfUkVRVUVTVF9DTE9DSz1sb2dpY2FsDwAAAExEX1BSRUxPQUQ9bGFzdAYAAABFTVBUWT0=",
+    "malformed-1.payload": "UEhQUlEwMDAAAAAAAAAAAAAAAAAAAAAA",
+    "malformed-4.payload": "UEhQUlEwMDEAAAAAAAAAAEBCDwAAAAAA",
+    "probe-3.payload": "UEhQUlEwMDH//////////yChBwAFAAAACwAAAD1lbXB0eS1uYW1lCQAAAERVUD1maXJzdAYAAABSQVc9//4IAAAARFVQPWxhc3QJAAAAVkFMVUU9eD15",
+    "malformed-5.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAABAAAABQAAAEE9eAB5",
+    "malformed-7.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAACAAAA",
+    "clock-3-0.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "timeout.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "probe-2.payload": "UEhQUlEwMDH//////////yChBwAEAAAAEAAAAExEX1BSRUxPQUQ9Zmlyc3QeAAAAUEhQX1NQRUNfUkVRVUVTVF9DTE9DSz1sb2dpY2FsDwAAAExEX1BSRUxPQUQ9bGFzdAYAAABFTVBUWT0=",
+    "no-transport.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "warning-order.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "globals-order.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "raw-env-source-backed.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAGAAAACQAAAERVUD1maXJzdA4AAABTUEVDSUFMLk5BTUU9eAUAAABBIEI9eQYAAABSQVc9//4JAAAAVkFMVUU9eD15CAAAAERVUD1sYXN0",
+    "env-order.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "malformed-0.payload": "",
+    "raw-env-preserved-keys.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAGAAAACQAAAERVUD1maXJzdA4AAABTUEVDSUFMLk5BTUU9eAUAAABBIEI9eQYAAABSQVc9//4JAAAAVkFMVUU9eD15CAAAAERVUD1sYXN0",
+    "malformed-2.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAAAAA=",
+    "malformed-3.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAAAAAAeA==",
+    "clock-1-0.payload": "UEhQUlEwMDEAAAAAAAAAAAEAAAAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-5-1.payload": "UEhQUlEwMDEBAAAAAAAgACChBwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-3-1.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "lazy-dead-direct.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "probe-0.payload": "UEhQUlEwMDH//////////yChBwAAAAAA",
+    "lazy-dynamic.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-2-1.payload": "UEhQUlEwMDH//////////z9CDwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-4-0.payload": "UEhQUlEwMDEB8VNlAAAAAD9CDwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "probe-1.payload": "UEhQUlEwMDH//////////yChBwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "malformed-6.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAABAAAADgAAAG1pc3NpbmdfZXF1YWxz",
+    "clock-0-0.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "malformed-8.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAABAAAA/////w==",
+    "clock-2-0.payload": "UEhQUlEwMDH//////////z9CDwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-1-1.payload": "UEhQUlEwMDEAAAAAAAAAAAEAAAAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-0-1.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "argv-path.payload": "UEhQUlEwMDEA8VNlAAAAAEjoAQAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "clock-5-0.payload": "UEhQUlEwMDEBAAAAAAAgACChBwAEAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmUKAAAAU0VDT05EPXR3bw==",
+    "raw-env.payload": "UEhQUlEwMDEAAAAAAAAAAAAAAAAGAAAACQAAAERVUD1maXJzdA4AAABTUEVDSUFMLk5BTUU9eAUAAABBIEI9eQYAAABSQVc9//4JAAAAVkFMVUU9eD15CAAAAERVUD1sYXN0"
+  },
+  "canonical_files": {
+    "native/request_clock.c": "a1d27e828cd3fe1069cbe59ff4254cb385fecc468153a6e223ebc0762dfe2881",
+    ".tools/request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+    "scripts/build-request-provider.sh": "27f023f7c4127034924245b5eff059ba7467aff40b4a572429576ae506867213",
+    "tests/semantics/request_provider.py": "cb96392bb01df671d0e29159958006098f1904cffb66a159133431808f7617ce",
+    "coverage/semantics/request-provider.json": "b54873ae5919aff4407a767001d091dd235caf904419820cb33440df4421a787",
+    "coverage/semantics/request-provider-build.json": "efc2f66f7063212d7fc049d7c8e276dd79700cdb1276e52d704f8eb4b11030fa"
+  },
+  "preflight": "17 stale identity,3 invalid path,17 invalid closure checks;9 ignored build logs. Whole-project final offline audit remains pending."
+}
