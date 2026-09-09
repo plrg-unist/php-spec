@@ -55,6 +55,11 @@ or closing-tag start line as `statementTerminatorLine`; a comment Nop alone does
 not make a braced/alternative body a bare statement. These fields prepare exact
 control compilation; their transport does not enable control execution.
 
+Ternaries retain boolean `parenthesizedConditional`, set by the actual grouping
+production and false at ternary construction. Call/control parentheses do not
+set it. This distinguishes otherwise identical nested trees for later compiler
+legality checks; printing still derives grouping from checked tree structure.
+
 Encoded programs additionally carry initial source/lexer encoding names, BOM
 and skipped shebang bytes. Noninjective or changing filters retain original byte
 spelling as explicit provenance; that field is never read by the printer. Node

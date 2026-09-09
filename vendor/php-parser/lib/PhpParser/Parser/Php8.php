@@ -2455,13 +2455,16 @@ class Php8 extends \PhpParser\ParserAbstract
           if ($self->semValue instanceof Expr\ArrowFunction) {
               $self->parenthesizedArrowFunctions->offsetSet($self->semValue);
           }
+          if ($self->semValue instanceof Expr\Ternary) {
+              $self->semValue->setAttribute('parenthesizedConditional', true);
+          }
 
             },
             481 => static function ($self, $stackPos) {
-                 $self->semValue = new Expr\Ternary($self->semStack[$stackPos-(5-1)], $self->semStack[$stackPos-(5-3)], $self->semStack[$stackPos-(5-5)], $self->getAttributes($self->tokenStartStack[$stackPos-(5-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue = new Expr\Ternary($self->semStack[$stackPos-(5-1)], $self->semStack[$stackPos-(5-3)], $self->semStack[$stackPos-(5-5)], $self->getAttributes($self->tokenStartStack[$stackPos-(5-1)], $self->tokenEndStack[$stackPos])); $self->semValue->setAttribute('parenthesizedConditional', false);
             },
             482 => static function ($self, $stackPos) {
-                 $self->semValue = new Expr\Ternary($self->semStack[$stackPos-(4-1)], null, $self->semStack[$stackPos-(4-4)], $self->getAttributes($self->tokenStartStack[$stackPos-(4-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue = new Expr\Ternary($self->semStack[$stackPos-(4-1)], null, $self->semStack[$stackPos-(4-4)], $self->getAttributes($self->tokenStartStack[$stackPos-(4-1)], $self->tokenEndStack[$stackPos])); $self->semValue->setAttribute('parenthesizedConditional', false);
             },
             483 => static function ($self, $stackPos) {
                  $self->semValue = new Expr\BinaryOp\Coalesce($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));

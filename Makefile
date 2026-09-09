@@ -20,6 +20,7 @@ test: build
 	python3 tests/wire_negative.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
+	python3 tests/ternary_metadata.py
 	python3 tests/phase_ledger.py
 	python3 tests/parallel_validation_test.py
 	python3 tests/validate.py --elaborate --lint-all

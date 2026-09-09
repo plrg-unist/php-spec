@@ -21,3 +21,14 @@
 -          { $$ = Node\UseItem[$1, $3, Stmt\Use_::TYPE_UNKNOWN]; $this->checkUseUse($$, #3); }
 +          { $$ = Node\UseItem[$1, $3, Stmt\Use_::TYPE_UNKNOWN]; }
  ;
+@@ -1102,5 +1102,8 @@
+           }
++          if ($$ instanceof Expr\Ternary) {
++              $$->setAttribute('parenthesizedConditional', true);
++          }
+       }
+-    | expr '?' expr ':' expr                                { $$ = Expr\Ternary[$1, $3,   $5]; }
+-    | expr '?' ':' expr                                     { $$ = Expr\Ternary[$1, null, $4]; }
++    | expr '?' expr ':' expr                                { $$ = Expr\Ternary[$1, $3,   $5]; $$->setAttribute('parenthesizedConditional', false); }
++    | expr '?' ':' expr                                     { $$ = Expr\Ternary[$1, null, $4]; $$->setAttribute('parenthesizedConditional', false); }
+     | expr T_COALESCE expr                                  { $$ = Expr\BinaryOp\Coalesce[$1, $3]; }
