@@ -120,6 +120,13 @@ def main():
                 else:node['meta']['startLine']={'int':line}
                 checked=a.request({'op':'check','ast':ast,'fixture':True});i=len(fixtures)
                 fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED "missing ordinary compiler line")\n')
+            parsed=f.request({'op':'parse','source':base64.b64encode(b'<?php break;').decode()})
+            for line in [None,'0','-1','99']:
+                ast=copy.deepcopy(parsed['ast']);node=ast['program'][0]
+                if line is None:node['meta'].pop('statementTerminatorLine')
+                else:node['meta']['statementTerminatorLine']={'int':line}
+                checked=a.request({'op':'check','ast':ast,'fixture':True});i=len(fixtures)
+                fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED "missing source line")\n')
             source=b'<?php echo [[NAN],[NAN]];'
             parsed=f.request({'op':'parse','source':base64.b64encode(source).decode()})
             checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})
@@ -145,10 +152,10 @@ def main():
             run=subprocess.run([str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*map(str,SPECS),str(file)],capture_output=True,text=True,timeout=120)
             if run.returncode or run.stdout.strip()!='true':
                 (ROOT/'.tools/source-compiler-failure.watsup').write_text(file.read_text());raise AssertionError((run.returncode,run.stdout,run.stderr))
-            print(len(ACCESS_CASES),'access sources;',sum(len(probes) for source,probes in ACCESS_CASES),'access paths;',len(SOURCE_CASES),'compiler lint comparisons;',len(LINES),'emission-line observations; 4 Unsupported contexts; 3 metadata boundaries; constant export merge checks passed')
+            print(len(ACCESS_CASES),'access sources;',sum(len(probes) for source,probes in ACCESS_CASES),'access paths;',len(SOURCE_CASES),'compiler lint comparisons;',len(LINES),'emission-line observations; 4 Unsupported contexts; 7 metadata boundaries; constant export merge checks passed')
     finally:f.close();a.close()
     assert before==fingerprint(),'watched inputs changed'
-    report={'scope':'ordered compiler work, access and operand descriptors; source execution tested separately', 'profile':types.PROFILE,'oracle_identity':identity,'fingerprint':before,'baseline_cases':len(runtime_cases.CASES),'targeted_lint_cases':len(CASES),'byte_diagnostic_checks':['invalid UTF-8 roundtrip','Unicode separators are not output line breaks'],'access_sources':len(ACCESS_CASES),'access_paths':sum(len(probes) for source,probes in ACCESS_CASES),'emission_line_cases':len(LINES),'unsupported_contexts':4,'constant_export_checks':['matching duplicate','conflicting scalar','conflicting array ID','missing operand line','missing fact line','incomplete compilation'],'metadata_boundaries':[None,'0','-1'],'cases':records}
+    report={'scope':'ordered compiler work, access and operand descriptors; source execution tested separately', 'profile':types.PROFILE,'oracle_identity':identity,'fingerprint':before,'baseline_cases':len(runtime_cases.CASES),'targeted_lint_cases':len(CASES),'byte_diagnostic_checks':['invalid UTF-8 roundtrip','Unicode separators are not output line breaks'],'access_sources':len(ACCESS_CASES),'access_paths':sum(len(probes) for source,probes in ACCESS_CASES),'emission_line_cases':len(LINES),'unsupported_contexts':4,'constant_export_checks':['matching duplicate','conflicting scalar','conflicting array ID','missing operand line','missing fact line','incomplete compilation'],'metadata_boundaries':[None,'0','-1'],'break_terminator_boundaries':[None,'0','-1','99'],'cases':records}
     (ROOT/'coverage/semantics/source-compiler.json').write_text(json.dumps(report,indent=2)+'\n')
 
 

@@ -135,3 +135,17 @@ check and recursive array-fold classifier are no longer the public source
 compilation path. Their legacy definitions await coordinated retirement; ordinary
 compilation now uses its own narrow direct-CV check and the shared source-line
 error helper for bare break.
+
+A bare `break` has no operand child in Zend's AST, so its compiler line is the
+terminator token's start line (`zend_ast_create_1`, `zend_ast.c:173`, and
+`zend_language_parser.y:521`). The frontend retains this as checked integer
+`statementTerminatorLine` on break and continue nodes. It cannot be recovered
+from the keyword's `startLine` or the statement's `endLine`: a closing-tag token
+may consume a trailing newline. Missing, nonpositive, or out-of-range token lines
+yield Unsupported instead of a guessed line. The range check uses the retained
+statement start/end positions; it does not authenticate edited metadata against
+unavailable original source. Syntax reconstruction retains positive edited values,
+and printing derives fresh source from checked syntax rather than these positions.
+The fourteen original-source regressions retain semicolon and closing-tag failures
+and controls. Explicit break depths and continue remain part of pending source-control
+activation; their token locations are transported without claiming that activation.

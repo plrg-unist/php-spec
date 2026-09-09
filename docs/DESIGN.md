@@ -39,6 +39,13 @@ Anonymous namespace nodes additionally retain integer `namespaceBraceLine`, the
 opening-brace token line after whitespace and comments. It comes from the effective
 lexer tokens, including encoded sources, and survives checked elaboration and fresh
 node reconstruction. Compiler diagnostics consume this field; the printer does not.
+Break and continue nodes similarly retain integer `statementTerminatorLine`, the
+start line of their semicolon or closing-tag terminator token. The closing-tag
+token can include a newline, so the statement end line is insufficient. This
+field also uses effective lexer tokens, survives fresh reconstruction, and never
+instructs the printer to replay source. The compiler validates the consumed line
+against the statement's retained start/end range; edited syntax remains explicit
+input, not authenticated source provenance.
 
 Encoded programs additionally carry initial source/lexer encoding names, BOM
 and skipped shebang bytes. Noninjective or changing filters retain original byte

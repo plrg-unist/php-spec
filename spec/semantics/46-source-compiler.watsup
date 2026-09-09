@@ -10,6 +10,22 @@ var P : ppstate
 dec $ppnamed(ppstate, pcpath, pnresult) : ppstate
 dec $ppcvcheck(phpType34) : pcheck
 
+dec $ppterminator_tag(metadataEntry) : bool
+def $ppterminator_tag(MstatementTerminatorLine z) = true
+def $ppterminator_tag(metadataEntry) = false -- otherwise
+dec $ppterminator_token(metadata) : int
+def $ppterminator_token(eps) = 0
+def $ppterminator_token((MstatementTerminatorLine z) :: metadata) = z
+def $ppterminator_token(metadataEntry :: metadata) = $ppterminator_token(metadata)
+  -- if ~$ppterminator_tag(metadataEntry)
+dec $ppterminator_range(int, int, int) : int
+def $ppterminator_range(z, z_start, z_end) = z
+  -- if $(z > 0 /\ z_start > 0 /\ z >= z_start /\ z <= z_end)
+def $ppterminator_range(z, z_start, z_end) = 0
+  -- otherwise
+dec $ppterminator(metadata) : int
+def $ppterminator(metadata) = $ppterminator_range($ppterminator_token(metadata), $source_line(metadata), $source_end_line(metadata))
+
 dec $ppstart(nat, program, ptbytes) : ppstate
 dec $pplexical(ppstate, plresult) : ppstate
 dec $ppresume(ppstate, plstate, pcpath, statement, plenv) : ppstate
@@ -76,7 +92,7 @@ def $ppstatement(P, pcpath, NStmtUnset (SEQUENCE expression*) metadata) = $ppexp
   -- if P.COMPLETION = PPCNORMAL
 def $ppstatement(P, pcpath, NStmtBlock (SEQUENCE statement*) metadata) = $ppstatements($pplocate(P, pcpath, $source_end_line(metadata)), pcpath ++ [PCFIELD 0], 0, statement*)
   -- if P.COMPLETION = PPCNORMAL
-def $ppstatement(P, pcpath, NStmtBreak ABSENT metadata) = $ppcheck(P, $context_error("'break' not in the 'loop' or 'switch' context", $source_line(metadata)))
+def $ppstatement(P, pcpath, NStmtBreak ABSENT metadata) = $ppcheck(P, $context_error("'break' not in the 'loop' or 'switch' context", $ppterminator(metadata)))
   -- if P.COMPLETION = PPCNORMAL
 def $ppstatement(P, pcpath, statement) = $ppunsupported(P, "ordinary statement compilation")
   -- otherwise

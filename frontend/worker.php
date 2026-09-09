@@ -128,6 +128,24 @@ while (($line = fgets(STDIN)) !== false) {
                         $node->setAttribute('namespaceBraceLine', $tokens[$index]->line);
                     }
                 }
+                // Childless break/continue inherit the terminator token's start
+                // line. A closing-tag token may also contain a trailing newline.
+                $pending = $ast;
+                while ($pending !== []) {
+                    $node = array_pop($pending);
+                    if ($node instanceof PhpParser\Node\Stmt\Break_ || $node instanceof PhpParser\Node\Stmt\Continue_) {
+                        $token = $tokens[$node->getEndTokenPos()];
+                        if ($token->id !== ord(';') && $token->id !== T_CLOSE_TAG) throw new RuntimeException('Loop control terminator token is missing');
+                        $node->setAttribute('statementTerminatorLine', $token->line);
+                    }
+                    foreach ($node->getSubNodeNames() as $field) {
+                        $value = $node->$field;
+                        if ($value instanceof PhpParser\Node) $pending[] = $value;
+                        elseif (is_array($value)) {
+                            foreach ($value as $child) if ($child instanceof PhpParser\Node) $pending[] = $child;
+                        }
+                    }
+                }
                 $transport = ['version' => 1, 'program' => encode($ast)];
                 $encoding = sourceEncoding(bytes($request->source), $parser->getTokens(), $ast);
                 if ($encoding !== null) $transport['encoding'] = $encoding;
