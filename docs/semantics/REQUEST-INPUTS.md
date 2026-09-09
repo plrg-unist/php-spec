@@ -98,3 +98,12 @@ Both are protocol controls. Omitting request selects the unchanged ordinary
 `php_run` path. The adapter contains no PHP bootstrap computations or source
 execution shortcut. Canonical pairing and complete request state/source review
 remain separate acceptance steps.
+
+[Two independent path controls](../../coverage/semantics/request-path-independent-review.json)
+confirm that `file`/argv[0] may carry relative or symlink invocation spelling,
+while the execute request's filename supplies the resolved source context.
+PHP_SELF, SCRIPT_NAME, SCRIPT_FILENAME and PATH_TRANSLATED retain the former;
+diagnostics retain the latter. The initial combined probe also contained
+`__FILE__`/`__DIR__` and exposed a required ordinary compiler-line boundary.
+Its native/checked/full-state observation remains separate from the two passing
+transport comparisons.
