@@ -6,7 +6,8 @@ original899/e7d552ec gates and the one-test correction bridge.
 Historical reference baseline884/7399e812 and all native/current884 originals
 retain their original identities.
 This is the next bounded stage of the complete-core plan. Runtime6 owns runtime,
-compiler5 owns compiler work, and review9 owns independent review. No default
+compiler6 owns current compiler work, and review9 owns independent review.
+Compiler5 authored the accepted constant and historical signature prerequisites. No default
 source admission is claimed by this plan.
 
 ## Coherent acceptance units
@@ -34,7 +35,7 @@ and before default/type/optional normalization. Start/resume reuse the existing
 signature fold; legacy literal-only consumers retain their wrapper. The prototype
 on historical877 is helper preparation, with357 native signatures,28 descriptors,
 174 reference-return flags and eight shared-folder suspension controls. It is not
-an accepted replacement for current884.
+an accepted replacement for current899.
 
 The source compiler resolves each request using existing constant compiler45 at
 `declaration ++ [PCFIELD 3, PCINDEX i, PCFIELD 6]`. Parameter defaults disable
@@ -43,25 +44,37 @@ original declaration magic/namespace/import context. Folding precedes validation
 of the remaining constant expression, so an invalid skipped arm can disappear.
 No second constant evaluator or host execution supplies semantics.
 
-Ordered default descriptors carry parameter index, original origin and a stored
-or deferred designation. Stored defaults borrow the existing unit constant pool;
+The agreed descriptor is `pdefault {INDEX nat, ORIGIN porigin, KIND pdefaultkind}`,
+with `PDSTORED | PDDEFERRED`, in ordered `pfunction.DEFAULTS`. Entries use zero-based
+source parameter indexes and survive only when signature normalization retains a
+default. Stored defaults borrow the existing unit constant pool;
 deferred defaults use original source and compiled code roots. Descriptor and
 root validation must be derived from checked source without reconstructing
-arbitrary runtime values. Omitted reference parameters receive fresh ordinary
+arbitrary runtime values. Compiled pool/code roots still include defaults dropped
+by required-after-optional normalization; receive/cache roots require a surviving
+descriptor. Extend the current NConst-only class guard atomically with admission.
+Omitted reference parameters receive fresh ordinary
 cells; actual alias acquisition promotes them, as in the pinned RECV_INIT.
+
+Runtime91 plans an origin-keyed cache of owning `VALUE` plus nonowning `CLASS`,
+explicit default receive/bind tasks and a source-typed receive context using the
+existing observer.
 
 Deferred receive caching is observable. Native originals show warnings once for
 cacheable scalar/empty results and repeated warnings for refcounted array/string
 results. String length alone does not identify cacheability. The [allocation-class contract](CONSTANT-VALUE-CLASSES.md) now records the
 pinned constructors and source-derived provenance. Default receive/cache
 activation must replay the retained original observations. Cache entries and constant values must retain their actual ownership;
-failures must not install successful cache entries or execute the body.
+failures must not install successful cache entries or execute the body. Pinned
+RECV_INIT also requires no AST side effects. The only current pinned setter is
+NEW, which remains unadmitted; no speculative side-effect bit is needed in this
+scalar/array stage, but object admission must extend the predicate atomically.
 Empty strings and arrays can also be allocated; constant folding and runtime
 null-to-array casts differ. Transfer rules must preserve these source operations.
 
 ## Evidence and review gates
 
-Preserve native lint/run bytes, checked ASTs, complete current884 failure states,
+Preserve native lint/run bytes, checked ASTs, complete accepted-baseline failure states,
 original file/request profiles and actual executable/source hashes before edits.
 Current independent originals cover omitted/supplied errors, selected/skipped
 invalid defaults, required-after-optional, declaration magic/imports, repeated
@@ -69,7 +82,9 @@ array/reference defaults, escaped aliases, warning-cache result kinds and user
 constant activation/fallback. Old agreeing cases remain agreements under their
 original identity; Unsupported, timeouts and setup errors remain separate.
 119 independent default/cache observations remain for the receive stage,
-including the separate11 literal-constructor controls.
+including the separate11 literal-constructor controls. Their exact native/source
+contexts now have a separate current899 replay:116 Unsupported and three existing
+required-after-optional agreements, preserving original884 outcomes separately.
 The [106-source preparation](../../coverage/semantics/default-review-preparation.json)
 and [56-source diagnosis](../../coverage/semantics/constant-review-diagnosis.json)
 retain the exact old states, allocation observations and compiler boundary failures.
