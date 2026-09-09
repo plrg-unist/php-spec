@@ -1,5 +1,9 @@
 # Quiet/CV independent review continuation
 
+Latest continuation: [request profile and calls reviewer handoff](REQUEST-REVIEWER-HANDOFF.md).
+Its active ordinary campaign and separately accepted263 request profile supersede
+the continuation summary below; historical identities remain unchanged.
+
 Quiet publication is accepted at **a42fddfe**, runtime evidence **608a8752**,
 compiler evidence **cd0f3d3f** and
 [canonical independent review](../../coverage/semantics/quiet-access-review.json).
