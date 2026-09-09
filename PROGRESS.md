@@ -30,7 +30,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   consumers. Read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md) and
   [SOURCE-ORIGINS](docs/semantics/SOURCE-ORIGINS.md).
 - Compiler: ordered ordinary compilation, lexical context and retained constant
-  facts; ordered helper `72d3a65d` is reviewed. Read [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md),
+  facts; ordered helper/access `00e27843` is reviewed. Read [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md),
   [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md) and
   [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md).
 - Shared tree: stage owned files only, commit each independently reviewed increment,
@@ -67,8 +67,9 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   observations**, 6 Unsupported contexts and metadata/export controls passed;
   independent alternates and exact-bit conflict probes passed. Constant replacement
   lines are corrected; [raw history](coverage/semantics/constant-rewrite-line-disagreement.json)
-  preserves six prior failures and all ten resolved observations. Work, lexical
-  resumption, AST facts and code-generation constants are distinct. Runtime entry
+  preserves six prior failures and all ten resolved observations. Access descriptors `00e27843` passed 8 sources/24 roles and 5 independent
+  sources/17 roles. Read/write/unset modes and skipped-child absence are reviewed.
+  Work, lexical resumption, AST facts and code-generation constants are distinct. Runtime entry
   still uses the prior checker; [SOURCE-COMPILER](docs/semantics/SOURCE-COMPILER.md)
   describes the pending consumer.
 - Compiler/frontend `9658958c`: 233 checked prefix comparisons plus 64 independent
@@ -93,9 +94,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 Heredoc/nowdoc lines are corrected in `4297dadf`; the
 [raw evidence](coverage/semantics/heredoc-line-disagreement.json) retains ten prior
 failures and twelve resolved observations. Filename transport `0270197e` passed
-16 canonical and 24 expanded byte/metadata checks. Review compiler access
-descriptors, then integrate the ordered compiler and pools before source
-dimensions. Runtime tasks consume facts by unit/path, while
+16 canonical and 24 expanded byte/metadata checks. Integrate the ordered
+compiler and pools before source dimensions. Runtime tasks consume facts by unit/path, while
 ordinary compilation still visits children below constant-prepass assignment
 barriers. Preserve compiler lines, key conversion, delayed reads and owner timing.
 All 16 read/prepass and eight write/error-order witnesses, plus existing array and
