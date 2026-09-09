@@ -1,9 +1,10 @@
 # Permanent compiled constant pools
 
 `32-compiled-pools.watsup` installs compiler-owned constant arrays into runtime
-storage without exposing them to temporary-root cleanup. This is an internal
-storage interface. Source execution does not yet install a pool or consume a
-compiled fact; the ordered compiler and source bridge have separate gates.
+storage without exposing them to temporary-root cleanup. The internal storage interface is now consumed by
+`33-runtime-compiler.watsup`: public source execution completes ordered compilation,
+exports both retained facts and ordinary constant operands, and installs one pool
+before running compiled work.
 
 Each `ppool` belongs to one compiled source instance and maps structural paths
 to values. `S.POOLS` contributes permanent roots to the allocation graph, separate
@@ -45,10 +46,10 @@ nested remapping, duplicate source instances, retained runtime cycles, COW and
 The report is `coverage/semantics/compiled-pools.json`. Run ownership and the full
 source regression after root-domain changes.
 
-The next bridge must merge partial constant facts and ordinary compiled operand
-results, rejecting conflicting values at a shared path, and retain effective
-compiler lines separately. It must install each source instance once and dispatch
-by the task's explicit unit/path. It must not rebuild pools during execution,
+The source bridge merges partial constant facts and ordinary compiled operand
+results, rejecting conflicting values at a shared path, and retains effective
+compiler lines separately. It installs each source instance once and dispatches
+by the task's explicit unit/path. It does not rebuild pools during execution,
 choose paths by AST equality, or transplant the isolated compiler's `HELD` list
 into runtime temporaries. String/scalar read activation also requires the exact
 constant-prepass suppression and partial-fold behavior described in

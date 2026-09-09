@@ -1,0 +1,76 @@
+;; Ordered compilation is completed before any recorded work executes. Only
+;; compact operand metadata is retained: compiler MEMORY is not runtime state.
+dec $code_at(pcode*, nat) : pcode?
+def $code_at(eps, n) = eps
+def $code_at(pcode :: pcode_tail*, n) = (pcode)
+  -- if pcode.UNIT = n
+def $code_at(pcode :: pcode_tail*, n) = $code_at(pcode_tail*, n)
+  -- if pcode.UNIT =/= n
+dec $code_expression(pcodeexpr*, pcpath) : (int, bool)?
+def $code_expression(eps, pcpath) = eps
+def $code_expression((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath) = ((z, b))
+def $code_expression((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+
+def $runtime_line(S, pcpath, expression) = z
+  -- if S.ORIGIN = (PORIGIN n pcpath_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = ((z, b))
+def $runtime_line(S, pcpath, expression) = 0
+  -- if S.ORIGIN = (PORIGIN n pcpath_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = eps
+def $runtime_line(S, pcpath, expression) = $compiled_line(expression)
+  -- otherwise
+
+dec $compiled_read(pstate, porigin) : pvalue?
+def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
+def $compiled_read(S, porigin) = eps
+  -- otherwise
+
+def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE (KNOWN pvalue)][.RESULT = KNOWN PNULL]
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $enter_compiled_task(S, porigin, ptask, ptask_tail*) = S[.TODO = [ptask, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
+  -- otherwise
+
+dec $compiled_operands(ppstate, ppexprdone*) : pcodeexpr*
+def $compiled_operands(P, eps) = eps
+def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = (CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps)) :: $compiled_operands(P, ppexprdone*)
+dec $compiled_work(nat, ppwork*) : ptask*
+def $compiled_work(n, eps) = eps
+def $compiled_work(n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = (AT (PORIGIN n pcpath) (STMT statement)) :: $compiled_work(n, ppwork*)
+dec $export_constants((pcpath, pvalue)*) : pconstant*
+def $export_constants(eps) = eps
+def $export_constants((pcpath, pvalue) :: (pcpath_tail, pvalue_tail)*) = (PCONSTANT pcpath pvalue) :: $export_constants((pcpath_tail, pvalue_tail)*)
+
+dec $compile_pool(pstate, ppstate, ppconstants) : pstate
+dec $compiler_diagnostics(pstate, pldiagnostic*) : pstate
+def $compiler_diagnostics(S, eps) = S
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation) pllocation.LINE]], pldiagnostic*)
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.COMPLETION = STATICBYTES $plmessage(PLDIAGNOSTIC "fatal" text ptbytes* pllocation) pllocation.LINE], pldiagnostic*)
+
+dec $compile_source(pstate, ppstate) : pstate
+def $compile_source(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
+  -- if P.COMPLETION = PPCABRUPT pcompletion
+def $compile_source(S, P) = $compiler_diagnostics(S[.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
+  -- if P.COMPLETION = PPCNAMESPACE
+def $compile_source(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS), P, $ppconstants(P))
+  -- if P.COMPLETION = PPCNORMAL
+
+def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS) }]]
+  -- if P.FOLD.MEMORY.ENV = eps
+  -- if P.FOLD.MEMORY.STORE = eps
+  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))
+  -- if S_installed.COMPLETION = NORMAL
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed
+  -- if P.FOLD.MEMORY.ENV = eps
+  -- if P.FOLD.MEMORY.STORE = eps
+  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))
+  -- if S_installed.COMPLETION =/= NORMAL
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S[.COMPLETION = UNSUPPORTED "compiler variable storage in constant pool"]
+  -- if (P.FOLD.MEMORY.ENV =/= eps \/ P.FOLD.MEMORY.STORE =/= eps)

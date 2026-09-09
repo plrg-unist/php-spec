@@ -8,6 +8,8 @@ syntax plocation = ROOT nat | ELEMENT nat pkey | NOWHERE
 syntax porigin = PORIGIN nat pcpath
 syntax pconstant = PCONSTANT pcpath pvalue
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
+syntax pcodeexpr = CODEEXPR pcpath int bool
+syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr* }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax ptask = AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
@@ -19,7 +21,7 @@ syntax ptask = AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile* }
+  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode* }
 dec $cv_name(phpType34) : (nat*)?
 dec $fold_constant(pstate, expression) : pstate?
 dec $initial_state(pcompletion) : pstate
@@ -127,3 +129,6 @@ def $unset_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment v
   -- if $environment_name(n_name*)
 def $unset_name(S, n_name*) = S[.ENV = $unbind(S.ENV, n_name*)]
   -- if ~$environment_name(n_name*)
+
+dec $runtime_line(pstate, pcpath, expression) : int
+dec $enter_compiled_task(pstate, porigin, ptask, ptask*) : pstate

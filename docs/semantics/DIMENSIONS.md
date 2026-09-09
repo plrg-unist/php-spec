@@ -1,8 +1,8 @@
 # Scalar and string dimensions
 
-`44-dimension-read.watsup` supplies pure runtime R-fetch helpers. It is not yet
-listed in the source machine's module catalog: source scalar/string dimension
-reads remain pending until the checked constant-expression prepass is integrated.
+`44-dimension-read.watsup` supplies pure runtime R-fetch helpers. It is registered as a compiler dependency for its string constant-read leaf.
+Generic source scalar/string dimension reads remain pending after the checked
+constant-expression prepass and ordered compiler bridge activation.
 Array reads continue through the reviewed source path. Reference assignment and
 acquisition now cover writable array elements; string-offset reference/write
 contexts remain separate pending work.
@@ -51,7 +51,7 @@ coverage or a proof that string dimensions are complete.
 
 
 `45-dimension-write.watsup` supplies separate callback-free write and reference
-fetch helpers, also outside the source module catalog. `$string_dimension_write`
+fetch helpers, outside the source module catalog. `$string_dimension_write`
 returns a state and updated container bytes. It resolves/converts the key first;
 an index below the negative bound warns and returns null before fetching a
 delayed RHS. Otherwise it stringifies the RHS, rejects empty strings, warns for

@@ -194,20 +194,41 @@ follow `ZEND_UNSET_DIM` and `ZEND_FETCH_DIM_UNSET`, with independent byte/line/o
 fixtures. Empty `[]` reads and unsets are rejected statically before output;
 intermediate string offsets remain pending with the string access protocol.
 
-A pure constant classifier reuses the array/numeric rules on isolated state and
-accepts only normal results without diagnostics. This determines compiler source
-lines: a folded array retains its first element's effective line, an empty array
-uses its closing line, and a runtime array ends on its last compiled value.
-Source evidence is `zend_try_ct_eval_array`, `zend_compile_array`,
-`zend_delayed_compile_dim`, `zend_ast_create_list_1`, `ZEND_ADD_ARRAY_ELEMENT`,
-`zend_fetch_dimension_address_inner` and `zend_hash_compare_impl`. Compile-time
-array-key errors remain explicit Unsupported until their static phase is modeled.
+Public `$php_run` binds actual filename bytes before invoking the ordered compiler.
+`33-runtime-compiler.watsup` completes compilation before starting any `PPCWORK`
+statement, preserving original checked source units and occurrence paths. Compile
+errors suppress all recorded work. Ordered lexical warnings survive a subsequent
+ordinary static error or Unsupported completion. Byte-valued lexical fatal messages
+use `STATICBYTES`; ordinary static errors retain `STATICERROR`. The renderer projects
+both as compile errors with exact byte messages, source lines and status255.
 
-The static pass currently rejects unsupported syntax before execution. This is a
-visible bootstrap limitation, not a claim that unsupported code always executes.
-Source-dependent errors require an actual positive source line; edited values
-without one return Unsupported. The public source command supplies original file
-identity for diagnostic rendering, with no pretty-print round trip.
+Successful compilation merges partial constant facts and ordinary constant operands,
+rejects compiler variable storage, and installs a permanent pool into disjoint runtime
+array storage. Compact `CODEEXPR` descriptors retain each expression's ending line
+and whether ordinary compilation produced a constant read operand. A partial fact
+below a wholly folded parent does not authorize execution. Scoped `AT EVAL` and
+`AT DIM_PREP` consume pooled values only for that read permission; write, reference
+and unset acquisition retain their designation tasks. Pool values are reused after
+temporary cleanup and budget resumption, without allocating another literal.
+
+Runtime consumers obtain compiler lines by the current unit/path and explicit child
+path. Missing descriptors in a compiled unit produce missing context, not an AST
+line substitute. Internal bare-state fixtures may still use the legacy AST line
+helper and `$run_source` trace wrapper; neither is the public source entry point.
+The old whole-source availability traversal remains only for that internal test
+path. Ordinary compilation still shares its direct-CV predicate, which invokes
+the old constant classifier on literal name forms; retiring that narrow dependency
+and the legacy trace traversal is pending. Namespace/import work currently
+executes only expressions admitted by the ordered compiler; unresolved namespace
+constant lookup remains Unsupported. Generic string/scalar dimensions are still
+pending even though the compiler uses the pure string constant-read helper.
+
+The compiler rejects unfinished syntax before source execution. This is a visible
+implementation boundary, not a claim that every unsupported expression would run.
+`tests/semantics/runtime_compiler.py` checks compiled execution, pool ownership,
+per-occurrence identity and constructed interruption/re-entry states; it does not
+claim loop or function execution. Existing original-source comparisons separately
+validate the admitted behavior against the pinned engine.
 
 `bin/php-semantics FILE` emits a JSON observation: status, base64 stdout/stderr,
 exit status, diagnostics, events, and unsupported reason. Modeled PHP failure is

@@ -11,7 +11,7 @@ Reference-assignment expressions now return owning `REFERENCE` operands. Their
 cell identity is captured but their contained value is read by the consumer;
 keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 
-The next compiler/pool source activation is described in
+The compiler/pool source activation is described in
 [the runtime bridge handoff](RUNTIME-BRIDGE-HANDOFF.md).
 
 ## Entry points
@@ -22,7 +22,7 @@ The next compiler/pool source activation is described in
   checked unit/path task scopes; see [runtime origins](SOURCE-ORIGINS.md).
 - `32-compiled-pools`: internal per-unit constant storage, disjoint array-ID
   installation and permanent roots; see [compiled pools](COMPILED-POOLS.md).
-  Source execution does not yet invoke it.
+  Source execution invokes it through `33-runtime-compiler`.
 - `36-arrays`: ordered entries/history, key coercions, reads, identity, union,
   isolated constant classifier. `37-array-locations`: location acquisition and
   conditional shallow path copying. `38-array-unset`: unset contexts.

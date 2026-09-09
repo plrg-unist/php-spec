@@ -53,23 +53,24 @@ def main():
     # A real non-UTF8 path passes through the CLI, adapter, and diagnostic formatter.
     with tempfile.TemporaryDirectory(prefix='execute-context-',dir=ROOT/'.tools') as tmp:
         file = Path(tmp)/os.fsdecode(b'byte \xff.php')
-        file.write_bytes(source)
-        native = subprocess.run([str(types.PHP),'-n',*types.FLAGS,str(file)],capture_output=True,timeout=30,env=types.ENV,cwd=tmp)
-        run = subprocess.run([str(ROOT/'bin/php-semantics'),str(file)],capture_output=True,timeout=35,env=types.ENV,cwd=tmp)
-        response = json.loads(run.stdout)
-        assert run.returncode == 0 and response['status'] == 'normal', response
-        assert base64.b64decode(response['stdout']) == native.stdout
-        assert base64.b64decode(response['stderr']) == native.stderr
-        assert response['exit_status'] == native.returncode
-        records.append({'filename_base64':base64.b64encode(os.fsencode(file)).decode(),
-            'native_command':native.args,'semantic_command':run.args,'cwd':tmp,
-            'profile':types.PROFILE,'environment':{'LC_ALL':'C','TZ':'UTC','PHP_SPEC_SCRIPT_ENCODING':None},
-            'semantic_stdout_base64':base64.b64encode(run.stdout).decode(),
-            'semantic_stderr_base64':base64.b64encode(run.stderr).decode(),
-            'semantic_exit_status':run.returncode,
-            'native_stdout_base64':base64.b64encode(native.stdout).decode(),
-            'native_stderr_base64':base64.b64encode(native.stderr).decode(),
-            'native_exit_status':native.returncode,'response':response})
+        for source_context in (source, b'<?php\nuse A;\necho 1;\nuse A;', b'<?php use A\\B as \xff; echo 1; use C\\D as \xff;'):
+            file.write_bytes(source_context)
+            native = subprocess.run([str(types.PHP),'-n',*types.FLAGS,str(file)],capture_output=True,timeout=30,env=types.ENV,cwd=tmp)
+            run = subprocess.run([str(ROOT/'bin/php-semantics'),str(file)],capture_output=True,timeout=35,env=types.ENV,cwd=tmp)
+            response = json.loads(run.stdout)
+            assert run.returncode == 0 and response['status'] in {'normal','static_rejection'}, response
+            assert base64.b64decode(response['stdout']) == native.stdout
+            assert base64.b64decode(response['stderr']) == native.stderr
+            assert response['exit_status'] == native.returncode
+            records.append({'source_base64':base64.b64encode(source_context).decode(),'filename_base64':base64.b64encode(os.fsencode(file)).decode(),
+                'native_command':native.args,'semantic_command':run.args,'cwd':tmp,
+                'profile':types.PROFILE,'environment':{'LC_ALL':'C','TZ':'UTC','PHP_SPEC_SCRIPT_ENCODING':None},
+                'semantic_stdout_base64':base64.b64encode(run.stdout).decode(),
+                'semantic_stderr_base64':base64.b64encode(run.stderr).decode(),
+                'semantic_exit_status':run.returncode,
+                'native_stdout_base64':base64.b64encode(native.stdout).decode(),
+                'native_stderr_base64':base64.b64encode(native.stderr).decode(),
+                'native_exit_status':native.returncode,'response':response})
     assert before == fingerprint(), 'implementation changed during execute context validation'
     report = {'result':'pass','classification':'source filename transport; file-sensitive PHP constructs remain pending',
         'cases':len(records),'source_base64':base64.b64encode(source).decode(),'records':records,'fingerprint':before}

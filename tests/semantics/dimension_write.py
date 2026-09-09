@@ -17,6 +17,7 @@ def main():
     runner = HERE/'_build/default/numeric_runner.exe'
     specs = [ROOT/p for p in json.loads((ROOT/'spec/semantics/modules.json').read_text())]
     specs += [ROOT/'spec/semantics/44-dimension-read.watsup', ROOT/'spec/semantics/45-dimension-write.watsup']
+    specs = list(dict.fromkeys(specs))
     def fingerprint():
         return {'closure': source_validation.fingerprint(),
                 'runner': hashlib.sha256(runner.read_bytes()).hexdigest()}

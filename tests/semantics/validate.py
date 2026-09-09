@@ -382,6 +382,38 @@ CASES.update({
 })
 
 
+# Ordered compiler activation: exact new source admissions and failure ordering.
+CASES.update({
+    'compiler-byte-import-conflict': b'<?php use A\\B as \xff; echo 1; use C\\D as \xff;',
+    'compiler-multiline-warning-fatal': b'<?php\nuse A;\necho 1;\nuse A;',
+    'compiler-array-key-static': b'<?php $a=[[]=>1];',
+    'compiler-error-suppresses-output': b'<?php echo "before"; $a=[[]=>1];',
+    'compiler-error-before-runtime-undefined': b'<?php echo $missing; $a=[&$x[]];',
+    'compiler-warning-before-static-error': b'<?php use A; echo "before"; $a=[[]=>1]; use B;',
+    'compiler-import-conflict-after-work': b'<?php echo "before"; use A; use A;',
+    'compiler-namespace-work': b'<?php namespace N; echo 1; {echo 2;} namespace M; echo 3;',
+    'compiler-bracketed-namespace-work': b'<?php namespace N {echo 1;} namespace M {echo 2;}',
+    'compiler-import-warning-work': b'<?php use A; echo 1; use B; echo 2;',
+    'compiler-qualified-import-work': b'<?php use A\\B; echo 1;',
+    'compiler-folded-string-array': b'<?php $a=["abc"["1x"]]; echo $a[0];',
+    'compiler-folded-string-partial-array': b'<?php $u=7;$a=[$u,"abc"["1x"]];echo $a[0],$a[1];',
+    'compiler-folded-string-reference-array': b'<?php $u=7;$a=[&$u,"abc"["1x"]];$u=8;echo $a[0],$a[1];',
+    'compiler-folded-string-under-assignment': b'<?php $a=[($u=["abc"["1x"]])];echo $a[0][0],$u[0];',
+    'compiler-pool-copy-first-mutation': b'<?php $a=[[NAN]];$b=$a;$a[0][0]=1;echo $b[0][0]===NAN,$a[0][0],$a===$b;',
+    'compiler-pool-distinct-nan-occurrences': b'<?php $a=[[NAN],[NAN]];echo $a[0]===$a[0],$a[0]===$a[1];',
+})
+
+CASES.update({
+    'compiler-unmatched-prefix-control': b'<?php use Vendor\\Package as A;echo B\\Missing;',
+    'compiler-unqualified-control': b'<?php use Vendor\\Package as A;echo Missing;',
+})
+COMPILER_ALIAS_UNSUPPORTED = [
+    b'<?php use Vendor\\Package as A;echo A\\Missing;',
+    b'<?php use Vendor\\Package as Alias;echo aLiAs\\Missing;',
+    b'<?php echo "before";use Vendor\\Package as A;echo A\\Missing;',
+    b'<?php use Vendor\\Package as A;$u=1;$a=[$u,A\\Missing];',
+]
+
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
@@ -408,6 +440,7 @@ CONFORMANCE += ['numeric-min-trailing-space', 'numeric-min-nul-control',
                 'numeric-positive-overflow-incomplete-exponent',
                 'numeric-negative-overflow-incomplete-exponent',
                 'numeric-incomplete-exponent-overflow-control']
+CONFORMANCE += ['string-read-dynamic-literal-prepass']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 
@@ -515,14 +548,16 @@ def main():
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
                        b'<?php $a="abc";$x=&$a[0];', b'<?php $a="abc";unset($a[0][0]);',
-                       b'<?php $a=[...[]];', b'<?php $a=[[]=>1];',
+                       b'<?php $a=[...[]];',
                        b'<?php echo $http_response_header;',
-                       b'<?php $http_response_header=1;echo $http_response_header;']:
+                       b'<?php $http_response_header=1;echo $http_response_header;'] + COMPILER_ALIAS_UNSUPPORTED:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
             response = json.loads(result.stdout)
             assert result.returncode != 0 and response['status'] == 'unsupported', response
+            if source in COMPILER_ALIAS_UNSUPPORTED:
+                assert response['stdout'] == '', response
             negatives.append({'source': base64.b64encode(source).decode(), 'exit_status': result.returncode,
                               'observation': response})
         # Edited checked values cannot invent source positions for diagnostics.

@@ -1,6 +1,6 @@
 ;; Compiled constants outlive task temporaries. This internal installation API
 ;; consumes compiler-proved values; structural validation does not re-prove
-;; constant evaluation. Source execution does not install or consume pools yet.
+;; constant evaluation. Ordered source compilation installs each unit before execution.
 dec $constant_at(pconstant*, pcpath) : pvalue?
 def $constant_at(eps, pcpath) = eps
 def $constant_at((PCONSTANT pcpath pvalue) :: pconstant*, pcpath) = (pvalue)

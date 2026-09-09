@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checked task occurrence traces; no compiled facts or literal pools consumed."""
+"""Bare checked task traces plus compiled-entry encoded-program resumption."""
 import base64
 import copy
 import hashlib

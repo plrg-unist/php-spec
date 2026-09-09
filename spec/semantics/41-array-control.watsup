@@ -4,12 +4,12 @@ rule PhpStep/array-literal: S ~> S_new[.TODO = (ARRAY_NEXT n phpType13*) :: ptas
   -- if S_new.RESULT = KNOWN (PARRAY n)
 rule PhpStep/array-finished: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PARRAY n)]
   -- if S.TODO = (ARRAY_NEXT n eps) :: ptask_tail*
-rule PhpStep/array-unkeyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), ARRAY_VALUE n eps phpType13_tail* $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/array-unkeyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), ARRAY_VALUE n eps phpType13_tail* $runtime_line(S, [PCFIELD 1], expression)] ++ ptask_tail*]
   -- if S.TODO = (ARRAY_NEXT n ((NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
 rule PhpStep/array-keyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_key), ARRAY_KEY n expression phpType13_tail*] ++ ptask_tail*]
   -- if S.TODO = (ARRAY_NEXT n ((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
   -- if phpType5 = expression_key
-rule PhpStep/array-key: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), ARRAY_VALUE n (S.RESULT) phpType13_tail* $compiled_line(expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/array-key: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), ARRAY_VALUE n (S.RESULT) phpType13_tail* $runtime_line(S, [PCFIELD 1], expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ARRAY_KEY n expression phpType13_tail*) :: ptask_tail*
 rule PhpStep/array-value-unkeyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13_tail*)]
   -- if S.TODO = (ARRAY_VALUE n eps phpType13_tail* z) :: ptask_tail*
@@ -36,12 +36,12 @@ rule PhpStep/array-key-abrupt: S ~> S_key[.TODO = eps]
   -- if S_key = $key_operand(S_read, poperand, z)
   -- if S_key.COMPLETION =/= NORMAL
 
-rule PhpStep/array-reference-unkeyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), ARRAY_REF_VALUE n eps phpType13_tail* $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/array-reference-unkeyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), ARRAY_REF_VALUE n eps phpType13_tail* $runtime_line(S, [PCFIELD 1], expression)] ++ ptask_tail*]
   -- if S.TODO = (ARRAY_NEXT n ((NArrayItem ABSENT expression (BOOLEAN true) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
 rule PhpStep/array-reference-keyed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_key), ARRAY_REF_KEY n expression phpType13_tail*] ++ ptask_tail*]
   -- if S.TODO = (ARRAY_NEXT n ((NArrayItem phpType5 expression (BOOLEAN true) (BOOLEAN false) metadata) :: phpType13_tail*)) :: ptask_tail*
   -- if phpType5 = expression_key
-rule PhpStep/array-reference-key: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), ARRAY_REF_VALUE n (S.RESULT) phpType13_tail* $compiled_line(expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/array-reference-key: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), ARRAY_REF_VALUE n (S.RESULT) phpType13_tail* $runtime_line(S, [PCFIELD 1], expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (ARRAY_REF_KEY n expression phpType13_tail*) :: ptask_tail*
 rule PhpStep/array-reference-value-unkeyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13_tail*)]
   -- if S.TODO = (ARRAY_REF_VALUE n eps phpType13_tail* z) :: ptask_tail*
@@ -56,19 +56,19 @@ rule PhpStep/array-reference-key-abrupt: S ~> S_key[.TODO = eps][.HELD = S.HELD]
   -- if S_key = $key_operand($hold_literal_reference(S), poperand, z)
   -- if S_key.COMPLETION =/= NORMAL
 
-rule PhpStep/dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), DIM_FETCH $compiled_line(expression_key)] ++ ptask_tail*]
+rule PhpStep/dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), DIM_FETCH $runtime_line(S, [PCFIELD 1], expression_key)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key
 rule PhpStep/dimension-prepare-cv: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (VARIABLE n_name* $variable_line(phpType34, metadata))][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
-rule PhpStep/dimension-prepare-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DIM_NAME $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/dimension-prepare-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DIM_NAME $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
   -- if phpType34 = expression
 rule PhpStep/dimension-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_NAME S.RESULT z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_NAME z) :: ptask_tail*
-rule PhpStep/dimension-prepare-path: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), DIM_INDEX expression_key $compiled_line(expression_key)] ++ ptask_tail*]
+rule PhpStep/dimension-prepare-path: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), DIM_INDEX expression_key $runtime_line(S, [PCFIELD 1], expression_key)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key
 rule PhpStep/dimension-index: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), DIM_PATH S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]

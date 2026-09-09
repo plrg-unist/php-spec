@@ -5,7 +5,8 @@ The machine retains canonical checked `pcunit` values in `SOURCES`. An optional
 current task scope. `$php_run` creates unit zero for its initial source;
 `$run_source` accepts an explicit canonical unit, and rejects a forged occurrence
 catalog. The original `PROGRAM` or `ENCODEDPROGRAM` value remains in that unit.
-This stage does not install compiler facts or constant-array pools.
+The public entry now completes ordered compilation and installs a permanent pool;
+`$run_source` remains an internal bare-task trace fixture.
 
 The `execute` transport now requires the actual source filename as canonical
 base64 bytes alongside the checked AST and transition budget. `$php_run` decodes
@@ -13,7 +14,7 @@ it in the specification and retains `SOURCEFILE unit bytes` in `S.FILES`, includ
 budget and abrupt results. Empty and NUL-containing filenames are invalid context;
 other bytes are preserved, including non-UTF8 filesystem names. Syntax-only
 `check` and `elaborate` requests remain independent of this execution context.
-File-sensitive PHP constructs are still pending. The compiler bridge must pass
+File-sensitive PHP constructs are still pending. The compiler bridge passes
 this context into compilation before running tasks; this transport milestone
 currently records it around the existing source entry point.
 
@@ -49,8 +50,8 @@ checks and transparent reference-root checks supplement the trace comparisons.
 The full source and ownership gates still validate behavior and lifetimes.
 
 The internal [pool installer](COMPILED-POOLS.md) now supplies permanent roots
-separate from `HELD` and reserves disjoint allocation IDs. Source execution still
-needs to invoke it and consume compiled facts by unit/path. Those roots survive
+separate from `HELD` and reserves disjoint allocation IDs. Public source execution invokes it through `33-runtime-compiler.watsup` and
+consumes ordinary constant read operands by unit/path. Those roots survive
 temporary cleanup; compiled-unit teardown remains pending. The checked compiler traversal
 must still visit child arrays normally below an assignment/variable barrier that
 stops an enclosing constant-evaluation traversal. Repeated literal execution,

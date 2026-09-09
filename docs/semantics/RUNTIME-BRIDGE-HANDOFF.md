@@ -21,31 +21,41 @@ line cases and 8 sources/24 access roles passed independently, with additional
 5 sources/17 roles. See the corresponding current/historical reports rather than
 assuming a report's fingerprint survives subsequent edits.
 
-## Ownership and current entry points
+## Current bridge implementation
 
-The runtime author owns 30–43, modules.json, adapter execution integration,
-bin/php-semantics, runtime/source tests, DESIGN and ARRAY-HANDOFF. The narrow 20
-string-line handoff has returned from the compiler author. Coordinate changes to
-compiler-owned 11, 16, 21, 45-constant-context and 46-source-compiler; do not duplicate
-those traversals. The reviewer owns PROGRESS/inventory/CORE/README and independent
-conformance evidence. Never push; stage only owned files after independent review.
+`33-runtime-compiler.watsup` now connects public `$php_run` to `$ppstart` before
+execution. The caller's actual filename bytes initialize `S.FILES` and the lexical
+compiler context first. The compiler must complete successfully before any `WORK`
+executes. Compiler warnings remain ordered before later failures; lexical fatal
+messages use the byte-valued `STATICBYTES` completion and the source renderer.
+Ordinary `STATICERROR`, Unsupported, budget and runner failures remain distinct.
 
-`adapter/main.ml::execute` now requires canonical base64 `filename`, checks the
-program, and calls `$php_run(program, budget, filename_text)`. The CLI passes the
-actual `os.fsencode` path. 40 decodes bytes and retains `SOURCEFILE unit bytes` in
-`S.FILES`; empty/NUL filenames are invalid context. Non-UTF8 bytes are preserved.
-Currently this field is set after the old source drive. The bridge must supply
-that same actual filename **before** compilation and execution, without a dummy
-file or host character conversion. File-sensitive PHP expressions remain pending.
+Successful compilation installs merged facts/constant operands in the permanent
+pool, rejects compiler variable storage, and retains compact `CODEEXPR` descriptors
+with occurrence, ending line and constant-read eligibility. It does not embed
+`ppstate` or compiler memory in runtime state. Scoped `AT EVAL`/`AT DIM_PREP` reads
+consume the already shifted pool value only for a successful ordinary `PPR` operand.
+`PPW` and `PPUNSET` contexts retain designation work. Partial facts below wholly
+folded parents own values but provide no executable access permission.
 
-`$php_run` still calls 40 `$run_source`, whose `$check_statements` path uses 20's old
-availability/constant-read checks. It then creates scoped statement tasks and
-runs `$drive`. 36's recursive constant classifier is also still in use. The new
-compiler and pure 44/45 dimension helpers are **not registered in modules.json**;
-source execution does not install pools or consume compiler facts. Replace the
-old source compilation path carefully, retaining explicit Unsupported outcomes
-for unresolved syntax/context; avoid keeping two competing source prepasses.
-Bare helper-state execution may remain a clearly identified internal test path.
+31 and 40–42 source consumers use recorded occurrence ending lines; a compiled
+unit never recovers a missing descriptor from AST equality or source metadata.
+The old `$run_source` traversal remains an internal bare-task trace fixture,
+excluded from public `$php_run`. The compiler still shares its direct-CV predicate,
+which calls the legacy constant classifier on literal name forms. Retirement of
+that narrow dependency and the legacy test traversal is still pending. Generic44 is now registered as a compiler dependency; runtime
+`$base_read` still supports only its prior array path. String/scalar dynamic reads
+and all45 write helpers remain separate activation gates.
+
+The reviewed bridge passed 546 exact source comparisons and 28 explicit negative
+outcomes after the imported-class-prefix guard `ff941f17`. Independent review
+repeated the full source suite, 582 compiler and 233 context campaigns, and all runtime
+helper gates. Additional independent evidence covers 16 source probes, 16 constructed
+cases/138 assertions, four byte-diagnostic probes and seven alias controls.
+`runtime_compiler.py` passed 11 cases/105 assertions; 12 admitted original sources
+from the compiler emission-line matrix also matched through public execution.
+The earlier accepted counts above remain historical. Runtime owns20/30–43, the module catalog, renderer and runtime tests;
+compiler owns11/16/21/22/45constant/46; reviewer owns progress/inventory/CORE/README.
 
 ## Reviewed interfaces
 
@@ -90,46 +100,31 @@ compiler cells/bindings before extracting array storage. Do not transplant
 compiler `HELD` into runtime `HELD`; permanent pool roots own all retained values,
 including unused partial arrays. Keep executable metadata separate from ownership.
 
-## First source bridge
+## Scope and remaining integration
 
-Use reviewed compiler work and descriptors on the current global source subset.
-Namespace/import value resolution stays explicitly pending; never interpret its
-names using an unconditional global lookup. Byte compiler diagnostics also need
-an explicit completion/encoder when that context is activated.
-An ordinary compiler error suppresses execution of all earlier `WORK`; retain
-its ordered compiler diagnostics instead of starting the partially compiled tasks.
+Namespace/import scalar-only work now executes at its original lexical paths;
+namespace constant value resolution remains explicitly Unsupported until the shared
+resolver is connected and independently reviewed. In particular, compound constant
+names whose first component matches an imported class alias are temporarily
+Unsupported: the old global evaluator would otherwise report the wrong resolved
+name. Four retained negatives cover matching/case-folded aliases, prior output and
+partial arrays; unmatched-prefix and unqualified controls remain admitted. No
+unconditional global fallback or host lookup is introduced. Compiler diagnostic rendering currently has the
+single-source-unit contract of `$php_run`; dynamic/multiple-source execution and
+per-unit teardown remain pending.
 
-A possible small dispatch boundary is scoped `AT EVAL` and `AT DIM_PREP`. Consume
-an installed constant only for a checked **PPR** occurrence with an actual compiled
-constant operand. Merged partial facts alone cannot authorize a read. In
-particular, DIM_PREP is shared with writing/unset/reference acquisition; preserve
-those designation effects. Interception must preserve surrounding origin scopes,
-borrowing/capture rules, permanent roots and budget resumability. Do not duplicate
-or allocate a constant literal each time its task executes.
+The bridge newly admits constant string DIM reads folded inside constant and dynamic
+arrays, compile-time illegal array keys, and lexical compiler diagnostics. Exact
+source witnesses retain those support changes. Generic read activation must include
+all16 read/prepass fixtures; some fixtures intentionally combine a folded operand
+with an ordinary string read that remains Unsupported at this bridge milestone.
 
-Replace runtime consumers of `$compiled_line` with the ending line recorded for
-their exact expression occurrence. 31 echo tasks and 40–42 continuation creation
-contain those calls. Respect explicit assignment line resets and the distinction
-between a CV operand's origin line and its consumer's line. The old helper may
-serve bare internal states; it cannot substitute for compiled metadata when a
-source descriptor exists.
-
-This is a behavior-changing compiler/pool bridge. It can admit constant string
-DIM reads folded inside arrays before generic 44 runtime reads are connected.
-Include those newly admitted prepass witnesses in this first source gate. Likewise,
-if a previously Unsupported compile error becomes modeled (for example a constant
-array key), preserve its exact positive source regression and update the negative
-classification explicitly. Never omit a mismatch or call it a passing Unsupported
-case. Keep all 526 existing source cases, including twelve heredoc/quoted controls.
-Any newly admitted namespace/import-only source also needs its own exact witness;
-do not describe an expanded source entry as preserving an unchanged support set.
-
-Tests must cover same occurrence reuse after temporary cleanup, distinct equal
-NaN array occurrences/units, dynamic allocation disjointness, first mutation COW,
-partial facts without executable access, read versus writable DIM contexts,
-actual filenames, effective lines, and encoded checked-program retention. Existing
-SOURCE-ORIGINS tests intentionally trace bare source tasks; update entry-point
-assumptions explicitly if the compiled entry changes their expected state.
+Constructed bridge tests check repeated occurrence reuse after temporary cleanup,
+distinct NaN-array occurrences and units, dynamic allocation disjointness, read versus
+write/unset permission, partial facts without ordinary descriptors, compiler variable
+storage rejection and budget resumability. Existing source/origin/filename/ownership
+regressions remain mandatory, including the encoded checked-program retention test.
+These constructed re-entry states do not claim PHP loop or function execution.
 
 ## Following gates and commands
 
@@ -157,3 +152,21 @@ python3 tests/semantics/validate.py
 Coordinate short freezes with the compiler author and reviewer. Final source runs
 currently take about three minutes. Independent review and an exact fresh source
 repeat are required before committing each bounded implementation milestone.
+
+## Next source milestones
+
+1. Activate ordinary scalar/string reads through 44 and all 16 retained read/prepass
+   fixtures, then string writes/reference/nested errors with all eight ordering
+   fixtures. Keep delayed RHS reads and captured writable locations explicit.
+2. Add source `if`, `while`, `do` and `for`, pure truthiness and loop-scoped
+   `break`/`continue`. Test actual repeated literal execution using the already
+   installed pool and interruption/resumption across iterations.
+3. Add array unpack/destructuring and foreach value/reference execution. Foreach
+   requires persistent cursor behavior under deletion/reinsertion and mutation,
+   not an index into the current entry list. Extend the ownership protocol first.
+
+The compiler worker can independently prepare namespace constant resolution and
+function declarations while these runtime steps proceed. Runtime namespace reads
+need compact resolved-name/fallback descriptors; basic named calls subsequently
+need frames, argument/reference binding and declaration activation. General callbacks,
+objects and lifecycle remain further core work. The full-core objective is unchanged.

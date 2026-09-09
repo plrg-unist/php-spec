@@ -43,9 +43,9 @@ dec $statement_tasks(statement*, porigin?, nat) : ptask*
 def $statement_tasks(eps, porigin?, n) = eps
 def $statement_tasks(statement :: statement_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), STMT statement)] ++ $statement_tasks(statement_tail*, porigin?, $(n + 1))
 
-dec $echo_tasks(expression*, porigin?, nat) : ptask*
-def $echo_tasks(eps, porigin?, n) = eps
-def $echo_tasks(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), EMIT $compiled_line(expression)] ++ $echo_tasks(expression_tail*, porigin?, $(n + 1))
+dec $echo_tasks(pstate, expression*, porigin?, nat) : ptask*
+def $echo_tasks(S, eps, porigin?, n) = eps
+def $echo_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), EMIT $runtime_line(S[.ORIGIN = $origin_child(porigin?, [PCINDEX n])], eps, expression)] ++ $echo_tasks(S, expression_tail*, porigin?, $(n + 1))
 
 dec $unset_tasks(expression*, porigin?, nat) : ptask*
 def $unset_tasks(eps, porigin?, n) = eps
