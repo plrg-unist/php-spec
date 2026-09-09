@@ -1,0 +1,822 @@
+{
+  "decision": "accepted",
+  "reviewer": "review9, independent of compiler5/runtime6",
+  "scope": "Bounded ordinary const declarations/reads, compiler initializer policy, runtime table/ownership, and nonowning allocation provenance. This is the user-constant prerequisite for untyped defaults; no constant/call/core family is closed.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "authority": "vendor/php-src; current -n/no output-filter source profile"
+  },
+  "commits": {
+    "code": "5151608e",
+    "compiler_evidence": "41b2c1a2",
+    "historical_default_preparation": "3452d7d4",
+    "runtime_evidence": "06b64f88"
+  },
+  "production": {
+    "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+    "files": 899,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "tested": {
+    "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+    "files": 899,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "test_only_bridge": {
+    "result": "pass",
+    "before": {
+      "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "after": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changed_only": "tests/semantics/user_constant_state.py",
+    "before_sha256": "08911ad0a7f4a3e479fe2f61e84a4cd68a4ce5b59c594d20682372be3945e5c1",
+    "after_sha256": "b6a69ce9eb4fbd6fcda8ca41f3fc43298973b075edbdea0d760ac2abf52c6895",
+    "exact_unchanged_files": 898,
+    "scope": "One assertion now checks equality to initial request allocation set; original failure and independent initial/fullstate audit retained. Source/runtime/runner/native gate bytes unchanged. Original899/e7d552ec gates are bridged, never relabelled ca3c06e5."
+  },
+  "compiler_input": {
+    "sha256": "cb31d858d43fec8224c84d2b2a29132f576483454113ef145f501003d88ea513",
+    "files": 889,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "original_preparation": {
+    "reports": [
+      "coverage/semantics/default-review-preparation.json",
+      "coverage/semantics/constant-review-diagnosis.json",
+      "coverage/semantics/literal-class-review-preparation.json"
+    ],
+    "original_sources": 173,
+    "constant_runtime": 42,
+    "compiler_boundary": 12,
+    "later_default_cache": 119,
+    "scope": "Original106+56 identities unchanged; separate11 lexical allocation constructors. Native/current884 outcomes and frozen887 false-boundary diagnostics remain original; no blanket Unsupported-to-agreement relabelling."
+  },
+  "independent_gates": {
+    "result": "pass",
+    "input": {
+      "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "constant_original_source_replays": 42,
+    "author_exact_source_replays": 75,
+    "shared_quiet_source_regressions": 24,
+    "constant_state_assertions": 1082,
+    "quiet_state_assertions": 676,
+    "states": [
+      {
+        "id": "constant-value-call-cow",
+        "assertions": 270,
+        "raw": "/home/user/workspace/php-spec/.tools/review9-constant-state-6vpebkje/constant-value-call-cow"
+      },
+      {
+        "id": "constant-foreach-reference",
+        "assertions": 271,
+        "raw": "/home/user/workspace/php-spec/.tools/review9-constant-state-6vpebkje/constant-foreach-reference"
+      },
+      {
+        "id": "constant-duplicate-evaluate-first",
+        "assertions": 271,
+        "raw": "/home/user/workspace/php-spec/.tools/review9-constant-state-h5_ud0pv/constant-duplicate-evaluate-first"
+      },
+      {
+        "id": "constant-import-array-cow",
+        "assertions": 270,
+        "raw": "/home/user/workspace/php-spec/.tools/review9-constant-state-gsm978ub/constant-import-array-cow"
+      },
+      {
+        "id": "additional-quiet-result-nested-ref",
+        "assertions": 338,
+        "raw": "/home/user/workspace/php-spec/.tools/review9-constant-quiet-state-jad5yask/additional-quiet-result-nested-ref"
+      },
+      {
+        "id": "additional-quiet-name-key-temporaries",
+        "assertions": 338,
+        "raw": "/home/user/workspace/php-spec/.tools/review9-constant-quiet-state-jad5yask/additional-quiet-name-key-temporaries"
+      }
+    ],
+    "cuts_per_state": 35,
+    "full_resumes_per_state": 7,
+    "branch_variants": 6,
+    "branch_assertions": 126,
+    "class_projection_sources": 15,
+    "class_projection_assertions": 195,
+    "exact_worker_responses": 339,
+    "clean_worker_closures": 18,
+    "raw_directories": [
+      "/home/user/workspace/php-spec/.tools/review9-reference-replay-vihbgner",
+      "/home/user/workspace/php-spec/.tools/review9-reference-replay-3lfxp74z",
+      "/home/user/workspace/php-spec/.tools/review9-constant-final/.tools/review9-constant-quiet-regression-qof84sax",
+      "/home/user/workspace/php-spec/.tools/review9-constant-state-6vpebkje",
+      "/home/user/workspace/php-spec/.tools/review9-constant-state-h5_ud0pv",
+      "/home/user/workspace/php-spec/.tools/review9-constant-state-gsm978ub",
+      "/home/user/workspace/php-spec/.tools/review9-constant-quiet-state-jad5yask",
+      "/home/user/workspace/php-spec/.tools/review9-constant-final/.tools/user-constant-branch-protocol-be9mxld8",
+      "/home/user/workspace/php-spec/.tools/review9-constant-class-projection-uc0extcx"
+    ],
+    "retained_failure": "Combined constant-state fixture expected wrong internal PHPERROR representation; exact native agreement held. Original failure remains separate; first two passing state programs reused, corrected third and fourth ran separately.",
+    "scope": "Source counts overlap intentionally; not unique-source union.899/e7d552ec gates remain exact and bridge only via one test fixture correction to899/ca3c06e5."
+  },
+  "no_constant_call_bridge": {
+    "result": "pass",
+    "old": {
+      "sha256": "4b5e15e43b375a5330378ffa403f5277605a7a213d0197c8a1c08f80c5adc255",
+      "files": 882,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "new": {
+      "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "records": [
+      {
+        "id": "saved-param-owner",
+        "budgets": [
+          0,
+          16,
+          32,
+          64,
+          128,
+          10000
+        ],
+        "max_saved_frames": 2,
+        "full_state_equal_after_empty_extension": true,
+        "native_agreement": true
+      },
+      {
+        "id": "recursive-ref",
+        "budgets": [
+          0,
+          16,
+          32,
+          64,
+          128,
+          10000
+        ],
+        "max_saved_frames": 3,
+        "full_state_equal_after_empty_extension": true,
+        "native_agreement": true
+      }
+    ],
+    "scope": "Exact complete state comparison for two accepted no-constant reference programs, removing only two new empty constant state fields. Original file/request/native contexts unchanged. No historical source gate relabelled current."
+  },
+  "compiler_audit": {
+    "archive": {
+      "result": "pass",
+      "method": "Independent sequential tar member hash/link audit, all manifest paths, external executable bindings and source closures; historical default preparation remains separate from source acceptance.",
+      "records": [
+        {
+          "archive": "/home/user/workspace/php-spec/.tools/compiler5-constant-classes/coverage/semantics/user-constant-compiler-originals.tar.xz",
+          "sha256": "5b707daa7c0e97098bcbc4e6d91771ad432036a448f10d5252f56265e914b4cf",
+          "paths": 16328,
+          "regular_members": 5467,
+          "hardlinks": 10861,
+          "unique_contents": 5467,
+          "tools": 10,
+          "exact_source_pins": {
+            "vendor/php-src/Zend/zend_API.c": "1aa5548cebd8f337bad00fe94917559d52db75566eb5d8674ef377a6369ef711",
+            "vendor/php-src/Zend/zend_ast.c": "2b957bba99379210a4205a8fdfe4cde40da6df4bfcd99f115ee188ecd5d275d5",
+            "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
+            "vendor/php-src/Zend/zend_execute.c": "5479cd6fd4025f013713cee297028c93c8c6a70bbf10481a8374da6e207773c8",
+            "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7",
+            "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
+            "vendor/php-src/Zend/zend_inheritance.c": "69793711dc0a88c93545be87baa57e2fca26f2dc2e0701a8d956611980fee486",
+            "vendor/php-src/Zend/zend_language_parser.y": "f108f2c2ff4c98c68b6478e7fbdebc16d8afb8bbbc3ae6079e5b285b448dac0c",
+            "vendor/php-src/Zend/zend_language_scanner.l": "5e178b9e0a4f865a423a098ac97ba5fc04ef2f68503382e18599d89d9ad8d15b",
+            "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
+            "vendor/php-src/Zend/zend_variables.c": "13abee4e3dcf1dec216653a77625d2e3b7cc9fcd6514ffade3aab882372d6440",
+            "vendor/php-src/Zend/zend_vm_def.h": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41",
+            "vendor/php-src/main/php_variables.c": "a2d15a0a9505cf17e8b45dc29220368b0efb96e31523e40d63849aadde384f9b",
+            "vendor/php-src/Zend/zend_constants.c": "f4a908d79814ce82cb368cdd9d68e68901ae31e0a1e2398e4b18c3987d37266b",
+            "vendor/php-src/Zend/zend_execute.h": "7f9703c44405a98a6f1fabde592c109ccc2e5bcffb497901a9ab2db7e739a86b",
+            "vendor/php-src/Zend/zend_hash.h": "9ce2315a2f2a8b08223c43615ed2cf4c6c302cc6a71faeb9c226617944663904",
+            "vendor/php-src/Zend/zend_string.h": "0adb9eb3dd4a1ca35c6afcfcafdf8deda598bbcef966af9fb3288f487a6ff5bc",
+            "vendor/php-src/Zend/zend_types.h": "601ed337205b2258ff0de217d40aaf38afd3a52f67a8edf0f91182414a6bcccd"
+          },
+          "closures": {
+            "source_inputs": {
+              "files": 889,
+              "fingerprint": {
+                "sha256": "cb31d858d43fec8224c84d2b2a29132f576483454113ef145f501003d88ea513",
+                "files": 889,
+                "scope": [
+                  "frontend",
+                  "adapter",
+                  "spec",
+                  "native",
+                  "tests",
+                  "scripts",
+                  "bin",
+                  "vendor/php-parser",
+                  "Makefile",
+                  "dune-project",
+                  "runtime binaries",
+                  "encoding-spellings inventory",
+                  "comparison oracle archives"
+                ]
+              }
+            },
+            "historical_source_inputs": {
+              "files": 887,
+              "fingerprint": {
+                "sha256": "4f4a24eb9505f49703750cebe8ac9e066fc4854420b10fec295a1f0813f5e799",
+                "files": 887,
+                "scope": [
+                  "frontend",
+                  "adapter",
+                  "spec",
+                  "native",
+                  "tests",
+                  "scripts",
+                  "bin",
+                  "vendor/php-parser",
+                  "Makefile",
+                  "dune-project",
+                  "runtime binaries",
+                  "encoding-spellings inventory",
+                  "comparison oracle archives"
+                ]
+              }
+            }
+          },
+          "scope": "Private compiler88 user-constant declaration prerequisite and source-backed allocation class facts; no runtime/default admission or native allocation equivalence claim.",
+          "transport": "Worker records are decoded JSON responses, not exact wire or separately captured worker stderr. Native/SpecTec subprocess bytes/status and timeout partials are retained."
+        },
+        {
+          "archive": "/home/user/workspace/php-spec/.tools/compiler5-default-successor/default-compiler-preparation.tar.xz",
+          "sha256": "ac28dcfc5f35a08b093a17f1ea2eb80a0841c9fe07a06b1c06c53a27393dc10d",
+          "paths": 7729,
+          "regular_members": 3388,
+          "hardlinks": 4341,
+          "unique_contents": 3388,
+          "tools": 5,
+          "exact_source_pins": {
+            "vendor/php-src/Zend/zend_API.c": "1aa5548cebd8f337bad00fe94917559d52db75566eb5d8674ef377a6369ef711",
+            "vendor/php-src/Zend/zend_ast.c": "2b957bba99379210a4205a8fdfe4cde40da6df4bfcd99f115ee188ecd5d275d5",
+            "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
+            "vendor/php-src/Zend/zend_execute.c": "5479cd6fd4025f013713cee297028c93c8c6a70bbf10481a8374da6e207773c8",
+            "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7",
+            "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
+            "vendor/php-src/Zend/zend_inheritance.c": "69793711dc0a88c93545be87baa57e2fca26f2dc2e0701a8d956611980fee486",
+            "vendor/php-src/Zend/zend_language_parser.y": "f108f2c2ff4c98c68b6478e7fbdebc16d8afb8bbbc3ae6079e5b285b448dac0c",
+            "vendor/php-src/Zend/zend_language_scanner.l": "5e178b9e0a4f865a423a098ac97ba5fc04ef2f68503382e18599d89d9ad8d15b",
+            "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
+            "vendor/php-src/Zend/zend_variables.c": "13abee4e3dcf1dec216653a77625d2e3b7cc9fcd6514ffade3aab882372d6440",
+            "vendor/php-src/Zend/zend_vm_def.h": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41",
+            "vendor/php-src/main/php_variables.c": "a2d15a0a9505cf17e8b45dc29220368b0efb96e31523e40d63849aadde384f9b"
+          },
+          "closures": {
+            "signature_source_inputs": {
+              "files": 877,
+              "fingerprint": "475f1f76a9f836b64b2a775331a17a5121ce259dc4c37c5d013f2bc2c40263c8"
+            }
+          },
+          "scope": "Historical untyped-default compiler preparation and successor continuity only; no constant/default source admission, no new semantics run, no independent acceptance inferred.",
+          "transport": "Decoded Worker JSON; native/SpecTec subprocess bytes/status and captured timeout partials. No new exact-wire claim."
+        }
+      ]
+    },
+    "raw_gates": {
+      "result": "pass",
+      "records": [
+        {
+          "report": "/home/user/workspace/php-spec/.tools/compiler5-constant-classes/coverage/semantics/user-constant-compiler.json",
+          "sources": 55,
+          "fixture_sha256": "1b91fb9a437f3decee2257ce19e961567f57c3e1aea527f402747a867dc2e7c7",
+          "asserted_native_events": true,
+          "all_input_bytes_match": true
+        },
+        {
+          "report": "/home/user/workspace/php-spec/.tools/compiler5-constant-classes/coverage/semantics/constant-class-compiler.json",
+          "sources": 40,
+          "fixture_sha256": "ce6baf6fbb279e28765a011a60a1bc0f57684e701c2ff51b9ee5eb88b797ff34",
+          "asserted_native_events": true,
+          "all_input_bytes_match": true
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/compiler5-constant-classes/.tools/constant_context-regression-z92s7srx",
+          "scope": "Retained focused regression aggregate pass, exact source closure and no failed requests; decoded Worker JSON remains distinct from exact wire.",
+          "processes": 45,
+          "requests": 84
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/compiler5-constant-classes/.tools/source_context-regression-xtn2jfvc",
+          "scope": "Retained focused regression aggregate pass, exact source closure and no failed requests; decoded Worker JSON remains distinct from exact wire.",
+          "processes": 306,
+          "requests": 658
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/compiler5-constant-classes/.tools/magic_constants_compiler-regression-m57qkf4h",
+          "scope": "Retained focused regression aggregate pass, exact source closure and no failed requests; decoded Worker JSON remains distinct from exact wire.",
+          "processes": 67,
+          "requests": 152
+        }
+      ]
+    },
+    "paired": {
+      "result": "pass",
+      "report_sha256": "64ca2f2bca6ebd183f144141a97aaf06c17d21b8fdfa79ac94fba2caf045989b",
+      "scope": "Final compiler pairing addition binds code5151608e and exact canonical899 bytes/modes; canonical CLI and independent semantic acceptance remain separate.",
+      "canonical": {
+        "code_commit": "5151608e",
+        "fingerprint": {
+          "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+          "files": 899,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "files_and_modes_exact": 899,
+        "runtime_installation_manifest_sha256": "96bf3107740fe12b6582a214151bbf66e9587c3c13d994077163dcdcde402fd0",
+        "scope": "Exact installed bytes/modes only; canonical CLI and independent runtime acceptance reported separately."
+      }
+    },
+    "independent_889_boundary": {
+      "sources": 12,
+      "assertions": 26,
+      "native_phase_agreements": 5,
+      "separate_pending_forms": 7,
+      "raw": ".tools/review9-constant-boundary-compiler-7ek8hpy8"
+    },
+    "independent_class_projection": {
+      "sources": 15,
+      "assertions": 195,
+      "inputs": [
+        "889/cb31d858",
+        "899/e7d552ec"
+      ],
+      "scope": "Exact retained source constructor metadata and class export/nonownership projections; no default source admission."
+    }
+  },
+  "author_audit": {
+    "result": "pass",
+    "source_gate_input": {
+      "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "state_test_input": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "exact_worker_responses": 166,
+    "clean_worker_closures": 10,
+    "records": [
+      {
+        "scope": "source75 and46 source-backed class/scratch assertions",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime6-constants/.tools/user-constants-8s4jnybc",
+        "fingerprint": {
+          "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+          "files": 899,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      {
+        "scope": "user-constant-protocol.json",
+        "controls": 14,
+        "raw": "/home/user/workspace/php-spec/.tools/runtime6-constants/.tools/user-constant-protocol-h_9umukf",
+        "fingerprint": {
+          "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+          "files": 899,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      {
+        "scope": "user-constant-context-protocol.json",
+        "controls": 14,
+        "raw": "/home/user/workspace/php-spec/.tools/runtime6-constants/.tools/user-constant-context-protocol-k212np_m",
+        "fingerprint": {
+          "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+          "files": 899,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      {
+        "scope": "corrected state3/821 assertions,35 cuts and7 full resumes each",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime6-constants/.tools/user-constant-state-guytsf8p",
+        "fingerprint": {
+          "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+          "files": 899,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      {
+        "scope": "branch6/126 assertions",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime6-constants/.tools/user-constant-branch-protocol-baow5dtu",
+        "fingerprint": {
+          "sha256": "e7d552ecda7df50578bc0ef629295ccc4df2e0304d94bf449b1621eb2c6e06ff",
+          "files": 899,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      }
+    ],
+    "scope": "All actual native and runner bytes checked; source-derived class expectations are not native allocation observations. Three PHP_VERSION source boundaries remain separate. Exact test-only manifest bridge carries unchanged semantics, without relabelling source gates."
+  },
+  "pending_builtin_values": {
+    "result": "pass",
+    "scope": "Three retained native/current Unsupported PHP_VERSION value-read controls; no semantic agreements counted.",
+    "cases": [
+      "builtin-initializer",
+      "builtin-duplicate",
+      "namespace-fallback-before-shadow"
+    ],
+    "exact_responses": 6,
+    "clean_worker_closures": 2,
+    "raw": "/home/user/workspace/php-spec/.tools/runtime6-constants/.tools/user-constant-builtin-boundaries-gkpknbxp",
+    "input": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    }
+  },
+  "publication": {
+    "result": "pass",
+    "archive_sha256": "8e04b35a50890a08f236ef4fa9ef467b9f843714ad9b5f928874404afc6ee2c3",
+    "paths": 48,
+    "new_payloads": 32,
+    "cli_cases": 8,
+    "input": {
+      "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+      "files": 899,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "scope": "Independent publication archive payload/mode audit and exact original-source/request CLI observations; raw process envelope exit0/stderr empty distinguished from decoded PHP failures."
+  },
+  "archives": {
+    "independent": {
+      "path": "coverage/semantics/user-constant-review-originals.tar.xz",
+      "sha256": "927716ae63e7e92108914468deb65e2d754a8add71833d757708ff2d18d23456",
+      "bytes": 1557572
+    },
+    "independent_publication": {
+      "path": "coverage/semantics/user-constant-review-publication-originals.tar.xz",
+      "sha256": "0ee3a950d228b401171406df4aeedd0484b4be1c085c6925ce640089d85d3e52",
+      "bytes": 46788
+    },
+    "compiler": {
+      "path": "coverage/semantics/user-constant-compiler-originals.tar.xz",
+      "sha256": "5b707daa7c0e97098bcbc4e6d91771ad432036a448f10d5252f56265e914b4cf",
+      "bytes": 1652468
+    },
+    "historical_default_preparation": {
+      "path": "coverage/semantics/default-compiler-preparation.tar.xz",
+      "sha256": "ac28dcfc5f35a08b093a17f1ea2eb80a0841c9fe07a06b1c06c53a27393dc10d",
+      "bytes": 1307020
+    },
+    "runtime": {
+      "path": "coverage/semantics/user-constant-runtime-originals.tar.xz",
+      "sha256": "434da27c2d7946f2c0d5123da46dcb62bc75e2073060076a498eeadeae234a3a",
+      "bytes": 26020612
+    },
+    "runtime_publication": {
+      "path": "coverage/semantics/user-constant-runtime-publication-originals.tar.xz",
+      "sha256": "8e04b35a50890a08f236ef4fa9ef467b9f843714ad9b5f928874404afc6ee2c3",
+      "bytes": 50820
+    }
+  },
+  "archive_audits": {
+    "runtime": {
+      "result": "pass",
+      "archive_sha256": "434da27c2d7946f2c0d5123da46dcb62bc75e2073060076a498eeadeae234a3a",
+      "paths": 10283,
+      "unique_payloads": 3854,
+      "exact_watched_input_files": 899,
+      "fingerprint": {
+        "sha256": "ca3c06e5ef019860634c837b3998a14f0ea179c154d39d82a71866ebf61f443e",
+        "files": 899,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "all_modes_match": true,
+      "classifications": {
+        "source_originals": "Old884 PHP/source/check/runtime packets retained in constant-originals-mairopqi and four extra constant roots under runtime6-defaults. Compiler887-only first execution has retained no-rule interpreter failure.",
+        "early_class_loads": "up1hk42o, hsmkxcv6, 50y13nxj and 2yjbg7k7 retain command/stdout/stderr/status only, without a full contemporaneous input snapshot; they are partial setup evidence, not complete execution closures. Later class-load roots retain exact input snapshots.",
+        "semantic_failures": "Early multiline constant errors, source name/origin guards, array class consistency, and nested initializer admission retain original states before repair. Reviewer retains original simultaneous branch/pooled-class failures separately; author repaired replay included.",
+        "test_failures": "Original failed branch fixtures and partial author-state allocation expectation remain with raw failures, distinct from semantic mismatches.",
+        "reader_setup": "A report inspection attempted nonexistent coverage user-constant-branch-protocol.json; actual maintained branch report lives under its raw directory and is copied unchanged for publication. No semantic execution occurred in that failed read."
+      },
+      "scope": "Every archived payload and indexed path hash/size checked independently in one sequential traversal. Exact final899 bytes/modes and all final raw reports bound. Four incomplete early load contexts remain explicitly partial setup evidence, not semantic closures."
+    },
+    "independent": {
+      "result": "pass",
+      "archive_sha256": "927716ae63e7e92108914468deb65e2d754a8add71833d757708ff2d18d23456",
+      "exact_paths": 5641,
+      "unique_payloads": 2657,
+      "external_tool_bindings": 5,
+      "scope": "Independent user-constant prerequisite review: exact899 source/state/quiet/class gates and historical882 no-constant call state bridge, original891 branch metadata failures and repaired guard positives, compiler889 boundary/class review, retained setup errors and explicit test-only899 manifest bridge. Defaults119 originals remain separately archived preparation; no defaults admission or complete-core closure."
+    },
+    "independent_publication": {
+      "result": "pass",
+      "archive_sha256": "0ee3a950d228b401171406df4aeedd0484b4be1c085c6925ce640089d85d3e52",
+      "paths": 16,
+      "new_payloads": 16,
+      "bytes": 46788
+    }
+  },
+  "preserved_findings": [
+    "Actual891 source-derived ternary state admitted mutually exclusive branch facts and wrong pooled class; full resume changed constant class without changing bytes. Final branch6/126 rejects three corruptions and admits unchanged plus two arbitrary consistent values.",
+    "Author source line/name/origin/class/nested-initializer failures remain in runtime434da27c history; four early incomplete module-load snapshots are explicitly partial setup evidence.",
+    "Author state test expected no allocations after error; exact initial request allocations remain. One test-only correction bridges899/e7d552ec to899/ca3c06e5; semantic/tool bytes unchanged.",
+    "Reviewer state fixture expected THROWN for undefined constant; existing PHPERROR constructor produced exact native stderr/status. Original failure retained; first two passing state programs reused, corrected third and fourth completed separately.",
+    "Literal/nowdoc/scanner class observations, float-cast fixture expectation, branch fixture syntax/helper errors, archive/status setup assertions and historical metadata versions remain separately classified. No timeout or tool failure is counted as agreement."
+  ],
+  "source_semantics_constraints": [
+    "Class transfers consume existing evaluation results and source metadata, never a second AST evaluator.",
+    "PCCLASS and observer facts own no heap arrays. Table VALUE remains an owner through frames and abrupt cleanup.",
+    "Public guards project source names/lines/pool class descriptors and validate current value tags/topology/branch relationships without reconstructing arbitrary runtime values.",
+    "Quiet capture records the already-computed left result only inside initializer context; outside it is identity, confirmed by24 ordinary sources and2 dense state programs.",
+    "Complete no-constant saved/recursive call states match historical882 at six cuts/full after removing only the new empty constant fields."
+  ],
+  "remaining": [
+    "Untyped positional default receives and observable caching, including all119 retained default/cache observations. Current32/89 class origin guard admits only NConst initializer descendants;90/91 must atomically add parameter-default roots/descriptors/integrity.",
+    "Typed defaults, parameter/return types, reference returns, variadics/named/unpacked sends and remaining callable forms.",
+    "Class/object/property/callable constant forms, remaining builtin constant values including three PHP_VERSION boundaries, define/defined and dynamic source declarations.",
+    "Objects/exceptions/dynamic sources/generators/fibers/observable lifetime and GC/core intrinsics; final current full-source/full-syntax/fresh offline campaigns.",
+    "Only oracle identity closes169 constructors/306 obligations. Namespace-relative static class-scope branch remains the sole intentional discrepancy, with source activation pending."
+  ],
+  "evidence_resolution": "Absolute raw paths record original execution identity. Reconstruct their logical paths from the content-addressed independent/runtime archives and exact compiler archives; do not require mutable .tools paths to exist. Source totals overlap intentionally and are not a unique-source union.",
+  "external_tool_payload_resolution": {
+    "scope": "The five independent archive external-tool hashes resolve to complete binary payloads in the runtime history archive, whose final899 closure was independently audited.",
+    "archive": {
+      "path": "coverage/semantics/user-constant-runtime-originals.tar.xz",
+      "sha256": "434da27c2d7946f2c0d5123da46dcb62bc75e2073060076a498eeadeae234a3a",
+      "bytes": 26020612
+    },
+    "root": ".tools/runtime6-constants"
+  }
+}
