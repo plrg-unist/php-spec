@@ -1,0 +1,273 @@
+;; Ordered ordinary compilation for the currently admitted source subset.
+syntax ppmode = PPR | PPW | PPUNSET
+syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
+syntax ppwork = PPCWORK pcpath statement plenv nat
+syntax ppexprdone = PPCEXPR pcpath nat pvalue?
+syntax ppstate = { FOLD pfstate, ENV plenv, LOCATION pllocation,
+  COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, EXPRESSIONS ppexprdone* }
+var P : ppstate
+
+dec $ppstart(nat, program, ptbytes) : ppstate
+dec $pplexical(ppstate, plresult) : ppstate
+dec $ppresume(ppstate, plstate, pcpath, statement, plenv) : ppstate
+dec $pplocate(ppstate, pcpath, int) : ppstate
+dec $ppcheck(ppstate, pcheck) : ppstate
+dec $ppunsupported(ppstate, text) : ppstate
+dec $ppfoldresult(ppstate, pfstate) : ppstate
+dec $ppoperandresult(ppstate, pfstate) : ppstate
+dec $ppstatement(ppstate, pcpath, statement) : ppstate
+dec $ppstatements(ppstate, pcpath, nat, statement*) : ppstate
+dec $ppexpr(ppstate, pcpath, expression, ppmode) : ppstate
+dec $ppexprbody(ppstate, pcpath, expression, ppmode) : ppstate
+dec $ppdone(ppstate, pcpath) : ppstate
+dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
+
+def $ppstart(n, program, ptbytes) = $pplexical({ FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, EXPRESSIONS eps }, $plstart(n, program, ptbytes))
+def $pplexical(P, plresult) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pplexical(P, PLDONE plstate pldiagnostic*) = P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*]
+  -- if P.COMPLETION = PPCNORMAL
+def $pplexical(P, PLERROR pldiagnostic*) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*][.COMPLETION = PPCNAMESPACE]
+  -- if P.COMPLETION = PPCNORMAL
+def $pplexical(P, PLUNSUPPORTED text) = $ppunsupported(P, text)
+  -- if P.COMPLETION = PPCNORMAL
+def $pplexical(P, PLWORK (PCOCCURRENCE pcpath pcnode) plstate pldiagnostic*) = $ppresume(P_compiled, plstate, pcpath, statement, plstate.ENV)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcnode = statement
+  -- if P_compiled = $ppstatement(P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*], pcpath, statement)
+def $ppresume(P, plstate, pcpath, statement, plenv) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppresume(P, plstate, pcpath, statement, plenv) = $pplexical(P[.WORK = P.WORK ++ [PPCWORK pcpath statement plenv P.LOCATION.LINE]], $plresume(plstate, PLCOMPILED (P.LOCATION[.PATH = pcpath]) P.ENV))
+  -- if P.COMPLETION = PPCNORMAL
+
+def $pplocate(P, pcpath, z) = P[.LOCATION = P.LOCATION[.PATH = pcpath][.LINE = n]]
+  -- if $(z > 0)
+  -- if z = n
+def $pplocate(P, pcpath, z) = $ppunsupported(P, "missing ordinary compiler line")
+  -- if $(z <= 0)
+def $ppcheck(P, pcheck) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcheck(P, READY) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcheck(P, REJECT pcompletion) = P[.COMPLETION = PPCABRUPT pcompletion]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunsupported(P, text) = P[.COMPLETION = PPCABRUPT (UNSUPPORTED text)]
+def $ppfoldresult(P, F) = P[.FOLD = F]
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $ppfoldresult(P, F) = P[.FOLD = F][.COMPLETION = PPCABRUPT F.MEMORY.COMPLETION]
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+
+;; Ordinary code generation can yield a constant operand without rewriting the AST.
+def $ppoperandresult(P, F) = $ppfoldresult(P, F[.FACTS = P.FOLD.FACTS])
+
+def $ppstatement(P, pcpath, statement) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppstatement(P, pcpath, NStmtNop metadata) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtInlineHTML (BYTES text) metadata) = $pplocate(P, pcpath, $source_line(metadata))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtExpression expression metadata) = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtEcho (SEQUENCE expression*) metadata) = $ppexprs(P, pcpath ++ [PCFIELD 0], 0, expression*, PPR)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtUnset (SEQUENCE expression*) metadata) = $ppexprs($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 0], 0, expression*, PPUNSET)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtBlock (SEQUENCE statement*) metadata) = $ppstatements($pplocate(P, pcpath, $source_end_line(metadata)), pcpath ++ [PCFIELD 0], 0, statement*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtBreak ABSENT metadata) = $ppcheck(P, $check_statement(NStmtBreak ABSENT metadata))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, statement) = $ppunsupported(P, "ordinary statement compilation")
+  -- otherwise
+
+def $ppstatements(P, pcpath, n, eps) = P
+def $ppstatements(P, pcpath, n, statement :: statement_tail*) = $ppstatements($ppstatement(P, pcpath ++ [PCINDEX n], statement), pcpath, $(n + 1), statement_tail*)
+def $ppexprs(P, pcpath, n, eps, ppmode) = P
+def $ppexprs(P, pcpath, n, expression :: expression_tail*, ppmode) = $ppexprs($ppexpr(P, pcpath ++ [PCINDEX n], expression, ppmode), pcpath, $(n + 1), expression_tail*, ppmode)
+
+dec $ppeffective_line(pffact*, pcpath, expression, ppmode) : int
+def $ppeffective_line(pffact*, pcpath, expression, PPR) = z
+  -- if $pffactline(pffact*, pcpath) = (z)
+def $ppeffective_line(pffact*, pcpath, expression, ppmode) = $expression_line(expression)
+  -- otherwise
+
+def $ppexpr(P, pcpath, expression, ppmode) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppexpr(P, pcpath, expression, ppmode) = $ppdone($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, expression, ppmode)), pcpath, expression, ppmode), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdone(P, pcpath) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppdone(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR pcpath P.LOCATION.LINE P.FOLD.VALUE]]
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppexprbody(P, pcpath, expression, ppmode) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppexprbody(P, pcpath, expression, PPR) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = (pvalue)
+
+dec $ppdispatch(ppstate, pcpath, expression, ppmode) : ppstate
+dec $ppvariable(ppstate, pcpath, phpType34, ppmode) : ppstate
+dec $ppvarname(ppstate) : ppstate
+dec $ppbinary(ppstate, pcpath, pbin, expression, expression) : ppstate
+dec $ppbinarydone(ppstate, pcpath, pbin, pvalue?) : ppstate
+dec $ppunarydone(ppstate, pcpath, punary) : ppstate
+dec $ppdim(ppstate, pcpath, phpType5, ppmode) : ppstate
+dec $ppassign(ppstate, pcpath, expression, expression, bool) : ppstate
+dec $ppassignright(ppstate, pcpath, expression, expression, bool) : ppstate
+dec $ppassignmentline(ppstate, expression, bool) : ppstate
+dec $pparray(ppstate, pcpath, phpType13*) : ppstate
+dec $ppitems(ppstate, pcpath, nat, phpType13*) : ppstate
+dec $ppitemkey(ppstate, pcpath, phpType5) : ppstate
+dec $ppvaluemode(bool) : ppmode
+
+def $ppexprbody(P, pcpath, expression, PPR) = $ppdispatch(P, pcpath, expression, PPR)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = eps
+def $ppexprbody(P, pcpath, expression, ppmode) = $ppdispatch(P, pcpath, expression, ppmode)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ppmode =/= PPR
+
+def $ppdispatch(P, pcpath, NScalarInt (INTEGER i) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PINT i)]]
+def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PFLOAT $hex_bits(text, 0))]]
+def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
+def $ppdispatch(P, pcpath, NExprConstFetch (NName (BYTES text) metadata_name) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = $fold_scalar(NExprConstFetch (NName (BYTES text) metadata_name) metadata)]]
+  -- if P.ENV.NAMESPACE = eps
+  -- if P.ENV.CONSTANTS = eps
+def $ppdispatch(P, pcpath, NExprVariable phpType34 metadata, ppmode) = $ppvariable(P, pcpath, phpType34, ppmode)
+def $ppdispatch(P, pcpath, NExprAssign expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, false)
+def $ppdispatch(P, pcpath, NExprAssignRef expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, true)
+def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, expression_1, expression_2)
+  -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
+def $ppdispatch(P, pcpath, expression_outer, PPR) = $ppunarydone($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, punary)
+  -- if $pfshape(expression_outer) = PFUNARY punary expression
+def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppdim($ppexpr(P, pcpath ++ [PCFIELD 0], expression, ppmode), pcpath, phpType5, ppmode)
+def $ppdispatch(P, pcpath, NExprArray (SEQUENCE phpType13*) metadata, PPR) = $pparray($ppfoldresult(P, $pfprepare(P.FOLD, pcpath, NExprArray (SEQUENCE phpType13*) metadata, P.ENV, P.LOCATION.LINE)), pcpath, phpType13*)
+def $ppdispatch(P, pcpath, expression, ppmode) = $ppunsupported(P, "ordinary expression or writable operand compilation")
+  -- otherwise
+
+;; Direct CV classification is shared with the machine. A computed name is
+;; compiled normally even though enclosing constant evaluation stops at VAR.
+def $ppvariable(P, pcpath, phpType34, ppmode) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if $header_literal(phpType34)
+  -- if ppmode =/= PPR
+def $ppvariable(P, pcpath, phpType34, ppmode) = $ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $check_variable(phpType34))
+  -- if $cv_name(phpType34) = (n*)
+  -- if (~$header_literal(phpType34) \/ ppmode = PPR)
+def $ppvariable(P, pcpath, phpType34, ppmode) = $ppvarname($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+  -- if $cv_name(phpType34) = eps
+  -- if phpType34 = expression
+  -- if ~$header_literal(phpType34)
+def $ppvarname(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppvarname(P) = $ppunsupported(P, "compile-time array name diagnostic")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PARRAY n)
+def $ppvarname(P) = $ppunsupported(P, "compile-time NaN name diagnostic")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PFLOAT n)
+  -- if (n_text*, true) = $number_text(NFLOAT n, 14)
+def $ppvarname(P) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- otherwise
+
+def $ppbinary(P, pcpath, pbin, expression_1, expression_2) = $ppbinarydone($ppexpr(P_left, pcpath ++ [PCFIELD 1], expression_2, PPR), pcpath, pbin, P_left.FOLD.VALUE)
+  -- if P_left = $ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPR)
+def $ppbinarydone(P, pcpath, pbin, pvalue?) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppbinarydone(P, pcpath, pbin, pvalue?) = $ppoperandresult(P, $pfbinary(P.FOLD, pcpath, pbin, pvalue?, P.FOLD.VALUE, P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunarydone(P, pcpath, punary) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppunarydone(P, pcpath, punary) = $ppoperandresult(P, $pfunary(P.FOLD, pcpath, punary, P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+
+;; Ordinary DIM compilation descends into the base before diagnosing [] and
+;; never applies the constant-DIM leaf unless a surrounding prepass retained it.
+def $ppdim(P, pcpath, phpType5, ppmode) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppdim(P, pcpath, ABSENT, PPR) = $ppcheck(P, $context_error("Cannot use [] for reading", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdim(P, pcpath, ABSENT, PPUNSET) = $ppcheck(P, $context_error("Cannot use [] for unsetting", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdim(P, pcpath, ABSENT, PPW) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdim(P, pcpath, phpType5, ppmode) = P_key[.FOLD = P_key.FOLD[.VALUE = eps]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if phpType5 = expression
+  -- if P_key = $ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR)
+
+;; Assignment compiles its delayed target before the source. Direct variable
+;; assignment restores the target AST line; reference assignment does not.
+def $ppvaluemode(false) = PPR
+def $ppvaluemode(true) = PPW
+def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
+def $ppassignright(P, pcpath, expression_1, expression_2, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppassignright(P, pcpath, NExprArrayDimFetch expression_base phpType5 metadata, expression_2, false) = $ppdone($ppcheck(P[.FOLD = P.FOLD[.VALUE = eps]], $check_variable(phpType34)), pcpath ++ [PCFIELD 1])
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $assignment_self(NExprArrayDimFetch expression_base phpType5 metadata, expression_2)
+  -- if expression_2 = NExprVariable phpType34 metadata_rhs
+def $ppassignright(P, pcpath, expression_1, expression_2, b) = $ppexpr(P, pcpath ++ [PCFIELD 1], expression_2, $ppvaluemode(b))
+  -- otherwise
+def $ppassignmentline(P, expression, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppassignmentline(P, NExprVariable phpType34 metadata, false) = $pplocate(P[.FOLD = P.FOLD[.VALUE = eps]], P.LOCATION.PATH, $variable_line(phpType34, metadata))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppassignmentline(P, expression, b) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- otherwise
+
+def $pparray(P, pcpath, phpType13*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pparray(P, pcpath, phpType13*) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+def $pparray(P, pcpath, phpType13*) = $ppitems(P, pcpath ++ [PCFIELD 0], 0, phpType13*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = eps
+def $ppitems(P, pcpath, n, phpType13*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppitems(P, pcpath, n, eps) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppitems(P, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*) = $ppitems($ppexpr($ppitemkey(P, pcpath ++ [PCINDEX n, PCFIELD 0], phpType5), pcpath ++ [PCINDEX n, PCFIELD 1], expression, $ppvaluemode(b)), pcpath, $(n + 1), phpType13*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppitems(P, pcpath, n, phpType13*) = $ppunsupported(P, "ordinary array unpack or edited item")
+  -- otherwise
+def $ppitemkey(P, pcpath, ABSENT) = P
+def $ppitemkey(P, pcpath, phpType5) = $ppexpr(P, pcpath, expression, PPR)
+  -- if phpType5 = expression
+
+;; Merge executable constant operands without conflating their two compiler phases.
+;; Equality here compares exact values/table IDs, not PHP value equality.
+syntax ppconstants = PPCCONSTANTS (pcpath, pvalue)* | PPCINVALID text
+dec $ppconstant_at((pcpath, pvalue)*, pcpath) : pvalue?
+def $ppconstant_at(eps, pcpath) = eps
+def $ppconstant_at((pcpath, pvalue) :: (pcpath_tail, pvalue_tail)*, pcpath) = (pvalue)
+def $ppconstant_at((pcpath_other, pvalue) :: (pcpath_tail, pvalue_tail)*, pcpath) = $ppconstant_at((pcpath_tail, pvalue_tail)*, pcpath)
+  -- if pcpath_other =/= pcpath
+dec $ppput(ppconstants, pcpath, pvalue) : ppconstants
+def $ppput(PPCINVALID text, pcpath, pvalue) = PPCINVALID text
+def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = PPCCONSTANTS ((pcpath_old, pvalue_old)* ++ [(pcpath, pvalue)])
+  -- if $ppconstant_at((pcpath_old, pvalue_old)*, pcpath) = eps
+def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = PPCCONSTANTS (pcpath_old, pvalue_old)*
+  -- if $ppconstant_at((pcpath_old, pvalue_old)*, pcpath) = (pvalue)
+def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = PPCINVALID "conflicting constant values for one source occurrence"
+  -- if $ppconstant_at((pcpath_old, pvalue_old)*, pcpath) = (pvalue_existing)
+  -- if pvalue_existing =/= pvalue
+
+dec $ppmergefacts(ppconstants, pffact*) : ppconstants
+def $ppmergefacts(ppconstants, eps) = ppconstants
+def $ppmergefacts(ppconstants, (PFFACT pcpath pvalue z) :: pffact*) = $ppmergefacts($ppput(ppconstants, pcpath, pvalue), pffact*)
+  -- if $(z > 0)
+def $ppmergefacts(ppconstants, (PFFACT pcpath pvalue z) :: pffact*) = PPCINVALID "missing constant rewrite line"
+  -- if $(z <= 0)
+dec $ppmergeoperands(ppconstants, ppexprdone*) : ppconstants
+def $ppmergeoperands(ppconstants, eps) = ppconstants
+def $ppmergeoperands(ppconstants, (PPCEXPR pcpath n eps) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+  -- if $(n > 0)
+def $ppmergeoperands(ppconstants, (PPCEXPR pcpath n (pvalue)) :: ppexprdone*) = $ppmergeoperands($ppput(ppconstants, pcpath, pvalue), ppexprdone*)
+  -- if $(n > 0)
+def $ppmergeoperands(ppconstants, (PPCEXPR pcpath 0 pvalue?) :: ppexprdone*) = PPCINVALID "missing compiled operand line"
+dec $ppconstants(ppstate) : ppconstants
+def $ppconstants(P) = $ppmergeoperands($ppmergefacts(PPCCONSTANTS eps, P.FOLD.FACTS), P.EXPRESSIONS)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstants(P) = PPCINVALID "incomplete source compilation"
+  -- otherwise

@@ -1,8 +1,8 @@
 ;; Checked constant-expression work for the current global expression subset.
 ;; A compiled source instance owns this store; it is not recreated on execution.
-syntax pffact = PFFACT pcpath pvalue
+syntax pffact = PFFACT pcpath pvalue int
 syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue? }
-syntax pfshape = PFLEAF pvalue? | PFBINARY pbin expression expression
+syntax pfshape = PFSCALAR pvalue int | PFLEAF pvalue? | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
@@ -21,8 +21,13 @@ def $pfoccurrence((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath, e
   -- if pcpath_other =/= pcpath
 dec $pffact(pffact*, pcpath) : pvalue?
 def $pffact(eps, pcpath) = eps
-def $pffact((PFFACT pcpath pvalue) :: pffact*, pcpath) = (pvalue)
-def $pffact((PFFACT pcpath_other pvalue) :: pffact*, pcpath) = $pffact(pffact*, pcpath)
+def $pffact((PFFACT pcpath pvalue z) :: pffact*, pcpath) = (pvalue)
+def $pffact((PFFACT pcpath_other pvalue z) :: pffact*, pcpath) = $pffact(pffact*, pcpath)
+  -- if pcpath_other =/= pcpath
+dec $pffactline(pffact*, pcpath) : int?
+def $pffactline(eps, pcpath) = eps
+def $pffactline((PFFACT pcpath pvalue z) :: pffact*, pcpath) = (z)
+def $pffactline((PFFACT pcpath_other pvalue z) :: pffact*, pcpath) = $pffactline(pffact*, pcpath)
   -- if pcpath_other =/= pcpath
 dec $pferror(pfstate, text, int) : pfstate
 def $pferror(F, text, z) = F[.MEMORY = F.MEMORY[.COMPLETION = pcompletion]][.VALUE = eps]
@@ -30,14 +35,14 @@ def $pferror(F, text, z) = F[.MEMORY = F.MEMORY[.COMPLETION = pcompletion]][.VAL
 dec $pfunsupported(pfstate, text) : pfstate
 def $pfunsupported(F, text) = F[.MEMORY = F.MEMORY[.COMPLETION = UNSUPPORTED text]][.VALUE = eps]
 ;; Every retained folded array is a pool owner, including unused partial children.
-dec $pfremember(pfstate, pcpath, pvalue?) : pfstate
-def $pfremember(F, pcpath, eps) = F[.VALUE = eps]
-def $pfremember(F, pcpath, (pvalue)) = F[.FACTS = F.FACTS ++ [PFFACT pcpath pvalue]][.VALUE = (pvalue)][.MEMORY = F.MEMORY[.HELD = F.MEMORY.HELD ++ $value_nodes(pvalue)]]
+dec $pfremember(pfstate, pcpath, pvalue?, int) : pfstate
+def $pfremember(F, pcpath, eps, z) = F[.VALUE = eps]
+def $pfremember(F, pcpath, (pvalue), z) = F[.FACTS = F.FACTS ++ [PFFACT pcpath pvalue z]][.VALUE = (pvalue)][.MEMORY = F.MEMORY[.HELD = F.MEMORY.HELD ++ $value_nodes(pvalue)]]
 
 dec $pfshape(expression) : pfshape
-def $pfshape(NScalarInt (INTEGER i) metadata) = PFLEAF (PINT i)
-def $pfshape(NScalarFloat (FLOAT text) metadata) = PFLEAF (PFLOAT $hex_bits(text, 0))
-def $pfshape(NScalarString (BYTES text) metadata) = PFLEAF (PSTRING $base64(text))
+def $pfshape(NScalarInt (INTEGER i) metadata) = PFSCALAR (PINT i) ($source_line(metadata))
+def $pfshape(NScalarFloat (FLOAT text) metadata) = PFSCALAR (PFLOAT $hex_bits(text, 0)) ($source_line(metadata))
+def $pfshape(NScalarString (BYTES text) metadata) = PFSCALAR (PSTRING $base64(text)) ($source_line(metadata))
 def $pfshape(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = PFLEAF ($fold_scalar(NExprConstFetch (NName (BYTES text) metadata_name) metadata))
 def $pfshape(NExprVariable phpType34 metadata) = PFSTOP
 def $pfshape(NExprAssign expression_1 expression_2 metadata) = PFSTOP
@@ -78,7 +83,8 @@ def $pffold(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expressi
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pffact(F.FACTS, pcpath) = eps
 
-def $pfdispatch(F, pcpath, PFLEAF pvalue?, z) = $pfremember(F, pcpath, pvalue?)
+def $pfdispatch(F, pcpath, PFSCALAR pvalue z_leaf, z) = $pfremember(F, pcpath, (pvalue), z_leaf)
+def $pfdispatch(F, pcpath, PFLEAF pvalue?, z) = $pfremember(F, pcpath, pvalue?, z)
 def $pfdispatch(F, pcpath, PFSTOP, z) = F[.VALUE = eps]
 def $pfdispatch(F, pcpath, PFOTHER, z) = $pfunsupported(F, "constant-expression kind")
 
@@ -89,7 +95,7 @@ def $pfdispatch(F, pcpath, PFBINARY pbin expression_1 expression_2, z) = $pfbina
   -- if F_right = $pffold(F_left, pcpath ++ [PCFIELD 1], expression_2, z)
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue))
+def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue), z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $constant_state($binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z)) = (S)
   -- if S.RESULT = KNOWN pvalue
@@ -100,7 +106,7 @@ dec $pfunary(pfstate, pcpath, punary, int) : pfstate
 def $pfdispatch(F, pcpath, PFUNARY punary expression, z) = $pfunary($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, punary, z)
 def $pfunary(F, pcpath, punary, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfunary(F, pcpath, punary, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result))
+def $pfunary(F, pcpath, punary, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
   -- if $constant_state($unary_apply(F.MEMORY, punary, pvalue, z)) = (S)
@@ -124,17 +130,17 @@ def $pfdimvalue(S, PARRAY n, pvalue) = (pvalue_result)
 def $pfdimvalue(S, PSTRING n*, pvalue) = $string_constant_read(n*, pvalue)
 def $pfdimvalue(S, pvalue_1, pvalue_2) = eps
   -- otherwise
-dec $pfdim(pfstate, pcpath, pvalue?, pvalue?) : pfstate
+dec $pfdim(pfstate, pcpath, pvalue?, pvalue?, int) : pfstate
 def $pfdispatch(F, pcpath, PFDIM expression ABSENT, z) = $pferror(F, "Cannot use [] for reading", z)
-def $pfdispatch(F, pcpath, PFDIM expression phpType5, z) = $pfdim(F_key, pcpath, F_base.VALUE, F_key.VALUE)
+def $pfdispatch(F, pcpath, PFDIM expression phpType5, z) = $pfdim(F_key, pcpath, F_base.VALUE, F_key.VALUE, z)
   -- if phpType5 = expression_key
   -- if F_base = $pffold(F, pcpath ++ [PCFIELD 0], expression, z)
   -- if F_key = $pffold(F_base, pcpath ++ [PCFIELD 1], expression_key, z)
-def $pfdim(F, pcpath, pvalue_1?, pvalue_2?) = F
+def $pfdim(F, pcpath, pvalue_1?, pvalue_2?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfdim(F, pcpath, (pvalue_1), (pvalue_2)) = $pfremember(F, pcpath, $pfdimvalue(F.MEMORY, pvalue_1, pvalue_2))
+def $pfdim(F, pcpath, (pvalue_1), (pvalue_2), z) = $pfremember(F, pcpath, $pfdimvalue(F.MEMORY, pvalue_1, pvalue_2), z)
   -- if F.MEMORY.COMPLETION = NORMAL
-def $pfdim(F, pcpath, pvalue_1?, pvalue_2?) = F[.VALUE = eps]
+def $pfdim(F, pcpath, pvalue_1?, pvalue_2?, z) = F[.VALUE = eps]
   -- otherwise
 
 ;; Array pass one visits each value then its key, retaining all partial folds.
@@ -195,6 +201,6 @@ def $pfinserted(S, n, pfitem*, z) = $pfconstruct(S, n, pfitem*, z)
   -- if S.EVENTS = eps
 def $pfinserted(S, n, pfitem*, z) = PFDEFER
   -- otherwise
-def $pfbuilt(F, pcpath, PFBUILT S, n, z) = $pfremember(F[.MEMORY = S], pcpath, (PARRAY n))
+def $pfbuilt(F, pcpath, PFBUILT S, n, z) = $pfremember(F[.MEMORY = S], pcpath, (PARRAY n), z)
 def $pfbuilt(F, pcpath, PFDEFER, n, z) = F[.VALUE = eps]
 def $pfbuilt(F, pcpath, PFSTATIC text, n, z) = $pferror(F, text, z)

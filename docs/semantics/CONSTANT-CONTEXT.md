@@ -18,7 +18,7 @@ does not establish that constant evaluation folds that dimension.
 | `$pfprepare(state, path, expression, environment, line)` | Perform one constant-expression invocation at the exact checked occurrence. Require a positive current compiler line and the existing lexical `plenv`. |
 | `state.SOURCE` | Original checked program, unit ID and generated structural occurrences. Metadata and expression syntax remain unchanged. |
 | `state.MEMORY` | Isolated pure constant store. Completion is `NORMAL`, a source-backed `STATICERROR`, or explicit `UNSUPPORTED`. |
-| `state.FACTS` | Relative path and folded value pairs; their identity includes the enclosing source-unit ID. Array values designate tables in this store. |
+| `state.FACTS` | Relative path, folded value and effective compiler line; their identity includes the enclosing source-unit ID. Array values designate tables in this store. |
 | `state.VALUE` | Optional whole-expression folded value. Its absence does not discard successfully folded children. |
 
 The compiler retains states constructed by these helpers; they are not an
@@ -79,3 +79,5 @@ replace `20-machine.watsup`'s bounded constant-read prepass and
 `36-arrays.watsup`'s recursive classifier. Their current source behavior remains
 in force until that coordinated replacement; string/scalar source reads and
 loop/function literal-pool behavior are still pending.
+
+Each `PFFACT` retains the effective line of its constant AST node. Original integer, float and string leaves keep their source lines. Actual constant-expression rewrites use the invocation compiler line, matching `zend_eval_const_expr` replacing the node with `zend_ast_create_zval` (`zend_compile.c:12380`, `zend_ast.c:88`). The original checked syntax remains unchanged. `$pffactline` exposes this provenance to ordinary compilation; cached facts retain the first rewrite line across repeated evaluation.

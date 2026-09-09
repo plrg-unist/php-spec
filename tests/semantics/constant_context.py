@@ -95,7 +95,7 @@ def main():
                 body=f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if F = $pfprepare($pfbegin(41, {checked["fixture"]}), {path}, {occurrences.node_term(node)}, $plempty(false), 2)\n  -- if F.MEMORY.COMPLETION = NORMAL\n'
                 if folded:
                     body+='  -- if F.VALUE = (pvalue)\n  -- if $pfobserve(F.MEMORY, pvalue) = '+obs(expected)+'\n'
-                    body+=f'  -- if $pfprepare(F, {path}, {occurrences.node_term(node)}, $plempty(false), 2) = F\n'
+                    body+=f'  -- if $pfprepare(F, {path}, {occurrences.node_term(node)}, $plempty(false), 99) = F\n'
                 else: body+='  -- if F.VALUE = eps\n'
                 if expression in ['[$u,"abc"["1x"]]','[&$u,"abc"["1x"]]','[($u=&$v),"abc"["1x"]]']:
                     fact_path=occurrences.path_term([('INDEX',2),('FIELD',0),('FIELD',1),('FIELD',0),('INDEX',0),('FIELD',1),('FIELD',0),('INDEX',1),('FIELD',1)])
