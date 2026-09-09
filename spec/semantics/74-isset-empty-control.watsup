@@ -1,0 +1,113 @@
+;; Only the terminal access uses ISSET_ISEMPTY; ancestors retain FETCH_DIM_IS.
+;; Empty tests truth, including NaN diagnostics; isset tests only absence/null.
+dec $isset_value(pstate, pvalue, bool, int) : pstate
+def $isset_value(S, pvalue, false, z) = S[.RESULT = KNOWN (PBOOL (pvalue =/= PNULL))]
+def $isset_value(S, pvalue, true, z) = $boolean_result(S[.RESULT = KNOWN pvalue], true, z)
+
+dec $isset_array(pstate, nat, pvalue, bool, int) : pstate
+dec $isset_key(pstate, pvalue, int) : pstate
+def $isset_key(S, PARRAY n_key, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,97,99,99,101,115,115,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32,97,114,114,97,121,32,105,110,32,105,115,115,101,116,32,111,114,32,101,109,112,116,121], z)
+def $isset_key(S, pvalue, z) = $dimension_key_value(S, pvalue, z) -- otherwise
+def $isset_array(S, n, pvalue, b, z) = S_key
+  -- if S_key = $isset_key(S, pvalue, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $isset_array(S, n, pvalue, b, z) = S_key[.RESULT = KNOWN (PBOOL b)]
+  -- if S_key = $isset_key(S, pvalue, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if $entry_lookup(S_key.ARRAYS[n].ITEMS, S_key.KEY) = eps
+def $isset_array(S, n, pvalue, b, z) = $isset_value(S_key, $entry_value(S_key, pitem), b, z)
+  -- if S_key = $isset_key(S, pvalue, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if $entry_lookup(S_key.ARRAYS[n].ITEMS, S_key.KEY) = (pitem)
+
+dec $isset_string_at(pstate, nat*, int, bool) : pstate
+dec $isset_string(pstate, nat*, pvalue, bool, int) : pstate
+def $isset_string(S, n_bytes*, PFLOAT n, b, z) = $isset_string_at($cast_notices(S, castnotice*, n, z), n_bytes*, i, b)
+  -- if (i, castnotice*) = $float_long(n, true)
+def $isset_string(S, n_bytes*, PINT i, b, z) = $isset_string_at(S, n_bytes*, i, b)
+def $isset_string(S, n_bytes*, PNULL, b, z) = $isset_string_at(S, n_bytes*, 0, b)
+def $isset_string(S, n_bytes*, PBOOL false, b, z) = $isset_string_at(S, n_bytes*, 0, b)
+def $isset_string(S, n_bytes*, PBOOL true, b, z) = $isset_string_at(S, n_bytes*, 1, b)
+def $isset_string(S, n_bytes*, PSTRING n_key*, b, z) = $isset_string_at(S, n_bytes*, i, b)
+  -- if $numeric_string(n_key*) = FULLNUM (NINT i)
+def $isset_string(S, n_bytes*, pvalue, b, z) = S[.RESULT = KNOWN (PBOOL b)] -- otherwise
+
+def $isset_string_at(S, n_bytes*, i, b) = S_read[.RESULT = KNOWN (PBOOL b)]
+  -- if S_read = $quiet_string_at(S, n_bytes*, i)
+  -- if S_read.RESULT = KNOWN PNULL
+def $isset_string_at(S, n_bytes*, i, false) = S_read[.RESULT = KNOWN (PBOOL true)]
+  -- if S_read = $quiet_string_at(S, n_bytes*, i)
+  -- if S_read.RESULT = KNOWN (PSTRING n_value*)
+def $isset_string_at(S, n_bytes*, i, true) = S_read[.RESULT = KNOWN (PBOOL (n_value* = [48]))]
+  -- if S_read = $quiet_string_at(S, n_bytes*, i)
+  -- if S_read.RESULT = KNOWN (PSTRING n_value*)
+
+dec $isset_dimension_value(pstate, pvalue, pvalue, bool, int) : pstate
+def $isset_dimension_value(S, PARRAY n, pvalue, b, z) = $isset_array(S, n, pvalue, b, z)
+def $isset_dimension_value(S, PSTRING n_bytes*, pvalue, b, z) = $isset_string(S, n_bytes*, pvalue, b, z)
+def $isset_dimension_value(S, pvalue_base, pvalue, b, z) = S[.RESULT = KNOWN (PBOOL b)] -- otherwise
+
+dec $isset_simple(pstate, pbase, bool, int) : pstate
+dec $isset_base(pstate, pbase, bool, int) : pstate
+def $isset_base(S, BASE_DIM pbase poperand z_key, b, z) = S_read
+  -- if S_read = $quiet_base(S, pbase, z_key)
+  -- if S_read.COMPLETION =/= NORMAL
+def $isset_base(S, BASE_DIM pbase poperand z_key, b, z) = S_key
+  -- if S_read = $quiet_base(S, pbase, z_key)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_key = $resolve_at(S_read, poperand, z_key)
+  -- if S_key.COMPLETION =/= NORMAL
+def $isset_base(S, BASE_DIM pbase poperand z_key, b, z) = $isset_dimension_value(S_key, pvalue_base, pvalue, b, z_key)
+  -- if S_read = $quiet_base(S, pbase, z_key)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_base
+  -- if S_key = $resolve_at(S_read, poperand, z_key)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue
+def $isset_simple(S, pbase, b, z) = S_read
+  -- if S_read = $quiet_base(S, pbase, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $isset_simple(S, pbase, b, z) = $isset_value(S_read, pvalue, b, z)
+  -- if S_read = $quiet_base(S, pbase, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+def $isset_base(S, BASE_VALUE poperand, b, z) = $isset_simple(S, BASE_VALUE poperand, b, z)
+def $isset_base(S, BASE_NAME poperand z_name, b, z) = $isset_simple(S, BASE_NAME poperand z_name, b, z)
+
+dec $isset_this(expression) : bool
+def $isset_this(NExprVariable phpType32 metadata) = $direct_this(phpType32)
+def $isset_this(expression) = false -- otherwise
+
+rule PhpStep/empty-value: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), TRUTH_RESULT true $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprEmpty expression metadata)) :: ptask_tail*
+  -- if ~$coalesce_quiet_operand(expression)
+rule PhpStep/empty-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), ISSET_PREP expression true)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprEmpty expression metadata)) :: ptask_tail*
+  -- if $coalesce_quiet_operand(expression)
+rule PhpStep/isset: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX 0]), ISSET_PREP expression false), ISSET_NEXT expression_tail* 1] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprIsset (SEQUENCE (expression :: expression_tail*)) metadata)) :: ptask_tail*
+rule PhpStep/isset-this: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)]
+  -- if S.TODO = (ISSET_PREP (NExprVariable phpType32 metadata) b) :: ptask_tail*
+  -- if $direct_this(phpType32)
+rule PhpStep/isset-prepare: S ~> S[.TODO = [$at_task(S.ORIGIN, DIM_PREP expression), ISSET_RESULT b $runtime_line(S, eps, expression)] ++ ptask_tail*]
+  -- if S.TODO = (ISSET_PREP expression b) :: ptask_tail*
+  -- if ~($ppglobals_base(expression))
+  -- if $isset_this(expression) = false
+rule PhpStep/isset-global: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (~b))]
+  -- if S.TODO = (ISSET_PREP expression b) :: ptask_tail*
+  -- if $ppglobals_base(expression)
+rule PhpStep/isset-result: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if S_read = $isset_base(S, S.BASE, b, z)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/isset-abrupt: S ~> S_read[.TODO = eps][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if S_read = $isset_base(S, S.BASE, b, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/isset-next: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCINDEX n]), ISSET_PREP expression false), ISSET_NEXT expression_tail* $(n + 1)] ++ ptask_tail*]
+  -- if S.TODO = (ISSET_NEXT (expression :: expression_tail*) n) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PBOOL true)
+rule PhpStep/isset-done: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (ISSET_NEXT expression* n) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PBOOL false) \/ expression* = eps

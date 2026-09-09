@@ -1,0 +1,56 @@
+;; Variable operands use quiet access. Non-variable empty operands compile as
+;; ordinary NOT, preserving known results and already recorded child effects.
+dec $ppisset(ppstate, pcpath, expression*) : ppstate
+dec $ppissettail(ppstate, pcpath, nat, expression*) : ppstate
+dec $ppissetleaf(ppstate, pcpath, expression) : ppstate
+dec $ppissetbody(ppstate, pcpath, expression) : ppstate
+dec $ppissetglobal(ppstate) : ppstate
+dec $ppissetjoin(pvalue?, ppstate) : ppstate
+
+def $pptemporary(NExprIsset phpType25 metadata) = true
+def $pptemporary(NExprEmpty expression metadata) = true
+def $ppdispatch(P, pcpath, NExprIsset (SEQUENCE expression*) metadata, PPR) = $ppisset(P, pcpath ++ [PCFIELD 0], expression*)
+def $ppdispatch(P, pcpath, NExprEmpty expression metadata, PPR) = $ppnotdone($ppissetleaf(P, pcpath ++ [PCFIELD 0], expression), pcpath)
+  -- if $coalesce_quiet_operand(expression)
+def $ppdispatch(P, pcpath, NExprEmpty expression metadata, PPR) = $ppnotdone($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
+  -- if ~$coalesce_quiet_operand(expression)
+
+def $ppisset(P, pcpath, eps) = $ppunsupported(P, "empty isset argument list")
+def $ppisset(P, pcpath, expression :: expression_tail*) = $ppissettail($ppissetleaf(P, pcpath ++ [PCINDEX 0], expression), pcpath, 1, expression_tail*)
+def $ppissettail(P, pcpath, n, expression*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppissettail(P, pcpath, n, eps) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppissettail(P, pcpath, n, expression :: expression_tail*) = $ppissettail($ppissetjoin(P.FOLD.VALUE, $ppissetleaf(P, pcpath ++ [PCINDEX n], expression)), pcpath, $(n + 1), expression_tail*)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppissetleaf(P, pcpath, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppissetleaf(P, pcpath, expression) = $ppissetbody($pplocate(P, pcpath, $expression_line(expression)), pcpath, expression)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppissetbody(P, pcpath, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppissetbody(P, pcpath, expression) = $ppcheck(P, $context_error("Cannot use isset() on the result of an expression (you can use \"null !== expression\" instead)", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~$coalesce_quiet_operand(expression)
+def $ppissetbody(P, pcpath, NExprArrayDimFetch expression ABSENT metadata) = $ppcheck(P, $context_error("Cannot use [] for reading", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppglobals_base(expression)
+def $ppissetbody(P, pcpath, expression) = $ppissetglobal($ppexpr(P, pcpath, expression, PPIS))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppglobals_base(expression)
+def $ppissetbody(P, pcpath, expression) = $ppclearvalue($ppexpr(P, pcpath, expression, PPIS))
+  -- otherwise
+
+def $ppissetglobal(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppissetglobal(P) = P[.FOLD = P.FOLD[.VALUE = (PBOOL true)]]
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppissetjoin(pvalue?, P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppissetjoin((PBOOL true), P) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PBOOL true)
+def $ppissetjoin(pvalue?, P) = $ppclearvalue(P)
+  -- otherwise
