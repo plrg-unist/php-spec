@@ -5,7 +5,9 @@ Their targets evaluate dynamic names and dimension keys once, retain delayed
 variable/reference operands, then acquire the writable location. Missing names
 and explicit array keys warn and initialize to null; `[]` appends a null slot
 without an undefined-key warning. Intermediate dimensions use the same read/write
-mode. Copy-on-write separation counts the captured inputs as owners.
+mode. Computed-name fetch diagnostics use their own compiler line; direct compiled
+variables use the containing dimension instruction line. Copy-on-write separation
+counts the captured inputs as owners.
 
 Increment/decrement writes the acquired location. Prefix expressions return the
 new value; postfix expressions return a value snapshot from before the update.

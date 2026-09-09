@@ -49,6 +49,9 @@ and runtime phases; [truth evidence](coverage/semantics/truth-review.json) recor
 source comparisons, selected-value copying and budget resumption.
 [Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
 and array values, with [independent evidence](coverage/semantics/comparison-review.json).
+[Prefix/postfix increment and decrement](docs/semantics/UPDATES.md) execute for
+current scalar/array locations, preserving copied results and diagnostic order;
+[independent review](coverage/semantics/incdec-review.json) records the source and resumption gates.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the

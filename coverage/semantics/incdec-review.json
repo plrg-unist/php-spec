@@ -1,0 +1,120 @@
+{
+  "status": "accepted bounded inc/dec source activation",
+  "implementation": "7d5718fb",
+  "author_reports": "5b24a5f8",
+  "fingerprint": {
+    "sha256": "d399263a1c9f33bb445c958d624392ffc83d49df1c247df72b0c23ce59855d35",
+    "files": 785,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "scope": "Four prefix/postfix updates for current null/bool/int/binary64/byte-string/array values and direct/computed variable/dimension/append lvalues; global-only this context",
+  "source_gate": {
+    "exact_sources": 1484,
+    "outcome_negatives": 25,
+    "audit": {
+      "path": "coverage/semantics/incdec-campaign-audit.json",
+      "sha256": "d313ef4a31b49bbfd335e578e9817c895f9a6ccf3102ad73b2e925b4a78bdce9"
+    }
+  },
+  "independent": {
+    "public_source_observations": 339,
+    "unique_source_byte_strings": 331,
+    "source_review": {
+      "path": "coverage/semantics/incdec-source-review.json",
+      "sha256": "9a85d2c656faa749e088049d450f84d41f823a44394ffba91fb37e02f03b971f"
+    },
+    "context_replay_programs": 71,
+    "context_assertions": 994,
+    "context_review": {
+      "path": "coverage/semantics/incdec-this-review.json",
+      "sha256": "1aaf728962f53d4ec5edc870521afa0d687b122b209a457bd9b388a7884b3fb8"
+    },
+    "dense_programs": 8,
+    "dense_budgets_per_program": 101,
+    "dense_assertions": 4152,
+    "dense_review": {
+      "path": "coverage/semantics/incdec-dense-review.json",
+      "sha256": "b7f27dbe46bff598c2add07c8d0229e8f166fbc88584fc46ccab390314e0aae4"
+    },
+    "unchanged_replays_bound_to_production": {
+      "path": "coverage/semantics/incdec-replay-bindings.json",
+      "sha256": "f6e7f4c5f613fddbb64b7ab75f9054fc5c7d29f64eddea5e72674f9ced87ba93"
+    },
+    "additional_compiler_profiles": 83,
+    "prepass_review": {
+      "path": "coverage/semantics/incdec-prepass-review.json",
+      "sha256": "36750e87dd025db9cc64f834c759f9e505f62ecaf9d18b6c0a3715abb7957828"
+    },
+    "static_review": {
+      "path": "coverage/semantics/incdec-static-review.json",
+      "sha256": "98e7473cece54c9d44fd266ab1307548c6fc8f7c0d1a35dd184f46e27120b870"
+    }
+  },
+  "author_and_regression": {
+    "runtime_source_programs": 154,
+    "runtime_assertions": 2226,
+    "new_source_selections": 271,
+    "dedicated_compiler_lints": 108,
+    "dedicated_access_paths": 32,
+    "dedicated_emission_lines": 8,
+    "dedicated_context_checks": 12,
+    "broad_compiler_lints": 1526,
+    "broad_emission_lines": 15,
+    "origins": "25 sources/333 assertions",
+    "bridge": "15 cases/148 assertions",
+    "ownership": "617 graph+96 boundary cases/5434 assertions",
+    "writable_fetch": "30 sources/505 assertions",
+    "prior_wrappers": "21 sources/396 assertions"
+  },
+  "resolved_history": {
+    "prepass": {
+      "path": "coverage/semantics/incdec-prepass-originals.json",
+      "sha256": "6a6f5a6549f2a0c26315fccd34fcb7b967e1ab688d10ce5da3ef109da558da1b"
+    },
+    "callable_context": {
+      "path": "coverage/semantics/incdec-call-line-originals.json",
+      "sha256": "c1a41bbfff5061948f8049a447f1c064ede04cd2aa520e4cc0b4a60cba2d16f7"
+    },
+    "computed_root_line": {
+      "path": "coverage/semantics/incdec-computed-line-originals.json",
+      "sha256": "31479296392902e13ed83a848a4321c3fd40b782fe22f726fab8993a1fa14dca"
+    },
+    "overlapping_draft_rule": {
+      "path": "coverage/semantics/incdec-static-overlap-originals.json",
+      "sha256": "3d191a5459cbd2446bc6d16d3cce6869aa206d445bab6f1adba6ad6116a451cd"
+    },
+    "ordinary_write_wrapper_correction": {
+      "path": "coverage/semantics/wrapper-dynamic-write-review.json",
+      "sha256": "a271bc04baab6bc7a5b9823570454dddb1ef847cda4c2fc35afa35258b9335ef"
+    },
+    "resolution": "Exact source bytes for every retained prepass/callable/root-line and wrapper original occur unchanged in the current passing source gate; original failure reports remain unchanged."
+  },
+  "design": [
+    "Updates acquire RW locations once and return copied scalar values, not reference results. Existing wrappers/COW owners and held locations remain distinct.",
+    "Four explicit PFSTOP barriers preserve skipped constant-prepass contexts and later ordinary compiler visits.",
+    "Direct call-return rejection precedes nullsafe-chain rejection; the fallback is disjoint. Dynamic callable opening-token context is consumed; missing/nonpositive context is Unsupported.",
+    "Direct/literal this fetch is eager in the current global machine. Computed reads use ordinary name lookup; computed updates reject rebinding at runtime. Direct assignment/reference rebinding and final unset reject statically.",
+    "Computed BASE_NAME diagnostics use the stored name-access line; direct CV dimensions use the containing opcode line. Forced key effects retain their evaluation order."
+  ],
+  "dependency_preflight": "Independently passed15 identity/3 path/17 closure negatives and9 ignored-log invariances; all new helpers embed source literals without new archive dependencies. Inventory169/306 unchanged; only oracle pin closes.",
+  "limits": [
+    "No constructor/family closure. Objects/properties/typed references/frames and source GC remain pending.",
+    "Computed plain-write/reference/unset environment-name protocols and parser-folded concat names remain prior explicit boundaries.",
+    "Compound updates, remaining operators/casts, reached destructuring, ordinary array omissions and broader core families remain pending.",
+    "No new intentional engine divergence. Final full syntax and fresh offline rebuild remain required."
+  ]
+}

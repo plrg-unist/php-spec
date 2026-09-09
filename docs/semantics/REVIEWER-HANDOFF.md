@@ -1,119 +1,108 @@
 # Independent review continuation
 
 Read PLAN, PROGRESS, applicable AGENTS and the php/php-spec/p4-spectec skills first.
-Root orchestrates; runtime_next owns runtime/storage, compiler_next owns compiler
-and frontend, reviewer owns independent evidence, inventory and concise docs.
-Never push. Stage owned files and coordinate index, build starts and watched freezes.
-No PHP semantic family or constructor closes from these bounded checkpoints.
+Root orchestrates; runtime owns execution/storage, compiler owns static/frontend
+work, reviewer owns independent evidence, inventory, PROGRESS and concise docs.
+Never push. Coordinate file ownership, Git index and Dune starts. Complete core
+remains unfinished; no constructor or PHP semantic family closes here.
 
-## Latest corrective checkpoint
+## Accepted inc/dec checkpoint
 
-`84d70299`/reports `fa691044` repairs ordinary WRITE_DYNAMIC incorrectly marking
-reference history. All seven acquire_name call sites were audited; only that
-ordinary writable fetch changes. `fetch_write_name` initializes absent/undefined
-slots without adding markers; true acquisition marks afterward. Existing shared
-or singleton wrappers retain history. [Review](../../coverage/semantics/wrapper-dynamic-write-review.json)
-resolves all28 originals (12 mismatches/16 controls) and adds12 exact controls;
-prior79 wrapper sources,49 state assertions and ownership617+96/5434 pass.
-Selected30 sources/25 negatives and canonical30/505 pass `055e533c`. Helper embeds
-all original bytes; independent evidence/inventory preflight passes. Full source
-refresh shares the immediately following inc/dec gate, not this bounded correction.
+Code `7d5718fb`, reports `5b24a5f8` and
+[review](../../coverage/semantics/incdec-review.json) pass **1,484 exact sources +25
+negatives** on `d399263a1c9f33bb445c958d624392ffc83d49df1c247df72b0c23ce59855d35`.
+Independent raw audit verifies ordered source IDs/bytes/hashes and exact native
+stdout/stderr/status, plus all retained wrapper/prepass/call-line/root-line sources.
+339 independent public observations (331 distinct byte strings), 71 context replays/
+994 assertions and eight dense replays/4,152 assertions pass. Dense budgets are
+0–100 inclusive. Replay reports preserve their original fingerprints; separate
+bindings prove every loaded semantic byte is identical to saved production.
 
-## Accepted wrapper correction
+Canonical gates: 154 runtime programs/2,226 assertions; dedicated compiler 108 lints,
+32 access paths, eight emission lines and 12 context boundaries; broad compiler
+1,526 lints/15 emission lines. Origins 25/333, bridge 15/148, ownership 617+96/5,434,
+writable-fetch 30/505 and prior wrappers 21/396 pass the same closure. Helper graph
+collection assertions are not source GC calls. All new helpers embed source bytes,
+adding no consumed archive dependency. Independent preflight passed 15 identity,
+three path, 17 closure negatives and nine build-log invariances; inventory is
+169 constructors/306 obligations, with only validation.oracle-pin closed.
 
-Code `3585707a`, reports `eebf79e9` and
-[review](../../coverage/semantics/reference-wrapper-review.json) pass **1,163 exact
-sources +25 negatives** on `1f71f10d643374f0d0ff046d2139315e8d9692f5c0ec1a07a6e4849ccf0776ec`.
-All eleven unchanged FETCH/final-write/UNSET originals are integrated; five prior
-mismatches now agree. Independent evidence adds 79 exact public sources, 72 replay
-programs/1,288 assertions and 45 constructed transition/owner checks. The raw audit
-checks every ordered catalog ID, original byte string/hash and native/model outcome.
+Four pre/post updates acquire RW variable/dimension/append locations and return
+copied values. Current six values include exact string/bool/null diagnostics and
+array failures. Direct `$this` uses eager FETCH_THIS in global source execution;
+literal-string spelling is direct, ternary-computed spelling stays computed.
+Computed reads use ordinary lookup and updates reject rebinding dynamically.
+Direct assignment/reference rebinding and final unset reject statically before
+operand compilation. Dimension bases/reference RHS retain runtime acquisition.
+Computed BASE_NAME diagnostics use the stored root line; direct CV dimension
+fetches retain their containing opcode line. Forced keys keep their own ordering.
 
-`REFCELLS` records stable backing-cell wrapper identity independently of owner
-counts and roots. Acquisition/rebinding marks cells; writes and singleton unset
-preserve history. Fresh ordinary bindings are unmarked. Array COW and union may
-unwrap a singleton copied ALIAS into DIRECT while the original wrapper remains.
-Markers create no edges and cannot retain dead storage. Generic nested/reference
-FETCH and intermediate UNSET suppress false conversion warnings through wrappers;
-final ASSIGN_DIM/UNSET_DIM retain warnings. Direct CV source acquisition follows
-target FETCH, while computed-name capture can precede it. Compiler reference
-markers cannot enter permanent pools; valid installation preserves runtime markers.
+## Preserve corrective history
 
-Canonical wrappers 21 sources/396 assertions, compiler 1,205 lints/15 ending-line
-observations, origins 25/333, bridge 15/148 and ownership 617+96/5,434 pass the same
-closure. Collection assertions concern pure graph helpers, not source GC calls.
-No intentional divergence was selected. Original mismatch archives remain unchanged.
+- Wrapper identity `3585707a`/review `5b0dc0f2` repaired five FETCH/UNSET differences,
+  then ordinary WRITE_DYNAMIC was found incorrectly marking references.
+  Correction `84d70299`, reports `fa691044`, review `24c681d7` separates initialized
+  writable fetching from actual acquisition. All seven acquire_name call sites
+  were inspected; WRITE_DYNAMIC alone is ordinary. All 28 retained originals
+  (12 mismatches/16 controls) resolve, with 12 independent extra sources, 79 prior
+  wrapper sources and 49 marker/state checks. Current full source gate refreshes
+  all canonical originals. Preserve initialized self-target timing and copied
+  reference-result assignment without creating a fresh wrapper.
+- REFCELLS stores stable cell history independently of owners/roots. Writes and
+  singleton unset preserve it; fresh ordinary bindings remain unmarked. COW/union
+  may unwrap copied ALIAS entries independently. Markers retain no storage and
+  cannot enter isolated compiler pools. Generic FETCH/intermediate UNSET warnings
+  differ from final ASSIGN_DIM/UNSET_DIM. Cycles remain observable before collection.
+- Incdec prepass originals retain two old Unsupported gaps and a control; all four
+  update shapes now have explicit nontraversing PFSTOP barriers. Ordinary visits
+  still compile operands. Nullsafe-call overlapping-rule failure is retained as
+  an interpreter failure, never a PHP error or pass; direct call checks now precede
+  disjoint fallback checks. Seven computed-line originals retain four draft
+  mismatches/three controls, now source-integrated and resolved.
+- Callable metadata `c6a7d67d`/review `1d32e9be` retains eight old-AST originals:
+  an identical pair needs native lines 3/2. `callableExprLine` preserves dynamic
+  invocation opening-token context; name calls retain their name line. Optional
+  integer transport differs from semantic requiredness/range checking. Missing/
+  nonpositive context remains Unsupported; positive edited lines are consumed.
+- First-hole metadata `87341500`/review `79951ad4`, unpack `d4706937` and original
+  array kind `09f33419` remain accepted. Genuine-list conversion `5c756e5e`/review
+  `861020db` passes 20 skipped sources; 14 reached originals remain Unsupported.
+  First-hole compiler consumption and full destructuring remain open.
 
-## Next bounded gates
+## Next independent gates
 
-- Runtime private inc/dec uses `.tools/{20-incdec-compiler,30-incdec,45-incdec-compiler,46-incdec-checked,53-incdec-source}.watsup`.
-  Current this-inclusive paths30-incdec-this/40-incdec-this/41-incdec-this/53-incdec-this
-  plus20-incdec-compiler/45-incdec-compiler/46-incdec-this pass140 author programs/2030
-  assertions. Rebase independent dense/public gates onto these after this checkpoint. Independent earlier
-  177 programs/2,478 assertions passed but exposed two array-prepass Unsupported
-  gaps, retained unchanged in incdec-prepass-originals.json. Review explicit PFSTOP
-  depth, static fallback priority and new callable metadata consumption before
-  publication. Canonical compiler draft has108 native lints,32 access paths,8 emission lines and12
-  source-context boundaries. Computed write/ref/unset remain previously explicit
-  environment boundaries. Literal concat names are a pending parser-folding context
-  (concat-cv-originals.json); ternary names stay computed. Pair copied pre/post results, exact error lines,
-  missing targets, append rules and held locations. Compound updates follow.
-- Callable invocation metadata `c6a7d67d` is independently accepted in
-  callable-line-review.json: eight exact old-AST originals (identical pair reports
-  native lines 3/2), 35 canonical profiles/477 checks, 24 independent profiles/168
-  checks and 24 native error-line comparisons. Exact parser regeneration passes;
-  the one parser semantic action preserves opening argument-token context. Optional
-  integer transport is distinct from compiler requiredness/range checks. No source
-  call or update admission follows from this prerequisite alone.
-- First-hole token metadata `87341500`/review `79951ad4` is accepted: 31 author
-  profiles/409 checks, 20 independent profiles/140 checks and all 12 original line
-  witnesses. Empty list closing tokens are not commas. Integer metadata is checked
-  transport; missing/range requirements remain compiler consumer obligations.
-- Genuine-list conversion `5c756e5e`/review `861020db` is accepted: recursive nested
-  Array_ target conversion precedes ordinary omission checking and preserves all
-  original flags/context. Twenty exact skipped sources/25 negatives, 32 checked
-  profiles and independent comments/archive checks pass. Fourteen reached originals
-  remain Unsupported. Full source refresh shares incdec activation.
-- Ordinary array omissions should use nullable Array_.items and first-omission
-  context; no new ArrayHole node is justified. `zend_try_ct_eval_array` uses NULL
-  entries and diagnoses at the preceding nonempty element's original AST line;
-  a leading hole retains current compiler context. Preserve prepass order, skipped
-  branches and hole indices. Approximately 21 consumer files need deterministic
-  generated-type remapping. Sixteen new exact line originals are retained at
-  `.tools/array-hole-line-originals.json` for later independent review. Review metadata, generator/adapter/printer and semantic
-  consumers together. Compiler is retaining multiline/keyed/folded/nested evidence.
+Use the current [runtime](RUNTIME-SUCCESSOR-HANDOFF.md) and
+[compiler](COMPILER-HANDOFF.md) handoffs, not obsolete private snapshots. The rebased
+compound prototype passes 81 author programs/1,204 assertions plus extra timing
+controls, but independent source and dedicated compiler PFSTOP/access/order gates
+remain pending. Preserve dynamic target acquisition before delayed RHS CV reads,
+while forced RHS expressions may run earlier. Review array `+=` identity/COW and
+all remaining numeric/byte/power/cast source dispatch. `??=` needs a separate quiet
+read/memoized write path. Keep old draft disagreements unchanged.
 
-[Frontend phase archives](../../coverage/semantics/frontend-phase-originals-review.json)
-contain all 16 genuine-list and six ordinary-array-hole originals, independently
-repeated before repair. Earlier 28 metadata losses remain retained. Never overwrite
-originals with repaired observations. Unpack/destructuring, foreach, calls/frames,
-objects/linking, dynamic sources and callbacks/lifecycle remain open; continue the
-[runtime](RUNTIME-SUCCESSOR-HANDOFF.md) and [compiler](COMPILER-HANDOFF.md) interfaces.
+Computed plain-write/reference/unset environment names were already explicitly
+Unsupported; they were not admitted mismatches. Literal-concat variable names also
+remain an old compiler-line boundary (concat-cv-originals.json). Zend parser-ZVAL
+folding and its no-error guard are not equivalent to arbitrary constant FACTS;
+probe unary/folded contexts before deciding their exact source classification.
 
-## Retained constraints and validation
+Ordinary omissions should use nullable Array_.items plus exact initial context,
+not a new ArrayHole constructor. Preserve indices. The engine diagnoses a null
+entry at the previous nonempty element's original AST line, or current compiler
+line when first. Do not substitute keyed-item start or folded-child fact lines.
+Sixteen fresh `.tools/array-hole-line-originals.json` observations need independent
+repetition/archive before schema changes; include keyed/unpack/arithmetic/concat
+and nested-first-hole controls. Generated domain merging/remapping must cover all
+adapter/printer/semantic consumers and skipped versus reached compiler visits.
 
-Use only project-local PHP 8.5.10 CLI NTS64, `.tools/php/bin/php`, source pin
-`34308a6666b2d489c509541ea9befea9e2b42348`. Rules stay pure `.watsup`; checked source
-execution, edited ASTs and helper values are separate evidence classes. Unsupported,
-crashes, timeouts and budgets never count as semantic agreement.
+Comparison/truth/control corrections and all originals remain retained. Partial
+FACTS, ordinary values, executable ACCESS, redirects and permanent POOLS stay
+separate. Namespace-relative `static` is the sole intentional divergence, with
+source activation pending. Calls/frames, objects/linking, dynamic sources,
+callbacks/unwinding and lifetime/collection remain unfinished.
 
-Comparison `0e065cc6` retains all four overflow and 48 phase originals. Truth,
-control, scalar/array/string lvalues, origins and compiler pools remain reviewed.
-Partial FACTS, ordinary values, executable ACCESS and redirects stay distinct;
-ordinary ternary copies values while raw prepass redirects can preserve delayed
-operands. Uncollected cycles remain observable owners. Namespace-relative `static`
-is the sole intentional divergence, with source activation proof pending.
-
-Run `tests/semantics/evidence.py` and `scripts/check-semantic-inventory.py` **before**
-long campaigns when catalogs, archives or harnesses change. Preflight currently
-passes 15 identity, three path, 17 closure negatives and nine ignored-log changes.
-The wrapper helper embeds source bytes, adding no consumed archive dependency.
-The earlier comparison campaign required a repeat after isolated fixtures omitted
-mandatory comparison archives; do not repeat that ordering mistake.
-
-Serialize Dune starts, save all watched inputs, then run one complete source gate
-and applicable independent/helpers. Validate exact raw membership and stable
-fingerprints; never edit fingerprints to conceal drift. `make test`, inventory and
-patch reconstruction gate frontend changes. The 30,980-record syntax audit is
-historical; final full syntax and fresh offline rebuild remain required.
-Inventory: 169 constructors/306 obligations; only validation.oracle-pin closes.
+Before expensive campaigns, save watched bytes and run evidence/inventory preflight.
+An earlier archive-fixture omission forced a complete comparison rerun; do not
+repeat it. Never alter fingerprints to conceal drift or count Unsupported/tool
+failure/budget as agreement. Final complete syntax and a fresh offline rebuild
+remain required; copied binaries are not portability evidence.

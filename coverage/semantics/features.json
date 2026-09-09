@@ -1246,10 +1246,18 @@
       "obligations": [
         "coercion.increment-decrement"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/05-string-operators.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/53-incdec.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "node": "Expr_PostInc",
@@ -1257,10 +1265,18 @@
       "obligations": [
         "coercion.increment-decrement"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/05-string-operators.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/53-incdec.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "node": "Expr_PreDec",
@@ -1268,10 +1284,18 @@
       "obligations": [
         "coercion.increment-decrement"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/05-string-operators.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/53-incdec.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "node": "Expr_PreInc",
@@ -1279,10 +1303,18 @@
       "obligations": [
         "coercion.increment-decrement"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/05-string-operators.watsup",
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/53-incdec.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/validate.py"
+      ],
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "node": "Expr_Print",
@@ -3162,17 +3194,23 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/05-string-operators.watsup"
+        "spec/semantics/05-string-operators.watsup",
+        "spec/semantics/53-incdec.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/string_operators.py",
         "coverage/semantics/string-operators.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/validate.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent helper review81f151d7: 1400 exact cases repeated, including linear long carries and ordered notices; source execution and other value types pending."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "id": "bytes.interpolation",
@@ -3470,17 +3508,23 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/05-string-operators.watsup"
+        "spec/semantics/05-string-operators.watsup",
+        "spec/semantics/53-incdec.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/string_operators.py",
         "coverage/semantics/string-operators.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py",
+        "tests/semantics/validate.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent helper review81f151d7: 1400 exact cases repeated, including linear long carries and ordered notices; source execution and other value types pending."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "id": "storage.slots",
@@ -3568,7 +3612,9 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/53-incdec.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -3582,12 +3628,14 @@
         "tests/semantics/conformance/overflow-float-variable-name-delayed.php",
         "tests/semantics/conformance/negative-float-variable-name-captured.php",
         "tests/semantics/conformance/boolean-variable-name-captured.php",
-        "tests/semantics/conformance/reference-float-cv-initialization.php"
+        "tests/semantics/conformance/reference-float-cv-initialization.php",
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent CV correction eea66b2d: 439 exact source comparisons and 25 negatives; 617 graph plus 77 boundary cases (5335 assertions) and 50 expanded source probes passed. Direct CV source initialization now follows delayed reference-target name consumption; literal FLOAT names use CV delayed reads, while unary/constants retain captured behavior. All nine timing witnesses are mandatory. Element places, frames, properties and callbacks remain pending; raw historical disagreements and accepted resolution remain in reference-timing-disagreement.json.",
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-variable.php",
         "tests/semantics/conformance/dynamic-name-delayed.php",
@@ -3731,12 +3779,13 @@
         "tests/semantics/conformance/reference-dynamic-source-initialization.php",
         "tests/semantics/conformance/reference-float-cv-initialization.php",
         "tests/semantics/reference_wrappers.py",
-        "coverage/semantics/reference-wrapper-source-review.json"
+        "coverage/semantics/reference-wrapper-source-review.json",
+        "tests/semantics/write_fetch.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c"
       ],
-      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
+      "review": "Wrapper history 3585707a and ordinary writable-fetch correction 84d70299 are independently reviewed in coverage/semantics/wrapper-dynamic-write-review.json and refreshed by incdec-review.json on 1,484 exact sources +25 negatives. True acquisition marks; ordinary initialized fetching does not; singleton history and COW/union unwrapping remain distinct. Objects/typed references/frames, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php",
@@ -3954,12 +4003,13 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/reference_wrappers.py",
-        "coverage/semantics/reference-wrapper-source-review.json"
+        "coverage/semantics/reference-wrapper-source-review.json",
+        "tests/semantics/write_fetch.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c"
       ],
-      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
+      "review": "Wrapper history 3585707a and ordinary writable-fetch correction 84d70299 are independently reviewed in coverage/semantics/wrapper-dynamic-write-review.json and refreshed by incdec-review.json on 1,484 exact sources +25 negatives. True acquisition marks; ordinary initialized fetching does not; singleton history and COW/union unwrapping remain distinct. Objects/typed references/frames, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/array-self-append.php",
@@ -3996,13 +4046,14 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/reference_wrappers.py",
-        "coverage/semantics/reference-wrapper-source-review.json"
+        "coverage/semantics/reference-wrapper-source-review.json",
+        "tests/semantics/write_fetch.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_variables.c"
       ],
-      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
+      "review": "Wrapper history 3585707a and ordinary writable-fetch correction 84d70299 are independently reviewed in coverage/semantics/wrapper-dynamic-write-review.json and refreshed by incdec-review.json on 1,484 exact sources +25 negatives. True acquisition marks; ordinary initialized fetching does not; singleton history and COW/union unwrapping remain distinct. Objects/typed references/frames, callbacks and source GC remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-reference-copy.php",
         "tests/semantics/conformance/destructure-reference.php",
@@ -4382,17 +4433,21 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/53-incdec.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending.",
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-name-delayed.php",
         "tests/semantics/conformance/string-read-numeric-keys.php",
@@ -5279,7 +5334,8 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/53-incdec.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_compiler.py",
@@ -5287,12 +5343,14 @@
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/traversal-temporary-review.json"
+        "coverage/semantics/traversal-temporary-review.json",
+        "tests/semantics/incdec.py",
+        "tests/semantics/incdec_compiler.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Temporary scalar, array, named-constant, admitted arithmetic/unary and assignment write/unset operands reject before children, preserving surrounding assignment RHS compile priority. Independent 38 exact alternate sources and two explicit call/property boundaries passed. Broader lvalue contexts, calls/properties, destructuring and readonly/type constraints remain pending."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
     },
     {
       "id": "static.control-targets",
@@ -7919,13 +7977,14 @@
       ],
       "source_tests": [
         "tests/semantics/reference_wrappers.py",
-        "coverage/semantics/reference-wrapper-source-review.json"
+        "coverage/semantics/reference-wrapper-source-review.json",
+        "tests/semantics/write_fetch.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_gc.c"
       ],
-      "review": "Independent wrapper review coverage/semantics/reference-wrapper-review.json accepts 3585707a on 1163 exact sources plus 25 negatives, 79 independent sources, 72 replay programs/1288 assertions and 45 additional state assertions. Explicit singleton wrapper history adds no roots; COW/union unwrapping, capture timing and uncollected owners remain distinct. Calls/frames, property constraints, callbacks and source collection remain pending; no family closure.",
+      "review": "Wrapper history 3585707a and ordinary writable-fetch correction 84d70299 are independently reviewed in coverage/semantics/wrapper-dynamic-write-review.json and refreshed by incdec-review.json on 1,484 exact sources +25 negatives. True acquisition marks; ordinary initialized fetching does not; singleton history and COW/union unwrapping remain distinct. Objects/typed references/frames, callbacks and source GC remain pending.",
       "notes": "Unreachable cycles awaiting collection retain reference-wrapper owners and can change array-copy unwrapping. Reachability-only owner counting is insufficient; explicit collection changes ordinary array mutation observations.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-uncollected-cycle-reference.php",

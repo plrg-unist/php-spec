@@ -112,7 +112,9 @@ handlers finish; machine integration must preserve the engine's callback mutatio
 and abrupt-completion behavior. Source: `increment_string`, `increment_function`,
 `decrement_function` and `bitwise_*_function`. Run
 `python3 tests/semantics/string_operators.py` for byte grids, mixed lengths,
-carry boundaries and diagnostic identities.
+carry boundaries and diagnostic identities. [Source updates](UPDATES.md) now
+connect increment/decrement to current scalar/array locations; notice callbacks
+and typed-property constraints remain separate obligations.
 
 `06-power-prepare.watsup` models PHP's integer exponentiation loop and libm's
 zero/infinity/NaN/domain and extreme-exponent branches. It returns `POWERDONE`

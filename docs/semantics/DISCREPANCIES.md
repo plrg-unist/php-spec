@@ -312,8 +312,8 @@ include two identical complete checked ASTs whose pinned write-context errors us
 lines 3 and 2. Dynamic calls take their compiler creation line from the opening
 argument token, which ordinary node positions cannot recover. `c6a7d67d` preserves
 that integer context. [Independent review](../../coverage/semantics/callable-line-review.json)
-validates checked transport and 24 additional native error lines; actual compiler
-consumption and update source admission remain separately gated.
+validates checked transport and 24 additional native error lines; compiler consumption and update source admission now pass `7d5718fb` and its
+[independent source review](../../coverage/semantics/incdec-review.json).
 
 ## Update array prepass: retained draft boundary
 
@@ -321,7 +321,8 @@ consumption and update source admission remain separately gated.
 retain two Unsupported draft results for updates in array values/keys and one
 matching skipped-branch control. Constant-expression traversal must stop at all
 four update forms without visiting their children. The corrected private draft
-adds those explicit barriers; source acceptance remains pending. Unsupported was
+adds those explicit barriers; `7d5718fb` now admits all three unchanged originals
+within the independently audited 1,484-source campaign. Unsupported was
 not conformance success, and no intentional divergence is selected.
 
 ## Ordinary computed-name writes: admitted wrapper regression
@@ -348,5 +349,6 @@ RW fetch diagnoses an absent variable at its own line; the following missing arr
 key uses the dimension line. Computed `$this` similarly raises its rebinding error
 at the root fetch line, after any forced key expression has run. Direct compiled
 variables use the dimension opcode's line instead. Both lines already exist in
-checked access descriptors; runtime propagation is under correction. No source
-update admission or intentional divergence is claimed.
+checked access descriptors; runtime correction `7d5718fb` now preserves both. All seven originals pass in the
+[independently audited source gate](../../coverage/semantics/incdec-review.json),
+with 71 additional context replays. No intentional divergence is selected.

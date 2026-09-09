@@ -25,8 +25,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Active ownership
 
-- Runtime: inc/dec, compound operations and remaining numeric dispatch, then arrays/foreach.
-- Compiler: update descriptors and ordinary-array omission phase repair, then declarations/frames.
+- Runtime: compound operations and remaining numeric dispatch, then arrays/foreach.
+- Compiler: compound descriptors and ordinary-array omission repair, then declarations/frames.
 - Reviewer: independent gates, discrepancy history, inventory, concise docs and progress.
 - Stage owned files, commit reviewed increments, never push. Save watched bytes and run evidence/inventory preflight before long campaigns.
 
@@ -34,92 +34,77 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 [compiler handoff](docs/semantics/COMPILER-HANDOFF.md) and
 [reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) retain interfaces and next gates.
 
-## Latest accepted checkpoints
+## Latest accepted checkpoint
 
-Computed-write correction `84d70299`/reports `fa691044` fixes an admitted
-reference-history regression. [Independent review](coverage/semantics/wrapper-dynamic-write-review.json)
-resolves all 28 retained originals (12 mismatches/16 controls), adds 12 timing/COW
-sources, and passes 79 prior wrapper sources, 49 state checks and ownership
-617+96/5,434. Canonical 30-source/505-assertion and selected 30-source/25-negative
-gates pass on `055e533c`; full source refresh shares the following inc/dec gate.
+Inc/dec code `7d5718fb`, reports `5b24a5f8` and
+[independent review](coverage/semantics/incdec-review.json) pass **1,484 exact
+sources +25 outcome negatives** on `d399263a`. The raw audit verifies every
+ordered catalog ID, original byte string/hash, stdout/stderr/status and retained
+regression binding. This refresh includes the genuine-list and computed-write
+prerequisites; earlier campaigns remain historical fingerprints.
 
-The inventory has **169 constructors and 306 runtime obligations**. Only
-[oracle selection/identity](coverage/semantics/oracle-pin-review.json) closes;
-no constructor or PHP semantic family closes. Closure governance `ffdc131d`
-requires exact original-source/raw-byte bindings, independent review and current
-fingerprints. `--complete` must reject unfinished or stale entries.
+Independent validation adds 339 source observations (331 distinct byte strings),
+71 context replays/994 assertions and eight dense replays/4,152 assertions at every
+budget 0–100. Actual replay-loaded semantic bytes are separately bound to identical
+production files, preserving original fingerprints. Canonical helpers pass 154
+runtime programs/2,226 assertions, 108 compiler lints/32 access paths/eight emission
+lines/12 context checks, and broad compiler 1,526 lints/15 emission observations.
+Origins 25/333, bridge 15/148, ownership 617+96/5,434 and prior wrapper helpers pass.
 
-Historical reference-wrapper correction `3585707a` and reports `eebf79e9` passed
-**1,163 exact sources +25 outcome negatives** on `1f71f10d`.
-[Independent review](coverage/semantics/reference-wrapper-review.json) verifies
-79 public sources, 72 replay programs/1,288 assertions and 45 additional state
-checks. All eleven retained FETCH/final-write/UNSET originals remain unchanged
-and integrated; five prior mismatches now agree. Singleton wrapper history adds
-no roots, COW/union copies can unwrap independently, and intermediate FETCH/UNSET
-warnings remain distinct from final dimension mutation. No divergence was added.
+Four updates now use captured RW locations and copied pre/post results for the
+current six values and variable/dimension/append lvalues. Direct global `$this`
+fetch is eager; computed reads and updates follow their distinct name protocols.
+Direct rebinding/final unset reject statically. Computed root diagnostics use the
+stored root line; direct CV dimensions retain their containing opcode line.
+All seven root-line originals, three prepass originals and eight callable-line
+originals are unchanged and integrated. Compound operators and object contexts
+are not inferred from this milestone.
 
-That historical closure includes origins, compiler bridge and ownership gates.
-[Comparison review](coverage/semantics/comparison-review.json) retains `0e065cc6`:
-38 independent sources, 34 compiler alternatives and six dense replays/4,974 checks.
-Its overflow and phase originals remain unchanged and source-integrated.
+Evidence/inventory preflight ran before long campaigns and independently passes
+15 identity, three path and 17 closure negatives, plus nine ignored-log changes.
+New helpers embed source literals; they consume no new archive dependencies.
+The inventory has **169 constructors and 306 runtime obligations**. Four update
+constructors become partial; only [oracle identity](coverage/semantics/oracle-pin-review.json)
+closes. No constructor or semantic family closes. Governance `ffdc131d` requires
+original-source evidence, independent review and current fingerprints; `--complete`
+must reject unfinished or stale entries.
 
-First-hole metadata `87341500` is independently accepted in `79951ad4`:
-31 author profiles/409 checks, 20 additional profiles/140 checks, and 12 exact
-original line witnesses. Nested unpack (`d4706937`) and original array kind
-(`09f33419`) remain reviewed prerequisites. All 16 genuine-list and six ordinary
-array-hole [phase originals](coverage/semantics/frontend-phase-originals-review.json)
-are independently repeated. Genuine-list conversion `5c756e5e` now passes 20 exact
-skipped sources +25 negatives, 32 checked/printer profiles and independent review;
-14 reached originals remain explicitly Unsupported. First-hole compiler consumption
-and ordinary-array omission repair remain pending. Callable invocation metadata
-`c6a7d67d` passes [independent review](coverage/semantics/callable-line-review.json):
-eight old-AST originals, 35 canonical profiles/477 checks, 24 additional profiles
-and 24 native error-line witnesses. Its semantic consumer remains a separate gate.
+## Retained corrections and interfaces
 
-## Retained contracts
-
-- [Truth](coverage/semantics/truth-review.json) `e7dac829`/`682bcba0` preserves all 63 phase/copy/grouping originals. Ordinary ternary copies selected values; raw prepass redirects can preserve delayed operands.
-- [Control](coverage/semantics/control-review.json) `d87f3f9f` covers conditionals, while/do/for and literal-depth jumps, with 67 independent sources and dense resumption. Exceptions, switch/goto, foreach and lifecycle remain pending.
-- [Read](coverage/semantics/dimension-read-review.json), [write](coverage/semantics/dimension-write-review.json) and [traversal retirement](coverage/semantics/traversal-temporary-review.json) retain scalar/array/string lvalues, delayed reads, captured ownership and reference/compiler errors. Production unchecked source traversal is retired.
-- [Compiler](docs/semantics/SOURCE-COMPILER.md), [constant context](docs/semantics/CONSTANT-CONTEXT.md), [pools](docs/semantics/COMPILED-POOLS.md) and [namespace review](coverage/semantics/namespace-constants-review.json) distinguish structural origins, partial FACTS, ordinary values, executable ACCESS and redirects. Only actual compiled reads consume pooled values; distinct NaN occurrences retain distinct array identity.
-- [Numeric](docs/semantics/NUMERICS.md), [static](docs/semantics/STATIC.md) and [linking handoff](docs/semantics/LINKING-HANDOFF.md) retain reviewed pure helpers; source contexts, declarations and frames remain partial.
-- **146 independent oracle targets; 86 integrated**. Oracle-only and edited-helper evidence establishes no additional source runtime coverage.
+- Wrapper history `3585707a` repaired five FETCH/UNSET differences but accidentally marked ordinary computed-name writes. Correction `84d70299`, reports `fa691044`, review `24c681d7` separates initialized writable fetch from actual reference acquisition. All seven callers were audited; all 28 retained originals (12 mismatches/16 controls) now agree. Independent correction gates add 12 source controls, 79 prior wrapper sources and 49 state checks. Current full validation refreshes its canonical cases.
+- [Wrapper contract](docs/semantics/REFERENCE-WRAPPERS.md) preserves singleton history without extra roots. COW/union may unwrap copied aliases independently; generic FETCH/intermediate UNSET warnings differ from final dimension mutation. Source collection remains pending.
+- [Comparison](coverage/semantics/comparison-review.json) `0e065cc6` retains overflow and phase originals; [truth](coverage/semantics/truth-review.json) `e7dac829`/`682bcba0` retains all 63 phase/copy/grouping witnesses. Ordinary ternary copies selected values; raw prepass redirects may preserve delayed operands.
+- [Control](coverage/semantics/control-review.json) `d87f3f9f` covers conditionals, while/do/for and literal-depth jumps. Checked source occurrences, executable ACCESS, partial FACTS, permanent POOLS and held operands remain separate; actual compiled reads alone consume pooled values. Exceptions, foreach and unwinding remain open.
+- Destructuring prerequisites preserve unpack (`d4706937`), original array kind (`09f33419`) and first-hole token line (`87341500`). Genuine-list conversion `5c756e5e`/review `861020db` admits 20 skipped sources, while 14 reached originals remain Unsupported. First-hole compiler consumption and ordinary Array_ omissions remain pending.
+- Callable opening-token metadata `c6a7d67d`/review `1d32e9be` preserves eight old-AST witnesses, including identical trees with different native lines. Inc/dec now consumes it for rejected dynamic-call targets. Ordinary call execution remains pending.
+- [Numeric](docs/semantics/NUMERICS.md), [static](docs/semantics/STATIC.md), [compiler](docs/semantics/SOURCE-COMPILER.md) and linking handoffs retain reviewed helpers and explicit activation limits. **146 independent oracle targets; 86 integrated**; helper-only evidence closes no source family.
 
 ## Next gates and decisions
 
-Pair four inc/dec forms with compiler PPRW access, then compound lvalues and the
-remaining numeric/string operations. The private update draft is not
-admitted; independent probes retained two missing array-prepass barriers and a control.
-The corrected private draft passes 140 author programs/2,030 assertions, including
-top-level `$this` contexts; independent acceptance remains pending.
-Preserve acquisition timing, copied pre/post results, error lines,
-append legality and held locations. Coalescing assignment needs a separate quiet
-read and memoized write path.
+Pair twelve compound assignments with checked PPRW/PFSTOP order, captured targets,
+delayed CV RHS reads, array `+=` and exact diagnostics. The rebased private prototype
+passes 81 author originals/1,204 assertions, with additional timing controls; it
+still needs independent and dedicated compiler gates. Remaining numeric/byte/power
+operators, casts and literal-concat variable-name classification are separate
+source work. Computed plain-write/reference/unset environment-name protocols remain
+prior explicit boundaries. `??=` requires quiet reads and memoized writes.
 
-Genuine-list frontend conversion is reviewed as a compatible prerequisite; its
-full source refresh shares the upcoming inc/dec gate. Preserve reached-target
-errors as pending rather than counting Unsupported as agreement.
-Ordinary Array_ omissions should use nullable items with required first-omission
-context; the engine stores null holes and uses prior-element/compiler lines.
-No ArrayHole constructor is justified by current evidence. Gate checked schema,
-mechanical consumer remapping, printer and exact compiler visits together.
+Ordinary Array_ omissions should use nullable items and exact first-omission
+context: Zend stores null entries and reports prior-element/compiler lines. No new
+ArrayHole node is justified. Independently repeat the 16 fresh line originals,
+then gate checked schema, deterministic consumer remapping, printer and exact
+compiler visits together. Preserve skipped branches and original hole indices.
 
-Then pair unpack/destructuring compile traversal with runtime copying/references,
-keys and errors. Foreach requires persistent bucket/cursor identities and mutation
-ownership. Calls, classes/objects, modern properties, dynamic sources, callbacks
-and resumable lifetime remain open. CORE's intrinsic/environment boundary is fixed;
-ordinary-library exclusions cannot discharge unfinished core obligations.
+Then pair reached destructuring/unpack traversal with runtime keys, copies,
+references and errors. Foreach requires persistent bucket/cursor identities and
+mutation ownership. Calls/frames, linking/objects, modern properties, dynamic
+sources, callbacks and resumable lifetime remain unfinished. The intrinsic versus
+ordinary-library boundary in CORE cannot discharge unfinished core obligations.
 
-[Discrepancies](docs/semantics/DISCREPANCIES.md) retain raw failures and separate
-resolutions. Namespace-relative `static` remains the sole intentional divergence,
-with source activation evidence pending. Other observed irregularities follow the
-pin, including numeric boundary scanning and singleton wrapper diagnostics.
-
-The [30,980-record syntax audit](coverage/frontend-syntax-repair.json) is historical
-after metadata changes: 30,671 pass, 254 parser rejections, 41 classified compile
-phase differences, six redirects and eight non-source records. Final full syntax
-validation and a fresh offline rebuild remain required. Copied executables alone
-establish no portability claim.
-
-Unsupported, crashes, timeouts and interrupted runs never count as passes.
-Finish and independently review every core obligation before closing the project.
+[Discrepancies](docs/semantics/DISCREPANCIES.md) preserve raw failures separately
+from resolutions. Namespace-relative `static` remains the sole intentional
+divergence, with source activation evidence pending; no new divergence was selected.
+The 30,980-record syntax audit is historical after metadata changes. Final complete
+syntax validation and a fresh offline rebuild remain required; copied executables
+alone establish no portability claim. Unsupported, crashes, timeouts and interrupted
+runs never count as passes. Finish every core obligation before closing the project.
