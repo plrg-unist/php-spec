@@ -3,8 +3,9 @@
 This handoff continues the complete-core task. First calls are a reviewed increment,
 not a completed call family or full-core closure. Read AGENTS.md, the php/php-spec/
 p4-spectec skills, PLAN.md, PROGRESS.md, SOURCE-CALLS.md, and the current reviewer and
-compiler handoffs. Root orchestrates; compiler5 owns compiler work; review8 remains
-independent. Never push. Use the sole pinned PHP8.5.10 NTS64 oracle and actual pure
+compiler handoffs. Root orchestrates; runtime6 owns the positional-reference
+successor, compiler5 owns compiler work, and review9 is independent. Runtime5 and
+review8 own the historical firstcalls evidence below. Never push. Use the sole pinned PHP8.5.10 NTS64 oracle and actual pure
 SpecTec rules. Preserve original failures before repairs, including complete states,
 source bytes, primitive profiles and actual executable inputs.
 

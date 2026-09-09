@@ -1,7 +1,9 @@
 # First source calls: independent review continuation
 
 Read AGENTS.md, PLAN.md, PROGRESS.md, CORE.md and the php/php-spec/p4-spectec
-skills before work. Root orchestrates; compiler/runtime/review work is delegated.
+skills before work. Root orchestrates; runtime6/compiler5 implement the
+positional-reference successor and review9 reviews independently. Runtime5/review8
+identities below retain their historical firstcalls scope.
 Never push. Preserve exact failures before repair, keep Unsupported/timeouts/
 harness failures separate from agreement, and use small coordinated Git commits.
 Only pinned PHP8.5.10 CLI NTS64 is the oracle; execution remains pure SpecTec.
