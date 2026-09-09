@@ -1478,16 +1478,16 @@ class Php8 extends \PhpParser\ParserAbstract
                  $self->semValue = array($self->semStack[$stackPos-(1-1)]);
             },
             138 => static function ($self, $stackPos) {
-                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(1-1)], null, Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); $self->checkUseUse($self->semValue, $stackPos-(1-1));
+                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(1-1)], null, Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos]));
             },
             139 => static function ($self, $stackPos) {
-                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos])); $self->checkUseUse($self->semValue, $stackPos-(3-3));
+                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
             },
             140 => static function ($self, $stackPos) {
-                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(1-1)], null, Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); $self->checkUseUse($self->semValue, $stackPos-(1-1));
+                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(1-1)], null, Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos]));
             },
             141 => static function ($self, $stackPos) {
-                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos])); $self->checkUseUse($self->semValue, $stackPos-(3-3));
+                 $self->semValue = new Node\UseItem($self->semStack[$stackPos-(3-1)], $self->semStack[$stackPos-(3-3)], Stmt\Use_::TYPE_UNKNOWN, $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
             },
             142 => static function ($self, $stackPos) {
                  $self->semValue = $self->semStack[$stackPos-(1-1)]; $self->semValue->type = Stmt\Use_::TYPE_NORMAL;

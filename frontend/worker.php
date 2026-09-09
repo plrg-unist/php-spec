@@ -118,6 +118,16 @@ while (($line = fgets(STDIN)) !== false) {
             case 'parse':
                 try { $ast = parseWithEncoding($parser, bytes($request->source)); checkTargetSyntax($ast, $parser->getTokens()); }
                 catch (PhpParser\Error $error) { $result = ['accepted' => false, 'category' => 'parser_rejection', 'message' => base64_encode($error->getMessage())]; break; }
+                // Zend's anonymous namespace AST inherits its opening-brace line.
+                $tokens = $parser->getTokens();
+                foreach ($ast as $node) {
+                    if ($node instanceof PhpParser\Node\Stmt\Namespace_ && $node->name === null) {
+                        $index = $node->getStartTokenPos() + 1;
+                        while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                        if ($tokens[$index]->text !== '{') throw new RuntimeException('Anonymous namespace brace token is missing');
+                        $node->setAttribute('namespaceBraceLine', $tokens[$index]->line);
+                    }
+                }
                 $transport = ['version' => 1, 'program' => encode($ast)];
                 $encoding = sourceEncoding(bytes($request->source), $parser->getTokens(), $ast);
                 if ($encoding !== null) $transport['encoding'] = $encoding;

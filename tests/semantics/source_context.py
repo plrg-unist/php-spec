@@ -99,6 +99,7 @@ def main():
             ('<?php use '+kind+'\nA\\\n{B as X,\nC as X};').encode(),
         ])
     source_cases.append(b'<?php namespace\nN\n{ use\nA\\{B as X,\nC as X}; }')
+    source_cases += [b'<?php namespace\n{ use A; }', b'<?php namespace\n/* {\n } */\n{ use A; }', b'<?php namespace\r\n{ use A; }', b'<?php namespace { use A; } namespace\n{ use A; }']
     barriers=[
         b'<?php use A; function f($a,$a) {} use B;',
         b'<?php namespace N; use A\\B as Alias; function f(): Alias {} use C;',
@@ -119,18 +120,13 @@ def main():
                 assert run.returncode in [0,255],(source,run)
                 parsed=frontend.request({'op':'parse','source':base64.b64encode(source).decode()})
                 if not parsed['accepted']:
-                    match=re.fullmatch(rb'<\?php (?:namespace (?:Ns|ns); )?use (function |const )?A as (Self|Parent|Static|callable|array);',source)
+                    match=re.fullmatch(rb'<\?php (?:namespace (?:Ns|ns); )?use (function |const )?A as (Static|callable|array);',source)
                     assert match,(source,parsed)
                     kind,alias=match.groups();alias=alias.decode()
                     native=frontend.request({'op':'oracle','source':base64.b64encode(source).decode()})
-                    if alias in ['Self','Parent']:
-                        message=f"Cannot use A as {alias} because '{alias}' is a special class name on line 1"
-                        assert native['accepted'] and run.returncode==(0 if kind else 255)
-                        classification='frontend-acceptance-gap' if kind else 'frontend-compile-restriction'
-                    else:
-                        message=f'Syntax error, unexpected T_{alias.upper()}, expecting T_STRING on line 1'
-                        assert not native['accepted'] and run.returncode==255
-                        classification='parser-rejection'
+                    message=f'Syntax error, unexpected T_{alias.upper()}, expecting T_STRING on line 1'
+                    assert not native['accepted'] and run.returncode==255
+                    classification='parser-rejection'
                     assert base64.b64decode(parsed['message']).decode()==message,(source,parsed)
                     rejected.append({'source_base64':base64.b64encode(source).decode(),'classification':classification,'frontend':parsed,'native_parser':native,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
                     continue
@@ -156,21 +152,6 @@ def main():
                 barrier_records.append({'id':'barrier-'+str(i),'source_base64':base64.b64encode(source).decode(),'path':path,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
                 expected='(PCOCCURRENCE '+occurrences.path_term(path)+' '+occurrences.node_term(node)+')'
                 fixtures.append(f'dec $barrier{i}() : bool\ndef $barrier{i}() = true\n  -- if plresult = $plstart(1000, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if $pltestwork(plresult) = '+expected+'\n  -- if $pladvance($plteststate(plresult)) = PLUNSUPPORTED "pending statement compilation must supply its final compiler line"\n')
-            for i,record in enumerate(rejected):
-                if record['classification']=='parser-rejection': continue
-                source=base64.b64decode(record['source_base64'])
-                alias=re.search(rb'as (Self|Parent);$',source).group(1)
-                seed_source=source[:-len(alias)-1]+b'Alias;'
-                parsed=frontend.request({'op':'parse','source':base64.b64encode(seed_source).decode()});assert parsed['accepted'],parsed
-                ast=copy.deepcopy(parsed['ast'])
-                nodes=ast['program'][0]['fields'][1] if ast['program'][0]['node']=='Stmt_Namespace' else ast['program']
-                nodes[0]['fields'][1][0]['fields'][2]['fields'][0]={'bytes':base64.b64encode(alias).decode()}
-                checked=adapter.request({'op':'check','ast':ast,'fixture':True})
-                file.write_bytes(source)
-                run=subprocess.run([str(types.PHP),'-n',*types.FLAGS,'-l',str(file)],capture_output=True,env=types.ENV,timeout=10)
-                fixtures.append(f'dec $restricted{i}() : bool\ndef $restricted{i}() = true\n  -- if plresult = $plstart(2000, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if $pltestok(plresult) = '+str(run.returncode==0).lower()+'\n  -- if $pltestevents(plresult) = '+expected_events(events(run),file)+'\n')
-                record['checked_edited_helper']=True
-                record['edited_ast_sha256']=hashlib.sha256(json.dumps(checked['ast'],sort_keys=True).encode()).hexdigest()
             descriptor_cases=[
                 (b'<?php namespace Ns; use A\\{B as Alias,function f as FUN,const X as CoNs}; function g(): Alias {}', r'Ns', [('alias',r'A\B')], [('fun',r'A\f')], [('CoNs',r'A\X')]),
                 (b'<?php namespace Ns; use A\\B as X; namespace Ns; use C\\D as X;', 'Ns', [('x',r'C\D')], [], []),
@@ -248,7 +229,7 @@ def main():
                 assertions+='  -- if $pltestok(plresult_final) = '+str(run.returncode==0).lower()+'\n  -- if $pltestevents(plresult_final) = '+expected_events(events(run),file)+'\n'
                 fixtures.append(f'dec $resume{i}() : bool\ndef $resume{i}() = true\n'+assertions)
                 resume_records.append({'id':'resume-'+str(i),'scope':'checked edited namespace shape and/or explicitly supplied successful ordinary compiler result; no body compilation claimed','source_base64':base64.b64encode(source).decode(),'frontend':frontend.request({'op':'parse','source':base64.b64encode(source).decode()}),'native_parser':frontend.request({'op':'oracle','source':base64.b64encode(source).decode()}),'supplied_compiled':resume,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
-            # Anonymous namespace AST metadata does not generally retain the opening brace line.
+            # Source-derived anonymous brace metadata supplies the compiler line.
             source=b'<?php namespace N; namespace\n{\n}'
             ast=parse_ast(b'<?php namespace N;')
             anonymous=parse_ast(b'<?php namespace\n{\n}')['program'][0]
@@ -257,14 +238,32 @@ def main():
             file.write_bytes(source)
             run=subprocess.run([str(types.PHP),'-n',*types.FLAGS,'-l',str(file)],capture_output=True,env=types.ENV,timeout=10)
             assert run.returncode==255
-            assertions='  -- if $plstart(8000, '+checked['fixture']+', '+types.byte_expr(str(file))+') = PLUNSUPPORTED "missing namespace compiler line (anonymous opening brace requires source context)"\n'
-            prefix=adapter.request({'op':'check','ast':parse_ast(b'<?php namespace N;'),'fixture':True})
-            assertions+='  -- if plstate = $plteststate($plstart(8000, '+prefix['fixture']+', '+types.byte_expr(str(file))+'))\n'
-            location='{ UNIT 8000, PATH ([(PCINDEX 1)]), FILE ('+types.byte_expr(str(file))+'), LINE 2 }'
-            assertions+='  -- if plresult = $plnamespace(plstate, ([(PCINDEX 1)]), ABSENT, SEQUENCE eps, 2, '+location+')\n'
+            assertions='  -- if plresult = $plstart(8000, '+checked['fixture']+', '+types.byte_expr(str(file))+')\n'
             assertions+='  -- if $pltestevents(plresult) = '+expected_events(events(run),file)+'\n'
+            # The brace metadata is retained through checking and actively controls diagnostics.
+            assert anonymous['meta']['namespaceBraceLine']=={'int':'2'}
+            assertions+='  -- if $plcompileline('+occurrences.node_term(anonymous)+') = 2\n'
+            changed=copy.deepcopy(ast);changed['program'][1]['meta']['namespaceBraceLine']={'int':'3'}
+            checked_changed=adapter.request({'op':'check','ast':changed,'fixture':True})
+            assertions+='  -- if $pltestevents($plstart(8000, '+checked_changed['fixture']+', '+types.byte_expr(str(file))+')) = '+expected_events([(level,message,3) for level,message,line in events(run)],file)+'\n'
+            missing=copy.deepcopy(ast);del missing['program'][1]['meta']['namespaceBraceLine']
+            checked_missing=adapter.request({'op':'check','ast':missing,'fixture':True})
+            assertions+='  -- if $plstart(8000, '+checked_missing['fixture']+', '+types.byte_expr(str(file))+') = PLUNSUPPORTED "missing namespace compiler line (anonymous opening brace requires source context)"\n'
+            # An absent one-line brace can be inferred; explicit invalid metadata cannot.
+            one_line=copy.deepcopy(ast)
+            one_line['program'][1]=parse_ast(b'<?php namespace {}')['program'][0]
+            for value,expected in [(None,'PLERROR'),('0','PLUNSUPPORTED'),('-1','PLUNSUPPORTED')]:
+                probe=copy.deepcopy(one_line)
+                if value is None: del probe['program'][1]['meta']['namespaceBraceLine']
+                else: probe['program'][1]['meta']['namespaceBraceLine']={'int':value}
+                checked_probe=adapter.request({'op':'check','ast':probe,'fixture':True})
+                outcome='$plstart(8000, '+checked_probe['fixture']+', '+types.byte_expr(str(file))+')'
+                if expected=='PLUNSUPPORTED':
+                    assertions+='  -- if '+outcome+' = PLUNSUPPORTED "missing namespace compiler line (anonymous opening brace requires source context)"\n'
+                else:
+                    assertions+='  -- if '+outcome+' = PLERROR pldiagnostic_one*\n'
             fixtures.append('dec $anonymousline() : bool\ndef $anonymousline() = true\n'+assertions)
-            resume_records.append({'id':'anonymous-opening-brace-line','scope':'source-context missing compiler anchor; explicit helper line2 supplied separately','source_base64':base64.b64encode(source).decode(),'source_result':'Unsupported missing namespace compiler line','explicit_helper_line':2,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+            resume_records.append({'id':'anonymous-opening-brace-line','scope':'source-derived checked brace metadata consumed in edited namespace sequence; mutation changes compiler event line; missing edited metadata is Unsupported','source_base64':base64.b64encode(source).decode(),'brace_line':2,'mutated_line':3,'one_line_missing_field':'diagnostic line inferred','one_line_explicit_nonpositive':['0','-1'],'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
             seed=parse_ast(b'<?php use A;')
             negative_asts=[]
             missing=copy.deepcopy(seed);missing['program'][0]['meta']={};missing['program'][0]['fields'][1][0]['fields'][1]['meta']={};negative_asts.append((missing,'missing context metadata or edited namespace/import shape'))

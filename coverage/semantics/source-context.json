@@ -207,8 +207,8 @@
   ],
   "fingerprint": {
     "closure": {
-      "sha256": "7cfb4708321888e5b26942766754f54e1ce16c0eac1a8c182737cfefa4880486",
-      "files": 719,
+      "sha256": "3c76c444af66d0405c610341d2f206be2a14479075e8dff4af45b3b6515007da",
+      "files": 737,
       "scope": [
         "frontend",
         "adapter",
@@ -225,12 +225,12 @@
       ]
     },
     "direct": {
-      "spec/php.watsup": "2e186460cd8e199406f13b6e0ff55861e5dd453bc6c0f816338f1a52637db85f",
+      "spec/php.watsup": "9af8f0497cc9fd954b22f7c396907a1323a9a38915aadd2aaba7cb1af0f7c75a",
       "spec/semantics/11-source-occurrences.watsup": "dee3b76b313751b631c8ad48ea06e2a25e1b375b167262db4f0d85a879dc025f",
       "spec/semantics/10-bytes.watsup": "7a01fb92f9f93c0508dbc99579e8e3e44e2637afc115ded1a2390e069f1e2a1b",
       "spec/semantics/16-static-types.watsup": "f5eaf8d1e2d0cceabe9159a098582e78e5353df9ac735f9d5e8ac4900e258f19",
-      "spec/semantics/21-source-context.watsup": "886d71cfd127e6c227050dcedaff1155cedc7c2508983b1c8235e22dbe7d3c80",
-      "tests/semantics/source_context.py": "40d0783ce3bdb4b31aafae86b42bfbc84bce4706a5c0af41ac8751b08dd9403d",
+      "spec/semantics/21-source-context.watsup": "c4f52e5e6921b4c3020043d365d5b7bf3b394fba2d3a2f5beda5d62296d4169d",
+      "tests/semantics/source_context.py": "ae27b4001bcd8216060cf8db227cf82eb0f7694c63a756504317553e4ab2e6f0",
       "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
       ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
       "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
@@ -238,7 +238,7 @@
       "vendor/php-src/Zend/zend_language_parser.y": "f108f2c2ff4c98c68b6478e7fbdebc16d8afb8bbbc3ae6079e5b285b448dac0c"
     }
   },
-  "prefix_comparisons": 211,
+  "prefix_comparisons": 233,
   "barrier_cases": [
     {
       "id": "barrier-0",
@@ -347,46 +347,6 @@
   ],
   "frontend_rejections": [
     {
-      "source_base64": "PD9waHAgdXNlIEEgYXMgU2VsZjs=",
-      "classification": "frontend-compile-restriction",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 255,
-      "oracle_stderr": "Fatal error: Cannot use A as Self because 'Self' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "c9aca3abf09e7932b455d08e320ccf315e30bb91656b2e7c14a93908b115b980"
-    },
-    {
-      "source_base64": "PD9waHAgdXNlIEEgYXMgUGFyZW50Ow==",
-      "classification": "frontend-compile-restriction",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 255,
-      "oracle_stderr": "Fatal error: Cannot use A as Parent because 'Parent' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "0cd62d8031ef1e9b1d16fa48b9788d557b08b01210d94348e16dece672878da2"
-    },
-    {
       "source_base64": "PD9waHAgdXNlIEEgYXMgU3RhdGljOw==",
       "classification": "parser-rejection",
       "frontend": {
@@ -445,46 +405,6 @@
       },
       "oracle_exit": 255,
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
-    },
-    {
-      "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uIEEgYXMgU2VsZjs=",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "0c1ab95b8a2fca8415f271b705b033845905617092dc83443c1bf0e1add55851"
-    },
-    {
-      "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uIEEgYXMgUGFyZW50Ow==",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "3b9806f903840f9a133017b4583b7103e06c782bd00119dfa1747d1aa5aa3670"
     },
     {
       "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uIEEgYXMgU3RhdGljOw==",
@@ -547,46 +467,6 @@
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
     },
     {
-      "source_base64": "PD9waHAgdXNlIGNvbnN0IEEgYXMgU2VsZjs=",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "ccde56054564bb9b4abb2439a97bed0bdb1bc53e6b0dcad45f657cea3c0c6a1b"
-    },
-    {
-      "source_base64": "PD9waHAgdXNlIGNvbnN0IEEgYXMgUGFyZW50Ow==",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "4666e8d74c08be4fabb5b33a72cbc7a007aac1ff477659381e00fcd78c2268cd"
-    },
-    {
       "source_base64": "PD9waHAgdXNlIGNvbnN0IEEgYXMgU3RhdGljOw==",
       "classification": "parser-rejection",
       "frontend": {
@@ -645,46 +525,6 @@
       },
       "oracle_exit": 255,
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgQSBhcyBTZWxmOw==",
-      "classification": "frontend-compile-restriction",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 255,
-      "oracle_stderr": "Fatal error: Cannot use A as Self because 'Self' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "7a3ee2d0f4c6e3cf3b0b0cd7ce6bb2a3a01b28cbb25649252d782a0faa715ae6"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgQSBhcyBQYXJlbnQ7",
-      "classification": "frontend-compile-restriction",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 255,
-      "oracle_stderr": "Fatal error: Cannot use A as Parent because 'Parent' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "db6c4669b79f49bf0d7511ffa5d2c7a347daec19af71c02afe691e2492a53d19"
     },
     {
       "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgQSBhcyBTdGF0aWM7",
@@ -747,46 +587,6 @@
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
     },
     {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgZnVuY3Rpb24gQSBhcyBTZWxmOw==",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "7a14b312a2ce22298e8e3c8590e8407a4c8c11cf67d1c3d2b02f5075f1a65f9a"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgZnVuY3Rpb24gQSBhcyBQYXJlbnQ7",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "11db834984ce2750a3292ec16c25914976dd60cc26585af3bee4c5708eccd0c6"
-    },
-    {
       "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgZnVuY3Rpb24gQSBhcyBTdGF0aWM7",
       "classification": "parser-rejection",
       "frontend": {
@@ -845,46 +645,6 @@
       },
       "oracle_exit": 255,
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgY29uc3QgQSBhcyBTZWxmOw==",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "788122beb03ae9805d63cf0acab582b803a6323ce7fefd153e87ba11f5c1da91"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgY29uc3QgQSBhcyBQYXJlbnQ7",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "40b9cc086a056452a05a4d510c828c87e40491d32c36ee25a99e244abb657227"
     },
     {
       "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgY29uc3QgQSBhcyBTdGF0aWM7",
@@ -947,46 +707,6 @@
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
     },
     {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgQSBhcyBTZWxmOw==",
-      "classification": "frontend-compile-restriction",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 255,
-      "oracle_stderr": "Fatal error: Cannot use A as Self because 'Self' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "219345082ab3a1719e4bbf78cb52eb90da74e730439b71e4292332fd26be876c"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgQSBhcyBQYXJlbnQ7",
-      "classification": "frontend-compile-restriction",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 255,
-      "oracle_stderr": "Fatal error: Cannot use A as Parent because 'Parent' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "dcd26162bbcd88fa41d28f5f90da0406f4ea2c923ff0c5dac6a9745930c661c8"
-    },
-    {
       "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgQSBhcyBTdGF0aWM7",
       "classification": "parser-rejection",
       "frontend": {
@@ -1047,46 +767,6 @@
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
     },
     {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgZnVuY3Rpb24gQSBhcyBTZWxmOw==",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "49736a1b20725de299442104def650c1bb44c996918394472f3d85fc5c759403"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgZnVuY3Rpb24gQSBhcyBQYXJlbnQ7",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "7f36e070ceeacb1cd9ed42d7500bb9b5c77ed1681ba61f680b0951e2cb461439"
-    },
-    {
       "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgZnVuY3Rpb24gQSBhcyBTdGF0aWM7",
       "classification": "parser-rejection",
       "frontend": {
@@ -1145,46 +825,6 @@
       },
       "oracle_exit": 255,
       "oracle_stderr": "Parse error: syntax error, unexpected token \"array\", expecting identifier in input.php on line 1\n"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgY29uc3QgQSBhcyBTZWxmOw==",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFNlbGYgYmVjYXVzZSAnU2VsZicgaXMgYSBzcGVjaWFsIGNsYXNzIG5hbWUgb24gbGluZSAx"
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "ad80de4a5df7c689c18dcd5b2d56e3a754257d36c0e2f70ed59999cefde39ed8"
-    },
-    {
-      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgY29uc3QgQSBhcyBQYXJlbnQ7",
-      "classification": "frontend-acceptance-gap",
-      "frontend": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": false,
-        "category": "parser_rejection",
-        "message": "Q2Fubm90IHVzZSBBIGFzIFBhcmVudCBiZWNhdXNlICdQYXJlbnQnIGlzIGEgc3BlY2lhbCBjbGFzcyBuYW1lIG9uIGxpbmUgMQ=="
-      },
-      "native_parser": {
-        "ok": true,
-        "diagnostics": [],
-        "accepted": true
-      },
-      "oracle_exit": 0,
-      "oracle_stderr": "",
-      "checked_edited_helper": true,
-      "edited_ast_sha256": "5c8908ae245cef0dcdf401de2a6df2e02a58570d864c075e6ba93f5cc42beadb"
     },
     {
       "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgY29uc3QgQSBhcyBTdGF0aWM7",
@@ -2238,10 +1878,15 @@
     },
     {
       "id": "anonymous-opening-brace-line",
-      "scope": "source-context missing compiler anchor; explicit helper line2 supplied separately",
+      "scope": "source-derived checked brace metadata consumed in edited namespace sequence; mutation changes compiler event line; missing edited metadata is Unsupported",
       "source_base64": "PD9waHAgbmFtZXNwYWNlIE47IG5hbWVzcGFjZQp7Cn0=",
-      "source_result": "Unsupported missing namespace compiler line",
-      "explicit_helper_line": 2,
+      "brace_line": 2,
+      "mutated_line": 3,
+      "one_line_missing_field": "diagnostic line inferred",
+      "one_line_explicit_nonpositive": [
+        "0",
+        "-1"
+      ],
       "oracle_exit": 255,
       "oracle_stderr": "Fatal error: Cannot mix bracketed namespace declarations with unbracketed namespace declarations in input.php on line 2\nStack trace:\n#0 {main}\n"
     }
@@ -2451,6 +2096,38 @@
       "oracle_exit": 255,
       "oracle_stdout": "Errors parsing input.php\n",
       "oracle_stderr": "Fatal error: Cannot use A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-12",
+      "source_base64": "PD9waHAgdXNlIEEgYXMgU2VsZjs=",
+      "source_sha256": "974bcba78c63167d20bd52cb9e92fe54037dfa2f97154863f93dc11139fe5812",
+      "ast_sha256": "dec1ae950d112254bb554f30a00e215c2dbc2fb0782d0d2ccd38abd96b3a9db7",
+      "diagnostics": [
+        [
+          "fatal",
+          "Cannot use A as Self because 'Self' is a special class name",
+          1
+        ]
+      ],
+      "oracle_exit": 255,
+      "oracle_stdout": "Errors parsing input.php\n",
+      "oracle_stderr": "Fatal error: Cannot use A as Self because 'Self' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-13",
+      "source_base64": "PD9waHAgdXNlIEEgYXMgUGFyZW50Ow==",
+      "source_sha256": "e05e4512160f08e344ca4e296894a6bd7a3552dc13a34611c45e2605134a9df8",
+      "ast_sha256": "a56c4da0bfa9015508d38db090519d4edba5d1664a6694bb5c3d6d154c1d719b",
+      "diagnostics": [
+        [
+          "fatal",
+          "Cannot use A as Parent because 'Parent' is a special class name",
+          1
+        ]
+      ],
+      "oracle_exit": 255,
+      "oracle_stdout": "Errors parsing input.php\n",
+      "oracle_stderr": "Fatal error: Cannot use A as Parent because 'Parent' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
       "id": "source-15",
@@ -2762,6 +2439,26 @@
       "oracle_stderr": "Fatal error: Cannot use function A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
+      "id": "source-38",
+      "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uIEEgYXMgU2VsZjs=",
+      "source_sha256": "579c81d52ffd353088c7fa07a69bc74ee125bdcf30768e34317067615625f2e6",
+      "ast_sha256": "fbb5a46ab505562703c645ba9973c7cfe4d40fae679dbfacb99cfd886feca172",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
+      "id": "source-39",
+      "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uIEEgYXMgUGFyZW50Ow==",
+      "source_sha256": "2dbd846de34d642aa33d178d713431ff5107eb7ce9ccde6b7a0d7cc6d1fc500d",
+      "ast_sha256": "a67febd54dbe16ed4ef7d32eb0174ca88566a32c2b959dae22f5ee44fbab979b",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
       "id": "source-41",
       "source_base64": "PD9waHAgdXNlIGZ1bmN0aW9uIEEgYXMgSU5UOw==",
       "source_sha256": "ebfab5630160aa8c37ff6a5bc0a093aefdbd4d487ccf46aea40657a45418998b",
@@ -3023,6 +2720,26 @@
       "oracle_stderr": "Fatal error: Cannot use const A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
+      "id": "source-64",
+      "source_base64": "PD9waHAgdXNlIGNvbnN0IEEgYXMgU2VsZjs=",
+      "source_sha256": "da86e95d6303cff20b28e122b33c7a0308c5be360a89e3b7b68a53ccee849bb2",
+      "ast_sha256": "b0e334483bf25dbdc920fc0ec38e54d7a2f2bbae68265de6c24fa3f2798b093a",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
+      "id": "source-65",
+      "source_base64": "PD9waHAgdXNlIGNvbnN0IEEgYXMgUGFyZW50Ow==",
+      "source_sha256": "489238348364748dd1a7ce1e34c90e2e3db1683d03d258deb8d588edd6fd530e",
+      "ast_sha256": "c1d5e3af47ebb07d3b8fb25f792b1bfe763ff077e2bcba3da1bff7a8e706e935",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
       "id": "source-67",
       "source_base64": "PD9waHAgdXNlIGNvbnN0IEEgYXMgSU5UOw==",
       "source_sha256": "7f1c34a1e9ee360bedbe39d06d7b72bbb1febf876a8b30e5378f8ffdb2aa1040",
@@ -3267,6 +2984,38 @@
       "oracle_exit": 255,
       "oracle_stdout": "Errors parsing input.php\n",
       "oracle_stderr": "Fatal error: Cannot use A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-90",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgQSBhcyBTZWxmOw==",
+      "source_sha256": "a288f20148e7c52d06bfb2d5e8e9d17134d460f561f91a59cd9f7cb5f62be6bb",
+      "ast_sha256": "c632923a0687806455d8c51b318e7685ae043e4518131921d0ee2826ce62c2ae",
+      "diagnostics": [
+        [
+          "fatal",
+          "Cannot use A as Self because 'Self' is a special class name",
+          1
+        ]
+      ],
+      "oracle_exit": 255,
+      "oracle_stdout": "Errors parsing input.php\n",
+      "oracle_stderr": "Fatal error: Cannot use A as Self because 'Self' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-91",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgQSBhcyBQYXJlbnQ7",
+      "source_sha256": "d54769e92acfc1676f40f53f5fd6933abb7f934f660f2956859a44a9bb84613f",
+      "ast_sha256": "a18bf320328dd8a9aab67171e18aaef881b9fb0beebc027c402519f1d77eadfe",
+      "diagnostics": [
+        [
+          "fatal",
+          "Cannot use A as Parent because 'Parent' is a special class name",
+          1
+        ]
+      ],
+      "oracle_exit": 255,
+      "oracle_stdout": "Errors parsing input.php\n",
+      "oracle_stderr": "Fatal error: Cannot use A as Parent because 'Parent' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
       "id": "source-93",
@@ -3551,6 +3300,26 @@
       "oracle_stderr": "Fatal error: Cannot use function A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
+      "id": "source-116",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgZnVuY3Rpb24gQSBhcyBTZWxmOw==",
+      "source_sha256": "c88f0b6487e2e1146d4c918a27768cae8f7e322678936dfa297fad1506bf3106",
+      "ast_sha256": "6f6c968c57060c104ab5723a0bd32495f223fa687664102ca77411a1ab0ba640",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
+      "id": "source-117",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgZnVuY3Rpb24gQSBhcyBQYXJlbnQ7",
+      "source_sha256": "bea614913f2513b0bf7975e59ebdb87fc9acc9dc49ee8f4bafb45b46cf01fe84",
+      "ast_sha256": "a8cb7193d28b012a126af2467cb5951fa3e4f7d8dda541bcd402d4323e4931f3",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
       "id": "source-119",
       "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgZnVuY3Rpb24gQSBhcyBJTlQ7",
       "source_sha256": "a15af474756f79c5886bb69817369258574b84ae11d012de48a4695d57bc4157",
@@ -3783,6 +3552,26 @@
       "oracle_exit": 255,
       "oracle_stdout": "Errors parsing input.php\n",
       "oracle_stderr": "Fatal error: Cannot use const A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-142",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgY29uc3QgQSBhcyBTZWxmOw==",
+      "source_sha256": "8884f9419b6271e5d7acc6487ef6c2204ffad2a646a49d731008d36121363316",
+      "ast_sha256": "ccbbf9a098a1a8a9f7b1b98250d7710600c7f4cdaedb9b8e8ffa20ccb8475c60",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
+      "id": "source-143",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIE5zOyB1c2UgY29uc3QgQSBhcyBQYXJlbnQ7",
+      "source_sha256": "abf83fc3104ced05d07f23f03998b70430eda9071207aafbb8b5aa844838ec06",
+      "ast_sha256": "d34c02d650cae658168c741ac9a79f69855c3f5820e1902f16508012ad3ffea4",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
     },
     {
       "id": "source-145",
@@ -4029,6 +3818,38 @@
       "oracle_exit": 255,
       "oracle_stdout": "Errors parsing input.php\n",
       "oracle_stderr": "Fatal error: Cannot use A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-168",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgQSBhcyBTZWxmOw==",
+      "source_sha256": "5d02af1498c3fb61a4028eda5ab5c7b46d60a896e5eb242ca5bac140da6383a0",
+      "ast_sha256": "4d50591ada10b56a2b48499a6cf7434a1a3be80d593f11955c4eabf3059a6670",
+      "diagnostics": [
+        [
+          "fatal",
+          "Cannot use A as Self because 'Self' is a special class name",
+          1
+        ]
+      ],
+      "oracle_exit": 255,
+      "oracle_stdout": "Errors parsing input.php\n",
+      "oracle_stderr": "Fatal error: Cannot use A as Self because 'Self' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-169",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgQSBhcyBQYXJlbnQ7",
+      "source_sha256": "9816fb7745efc2042d9ac3ad683161dde77132f5087dfb7b2c6479e1e9e392fe",
+      "ast_sha256": "f04b36d785df3831c2e85ce43372a6e08117548bc0959b20ba456e2da59e52bc",
+      "diagnostics": [
+        [
+          "fatal",
+          "Cannot use A as Parent because 'Parent' is a special class name",
+          1
+        ]
+      ],
+      "oracle_exit": 255,
+      "oracle_stdout": "Errors parsing input.php\n",
+      "oracle_stderr": "Fatal error: Cannot use A as Parent because 'Parent' is a special class name in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
       "id": "source-171",
@@ -4313,6 +4134,26 @@
       "oracle_stderr": "Fatal error: Cannot use function A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
+      "id": "source-194",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgZnVuY3Rpb24gQSBhcyBTZWxmOw==",
+      "source_sha256": "92659626a89c0a97d6d0c4daa90ef0dbbb0cf4cd97736c523eb62584ffa2ed9c",
+      "ast_sha256": "834914546e4e746f3c85a98ce7aa11ef79177583fe4c97c844a6b94ca24bace0",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
+      "id": "source-195",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgZnVuY3Rpb24gQSBhcyBQYXJlbnQ7",
+      "source_sha256": "b2445cb8ee9943dd1ce7dfe72f938ede7a682028f8b3ddd934eb39c84e4d5253",
+      "ast_sha256": "13fb96156196abb53af9dc40976fe849f41cb31b5e6b5555132ebe9bb9984bdc",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
       "id": "source-197",
       "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgZnVuY3Rpb24gQSBhcyBJTlQ7",
       "source_sha256": "008ec646f15d1bbf47cebdd4b89e840d797e9d61c6438df535e34926d6a67946",
@@ -4547,6 +4388,26 @@
       "oracle_stderr": "Fatal error: Cannot use const A\\C as X because the name is already in use in input.php on line 1\nStack trace:\n#0 {main}\n"
     },
     {
+      "id": "source-220",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgY29uc3QgQSBhcyBTZWxmOw==",
+      "source_sha256": "6c87636081d29cde3a3b35da4fcb23d842c6995c30caf714fa65ad33c74c166f",
+      "ast_sha256": "150cadfe1403ffe1623d1447a7f5080f1b47757120658b3042e0e99effa85bca",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
+      "id": "source-221",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgY29uc3QgQSBhcyBQYXJlbnQ7",
+      "source_sha256": "ef7b50af549f69b217cc3156e20465f327ca132d32c9d296141a84827137e643",
+      "ast_sha256": "d7fea81429d3ae7d0072708d7ac82c1c4a483d2dc4f183b04a5bb963a6019cd6",
+      "diagnostics": [],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": ""
+    },
+    {
       "id": "source-223",
       "source_base64": "PD9waHAgbmFtZXNwYWNlIG5zOyB1c2UgY29uc3QgQSBhcyBJTlQ7",
       "source_sha256": "ac275f8124ce3ca40e424bf26664bc9bd9080c7242cfdd847c4e902436604488",
@@ -4696,7 +4557,7 @@
       "id": "source-239",
       "source_base64": "PD9waHAgbmFtZXNwYWNlIHsgdXNlIEE7IH0gbmFtZXNwYWNlIE4geyB1c2UgQjsgfSBuYW1lc3BhY2UgeyB1c2UgQzsgfQ==",
       "source_sha256": "7e1320eb428a1f149d23eb88b3d21dec2b31c6896c3d2369b2afcfd61faaffdb",
-      "ast_sha256": "8c2e5b41b6e0f2d74c9d732532452212fcc7db4e70f5e4b48ec08081915dbd15",
+      "ast_sha256": "8cb42c867ed8990a58d4f43c9f674ceaca3f498a93e2a73250f7c9bfde16aed9",
       "diagnostics": [
         [
           "warning",
@@ -5007,6 +4868,75 @@
       "oracle_exit": 255,
       "oracle_stdout": "Errors parsing input.php\n",
       "oracle_stderr": "Fatal error: Cannot use A\\C as X because the name is already in use in input.php on line 4\nStack trace:\n#0 {main}\n"
+    },
+    {
+      "id": "source-256",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlCnsgdXNlIEE7IH0=",
+      "source_sha256": "2150b835c3a252b34a20f62425ec34a98b78e7c61a8115684ebf7f4a6d4acfd3",
+      "ast_sha256": "9ee391ba52086407489a3e20147268b9d9a29f943c9653d7aca7a6915badaf72",
+      "diagnostics": [
+        [
+          "warning",
+          "The use statement with non-compound name 'A' has no effect",
+          2
+        ]
+      ],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": "Warning: The use statement with non-compound name 'A' has no effect in input.php on line 2\n"
+    },
+    {
+      "id": "source-257",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlCi8qIHsKIH0gKi8KeyB1c2UgQTsgfQ==",
+      "source_sha256": "9cbb6b1fe88c27899a8af150d01216634698097db1bda63601937399ae1db86c",
+      "ast_sha256": "5aa3c81aaf041562f068d9136fb770e7a6555239661f9fc3e580bfdf137eabff",
+      "diagnostics": [
+        [
+          "warning",
+          "The use statement with non-compound name 'A' has no effect",
+          4
+        ]
+      ],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": "Warning: The use statement with non-compound name 'A' has no effect in input.php on line 4\n"
+    },
+    {
+      "id": "source-258",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlDQp7IHVzZSBBOyB9",
+      "source_sha256": "109e9af6844eb5cd38e82e4a0e7def28369df7ffae51a275e01a95243c5e2de8",
+      "ast_sha256": "122a406c4bf45e9d7258e8d3d94533cfa4d2ad5e1d854880aafea61c15086c7e",
+      "diagnostics": [
+        [
+          "warning",
+          "The use statement with non-compound name 'A' has no effect",
+          2
+        ]
+      ],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": "Warning: The use statement with non-compound name 'A' has no effect in input.php on line 2\n"
+    },
+    {
+      "id": "source-259",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIHsgdXNlIEE7IH0gbmFtZXNwYWNlCnsgdXNlIEE7IH0=",
+      "source_sha256": "32dc5bdec2bc9b188708adb9b4d253f1fdf2d9f384706a85612546f88e4fe0d1",
+      "ast_sha256": "f335d4d7550d7cc02357c7814ea5950d4fcc37d7745b5af132b8db0414878289",
+      "diagnostics": [
+        [
+          "warning",
+          "The use statement with non-compound name 'A' has no effect",
+          1
+        ],
+        [
+          "warning",
+          "The use statement with non-compound name 'A' has no effect",
+          2
+        ]
+      ],
+      "oracle_exit": 0,
+      "oracle_stdout": "No syntax errors detected in input.php\n",
+      "oracle_stderr": "Warning: The use statement with non-compound name 'A' has no effect in input.php on line 1\nWarning: The use statement with non-compound name 'A' has no effect in input.php on line 2\n"
     }
   ]
 }

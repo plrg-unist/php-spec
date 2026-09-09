@@ -44,9 +44,14 @@ comments, preventing simultaneous loss in both round-trip branches.
 Malformed tests exercise the strict checker and typed elaboration separately;
 they also change a checked scalar and require changed output.
 
-Canonical equality ignores source positions, literal spelling/kind,
+Canonical syntax equality ignores source positions (including `namespaceBraceLine`), literal spelling/kind,
 heredoc delimiters/indentation, and the inline-HTML leading-newline printing
-hint. These remain in the transport. Comment equality ignores positions,
+hint. These remain in the transport. `tests/source_context_metadata.py` checks exact
+namespace-brace metadata across ASCII, CRLF, UTF-16LE and a converted single-byte
+encoding, fresh reconstruction, absent fields and malformed payload rejection.
+The compiler-context campaign separately mutates a positive brace line and requires
+the diagnostic location to change; semantic validation does not normalize it away.
+Comment equality ignores positions,
 CRLF versus LF, a common indentation prefix on continuation lines, and
 indentation before conventional leading `*` markers. Substantive text,
 relative indentation within the content, ordering, and doc-comment identity

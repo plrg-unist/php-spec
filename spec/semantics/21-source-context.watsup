@@ -36,6 +36,7 @@ dec $plmessage(pldiagnostic) : ptbytes
 dec $plkindmessage(plkind) : ptbytes
 dec $plmetatag(metadataEntry) : text
 dec $plline(metadata) : nat
+dec $plbraceline(metadata) : nat?
 dec $plendline(metadata) : nat
 dec $plcompileline(pcnode) : nat
 dec $plnamespaceerror(pllocation, text, ptbytes*) : plresult
@@ -129,9 +130,10 @@ def $plmessage(PLDIAGNOSTIC text "namespace-name" ([ptbytes]) pllocation) = $pta
 def $plmessage(PLDIAGNOSTIC text "outside-namespace" eps pllocation) = $ptascii("No code may exist outside of namespace {}")
 
 ;; Zend AST constructors retain first import/name-child lines; anonymous namespace
-;; lists start at the opening brace, which is not generally in current metadata.
+;; lists use the checked opening-brace token line supplied by the frontend.
 def $plmetatag(MstartLine int) = "line"
 def $plmetatag(MendLine int) = "end-line"
+def $plmetatag(MnamespaceBraceLine int) = "namespace-brace"
 def $plmetatag(Mkind int) = "kind"
 def $plmetatag(metadataEntry) = ""
   -- otherwise
@@ -142,6 +144,13 @@ def $plline((MstartLine int) :: metadataEntry*) = 0
   -- if $(int < 0)
 def $plline(metadataEntry :: metadataEntry_tail*) = $plline(metadataEntry_tail*)
   -- if $plmetatag(metadataEntry) =/= "line"
+def $plbraceline(eps) = eps
+def $plbraceline((MnamespaceBraceLine int) :: metadataEntry*) = (pli)
+  -- if int = pli
+def $plbraceline((MnamespaceBraceLine int) :: metadataEntry*) = (0)
+  -- if $(int < 0)
+def $plbraceline(metadataEntry :: metadataEntry_tail*) = $plbraceline(metadataEntry_tail*)
+  -- if $plmetatag(metadataEntry) =/= "namespace-brace"
 def $plendline(eps) = 0
 def $plendline((MendLine int) :: metadataEntry*) = pli
   -- if int = pli
@@ -152,9 +161,13 @@ def $plendline(metadataEntry :: metadataEntry_tail*) = $plendline(metadataEntry_
 def $plcompileline(NStmtUse phpType24 (SEQUENCE ((NUseItem phpType24_item (NName phpType35 metadata_name) phpType3 metadata_item) :: phpType54*)) metadata) = $plline(metadata_name)
 def $plcompileline(NStmtGroupUse phpType24 (NName phpType35 metadata_name) phpType53 metadata) = $plline(metadata_name)
 def $plcompileline(NStmtNamespace (NName phpType35 metadata_name) phpType23 metadata) = $plline(metadata_name)
+def $plcompileline(NStmtNamespace ABSENT phpType23 metadata) = pli
+  -- if $plbraceline(metadata) = (pli)
 def $plcompileline(NStmtNamespace ABSENT phpType23 metadata) = $plline(metadata)
+  -- if $plbraceline(metadata) = eps
   -- if $plline(metadata) = $plendline(metadata)
 def $plcompileline(NStmtNamespace ABSENT phpType23 metadata) = 0
+  -- if $plbraceline(metadata) = eps
   -- if $plline(metadata) =/= $plendline(metadata)
 def $plcompileline(pcnode) = $plline($pcmetadata(pcnode))
   -- otherwise

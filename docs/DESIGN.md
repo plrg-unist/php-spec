@@ -35,6 +35,10 @@ infinity and avoiding JSON number conversion. Literal spellings remain metadata.
 Comments retain their bytes, doc-comment distinction and six source positions.
 A deterministic attachment pass retains comments that upstream leaves unattached.
 The schema declares every accepted metadata key and its payload type.
+Anonymous namespace nodes additionally retain integer `namespaceBraceLine`, the
+opening-brace token line after whitespace and comments. It comes from the effective
+lexer tokens, including encoded sources, and survives checked elaboration and fresh
+node reconstruction. Compiler diagnostics consume this field; the printer does not.
 
 Encoded programs additionally carry initial source/lexer encoding names, BOM
 and skipped shebang bytes. Noninjective or changing filters retain original byte

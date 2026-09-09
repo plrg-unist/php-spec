@@ -164,13 +164,17 @@ the PHP-Parser statement's keyword start line. Mandatory multiline regressions
 retain the independently discovered [line disagreements](../../coverage/semantics/compiler-context-line-disagreement.json).
 
 An anonymous namespace inherits its statement-list creation line at the opening
-brace. Current metadata generally lacks that brace location. A one-line namespace
-can establish it from equal start/end lines; otherwise the helper does not guess.
-If a namespace diagnostic needs that missing line, the source entry returns
-Unsupported. An explicitly supplied helper context can exercise the rule, but is
-not original-source diagnostic agreement. Valid namespace transitions needing no
-diagnostic can still proceed. Adding checked brace metadata and repeating the
-original-source cases remain required before this source-context gap closes.
+brace. The frontend retains this effective lexer-token line as checked integer
+`namespaceBraceLine`, including comments, CRLF and encoded-source cases. The
+helper consumes it exactly. Edited checked inputs without the field can establish
+a one-line brace from equal start/end lines; otherwise a diagnostic needing that
+line returns Unsupported. Explicit zero or negative brace lines cannot use that
+absent-field fallback and remain Unsupported when a diagnostic needs the line.
+Positive line mutation changes the resulting diagnostic,
+while a missing multiline brace remains an explicit unsupported input. Some invalid
+namespace sequences still encounter the frontend's earlier semantic restrictions;
+those sequence tests remain labeled edited-helper evidence, not original-source
+compiler agreement.
 `$pltypecontext` supplies the class-import subset and namespace to the reviewed
 type helper, retaining explicit scope/position/owner/member/location inputs.
 This is a type-helper consumer, not automatic signature compilation: general
@@ -185,18 +189,16 @@ raw pinned lint channels, exact events, runtime profile and unchanged fingerprin
 are retained. A supplied completion in an interface test is never evidence that
 the missing ordinary compiler executed.
 
-The frontend currently rejects `Self`/`Parent` aliases even for function and
-constant imports, although pinned parsing and compilation accept those imports.
-It also rejects class aliases at an earlier phase than Zend compilation. Exact
-sources and frontend/native-parser/lint outcomes remain separate, with equivalent
-checked edited alias fixtures labeled as helper evidence. Grammar rejections for
-`static`, `array` and `callable` aliases are separately counted. None count as
-original-source prefix agreement. A bounded frontend repair and full classified
-syntax validation remain required; the lexical helper does not repair the source
-pipeline by receiving edited syntax.
+The frontend grammar now defers its four import-alias semantic checks. Original
+`Self`/`Parent` function and constant aliases reach the checked prefix helper and
+compile successfully; class aliases reach its class-only compilation rejection.
+Actual grammar rejections for `static`, `array` and `callable` aliases remain
+separately counted and do not count as prefix agreement. The unchanged upstream
+grammar, checked-in correction and deterministic parser regeneration retain the
+source provenance of this phase correction.
 
 Strict-types compilation, encoding/tick declare effects, function/class/declaration
-contexts, keyword/brace metadata, body compilation, default compilation, registration,
+contexts, function/class keyword metadata, body compilation, default compilation, registration,
 linking and source-machine integration remain pending. These are core obligations,
 not exclusions. The next stage must consume and resume the work descriptors with
 source-evidenced compiler rules before claiming that these contexts drive ordinary
