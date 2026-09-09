@@ -6,7 +6,9 @@ binds295 exact sources, author 8 state programs/3,760 assertions and independent
 2,277. Earlier 286 independent source runs retain their original identity; nine added
 originals and nine canonical public CLI replays pass separately. Full checked/state
 observations are retained losslessly in the linked evidence. Three object quiet
-forms, request environment, `isset`/`empty` and `??=` remain source work.
+forms, request environment and `isset`/`empty` remain source work. Variable/DIM
+`??=` is now separately accepted at f073c750; see the
+[coalescing-assignment contract](COALESCE-ASSIGNMENT-REVIEW.md).
 
 The [28 independent native originals](../../coverage/semantics/quiet-cv-independent-originals.json)
 preserve exact PHP 8.5.10 source, lint and execution observations for the broader
