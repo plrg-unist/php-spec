@@ -236,3 +236,17 @@ beside their final resolution. Twenty transport profiles/200 checks, eight
 additional original sources and five metadata controls passed, including encoded
 sources and in-range edited line consumption. This establishes no valid-loop or
 explicit-depth semantics; no intentional divergence is selected.
+
+## Destructuring provenance: pending frontend preservation
+
+Before source destructuring admission, [28 retained originals](../../coverage/semantics/destructuring-metadata-disagreement.json)
+expose three transport losses. Recursive array-to-list conversion discards a
+nested item's unpack flag, and converts `array()` to the same list kind as `[]`,
+erasing distinct compiler errors. Leading omitted entries also lose their comma
+line: two original sources have identical checked ASTs, including all positions,
+but PHP reports lines 1 and 2. Preserve token-derived list creation context.
+
+Independent frontend/checked-adapter and native-lint repeats reproduce all 28
+streams and statuses. These observations establish the preservation prerequisite;
+destructuring execution remains pending. Original records remain unchanged, and
+no intentional divergence is selected.
