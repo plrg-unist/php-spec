@@ -44,12 +44,14 @@ comments, preventing simultaneous loss in both round-trip branches.
 Malformed tests exercise the strict checker and typed elaboration separately;
 they also change a checked scalar and require changed output.
 
-Canonical syntax equality ignores source positions (including `namespaceBraceLine` and `statementTerminatorLine`), literal spelling/kind,
+Canonical syntax equality ignores source positions (including `namespaceBraceLine`, `statementTerminatorLine` and `statementBodyLine`), literal spelling/kind,
 heredoc delimiters/indentation, and the inline-HTML leading-newline printing
 hint. These remain in the transport. `tests/source_context_metadata.py` checks exact
-namespace-brace and break/continue terminator metadata across ASCII, CRLF,
+namespace-brace, control-body and break/continue/empty-for terminator metadata
+across ASCII, CRLF,
 UTF-16LE and a converted single-byte encoding, including nested nodes and
-closing-tag newlines. It checks fresh reconstruction, absent fields and malformed
+closing-tag newlines, brace/colon versus single-statement bodies and punctuation
+inside header literals/comments. It checks fresh reconstruction, absent fields and malformed
 payload rejection.
 The compiler-context campaign separately mutates a positive brace line and requires
 the diagnostic location to change; semantic validation does not normalize it away.

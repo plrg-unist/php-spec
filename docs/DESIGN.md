@@ -46,6 +46,14 @@ field also uses effective lexer tokens, survives fresh reconstruction, and never
 instructs the printer to replay source. The compiler validates the consumed line
 against the statement's retained start/end range; edited syntax remains explicit
 input, not authenticated source provenance.
+If/elseif/else, while, do and for nodes additionally retain integer
+`statementBodyLine`: the opening brace/colon token line for a synthetic Zend
+statement list, or zero when the grammar uses a single statement. Header scans
+match actual parenthesis tokens, ignoring punctuation inside string/comment
+payloads. Empty `for(;;);` bodies have no Zend child AST and retain their semicolon
+or closing-tag start line as `statementTerminatorLine`; a comment Nop alone does
+not make a braced/alternative body a bare statement. These fields prepare exact
+control compilation; their transport does not enable control execution.
 
 Encoded programs additionally carry initial source/lexer encoding names, BOM
 and skipped shebang bytes. Noninjective or changing filters retain original byte

@@ -138,6 +138,26 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($token->id !== ord(';') && $token->id !== T_CLOSE_TAG) throw new RuntimeException('Loop control terminator token is missing');
                         $node->setAttribute('statementTerminatorLine', $token->line);
                     }
+                    if ($node instanceof PhpParser\Node\Stmt\If_ || $node instanceof PhpParser\Node\Stmt\ElseIf_ || $node instanceof PhpParser\Node\Stmt\Else_ || $node instanceof PhpParser\Node\Stmt\While_ || $node instanceof PhpParser\Node\Stmt\Do_ || $node instanceof PhpParser\Node\Stmt\For_) {
+                        $index = $node->getStartTokenPos() + 1;
+                        if (!($node instanceof PhpParser\Node\Stmt\Do_) && !($node instanceof PhpParser\Node\Stmt\Else_)) {
+                            while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                            if ($tokens[$index]->id !== ord('(')) throw new RuntimeException('Control condition opener is missing');
+                            $depth = 0;
+                            do {
+                                if ($tokens[$index]->id === ord('(')) ++$depth;
+                                elseif ($tokens[$index]->id === ord(')')) --$depth;
+                                ++$index;
+                            } while ($depth !== 0);
+                        }
+                        while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                        $bodyLine = in_array($tokens[$index]->id, [ord('{'), ord(':')], true) ? $tokens[$index]->line : 0;
+                        $node->setAttribute('statementBodyLine', $bodyLine);
+                        if ($bodyLine === 0 && $node instanceof PhpParser\Node\Stmt\For_ && !$node->init && !$node->cond && !$node->loop && (!$node->stmts || (count($node->stmts) === 1 && $node->stmts[0] instanceof PhpParser\Node\Stmt\Nop))) {
+                            if (!in_array($tokens[$node->getEndTokenPos()]->id, [ord(';'), T_CLOSE_TAG], true)) throw new RuntimeException('Empty for terminator token is missing');
+                            $node->setAttribute('statementTerminatorLine', $tokens[$node->getEndTokenPos()]->line);
+                        }
+                    }
                     foreach ($node->getSubNodeNames() as $field) {
                         $value = $node->$field;
                         if ($value instanceof PhpParser\Node) $pending[] = $value;
