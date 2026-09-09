@@ -1,0 +1,30 @@
+;; Array-only spread transfer. Builders are fresh; scalar rejection is separate
+;; from the compiler's fully-constant-array error path. Traversables need frames.
+dec $unpack_type_bytes(pvalue) : nat*
+def $unpack_type_bytes(PBOOL true) = [116,114,117,101]
+def $unpack_type_bytes(PBOOL false) = [102,97,108,115,101]
+def $unpack_type_bytes(pvalue) = $type_bytes(pvalue) -- otherwise
+
+dec $unpack_error_bytes(pvalue) : nat*
+def $unpack_error_bytes(pvalue) = [79,110,108,121,32,97,114,114,97,121,115,32,97,110,100,32,84,114,97,118,101,114,115,97,98,108,101,115,32,99,97,110,32,98,101,32,117,110,112,97,99,107,101,100,44,32] ++ $unpack_type_bytes(pvalue) ++ [32,103,105,118,101,110]
+
+dec $unpack_key(pkey) : pkey?
+def $unpack_key(KINT i) = eps
+def $unpack_key(KSTRING n*) = (KSTRING n*)
+
+dec $array_unpack_entries(pstate, nat, pentry*, int) : pstate
+def $array_unpack_entries(S, n_target, pentry*, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $array_unpack_entries(S, n_target, eps, z) = S
+  -- if S.COMPLETION = NORMAL
+def $array_unpack_entries(S, n_target, (ENTRY pkey pitem) :: pentry_tail*, z) = $array_unpack_entries($literal_item_insert(S, n_target, $unpack_key(pkey), $merge_item(S, pitem), z), n_target, pentry_tail*, z)
+  -- if S.COMPLETION = NORMAL
+
+dec $array_unpack(pstate, nat, pvalue, int) : pstate
+def $array_unpack(S, n_target, pvalue, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $array_unpack(S, n_target, PARRAY n_source, z) = $array_unpack_entries(S[.HELD = S.HELD ++ [HARRAY n_target, HARRAY n_source]], n_target, S.ARRAYS[n_source].ITEMS, z)[.HELD = S.HELD]
+  -- if S.COMPLETION = NORMAL
+def $array_unpack(S, n_target, pvalue, z) = $throw_scalar(S, "Error", $unpack_error_bytes(pvalue), z)
+  -- otherwise
+

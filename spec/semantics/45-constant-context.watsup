@@ -9,7 +9,7 @@ syntax pfshape = PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression ex
   | PFTERNARY expression phpType5 expression | PFMEMBER expression phpType20 | PFNEW phpType28 phpType6 | PFCAST pcast expression | PFCAST_OBJECT expression | PFCAST_UNSET | PFBITNOT expression | PFCOALESCE expression expression | PFCLASSCONST phpType19 phpType20 | PFCLASSNAME phpType19 | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool | PFSPREAD pvalue?
-syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text
+syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
 
 dec $pfwarning_binary(pbin) : bool
@@ -578,3 +578,11 @@ def $pfbitnot(F, pcpath, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result
   -- if S.RESULT = KNOWN pvalue_result
 def $pfbitnot(F, pcpath, z) = F[.VALUE = eps]
   -- otherwise
+
+;; All operands were visited by pass one. A scalar spread is a compile error
+;; only when every element is constant; append overflow defers to execution.
+def $pfready((PFSPREAD (pvalue)) :: pfitem*) = $pfready(pfitem*)
+def $pfconstruct(S, n, (PFSPREAD (PARRAY n_source)) :: pfitem*, z) = $pfinserted($array_unpack(S, n, PARRAY n_source, z), n, pfitem*, z)
+def $pfconstruct(S, n, (PFSPREAD (pvalue)) :: pfitem*, z) = PFSTATICBYTES ($unpack_error_bytes(pvalue))
+  -- if ~$is_array_value(pvalue)
+def $pfbuilt(F, pcpath, PFSTATICBYTES ptbytes, n, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ptbytes z]][.VALUE = eps]

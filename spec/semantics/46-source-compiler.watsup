@@ -523,3 +523,6 @@ def $ppbinarydone(P, pcpath, CONCAT, pvalue_left?) = $ppoperandresult(P, $ppconc
   -- if P.COMPLETION = PPCNORMAL
   -- if F = $pfbinary(P.FOLD, pcpath, CONCAT, pvalue_left?, P.FOLD.VALUE, P.LOCATION.LINE)
   -- if F.VALUE = eps
+
+def $ppitems(P, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*) = $ppitems($ppexpr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression, PPR), pcpath, $(n + 1), phpType13*)
+  -- if P.COMPLETION = PPCNORMAL

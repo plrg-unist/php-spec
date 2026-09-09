@@ -629,6 +629,11 @@ for number in range(40):
         f'echo $a[{first}],$a[{second}],$a[{third}];').encode()
 
 
+from array_unpack import CASES as UNPACK_CASES
+CASES.update(UNPACK_CASES)
+CASES['unpack-retired-outcome-negative'] = b'<?php $a=[...[]];'
+
+
 def fingerprint():
     return syntax_validation.implementation_fingerprint()
 
@@ -696,7 +701,6 @@ def main():
                        b'<?php echo $missing; ${INF-INF}=1;',
                        b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
                        b'<?php $a="abc";unset($a[0][0]);',
-                       b'<?php $a=[...[]];',
                        b'<?php echo $http_response_header;',
                        b'<?php $http_response_header=1;echo $http_response_header;']:
             path.write_bytes(source)

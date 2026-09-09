@@ -1,0 +1,14 @@
+;; An unpack operand is an ordinary read. The builder stays owned by its task
+;; while evaluation may rebind the source, warn, or fail.
+rule PhpStep/array-unpack-next: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), ARRAY_UNPACK n phpType13_tail* $runtime_line(S, [PCFIELD 1], expression)] ++ ptask_tail*]
+  -- if S.TODO = (ARRAY_NEXT n ((NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13_tail*)) :: ptask_tail*
+rule PhpStep/array-unpack-value: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13_tail*)]
+  -- if S.TODO = (ARRAY_UNPACK n phpType13_tail* z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_out = $array_unpack(S_read, n, pvalue, z)
+rule PhpStep/array-unpack-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (ARRAY_UNPACK n phpType13_tail* z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
