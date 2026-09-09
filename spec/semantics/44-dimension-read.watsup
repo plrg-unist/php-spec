@@ -1,0 +1,91 @@
+;; Runtime R-fetch helpers. Source dispatch remains separate until the checked
+;; constant-expression prepass models string-dimension folding in array literals.
+dec $dimension_value_name(pvalue) : nat*
+def $dimension_value_name(PBOOL false) = [102,97,108,115,101]
+def $dimension_value_name(PBOOL true) = [116,114,117,101]
+def $dimension_value_name(pvalue) = $type_bytes(pvalue)
+  -- otherwise
+
+dec $offset_cast_integer(pvalue) : int?
+def $offset_cast_integer(PNULL) = (0)
+def $offset_cast_integer(PBOOL false) = (0)
+def $offset_cast_integer(PBOOL true) = (1)
+def $offset_cast_integer(PFLOAT n) = ($float_to_int(n))
+def $offset_cast_integer(pvalue) = eps
+  -- otherwise
+
+dec $string_offset(pstate, pvalue, int) : pstate
+def $string_offset(S, PINT i, z) = S[.KEY = KINT i]
+def $string_offset(S, PSTRING n*, z) = S[.KEY = KINT i]
+  -- if $numeric_string(n*) = FULLNUM (NINT i)
+def $string_offset(S, PSTRING n*, z) = S_warned[.KEY = KINT i]
+  -- if $numeric_string(n*) = LEADNUM (NINT i)
+  -- if S_warned = $diagnostic(S, "Warning", [73,108,108,101,103,97,108,32,115,116,114,105,110,103,32,111,102,102,115,101,116,32,34] ++ $c_string(n*) ++ [34], z)
+def $string_offset(S, pvalue, z) = S_warned[.KEY = KINT i]
+  -- if $offset_cast_integer(pvalue) = (i)
+  -- if S_warned = $diagnostic(S, "Warning", [83,116,114,105,110,103,32,111,102,102,115,101,116,32,99,97,115,116,32,111,99,99,117,114,114,101,100], z)
+def $string_offset(S, pvalue, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,97,99,99,101,115,115,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32] ++ $type_bytes(pvalue) ++ [32,111,110,32,115,116,114,105,110,103], z)
+  -- otherwise
+
+dec $string_byte_read(pstate, nat*, int, int) : pstate
+def $string_byte_read(S, n_bytes*, i, z) = S[.RESULT = KNOWN (PSTRING (n_bytes*[n_index:1]))]
+  -- if $(i >= 0 /\ i < |n_bytes*|)
+  -- if n_index = i
+def $string_byte_read(S, n_bytes*, i, z) = S[.RESULT = KNOWN (PSTRING (n_bytes*[n_index:1]))]
+  -- if $(i < 0 /\ -i <= |n_bytes*|)
+  -- if n_index = $(|n_bytes*| + i)
+def $string_byte_read(S, n_bytes*, i, z) = $diagnostic(S, "Warning", [85,110,105,110,105,116,105,97,108,105,122,101,100,32,115,116,114,105,110,103,32,111,102,102,115,101,116,32] ++ $decimal_integer(i), z)[.RESULT = KNOWN (PSTRING eps)]
+  -- otherwise
+
+dec $string_dimension_read(pstate, nat*, pvalue, int) : pstate
+def $string_dimension_read(S, n_bytes*, pvalue, z) = S_offset
+  -- if S_offset = $string_offset(S, pvalue, z)
+  -- if S_offset.COMPLETION =/= NORMAL
+def $string_dimension_read(S, n_bytes*, pvalue, z) = $string_byte_read(S_offset, n_bytes*, i, z)
+  -- if S_offset = $string_offset(S, pvalue, z)
+  -- if S_offset.COMPLETION = NORMAL
+  -- if S_offset.KEY = KINT i
+
+dec $scalar_dimension_read(pstate, pvalue, poperand, int) : pstate
+def $scalar_dimension_read(S, pvalue, poperand, z) = S_key
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $scalar_dimension_read(S, pvalue, poperand, z) = S_warned[.RESULT = KNOWN PNULL]
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_warned = $diagnostic(S_key, "Warning", [84,114,121,105,110,103,32,116,111,32,97,99,99,101,115,115,32,97,114,114,97,121,32,111,102,102,115,101,116,32,111,110,32] ++ $dimension_value_name(pvalue), z)
+
+dec $string_operand_read(pstate, nat*, poperand, int) : pstate
+def $string_operand_read(S, n_bytes*, poperand, z) = S_key
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $string_operand_read(S, n_bytes*, poperand, z) = $string_dimension_read(S_key, n_bytes*, pvalue_key, z)
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue_key
+
+dec $dimension_read(pstate, pvalue, poperand, int) : pstate
+def $dimension_read(S, PARRAY n, poperand, z) = $array_read(S, PARRAY n, poperand, z)
+def $dimension_read(S, PSTRING n_bytes*, poperand, z) = $string_operand_read(S, n_bytes*, poperand, z)
+def $dimension_read(S, pvalue, poperand, z) = $scalar_dimension_read(S, pvalue, poperand, z)
+  -- otherwise
+
+;; Distinct compile-time leaf from zend_eval_const_expr's string DIM case.
+;; Leading integer text folds silently here, but negative offsets never fold.
+;; This does not apply a prepass to arbitrary runtime expressions.
+dec $string_constant_index(pvalue) : int?
+def $string_constant_index(PINT i) = (i)
+def $string_constant_index(PSTRING n*) = (i)
+  -- if $numeric_string(n*) = FULLNUM (NINT i)
+def $string_constant_index(PSTRING n*) = (i)
+  -- if $numeric_string(n*) = LEADNUM (NINT i)
+def $string_constant_index(pvalue) = eps
+  -- otherwise
+
+dec $string_constant_read(nat*, pvalue) : pvalue?
+def $string_constant_read(n_bytes*, pvalue) = (PSTRING (n_bytes*[n_index:1]))
+  -- if $string_constant_index(pvalue) = (i)
+  -- if $(i >= 0 /\ i < |n_bytes*|)
+  -- if n_index = i
+def $string_constant_read(n_bytes*, pvalue) = eps
+  -- otherwise

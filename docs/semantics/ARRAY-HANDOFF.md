@@ -28,39 +28,30 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
   allocation invariants. Reviewer-owned `conformance/` contains oracle targets,
   including pending references/GC/literal-identity cases, not source pass claims.
 
-## Next bounded increments
+## Current invariants and next work
 
-1. Array write/unset entry now moves captured path/RHS inputs into `HELD` before
-   internal borrowed `RESULT` lookups, then restores earlier `HELD`. The driver
-   prunes after completed tasks and releases terminal abrupt temporaries; budgets
-   retain interrupted roots. Binary consumers also hold captured operands while
-   resolving borrowed values. Location COW clears borrowed `RESULT` and prunes
-   with live inputs held. Scalar/read helpers still require resumable roots before callbacks.
-   `CELL`/`LOCATION` remain borrowed for admitted variable-only references;
-   `zend_compile_assign_ref`/`ZEND_MAKE_REF` identify the precise future owned
-   acquisition cases. Extend task-root dispatch whenever adding captured tasks.
-2. Conditional COW and singleton unwrapping have helper and variable-reference
-   literal source tests. `zend_array_dup_value` unwraps a
-   singleton reference except when its value is the source container itself.
-   Union duplicates left entries this way; right-merge singleton wrappers unwrap
-   even for source-self references (`zval_add_ref`). Conflicting keys skip copying.
-   Entry copying counts a pruned graph projection rooted at its borrowed source;
-   it leaves caller allocations intact for constant-classifier local builders.
-   Unreachable cycles remain owners until collection; dead acyclic allocations do not.
-3. Literal reference tasks hold an acquired cell before delayed key conversion,
-   then move its owner into an ALIAS entry. Element sources separate their path
-   before promoting the final slot, returning a borrowed cell. Exact nonliteral
-   target/non-CV source assignment uses REF_CAPTURE and an owning REF_DYNAMIC
-   task; direct literal names use the ordinary borrowed source path. Element
-   targets use REF_ARRAY for the owning non-CV source, or REF_ARRAY_CV to acquire
-   the source only after target designation. Binding replaces ALIAS entries rather
-   than writing through their previous cells. Complete remaining scalar/string
-   read/offset contexts and array consumer interactions before foreach.
-4. Before repeated literal execution, add explicit source-unit/compiled-occurrence
-   identities and persistent literal-pool roots. One constant literal occurrence
-   can return the same container across iterations/calls; separately written
-   identical literals differ. Editable metadata/AST structural equality is not an
-   occurrence identity. Dynamic literals still allocate per evaluation.
+- Mutation helpers move their captured task inputs into `HELD`, clear borrowed
+  `RESULT`/`BASE`, and restore earlier `HELD` on every outcome. Driver pruning
+  happens after completed tasks. Terminal errors release machine temporaries;
+  budgets retain them. No helper callback/suspension boundary is modeled yet.
+- COW counts surviving owners after RC pruning, retaining uncollected cycles.
+  Copies unwrap singleton ALIAS cells except source-self references. Union left
+  duplication uses that exception; right merge unwraps every singleton wrapper,
+  and conflicting keys skip copying. Captured operands remain rooted throughout.
+- Element sources separate their path before promoting the final slot, returning
+  a borrowed cell. Nonliteral-target/non-CV-source assignment explicitly owns it
+  in `REF_DYNAMIC` or `REF_ARRAY`; direct literal names do not add that owner.
+  `REF_ARRAY_CV` designates the target before initializing its source. Binding
+  replaces the entry's alias; ordinary assignment writes through an alias.
+- Literal reference entries acquire an owning temporary before delayed key
+  conversion, then transfer it into the entry. The compiler constant-expression
+  prepass has a distinct traversal, including append rejection; see below.
+- Next: [scalar/string dimension helpers](DIMENSIONS.md), exact compiler prepass
+  integration, string write/reference errors, array unpack and destructuring.
+  Before foreach/general loops, integrate [source-unit occurrence identities](SOURCE-CONTEXT.md)
+  and persistent literal-pool roots. Equal subtrees and editable metadata are not
+  occurrence identities. Foreach additionally needs persistent bucket/cursor
+  state and mutation/reference interaction tests.
 
 ## Discriminators to preserve
 
