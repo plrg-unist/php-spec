@@ -2,14 +2,28 @@
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
-syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext* }
+syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
-  | PFARRAY phpType13* | PFSTOP | PFOTHER
+  | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
+  | PFTERNARY expression phpType5 expression | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool
 syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text
 var F : pfstate
+
+dec $pfredirect((pcpath, pcpath)*, pcpath) : pcpath?
+dec $pfwarning_events(pevent*, pcpath) : (pcpath, ptbytes, int)*
+dec $pfwarned(pfstate, pcpath, pstate) : pfstate
+dec $pftruth(pfstate, pcpath, pvalue, int) : pfstate
+dec $pfnot(pfstate, pcpath, int) : pfstate
+dec $pfshort(pfstate, pcpath, bool, pvalue?, pvalue?, int) : pfstate
+dec $pfshortleft(pfstate, pcpath, bool, pvalue?, int) : pfstate
+dec $pfconditional(pfstate, pcpath, expression, phpType5, expression, int) : pfstate
+dec $pfchoose(pfstate, pcpath, expression, phpType5, expression, int) : pfstate
+dec $pfselected(pfstate, pcpath, pcpath, expression, int) : pfstate
+dec $pfselecteddone(pfstate, pcpath, pcpath) : pfstate
+dec $pfaddredirect(pfstate, pcpath, pcpath) : pfstate
 
 dec $pftracked(pfstate, pcpath, expression, int) : pfstate
 dec $pfnamed(pfstate, pcpath, pnresult, int) : pfstate
@@ -17,7 +31,7 @@ dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { SOURCE $pcsource(n, program), MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps }
+def $pfbegin(n, program) = { SOURCE $pcsource(n, program), MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -59,6 +73,13 @@ def $pfshape(NExprBinaryOpMul expression_1 expression_2 metadata) = PFBINARY MUL
 def $pfshape(NExprBinaryOpDiv expression_1 expression_2 metadata) = PFBINARY DIVIDE expression_1 expression_2
 def $pfshape(NExprBinaryOpIdentical expression_1 expression_2 metadata) = PFBINARY IDENTICAL expression_1 expression_2
 def $pfshape(NExprBinaryOpNotIdentical expression_1 expression_2 metadata) = PFBINARY NOTIDENTICAL expression_1 expression_2
+def $pfshape(NExprBooleanNot expression metadata) = PFNOT expression
+def $pfshape(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = PFSHORT false expression_1 expression_2
+def $pfshape(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = PFSHORT false expression_1 expression_2
+def $pfshape(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = PFSHORT true expression_1 expression_2
+def $pfshape(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = PFSHORT true expression_1 expression_2
+def $pfshape(NExprBinaryOpLogicalXor expression_1 expression_2 metadata) = PFBINARY LOGICALXOR expression_1 expression_2
+def $pfshape(NExprTernary expression_1 phpType5 expression_2 metadata) = PFTERNARY expression_1 phpType5 expression_2
 def $pfshape(NExprUnaryPlus expression metadata) = PFUNARY POSITIVE expression
 def $pfshape(NExprUnaryMinus expression metadata) = PFUNARY NEGATIVE expression
 def $pfshape(NExprArrayDimFetch expression phpType5 metadata) = PFDIM expression phpType5
@@ -91,6 +112,7 @@ def $pftracked(F, pcpath, expression, z) = F[.VALUE = (pvalue)]
 def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expression), z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pffact(F.FACTS, pcpath) = eps
+  -- if $pfredirect(F.REDIRECTS, pcpath) = eps
 
 def $pfdispatch(F, pcpath, PFSCALAR pvalue z_leaf, z) = $pfremember(F, pcpath, (pvalue), z_leaf)
 def $pfdispatch(F, pcpath, PFNAME name, z) = $pfnamed(F, pcpath, $pnresolve(F.ENV, PLCONSTANT, name), z)
@@ -108,6 +130,7 @@ def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue), z)
   -- if F.MEMORY.COMPLETION = NORMAL
+  -- if pbin =/= LOGICALXOR
   -- if $constant_state($binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z)) = (S)
   -- if S.RESULT = KNOWN pvalue
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F[.VALUE = eps]
@@ -226,4 +249,92 @@ def $pfcontextualize(F, pcpath) = F[.CONTEXTS = F.CONTEXTS ++ [PFCONTEXT pcpath 
 def $pfcontextualize(F, pcpath) = F
   -- if $pfcontext_at(F.CONTEXTS, pcpath) = (F.ENV)
 def $pfcontextualize(F, pcpath) = $pfunsupported(F, "constant occurrence lexical context changed")
+  -- otherwise
+
+;; Rewrites preserve original occurrence identities, including a selected dynamic arm.
+def $pfredirect(eps, pcpath) = eps
+def $pfredirect((pcpath, pcpath_target) :: (pcpath_from, pcpath_to)*, pcpath) = (pcpath_target)
+def $pfredirect((pcpath_other, pcpath_target) :: (pcpath_from, pcpath_to)*, pcpath) = $pfredirect((pcpath_from, pcpath_to)*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $pftracked(F, pcpath, expression, z) = $pfselected(F, pcpath, pcpath_target, expression_target, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if $pffact(F.FACTS, pcpath) = eps
+  -- if $pfredirect(F.REDIRECTS, pcpath) = (pcpath_target)
+  -- if $occurrence_node(F.SOURCE.OCCURRENCES, pcpath_target) = (expression_target)
+
+def $pfwarning_events(eps, pcpath) = eps
+def $pfwarning_events((DIAGNOSTIC "Warning" ptbytes z) :: pevent*, pcpath) = (pcpath, ptbytes, z) :: $pfwarning_events(pevent*, pcpath)
+def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNINGS ++ $pfwarning_events(S.EVENTS, pcpath)][.VALUE = (pvalue)]
+  -- if S.RESULT = KNOWN pvalue
+def $pftruth(F, pcpath, pvalue, z) = $pfwarned(F, pcpath, $truth_value(F.MEMORY, pvalue, z))
+
+;; Unlike arithmetic guards, constant XOR permits its Boolean coercion warnings.
+def $pfbinary(F, pcpath, LOGICALXOR, (pvalue_left), (pvalue_right), z) = $pfremember(F_result, pcpath, F_result.VALUE, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if S = $binary_apply(F.MEMORY, LOGICALXOR, pvalue_left, pvalue_right, z)
+  -- if S.COMPLETION = NORMAL
+  -- if F_result = $pfwarned(F, pcpath, S)
+
+def $pfdispatch(F, pcpath, PFNOT expression, z) = $pfnot($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, z)
+def $pfnot(F, pcpath, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfnot(F, pcpath, z) = F[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (PFLOAT n)
+def $pfnot(F, pcpath, z) = $pfremember(F, pcpath, (PBOOL (~$truth(F.MEMORY, pvalue))), z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if $type_bytes(pvalue) =/= [102,108,111,97,116]
+def $pfnot(F, pcpath, z) = F[.VALUE = eps]
+  -- otherwise
+
+;; The constant AST pass visits BOTH logical operands before selecting the value.
+def $pfdispatch(F, pcpath, PFSHORT b_or expression_left expression_right, z) = $pfshort(F_right, pcpath, b_or, F_left.VALUE, F_right.VALUE, z)
+  -- if F_left = $pffold(F, pcpath ++ [PCFIELD 0], expression_left, z)
+  -- if F_right = $pffold(F_left, pcpath ++ [PCFIELD 1], expression_right, z)
+def $pfshort(F, pcpath, b_or, pvalue_left?, pvalue_right?, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfshort(F, pcpath, b_or, eps, pvalue_right?, z) = F[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfshort(F, pcpath, b_or, (pvalue_left), pvalue_right?, z) = $pfshortleft($pftruth(F, pcpath, pvalue_left, z), pcpath, b_or, pvalue_right?, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $pfshortleft(F, pcpath, b_or, pvalue_right?, z) = $pfremember(F, pcpath, (PBOOL b_or), z)
+  -- if F.VALUE = (PBOOL b_or)
+def $pfshortleft(F, pcpath, b_or, (pvalue_right), z) = $pfremember(F_right, pcpath, F_right.VALUE, z)
+  -- if F.VALUE = (PBOOL b)
+  -- if b =/= b_or
+  -- if F_right = $pftruth(F, pcpath, pvalue_right, z)
+def $pfshortleft(F, pcpath, b_or, eps, z) = F[.VALUE = eps]
+  -- if F.VALUE = (PBOOL b)
+  -- if b =/= b_or
+
+;; Constant conditional selection removes the parent even for a dynamic child.
+def $pfdispatch(F, pcpath, PFTERNARY expression_cond phpType5 expression_false, z) = $pfconditional($pffold(F, pcpath ++ [PCFIELD 0], expression_cond, z), pcpath, expression_cond, phpType5, expression_false, z)
+def $pfconditional(F, pcpath, expression_cond, phpType5, expression_false, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfconditional(F, pcpath, expression_cond, phpType5, expression_false, z) = $pfchoose($pftruth(F, pcpath, pvalue, z), pcpath, expression_cond, phpType5, expression_false, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+def $pfconditional(F, pcpath, expression_cond, phpType5, expression_false, z) = F_false[.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = eps
+  -- if F_true = $pfitemkey(F, pcpath ++ [PCFIELD 1], phpType5, z)
+  -- if F_false = $pffold(F_true, pcpath ++ [PCFIELD 2], expression_false, z)
+def $pfchoose(F, pcpath, expression_cond, phpType5, expression_false, z) = $pfselected(F, pcpath, pcpath ++ [PCFIELD 2], expression_false, z)
+  -- if F.VALUE = (PBOOL false)
+def $pfchoose(F, pcpath, expression_cond, ABSENT, expression_false, z) = $pfselected(F, pcpath, pcpath ++ [PCFIELD 0], expression_cond, z)
+  -- if F.VALUE = (PBOOL true)
+def $pfchoose(F, pcpath, expression_cond, expression_true, expression_false, z) = $pfselected(F, pcpath, pcpath ++ [PCFIELD 1], expression_true, z)
+  -- if F.VALUE = (PBOOL true)
+def $pfselected(F, pcpath, pcpath_target, expression, z) = $pfselecteddone($pffold(F_redirect, pcpath_target, expression, z), pcpath, pcpath_target)
+  -- if F_redirect = $pfaddredirect(F, pcpath, pcpath_target)
+def $pfaddredirect(F, pcpath, pcpath_target) = F[.REDIRECTS = F.REDIRECTS ++ [(pcpath, pcpath_target)]]
+  -- if $pfredirect(F.REDIRECTS, pcpath) = eps
+def $pfaddredirect(F, pcpath, pcpath_target) = F
+  -- if $pfredirect(F.REDIRECTS, pcpath) = (pcpath_target)
+def $pfselecteddone(F, pcpath, pcpath_target) = $pfremember(F, pcpath, F.VALUE, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if $pffactline(F.FACTS, pcpath_target) = (z)
+def $pfselecteddone(F, pcpath, pcpath_target) = F
   -- otherwise

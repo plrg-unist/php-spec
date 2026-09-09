@@ -10,9 +10,11 @@ syntax pconstant = PCONSTANT pcpath pvalue
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
 syntax pcodeexpr = CODEEXPR pcpath int bool
 syntax pcodename = CODENAME pcpath nat* (nat*)?
-syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr*, NAMES pcodename* }
+syntax pcoderedirect = CODEREDIRECT pcpath pcpath bool
+syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr*, NAMES pcodename*, REDIRECTS pcoderedirect* }
 syntax psourcefile = SOURCEFILE nat nat*
-syntax ptask = CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
+syntax ptask = TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
+  | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
@@ -138,3 +140,7 @@ dec $dimension_read(pstate, pvalue, poperand, int) : pstate
 syntax pstringfetch = STRINGREFERENCE | STRINGNESTED
 dec $string_dimension_write(pstate, nat*, poperand?, poperand, int) : (pstate, nat*)
 dec $string_dimension_fetch(pstate, poperand?, pstringfetch, int) : pstate
+
+;; Shared source/constant truth consumers; definitions follow in module50.
+dec $truth(pstate, pvalue) : bool
+dec $truth_value(pstate, pvalue, int) : pstate

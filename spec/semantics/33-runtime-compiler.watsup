@@ -45,6 +45,32 @@ def $compiled_name(S, PORIGIN n pcpath) = ($constant_fetch(n_name*, n_fallback*?
 def $compiled_name(S, porigin) = eps
   -- otherwise
 
+dec $code_redirect(pcoderedirect*, pcpath) : (pcpath, bool)?
+def $code_redirect(eps, pcpath) = eps
+def $code_redirect((CODEREDIRECT pcpath pcpath_target b) :: pcoderedirect*, pcpath) = ((pcpath_target, b))
+def $code_redirect((CODEREDIRECT pcpath_other pcpath_target b) :: pcoderedirect*, pcpath) = $code_redirect(pcoderedirect*, pcpath)
+  -- if pcpath_other =/= pcpath
+dec $compiled_redirect(pstate, porigin) : (porigin, expression, bool, int)?
+def $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n pcpath_target, expression, b, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = ((pcpath_target, b))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_target) = (expression)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b_constant))
+def $compiled_redirect(S, porigin) = eps
+  -- otherwise
+dec $redirect_tasks(porigin, expression, bool, bool, int) : ptask*
+def $redirect_tasks(porigin, expression, false, false, z) = [AT porigin (EVAL expression)]
+def $redirect_tasks(porigin, expression, false, true, z) = [AT porigin (DIM_PREP expression)]
+def $redirect_tasks(porigin, expression, true, false, z) = [AT porigin (EVAL expression), TRUTH_RESULT false z]
+def $redirect_tasks(porigin, expression, true, true, z) = [AT porigin (EVAL expression), TRUTH_RESULT false z, DIM_CAPTURE]
+
+def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_tasks(porigin_target, expression_target, b, false, z) ++ ptask*]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, b, z))
+def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_tasks(porigin_target, expression_target, b, true, z) ++ ptask*]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, b, z))
+
 def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
   -- if $compiled_read(S, porigin) = (pvalue)
 def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE (KNOWN pvalue)][.RESULT = KNOWN PNULL]
@@ -64,6 +90,9 @@ def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = (CODEEXPR
 dec $compiled_names((pcpath, pnreference)*) : pcodename*
 def $compiled_names(eps) = eps
 def $compiled_names((pcpath, pnreference) :: (pcpath_tail, pnreference_tail)*) = (CODENAME pcpath pnreference.RESOLVED pnreference.FALLBACK) :: $compiled_names((pcpath_tail, pnreference_tail)*)
+dec $compiled_redirects((pcpath, pcpath, bool)*) : pcoderedirect*
+def $compiled_redirects(eps) = eps
+def $compiled_redirects((pcpath_parent, pcpath_target, b) :: (pcpath_parent_tail, pcpath_target_tail, b_tail)*) = (CODEREDIRECT pcpath_parent pcpath_target b) :: $compiled_redirects((pcpath_parent_tail, pcpath_target_tail, b_tail)*)
 dec $compiled_work(nat, ppwork*) : ptask*
 def $compiled_work(n, eps) = eps
 def $compiled_work(n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = (AT (PORIGIN n pcpath) (STMT statement)) :: $compiled_work(n, ppwork*)
@@ -86,7 +115,7 @@ def $compile_source(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS), NAMES $compiled_names(P.NAMES) }]]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))

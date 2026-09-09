@@ -10,7 +10,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, storage, array, reference, namespace constant and if/while/do/for/jump checked source execution fixtures",
+  "scope": "authored scalar, storage, array, reference, namespace constant, control and truth-expression checked source execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -56,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "ff73f0181b1fb5b61beb3427967cc05c20bc78d91f3957eba10f0ab4654dd7af",
-    "files": 767,
+    "sha256": "10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e",
+    "files": 771,
     "scope": [
       "frontend",
       "adapter",
@@ -3201,6 +3201,648 @@
       "comparison": "pass"
     },
     {
+      "id": "truth-not-truth",
+      "source_sha256": "04a45e77eec144f7bff31c18b27b9572f0114916422d55a5ba4b74d625b149f7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-not-nan",
+      "source_sha256": "14a4a61704ed4730853d43412f71ad7319c80a175908fc32b000f87c64b0db06",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-and-skip",
+      "source_sha256": "6bb3c91ac2e1eb3ea4ecc9a9612bd6048184640c45bbf2a374031ed1c6711f78",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-or-skip",
+      "source_sha256": "e15dbd299b6b3193474c7254321d1bd392c42778350435dd3d7dd90fc8612ca6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-and-right",
+      "source_sha256": "7df81f3e6cc5b959b15528aee32825a3a0f0eed6ad17676961ff5ab88d14b812",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-or-right",
+      "source_sha256": "1d9b30d9ed3b8c714a0eaccdd100912efae1e5b6b36a90ed07f1c621f55e45fa",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-word-logical",
+      "source_sha256": "f2b034a971bbf8afee8a2ba953b3db9fca4ffae3186438e9b4a4ef08d26f2cc0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-dynamic-nan-and",
+      "source_sha256": "15c54cf34fa954016ad0cb79285cac0fe0f757728cc479016c9d1a28f7a800ff",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-dynamic-nan-or",
+      "source_sha256": "dcbf66616b03844c8eceb08143eec4ea4cb98f6828896663d4127733a6dff656",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-dynamic-nan-right",
+      "source_sha256": "4711e339f849eb6c5bd3260216caa0a8ef75fc9d1981faaa158579ffac4f15f6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-capture",
+      "source_sha256": "f0575dcc242808a01df7167ab93ecb8f2b74ff6b6b8f03ebf22feaa03ba30db6",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-false-capture",
+      "source_sha256": "8f92b5c41db48faec7432d7df42796943cc26fad7a916ac2b9a50787856824e1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-short-capture",
+      "source_sha256": "b498e965f0de6ff4e3afa7ab14dda6b04f0f255587f5d2a9499ad80bdd47dd83",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-nan",
+      "source_sha256": "d3425c7f5b560bae6b5c28cee68c2ddc7818268a803d6d09426726ff6baba311",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-short-nan",
+      "source_sha256": "9721e247111ded52237a29543242d20b3cf4a9b670f870adca153bd26162e15a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-array-cow",
+      "source_sha256": "1583a526bd561357816289c57564d9d762db83ba19573b6611cb0debf47fee37",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-reference-copy",
+      "source_sha256": "75580e2595a20bc34cdc1a57e8caddb58968c6ba9ead6957bddebfef5672cd33",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-short-false",
+      "source_sha256": "eb93d0ab0c00cde3973eb4928100a6b1ddf4b70701abd3556dd8f628d560a47a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-xor-delayed",
+      "source_sha256": "67eb0894a9441082767eb4b6fd440e9388c10bbcae2afa29fd1841260affbcda",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-xor-nan-dynamic",
+      "source_sha256": "5582deba90718ba8d56042939fbf8e0b6ef121c8801246cfb5ca580600308e28",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-xor-array",
+      "source_sha256": "b529a5aaf8f800b00ba1402142c63fa4a156c1b03197a5c111960328d1539f89",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-refassign-copy",
+      "source_sha256": "0bb0a1d595d1c744246e006bc9fa2b0533282d5742487461f1e4bab11b350738",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-short-refassign-copy",
+      "source_sha256": "3bfe95ecf6d1eec40bcadb4766f170b4416db35eb1e636d08b221cd9452c865a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-dynamic-key",
+      "source_sha256": "ae2fe4beff1cddae359ca329e4d3aaebb621cee4541fb0bdaf22c81af41f71f2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-short-dimension",
+      "source_sha256": "010c4b2c8ba27aca351038d14f2bf63066e65d005186ba334a84ce3c79600e04",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-skips-unset-value",
+      "source_sha256": "698719eda9422f05a8acad8af5b829345ef86811cc74a4a06aa66deae4bc6037",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-ternary-short-false-missing",
+      "source_sha256": "d22b3a297ad06486547e837c83c246d6f4e7a37d89570e275c95b2368755e3b7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-xor-delayed-nan",
+      "source_sha256": "393e608fd01a6f22818cc2f1a7d1962226ada625d047017b89943f94897e37a4",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-not-dimension-reference",
+      "source_sha256": "0d16af7c75bdb29fd5e49d9b4a63e2959cff8e42eebb643c233eabef5c7505dd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-loop-truth-roots",
+      "source_sha256": "c3d8845ccd71a207d1a807f542238c222278718c0dd880472bfb470b448cb672",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-loop-truth-nan",
+      "source_sha256": "fd0832401fa3c3094a7b9eb1f50f9a25685786f41cbe75ab15bd5b37d23a819d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-skip-and",
+      "source_sha256": "367cbf7db0f0b5a62b1335bb43e9413444e24306c31f25efd9b71b3d9893fc30",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-skip-or",
+      "source_sha256": "540e343b1df6c6d7f7757e25e9ad77338f0f3bb6dc7d21b0011aa2abe5acf5bd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-visit-and",
+      "source_sha256": "dbc7b668d24a16340a8a325e9476d5db7f83b1a061e297d1527239f0ad9d5e00",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-visit-or",
+      "source_sha256": "5f43857bd2af6076f53d32de982664934cfc702c636be0011322c862c38e407c",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-skip-import-warning",
+      "source_sha256": "4e55b5d35781b421ddc92cb90dcefa0e858573e914be6ad213a1bf5eff77dbae",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-nan-and",
+      "source_sha256": "333a859c5ac865d8b295860d0c09a7f2fc3c0f745c6a3bb8de1d5d416350de4a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-nan-or",
+      "source_sha256": "39ef78bc09a528c21d9d41505e4d3ec530cc4bf3fef56a166a50378f14189df2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-full-ternary-static",
+      "source_sha256": "4e31e023c0cfbd143889c1391d5c20b9120c43cba862feaa3dff3749165da1a6",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-shorthand-ternary-static",
+      "source_sha256": "d6e99d68682816987c359366f0c94eb8f1ecfa4f67256fe4ef0e117fcec3e312",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-dynamic-nan",
+      "source_sha256": "587aa54861f4d961d03a75ea60c088394c5ebb6748a8034b0c8d81b248bea362",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-constant-expression-left",
+      "source_sha256": "c23047aadc88778c396e3e934a819ed033284a3d3169fc8a8c9a3c9d6ebe75bc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-runtime-phase-dynamic-left",
+      "source_sha256": "717a4cc1019d5ea09be0e4251b25573e3df0af8c8f8ee362c575592cc0c18aea",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-false-and-bare",
+      "source_sha256": "2dd8cdf6aa735fdace88f3a2d0af864f8d8393649b93873a6133307af691edde",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-false-and-array",
+      "source_sha256": "7adb5a036cf0e92ce4296292fcbd3c936eaae1edb36af8bf0b7b5aa6d2e71e78",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-false-and-assignment-barrier",
+      "source_sha256": "b66749c7e1650822ca2954f44350830f72d63500348394159c5eedc32197b5ab",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-or-bare",
+      "source_sha256": "2db48a57c797e583fb650cea37f9c6c38ab156c9cf4feadb0ef597c30d931d88",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-or-array",
+      "source_sha256": "4eb5c3546f63edc28b082227a8fe40fa31767a425a7beb98b18c2d2e362b3cc8",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-or-assignment-barrier",
+      "source_sha256": "3a673bfa8feed5024a18761f4ac77639bbf9ea47d477365d7fb197c30b45051b",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-ternary-bare",
+      "source_sha256": "7f33108f1ff00746831df64d4ddeac2b3957474bd91594ccb56930531277be01",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-ternary-array",
+      "source_sha256": "837e41de94136db08dbf5f82c37b01eabf3e3a13acf2dbab178e02fcb366bb50",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-ternary-assignment-barrier",
+      "source_sha256": "67d3926257c238d8b8016827a84ff710f506a7fe59c6e88f5ddba20032d8be32",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-short-bare",
+      "source_sha256": "e9c9edc57b2d82cd52dc9bd6be9fa946eab51e3ac222d4e3c5e9e93423bf9a1c",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-short-array",
+      "source_sha256": "66c0d6c83d74af49a3fc97fdca235cc1d5de1081d6312330519232a43796eea3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-true-short-assignment-barrier",
+      "source_sha256": "9a9e430c677baa607e4f6fb4a5e1050e9383d9f16727d0428fbd8246da2c0009",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nonconstant-selected-bare",
+      "source_sha256": "67c37a600f5a5799faf0166197cc0881ffe23caae20fd193ad376fb8432d8706",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nonconstant-selected-array",
+      "source_sha256": "f73b240d6f46043873261ed0ae4fb25ffb690efae4aac05eda9fb75962be5504",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nonconstant-selected-assignment-barrier",
+      "source_sha256": "154fb1d6abe8412c8d11b6453a6fdf6323c9fb245772cf88c4aa7d83fc736085",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-false-nonconstant-selected-bare",
+      "source_sha256": "5459dcee2030c79871af211114eb949c7d71968e39b34411ac2b97234a6a6a0e",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-false-nonconstant-selected-array",
+      "source_sha256": "f415d9961a1c3c2bd05d3f54e78bb75cf12f5bf0e517f43e8c10d354db345ea2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-false-nonconstant-selected-assignment-barrier",
+      "source_sha256": "e7567752af91e544dbeb20cc7de756e1984e0b36c069a3ef81cda4f6ea322592",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-dynamic-condition-bare",
+      "source_sha256": "465d122841766bed572962cc183d9f04eaea5c32f8a6985a2dceb4743b718264",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-dynamic-condition-array",
+      "source_sha256": "f43410e0430f2fa1a6cfc87d4715c17eb6a9b1af20edfbf0e6c04fdab012aab9",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-dynamic-condition-assignment-barrier",
+      "source_sha256": "b0b6f2c2a01e10f21095bddf640036b55343eecd88c1eee8b5d2ca6b24a11d2e",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-and-bare",
+      "source_sha256": "8a858466f924085bdf58e764d4055f83c36c098303f13ed0702b0614195a6e20",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-and-array",
+      "source_sha256": "ca7d9d58d5f0c2de140f0eddd7cac2d616d79126d52d9a33074eba2dec43aeec",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-and-assignment-barrier",
+      "source_sha256": "462c3dbd70bfa020c08e8629a16dcfbb571650b4c3b9b2e44af7f662962433f3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-or-bare",
+      "source_sha256": "eb8e524470e5e0ff5c718bfcdc3b5e2e2cca12508a56bcc33bdea7164f0b89cb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-or-array",
+      "source_sha256": "1ef940dec57a7887dbe4f4b84878e40caa2de854377f7965f4dc588d15a463cf",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-or-assignment-barrier",
+      "source_sha256": "47548e856df635b5c1c2060797ca74087c6f42c8b6e4aeb2453a039d77636380",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-not-bare",
+      "source_sha256": "d8c1d5a0419b29cf12cfdabe6f97b30b56fad805fc47b48ed8498f1e28d3a699",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-not-array",
+      "source_sha256": "c95b20db36a2ce1d80860667b10856b56b351ac409294d4351d9070979506280",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-not-assignment-barrier",
+      "source_sha256": "5d10cc1536ba1e4de3b364d0a99aa5f28502074766900a5bfc212dce6d5f17d0",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-ternary-bare",
+      "source_sha256": "36973f93fde0c86f32f587f59b5d68a03793fa8682fa427ed971580ad3378133",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-ternary-array",
+      "source_sha256": "9fa4236cd3b905d1538e7ebca37bc300c34e6e9a753a2da3e7d292544d5f2210",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-ternary-assignment-barrier",
+      "source_sha256": "688224cce744a64dac2e57f663fcfd259ddbec33ec3df824548f3ff07b24e977",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-short-bare",
+      "source_sha256": "d13096dabdba4c65383762d9fcb44d48a6a7fd13944a0eb0e80e21aeafcb694c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-short-array",
+      "source_sha256": "22d374c00b2bd8b0991eb8a77e5f751797fff7af200a90eacbb4fc5a3b95651a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-prepass-nan-short-assignment-barrier",
+      "source_sha256": "6f3789f68775a2e7281f38fde6cb3d016088d38deaec45bb31ac05eeb95300b3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-ordinary-cv",
+      "source_sha256": "9fe175ffaec7185a8094f27a611ee641caf8edd43c3508f510f49cc1a4227ee7",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-prepass-cv",
+      "source_sha256": "a8d6f70727ddc6f851486addbc40cd4927ceff9d4d4fcc3703cbda364e3371fb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-ordinary-ref",
+      "source_sha256": "29371ee44175b193f8d9ea1d3dacea83158e1e647f7968bd787acb008503f7e1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-prepass-ref",
+      "source_sha256": "9a37caad6ec8830991e34b13fae5d185fdfd77b2697276aff410c042e835f647",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-ordinary-shorthand-cv",
+      "source_sha256": "253af75074bb2f3581a0bca2faf540a030aa8795b58401600747c603697c57a2",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-prepass-selected-array",
+      "source_sha256": "51ff672f3150753816d1ccc37559477498bee55c6fc9f0bfa1992373cdf7937f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-ordinary-selected-array",
+      "source_sha256": "6a19152aef0226ec91a818dd6b6983112ebcf3730aa272dd42cdae04e476377d",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-copy-prepass-short-assign",
+      "source_sha256": "df73ff0f0f74ef65b84e67568220290af2966c2ae55248efe30e3ac5b670740e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-grouping-0",
+      "source_sha256": "dbd2e9c5a7b8b01190ca5c9c15e7629f3b6627bf42b5932a62385c7722bd45e6",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-grouping-1",
+      "source_sha256": "2194bce8455ab8dff66a7202f5cf7e20b9223366330138d7ac2c292c68631ef5",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-grouping-2",
+      "source_sha256": "6339698e57307228a2a63667767f35c6f3b4ef23283dcfa309ecfc4d96c17f69",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-independent-grouping-3",
+      "source_sha256": "85d013c743d46dd0d04d5cbe325b0158a06b6b1c6f689cddf1c748d2e2336ac9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-warnings-before-later-failure",
+      "source_sha256": "3c627a794e4fcb0b32b83cb397e51741921ed47f8b56dd14a58257af8ab3ad7e",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-warnings-after-earlier-failure",
+      "source_sha256": "1d0a50aabe4cb657246fff499316bfac1a9b7d6cad452e579f6cb3aee4f1d8ea",
+      "semantic_status": "static_rejection",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-constant-left-dynamic-right",
+      "source_sha256": "60fcdd9c32544c9604b7584b2bbfe79fbd4e8f658b5e9ca4ede1ae387b73d168",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-constant-left-late-right",
+      "source_sha256": "292ff986c471757d4d74aeede0355cf50afc9ac675cd8d69d62b0e733db8c5c8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-logical-constant-left-dynamic-right",
+      "source_sha256": "fc9c1d1a4996f40f75cb796923a75f1fc0f0e642b682e2d8873fbe46053891eb",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-short-nan",
+      "source_sha256": "f7a6a971ea18abc6803bbc12d7c4a4f6ca1f394f16b03e5df5377506759331cc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-ternary-line",
+      "source_sha256": "a19b6af231f4e7dbbe8d94cadd493bf5626c8a789cc89a0d8bbb147a9cd3091c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-ordinary-logical-line",
+      "source_sha256": "6ef6c9acbbfef772ea71dad1ad44df509d7ea7d091b7d79869d721038be5aa02",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-ordinary-logical-right-line",
+      "source_sha256": "d3548cd17d53eb0671229e13135356a04b720df6bd10e707e2637c04791bcad3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-logical-line",
+      "source_sha256": "d5965341fe1ba06b0b6fdab3e20657a97207eac070d8e4e2fa51e1b0ccf1f3fd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-ordinary-xor-line",
+      "source_sha256": "525b22b96f571bbe4afcb5b2c03725c76ca01b29ee2e7270b0a460e46b3481c3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-xor-line",
+      "source_sha256": "d3bd7ae6ec6dba737a299b5e378613f75bfdd821397c0196ed6b4e7d4d0bedfd",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-ordinary-not-finite-float",
+      "source_sha256": "b29b278bdb212884655c70b45cec4dcec81dc5f5de15aae785364521950d3838",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-not-finite-float",
+      "source_sha256": "d2932182fdd101f66d11b4cb136cc35c0d0870d7a02cd1b4666e6e75d62cb405",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-grouping-erased-dynamic-child",
+      "source_sha256": "16ef809f9ecda26aebbcc43a352990e7d662c412689a4a331295cd4687d639a9",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "truth-compiler-prepass-grouping-erased-invalid-unselected",
+      "source_sha256": "1a45419b2246445ef3ba1bf67856ed87e44f9a0a86cc044017131912928c8dcc",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
       "id": "conformance-reference-rebind",
       "source_sha256": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
       "semantic_status": "normal",
@@ -4562,7 +5204,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-46_ng4_8/unsupported.php"
+        "/tmp/php-semantics-lu8mcvgk/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -4581,7 +5223,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-46_ng4_8/unsupported.php"
+        "/tmp/php-semantics-lu8mcvgk/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -4600,7 +5242,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-46_ng4_8/unsupported.php",
+        "/tmp/php-semantics-lu8mcvgk/unsupported.php",
         "--steps",
         "0"
       ],
@@ -4621,7 +5263,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-46_ng4_8/unsupported.php",
+        "/tmp/php-semantics-lu8mcvgk/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -4634,12 +5276,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-46_ng4_8/unsupported.php.missing"
+        "/tmp/php-semantics-lu8mcvgk/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-46_ng4_8/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-lu8mcvgk/unsupported.php.missing'"
       }
     },
     {
@@ -4856,7 +5498,7 @@
       "source": "PD9waHAgZm9yKDs7KTs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-46_ng4_8/unsupported.php",
+        "/tmp/php-semantics-lu8mcvgk/unsupported.php",
         "--steps",
         "40"
       ],
@@ -4903,7 +5545,7 @@
           ]
         },
         "steps": 100,
-        "filename": "L3RtcC9waHAtc2VtYW50aWNzLTQ2X25nNF84L3Vuc3VwcG9ydGVkLnBocA=="
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLWx1OG1jdmdrL3Vuc3VwcG9ydGVkLnBocA=="
       },
       "exit_status": 0,
       "observation": {
@@ -5134,14 +5776,14 @@
                   "99",
                   "115",
                   "45",
-                  "52",
-                  "54",
-                  "95",
-                  "110",
-                  "103",
-                  "52",
-                  "95",
+                  "108",
+                  "117",
                   "56",
+                  "109",
+                  "99",
+                  "118",
+                  "103",
+                  "107",
                   "47",
                   "117",
                   "110",
@@ -5200,7 +5842,7 @@
           ]
         },
         "steps": 100,
-        "filename": "L3RtcC9waHAtc2VtYW50aWNzLTQ2X25nNF84L3Vuc3VwcG9ydGVkLnBocA=="
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLWx1OG1jdmdrL3Vuc3VwcG9ydGVkLnBocA=="
       },
       "exit_status": 0,
       "observation": {
@@ -5452,14 +6094,14 @@
                   "99",
                   "115",
                   "45",
-                  "52",
-                  "54",
-                  "95",
-                  "110",
-                  "103",
-                  "52",
-                  "95",
+                  "108",
+                  "117",
                   "56",
+                  "109",
+                  "99",
+                  "118",
+                  "103",
+                  "107",
                   "47",
                   "117",
                   "110",
@@ -6306,7 +6948,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source.jsonl",
-    "sha256": "0da2a503e540ce1968f147f3ef2e89469d0283525b89a9194734203676bb85be",
-    "records": 747
+    "sha256": "5e2ad8a4ce7680905393b1fce8fbe2b96fce5878c03faedb9e0b1cf2f0e3c9e3",
+    "records": 854
   }
 }

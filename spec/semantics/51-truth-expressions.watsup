@@ -1,0 +1,83 @@
+;; Runtime truth consumers. Compiler constant short-circuiting is separate.
+dec $boolean_result(pstate, bool, int) : pstate
+def $boolean_result(S, b_negate, z) = S_bool[.TODO = eps]
+  -- if S_bool = $condition(S, z)
+  -- if S_bool.COMPLETION =/= NORMAL
+def $boolean_result(S, b_negate, z) = S_bool[.RESULT = KNOWN (PBOOL (b =/= b_negate))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_bool = $condition(S, z)
+  -- if S_bool.COMPLETION = NORMAL
+  -- if S_bool.RESULT = KNOWN (PBOOL b)
+rule PhpStep/truth-result: S ~> $boolean_result(S[.TODO = ptask_tail*], b_negate, z)
+  -- if S.TODO = (TRUTH_RESULT b_negate z) :: ptask_tail*
+rule PhpStep/boolean-not: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), TRUTH_RESULT true $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBooleanNot expression metadata)) :: ptask_tail*
+
+dec $short_result(pstate, bool, expression, int, int) : pstate
+def $short_result(S, b_or, expression, z_left, z_right) = S_bool[.TODO = eps]
+  -- if S_bool = $condition(S, z_left)
+  -- if S_bool.COMPLETION =/= NORMAL
+def $short_result(S, b_or, expression, z_left, z_right) = S_bool[.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_bool = $condition(S, z_left)
+  -- if S_bool.COMPLETION = NORMAL
+  -- if S_bool.RESULT = KNOWN (PBOOL b_or)
+def $short_result(S, b_or, expression, z_left, z_right) = S_bool[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), TRUTH_RESULT false z_right] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_bool = $condition(S, z_left)
+  -- if S_bool.COMPLETION = NORMAL
+  -- if S_bool.RESULT = KNOWN (PBOOL b)
+  -- if b =/= b_or
+rule PhpStep/short-result: S ~> $short_result(S[.TODO = ptask_tail*], b_or, expression, z_left, z_right)
+  -- if S.TODO = (SHORT_RESULT b_or expression z_left z_right) :: ptask_tail*
+rule PhpStep/boolean-and: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SHORT_RESULT false expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpBooleanAnd expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/boolean-or: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SHORT_RESULT true expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpBooleanOr expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/logical-and: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SHORT_RESULT false expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpLogicalAnd expression_1 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/logical-or: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SHORT_RESULT true expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpLogicalOr expression_1 expression_2 metadata)) :: ptask_tail*
+
+;; Selected arms produce a value at the arm boundary, including delayed CV reads.
+rule PhpStep/value-copy: S ~> $resolve_at(S[.TODO = ptask_tail*], S.RESULT, z)
+  -- if S.TODO = (VALUE_COPY z) :: ptask_tail*
+dec $selected_true(pstate, phpType5, pvalue, int) : pstate
+def $selected_true(S, ABSENT, pvalue, z) = S[.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $selected_true(S, expression, pvalue, z) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), VALUE_COPY z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $selected_branch(pstate, phpType5, expression, pvalue, int, int) : pstate
+def $selected_branch(S, phpType5, expression, pvalue, z_true, z_false) = $selected_true(S, phpType5, pvalue, z_true)
+  -- if S.RESULT = KNOWN (PBOOL true)
+def $selected_branch(S, phpType5, expression, pvalue, z_true, z_false) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 2]), EVAL expression), VALUE_COPY z_false] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.RESULT = KNOWN (PBOOL false)
+dec $select_value(pstate, phpType5, expression, int, int, int) : pstate
+def $select_value(S, phpType5, expression, z_cond, z_true, z_false) = S_read[.TODO = eps]
+  -- if S_read = $resolve_at(S, S.RESULT, z_cond)
+  -- if S_read.COMPLETION =/= NORMAL
+def $select_value(S, phpType5, expression, z_cond, z_true, z_false) = $selected_branch($truth_value(S_read, pvalue, z_cond), phpType5, expression, pvalue, z_true, z_false)
+  -- if S_read = $resolve_at(S, S.RESULT, z_cond)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+dec $true_arm_line(pstate, phpType5) : int
+def $true_arm_line(S, ABSENT) = 0
+def $true_arm_line(S, expression) = $runtime_line(S, [PCFIELD 1], expression)
+rule PhpStep/ternary: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SELECT_VALUE phpType5 expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $true_arm_line(S, phpType5) $runtime_line(S, [PCFIELD 2], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprTernary expression_1 phpType5 expression_2 metadata)) :: ptask_tail*
+rule PhpStep/select-value: S ~> $select_value(S[.TODO = ptask_tail*], phpType5, expression, z_cond, z_true, z_false)
+  -- if S.TODO = (SELECT_VALUE phpType5 expression z_cond z_true z_false) :: ptask_tail*
+
+;; XOR retains ordinary delayed binary reads, then coerces left before right.
+def $binary_apply(S, LOGICALXOR, pvalue_left, pvalue_right, z) = S_right[.RESULT = KNOWN (PBOOL (b_left =/= b_right))]
+  -- if S_left = $truth_value(S, pvalue_left, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_left.RESULT = KNOWN (PBOOL b_left)
+  -- if S_right = $truth_value(S_left, pvalue_right, z)
+  -- if S_right.COMPLETION = NORMAL
+  -- if S_right.RESULT = KNOWN (PBOOL b_right)
+def $binary_apply(S, LOGICALXOR, pvalue_left, pvalue_right, z) = S_left
+  -- if S_left = $truth_value(S, pvalue_left, z)
+  -- if S_left.COMPLETION =/= NORMAL
+def $binary_apply(S, LOGICALXOR, pvalue_left, pvalue_right, z) = S_right
+  -- if S_left = $truth_value(S, pvalue_left, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_right = $truth_value(S_left, pvalue_right, z)
+  -- if S_right.COMPLETION =/= NORMAL
+rule PhpStep/logical-xor: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT LOGICALXOR expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpLogicalXor expression_1 expression_2 metadata)) :: ptask_tail*

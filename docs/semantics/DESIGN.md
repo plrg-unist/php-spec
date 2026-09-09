@@ -229,6 +229,16 @@ append and invalid negative bounds can precede a delayed RHS read. Final referen
 fetches and intermediate nested fetches preserve their distinct errors after key
 conversion. The machine continues to own mutation inputs across these operations.
 
+The registered truth-expression rules add boolean/logical operators and
+ternary selection. Ordinary selected arms become values before parent operands
+continue. Compiler-prepass replacement instead retains a structural read redirect,
+so the selected child's CV/reference operand can remain delayed. A separate boolean
+redirect consumes only the dynamic RHS after constant-left truth conversion during
+compilation. These descriptors coexist with pooled values and namespace names;
+they preserve explicit origins without rewriting the checked AST. Source validation
+passed 854 exact observations and 25 outcome boundaries, with independent phase,
+redirect, selected-value ownership and dense resumption checks.
+
 The compiler rejects unfinished syntax before source execution. This is a visible
 implementation boundary, not a claim that every unsupported expression would run.
 `tests/semantics/runtime_compiler.py` checks compiled execution, pool ownership,

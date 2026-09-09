@@ -4,8 +4,19 @@ syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
 syntax ppexprdone = PPCEXPR pcpath nat pvalue?
 syntax ppstate = { LOOPS nat, FOLD pfstate, ENV plenv, LOCATION pllocation,
-  COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)* }
+  COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate
+
+dec $ppfoldwarnings((pcpath, ptbytes, int)*, pllocation) : pldiagnostic*
+dec $ppnotdone(ppstate, pcpath) : ppstate
+dec $ppshort(ppstate, pcpath, bool, expression) : ppstate
+dec $ppshortconstant(ppstate, pcpath, bool, pvalue, expression) : ppstate
+dec $ppshortfold(ppstate, pcpath) : ppstate
+dec $ppclearvalue(ppstate) : ppstate
+dec $ppgrouping(metadata) : bool?
+dec $ppgrouping_tag(metadataEntry) : bool
+dec $ppternarycheck(ppstate, expression, phpType5) : ppstate
+dec $ppternarychain(ppstate, bool, bool) : ppstate
 
 dec $ppnamed(ppstate, pcpath, pnresult) : ppstate
 dec $ppcvcheck(phpType34) : pcheck
@@ -40,7 +51,7 @@ dec $ppexpr(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppexprbody(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppdone(ppstate, pcpath, ppmode) : ppstate
 dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
-def $ppstart(n, program, ptbytes) = $pplexical({ LOOPS 0, FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, EXPRESSIONS eps, ACCESS eps, NAMES eps }, $plstart(n, program, ptbytes))
+def $ppstart(n, program, ptbytes) = $pplexical({ LOOPS 0, FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $pplexical(P, PLDONE plstate pldiagnostic*) = P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*]
@@ -70,9 +81,9 @@ def $ppcheck(P, READY) = P
 def $ppcheck(P, REJECT pcompletion) = P[.COMPLETION = PPCABRUPT pcompletion]
   -- if P.COMPLETION = PPCNORMAL
 def $ppunsupported(P, text) = P[.COMPLETION = PPCABRUPT (UNSUPPORTED text)]
-def $ppfoldresult(P, F) = P[.FOLD = F]
+def $ppfoldresult(P, F) = P[.FOLD = F[.WARNINGS = eps]][.DIAGNOSTICS = P.DIAGNOSTICS ++ $ppfoldwarnings(F.WARNINGS, P.LOCATION)]
   -- if F.MEMORY.COMPLETION = NORMAL
-def $ppfoldresult(P, F) = P[.FOLD = F][.COMPLETION = PPCABRUPT F.MEMORY.COMPLETION]
+def $ppfoldresult(P, F) = P[.FOLD = F[.WARNINGS = eps]][.DIAGNOSTICS = P.DIAGNOSTICS ++ $ppfoldwarnings(F.WARNINGS, P.LOCATION)][.COMPLETION = PPCABRUPT F.MEMORY.COMPLETION]
   -- if F.MEMORY.COMPLETION =/= NORMAL
 
 ;; Ordinary code generation can yield a constant operand without rewriting the AST.
@@ -139,6 +150,7 @@ dec $ppvaluemode(bool) : ppmode
 def $ppexprbody(P, pcpath, expression, PPR) = $ppdispatch(P, pcpath, expression, PPR)
   -- if P.COMPLETION = PPCNORMAL
   -- if $pffact(P.FOLD.FACTS, pcpath) = eps
+  -- if $pfredirect(P.FOLD.REDIRECTS, pcpath) = eps
 def $ppexprbody(P, pcpath, expression, ppmode) = $ppdispatch(P, pcpath, expression, ppmode)
   -- if P.COMPLETION = PPCNORMAL
   -- if ppmode =/= PPR
@@ -146,6 +158,9 @@ def $ppexprbody(P, pcpath, expression, ppmode) = $ppdispatch(P, pcpath, expressi
 dec $pptemporary_shape(pfshape) : bool
 def $pptemporary_shape(PFBINARY pbin expression_1 expression_2) = true
 def $pptemporary_shape(PFUNARY punary expression) = true
+def $pptemporary_shape(PFNOT expression) = true
+def $pptemporary_shape(PFSHORT b expression_1 expression_2) = true
+def $pptemporary_shape(PFTERNARY expression_1 phpType5 expression_2) = true
 def $pptemporary_shape(pfshape) = false -- otherwise
 dec $pptemporary(expression) : bool
 def $pptemporary(NScalarInt (INTEGER i) metadata) = true
@@ -331,3 +346,68 @@ def $ppcvcheck(NScalarFloat (FLOAT text) metadata) = REJECT (UNSUPPORTED "compil
   -- if (n_out*, true) = $number_text(NFLOAT $hex_bits(text, 0), 14)
 def $ppcvcheck(phpType34) = READY
   -- otherwise
+
+;; Compiler warnings share lexical diagnostic ordering and exact original paths.
+def $ppfoldwarnings(eps, pllocation) = eps
+def $ppfoldwarnings((pcpath, ptbytes, z) :: (pcpath_tail, ptbytes_tail, z_tail)*, pllocation) = (PLDIAGNOSTIC "warning" "constant-warning" ([ptbytes]) (pllocation[.PATH = pcpath][.LINE = n])) :: $ppfoldwarnings((pcpath_tail, ptbytes_tail, z_tail)*, pllocation)
+  -- if z = n
+def $plmessage(PLDIAGNOSTIC "warning" "constant-warning" ([ptbytes]) pllocation) = ptbytes
+
+;; Only an actually compiled read publishes a runtime redirect. Unvisited
+;; rewrites retained by an outer prepass are not executable operands.
+def $ppexprbody(P, pcpath, expression, PPR) = $ppexpr(P[.REDIRECTS = P.REDIRECTS ++ [(pcpath, pcpath_target, false)]], pcpath_target, expression_target, PPR)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = eps
+  -- if $pfredirect(P.FOLD.REDIRECTS, pcpath) = (pcpath_target)
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_target) = (expression_target)
+
+def $ppdispatch(P, pcpath, NExprBooleanNot expression metadata, PPR) = $ppnotdone($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
+def $ppnotdone(P, pcpath) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppnotdone(P, pcpath) = $ppoperandresult(P, $pfnot(P.FOLD, pcpath, P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppclearvalue(P) = P[.FOLD = P.FOLD[.VALUE = eps]]
+def $ppdispatch(P, pcpath, expression, PPR) = $ppshort($ppexpr(P, pcpath ++ [PCFIELD 0], expression_left, PPR), pcpath, b_or, expression_right)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+def $ppshort(P, pcpath, b_or, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppshort(P, pcpath, b_or, expression) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = eps
+def $ppshort(P, pcpath, b_or, expression) = $ppshortconstant($ppfoldresult(P, $pftruth(P.FOLD, pcpath, pvalue, P.LOCATION.LINE)), pcpath, b_or, pvalue, expression)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+def $ppshortconstant(P, pcpath, b_or, pvalue, expression) = $ppoperandresult(P, $pftruth(P.FOLD, pcpath, pvalue, P.LOCATION.LINE))
+  -- if P.FOLD.VALUE = (PBOOL b_or)
+def $ppshortconstant(P, pcpath, b_or, pvalue, expression) = $ppshortfold($ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR), pcpath)
+  -- if P.FOLD.VALUE = (PBOOL b)
+  -- if b =/= b_or
+def $ppshortfold(P, pcpath) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppshortfold(P, pcpath) = $ppoperandresult(P, $pftruth(P.FOLD, pcpath, pvalue, P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+def $ppshortfold(P, pcpath) = P[.REDIRECTS = P.REDIRECTS ++ [(pcpath, pcpath ++ [PCFIELD 1], true)]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = eps
+
+;; Grouping is a grammar fact. Check nested chains only when ordinary
+;; compilation reaches this conditional; prepass selection can erase it.
+def $ppgrouping(eps) = eps
+def $ppgrouping((MparenthesizedConditional b) :: metadata) = (b)
+def $ppgrouping(metadataEntry :: metadata) = $ppgrouping(metadata)
+  -- if $ppgrouping_tag(metadataEntry) = false
+def $ppgrouping_tag(MparenthesizedConditional b) = true
+def $ppgrouping_tag(metadataEntry) = false -- otherwise
+def $ppternarycheck(P, NExprTernary expression_cond phpType5_inner expression_false metadata, phpType5_outer) = $ppunsupported(P, "missing nested conditional grouping context")
+  -- if $ppgrouping(metadata) = eps
+def $ppternarycheck(P, NExprTernary expression_cond phpType5_inner expression_false metadata, phpType5_outer) = $ppternarychain(P, phpType5_inner =/= ABSENT, phpType5_outer =/= ABSENT)
+  -- if $ppgrouping(metadata) = (false)
+def $ppternarycheck(P, expression, phpType5) = P
+  -- otherwise
+def $ppternarychain(P, true, true) = $ppcheck(P, $context_error("Unparenthesized `a ? b : c ? d : e` is not supported. Use either `(a ? b : c) ? d : e` or `a ? b : (c ? d : e)`", P.LOCATION.LINE))
+def $ppternarychain(P, true, false) = $ppcheck(P, $context_error("Unparenthesized `a ? b : c ?: d` is not supported. Use either `(a ? b : c) ?: d` or `a ? b : (c ?: d)`", P.LOCATION.LINE))
+def $ppternarychain(P, false, true) = $ppcheck(P, $context_error("Unparenthesized `a ?: b ? c : d` is not supported. Use either `(a ?: b) ? c : d` or `a ?: (b ? c : d)`", P.LOCATION.LINE))
+def $ppternarychain(P, false, false) = P
+def $ppdispatch(P, pcpath, NExprTernary expression_cond phpType5 expression_false metadata, PPR) = $ppclearvalue($ppexpr($ppitemkey($ppexpr($ppternarycheck(P, expression_cond, phpType5), pcpath ++ [PCFIELD 0], expression_cond, PPR), pcpath ++ [PCFIELD 1], phpType5), pcpath ++ [PCFIELD 2], expression_false, PPR))

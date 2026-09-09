@@ -14,6 +14,7 @@ executing recorded work through `33-runtime-compiler.watsup`.
 | `WORK` | Successfully compiled ordinary statements, in compilation order, with original paths, exact statements, lexical environments and final compiler lines. |
 | `EXPRESSIONS` | Per-expression path, final compiler line and optional constant code-generation operand. |
 | `ACCESS` | The corresponding ordinary compiler operand mode at each expression path, in the same order. |
+| `REDIRECTS` | Executable read redirects: original path, selected path and whether the selected result is converted to bool. Raw conditional rewrites preserve operand acquisition; constant-left logical rewrites skip an already compiled truth conversion. |
 | `NAMES` | Nonfolded ordinary constant reads: path and exact lexical name-resolution descriptor. Folded or unvisited children have no runtime name lookup entry. |
 | `DIAGNOSTICS` | Ordered namespace/import compiler diagnostics, including exact byte messages and their source-unit locations. |
 | `LOCATION` | Active or last ordinary compiler position. Lexical diagnostic locations are carried by the diagnostics themselves. |
@@ -124,7 +125,8 @@ working directory, status and raw output channels.
 The supported ordinary statements are expression statements, echo, unset, blocks,
 inline output and no-ops, plus the control statements described below. Expressions
 cover the current scalar/named-constant, variable, assignment/reference,
-`+ - * / === !==`, unary sign, array and dimension subset. Namespace and all import
+`+ - * / === !==`, unary sign/not, logical/short-circuit operators, ternaries,
+array and dimension subset. Namespace and all import
 kinds supply lexical context; admitted constant fetches and array prepasses consume
 it. Compile-time computed-name warnings and HTTP-variable assignment flags remain
 Unsupported. Functions/classes, declare effects and other unimplemented statements still
@@ -167,3 +169,20 @@ records existing structural occurrence paths, and validates break/continue depth
 before runtime begins. [CONTROL-COMPILER](CONTROL-COMPILER.md) describes order,
 metadata and remaining boundaries. Runtime continuations consume the same checked
 source occurrences and installed constant pools.
+
+Truth compilation keeps prepass replacement separate from ordinary code generation.
+A constant-left logical operation can omit right-side compilation or emit only
+right-side Boolean conversion; a dynamic left operand compiles both sides. Compiler
+warnings are merged at their actual position among lexical diagnostics and survive
+later static failure. Full and shorthand ternaries ordinarily compile all their
+children; nested-chain checks consume `parenthesizedConditional` only when that
+compiler invocation is reached. Array prepass can erase the conditional beforehand.
+
+Only actually visited read replacements appear in runtime `REDIRECTS`; a partial
+prepass redirect below an entirely folded parent has no executable role. Runtime
+resolves the target from the same compiled unit's canonical occurrence table,
+retaining origin, ending line and pool identity across resumption. Raw redirects
+preserve delayed CV/reference results because prepass removed the value-copying
+conditional. Logical redirects convert the right result once. These contracts are
+checked by the source truth and compiler campaigns, including skipped compile
+errors, NaN warning phase/count, grouping and reference/array identity interactions.

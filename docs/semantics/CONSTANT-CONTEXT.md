@@ -1,7 +1,7 @@
 # Checked constant-expression work
 
 `45-constant-context.watsup` supplies an internal compiler helper for the admitted
-scalar, named-constant, arithmetic, identity, array and dimension expressions
+scalar, named-constant, arithmetic, identity, Boolean, conditional, array and dimension expressions
 in an explicit lexical namespace/import environment. It retains
 partial constant folds as facts about exact checked source occurrences. The
 ordered source compiler uses it through `46-source-compiler.watsup`, and
@@ -22,6 +22,7 @@ does not establish that constant evaluation folds that dimension.
 | `state.SOURCE` | Original checked program, unit ID and generated structural occurrences. Metadata and expression syntax remain unchanged. |
 | `state.MEMORY` | Isolated pure constant store. Completion is `NORMAL`, a source-backed `STATICERROR`, or explicit `UNSUPPORTED`. |
 | `state.FACTS` | Relative path, folded value and effective compiler line; their identity includes the enclosing source-unit ID. Array values designate tables in this store. |
+| `state.REDIRECTS` / `state.WARNINGS` | Selected conditional occurrence replacements and ordered compiler-warning bytes/lines; ordinary compilation exports only redirects it actually visits. |
 | `state.VALUE` | Optional whole-expression folded value. Its absence does not discard successfully folded children. |
 | `state.ENV` / `state.CONTEXTS` | Active lexical environment and the environment first used at each visited path. Reusing a path under a changed environment is rejected, even if its prior value did not fold. |
 
@@ -49,7 +50,8 @@ by source occurrence, rather than by expression equality. While/do/for source
 execution reuses installed pools; future function execution must preserve the
 same compiled-source ownership contract.
 
-Constant evaluation visits both operands of admitted binary operators, and visits
+Constant evaluation visits both operands of admitted binary operators (including
+short-circuit operators), and visits
 a dimension's base then key. An absent dimension key errors before either child
 is visited. An array first visits each entry's value then its key, in entry order.
 It processes every entry before deciding whether the array can be constant, even
@@ -106,3 +108,18 @@ inventing a line. `tests/semantics/string_lines.py` compares all12 retained orig
 source witnesses through native PHP and the source machine, two encoded profiles
 through the compiler, and seven edited metadata boundaries. Encoded-profile checks
 do not claim the source CLI accepts those profiles.
+
+Boolean folding follows its compiler phase. The array prepass visits both logical
+operands before selecting a result; ordinary short-circuit compilation can skip
+its right operand. Constant NaN Boolean conversion warnings remain compiler events,
+including the ordinary OR compiler's second conversion when it short-circuits.
+Unary not defers every float operand; XOR permits constant conversion warnings.
+
+A prepass conditional with a constant condition replaces itself with its selected
+child, including a nonconstant child. `REDIRECTS` records the original and selected
+paths without changing the checked AST. The selected child's cached literal line
+and delayed-read/reference behavior survive. A nonconstant condition visits both
+arms. Ordinary ternary compilation visits both arms and applies nested-chain
+legality using checked grouping metadata; a conditional erased by prepass selection
+is not checked later. `truth_compiler.py` and `truth_expressions.py` separately
+validate compiler diagnostics/descriptors and actual source execution.

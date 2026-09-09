@@ -514,6 +514,8 @@ CASES.update({
 
 from control_flow import CASES as CONTROL_CASES
 CASES.update(CONTROL_CASES)
+from truth_expressions import CASES as TRUTH_CASES
+CASES.update(TRUTH_CASES)
 
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
@@ -705,7 +707,7 @@ def main():
     assert (oracle_identity['version'], oracle_identity['sapi'], oracle_identity['int_size'], oracle_identity['zts']) == ('8.5.10', 'cli', 8, False)
     oracle_identity['binary_sha256'] = hashlib.sha256(PHP.read_bytes()).hexdigest()
     oracle_identity['source_commit'] = '34308a6666b2d489c509541ea9befea9e2b42348'
-    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, storage, array, reference, namespace constant and if/while/do/for/jump checked source execution fixtures', 'profile': PROFILE,
+    report = {'selection_prefix': args.prefix, 'budgets': {'transitions': 100000, 'worker_seconds': 30, 'process_seconds': 35}, 'seeds': {'alias': 85010, 'scalar': 6614, 'array_keys': 7116}, 'scope': 'authored scalar, storage, array, reference, namespace constant, control and truth-expression checked source execution fixtures', 'profile': PROFILE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'oracle': oracle_identity,
               'fingerprints': before, 'results': results, 'negative_checks': negatives}
     raw = ROOT / 'coverage' / ('results-semantic-source-selected.jsonl' if args.prefix else 'results-semantic-source.jsonl')

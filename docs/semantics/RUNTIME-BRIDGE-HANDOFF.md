@@ -293,3 +293,54 @@ Next source activation sequence, agreed with the parent after this control slice
 Current source arithmetic admission is only `+`, `-`, `*`, `/`, `===`, `!==`
 and unary `+`/`-`; never infer broader source support from registered numeric
 helpers. Preserve the full-core objective while publishing bounded reviewed changes.
+
+## Accepted truth expression source activation
+
+The registered source implementation adds boolean negation, `&&`/`||`, `and`/`or`/`xor`,
+and full/shorthand ternary. Shared `$truth`/`$truth_value` declarations now live
+in 30 for compiler use, with definitions retained in 50. Runtime 51 resolves
+conditions once, uses the appropriate ending line, and copies an ordinary selected
+ternary arm at its arm boundary. Shorthand retains the already resolved original
+value. This prevents later parent operands from changing a selected CV/reference
+result. XOR uses the ordinary delayed binary operand protocol before left/right
+truth conversion. No comparison operator admission is implied.
+
+Compiler 45/46 preserve the distinct prepass and ordinary compilation phases.
+Ordinary constant-left short circuiting can skip RHS compilation; the constant
+prepass visits both children first. NaN truth warnings can occur during either
+phase, with distinct multiplicities, and retained diagnostics must not be erased
+by a later static error. Exact ternary grouping metadata prerequisite 6005090b
+allows grouping errors to occur only when ordinary compilation reaches them.
+
+`P.REDIRECTS` exports `(parent path, target path, coerce)` only for executable read
+occurrences. Compact `CODEREDIRECT` records contain paths and a boolean, with no
+array IDs or copied ASTs. Runtime 33 retrieves the exact target expression from
+the retained source occurrence catalog. A raw prepass replacement schedules the
+target `EVAL` or `DIM_PREP` and preserves its delayed CV/reference behavior;
+ordinary ternary `VALUE_COPY` must not run there. A boolean redirect schedules
+RHS evaluation followed by runtime truth conversion, since compilation already
+consumed the constant left operand. `DIM_PREP` then captures the boolean base.
+Pooled values take precedence, and neither write/reference nor unset acquisition
+uses this read redirection. Each target task retains its unit and structural path.
+
+The final source gate passed 854 observations and 25 outcome boundaries,
+including all 63 archived phase/copy/grouping originals, 31 runtime probes and
+16 additional compiler controls (107 distinct new source records after deduplication).
+Canonical `truth_expressions.py` passed 71 normal source/state cases with 1,344
+assertions. Independent review passed 44 alternate sources and four programs
+across 163 budgets each (3,316 assertions), plus compiler redirect/grouping checks
+and canonical origins, bridge and ownership repeats. Final compiler gates passed
+79 truth sources, 896 lint sources and 42+5 constant-context cases. The helper
+explicitly hashes the archived oracle input and rejected an input mutation; final
+evidence uses the fresh 10a40a12 closure. The earlier `.tools` runs remain scratch
+evidence; the production catalog and final frozen reports are authoritative.
+
+
+Immediate next comparison work is isolated under `.tools`: `20-comparison.watsup`,
+`45-comparison-compiler.watsup` and `52-comparison.watsup`; the paired source probe
+passed 117 original programs/1,638 assertions, not a production admission. Preserve
+non-antisymmetric NaN/array order, silent NaN-versus-bool/null comparison, and
+integer-overflow provenance in numeric-string comparison. The current comparison
+draft still needs the twenty-digit decimal/exponent overflow flag refinement and
+additional recursion/ownership/phase probes before publication. Runtime owns20/52;
+compiler owns45 mappings; shared02/04 helper changes require explicit coordination.
