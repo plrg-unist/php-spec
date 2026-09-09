@@ -3,10 +3,28 @@
 Quiet publication is accepted at **a42fddfe**, runtime evidence **608a8752**,
 compiler evidence **cd0f3d3f** and
 [canonical independent review](../../coverage/semantics/quiet-access-review.json).
-Root orchestrates; runtime4 hands off runtime, compiler4 continues compiler rules,
+Root orchestrates; runtime5 owns runtime, compiler4 continues compiler rules,
 review7 owns independent evidence/status. Full core remains unfinished. Do not push.
 
-## Accepted quiet/name publication
+Current continuation: isset/empty **701e39fa**, author **65cefcc1**, compiler
+**72c30740** are independently accepted at835/afbaa198; see
+[review](../../coverage/semantics/isset-empty-review.json) and
+[contract](ISSET-EMPTY-REVIEW.md). Earlier quiet and guarded prototypes below retain
+their original identities. Guarded coalescing assignment is now accepted at
+f073c750/1fe36808,137 sources,8 author/3760 and7 independent/3024 assertions.
+The request provider is accepted atbe12200b/9a5b11e1 with explicit external facts
+only; [request contract](REQUEST-INPUTS.md) excludes bootstrap admission.
+
+Next: review compiler AUTOGLOBALS642 frozen manifest in
+`.tools/autoglobal-compiler-checked/frozen-review-inputs.json`, then paired
+request/bootstrap and GLOBALS snapshot runtime originals. Compiler4 has the
+activation-order original prediction failures and actual first descriptor failure;
+runtime5 is retaining authored primitive request matrices before implementation.
+Isset232/4pending and7dense2655 raw evidence is durable. Preserve all12 old
+container controls, the guarded GLOBALS source and four isset GLOBALS boundaries.
+Full quiet/CV integration precedes calls/frames; final core/syntax/offline remain due.
+
+## Historical accepted quiet/name publication
 
 Canonical fingerprint **9c46ba66** has 822 public inputs. Final private 829 is
 `.tools/runtime4-quiet-final/candidate-inputs.json`, SHA256
