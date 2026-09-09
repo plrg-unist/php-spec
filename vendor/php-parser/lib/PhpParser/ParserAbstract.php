@@ -1011,6 +1011,10 @@ abstract class ParserAbstract implements Parser {
 
     protected function fixupArrayDestructuring(Array_ $node): Expr\List_ {
         $this->createdArrays->offsetUnset($node);
+        if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error
+            && $this->tokens[$node->items[0]->value->getStartTokenPos()]->text === ',') {
+            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
+        }
         return new Expr\List_(array_map(function (Node\ArrayItem $item) {
             if ($item->value instanceof Expr\Error) {
                 // We used Error as a placeholder for empty elements, which are legal for destructuring.
@@ -1027,6 +1031,10 @@ abstract class ParserAbstract implements Parser {
     }
 
     protected function postprocessList(Expr\List_ $node): void {
+        if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error
+            && $this->tokens[$node->items[0]->value->getStartTokenPos()]->text === ',') {
+            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
+        }
         foreach ($node->items as $i => $item) {
             if ($item->value instanceof Expr\Error) {
                 // We used Error as a placeholder for empty elements, which are legal for destructuring.

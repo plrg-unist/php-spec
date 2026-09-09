@@ -17,6 +17,9 @@ array-kind preservation `09f33419`, independently reviewed in `d4231d20` and
 `b0f11653`. The reviewed comparison implementation validates 1,142 originals plus 25 negatives,
 1,184 compiler lints and 48 dedicated phase lints; consult PROGRESS for its
 commit and independent evidence.
+First-hole metadata also preserves the actual leading comma line through checked
+transport; `tests/list_line_metadata.py` covers 31 source/encoding profiles and
+409 boundaries. Empty `list()` is excluded. Compiler consumption remains pending.
 
 Compiler owns 11/15–19/21–23/45-constant-context/46/47, metadata and compiler tests.
 Runtime owns 20/30–44/45-dimension-write/50–53, execution and source tests. Reviewer
@@ -72,13 +75,7 @@ Compiler scratch preparations, all outside watched inputs:
    PPRW access probes are in `.tools/probe-update-compiler.py`. These are not runtime
    admission. Runtime must supply exact expression-line projections; call-target
    fallback zero otherwise prevents the intended static rejection.
-2. First-hole metadata is `.tools/ParserAbstract-first-hole.php`, with draft test
-   `.tools/list_line_metadata.py` (31 source/encoding profiles). Preserve the first
-   comma token's line before Error placeholders become null; require actual comma,
-   since empty list() has a placeholder at ')'. Two originals have identical old
-   checked ASTs but native referenceability errors on lines 2 versus 1. The existing
-   metadata cannot recover this distinction. Publish/gate this separately.
-3. Genuine list targets need a separate frontend phase repair:
+2. Genuine list targets need a separate frontend phase repair:
    `.tools/ParserAbstract-list-targets.php` converts nested Array_ before the global
    empty-array check, keeping original kind, unpack and omitted slots. The 16 exact
    originals `coverage/semantics/destructuring-list-target-originals.json` include native-valid skipped logical
@@ -87,13 +84,13 @@ Compiler scratch preparations, all outside watched inputs:
    precede long-array rejection. Existing archived single witness and original 28
    losses are in the destructuring-metadata coverage ledger. Do not silently exclude
    these sources or conflate this acceptance change with first-hole metadata.
-4. The global empty-array checker also rejects valid skipped ordinary array holes:
+3. The global empty-array checker also rejects valid skipped ordinary array holes:
    `coverage/semantics/array-hole-phase-originals.json` retains six originals, three native-valid
    short-circuit/prepass-skipped cases and three visited-error controls. After the
    first-hole/genuine-list prerequisites, introduce a faithful checked Array_
    omission representation and defer rejection to exact compiler visits. This is
    an outstanding source-completeness gap, not an acceptable parser exclusion.
-5. Unpack drafts `.tools/45-unpack-compiler.watsup` and
+4. Unpack drafts `.tools/45-unpack-compiler.watsup` and
    `.tools/46-unpack-compiler.watsup` passed 18 original lints/invariant controls;
    rebase them onto comparisons before use. Traverse every operand before constant
    construction; scalar unpack is static only for a fully constant array. A dynamic

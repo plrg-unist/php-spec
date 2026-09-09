@@ -47,7 +47,7 @@ for tag, node in nodes.items():
     for field in node['fields']:
         field['domain'] = type_name(field['type'])
 metadata = {
-    **{k: 'int' for k in ('startLine', 'endLine', 'startFilePos', 'endFilePos', 'startTokenPos', 'endTokenPos', 'kind', 'namespaceBraceLine', 'statementTerminatorLine', 'statementBodyLine', 'destructuringArrayKind')},
+    **{k: 'int' for k in ('startLine', 'endLine', 'startFilePos', 'endFilePos', 'startTokenPos', 'endTokenPos', 'kind', 'namespaceBraceLine', 'statementTerminatorLine', 'statementBodyLine', 'destructuringArrayKind', 'listFirstHoleLine')},
     **{k: 'text' for k in ('rawValue', 'docLabel', 'docIndentation', 'propertyName')},
     'hasLeadingNewline': 'bool',
     'parenthesizedConditional': 'bool',

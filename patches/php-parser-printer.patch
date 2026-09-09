@@ -476,7 +476,14 @@ index 50a8e504..94fc8796 100644
          /** @var Node|null $origNode */
 --- a/vendor/php-parser/lib/PhpParser/ParserAbstract.php
 +++ b/vendor/php-parser/lib/PhpParser/ParserAbstract.php
-@@ -1021,6 +1021,7 @@
+@@ -1013,2 +1013,6 @@
+         $this->createdArrays->offsetUnset($node);
++        if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error
++            && $this->tokens[$node->items[0]->value->getStartTokenPos()]->text === ',') {
++            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
++        }
+         return new Expr\List_(array_map(function (Node\ArrayItem $item) {
+@@ -1021,6 +1025,7 @@
                      $this->fixupArrayDestructuring($item->value),
 -                    $item->key, $item->byRef, $item->getAttributes());
 +                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
@@ -486,3 +493,10 @@ index 50a8e504..94fc8796 100644
 +        }, $node->items), ['kind' => Expr\List_::KIND_ARRAY,
 +            'destructuringArrayKind' => $node->getAttribute('kind')] + $node->getAttributes());
      }
+@@ -1028,2 +1033,6 @@
+     protected function postprocessList(Expr\List_ $node): void {
++        if (isset($node->items[0]) && $node->items[0]->value instanceof Expr\Error
++            && $this->tokens[$node->items[0]->value->getStartTokenPos()]->text === ',') {
++            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
++        }
+         foreach ($node->items as $i => $item) {

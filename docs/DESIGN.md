@@ -63,6 +63,10 @@ Converted lists also retain integer `destructuringArrayKind`, the original
 `list()` from converted array targets. Keeping the list representation preserves
 omitted slots; the additional field lets fresh printing retain otherwise-invalid
 nested `array(...)` targets without changing frontend acceptance.
+Leading omitted list slots retain integer `listFirstHoleLine` from the actual
+comma token before its placeholder is removed. Empty `list()` has a closing-token
+placeholder and does not get this field. The line distinguishes otherwise identical
+checked trees whose later compiler diagnostics use different source lines.
 
 Ternaries retain boolean `parenthesizedConditional`, set by the actual grouping
 production and false at ternary construction. Call/control parentheses do not
