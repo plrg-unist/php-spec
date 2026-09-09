@@ -49,6 +49,12 @@ Separate returned values from returned references and bind each parameter once
 in the correct order. Use existing location/reference and copy rules; retaining
 an argument as a reference wrapper is different from copying its value.
 
+Keep the request-global bindings and symbol order separate from each frame's
+local ENV/CVS/SYMBOLS. GLOBALS access and superglobal names resolve the request
+table inside functions, while ordinary locals use the frame table. Both routes
+retain their actual shared heap-cell ownership. HTTPROOTS and ACTIVATED remain
+request-wide; callbacks replace global bindings rather than frame locals.
+
 Add return completion and cleanup through the existing control mechanism.
 Top-level return and return from foreach must release active iterator ownership
 while preserving final aliases. Function return restores caller context once,
