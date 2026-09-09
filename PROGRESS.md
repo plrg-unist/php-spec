@@ -25,9 +25,9 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Active ownership
 
-- Runtime: compound operations and remaining numeric dispatch, then arrays/foreach.
-- Compiler: nullable ordinary-array omission representation, then declarations/frames.
-- Reviewer: independent gates, discrepancy history, inventory, concise docs and progress.
+- `runtime_next`: compound implementation and remaining numeric dispatch, then arrays/foreach.
+- `compiler4`: nullable ordinary-array frontend/schema implementation, then declarations/frames.
+- `compiler3`: independent review, discrepancy history, inventory, concise docs and progress.
 - Stage owned files, commit reviewed increments, never push. Save watched bytes and run evidence/inventory preflight before long campaigns.
 
 [Runtime handoff](docs/semantics/RUNTIME-SUCCESSOR-HANDOFF.md),
@@ -81,23 +81,23 @@ must reject unfinished or stale entries.
 
 ## Next gates and decisions
 
-Pair twelve compound assignments with checked PPRW/PFSTOP order, captured targets,
-delayed CV RHS reads, array `+=` and exact diagnostics. The rebased private prototype
-passes 81 author originals/1,204 assertions, with additional timing controls; it
-still needs production admission. Independent review found an incorrect early
-compound `$this` rejection and a delayed DIM diagnostic-line error; immutable
-originals are linked in the discrepancy ledger. A corrected compiler guard passes
-324 phase probes, and 133 independent runtime originals/3,377 state assertions
-pass its bounded draft. DIM opcode-line correction and full gates remain pending. Remaining numeric/byte/power
-operators, casts and literal-concat variable-name classification are separate
-source work. Computed plain-write/reference/unset environment-name protocols remain
-prior explicit boundaries. `??=` requires quiet reads and memoized writes.
+Twelve compound assignments remain private candidates. Independent review retained
+an incorrect early `$this` rejection and delayed DIM diagnostic-line error in
+`c6c2c298`; corrected candidates pass 324 lint observations, 156 access paths,
+six compiler-line checks and 277 runtime originals/5,393 state assertions.
+Three loops resume identically at every budget 0–100. Final compiler context stays
+separate from the captured target opcode line. The 951-source author gate,
+production admission, preflight and full campaign/raw audit remain pending.
+Remaining ordinary numeric/byte/power operators, casts and literal-concat name
+classification are separate source work. Computed plain-write/reference/unset
+name protocols remain explicit boundaries; `??=` needs quiet reads and memoized writes.
 
-Ordinary Array_ omissions should use nullable items and exact first-omission
-context: Zend stores null entries and reports prior-element/compiler lines. No new
-ArrayHole node is justified. Independently repeat the 16 fresh line originals,
-then gate checked schema, deterministic consumer remapping, printer and exact
-compiler visits together. Preserve skipped branches and original hole indices.
+Ordinary Array_ omissions use a private nullable-item/schema prototype, with exact
+first-hole context and parser-folded concat line metadata. No new ArrayHole node
+is justified. Independent review reproduced 22 retained omission originals and
+21 concat-context originals. Production schema/consumer remapping, printer,
+checked metadata boundaries and skipped/reached compiler gates remain pending.
+Preserve original indices and distinguish parser literals from compiler facts.
 
 Then pair reached destructuring/unpack traversal with runtime keys, copies,
 references and errors. Foreach requires persistent bucket/cursor identities and
