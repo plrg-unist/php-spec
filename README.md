@@ -77,8 +77,9 @@ and list keys through checked printing and report exact compiler errors;
 the original sources and retired exceptions. [Array foreach execution](docs/semantics/FOREACH-REVIEW.md)
 now retains captured values/reference cells, saved copy positions and abrupt-exit
 cleanup. [Targeted acceptance](coverage/semantics/foreach-runtime-review.json) binds
-155 sources and complementary dense state checks; the full 4,997-source campaign
-is pending. Objects, frames and two compiler contexts remain unfinished.
+155 sources and complementary dense state checks. The [full container audit](coverage/semantics/container-campaign-audit.json)
+passes 4,997 exact sources and 24 outcome controls; objects, frames and two compiler
+contexts remain unfinished.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the

@@ -74,9 +74,13 @@ request environment/CV diagnostics and ??= follow containers before broader call
 ## Foreach targeted acceptance and active campaign
 
 Code **1f0e8810**, author evidence **7cdd513c**, bounded independent review
-`foreach-runtime-review.json` accepts array iteration. Full 4,997 sources/24 negatives
-are running; no full current closure yet. Never modify canonical watched bytes or
-build tools during that run. Docs/coverage updates are safe. Root orchestrates.
+`foreach-runtime-review.json` accepts array iteration. Full4,997 sources/24 controls pass on a0e3709a/819 public inputs, author d71d4107.
+Independent container-campaign-audit.json verifies every ordered observation and
+actual semantic/native subprocess pair,26 source archive groups plus2 compiler-only
+archives,12 report/bridge bindings,16 pending core cases and4 parser controls.
+Stable container-source.json binds exclusive raw f0fc89de6948c9bae3924dde6aae22490edcdad76222019227f89ffb161d70d6.
+Canonical freeze may be released after this audit commit; later source changes
+make this checkpoint historical. Root orchestrates.
 
 Original `.tools/runtime4-foreach/final-inputs.json`819 is immutable. Independent
 output replay passed143, but dense `independent-holder-element-rebound` exposed a
@@ -105,20 +109,12 @@ remain separate. Full compiler89/metadata20 has two explicit pending contexts:
 header target diagnostic and nullsafe property iterable. Producer20 plain/UTF16
 source/body-line and20 metadata controls passed independent replay.
 
-Next review: audit full raw ordered membership with
-`.tools/review6-container-campaign-audit.py` after runtime publishes current summary;
-compare historical4407 raw hash and exact original archives. Compiler current report
-should cover5039 lints after final12 additions. Preserve old5027 run as historical
-with explicit correction/catalogue proof. Then update concise current status.
-
-Quiet/CV next remains required: seven ordinary request environment, five quiet,
-one list header, one return and two foreach compiler contexts are explicit work.
-`QUIET-CV-REVIEW.md` and28 native originals distinguish delayed CV rereads, temporary
-reuse and header write state. Independent next header prototype review passed120
-native/lint/checked originals,113 source/compiler and40 compile diagnostic prefixes,
-seven quiet excluded; first partial diagnostic-map failure reproduced. Its immutable
-`.tools/header-runtime-checked` still uses old foreach69 and must rebase before
-admission. No next-family source admission is implied.
+Next: paired quiet/name source publication, then complete ??=/GLOBALS/requestenv and
+isset/empty before broader calls/frames. Read [next private review handoff](QUIET-REVIEWER-HANDOFF.md)
+for exact immutable candidates and already completed independent source/state
+reviews. Do not rerun historical preparation scripts or overwrite private snapshots.
+Compiler aggregate5,027 remains historical; exact final12 lints are fresh in
+foreach-final-catalogue-compiler.json and already members of corrected89 focused.
 
 ## Historical ordinary closure and validation discipline
 

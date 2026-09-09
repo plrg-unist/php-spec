@@ -2,7 +2,7 @@
 
 Array foreach code **1f0e8810** has [bounded runtime acceptance](../../coverage/semantics/foreach-runtime-review.json):
 155 exact sources, nine author state programs/6,498 assertions and eight independent
-programs/3,096 assertions. The full 4,997-source campaign is pending. Object and
+programs/3,096 assertions. The [full 4,997-source container audit](../../coverage/semantics/container-campaign-audit.json) passes. Object and
 Traversable protocols, return/frames and header/nullsafe compiler contexts remain
 unfinished. The pinned engine is PHP 8.5.10;
 [18 native originals](../../coverage/semantics/foreach-independent-cursor-originals.json)
@@ -82,4 +82,4 @@ is changed when resuming. Earlier timeouts and tool failures remain failures.
 The final catalogue adds twelve unchanged prerequisite sources to the corrected
 candidate. Exact non-CASES harness bytes, selected sources, fixtures, modules and
 tools bind the completed state runs to publication; this does not relabel those
-runs as a fresh aggregate campaign. Current full source acceptance awaits its raw audit.
+runs as a fresh aggregate campaign. The later full source campaign now passes its independent ordered/raw/archive audit.
