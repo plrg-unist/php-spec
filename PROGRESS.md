@@ -6,18 +6,22 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Explicit-input request bootstrap, GLOBALS access/snapshots and top-level magic
-constants are accepted at **652d10b7**, with author evidence **d3dfb87a** and
-compiler evidence **ca3ac883**. The [independent review](coverage/semantics/request-environment-review.json)
-binds reviewed **845/1d206c8e** to263 request sources and44 ordinary magic sources.
-The263 union retains260 parent and3 consumer-successor observations; canonical
-smokes and exact adapter/state bridges are separate, not a fresh canonical263 run.
-Eight independent state programs/1,936 assertions bridge through72 final states;
-six final author programs pass2,619 assertions. [Input](docs/semantics/REQUEST-INPUTS.md)
-and [state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts distinguish explicit
-external facts, PG ownership, CV order, callback replacement and source identity.
+The fresh **263-source explicit-request campaign passes** on846/14d17662.
+[Independent raw audit](coverage/semantics/quiet-request-integration-review.json)
+checks263 native calls,526 complete frontend/adapter responses and every primitive
+input/source/state/output; the2,381-file lossless archive is byte-verified.
+Author evidence is **c9fce8c9**. The5,706-case ordinary campaign remains running;
+its results and full quiet/CV acceptance are pending.
 
-Next, run full quiet/CV integration with a frozen catalogue and explicit invocation
+Request/GLOBALS/top-level magic code **652d10b7** is accepted at **eed5bf8d**,
+after author **d3dfb87a** and compiler **ca3ac883**. Its historical845 bridge
+retains260+3 private request observations and44 ordinary magic sources, eight
+independent state programs/1,936 assertions,72 final state comparisons and six
+author programs/2,619 assertions. [Input](docs/semantics/REQUEST-INPUTS.md) and
+[state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts cover external facts,
+PG ownership, CV order, callback replacement and source identity.
+
+Complete the running full quiet/CV integration with its frozen catalogue and invocation
 profiles before [calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md).
 [Independent preflight](coverage/semantics/quiet-integration-preflight-review.json)
 verifies5,706 ordinary cases retain all4,997 historical source bytes, plus263
@@ -34,7 +38,7 @@ Validation infrastructure **9fc1ce9f** now gives **846/14d17662** inputs. Its
 [independent review](coverage/semantics/private-validation-infrastructure-review.json)
 binds13-reference private preflight and exclusive compiler timeout/failure
 retention. Runtime, adapter and catalogues are unchanged. Earlier reports keep
-their exact845 identities; the next broad campaign binds846 separately.
+their exact845 identities; the running broad campaign binds846 separately.
 
 The actual private full compiler gate passes5,753 lints/5,786 aggregate assertions;
 current5,750 is its exact ordered subset after three magic sources moved profiles.
@@ -93,7 +97,7 @@ work; review7 owns independent evidence/inventory/docs. Root orchestrates. Stage
 owned files, commit reviewed increments and never push. Use canonical-root Dune
 builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-QUIET-HANDOFF.md),
 [compiler](docs/semantics/COMPILER-HANDOFF.md) and
-[reviewer](docs/semantics/QUIET-REVIEWER-HANDOFF.md) handoffs retain interfaces.
+[reviewer](docs/semantics/REQUEST-REVIEWER-HANDOFF.md) handoffs retain interfaces.
 
 Each coherent increment needs native/source originals, focused phase/line checks,
 appropriate state/ownership/resumption gates and independent review. Run early
