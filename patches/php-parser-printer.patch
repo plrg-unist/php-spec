@@ -500,3 +500,10 @@ index 50a8e504..94fc8796 100644
 +            $node->setAttribute('listFirstHoleLine', $node->items[0]->value->getStartLine());
 +        }
          foreach ($node->items as $i => $item) {
+@@ -1032,2 +1041,6 @@
+                 $node->items[$i] = null;
++            } else if ($item->value instanceof Array_) {
++                $node->items[$i] = new Node\ArrayItem(
++                    $this->fixupArrayDestructuring($item->value),
++                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
+             }

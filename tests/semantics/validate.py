@@ -521,6 +521,30 @@ CASES.update(COMPARISON_CASES)
 from reference_wrappers import CASES as REFERENCE_WRAPPER_CASES
 CASES.update(REFERENCE_WRAPPER_CASES)
 
+# Exact retained and independent skipped genuine-list phase controls.
+CASES.update({
+    'list-target-original-short-circuit-skipped': b'<?php false && (list(array(,$x))=$a); echo 1;',
+    'list-target-original-prepass-skipped': b'<?php echo [true?1:(list(array(,$x))=$a)][0];',
+    'list-target-reviewed-0-0': b'<?php false && (list(array(,$x))=$a);echo 1;',
+    'list-target-reviewed-0-1': b'<?php true || (list(array(,$x))=$a);echo 2;',
+    'list-target-reviewed-0-2': b'<?php echo [true ? 3 : (list(array(,$x))=$a)][0];',
+    'list-target-reviewed-1-0': b'<?php false && (list(array($x,,))=$a);echo 1;',
+    'list-target-reviewed-1-1': b'<?php true || (list(array($x,,))=$a);echo 2;',
+    'list-target-reviewed-1-2': b'<?php echo [true ? 3 : (list(array($x,,))=$a)][0];',
+    'list-target-reviewed-2-0': b'<?php false && (list([,$x])=$a);echo 1;',
+    'list-target-reviewed-2-1': b'<?php true || (list([,$x])=$a);echo 2;',
+    'list-target-reviewed-2-2': b'<?php echo [true ? 3 : (list([,$x])=$a)][0];',
+    'list-target-reviewed-3-0': b'<?php false && (list(array(array(,$x)))=$a);echo 1;',
+    'list-target-reviewed-3-1': b'<?php true || (list(array(array(,$x)))=$a);echo 2;',
+    'list-target-reviewed-3-2': b'<?php echo [true ? 3 : (list(array(array(,$x)))=$a)][0];',
+    'list-target-reviewed-4-0': b'<?php false && (list(0=>array(,$x))=$a);echo 1;',
+    'list-target-reviewed-4-1': b'<?php true || (list(0=>array(,$x))=$a);echo 2;',
+    'list-target-reviewed-4-2': b'<?php echo [true ? 3 : (list(0=>array(,$x))=$a)][0];',
+    'list-target-reviewed-5-0': b'<?php false && (list(array(,&$x))=$a);echo 1;',
+    'list-target-reviewed-5-1': b'<?php true || (list(array(,&$x))=$a);echo 2;',
+    'list-target-reviewed-5-2': b'<?php echo [true ? 3 : (list(array(,&$x))=$a)][0];',
+})
+
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',

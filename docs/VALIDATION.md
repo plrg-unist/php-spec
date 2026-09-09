@@ -62,6 +62,9 @@ slots, edited kind fields and invalid payloads in plain and encoded sources.
 `tests/list_line_metadata.py` checks first-comma lines, empty/nonempty controls,
 nested lists and encoded sources, including an otherwise identical-AST pair and
 malformed checked metadata.
+`tests/list_target_metadata.py` binds the 16 retained genuine-list originals and
+checks 32 plain/encoded source, checked and fresh-print native diagnostic profiles.
+Twenty skipped original sources are also in the exact semantic source campaign.
 The compiler-context campaign separately mutates a positive brace line and requires
 the diagnostic location to change; semantic validation does not normalize it away.
 The ordinary compiler rejects missing, nonpositive and out-of-range terminator

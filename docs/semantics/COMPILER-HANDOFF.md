@@ -56,11 +56,11 @@ are direct helper inputs and explicit inputs of the broad source fingerprint.
 
 ## Immediate continuation
 
-Runtime must first repair the confirmed explicit-reference fetch discrepancy;
-see RUNTIME-SUCCESSOR-HANDOFF. A singleton explicit wrapper remains observably
-different from a direct value when a false value becomes an array. Wrapper history
-must survive owner-count changes. Direct ASSIGN_DIM still warns. Do not admit new
-mutation operators on the known-broken acquisition substrate.
+Reference-wrapper acquisition is corrected in `3585707a`, reports `eebf79e9`,
+review `5b0dc0f2`: 1,163 exact sources plus 25 negatives and 1,205 compiler lints.
+Singleton explicit wrapper history survives owner-count changes; generic FETCH
+and final ASSIGN_DIM keep their distinct diagnostics. New mutation source
+operators still need paired compiler/runtime activation.
 
 Compiler scratch preparations, all outside watched inputs:
 
@@ -75,15 +75,12 @@ Compiler scratch preparations, all outside watched inputs:
    PPRW access probes are in `.tools/probe-update-compiler.py`. These are not runtime
    admission. Runtime must supply exact expression-line projections; call-target
    fallback zero otherwise prevents the intended static rejection.
-2. Genuine list targets need a separate frontend phase repair:
-   `.tools/ParserAbstract-list-targets.php` converts nested Array_ before the global
-   empty-array check, keeping original kind, unpack and omitted slots. The 16 exact
-   originals `coverage/semantics/destructuring-list-target-originals.json` include native-valid skipped logical
-   and prepass ternary arms currently rejected by the frontend. Preserve rejection
-   order: outer mixed style, spread, RHS read failure and RHS referenceability can
-   precede long-array rejection. Existing archived single witness and original 28
-   losses are in the destructuring-metadata coverage ledger. Do not silently exclude
-   these sources or conflate this acceptance change with first-hole metadata.
+2. Genuine-list nested array conversion now precedes the global ordinary-array
+   omission check. `tests/list_target_metadata.py` binds all 16 immutable originals
+   and checks plain/UTF-16BE checked and fresh-printed diagnostic families; 20
+   native-valid skipped sources are in the source campaign. Reached destructuring
+   compilation remains pending: preserve outer style, spread, RHS read and
+   referenceability errors before long-array rejection.
 3. The global empty-array checker also rejects valid skipped ordinary array holes:
    `coverage/semantics/array-hole-phase-originals.json` retains six originals, three native-valid
    short-circuit/prepass-skipped cases and three visited-error controls. After the

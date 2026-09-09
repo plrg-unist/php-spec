@@ -62,7 +62,9 @@ Converted lists also retain integer `destructuringArrayKind`, the original
 `Array_` long/short kind (1/2). Their existing `kind` continues to distinguish
 `list()` from converted array targets. Keeping the list representation preserves
 omitted slots; the additional field lets fresh printing retain otherwise-invalid
-nested `array(...)` targets without changing frontend acceptance.
+nested `array(...)` targets. Genuine `list()` recursively converts nested array
+targets before the global ordinary-array omission check, so skipped compiler
+branches retain their syntax. Target legality remains a compiler responsibility.
 Leading omitted list slots retain integer `listFirstHoleLine` from the actual
 comma token before its placeholder is removed. Empty `list()` has a closing-token
 placeholder and does not get this field. The line distinguishes otherwise identical

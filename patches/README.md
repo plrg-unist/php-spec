@@ -13,6 +13,7 @@ BSD-3-Clause license.
 | Select PHP 8 concatenation precedence between shifts and pipe | `precedence.php`: `('x' . 1) + 2` previously changed grouping |
 | Retain a trailing comma for singleton positional `clone` call nodes | `clone85.php`: `clone($a,)` otherwise reparsed as unary clone |
 | Retain original array syntax on converted destructuring lists and print it faithfully | `destructuring_metadata.py`: nested `array(...)` otherwise became square syntax, erasing a distinct compiler rejection; list storage retains omitted slots |
+| Convert nested array targets within genuine `list()` before ordinary-array checks | `list_target_metadata.py`: preserves native-valid skipped branches and original target diagnostic families |
 | Preserve the first omitted list slot's comma line before removing its placeholder | `list_line_metadata.py`: otherwise identical checked trees need different compiler diagnostic lines; empty `list()` is a closing-token control |
 | Preserve nested destructuring spread flags when converting array nodes into lists | `destructuring_metadata.py`: nested spreads otherwise became ordinary list entries before checked transport |
 | Retain final omitted destructuring slots | `optional` fixture: `[,]` otherwise printed `[]` |

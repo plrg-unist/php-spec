@@ -1039,6 +1039,10 @@ abstract class ParserAbstract implements Parser {
             if ($item->value instanceof Expr\Error) {
                 // We used Error as a placeholder for empty elements, which are legal for destructuring.
                 $node->items[$i] = null;
+            } else if ($item->value instanceof Array_) {
+                $node->items[$i] = new Node\ArrayItem(
+                    $this->fixupArrayDestructuring($item->value),
+                    $item->key, $item->byRef, $item->getAttributes(), $item->unpack);
             }
         }
     }
