@@ -2,16 +2,16 @@
 ;; return null. This is distinct from ISSET_ISEMPTY's terminal string protocol.
 dec $quiet_name(pstate, nat*) : pstate
 def $quiet_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*) /\ ~$this_name(n_name*)
+  -- if $environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
 def $quiet_name(S, n_name*) = S[.RESULT = KNOWN PNULL]
-  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = eps
 def $quiet_name(S, n_name*) = S[.RESULT = KNOWN PNULL]
-  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = UNDEFINED
 def $quiet_name(S, n_name*) = S[.RESULT = KNOWN pvalue]
-  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
 

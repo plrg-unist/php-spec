@@ -60,14 +60,15 @@ rule PhpStep/literal-abrupt: S ~> S[.TODO = eps][.COMPLETION = pcompletion]
 rule PhpStep/variable: S ~> S[.TODO = ptask_tail*][.RESULT = VARIABLE n_name* $variable_line(phpType32, metadata)]
   -- if S.TODO = (EVAL (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_name(phpType32) = (n_name*)
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if ~$ppglobals_base(NExprVariable phpType32 metadata)
 rule PhpStep/global-this-read: S ~> $global_this_error(S, $runtime_line(S, eps, NExprVariable phpType32 metadata))[.TODO = eps]
   -- if S.TODO = (EVAL (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $direct_this(phpType32)
 rule PhpStep/environment-variable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if S.TODO = (EVAL (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_name(phpType32) = (n_name*)
-  -- if $environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*)
   -- if ~$this_name(n_name*)
 rule PhpStep/dynamic-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), NAME_READ $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprVariable phpType32 metadata)) :: ptask_tail*
@@ -173,7 +174,7 @@ rule PhpStep/write-dynamic: S ~> S_cell[.TODO = (WRITE_NAME $echo_value(pvalue) 
   -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
-  -- if S_cell = $fetch_write_name(S_name, $echo_value(pvalue))
+  -- if S_cell = $fetch_write_name_at(S_name, $echo_value(pvalue), z)
 rule PhpStep/write-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (WRITE_DYNAMIC poperand z) :: ptask_tail*
   -- if S_name = $resolve_name(S, poperand, z)
@@ -210,7 +211,7 @@ rule PhpStep/acquire-dynamic-cell: S ~> S_cell[.TODO = ptask_tail*]
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
-  -- if S_cell = $acquire_name(S_name, $echo_value(pvalue))
+  -- if S_cell = $acquire_name_at(S_name, $echo_value(pvalue), z)
 rule PhpStep/acquire-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (ACQUIRE_DYNAMIC z) :: ptask_tail*
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
@@ -226,7 +227,7 @@ rule PhpStep/bind-dynamic: S ~> S_bound[.TODO = ptask_tail*]
   -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
-  -- if S_bound = $bind_reference(S_name[.CELL = n_source], $echo_value(pvalue))
+  -- if S_bound = $bind_reference_at(S_name[.CELL = n_source], $echo_value(pvalue), z)
 rule PhpStep/bind-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (REF_DYNAMIC poperand n_source z) :: ptask_tail*
   -- if S_name = $resolve_name(S, poperand, z)
@@ -236,7 +237,9 @@ rule PhpStep/bind-dynamic-cv: S ~> S_bound[.TODO = ptask_tail*]
   -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_target*)
-  -- if S_cell = $acquire_name(S_name, n_source*)
+  -- if S_target = $fetch_write_name_at(S_name, n_target*, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_target, n_source*)
   -- if S_cell.COMPLETION = NORMAL
   -- if S_bound = $bind_reference(S_cell, n_target*)
 rule PhpStep/bind-dynamic-cv-name-abrupt: S ~> S_name[.TODO = eps]
@@ -247,8 +250,18 @@ rule PhpStep/bind-dynamic-cv-source-abrupt: S ~> S_cell[.TODO = eps]
   -- if S.TODO = (REF_DYNAMIC_CV poperand n_source* z) :: ptask_tail*
   -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_cell = $acquire_name(S_name, n_source*)
+  -- if S_name.RESULT = KNOWN (PSTRING n_target*)
+  -- if S_target = $fetch_write_name_at(S_name, n_target*, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_target, n_source*)
   -- if S_cell.COMPLETION =/= NORMAL
+rule PhpStep/bind-dynamic-cv-target-abrupt: S ~> S_target[.TODO = eps]
+  -- if S.TODO = (REF_DYNAMIC_CV poperand n_source* z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_target*)
+  -- if S_target = $fetch_write_name_at(S_name, n_target*, z)
+  -- if S_target.COMPLETION =/= NORMAL
 rule PhpStep/unset-name: S ~> S_unset[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (UNSET (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_unset = $unset_name(S, $base64(text))
@@ -284,7 +297,7 @@ def $drive(S, n) = $drive($prune_allocations(S_next), n_next)
   -- if $(n - 1) = n_next
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
+def $initial_state(pcompletion) = {REQUEST eps, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
 dec $source_filename(nat*) : bool
 def $source_filename(n*) = (n* =/= eps /\ ~(0 <- n*))
 dec $php_run(program, nat, text) : pstate

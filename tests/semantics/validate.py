@@ -644,6 +644,10 @@ CASES.update({"quiet-"+name:source for name,source in QUIET_CASES.items()})
 from array_unpack import CASES as UNPACK_CASES
 CASES.update(UNPACK_CASES)
 CASES['unpack-retired-outcome-negative'] = b'<?php $a=[...[]];'
+from magic_constants import CASES as MAGIC_CASES
+CASES.update({'magic-'+name:source for name,source in MAGIC_CASES.items()
+              if name not in ('magic-autoglobal-name', 'magic-concat-globals-name', 'computed-global-priority')})
+CASES['globals-whole-unset-retired-outcome-negative'] = b'<?php unset($GLOBALS);'
 
 
 def fingerprint():
@@ -708,7 +712,7 @@ def main():
                           "exit_status": result.returncode, "observation": json.loads(result.stdout)})
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'runner_failure'
         for source in [b'<?php f()[0]="X";', b'<?php echo $argc;', b'<?php $a=&$argc;',
-                       b'<?php $n="argc"; $a=&$$n;', b'<?php unset($GLOBALS);',
+                       b'<?php $n="argc"; $a=&$$n;',
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php $a="abc";unset($a[0][0]);',
                        *ISSET_PENDING_GLOBALS.values()]:
             path.write_bytes(source)

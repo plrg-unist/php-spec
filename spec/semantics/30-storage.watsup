@@ -2,7 +2,7 @@
 syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
 syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
-syntax pbase = BASE_VALUE poperand | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int
+syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int
 syntax pnode = HCELL nat | HARRAY nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | NOWHERE
 syntax porigin = PORIGIN nat pcpath
@@ -14,7 +14,7 @@ syntax pcoderedirect = CODEREDIRECT pcpath pcpath bool
 syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr*, NAMES pcodename*, REDIRECTS pcoderedirect* }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pupdate = INCREMENT | DECREMENT
-syntax ptask = ISSET_PREP expression bool | ISSET_RESULT bool int | ISSET_NEXT expression* nat | COALESCE_ASSIGN_PREP expression expression int | COALESCE_ASSIGN_WRITE pbase bool int | COALESCE_QUIET expression int int | FOREACH_PREP statement int | FOREACH_CV statement nat* int | FOREACH_NAME statement int | FOREACH_DIM statement int | FOREACH_RESET statement plocation bool int | FOREACH_NEXT nat pnode statement porigin? int | COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
+syntax ptask = GLOBAL_NAME int | ISSET_PREP expression bool | ISSET_RESULT bool int | ISSET_NEXT expression* nat | COALESCE_ASSIGN_PREP expression expression int | COALESCE_ASSIGN_WRITE pbase bool int | COALESCE_QUIET expression int int | FOREACH_PREP statement int | FOREACH_CV statement nat* int | FOREACH_NAME statement int | FOREACH_DIM statement int | FOREACH_RESET statement plocation bool int | FOREACH_NEXT nat pnode statement porigin? int | COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
   | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
@@ -27,11 +27,18 @@ syntax ptask = ISSET_PREP expression bool | ISSET_RESULT bool int | ISSET_NEXT e
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pcursor = CURSOR nat nat
 syntax piterator = ITERATOR nat nat bool pcursor*
-syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax preqbytes = nat*
+syntax prequest = { ENV (preqbytes, preqbytes)*, ARGV preqbytes*, FILE preqbytes, SECONDS int, MICROSECONDS nat, VARIABLES preqbytes, JIT bool, CWD preqbytes? }
+var Q : prequest
+syntax pstate = { REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $cv_name(phpType32) : (nat*)?
 dec $direct_this(phpType32) : bool
 dec $global_this_error(pstate, int) : pstate
+dec $fetch_write_name_at(pstate, nat*, int) : pstate
+dec $acquire_name_at(pstate, nat*, int) : pstate
+dec $bind_reference_at(pstate, nat*, int) : pstate
+dec $location_name_at(pstate, nat*, int) : pstate
 dec $this_name(nat*) : bool
 def $this_name(n*) = (n* = [116,104,105,115])
 dec $initial_state(pcompletion) : pstate
@@ -48,6 +55,25 @@ def $environment_name(n*) = true
   -- if n* <- [[71,76,79,66,65,76,83], [116,104,105,115], [97,114,103,99], [97,114,103,118], [95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,83,69,82,86,69,82], [95,69,78,86], [95,82,69,81,85,69,83,84], [95,70,73,76,69,83]]
 def $environment_name(n*) = false
   -- otherwise
+
+dec $request_roots_nodes((preqbytes, pvalue)*) : pnode*
+dec $symbol_add(preqbytes*, nat*) : preqbytes*
+def $symbol_add(preqbytes*, n*) = preqbytes* -- if n* <- preqbytes*
+def $symbol_add(preqbytes*, n*) = preqbytes* ++ [n*] -- if ~(n* <- preqbytes*)
+dec $symbols_add(preqbytes*, preqbytes*) : preqbytes*
+def $symbols_add(preqbytes*, eps) = preqbytes*
+def $symbols_add(preqbytes_known*, preqbytes :: preqbytes_tail*) = $symbols_add($symbol_add(preqbytes_known*, preqbytes), preqbytes_tail*)
+
+dec $symbol_delete(preqbytes*, nat*) : preqbytes*
+def $symbol_delete(eps, n*) = eps
+def $symbol_delete(preqbytes :: preqbytes_tail*, n*) = preqbytes_tail* -- if preqbytes = n*
+def $symbol_delete(preqbytes :: preqbytes_tail*, n*) = preqbytes :: $symbol_delete(preqbytes_tail*, n*) -- if preqbytes =/= n*
+dec $symbol_unset(pstate, nat*) : preqbytes*
+def $symbol_unset(S, n*) = S.SYMBOLS -- if n* <- S.CVS
+def $symbol_unset(S, n*) = $symbol_delete(S.SYMBOLS, n*) -- if ~(n* <- S.CVS)
+
+dec $environment_blocked(pstate, nat*) : bool
+def $environment_blocked(S, n*) = ($this_name(n*) \/ (S.REQUEST = eps /\ $environment_name(n*)))
 
 dec $lookup(pbinding*, nat*) : nat?
 def $lookup(eps, n_name*) = eps
@@ -70,7 +96,7 @@ def $set_cell(pslot_old :: pslot_tail*, n, pslot) = pslot_old :: $set_cell(pslot
 dec $ensure(pstate, nat*) : pstate
 def $ensure(S, n_name*) = S[.CELL = n_cell]
   -- if $lookup(S.ENV, n_name*) = (n_cell)
-def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.ENV = (BIND n_name* n_cell) :: S.ENV][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]]
+def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.ENV = (BIND n_name* n_cell) :: S.ENV][.SYMBOLS = $symbol_add(S.SYMBOLS, n_name*)][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]]
   -- if $lookup(S.ENV, n_name*) = eps
   -- if n_cell = |S.STORE|
 
@@ -85,13 +111,13 @@ def $reference_cell(S, n) = S[.REFCELLS = n :: S.REFCELLS] -- if ~(n <- S.REFCEL
 ;; reference wrapper. Reference-source acquisition adds the marker afterward.
 dec $fetch_write_name(pstate, nat*) : pstate
 def $fetch_write_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*)
 def $fetch_write_name(S, n_name*) = S_found
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if S_found = $ensure(S, n_name*)
   -- if S_found.STORE[S_found.CELL] = DEFINED pvalue
 def $fetch_write_name(S, n_name*) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED PNULL)]
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if S_found = $ensure(S, n_name*)
   -- if S_found.STORE[S_found.CELL] = UNDEFINED
 
@@ -111,16 +137,16 @@ def $missing(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
 
 dec $read_name(pstate, nat*, int) : pstate
 def $read_name(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*) /\ ~$this_name(n_name*)
+  -- if $environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
 def $read_name(S, n_name*, z) = $missing(S, n_name*, z)
-  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = eps
 def $read_name(S, n_name*, z) = $missing(S, n_name*, z)
-  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = UNDEFINED
 def $read_name(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
-  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
 
@@ -137,25 +163,25 @@ def $resolve_at(S, REFERENCE n, z) = $resolve(S, REFERENCE n)
 
 dec $write_name(pstate, nat*, pvalue) : pstate
 def $write_name(S, n_name*, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*)
 def $write_name(S, n_name*, pvalue) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED pvalue)][.RESULT = KNOWN pvalue]
-  -- if ~$environment_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if S_found = $ensure(S, n_name*)
 
 dec $bind_reference(pstate, nat*) : pstate
 def $bind_reference(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*)
 ;; ZEND_ASSIGN_REF returns an owning reference wrapper when its value is used.
 ;; Consumers dereference this captured cell, even if a name is later rebound.
-def $bind_reference(S, n_name*) = $reference_cell(S, S.CELL)[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.RESULT = REFERENCE S.CELL]
-  -- if ~$environment_name(n_name*)
+def $bind_reference(S, n_name*) = $reference_cell(S, S.CELL)[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.SYMBOLS = $symbol_add(S.SYMBOLS, n_name*)][.RESULT = REFERENCE S.CELL]
+  -- if ~$environment_blocked(S, n_name*)
   -- if S.STORE[S.CELL] = DEFINED pvalue
 
 dec $unset_name(pstate, nat*) : pstate
 def $unset_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if $environment_name(n_name*)
-def $unset_name(S, n_name*) = S[.ENV = $unbind(S.ENV, n_name*)]
-  -- if ~$environment_name(n_name*)
+  -- if $environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
+def $unset_name(S, n_name*) = S[.ENV = $unbind(S.ENV, n_name*)][.SYMBOLS = $symbol_unset(S, n_name*)]
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
 
 dec $runtime_line(pstate, pcpath, expression) : int
 dec $enter_compiled_task(pstate, porigin, ptask, ptask*) : pstate

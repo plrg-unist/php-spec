@@ -3,7 +3,7 @@ syntax ppmode = PPR | PPW | PPRW | PPUNSET | PPIS
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
 syntax ppexprdone = PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath
-syntax ppstate = { LOOPS nat, HEADERASSIGNED bool, CVS ptbytes*, FOLD pfstate, ENV plenv, LOCATION pllocation,
+syntax ppstate = { LOOPS nat, HEADERASSIGNED bool, CVS ptbytes*, AUTOGLOBALS ptbytes*, FOLD pfstate, ENV plenv, LOCATION pllocation,
   COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, WRITES (pcpath, nat)*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate
 
@@ -21,6 +21,7 @@ dec $ppternarychain(ppstate, bool, bool) : ppstate
 dec $ppnamed(ppstate, pcpath, pnresult) : ppstate
 dec $ppcv(ppstate, phpType32, ppmode) : ppstate
 dec $ppcvrecord(ppstate, ptbytes) : ppstate
+dec $ppautorecord(ppstate, ptbytes) : ppstate
 dec $ppcvconverted(ppstate, phpType32) : ppstate
 dec $ppnamecast(ppstate, ppmode, pvalue?) : ppstate
 dec $ppnamecasted(ppstate, ppmode) : ppstate
@@ -59,7 +60,11 @@ dec $ppdone(ppstate, pcpath, ppmode) : ppstate
 dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
 dec $ppunsetexprs(ppstate, pcpath, nat, expression*) : ppstate
 dec $ppunsetcheck(ppstate, expression) : ppstate
-def $ppstart(n, program, ptbytes) = $pplexical({ LOOPS 0, HEADERASSIGNED false, CVS eps, FOLD $pfbegin(n, program), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
+dec $ppupdatecheck(ppstate, expression) : ppstate
+dec $ppassignrefcheck(ppstate, expression, bool) : ppstate
+dec $ppstart_cwd(nat, program, ptbytes, ptbytes?) : ppstate
+def $ppstart(n, program, ptbytes) = $ppstart_cwd(n, program, ptbytes, eps)
+def $ppstart_cwd(n, program, ptbytes, ptbytes_cwd?) = $pplexical({ LOOPS 0, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.FILE = (ptbytes)][.CWD = ptbytes_cwd?]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $pplexical(P, PLDONE plstate pldiagnostic*) = P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*]
@@ -124,7 +129,7 @@ def $ppunsetexprs(P, pcpath, n, eps) = P
 def $ppunsetexprs(P, pcpath, n, expression :: expression_tail*) = $ppunsetexprs($ppexpr($ppunsetcheck($pplocate(P, pcpath ++ [PCINDEX n], $expression_line(expression)), expression), pcpath ++ [PCINDEX n], expression, PPUNSET), pcpath, $(n + 1), expression_tail*)
 def $ppunsetcheck(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("Cannot unset $this", P.LOCATION.LINE))
   -- if $cv_name(phpType32) = ([116,104,105,115])
-def $ppunsetcheck(P, expression) = P -- otherwise
+def $ppunsetcheck(P, expression) = $ppupdatecheck(P, expression) -- otherwise
 
 dec $ppeffective_line(pffact*, pcpath, expression, ppmode) : int
 def $ppeffective_line(pffact*, pcpath, expression, PPR) = z
@@ -177,7 +182,6 @@ def $ppexprbody(P, pcpath, expression, ppmode) = $ppdispatch(P, pcpath, expressi
   -- if ppmode =/= PPR
 
 ;; Updates reject non-writable calls/nullsafe chains before compiling operands.
-dec $ppupdatecheck(ppstate, expression) : ppstate
 dec $ppupdateother(ppstate, expression) : ppstate
 dec $ppnullsafe(expression) : bool
 dec $ppnullsafeclass(phpType19) : bool
@@ -245,9 +249,9 @@ def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = 
 def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
 def $ppdispatch(P, pcpath, NExprConstFetch name metadata, PPR) = $ppnamed(P, pcpath, $pnresolve(P.ENV, PLCONSTANT, name))
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppclearvalue(P)
-  -- if $cv_name(phpType32) = ([116,104,105,115])
+  -- if ($cv_name(phpType32) = ([116,104,105,115]) \/ $cv_name(phpType32) = ([71,76,79,66,65,76,83]))
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppvariable(P, pcpath, phpType32, ppmode)
-  -- if $cv_name(phpType32) =/= ([116,104,105,115])
+  -- if ($cv_name(phpType32) =/= ([116,104,105,115]) /\ $cv_name(phpType32) =/= ([71,76,79,66,65,76,83]))
 def $ppdispatch(P, pcpath, NExprAssign expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, false)
 def $ppdispatch(P, pcpath, NExprAssignRef expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, true)
 def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, expression_1, expression_2)
@@ -328,8 +332,12 @@ def $ppvaluemode(false) = PPR
 def $ppvaluemode(true) = PPW
 def $ppassign(P, pcpath, NExprVariable phpType32 metadata, expression_2, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
   -- if $cv_name(phpType32) = ([116,104,105,115])
-def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
+def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr($ppassignrefcheck($ppupdatecheck(P, expression_1), expression_2, b), pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
   -- otherwise
+;; Reference assignment checks the original source before delayed target compilation.
+def $ppassignrefcheck(P, NExprVariable phpType32 metadata, true) = $ppcheck(P, $context_error("Cannot acquire reference to $GLOBALS", P.LOCATION.LINE))
+  -- if $cv_name(phpType32) = ([71,76,79,66,65,76,83])
+def $ppassignrefcheck(P, expression, b) = P -- otherwise
 def $ppassignright(P, pcpath, expression_1, expression_2, b) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppassignright(P, pcpath, NExprArrayDimFetch expression_base phpType5 metadata, expression_2, false) = $ppdone($ppcv(P, phpType32, PPR), pcpath ++ [PCFIELD 1], PPR)
@@ -532,7 +540,7 @@ def $ppitems(P, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEA
 ;; FETCH_R emits its deprecation independently of that compilation-unit flag.
 def $ppcv(P, phpType32, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppcv(P, phpType32, ppmode) = $ppcvrecord($ppheader($ppclearvalue($ppcvconverted(P, phpType32)), n*, ppmode, true), n*)
+def $ppcv(P, phpType32, ppmode) = $ppcvrecord($ppautorecord($ppheader($ppclearvalue($ppcvconverted(P, phpType32)), n*, ppmode, true), n*), n*)
   -- if P.COMPLETION = PPCNORMAL
   -- if $cv_name(phpType32) = (n*)
 def $ppheader(P, n*, ppmode, b_cv) = P
@@ -561,7 +569,7 @@ def $ppcvconverted(P, phpType32) = P
   -- otherwise
 def $ppnamecast(P, ppmode, eps) = $ppclearvalue(P)
 def $ppnamecast(P, ppmode, (pvalue)) = $ppnamecasted($ppoperandresult(P, $pfwarned(P.FOLD, P.LOCATION.PATH, $stringify(P.FOLD.MEMORY, pvalue, P.LOCATION.LINE))), ppmode)
-def $ppnamecasted(P, ppmode) = $ppheader($ppclearvalue(P), n*, ppmode, false)
+def $ppnamecasted(P, ppmode) = $ppheader($ppclearvalue($ppautorecord(P, n*)), n*, ppmode, false)
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.VALUE = (PSTRING n*)
 def $ppnamecasted(P, ppmode) = P
@@ -604,3 +612,15 @@ def $ppcvrecord(P, ptbytes) = P[.CVS = P.CVS ++ [ptbytes]]
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$psautoglobal(ptbytes)
   -- if ~(ptbytes <- P.CVS)
+
+;; Requests made by zend_is_auto_global during ordinary compilation. Runtime
+;; bootstrap consumes primitive request inputs; no environment values live here.
+;; Special direct GLOBALS/key lowering never calls this name-lookup protocol.
+def $ppautorecord(P, ptbytes) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppautorecord(P, ptbytes) = P[.AUTOGLOBALS = P.AUTOGLOBALS ++ [ptbytes]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $psautoglobal(ptbytes)
+  -- if ~(ptbytes <- P.AUTOGLOBALS)
+def $ppautorecord(P, ptbytes) = P
+  -- otherwise

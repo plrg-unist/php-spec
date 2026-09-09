@@ -163,7 +163,7 @@ def $allocation_edges(S, pnode :: pnode_tail*) = $node_edges(pnode, $node_childr
 
 dec $machine_roots(pstate) : pnode*
 dec $pools_nodes(ppool*) : pnode*
-def $machine_roots(S) = $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS)
+def $machine_roots(S) = $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}

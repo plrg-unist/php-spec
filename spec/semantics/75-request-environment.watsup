@@ -1,0 +1,146 @@
+;; The CLI request contains only caller-supplied external facts. Initial PHP
+;; arrays and binary64 clock fields are derived by these executable rules.
+dec $request_key(nat*) : pkey
+def $request_key(n*) = KINT i -- if $string_key(n*) = INTEGERKEY i
+def $request_key(n*) = KSTRING n* -- if $string_key(n*) = STRINGKEY
+
+def $request_roots_nodes(eps) = eps
+def $request_roots_nodes((preqbytes, pvalue) :: (preqbytes_tail, pvalue_tail)*) = $value_nodes(pvalue) ++ $request_roots_nodes((preqbytes_tail, pvalue_tail)*)
+
+dec $request_args(preqbytes*, nat, parray) : parray
+def $request_args(eps, n, parray) = parray
+def $request_args(preqbytes :: preqbytes_tail*, n, parray) = $request_args(preqbytes_tail*, $(n + 1), $array_insert(parray, KINT n, DIRECT (PSTRING preqbytes)))
+
+dec $request_env_name(preqbytes) : bool
+def $request_env_name(preqbytes) = (preqbytes =/= eps /\ ~(32 <- preqbytes) /\ ~(46 <- preqbytes) /\ ~(91 <- preqbytes))
+dec $request_import((preqbytes, preqbytes)*, parray) : parray
+def $request_import(eps, parray) = parray
+def $request_import((preqbytes_name, preqbytes_value) :: (preqbytes_tail, preqbytes_values)*, parray) = $request_import((preqbytes_tail, preqbytes_values)*, $array_insert(parray, $request_key(preqbytes_name), DIRECT (PSTRING preqbytes_value)))
+  -- if $request_env_name(preqbytes_name)
+def $request_import((preqbytes_name, preqbytes_value) :: (preqbytes_tail, preqbytes_values)*, parray) = $request_import((preqbytes_tail, preqbytes_values)*, parray)
+  -- if ~$request_env_name(preqbytes_name)
+
+dec $request_env_first((preqbytes, preqbytes)*, preqbytes) : preqbytes?
+def $request_env_first(eps, preqbytes) = eps
+def $request_env_first((preqbytes, preqbytes_value) :: (preqbytes_tail, preqbytes_values)*, preqbytes) = (preqbytes_value)
+def $request_env_first((preqbytes_other, preqbytes_value) :: (preqbytes_tail, preqbytes_values)*, preqbytes) = $request_env_first((preqbytes_tail, preqbytes_values)*, preqbytes)
+  -- if preqbytes_other =/= preqbytes
+
+dec $request_proxy(parray, (preqbytes, preqbytes)*) : parray
+def $request_proxy(parray, (preqbytes, preqbytes_value)*) = $array_insert(parray, $request_key([72,84,84,80,95,80,82,79,88,89]), DIRECT (PSTRING preqbytes_proxy))
+  -- if $entry_lookup(parray.ITEMS, $request_key([72,84,84,80,95,80,82,79,88,89])) = (pitem)
+  -- if $request_env_first((preqbytes, preqbytes_value)*, [72,84,84,80,95,80,82,79,88,89]) = (preqbytes_proxy)
+def $request_proxy(parray, (preqbytes, preqbytes_value)*) = parray -- otherwise
+
+dec $request_clock(prequest) : nat
+def $request_clock(Q) = $float_add($float_of_int(Q.SECONDS), $float_div($float_of_int(Q.MICROSECONDS), $float_of_int(1000000)))
+dec $request_server_paths(parray, prequest) : parray
+def $request_server_paths(parray, Q) = $array_insert($array_insert($array_insert($array_insert($array_insert(parray, $request_key([80,72,80,95,83,69,76,70]), DIRECT (PSTRING Q.FILE)), $request_key([83,67,82,73,80,84,95,78,65,77,69]), DIRECT (PSTRING Q.FILE)), $request_key([83,67,82,73,80,84,95,70,73,76,69,78,65,77,69]), DIRECT (PSTRING Q.FILE)), $request_key([80,65,84,72,95,84,82,65,78,83,76,65,84,69,68]), DIRECT (PSTRING Q.FILE)), $request_key([68,79,67,85,77,69,78,84,95,82,79,79,84]), DIRECT (PSTRING eps))
+dec $request_server_clock(parray, prequest) : parray
+def $request_server_clock(parray, Q) = $array_insert($array_insert(parray, $request_key([82,69,81,85,69,83,84,95,84,73,77,69,95,70,76,79,65,84]), DIRECT (PFLOAT n)), $request_key([82,69,81,85,69,83,84,95,84,73,77,69]), DIRECT (PINT $float_to_int(n)))
+  -- if n = $request_clock(Q)
+
+dec $request_server_args(pstate, parray) : parray
+def $request_server_args(S, parray) = $array_insert($array_insert(parray, $request_key([97,114,103,118]), DIRECT pvalue_argv), $request_key([97,114,103,99]), DIRECT pvalue_argc)
+  -- if $lookup(S.ENV, [97,114,103,118]) = (n_argv)
+  -- if $lookup(S.ENV, [97,114,103,99]) = (n_argc)
+  -- if S.STORE[n_argv] = DEFINED pvalue_argv
+  -- if S.STORE[n_argc] = DEFINED pvalue_argc
+def $request_server_args(S, parray) = parray -- otherwise
+
+dec $request_environ(prequest) : parray
+def $request_environ(Q) = $request_proxy($request_import(Q.ENV, $array_empty()), Q.ENV)
+  -- if 69 <- Q.VARIABLES \/ 101 <- Q.VARIABLES
+def $request_environ(Q) = $array_empty() -- otherwise
+
+dec $request_server(pstate, prequest) : parray
+def $request_server(S, Q) = $request_proxy($request_server_args(S, $request_server_clock($request_server_paths($request_import(Q.ENV, $array_empty()), Q), Q)), Q.ENV)
+  -- if 83 <- Q.VARIABLES \/ 115 <- Q.VARIABLES
+def $request_server(S, Q) = $array_empty() -- otherwise
+
+;; Auto-global callbacks replace the symbol-table zval; they do not assign
+;; through an existing reference wrapper. Old aliases retain their old cell.
+dec $request_bind_global(pstate, preqbytes, pvalue) : pstate
+def $request_bind_global(S, preqbytes, pvalue) = S[.ENV = (BIND preqbytes n) :: $unbind(S.ENV, preqbytes)][.STORE = S.STORE ++ [DEFINED pvalue]][.SYMBOLS = $symbol_add(S.SYMBOLS, preqbytes)][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.CELL = n][.RESULT = KNOWN pvalue]
+  -- if S.REQUEST = (Q)
+  -- if n = |S.STORE|
+def $request_bind_global(S, preqbytes, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if S.REQUEST = eps
+
+dec $request_global(pstate, preqbytes, parray, bool) : pstate
+def $request_global(S, preqbytes, parray, true) = S_named[.HTTPROOTS = S.HTTPROOTS ++ [(preqbytes, pvalue)]][.ACTIVATED = $symbol_add(S.ACTIVATED, preqbytes)]
+  -- if S_array = $allocate_array(S, parray)
+  -- if S_array.RESULT = KNOWN pvalue
+  -- if S_named = $request_bind_global(S_array, preqbytes, pvalue)
+def $request_global(S, preqbytes, parray, false) = S_named[.ACTIVATED = $symbol_add(S.ACTIVATED, preqbytes)]
+  -- if S_array = $allocate_array(S, parray)
+  -- if S_array.RESULT = KNOWN pvalue
+  -- if S_named = $request_bind_global(S_array, preqbytes, pvalue)
+
+dec $request_activate(pstate, preqbytes) : pstate
+def $request_activate(S, preqbytes) = S -- if preqbytes <- S.ACTIVATED
+def $request_activate(S, [95,83,69,82,86,69,82]) = $request_global(S, [95,83,69,82,86,69,82], $request_server(S, Q), true)
+  -- if ~([95,83,69,82,86,69,82] <- S.ACTIVATED)
+  -- if S.REQUEST = (Q)
+def $request_activate(S, [95,69,78,86]) = $request_global(S, [95,69,78,86], $request_environ(Q), true)
+  -- if ~([95,69,78,86] <- S.ACTIVATED)
+  -- if S.REQUEST = (Q)
+;; CLI has no query string, cookie header or POST request. The retained G/P/C
+;; tables stay empty: user writes separate their shared arrays from HTTPROOTS.
+def $request_activate(S, [95,82,69,81,85,69,83,84]) = $request_global(S, [95,82,69,81,85,69,83,84], $array_empty(), false)
+  -- if ~([95,82,69,81,85,69,83,84] <- S.ACTIVATED)
+def $request_activate(S, preqbytes) = $request_global(S, preqbytes, $array_empty(), true)
+  -- if preqbytes <- [[95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,70,73,76,69,83]]
+  -- if ~(preqbytes <- S.ACTIVATED)
+def $request_activate(S, preqbytes) = S -- otherwise
+
+dec $request_activate_names(pstate, preqbytes*) : pstate
+def $request_activate_names(S, eps) = S
+def $request_activate_names(S, preqbytes :: preqbytes_tail*) = $request_activate_names($request_activate(S, preqbytes), preqbytes_tail*)
+
+dec $request_eager(prequest) : preqbytes*
+def $request_eager(Q) = [[95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,70,73,76,69,83], [95,83,69,82,86,69,82]] -- if Q.JIT
+def $request_eager(Q) = [[95,71,69,84], [95,80,79,83,84], [95,67,79,79,75,73,69], [95,83,69,82,86,69,82], [95,69,78,86], [95,82,69,81,85,69,83,84], [95,70,73,76,69,83]] -- if ~Q.JIT
+
+dec $request_bootstrap(pstate, prequest) : pstate
+def $request_bootstrap(S, Q) = $request_activate_names(S_named, $request_eager(Q))[.RESULT = KNOWN PNULL]
+  -- if S_array = $allocate_array(S[.REQUEST = (Q)][.ACTIVATED = [[71,76,79,66,65,76,83]]], $request_args(Q.ARGV, 0, $array_empty()))
+  -- if S_array.RESULT = KNOWN pvalue
+  -- if n_argc = |Q.ARGV|
+  -- if S_named = $write_name($write_name(S_array, [97,114,103,118], pvalue), [97,114,103,99], PINT n_argc)
+
+def $request_compile(S, P) = S[.CVS = P.CVS][.SYMBOLS = $symbols_add(S.SYMBOLS, P.CVS)]
+  -- if S.REQUEST = eps
+def $request_compile(S, P) = S_active[.CVS = P.CVS][.SYMBOLS = $symbols_add(S_active.SYMBOLS, P.CVS)][.RESULT = KNOWN PNULL]
+  -- if S.REQUEST = (Q)
+  -- if S_active = $request_activate_names(S, P.AUTOGLOBALS)
+
+dec $request_bytes(preqbytes) : bool
+def $request_bytes(eps) = true
+def $request_bytes(n :: n_tail*) = ($(n > 0 /\ n < 256) /\ $request_bytes(n_tail*))
+dec $request_env_valid((preqbytes, preqbytes)*) : bool
+def $request_env_valid(eps) = true
+def $request_env_valid((preqbytes_name, preqbytes_value) :: (preqbytes_names, preqbytes_values)*) = ($request_bytes(preqbytes_name) /\ ~(61 <- preqbytes_name) /\ $request_bytes(preqbytes_value) /\ $request_env_valid((preqbytes_names, preqbytes_values)*))
+dec $request_argv_valid(preqbytes*) : bool
+def $request_argv_valid(eps) = true
+def $request_argv_valid(preqbytes :: preqbytes_tail*) = ($request_bytes(preqbytes) /\ $request_argv_valid(preqbytes_tail*))
+dec $request_file_argv(prequest) : bool
+def $request_file_argv(Q) = (preqbytes = Q.FILE)
+  -- if Q.ARGV = preqbytes :: preqbytes_tail*
+def $request_file_argv(Q) = false -- if Q.ARGV = eps
+dec $request_cwd_valid(preqbytes?) : bool
+def $request_cwd_valid(eps) = true
+def $request_cwd_valid((preqbytes)) = ($request_bytes(preqbytes) /\ preqbytes =/= eps)
+dec $request_valid(prequest) : bool
+def $request_valid(Q) = ($request_cwd_valid(Q.CWD) /\ $request_env_valid(Q.ENV) /\ $request_argv_valid(Q.ARGV) /\ $request_file_argv(Q) /\ $request_bytes(Q.FILE) /\ Q.FILE =/= eps /\ $request_bytes(Q.VARIABLES) /\ Q.VARIABLES =/= eps /\ $(Q.SECONDS >= -9223372036854775808 /\ Q.SECONDS <= 9223372036854775807 /\ Q.MICROSECONDS < 1000000))
+
+dec $php_request_run(program, nat, text, prequest) : pstate
+def $php_request_run(program, n, text_file, Q) = $drive($compile_source($request_bootstrap($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]], Q), $ppstart_cwd(0, program, n_file*, Q.CWD)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $request_valid(Q)
+def $php_request_run(program, n, text_file, Q) = $initial_state(UNSUPPORTED "invalid request primitive facts")
+  -- if ~$request_valid(Q)
+def $php_request_run(program, n, text_file, Q) = $initial_state(UNSUPPORTED "invalid source filename")
+  -- if $request_valid(Q)
+  -- if ~$source_filename($base64(text_file))

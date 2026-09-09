@@ -66,6 +66,7 @@ rule PhpStep/dimension-prepare-cv: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALU
   -- if S.TODO = (DIM_PREP (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_name(phpType32) = (n_name*)
   -- if ~$direct_this(phpType32)
+  -- if ~$ppglobals_base(NExprVariable phpType32 metadata)
 rule PhpStep/dimension-prepare-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DIM_NAME $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_name(phpType32) = eps
@@ -75,6 +76,7 @@ rule PhpStep/dimension-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_NAME $capt
 rule PhpStep/dimension-prepare-path: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), DIM_INDEX expression_key $runtime_line(S, [PCFIELD 1], expression_key)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if phpType5 = expression_key
+  -- if ~$ppglobals_base(expression)
 rule PhpStep/dimension-index: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), DIM_PATH S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (DIM_INDEX expression z) :: ptask_tail*
 rule PhpStep/dimension-path: S ~> S[.TODO = ptask_tail*][.BASE = BASE_DIM pbase S.RESULT z][.RESULT = KNOWN PNULL]
