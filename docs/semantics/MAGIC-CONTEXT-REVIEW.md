@@ -4,8 +4,9 @@ The [private1430 review](../../coverage/semantics/magic-context-independent-revi
 approves nine top-level magic constructors for pairing with the request runtime.
 It retains41 fresh native/lint/checked sources,55 metadata/CWD controls,61 current
 adapter replays,24 descriptor cases,23 native dirname observations and the original
-request path/magic failure. Canonical publication and declaration contexts remain
-pending.
+request path/magic failure. [Canonical publication](../../coverage/semantics/request-environment-review.json)
+at652d10b7 binds44 ordinary magic sources and three request-dependent magic sources,
+retaining the exact47-source union. Declaration contexts remain pending.
 
 `__LINE__` uses its original AST leaf line. `__FILE__` uses the compiled source
 identity, and `__DIR__` uses its POSIX dirname. When dirname is `.`, the request

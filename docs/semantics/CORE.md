@@ -143,7 +143,10 @@ Fixture inputs/services must be reviewed, finite and shared by both executions.
 The [request fixture transport](REQUEST-INPUTS.md) supplies explicit clock and
 ordered environment bytes to instrumented native runs, separately from ordinary
 uninstrumented oracle invocations. It does not supply PHP bootstrap answers;
-request initialization and auto-global source semantics remain pending.
+the [accepted request rules](REQUEST-STATE-REVIEW.md) derive CLI initialization,
+auto-global activation and GLOBALS snapshots in pure SpecTec. This explicit-input
+profile is distinct from ordinary uninstrumented execution. Stdin, broader services,
+frame-local environments and later-unit execution remain core obligations.
 
 | Borderline family | Decision and reason |
 | --- | --- |

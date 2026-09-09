@@ -185,13 +185,17 @@
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/44-dimension-read.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/request_environment.py",
+        "tests/semantics/globals_compiler.py"
       ],
-      "review": "Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json.",
+      "review": "Historical storage review: Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -228,7 +232,9 @@
         "spec/semantics/62-list-values.watsup",
         "spec/semantics/63-list-control.watsup",
         "spec/semantics/64-list-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -236,9 +242,10 @@
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/request_environment.py"
       ],
-      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json. Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending."
+      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json. Accepted77f8d3c0 with independent destructuring-review.json:283 selected sources(263 additions),24 negatives,7 state programs/3633 assertions,23 mechanism checks,328 retained cross-family sources,all5 compiler gates and independent44+16 controls/12 dense programs6192 assertions. Scalar/array list evaluation,reference targets,fetch-before-store ordering and retained effects of known results are source-active. Header diagnostics,object/ArrayAccess and property/frame-dependent targets remain pending. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open."
     },
     {
       "node": "Expr_AssignOp_BitwiseAnd",
@@ -325,7 +332,7 @@
         "coverage/semantics/coalesce-assignment-source.json",
         "coverage/semantics/coalesce-assignment-review.json"
       ],
-      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment and object protocols remain pending; no family closure."
+      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending."
     },
     {
       "node": "Expr_AssignOp_Concat",
@@ -530,14 +537,17 @@
         "spec/semantics/40-control.watsup",
         "spec/semantics/37-array-locations.watsup",
         "spec/semantics/39-ownership.watsup",
-        "spec/semantics/42-array-write-control.watsup"
+        "spec/semantics/42-array-write-control.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "tests/semantics/conformance/reference-assignment-result.php"
+        "tests/semantics/conformance/reference-assignment-result.php",
+        "tests/semantics/request_environment.py"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -561,7 +571,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_BitwiseOr",
@@ -581,7 +591,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_BitwiseXor",
@@ -601,7 +611,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_BooleanAnd",
@@ -700,7 +710,7 @@
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_Div",
@@ -920,7 +930,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_Mul",
@@ -1040,7 +1050,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_ShiftLeft",
@@ -1060,7 +1070,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_ShiftRight",
@@ -1080,7 +1090,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BinaryOp_Smaller",
@@ -1169,7 +1179,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_BooleanNot",
@@ -1213,7 +1223,7 @@
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_Cast_Bool",
@@ -1234,7 +1244,7 @@
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_Cast_Double",
@@ -1255,7 +1265,7 @@
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_Cast_Int",
@@ -1276,7 +1286,7 @@
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_Cast_Object",
@@ -1314,7 +1324,7 @@
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_Cast_Unset",
@@ -1351,7 +1361,7 @@
         "tests/semantics/ordinary.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "node": "Expr_ClassConstFetch",
@@ -1442,7 +1452,7 @@
         "tests/semantics/isset_empty.py",
         "tests/semantics/isset_empty_compiler.py"
       ],
-      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending.",
       "evidence": [
         "coverage/semantics/isset-empty-review.json"
       ]
@@ -1577,7 +1587,7 @@
         "tests/semantics/isset_empty.py",
         "tests/semantics/isset_empty_compiler.py"
       ],
-      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending.",
       "evidence": [
         "coverage/semantics/isset-empty-review.json"
       ]
@@ -1952,7 +1962,9 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/70-quiet-coalesce.watsup"
+        "spec/semantics/70-quiet-coalesce.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -1960,9 +1972,11 @@
         "tests/semantics/quiet_access.py",
         "tests/semantics/quiet_access_compiler.py",
         "coverage/semantics/quiet-access-source.json",
-        "coverage/semantics/quiet-access-review.json"
+        "coverage/semantics/quiet-access-review.json",
+        "tests/semantics/request_environment.py",
+        "tests/semantics/globals_compiler.py"
       ],
-      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure."
+      "review": "Historical storage review: Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Expr_Yield",
@@ -2201,10 +2215,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Dir",
@@ -2213,10 +2234,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_File",
@@ -2225,10 +2253,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Function",
@@ -2237,10 +2272,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Line",
@@ -2249,10 +2291,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Method",
@@ -2261,10 +2310,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Namespace",
@@ -2273,10 +2329,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Property",
@@ -2285,10 +2348,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_MagicConst_Trait",
@@ -2297,10 +2367,17 @@
         "source.magic-constants",
         "source.context"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "node": "Scalar_String",
@@ -2944,13 +3021,16 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/40-control.watsup"
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/request_environment.py"
       ],
-      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json."
+      "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open."
     },
     {
       "node": "Stmt_Use",
@@ -3065,7 +3145,8 @@
         "spec/semantics/41-array-control.watsup",
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/77-magic-constants.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_occurrences.py",
@@ -3083,12 +3164,14 @@
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "coverage/semantics/runtime-compiler-review.json",
-        "coverage/semantics/traversal-temporary-review.json"
+        "coverage/semantics/traversal-temporary-review.json",
+        "tests/semantics/request_environment.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/request-environment-review.json"
       ],
-      "review": "Public execution completes ordered compilation, installs permanent per-unit pools and consumes exact occurrence descriptors for constants, names and effective lines. Namespace constant source lookup and scalar/string dimensions are active. Legacy production source traversal/classifiers are retired; unchecked trace execution exists only in test fixtures. Independent review records source, origin/resumption, pool and compiler gates. Source conditionals and while/do/for reuse descriptors/pools through nested jumps and budget resumption. Declarations/defaults, functions and dynamic units remain pending."
+      "review": "Public execution completes ordered compilation, installs permanent per-unit pools and consumes exact occurrence descriptors for constants, names and effective lines. Namespace constant source lookup and scalar/string dimensions are active. Legacy production source traversal/classifiers are retired; unchecked trace execution exists only in test fixtures. Independent review records source, origin/resumption, pool and compiler gates. Source conditionals and while/do/for reuse descriptors/pools through nested jumps and budget resumption. Declarations/defaults, functions and dynamic units remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open."
     },
     {
       "id": "source.encodings",
@@ -3119,15 +3202,23 @@
     {
       "id": "source.magic-constants",
       "milestone": "0b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "implementation": [
+        "spec/semantics/77-magic-constants.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/magic_constants.py",
+        "tests/semantics/magic_constants_compiler.py",
+        "tests/semantics/request_environment.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "Nine top-level magic constructors reviewed; declaration contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "source.halt-payload",
@@ -3360,7 +3451,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "numeric.integer-bitwise",
@@ -3384,7 +3475,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "numeric.binary64-codec",
@@ -3565,7 +3656,7 @@
         "dependencies/libm-pow-disassembly.txt",
         "vendor/libm-pow-source/sysdeps/ieee754/dbl-64/e_pow.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "numeric.numeric-text",
@@ -3712,7 +3803,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "bytes.string-bitwise",
@@ -3736,7 +3827,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "bytes.string-increment",
@@ -3848,7 +3939,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "coercion.cast-int",
@@ -3874,7 +3965,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "coercion.cast-float",
@@ -3897,7 +3988,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "coercion.cast-string",
@@ -3920,7 +4011,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "coercion.cast-array",
@@ -3939,7 +4030,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "coercion.cast-object",
@@ -3970,7 +4061,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven request-environment cases remain explicit Unsupported; objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
     },
     {
       "id": "coercion.array-key",
@@ -4194,7 +4285,9 @@
         "spec/semantics/40-control.watsup",
         "spec/semantics/53-incdec.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/70-quiet-coalesce.watsup"
+        "spec/semantics/70-quiet-coalesce.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -4214,12 +4307,14 @@
         "tests/semantics/quiet_access.py",
         "tests/semantics/quiet_access_compiler.py",
         "coverage/semantics/quiet-access-source.json",
-        "coverage/semantics/quiet-access-review.json"
+        "coverage/semantics/quiet-access-review.json",
+        "tests/semantics/request_environment.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/request-environment-review.json"
       ],
-      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure.",
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/dynamic-variable.php",
         "tests/semantics/conformance/dynamic-name-delayed.php",
@@ -4237,41 +4332,62 @@
     {
       "id": "storage.globals",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py",
+        "tests/semantics/request_environment_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "storage.superglobals",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py",
+        "tests/semantics/request_environment_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "storage.globals-restrictions",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py",
+        "tests/semantics/request_environment_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "storage.assignment",
@@ -5171,7 +5287,9 @@
         "spec/semantics/65-coalesce-compiler.watsup",
         "spec/semantics/66-nonvariable-coalesce.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/70-quiet-coalesce.watsup"
+        "spec/semantics/70-quiet-coalesce.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -5183,12 +5301,14 @@
         "tests/semantics/quiet_access.py",
         "tests/semantics/quiet_access_compiler.py",
         "coverage/semantics/quiet-access-source.json",
-        "coverage/semantics/quiet-access-review.json"
+        "coverage/semantics/quiet-access-review.json",
+        "tests/semantics/request_environment.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/request-environment-review.json"
       ],
-      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure.",
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php",
         "tests/semantics/conformance/missing-null-access.php"
@@ -5205,19 +5325,23 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/71-coalesce-assignment-compiler.watsup",
-        "spec/semantics/72-coalesce-assignment-control.watsup"
+        "spec/semantics/72-coalesce-assignment-control.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/coalesce_assignment.py",
         "tests/semantics/coalesce_assignment_compiler.py",
         "coverage/semantics/coalesce-assignment-source.json",
-        "coverage/semantics/coalesce-assignment-review.json"
+        "coverage/semantics/coalesce-assignment-review.json",
+        "tests/semantics/request_environment.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/request-environment-review.json"
       ],
-      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment and object protocols remain pending; no family closure.",
+      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/coalesce-write.php"
       ]
@@ -5269,18 +5393,22 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/73-isset-empty-compiler.watsup",
-        "spec/semantics/74-isset-empty-control.watsup"
+        "spec/semantics/74-isset-empty-control.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/isset_empty.py",
-        "tests/semantics/isset_empty_compiler.py"
+        "tests/semantics/isset_empty_compiler.py",
+        "tests/semantics/request_environment.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
-        "coverage/semantics/isset-empty-review.json"
+        "coverage/semantics/isset-empty-review.json",
+        "coverage/semantics/request-environment-review.json"
       ],
-      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/missing-null-access.php"
       ]
@@ -5292,18 +5420,22 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/73-isset-empty-compiler.watsup",
-        "spec/semantics/74-isset-empty-control.watsup"
+        "spec/semantics/74-isset-empty-control.watsup",
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/isset_empty.py",
-        "tests/semantics/isset_empty_compiler.py"
+        "tests/semantics/isset_empty_compiler.py",
+        "tests/semantics/request_environment.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
-        "coverage/semantics/isset-empty-review.json"
+        "coverage/semantics/isset-empty-review.json",
+        "coverage/semantics/request-environment-review.json"
       ],
-      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/missing-null-access.php"
       ]
@@ -8098,28 +8230,41 @@
     {
       "id": "environment.request-inputs",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py",
+        "tests/semantics/request_environment_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "environment.argv-stdin",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "Explicit CLI argv bytes and argc/COW behavior reviewed; stdin services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "environment.source-provider",
@@ -8150,28 +8295,41 @@
     {
       "id": "environment.config",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "environment.initialization",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py",
+        "tests/semantics/request_environment_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "environment.output-destination",
@@ -8189,15 +8347,22 @@
     {
       "id": "environment.finite-fixtures",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/75-request-environment.watsup",
+        "spec/semantics/76-globals.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/request_environment.py",
+        "tests/semantics/request_environment_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/request-environment-review.json"
+      ],
+      "review": "CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
     },
     {
       "id": "environment.resource-boundary",

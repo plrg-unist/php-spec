@@ -6,27 +6,36 @@ compiler evidence **cd0f3d3f** and
 Root orchestrates; runtime5 owns runtime, compiler4 continues compiler rules,
 review7 owns independent evidence/status. Full core remains unfinished. Do not push.
 
-Current continuation: isset/empty **701e39fa**, author **65cefcc1**, compiler
-**72c30740** are independently accepted at835/afbaa198; see
-[review](../../coverage/semantics/isset-empty-review.json) and
-[contract](ISSET-EMPTY-REVIEW.md). Earlier quiet and guarded prototypes below retain
-their original identities. Guarded coalescing assignment is now accepted at
-f073c750/1fe36808,137 sources,8 author/3760 and7 independent/3024 assertions.
-The request provider is accepted atbe12200b/9a5b11e1 with explicit external facts
-only; [request contract](REQUEST-INPUTS.md) excludes bootstrap admission.
+Current continuation: request/GLOBALS/top-level magic **652d10b7**, runtime
+**d3dfb87a**, compiler **ca3ac883**, canonical **845/1d206c8e** are accepted in
+[request review](../../coverage/semantics/request-environment-review.json).
+Exact parent845/5a3b260 sources + final845/a1cf3 routed sources give263 request
+literals;44 ordinary magic retain the same307 union. Canonical differs only in
+Dune adapter binary from final private build;71 adapter replays,72 exact states
+and7 independent CLI comparisons close that bridge. The prior840 source246 and
+8/1,936 state evidence bridge through72 new states with only absent REQUEST.CWD
+removed. Final author6dense2,619 includes late128/256/512 cuts. Originals and
+scripts are losslessly archived by the linked review. Runtime2261-file history
+preserves all first failures, timeout, callback/CELL and profile corrections.
 
-Next: pair request/bootstrap and GLOBALS snapshot runtime originals with the
-compiler AUTOGLOBALS642 frozen manifest in
-`.tools/autoglobal-compiler-checked/frozen-review-inputs.json`. Compiler-only review
-a2953bce passes33 originals+12 independent order controls and reproduces the exact
-first full descriptor state; canonical/runtime publication remains pending. Eight
-additional primitive request originals are durable at1da7d073, including duplicate
-HTTP_PROXY and reserved SERVER-key ordering. Compiler4 has the
-activation-order original prediction failures and actual first descriptor failure;
-runtime5 is retaining authored primitive request matrices before implementation.
-Isset232/4pending and7dense2655 raw evidence is durable. Preserve all12 old
-container controls, the guarded GLOBALS source and four isset GLOBALS boundaries.
-Full quiet/CV integration precedes calls/frames; final core/syntax/offline remain due.
+Private full compiler5,753/5,786 passes; current5,750 catalogue is its exact ordered
+subset, with three extra valid request-routed magic lints. Actual private modules,
+reference846 and tools are bound; missing reference, first120s timeout/deleted
+first fixture and unused canonical-wrapper guard remain distinct nonpasses.
+
+Next: full quiet/CV integration using a frozen catalogue and explicit native
+invocation profiles, then calls/frames. Preserve old uninstrumented controls.
+Seven historical request controls, four isset GLOBALS controls and guarded GLOBALS
+now have explicit-request witnesses; five old core controls remain (three object
+quiet, nested return and nullsafe-reference iterable), plus four parser controls.
+Two later-eval callback sources remain Unsupported. Top-level magic admission does
+not admit declaration bodies. Full core/source/syntax/offline closure remains due.
+
+Approved infrastructure drafts may publish after this review: explicit13-reference
+private preflight and exclusive source-compiler failure retention with600s
+aggregate deadline. Their independent checks are in
+`.tools/review7-reference-helper/results.json` and
+`.tools/review7-compiler-retention/results.json`; neither changes engine semantics.
 
 ## Historical accepted quiet/name publication
 
