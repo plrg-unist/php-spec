@@ -1,0 +1,26 @@
+{
+  "result": "pass",
+  "scope": "checked-source effect occurrence validation, marker deduplication, pool preservation and malformed internal-state rejection",
+  "source_base64": "PD9waHAgZWNobyAobGlzdCgkeCk9WzFdKT09WzFdLCI6IiwkeDs=",
+  "assertions": 23,
+  "fixture": "dec $main() : bool\ndef $main() = true\n  -- if S = $php_run((PROGRAM ([(NStmtEcho ((SEQUENCE ([(NExprBinaryOpEqual ((NExprAssign ((NExprList ((SEQUENCE ([(NArrayItem ((ABSENT)) ((NExprVariable ((BYTES (\"eA==\"))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (6)), (MstartFilePos (17)), (MstartLine (1)), (MstartTokenPos (6))]))) ((BOOLEAN (false))) ((BOOLEAN (false))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (6)), (MstartFilePos (17)), (MstartLine (1)), (MstartTokenPos (6))]))]))) ([(MendFilePos (19)), (MendLine (1)), (MendTokenPos (7)), (Mkind (1)), (MstartFilePos (12)), (MstartLine (1)), (MstartTokenPos (4))]))) ((NExprArray ((SEQUENCE ([(NArrayItem ((ABSENT)) ((NScalarInt ((INTEGER (1))) ([(MendFilePos (22)), (MendLine (1)), (MendTokenPos (10)), (Mkind (10)), (MrawValue (\"MQ==\")), (MstartFilePos (22)), (MstartLine (1)), (MstartTokenPos (10))]))) ((BOOLEAN (false))) ((BOOLEAN (false))) ([(MendFilePos (22)), (MendLine (1)), (MendTokenPos (10)), (MstartFilePos (22)), (MstartLine (1)), (MstartTokenPos (10))]))]))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (11)), (Mkind (2)), (MstartFilePos (21)), (MstartLine (1)), (MstartTokenPos (9))]))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (12)), (MstartLine (1)), (MstartTokenPos (4))]))) ((NExprArray ((SEQUENCE ([(NArrayItem ((ABSENT)) ((NScalarInt ((INTEGER (1))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (15)), (Mkind (10)), (MrawValue (\"MQ==\")), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (15))]))) ((BOOLEAN (false))) ((BOOLEAN (false))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (15))]))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (16)), (Mkind (2)), (MstartFilePos (27)), (MstartLine (1)), (MstartTokenPos (14))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (11)), (MstartLine (1)), (MstartTokenPos (3))])), (NScalarString ((BYTES (\"Og==\"))) ([(MendFilePos (33)), (MendLine (1)), (MendTokenPos (18)), (Mkind (2)), (MrawValue (\"Ijoi\")), (MstartFilePos (31)), (MstartLine (1)), (MstartTokenPos (18))])), (NExprVariable ((BYTES (\"eA==\"))) ([(MendFilePos (36)), (MendLine (1)), (MendTokenPos (20)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (20))]))]))) ([(MendFilePos (37)), (MendLine (1)), (MendTokenPos (21)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))])), 0, \"L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2Rlc3RydWN0dXJpbmctbWVjaGFuaXNtLXZva3pvNnV1L3NvdXJjZS5waHA=\")\n  -- if S.COMPLETION = BUDGET\n  -- if S_out = $drive(S[.COMPLETION = NORMAL], 10000)\n  -- if S_out.COMPLETION = NORMAL\n  -- if S_dup = S[.CODE = [S.CODE[0][.EXPRESSIONS = S.CODE[0].EXPRESSIONS ++ S.CODE[0].EXPRESSIONS]]]\n  -- if S_dup_out = $drive(S_dup[.COMPLETION = NORMAL], 10000)\n  -- if S_dup_out[.CODE = S.CODE] = S_out\n  -- if $heap_valid($heap_graph(S_dup_out))\n  -- if S_missing = S[.CODE = [S.CODE[0][.EXPRESSIONS = S.CODE[0].EXPRESSIONS ++ [(CODEEFFECT ([PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 9]))]]]]\n  -- if S_missing_out = $drive(S_missing[.COMPLETION = NORMAL], 10000)\n  -- if S_missing_out.COMPLETION = UNSUPPORTED \"invalid task source occurrence\"\n  -- if $heap_valid($heap_graph(S_missing_out))\n  -- if S_nonexpr = S[.CODE = [S.CODE[0][.EXPRESSIONS = S.CODE[0].EXPRESSIONS ++ [(CODEEFFECT ([PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0, PCFIELD 1, PCFIELD 0, PCINDEX 0]))]]]]\n  -- if S_nonexpr_out = $drive(S_nonexpr[.COMPLETION = NORMAL], 10000)\n  -- if S_nonexpr_out.COMPLETION = UNSUPPORTED \"invalid compiled effect occurrence\"\n  -- if $heap_valid($heap_graph(S_nonexpr_out))\n  -- if $compiled_effects(S, (PORIGIN 0 ([PCINDEX 0, PCFIELD 0, PCINDEX 0]))) = [(CODEEFFECT ([PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0]))]\n  -- if $effect_unique([(CODEEFFECT ([PCINDEX 0])), (CODEEFFECT ([PCINDEX 1])), (CODEEFFECT ([PCINDEX 0]))], eps) = [(CODEEFFECT ([PCINDEX 0])), (CODEEFFECT ([PCINDEX 1]))]\n  -- if $effect_select([(CODEEFFECT ([PCINDEX 0, PCFIELD 0])), (CODEEFFECT ([PCINDEX 0]))], [(CODEEFFECT ([PCINDEX 0, PCFIELD 0])), (CODEEFFECT ([PCINDEX 0]))], eps) = [(CODEEFFECT ([PCINDEX 0]))]\n  -- if S_bad_result = $enter_compiled_task(S[.POOLS = eps], (PORIGIN 0 ([PCINDEX 0, PCFIELD 0, PCINDEX 0])), COMPILED_RESULT false, eps)\n  -- if S_bad_result.COMPLETION = UNSUPPORTED \"invalid compiled result\"\n  -- if S_out.POOLS = S.POOLS\n  -- if S_out.CODE = S.CODE\n",
+  "fingerprint": {
+    "sha256": "f1699a75c77c253e92ea3d965bc8f0f98de6b7d51155b73e301e9c16e9ecc9aa",
+    "files": 812,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  }
+}
