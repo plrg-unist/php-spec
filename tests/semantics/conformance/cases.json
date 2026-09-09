@@ -1870,6 +1870,104 @@
       "expected_exit_status": 0,
       "provenance": "independent follow-up discriminator for pinned zend_eval_const_expr dimension folding and assignment barriers",
       "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-min-trailing-space",
+      "file": "tests/semantics/conformance/numeric-min-trailing-space.php",
+      "purpose": "Trailing whitespace makes exact negative minimum text floating-point at the pinned C-string bound check.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": ":1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-min-nul-control",
+      "file": "tests/semantics/conformance/numeric-min-nul-control.php",
+      "purpose": "A NUL terminates the negative-minimum bound comparison even though the full numeric input has trailing data.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": "1:",
+      "expected_stderr": "Warning: A non-numeric value encountered in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-min-leading-zero-space",
+      "file": "tests/semantics/conformance/numeric-min-leading-zero-space.php",
+      "purpose": "Leading zeroes do not remove the minimum-bound trailing-space classification effect.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": ":1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-min-incomplete-exponent-control",
+      "file": "tests/semantics/conformance/numeric-min-incomplete-exponent-control.php",
+      "purpose": "An incomplete signed exponent shifts the bound comparison and leaves negative-minimum text integer.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": "1:",
+      "expected_stderr": "Warning: A non-numeric value encountered in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-positive-overflow-incomplete-exponent",
+      "file": "tests/semantics/conformance/numeric-positive-overflow-incomplete-exponent.php",
+      "purpose": "The shifted nineteen-digit bound comparison admits positive overflow text as the wrapped minimum integer.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": "1::",
+      "expected_stderr": "Warning: A non-numeric value encountered in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-negative-overflow-incomplete-exponent",
+      "file": "tests/semantics/conformance/numeric-negative-overflow-incomplete-exponent.php",
+      "purpose": "The shifted bound comparison admits negative overflow text as the wrapped maximum integer.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": ":1:",
+      "expected_stderr": "Warning: A non-numeric value encountered in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "numeric-incomplete-exponent-overflow-control",
+      "file": "tests/semantics/conformance/numeric-incomplete-exponent-overflow-control.php",
+      "purpose": "A larger nineteen-digit prefix still compares above the shifted bound and remains floating-point.",
+      "obligations": [
+        "numeric.numeric-text",
+        "numeric.arithmetic-result-types"
+      ],
+      "expected_stdout": "::1",
+      "expected_stderr": "Warning: A non-numeric value encountered in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
+      "semantic_status": "pending"
     }
   ]
 }

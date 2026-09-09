@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "07293d8aca66af6d627f72f5774e1999d31cc8f4f6e6a40a7bb2eae15a0adcda",
+    "tests/semantics/conformance/cases.json": "958e901f3abe70ba51a6244c1da07fde9dac75c08a220a29a10aa929b465a64e",
     "tests/semantics/conformance/oracle.py": "448e42aa0ec1de11e4320560a1963fba4e137fa8fe75aebc990368394dde4eb5",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -180,6 +180,13 @@
     "tests/semantics/conformance/string-read-dynamic-literal-prepass.php": "071a410c57f42fcb3d7c05b327ff1f12e2165611a411085861d1234a98843800",
     "tests/semantics/conformance/string-read-negative-literal-prepass.php": "ec329f700cacd9b0447a44afcb62f82bc4f305843405550731b5d3a19f15adf5",
     "tests/semantics/conformance/string-read-assignment-prepass-barrier.php": "8747a313cc2eee465cbd2f462d63446901e32a4ed4a013c624650b3858c20f4f",
+    "tests/semantics/conformance/numeric-min-trailing-space.php": "c5aa12433ce46c6fc5711162d5e082da271bd309d138abf31bad4e86d4947f86",
+    "tests/semantics/conformance/numeric-min-nul-control.php": "79cf322de443dfdd374170ad05413f5b70910c0e35db559b06cc3d531aa1b8b1",
+    "tests/semantics/conformance/numeric-min-leading-zero-space.php": "c7eacd7c0b3bfd606aff35c6171a037a52dc02b3cf3fe3b6111aaa5b1b9b7a1c",
+    "tests/semantics/conformance/numeric-min-incomplete-exponent-control.php": "c3e6247d21f2d2af6ab7df573d1c4a75e4b32ea5b65927bb42567cac55dbcb56",
+    "tests/semantics/conformance/numeric-positive-overflow-incomplete-exponent.php": "b46d4b489aac4a8f1f3ae8b52f44975b6cac878b415653b6dca9f82c6784566d",
+    "tests/semantics/conformance/numeric-negative-overflow-incomplete-exponent.php": "5dda06461751effe5d1555e77e95d5b6f0fd9d6768d653fb6b7f37a1fd66bd21",
+    "tests/semantics/conformance/numeric-incomplete-exponent-overflow-control.php": "4d64adc1ac244f9b732c517c6cc78000cf3f40dbbe1b6ab3e35840d1f2253877",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
@@ -1497,6 +1504,76 @@
       "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
       "stdout": "Yg==",
       "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0ICIxeCIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy1yZWFkLWFzc2lnbm1lbnQtcHJlcGFzcy1iYXJyaWVyLnBocCBvbiBsaW5lIDIK",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-min-trailing-space",
+      "source_sha256": "c5aa12433ce46c6fc5711162d5e082da271bd309d138abf31bad4e86d4947f86",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-min-trailing-space.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "OjE=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-min-nul-control",
+      "source_sha256": "79cf322de443dfdd374170ad05413f5b70910c0e35db559b06cc3d531aa1b8b1",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-min-nul-control.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTo=",
+      "stderr": "V2FybmluZzogQSBub24tbnVtZXJpYyB2YWx1ZSBlbmNvdW50ZXJlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvbnVtZXJpYy1taW4tbnVsLWNvbnRyb2wucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-min-leading-zero-space",
+      "source_sha256": "c7eacd7c0b3bfd606aff35c6171a037a52dc02b3cf3fe3b6111aaa5b1b9b7a1c",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-min-leading-zero-space.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "OjE=",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-min-incomplete-exponent-control",
+      "source_sha256": "c3e6247d21f2d2af6ab7df573d1c4a75e4b32ea5b65927bb42567cac55dbcb56",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-min-incomplete-exponent-control.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTo=",
+      "stderr": "V2FybmluZzogQSBub24tbnVtZXJpYyB2YWx1ZSBlbmNvdW50ZXJlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvbnVtZXJpYy1taW4taW5jb21wbGV0ZS1leHBvbmVudC1jb250cm9sLnBocCBvbiBsaW5lIDIK",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-positive-overflow-incomplete-exponent",
+      "source_sha256": "b46d4b489aac4a8f1f3ae8b52f44975b6cac878b415653b6dca9f82c6784566d",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-positive-overflow-incomplete-exponent.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "MTo6",
+      "stderr": "V2FybmluZzogQSBub24tbnVtZXJpYyB2YWx1ZSBlbmNvdW50ZXJlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvbnVtZXJpYy1wb3NpdGl2ZS1vdmVyZmxvdy1pbmNvbXBsZXRlLWV4cG9uZW50LnBocCBvbiBsaW5lIDIK",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-negative-overflow-incomplete-exponent",
+      "source_sha256": "5dda06461751effe5d1555e77e95d5b6f0fd9d6768d653fb6b7f37a1fd66bd21",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-negative-overflow-incomplete-exponent.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "OjE6",
+      "stderr": "V2FybmluZzogQSBub24tbnVtZXJpYyB2YWx1ZSBlbmNvdW50ZXJlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvbnVtZXJpYy1uZWdhdGl2ZS1vdmVyZmxvdy1pbmNvbXBsZXRlLWV4cG9uZW50LnBocCBvbiBsaW5lIDIK",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "numeric-incomplete-exponent-overflow-control",
+      "source_sha256": "4d64adc1ac244f9b732c517c6cc78000cf3f40dbbe1b6ab3e35840d1f2253877",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/numeric-incomplete-exponent-overflow-control.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "Ojox",
+      "stderr": "V2FybmluZzogQSBub24tbnVtZXJpYyB2YWx1ZSBlbmNvdW50ZXJlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvbnVtZXJpYy1pbmNvbXBsZXRlLWV4cG9uZW50LW92ZXJmbG93LWNvbnRyb2wucGhwIG9uIGxpbmUgMgo=",
       "exit_status": 0,
       "expected_match": true
     }

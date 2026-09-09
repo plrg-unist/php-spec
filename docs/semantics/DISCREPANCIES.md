@@ -118,3 +118,24 @@ Commit `891c2c95` uses the first imported name, group prefix or named namespace
 location; 211 mandatory prefix comparisons and 64 independent alternates passed.
 Anonymous namespace brace metadata remains an explicit Unsupported boundary when
 a diagnostic needs it. No intentional divergence or source activation is claimed.
+
+
+## Numeric-string boundary suffixes: specification defect under correction
+
+At the pinned `_is_numeric_string_ex`, the nineteen-significant-digit bound check
+uses `strcmp`, including any non-NUL suffix. Negative minimum text followed by
+whitespace is therefore floating-point; a NUL terminator preserves its integer
+classification. An incomplete exponent with a sign advances the comparison
+pointer: `9223372036854775808e+` becomes the minimum integer, and
+`-9223372036854775809e+` becomes the maximum integer after signed conversion.
+Larger prefixes can still compare above the shifted bound and remain floating.
+
+The shared numeric classifier currently omits these distinctions. This was found
+in independent string-offset testing: the minimum text plus `tail` throws a
+TypeError in PHP, while the helper wrongly warns about an integer offset.
+[Raw arithmetic evidence](../../coverage/semantics/numeric-boundary-disagreement.json)
+retains 104 original-source observations, including 28 disagreements and their
+controls, exact bytes/outcomes and implementation fingerprints. Seven independent
+source fixtures retain the principal discriminators. Follow the pinned behavior;
+no intentional divergence is selected. The numeric correction and dimension
+helper remain subject to fresh independent gates.
