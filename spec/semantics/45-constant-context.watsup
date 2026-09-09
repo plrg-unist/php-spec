@@ -42,7 +42,7 @@ def $pfremember(F, pcpath, (pvalue), z) = F[.FACTS = F.FACTS ++ [PFFACT pcpath p
 dec $pfshape(expression) : pfshape
 def $pfshape(NScalarInt (INTEGER i) metadata) = PFSCALAR (PINT i) ($source_line(metadata))
 def $pfshape(NScalarFloat (FLOAT text) metadata) = PFSCALAR (PFLOAT $hex_bits(text, 0)) ($source_line(metadata))
-def $pfshape(NScalarString (BYTES text) metadata) = PFSCALAR (PSTRING $base64(text)) ($source_line(metadata))
+def $pfshape(NScalarString (BYTES text) metadata) = PFSCALAR (PSTRING $base64(text)) ($string_line(metadata))
 def $pfshape(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = PFLEAF ($fold_scalar(NExprConstFetch (NName (BYTES text) metadata_name) metadata))
 def $pfshape(NExprVariable phpType34 metadata) = PFSTOP
 def $pfshape(NExprAssign expression_1 expression_2 metadata) = PFSTOP

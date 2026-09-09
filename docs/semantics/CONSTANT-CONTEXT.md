@@ -81,3 +81,19 @@ in force until that coordinated replacement; string/scalar source reads and
 loop/function literal-pool behavior are still pending.
 
 Each `PFFACT` retains the effective line of its constant AST node. Original integer, float and string leaves keep their source lines. Actual constant-expression rewrites use the invocation compiler line, matching `zend_eval_const_expr` replacing the node with `zend_ast_create_zval` (`zend_compile.c:12380`, `zend_ast.c:88`). The original checked syntax remains unchanged. `$pffactline` exposes this provenance to ordinary compilation; cached facts retain the first rewrite line across repeated evaluation.
+
+
+Original string leaves use the shared `$string_line` rule from `20-machine.watsup`.
+Quoted literals keep `startLine`; heredoc/nowdoc kinds 3 and 4 use the following
+line, including empty strings, indentation, CRLF and a binary prefix. The pinned
+parser returns the string-content token (or creates the empty value after the
+opening newline), and the scanner stamps that token's start line
+(`zend_language_parser.y:1500`, `zend_language_scanner.l:3194`). Constant-expression
+rewrites still use their invocation line, independently of original string kind.
+Absent kind metadata permits only a proven single-line fallback; missing multiline
+kind, an explicit invalid kind, or a missing/nonpositive source line yields line0.
+Ordinary checked compilation then reports missing compiler context instead of
+inventing a line. `tests/semantics/string_lines.py` compares all12 retained original
+source witnesses through native PHP and the source machine, two encoded profiles
+through the compiler, and seven edited metadata boundaries. Encoded-profile checks
+do not claim the source CLI accepts those profiles.

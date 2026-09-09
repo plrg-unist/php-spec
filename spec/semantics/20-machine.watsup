@@ -38,12 +38,38 @@ def $source_end_line(metadataEntry :: metadataEntry_tail*) = z
 def $source_end_line(metadataEntry :: metadataEntry_tail*) = $source_end_line(metadataEntry_tail*)
   -- if $($metadata_end_line(metadataEntry) <= 0)
 
+;; Heredoc/nowdoc scalar nodes come from their content token, after the opener.
+dec $metadata_string_kind(metadataEntry) : int?
+def $metadata_string_kind(Mkind z) = (z)
+def $metadata_string_kind(metadataEntry) = eps
+  -- otherwise
+dec $string_kind(metadata) : int?
+def $string_kind(eps) = eps
+def $string_kind(metadataEntry :: metadataEntry_tail*) = (z)
+  -- if $metadata_string_kind(metadataEntry) = (z)
+def $string_kind(metadataEntry :: metadataEntry_tail*) = $string_kind(metadataEntry_tail*)
+  -- if $metadata_string_kind(metadataEntry) = eps
+dec $string_line(metadata) : int
+def $string_line(metadata) = $source_line(metadata)
+  -- if $string_kind(metadata) = (z)
+  -- if (z = 1 \/ z = 2)
+def $string_line(metadata) = $($source_line(metadata) + 1)
+  -- if $string_kind(metadata) = (z)
+  -- if (z = 3 \/ z = 4)
+  -- if $($source_line(metadata) > 0)
+def $string_line(metadata) = $source_line(metadata)
+  -- if $string_kind(metadata) = eps
+  -- if $source_line(metadata) = $source_end_line(metadata)
+  -- if $($source_line(metadata) > 0)
+def $string_line(metadata) = 0
+  -- otherwise
+
 dec $expression_line(expression) : int
 dec $variable_line(phpType34, metadata) : int
 def $variable_line(BYTES text, metadata) = $source_line(metadata)
 def $variable_line(phpType34, metadata) = $expression_line(expression)
   -- if phpType34 = expression
-def $expression_line(NScalarString phpType35 metadata) = $source_line(metadata)
+def $expression_line(NScalarString phpType35 metadata) = $string_line(metadata)
 def $expression_line(NScalarInt phpType24 metadata) = $source_line(metadata)
 def $expression_line(NScalarFloat phpType43 metadata) = $source_line(metadata)
 def $expression_line(NExprConstFetch name metadata) = $source_line(metadata)
