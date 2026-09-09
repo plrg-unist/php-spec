@@ -21,7 +21,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Ownership and handoffs
 
-- `runtime4`: storage/source integration, currently quiet access/CV/request-environment rules.
+- `runtime5`: storage/source integration, currently quiet access/CV/request-environment rules.
 - `compiler4`: paired compiler/frontend work, then declarations/frames and class lookup.
 - `review7`: independent evidence, inventory, phase ledger and concise status/docs.
 - Root orchestrates; stage owned files, commit reviewed increments, never push.
@@ -42,6 +42,15 @@ The exclusive raw file starts **`f0fc89de`**; [stable source report](coverage/se
 retains this checkpoint when later selections run. Its sixteen required core controls and four parser controls remain separate in that
 immutable report. Quiet publication below retires four of those core controls;
 twelve remain. No full-core or final-syntax claim follows.
+
+Variable/DIM coalescing assignment code **`f073c750`**, runtime evidence
+**`784492ab`** and compiler evidence **`012cd357`** are accepted by
+[independent review](coverage/semantics/coalesce-assignment-review.json):137 exact
+sources +18 controls, fresh author 8 state programs/3,760 assertions, independent 7/
+3,024 and nine edited-descriptor controls/74. Eighteen fresh canonical CLI cases
+pass; the GLOBALS original remains Unsupported. Canonical 826/`cc1d3e5e` exactly
+retains guarded 834 runtime dependencies. [Contract](docs/semantics/COALESCE-ASSIGNMENT-REVIEW.md)
+records delayed CVs, retained reference temporaries and separate write lines.
 
 Quiet variable/DIM coalescing and compiled header/name conversion code **`a42fddfe`**
 is accepted by [independent review](coverage/semantics/quiet-access-review.json):
@@ -87,8 +96,8 @@ coalescing assignments before broader calls/frames, declarations, linked objects
 exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
 Three object quiet-coalescing forms and seven ordinary request-environment
 cases remain explicit Unsupported work; none count as source agreements.
-Guarded coalescing-assignment runtime and GLOBALS compiler candidates have
-independent private evidence; their source publication remains pending. [Quiet/CV design review](docs/semantics/QUIET-CV-REVIEW.md) and 28 native
+GLOBALS compiler candidates have independent private evidence; request-environment
+and terminal isset/empty source publication remain pending. [Quiet/CV design review](docs/semantics/QUIET-CV-REVIEW.md) and 28 native
 originals distinguish delayed CV reads, temporary reuse and header compiler state.
 Ordinary-library exclusions cannot discharge required core behavior.
 
