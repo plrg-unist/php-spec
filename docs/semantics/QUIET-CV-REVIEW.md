@@ -52,3 +52,14 @@ but gives those same silent boolean results for a string base with `isset`/`empt
 A float key1.5 is silent with `??`, but `isset`/`empty` report lossy conversion.
 Array-base illegal-key diagnostic text also differs. Runtime4's retained198-source
 matrix supplies the next integration controls; this document makes no admission.
+
+Twelve [reference-valued memoization originals](../../coverage/semantics/coalesce-assignment-reference-originals.json)
+show that a copied temporary can still contain a reference cell. `ZEND_COPY_TMP`
+uses `ZVAL_COPY`, preserving wrappers. With `$j=1`, the key `($k=&$j)` in
+`$a[($k=&$j)] ??= ($j=2)` becomes2 on refetch. Rebinding `$j` to another cell instead
+leaves the saved key at1. A ternary around that AssignRef copies its resolved value,
+also retaining key1. Computed variable names show the same distinction. Mutating
+the retained cell to an array raises an illegal-key TypeError during writing.
+Memoization therefore retains the actual VALUE, including a REFERENCE; resolving
+all temporary operands early would lose this behavior. The non-null branch and
+throwing RHS need ownership cleanup for these retained wrappers.
