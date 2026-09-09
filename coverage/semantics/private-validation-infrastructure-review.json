@@ -1,0 +1,242 @@
+{
+  "result": "pass",
+  "scope": "Infrastructure only: explicit pinned read-only private references and exclusive aggregate compiler failure preservation. No new semantic source agreement or full compiler closure.",
+  "canonical_inputs": {
+    "scripts/private-semantics-references.py": "789c8b0f977aee94de4f0200e134881a331deaada3e3b5831397d140f968ae98",
+    "tests/semantics/source_compiler.py": "6c2002af79a245a1dc84d07e8926dabd429128db28b59b9015c3f7c77a378a72"
+  },
+  "reference_controls": {
+    "result": "pass",
+    "scope": "Independent CLI seven controls on relocated canonical/target fixture roots,13 exact pinned references; no runtime semantics or full source-closure claim.",
+    "script_sha256": "789c8b0f977aee94de4f0200e134881a331deaada3e3b5831397d140f968ae98",
+    "references": {
+      "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
+      "vendor/php-src/Zend/zend_API.c": "1aa5548cebd8f337bad00fe94917559d52db75566eb5d8674ef377a6369ef711",
+      "vendor/php-src/Zend/zend_ast.c": "2b957bba99379210a4205a8fdfe4cde40da6df4bfcd99f115ee188ecd5d275d5",
+      "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
+      "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
+      "vendor/php-src/Zend/zend_gc.c": "ab0d9eefd826a6ad2a1a05ded43a101d487efb530e7a094026a748a56a844ed7",
+      "vendor/php-src/Zend/zend_inheritance.c": "69793711dc0a88c93545be87baa57e2fca26f2dc2e0701a8d956611980fee486",
+      "vendor/php-src/Zend/zend_vm_def.h": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41",
+      "vendor/php-src/Zend/zend_variables.c": "13abee4e3dcf1dec216653a77625d2e3b7cc9fcd6514ffade3aab882372d6440",
+      "vendor/php-src/Zend/zend_execute.c": "5479cd6fd4025f013713cee297028c93c8c6a70bbf10481a8374da6e207773c8",
+      "vendor/php-src/Zend/zend_language_parser.y": "f108f2c2ff4c98c68b6478e7fbdebc16d8afb8bbbc3ae6079e5b285b448dac0c",
+      "vendor/php-src/Zend/zend_language_scanner.l": "5e178b9e0a4f865a423a098ac97ba5fc04ef2f68503382e18599d89d9ad8d15b",
+      "vendor/php-src/main/php_variables.c": "a2d15a0a9505cf17e8b45dc29220368b0efb96e31523e40d63849aadde384f9b"
+    },
+    "records": [
+      {
+        "id": "missing-default-no-write",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/target"
+        ],
+        "status": 1,
+        "stdout": "",
+        "stderr": "private semantics references missing: vendor/php-src/Zend/zend_compile.c, vendor/php-src/Zend/zend_API.c, vendor/php-src/Zend/zend_ast.c, vendor/php-src/Zend/zend_operators.c, vendor/php-src/Zend/zend_hash.c, vendor/php-src/Zend/zend_gc.c, vendor/php-src/Zend/zend_inheritance.c, vendor/php-src/Zend/zend_vm_def.h, vendor/php-src/Zend/zend_variables.c, vendor/php-src/Zend/zend_execute.c, vendor/php-src/Zend/zend_language_parser.y, vendor/php-src/Zend/zend_language_scanner.l, vendor/php-src/main/php_variables.c; provision before freezing with --copy-missing\n"
+      },
+      {
+        "id": "provision13-exact",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/target",
+          "--copy-missing"
+        ],
+        "status": 0,
+        "stdout": "Private semantics references: 13 exact files; /home/user/workspace/php-spec/.tools/review7-reference-helper/target/semantics-reference-inputs.json\n",
+        "stderr": ""
+      },
+      {
+        "id": "default-idempotent",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/target"
+        ],
+        "status": 0,
+        "stdout": "Private semantics references: 13 exact files; /home/user/workspace/php-spec/.tools/review7-reference-helper/target/semantics-reference-inputs.json\n",
+        "stderr": ""
+      },
+      {
+        "id": "mismatch-reject-before-partial-copy",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/target",
+          "--copy-missing"
+        ],
+        "status": 1,
+        "stdout": "",
+        "stderr": "read-only oracle reference mismatch; refusing overwrite: vendor/php-src/Zend/zend_compile.c\n"
+      },
+      {
+        "id": "existing-manifest-preserved",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/target",
+          "--copy-missing"
+        ],
+        "status": 1,
+        "stdout": "",
+        "stderr": "existing reference manifest differs; preserve it and use a new private root\n"
+      },
+      {
+        "id": "canonical-root-refused",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical",
+          "--copy-missing"
+        ],
+        "status": 1,
+        "stdout": "",
+        "stderr": "private root must differ from the canonical checkout\n"
+      },
+      {
+        "id": "missing-root-no-write",
+        "command": [
+          "python3",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/canonical/scripts/private-semantics-references.py",
+          "/home/user/workspace/php-spec/.tools/review7-reference-helper/absent",
+          "--copy-missing"
+        ],
+        "status": 1,
+        "stdout": "",
+        "stderr": "private root is missing spec/semantics/modules.json\n"
+      }
+    ]
+  },
+  "retention_controls": {
+    "result": "pass",
+    "scope": "Three independent retention-helper controls: exact arbitrary fixture bytes and structured timeout/false/nonzero records survive temporary source cleanup in distinct exclusive output directories. These are controlled tool records, not executed PHP or full compiler validation. Actual main timeout/error branches reviewed from unchanged source AST.",
+    "source_sha256": "6c2002af79a245a1dc84d07e8926dabd429128db28b59b9015c3f7c77a378a72",
+    "records": [
+      {
+        "directory": "/home/user/workspace/php-spec/.tools/review7-compiler-retention/.tools/source-compiler-failure-f37c_3mb",
+        "fixture_sha256": "423039f84b3c5fca95382043c029c7c4215a03be61aefb59c92b89d5e32267e1",
+        "report_sha256": "0320fc11ce6096915eb33b89dabd6404912af187cbe8305781bc7dcbf827485d",
+        "result": {
+          "timeout_seconds": 600,
+          "stdout_base64": "cGFydGlhbP8A",
+          "stderr_base64": "ZmFpbGVkCg=="
+        }
+      },
+      {
+        "directory": "/home/user/workspace/php-spec/.tools/review7-compiler-retention/.tools/source-compiler-failure-hq89wxbo",
+        "fixture_sha256": "546a52717f74603a2c172e19e0224bd6fde3e62b37eb4ad183f55804e146ebce",
+        "report_sha256": "3af17c4d58dfc2dbd410dcad83f48c0bba634236451b0cc0539354684c3c72df",
+        "result": {
+          "status": 0,
+          "stdout": "false\n",
+          "stderr": ""
+        }
+      },
+      {
+        "directory": "/home/user/workspace/php-spec/.tools/review7-compiler-retention/.tools/source-compiler-failure-2ondmxt5",
+        "fixture_sha256": "02c58f7867b26e221decc8b147cb4bbdd1cce5212b0ffc3f9210f59413ecce35",
+        "report_sha256": "b75091edca0eb635c94cadbabe50866af6e3a194e7d1ae495109490c4c238dfc",
+        "result": {
+          "status": 3,
+          "stdout": "partial\n",
+          "stderr": "tool failure\n"
+        }
+      }
+    ]
+  },
+  "code_review": "Provision all missing references before freezing; reject any differing existing file or manifest before copying. Never overwrite an old root. Aggregate timeout changes wallclock120 to600 only. Actual timeout and false/nonzero branches preserve exact fixture and records before TemporaryDirectory cleanup, then raise; no failed aggregate counts as pass.",
+  "limits": "The13-reference list covers current semantics harness references, not full syntax/source/tool dependency closure. Timeout/false/nonzero independent controls are deliberate structured tool failures; author actual-main controls separately use real native/checked setup with mocked aggregate. Earlier deleted timeout fixture remains unavailable and is not reconstructed as original.",
+  "artifacts": [
+    {
+      "path": ".tools/review7-reference-helper.py",
+      "sha256": "844ede52f7a7670532367c1473d288ca6a47210906280b5f30217ff72b388252",
+      "base64": "ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCBhc3QsaGFzaGxpYixqc29uLHNodXRpbCxzdWJwcm9jZXNzClI9UGF0aC5jd2QoKTtPPVIvJy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXInO08ubWtkaXIoZXhpc3Rfb2s9RmFsc2UpO0M9Ty8nY2Fub25pY2FsJztUPU8vJ3RhcmdldCc7KEMvJ3NjcmlwdHMnKS5ta2RpcihwYXJlbnRzPVRydWUpOyhULydzcGVjL3NlbWFudGljcycpLm1rZGlyKHBhcmVudHM9VHJ1ZSk7KFQvJ3NwZWMvc2VtYW50aWNzL21vZHVsZXMuanNvbicpLndyaXRlX3RleHQoJ1tdXG4nKTtzb3VyY2U9Ui8nLnRvb2xzL21hZ2ljLXB1YmxpY2F0aW9uL3ByaXZhdGUtc2VtYW50aWNzLXJlZmVyZW5jZXMucHknO3NjcmlwdD1DLydzY3JpcHRzL3ByaXZhdGUtc2VtYW50aWNzLXJlZmVyZW5jZXMucHknO3NjcmlwdC53cml0ZV9ieXRlcyhzb3VyY2UucmVhZF9ieXRlcygpKTtucz17fTtleGVjKGNvbXBpbGUoc291cmNlLnJlYWRfdGV4dCgpLHN0cihzY3JpcHQpLCdleGVjJykseydfX25hbWVfXyc6J3Jldmlld19pbXBvcnQnLCdfX2ZpbGVfXyc6c3RyKHNjcmlwdCl9LG5zKTtyZWZzPW5zWydSRUZFUkVOQ0VTJ107YXNzZXJ0IGxlbihyZWZzKT09MTMKZm9yIG5hbWUgaW4gcmVmczoKIHA9Qy9uYW1lO3AucGFyZW50Lm1rZGlyKHBhcmVudHM9VHJ1ZSxleGlzdF9vaz1UcnVlKTtwLndyaXRlX2J5dGVzKChSL25hbWUpLnJlYWRfYnl0ZXMoKSkKZGVmIHJ1bih0YXJnZXQsY29weT1GYWxzZSk6CiBhcmdzPVsncHl0aG9uMycsc3RyKHNjcmlwdCksc3RyKHRhcmdldCldKyhbJy0tY29weS1taXNzaW5nJ10gaWYgY29weSBlbHNlIFtdKTtyPXN1YnByb2Nlc3MucnVuKGFyZ3MsY2FwdHVyZV9vdXRwdXQ9VHJ1ZSx0ZXh0PVRydWUsdGltZW91dD0yMCk7cmV0dXJuIHsnY29tbWFuZCc6YXJncywnc3RhdHVzJzpyLnJldHVybmNvZGUsJ3N0ZG91dCc6ci5zdGRvdXQsJ3N0ZGVycic6ci5zdGRlcnJ9CnJlY29yZHM9W107cj1ydW4oVCk7YXNzZXJ0IHJbJ3N0YXR1cyddPT0xIGFuZCAnbWlzc2luZzonIGluIHJbJ3N0ZGVyciddIGFuZCBub3QgKFQvJ3NlbWFudGljcy1yZWZlcmVuY2UtaW5wdXRzLmpzb24nKS5leGlzdHMoKTtyZWNvcmRzLmFwcGVuZCh7J2lkJzonbWlzc2luZy1kZWZhdWx0LW5vLXdyaXRlJywqKnJ9KQpyPXJ1bihULFRydWUpO2Fzc2VydCByWydzdGF0dXMnXT09MDtleHBlY3RlZD17bjpoYXNobGliLnNoYTI1NigoUi9uKS5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpIGZvciBuIGluIHJlZnN9O2Fzc2VydCB7bjpoYXNobGliLnNoYTI1NigoVC9uKS5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpIGZvciBuIGluIHJlZnN9PT1leHBlY3RlZDtyZWNvcmRzLmFwcGVuZCh7J2lkJzoncHJvdmlzaW9uMTMtZXhhY3QnLCoqcn0pO21hbmlmZXN0PVQvJ3NlbWFudGljcy1yZWZlcmVuY2UtaW5wdXRzLmpzb24nO3Jhdz1tYW5pZmVzdC5yZWFkX2J5dGVzKCk7c3RhbXA9bWFuaWZlc3Quc3RhdCgpLnN0X210aW1lX25zO3I9cnVuKFQpO2Fzc2VydCByWydzdGF0dXMnXT09MCBhbmQgbWFuaWZlc3QucmVhZF9ieXRlcygpPT1yYXcgYW5kIG1hbmlmZXN0LnN0YXQoKS5zdF9tdGltZV9ucz09c3RhbXA7cmVjb3Jkcy5hcHBlbmQoeydpZCc6J2RlZmF1bHQtaWRlbXBvdGVudCcsKipyfSkKcD1UL3JlZnNbMF07cC53cml0ZV9ieXRlcyhiJ2NoYW5nZWQnKTtxPVQvcmVmc1sxXTtzYXZlZD1xLnJlYWRfYnl0ZXMoKTtxLnVubGluaygpO3I9cnVuKFQsVHJ1ZSk7YXNzZXJ0IHJbJ3N0YXR1cyddPT0xIGFuZCAncmVmdXNpbmcgb3ZlcndyaXRlJyBpbiByWydzdGRlcnInXSBhbmQgcC5yZWFkX2J5dGVzKCk9PWInY2hhbmdlZCcgYW5kIG5vdCBxLmV4aXN0cygpIGFuZCBtYW5pZmVzdC5yZWFkX2J5dGVzKCk9PXJhdztyZWNvcmRzLmFwcGVuZCh7J2lkJzonbWlzbWF0Y2gtcmVqZWN0LWJlZm9yZS1wYXJ0aWFsLWNvcHknLCoqcn0pO3Aud3JpdGVfYnl0ZXMoKEMvcmVmc1swXSkucmVhZF9ieXRlcygpKTtxLndyaXRlX2J5dGVzKHNhdmVkKQptYW5pZmVzdC53cml0ZV90ZXh0KCd7fVxuJyk7cj1ydW4oVCxUcnVlKTthc3NlcnQgclsnc3RhdHVzJ109PTEgYW5kICdtYW5pZmVzdCBkaWZmZXJzJyBpbiByWydzdGRlcnInXSBhbmQgbWFuaWZlc3QucmVhZF90ZXh0KCk9PSd7fVxuJztyZWNvcmRzLmFwcGVuZCh7J2lkJzonZXhpc3RpbmctbWFuaWZlc3QtcHJlc2VydmVkJywqKnJ9KQpyPXJ1bihDLFRydWUpO2Fzc2VydCByWydzdGF0dXMnXT09MSBhbmQgJ2Nhbm9uaWNhbCBjaGVja291dCcgaW4gclsnc3RkZXJyJ107cmVjb3Jkcy5hcHBlbmQoeydpZCc6J2Nhbm9uaWNhbC1yb290LXJlZnVzZWQnLCoqcn0pO3I9cnVuKE8vJ2Fic2VudCcsVHJ1ZSk7YXNzZXJ0IHJbJ3N0YXR1cyddPT0xIGFuZCAnbWlzc2luZyBzcGVjL3NlbWFudGljcy9tb2R1bGVzLmpzb24nIGluIHJbJ3N0ZGVyciddIGFuZCBub3QgKE8vJ2Fic2VudCcpLmV4aXN0cygpO3JlY29yZHMuYXBwZW5kKHsnaWQnOidtaXNzaW5nLXJvb3Qtbm8td3JpdGUnLCoqcn0pO3JlcG9ydD17J3Jlc3VsdCc6J3Bhc3MnLCdzY29wZSc6J0luZGVwZW5kZW50IENMSSBzZXZlbiBjb250cm9scyBvbiByZWxvY2F0ZWQgY2Fub25pY2FsL3RhcmdldCBmaXh0dXJlIHJvb3RzLDEzIGV4YWN0IHBpbm5lZCByZWZlcmVuY2VzOyBubyBydW50aW1lIHNlbWFudGljcyBvciBmdWxsIHNvdXJjZS1jbG9zdXJlIGNsYWltLicsJ3NjcmlwdF9zaGEyNTYnOmhhc2hsaWIuc2hhMjU2KHNvdXJjZS5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpLCdyZWZlcmVuY2VzJzpleHBlY3RlZCwncmVjb3Jkcyc6cmVjb3Jkc307KE8vJ3Jlc3VsdHMuanNvbicpLndyaXRlX3RleHQoanNvbi5kdW1wcyhyZXBvcnQsaW5kZW50PTIpKydcbicpO3ByaW50KCdzZXZlbiBpbmRlcGVuZGVudCBDTEkgY29udHJvbHMgcGFzczsxMyBleGFjdCBzb3VyY2VzJykK"
+    },
+    {
+      "path": ".tools/review7-compiler-retention.py",
+      "sha256": "d8f5af9df460c032872d89df34fb0d14a2752d45ad44ecd8f3a3c61944b8ebde",
+      "base64": "ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCBhc3QsYmFzZTY0LGhhc2hsaWIsanNvbix0ZW1wZmlsZQpSPVBhdGguY3dkKCk7Tz1SLycudG9vbHMvcmV2aWV3Ny1jb21waWxlci1yZXRlbnRpb24nO08ubWtkaXIoZXhpc3Rfb2s9RmFsc2UpOyhPLycudG9vbHMnKS5ta2RpcigpO3A9Ui8nLnRvb2xzL21hZ2ljLXB1YmxpY2F0aW9uL3NvdXJjZV9jb21waWxlci5weSc7dHJlZT1hc3QucGFyc2UocC5yZWFkX3RleHQoKSk7bm9kZT1uZXh0KG4gZm9yIG4gaW4gdHJlZS5ib2R5IGlmIGlzaW5zdGFuY2Uobixhc3QuRnVuY3Rpb25EZWYpIGFuZCBuLm5hbWU9PSdyZXRhaW5fZmFpbHVyZScpO25zPXsnUGF0aCc6UGF0aCwndGVtcGZpbGUnOnRlbXBmaWxlLCdqc29uJzpqc29uLCdST09UJzpPfTtleGVjKGNvbXBpbGUoYXN0Lk1vZHVsZShib2R5PVtub2RlXSx0eXBlX2lnbm9yZXM9W10pLHN0cihwKSwnZXhlYycpLG5zKTtyZXRhaW5lZD1bXQpmb3IgaSxyZXN1bHQgaW4gZW51bWVyYXRlKFt7J3RpbWVvdXRfc2Vjb25kcyc6NjAwLCdzdGRvdXRfYmFzZTY0JzpiYXNlNjQuYjY0ZW5jb2RlKGIncGFydGlhbFx4ZmZcMCcpLmRlY29kZSgpLCdzdGRlcnJfYmFzZTY0JzpiYXNlNjQuYjY0ZW5jb2RlKGInZmFpbGVkXG4nKS5kZWNvZGUoKX0seydzdGF0dXMnOjAsJ3N0ZG91dCc6J2ZhbHNlXG4nLCdzdGRlcnInOicnfSx7J3N0YXR1cyc6Mywnc3Rkb3V0JzoncGFydGlhbFxuJywnc3RkZXJyJzondG9vbCBmYWlsdXJlXG4nfV0pOgogd2l0aCB0ZW1wZmlsZS5UZW1wb3JhcnlEaXJlY3RvcnkoZGlyPU8pIGFzIHRkOgogIGY9UGF0aCh0ZCkvJ2Nhc2VzLndhdHN1cCc7cGF5bG9hZD1iJ2RlYyAkbWFpbigpIDogYm9vbFxuZGVmICRtYWluKCkgPSBmYWxzZVxuOzsgZXhhY3QgcmF3IGZpeHR1cmUgYnl0ZXMgXHhmZlx4MDBcbicrc3RyKGkpLmVuY29kZSgpO2Yud3JpdGVfYnl0ZXMocGF5bG9hZCk7ZmluZ2VycHJpbnQ9eydzY29wZSc6J2NvbnRyb2xsZWQgcmV0ZW50aW9uIGhlbHBlciB0ZXN0OyBubyBQSFAgc2VtYW50aWMgb2JzZXJ2YXRpb25zJywnc2hhMjU2JzonY29udHJvbGxlZCd9O3JlY29yZHM9W3snaWQnOidjb250cm9sJytzdHIoaSksJ3NvdXJjZV9iYXNlNjQnOmJhc2U2NC5iNjRlbmNvZGUoYidjb250cm9sbGVkIHNvdXJjZSBieXRlcycpLmRlY29kZSgpLCd0b29sX3Jlc3VsdCc6cmVzdWx0fV07Y29tbWFuZD1bJ2NvbnRyb2xsZWQtdG9vbCcsc3RyKGYpXTtvdXQ9bnNbJ3JldGFpbl9mYWlsdXJlJ10oZmluZ2VycHJpbnQscmVjb3JkcyxmLGNvbW1hbmQscmVzdWx0KTtleHBlY3RlZD17J2ZpbmdlcnByaW50JzpmaW5nZXJwcmludCwncmVjb3Jkcyc6cmVjb3JkcywnY29tbWFuZCc6Y29tbWFuZCwncmVzdWx0JzpyZXN1bHR9O2Fzc2VydChvdXQvJ2Nhc2VzLndhdHN1cCcpLnJlYWRfYnl0ZXMoKT09cGF5bG9hZDthc3NlcnQganNvbi5sb2Fkcygob3V0LydyZXN1bHRzLmpzb24nKS5yZWFkX3RleHQoKSk9PWV4cGVjdGVkCiBhc3NlcnQgbm90IGYuZXhpc3RzKCkgYW5kKG91dC8nY2FzZXMud2F0c3VwJykucmVhZF9ieXRlcygpPT1wYXlsb2FkO3JldGFpbmVkLmFwcGVuZCh7J2RpcmVjdG9yeSc6c3RyKG91dCksJ2ZpeHR1cmVfc2hhMjU2JzpoYXNobGliLnNoYTI1NihwYXlsb2FkKS5oZXhkaWdlc3QoKSwncmVwb3J0X3NoYTI1Nic6aGFzaGxpYi5zaGEyNTYoKG91dC8ncmVzdWx0cy5qc29uJykucmVhZF9ieXRlcygpKS5oZXhkaWdlc3QoKSwncmVzdWx0JzpyZXN1bHR9KQphc3NlcnQgbGVuKHtyWydkaXJlY3RvcnknXSBmb3IgciBpbiByZXRhaW5lZH0pPT0zCmZvciByIGluIHJldGFpbmVkOmFzc2VydCBoYXNobGliLnNoYTI1NigoUGF0aChyWydkaXJlY3RvcnknXSkvJ2Nhc2VzLndhdHN1cCcpLnJlYWRfYnl0ZXMoKSkuaGV4ZGlnZXN0KCk9PXJbJ2ZpeHR1cmVfc2hhMjU2J10KcmVwb3J0PXsncmVzdWx0JzoncGFzcycsJ3Njb3BlJzonVGhyZWUgaW5kZXBlbmRlbnQgcmV0ZW50aW9uLWhlbHBlciBjb250cm9sczogZXhhY3QgYXJiaXRyYXJ5IGZpeHR1cmUgYnl0ZXMgYW5kIHN0cnVjdHVyZWQgdGltZW91dC9mYWxzZS9ub256ZXJvIHJlY29yZHMgc3Vydml2ZSB0ZW1wb3Jhcnkgc291cmNlIGNsZWFudXAgaW4gZGlzdGluY3QgZXhjbHVzaXZlIG91dHB1dCBkaXJlY3Rvcmllcy4gVGhlc2UgYXJlIGNvbnRyb2xsZWQgdG9vbCByZWNvcmRzLCBub3QgZXhlY3V0ZWQgUEhQIG9yIGZ1bGwgY29tcGlsZXIgdmFsaWRhdGlvbi4gQWN0dWFsIG1haW4gdGltZW91dC9lcnJvciBicmFuY2hlcyByZXZpZXdlZCBmcm9tIHVuY2hhbmdlZCBzb3VyY2UgQVNULicsJ3NvdXJjZV9zaGEyNTYnOmhhc2hsaWIuc2hhMjU2KHAucmVhZF9ieXRlcygpKS5oZXhkaWdlc3QoKSwncmVjb3Jkcyc6cmV0YWluZWR9OyhPLydyZXN1bHRzLmpzb24nKS53cml0ZV90ZXh0KGpzb24uZHVtcHMocmVwb3J0LGluZGVudD0yKSsnXG4nKTtwcmludCgndGhyZWUgZXhjbHVzaXZlIHJldGVudGlvbiBoZWxwZXIgY29udHJvbHMgcGFzcycpCg=="
+    },
+    {
+      "path": ".tools/review7-reference-helper/results.json",
+      "sha256": "0eb2bb533d30a924a722e59012595493e42965f81c1fdaa3d95f79e4b3b01bcb",
+      "base64": "ewogICJyZXN1bHQiOiAicGFzcyIsCiAgInNjb3BlIjogIkluZGVwZW5kZW50IENMSSBzZXZlbiBjb250cm9scyBvbiByZWxvY2F0ZWQgY2Fub25pY2FsL3RhcmdldCBmaXh0dXJlIHJvb3RzLDEzIGV4YWN0IHBpbm5lZCByZWZlcmVuY2VzOyBubyBydW50aW1lIHNlbWFudGljcyBvciBmdWxsIHNvdXJjZS1jbG9zdXJlIGNsYWltLiIsCiAgInNjcmlwdF9zaGEyNTYiOiAiNzg5YzhiMGY5NzdhZWU5NGRlNGYwMjAwZTEzNDg4MWEzMzFkZWFhZGEzZTNiNTgzMTM5N2QxNDBmOTY4YWU5OCIsCiAgInJlZmVyZW5jZXMiOiB7CiAgICAidmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2NvbXBpbGUuYyI6ICIyNTE5MGVlMjBmMjY2MGFhNjY1NzdmNWRhNzFiNDNiZTYzMjY4ZTkwZmE3YzBlY2IyZTNjZjhmMWU2MjFiMjI1IiwKICAgICJ2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfQVBJLmMiOiAiMWFhNTU0OGNlYmQ4ZjMzN2JhZDAwZmU5NDkxNzU1OWQ1MmRiNzU1NjZlYjVkODY3NGVmMzc3YTYzNjllZjcxMSIsCiAgICAidmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2FzdC5jIjogIjJiOTU3YmJhOTkzNzkyMTBhNDIwNWE4ZmRmZTRjZGU0MGRhNmRmNGJmY2Q5OWYxMTVlZTE4OGVjZDVkMjc1ZDUiLAogICAgInZlbmRvci9waHAtc3JjL1plbmQvemVuZF9vcGVyYXRvcnMuYyI6ICJlNjIyZGVkYmU1YjFhZDA1ODQwODBhMTkyYTEzM2IxYTZkMjE0ZjY2MjM4YjhlZjkxZTI5OGExMTEwYWY4N2EyIiwKICAgICJ2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfaGFzaC5jIjogImIxY2IxYzg5MjEzYWU5MWE5YzIxZWU2OWFiYWY5ZjA1YTBkYmU1ZjgzNThiZjAwNzZhN2IxZGZlMjUxOTE0ZTUiLAogICAgInZlbmRvci9waHAtc3JjL1plbmQvemVuZF9nYy5jIjogImFiMGQ5ZWVmZDgyNmE2YWQyYTFhMDVkZWQ0M2ExMDFkNDg3ZWZiNTMwZTdhMDk0MDI2YTc0OGE1NmE4NDRlZDciLAogICAgInZlbmRvci9waHAtc3JjL1plbmQvemVuZF9pbmhlcml0YW5jZS5jIjogIjY5NzkzNzExZGMwYTg4YzkzNTQ1YmU4N2JhYTU3ZTJmY2EyNmYyZGMyZTA3MDFhOGQ5NTY2MTE5ODBmZWU0ODYiLAogICAgInZlbmRvci9waHAtc3JjL1plbmQvemVuZF92bV9kZWYuaCI6ICI4N2Y2ZDczYzMxYTBjMjg2NWZjODQxZWZiYTkxMWQ1MTJjMTRkNjcyZjMxYmUyNWQxNDBiMTBmYjQzNDUxYTQxIiwKICAgICJ2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfdmFyaWFibGVzLmMiOiAiMTNhYmVlNGUzZGNmMWRlYzIxNjY1M2E3NzYyNWQyZTNiN2NjOWZjZDY1MTRmZmFkZTNhYWI4ODIzNzJkNjQ0MCIsCiAgICAidmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2V4ZWN1dGUuYyI6ICI1NDc5Y2Q2ZmQ0MDI1ZjAxMzcxM2NlZTI5NzAyOGM5M2M4YzZhNzBiYmYxMDQ4MWE4Mzc0ZGE2ZTIwNzc3M2M4IiwKICAgICJ2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfbGFuZ3VhZ2VfcGFyc2VyLnkiOiAiZjEwOGYyYzJmZjRjOThjNjhiNjQ3OGU3ZmJkZWJjMTZkOGFmYjhiYmJjM2FlNjA3OWU1YjI4NWI0NDhkYWMwYyIsCiAgICAidmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2xhbmd1YWdlX3NjYW5uZXIubCI6ICI1ZTE3OGI5ZTBhNGY4NjVhNDIzYTA5OGFjOTdiYTVmYzA0ZWYyZjY4NTAzMzgyZTE4NTk5ZDg5ZDlhZDhkMTViIiwKICAgICJ2ZW5kb3IvcGhwLXNyYy9tYWluL3BocF92YXJpYWJsZXMuYyI6ICJhMmQxNWEwYTk1MDVjZjE3ZThiNDVkYzI5MjIwMzY4YjBlZmI5NmUzMTUyM2U0MGQ2Mzg0OWFhZGRlMzg0ZjliIgogIH0sCiAgInJlY29yZHMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJtaXNzaW5nLWRlZmF1bHQtbm8td3JpdGUiLAogICAgICAiY29tbWFuZCI6IFsKICAgICAgICAicHl0aG9uMyIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvY2Fub25pY2FsL3NjcmlwdHMvcHJpdmF0ZS1zZW1hbnRpY3MtcmVmZXJlbmNlcy5weSIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvdGFyZ2V0IgogICAgICBdLAogICAgICAic3RhdHVzIjogMSwKICAgICAgInN0ZG91dCI6ICIiLAogICAgICAic3RkZXJyIjogInByaXZhdGUgc2VtYW50aWNzIHJlZmVyZW5jZXMgbWlzc2luZzogdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2NvbXBpbGUuYywgdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX0FQSS5jLCB2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfYXN0LmMsIHZlbmRvci9waHAtc3JjL1plbmQvemVuZF9vcGVyYXRvcnMuYywgdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2hhc2guYywgdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2djLmMsIHZlbmRvci9waHAtc3JjL1plbmQvemVuZF9pbmhlcml0YW5jZS5jLCB2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfdm1fZGVmLmgsIHZlbmRvci9waHAtc3JjL1plbmQvemVuZF92YXJpYWJsZXMuYywgdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2V4ZWN1dGUuYywgdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2xhbmd1YWdlX3BhcnNlci55LCB2ZW5kb3IvcGhwLXNyYy9aZW5kL3plbmRfbGFuZ3VhZ2Vfc2Nhbm5lci5sLCB2ZW5kb3IvcGhwLXNyYy9tYWluL3BocF92YXJpYWJsZXMuYzsgcHJvdmlzaW9uIGJlZm9yZSBmcmVlemluZyB3aXRoIC0tY29weS1taXNzaW5nXG4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAicHJvdmlzaW9uMTMtZXhhY3QiLAogICAgICAiY29tbWFuZCI6IFsKICAgICAgICAicHl0aG9uMyIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvY2Fub25pY2FsL3NjcmlwdHMvcHJpdmF0ZS1zZW1hbnRpY3MtcmVmZXJlbmNlcy5weSIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvdGFyZ2V0IiwKICAgICAgICAiLS1jb3B5LW1pc3NpbmciCiAgICAgIF0sCiAgICAgICJzdGF0dXMiOiAwLAogICAgICAic3Rkb3V0IjogIlByaXZhdGUgc2VtYW50aWNzIHJlZmVyZW5jZXM6IDEzIGV4YWN0IGZpbGVzOyAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1yZWZlcmVuY2UtaGVscGVyL3RhcmdldC9zZW1hbnRpY3MtcmVmZXJlbmNlLWlucHV0cy5qc29uXG4iLAogICAgICAic3RkZXJyIjogIiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJkZWZhdWx0LWlkZW1wb3RlbnQiLAogICAgICAiY29tbWFuZCI6IFsKICAgICAgICAicHl0aG9uMyIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvY2Fub25pY2FsL3NjcmlwdHMvcHJpdmF0ZS1zZW1hbnRpY3MtcmVmZXJlbmNlcy5weSIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvdGFyZ2V0IgogICAgICBdLAogICAgICAic3RhdHVzIjogMCwKICAgICAgInN0ZG91dCI6ICJQcml2YXRlIHNlbWFudGljcyByZWZlcmVuY2VzOiAxMyBleGFjdCBmaWxlczsgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctcmVmZXJlbmNlLWhlbHBlci90YXJnZXQvc2VtYW50aWNzLXJlZmVyZW5jZS1pbnB1dHMuanNvblxuIiwKICAgICAgInN0ZGVyciI6ICIiCiAgICB9LAogICAgewogICAgICAiaWQiOiAibWlzbWF0Y2gtcmVqZWN0LWJlZm9yZS1wYXJ0aWFsLWNvcHkiLAogICAgICAiY29tbWFuZCI6IFsKICAgICAgICAicHl0aG9uMyIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvY2Fub25pY2FsL3NjcmlwdHMvcHJpdmF0ZS1zZW1hbnRpY3MtcmVmZXJlbmNlcy5weSIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvdGFyZ2V0IiwKICAgICAgICAiLS1jb3B5LW1pc3NpbmciCiAgICAgIF0sCiAgICAgICJzdGF0dXMiOiAxLAogICAgICAic3Rkb3V0IjogIiIsCiAgICAgICJzdGRlcnIiOiAicmVhZC1vbmx5IG9yYWNsZSByZWZlcmVuY2UgbWlzbWF0Y2g7IHJlZnVzaW5nIG92ZXJ3cml0ZTogdmVuZG9yL3BocC1zcmMvWmVuZC96ZW5kX2NvbXBpbGUuY1xuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogImV4aXN0aW5nLW1hbmlmZXN0LXByZXNlcnZlZCIsCiAgICAgICJjb21tYW5kIjogWwogICAgICAgICJweXRob24zIiwKICAgICAgICAiL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctcmVmZXJlbmNlLWhlbHBlci9jYW5vbmljYWwvc2NyaXB0cy9wcml2YXRlLXNlbWFudGljcy1yZWZlcmVuY2VzLnB5IiwKICAgICAgICAiL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctcmVmZXJlbmNlLWhlbHBlci90YXJnZXQiLAogICAgICAgICItLWNvcHktbWlzc2luZyIKICAgICAgXSwKICAgICAgInN0YXR1cyI6IDEsCiAgICAgICJzdGRvdXQiOiAiIiwKICAgICAgInN0ZGVyciI6ICJleGlzdGluZyByZWZlcmVuY2UgbWFuaWZlc3QgZGlmZmVyczsgcHJlc2VydmUgaXQgYW5kIHVzZSBhIG5ldyBwcml2YXRlIHJvb3RcbiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJjYW5vbmljYWwtcm9vdC1yZWZ1c2VkIiwKICAgICAgImNvbW1hbmQiOiBbCiAgICAgICAgInB5dGhvbjMiLAogICAgICAgICIvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1yZWZlcmVuY2UtaGVscGVyL2Nhbm9uaWNhbC9zY3JpcHRzL3ByaXZhdGUtc2VtYW50aWNzLXJlZmVyZW5jZXMucHkiLAogICAgICAgICIvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1yZWZlcmVuY2UtaGVscGVyL2Nhbm9uaWNhbCIsCiAgICAgICAgIi0tY29weS1taXNzaW5nIgogICAgICBdLAogICAgICAic3RhdHVzIjogMSwKICAgICAgInN0ZG91dCI6ICIiLAogICAgICAic3RkZXJyIjogInByaXZhdGUgcm9vdCBtdXN0IGRpZmZlciBmcm9tIHRoZSBjYW5vbmljYWwgY2hlY2tvdXRcbiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJtaXNzaW5nLXJvb3Qtbm8td3JpdGUiLAogICAgICAiY29tbWFuZCI6IFsKICAgICAgICAicHl0aG9uMyIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvY2Fub25pY2FsL3NjcmlwdHMvcHJpdmF0ZS1zZW1hbnRpY3MtcmVmZXJlbmNlcy5weSIsCiAgICAgICAgIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LXJlZmVyZW5jZS1oZWxwZXIvYWJzZW50IiwKICAgICAgICAiLS1jb3B5LW1pc3NpbmciCiAgICAgIF0sCiAgICAgICJzdGF0dXMiOiAxLAogICAgICAic3Rkb3V0IjogIiIsCiAgICAgICJzdGRlcnIiOiAicHJpdmF0ZSByb290IGlzIG1pc3Npbmcgc3BlYy9zZW1hbnRpY3MvbW9kdWxlcy5qc29uXG4iCiAgICB9CiAgXQp9Cg=="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/results.json",
+      "sha256": "3fc1c9ac8917b92c243e75e0f6337c5f803710dc85f4d0a07ada474e0abde668",
+      "base64": "ewogICJyZXN1bHQiOiAicGFzcyIsCiAgInNjb3BlIjogIlRocmVlIGluZGVwZW5kZW50IHJldGVudGlvbi1oZWxwZXIgY29udHJvbHM6IGV4YWN0IGFyYml0cmFyeSBmaXh0dXJlIGJ5dGVzIGFuZCBzdHJ1Y3R1cmVkIHRpbWVvdXQvZmFsc2Uvbm9uemVybyByZWNvcmRzIHN1cnZpdmUgdGVtcG9yYXJ5IHNvdXJjZSBjbGVhbnVwIGluIGRpc3RpbmN0IGV4Y2x1c2l2ZSBvdXRwdXQgZGlyZWN0b3JpZXMuIFRoZXNlIGFyZSBjb250cm9sbGVkIHRvb2wgcmVjb3Jkcywgbm90IGV4ZWN1dGVkIFBIUCBvciBmdWxsIGNvbXBpbGVyIHZhbGlkYXRpb24uIEFjdHVhbCBtYWluIHRpbWVvdXQvZXJyb3IgYnJhbmNoZXMgcmV2aWV3ZWQgZnJvbSB1bmNoYW5nZWQgc291cmNlIEFTVC4iLAogICJzb3VyY2Vfc2hhMjU2IjogIjZjMjAwMmFmNzlhMjQ1YTFkYzg0ZDA3ZTg5MjZkYWJkNDI5MTI4ZGIyOGI1OWI5MDE1YzNmN2M3N2EzNzhhNzIiLAogICJyZWNvcmRzIjogWwogICAgewogICAgICAiZGlyZWN0b3J5IjogIi9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNvbXBpbGVyLXJldGVudGlvbi8udG9vbHMvc291cmNlLWNvbXBpbGVyLWZhaWx1cmUtZjM3Y18zbWIiLAogICAgICAiZml4dHVyZV9zaGEyNTYiOiAiNDIzMDM5Zjg0YjNjNWZjYTk1MzgyMDQzYzAyOWM3YzQyMTVhMDNiZTYxYWVmYjU5YzkyYjg5ZDVlMzIyNjdlMSIsCiAgICAgICJyZXBvcnRfc2hhMjU2IjogIjAzMjBmYzExY2U2MDk2OTE1ZWIzM2I4OWRhYmQ2NDA0OTEyYWYxODdjYmU4MzA1NzgxYmM3ZGNiZjgyNzQ4NWQiLAogICAgICAicmVzdWx0IjogewogICAgICAgICJ0aW1lb3V0X3NlY29uZHMiOiA2MDAsCiAgICAgICAgInN0ZG91dF9iYXNlNjQiOiAiY0dGeWRHbGhiUDhBIiwKICAgICAgICAic3RkZXJyX2Jhc2U2NCI6ICJabUZwYkdWa0NnPT0iCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJkaXJlY3RvcnkiOiAiL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY29tcGlsZXItcmV0ZW50aW9uLy50b29scy9zb3VyY2UtY29tcGlsZXItZmFpbHVyZS1ocTg5d3hibyIsCiAgICAgICJmaXh0dXJlX3NoYTI1NiI6ICI1NDZhNTI3MTdmNzQ2MDNhMmMxNzJlMTllMDIyNGJkNmZkZTNlNjJiMzdlYjRhZDE4M2Y1NTgwNGUxNDZlYmNlIiwKICAgICAgInJlcG9ydF9zaGEyNTYiOiAiM2FmMTdjNGQ1OGRmYzJkYmQ0MTBkY2FkODNmNDhjMGJiYTYzNDIzNjQ1MWIwY2MwNTM5MzU0Njg0YzNjNzJkZiIsCiAgICAgICJyZXN1bHQiOiB7CiAgICAgICAgInN0YXR1cyI6IDAsCiAgICAgICAgInN0ZG91dCI6ICJmYWxzZVxuIiwKICAgICAgICAic3RkZXJyIjogIiIKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImRpcmVjdG9yeSI6ICIvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jb21waWxlci1yZXRlbnRpb24vLnRvb2xzL3NvdXJjZS1jb21waWxlci1mYWlsdXJlLTJvbmRteHQ1IiwKICAgICAgImZpeHR1cmVfc2hhMjU2IjogIjAyYzU4Zjc4NjdiMjZlMjIxZGVjYzhiMTQ3Y2I0YmJkZDFjY2U1MjEyYjBmZmMzZjkyMTBmNTk0MTNlY2NlMzUiLAogICAgICAicmVwb3J0X3NoYTI1NiI6ICJiNzUwOTFlZGNhMGViNjM1Yzk0Y2FkYmFiZTUwODY2YWY2ZTNhMTk0ZTdkMWFlNDk1MTA5NDkwYzRjMjM4ZGZjIiwKICAgICAgInJlc3VsdCI6IHsKICAgICAgICAic3RhdHVzIjogMywKICAgICAgICAic3Rkb3V0IjogInBhcnRpYWxcbiIsCiAgICAgICAgInN0ZGVyciI6ICJ0b29sIGZhaWx1cmVcbiIKICAgICAgfQogICAgfQogIF0KfQo="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/.tools/source-compiler-failure-f37c_3mb/cases.watsup",
+      "sha256": "423039f84b3c5fca95382043c029c7c4215a03be61aefb59c92b89d5e32267e1",
+      "base64": "ZGVjICRtYWluKCkgOiBib29sCmRlZiAkbWFpbigpID0gZmFsc2UKOzsgZXhhY3QgcmF3IGZpeHR1cmUgYnl0ZXMg/wAKMA=="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/.tools/source-compiler-failure-f37c_3mb/results.json",
+      "sha256": "0320fc11ce6096915eb33b89dabd6404912af187cbe8305781bc7dcbf827485d",
+      "base64": "ewogICJmaW5nZXJwcmludCI6IHsKICAgICJzY29wZSI6ICJjb250cm9sbGVkIHJldGVudGlvbiBoZWxwZXIgdGVzdDsgbm8gUEhQIHNlbWFudGljIG9ic2VydmF0aW9ucyIsCiAgICAic2hhMjU2IjogImNvbnRyb2xsZWQiCiAgfSwKICAicmVjb3JkcyI6IFsKICAgIHsKICAgICAgImlkIjogImNvbnRyb2wwIiwKICAgICAgInNvdXJjZV9iYXNlNjQiOiAiWTI5dWRISnZiR3hsWkNCemIzVnlZMlVnWW5sMFpYTT0iLAogICAgICAidG9vbF9yZXN1bHQiOiB7CiAgICAgICAgInRpbWVvdXRfc2Vjb25kcyI6IDYwMCwKICAgICAgICAic3Rkb3V0X2Jhc2U2NCI6ICJjR0Z5ZEdsaGJQOEEiLAogICAgICAgICJzdGRlcnJfYmFzZTY0IjogIlptRnBiR1ZrQ2c9PSIKICAgICAgfQogICAgfQogIF0sCiAgImNvbW1hbmQiOiBbCiAgICAiY29udHJvbGxlZC10b29sIiwKICAgICIvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jb21waWxlci1yZXRlbnRpb24vdG1wb3lpY2x1YXovY2FzZXMud2F0c3VwIgogIF0sCiAgInJlc3VsdCI6IHsKICAgICJ0aW1lb3V0X3NlY29uZHMiOiA2MDAsCiAgICAic3Rkb3V0X2Jhc2U2NCI6ICJjR0Z5ZEdsaGJQOEEiLAogICAgInN0ZGVycl9iYXNlNjQiOiAiWm1GcGJHVmtDZz09IgogIH0KfQo="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/.tools/source-compiler-failure-hq89wxbo/cases.watsup",
+      "sha256": "546a52717f74603a2c172e19e0224bd6fde3e62b37eb4ad183f55804e146ebce",
+      "base64": "ZGVjICRtYWluKCkgOiBib29sCmRlZiAkbWFpbigpID0gZmFsc2UKOzsgZXhhY3QgcmF3IGZpeHR1cmUgYnl0ZXMg/wAKMQ=="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/.tools/source-compiler-failure-hq89wxbo/results.json",
+      "sha256": "3af17c4d58dfc2dbd410dcad83f48c0bba634236451b0cc0539354684c3c72df",
+      "base64": "ewogICJmaW5nZXJwcmludCI6IHsKICAgICJzY29wZSI6ICJjb250cm9sbGVkIHJldGVudGlvbiBoZWxwZXIgdGVzdDsgbm8gUEhQIHNlbWFudGljIG9ic2VydmF0aW9ucyIsCiAgICAic2hhMjU2IjogImNvbnRyb2xsZWQiCiAgfSwKICAicmVjb3JkcyI6IFsKICAgIHsKICAgICAgImlkIjogImNvbnRyb2wxIiwKICAgICAgInNvdXJjZV9iYXNlNjQiOiAiWTI5dWRISnZiR3hsWkNCemIzVnlZMlVnWW5sMFpYTT0iLAogICAgICAidG9vbF9yZXN1bHQiOiB7CiAgICAgICAgInN0YXR1cyI6IDAsCiAgICAgICAgInN0ZG91dCI6ICJmYWxzZVxuIiwKICAgICAgICAic3RkZXJyIjogIiIKICAgICAgfQogICAgfQogIF0sCiAgImNvbW1hbmQiOiBbCiAgICAiY29udHJvbGxlZC10b29sIiwKICAgICIvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jb21waWxlci1yZXRlbnRpb24vdG1wOWx1ZzVzeXUvY2FzZXMud2F0c3VwIgogIF0sCiAgInJlc3VsdCI6IHsKICAgICJzdGF0dXMiOiAwLAogICAgInN0ZG91dCI6ICJmYWxzZVxuIiwKICAgICJzdGRlcnIiOiAiIgogIH0KfQo="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/.tools/source-compiler-failure-2ondmxt5/cases.watsup",
+      "sha256": "02c58f7867b26e221decc8b147cb4bbdd1cce5212b0ffc3f9210f59413ecce35",
+      "base64": "ZGVjICRtYWluKCkgOiBib29sCmRlZiAkbWFpbigpID0gZmFsc2UKOzsgZXhhY3QgcmF3IGZpeHR1cmUgYnl0ZXMg/wAKMg=="
+    },
+    {
+      "path": ".tools/review7-compiler-retention/.tools/source-compiler-failure-2ondmxt5/results.json",
+      "sha256": "b75091edca0eb635c94cadbabe50866af6e3a194e7d1ae495109490c4c238dfc",
+      "base64": "ewogICJmaW5nZXJwcmludCI6IHsKICAgICJzY29wZSI6ICJjb250cm9sbGVkIHJldGVudGlvbiBoZWxwZXIgdGVzdDsgbm8gUEhQIHNlbWFudGljIG9ic2VydmF0aW9ucyIsCiAgICAic2hhMjU2IjogImNvbnRyb2xsZWQiCiAgfSwKICAicmVjb3JkcyI6IFsKICAgIHsKICAgICAgImlkIjogImNvbnRyb2wyIiwKICAgICAgInNvdXJjZV9iYXNlNjQiOiAiWTI5dWRISnZiR3hsWkNCemIzVnlZMlVnWW5sMFpYTT0iLAogICAgICAidG9vbF9yZXN1bHQiOiB7CiAgICAgICAgInN0YXR1cyI6IDMsCiAgICAgICAgInN0ZG91dCI6ICJwYXJ0aWFsXG4iLAogICAgICAgICJzdGRlcnIiOiAidG9vbCBmYWlsdXJlXG4iCiAgICAgIH0KICAgIH0KICBdLAogICJjb21tYW5kIjogWwogICAgImNvbnRyb2xsZWQtdG9vbCIsCiAgICAiL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY29tcGlsZXItcmV0ZW50aW9uL3RtcHZ6eHk0MWhnL2Nhc2VzLndhdHN1cCIKICBdLAogICJyZXN1bHQiOiB7CiAgICAic3RhdHVzIjogMywKICAgICJzdGRvdXQiOiAicGFydGlhbFxuIiwKICAgICJzdGRlcnIiOiAidG9vbCBmYWlsdXJlXG4iCiAgfQp9Cg=="
+    }
+  ],
+  "code_commit": "9fc1ce9f",
+  "author_evidence_commit": "a934749a",
+  "author_evidence": {
+    "path": "coverage/semantics/private-validation-infrastructure.json",
+    "sha256": "ce2c42df68e8e748c304aa31f8fe08e8eb72a8e55edff33ea75cbf42d62b0ffd"
+  },
+  "fingerprint": {
+    "sha256": "14d1766202ddc2e5ba1b0223611b1a83084f34ee7a182550a6a9771ab503462f",
+    "files": 846,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "request_publication_bridge": {
+    "review": "coverage/semantics/request-environment-review.json",
+    "unchanged_prior_inputs": 844,
+    "changed": {
+      "tests/semantics/source_compiler.py": {
+        "old": "99967265fca5943d03945d7bbe801b4753c3bb2c94eb9f52f5f334d7abf1ffba",
+        "new": "6c2002af79a245a1dc84d07e8926dabd429128db28b59b9015c3f7c77a378a72"
+      }
+    },
+    "added": {
+      "scripts/private-semantics-references.py": "789c8b0f977aee94de4f0200e134881a331deaada3e3b5831397d140f968ae98"
+    },
+    "scope": "Only verification infrastructure changed after reviewed845 request publication. Runtime/compiler semantics, native provider, adapter and source catalogues remain byte-identical. Current846 broad campaign is separate."
+  }
+}

@@ -31,11 +31,16 @@ quiet, nested return and nullsafe-reference iterable), plus four parser controls
 Two later-eval callback sources remain Unsupported. Top-level magic admission does
 not admit declaration bodies. Full core/source/syntax/offline closure remains due.
 
-Approved infrastructure drafts may publish after this review: explicit13-reference
-private preflight and exclusive source-compiler failure retention with600s
-aggregate deadline. Their independent checks are in
-`.tools/review7-reference-helper/results.json` and
-`.tools/review7-compiler-retention/results.json`; neither changes engine semantics.
+Infrastructure9fc1ce9f/a934749a is now independently bound in
+[review](../../coverage/semantics/private-validation-infrastructure-review.json).
+Current846/14d17662 adds the13-reference private preflight script and changes only
+source-compiler failure retention/deadline;844 prior inputs are byte-identical.
+Before freezing a new private root, run
+`python3 scripts/private-semantics-references.py ROOT --copy-missing`, then use the
+same command without the flag as a preflight. Existing mismatches/manifests are
+never overwritten. This reference set does not replace full syntax/tool/source
+closure. Failed aggregates retain exclusive exact fixtures and results;600s is a
+wallclock limit only. Historical first deleted timeout artifacts stay unavailable.
 
 ## Historical accepted quiet/name publication
 

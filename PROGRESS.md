@@ -9,7 +9,7 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 Explicit-input request bootstrap, GLOBALS access/snapshots and top-level magic
 constants are accepted at **652d10b7**, with author evidence **d3dfb87a** and
 compiler evidence **ca3ac883**. The [independent review](coverage/semantics/request-environment-review.json)
-binds current **845/1d206c8e** to263 request sources and44 ordinary magic sources.
+binds reviewed **845/1d206c8e** to263 request sources and44 ordinary magic sources.
 The263 union retains260 parent and3 consumer-successor observations; canonical
 smokes and exact adapter/state bridges are separate, not a fresh canonical263 run.
 Eight independent state programs/1,936 assertions bridge through72 final states;
@@ -26,6 +26,12 @@ Seven old request-environment controls, four isset/empty GLOBALS controls and th
 guarded GLOBALS original now have explicit-request witnesses. Their original
 Unsupported outcomes remain unchanged history. Two later-eval callback witnesses
 still await dynamic-source execution. Ordinary-library exclusions cannot close core work.
+
+Validation infrastructure **9fc1ce9f** now gives **846/14d17662** inputs. Its
+[independent review](coverage/semantics/private-validation-infrastructure-review.json)
+binds13-reference private preflight and exclusive compiler timeout/failure
+retention. Runtime, adapter and catalogues are unchanged. Earlier reports keep
+their exact845 identities; the next broad campaign binds846 separately.
 
 The actual private full compiler gate passes5,753 lints/5,786 aggregate assertions;
 current5,750 is its exact ordered subset after three magic sources moved profiles.
