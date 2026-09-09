@@ -202,6 +202,7 @@ def $call_frames_valid(S, eps) = true
 def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN], pframe.TODO) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $constant_context_valid(pstate) : bool
+dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $call_descriptors_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
@@ -213,6 +214,7 @@ def $call_descriptors_valid(S) = true
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $constant_context_valid(S)
+  -- if $default_caches_valid(S, S.DEFAULTCACHE)
 def $call_descriptors_valid(S) = false -- otherwise
 
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL

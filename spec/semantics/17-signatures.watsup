@@ -10,6 +10,10 @@ syntax pssignature = { PARAMETERS psparam*, RETURNS ptbranch*, BYREF bool }
 syntax psdiagnostic = PSTYPEDIAGNOSTIC ptdiagnostic | PSDIAGNOSTIC text text ptbytes* ptcontext
 syntax psresult = PSOK pssignature psdiagnostic* | PSERROR psdiagnostic* | PSUNSUPPORTED text
 syntax psoneresult = PSONE psparam psdiagnostic* | PSONEERROR psdiagnostic* | PSONEUNSUPPORTED text
+syntax psoneprogress = PSGUARDED psoneresult | PSNEEDDEFAULT
+syntax pscontinuation = { CONTEXT ptcontext, PARAMETER psraw, REST psinput*,
+  SIGNATURE pssignature, DIAGNOSTICS psdiagnostic* }
+syntax psprogress = PSSDONE psresult | PSSDEFAULTREQUEST pscontinuation
 
 
 dec $psline(metadata) : nat
@@ -52,6 +56,18 @@ dec $psfallbackreturn(ptcontext, ptbranch*) : ptbranch*
 dec $psreturnnotice(ptcontext, ptbranch*, bool) : psdiagnostic*
 dec $psfunctionname(ptcontext) : ptbytes
 dec $psmessage(psdiagnostic) : ptbytes
+
+dec $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) : psoneprogress
+dec $psdefaultguard(ptcontext, psraw, psinput*) : psoneprogress
+dec $psguard_resolve(ptcontext, psraw, psinput*, psoneprogress) : psoneresult
+dec $psstep_start(phpType16, phpType18, bool, ptcontext) : psprogress
+dec $psreturn_start(ptcontext, psinput*, bool, ptresult) : psprogress
+dec $psfold_start(ptcontext, psinput*, pssignature, psdiagnostic*) : psprogress
+dec $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, psoneprogress) : psprogress
+dec $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult) : psprogress
+dec $psstep_resume(pscontinuation, psdefault) : psprogress
+dec $psstep_finish(psprogress) : psresult
+
 
 ;; Missing positions on edited syntax are explicit, never guessed.
 def $psline(eps) = 0
@@ -159,42 +175,42 @@ def $psconvertdefault(ptbranch*, PSDEFAULT phpType5 "int") = PSDEFAULT phpType5 
 def $psconvertdefault(ptbranch*, psdefault) = psdefault
   -- otherwise
 
-def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = PSONEUNSUPPORTED "missing parameter compiler line"
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) = PSGUARDED (PSONEUNSUPPORTED "missing parameter compiler line")
   -- if psraw.LINE = 0
-def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $pserror(ptcontext, "parameter-auto-global", [psraw.NAME])
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) = PSGUARDED ($pserror(ptcontext, "parameter-auto-global", [psraw.NAME]))
   -- if psraw.LINE =/= 0
   -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
   -- if $psautoglobal(psraw.NAME)
-def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $pserror(ptcontext, "parameter-redefined", [psraw.NAME])
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) = PSGUARDED ($pserror(ptcontext, "parameter-redefined", [psraw.NAME]))
   -- if psraw.LINE =/= 0
   -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
   -- if ~$psautoglobal(psraw.NAME)
   -- if psraw.NAME <- ptbytes*
-def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $pserror(ptcontext, "parameter-this", eps)
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) = PSGUARDED ($pserror(ptcontext, "parameter-this", eps))
   -- if psraw.LINE =/= 0
   -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
   -- if ~$psautoglobal(psraw.NAME)
   -- if ~(psraw.NAME <- ptbytes*)
   -- if psraw.NAME = $ptascii("this")
-def $psone(ptcontext, psraw, psinput*, ptbytes*, true) = $pserror(ptcontext, "variadic-last", eps)
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, true) = PSGUARDED ($pserror(ptcontext, "variadic-last", eps))
   -- if psraw.LINE =/= 0
   -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
   -- if ~$psautoglobal(psraw.NAME)
   -- if ~(psraw.NAME <- ptbytes*)
   -- if psraw.NAME =/= $ptascii("this")
-def $psone(ptcontext, psraw, psinput*, ptbytes*, false) = $psdefaultstage(ptcontext, psraw, psinput*)
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, false) = $psdefaultguard(ptcontext, psraw, psinput*)
   -- if psraw.LINE =/= 0
   -- if $ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME)
   -- if ~$psautoglobal(psraw.NAME)
   -- if ~(psraw.NAME <- ptbytes*)
   -- if psraw.NAME =/= $ptascii("this")
 
-def $psdefaultstage(ptcontext, psraw, psinput*) = $pserror(ptcontext, "variadic-default", eps)
+def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED ($pserror(ptcontext, "variadic-default", eps))
   -- if psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT
-def $psdefaultstage(ptcontext, psraw, psinput*) = PSONEUNSUPPORTED "parameter attributes, promotion or hooks"
+def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED (PSONEUNSUPPORTED "parameter attributes, promotion or hooks")
   -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
   -- if psraw.EXTRA
-def $psdefaultstage(ptcontext, psraw, psinput*) = $psdefaultready(ptcontext, psraw, psinput*, $psdefault(psraw.DEFAULT, ptcontext))
+def $psdefaultguard(ptcontext, psraw, psinput*) = PSNEEDDEFAULT
   -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
   -- if ~psraw.EXTRA
 
@@ -248,26 +264,18 @@ def $psdefaulttypename("false") = $ptascii("bool")
 def $psdefaulttypename(text) = $ptascii(text)
   -- if text =/= "true" /\ text =/= "false"
 
-def $psfold(ptcontext, eps, pssignature, psdiagnostic*) = PSOK pssignature psdiagnostic*
-def $psfold(ptcontext, (PSINPUTUNSUPPORTED text) :: psinput*, pssignature, psdiagnostic*) = PSUNSUPPORTED text
-def $psfold(ptcontext, (PSINPUT psraw) :: psinput*, pssignature, psdiagnostic*) = $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, $psone(ptcontext[.LINE = psraw.LINE][.POSITION = PTPARAMETER], psraw, psinput*, (psparam.NAME)*, $psseenvariadic(pssignature.PARAMETERS)))
-  -- if psparam* = pssignature.PARAMETERS
+def $psfold(ptcontext, psinput*, pssignature, psdiagnostic*) = $psstep_finish($psfold_start(ptcontext, psinput*, pssignature, psdiagnostic*))
+
 
 def $psseenvariadic(eps) = false
 def $psseenvariadic(psparam :: psparam_rest*) = psparam.VARIADIC \/ $psseenvariadic(psparam_rest*)
 
-def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, PSONE psparam psdiagnostic_new*) = $psfold(ptcontext, psinput*, pssignature[.PARAMETERS = pssignature.PARAMETERS ++ [psparam]], psdiagnostic* ++ psdiagnostic_new*)
-def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEERROR psdiagnostic_new*) = PSERROR (psdiagnostic* ++ psdiagnostic_new*)
-def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEUNSUPPORTED text) = PSUNSUPPORTED text
+def $psafterone(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult) = $psstep_finish($psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult))
 
-def $pscompile(SEQUENCE phpType17*, phpType18, bool, ptcontext) = $psreturnstage(ptcontext, ($pslower(phpType17))*, bool, $ptype_normalize(phpType18, ptcontext[.POSITION = PTRETURN]))
-  -- if ptcontext.MEMBER =/= eps
-def $pscompile(phpType16, phpType18, bool, ptcontext) = PSUNSUPPORTED "missing declaration display name"
-  -- if ptcontext.MEMBER = eps
 
-def $psreturnstage(ptcontext, psinput*, bool, PTERROR ptdiagnostic*) = PSERROR (PSTYPEDIAGNOSTIC ptdiagnostic)*
-def $psreturnstage(ptcontext, psinput*, bool, PTUNSUPPORTED text) = PSUNSUPPORTED text
-def $psreturnstage(ptcontext, psinput*, bool, PTOK ptbranch* ptdiagnostic*) = $psfold(ptcontext, psinput*, { PARAMETERS eps, RETURNS $psfallbackreturn(ptcontext, ptbranch*), BYREF bool }, (PSTYPEDIAGNOSTIC ptdiagnostic)* ++ $psreturnnotice(ptcontext, ptbranch*, bool))
+def $pscompile(phpType16, phpType18, bool, ptcontext) = $psstep_finish($psstep_start(phpType16, phpType18, bool, ptcontext))
+def $psreturnstage(ptcontext, psinput*, bool, ptresult) = $psstep_finish($psreturn_start(ptcontext, psinput*, bool, ptresult))
+
 
 def $psfallbackreturn(ptcontext, eps) = [(PTBRANCH ([PTBUILTIN "string"]))]
   -- if ptcontext.OWNER =/= eps /\ $ptlc(ptcontext.MEMBER) = $ptascii("__tostring")
@@ -295,6 +303,40 @@ def $psmessage(PSDIAGNOSTIC text "implicit-nullable" ([ptbytes]) ptcontext) = $p
 def $psmessage(PSDIAGNOSTIC text "optional-before-required" ([ptbytes_optional, ptbytes_required]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Optional parameter $") ++ ptbytes_optional ++ $ptascii(" declared before required parameter $") ++ ptbytes_required ++ $ptascii(" is implicitly treated as a required parameter")
 def $psmessage(PSDIAGNOSTIC text "void-return-reference" ptbytes* ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Returning by reference from a void function is deprecated")
 
-def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = PSONEUNSUPPORTED "edited invalid parameter name"
+def $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) = PSGUARDED (PSONEUNSUPPORTED "edited invalid parameter name")
   -- if psraw.LINE =/= 0
   -- if ~($ptvalidname(psraw.NAME, true) /\ ~(92 <- psraw.NAME))
+
+;; Suspend after parameter guards and before default/type normalization. The
+;; source compiler supplies its shared constant-expression result at this point;
+;; historical structural consumers retain the literal-resolving wrappers.
+
+def $psone(ptcontext, psraw, psinput*, ptbytes*, bool) = $psguard_resolve(ptcontext, psraw, psinput*, $psguard(ptcontext, psraw, psinput*, ptbytes*, bool))
+def $psdefaultstage(ptcontext, psraw, psinput*) = $psguard_resolve(ptcontext, psraw, psinput*, $psdefaultguard(ptcontext, psraw, psinput*))
+def $psguard_resolve(ptcontext, psraw, psinput*, PSGUARDED psoneresult) = psoneresult
+def $psguard_resolve(ptcontext, psraw, psinput*, PSNEEDDEFAULT) = $psdefaultready(ptcontext, psraw, psinput*, $psdefault(psraw.DEFAULT, ptcontext))
+
+def $psstep_start(SEQUENCE phpType17*, phpType18, bool, ptcontext) = $psreturn_start(ptcontext, ($pslower(phpType17))*, bool, $ptype_normalize(phpType18, ptcontext[.POSITION = PTRETURN]))
+  -- if ptcontext.MEMBER =/= eps
+def $psstep_start(phpType16, phpType18, bool, ptcontext) = PSSDONE (PSUNSUPPORTED "missing declaration display name")
+  -- if ptcontext.MEMBER = eps
+
+def $psreturn_start(ptcontext, psinput*, bool, PTERROR ptdiagnostic*) = PSSDONE (PSERROR (PSTYPEDIAGNOSTIC ptdiagnostic)*)
+def $psreturn_start(ptcontext, psinput*, bool, PTUNSUPPORTED text) = PSSDONE (PSUNSUPPORTED text)
+def $psreturn_start(ptcontext, psinput*, bool, PTOK ptbranch* ptdiagnostic*) = $psfold_start(ptcontext, psinput*, { PARAMETERS eps, RETURNS $psfallbackreturn(ptcontext, ptbranch*), BYREF bool }, (PSTYPEDIAGNOSTIC ptdiagnostic)* ++ $psreturnnotice(ptcontext, ptbranch*, bool))
+
+def $psfold_start(ptcontext, eps, pssignature, psdiagnostic*) = PSSDONE (PSOK pssignature psdiagnostic*)
+def $psfold_start(ptcontext, (PSINPUTUNSUPPORTED text) :: psinput*, pssignature, psdiagnostic*) = PSSDONE (PSUNSUPPORTED text)
+def $psfold_start(ptcontext, (PSINPUT psraw) :: psinput*, pssignature, psdiagnostic*) = $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, $psguard(ptcontext[.LINE = psraw.LINE][.POSITION = PTPARAMETER], psraw, psinput*, (psparam.NAME)*, $psseenvariadic(pssignature.PARAMETERS)))
+  -- if psparam* = pssignature.PARAMETERS
+
+def $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, PSGUARDED psoneresult) = $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult)
+def $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, PSNEEDDEFAULT) = PSSDEFAULTREQUEST { CONTEXT ptcontext, PARAMETER psraw, REST psinput*, SIGNATURE pssignature, DIAGNOSTICS psdiagnostic* }
+
+def $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, PSONE psparam psdiagnostic_new*) = $psfold_start(ptcontext, psinput*, pssignature[.PARAMETERS = pssignature.PARAMETERS ++ [psparam]], psdiagnostic* ++ psdiagnostic_new*)
+def $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEERROR psdiagnostic_new*) = PSSDONE (PSERROR (psdiagnostic* ++ psdiagnostic_new*))
+def $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEUNSUPPORTED text) = PSSDONE (PSUNSUPPORTED text)
+
+def $psstep_resume(pscontinuation, psdefault) = $psafterone_start(pscontinuation.CONTEXT, pscontinuation.REST, pscontinuation.SIGNATURE, pscontinuation.DIAGNOSTICS, $psdefaultready(pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER], pscontinuation.PARAMETER, pscontinuation.REST, psdefault))
+def $psstep_finish(PSSDONE psresult) = psresult
+def $psstep_finish(PSSDEFAULTREQUEST pscontinuation) = $psstep_finish($psstep_resume(pscontinuation, $psdefault(pscontinuation.PARAMETER.DEFAULT, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER])))

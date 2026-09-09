@@ -94,6 +94,11 @@ test-semantics: build
 	python3 tests/semantics/user_constant_context_protocol.py
 	python3 tests/semantics/user_constant_branch_protocol.py
 	python3 tests/semantics/user_constant_state.py
+	python3 tests/semantics/default_parameter_compiler.py
+	python3 tests/semantics/default_parameters.py
+	python3 tests/semantics/default_parameter_protocol.py
+	python3 tests/semantics/default_readiness_protocol.py
+	python3 tests/semantics/default_parameter_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

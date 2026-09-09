@@ -1,0 +1,179 @@
+;; Omitted positional receives use the actual callee and the shared expression
+;; machine. Cache entries own values; allocation classes never own heap nodes.
+dec $default_at(pdefault*, nat) : pdefault?
+def $default_at(eps, n) = eps
+def $default_at(pdefault :: pdefault_tail*, n) = (pdefault) -- if pdefault.INDEX = n
+def $default_at(pdefault :: pdefault_tail*, n) = $default_at(pdefault_tail*, n) -- if pdefault.INDEX =/= n
+dec $default_parameter_origin(porigin, nat) : porigin
+def $default_parameter_origin(PORIGIN n_unit pcpath, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 3, PCINDEX n])
+dec $default_parameter_line(pstate, porigin, nat) : int
+def $default_parameter_line(S, porigin, n) = z
+  -- if $default_parameter_origin(porigin, n) = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+dec $default_required(psparam*) : nat
+def $default_required(eps) = 0
+def $default_required(psparam :: psparam_tail*) = $(1 + $default_required(psparam_tail*)) -- if psparam.REQUIRED
+def $default_required(psparam :: psparam_tail*) = $default_required(psparam_tail*) -- if ~psparam.REQUIRED
+dec $default_required_text(psparam*) : preqbytes
+def $default_required_text(psparam*) = $ptascii("exactly ") -- if $default_required(psparam*) = |psparam*|
+def $default_required_text(psparam*) = $ptascii("at least ") -- if $default_required(psparam*) =/= |psparam*|
+
+def $default_begin(S, pfunction, n) = S[.TODO = [DEFAULT_RECEIVE pfunction.ORIGIN n]]
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+def $default_begin(S, pfunction, n) = $throw_scalar(S, "ArgumentCountError", $ptascii("Too few arguments to function ") ++ pfunction.NAME ++ $ptascii("(), ") ++ $ntunsigned(pcallcontext.ARGC) ++ $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE) ++ $ptascii(" and ") ++ $default_required_text(pfunction.SIGNATURE.PARAMETERS) ++ $ntunsigned($default_required(pfunction.SIGNATURE.PARAMETERS)) ++ $ptascii(" expected"), $default_parameter_line(S, pfunction.ORIGIN, n))
+  -- if $default_at(pfunction.DEFAULTS, n) = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+
+dec $default_cache_at(pdefaultcache*, porigin) : pdefaultcache?
+def $default_cache_at(eps, porigin) = eps
+def $default_cache_at(pdefaultcache :: pdefaultcache_tail*, porigin) = (pdefaultcache) -- if pdefaultcache.ORIGIN = porigin
+def $default_cache_at(pdefaultcache :: pdefaultcache_tail*, porigin) = $default_cache_at(pdefaultcache_tail*, porigin) -- if pdefaultcache.ORIGIN =/= porigin
+def $default_cache_roots(eps) = eps
+def $default_cache_roots(pdefaultcache :: pdefaultcache_tail*) = $value_nodes(pdefaultcache.VALUE) ++ $default_cache_roots(pdefaultcache_tail*)
+dec $default_cacheable(pvalueclass) : bool
+def $default_cacheable(PVSCALAR) = true
+def $default_cacheable(PVSTRING b) = b
+def $default_cacheable(PVARRAY b (pkey, pvalueclass)*) = b
+dec $default_cache_value(pstate, porigin, pvalue, pvalueclass) : pstate
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.DEFAULTCACHE = S.DEFAULTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]]
+  -- if $default_cacheable(pvalueclass)
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S
+  -- if ~$default_cacheable(pvalueclass)
+
+dec $default_next(pstate, pfunction, nat) : ptask*
+def $default_next(S, pfunction, n) = [DEFAULT_RECEIVE pfunction.ORIGIN n] -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+def $default_next(S, pfunction, n) = $function_tasks(S, pfunction) -- if n = |pfunction.SIGNATURE.PARAMETERS|
+dec $default_store(pstate, pfunction, nat, pvalue) : pstate
+def $default_store(S, pfunction, n, pvalue) = $write_name(S, psparam.NAME, pvalue)[.TODO = $default_next(S, pfunction, $(n + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+
+rule PhpStep/default-stored: S ~> $default_store(S, pfunction, n, pvalue)
+  -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDSTORED
+  -- if $compiled_read(S, pdefault.ORIGIN) = (pvalue)
+rule PhpStep/default-cached: S ~> $default_store(S, pfunction, n, pdefaultcache.VALUE)
+  -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+rule PhpStep/default-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if $origin_node(S.SOURCES, pdefault.ORIGIN) = (expression)
+  -- if porigin_param = $default_parameter_origin(porigin, n)
+rule PhpStep/default-bind: S ~> $default_store($default_cache_value(S_value[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
+  -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
+rule PhpStep/default-bind-abrupt: S ~> S_value
+  -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
+  -- if S_value.COMPLETION =/= NORMAL
+
+;; Dropped defaults still contribute compiler facts. Receive/cache guards below
+;; additionally require the surviving descriptor in the actual active function.
+dec $default_node_below(pcnode, pcpath, pcpath) : bool
+def $default_node_below(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 expression phpType37 metadata, pcpath_param, pcpath) = $effect_below(pcpath_param ++ [PCFIELD 6], pcpath)
+def $default_node_below(pcnode, pcpath_param, pcpath) = false -- otherwise
+def $default_below(eps, pcpath) = false
+def $default_below((PCOCCURRENCE pcpath_param pcnode) :: pcoccurrence*, pcpath) = ($default_node_below(pcnode, pcpath_param, pcpath) \/ $default_below(pcoccurrence*, pcpath))
+dec $default_origin_at(pdefault*, porigin) : pdefault?
+def $default_origin_at(eps, porigin) = eps
+def $default_origin_at(pdefault :: pdefault_tail*, porigin) = (pdefault) -- if pdefault.ORIGIN = porigin
+def $default_origin_at(pdefault :: pdefault_tail*, porigin) = $default_origin_at(pdefault_tail*, porigin) -- if pdefault.ORIGIN =/= porigin
+dec $default_function_at(pfunction*, porigin) : pfunction?
+def $default_function_at(eps, porigin) = eps
+def $default_function_at(pfunction :: pfunction_tail*, porigin) = (pfunction) -- if $default_origin_at(pfunction.DEFAULTS, porigin) = (pdefault)
+def $default_function_at(pfunction :: pfunction_tail*, porigin) = $default_function_at(pfunction_tail*, porigin) -- if $default_origin_at(pfunction.DEFAULTS, porigin) = eps
+def $default_caches_valid(S, eps) = true
+def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
+  -- if $default_function_at(S.FUNCTIONS, pdefaultcache.ORIGIN) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, pdefaultcache.ORIGIN) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (pfunction.ORIGIN)
+  -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
+  -- if $default_cacheable(pdefaultcache.CLASS)
+  -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
+  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
+  -- if $default_caches_valid(S, pdefaultcache_tail*)
+def $default_caches_valid(S, pdefaultcache*) = false -- otherwise
+
+dec $default_received_slots(pstate, psparam*, nat) : bool
+def $default_received_slots(S, psparam*, 0) = true
+def $default_received_slots(S, psparam :: psparam_tail*, n) = true
+  -- if $(n > 0)
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $default_received_slots(S, psparam_tail*, $nabs($(n - 1)))
+def $default_received_slots(S, psparam*, n) = false -- otherwise
+dec $default_task_valid(pstate, porigin, nat) : bool
+def $default_task_valid(S, porigin, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if $(n >= pcallcontext.ARGC)
+  -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, n)
+def $default_task_valid(S, porigin, n) = false -- otherwise
+dec $default_receive_queue(pstate, porigin, nat) : bool
+def $default_receive_queue(S, porigin, n) = true
+  -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask*
+  -- if ptask* = eps
+def $default_receive_queue(S, porigin, n) = false -- otherwise
+dec $default_final_task(ptask*, ptask) : bool
+def $default_final_task(eps, ptask) = false
+def $default_final_task(ptask :: ptask_tail*, ptask_last) = (ptask = ptask_last)
+  -- if ptask_tail* = eps
+def $default_final_task(ptask :: ptask_tail*, ptask_last) = $default_final_task(ptask_tail*, ptask_last)
+  -- if ptask_tail* =/= eps
+def $call_task_valid(S, DEFAULT_RECEIVE porigin n) = ($default_task_valid(S, porigin, n) /\ $default_receive_queue(S, porigin, n) /\ S.CONSTCONTEXT = eps /\ S.ORIGIN = (porigin))
+dec $default_bind_task_valid(pstate, porigin, nat) : bool
+def $call_task_valid(S, DEFAULT_BIND porigin n) = $default_bind_task_valid(S, porigin, n)
+def $default_bind_task_valid(S, porigin, n) = true
+  -- if $default_final_task(S.TODO, DEFAULT_BIND porigin n)
+  -- if $default_task_valid(S, porigin, n)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if S.ORIGIN = ($default_parameter_origin(porigin, n))
+def $default_bind_task_valid(S, porigin, n) = false -- otherwise
+def $constant_binding(DEFAULT_BIND porigin n) = [$default_parameter_origin(porigin, n)]
+def $call_after_origin(S, DEFAULT_BIND porigin n) = S[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
+def $default_context_valid(S, pconstantcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if pconstantcontext.ORIGIN = $default_parameter_origin(pfunction.ORIGIN, pdefault.INDEX)
+  -- if pconstantcontext.LINE = $default_parameter_line(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $constant_bindings(S.TODO) = [pconstantcontext.ORIGIN]
+  -- if $default_task_valid(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
+  -- if $constant_branches_valid(S)
+def $default_context_valid(S, pconstantcontext) = false -- otherwise
+
+dec $default_node_code_below(pcnode, pcpath, pcpath) : bool
+def $default_node_code_below(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata, pcpath_param, pcpath) = $effect_below(pcpath_param, pcpath)
+def $default_node_code_below(pcnode, pcpath_param, pcpath) = false -- otherwise
+def $default_code_below(eps, pcpath) = false
+def $default_code_below((PCOCCURRENCE pcpath_param pcnode) :: pcoccurrence*, pcpath) = ($default_node_code_below(pcnode, pcpath_param, pcpath) \/ $default_code_below(pcoccurrence*, pcpath))
