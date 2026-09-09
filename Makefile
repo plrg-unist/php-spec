@@ -24,6 +24,7 @@ test: build
 	python3 tests/destructuring_metadata.py
 	python3 tests/list_line_metadata.py
 	python3 tests/list_target_metadata.py
+	python3 tests/callable_line_metadata.py
 	python3 tests/phase_ledger.py
 	python3 tests/parallel_validation_test.py
 	python3 tests/validate.py --elaborate --lint-all

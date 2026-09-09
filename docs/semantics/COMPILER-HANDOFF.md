@@ -20,6 +20,10 @@ commit and independent evidence.
 First-hole metadata also preserves the actual leading comma line through checked
 transport; `tests/list_line_metadata.py` covers 31 source/encoding profiles and
 409 boundaries. Empty `list()` is excluded. Compiler consumption remains pending.
+Dynamic calls additionally retain `callableExprLine`, the opening argument-list
+token line captured by Zend's `callable_expr` reduction. Named calls use their
+name line. Two archived identical old checked trees require different native
+write-context errors; metadata transport alone does not admit call execution.
 
 Compiler owns 11/15–19/21–23/45-constant-context/46/47, metadata and compiler tests.
 Runtime owns 20/30–44/45-dimension-write/50–53, execution and source tests. Reviewer

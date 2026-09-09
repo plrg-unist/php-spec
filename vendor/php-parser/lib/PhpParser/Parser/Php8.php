@@ -2615,7 +2615,7 @@ class Php8 extends \PhpParser\ParserAbstract
                  $self->semValue = new Expr\FuncCall($self->semStack[$stackPos-(2-1)], $self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos]));
             },
             532 => static function ($self, $stackPos) {
-                 $self->semValue = new Expr\FuncCall($self->semStack[$stackPos-(2-1)], $self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue = new Expr\FuncCall($self->semStack[$stackPos-(2-1)], $self->semStack[$stackPos-(2-2)], $self->getAttributes($self->tokenStartStack[$stackPos-(2-1)], $self->tokenEndStack[$stackPos])); $self->semValue->setAttribute('callableExprLine', $self->tokens[$self->tokenStartStack[$stackPos-(2-2)]]->line);
             },
             533 => static function ($self, $stackPos) {
                  $self->semValue = new Expr\StaticCall($self->semStack[$stackPos-(4-1)], $self->semStack[$stackPos-(4-3)], $self->semStack[$stackPos-(4-4)], $self->getAttributes($self->tokenStartStack[$stackPos-(4-1)], $self->tokenEndStack[$stackPos]));

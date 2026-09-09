@@ -70,6 +70,12 @@ comma token before its placeholder is removed. Empty `list()` has a closing-toke
 placeholder and does not get this field. The line distinguishes otherwise identical
 checked trees whose later compiler diagnostics use different source lines.
 
+Dynamic function calls retain integer `callableExprLine` from the opening argument
+list token, matching Zend's explicit creation-line override after `callable_expr`.
+Named function calls keep their name line. This context distinguishes identical
+checked trees with different write-context rejection lines; call execution and
+compiler consumption are separate semantic work.
+
 Ternaries retain boolean `parenthesizedConditional`, set by the actual grouping
 production and false at ternary construction. Call/control parentheses do not
 set it. This distinguishes otherwise identical nested trees for later compiler
