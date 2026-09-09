@@ -1,0 +1,59 @@
+{
+  "status": "accepted bounded metadata prerequisite",
+  "implementation": "87341500",
+  "fingerprint": {
+    "sha256": "139dababc2606513d77f9290037e94cdecce822db11c642a9f1d874fd599e279",
+    "files": 778,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "author_gate": {
+    "source_encoding_profiles": 31,
+    "checked_boundaries": 409,
+    "independently_repeated": true
+  },
+  "independent_gate": {
+    "source_encoding_profiles": 20,
+    "assertions": 140,
+    "raw": {
+      "path": "coverage/semantics/destructuring-first-hole-source-review.json",
+      "sha256": "e23b528af4ce0be3e1efccf995daab6c94dd4283ee1e52fa245768ccd5aa9ed2"
+    }
+  },
+  "originals": {
+    "sources": 12,
+    "raw": {
+      "path": "coverage/semantics/destructuring-first-hole-original-review.json",
+      "sha256": "4c7307cfdfba716a4a82825e9d5f61351eb3e512e1a7cf6924f0a176f61b80c3"
+    },
+    "preserved": "Exact source/native-lint streams/status and old frontend structure; only current first-comma and previously reviewed original-array-kind metadata added."
+  },
+  "validation": {
+    "evidence_preflight": "15 identity, 3 path, 17 closure negatives and 9 build-log invariances pass",
+    "inventory": "169 constructors; 306 obligations; only oracle pin closed",
+    "author_bounded_syntax": "97 targeted, 4103 generated, one deep input; existing classifications unchanged",
+    "author_patch_reconstruction": "all four distribution-patched files reproduced byte-for-byte"
+  },
+  "findings": [
+    "Comma identity is checked against actual token text before Error placeholders become absent slots. Empty list closing-token placeholders do not fabricate comma context.",
+    "Checked conversion preserves integer metadata; absent or edited integer fields survive round trip, malformed field types are rejected. Range/requiredness is a future compiler consumer obligation.",
+    "Fresh printing preserves normalized syntax, not original diagnostic locations. UTF-16BE independent and UTF-16LE author profiles agree."
+  ],
+  "limits": [
+    "No runtime destructuring admission or full syntax campaign claimed.",
+    "Genuine-list and ordinary-array omission phase repairs remain separate open work."
+  ]
+}

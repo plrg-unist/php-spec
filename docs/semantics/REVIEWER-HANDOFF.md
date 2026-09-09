@@ -59,8 +59,9 @@ A further author-only four-source capture in
 `.tools/false-reference-unset-disagreement.json` reports two nested UNSET fetch
 mismatches and two controls. Preserve and independently repeat it next; generic
 UNSET fetch in module38 also needs wrapper-history review. Final UNSET_DIM must
-retain its own warning behavior. These new cases are not part of the seven
-independently repeated originals above.
+retain its own warning behavior. These four cases are now independently archived/repeated in
+coverage/semantics/false-reference-unset-{originals,review}.json; they are distinct
+from the seven earlier originals.
 
 ## Compiler/frontend prerequisites and next interfaces
 
@@ -74,7 +75,8 @@ independently repeated originals above.
   originals include native-valid skipped logical/prepass arms. Preserve earlier
   outer-style, spread, RHS read and RHS referenceability errors before long-array
   rejection. Keep original array kind, unpack and omitted entries. The previously archived single phase-gap witness is independently reviewed;
-  expanded author captures are linked below and await independent repetition.
+  all 22 expanded captures are now independently repeated with exact native lint
+  and frontend outcomes.
 - Ordinary array omissions have a broader six-source gap: native-valid skipped
   `[,$x]` branches are rejected by the frontend. A metadata-bearing ArrayHole item
   is only a proposal. Independently assess minimal faithful omission/token-line
@@ -95,8 +97,9 @@ independently repeated originals above.
 
 Expanded frontend originals are retained in
 [phase archive review](../../coverage/semantics/frontend-phase-originals-review.json):
-16 genuine-list and six ordinary-array-hole captures, author evidence pending
-independent repetition.
+16 genuine-list and six ordinary-array-hole captures, now independently repeated.
+First-hole metadata `87341500` is accepted in destructuring-first-hole-review.json;
+its compiler consumption remains pending.
 
 ## Review discipline and commands
 

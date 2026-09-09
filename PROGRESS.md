@@ -64,10 +64,12 @@ all 63 original phase/copy/grouping cases and compiler redirect/archive integrit
 Frontend prerequisites preserve nested unpack flags (`d4706937`,
 [review](coverage/semantics/destructuring-unpack-review.json)) and original array
 syntax kind (`09f33419`, [review](coverage/semantics/destructuring-array-kind-review.json)).
-First-hole comma context and array-omission phase gaps remain pending. Their
+First-hole comma metadata `87341500` is independently reviewed (31 author profiles/409
+checks plus 20 independent profiles/140 checks); compiler consumption and array-omission
+phase gaps remain pending. Their
 [original loss witnesses](coverage/semantics/destructuring-metadata-disagreement.json)
 and [expanded author captures](coverage/semantics/frontend-phase-originals-review.json)
-remain alongside partial resolutions; the expanded 22 captures await independent repetition.
+remain alongside partial resolutions; all expanded 22 captures are independently repeated.
 
 ## Retained evidence and contracts
 
@@ -100,9 +102,11 @@ Repair the [open false-reference FETCH discrepancy](coverage/semantics/false-ref
 before update operators: three independent source mismatches and four controls
 persist on the final comparison closure. Singleton unset retains observable
 reference-wrapper history; generic dimension FETCH and final ASSIGN_DIM warn
-differently. Runtime's proposed marker state remains unapproved. Fresh review must
-cover binding, COW, cycles, lifetime, pools and resumption. Four further author
-nested-UNSET observations are linked in the handoff for independent confirmation.
+differently. Runtime's proposed marker state remains under review. Independent scratch gates pass
+72 expanded sources/1,288 assertions, alongside author source and graph gates.
+[Four nested-UNSET originals](coverage/semantics/false-reference-unset-review.json)
+are independently confirmed: two admitted mismatches and two controls. Production
+publication and the full stable source gate remain required.
 The current admitted runtime is not globally clean; no new divergence is selected.
 
 Complete remaining destructuring provenance prerequisites, then pair compiler

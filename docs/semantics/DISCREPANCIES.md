@@ -262,7 +262,10 @@ Original array syntax is now preserved by `09f33419`: converted lists retain
 omitted slots. [Style review](../../coverage/semantics/destructuring-array-kind-review.json)
 passes 35 author profiles/437 checks and 12 independent profiles/88 checks,
 including original/printed native diagnostic families and edited-kind consumption.
-First-hole token context remains pending. A separate [genuine-list phase witness](../../coverage/semantics/destructuring-list-hole-phase-disagreement.json)
+First-hole token context is now preserved by `87341500`; the
+[review](../../coverage/semantics/destructuring-first-hole-review.json) repeats 12
+original line witnesses and adds 20 independent source/encoding profiles. Compiler
+consumption remains pending. A separate [genuine-list phase witness](../../coverage/semantics/destructuring-list-hole-phase-disagreement.json)
 records `list(array(,$x))=$a`: the frontend rejects empty array entries early,
 while the pinned compiler rejects the long-array assignment target. Repair its
 phase before source destructuring admission; no divergence is selected.
@@ -275,6 +278,10 @@ fetch and `$x=&$a[0]` omit the pinned false-to-array deprecation, but the model
 emits it. The difference survives `unset($r)`, so live owner count cannot replace
 reference-wrapper history. Final dimension assignment still warns in both
 implementations. Preserve that operation distinction when repairing state.
+
+[Four nested-UNSET originals](../../coverage/semantics/false-reference-unset-review.json)
+independently confirm two more mismatches and two controls: intermediate UNSET
+fetch suppresses the warning through a wrapper, while final UNSET_DIM still warns.
 
 This existing source discrepancy is the immediate corrective prerequisite after
 the bounded comparison checkpoint; comparison results do not establish a
@@ -291,11 +298,11 @@ that scanner history repairs smart string comparison in `0e065cc6`; all four now
 agree through original-source execution. [Independent comparison review](../../coverage/semantics/comparison-review.json)
 records source and helper boundaries separately. No intentional divergence is selected.
 
-## Expanded array-omission phase gaps: pending review and repair
+## Expanded array-omission phase gaps: independently confirmed, repair pending
 
-[Retained author captures](../../coverage/semantics/frontend-phase-originals-review.json)
+[Retained originals](../../coverage/semantics/frontend-phase-originals-review.json)
 add 16 genuine-list and six ordinary-array omission sources, including native-valid
-skipped branches currently rejected by the frontend. These expanded captures await
-independent repetition; the earlier single genuine-list witness is independently
-reviewed. Genuine-list conversion, first-hole token context and ordinary Array_
-omission representation are separate prerequisites. No repair or admission is claimed.
+skipped branches currently rejected by the frontend. All 22 captures are independently repeated with exact native lint and frontend
+outcomes. Genuine-list conversion and ordinary Array_ omission representation
+remain separate open repairs; first-hole metadata is reviewed independently.
+No phase repair or runtime admission is claimed.
