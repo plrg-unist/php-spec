@@ -33,6 +33,15 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Latest accepted checkpoints
 
+Foreach syntax/key-precheck code **`75672577`** preserves reference/list key
+designations and retires exactly three historical parser exceptions. The frozen
+private and canonical inputs match **`ac2aaca6`** (815 inputs): 17 exact source
+static errors +24 outcome negatives, 66 parser profiles, 18 typed/printer checks,
+26 compiler metadata controls and the 4,884-source compiler gate pass.
+[Independent review](coverage/semantics/foreach-publication-review.json) reproduces
+33 original observations and verifies all three retirements. Normal foreach
+compilation and execution remain pending; 12 Unsupported controls are not admissions.
+
 Destructuring/effect/coalesce code **`77f8d3c0`**, compiler reports **`c2893aea`**
 and runtime reports **`54bda2fa`** share **`f1699a75`** (812 inputs).
 **283 selected sources +24 outcome negatives** pass: 263 additions and 20 retained
@@ -65,11 +74,11 @@ syntax acceptance do not close ordinary source-execution families.
 
 ## Next bounded work
 
-Publish the reviewed foreach representation/prechecks and retire its three exact
-syntax exemptions, then complete array iteration with persistent insertion
+Complete array iteration with persistent insertion
 occurrences, per-iterator saved copy positions and explicit ownership/unwinding.
 [Independent design review](docs/semantics/FOREACH-REVIEW.md) and
-[18 native originals](coverage/semantics/foreach-independent-cursor-originals.json)
+[18 cursor originals](coverage/semantics/foreach-independent-cursor-originals.json)
+and [12 copy/unwind originals](coverage/semantics/foreach-independent-copy-unwind-originals.json)
 distinguish array replacement, source rebinding/unset, nested iterators and aliases.
 Normal foreach execution remains unadmitted.
 
@@ -78,7 +87,9 @@ coalescing assignments before broader calls/frames, declarations, linked objects
 exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
 One header diagnostic case, five quiet-coalescing cases and seven ordinary
 request-environment cases remain explicit Unsupported work; none count as source
-agreements. Ordinary-library exclusions cannot discharge required core behavior.
+agreements. [Quiet/CV design review](docs/semantics/QUIET-CV-REVIEW.md) and 28 native
+originals distinguish delayed CV reads, temporary reuse and header compiler state.
+Ordinary-library exclusions cannot discharge required core behavior.
 
 Raw protection **`de04828e`** creates exclusive per-run files; its
 [independent review](coverage/semantics/raw-output-review.json) verifies repeated

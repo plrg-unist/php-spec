@@ -73,36 +73,43 @@ request environment/CV diagnostics and ??= follow containers before broader call
 
 ## Foreach next
 
-`.tools/foreach-frontend-next/candidate-inputs.json` binds the reviewed immutable
-prerequisite: 344 inputs, 56 modules, four tools, nine frontend/schema/patch deltas
-and early compiler67. Appended keyByRef is FIELD5; FIELD0–4 and all70 domains stay
-unchanged. List keys inhabit existing expression syntax. Edited true flag with no
-key is structurally checked but printer rejects; compiler explicitly Unsupported.
-Independent `foreach-prerequisite-review.json` reproduces33 old frontend/native
-lints,29 checked roundtrips,17 exact compiler prechecks/12 normal pending cases,
-26 metadata assertions and seven independently edited boundaries. Author66 plain/
-UTF16BE profiles and18 typed/printer checks pass. Three exact historical PHPT
-exemptions are preserved in that report and `foreach-prerequisite-originals.json`.
+Foreach representation/key-precheck code **75672577** publishes exactly the frozen
+`.tools/foreach-publication/candidate-inputs.json` prerequisite: ac2aaca6/815 inputs,
+17 changed files, 56 modules and four tools. `foreach-publication-review.json`
+reproduces33 old frontend/native lints,29 checked roundtrips,17 exact prechecks,
+26 metadata assertions and seven edited boundaries. Twelve normal-compilation
+Unsupported controls remain explicitly pending. Canonical66 plain/UTF16 profiles,
+18 typed/printer controls and17 source/24 negative outcomes pass; matching private
+closure also passes4,884 compiler lints,694 static tests and169 occurrence domains.
 
-The reviewer reserves `tests/phase-discrepancies.json` and `tests/phase_ledger.py`.
-Retire their three foreach exemptions atomically with compatible frontend/compiler
-publication; preserve literal old entries as negative allowlist regressions.
-Compiler4 has a canonical-ready frontend test at
-`.tools/foreach-publication-draft/foreach_targets.py`. Full foreach compiler work
-is a separate draft (69 exact cases and two explicit pending contexts at last
-message); request its current immutable manifest before independent execution.
+Appended keyByRef is FIELD5; FIELD0–4 and all70 domains stay unchanged. List keys
+inhabit existing expression syntax. An edited true flag with no target is
+structurally checked but rejected by printer and explicitly Unsupported by
+compiler. Exactly three phase exemptions are retired; their full old entries and
+source bytes remain in the independent prerequisite review/originals. Reviewer
+still owns the phase ledger; literal old observations remain negative regressions.
+
+Full foreach compiler work is a separate mutable draft, with69 exact cases and
+two pending contexts at last message. A later20-producer control gate covers
+statementBodyLine for foreach, including nested parentheses/comments, alternate
+bodies and UTF16. Request the complete immutable full compiler/runtime manifest
+before independent execution; preserve earlier prototype/tool failures separately.
 
 Runtime4's `.tools/runtime4-foreach` is a mutable next draft, not an accepted or
 frozen candidate. Its68 cursor design adds insertion POSITIONS/SERIAL per array,
 per-iterator current-table/saved-copy classes and no extra heap owners. COW hooks
 include location separation/union; empty copies omit iterator inheritance. Read
 `FOREACH-REVIEW.md` for source-backed risks/interfaces and the independent18 native
-cursor/alias originals, plus earlier30 history originals under
+cursor/alias originals and12 copy/unwind originals, plus earlier30 history originals under
 `.tools/runtime-foreach-next/history-originals.json`. Runtime4 also preserved36
 setup cases under `.tools/runtime4-foreach-setup-*`. Do not approximate cursors by
 keys or global ancestry. Selecting one iterator's descendant discards only its
 alternates. By-value owns HARRAY, by-reference owns acquired HCELL. Unwinding must
-remove cursor metadata while retaining value-variable aliases.
+remove cursor metadata while retaining value-variable aliases. Three reference-valued
+AssignRef iterable reset defects were captured before wrapper correction; the
+extra top-level return source remains Unsupported pending return/frame activation.
+Next quiet/CV originals28 and compiler-state notes are in `QUIET-CV-REVIEW.md`;
+those observations make no implementation/admission claim.
 
 ## Historical ordinary closure and validation discipline
 
