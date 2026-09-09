@@ -74,8 +74,9 @@ execution separate. Its [contract](docs/semantics/BUILTIN-ARGUMENT-MODES.md),
 [canonical bridge](coverage/semantics/builtin-argument-modes-publication.json) and
 [400-file author archive](coverage/semantics/builtin-argument-mode-originals.json)
 retain 780 exact native metadata rows and 7,508 pure flag assertions, including
-the original standalone-loader setup failure. The exact publication files were
-independently checked; durable independent acceptance follows. No call source
+the original standalone-loader setup failure. [Independent acceptance](coverage/semantics/builtin-argument-modes-review.json)
+checks all 400 author files and 73 reviewer files, reproduces the exact source-derived
+table, and replays all 7,508 flags on the standalone prerequisites. No call source
 activation or core closure is claimed. Forward/known argument fetch compilation
 and multiline call-site metadata corrections remain in the private paired work.
 
