@@ -1,0 +1,125 @@
+{
+  "scope": "Separate source-constructor supplement after the retained162 constant/default originals. No source activation or final allocation implementation acceptance.",
+  "result": "11 originals independently retained and audited",
+  "baseline": {
+    "sha256": "7399e812eb825917abc3249d514b7a5a26223be52fda9401d37269a03b9668b3",
+    "files": 884,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "counts": {
+    "sources": 11,
+    "native_lints": 11,
+    "exact_worker_responses": 22,
+    "clean_closures": 4
+  },
+  "observations": [
+    "Heredoc empty and one raw byte warn once; an escape decoding to one byte warns twice.",
+    "Grammar-empty nowdoc warns once; nowdoc one-byte content warns twice. A separate blank body token also warns twice despite producing empty bytes.",
+    "The two empty nowdoc cases have identical checked kind4/rawValue empty/value empty. Existing endTokenPos-startTokenPos distinguishes no-body1 from body2, matching pinned grammar/scanner constructors.",
+    "Empty namespace magic warns once. Long namespace, qualified function, file and directory magic values warn twice in the selected deferred context. Copying a compiler string does not imply it was interned."
+  ],
+  "records": [
+    {
+      "id": "heredoc-empty",
+      "source_sha256": "3c160046eacf840c056a59a22ba2c33daca0ae850de060d0947c149d26b7d48d",
+      "native_warning_count": 1,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "heredoc-one",
+      "source_sha256": "21db6145bf3267a4fd274611631fbb3f29a20d69901da103f23c1a8b12640370",
+      "native_warning_count": 1,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "heredoc-escaped-one",
+      "source_sha256": "1efffa245e58b80337d8acf8a55e9c52745e48524ec2fd9ce7ac324253d94360",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "nowdoc-empty",
+      "source_sha256": "b5d79efb278a707db2ab1e191eb226f174ea69234fcb4af8db861ff53274a920",
+      "native_warning_count": 1,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "nowdoc-one",
+      "source_sha256": "3e84edb24898b6adeff679fa420a3f53f28f82692fbf8afa43394458e983b62b",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "magic-class-namespace-empty",
+      "source_sha256": "63cdcca8922897696fcab59b5d4ce7134f1f3b10726d857bce97723c77fba03c",
+      "native_warning_count": 1,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "magic-class-namespace-long",
+      "source_sha256": "5d3cca4f00a19f21cd3de7e0280e1f694123e62d76301f4bcc041c9dbe400dcf",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "magic-class-function-long",
+      "source_sha256": "705321d7ef890b0ed8a349688c19b1fa6f2d81ee4cbe7e9c70fe29d48df15291",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "magic-class-file",
+      "source_sha256": "242e2f1c38bedcdb4748d77659c0c85796b8f412b45f1c67c15ce34b91dae916",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "magic-class-dir",
+      "source_sha256": "83d150b990b5cbd8a1d326d0212182636032d5811cbe67e112d3a62a5f98df94",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    },
+    {
+      "id": "nowdoc-blank-token",
+      "source_sha256": "417da5c0c7575bef0aabcd429d066aa905e9c20c2431b47dc5503d6dd09f3535",
+      "native_warning_count": 2,
+      "native_exit": 0,
+      "old_status": "unsupported"
+    }
+  ],
+  "source_review": ".tools/review9-constant-transfer-source-review.json",
+  "source_authority": "Pinned vendor/php-src34308a6666b2d489c509541ea9befea9e2b42348 plus checked vendor/php-parser ParserAbstract.php; exact source bytes and hashes are archived.",
+  "archive": {
+    "index": "coverage/semantics/literal-class-review-originals.json",
+    "path": "coverage/semantics/literal-class-review-originals.tar.xz",
+    "sha256": "3937110b253b454a6a57acda7b40511a268fbe9e04e1421535e6aeae54e2513b",
+    "bytes": 49348,
+    "paths": 423,
+    "new_payloads": 164
+  },
+  "remaining": "Compiler source class attachment, runtime observation and checked public-state validation still require frozen paired review. These11 augment later defaults/cache controls; the42 constant-runtime and12 compiler-boundary selection is unchanged."
+}
