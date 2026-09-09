@@ -407,12 +407,18 @@ CASES.update({
     'compiler-unmatched-prefix-control': b'<?php use Vendor\\Package as A;echo B\\Missing;',
     'compiler-unqualified-control': b'<?php use Vendor\\Package as A;echo Missing;',
 })
-COMPILER_ALIAS_UNSUPPORTED = [
+COMPILER_ALIAS_RESOLVED = [
     b'<?php use Vendor\\Package as A;echo A\\Missing;',
     b'<?php use Vendor\\Package as Alias;echo aLiAs\\Missing;',
     b'<?php echo "before";use Vendor\\Package as A;echo A\\Missing;',
     b'<?php use Vendor\\Package as A;$u=1;$a=[$u,A\\Missing];',
 ]
+
+# Retain the original imported-class-prefix discrepancies as exact source cases.
+CASES.update({f'namespace-alias-resolved-{i}': source for i, source in enumerate(COMPILER_ALIAS_RESOLVED)})
+from namespace_constants import CASES as NAMESPACE_CASES
+CASES.update(NAMESPACE_CASES)
+CASES['namespace-alias-fully-qualified'] = b'<?php use Vendor\\Package as A;echo \\A\\Missing;'
 
 # Existing compiler emission-line witnesses, now exercised through source execution.
 CASES.update({
@@ -570,14 +576,12 @@ def main():
                        b'<?php $a="abc";$x=&$a[0];', b'<?php $a="abc";unset($a[0][0]);',
                        b'<?php $a=[...[]];',
                        b'<?php echo $http_response_header;',
-                       b'<?php $http_response_header=1;echo $http_response_header;'] + COMPILER_ALIAS_UNSUPPORTED:
+                       b'<?php $http_response_header=1;echo $http_response_header;']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
             response = json.loads(result.stdout)
             assert result.returncode != 0 and response['status'] == 'unsupported', response
-            if source in COMPILER_ALIAS_UNSUPPORTED:
-                assert response['stdout'] == '', response
             negatives.append({'source': base64.b64encode(source).decode(), 'exit_status': result.returncode,
                               'observation': response})
         # Edited checked values cannot invent source positions for diagnostics.

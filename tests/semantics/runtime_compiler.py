@@ -36,6 +36,13 @@ def main():
         c=checked(b'<?php [[NAN],[NAN]];')
         child=path([I(0),F(0),F(0),I(0),F(1)])
         cases.append([f'P = $ppstart(71, {c["fixture"]}, ([47,112]))','S = $compile_source($initial_state(NORMAL), P)',f'$pool_value(S.POOLS, PORIGIN 71 {child}) = (PARRAY n)',f'$ppaccess(P, {child}) = eps',f'$compiled_read(S, PORIGIN 71 {child}) = eps','S_clean = $prune_allocations($release_temporaries(S))','(HARRAY n) <- S_clean.ALLOCATIONS'])
+        c=checked(b'<?php namespace N;\nNAN;\nMissing;')
+        names=[(steps,node) for j,statement in enumerate(c['ast']['program']) for steps,node in occurrences.expected(statement,[I(j)]) if node['node']=='Expr_ConstFetch']
+        nan_path=path(names[0][0]); missing_path=path(names[1][0]); nan_expr=occurrences.node_term(names[0][1])
+        prefix=[f'P = $ppstart(71, {c["fixture"]}, ([47,110]))','S = $compile_source($initial_state(NORMAL), P)','S.COMPLETION = NORMAL',f'$compiled_read(S, PORIGIN 71 {nan_path}) = eps',f'$compiled_name(S, PORIGIN 71 {nan_path}) = (VALUE (PFLOAT 9221120237041090560))',f'$compiled_name(S, PORIGIN 71 {missing_path}) = (ABRUPT (PHPERROR ([78,92,77,105,115,115,105,110,103]) 3))']
+        cases.append(prefix+['$drive(S, 1000).COMPLETION = PHPERROR ([78,92,77,105,115,115,105,110,103]) 3',f'S_again = $drive(S[.TODO = [AT (PORIGIN 71 {nan_path}) (EVAL {nan_expr})]], 1000)','S_again.COMPLETION = NORMAL','S_again.ORIGIN = eps','S_again.RESULT = KNOWN (PFLOAT 9221120237041090560)','S_again.CODE = S.CODE','S_again.POOLS = S.POOLS'])
+        for budget in (1,3,5):
+            cases.append(prefix+[f'S_budget = $drive(S, {budget})','S_budget.COMPLETION = BUDGET','$drive(S_budget[.COMPLETION = NORMAL], 1000) = $drive(S, 1000)','S_budget.CODE = S.CODE'])
         c=checked(b'<?php [NAN];')
         prefix=[f'P = $ppstart(71, {c["fixture"]}, ([47,112]))']
         cases.append(prefix+['$compile_source($initial_state(NORMAL), P[.FOLD = P.FOLD[.MEMORY = P.FOLD.MEMORY[.ENV = [BIND ([120]) 0]]]]).COMPLETION = UNSUPPORTED "compiler variable storage in constant pool"'])

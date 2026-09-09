@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exact constant-expression helper facts; runtime source consumption remains pending."""
+"""Exact constant-expression facts consumed by ordered source compilation."""
 import base64, copy, hashlib, json, subprocess, sys, tempfile, re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'tests/semantics'))
@@ -133,22 +133,21 @@ def main():
             i=len(fixtures)
             prepare=f'$pfprepare(F_seed, {path}, {occurrences.node_term(node)}, $plempty(false), 2)'
             body=f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if F_seed = $pfbegin(41, {checked["fixture"]})\n'
-            probes=[prepare.replace(path,'eps',1),prepare.replace(', 2)',', 0)'),prepare.replace(', 2)',', $(-1))'),prepare.replace('$plempty(false)','$plempty(false)[.NAMESPACE = [78]]'),prepare.replace('$plempty(false)','$plempty(false)[.CONSTANTS = [([78],[77])]]'),prepare.replace('F_seed,','F_seed[.SOURCE = F_seed.SOURCE[.OCCURRENCES = eps]],',1)]
+            probes=[prepare.replace(path,'eps',1),prepare.replace(', 2)',', 0)'),prepare.replace(', 2)',', $(-1))'),prepare.replace('F_seed,','F_seed[.SOURCE = F_seed.SOURCE[.OCCURRENCES = eps]],',1)]
             changed=copy.deepcopy(node);changed['meta']['startLine']={'int':'99'}
             probes.append(prepare.replace(occurrences.node_term(node),occurrences.node_term(changed)))
             for j,probe in enumerate(probes):
-                body+=f'  -- if F_bad{j} = '+probe+'\n  -- if F_bad'+str(j)+'.MEMORY.COMPLETION = UNSUPPORTED "invalid constant-expression occurrence, compiler line, or unsupported namespace/import context"\n'
-            body+='  -- if F_other = $pfbegin(42, '+checked['fixture']+')\n  -- if F_seed.SOURCE.ID =/= F_other.SOURCE.ID\n'
+                body+=f'  -- if F_bad{j} = '+probe+'\n  -- if F_bad'+str(j)+'.MEMORY.COMPLETION = UNSUPPORTED "invalid constant-expression occurrence or compiler line"\n'
             fixtures.append(body)
             f=Path(tmp)/'test.watsup'
             f.write_text(PREFIX+'\n'.join(fixtures)+'\ndec $main() : bool\ndef $main() = true\n'+''.join(f'  -- if $case{i}()\n' for i in range(len(fixtures))))
             run=subprocess.run([str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*map(str,SPECS),str(f)],capture_output=True,text=True,timeout=120)
             if run.returncode or run.stdout.strip()!='true':
                 (ROOT/'.tools/constant-failure.watsup').write_text(f.read_text());raise AssertionError((run.returncode,run.stdout,run.stderr))
-            print(len(records),'source observations and 7 boundary probes passed')
+            print(len(records),'source observations and 5 boundary probes passed')
     finally:frontend.close();adapter.close()
     assert before==fingerprint(),'watched inputs changed'
-    report={'scope':'selected checked constant-expression invocations in explicit global context; no source compiler or runtime consumption', 'profile':types.PROFILE, 'oracle_identity':identity, 'fingerprint':before, 'source_cases':len(records), 'boundary_probes':7, 'cases':records}
+    report={'scope':'selected checked constant-expression invocations; source runtime integration tested separately', 'profile':types.PROFILE, 'oracle_identity':identity, 'fingerprint':before, 'source_cases':len(records), 'boundary_probes':5, 'cases':records}
     (ROOT/'coverage/semantics/constant-context.json').write_text(json.dumps(report,indent=2)+'\n')
 
 

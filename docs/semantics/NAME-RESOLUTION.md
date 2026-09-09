@@ -45,6 +45,22 @@ against the pinned source algorithm; an undefined-name observation alone cannot
 prove which lookup attempts occurred. Reports retain original source bytes,
 checked AST hashes, exact commands, profile, status and both raw output channels.
 
-This is an unregistered lexical helper. Its consumers in constant evaluation,
-ordinary compilation and source runtime lookup remain pending. It does not remove
-those consumers' current explicit namespace/import boundaries.
+The ordered compiler and constant-expression prepass now consume these descriptors.
+`23-named-constants.watsup` keeps compile-time substitution separate from runtime
+fallback. The byte-keyed backend in `20-machine.watsup` contains one set of modeled
+startup values; its wire-text wrapper decodes into that same lookup. The generated
+`15-constant-names.watsup` remains a names-only startup table and distinguishes
+existing unmodeled constants from missing names. Existing unmodeled constants
+produce Unsupported, while genuinely absent names can try the explicit fallback.
+Runtime lookup uses resolved bytes for an eventual undefined-constant message.
+The anchors are `zend_compile_const` at11014 and `_zend_quick_get_constant` in
+`Zend/zend_execute.c` at5411, including its separation from special-constant
+substitution.
+
+Run `python3 tests/semantics/namespace_constants.py` for original-source native/runtime
+comparisons and compiler descriptor assertions: imported names, class prefixes,
+case distinctions, namespace resets, raw bytes, exact diagnostic lines, partial
+array folds and lexical cache reuse. These checks include namespaced `NAN` remaining
+a nonconstant fetch while a `use const NAN` alias folds. `FULL` is not a promise
+that a symbol exists. Function invocation, user constant declarations, autoload,
+class constant access and magic source constants remain separate pending work.

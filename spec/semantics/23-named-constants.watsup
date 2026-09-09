@@ -1,0 +1,11 @@
+;; Constant substitution is distinct from late namespace fallback lookup.
+dec $pnfold(pnreference) : pvalue?
+dec $pnfoldname(pnreference) : ptbytes
+def $pnfoldname(pnreference) = pnreference.RESOLVED
+  -- if pnreference.FULL
+def $pnfoldname(pnreference) = $ptlast(pnreference.RESOLVED)
+  -- if ~pnreference.FULL
+def $pnfold(pnreference) = (pvalue)
+  -- if $special_constant($pnfoldname(pnreference)) = (pvalue)
+def $pnfold(pnreference) = $builtin_value_bytes(pnreference.RESOLVED)
+  -- if $special_constant($pnfoldname(pnreference)) = eps

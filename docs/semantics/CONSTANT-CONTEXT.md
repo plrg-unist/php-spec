@@ -1,7 +1,8 @@
 # Checked constant-expression work
 
 `45-constant-context.watsup` supplies an internal compiler helper for the admitted
-global scalar, arithmetic, identity, array and dimension expressions. It retains
+scalar, named-constant, arithmetic, identity, array and dimension expressions
+in an explicit lexical namespace/import environment. It retains
 partial constant folds as facts about exact checked source occurrences. The
 ordered source compiler uses it through `46-source-compiler.watsup`, and
 `33-runtime-compiler.watsup` installs and consumes its values for the admitted
@@ -22,20 +23,20 @@ does not establish that constant evaluation folds that dimension.
 | `state.MEMORY` | Isolated pure constant store. Completion is `NORMAL`, a source-backed `STATICERROR`, or explicit `UNSUPPORTED`. |
 | `state.FACTS` | Relative path, folded value and effective compiler line; their identity includes the enclosing source-unit ID. Array values designate tables in this store. |
 | `state.VALUE` | Optional whole-expression folded value. Its absence does not discard successfully folded children. |
+| `state.ENV` / `state.CONTEXTS` | Active lexical environment and the environment first used at each visited path. Reusing a path under a changed environment is rejected, even if its prior value did not fold. |
 
 The compiler retains states constructed by these helpers; they are not an
 external serialized-state ingestion format. Entry verifies canonical source
 occurrences and exact selected expression equality, including metadata. A forged
 path, a changed selected expression, missing compiler line or unsupported lexical
 context does not become a successful fold. Earlier unsuccessful completion is
-preserved. The current constant-name resolver is explicitly restricted to empty
-namespace and constant-import tables. Ordinary compilation temporarily rejects
-compound constant names whose first segment matches a class import, including
-ASCII case variants. Unqualified constants and unmatched compound prefixes remain
-admitted. The current startup constants are all unqualified, so the partial
-prepass cannot fold an imported compound name before this ordinary check. This
-boundary remains a pending source obligation: constant fetches must consume the
-shared `22-name-resolution.watsup` descriptors and the same lexical environment.
+preserved. Constant names use `22-name-resolution.watsup` and the substitution
+rules in `23-named-constants.watsup`. Fully qualified, namespace-relative, imported
+and ordinary names retain their qualification-dependent behavior. In a namespace,
+unqualified `true`, `false` and `null` can fold before ordinary lookup; unqualified
+`NAN` remains a runtime fallback. Constant aliases use exact case, while qualified
+class-import prefixes use ASCII lowercase keys. No fallback lookup occurs during
+constant substitution.
 
 Each successful value is cached at its structural path. A later compiler visit
 to that occurrence reuses it; a distinct occurrence has a distinct fact. Each
@@ -82,11 +83,10 @@ Source-unit IDs and occurrence paths now travel through ordinary compilation and
 runtime tasks. The source consumer installs the persistent pool and uses compiled
 read values and ending lines before evaluating remaining children. The old
 whole-program constant-read prepass and recursive array-fold classifier are no
-longer the public source compilation path; legacy helper definitions and remaining
-leaf-checker dependencies await coordinated retirement. Generic scalar/string
-runtime reads and source loop/function behavior are still pending. A string DIM
-folded by this prepass can execute through its constant value without establishing
-those generic runtime reads.
+longer the public source compilation path. The ordered compiler no longer depends
+on their direct-variable/bare-break checks; unused legacy definitions await
+coordinated retirement. Generic scalar/string reads are separately connected to
+the source runtime. Source loop/function behavior remains pending.
 
 Each `PFFACT` retains the effective line of its constant AST node. Original integer, float and string leaves keep their source lines. Actual constant-expression rewrites use the invocation compiler line, matching `zend_eval_const_expr` replacing the node with `zend_ast_create_zval` (`zend_compile.c:12380`, `zend_ast.c:88`). The original checked syntax remains unchanged. `$pffactline` exposes this provenance to ordinary compilation; cached facts retain the first rewrite line across repeated evaluation.
 

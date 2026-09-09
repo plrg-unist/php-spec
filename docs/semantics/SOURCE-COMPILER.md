@@ -14,6 +14,7 @@ executing recorded work through `33-runtime-compiler.watsup`.
 | `WORK` | Successfully compiled ordinary statements, in compilation order, with original paths, exact statements, lexical environments and final compiler lines. |
 | `EXPRESSIONS` | Per-expression path, final compiler line and optional constant code-generation operand. |
 | `ACCESS` | The corresponding ordinary compiler operand mode at each expression path, in the same order. |
+| `NAMES` | Nonfolded ordinary constant reads: path and exact lexical name-resolution descriptor. Folded or unvisited children have no runtime name lookup entry. |
 | `DIAGNOSTICS` | Ordered namespace/import compiler diagnostics, including exact byte messages and their source-unit locations. |
 | `LOCATION` | Active or last ordinary compiler position. Lexical diagnostic locations are carried by the diagnostics themselves. |
 | `ENV` | Current lexical environment returned by the namespace/import traversal. Each work descriptor retains its own environment. |
@@ -69,6 +70,17 @@ are cleared by cleanup, while compiled pools remain rooted. A compiled occurrenc
 is looked up in its installed pool; source loops and functions remain unsupported,
 so their execution is not established by this installation milestone.
 
+Constant reads use the same lexical environment as their containing work.
+`22-name-resolution.watsup` supplies the resolved bytes, qualification flag and
+optional fallback; `23-named-constants.watsup` performs only valid compile-time
+substitution. A remaining read is recorded in `NAMES`. The runtime retains compact
+`CODENAME` records and calls the shared byte-keyed constant backend at the compiled
+ending line after a pool miss. Fallback is attempted only when the resolved name
+is absent. An existing unmodeled startup constant remains Unsupported; it does not
+become a missing name or trigger fallback. Undefined-name diagnostics retain the
+resolved spelling even when a fallback was attempted. The former matching
+class-import-prefix admission boundary is removed by this source lookup path.
+
 Expression records preserve the current compiler line after children, including
 partial-fold line effects and assignment's explicit target-line reset. A direct
 assignment-to-self dimension path preserves the compiler's special CV behavior.
@@ -111,15 +123,15 @@ working directory, status and raw output channels.
 
 The supported ordinary statements are expression statements, echo, unset, blocks,
 inline output and no-ops, with out-of-context bare `break` rejection. Expressions
-cover the current scalar/global-constant, variable, assignment/reference,
-`+ - * / === !==`, unary sign, array and dimension subset. Namespaced or imported
-constant resolution (including a qualified name with a matching class-import
-prefix), arrays under those unresolved lexical contexts, compile-time
-computed-name warnings and HTTP-variable assignment flags remain Unsupported.
-Functions/classes, declare effects, loops and other statements still stop the
-ordinary compiler explicitly. These are pending core obligations. Namespace and
-import diagnostics are emitted before recorded work executes, but constant-name
-consumers of `22-name-resolution.watsup` remain pending. The old whole-program
+cover the current scalar/named-constant, variable, assignment/reference,
+`+ - * / === !==`, unary sign, array and dimension subset. Namespace and all import
+kinds supply lexical context; admitted constant fetches and array prepasses consume
+it. Compile-time computed-name warnings and HTTP-variable assignment flags remain
+Unsupported. Functions/classes, declare effects, loops and other statements still
+stop ordinary compilation explicitly. Declaration publication, user constants and
+source magic constants remain pending core obligations. Namespace/import
+diagnostics are emitted before recorded work executes. The old whole-program
 check and recursive array-fold classifier are no longer the public source
-compilation path. Their legacy helper definitions, and the compiler's remaining
-direct-CV/bare-break checker dependencies, still require coordinated retirement.
+compilation path. Their legacy definitions await coordinated retirement; ordinary
+compilation now uses its own narrow direct-CV check and the shared source-line
+error helper for bare break.

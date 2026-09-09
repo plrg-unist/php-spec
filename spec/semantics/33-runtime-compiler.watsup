@@ -30,16 +30,39 @@ def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
 def $compiled_read(S, porigin) = eps
   -- otherwise
 
+dec $code_name(pcodename*, pcpath) : (nat*, (nat*)?)?
+def $code_name(eps, pcpath) = eps
+def $code_name((CODENAME pcpath n_name* n_fallback*?) :: pcodename*, pcpath) = ((n_name*, n_fallback*?))
+def $code_name((CODENAME pcpath_other n_name* n_fallback*?) :: pcodename*, pcpath) = $code_name(pcodename*, pcpath)
+  -- if pcpath_other =/= pcpath
+
+dec $compiled_name(pstate, porigin) : peval?
+def $compiled_name(S, PORIGIN n pcpath) = ($constant_fetch(n_name*, n_fallback*?, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((n_name*, n_fallback*?))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $compiled_name(S, porigin) = eps
+  -- otherwise
+
 def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
   -- if $compiled_read(S, porigin) = (pvalue)
 def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE (KNOWN pvalue)][.RESULT = KNOWN PNULL]
   -- if $compiled_read(S, porigin) = (pvalue)
+def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_name(S, porigin) = (VALUE pvalue)
+def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = eps][.COMPLETION = pcompletion]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_name(S, porigin) = (ABRUPT pcompletion)
 def $enter_compiled_task(S, porigin, ptask, ptask_tail*) = S[.TODO = [ptask, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
   -- otherwise
 
 dec $compiled_operands(ppstate, ppexprdone*) : pcodeexpr*
 def $compiled_operands(P, eps) = eps
 def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = (CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps)) :: $compiled_operands(P, ppexprdone*)
+dec $compiled_names((pcpath, pnreference)*) : pcodename*
+def $compiled_names(eps) = eps
+def $compiled_names((pcpath, pnreference) :: (pcpath_tail, pnreference_tail)*) = (CODENAME pcpath pnreference.RESOLVED pnreference.FALLBACK) :: $compiled_names((pcpath_tail, pnreference_tail)*)
 dec $compiled_work(nat, ppwork*) : ptask*
 def $compiled_work(n, eps) = eps
 def $compiled_work(n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = (AT (PORIGIN n pcpath) (STMT statement)) :: $compiled_work(n, ppwork*)
@@ -62,7 +85,7 @@ def $compile_source(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS) }]]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS), NAMES $compiled_names(P.NAMES) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))

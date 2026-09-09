@@ -2,16 +2,16 @@
 
 Read PLAN.md, PROGRESS.md, AGENTS.md and the php/php-spec/p4-spectec skills, then
 ARRAY-HANDOFF.md, DESIGN.md, SOURCE-COMPILER.md, CONSTANT-CONTEXT.md and DIMENSIONS.md.
-The complete PHP core goal remains unfinished. This is a clean author turnover,
-not completion of compiler activation, string dimensions, or control flow.
+The complete PHP core goal remains unfinished. This handoff records the runtime
+bridge, subsequent source activations, and the remaining control and lifetime work.
 
-## Accepted checkpoint
+## Historical pre-bridge checkpoint
 
 Runtime commits: `cb02399c` task origins; `0df3d175` permanent pool installation;
 `0270197e` actual filename transport and twelve string-line source regressions.
 Compiler commits: `72d3a65d` ordered compiler and effective constant rewrite lines;
 `4297dadf` heredoc/nowdoc token-line correction; `00e27843` access descriptors.
-There are no uncommitted runtime implementation changes at this handoff.
+These checkpoints predate the source bridge described below.
 
 The final regular source suite passed **526 exact source comparisons + 25 outcome
 negatives**, independently repeated. Filename transport passed 16 canonical and 24
@@ -38,12 +38,19 @@ consume the already shifted pool value only for a successful ordinary `PPR` oper
 `PPW` and `PPUNSET` contexts retain designation work. Partial facts below wholly
 folded parents own values but provide no executable access permission.
 
+Namespace constant reads additionally export tagged `CODENAME` descriptors with
+occurrence, resolved name bytes and optional global fallback bytes. After a pooled
+read misses, `AT EVAL ConstFetch` performs lookup at the recorded ending line.
+Lookup failure names the primary resolved spelling, even when fallback was tried;
+preceding runtime output is preserved. `DIM_PREP` reaches this same path through
+its existing same-origin `AT EVAL`. Folded values retain the pool route. Compiler
+lexical context remains separate from runtime variable storage.
+
 31 and 40–42 source consumers use recorded occurrence ending lines; a compiled
 unit never recovers a missing descriptor from AST equality or source metadata.
 The old `$run_source` traversal remains an internal bare-task trace fixture,
-excluded from public `$php_run`. The compiler still shares its direct-CV predicate,
-which calls the legacy constant classifier on literal name forms. Retirement of
-that narrow dependency and the legacy test traversal is still pending. Module44 is registered and `$base_read` now delegates ordinary array/string/scalar
+excluded from public `$php_run`. The compiler now uses its own narrow direct-CV check. Retirement of
+the legacy test traversal and its recursive classifier remains pending. Module44 is registered and `$base_read` now delegates ordinary array/string/scalar
 reads to `$dimension_read`. Module45 write helpers remain a separate activation gate.
 
 The reviewed bridge passed 546 exact source comparisons and 28 explicit negative
@@ -77,7 +84,7 @@ compiler owns11/16/21/22/45constant/46; reviewer owns progress/inventory/CORE/RE
   Scalar leaves preserve their token line; rewritten operations use the ambient
   prepass line. Do not recover that line from the original AST after folding.
 - 46: `$ppstart(id, program, actual_file_bytes)` returns `ppstate` with `FOLD`,
-  `WORK`, `EXPRESSIONS`, `ACCESS`, completion and ordered diagnostics.
+  `WORK`, `EXPRESSIONS`, `ACCESS`, `NAMES`, completion and ordered diagnostics.
   `FOLD.SOURCE` is the canonical unit; `FOLD.MEMORY` is isolated compiler storage.
   `PPCWORK path statement env endline` identifies successfully compiled work.
   A block's children are compiled recursively without extra WORK entries; execute
@@ -129,6 +136,14 @@ The subsequent generic read activation passed 576 exact source comparisons and
 28 explicit negative outcomes. Independent review repeated 64 additional original
 sources, the 583-case read matrix, runtime compiler/origin/ownership controls, and
 612 ordered compiler lint cases with emission-line and access-role controls.
+
+Namespace constant activation subsequently passed 621 exact source comparisons
+and 24 explicit negative outcomes. Independent review repeated 43 alternate
+sources, including all seven original alias observations, and 19 constructed
+lookup/multiunit/DIM resumption cases with 187 assertions. Canonical namespace
+40 source/15 descriptor checks, constant 42/5, compiler 663 lint/emission/access
+checks, runtime bridge 15/148 and origin/ownership campaigns also passed. The four
+temporary alias guards are removed; their exact original sources now agree.
 
 ## Following gates and commands
 

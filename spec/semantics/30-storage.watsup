@@ -9,7 +9,8 @@ syntax porigin = PORIGIN nat pcpath
 syntax pconstant = PCONSTANT pcpath pvalue
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
 syntax pcodeexpr = CODEEXPR pcpath int bool
-syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr* }
+syntax pcodename = CODENAME pcpath nat* (nat*)?
+syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr*, NAMES pcodename* }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax ptask = AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int

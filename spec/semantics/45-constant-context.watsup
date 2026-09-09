@@ -1,8 +1,9 @@
-;; Checked constant-expression work for the current global expression subset.
+;; Checked constant-expression work in an explicit lexical environment.
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
-syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue? }
-syntax pfshape = PFSCALAR pvalue int | PFLEAF pvalue? | PFBINARY pbin expression expression
+syntax pfcontext = PFCONTEXT pcpath plenv
+syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext* }
+syntax pfshape = PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
@@ -10,8 +11,13 @@ syntax pfitem = PFITEM pvalue? pfkey bool
 syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text
 var F : pfstate
 
+dec $pftracked(pfstate, pcpath, expression, int) : pfstate
+dec $pfnamed(pfstate, pcpath, pnresult, int) : pfstate
+dec $pfcontext_at(pfcontext*, pcpath) : plenv?
+dec $pfcontextualize(pfstate, pcpath) : pfstate
+
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { SOURCE $pcsource(n, program), MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps }
+def $pfbegin(n, program) = { SOURCE $pcsource(n, program), MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -43,7 +49,7 @@ dec $pfshape(expression) : pfshape
 def $pfshape(NScalarInt (INTEGER i) metadata) = PFSCALAR (PINT i) ($source_line(metadata))
 def $pfshape(NScalarFloat (FLOAT text) metadata) = PFSCALAR (PFLOAT $hex_bits(text, 0)) ($source_line(metadata))
 def $pfshape(NScalarString (BYTES text) metadata) = PFSCALAR (PSTRING $base64(text)) ($string_line(metadata))
-def $pfshape(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = PFLEAF ($fold_scalar(NExprConstFetch (NName (BYTES text) metadata_name) metadata))
+def $pfshape(NExprConstFetch name metadata) = PFNAME name
 def $pfshape(NExprVariable phpType34 metadata) = PFSTOP
 def $pfshape(NExprAssign expression_1 expression_2 metadata) = PFSTOP
 def $pfshape(NExprAssignRef expression_1 expression_2 metadata) = PFSTOP
@@ -65,26 +71,31 @@ dec $pffold(pfstate, pcpath, expression, int) : pfstate
 dec $pfdispatch(pfstate, pcpath, pfshape, int) : pfstate
 def $pfprepare(F, pcpath, expression, plenv, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfprepare(F, pcpath, expression, plenv, z) = $pffold(F, pcpath, expression, z)
+def $pfprepare(F, pcpath, expression, plenv, z) = $pffold(F[.ENV = plenv], pcpath, expression, z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.SOURCE = $pcsource(F.SOURCE.ID, F.SOURCE.AST)
   -- if $pfoccurrence(F.SOURCE.OCCURRENCES, pcpath, expression)
   -- if $(z > 0)
-  -- if plenv.NAMESPACE = eps
-  -- if plenv.CONSTANTS = eps
-def $pfprepare(F, pcpath, expression, plenv, z) = $pfunsupported(F, "invalid constant-expression occurrence, compiler line, or unsupported namespace/import context")
+def $pfprepare(F, pcpath, expression, plenv, z) = $pfunsupported(F, "invalid constant-expression occurrence or compiler line")
   -- otherwise
 def $pffold(F, pcpath, expression, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pffold(F, pcpath, expression, z) = F[.VALUE = (pvalue)]
+def $pffold(F, pcpath, expression, z) = $pftracked($pfcontextualize(F, pcpath), pcpath, expression, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+
+def $pftracked(F, pcpath, expression, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pftracked(F, pcpath, expression, z) = F[.VALUE = (pvalue)]
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pffact(F.FACTS, pcpath) = (pvalue)
-def $pffold(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expression), z)
+def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expression), z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pffact(F.FACTS, pcpath) = eps
 
 def $pfdispatch(F, pcpath, PFSCALAR pvalue z_leaf, z) = $pfremember(F, pcpath, (pvalue), z_leaf)
-def $pfdispatch(F, pcpath, PFLEAF pvalue?, z) = $pfremember(F, pcpath, pvalue?, z)
+def $pfdispatch(F, pcpath, PFNAME name, z) = $pfnamed(F, pcpath, $pnresolve(F.ENV, PLCONSTANT, name), z)
+def $pfnamed(F, pcpath, PNRESOLVED pnreference, z) = $pfremember(F, pcpath, $pnfold(pnreference), z)
+def $pfnamed(F, pcpath, PNUNSUPPORTED text, z) = $pfunsupported(F, text)
 def $pfdispatch(F, pcpath, PFSTOP, z) = F[.VALUE = eps]
 def $pfdispatch(F, pcpath, PFOTHER, z) = $pfunsupported(F, "constant-expression kind")
 
@@ -204,3 +215,15 @@ def $pfinserted(S, n, pfitem*, z) = PFDEFER
 def $pfbuilt(F, pcpath, PFBUILT S, n, z) = $pfremember(F[.MEMORY = S], pcpath, (PARRAY n), z)
 def $pfbuilt(F, pcpath, PFDEFER, n, z) = F[.VALUE = eps]
 def $pfbuilt(F, pcpath, PFSTATIC text, n, z) = $pferror(F, text, z)
+
+;; A cached rewrite belongs to the lexical context of its source occurrence.
+def $pfcontext_at(eps, pcpath) = eps
+def $pfcontext_at((PFCONTEXT pcpath plenv) :: pfcontext*, pcpath) = (plenv)
+def $pfcontext_at((PFCONTEXT pcpath_other plenv) :: pfcontext*, pcpath) = $pfcontext_at(pfcontext*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $pfcontextualize(F, pcpath) = F[.CONTEXTS = F.CONTEXTS ++ [PFCONTEXT pcpath F.ENV]]
+  -- if $pfcontext_at(F.CONTEXTS, pcpath) = eps
+def $pfcontextualize(F, pcpath) = F
+  -- if $pfcontext_at(F.CONTEXTS, pcpath) = (F.ENV)
+def $pfcontextualize(F, pcpath) = $pfunsupported(F, "constant occurrence lexical context changed")
+  -- otherwise
