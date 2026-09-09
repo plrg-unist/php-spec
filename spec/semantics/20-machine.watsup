@@ -150,12 +150,6 @@ def $expression_line(expression) = 0
 
 dec $assignment_self(expression, expression) : bool
 
-dec $header_literal(phpType32) : bool
-def $header_literal(BYTES text) = ($base64(text) = [104,116,116,112,95,114,101,115,112,111,110,115,101,95,104,101,97,100,101,114])
-def $header_literal(NScalarString (BYTES text) metadata) = $header_literal(BYTES text)
-def $header_literal(phpType32) = false
-  -- otherwise
-
 dec $context_error(text, int) : pcheck
 def $context_error(text, z) = REJECT (STATICERROR text z)
   -- if $(z > 0)

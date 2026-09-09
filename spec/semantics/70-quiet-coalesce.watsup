@@ -1,0 +1,105 @@
+;; BP_VAR_IS fetches retain key/name expression effects, while absent locations
+;; return null. This is distinct from ISSET_ISEMPTY's terminal string protocol.
+dec $quiet_name(pstate, nat*) : pstate
+def $quiet_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_name(n_name*) /\ ~$this_name(n_name*)
+def $quiet_name(S, n_name*) = S[.RESULT = KNOWN PNULL]
+  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if $lookup(S.ENV, n_name*) = eps
+def $quiet_name(S, n_name*) = S[.RESULT = KNOWN PNULL]
+  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = UNDEFINED
+def $quiet_name(S, n_name*) = S[.RESULT = KNOWN pvalue]
+  -- if (~$environment_name(n_name*) \/ $this_name(n_name*))
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+
+dec $quiet_operand(pstate, poperand) : pstate
+def $quiet_operand(S, VARIABLE n_name* z) = $quiet_name(S, n_name*)
+def $quiet_operand(S, poperand) = $resolve(S, poperand) -- otherwise
+
+dec $quiet_array(pstate, nat, pvalue, int) : pstate
+def $quiet_array(S, n_array, pvalue, z) = S_key
+  -- if S_key = $dimension_key_value(S, pvalue, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $quiet_array(S, n_array, pvalue, z) = S_key[.RESULT = KNOWN PNULL]
+  -- if S_key = $dimension_key_value(S, pvalue, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if $entry_lookup(S_key.ARRAYS[n_array].ITEMS, S_key.KEY) = eps
+def $quiet_array(S, n_array, pvalue, z) = S_key[.RESULT = KNOWN $entry_value(S_key, pitem)]
+  -- if S_key = $dimension_key_value(S, pvalue, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if $entry_lookup(S_key.ARRAYS[n_array].ITEMS, S_key.KEY) = (pitem)
+
+dec $quiet_string_at(pstate, nat*, int) : pstate
+def $quiet_string_at(S, n_bytes*, i) = S[.RESULT = KNOWN (PSTRING (n_bytes*[n_index:1]))]
+  -- if $(i >= 0 /\ i < |n_bytes*|)
+  -- if n_index = i
+def $quiet_string_at(S, n_bytes*, i) = S[.RESULT = KNOWN (PSTRING (n_bytes*[n_index:1]))]
+  -- if $(i < 0 /\ -i <= |n_bytes*|)
+  -- if n_index = $(|n_bytes*| + i)
+def $quiet_string_at(S, n_bytes*, i) = S[.RESULT = KNOWN PNULL] -- otherwise
+
+dec $quiet_string(pstate, nat*, pvalue, int) : pstate
+def $quiet_string(S, n_bytes*, PINT i, z) = $quiet_string_at(S, n_bytes*, i)
+def $quiet_string(S, n_bytes*, pvalue, z) = $quiet_string_at(S, n_bytes*, i)
+  -- if $offset_cast_integer(pvalue) = (i)
+def $quiet_string(S, n_bytes*, PSTRING n_key*, z) = $quiet_string_at(S, n_bytes*, i)
+  -- if $numeric_string(n_key*) = FULLNUM (NINT i)
+def $quiet_string(S, n_bytes*, PSTRING n_key*, z) = S_warned
+  -- if $numeric_string(n_key*) = LEADNUM (NINT i)
+  -- if S_warned = $string_offset(S, PSTRING n_key*, z)
+  -- if S_warned.COMPLETION =/= NORMAL
+def $quiet_string(S, n_bytes*, PSTRING n_key*, z) = $quiet_string_at(S_warned, n_bytes*, i)
+  -- if $numeric_string(n_key*) = LEADNUM (NINT i)
+  -- if S_warned = $string_offset(S, PSTRING n_key*, z)
+  -- if S_warned.COMPLETION = NORMAL
+def $quiet_string(S, n_bytes*, PSTRING n_key*, z) = S[.RESULT = KNOWN PNULL]
+  -- if $string_constant_index(PSTRING n_key*) = eps
+def $quiet_string(S, n_bytes*, PARRAY n, z) = $string_offset(S, PARRAY n, z)
+
+dec $quiet_dimension_value(pstate, pvalue, pvalue, int) : pstate
+def $quiet_dimension_value(S, PARRAY n, pvalue_key, z) = $quiet_array(S, n, pvalue_key, z)
+def $quiet_dimension_value(S, PSTRING n_bytes*, pvalue_key, z) = $quiet_string(S, n_bytes*, pvalue_key, z)
+def $quiet_dimension_value(S, pvalue_base, pvalue_key, z) = S[.RESULT = KNOWN PNULL] -- otherwise
+
+dec $quiet_dimension(pstate, pvalue, poperand, int) : pstate
+def $quiet_dimension(S, pvalue, poperand, z) = S_key
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $quiet_dimension(S, pvalue, poperand, z) = $quiet_dimension_value(S_key, pvalue, pvalue_key, z)
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue_key
+
+dec $quiet_base(pstate, pbase, int) : pstate
+def $quiet_base(S, BASE_VALUE poperand, z) = $quiet_operand(S, poperand)
+def $quiet_base(S, BASE_NAME poperand z_name, z) = S_name
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $quiet_base(S, BASE_NAME poperand z_name, z) = $quiet_name(S_name, n_name*)
+  -- if S_name = $resolve_name(S, poperand, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $quiet_base(S, BASE_DIM pbase poperand z_key, z) = S_base
+  -- if S_base = $quiet_base(S, pbase, z_key)
+  -- if S_base.COMPLETION =/= NORMAL
+def $quiet_base(S, BASE_DIM pbase poperand z_key, z) = $quiet_dimension(S_base, pvalue, poperand, z_key)
+  -- if S_base = $quiet_base(S, pbase, z_key)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN pvalue
+
+;; Source activation adds COALESCE_QUIET expression int int to ptask alongside
+;; compiler PPIS. DIM_PREP preserves delayed CVs and evaluated temporary owners.
+rule PhpStep/coalesce-quiet: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_left), COALESCE_QUIET expression_right $runtime_line(S, [PCFIELD 0], expression_left) $runtime_line(S, [PCFIELD 1], expression_right)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpCoalesce expression_left expression_right metadata)) :: ptask_tail*
+  -- if $coalesce_quiet_operand(expression_left)
+rule PhpStep/coalesce-quiet-result: S ~> $coalesce_result(S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], expression, z_left, z_right)
+  -- if S.TODO = (COALESCE_QUIET expression z_left z_right) :: ptask_tail*
+  -- if S_read = $quiet_base(S, S.BASE, z_left)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/coalesce-quiet-abrupt: S ~> S_read
+  -- if S.TODO = (COALESCE_QUIET expression z_left z_right) :: ptask_tail*
+  -- if S_read = $quiet_base(S, S.BASE, z_left)
+  -- if S_read.COMPLETION =/= NORMAL

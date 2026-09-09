@@ -75,13 +75,13 @@ rule PhpStep/dynamic-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, 
   -- if phpType32 = expression
 rule PhpStep/name-read: S ~> S_read[.TODO = ptask_tail*]
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_read = $read_name(S_name, $echo_value(pvalue), z)
 rule PhpStep/name-read-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL]
   -- if S.TODO = (EMIT z) :: ptask_tail*
@@ -156,7 +156,7 @@ rule PhpStep/assign-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [P
   -- if S.TODO = (EVAL (NExprAssign (NExprVariable phpType32 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if $cv_name(phpType32) = eps
   -- if phpType32 = expression_name
-rule PhpStep/prepare-assign: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), WRITE_DYNAMIC S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/prepare-assign: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), WRITE_DYNAMIC $captured_name(S, [PCFIELD 0, PCFIELD 0], S.RESULT) z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_ASSIGN expression z) :: ptask_tail*
 rule PhpStep/write-name: S ~> S_written[.TODO = ptask_tail*]
   -- if S.TODO = (WRITE_NAME n_name* z) :: ptask_tail*
@@ -185,13 +185,13 @@ rule PhpStep/reference-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN,
   -- if S.TODO = (EVAL (NExprAssignRef (NExprVariable phpType32 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if $cv_name(phpType32) = eps
   -- if phpType32 = expression_name
-rule PhpStep/prepare-reference: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), REF_CAPTURE S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/prepare-reference: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), REF_CAPTURE $captured_name(S, [PCFIELD 0, PCFIELD 0], S.RESULT) z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
   -- if $reference_cv(expression) = eps
 ;; A CV source is fetched by ASSIGN_REF after the delayed target FETCH_W.
 ;; A non-CV source is acquired earlier; array literal references also acquire
 ;; before their key consumer, and do not use this assignment protocol.
-rule PhpStep/prepare-reference-cv: S ~> S[.TODO = (REF_DYNAMIC_CV S.RESULT n_name* z) :: ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/prepare-reference-cv: S ~> S[.TODO = (REF_DYNAMIC_CV $captured_name(S, [PCFIELD 0, PCFIELD 0], S.RESULT) n_name* z) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
   -- if $reference_cv(expression) = (n_name*)
 rule PhpStep/global-this-reference: S ~> $global_this_error(S, $runtime_line(S, eps, NExprVariable phpType32 metadata))[.TODO = eps]
@@ -207,13 +207,13 @@ rule PhpStep/acquire-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [
   -- if ~$direct_this(phpType32)
 rule PhpStep/acquire-dynamic-cell: S ~> S_cell[.TODO = ptask_tail*]
   -- if S.TODO = (ACQUIRE_DYNAMIC z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_cell = $acquire_name(S_name, $echo_value(pvalue))
 rule PhpStep/acquire-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (ACQUIRE_DYNAMIC z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/bind-reference: S ~> S_bound[.TODO = ptask_tail*]
   -- if S.TODO = (REF_NAME n_name*) :: ptask_tail*
@@ -257,13 +257,13 @@ rule PhpStep/unset-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PC
   -- if phpType32 = expression_name
 rule PhpStep/unset-dynamic-name: S ~> S_unset[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (UNSET_DYNAMIC z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue
   -- if S_unset = $unset_name(S_name, $echo_value(pvalue))
 rule PhpStep/unset-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (UNSET_DYNAMIC z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 
 dec $drive(pstate, nat) : pstate

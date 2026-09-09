@@ -66,6 +66,8 @@ test-semantics: build
 	python3 tests/semantics/array_unpack_compiler.py
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
+	python3 tests/semantics/quiet_access.py
+	python3 tests/semantics/quiet_access_compiler.py
 	python3 tests/semantics/foreach.py
 	python3 tests/semantics/foreach_compiler.py
 	python3 tests/semantics/foreach_source_compiler.py

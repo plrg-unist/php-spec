@@ -203,7 +203,6 @@ METADATA_CASES = [('value',
    'context")) 5)'])]
 
 PENDING = {
-    'context/value-header': 'compile-time http_response_header context',
     'context/iterable-nullsafe-ref': 'ordinary expression or writable operand compilation',
 }
 
@@ -285,7 +284,7 @@ def main():
                 raise AssertionError((str(failure),run.stdout,run.stderr))
     finally:adapter.close()
     assert before==inputs(),'foreach compiler inputs changed'
-    report={'scope':'Foreach compiler/body contexts and access metadata; two explicit pending core boundaries do not count as native agreements',
+    report={'scope':'Foreach compiler/body contexts and access metadata; the remaining object-dependent boundary does not count as a native agreement',
             'fingerprint':before,'profile':types.PROFILE,'records':records,'pending':pending,'boundaries':boundaries}
     REPORT.write_text(json.dumps(report,indent=2)+'\n')
     print(len(records),'native lints (including 20 body profiles);',len(boundaries),

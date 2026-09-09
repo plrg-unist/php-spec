@@ -7,18 +7,18 @@ from source_compiler import ROOT, types, context
 
 ARCHIVES={
     'list-compiler-line-originals.json':set(),
-    'list-rhs-line-originals.json':{'cv-deprecated'},
+    'list-rhs-line-originals.json':set(),
     'list-effectful-result-originals.json':set(),
     'list-spread-originals.json':set(),
     'list-static-sweep-originals.json':{'target-dim-call','ref-call','ref-whole-list'},
-    'coalesce-source-originals.json':set(),
+    'coalesce-source-originals.json':{'quiet-property','quiet-nullsafe','quiet-static-property'},
 }
-# The retained header/call/quiet-access boundaries remain assigned in QUIET-CV-HANDOFF.
+# The retained call and object-access boundaries remain assigned in QUIET-CV-HANDOFF.
 CASES={}
 for archive,excluded in ARCHIVES.items():
     data=json.loads((ROOT/'coverage/semantics'/archive).read_text())
     for row in data if isinstance(data,list) else data['records']:
-        if row['id'] not in excluded and not row['id'].startswith('quiet-'):
+        if row['id'] not in excluded:
             CASES[archive+'/'+row['id']]=base64.b64decode(row['source_base64'])
 
 
@@ -81,7 +81,7 @@ def main():
     finally:
         frontend.close();adapter.close()
     assert before==fingerprint(),'destructuring compiler inputs changed'
-    report={'scope':'destructuring/list and nonvariable coalesce compiler slice; pending header/call/quiet access tracked separately','fingerprint':before,'profile':types.PROFILE,'source_cases':len(records),'boundaries':boundaries,'records':records}
+    report={'scope':'destructuring/list and variable/coalesce compiler checks; pending calls and object access tracked separately','fingerprint':before,'profile':types.PROFILE,'source_cases':len(records),'boundaries':boundaries,'records':records}
     (ROOT/'coverage/semantics/destructuring-compiler.json').write_text(json.dumps(report,indent=2)+'\n')
     print(len(records),'native lint comparisons;',len(boundaries),'list metadata controls passed')
 

@@ -1,6 +1,5 @@
 ;; Zend's ordinary coalesce always emits a temporary and compiles both arms.
 ;; Non-variable expressions use ordinary reads; quiet locations need IS access.
-dec $coalesce_quiet_operand(expression) : bool
 def $coalesce_quiet_operand(NExprVariable phpType32 metadata) = true
 def $coalesce_quiet_operand(NExprArrayDimFetch expression phpType5 metadata) = true
 def $coalesce_quiet_operand(NExprPropertyFetch expression phpType20 metadata) = true
@@ -9,7 +8,10 @@ def $coalesce_quiet_operand(NExprStaticPropertyFetch phpType19 phpType31 metadat
 def $coalesce_quiet_operand(expression) = false -- otherwise
 
 def $pptemporary_shape(PFCOALESCE expression_left expression_right) = true
-def $ppdispatch(P, pcpath, NExprBinaryOpCoalesce expression_left expression_right metadata, PPR) = $ppclearvalue($ppexpr($ppexpr(P, pcpath ++ [PCFIELD 0], expression_left, PPR), pcpath ++ [PCFIELD 1], expression_right, PPR))
-  -- if ~$coalesce_quiet_operand(expression_left)
-def $ppdispatch(P, pcpath, NExprBinaryOpCoalesce expression_left expression_right metadata, PPR) = $ppunsupported(P, "coalesce quiet-access compilation")
-  -- if $coalesce_quiet_operand(expression_left)
+dec $coalesce_mode(expression) : ppmode
+def $coalesce_mode(expression) = PPIS
+  -- if $coalesce_quiet_operand(expression)
+def $coalesce_mode(expression) = PPR
+  -- otherwise
+
+def $ppdispatch(P, pcpath, NExprBinaryOpCoalesce expression_left expression_right metadata, PPR) = $ppclearvalue($ppexpr($ppexpr(P, pcpath ++ [PCFIELD 0], expression_left, $coalesce_mode(expression_left)), pcpath ++ [PCFIELD 1], expression_right, PPR))

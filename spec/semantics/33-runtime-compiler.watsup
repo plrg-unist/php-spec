@@ -32,6 +32,20 @@ def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
 def $compiled_read(S, porigin) = eps
   -- otherwise
 
+
+;; Constant variable names are converted while compiling. Preserve the original
+;; pool operand; normalize only a captured name at that compiled occurrence.
+dec $compiled_name_bytes(pvalue) : nat*
+def $compiled_name_bytes(PARRAY n) = [65,114,114,97,121]
+def $compiled_name_bytes(pvalue) = $echo_value(pvalue)
+  -- if ~$is_array_value(pvalue)
+dec $captured_name(pstate, pcpath, poperand) : poperand
+def $captured_name(S, pcpath, KNOWN pvalue) = KNOWN (PSTRING $compiled_name_bytes(pvalue))
+  -- if $origin_child(S.ORIGIN, pcpath) = (porigin)
+  -- if $compiled_read(S, porigin) = (pvalue_original)
+def $captured_name(S, pcpath, poperand) = poperand
+  -- otherwise
+
 ;; Known operand kind does not erase earlier emitted assignments. Effects name
 ;; original occurrences; replay excludes a nested root already covered by an
 ;; ancestor, while preserving the compiler's ordering of independent roots.
@@ -181,6 +195,7 @@ dec $compile_pool(pstate, ppstate, ppconstants) : pstate
 dec $compiler_diagnostics(pstate, pldiagnostic*) : pstate
 def $compiler_diagnostics(S, eps) = S
 def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation) pllocation.LINE]], pldiagnostic*)
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Deprecated" $plmessage(PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) pllocation.LINE]], pldiagnostic*)
 def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.COMPLETION = STATICBYTES $plmessage(PLDIAGNOSTIC "fatal" text ptbytes* pllocation) pllocation.LINE], pldiagnostic*)
 
 dec $compile_source(pstate, ppstate) : pstate

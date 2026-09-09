@@ -83,17 +83,17 @@ rule PhpStep/list-store-computed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGI
   -- if phpType32 = expression
 rule PhpStep/list-store-computed-value: S ~> $write_name(S_name, $echo_value(pvalue_name), pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE_NAME (KNOWN pvalue) false z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue_name
 rule PhpStep/list-store-computed-reference: S ~> $bind_reference(S_name[.CELL = n_source], $echo_value(pvalue_name))[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE_NAME (REFERENCE n_source) true z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue_name
 rule PhpStep/list-store-computed-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (LIST_STORE_NAME poperand b z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/list-store-dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression phpType5 metadata), LIST_STORE_DIM poperand b z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_STORE (NExprArrayDimFetch expression phpType5 metadata) poperand b z) :: ptask_tail*

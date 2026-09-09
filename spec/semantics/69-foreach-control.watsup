@@ -77,14 +77,14 @@ rule PhpStep/foreach-cv-abrupt: S ~> S_read
 
 rule PhpStep/foreach-name: S ~> $foreach_reset_location(S_fetched, statement, z)
   -- if S.TODO = (FOREACH_NAME statement z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0, PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
   -- if S_cell = $fetch_write_name(S_name, n_name*)
   -- if S_fetched = S_cell[.LOCATION = ROOT S_cell.CELL]
 rule PhpStep/foreach-name-abrupt: S ~> S_name
   -- if S.TODO = (FOREACH_NAME statement z) :: ptask_tail*
-  -- if S_name = $resolve_name(S, S.RESULT, z)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0, PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/foreach-dim: S ~> $foreach_reset_location(S_fetched[.TODO = S.TODO][.HELD = S.HELD], statement, z)
   -- if S.TODO = (FOREACH_DIM statement z) :: ptask_tail*

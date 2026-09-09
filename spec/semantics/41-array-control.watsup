@@ -70,7 +70,7 @@ rule PhpStep/dimension-prepare-name: S ~> S[.TODO = [$at_task($origin_child(S.OR
   -- if S.TODO = (DIM_PREP (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_name(phpType32) = eps
   -- if phpType32 = expression
-rule PhpStep/dimension-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_NAME S.RESULT z][.RESULT = KNOWN PNULL]
+rule PhpStep/dimension-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_NAME $captured_name(S, [PCFIELD 0], S.RESULT) z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_NAME z) :: ptask_tail*
 rule PhpStep/dimension-prepare-path: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), DIM_INDEX expression_key $runtime_line(S, [PCFIELD 1], expression_key)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*

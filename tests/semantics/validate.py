@@ -635,6 +635,8 @@ from foreach_compiler import CASES as FOREACH_PRECHECK_CASES
 CASES.update({"foreach-precheck-"+name:source for name,source in FOREACH_PRECHECK_CASES.items()})
 from foreach import CASES as FOREACH_CASES
 CASES.update({"foreach-"+name:source for name,source in FOREACH_CASES.items()})
+from quiet_access import CASES as QUIET_CASES
+CASES.update({"quiet-"+name:source for name,source in QUIET_CASES.items()})
 from array_unpack import CASES as UNPACK_CASES
 CASES.update(UNPACK_CASES)
 CASES['unpack-retired-outcome-negative'] = b'<?php $a=[...[]];'
@@ -703,12 +705,7 @@ def main():
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'runner_failure'
         for source in [b'<?php f()[0]="X";', b'<?php echo $argc;', b'<?php $a=&$argc;',
                        b'<?php $n="argc"; $a=&$$n;', b'<?php unset($GLOBALS);',
-                       b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
-                       b'<?php echo $missing; ${INF-INF}=1;',
-                       b'<?php echo MISSING; ${[]}=1;', b'<?php echo MISSING; ${[1]+[2]}=1;',
-                       b'<?php $a="abc";unset($a[0][0]);',
-                       b'<?php echo $http_response_header;',
-                       b'<?php $http_response_header=1;echo $http_response_header;']:
+                       b'<?php $n="GLOBALS"; unset($$n);', b'<?php $a="abc";unset($a[0][0]);']:
             path.write_bytes(source)
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
