@@ -1,0 +1,60 @@
+{
+  "scope": "Independent pre-repair private call scope, unwind and execute-state integrity failures. No calls acceptance.",
+  "records": [
+    {
+      "id": "literal-global-env",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigpe2dsb2JhbCAkX0VOVjskbj0iX0VOViI7ZWNobyBpc3NldCgkJG4pPyJMIjoiQSI7fWYoKTs=",
+      "native_stdout": "A",
+      "candidate_stdout": "L",
+      "classification": "spurious function-local autoglobal binding",
+      "native": ".tools/review8-global-binding-originals-nqcjz_0r/0-native.json",
+      "full_candidate": ".tools/review8-global-binding-replay-v7erqyx9/0-result.json"
+    },
+    {
+      "id": "computed-known-global-env",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigpe2dsb2JhbCAkeyJfRU5WIn07JG49Il9FTlYiO2VjaG8gaXNzZXQoJCRuKT8iTCI6IkEiO31mKCk7",
+      "native_stdout": "A",
+      "candidate_stdout": "L",
+      "classification": "spurious function-local autoglobal binding",
+      "native": ".tools/review8-global-binding-originals-nqcjz_0r/1-native.json",
+      "full_candidate": ".tools/review8-global-binding-replay-v7erqyx9/1-result.json"
+    },
+    {
+      "case": 0,
+      "cut": 33,
+      "iterators": 1,
+      "foreach_continuations": 0,
+      "classification": "Retained intermediate error-unwind iterator registry mismatch; final cleanup was separately correct."
+    },
+    {
+      "case": 1,
+      "cut": 50,
+      "iterators": 2,
+      "foreach_continuations": 1,
+      "classification": "Retained intermediate error-unwind iterator registry mismatch; final cleanup was separately correct."
+    },
+    {
+      "id": "callable-wrong-existing-origin",
+      "native_control_stdout": "1",
+      "mutated_state_stdout": "2",
+      "classification": "unchecked CALLABLES key-to-function NAME/ORIGIN agreement",
+      "root": ".tools/review8-call-integrity-8fu0saqo"
+    }
+  ],
+  "controls": [
+    "Both error sources have correct native-compared final thrown states; only retained intermediate iterator registry states are defective.",
+    "BODY redirected to another existing function and duplicated ORIGIN are rejected by existing task source occurrence guards with no output.",
+    "Inactive dynamic ENV comparison A/A is not evidence of activated dynamic scope; separate activated controls are required."
+  ],
+  "setup_failures": [
+    "Initial hand-authored request fixtures in originals and corrected-setup directories had syntax errors; successful replay uses request_environment_state.request_fixture. These failures are distinct from the two native A/candidate L disagreements."
+  ],
+  "raw_archive": {
+    "path": "coverage/semantics/call-scope-unwind-integrity-originals-raw.json.gz",
+    "sha256": "50b10a63cd9daa70fb1fcbec8148036c054af63407b0e6c878a9597d6f1f6ac6",
+    "files": 482,
+    "format": "gzip JSON list with relative original path, byte count, SHA256 and exact base64 payload"
+  },
+  "tool_binding": "Input manifests bind exact pinned native PHP, frontend, adapter and SpecTec runner bytes. Loaded original SpecTec modules and all raw commands/results are archived; executable binaries are bound by hash.",
+  "validation": "Every archived payload independently decoded and exact byte/hash/length checked against originals; five defects are retained separately from successful controls and setup failures."
+}
