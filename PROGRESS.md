@@ -53,8 +53,8 @@ recursion examples run, with global scope, fatal unwinding and dense ownership
 checks in progress. Independent originals **8d65b928** preserve two compiler
 priority defects, now corrected in a private recheck. **4f639832** adds eight
 paired native ownership witnesses (77 with retained roots,17 without them).
-Literal/computed autoglobal binding and intermediate error-iterator defects are
-retained before repair. The source-derived 780-name builtin occupancy prerequisite
+Originals **b16ec243** retain literal/computed autoglobal binding, intermediate
+error-iterator and unchecked callable-mapping defects before repair. The source-derived 780-name builtin occupancy prerequisite
 is now published as a standalone pure predicate, source generator and focused test.
 Its [source audit](docs/semantics/BUILTIN-FUNCTIONS.md) derives 780 names from 13
 configured C registration tables and 238 actual source/configuration inputs.
@@ -64,7 +64,8 @@ call consumers remain in the private paired milestone. Implementation **87519651
 [canonical reproduction bridge](coverage/semantics/builtin-functions-publication.json).
 The [lossless author archive](coverage/semantics/builtin-function-originals.json)
 retains source preprocessing, metadata, membership and injected timeout originals;
-independent prerequisite acceptance is recorded separately.
+[Independent prerequisite acceptance](coverage/semantics/builtin-functions-review.json)
+verifies exact canonical publication, 322 author files and 71 reviewer files.
 
 ## Milestones
 
