@@ -62,7 +62,7 @@ def $ppfunction_special(P, ptbytes) = P[.ENV = P.ENV[.SEEN = P.ENV.SEEN ++ [(PLF
 def $ppfunction_start(P, ptbytes, pssignature) = P[.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.LOOPS = 0][.EARLY = eps][.FOLD = P.FOLD[.FUNCTION = ptbytes][.VALUE = eps]][.EXPRESSIONS = eps][.ACCESS = eps][.NAMES = eps][.REDIRECTS = eps][.WRITES = eps][.GLOBALS = eps]
   -- if psparam* = pssignature.PARAMETERS
 
-def $ppfunction_code(P) = { GLOBALS $ppownglobal(P.FUNCTIONS, P.GLOBALS), UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $ppownexpr(P.FUNCTIONS, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $ppownname(P.FUNCTIONS, $compiled_names(P.NAMES)), REDIRECTS $ppownredirect(P.FUNCTIONS, $compiled_redirects(P.REDIRECTS)) }
+def $ppfunction_code(P) = { STRICT P.ENV.STRICT, GLOBALS $ppownglobal(P.FUNCTIONS, P.GLOBALS), UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $ppownexpr(P.FUNCTIONS, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $ppownname(P.FUNCTIONS, $compiled_names(P.NAMES)), REDIRECTS $ppownredirect(P.FUNCTIONS, $compiled_redirects(P.REDIRECTS)) }
 
 def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
   -- if P_body.COMPLETION =/= PPCNORMAL
