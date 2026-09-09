@@ -83,7 +83,7 @@ constant activation/fallback. Old agreeing cases remain agreements under their
 original identity; Unsupported, timeouts and setup errors remain separate.
 119 independent default/cache observations remain for the receive stage,
 including the separate11 literal-constructor controls. Their exact native/source
-contexts now have a separate current899 replay:116 Unsupported and three existing
+contexts now have a separate [current899 replay](../../coverage/semantics/default-review-current-baseline.json):116 Unsupported and three existing
 required-after-optional agreements, preserving original884 outcomes separately.
 The [106-source preparation](../../coverage/semantics/default-review-preparation.json)
 and [56-source diagnosis](../../coverage/semantics/constant-review-diagnosis.json)
