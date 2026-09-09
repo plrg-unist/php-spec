@@ -55,6 +55,10 @@ current scalar/array locations, preserving copied results and diagnostic order;
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
+[Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
+source dispatch with scalar/array conversions, delayed variable reads and concat
+compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
+seven preserved request-environment boundaries remain separate unfinished work.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Reached destructuring and required
 class-constant lookup remain unfinished.

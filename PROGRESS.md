@@ -8,107 +8,105 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 | Milestone | Deliverable | Current status |
 | --- | --- | --- |
-| 0a | Contracts and inventory | Complete — contracts only |
-| 0b | Checked AST runner and original-source harness | Complete — bounded bootstrap |
-| 1a–c | Integers, bytes, binary64, conversions and power | Partial — helpers and arithmetic/update source paths reviewed |
-| 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/references reviewed; frames and properties pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/references/updates and omissions reviewed; unpack/foreach pending |
+| 0a–b | Contracts, inventory, checked runner and source harness | Complete — bounded bootstrap |
+| 1a–c | Integers, bytes, binary64, conversions and power | Partial — scalar/array operator and cast source paths reviewed |
+| 2a | Slots, aliases, frames and access modes | Partial — bindings/references reviewed; calls and frames pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/updates and omissions reviewed; unpack/list/foreach next |
 | 3a | Control, exceptions, diagnostics and unwinding | Partial — conditionals/loops/jumps reviewed; exceptions pending |
-| 3b | Calls, closures and independent static checks | Partial — type/signature/compiler helpers reviewed; activation pending |
-| 4a | Class linking, inheritance, traits, visibility and clone | Partial — local headers/relations reviewed; linking pending |
-| 4b | Properties, modern declarations and internal protocols | Pending |
+| 3b | Calls, closures and independent static checks | Partial — static helpers reviewed; source activation pending |
+| 4a–b | Linking, objects, traits, properties and internal protocols | Partial — local headers/relations reviewed; execution pending |
 | 5a | Dynamic sources, autoload and explicit services | Pending |
 | 5b | Generators/Fibers, lifetime, collection and callbacks | Pending |
 | 6 | Full inventory/review closure, differential campaign and offline audit | Pending |
 
 ## Ownership and handoffs
 
-- `runtime3`: remaining ordinary operators/casts, then unpack/destructuring/foreach; accepted compound handoff `3b3a7cd6` preserves exact private draft hashes.
-- `compiler4`: paired ordinary operator and destructuring compilation, then declarations/frames and class lookup.
-- `compiler3`: independent review, discrepancy history, inventory and concise documentation.
-- Stage owned files, commit reviewed increments, never push. Run evidence/inventory preflight after watched changes and before long campaigns.
+- Runtime successor: storage/source integration; `runtime3` is handing over. Immutable raw-output fix comes next, then unpack/destructuring/foreach.
+- `compiler4`: paired compiler/frontend work, then declarations/frames and class lookup.
+- Independent reviewer: evidence, inventory, phase ledger and concise status/docs. `compiler3` is handing over after this checkpoint.
+- Root orchestrates; stage owned files, commit reviewed increments, never push. Use canonical-root Dune builds and coordinate shared binaries.
 
 [Runtime](docs/semantics/RUNTIME-SUCCESSOR-HANDOFF.md),
-[compiler](docs/semantics/COMPILER-HANDOFF.md) and
-[reviewer](docs/semantics/REVIEWER-HANDOFF.md) handoffs retain exact interfaces.
+[compiler](docs/semantics/COMPILER-HANDOFF.md) and current
+[reviewer](docs/semantics/REVIEWER-HANDOFF.md) handoffs retain exact interfaces and history.
 
-## Current accepted checkpoints
+## Latest accepted checkpoint
 
-Nullable-array/context prerequisite code `9b82507a`, author reports `22b36687` and review `91f035e0`
-([independent evidence](coverage/semantics/array-omission-review.json)) pass **262 exact
-sources/lints**, 2,135 resumption assertions, 2,943 compiler lints and 106 metadata
-profiles/1,751 checks on `1ff3da3b`. Independent gates add 176 current source
-observations, 32 extra sources, 136 metadata boundaries, 24 fresh encoding/print
-profiles and 277 preserved compound programs/5,393 assertions. All 41 publication
-paths, 44 loaded modules and four tools are bound; two redundant EOF newlines are
-the only explicit private-to-production byte adjustments.
+Ordinary operator/cast code **`dba21cee`**, reports `a3290ae3`/`e397b137` and
+independent review `2ab579eb` pass **4,407 exact sources +25
+outcome negatives** on `a8f6aa0c` (799 inputs). Independent
+[raw audit](coverage/semantics/ordinary-campaign-audit.json) verifies every ordered
+ID, source byte/hash and stdout/stderr/status, 16 retained archive groups and 13
+current reports. The [review](coverage/semantics/ordinary-review.json) also binds
+62 independent sources, 25 state programs/2,875 assertions and 4,449 compiler lints.
+The catalog includes 1,506 new operator selections and 262 omission prerequisites.
+Seven retained request-environment cases remain Unsupported, excluded explicitly
+from agreement counts; objects and complete constructor families remain unfinished.
 
-Ordinary Array.items now shares nullable List.items domains, preserving indices
-and trailing omissions. Visited holes fail using the previous original expression
-line or active compiler context; skipped holes remain legal. Four narrow metadata
-fields preserve first-hole, concat, nullary and clone reduction context. Complete
-identical-AST/different-native-line witnesses justify the added fields. Synthetic
-unqualified exit/die/clone calls use closing lines; qualified/relative calls retain
-name lines. Five retired syntax exemptions now have literal regression checks.
-Classconstant lookup remains explicitly pending where its value can affect branch
-selection; replacing the wrong nonconstant result with Unsupported is not a pass.
+Ordinary numeric/byte operators, five casts, bitnot and void now preserve delayed
+CV reads, computed operand copies, explicit conversion diagnostics, COW and cycles.
+Parser-folded concat names keep their actual parser designation. Concat separates
+compiler scalar conversion from runtime array conversion and delayed reads.
+[Contract](docs/semantics/ORDINARY-OPERATORS.md) records these decisions.
 
-This prerequisite **does not refresh the full source campaign**. The last complete
-campaign remains compound code `63028b5a`, reports `76129823`, review `d61eccde`:
-**2,639 exact sources +25 negatives** on historical `c394a6e7`. Its raw audit verifies
-every ordered ID, original byte/hash and exact stdout/stderr/status, including all
-retained wrapper/incdec/compound originals. Twelve compound forms preserve captured
-locations, delayed reads, array union ownership, eager global `$this` and the split
-between target opcode diagnostics and final compiler context. Original phase/line
-failures and the ordinal-filename infrastructure correction remain documented.
+The accepted nullable/context prerequisite `9b82507a` preserves ordinary array
+omissions, original indices and compiler diagnostic context. Narrow first-hole,
+concat, nullary and clone metadata are justified by retained original sources;
+five old syntax exemptions are retired. Required classconstant lookup remains an
+explicit boundary where its value affects branch selection. Unsupported is not
+resolution. Compound `63028b5a`, incdec `7d5718fb` and wrapper `84d70299` contracts
+remain covered by the current campaign; their original failures and prior report
+identities remain in linked evidence and handoffs.
 
-Evidence preflight independently passes 15 identity, three path and 17 closure
-negatives plus nine ignored-log changes. Helpers embed literal sources without new
-archive dependencies. Inventory remains **169 constructors/306 runtime obligations**,
-with 70 field domains. New prepass-only constructor entries are partial and do not
-admit their ordinary execution. Only oracle identity closes. Governance `ffdc131d`
-requires current original-source evidence and independent review; `--complete` must
-reject unfinished or stale entries.
+Inventory remains **169 constructors/306 runtime obligations**, with 70 field
+domains. Only oracle identity closes. Prepass traversal, helper tests and syntax
+acceptance never establish ordinary source execution or full family coverage.
 
-## Retained contracts
+## Next bounded work
 
-- Inc/dec `7d5718fb`/review `a3cee6bd` preserves RW access, copied results, callable opening-token context, prepass barriers and computed-root lines. Its 1,484-source acceptance remains historical evidence.
-- Wrapper correction `84d70299`/review `24c681d7` distinguishes ordinary writable fetch from true reference acquisition. Singleton wrapper history creates no extra roots; COW/union can unwrap copies independently. Generic fetch/intermediate unset warnings differ from final dimension mutation. Source collection remains pending.
-- Comparisons `0e065cc6` and truth `e7dac829`/`682bcba0` retain original phase, overflow, copying and grouping witnesses. Occurrences, ACCESS, FACTS, permanent POOLS and held operands remain distinct; only compiled reads consume pooled values.
-- Destructuring prerequisites preserve unpack, original array kind and first-hole token line. Genuine-list `5c756e5e` admits skipped sources; 14 reached originals still need real execution. Callable-line `c6a7d67d` supports rejected call targets, not call execution.
-- Numeric/static/linking handoffs retain helper-only activation limits. **146 independent oracle targets; 86 integrated**. Helper evidence closes no source family.
+First protect raw report history with exclusive per-run output paths. A selected
+preflight overwrote an ignored historical raw file; independent recovery restored
+its exact original SHA-256, documented in
+[recovery proof](coverage/semantics/ordinary-selected-raw-recovery.json). Preserve
+completed raw reports instead of depending on manual backups.
 
-## Next gates and decisions
+The immutable `.tools/runtime-list-candidate` contains unpublished unpack/list,
+constant-result effects and nonvariable-coalesce rules. Independent 44 source
+controls pass; author state/mechanism gates await independent review. Its expanded
+source run retains one `http_response_header` boundary, and five quiet-write
+boundaries remain pending. Additional foreach originals justify key-reference
+syntax and list keys for later compiler rejection; three syntax exemptions need
+proper retirement after representation/phase gates.
 
-Runtime3's private ordinary operator/cast/concat gates pass 833 initial and 673
-expanded source observations; its canonical helper embeds 1,506 admitted selections.
-The 25 state programs pass 2,875 assertions, including five loops at every budget
-0–100. Independent review adds 62 source controls for delayed/eager operands,
-alias/cycle casts, compiler-warning priority and parser-literal versus computed
-names. Frozen native archives contain 805 initial, 28 timing and 680 expanded
-observations; seven request-environment cases remain explicitly Unsupported.
-Computed `$this` write/unset and parser-concat `$GLOBALS` read/discard/cast/write/
-unset require real environment semantics. Quiet `??=` remains separate. Final
-combined publication and a single 4,407-source campaign are next; no draft report
-is relabeled as a complete current source closure.
+A list assignment may return a compiler-known constant while still emitting
+writes. Parent folding must retain ordered effects separately; casts/coalesce and
+AST prepass traversal have different folding rules. Four actual draft failures
+and independent effect/line controls are retained. This mechanism is not yet
+production-admitted, and ownership, resumption and occurrence checks remain gates.
 
-Shared cast helpers pass 155 native inputs/496 assertions; independent checks add
-NaN diagnostic attribution and 62 alias/cycle/allocation/abrupt-state assertions.
-Bitnot passes 31 author and 19 independent inputs. Ordinary cast execution is not
-inferred from accepted CT folding. Required classconstant/named-class/magic-context
-lookup remains assigned; arbitrary constant facts never imply parser designation.
-Private unpack/list helpers have additional source/state/resumption probes, but
-source compiler pairing and independent review remain necessary. New multiline
-list/RHS originals preserve direct-CV versus computed-expression line and `$this`
-distinctions for the next bounded activation.
+Then complete request environment, named/class/magic lookup, quiet assignments,
+unpack/destructuring/foreach, calls/frames/declarations, linked objects/properties,
+exceptions, dynamic sources, resumable services, lifetime and core intrinsics.
+Ordinary-library exclusions cannot discharge required core behavior.
 
-Then complete unpack/destructuring keys/copies/references/errors and foreach cursor
-ownership. Calls/frames, linking/objects, modern properties, exceptions, dynamic
-sources, callbacks and resumable lifetime remain unfinished. The intrinsic versus
-ordinary-library boundary cannot discharge unfinished core obligations.
+## Validation cadence and closure
 
-[Discrepancies](docs/semantics/DISCREPANCIES.md) separate raw failures from resolutions.
-Namespace-relative `static` remains the sole intentional divergence, with source
-activation pending. The 30,980-record syntax audit is historical; full syntax and a
-fresh offline rebuild remain mandatory. Unsupported, crashes, timeouts and
-interrupted runs never pass. Close the project only after every core obligation.
+Each coherent increment needs exact source/native originals, focused compiler
+phase/line checks, appropriate state/ownership/resumption gates and independent
+review. Run evidence/inventory preflight after watched changes, before long runs.
+Commit compatible prerequisites separately; admit mutually dependent source rules
+atomically. Preserve failing observations before repair and keep docs current.
+
+Run full current source campaigns at meaningful integration checkpoints:
+unpack/list/foreach; calls/declarations/frames; linked objects/properties;
+exceptions/dynamic/resumable services. Unresolved shared numeric, compiler or
+ownership risk can require an earlier broad run. A changed implementation leaves
+the previous full report explicitly historical; never relabel it as current.
+
+[Discrepancies](docs/semantics/DISCREPANCIES.md) distinguish engine behavior from
+specification defects. Namespace-relative `static` remains the sole intentional
+divergence, with source activation pending. The 30,980-record syntax audit is
+historical; final full syntax validation, fresh offline rebuild, current source
+closure and every core obligation remain mandatory. Unsupported, tool failures,
+timeouts and interrupted runs never pass. Final design/departure reporting waits
+until the entire requested goal is complete.

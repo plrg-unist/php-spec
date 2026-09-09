@@ -283,7 +283,7 @@ that distinction.
 [review](../../coverage/semantics/reference-wrapper-review.json) confirms all eleven
 unchanged originals now agree within 1,163 exact sources, with 79 independent
 source comparisons and separate COW, lifetime and resumption checks. No intentional
-divergence is selected; source collection and later mutation operators remain pending.
+divergence is selected; source collection and quiet assignments remain pending.
 
 
 ## Smart string comparison overflow: resolved draft defect
@@ -295,15 +295,17 @@ that scanner history repairs smart string comparison in `0e065cc6`; all four now
 agree through original-source execution. [Independent comparison review](../../coverage/semantics/comparison-review.json)
 records source and helper boundaries separately. No intentional divergence is selected.
 
-## Expanded array-omission phase gaps: independently confirmed, repair pending
+## Expanded array-omission phase gaps: representation repaired
 
 [Retained originals](../../coverage/semantics/frontend-phase-originals-review.json)
 add 16 genuine-list and six ordinary-array omission sources, including native-valid
-skipped branches currently rejected by the frontend. All 22 original captures are independently repeated. Genuine-list conversion
+skipped branches previously rejected by the frontend. All 22 original captures were independently repeated. Genuine-list conversion
 `5c756e5e` now preserves nested array targets until compiler visitation. Its
 [review](../../coverage/semantics/list-target-review.json) validates 20 skipped
-source cases and explicitly retains 14 reached originals as Unsupported. Ordinary
-Array_ omission representation remains open; this is not full destructuring admission.
+source cases and explicitly retains 14 reached originals as Unsupported. Nullable
+ordinary-array representation and exact visited-hole diagnostics now pass
+`9b82507a` and [independent review](../../coverage/semantics/array-omission-review.json).
+Reached destructuring remains separate unfinished execution work.
 
 ## Dynamic callable invocation lines: repaired transport prerequisite
 
@@ -408,3 +410,19 @@ ledger. Their [exact historical entries and PHPT observations](../../coverage/se
 remain unchanged evidence: parsing/checked elaboration/fresh printing now agree,
 while native lint still rejects reached holes. Literal regression checks prevent
 the retired exemptions from masking a future frontend regression.
+
+## Parser-folded concat names: source boundary resolved
+
+[Four unchanged originals](../../coverage/semantics/concat-cv-originals.json)
+retain two prior Unsupported outcomes and two controls. With `$a=1`,
+`${"a".""}+($a=2)` produces 4, while the equal-name ternary form produces 3.
+The parser-folded literal becomes a compiled variable with a delayed read; an
+ordinary computed name captures its value earlier. Compiler value equality alone
+cannot recover that designation.
+
+`dba21cee` admits all four originals within the independently audited 4,407-source
+campaign. [Operator review](../../coverage/semantics/ordinary-review.json) also
+checks conversion phase, alias/cycle behavior and line context. Seven separate
+[request-environment boundaries](../../coverage/semantics/ordinary-request-environment-boundaries.json)
+remain unfinished, including computed this writes and parser-concat GLOBALS access.
+No intentional divergence is selected.
