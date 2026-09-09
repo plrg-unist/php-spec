@@ -75,17 +75,20 @@ def $numeric_cast_integer(LEADNUM pnumber) = $ncast_string_integer(pnumber)
 dec $string_cast_integer(nat*) : int
 def $string_cast_integer(n_t*) = $numeric_cast_integer($numeric_string(n_t*))
 
-dec $numeric_cast_float(pnumeric, nat) : nat
-def $numeric_cast_float(NOTNUMERIC, n_s) = 0
-def $numeric_cast_float(FULLNUM (NFLOAT n), n_s) = n
-def $numeric_cast_float(LEADNUM (NFLOAT n), n_s) = n
-def $numeric_cast_float(FULLNUM (NINT 0), n_s) = $(n_s * 9223372036854775808)
-def $numeric_cast_float(LEADNUM (NINT 0), n_s) = $(n_s * 9223372036854775808)
-def $numeric_cast_float(FULLNUM (NINT i), n_s) = $float_of_int(i) -- if i =/= 0
-def $numeric_cast_float(LEADNUM (NINT i), n_s) = $float_of_int(i) -- if i =/= 0
+;; Explicit float casts use zend_strtod on the original decimal prefix, not
+;; the numeric-string classifier's pointer-sensitive signed-long result.
+dec $string_float_scan(nat, nat*) : nat
+def $string_float_scan(n_s, n_t*) = 0
+  -- if DIGITS n_acc 0 n_rest* = $ntdigits(n_t*, 0, 0)
+  -- if (n_value, 0, n_end*, b_dot) = $ntfraction(n_rest*, n_acc)
+def $string_float_scan(n_s, n_t*) = $decimal_float(n_s, n_value, $(i_exp - n_frac))
+  -- if DIGITS n_acc n_count n_rest* = $ntdigits(n_t*, 0, 0)
+  -- if (n_value, n_frac, n_after*, b_dot) = $ntfraction(n_rest*, n_acc)
+  -- if $(n_count + n_frac > 0)
+  -- if (i_exp, n_end*, b_exp) = $ntexponent(n_after*)
 
 dec $string_cast_float(nat*) : nat
-def $string_cast_float(n_t*) = $numeric_cast_float($numeric_string(n_t*), n_s)
+def $string_cast_float(n_t*) = $string_float_scan(n_s, n_rest*)
   -- if (n_s, n_rest*) = $ntsign($nttrim(n_t*))
 
 dec $strprecision(pnumber) : strcastnotice*

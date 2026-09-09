@@ -387,6 +387,11 @@ CONFORMANCE += ['element-reference-target-copy', 'element-reference-target-rebin
                 'array-reference-nested-append-prepass', 'array-reference-assignment-key-prepass',
                 'array-reference-after-copy', 'array-union-left-self-reference',
                 'array-union-right-self-reference']
+CONFORMANCE += ['numeric-min-trailing-space', 'numeric-min-nul-control',
+                'numeric-min-leading-zero-space', 'numeric-min-incomplete-exponent-control',
+                'numeric-positive-overflow-incomplete-exponent',
+                'numeric-negative-overflow-incomplete-exponent',
+                'numeric-incomplete-exponent-overflow-control']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 

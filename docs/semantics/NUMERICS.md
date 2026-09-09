@@ -55,6 +55,17 @@ boundary strings and seeded decimal cases. The test uses unary plus to obtain th
 oracle value and separately checks `is_numeric` and leading-numeric warnings;
 these are test instrumentation, not implementations available to the semantics.
 
+At exactly 19 significant integer digits, the pinned classifier compares a
+NUL-terminated suffix with `long_min_digits`, including trailing whitespace or
+junk. An invalid exponent with a sign advances its pointer once, shifting the
+comparison start by one digit. Thus negative minimum followed by a space becomes
+a float, negative minimum followed by NUL remains a leading integer, and positive
+`9223372036854775808e+` becomes the signed minimum integer. The rules preserve
+this source-specific comparison and signed interpretation of the accumulated
+unsigned bits. The expanded tests retain both signs, leading zeros, adjacent
+bounds, whitespace, NUL and valid/invalid exponents; the original disagreement
+observations remain in `coverage/semantics/numeric-boundary-disagreement.json`.
+
 `03-numeric-format.watsup` supplies `number_text(pnumber, precision)`, returning
 decoded output bytes and a pending NaN-to-string warning flag. Positive precision
 uses exact significant-digit rounding; shortest mode tests increasing decimal
@@ -79,7 +90,9 @@ about 55 seconds on the development host. It does not establish every possible p
 `04-numeric-context.watsup` supplies numeric three-way/strict comparisons,
 numeric boolean conversion with pending NaN warning, canonical integer string
 keys, and distinct explicit/implicit string casts. String float casts preserve
-negative zero even when numeric-string classification is integer zero. Explicit
+negative zero even when numeric-string classification is integer zero. They use
+a separate decimal-prefix scan because `zend_strtod` must not inherit the
+classifier's shifted-boundary integer wrapping. Explicit
 string-to-int casts saturate finite overflow and return zero for infinity without
 float-cast warnings; implicit integer operands additionally report leading-data
 and precision-loss notices in source order. `num_compare` follows Zend's unordered

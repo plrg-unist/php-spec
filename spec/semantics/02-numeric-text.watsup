@@ -71,10 +71,55 @@ def $decimal_float(n_s, n, i) = $float_round(n_s, n_1, n_2)
   -- if $(i + $ntlog10(n) >= -325)
   -- if (n_1, n_2) = $ntscale(n, 1, i)
 
-dec $ntvalue(nat, nat, int, bool) : pnumber
-def $ntvalue(n_s, n, 0, false) = NINT $nsigned(n_s, n) -- if $long_range($nsigned(n_s, n))
-def $ntvalue(n_s, n, 0, false) = NFLOAT $decimal_float(n_s, n, 0) -- if ~$long_range($nsigned(n_s, n))
-def $ntvalue(n_s, n, i, true) = NFLOAT $decimal_float(n_s, n, i)
+;; The 19-significant-digit bound in _is_numeric_string_ex uses strcmp,
+;; including the suffix through the first NUL. An invalid exponent with a sign
+;; advances ptr once before this comparison, shifting its starting digit too.
+dec $ntzeros(nat*) : nat*
+def $ntzeros(eps) = eps
+def $ntzeros(48 :: n_t*) = $ntzeros(n_t*)
+def $ntzeros(n :: n_t*) = n :: n_t* -- if n =/= 48
+
+dec $ntcstring(nat*) : nat*
+def $ntcstring(eps) = eps
+def $ntcstring(0 :: n_t*) = eps
+def $ntcstring(n :: n_t*) = n :: $ntcstring(n_t*) -- if n =/= 0
+
+dec $ntbyte_compare(nat*, nat*) : int
+def $ntbyte_compare(eps, eps) = 0
+def $ntbyte_compare(eps, n :: n_t*) = $(-1)
+def $ntbyte_compare(n :: n_t*, eps) = 1
+def $ntbyte_compare(n_1 :: n_t1*, n_2 :: n_t2*) = $(-1) -- if $(n_1 < n_2)
+def $ntbyte_compare(n_1 :: n_t1*, n_2 :: n_t2*) = 1 -- if $(n_1 > n_2)
+def $ntbyte_compare(n :: n_t1*, n :: n_t2*) = $ntbyte_compare(n_t1*, n_t2*)
+
+dec $ntbound_shift(nat*) : bool
+def $ntbound_shift(n_e :: n_s :: n_t*) = true
+  -- if (n_e = 69 \/ n_e = 101) -- if (n_s = 43 \/ n_s = 45)
+def $ntbound_shift(n_t*) = false -- otherwise
+
+dec $ntbound_start(nat*, bool) : nat*
+def $ntbound_start(n_t*, false) = n_t*
+def $ntbound_start(n :: n_t*, true) = n_t*
+
+dec $ntlong_fits(nat, nat, nat*, nat*) : bool
+def $ntlong_fits(n_s, n, n_t*, n_rest*) = true -- if $(n < 1000000000000000000)
+def $ntlong_fits(n_s, n, n_t*, n_rest*) = false -- if $(n >= 10000000000000000000)
+def $ntlong_fits(n_s, n, n_t*, n_rest*) = ($(i < 0) \/ (i = 0 /\ n_s = 1))
+  -- if $(n >= 1000000000000000000) -- if $(n < 10000000000000000000)
+  -- if i = $ntbyte_compare($ntcstring($ntbound_start($ntzeros(n_t*), $ntbound_shift(n_rest*))), [57, 50, 50, 51, 51, 55, 50, 48, 51, 54, 56, 53, 52, 55, 55, 53, 56, 48, 56])
+
+;; Zend accumulates unsigned bits, then stores them in the signed long slot.
+dec $ntlong_signed(int) : int
+def $ntlong_signed(i) = i -- if $long_range(i)
+def $ntlong_signed(i) = $(i - 18446744073709551616) -- if $(i > 9223372036854775807)
+def $ntlong_signed(i) = $(i + 18446744073709551616) -- if $(i < -9223372036854775808)
+
+dec $ntvalue(nat, nat, int, bool, nat*, nat*) : pnumber
+def $ntvalue(n_s, n, 0, false, n_t*, n_rest*) = NINT $ntlong_signed($nsigned(n_s, n))
+  -- if $ntlong_fits(n_s, n, n_t*, n_rest*)
+def $ntvalue(n_s, n, 0, false, n_t*, n_rest*) = NFLOAT $decimal_float(n_s, n, 0)
+  -- if ~$ntlong_fits(n_s, n, n_t*, n_rest*)
+def $ntvalue(n_s, n, i, true, n_t*, n_rest*) = NFLOAT $decimal_float(n_s, n, i)
 
 dec $ntclass(pnumber, nat*) : pnumeric
 def $ntclass(pnumber, eps) = FULLNUM pnumber
@@ -84,7 +129,7 @@ dec $ntscan(nat, nat*) : pnumeric
 def $ntscan(n_s, n_t*) = NOTNUMERIC
   -- if DIGITS n_acc 0 n_rest* = $ntdigits(n_t*, 0, 0)
   -- if (n_value, 0, n_end*, b_dot) = $ntfraction(n_rest*, n_acc)
-def $ntscan(n_s, n_t*) = $ntclass($ntvalue(n_s, n_value, $(i_exp - n_frac), (b_dot \/ b_exp)), $nttrim(n_end*))
+def $ntscan(n_s, n_t*) = $ntclass($ntvalue(n_s, n_value, $(i_exp - n_frac), (b_dot \/ b_exp), n_t*, n_rest*), $nttrim(n_end*))
   -- if DIGITS n_acc n_count n_rest* = $ntdigits(n_t*, 0, 0)
   -- if (n_value, n_frac, n_after*, b_dot) = $ntfraction(n_rest*, n_acc)
   -- if $(n_count + n_frac > 0)

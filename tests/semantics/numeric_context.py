@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Context-sensitive string casts/keys and numeric comparisons/boolean notices."""
+import base64
 import hashlib
 import json
 import os
@@ -37,6 +38,18 @@ def main():
                b'9223372036854775807',b'9223372036854775808',b'9223372036854777856',
                b'-9223372036854775808',b'-9223372036854775809',b'18446744073709551616',
                b'foo',b'-foo',b'-',b'-.',b'- 0',b'-0.0',b'1\xff',b'\xff1']
+    # _is_numeric_string_ex compares the whole C suffix at 19 significant
+    # digits; an invalid signed exponent shifts that comparison by one byte.
+    boundary_magnitudes = [999999999999999999, 1000000000000000000,
+        1922337203685477580, 8922337203685477580, 8999999999999999999,
+        9223372036854775807, 9223372036854775808, 9223372036854775809,
+        9999999999999999999, 10000000000000000000]
+    boundary_suffixes = [b'', b' ', b'\t', b'\n', b'\0', b'\0tail', b'tail',
+        b'e', b'e+', b'e-', b'e+q', b'e-q', b'E+', b'E-', b'e+\0', b'e-\0',
+        b'e+ ', b'e- ', b'e+0', b'e-0', b'.0']
+    strings += [prefix + sign + zeros + str(n).encode() + suffix
+        for n in boundary_magnitudes for sign in (b'', b'+', b'-')
+        for prefix, zeros in ((b'', b''), (b' \t', b'000')) for suffix in boundary_suffixes]
     strings += [str(rng.randrange(-2**66,2**66)).encode() for _ in range(80)]
     cases = [[op,['s',s.hex()],['i','0']] for op in ['key','casti','castf','long'] for s in strings]
     numbers = [['i',str(n)] for n in [0,1,-1,2**63-1,-2**63,2**53+1]]
@@ -126,9 +139,14 @@ foreach (json_decode(stream_get_contents(STDIN),true) as [$op,$av,$bv]) {
     assert before == fingerprints(), 'numeric-context implementation changed during validation'
     report = {'cases': len(cases), 'seed': 85014, 'result': 'pass', 'fingerprints': before,
               'profile': profile, 'environment': {'LC_ALL':'C','TZ':'UTC'},
+              'oracle': {'source_base64': base64.b64encode(php.encode()).decode(),
+                         'stdin_base64': base64.b64encode((json.dumps(cases)).encode()).decode(),
+                         'stdout_base64': base64.b64encode(oracle.stdout.encode()).decode(),
+                         'stderr_base64': base64.b64encode(oracle.stderr.encode()).decode(),
+                         'exit_status': oracle.returncode, 'command': oracle.args},
               'case_manifest_sha256': hashlib.sha256(json.dumps([cases,outputs], sort_keys=True).encode()).hexdigest()}
     (ROOT / 'coverage/semantics/numeric-context.json').write_text(json.dumps(report, indent=2) + '\n')
-    print(json.dumps(report))
+    print(json.dumps({key: report[key] for key in ('cases', 'seed', 'result')}))
 
 
 if __name__ == '__main__':
