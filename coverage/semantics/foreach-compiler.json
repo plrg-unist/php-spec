@@ -1,9 +1,9 @@
 {
-  "scope": "foreach key-reference/list-key source prechecks; normal foreach compilation and execution pending",
+  "scope": "foreach key-reference/list-key source prechecks; full foreach compilation; scalar/array runtime admission gated separately",
   "fingerprint": {
     "closure": {
-      "sha256": "ac2aaca606866f359fdbdc6eac38f4412a336d1c75528fb5876a8c8feaae70be",
-      "files": 815,
+      "sha256": "cbb3bbfc36e7567ff5f3878d81354021faf76e14e577fe21a86cbd877dfae35f",
+      "files": 818,
       "scope": [
         "frontend",
         "adapter",
@@ -35,23 +35,24 @@
       "spec/semantics/09-libm-power.watsup": "2ad2f0c863474841c09bc4624554f30cec9ddfa776e9598fe87e93834de5a24a",
       "spec/semantics/10-bytes.watsup": "ece37a558435431cc368122be74ae3fa1d192a98d5669300e6e899bca7df8585",
       "spec/semantics/15-constant-names.watsup": "57aa5a92fb78842b926894af7fc4f7747c1aa069ce93689f3c7d574d1f009a3a",
-      "spec/semantics/20-machine.watsup": "2978c00157dc98560c9caa7d7fed93e42c867f191aedd6e5555814067ea10aa8",
+      "spec/semantics/20-machine.watsup": "e5a860d60998967eb2e654a8c30db4ca2ccb291edef2a79d322b5e5658d5a663",
       "spec/semantics/20-list-lines.watsup": "5ae443528027661ff0898b2c06450b59ebc362a8d553247fa2787bf8ba9229fa",
-      "spec/semantics/30-storage.watsup": "e15ae9137a713c49faf008dacd886242c8669281d7a253bf8e184755d76287bc",
+      "spec/semantics/30-storage.watsup": "2e7e7e7e1410060db0957268c93b39237302e5292eb3a9dcddb3c1cc7609f45d",
       "spec/semantics/31-source-origins.watsup": "94ff5d049b3ec2e7704dc22e17e2323b5401c0d7b56e3061c757265a6caa36b7",
       "spec/semantics/35-scalar-operations.watsup": "9403c3bb24fa89085f40a0c7652724a999f2d8765db1b9cea97ebea5f4286cf8",
-      "spec/semantics/36-arrays.watsup": "efdea599ba0724302f80ddbb5a400f7f8a46f04235aa1f682a8d1f6169f799bf",
+      "spec/semantics/36-arrays.watsup": "7ad9f5214ef874993ba4462fc8197669bf7c8fc2b5e4ece5417f557c607b0a0f",
       "spec/semantics/37-array-locations.watsup": "142ec8ace1dcf16b6366e47014a05ad83ef981f93772124749656c9e873b6a5b",
-      "spec/semantics/38-array-unset.watsup": "4744f4bb42032935d3a321fe87d6e703d7bc10a1a65cb86944058b474ad4feae",
-      "spec/semantics/39-ownership.watsup": "12c24944cdbaf77ee27faad763fa3e68c65aeabab340e04f1c1b4fcd0d156d95",
+      "spec/semantics/38-array-unset.watsup": "c89bc4aaab6546fb0ee8a7fdc66c0123b871a497e041185fcbaf861d9232c13e",
+      "spec/semantics/39-ownership.watsup": "a82936963992822502353d8ebb836fd2f5fc27f59d6244597dd13f2ccc5353b7",
+      "spec/semantics/68-array-cursors.watsup": "9ab79ec0dd965d64d7df09ddb4c9f11185051437a13159ce6e9b6a1e0396c4aa",
       "spec/semantics/32-compiled-pools.watsup": "3eec8a6aa389b13d2032e6752386ba389da501e4987cdef363213fb43460ea3e",
-      "spec/semantics/16-static-types.watsup": "f6f259382a9e9a51fe9acc7c3aec8ff3a4f089911840660bbae6a44f4c560aa5",
+      "spec/semantics/16-static-types.watsup": "9f0a321995817b25b1b3a17cc52db00549de1f11fddb905087fc83c4597101c0",
       "spec/semantics/21-source-context.watsup": "f68dda7b4e62fc62b09e96a8f8c7b8cd02f8597e7a41447e0e8b61756a7821bb",
       "spec/semantics/22-name-resolution.watsup": "9f9dd44d1f444e8d05c376321ab4112066e6f9886cbf361f1fd6ad4ec051578a",
       "spec/semantics/23-named-constants.watsup": "88e05728f18905b758b5c09254953635097244c92fdfd1e5bf1a9c4080e73438",
       "spec/semantics/44-dimension-read.watsup": "f86f9bd85dc53ac227995b504ee53edeec2ef42b4e80846c9548e12c067ca9cb",
       "spec/semantics/45-dimension-write.watsup": "c863bbac52fd9f6abdb26325a36f6d15be3e83ddb66f09e894c3f544a26dccdb",
-      "spec/semantics/56-casts.watsup": "a491681335f3366488d4c2a6efdb0fa5fa6dac96b3a9012c47130dd4601f8a98",
+      "spec/semantics/56-casts.watsup": "11cde5c7ba639863983529aa1c90665bd699a93fe6facd68da165826111b5c09",
       "spec/semantics/57-bitnot.watsup": "74afb1285d7b7b9156c4216d673914934c38347d4c894daea54bf13248b7a762",
       "spec/semantics/60-array-unpack.watsup": "3b2beff14d82e3e129c1d3b24d9fd1ac51fa13ee3ea7e3c789780de5c4ca70da",
       "spec/semantics/62-list-values.watsup": "5eadeae0ba730f8a314cab3f97c6e8bf70b5eeb46c53af1b9f2596c972ff076e",
@@ -60,8 +61,9 @@
       "spec/semantics/64-list-compiler.watsup": "1ce05f633bc5d17291aa643f0e23c99d7b707da523c79fb150ac055b73343a96",
       "spec/semantics/65-coalesce-compiler.watsup": "d5700c5d51e9f8eb30d079a61d42beab9e5e1514af4705f5f518ec3b79fe80c7",
       "spec/semantics/47-control-compiler.watsup": "a3e5bab449365c62e368dc4448cb3fec92bb3a4228d60b6db30c4c51268794a2",
+      "spec/semantics/67-foreach-compiler.watsup": "55ca5cc9aa2f287d011087c220ef478c7b2226a697f7f26c08edb8ddf4b89912",
       "spec/semantics/33-runtime-compiler.watsup": "3bab845eb357d9e898d802a35466476a1c420a07cd896157bca30e7eaa298e85",
-      "spec/semantics/40-control.watsup": "58cedbc1ef0c9ce7b8d7de42d9abee5e6f7c9c0c18ed657e211edeadc15455ec",
+      "spec/semantics/40-control.watsup": "f06e374cbc6d40b7cf5aaf1b4ab31532b688807593e909b781e55b41992e83ee",
       "spec/semantics/41-array-control.watsup": "f81948389be101b53627cdf6633e1c0031f20d679c4ba9b7bca1186731141da5",
       "spec/semantics/42-array-write-control.watsup": "4bfdbe4f841f4fef42c9eddbc60e571fca840d7e090b2aa65c954e81c0e1c893",
       "spec/semantics/43-array-unset-control.watsup": "3c25d2fca48080c07ff9c1121805b3f9fab1db05143bf518b962561b3b715306",
@@ -76,8 +78,8 @@
       "spec/semantics/61-array-unpack-control.watsup": "404d391705816b782d38ea6d58457e1ef010c2f886b80d0a09412c3535aaa1d3",
       "spec/semantics/63-list-control.watsup": "d63b8c6f4fc51b33e7a035f9a9a3358b9b4e50da74d95bdfd1ecb894daef7774",
       "spec/semantics/66-nonvariable-coalesce.watsup": "3d8aa080aa6135e1809aef880eec311682e05f549498ce69fc2802cf45422561",
-      "spec/semantics/67-foreach-compiler.watsup": "5b71055fa4030f138324fa209400b314b460c907f962b9de7d11678e9e9b03ec",
-      "tests/semantics/foreach_compiler.py": "5bde3b26c75af3d10d9eaa1d9e6c3ebe05ef5d5444b88fa7c123d68bad3e0758",
+      "spec/semantics/69-foreach-control.watsup": "be3c90735308f18bf2485f0cd8ebc81e4c176287f93d431069e9fd6afcce74b2",
+      "tests/semantics/foreach_compiler.py": "212ec7bd4a2160f728cb012c40f81bd5f3ad486e2a2781ed93d8c84e05f84e31",
       "tests/semantics/source_compiler.py": "8fbdc4a53f720c9529f5ca6edc5fd9296f8f1beb8b7bf928a138cf2edf858a80",
       "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7"
     }
@@ -272,7 +274,7 @@
       "target": "keyref",
       "field": "bool",
       "value": false,
-      "expected": "PPCABRUPT (UNSUPPORTED \"foreach source compilation\")"
+      "expected": "PPCNORMAL"
     },
     {
       "source_base64": "PD9waHAgZm9yZWFjaCgxIGFzICYkaz0+JHYpe30=",
@@ -286,9 +288,9 @@
     {
       "id": "key-ref",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyAmJGs9PiR2KXt9",
-      "ast_sha256": "361bf585b7286956f4f9380690d0375cdefaf22251f0b183169d2366c659560f",
+      "ast_sha256": "68f436ebed991060c83b06edea42a2980da94cfcd63d312db2e2d5e55524b342",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -317,19 +319,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-ref-both",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyAmJGs9PiYkdil7fQ==",
-      "ast_sha256": "d137d625e8c6430417ae5321bc3de420e8ce90ff8f2251bef68e5850402a105a",
+      "ast_sha256": "7f8abcdd7d7d47db7f0e82d456ff1adc1d588ca19e7ff8d0310c83cc67f307e1",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -358,19 +360,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-ref-before-iterable",
       "source_base64": "PD9waHAgZm9yZWFjaChbW109PjFdIGFzICYkaz0+JHYpe30=",
-      "ast_sha256": "de4085320b32029025bc6478e1a54c39ed1bd0b089f3d65e29ede2f9c2215b9a",
+      "ast_sha256": "6a2e7da64baf32ce60a2c76bb8e00eb27f8d99af715c6f91bacb660914d8e9b5",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -399,19 +401,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-ref-before-list-spread",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyAmJGs9PlsuLi4kdl0pe30=",
-      "ast_sha256": "9093130c569e9cc98f7f40def7c8d7fa495ba60a062fd663e7109aaaa46700c4",
+      "ast_sha256": "e5ed678379fa60c84fea8cc8885a3ffbb73b134fbf3186c5a5a8c139d033fdab",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -440,19 +442,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-ref-dim",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyAmJGtbMF09PiR2KXt9",
-      "ast_sha256": "4e880bdbd81b3c464ac96cc06d598775d0d81304d4197ea4c4a7b458df380687",
+      "ast_sha256": "30290bc66b20c194ae3149ab323baef398a2be26d3a99dcb95ccfa703e0fc76d",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -481,19 +483,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-list",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBsaXN0KCRrKT0+JHYpe30=",
-      "ast_sha256": "03470ae8e9a4f842547769bc49b556dc56cdaf620abcb408a2c8068101d93b84",
+      "ast_sha256": "54adef6f7fb106c903437cae6ad236336383bb8c87664142a2c07b48fd66c0cb",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -522,19 +524,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-list-empty",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBsaXN0KCk9PiR2KXt9",
-      "ast_sha256": "801e388c624dc20ff7b0798988c857a452041ef03fd5b5579271053be991c84e",
+      "ast_sha256": "9602d2f9948c2585adaed2ed6ba9524bbbc07f46baccbc4403e4271833aec377",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -563,19 +565,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-list-holes",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBsaXN0KCwkaywpPT4kdil7fQ==",
-      "ast_sha256": "6a53e75e3e73f480d860632ffb28e1a2cafb3c0c69ded1b7bd62a84ef6a6aa98",
+      "ast_sha256": "ade54c0a8596472bd65175758378c2ec7a15ae846152127e0d93b1dd8e25fb63",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -604,19 +606,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-short-list",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBbJGtdPT4kdil7fQ==",
-      "ast_sha256": "209e74360209f542e09dfb007f5a9299db6ef306533acbbbd4d77fbea1308462",
+      "ast_sha256": "a0fefee45853c1df0a66fb4a85b5c0ac2a08c8072665270b8ba0f69992331070",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -645,19 +647,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-short-holes",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBbLCRrLF09PiR2KXt9",
-      "ast_sha256": "7d7c696351cb62c505157a225a9ae4d34d13f6b08d0c5faba3deb7fab1330d4d",
+      "ast_sha256": "ab97ec1633ccf3839264cc1ae5dab38feef061838a0e1c692fdd35eaa9396936",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -686,19 +688,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-list-ref",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBbJiRrXT0+JHYpe30=",
-      "ast_sha256": "2957508defc749b848d92bcd3f4d4ade1713714fb9ff3bd813838bb465e6a141",
+      "ast_sha256": "89a87a6b44ee964d3511a1e3726bdfa5fb0acfd170f976d5b34120b4190f2dc4",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -727,19 +729,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-list-unpack",
       "source_base64": "PD9waHAgZm9yZWFjaChbXSBhcyBbLi4uJGtdPT4kdil7fQ==",
-      "ast_sha256": "3e642abf8ddb30e2ca579a2a281700ce6ebe489dcaddd80862faca62df284d73",
+      "ast_sha256": "aefcf9eea25074e805efa8d6a8f0e4c46d5dd9f4c6b27f973965062a6e45adcc",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -768,19 +770,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-list-before-iterable",
       "source_base64": "PD9waHAgZm9yZWFjaChbW109PjFdIGFzIGxpc3QoJGspPT4kdil7fQ==",
-      "ast_sha256": "fa65b7266e729b2d9fa6a5c9e61e6185843469b582f357c0395c6082ca8418ab",
+      "ast_sha256": "40177b1200e9ce3bac6ed6d8b1caefc71cbc5c64ccc23a9ed177385a4a3bc36c",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -809,19 +811,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "key-ref-multiline",
       "source_base64": "PD9waHAgZm9yZWFjaCgKW1tdPT4xXQphcwomJGsKPT4KJHYKKXt9",
-      "ast_sha256": "31994ae2b098bab2775646d41e58e5d81cbba09479b3138ad1121612dc510957",
+      "ast_sha256": "6bd75f0431c62b4bbc5203cf387347f2400d55f9823581d9d43a7af2e715605c",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -850,19 +852,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
       "source_base64": "PD9waHAKCiRhID0gYXJyYXkoMSwyLDMpOwpmb3JlYWNoICgkYSBhcyAmJGs9PiR2KSB7Cn0KCmVjaG8gIkRvbmVcbiI7Cj8+Cg==",
-      "ast_sha256": "f4151023648e0dd45661531e56bfc6ac8028256031a90a86340699b63c921a8d",
+      "ast_sha256": "8e5941cea247037e8f6a728f53d58befa84b248e04b34a287c3dbdbb42cc7e49",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -891,19 +893,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
       "source_base64": "PD9waHAKCiRhcnJheSA9IFtbJ2EnLCAnYiddLCAnYycsICdkJ107Cgpmb3JlYWNoKCRhcnJheSBhcyBsaXN0KCRrZXkpID0+IGxpc3QobGlzdCgpLCAkYSkpIHsKfQoKPz4K",
-      "ast_sha256": "fa315364c7573d732300ad42b49455bfcd70b4e11590ad59bfb26a5971bb6b1c",
+      "ast_sha256": "438036a9b307419db2061fa239b3420314703ebfa9ccb28cce4c4fe88c83dfec",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -932,19 +934,19 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgbGlzdCBhcyBrZXkgZWxlbWVudCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     },
     {
       "id": "vendor/php-src/tests/lang/foreachLoop.006.phpt",
       "source_base64": "PD9waHAKJGEgPSBhcnJheSgiYSIsImIiLCJjIik7CmZvcmVhY2ggKCRhIGFzICYkaz0+JHYpIHsKICB2YXJfZHVtcCgkdik7Cn0KPz4K",
-      "ast_sha256": "a019a773bde8177282da41b4076f60eb6489b1837567e94f1a9c2e72e0ee1684",
+      "ast_sha256": "d74858e820cc115c5e76b723f0cbed7ab8a9585824c11beec41efc024b0a52d6",
       "command": [
-        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/php/bin/php",
         "-n",
         "-d",
         "opcache.enable_cli=0",
@@ -973,12 +975,12 @@
         "-d",
         "zend.assertions=1",
         "-l",
-        "/home/user/workspace/php-spec/.tools/tmppud7a928/input.php"
+        "/home/user/workspace/php-spec/.tools/runtime4-foreach/.tools/tmp053f1gy9/input.php"
       ],
-      "cwd": "/home/user/workspace/php-spec",
+      "cwd": "/home/user/workspace/php-spec/.tools/runtime4-foreach",
       "status": 255,
-      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHB1ZDdhOTI4L2lucHV0LnBocAo=",
-      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wcHVkN2E5MjgvaW5wdXQucGhwIG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      "stdout_base64": "RXJyb3JzIHBhcnNpbmcgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU0LWZvcmVhY2gvLnRvb2xzL3RtcDA1M2YxZ3k5L2lucHV0LnBocAo=",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IEtleSBlbGVtZW50IGNhbm5vdCBiZSBhIHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTQtZm9yZWFjaC8udG9vbHMvdG1wMDUzZjFneTkvaW5wdXQucGhwIG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
     }
   ]
 }
