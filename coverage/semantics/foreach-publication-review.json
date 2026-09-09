@@ -1,0 +1,756 @@
+{
+  "result": "pass",
+  "scope": "Independent frozen private foreach syntax/key-precheck publication prerequisite. No normal foreach runtime or full-core closure claim. Historical native/parser originals remain verbatim.",
+  "candidate": {
+    "scope": "foreach reference/list key syntax and source compiler precheck prerequisite; normalforeachsource remainsUnsupported",
+    "base_commit": "c0d4e2bf",
+    "fingerprint": {
+      "sha256": "ac2aaca606866f359fdbdc6eac38f4412a336d1c75528fb5876a8c8feaae70be",
+      "files": 815,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "files": {
+      "vendor/php-parser/lib/PhpParser/Node/Stmt/Foreach_.php": "bc050f37e452c15cb015a1a7c90861e6d1510e83c78b27a8d3684278fb78fa7e",
+      "vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php": "727222d8c1dcd3dead838c9e4a1a1772e2ca2b06a5c784fef2d0c7e9eb757b37",
+      "vendor/php-parser/lib/PhpParser/Parser/Php8.php": "aa40374074529f6add90b169464c97283b49f8ff41f92612c0f95437dbae86ad",
+      "spec/nodes.json": "824a5732b06135041a25b8da91ffa4297c937dcd936e259cb45399322b66933f",
+      "spec/schema.json": "13099856e745b1805996d94f5320ffabbde216472b40f017d2441d767a8e943b",
+      "spec/php.watsup": "f5b48ed4853161e5cb43b39e118f3cf29afc755cda9709f4c1211cd20f284413",
+      "spec/semantics/11-source-occurrences.watsup": "ff1e1c80dc64989be39856786191fed644869798f5d93eb81078e163f4fac8f5",
+      "patches/php-parser-grammar.patch": "80ea6238dc94d53b61f053838d1024e18d446edd8cbf430f84826c984543951d",
+      "patches/php-parser-printer.patch": "7a4e8e7ab712e95d39c59bce564de2350d2d97b43d056c6af2c4db26e96e1a66",
+      "spec/semantics/67-foreach-compiler.watsup": "5b71055fa4030f138324fa209400b314b460c907f962b9de7d11678e9e9b03ec",
+      "spec/semantics/modules.json": "f8267b7c2a6d7ead6a101fc2b9bef9b21e886c518ec1394a6939291f1c80a4bd",
+      "tests/foreach_targets.py": "adc54ecb4785ceecdbd4e3e02b3e25682710935859092c64f0b45091be88e0c1",
+      "tests/semantics/foreach_compiler.py": "5bde3b26c75af3d10d9eaa1d9e6c3ebe05ef5d5444b88fa7c123d68bad3e0758",
+      "tests/semantics/validate.py": "6b72cc6cf56d13dc14370f06a098fe8b6985da7a5d6eebfbd8fec3164ea64f8a",
+      "Makefile": "790728db0d0db59e34d78e30921005a211accd175abc5f0490e0d711d487754e",
+      "tests/phase-discrepancies.json": "e5ee8a85905ea71c3f92c58966c51438cf32c358416eb62f2c58ee04b3bba239",
+      "tests/phase_ledger.py": "150a28bb55e8bff61c79617c3714893a6d22ef5faf6f674336cf0a99a397fad0"
+    },
+    "modules": {
+      "spec/php.watsup": "f5b48ed4853161e5cb43b39e118f3cf29afc755cda9709f4c1211cd20f284413",
+      "spec/semantics/11-source-occurrences.watsup": "ff1e1c80dc64989be39856786191fed644869798f5d93eb81078e163f4fac8f5",
+      "spec/semantics/00-numeric.watsup": "f7d962c8314711ddbd0a0e6b5302ff0d7c61c0c38b454d225e7e8b4d0cf42652",
+      "spec/semantics/01-integer.watsup": "d1955f4f435421fbb8d1ffdda1587be0f62a3509994bcb4bfd20eb74a4ab55ef",
+      "spec/semantics/02-numeric-text.watsup": "84986b275e0c1e3aceac6fbce873fa2fe72f8d20406fd061929d7f9c367f1574",
+      "spec/semantics/03-numeric-format.watsup": "9ce53fca5a4316cb79676aa89d8e1a05826a090e6b883cb8d45cf30875f345ca",
+      "spec/semantics/04-numeric-context.watsup": "0218f142bfe9e03c25833f37cacceda4ce1ba4e1a4a09f397b4ff67405f654e0",
+      "spec/semantics/05-string-operators.watsup": "312801d36acd2c1587b087d6a45f232e6a07763ca71eaa5779f9efac0e40c55d",
+      "spec/semantics/06-power-prepare.watsup": "484988253f36edfcafb88ac20de72ae540f34251babe582a5336a6e38cc08eb6",
+      "spec/semantics/07-fma.watsup": "4a2fbb46bfd7c81fcb05bf91ee02c6bbdc2905a2f74e9242fa71fcc1fb3d360b",
+      "spec/semantics/08-libm-data.watsup": "7933bc24cbf67cb984dd99a5a17c4086d78520d00330ca5eacb2553b871493f3",
+      "spec/semantics/09-libm-power.watsup": "2ad2f0c863474841c09bc4624554f30cec9ddfa776e9598fe87e93834de5a24a",
+      "spec/semantics/10-bytes.watsup": "ece37a558435431cc368122be74ae3fa1d192a98d5669300e6e899bca7df8585",
+      "spec/semantics/15-constant-names.watsup": "57aa5a92fb78842b926894af7fc4f7747c1aa069ce93689f3c7d574d1f009a3a",
+      "spec/semantics/20-machine.watsup": "2978c00157dc98560c9caa7d7fed93e42c867f191aedd6e5555814067ea10aa8",
+      "spec/semantics/20-list-lines.watsup": "5ae443528027661ff0898b2c06450b59ebc362a8d553247fa2787bf8ba9229fa",
+      "spec/semantics/30-storage.watsup": "e15ae9137a713c49faf008dacd886242c8669281d7a253bf8e184755d76287bc",
+      "spec/semantics/31-source-origins.watsup": "94ff5d049b3ec2e7704dc22e17e2323b5401c0d7b56e3061c757265a6caa36b7",
+      "spec/semantics/35-scalar-operations.watsup": "9403c3bb24fa89085f40a0c7652724a999f2d8765db1b9cea97ebea5f4286cf8",
+      "spec/semantics/36-arrays.watsup": "efdea599ba0724302f80ddbb5a400f7f8a46f04235aa1f682a8d1f6169f799bf",
+      "spec/semantics/37-array-locations.watsup": "142ec8ace1dcf16b6366e47014a05ad83ef981f93772124749656c9e873b6a5b",
+      "spec/semantics/38-array-unset.watsup": "4744f4bb42032935d3a321fe87d6e703d7bc10a1a65cb86944058b474ad4feae",
+      "spec/semantics/39-ownership.watsup": "12c24944cdbaf77ee27faad763fa3e68c65aeabab340e04f1c1b4fcd0d156d95",
+      "spec/semantics/32-compiled-pools.watsup": "3eec8a6aa389b13d2032e6752386ba389da501e4987cdef363213fb43460ea3e",
+      "spec/semantics/16-static-types.watsup": "f6f259382a9e9a51fe9acc7c3aec8ff3a4f089911840660bbae6a44f4c560aa5",
+      "spec/semantics/21-source-context.watsup": "f68dda7b4e62fc62b09e96a8f8c7b8cd02f8597e7a41447e0e8b61756a7821bb",
+      "spec/semantics/22-name-resolution.watsup": "9f9dd44d1f444e8d05c376321ab4112066e6f9886cbf361f1fd6ad4ec051578a",
+      "spec/semantics/23-named-constants.watsup": "88e05728f18905b758b5c09254953635097244c92fdfd1e5bf1a9c4080e73438",
+      "spec/semantics/44-dimension-read.watsup": "f86f9bd85dc53ac227995b504ee53edeec2ef42b4e80846c9548e12c067ca9cb",
+      "spec/semantics/45-dimension-write.watsup": "c863bbac52fd9f6abdb26325a36f6d15be3e83ddb66f09e894c3f544a26dccdb",
+      "spec/semantics/56-casts.watsup": "a491681335f3366488d4c2a6efdb0fa5fa6dac96b3a9012c47130dd4601f8a98",
+      "spec/semantics/57-bitnot.watsup": "74afb1285d7b7b9156c4216d673914934c38347d4c894daea54bf13248b7a762",
+      "spec/semantics/60-array-unpack.watsup": "3b2beff14d82e3e129c1d3b24d9fd1ac51fa13ee3ea7e3c789780de5c4ca70da",
+      "spec/semantics/62-list-values.watsup": "5eadeae0ba730f8a314cab3f97c6e8bf70b5eeb46c53af1b9f2596c972ff076e",
+      "spec/semantics/45-constant-context.watsup": "6850aaa953aaa975e2bd5a35736b75510489d8119124a5f211ee5eab3e589684",
+      "spec/semantics/46-source-compiler.watsup": "85d345d13abead0988837b29ca48351f3fdc805d1cc5ad610f9db8a6b852e679",
+      "spec/semantics/64-list-compiler.watsup": "1ce05f633bc5d17291aa643f0e23c99d7b707da523c79fb150ac055b73343a96",
+      "spec/semantics/65-coalesce-compiler.watsup": "d5700c5d51e9f8eb30d079a61d42beab9e5e1514af4705f5f518ec3b79fe80c7",
+      "spec/semantics/47-control-compiler.watsup": "a3e5bab449365c62e368dc4448cb3fec92bb3a4228d60b6db30c4c51268794a2",
+      "spec/semantics/33-runtime-compiler.watsup": "3bab845eb357d9e898d802a35466476a1c420a07cd896157bca30e7eaa298e85",
+      "spec/semantics/40-control.watsup": "58cedbc1ef0c9ce7b8d7de42d9abee5e6f7c9c0c18ed657e211edeadc15455ec",
+      "spec/semantics/41-array-control.watsup": "f81948389be101b53627cdf6633e1c0031f20d679c4ba9b7bca1186731141da5",
+      "spec/semantics/42-array-write-control.watsup": "4bfdbe4f841f4fef42c9eddbc60e571fca840d7e090b2aa65c954e81c0e1c893",
+      "spec/semantics/43-array-unset-control.watsup": "3c25d2fca48080c07ff9c1121805b3f9fab1db05143bf518b962561b3b715306",
+      "spec/semantics/50-control-flow.watsup": "50999cefc35aae6baef3a6c7d747ebd09c870980561d3586ba88bc9bea9614a4",
+      "spec/semantics/51-truth-expressions.watsup": "16d2580a7171304abce7db060883189f06d5fa06b46ef53b65978e27b102d7d4",
+      "spec/semantics/52-comparison.watsup": "38d0e3815bc4b319a59828d08f88c9a47634283f48f641744b547785ccaffb77",
+      "spec/semantics/53-incdec.watsup": "07fc0a57b78183e999447994271a2494bf7abc4f74656aa89b2142c094dfa8b8",
+      "spec/semantics/54-binary-operators.watsup": "ec59b71b8570043063a85db73972bbb02486e6f59b12e44ee4a44e1f6e6be82e",
+      "spec/semantics/55-compound-assignment.watsup": "9687061c9f718d60c579fcf50bde64f5a5573c17303bc2a6beeee5b80cb7aeba",
+      "spec/semantics/58-ordinary-expressions.watsup": "12a296d7b069538d9d7579c580d3b4eb492c19186925b6ae70ba0645efd1c042",
+      "spec/semantics/59-concat-expressions.watsup": "4b4eabd13e711f11b83b85cbe14155f8e3ede4f47eb562275203891fddc2eb72",
+      "spec/semantics/61-array-unpack-control.watsup": "404d391705816b782d38ea6d58457e1ef010c2f886b80d0a09412c3535aaa1d3",
+      "spec/semantics/63-list-control.watsup": "d63b8c6f4fc51b33e7a035f9a9a3358b9b4e50da74d95bdfd1ecb894daef7774",
+      "spec/semantics/66-nonvariable-coalesce.watsup": "3d8aa080aa6135e1809aef880eec311682e05f549498ce69fc2802cf45422561",
+      "spec/semantics/67-foreach-compiler.watsup": "5b71055fa4030f138324fa209400b314b460c907f962b9de7d11678e9e9b03ec"
+    },
+    "tools": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+      "_build/default/adapter/main.exe": "2c424aa81257e55b30b13b53ae70bbb0e34254c4f705fbb62af5c2176521c3a1",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7"
+    },
+    "original_sha256": "0dde06cbc0ba1d62a6232bfd0bb22357973906eb299faf8f676c2fb78afcfc15"
+  },
+  "frontend": {
+    "result": "pass",
+    "manifest_sha256": "9dfb6cc1674927413c0094d01f85654028015daa7402bdb333cdff5c014baceb",
+    "records": [
+      {
+        "id": "key-ref",
+        "source_sha256": "8e1d66292ea11a2e8b9fe739fb9546cd6cb461c3998ef0d31e7dd744098b2b33",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-ref-both",
+        "source_sha256": "0e127e9ee560457d15c8d10d5d99f3997679c2fda70dbb65a05dad02bbcce708",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-ref-before-iterable",
+        "source_sha256": "ca6a8f4efceaf0ce6c34771264171fc5a13ffeecf3b3f22443a3a73f8a015766",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-ref-before-list-spread",
+        "source_sha256": "d8b8094af5493262231736a5f99a6a27f3c009277a85fe59d3b7fc4402398a0e",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-ref-dim",
+        "source_sha256": "086dbb8b50aa60f52a7532bb530c556687fb0f4500467c0792e39a094ddb06c7",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-list",
+        "source_sha256": "2d36963d59545fc4b8ca01fdcc81dc018f1a73518737869502cb50192ab3ab0b",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-list-empty",
+        "source_sha256": "f5ad952ede90933a56989cbcd5100508650be6e16171bf096aae421fc5874de9",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-list-holes",
+        "source_sha256": "43d69641aabbe4a77b9824c10e3581ac8ae9105c5f2864bd7b4fc45677180a07",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-short-list",
+        "source_sha256": "36f306342ee76adbc2ec3f4fca090d8b050d2ce92e7f5998a19a59171dbb5a67",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-short-holes",
+        "source_sha256": "9795ec21f63ce3d59969156892d92a1dc426cb31fe63de640ad201b716900278",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-list-ref",
+        "source_sha256": "864522497eac586d22b179145a43f13eb6b5d9a6372a81129d6b764869395341",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-list-unpack",
+        "source_sha256": "0c46ce92bbce64dddb44eef4f6953c40e203f3066bf205931c71c56cea8ebc58",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-list-before-iterable",
+        "source_sha256": "b1b377913469e9cde7a260f8d965e1a5abe0c8d5e920987c0a910b3f1d60b257",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-ref",
+        "source_sha256": "f6860467907fc96b0d6b35fcda1c7e7db73445300ea1aeac4450f0f7f36f1c91",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-ref-dim",
+        "source_sha256": "80853b71a780f5dccc0e835ad3d1e11414c6810c2b70951175a5f5bf8b186074",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-list-ref",
+        "source_sha256": "26494466865096b3f5430abe3def84fd9eeb7eed6e7e3452cd5a21cdd32746c2",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-nested-ref",
+        "source_sha256": "e99ea97ff21e4a3a670c5ae6e2c8c75f9114dcad7b3eb35c65884b613b52e6c2",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-list-hole",
+        "source_sha256": "267cc943eacfae63b1f475258fe853d456b8eea8ba207c5ca13d87ecf335f281",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-genuine-hole",
+        "source_sha256": "a7eb23571745806bc4c0732a4530e0963447329a793fc8fbe742ee2c26ce3de6",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-list-unpack",
+        "source_sha256": "5fcc942e8c2272e2ff211b30ea00f5daf765f90fce104a070088bbd94752841a",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-nested-unpack-ref",
+        "source_sha256": "9e3fc240dcfac6481578731f970301ca4cd1ded4e2a3e7ed3c4ba16e9792b516",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-long-nested",
+        "source_sha256": "2e1f13893ea827ff5539c86aa24c9920e3e9a187adb6bb87bc804f66ab191fcd",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "value-mixed",
+        "source_sha256": "292157c728bc57b264b38c3ec412478df51a624fbdb74c0df1f11f24ac06df24",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "parse-ref-list-value",
+        "source_sha256": "0225d37e3d34298a9a333b09d2e669dffbe40be6f1f96f723b0fcaeddb261680",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": false
+      },
+      {
+        "id": "parse-ref-list-key",
+        "source_sha256": "51d6bcfe0833f74040a2320d639186ea969449c1eff2fdddd77d72bcc5a01703",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": false
+      },
+      {
+        "id": "parse-long-key",
+        "source_sha256": "066562ad99275d0bf949310d2a46669f2c31b42b8906566650d8d104ce9ca311",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": false
+      },
+      {
+        "id": "parse-literal-key",
+        "source_sha256": "c364f81e2edbf44aa911c9c98e82f2708b134fc5bc5e3e1592f6febaf111cc85",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": false
+      },
+      {
+        "id": "key-call",
+        "source_sha256": "484e33b74eeab145b3861508a23bb0aa104128356ad95df1f1dd9515b8935a57",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-nullsafe",
+        "source_sha256": "8c90d777348d80e5ee19bd292f7647d696b67583c3c9559c12fe56f8df2033a9",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "key-ref-multiline",
+        "source_sha256": "9849ab59ce756e2a692fef6b34179380886cc6ae210b47e33ebc329d78c73d2d",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
+        "source_sha256": "c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
+        "source_sha256": "9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      },
+      {
+        "id": "vendor/php-src/tests/lang/foreachLoop.006.phpt",
+        "source_sha256": "effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c",
+        "original_frontend_reproduced": true,
+        "original_lint_reproduced": true,
+        "candidate_parser_agrees": true,
+        "checked_roundtrip": true
+      }
+    ],
+    "boundaries": [
+      {
+        "mode": "absent-key",
+        "checked": true,
+        "result": "pass"
+      },
+      {
+        "mode": "bad-int",
+        "checked": false,
+        "result": "pass"
+      },
+      {
+        "mode": "bad-string",
+        "checked": false,
+        "result": "pass"
+      },
+      {
+        "mode": "missing",
+        "checked": false,
+        "result": "pass"
+      },
+      {
+        "mode": "extra",
+        "checked": false,
+        "result": "pass"
+      },
+      {
+        "mode": "false",
+        "checked": true,
+        "result": "pass"
+      },
+      {
+        "mode": "true",
+        "checked": true,
+        "result": "pass"
+      }
+    ]
+  },
+  "compiler": {
+    "records": [
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-0.watsup",
+        "sha256": "519789da8b95b971c2ac72656bd272a96859365703fb848ad6972a8080fee624",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-1.watsup",
+        "sha256": "e001c03257efd14feeee834e6b41319a725987424d0d674f770b4079b9e37830",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-10.watsup",
+        "sha256": "6d74b1b65dadf396533bea4326ed8e22947637d1da8c29473ab2819b8af66dd4",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-11.watsup",
+        "sha256": "61c5d88da64edda0b597fd442971ef35598018b77036929bc779eb84210709f2",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-12.watsup",
+        "sha256": "2fef0ef6fbbec2a03afba1ef6d91425b3960a67f0be7a3d6dffd403da73c55aa",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-13.watsup",
+        "sha256": "29f8b106d8633e6351377edc61bd0f64e02121e031c29273faf6e4be9c627947",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-14.watsup",
+        "sha256": "7c45599ba5f9154bd1436612af7dddaefbf041e830884dd06014f6f9289f6ec7",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-15.watsup",
+        "sha256": "a08901969827e9d8b6c8d416d03b162093cebc5fd2d44db7e8bb2d24ef893b99",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-16.watsup",
+        "sha256": "392e0ab420d07f273e6adb3c79804b8cbb9fa546ed02ca00c3befe493d3f02b4",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-17.watsup",
+        "sha256": "40c79138b3ce6969652e0d24789b6d89144ab1b138af7fbcaa14cd8c3ec5022d",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-18.watsup",
+        "sha256": "558e29d31e414257726b3d568ae2df85473baea0f4d777a6db42a1ec7d17a8fe",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-19.watsup",
+        "sha256": "17e44fed396beffd8c5e3f011e5d56dcdbeae7acbc58f465df2d25264c0d622d",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-2.watsup",
+        "sha256": "1f74369850bf83b490c2efe3ff1084ff1e55ed916e43fa37084573afd5d57b07",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-20.watsup",
+        "sha256": "e9f092de0302ae9e0d504b77ed285a4781eb1789281c5d4c50f90bcee7f7453d",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-21.watsup",
+        "sha256": "55818a6ce8648737030118cff49f0357b604b17fbc57f9f73ad0fe409b6fa907",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-22.watsup",
+        "sha256": "8d042198ec8c32ab01f3c106135ae62e35cfcf21188f7d48004be9ccb977fe2b",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-27.watsup",
+        "sha256": "8f16e9d4fbde675690efead2c6e81148a36446e410d1d29722e70d228286527f",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-28.watsup",
+        "sha256": "ecbc7dad08ebd25f9452e5484185f15e1574d0fa8af06716329cb49ef02cd598",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-29.watsup",
+        "sha256": "05ec7f4d4b687197a39aa7d5e6c390f6d6f9d7da9bb963613cfa894ab1d395ed",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-3.watsup",
+        "sha256": "7e19cf56cf1979b1537e9ac4dff151f1887dfed15e60c15391c77d07cb346557",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-30.watsup",
+        "sha256": "11b0e885d5dc009c06c0a736433db98358835f7cd5c4ab4fc7542deef03e7537",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-31.watsup",
+        "sha256": "c2a5c234fa8c3e6a76406281b55e38516b1735c68ad674592114bca1b066fa25",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-32.watsup",
+        "sha256": "1c29737add4e8ba684f7577ba0033e67be714064fc421cfe2014e8051e28ccda",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-4.watsup",
+        "sha256": "0e01bcbcc291b688bc0ba718bc507dc5f81b692a8ef2ba7ed9d26c2ee5fdc14e",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-5.watsup",
+        "sha256": "796117b584d046271643f940a2130ec5498bf2b0dc38568387e2af022ae999e2",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-6.watsup",
+        "sha256": "af7a56da5ca940357c8bf0ebde7829de96200fabb8a6786e5eba6561afbcb1fa",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-7.watsup",
+        "sha256": "91fb0f24e65cc41ed3e0929d041083622ff93403baccc012fb244c84a6715c8f",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-8.watsup",
+        "sha256": "ff32f3376ee1c2d1572b86fe0741c3d6da4734e326dd586330a45886dc641567",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/compile-9.watsup",
+        "sha256": "ca3a7d93820f955631049d7b1500e436660e8f082d8318c5d01530d728c99870",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      },
+      {
+        "fixture": "/home/user/workspace/php-spec/.tools/foreach-frontend-next/metadata.watsup",
+        "sha256": "0630720e7e8e18c715f1820f519221839a069f74a905bfec7d89da0a68d93528",
+        "status": 0,
+        "stdout": "true\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "phase_catalogue": {
+    "result": "pass",
+    "scope": "Exactly three original foreach phase exceptions retired; unchanged other33 entries; exact17 source catalogue originals including three retiredPHPTs; seven unrelated/eight retired observations remain errors",
+    "retired": [
+      {
+        "id": "vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
+        "sha256": "c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62",
+        "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR on line 4",
+        "lint_contains": "Key element cannot be a reference",
+        "restriction": "foreach_reference_key",
+        "reason": "The source foreach key is by-reference, a form rejected by Zend compilation.",
+        "evidence": [
+          "vendor/php-src/Zend/zend_compile.c:6109",
+          "vendor/php-parser-source/grammar/php.y:402"
+        ],
+        "ini": {}
+      },
+      {
+        "id": "vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
+        "sha256": "9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82",
+        "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting ')' on line 5",
+        "lint_contains": "Cannot use list as key element",
+        "restriction": "foreach_destructuring_key",
+        "reason": "The source foreach key is list destructuring, rejected by Zend compilation.",
+        "evidence": [
+          "vendor/php-src/Zend/zend_compile.c:6112",
+          "vendor/php-parser-source/grammar/php.y:402"
+        ],
+        "ini": {}
+      },
+      {
+        "id": "vendor/php-src/tests/lang/foreachLoop.006.phpt",
+        "sha256": "effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c",
+        "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR on line 3",
+        "lint_contains": "Key element cannot be a reference",
+        "restriction": "foreach_reference_key",
+        "reason": "The source foreach key is by-reference, a form rejected by Zend compilation.",
+        "evidence": [
+          "vendor/php-src/Zend/zend_compile.c:6109",
+          "vendor/php-parser-source/grammar/php.y:402"
+        ],
+        "ini": {}
+      }
+    ],
+    "sources": [
+      {
+        "id": "key-ref",
+        "sha256": "8e1d66292ea11a2e8b9fe739fb9546cd6cb461c3998ef0d31e7dd744098b2b33"
+      },
+      {
+        "id": "key-ref-both",
+        "sha256": "0e127e9ee560457d15c8d10d5d99f3997679c2fda70dbb65a05dad02bbcce708"
+      },
+      {
+        "id": "key-ref-before-iterable",
+        "sha256": "ca6a8f4efceaf0ce6c34771264171fc5a13ffeecf3b3f22443a3a73f8a015766"
+      },
+      {
+        "id": "key-ref-before-list-spread",
+        "sha256": "d8b8094af5493262231736a5f99a6a27f3c009277a85fe59d3b7fc4402398a0e"
+      },
+      {
+        "id": "key-ref-dim",
+        "sha256": "086dbb8b50aa60f52a7532bb530c556687fb0f4500467c0792e39a094ddb06c7"
+      },
+      {
+        "id": "key-list",
+        "sha256": "2d36963d59545fc4b8ca01fdcc81dc018f1a73518737869502cb50192ab3ab0b"
+      },
+      {
+        "id": "key-list-empty",
+        "sha256": "f5ad952ede90933a56989cbcd5100508650be6e16171bf096aae421fc5874de9"
+      },
+      {
+        "id": "key-list-holes",
+        "sha256": "43d69641aabbe4a77b9824c10e3581ac8ae9105c5f2864bd7b4fc45677180a07"
+      },
+      {
+        "id": "key-short-list",
+        "sha256": "36f306342ee76adbc2ec3f4fca090d8b050d2ce92e7f5998a19a59171dbb5a67"
+      },
+      {
+        "id": "key-short-holes",
+        "sha256": "9795ec21f63ce3d59969156892d92a1dc426cb31fe63de640ad201b716900278"
+      },
+      {
+        "id": "key-list-ref",
+        "sha256": "864522497eac586d22b179145a43f13eb6b5d9a6372a81129d6b764869395341"
+      },
+      {
+        "id": "key-list-unpack",
+        "sha256": "0c46ce92bbce64dddb44eef4f6953c40e203f3066bf205931c71c56cea8ebc58"
+      },
+      {
+        "id": "key-list-before-iterable",
+        "sha256": "b1b377913469e9cde7a260f8d965e1a5abe0c8d5e920987c0a910b3f1d60b257"
+      },
+      {
+        "id": "key-ref-multiline",
+        "sha256": "9849ab59ce756e2a692fef6b34179380886cc6ae210b47e33ebc329d78c73d2d"
+      },
+      {
+        "id": "vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
+        "sha256": "c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62"
+      },
+      {
+        "id": "vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
+        "sha256": "9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82"
+      },
+      {
+        "id": "vendor/php-src/tests/lang/foreachLoop.006.phpt",
+        "sha256": "effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c"
+      }
+    ],
+    "ledger_result": {
+      "status": 0,
+      "stdout": "phase ledger: known case accepted; seven unrelated and eight retired observations remain failures\n",
+      "stderr": ""
+    }
+  },
+  "originals": {
+    "path": "coverage/semantics/foreach-prerequisite-originals.json",
+    "sha256": "0dde06cbc0ba1d62a6232bfd0bb22357973906eb299faf8f676c2fb78afcfc15"
+  }
+}
