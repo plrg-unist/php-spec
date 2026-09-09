@@ -157,32 +157,6 @@
     "ini": {}
   },
   {
-    "id": "vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt",
-    "sha256": "c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62",
-    "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR on line 4",
-    "lint_contains": "Key element cannot be a reference",
-    "restriction": "foreach_reference_key",
-    "reason": "The source foreach key is by-reference, a form rejected by Zend compilation.",
-    "evidence": [
-      "vendor/php-src/Zend/zend_compile.c:6109",
-      "vendor/php-parser-source/grammar/php.y:402"
-    ],
-    "ini": {}
-  },
-  {
-    "id": "vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt",
-    "sha256": "9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82",
-    "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting ')' on line 5",
-    "lint_contains": "Cannot use list as key element",
-    "restriction": "foreach_destructuring_key",
-    "reason": "The source foreach key is list destructuring, rejected by Zend compilation.",
-    "evidence": [
-      "vendor/php-src/Zend/zend_compile.c:6112",
-      "vendor/php-parser-source/grammar/php.y:402"
-    ],
-    "ini": {}
-  },
-  {
     "id": "vendor/php-src/Zend/tests/function_outside_namespace.phpt",
     "sha256": "78a38e38f8ff4403f7c6730157041bb7222e6abffc47afc07d8478e548e86b93",
     "frontend_message": "Namespace declaration statement has to be the very first statement in the script on line 5",
@@ -454,19 +428,6 @@
     "evidence": [
       "vendor/php-src/Zend/zend_compile.c:7826",
       "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1077"
-    ],
-    "ini": {}
-  },
-  {
-    "id": "vendor/php-src/tests/lang/foreachLoop.006.phpt",
-    "sha256": "effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c",
-    "frontend_message": "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR on line 3",
-    "lint_contains": "Key element cannot be a reference",
-    "restriction": "foreach_reference_key",
-    "reason": "The source foreach key is by-reference, a form rejected by Zend compilation.",
-    "evidence": [
-      "vendor/php-src/Zend/zend_compile.c:6109",
-      "vendor/php-parser-source/grammar/php.y:402"
     ],
     "ini": {}
   }

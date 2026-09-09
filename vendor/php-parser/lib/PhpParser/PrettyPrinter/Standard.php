@@ -963,8 +963,11 @@ class Standard extends PrettyPrinterAbstract {
     }
 
     protected function pStmt_Foreach(Stmt\Foreach_ $node): string {
+        if ($node->keyByRef && $node->keyVar === null) {
+            throw new \LogicException('Cannot pretty-print a reference foreach key without a target');
+        }
         return 'foreach (' . $this->p($node->expr) . ' as '
-             . (null !== $node->keyVar ? $this->p($node->keyVar) . ' => ' : '')
+             . (null !== $node->keyVar ? ($node->keyByRef ? '&' : '') . $this->p($node->keyVar) . ' => ' : '')
              . ($node->byRef ? '&' : '') . $this->p($node->valueVar) . ') {'
              . $this->pStmts($node->stmts) . $this->nl . '}';
     }

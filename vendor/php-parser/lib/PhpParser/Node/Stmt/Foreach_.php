@@ -15,6 +15,8 @@ class Foreach_ extends Node\Stmt {
     public Node\Expr $valueVar;
     /** @var Node\Stmt[] Statements */
     public array $stmts;
+    /** @var bool Whether to assign key by reference (rejected during compilation) */
+    public bool $keyByRef;
 
     /**
      * Constructs a foreach node.
@@ -25,10 +27,12 @@ class Foreach_ extends Node\Stmt {
      *     keyVar?: Node\Expr|null,
      *     byRef?: bool,
      *     stmts?: Node\Stmt[],
+     *     keyByRef?: bool,
      * } $subNodes Array of the following optional subnodes:
      *             'keyVar' => null   : Variable to assign key to
      *             'byRef'  => false  : Whether to assign value by reference
      *             'stmts'  => array(): Statements
+     *             'keyByRef' => false: Whether to assign key by reference
      * @param array<string, mixed> $attributes Additional attributes
      */
     public function __construct(Node\Expr $expr, Node\Expr $valueVar, array $subNodes = [], array $attributes = []) {
@@ -38,10 +42,11 @@ class Foreach_ extends Node\Stmt {
         $this->byRef = $subNodes['byRef'] ?? false;
         $this->valueVar = $valueVar;
         $this->stmts = $subNodes['stmts'] ?? [];
+        $this->keyByRef = $subNodes['keyByRef'] ?? false;
     }
 
     public function getSubNodeNames(): array {
-        return ['expr', 'keyVar', 'byRef', 'valueVar', 'stmts'];
+        return ['expr', 'keyVar', 'byRef', 'valueVar', 'stmts', 'keyByRef'];
     }
 
     public function getType(): string {

@@ -1,0 +1,22 @@
+;; Zend foreach key checks precede iterable compilation (zend_compile.c:6100).
+dec $ppforeach_keycheck(ppstate, phpType5, bool) : ppstate
+def $ppforeach_keycheck(P, phpType5, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppforeach_keycheck(P, ABSENT, true) = $ppunsupported(P, "reference foreach key without target")
+  -- if P.COMPLETION = PPCNORMAL
+def $ppforeach_keycheck(P, expression, true) = $ppcheck(P, $context_error("Key element cannot be a reference", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppforeach_keycheck(P, expression, false) = $ppcheck(P, $context_error("Cannot use list as key element", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $list_pattern(expression) = (phpType13*)
+def $ppforeach_keycheck(P, phpType5, b) = P
+  -- otherwise
+
+dec $ppforeach_pending(ppstate) : ppstate
+def $ppforeach_pending(P) = $ppunsupported(P, "foreach source compilation")
+  -- if P.COMPLETION = PPCNORMAL
+def $ppforeach_pending(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+
+def $ppstatement(P, pcpath, NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value (SEQUENCE statement*) (BOOLEAN b_keyref) metadata) = $ppforeach_pending($ppforeach_keycheck($pplocate(P, pcpath, $expression_line(expression_iterable)), phpType5, b_keyref))
+  -- if P.COMPLETION = PPCNORMAL

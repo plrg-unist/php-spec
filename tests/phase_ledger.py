@@ -45,7 +45,22 @@ RETIRED_ARRAY_HOLES = [('vendor/php-src/Zend/tests/bug75426.phpt',
   '31ae3197341d97eed174082c4abc18b73e709c65f6fc08bf80c28366489dee98',
   'Cannot use empty array elements in arrays on line 3',
   'Cannot use empty array elements in arrays')]
-for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLES:
+# Retired foreach key exemptions must also remain observable failures.
+RETIRED_FOREACH_KEYS = [('vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt',
+  'c573f18a068c48e0fc809bbc7dd6bfda42bca28577889f1d6984a87f05795b62',
+  "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR "
+  'on line 4',
+  'Key element cannot be a reference'),
+ ('vendor/php-src/Zend/tests/foreach/foreach_list_003.phpt',
+  '9fd5d7b0468789dd8e8bd8782a4c64d94c43136e18ff7ddc87ee36330e6ede82',
+  "Syntax error, unexpected T_DOUBLE_ARROW, expecting ')' on line 5",
+  'Cannot use list as key element'),
+ ('vendor/php-src/tests/lang/foreachLoop.006.phpt',
+  'effe54fd3e9d9b1542a869eb87a4520578291ad4f10ea68e952f18f50e29423c',
+  "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR "
+  'on line 3',
+  'Key element cannot be a reference')]
+for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLES + RETIRED_FOREACH_KEYS:
     retired_record = {'id': source_id, 'sha256': source_hash, 'ini': {}}
     retired_result = {
         'status': 'unreviewed_phase_difference',
@@ -53,4 +68,4 @@ for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLE
         'lint': {'accepted': False, 'diagnostic_b64': base64.b64encode(lint_message.encode()).decode()},
     }
     assert classify_phase_difference(retired_record, retired_result)['status'] == 'unreviewed_phase_difference'
-print('phase ledger: known case accepted; seven unrelated and five retired observations remain failures')
+print('phase ledger: known case accepted; seven unrelated and eight retired observations remain failures')

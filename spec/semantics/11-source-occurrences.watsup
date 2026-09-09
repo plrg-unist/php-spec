@@ -144,7 +144,7 @@ syntax pcnode =
   | NStmtExpression expression metadata
   | NStmtFinally phpType23 metadata
   | NStmtFor phpType25 phpType25 phpType25 phpType23 metadata
-  | NStmtForeach expression phpType5 phpType4 expression phpType23 metadata
+  | NStmtForeach expression phpType5 phpType4 expression phpType23 phpType4 metadata
   | NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata
   | NStmtGlobal phpType25 metadata
   | NStmtGoto phpType11 metadata
@@ -295,7 +295,7 @@ def $pcfield_statement(NStmtEnumCase phpType14_0 phpType11_1 phpType5_2 metadata
 def $pcfield_statement(NStmtExpression expression_0 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtExpression expression_0 metadata))]
 def $pcfield_statement(NStmtFinally phpType23_0 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtFinally phpType23_0 metadata))]
 def $pcfield_statement(NStmtFor phpType25_0 phpType25_1 phpType25_2 phpType23_3 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtFor phpType25_0 phpType25_1 phpType25_2 phpType23_3 metadata))]
-def $pcfield_statement(NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 metadata))]
+def $pcfield_statement(NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 phpType4_5 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 phpType4_5 metadata))]
 def $pcfield_statement(NStmtFunction phpType14_0 phpType4_1 phpType11_2 phpType16_3 phpType18_4 phpType23_5 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtFunction phpType14_0 phpType4_1 phpType11_2 phpType16_3 phpType18_4 phpType23_5 metadata))]
 def $pcfield_statement(NStmtGlobal phpType25_0 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtGlobal phpType25_0 metadata))]
 def $pcfield_statement(NStmtGoto phpType11_0 metadata, pcpath) = [(PCOCCURRENCE pcpath (NStmtGoto phpType11_0 metadata))]
@@ -1694,8 +1694,8 @@ def $pcchildren(NStmtFinally phpType23_0 metadata, pcpath) = $pcfield_phpType23(
 def $pcmetadata(NStmtFinally phpType23_0 metadata) = metadata
 def $pcchildren(NStmtFor phpType25_0 phpType25_1 phpType25_2 phpType23_3 metadata, pcpath) = $pcfield_phpType25(phpType25_0, pcpath ++ [(PCFIELD 0)]) ++ $pcfield_phpType25(phpType25_1, pcpath ++ [(PCFIELD 1)]) ++ $pcfield_phpType25(phpType25_2, pcpath ++ [(PCFIELD 2)]) ++ $pcfield_phpType23(phpType23_3, pcpath ++ [(PCFIELD 3)])
 def $pcmetadata(NStmtFor phpType25_0 phpType25_1 phpType25_2 phpType23_3 metadata) = metadata
-def $pcchildren(NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 metadata, pcpath) = $pcfield_expression(expression_0, pcpath ++ [(PCFIELD 0)]) ++ $pcfield_phpType5(phpType5_1, pcpath ++ [(PCFIELD 1)]) ++ $pcfield_phpType4(phpType4_2, pcpath ++ [(PCFIELD 2)]) ++ $pcfield_expression(expression_3, pcpath ++ [(PCFIELD 3)]) ++ $pcfield_phpType23(phpType23_4, pcpath ++ [(PCFIELD 4)])
-def $pcmetadata(NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 metadata) = metadata
+def $pcchildren(NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 phpType4_5 metadata, pcpath) = $pcfield_expression(expression_0, pcpath ++ [(PCFIELD 0)]) ++ $pcfield_phpType5(phpType5_1, pcpath ++ [(PCFIELD 1)]) ++ $pcfield_phpType4(phpType4_2, pcpath ++ [(PCFIELD 2)]) ++ $pcfield_expression(expression_3, pcpath ++ [(PCFIELD 3)]) ++ $pcfield_phpType23(phpType23_4, pcpath ++ [(PCFIELD 4)]) ++ $pcfield_phpType4(phpType4_5, pcpath ++ [(PCFIELD 5)])
+def $pcmetadata(NStmtForeach expression_0 phpType5_1 phpType4_2 expression_3 phpType23_4 phpType4_5 metadata) = metadata
 def $pcchildren(NStmtFunction phpType14_0 phpType4_1 phpType11_2 phpType16_3 phpType18_4 phpType23_5 metadata, pcpath) = $pcfield_phpType14(phpType14_0, pcpath ++ [(PCFIELD 0)]) ++ $pcfield_phpType4(phpType4_1, pcpath ++ [(PCFIELD 1)]) ++ $pcfield_phpType11(phpType11_2, pcpath ++ [(PCFIELD 2)]) ++ $pcfield_phpType16(phpType16_3, pcpath ++ [(PCFIELD 3)]) ++ $pcfield_phpType18(phpType18_4, pcpath ++ [(PCFIELD 4)]) ++ $pcfield_phpType23(phpType23_5, pcpath ++ [(PCFIELD 5)])
 def $pcmetadata(NStmtFunction phpType14_0 phpType4_1 phpType11_2 phpType16_3 phpType18_4 phpType23_5 metadata) = metadata
 def $pcchildren(NStmtGlobal phpType25_0 metadata, pcpath) = $pcfield_phpType25(phpType25_0, pcpath ++ [(PCFIELD 0)])

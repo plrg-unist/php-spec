@@ -22,6 +22,7 @@ test: build
 	python3 tests/source_context_metadata.py
 	python3 tests/ternary_metadata.py
 	python3 tests/destructuring_metadata.py
+	python3 tests/foreach_targets.py
 	python3 tests/list_line_metadata.py
 	python3 tests/list_target_metadata.py
 	python3 tests/callable_line_metadata.py
@@ -65,5 +66,6 @@ test-semantics: build
 	python3 tests/semantics/array_unpack_compiler.py
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
+	python3 tests/semantics/foreach_compiler.py
 	python3 tests/semantics/destructuring_mechanism.py
 	python3 tests/semantics/validate.py

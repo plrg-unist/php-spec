@@ -306,7 +306,20 @@
      }
  
      // Control flow
-@@ -995,11 +1018,11 @@
+@@ -940,8 +963,11 @@
+     }
+ 
+     protected function pStmt_Foreach(Stmt\Foreach_ $node): string {
++        if ($node->keyByRef && $node->keyVar === null) {
++            throw new \LogicException('Cannot pretty-print a reference foreach key without a target');
++        }
+         return 'foreach (' . $this->p($node->expr) . ' as '
+-             . (null !== $node->keyVar ? $this->p($node->keyVar) . ' => ' : '')
++             . (null !== $node->keyVar ? ($node->keyByRef ? '&' : '') . $this->p($node->keyVar) . ' => ' : '')
+              . ($node->byRef ? '&' : '') . $this->p($node->valueVar) . ') {'
+              . $this->pStmts($node->stmts) . $this->nl . '}';
+     }
+@@ -995,11 +1021,11 @@
      }
  
      protected function pStmt_Label(Stmt\Label $node): string {
@@ -320,7 +333,7 @@
      }
  
      // Other
-@@ -1062,7 +1085,7 @@
+@@ -1062,7 +1088,7 @@
              return '{' . $this->p($node) . '}';
          } else {
              assert($node instanceof Node\Identifier);
@@ -329,7 +342,7 @@
          }
      }
  
-@@ -1072,8 +1095,22 @@
+@@ -1072,8 +1098,22 @@
          foreach ($encapsList as $element) {
              if ($element instanceof Node\InterpolatedStringPart) {
                  $return .= $this->escapeString($element->value, $quote);
@@ -353,7 +366,7 @@
              }
          }
  
-@@ -1146,7 +1183,8 @@
+@@ -1146,7 +1186,8 @@
      }
  
      protected function pDereferenceLhs(Node $node): string {
@@ -363,7 +376,7 @@
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1154,7 +1192,8 @@
+@@ -1154,7 +1195,8 @@
      }
  
      protected function pStaticDereferenceLhs(Node $node): string {
@@ -373,7 +386,7 @@
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1162,7 +1201,8 @@
+@@ -1162,7 +1204,8 @@
      }
  
      protected function pCallLhs(Node $node): string {
@@ -383,7 +396,7 @@
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1170,7 +1210,8 @@
+@@ -1170,7 +1213,8 @@
      }
  
      protected function pNewOperand(Node $node): string {
@@ -561,3 +574,40 @@
              return new Expr\Exit_(\count($args) === 1 ? $args[0]->value : null, $attrs);
          }
          return new Expr\FuncCall(new Name($name, $this->getAttributesAt($namePos)), $args, $attrs);
+--- a/vendor/php-parser/lib/PhpParser/Node/Stmt/Foreach_.php
++++ b/vendor/php-parser/lib/PhpParser/Node/Stmt/Foreach_.php
+@@ -15,6 +15,8 @@
+     public Node\Expr $valueVar;
+     /** @var Node\Stmt[] Statements */
+     public array $stmts;
++    /** @var bool Whether to assign key by reference (rejected during compilation) */
++    public bool $keyByRef;
+ 
+     /**
+      * Constructs a foreach node.
+@@ -25,10 +27,12 @@
+      *     keyVar?: Node\Expr|null,
+      *     byRef?: bool,
+      *     stmts?: Node\Stmt[],
++     *     keyByRef?: bool,
+      * } $subNodes Array of the following optional subnodes:
+      *             'keyVar' => null   : Variable to assign key to
+      *             'byRef'  => false  : Whether to assign value by reference
+      *             'stmts'  => array(): Statements
++     *             'keyByRef' => false: Whether to assign key by reference
+      * @param array<string, mixed> $attributes Additional attributes
+      */
+     public function __construct(Node\Expr $expr, Node\Expr $valueVar, array $subNodes = [], array $attributes = []) {
+@@ -38,10 +42,11 @@
+         $this->byRef = $subNodes['byRef'] ?? false;
+         $this->valueVar = $valueVar;
+         $this->stmts = $subNodes['stmts'] ?? [];
++        $this->keyByRef = $subNodes['keyByRef'] ?? false;
+     }
+ 
+     public function getSubNodeNames(): array {
+-        return ['expr', 'keyVar', 'byRef', 'valueVar', 'stmts'];
++        return ['expr', 'keyVar', 'byRef', 'valueVar', 'stmts', 'keyByRef'];
+     }
+ 
+     public function getType(): string {

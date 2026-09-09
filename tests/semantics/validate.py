@@ -631,6 +631,8 @@ for number in range(40):
 
 from destructuring import CASES as LIST_CASES
 CASES.update(LIST_CASES)
+from foreach_compiler import CASES as FOREACH_PRECHECK_CASES
+CASES.update({"foreach-precheck-"+name:source for name,source in FOREACH_PRECHECK_CASES.items()})
 from array_unpack import CASES as UNPACK_CASES
 CASES.update(UNPACK_CASES)
 CASES['unpack-retired-outcome-negative'] = b'<?php $a=[...[]];'
