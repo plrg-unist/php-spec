@@ -33,11 +33,11 @@ timeouts and interrupted campaigns never count as validation passes.
 - References agent owns source execution/storage; read
   [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Element-reference targets
   `f56e12bc`, numeric-boundary repair `9fc9628f` and pure dimension reads
-  `9ec050a1` are reviewed; pure string writes and source dimensions are next.
+  `9ec050a1` are reviewed; pure string writes `9990d23e` are reviewed; source dimensions are next.
 - Static worker owns checked compiler context and source facts. Structural
   occurrences `898f0152`, bounded namespace/import contexts `891c2c95` and
   frontend location/import-alias repair `9658958c` are reviewed. Shared constant
-  prepass facts are next. [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md)
+  facts `93eeb749` are reviewed; ordered compiler work and runtime origins are next. [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md)
   records pending applicability, internal metadata, linking and activation.
   Coordinate source-unit/task integration with the references owner.
 - Numeric helpers are pure; runner owns PHP values/effects. See NUMERICS.
@@ -66,11 +66,20 @@ timeouts and interrupted campaigns never count as validation passes.
   folding alone does not establish compiler prepass traversal. See
   [DIMENSIONS](docs/semantics/DIMENSIONS.md).
 - Numeric-boundary correction `9fc9628f` follows the pin’s suffix/NUL and invalid
-  signed-exponent behavior, including wrapped integer results. Independently
-  repeated **514 source comparisons +25 negatives**, 1,610 numeric-text, 5,961
-  conversion and 1,472 string-operation cases passed; expanded conversion matrix
-  6,681. [104 raw source observations](coverage/semantics/numeric-boundary-disagreement.json)
-  preserve 28 former disagreements; all now agree and seven witnesses are mandatory.
+  signed-exponent behavior, including wrapped integers. Source and expanded
+  numeric gates passed; [104 raw observations](coverage/semantics/numeric-boundary-disagreement.json)
+  preserve 28 former disagreements, all resolved. Seven witnesses are mandatory.
+- Pure string-write/fetch helper `9990d23e`: **2,220 runtime +12 boundary cases**,
+  12,040 assertions; 2,056 independent expanded cases passed. Key conversion,
+  negative bounds before delayed RHS reads, byte writes and reference/nested errors
+  are reviewed. Source location commits and callback ownership remain pending.
+- Constant-expression helper `93eeb749`: **42 original source observations +7
+  boundaries**, plus 37 independent expanded observations passed. Exact occurrence
+  facts retain partial folds, persistent array roots, same-path reuse and distinct
+  NaN-array paths. Nested compile-error priority/lines and assignment barriers are
+  reviewed. [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md) defines the
+  explicit invocation contract; ordinary compiler scheduling and runtime pool
+  installation remain pending.
 - Pure numeric helpers are independently reviewed; [NUMERICS](docs/semantics/NUMERICS.md)
   and [power provenance](docs/semantics/POWER-PROVENANCE.md) retain exact campaigns.
   Reviewed type/signature/class-header/covariance/method helpers and their expanded
@@ -99,10 +108,6 @@ timeouts and interrupted campaigns never count as validation passes.
   neither a fresh rebuild nor portability; syntax results establish no semantics.
 - **138 independent oracle targets**, 62 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
-- Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
-  now gives PHP/spec 4. Owning reference operands retain the captured cell and read
-  its current value at consumption. [Raw discrepancy](coverage/semantics/reference-result-disagreement.json)
-  preserves the prior spec 3 and binds the accepted mandatory regression.
 - Preserve delayed reads, self-assignment capture, cyclic arrays, NaN identity
   and exact compiler lines. [CORE](docs/semantics/CORE.md) records pending literal
   occurrence identity and uncollected-cycle ownership witnesses: GC changes copied
@@ -115,8 +120,8 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Independently review pure string-write/reference-error helpers and shared constant
-prepass facts before source integration. Preserve constant-array folding,
+Thread source origins through the unchanged source machine, then integrate ordered
+compiler work and the reviewed constant pool before source dimensions. Preserve folding,
 assignment barriers, key conversion, diagnostic and temporary-owner timing.
 All 16 read/prepass oracle targets and existing element-target/prepass witnesses
 are mandatory in the next source gate. Source-context traversal and class linking

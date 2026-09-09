@@ -3849,18 +3849,21 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/44-dimension-read.watsup"
+        "spec/semantics/44-dimension-read.watsup",
+        "spec/semantics/45-dimension-write.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_read.py",
-        "coverage/semantics/dimension-read.json"
+        "coverage/semantics/dimension-read.json",
+        "tests/semantics/dimension_write.py",
+        "coverage/semantics/dimension-write.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent pure dimension-read helper review 9ec050a1: 583 runtime comparisons, 10 compiler leaves and 5 boundaries (2318 assertions), plus 1456 expanded runtime pairs passed. Numeric key coercion, warning/type-error ordering and byte bounds are reviewed. The helper is unregistered in the source machine; source reads, shared constant-prepass traversal, writes, references and callbacks remain pending.",
+      "review": "Independent pure dimension-read helper review 9ec050a1: 583 runtime comparisons, 10 compiler leaves and 5 boundaries (2318 assertions), plus 1456 expanded runtime pairs passed. Numeric key coercion, warning/type-error ordering and byte bounds are reviewed. The helper is unregistered in the source machine; source reads, shared constant-prepass traversal, writes, references and callbacks remain pending. Pure write/reference-fetch helper 9990d23e independently passed 2220 runtime plus 12 boundaries (12040 assertions), with 2056 expanded comparisons. Key-before-RHS timing, negative bounds, first-byte writes and reference/nested errors are helper-only; source location commits remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-offset.php",
         "tests/semantics/conformance/string-read-numeric-keys.php",
@@ -4903,17 +4906,20 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/17-signatures.watsup"
+        "spec/semantics/17-signatures.watsup",
+        "spec/semantics/45-constant-context.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
-        "coverage/semantics/signatures.json"
+        "coverage/semantics/signatures.json",
+        "tests/semantics/constant_context.py",
+        "coverage/semantics/constant-context.json"
       ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
+      "review": "Independent constant-expression helper review 93eeb749: 42 original source observations plus 7 boundaries and 37 expanded observations passed. Explicit checked-occurrence invocation retains partial folds, same-path reuse, distinct NaN-array paths and persistent pool owner roots; nested compile-error order/lines and assignment barriers are checked. Original source, exact oracle streams/status/commands and implementation fingerprints are retained. Ordinary compiler scheduling, runtime pool installation, complete constant-expression kinds and source occurrence-identity witnesses remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",
@@ -7230,18 +7236,23 @@
     {
       "id": "static.constant-fold-diagnostics",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [
         "static.independent-compile-phase",
         "static.constant-expression"
       ],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/constant_context.py",
+        "coverage/semantics/constant-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent constant-expression helper review 93eeb749: 42 original source observations plus 7 boundaries and 37 expanded observations passed. Explicit checked-occurrence invocation retains partial folds, same-path reuse, distinct NaN-array paths and persistent pool owner roots; nested compile-error order/lines and assignment barriers are checked. Original source, exact oracle streams/status/commands and implementation fingerprints are retained. Ordinary compiler scheduling, runtime pool installation, complete constant-expression kinds and source occurrence-identity witnesses remain pending.",
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-read-literal-prepass.php",
@@ -7276,18 +7287,23 @@
     {
       "id": "containers.literal-occurrence-identity",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [
         "coercion.identity"
       ],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/45-constant-context.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/constant_context.py",
+        "coverage/semantics/constant-context.json"
+      ],
       "source_tests": [],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": null,
+      "review": "Independent constant-expression helper review 93eeb749: 42 original source observations plus 7 boundaries and 37 expanded observations passed. Explicit checked-occurrence invocation retains partial folds, same-path reuse, distinct NaN-array paths and persistent pool owner roots; nested compile-error order/lines and assignment barriers are checked. Original source, exact oracle streams/status/commands and implementation fingerprints are retained. Ordinary compiler scheduling, runtime pool installation, complete constant-expression kinds and source occurrence-identity witnesses remain pending.",
       "notes": "Constant-array identity is associated with the source literal occurrence; repeating its evaluation can share identity while distinct occurrences do not. NaN strict comparison makes this observable even with OPcache disabled.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-literal-occurrence-identity.php"
