@@ -1,0 +1,56 @@
+{
+  "scope": "Targeted canonical guarded coalescing assignment compiler admission and affected-family regressions; old5336 full compiler report remains historical",
+  "code_commit": "f073c750",
+  "fingerprint": {
+    "sha256": "cc1d3e5e3b275b6c2aa1c82e45c10931385542cbac34b35b31b56b45c53de0d5",
+    "files": 826,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "records": [
+    {
+      "report": "coverage/semantics/coalesce-assignment-compiler.json",
+      "sha256": "ecd5f5ba3d171f649fbdd37dd28f1be9e9e770f6b646c8e6b2b191e804ae2203",
+      "scope": "84 exact compiler traces,22 read/write/effect controls and8 malformed memoization/write descriptor controls; runtime source execution tested separately",
+      "native_traces": 84,
+      "source_controls": 22
+    },
+    {
+      "report": "coverage/semantics/foreach-source-compiler.json",
+      "sha256": "4f13184d037f09e3cb0bab24079461c7815d3b54662fbbc195e012e5533b5c2c",
+      "scope": "Foreach compiler/body contexts and access metadata; the remaining object-dependent boundary does not count as a native agreement",
+      "native_traces": 90,
+      "source_controls": 20
+    },
+    {
+      "report": "coverage/semantics/destructuring-compiler.json",
+      "sha256": "739281eb48ca6ef24eaabf55a7142fdb358e3e7bc2c720d780f8f910bae34cb6",
+      "scope": "destructuring/list and variable/coalesce compiler checks; pending calls and object access tracked separately",
+      "native_traces": 111,
+      "source_controls": 32
+    },
+    {
+      "report": "coverage/semantics/quiet-access-compiler.json",
+      "sha256": "6c1af323ec3ea76ae3cdf574a304920f3f8b0537d92700018723880449bf6b6b",
+      "scope": "240 exact header/name/quiet compiler traces and12 compiler state/access/operand controls; source execution tested separately",
+      "native_traces": 240,
+      "source_controls": 12
+    }
+  ],
+  "consumer_audit": "source_compiler,foreach_source_compiler,destructuring_compiler,quiet_access_compiler consume unchanged ppexprdone; no CODEWRITE branch or explicit ppstate constructor update required. Runtime code descriptor consumers changed in33.",
+  "malformed_memo_write_controls": 8,
+  "pending": "One foreach nullsafe/object compiler boundary remains explicit; computed TMPGLOBALS runtime boundary remains request-environment work."
+}
