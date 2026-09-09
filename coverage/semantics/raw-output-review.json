@@ -1,0 +1,52 @@
+{
+  "result": "pass",
+  "scope": "independent repeat-run raw path and historical byte preservation",
+  "validate_sha256": "8937624282e5545b59bf95d71cafcae41a77dcbc3a2e971132b451e0f697c8ab",
+  "runs": [
+    {
+      "path": "coverage/results-semantic-source-selected-jwanc137.jsonl",
+      "sha256": "c145dd0e459b36c1567c3503042856cfb14befa7b911ec7a55a70673c40465b1",
+      "records": 1
+    },
+    {
+      "path": "coverage/results-semantic-source-selected-x3_0jkby.jsonl",
+      "sha256": "b1ef35072769861c3dac78ce508ef2ff8497c2e55cb9fb5bb894dde585e79c8f",
+      "records": 1
+    }
+  ],
+  "preserved": {
+    "coverage/results-semantic-source.jsonl": "a1df0fdfcf893b067b4a581ad7a2c9e8c82a1014cfb542732b5f13cd2693695a",
+    "coverage/results-semantic-source-selected.jsonl": "841d9a646dcaf859348d0c6214025ebfefdb51d53b7a2cee2bbd5653867d8ef3",
+    "coverage/semantics/source.json": "96f8672b5c951d0574bb680b25065cb448191b36aa2a66330c1e4054a7eb32e8",
+    "coverage/semantics/source-selected.json": "ca1984c602fef1090d113f15c0407f5d77a3840fba8e23d12bd97d6c2462e886",
+    "coverage/results-semantic-source-selected-poq7k11u.jsonl": "c21a945b3eb92f85ce2e7a480be73ad840e950515ba894733ec9f0a3d5b9f420",
+    "coverage/results-semantic-source-selected-y8tlg59y.jsonl": "d0ccd324013ee3ec2dd1f193973e0131b4a79104ec8df3fa6d2892c785ef8841"
+  },
+  "code_commit": "de04828e",
+  "author_evidence": {
+    "scope": "two selected source validation runs; exclusive paths and preserved previous selected/broad raw bytes; historical summary restored",
+    "runs": [
+      {
+        "path": "coverage/results-semantic-source-selected-poq7k11u.jsonl",
+        "sha256": "c21a945b3eb92f85ce2e7a480be73ad840e950515ba894733ec9f0a3d5b9f420",
+        "records": 1,
+        "negative_checks": 25,
+        "stdout": "1 differential cases and 25 outcome negatives passed\n"
+      },
+      {
+        "path": "coverage/results-semantic-source-selected-y8tlg59y.jsonl",
+        "sha256": "d0ccd324013ee3ec2dd1f193973e0131b4a79104ec8df3fa6d2892c785ef8841",
+        "records": 1,
+        "negative_checks": 25,
+        "stdout": "1 differential cases and 25 outcome negatives passed\n"
+      }
+    ],
+    "historical_sha256": {
+      "coverage/results-semantic-source.jsonl": "a1df0fdfcf893b067b4a581ad7a2c9e8c82a1014cfb542732b5f13cd2693695a",
+      "coverage/results-semantic-source-selected.jsonl": "841d9a646dcaf859348d0c6214025ebfefdb51d53b7a2cee2bbd5653867d8ef3",
+      "coverage/semantics/source.json": "96f8672b5c951d0574bb680b25065cb448191b36aa2a66330c1e4054a7eb32e8",
+      "coverage/semantics/source-selected.json": "ca1984c602fef1090d113f15c0407f5d77a3840fba8e23d12bd97d6c2462e886"
+    }
+  },
+  "review": "NamedTemporaryFile exclusively creates each raw output; selected and broad report consumers retain the existing raw_results path/hash/records contract. Summary names remain latest-run pointers. No semantic rule change or full current campaign claim."
+}

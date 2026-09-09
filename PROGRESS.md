@@ -64,11 +64,13 @@ acceptance never establish ordinary source execution or full family coverage.
 
 ## Next bounded work
 
-First protect raw report history with exclusive per-run output paths. A selected
-preflight overwrote an ignored historical raw file; independent recovery restored
-its exact original SHA-256, documented in
-[recovery proof](coverage/semantics/ordinary-selected-raw-recovery.json). Preserve
-completed raw reports instead of depending on manual backups.
+Raw output protection **`de04828e`** now creates an exclusive file for every run.
+[Independent review](coverage/semantics/raw-output-review.json) repeats the same
+selection twice (one source +25 negatives each), verifies distinct paths and
+preserves both prior runs and historical selected/full evidence byte for byte.
+The accepted full campaign above is historical after this harness change; its
+semantic rules are unchanged. The earlier exact
+[recovery proof](coverage/semantics/ordinary-selected-raw-recovery.json) remains preserved.
 
 The immutable `.tools/runtime-list-candidate` contains unpublished unpack/list,
 constant-result effects and nonvariable-coalesce rules. Independent 44 source

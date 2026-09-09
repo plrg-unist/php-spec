@@ -41,14 +41,12 @@ were lost. The production independent62 replay also initially used its old priva
 report filename; its truthful production fingerprint was preserved, then the
 private gate rerun without claiming old private report byte identity.
 
-Runtime3 owns the next small harness fix, after this accepted freeze: exclusive
-per-run raw filenames. Only validate.py hardcodes the raw filename; consumers
-follow `report.raw_results.path`, and `.gitignore` covers `coverage/results*.jsonl`.
-`NamedTemporaryFile` with the existing prefix is sufficient. Repeat one selected
-prefix twice and verify distinct paths, first-run byte/hash preservation, and
-unchanged historical raw files. No full source rerun is needed for this narrow
-IO fix if focused checks pass; the accepted full report then remains historical.
-Also refresh the stale source-report scope wording. Review before commit.
+Harness code **de04828e** now creates exclusive per-run raw files and refreshes
+scope wording. Author and independent repeat gates each pass two selected runs
+(one source +25 negatives). Distinct paths, first-run preservation and historical
+raw/summary identity are bound in `coverage/semantics/raw-output-review.json`.
+No semantic rule changed; the earlier full report remains historical. Latest-run
+summary filenames remain intentional pointers, with raw paths/hash in each report.
 
 ## Frozen next list/unpack/effect candidate
 
