@@ -1,0 +1,84 @@
+;; User parameter/return scalar conversion, pinned zend_check_type semantics.
+;; Selection is pure; existing scalar helpers emit conversion diagnostics.
+syntax ptypeconversion = TYPEVALUE pvalue | TYPEINTEGER pvalue | TYPESTRING pvalue | TYPEBOOL pvalue | TYPEREJECT
+
+dec $typed_tag(pvalue) : text
+def $typed_tag(PNULL) = "null"
+def $typed_tag(PBOOL true) = "true"
+def $typed_tag(PBOOL false) = "false"
+def $typed_tag(PINT i) = "int"
+def $typed_tag(PFLOAT n) = "float"
+def $typed_tag(PSTRING n*) = "string"
+def $typed_tag(PARRAY n) = "array"
+dec $typed_exact(ptbranch*, pvalue) : bool
+def $typed_exact(ptbranch*, pvalue) = (ptbranch* = eps \/ "mixed" <- $ptmasks(ptbranch*) \/ $typed_tag(pvalue) <- $ptmasks(ptbranch*))
+dec $typed_number(pvalue) : pnumber?
+def $typed_number(PBOOL false) = (NINT 0)
+def $typed_number(PBOOL true) = (NINT 1)
+def $typed_number(PINT i) = (NINT i)
+def $typed_number(PFLOAT n) = (NFLOAT n)
+def $typed_number(PSTRING n*) = (pnumber) -- if $numeric_string(n*) = FULLNUM pnumber
+def $typed_number(pvalue) = eps -- otherwise
+
+dec $typed_integer_fit(pnumber) : bool
+def $typed_integer_fit(NINT i) = true
+def $typed_integer_fit(NFLOAT n) = $fparts_fits($float_decode(n))
+dec $typed_string_value(pvalue) : bool
+def $typed_string_value(PSTRING n*) = true
+def $typed_string_value(pvalue) = false -- otherwise
+dec $typed_scalar(pvalue) : bool
+def $typed_scalar(PBOOL b) = true
+def $typed_scalar(PINT i) = true
+def $typed_scalar(PFLOAT n) = true
+def $typed_scalar(PSTRING n*) = true
+def $typed_scalar(pvalue) = false -- otherwise
+
+dec $typed_int_conversion(text*, pvalue) : ptypeconversion?
+def $typed_int_conversion(text*, pvalue) = (TYPEVALUE $number_value(pnumber))
+  -- if "int" <- text* /\ "float" <- text*
+  -- if $typed_string_value(pvalue)
+  -- if $typed_number(pvalue) = (pnumber)
+def $typed_int_conversion(text*, pvalue) = (TYPEINTEGER pvalue)
+  -- if "int" <- text*
+  -- if ~("float" <- text* /\ $typed_string_value(pvalue))
+  -- if $typed_number(pvalue) = (pnumber)
+  -- if $typed_integer_fit(pnumber)
+def $typed_int_conversion(text*, pvalue) = eps -- otherwise
+
+dec $typed_after_float(text*, pvalue) : ptypeconversion
+dec $typed_after_string(text*, pvalue) : ptypeconversion
+dec $typed_after_int(text*, pvalue) : ptypeconversion
+def $typed_after_int(text*, pvalue) = TYPEVALUE (PFLOAT $num_float(pnumber))
+  -- if "float" <- text*
+  -- if $typed_number(pvalue) = (pnumber)
+def $typed_after_int(text*, pvalue) = $typed_after_float(text*, pvalue) -- otherwise
+def $typed_after_float(text*, pvalue) = TYPESTRING pvalue
+  -- if "string" <- text*
+  -- if $typed_scalar(pvalue)
+def $typed_after_float(text*, pvalue) = $typed_after_string(text*, pvalue) -- otherwise
+def $typed_after_string(text*, pvalue) = TYPEBOOL pvalue
+  -- if "true" <- text* /\ "false" <- text*
+  -- if $typed_scalar(pvalue)
+def $typed_after_string(text*, pvalue) = TYPEREJECT -- otherwise
+
+dec $typed_weak(text*, pvalue) : ptypeconversion
+def $typed_weak(text*, pvalue) = ptypeconversion
+  -- if $typed_int_conversion(text*, pvalue) = (ptypeconversion)
+def $typed_weak(text*, pvalue) = $typed_after_int(text*, pvalue)
+  -- if $typed_int_conversion(text*, pvalue) = eps
+
+dec $typed_conversion(ptbranch*, pvalue, bool) : ptypeconversion
+def $typed_conversion(ptbranch*, pvalue, b) = TYPEVALUE pvalue
+  -- if $typed_exact(ptbranch*, pvalue)
+def $typed_conversion(ptbranch*, PINT i, true) = TYPEVALUE (PFLOAT $float_of_int(i))
+  -- if ~$typed_exact(ptbranch*, PINT i)
+  -- if "float" <- $ptmasks(ptbranch*)
+def $typed_conversion(ptbranch*, pvalue, false) = $typed_weak($ptmasks(ptbranch*), pvalue)
+  -- if ~$typed_exact(ptbranch*, pvalue)
+def $typed_conversion(ptbranch*, pvalue, b) = TYPEREJECT -- otherwise
+
+dec $typed_apply(pstate, ptypeconversion, int) : pstate
+def $typed_apply(S, TYPEVALUE pvalue, z) = S[.RESULT = KNOWN pvalue]
+def $typed_apply(S, TYPEINTEGER pvalue, z) = $integer_coerce(S, pvalue, z)
+def $typed_apply(S, TYPESTRING pvalue, z) = $stringify(S, pvalue, z)
+def $typed_apply(S, TYPEBOOL pvalue, z) = $truth_value(S, pvalue, z)

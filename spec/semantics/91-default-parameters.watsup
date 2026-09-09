@@ -1,3 +1,5 @@
+dec $typed_default_store(pstate, pfunction, nat, pvalue) : pstate
+dec $typed_stored_default(psdefault, pvalue) : pvalue
 ;; Omitted positional receives use the actual callee and the shared expression
 ;; machine. Cache entries own values; allocation classes never own heap nodes.
 dec $default_at(pdefault*, nat) : pdefault?
@@ -43,20 +45,25 @@ def $default_cache_value(S, porigin, pvalue, pvalueclass) = S
   -- if ~$default_cacheable(pvalueclass)
 
 dec $default_next(pstate, pfunction, nat) : ptask*
-def $default_next(S, pfunction, n) = [DEFAULT_RECEIVE pfunction.ORIGIN n] -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+def $default_next(S, pfunction, n) = [DEFAULT_RECEIVE pfunction.ORIGIN n]
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if ~$typed_parameters(pfunction.SIGNATURE.PARAMETERS)
+def $default_next(S, pfunction, n) = [TYPE_RECEIVE pfunction.ORIGIN n]
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $typed_parameters(pfunction.SIGNATURE.PARAMETERS)
 def $default_next(S, pfunction, n) = $function_tasks(S, pfunction) -- if n = |pfunction.SIGNATURE.PARAMETERS|
 dec $default_store(pstate, pfunction, nat, pvalue) : pstate
 def $default_store(S, pfunction, n, pvalue) = $write_name(S, psparam.NAME, pvalue)[.TODO = $default_next(S, pfunction, $(n + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
 
-rule PhpStep/default-stored: S ~> $default_store(S, pfunction, n, pvalue)
+rule PhpStep/default-stored: S ~> $default_store(S, pfunction, n, $typed_stored_default(pfunction.SIGNATURE.PARAMETERS[n].DEFAULT, pvalue))
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDSTORED
   -- if $compiled_read(S, pdefault.ORIGIN) = (pvalue)
-rule PhpStep/default-cached: S ~> $default_store(S, pfunction, n, pdefaultcache.VALUE)
+rule PhpStep/default-cached: S ~> $typed_default_store(S, pfunction, n, pdefaultcache.VALUE)
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
@@ -72,7 +79,7 @@ rule PhpStep/default-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_param, LI
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
   -- if $origin_node(S.SOURCES, pdefault.ORIGIN) = (expression)
   -- if porigin_param = $default_parameter_origin(porigin, n)
-rule PhpStep/default-bind: S ~> $default_store($default_cache_value(S_value[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
+rule PhpStep/default-bind: S ~> $typed_default_store($default_cache_value(S_value[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
   -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)

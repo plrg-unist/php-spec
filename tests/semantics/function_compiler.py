@@ -53,12 +53,12 @@ CASES = {
     'builtin-body-priority': b'<?php function strlen(){break;}',
     'builtin-case': b'<?php function STRLEN(){}',
     'builtin-namespace': b'<?php namespace N;function strlen(){}',
-}
-PENDING = {
     'void-return': b'<?php function f():void{return 1;}',
     'never-return': b'<?php function f():never{return;}',
-    'byref-return': b'<?php function &f(){return 1;}',
     'param-type': b'<?php function f(int $a){}',
+}
+PENDING = {
+    'byref-return': b'<?php function &f(){return 1;}',
     'variadic': b'<?php function f(...$a){}',
 }
 
@@ -109,7 +109,7 @@ def main():
             assertion = (f'dec $case{index}() : bool\ndef $case{index}() = true\n'
                          f'  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n')
             if name in PENDING:
-                reason = "function type, reference return or variadic activation"
+                reason = "dependent function type, reference return or variadic activation"
                 assertion += '  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED ' + json.dumps(reason) + ')\n'
             else:
                 assertion += '  -- if $pptrace(P) = ' + context.expected_events(events, file) + '\n'
