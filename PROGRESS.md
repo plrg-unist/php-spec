@@ -69,8 +69,10 @@ First-hole metadata `87341500` is independently accepted in `79951ad4`:
 original line witnesses. Nested unpack (`d4706937`) and original array kind
 (`09f33419`) remain reviewed prerequisites. All 16 genuine-list and six ordinary
 array-hole [phase originals](coverage/semantics/frontend-phase-originals-review.json)
-are independently repeated; their phase repairs remain unpublished. First-hole
-compiler consumption is still pending.
+are independently repeated. Genuine-list conversion `5c756e5e` now passes 20 exact
+skipped sources +25 negatives, 32 checked/printer profiles and independent review;
+14 reached originals remain explicitly Unsupported. First-hole compiler consumption
+and ordinary-array omission repair remain pending.
 
 ## Retained contracts
 
@@ -84,13 +86,14 @@ compiler consumption is still pending.
 ## Next gates and decisions
 
 Pair four inc/dec forms with compiler PPRW access, then compound lvalues and the
-remaining numeric/string operations. The private 77-source update draft is not
-admitted. Preserve acquisition timing, copied pre/post results, error lines,
+remaining numeric/string operations. The private update draft is not
+admitted; independent probes found missing array-prepass barriers, now under repair. Preserve acquisition timing, copied pre/post results, error lines,
 append legality and held locations. Coalescing assignment needs a separate quiet
 read and memoized write path.
 
-Genuine-list early conversion has a narrow private candidate and 18 independent
-skipped-phase sources. Publish and validate separately after the wrapper checkpoint.
+Genuine-list frontend conversion is reviewed as a compatible prerequisite; its
+full source refresh shares the upcoming inc/dec gate. Preserve reached-target
+errors as pending rather than counting Unsupported as agreement.
 Ordinary Array_ omissions should use nullable items with required first-omission
 context; the engine stores null holes and uses prior-element/compiler lines.
 No ArrayHole constructor is justified by current evidence. Gate checked schema,

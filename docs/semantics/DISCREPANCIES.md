@@ -267,8 +267,8 @@ First-hole token context is now preserved by `87341500`; the
 original line witnesses and adds 20 independent source/encoding profiles. Compiler
 consumption remains pending. A separate [genuine-list phase witness](../../coverage/semantics/destructuring-list-hole-phase-disagreement.json)
 records `list(array(,$x))=$a`: the frontend rejects empty array entries early,
-while the pinned compiler rejects the long-array assignment target. Repair its
-phase before source destructuring admission; no divergence is selected.
+while the pinned compiler rejects the long-array assignment target. `5c756e5e` repairs frontend acceptance and skipped-branch execution; reached
+destructuring checks remain pending. No divergence is selected.
 
 ## Reference-wrapped false dimension fetch: resolved source mismatch
 
@@ -299,7 +299,8 @@ records source and helper boundaries separately. No intentional divergence is se
 
 [Retained originals](../../coverage/semantics/frontend-phase-originals-review.json)
 add 16 genuine-list and six ordinary-array omission sources, including native-valid
-skipped branches currently rejected by the frontend. All 22 captures are independently repeated with exact native lint and frontend
-outcomes. Genuine-list conversion and ordinary Array_ omission representation
-remain separate open repairs; first-hole metadata is reviewed independently.
-No phase repair or runtime admission is claimed.
+skipped branches currently rejected by the frontend. All 22 original captures are independently repeated. Genuine-list conversion
+`5c756e5e` now preserves nested array targets until compiler visitation. Its
+[review](../../coverage/semantics/list-target-review.json) validates 20 skipped
+source cases and explicitly retains 14 reached originals as Unsupported. Ordinary
+Array_ omission representation remains open; this is not full destructuring admission.

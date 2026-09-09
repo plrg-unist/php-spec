@@ -51,8 +51,10 @@ No intentional divergence was selected. Original mismatch archives remain unchan
   first-hole and original array kind. Author `.tools/probe-list-targets-checked.py`
   passes 32 plain/UTF-16BE checked/printer/native-family profiles and two original
   source executions. Independent `.tools/review5-list-phase.json` adds 18 exact
-  skipped logical/prepass source programs with actual override hashes. Production
-  publication/repeat and phase status resolution remain required.
+  skipped logical/prepass source programs with actual override hashes. Production `5c756e5e` is now independently accepted in list-target-review.json:
+  20 exact skipped sources/25 negatives, 32 checked profiles, extra comment and
+  archive mutation checks. Fourteen reached originals remain Unsupported. Full
+  source refresh shares incdec activation; no complete destructuring claim.
 - Ordinary array omissions should use nullable Array_.items and first-omission
   context; no new ArrayHole node is justified. `zend_try_ct_eval_array` uses NULL
   entries and diagnoses at the preceding nonempty element's original AST line;
