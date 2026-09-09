@@ -1,0 +1,84 @@
+{
+  "scope": "Independent pre-repair user-constant compiler and allocation diagnosis; no paired source acceptance or family closure.",
+  "result": "originals retained; compiler boundary repair required",
+  "baseline": {
+    "sha256": "7399e812eb825917abc3249d514b7a5a26223be52fda9401d37269a03b9668b3",
+    "files": 884,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "compiler_candidate": {
+    "sha256": "4f4a24eb9505f49703750cebe8ac9e066fc4854420b10fec295a1f0813f5e799",
+    "files": 887,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "originals": {
+    "source_count": 56,
+    "native_lints": 56,
+    "old_unsupported": 56,
+    "exact_worker_responses": 112,
+    "clean_closures": 10
+  },
+  "compiler_diagnosis": {
+    "full_states": 23,
+    "unique_sources": 12,
+    "exact_worker_responses": 57,
+    "clean_closures": 4,
+    "findings": [
+      "Legal constant/property/nullsafe/static first-class callable expressions were incorrectly rejected as static invalid operations. Existing classconstant/classname lookup stayed explicitly pending.",
+      "Dynamic classconstant initializer had the wrong static diagnostic; static::X remained pending despite native static rejection.",
+      "First wrapper attempted execution after a successful constant compilation on an intentionally unpaired compiler-only candidate. Its exact interpreter_failure and closure are preserved; the complete rerun only checks compiler phases."
+    ]
+  },
+  "allocation_observations": [
+    "Empty and one-byte results can be refcounted. Binary bitwise string shortcuts require both operands to have length one; remaining binary bitwise string results allocate.",
+    "When both concatenation operands are empty, the right operand class survives. Opposite empty operand orders can change repeated-warning counts.",
+    "Empty array union/unpack results allocate. Runtime null-to-array cast yields the shared empty array, while compile-folded null cast creates an allocated empty array.",
+    "Interning a stored root string does not recursively intern literal array children. Named constant aliases and deferred concatenation preserve different long-string classes despite equal bytes."
+  ],
+  "reference_observations": [
+    "Known constant-DIM reference sends reject statically; forward sends report a runtime temporary-write Error.",
+    "Reference foreach over a constant array mutates a temporary copy. Value-call and foreach-copy witnesses preserve the constant through local nested reference writes."
+  ],
+  "namespace_observation": "Runtime normalizes namespace prefixes only; terminal constant names and import aliases remain case-sensitive. Compile-time seen-symbol spelling is a separate pinned behavior.",
+  "archive": {
+    "index": "coverage/semantics/constant-review-diagnosis-originals.json",
+    "path": "coverage/semantics/constant-review-diagnosis-originals.tar.xz",
+    "sha256": "92303fda2d24b84b86338f18e520615d1abcffd07802313172fcb1b6b76a6545",
+    "bytes": 248168,
+    "paths": 3226,
+    "new_payloads": 921
+  },
+  "raw_audits": [
+    ".tools/review9-constant-supplement-audit.json",
+    ".tools/review9-constant-boundary-audit.json"
+  ],
+  "pending": "Source-derived allocation transfer and source-root/public-state guards require independent review on a frozen paired implementation. No value-only cacheability heuristic is accepted."
+}
