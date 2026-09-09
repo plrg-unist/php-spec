@@ -1,5 +1,5 @@
 {
-  "selection_prefix": "compiler-temporary",
+  "selection_prefix": "reference-wrapper-",
   "budgets": {
     "transitions": 100000,
     "worker_seconds": 30,
@@ -10,7 +10,7 @@
     "scalar": 6614,
     "array_keys": 7116
   },
-  "scope": "authored scalar, variable storage and array literal/read/write/unset plus variable and element reference-source checked execution fixtures",
+  "scope": "authored scalar, storage, array, reference, namespace constant, control and truth-expression checked source execution fixtures",
   "profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -56,8 +56,8 @@
     "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
   },
   "fingerprints": {
-    "sha256": "57bff379390b781cf115e65da85ebdc2c0852d7c07282f8be99c0cc058cac266",
-    "files": 763,
+    "sha256": "1f71f10d643374f0d0ff046d2139315e8d9692f5c0ec1a07a6e4849ccf0776ec",
+    "files": 779,
     "scope": [
       "frontend",
       "adapter",
@@ -70,139 +70,134 @@
       "Makefile",
       "dune-project",
       "runtime binaries",
-      "encoding-spellings inventory"
+      "encoding-spellings inventory",
+      "comparison oracle archives"
     ]
   },
   "results": [
     {
-      "id": "compiler-temporary-literal-string-target-error",
-      "source_sha256": "09c2861259aad2fcf18cdc95663cb7be6c52c1e80ea230ff3dcf7f6b5298f1e8",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-target-rhs-order",
-      "source_sha256": "e6b00695ce4b90f3ff7f051fef7a0eb24525809d6c939dcac8ed730544412952",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-target-key-not-compiled",
-      "source_sha256": "f364e4af69497ea8b973404720ed51ecf30d8f6f1b004cafaca4c4dcbcbb6402",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-target-read-error-not-run",
-      "source_sha256": "52cf9ebfa649cf3cf3b13a5929ca31d24c2e1328dfdfd892b10c9d358d4b19aa",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-target-before-runtime",
-      "source_sha256": "060c435e5cdc9d53c1089f18579b4a642fc198a6dfb7be320b45ff0a81ab5977",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-target-unset",
-      "source_sha256": "4c94d86cf417dfa6bfde5f9513c32ba32b9bd65de494e167079677727e6d6017",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-target-reference",
-      "source_sha256": "ae78d619dd9f68ed1d087aae8285774189f499bf4f9834ba1bcbfa612febbc2b",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-source-reference",
-      "source_sha256": "fbed25a62a14e7729e0a829817fd8d8b1fb46f9ae93209f1f7118411bb3df92a",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-array-target",
-      "source_sha256": "5e88d19b3a109b68539b53bc7d000fae0ee40d32cf72f13b67d930ac5f8c755b",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-array-target-prepass",
-      "source_sha256": "08cf0c4840ca40eddf3fcd917820786d529afb6e2082da9abc12c97b67f7d4b1",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-int-target",
-      "source_sha256": "dc9f698dcb6b8c2ab4c3b1897bb96f16c967d4e5d85f95b6dd568b2a4dc91b34",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-float-target",
-      "source_sha256": "f20135810e30e0fbd0b2e696f99e58eba4a249f4cd5659050807a8076be22743",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-const-target",
-      "source_sha256": "afcb70ad24c311f69f8935a917ca5aed3cd57c6f109bea6a9a5701dba1e9bdac",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-assignment-target",
-      "source_sha256": "0a9c098d44214a3aef678062beb1be106b627c34cfdf6a13a12a332fa9ff48f9",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-ref-assignment-target",
-      "source_sha256": "47bc505ffa6749a3f9547ed96a2830848765fb419695acef4793d52d1543b0ab",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-unary-target",
-      "source_sha256": "488f54a4bb88cdea3ef7f82c0b9ffd8910aca90f2a510eb65851cb7bea503ee2",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-multiline-target",
-      "source_sha256": "f02cef48b3d04f5a4aa2544af1ec69a1355735ef12536137dff1959d5a96faf8",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-string-multiline-target",
-      "source_sha256": "af1c3bffd6af24ec9d0524c564753316fd5a76e087122e6d2f3debdde74cabe9",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-nowdoc-target",
-      "source_sha256": "941d3e3f1ab263dbd946e9fb71d2f5e22aba160db376ce6cc108405511c183c9",
-      "semantic_status": "static_rejection",
-      "comparison": "pass"
-    },
-    {
-      "id": "compiler-temporary-literal-read-control",
-      "source_sha256": "ab909a06d80079a92209d15c41820621cb302ae5a550a1939bc87c62eb09716e",
+      "id": "reference-wrapper-nested-reference",
+      "source_sha256": "d3b7610c8f8c7084685a286c602ef3757f3ccc3476220fc6e67a3b9b3d9d1066",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "compiler-temporary-literal-array-read-control",
-      "source_sha256": "d2138f782b79cd0478204a17c42c959805f8dd8362fb82a9091ec00a2e9c5959",
+      "id": "reference-wrapper-nested-singleton-reference",
+      "source_sha256": "223b27723d8b876307e5d88b6f7987c261b722512a0bcd632cde746eda34719d",
       "semantic_status": "normal",
       "comparison": "pass"
     },
     {
-      "id": "compiler-temporary-variable-target-control",
-      "source_sha256": "3eff5d42efa4601bdee331242cb5dcd44df12f207136571ea5a89e65abe5e851",
+      "id": "reference-wrapper-nested-plain-control",
+      "source_sha256": "3b41b7713aa45fd7765f05b59c738e24cb2fe00f9699e6897bb5ce374b64d73f",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-reference-fetch",
+      "source_sha256": "4c34e5d858e265197600d4dd47d0a89d9b7499f33e94a52245af21a3fe814cd8",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-final-reference",
+      "source_sha256": "5448c08f1c3616ac35c9a34da826f32eda8231bcbb4c44666d357ef113832271",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-final-singleton-reference",
+      "source_sha256": "100cdcd8041e5bcf671c164270d399032834eae54d30fd4c1d8ab6b9e88efbac",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-final-plain",
+      "source_sha256": "3fd0965a8fc5fe35658ed8614291a4aa2b043904ddc7695e809168cd80fe0f8a",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-write-through-history",
+      "source_sha256": "a678ca56ef97abcbcecec4ab0ca63a12b7c0012b3b41ceea5198626432cea0ed",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-fresh-binding-after-unset",
+      "source_sha256": "8e41548d42fc5ab09f37f6107d0142979d56bba38359eadee803172b3e6685a3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-cow-singleton-unwrapping",
+      "source_sha256": "a5b6a54da9afce676f9270497a827dd533e3fd1bab6c5388a1ed0550ab7c1b71",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-cow-shared-reference",
+      "source_sha256": "5e092de5decc6c55f4a76f085c32f51eaf5723d9f1b616d35c42b6c2ab16ab39",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-value-copy-is-plain",
+      "source_sha256": "c69771498c329fcd6897c58d43a5cce65c712114e7988df5621fef5360ac6b3e",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-dead-cycle-reference",
+      "source_sha256": "febe48e6286aeec21e5796bc8bb723d57a480458b787e31f112910bd95502480",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-element-singleton-reference",
+      "source_sha256": "c876a7dc3a84fbb8eef1a3271b7c2c6eb7fa47ac114c81f87a5f7f626a6623b1",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-alias-chain-history",
+      "source_sha256": "d923443e9f1740306201eeb64602157f0e57cc09af9b103e76d3523cad8b8fac",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-loop-wrapper-history",
+      "source_sha256": "486395038642dd27aadfea00667ac7626cbee5d8daaf018aef4ac36b899eb94c",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-loop-wrapper-cow",
+      "source_sha256": "ab70944f60bbde15b18433b54e8f30e804a9a79db22fd95dceb372cc548b1b78",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-nested-unset-reference",
+      "source_sha256": "bea7ac00c3d537564b143b4e33b676fffe3bf009b3b90846bc49f61cb9eba679",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-nested-unset-singleton",
+      "source_sha256": "d2a115e5a230cbe783643ca5cc12abc21858cd7ede1aad1513f225c94e389533",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-nested-unset-plain",
+      "source_sha256": "957aafcddfc9059353a875788c62ce5737ff3289df71c5aa992100fcec492df3",
+      "semantic_status": "normal",
+      "comparison": "pass"
+    },
+    {
+      "id": "reference-wrapper-final-unset-reference",
+      "source_sha256": "1c224ef1f664e4f8cd9b427ef88bc69a73379702fc9d68a408afbe1297ffd185",
       "semantic_status": "normal",
       "comparison": "pass"
     }
@@ -212,7 +207,7 @@
       "source": "PD9waHAgc3RybGVuKCJhIik7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-y9fnlcuq/unsupported.php"
+        "/tmp/php-semantics-jok0j8ft/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -231,7 +226,7 @@
       "source": "PD9waHAgZWNobyBQSFBfVkVSU0lPTjs=",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-y9fnlcuq/unsupported.php"
+        "/tmp/php-semantics-jok0j8ft/unsupported.php"
       ],
       "exit_status": 1,
       "observation": {
@@ -250,7 +245,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-y9fnlcuq/unsupported.php",
+        "/tmp/php-semantics-jok0j8ft/unsupported.php",
         "--steps",
         "0"
       ],
@@ -271,7 +266,7 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-y9fnlcuq/unsupported.php",
+        "/tmp/php-semantics-jok0j8ft/unsupported.php",
         "--timeout",
         "0.000001"
       ],
@@ -284,12 +279,12 @@
       "source": "PD9waHAgZWNobyAieCI7",
       "command": [
         "/home/user/workspace/php-spec/bin/php-semantics",
-        "/tmp/php-semantics-y9fnlcuq/unsupported.php.missing"
+        "/tmp/php-semantics-jok0j8ft/unsupported.php.missing"
       ],
       "exit_status": 1,
       "observation": {
         "status": "runner_failure",
-        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-y9fnlcuq/unsupported.php.missing'"
+        "message": "[Errno 2] No such file or directory: '/tmp/php-semantics-jok0j8ft/unsupported.php.missing'"
       }
     },
     {
@@ -503,6 +498,27 @@
       }
     },
     {
+      "source": "PD9waHAgZm9yKDs7KTs=",
+      "command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/tmp/php-semantics-jok0j8ft/unsupported.php",
+        "--steps",
+        "40"
+      ],
+      "exit_status": 1,
+      "observation": {
+        "status": "budget_exhausted",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": null,
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      }
+    },
+    {
       "input": {
         "op": "execute",
         "ast": {
@@ -532,7 +548,7 @@
           ]
         },
         "steps": 100,
-        "filename": "L3RtcC9waHAtc2VtYW50aWNzLXk5Zm5sY3VxL3Vuc3VwcG9ydGVkLnBocA=="
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLWpvazBqOGZ0L3Vuc3VwcG9ydGVkLnBocA=="
       },
       "exit_status": 0,
       "observation": {
@@ -548,6 +564,7 @@
           },
           "ENV": [],
           "STORE": [],
+          "REFCELLS": [],
           "RESULT": {
             "tag": "KNOWN",
             "args": [
@@ -763,14 +780,14 @@
                   "99",
                   "115",
                   "45",
-                  "121",
-                  "57",
+                  "106",
+                  "111",
+                  "107",
+                  "48",
+                  "106",
+                  "56",
                   "102",
-                  "110",
-                  "108",
-                  "99",
-                  "117",
-                  "113",
+                  "116",
                   "47",
                   "117",
                   "110",
@@ -829,7 +846,7 @@
           ]
         },
         "steps": 100,
-        "filename": "L3RtcC9waHAtc2VtYW50aWNzLXk5Zm5sY3VxL3Vuc3VwcG9ydGVkLnBocA=="
+        "filename": "L3RtcC9waHAtc2VtYW50aWNzLWpvazBqOGZ0L3Vuc3VwcG9ydGVkLnBocA=="
       },
       "exit_status": 0,
       "observation": {
@@ -845,6 +862,7 @@
           },
           "ENV": [],
           "STORE": [],
+          "REFCELLS": [],
           "RESULT": {
             "tag": "KNOWN",
             "args": [
@@ -1081,14 +1099,14 @@
                   "99",
                   "115",
                   "45",
-                  "121",
-                  "57",
+                  "106",
+                  "111",
+                  "107",
+                  "48",
+                  "106",
+                  "56",
                   "102",
-                  "110",
-                  "108",
-                  "99",
-                  "117",
-                  "113",
+                  "116",
                   "47",
                   "117",
                   "110",
@@ -1153,6 +1171,7 @@
           },
           "ENV": [],
           "STORE": [],
+          "REFCELLS": [],
           "RESULT": {
             "tag": "KNOWN",
             "args": [
@@ -1375,6 +1394,7 @@
           },
           "ENV": [],
           "STORE": [],
+          "REFCELLS": [],
           "RESULT": {
             "tag": "KNOWN",
             "args": [
@@ -1612,6 +1632,7 @@
           },
           "ENV": [],
           "STORE": [],
+          "REFCELLS": [],
           "RESULT": {
             "tag": "KNOWN",
             "args": [
@@ -1935,7 +1956,7 @@
   ],
   "raw_results": {
     "path": "coverage/results-semantic-source-selected.jsonl",
-    "sha256": "22f3fbdb305d4d5c91e08d6a29d9c66b02162972b141a367bbd5840b397e0a98",
-    "records": 22
+    "sha256": "477ee15e584acc2446ea7767866f91b96361c1ee0056c843229096d3bc39a6a6",
+    "records": 21
   }
 }
