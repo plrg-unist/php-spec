@@ -47,6 +47,10 @@ originals show scalar/empty results can warn only on the first omitted call,
 while refcounted array/string results can warn on every call. Signature17's private
 suspension prototype remains historical877 helper preparation, with no defaults
 source activation. Types, reference returns and remaining callable protocols follow.
+Independent [preparation](coverage/semantics/default-review-preparation.json) retains
+106 native/current884 originals; the separate
+[diagnosis](coverage/semantics/constant-review-diagnosis.json) adds 56 originals and
+frozen887 compiler boundary failures. Allocation rules remain under review.
 The earlier reference [originals](coverage/semantics/reference-parameter-review-preparation.json)
 and [DIM diagnosis](coverage/semantics/reference-parameter-review-diagnosis.json)
 retain their original Unsupported/disagreement states. All seven existing pending

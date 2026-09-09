@@ -11,7 +11,8 @@ source admission is claimed by this plan.
 1. Complete ordinary user-constant declaration, lookup and value ownership through
    compiler88/runtime89. Positive defaults need this prerequisite. Preserve
    declaration-time activation, sequential declarations, namespace/import/fallback
-   resolution, case-sensitive names, duplicate diagnostics, selected/skipped
+   resolution, case-insensitive namespace prefixes and case-sensitive terminal
+   names, duplicate diagnostics, selected/skipped
    constant-expression branches, original lines and abrupt cleanup. Constant table
    values must own their arrays and preserve COW across reads and function calls.
 2. Integrate untyped positional defaults through compiler90/runtime91, starting
@@ -52,6 +53,8 @@ results. String length alone does not identify cacheability. Resolve the precise
 result/provenance contract against pinned source and original controls before
 admission. Cache entries and constant values must retain their actual ownership;
 failures must not install successful cache entries or execute the body.
+Empty strings and arrays can also be allocated; constant folding and runtime
+null-to-array casts differ. Transfer rules must preserve these source operations.
 
 ## Evidence and review gates
 
@@ -62,6 +65,9 @@ invalid defaults, required-after-optional, declaration magic/imports, repeated
 array/reference defaults, escaped aliases, warning-cache result kinds and user
 constant activation/fallback. Old agreeing cases remain agreements under their
 original identity; Unsupported, timeouts and setup errors remain separate.
+The [106-source preparation](../../coverage/semantics/default-review-preparation.json)
+and [56-source diagnosis](../../coverage/semantics/constant-review-diagnosis.json)
+retain the exact old states, allocation observations and compiler boundary failures.
 
 Before each acceptance unit, replay exact native sources on frozen paired inputs,
 check descriptor projections and bounded public metadata corruptions, and run
