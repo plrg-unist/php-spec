@@ -15,8 +15,9 @@ NAME_CHECKS={
  'literal-global-priority':['P.FOLD.FACTS = eps'],
  'computed-global-priority':['P.COMPLETION = PPCNORMAL'],
 }
+CASES = {**CASES, 'function-body-magic': b'<?php function f(){echo __FUNCTION__;}'}
+NAME_CHECKS['function-body-magic'] = ['P.COMPLETION = PPCNORMAL', 'P.FUNCTIONS = [pfunction]', 'pfunction.NAME = [102]', 'P.FOLD.FUNCTION = eps']
 DECLARATIONS={
- 'function':b'<?php function f(){echo __FUNCTION__;}',
  'class':b'<?php class C { const X=__CLASS__; }',
  'trait':b'<?php trait T { const X=__TRAIT__; }',
  'closure':b'<?php $f=function(){echo __FUNCTION__;};',
@@ -108,7 +109,7 @@ def main():
     finally:frontend.close();adapter.close()
     assert before==inputs(),'inputs changed during magic compiler checks'
     REPORT.parent.mkdir(parents=True,exist_ok=True)
-    REPORT.write_text(json.dumps({'scope':'Top-level magic only; declarations remain explicit pending boundaries','fingerprint':before,'profile':types.PROFILE,'records':records,'boundaries':boundaries,'fixtures':len(fixtures)},indent=2)+'\n')
-    print(f'Magic compiler: {len(records)} native lints,18 operand/fact checks,36 metadata,7 directory,4 declaration and3 skipped controls passed')
+    REPORT.write_text(json.dumps({'scope':'Top-level and named-function magic; class, trait and closure declarations remain explicit pending boundaries','fingerprint':before,'profile':types.PROFILE,'records':records,'boundaries':boundaries,'fixtures':len(fixtures)},indent=2)+'\n')
+    print(f'Magic compiler: {len(records)} native lints,18 operand/fact checks,36 metadata,7 directory,4 named-function context,3 pending declaration and3 skipped controls passed')
 
 if __name__=='__main__':main()

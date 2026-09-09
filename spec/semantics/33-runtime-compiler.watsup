@@ -1,3 +1,4 @@
+dec $compiled_argument(ppstate, pcpath) : pcodeexpr*
 ;; Ordered compilation is completed before any recorded work executes. Only
 ;; compact operand metadata is retained: compiler MEMORY is not runtime state.
 dec $code_at(pcode*, nat) : pcode?
@@ -7,6 +8,7 @@ def $code_at(pcode :: pcode_tail*, n) = (pcode)
 def $code_at(pcode :: pcode_tail*, n) = $code_at(pcode_tail*, n)
   -- if pcode.UNIT =/= n
 dec $code_expression(pcodeexpr*, pcpath) : (int, bool)?
+def $code_expression((CODEARG pcpath_arg) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
 def $code_expression((CODEEFFECT pcpath_effect) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
 def $code_expression((CODEWRITE pcpath_write z) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
 def $code_expression(eps, pcpath) = eps
@@ -44,6 +46,7 @@ def $code_write((CODEWRITE pcpath z) :: pcodeexpr*, pcpath) = (z)
 def $code_write((CODEWRITE pcpath_other z) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
   -- if pcpath_other =/= pcpath
 def $code_write((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $code_write((CODEARG pcpath_arg) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
 def $code_write((CODEEFFECT pcpath_other) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
 dec $runtime_write_line(pstate, pcpath) : int
 def $runtime_write_line(S, pcpath) = z
@@ -81,6 +84,7 @@ def $effect_ancestor((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_parent, pcpath_ch
   -- if $effect_below(pcpath, pcpath_child)
   -- if pcpath =/= pcpath_child
 def $effect_ancestor((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_ancestor((CODEARG pcpath) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
 def $effect_ancestor((CODEWRITE pcpath z) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
 def $effect_ancestor((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
   -- if ~($effect_below(pcpath_parent, pcpath) /\ $effect_below(pcpath, pcpath_child) /\ pcpath =/= pcpath_child)
@@ -90,6 +94,7 @@ def $effect_select((CODEEFFECT pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_par
   -- if $effect_below(pcpath_parent, pcpath)
   -- if ~$effect_ancestor(pcodeexpr_all*, pcpath_parent, pcpath)
 def $effect_select((CODEEXPR pcpath z b) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $effect_select((CODEARG pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
 def $effect_select((CODEWRITE pcpath z) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
 def $effect_select((CODEEFFECT pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
   -- if ~($effect_below(pcpath_parent, pcpath) /\ ~$effect_ancestor(pcodeexpr_all*, pcpath_parent, pcpath))
@@ -128,6 +133,7 @@ def $code_name((CODENAME pcpath_other n_name* n_fallback*?) :: pcodename*, pcpat
 
 dec $compiled_name(pstate, porigin) : peval?
 def $compiled_name(S, PORIGIN n pcpath) = ($constant_fetch(n_name*, n_fallback*?, z))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((n_name*, n_fallback*?))
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
@@ -199,7 +205,7 @@ def $enter_compiled_task(S, porigin, ptask, ptask_tail*) = S[.TODO = [ptask, ORI
 dec $compiled_operands(ppstate, ppexprdone*) : pcodeexpr*
 def $compiled_operands(P, eps) = eps
 def $compiled_operands(P, (PPCEFFECT pcpath) :: ppexprdone*) = (CODEEFFECT pcpath) :: $compiled_operands(P, ppexprdone*)
-def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = (CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps)) :: $compiled_operands(P, ppexprdone*)
+def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = $compiled_argument(P, pcpath) ++ [(CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps))] ++ $compiled_operands(P, ppexprdone*)
 dec $compiled_names((pcpath, pnreference)*) : pcodename*
 def $compiled_names(eps) = eps
 def $compiled_names((pcpath, pnreference) :: (pcpath_tail, pnreference_tail)*) = (CODENAME pcpath pnreference.RESOLVED pnreference.FALLBACK) :: $compiled_names((pcpath_tail, pnreference_tail)*)
@@ -223,7 +229,7 @@ def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: 
 dec $request_compile(pstate, ppstate) : pstate
 dec $compile_source_ready(pstate, ppstate) : pstate
 dec $compile_source(pstate, ppstate) : pstate
-def $compile_source(S, P) = $compile_source_ready($request_compile(S, P), P)
+def $compile_source(S, P) = $scope_check($compile_source_ready($request_compile(S, P), P))
 def $compile_source_ready(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
   -- if P.COMPLETION = PPCABRUPT pcompletion
 def $compile_source_ready(S, P) = $compiler_diagnostics(S[.SOURCES = [P.FOLD.SOURCE]], P.DIAGNOSTICS)
@@ -232,7 +238,7 @@ def $compile_source_ready(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGN
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_functions(S_installed, P.FUNCTIONS)[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if P.FOLD.MEMORY.REFCELLS = eps
@@ -246,3 +252,9 @@ def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed
   -- if S_installed.COMPLETION =/= NORMAL
 def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S[.COMPLETION = UNSUPPORTED "compiler variable storage in constant pool"]
   -- if (P.FOLD.MEMORY.ENV =/= eps \/ P.FOLD.MEMORY.STORE =/= eps \/ P.FOLD.MEMORY.REFCELLS =/= eps)
+
+;; Deferred fetch descriptors follow actual ordinary compiler access, including
+;; variable/dimension ancestors. Name and key expressions retain read access.
+def $compiled_argument(P, pcpath) = [CODEARG pcpath]
+  -- if $ppaccess(P, pcpath) = (PPF)
+def $compiled_argument(P, pcpath) = eps -- otherwise

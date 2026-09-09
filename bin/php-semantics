@@ -46,32 +46,43 @@ def observe(state, filename):
             severity, message, line = event['args']
             stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
+    stack = b''
+    for i, frame in enumerate(state.get('TRACE', [])):
+        stack += (b'#' + str(i).encode() + b' ' + bytes(map(int, frame['FILE']))
+                  + b'(' + str(frame['LINE']).encode() + b'): ' + bytes(map(int, frame['NAME']))
+                  + b'(' + bytes(map(int, frame['ARGTEXT'])) + b')\n')
+    stack += b'#' + str(len(state.get('TRACE', []))).encode() + b' {main}\n'
+    location = os.fsencode(filename)
+    origin = state.get('ERRORORIGIN')
+    if origin is not None:
+        for sourcefile in state['FILES']:
+            if sourcefile['args'][0] == origin['args'][0]:
+                location = bytes(map(int, sourcefile['args'][1]))
+                break
     diagnostic = None
-    status = {'NORMAL': 'normal', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection',
+    status = {'NORMAL': 'normal', 'FATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
     exit_status = 0 if tag == 'NORMAL' else None
     if tag == 'PHPERROR':
         name, line = bytes(map(int, fields[0])), int(fields[1])
         message = b'Undefined constant "' + name + b'"'
         diagnostic = {'class': 'Error', 'message': b64(message), 'line': line}
-        location = os.fsencode(filename)
         stderr += (b'Fatal error: Uncaught Error: ' + message + b' in ' + location + b':' + str(line).encode()
-                  + b'\nStack trace:\n#0 {main}\n  thrown in ' + location + b' on line ' + str(line).encode() + b'\n')
+                  + b'\nStack trace:\n' + stack + b'  thrown in ' + location + b' on line ' + str(line).encode() + b'\n')
         exit_status = 255
     elif tag == 'THROWN':
         classname, message, line = fields[0], bytes(map(int, fields[1])), int(fields[2])
         diagnostic = {'class': classname, 'message': b64(message), 'line': line}
-        location = os.fsencode(filename)
         stderr += (b'Fatal error: Uncaught ' + classname.encode() + b': ' + message + b' in ' + location
-                   + b':' + str(line).encode() + b'\nStack trace:\n#0 {main}\n  thrown in ' + location
+                   + b':' + str(line).encode() + b'\nStack trace:\n' + stack + b'  thrown in ' + location
                    + b' on line ' + str(line).encode() + b'\n')
         exit_status = 255
-    elif tag in {'STATICERROR', 'STATICBYTES'}:
+    elif tag in {'STATICERROR', 'STATICBYTES', 'FATAL'}:
         message = fields[0].encode() if tag == 'STATICERROR' else bytes(map(int, fields[0]))
         line = int(fields[1])
-        diagnostic = {'class': 'CompileError', 'message': b64(message), 'line': line}
+        diagnostic = {'class': 'Error' if tag == 'FATAL' else 'CompileError', 'message': b64(message), 'line': line}
         stderr += (b'Fatal error: ' + message + b' in ' + os.fsencode(filename)
-                  + b' on line ' + str(line).encode() + b'\nStack trace:\n#0 {main}\n')
+                  + b' on line ' + str(line).encode() + b'\nStack trace:\n' + stack)
         exit_status = 255
     return {'status': status, 'stdout': b64(stdout), 'stderr': b64(stderr),
             'exit_status': exit_status, 'diagnostic': diagnostic,

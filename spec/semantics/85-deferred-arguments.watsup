@@ -1,0 +1,25 @@
+;; Deferred by-value argument fetches use the compiler's original occurrence.
+dec $argument_fetch(pstate) : bool
+def $argument_fetch(S) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if (CODEARG pcpath) <- pcode.EXPRESSIONS
+def $argument_fetch(S) = false -- otherwise
+rule PhpStep/deferred-append-read: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression ABSENT metadata), DIM_FETCH $runtime_line(S, eps, NExprArrayDimFetch expression ABSENT metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprArrayDimFetch expression ABSENT metadata)) :: ptask_tail*
+  -- if $argument_fetch(S)
+
+dec $append_read_cv(pbase) : bool
+def $append_read_cv(BASE_VALUE (VARIABLE n_name* z)) = true
+def $append_read_cv(pbase) = false -- otherwise
+dec $append_read_base(pstate, pbase, int) : pstate
+def $append_read_base(S, BASE_VALUE (VARIABLE n_name* z_name), z) = S
+def $append_read_base(S, pbase, z) = S_base
+  -- if ~$append_read_cv(pbase)
+  -- if S_base = $base_read(S, pbase, z)
+def $base_read(S, BASE_APPEND pbase z_append, z) = S_base
+  -- if S_base = $append_read_base(S, pbase, z_append)
+  -- if S_base.COMPLETION =/= NORMAL
+def $base_read(S, BASE_APPEND pbase z_append, z) = $throw_scalar(S_base, "Error", ([67,97,110,110,111,116,32,117,115,101,32,91,93,32,102,111,114,32,114,101,97,100,105,110,103]), z_append)
+  -- if S_base = $append_read_base(S, pbase, z_append)
+  -- if S_base.COMPLETION = NORMAL

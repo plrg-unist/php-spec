@@ -60,11 +60,13 @@ def $request_server(S, Q) = $array_empty() -- otherwise
 
 ;; Auto-global callbacks replace the symbol-table zval; they do not assign
 ;; through an existing reference wrapper. Old aliases retain their old cell.
+dec $request_bind_local(pstate, preqbytes, pvalue) : pstate
 dec $request_bind_global(pstate, preqbytes, pvalue) : pstate
-def $request_bind_global(S, preqbytes, pvalue) = S[.ENV = (BIND preqbytes n) :: $unbind(S.ENV, preqbytes)][.STORE = S.STORE ++ [DEFINED pvalue]][.SYMBOLS = $symbol_add(S.SYMBOLS, preqbytes)][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.CELL = n][.RESULT = KNOWN pvalue]
+def $request_bind_global(S, preqbytes, pvalue) = $global_table_view($request_bind_local($global_table_view(S), preqbytes, pvalue))
+def $request_bind_local(S, preqbytes, pvalue) = S[.ENV = (BIND preqbytes n) :: $unbind(S.ENV, preqbytes)][.STORE = S.STORE ++ [DEFINED pvalue]][.SYMBOLS = $symbol_add(S.SYMBOLS, preqbytes)][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.CELL = n][.RESULT = KNOWN pvalue]
   -- if S.REQUEST = (Q)
   -- if n = |S.STORE|
-def $request_bind_global(S, preqbytes, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+def $request_bind_local(S, preqbytes, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if S.REQUEST = eps
 
 dec $request_global(pstate, preqbytes, parray, bool) : pstate

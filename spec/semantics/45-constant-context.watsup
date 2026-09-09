@@ -2,7 +2,7 @@
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
-syntax pfstate = { SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
+syntax pfstate = { FUNCTION ptbytes, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
@@ -34,7 +34,7 @@ dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
+def $pfbegin(n, program) = { FUNCTION eps, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool

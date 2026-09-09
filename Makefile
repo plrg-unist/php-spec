@@ -76,6 +76,12 @@ test-semantics: build
 	python3 tests/semantics/request_environment_state.py
 	python3 tests/semantics/isset_empty.py
 	python3 tests/semantics/isset_empty_compiler.py
+	python3 tests/semantics/function_compiler.py
+	python3 tests/semantics/function_argument_compiler.py
+	python3 tests/semantics/function_calls.py
+	python3 tests/semantics/function_call_state.py
+	python3 tests/semantics/function_call_protocol.py
+	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py
 	python3 tests/semantics/quiet_access.py

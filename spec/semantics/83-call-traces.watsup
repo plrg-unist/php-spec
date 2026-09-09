@@ -1,0 +1,101 @@
+;; Pinned -n profile: exception_ignore_args=0, string_param_max_len=15,
+;; precision=14. Trace arguments are captured by value before frame teardown.
+dec $trace_hex(nat) : nat
+def $trace_hex(n) = $(48 + n) -- if $(n < 10)
+def $trace_hex(n) = $(55 + n) -- if $(n >= 10)
+dec $trace_escape_byte(nat) : preqbytes
+def $trace_escape_byte(10) = [92,110]
+def $trace_escape_byte(13) = [92,114]
+def $trace_escape_byte(9) = [92,116]
+def $trace_escape_byte(12) = [92,102]
+def $trace_escape_byte(11) = [92,118]
+def $trace_escape_byte(27) = [92,101]
+def $trace_escape_byte(92) = [92,92]
+def $trace_escape_byte(n) = [92,120,$trace_hex($(n / 16)),$trace_hex($(n \ 16))]
+  -- if (($(n < 32) \/ $(n > 126)) /\ ~(n <- [10,13,9,12,11,27]))
+def $trace_escape_byte(n) = [n] -- otherwise
+dec $trace_escape(preqbytes) : preqbytes
+def $trace_escape(eps) = eps
+def $trace_escape(n :: n_tail*) = $trace_escape_byte(n) ++ $trace_escape(n_tail*)
+dec $trace_string(preqbytes) : preqbytes
+def $trace_string(n*) = [39] ++ $trace_escape(n*) ++ [39] -- if $(|n*| <= 15)
+def $trace_string(n*) = [39] ++ $trace_escape(n*[0:15]) ++ [46,46,46,39] -- if $(|n*| > 15)
+dec $trace_float(nat) : preqbytes
+def $trace_float(n) = n_out* ++ [46,48]
+  -- if n_out* = $echo_value(PFLOAT n)
+  -- if $float_decode(n) = FINITE n_sign n_exp n_mant
+  -- if ~(46 <- n_out*)
+def $trace_float(n) = $echo_value(PFLOAT n) -- otherwise
+dec $trace_value_text(pvalue) : preqbytes
+def $trace_value_text(PNULL) = $ptascii("NULL")
+def $trace_value_text(PBOOL true) = $ptascii("true")
+def $trace_value_text(PBOOL false) = $ptascii("false")
+def $trace_value_text(PINT z) = $decimal_integer(z)
+def $trace_value_text(PFLOAT n) = $trace_float(n)
+def $trace_value_text(PSTRING n*) = $trace_string(n*)
+def $trace_value_text(PARRAY n) = $ptascii("Array")
+dec $trace_arguments_text(pvalue*) : preqbytes
+def $trace_arguments_text(eps) = eps
+def $trace_arguments_text([pvalue]) = $trace_value_text(pvalue)
+def $trace_arguments_text(pvalue :: pvalue_tail*) = $trace_value_text(pvalue) ++ [44,32] ++ $trace_arguments_text(pvalue_tail*)
+  -- if pvalue_tail* =/= eps
+
+dec $trace_slot(pstate, pbinding*, preqbytes) : pvalue
+def $trace_slot(S, pbinding*, preqbytes) = pvalue
+  -- if $lookup(pbinding*, preqbytes) = (n)
+  -- if S.STORE[n] = DEFINED pvalue
+def $trace_slot(S, pbinding*, preqbytes) = PNULL -- otherwise
+dec $trace_parameters(pstate, pbinding*, preqbytes*, nat) : pvalue*
+def $trace_parameters(S, pbinding*, preqbytes*, 0) = eps
+def $trace_parameters(S, pbinding*, eps, n) = eps -- if $(n > 0)
+def $trace_parameters(S, pbinding*, preqbytes :: preqbytes_tail*, n) = $trace_slot(S, pbinding*, preqbytes) :: $trace_parameters(S, pbinding*, preqbytes_tail*, $nabs($(n - 1)))
+  -- if $(n > 0)
+dec $trace_extra(poperand*) : pvalue*
+def $trace_extra(eps) = eps
+def $trace_extra((KNOWN pvalue) :: poperand*) = pvalue :: $trace_extra(poperand*)
+dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
+def $trace_context(S, pbinding*, eps) = eps
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME pcallcontext.NAME, VALUES pvalue*, ARGTEXT $trace_arguments_text(pvalue*)}]
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pvalue* = $trace_parameters(S, pbinding*, pcallcontext.PARAMS, pcallcontext.ARGC) ++ $trace_extra(pcallcontext.EXTRA)
+dec $trace_saved(pstate, pframe*) : ptraceframe*
+def $trace_saved(S, eps) = eps
+def $trace_saved(S, pframe :: pframe_tail*) = $trace_saved(S, pframe_tail*) -- if pframe.CONTEXT = eps
+def $trace_saved(S, pframe :: pframe_tail*) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pframe.LOCALS = (psymboltable)
+dec $trace_values_roots(pvalue*) : pnode*
+def $trace_values_roots(eps) = eps
+def $trace_values_roots(pvalue :: pvalue_tail*) = $operand_nodes(KNOWN pvalue) ++ $trace_values_roots(pvalue_tail*)
+def $trace_roots(eps) = eps
+def $trace_roots(ptraceframe :: ptraceframe_tail*) = $trace_values_roots(ptraceframe.VALUES) ++ $trace_roots(ptraceframe_tail*)
+
+;; Abrupt frame teardown discards its continuations; only saved callers own
+;; remaining foreach iterator records across the next budget boundary.
+dec $error_task_iterator(ptask) : nat*
+def $error_task_iterator(AT porigin ptask) = $error_task_iterator(ptask)
+def $error_task_iterator(FOREACH_NEXT n pnode statement porigin? z) = [n]
+def $error_task_iterator(ptask) = eps -- otherwise
+dec $error_task_iterators(ptask*) : nat*
+def $error_task_iterators(eps) = eps
+def $error_task_iterators(ptask :: ptask_tail*) = $error_task_iterator(ptask) ++ $error_task_iterators(ptask_tail*)
+dec $error_saved_iterators(pframe*) : nat*
+def $error_saved_iterators(eps) = eps
+def $error_saved_iterators(pframe :: pframe_tail*) = $error_task_iterators(pframe.TODO) ++ $error_saved_iterators(pframe_tail*)
+dec $error_keep_iterators(piterator*, nat*) : piterator*
+def $error_keep_iterators(eps, n_keep*) = eps
+def $error_keep_iterators((ITERATOR n n_array b pcursor*) :: piterator*, n_keep*) = (ITERATOR n n_array b pcursor*) :: $error_keep_iterators(piterator*, n_keep*)
+  -- if n <- n_keep*
+def $error_keep_iterators((ITERATOR n n_array b pcursor*) :: piterator*, n_keep*) = $error_keep_iterators(piterator*, n_keep*)
+  -- if ~(n <- n_keep*)
+dec $error_release_iterators(pstate) : pstate
+def $error_release_iterators(S) = S[.ITERATORS = $error_keep_iterators(S.ITERATORS, $error_saved_iterators(S.FRAMES))]
+
+def $start_error_unwind(S) = $error_release_iterators(S)[.TRACE = $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+dec $error_unwind(pstate, pcompletion) : pstate
+def $error_unwind(S, pcompletion) = $error_release_iterators($restore_frame(S))[.TODO = [ERROR_UNWIND pcompletion]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if S.FRAMES =/= eps
+def $error_unwind(S, pcompletion) = S[.TODO = eps][.COMPLETION = pcompletion]
+  -- if S.FRAMES = eps
+rule PhpStep/error-unwind: S ~> $error_unwind(S, pcompletion)
+  -- if S.TODO = (ERROR_UNWIND pcompletion) :: ptask_tail*

@@ -161,9 +161,12 @@ dec $allocation_edges(pstate, pnode*) : hedge*
 def $allocation_edges(S, eps) = eps
 def $allocation_edges(S, pnode :: pnode_tail*) = $node_edges(pnode, $node_children(S, pnode)) ++ $allocation_edges(S, pnode_tail*)
 
+dec $table_roots(psymboltable?) : pnode*
+dec $frames_roots(pframe*) : pnode*
+dec $call_context_roots(pcallcontext?) : pnode*
 dec $machine_roots(pstate) : pnode*
 dec $pools_nodes(ppool*) : pnode*
-def $machine_roots(S) = $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
+def $machine_roots(S) = $trace_roots(S.TRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}

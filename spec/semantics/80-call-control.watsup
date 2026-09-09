@@ -1,0 +1,148 @@
+dec $call_sourcefile(psourcefile*, porigin) : preqbytes
+def $call_sourcefile(eps, porigin) = eps
+def $call_sourcefile((SOURCEFILE n preqbytes) :: psourcefile*, PORIGIN n pcpath) = preqbytes
+def $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, PORIGIN n pcpath) = $call_sourcefile(psourcefile*, PORIGIN n pcpath)
+  -- if n_other =/= n
+dec $function_at(pfunction*, porigin) : pfunction?
+def $function_at(eps, porigin) = eps
+def $function_at(pfunction :: pfunction_tail*, porigin) = (pfunction) -- if pfunction.ORIGIN = porigin
+def $function_at(pfunction :: pfunction_tail*, porigin) = $function_at(pfunction_tail*, porigin) -- if pfunction.ORIGIN =/= porigin
+dec $callable_at((preqbytes, porigin)*, preqbytes) : porigin?
+def $callable_at(eps, preqbytes) = eps
+def $callable_at((preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = (porigin)
+def $callable_at((preqbytes_name, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = $callable_at((preqbytes_tail, porigin_tail)*, preqbytes)
+  -- if preqbytes_name =/= preqbytes
+dec $activate_function(pstate, pfunction) : pstate
+def $activate_function(S, pfunction) = S -- if S.COMPLETION =/= NORMAL
+def $activate_function(S, pfunction) = S[.CALLABLES = S.CALLABLES ++ [($ptlc(pfunction.NAME), pfunction.ORIGIN)]]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$pfunction_builtin(pfunction.NAME)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = eps
+def $activate_function(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("()")) pfunction.LINE]
+  -- if S.COMPLETION = NORMAL
+  -- if $pfunction_builtin(pfunction.NAME)
+def $activate_function(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("() (previously declared in ") ++ $call_sourcefile(S.FILES, pfunction_old.ORIGIN) ++ [58] ++ $ntunsigned(pfunction_old.LINE) ++ [41]) pfunction.LINE]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$pfunction_builtin(pfunction.NAME)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction_old)
+dec $activate_early(pstate, pfunction*) : pstate
+def $activate_early(S, eps) = S
+def $activate_early(S, pfunction :: pfunction_tail*) = $activate_early($activate_function(S, pfunction), pfunction_tail*) -- if pfunction.EARLY
+def $activate_early(S, pfunction :: pfunction_tail*) = $activate_early(S, pfunction_tail*) -- if ~pfunction.EARLY
+def $install_functions(S, pfunction*) = $activate_early(S[.FUNCTIONS = S.FUNCTIONS ++ pfunction*], pfunction*)
+
+rule PhpStep/function-declaration-early: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if pfunction.EARLY
+rule PhpStep/function-declaration-runtime: S ~> $activate_function(S[.TODO = ptask_tail*], pfunction)
+  -- if S.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if ~pfunction.EARLY
+
+dec $call_target(pstate, preqbytes, preqbytes?) : pfunction?
+def $call_target(S, preqbytes, preqbytes_fallback?) = $function_at(S.FUNCTIONS, porigin)
+  -- if $callable_at(S.CALLABLES, $ptlc(preqbytes)) = (porigin)
+def $call_target(S, preqbytes, (preqbytes_fallback)) = $call_target(S, preqbytes_fallback, eps)
+  -- if $callable_at(S.CALLABLES, $ptlc(preqbytes)) = eps
+def $call_target(S, preqbytes, eps) = eps
+  -- if $callable_at(S.CALLABLES, $ptlc(preqbytes)) = eps
+dec $call_builtin(preqbytes, preqbytes?) : bool
+def $call_builtin(preqbytes, eps) = $pfunction_builtin(preqbytes)
+def $call_builtin(preqbytes, (preqbytes_fallback)) = ($pfunction_builtin(preqbytes) \/ $pfunction_builtin(preqbytes_fallback))
+dec $call_prepare(pstate, preqbytes, preqbytes?, phpType7*, int) : pstate
+def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.TODO = (CALL_ARGS pfunction.ORIGIN phpType7* 0 eps S.ORIGIN z) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ preqbytes ++ $ptascii("()"), z)
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if ~$call_builtin(preqbytes, preqbytes_fallback?)
+def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "registered builtin call"]
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $call_builtin(preqbytes, preqbytes_fallback?)
+rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes, preqbytes_fallback?, phpType7*, $runtime_line(S, eps, NExprFuncCall name (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprFuncCall name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+
+rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), EVAL expression), CALL_SEND porigin_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
+  -- if S.TODO = (CALL_ARGS porigin_function ((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) n poperand* porigin? z) :: ptask_tail*
+rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS porigin_function phpType7* $(n + 1) (poperand* ++ [KNOWN pvalue]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CALL_SEND porigin_function phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if S_value = $resolve(S, S.RESULT)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/call-send-abrupt: S ~> S_value
+  -- if S.TODO = (CALL_SEND porigin_function phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if S_value = $resolve(S, S.RESULT)
+  -- if S_value.COMPLETION =/= NORMAL
+
+dec $plain_parameters(psparam*) : bool
+def $plain_parameters(eps) = true
+def $plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.DEFAULT = PSNONE /\ $plain_parameters(psparam_tail*))
+dec $bind_parameters(pstate, psparam*, poperand*) : pstate
+def $bind_parameters(S, eps, poperand*) = S
+def $bind_parameters(S, psparam :: psparam_tail*, eps) = S
+def $bind_parameters(S, psparam :: psparam_tail*, (KNOWN pvalue) :: poperand*) = $bind_parameters($write_name(S, psparam.NAME, pvalue), psparam_tail*, poperand*)
+dec $function_tasks(pstate, pfunction) : ptask*
+def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [RETURN_NULL]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+dec $call_received(nat, nat) : nat
+def $call_received(n_args, n_params) = n_args -- if $(n_args < n_params)
+def $call_received(n_args, n_params) = n_params -- if $(n_args >= n_params)
+dec $call_arity(pstate, pfunction, nat, porigin?, int) : pstate
+def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = $function_tasks(S, pfunction)]
+  -- if $(n_args >= |pfunction.SIGNATURE.PARAMETERS|)
+def $call_arity(S, pfunction, n_args, (porigin), z) = $throw_scalar(S, "ArgumentCountError", $ptascii("Too few arguments to function ") ++ pfunction.NAME ++ $ptascii("(), ") ++ $ntunsigned(n_args) ++ $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $ptascii(" and exactly ") ++ $ntunsigned(|pfunction.SIGNATURE.PARAMETERS|) ++ $ptascii(" expected"), pfunction.LINE)
+  -- if $(n_args < |pfunction.SIGNATURE.PARAMETERS|)
+dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
+def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra]})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
+  -- if psparam* = pfunction.SIGNATURE.PARAMETERS
+  -- if n_args = |poperand*|
+  -- if n_params = |psparam*|
+  -- if n_received = $call_received(n_args, n_params)
+  -- if n_extra = $(n_args - n_received)
+  -- if $plain_parameters(psparam*) /\ ~pfunction.SIGNATURE.BYREF /\ pfunction.SIGNATURE.RETURNS = eps
+  -- if S_entered = $save_frame(S)
+  -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam*, poperand*)
+def $call_enter(S, pfunction, poperand*, porigin?, z) = S[.COMPLETION = UNSUPPORTED "unconnected function signature"]
+  -- otherwise
+rule PhpStep/call-enter: S ~> $call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z)
+  -- if S.TODO = (CALL_ARGS porigin_function eps n poperand* porigin? z) :: ptask_tail*
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+
+rule PhpStep/return-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), RETURN_VALUE $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtReturn expression metadata)) :: ptask_tail*
+rule PhpStep/return-empty: S ~> S[.TODO = RETURN_NULL :: ptask_tail*]
+  -- if S.TODO = (STMT (NStmtReturn ABSENT metadata)) :: ptask_tail*
+rule PhpStep/return-null: S ~> S[.TODO = (RETURN_UNWIND (KNOWN PNULL)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = RETURN_NULL :: ptask_tail*
+rule PhpStep/return-value: S ~> S_value[.TODO = (RETURN_UNWIND (KNOWN pvalue)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/return-value-abrupt: S ~> S_value
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+dec $return_discard(pstate, ptask) : pstate
+def $return_discard(S, ORIGIN_RETURN porigin?) = S[.ORIGIN = porigin?]
+def $return_discard(S, FOREACH_NEXT n pnode statement porigin? z) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = porigin?]
+def $return_discard(S, ptask) = S -- otherwise
+dec $return_step(pstate, poperand, ptask*) : pstate
+def $return_step(S, poperand, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_UNWIND poperand) :: ptask_tail*], ptask)
+def $return_step(S, poperand, eps) = $restore_frame(S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
+  -- if S.FRAMES =/= eps
+def $return_step(S, poperand, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
+  -- if S.FRAMES = eps
+rule PhpStep/return-unwind: S ~> $return_step(S, poperand, ptask_tail*)
+  -- if S.TODO = (RETURN_UNWIND poperand) :: ptask_tail*
+
+def $task_nodes(CALL_ARGS porigin_function phpType7* n poperand* porigin? z) = $operands_roots(poperand*)
+def $task_nodes(CALL_SEND porigin_function phpType7* n poperand* porigin? z) = $operands_roots(poperand*)
+def $task_nodes(RETURN_UNWIND poperand) = $operand_nodes(poperand)

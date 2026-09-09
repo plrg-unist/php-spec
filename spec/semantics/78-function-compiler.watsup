@@ -1,0 +1,208 @@
+dec $ppfunction_special(ppstate, ptbytes) : ppstate
+dec $ppplain_signature(pssignature) : bool
+dec $ppplain_params(psparam*) : bool
+dec $ppinner(pfunction*, pcpath) : bool
+dec $ppownexpr(pfunction*, pcodeexpr*) : pcodeexpr*
+dec $ppownname(pfunction*, pcodename*) : pcodename*
+dec $ppownredirect(pfunction*, pcoderedirect*) : pcoderedirect*
+dec $ppownglobal(pfunction*, pcpath*) : pcpath*
+dec $ppcodepath(pcodeexpr) : pcpath
+dec $ppglobal_variable(ppstate, pcpath, phpType32, metadata) : ppstate
+dec $ppfunction_context(ppstate, ptbytes) : ptcontext
+dec $ppsignature_diagnostics(ppstate, psdiagnostic*) : ppstate
+dec $ppsignature_diagnostic(ppstate, psdiagnostic) : ppstate
+dec $ppsignature_issue(ppstate, text, ptbytes, nat) : ppstate
+dec $ppfunction_name(ppstate, ptbytes) : ppstate
+dec $ppfunction_signature(ppstate, pcpath, ptbytes, statement*, metadata, psresult) : ppstate
+dec $ppfunction_start(ppstate, ptbytes, pssignature) : ppstate
+dec $ppfunction_body(ppstate, pcpath, ptbytes, statement*, metadata, pssignature) : ppstate
+dec $ppfunction_code(ppstate) : pcode
+dec $ppfunction_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+dec $psendline(metadata) : nat
+dec $ppfunction_early(pfunction*, ptbytes) : pfunction?
+dec $ppfunction_duplicate(ppstate, pfunction) : ppstate
+dec $ppcall_name(ppstate, pcpath, pnresult) : ppstate
+dec $ppcall_done(ppstate, pcpath, int) : ppstate
+dec $ppcall_args(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
+dec $ppcall_mode(ppstate, pnresult, nat, expression) : ppmode
+dec $ppcall_variable(expression) : bool
+dec $ppcall_deferred(expression) : ppmode
+dec $ppglobal_variables(ppstate, pcpath, nat, expression*) : ppstate
+
+;; Named declaration compilation preserves original source occurrences and gives
+;; each op-array fresh CV/header/loop state. Heap constant pools remain per unit.
+def $ppfunction_context(P, ptbytes) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTGLOBAL, POSITION PTRETURN, OWNER eps, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE P.LOCATION.LINE }
+
+def $ppsignature_diagnostics(P, eps) = P
+def $ppsignature_diagnostics(P, psdiagnostic :: psdiagnostic_tail*) = $ppsignature_diagnostics($ppsignature_diagnostic(P, psdiagnostic), psdiagnostic_tail*)
+def $ppsignature_diagnostic(P, PSDIAGNOSTIC text_level text_code ptbytes* ptcontext) = $ppsignature_issue(P, text_level, $psmessage(PSDIAGNOSTIC text_level text_code ptbytes* ptcontext), ptcontext.LINE)
+def $ppsignature_diagnostic(P, PSTYPEDIAGNOSTIC (PTDIAGNOSTIC text_level text_code ptbranch* ptcontext)) = $ppsignature_issue(P, text_level, $ptmessage(PTDIAGNOSTIC text_level text_code ptbranch* ptcontext), ptcontext.LINE)
+def $ppsignature_issue(P, "fatal", ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes n)]
+def $ppsignature_issue(P, text, ptbytes, n) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text "function-message" ([ptbytes]) (P.LOCATION[.LINE = n])]]
+  -- if text =/= "fatal"
+def $plmessage(PLDIAGNOSTIC text "function-message" ([ptbytes]) pllocation) = ptbytes
+
+def $ppfunction_name(P, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Cannot redeclare function ") ++ $ptjoin(P.ENV.NAMESPACE, ptbytes) ++ $ptascii("() (previously declared as local import)")) P.LOCATION.LINE)]
+  -- if $pllookup(P.ENV.FUNCTIONS, $ptlc(ptbytes)) = ptbytes_import
+  -- if ptbytes_import =/= eps
+  -- if $ptlc(ptbytes_import) =/= $ptlc($ptjoin(P.ENV.NAMESPACE, ptbytes))
+def $ppfunction_name(P, ptbytes) = $ppfunction_special(P, ptbytes)
+  -- otherwise
+
+def $ppfunction_special(P, ptbytes) = $ppcheck(P, $context_error("Defining a custom assert() function is not allowed, as the function has special semantics", P.LOCATION.LINE))
+  -- if $ptlc(ptbytes) = $ptascii("assert")
+def $ppfunction_special(P, ptbytes) = $ppcheck(P, $context_error("__autoload() is no longer supported, use spl_autoload_register() instead", P.LOCATION.LINE))
+  -- if $ptlc($ptjoin(P.ENV.NAMESPACE, ptbytes)) = $ptascii("__autoload")
+def $ppfunction_special(P, ptbytes) = P[.ENV = P.ENV[.SEEN = P.ENV.SEEN ++ [(PLFUNCTION, $ptlc($ptjoin(P.ENV.NAMESPACE, ptbytes)))]]]
+  -- otherwise
+
+def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSUNSUPPORTED text) = $ppunsupported(P, text)
+def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSERROR psdiagnostic*) = $ppsignature_diagnostics(P, psdiagnostic*)
+def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSOK pssignature psdiagnostic*) = $ppfunction_body($ppsignature_diagnostics(P, psdiagnostic*), pcpath, ptbytes, statement*, metadata, pssignature)
+  -- if $ppplain_signature(pssignature)
+def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSOK pssignature psdiagnostic*) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "function type, default, reference or variadic activation")
+  -- if ~$ppplain_signature(pssignature)
+
+def $ppfunction_start(P, ptbytes, pssignature) = P[.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.LOOPS = 0][.EARLY = eps][.FOLD = P.FOLD[.FUNCTION = ptbytes][.VALUE = eps]][.EXPRESSIONS = eps][.ACCESS = eps][.NAMES = eps][.REDIRECTS = eps][.WRITES = eps][.GLOBALS = eps]
+  -- if psparam* = pssignature.PARAMETERS
+
+def $ppfunction_body(P, pcpath, ptbytes, statement*, metadata, pssignature) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppfunction_body(P, pcpath, ptbytes, statement*, metadata, pssignature) = $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_body = $ppstatements($ppfunction_start(P, ptbytes, pssignature), pcpath ++ [PCFIELD 5], 0, statement*)
+
+def $ppfunction_code(P) = { GLOBALS $ppownglobal(P.FUNCTIONS, P.GLOBALS), UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $ppownexpr(P.FUNCTIONS, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $ppownname(P.FUNCTIONS, $compiled_names(P.NAMES)), REDIRECTS $ppownredirect(P.FUNCTIONS, $compiled_redirects(P.REDIRECTS)) }
+
+def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
+  -- if P_body.COMPLETION =/= PPCNORMAL
+def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppfunction_duplicate(P_restored, { ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $psline(metadata) })
+  -- if P_body.COMPLETION = PPCNORMAL
+  -- if P_restored = P_body[.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
+
+def $psendline(metadata) = n
+  -- if $source_end_line(metadata) = n
+
+def $ppfunction_early(eps, ptbytes) = eps
+def $ppfunction_early(pfunction :: pfunction_tail*, ptbytes) = (pfunction)
+  -- if pfunction.EARLY /\ $ptlc(pfunction.NAME) = $ptlc(ptbytes)
+def $ppfunction_early(pfunction :: pfunction_tail*, ptbytes) = $ppfunction_early(pfunction_tail*, ptbytes)
+  -- if ~(pfunction.EARLY /\ $ptlc(pfunction.NAME) = $ptlc(ptbytes))
+def $ppfunction_duplicate(P, pfunction) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("()")) pfunction.LINE)]
+  -- if pfunction.EARLY /\ $pfunction_builtin(pfunction.NAME)
+def $ppfunction_duplicate(P, pfunction) = P[.FUNCTIONS = P.FUNCTIONS ++ [pfunction]]
+  -- if ~pfunction.EARLY \/ (~$pfunction_builtin(pfunction.NAME) /\ $ppfunction_early(P.FUNCTIONS, pfunction.NAME) = eps)
+def $ppfunction_duplicate(P, pfunction) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("() (previously declared in ") ++ P.LOCATION.FILE ++ [58] ++ $ntunsigned(pfunction_old.LINE) ++ [41]) pfunction.LINE)]
+  -- if pfunction.EARLY /\ ~$pfunction_builtin(pfunction.NAME)
+  -- if $ppfunction_early(P.FUNCTIONS, pfunction.NAME) = (pfunction_old)
+
+def $ppstatement(P, pcpath, NStmtFunction (SEQUENCE eps) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $ppfunction_signature(P_name, pcpath, $ptjoin(P.ENV.NAMESPACE, $base64(text)), statement*, metadata, $pscompile(phpType16, phpType18, b, $ppfunction_context(P_name, $ptjoin(P.ENV.NAMESPACE, $base64(text)))))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_name = $ppfunction_name($pplocate(P, pcpath, $source_line(metadata)), $base64(text))
+  -- if P_name.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtFunction (SEQUENCE eps) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = P_name
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_name = $ppfunction_name($pplocate(P, pcpath, $source_line(metadata)), $base64(text))
+  -- if P_name.COMPLETION =/= PPCNORMAL
+
+;; Returning an expression compiles even inside a dead branch; no body effect runs.
+def $ppstatement(P, pcpath, NStmtReturn ABSENT metadata) = $pplocate(P, pcpath, $source_line(metadata))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtReturn expression metadata) = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
+  -- if P.COMPLETION = PPCNORMAL
+
+;; Calls resolve through the existing lexical function namespace/fallback rules.
+def $ppcall_name(P, pcpath, PNUNSUPPORTED text) = $ppunsupported(P, text)
+def $ppcall_name(P, pcpath, PNRESOLVED pnreference) = P[.NAMES = P.NAMES ++ [(pcpath, pnreference)]][.FOLD = P.FOLD[.VALUE = eps]]
+def $ppcall_variable(NExprVariable phpType32 metadata) = ~$ppglobals_base(NExprVariable phpType32 metadata)
+def $ppcall_variable(NExprArrayDimFetch expression phpType5 metadata) = true
+def $ppcall_variable(NExprPropertyFetch expression phpType20 metadata) = true
+def $ppcall_variable(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
+def $ppcall_variable(expression) = false -- otherwise
+
+;; Only finalized earlier declarations are compile-known. Namespace fallback,
+;; forward declarations and the body currently being compiled defer fetch mode.
+def $ppcall_mode(P, pnresult, n, expression) = PPR
+  -- if ~$ppcall_variable(expression)
+def $ppcall_mode(P, PNRESOLVED pnreference, n, expression) = PPW
+  -- if $ppcall_variable(expression)
+  -- if pnreference.FALLBACK = eps
+  -- if $pfunction_builtin_ref(pnreference.RESOLVED, n)
+def $ppcall_mode(P, PNRESOLVED pnreference, n, expression) = PPR
+  -- if $ppcall_variable(expression)
+  -- if pnreference.FALLBACK = eps
+  -- if (($pfunction_builtin(pnreference.RESOLVED) /\ ~$pfunction_builtin_ref(pnreference.RESOLVED, n)) \/ $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) =/= eps)
+def $ppcall_mode(P, pnresult, n, expression) = $ppcall_deferred(expression)
+  -- otherwise
+
+def $ppcall_deferred(NExprVariable phpType32 metadata) = PPR
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$psautoglobal(ptbytes)
+def $ppcall_deferred(expression) = PPF -- otherwise
+
+def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcall_args(P, pcpath, n, eps, pnresult) = $ppclearvalue(P)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppcall_args($ppexpr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression, $ppcall_mode(P, pnresult, $(n + 1), expression)), pcpath, $(n + 1), phpType7*, pnresult)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, unpacked or reference call argument compilation")
+  -- otherwise
+def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_done($ppcall_args($ppcall_name(P, pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult), pcpath, $source_line(metadata))
+  -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
+
+def $ppglobal_variables(P, pcpath, n, eps) = P
+def $ppglobal_variables(P, pcpath, n, (NExprVariable phpType32 metadata) :: expression*) = $ppglobal_variables($ppglobal_variable(P, pcpath ++ [PCINDEX n], phpType32, metadata), pcpath, $(n + 1), expression*)
+def $ppstatement(P, pcpath, NStmtGlobal (SEQUENCE expression*) metadata) = $ppglobal_variables($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 0], 0, expression*)
+  -- if P.COMPLETION = PPCNORMAL
+
+;; Global binding compiles its name, then try-CV in read context. It does not
+;; inherit ordinary whole-GLOBALS assignment restrictions or header write flags.
+def $ppglobal_variable(P, pcpath, phpType32, metadata) = $ppcheck($pplocate(P, pcpath, $source_line(metadata)), $context_error("Cannot use $this as global variable", $source_line(metadata)))
+  -- if $cv_name(phpType32) = ([116,104,105,115])
+def $ppglobal_variable(P, pcpath, phpType32, metadata) = $ppdone($ppcv($pplocate(P, pcpath, $source_line(metadata)), pcpath, phpType32, PPR), pcpath, PPR)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ptbytes =/= [116,104,105,115]
+def $ppglobal_variable(P, pcpath, phpType32, metadata) = $ppdone($ppvarname($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, PPW), pcpath, PPW)
+  -- if $cv_name(phpType32) = eps
+  -- if phpType32 = expression
+
+def $ppinner(eps, pcpath) = false
+def $ppinner(pfunction :: pfunction_tail*, pcpath) = $effect_below(pfunction.BODY, pcpath) \/ $ppinner(pfunction_tail*, pcpath)
+def $ppcodepath(CODEARG pcpath) = pcpath
+def $ppcodepath(CODEEXPR pcpath z b) = pcpath
+def $ppcodepath(CODEEFFECT pcpath) = pcpath
+def $ppcodepath(CODEWRITE pcpath z) = pcpath
+def $ppownexpr(pfunction*, eps) = eps
+def $ppownexpr(pfunction*, pcodeexpr :: pcodeexpr_tail*) = $ppownexpr(pfunction*, pcodeexpr_tail*)
+  -- if $ppinner(pfunction*, $ppcodepath(pcodeexpr))
+def $ppownexpr(pfunction*, pcodeexpr :: pcodeexpr_tail*) = pcodeexpr :: $ppownexpr(pfunction*, pcodeexpr_tail*)
+  -- if ~$ppinner(pfunction*, $ppcodepath(pcodeexpr))
+def $ppownname(pfunction*, eps) = eps
+def $ppownname(pfunction*, (CODENAME pcpath ptbytes ptbytes_fallback?) :: pcodename*) = $ppownname(pfunction*, pcodename*)
+  -- if $ppinner(pfunction*, pcpath)
+def $ppownname(pfunction*, (CODENAME pcpath ptbytes ptbytes_fallback?) :: pcodename*) = (CODENAME pcpath ptbytes ptbytes_fallback?) :: $ppownname(pfunction*, pcodename*)
+  -- if ~$ppinner(pfunction*, pcpath)
+def $ppownredirect(pfunction*, eps) = eps
+def $ppownredirect(pfunction*, (CODEREDIRECT pcpath pcpath_target b) :: pcoderedirect*) = $ppownredirect(pfunction*, pcoderedirect*)
+  -- if $ppinner(pfunction*, pcpath)
+def $ppownredirect(pfunction*, (CODEREDIRECT pcpath pcpath_target b) :: pcoderedirect*) = (CODEREDIRECT pcpath pcpath_target b) :: $ppownredirect(pfunction*, pcoderedirect*)
+  -- if ~$ppinner(pfunction*, pcpath)
+def $ppownglobal(pfunction*, eps) = eps
+def $ppownglobal(pfunction*, pcpath :: pcpath_tail*) = $ppownglobal(pfunction*, pcpath_tail*)
+  -- if $ppinner(pfunction*, pcpath)
+def $ppownglobal(pfunction*, pcpath :: pcpath_tail*) = pcpath :: $ppownglobal(pfunction*, pcpath_tail*)
+  -- if ~$ppinner(pfunction*, pcpath)
+
+;; Other signature protocols remain explicit until checks and runtime binding are
+;; paired, including declarations in files that never invoke the function.
+def $ppplain_signature(pssignature) = (~pssignature.BYREF /\ pssignature.RETURNS = eps /\ $ppplain_params(pssignature.PARAMETERS))
+def $ppplain_params(eps) = true
+def $ppplain_params(psparam :: psparam_tail*) = (~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.TYPE = eps /\ psparam.DEFAULT = PSNONE /\ $ppplain_params(psparam_tail*))
+
+;; zend_compile_call_common restores the call line after compiling sends.
+;; An abrupt operand keeps its original diagnostic location.
+def $ppcall_done(P, pcpath, z) = $pplocate(P, pcpath, z)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcall_done(P, pcpath, z) = P
+  -- if P.COMPLETION =/= PPCNORMAL
