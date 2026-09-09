@@ -339,3 +339,14 @@ confirms all 28 originals and 12 additional source controls, 49 marker/state che
 and the prior wrapper/ownership gates. Full source refresh shares the following
 update campaign; previous wrapper validation remains historical.
 No intentional divergence is selected.
+
+## Computed-name update access lines: retained draft defect
+
+[Seven exact original observations](../../coverage/semantics/incdec-computed-line-originals.json)
+retain four draft line mismatches and three controls. An ordinary computed-name
+RW fetch diagnoses an absent variable at its own line; the following missing array
+key uses the dimension line. Computed `$this` similarly raises its rebinding error
+at the root fetch line, after any forced key expression has run. Direct compiled
+variables use the dimension opcode's line instead. Both lines already exist in
+checked access descriptors; runtime propagation is under correction. No source
+update admission or intentional divergence is claimed.
