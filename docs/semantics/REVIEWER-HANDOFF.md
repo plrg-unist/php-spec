@@ -108,7 +108,10 @@ Compiler4 has `.tools/foreach-frontend-next/frontend-first-results.json`: author
 33 parser comparisons, 29 checked/print roundtrips and seven typed boundaries,
 binding eight frontend/schema files. All 70 domains and the original five field
 indices remain unchanged. These are private author gates; obtain a stable full
-candidate before independent review or source admission.
+candidate before independent review or source admission. Private compiler
+prechecks pass 17 lints; 12 normal targets remain pending. An edited true keyByRef
+with no key has no source grammar form: compiler returns Unsupported and the
+printer must reject it rather than silently dropping the flag.
 The reviewer reserves tests/phase-discrepancies.json and tests/phase_ledger.py;
 retire exemptions only after preserving exact old entries and source outcomes.
 
