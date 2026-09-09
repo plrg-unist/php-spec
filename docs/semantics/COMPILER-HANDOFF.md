@@ -1,167 +1,105 @@
 # Compiler continuation
 
-Read PLAN, current PROGRESS and the php/php-spec/p4-spectec skills first. Never
-push. Use only pinned PHP 8.5.10 CLI NTS64 and vendor/php-src as the oracle;
-meaning belongs in pure `.watsup`, not host eval. Original sources, raw failures
-and current fingerprints are required. Unsupported/tool failure/budget exhaustion
-are not passes. No PHP constructor or semantic family is closed; only the oracle
-pin obligation closes. Final complete syntax and fresh offline rebuild audits remain.
+Read PLAN, PROGRESS and the php/php-spec/p4-spectec skills first. Never push.
+Use only pinned PHP8.5.10 CLI NTS64, `.tools/php/bin/php` and vendor/php-src;
+meaning belongs in pure SpecTec. Original source bytes, raw failures and frozen
+input identities are required. Unsupported, budgets and tool failures never pass.
+No constructor or core family is complete; only oracle identity closes. Final
+whole syntax and fresh offline rebuild gates remain required.
 
-## Accepted state and ownership
+## Accepted prerequisite and ownership
 
-See PROGRESS for current source counts and exact implementation/review commits.
-Truth, comparisons and explicit reference-wrapper fetch history are source-active.
-The wrapper correction is `3585707a`/`eebf79e9`, reviewed in `5b0dc0f2`; singleton
-explicit wrappers survive owner-count changes and generic FETCH differs from final
-ASSIGN_DIM. Runtime REF marker history is not an extra memory root.
-Ordinary computed-name write fetching is corrected separately in `84d70299`,
-reports `fa691044`, reviewed in `24c681d7`: creating a writable location does
-not itself create an explicit reference wrapper. Preserve this distinction when
-adding compound, destructuring, argument and frame acquisition paths.
+PROGRESS records current code/report/review commits. Compound63028b5a and its
+independent review remain accepted. Nullable ordinary arrays and compiler context
+are described in ARRAY-OMISSIONS.md; code9b82507a follows independent
+review of the frozen262-source candidate and its production replay. The two publication adjustments remove
+redundant EOF newlines in10/16 only. Original107, expanded195, first154 and all
+failure archives remain immutable. This bounded prerequisite does not refresh
+complete source closure or admit ordinary operators, unpack or reached lists.
 
-Destructuring prerequisites preserve nested unpack (`d4706937`), original array
-kind (`09f33419`) and leading-hole line (`87341500`). Genuine-list early conversion
-is `5c756e5e`, reviewed in `861020db`: 20 exact skipped sources pass, while 14
-retained reached targets remain explicitly Unsupported. Callable creation-line
-metadata is `c6a7d67d`, reviewed in `1d32e9be`; two identical old checked trees
-need different native diagnostic lines. No call execution was admitted by metadata.
+Compiler4 owns compiler45/46 and checked/schema work; runtime3 owns30/31/39 and
+56–63 runtime protocols. Coordinate20 and module catalogs explicitly. Compiler3
+owns independent review, phase ledger, inventory and PROGRESS. Save every watched
+input before evidence/inventory preflight, then hold a stable freeze through gates.
+General coverage archives are distinct from explicit watched oracle dependencies.
+Use canonical project Dune build roots; private helpers must reuse frozen canonical
+executables without rebuilding through their symlinked `_build`. The retained
+omission rebuild incident records restoration of exact original tool hashes.
 
-Inc/dec/global-this source activation is `7d5718fb`, author reports `5b24a5f8`:
-**1,484 exact sources +25 outcome negatives**, independently accepted on closure
-`d399263a1c9f33bb445c958d624392ffc83d49df1c247df72b0c23ce59855d35`.
-Compiler gates pass 1,526 native lints/15 emission observations and dedicated
-108 lints/32 access paths/eight emission observations/12 context checks. Runtime
-validates 154 source/state programs; independent dense resumption covers eight
-programs/4,152 assertions at all 101 budgets. Final review checkpoint: `a3cee6bd`.
+## Interfaces that must survive
 
+- Occurrence identity is compiled instance plus FIELD/INDEX path, never AST
+  equality or filename. Nullable items retain original indices; generated domains
+  merge old26→12 and27→13, later domains shift by two.169 constructors remain.
+- FACTS, selected-child REDIRECTS, queued WARNINGS and permanent POOLS differ.
+  Only visited PPR reads export constants/redirects; facts beneath folded parents
+  remain roots. Raw selected-child redirects preserve delayed reads; ordinary
+  ternary copies its selected result. Parser literal designation cannot follow
+  arbitrary compiler-fact equality.
+- Array prepass visits original values then keys, continuing after dynamic entries.
+  Hole errors precede pass-two insertion/scalar-unpack errors; preceding original
+  operand lines differ from folded child context. Initial holes retain active
+  compilation context. Explicit barriers and childwalks follow pinned Zend; no
+  catchall unknown expression becomes nonconstant.
+- Classconstant/named ::class lookup remains explicitly Unsupported when required
+  lookup APIs are absent. Discarding a potentially known value changes branch
+  selection; retained Attribute originals prove actual mismatches. Magicconstant
+  context and other pending folds must not be presented as closed prepass scope.
+- Runtime wrappers distinguish writable fetch from reference acquisition; a
+  singleton REF wrapper remains distinct without adding roots. Captured locations,
+  COW arrays, embedded shared references and delayed operand reads remain separate.
+- Compound targets use PPRW before RHS, keys PPR; direct$this is lint-valid and
+  errors at runtime acquisition without object context. Preserve captured DIM
+  final-opcode lines and dynamic-name fetch timing.
+- concatExprLine/nullaryExprLine/cloneExprLine are proven parser contexts, with
+  missing/nonpositive semantic boundaries. Bare null exit requires valid token
+  spans; parenthesized exit uses endLine. Unqualified synthetic exit/die/clone
+  calls use endLine, qualified/relative names keep ordinary name lines. Shared
+  ASCII folding moved16→10 without a change of function meaning.
 
-Compiler owns 11/15–19/21–23/45-constant-context/46/47, checked metadata/schema,
-compiler helpers and docs. Runtime owns 20/30–44/45-dimension-write/50–53 and source
-execution. Reviewer owns independent evidence, PROGRESS, inventory and discrepancy
-history. Coordinate shared CASES/Makefile edits, Git index and Dune build starts.
-Save all watched inputs, then run full evidence/inventory preflight before expensive
-source campaigns; adding an archive without seeding isolated evidence fixtures
-previously forced an entire final comparison rerun.
+## Next source milestones
 
-## Retained interfaces
+1. Runtime3 `.tools/runtime-ordinary-final` contains reviewed prerequisite plus
+   ordinary binary/cast/bitnot/void/concat activation. Publish only its bounded
+   13-path delta after prerequisite commit and recheck exact base hashes. Shared
+   pcast API56 differs from compiler CT eligibility. Runtime58 schedules ordinary
+   values;59 handles concat constant conversions and delayed CV resolution.
+   Retain compiler scalar-conversion warnings after both operand compilations and
+   runtime constant-array conversion at final operator line before delayed reads.
+   Parser-folded literalconcat names differ from unary/ternary computed names.
+   Private source gates and pending environment boundaries are separate from the
+   required frozen combined whole-source campaign. `power_complete` belongs09;
+   load06–09 and preserve accepted compound20/54/55 when merging.
+2. Pair actual array unpack with60 shared transfer and61 source tasks. Shared
+   unpack_error_bytes returns byte lists for scalar runtime Error and compiler
+   PFSTATICBYTES. PFSPREAD prepares all operands first; only fully constant arrays
+   fail scalar unpack statically. Array construction calls array_unpack followed
+   by pfinserted to defer append overflow. Integer keys append, strings replace;
+   preserve singleton/shared reference ownership and original paths. Private154
+   exact sources and31state programs/2454assertions are evidence, not production
+   source admission until the coherent compiler/runtime commit is reviewed.
+3. Implement reached destructuring with runtime3 private62/63 tasks. Existing
+   14 reached-list originals remain Unsupported; helpers/task fixtures alone
+   do not close them. Propagate nested reference requirements before RHS, check
+   referenceable RHS/nullsafe before compiling RHS, then evaluate RHS exactly
+   once. Style, empty-list and keyed-hole checks occur after RHS compilation;
+   key compilation precedes target/style validation. Retained20 multiline source
+   controls are `.tools/list-compiler-line-originals.json`.
 
-- Occurrence identity is compiled-instance ID plus FIELD/INDEX path, never AST
-  equality or filename. 11 retains exact checked nodes and structural occurrence
-  catalogs. 21/22/23 carry lexical namespace/import/compiler order; no AST-wide
-  declaration registry. Existing unmodeled names never fall through as missing.
-- 45 separates partial FACTS, raw selected-child REDIRECTS and queued WARNINGS.
-  Array prepass visits logical children eagerly; ordinary short-circuit compilation
-  may skip them. Prepass ternary selects even a dynamic child; ordinary ternary
-  compiles both. Variables, assignments/references and all four updates are explicit
-  nontraversing prepass barriers, followed by ordinary child compilation if reached.
-- 46 exports expression(path,endline,value?), ACCESS modes and executable redirects.
-  Only visited PPR reads export redirects/use constants. Raw facts under folded
-  parents are roots, not executable entries. Ordinary ternary copies selected
-  values; raw prepass redirect preserves delayed CV/reference access.
-- 33 resolves same-unit redirect targets in canonical source catalogs; pooled values
-  precede redirects. Permanent POOLS differ from HELD temporaries. Constant export
-  rejects conflicting scalar/array identities and missing operand/fact lines.
-- PPRW update targets preserve nested base modes, read keys and allow append [].
-  Direct call-return rejection precedes nullsafe-chain rejection and operand visits;
-  a separate fallback makes those rules disjoint. `$this++` lint is accepted;
-  missing object context is a runtime acquisition error, never a static rejection.
-  Direct/literal assignment/reference rebinding and final unset reject statically
-  before operands, while dimension bases/reference RHS retain runtime FETCH_THIS.
-- `callableExprLine` is the actual argument-list opening token line for dynamic
-  function calls, matching Zend's explicit `callable_expr` mid-rule capture.
-  Named calls use the name line. Missing/nonpositive context is Unsupported;
-  an edited positive value changes the diagnostic line. 20 includes the required
-  call/static/nullsafe/property-chain line projections, not only admitted runtime
-  value forms. Ordinary call execution remains a separate obligation.
+   Unkeyed fetch inherits RHS/previous synthetic-assignment context; keyed fetch
+   uses key ending context. Holes preserve that carry. Synthetic assignment has
+   a ZNODE RHS created at the fetch line: nonreference VAR completion changes
+   carry to original target AST line, while reference/DIM targets preserve fetch
+   line; nested lists export nested completion. The computed name warning line
+   can differ from original VAR line. Do not reuse ppassignmentline's computed
+   variable_line for this special lowering, or use generic target end context.
+   Target acquisition still needs its separate writable ending descriptor.
+   Use original checked targets and occurrence descriptors, not synthetic ASTs.
+4. Foreach needs persistent cursor/bucket ownership through append, deletion,
+   reinsertion, array replacement, rebinding, unset, COW and references. Calls/
+   frames/defaults, linking/objects, properties, exceptions/unwinding, generators,
+   Fibers, dynamic sources and collection follow; see LINKING-HANDOFF.
 
-Read SOURCE-COMPILER, CONSTANT-CONTEXT, COMPARISONS, CONTROL-COMPILER and
-COMPILED-POOLS for tested rules. 47 preserves loop legality, compiler order and
-restored loop context. Checked position type/range is not source authenticity.
-
-## Next compiler work
-
-1. Pair compound operators with runtime captured locations and remaining numeric/
-   string operations. Fresh `.tools/{20,45,46}-compound-compiler.watsup` drafts,
-   generated by `.tools/rebase-compound-compiler.py`, rebase onto the current incdec
-   accepted incdec files. A paired private runtime replay passes 81 originals/1,204 assertions
-   (`.tools/compound-rebased-source.json`), but independent and dedicated compiler
-   phase/access/PFSTOP gates remain pending. Runtime's 588-source value expansion
-   (`.tools/probe-compound-values.py`) is active at turnover; coordinate its finish
-   before changing these draft hashes. Old `.tools/46-update-compiler.watsup` and
-   its generator predate incdec/this/nullsafe corrections and must not overwrite
-   accepted files. The fresh draft adds 12 explicit PFSTOP barriers and temporary
-   shapes. Target is PPRW before RHS; keys are PPR. Compound `$this` is lint-valid
-   like inc/dec; the old draft guard was wrong (see retained compound originals).
-   Parent ending line follows RHS, and existing potential-self
-   DIM/CV handling remains. Runtime distinguishes direct-CV RHS reading, dynamic-name
-   FETCH_RW before delayed RHS CV reading and final DIM location acquisition before delayed
-   RHS read. Gate these against retained `.tools/update-compiler-originals.json`.
-   Four `.tools/compound-fetch-timing-originals.json` sources confirm eager RHS
-   `$missing+1` diagnostics precede dynamic-name/DIM target fetch; the paired
-   timing report passes 56 assertions, still pending independent review.
-   `??=` needs separate quiet-read and memoized-write semantics.
-   `coverage/semantics/concat-cv-originals.json` records an existing literal-concat
-   CV gap. Zend's parser folds concat when both operands satisfy its ZVAL predicate
-   and `zend_binary_op_produces_error` guard (zend_ast.c484ff); ternary/compiler
-   FACTS are not equivalent. Probe unary/folded literal contexts too. Preserve exact
-   parser-created ZVAL line and classification when activating concat names.
-2. Reached destructuring remains open. Preserve the 16 exact originals in
-   `coverage/semantics/destructuring-list-target-originals.json` and their explicit
-   14 reached Unsupported observations. `zend_verify_list_assign_target` validates
-   RHS/referenceability before RHS compilation; outer mixed style, spread, RHS
-   static read and referenceability can precede nested long-array rejection.
-   Propagate nested reference requirements, evaluate RHS once, then process keys/
-   fetches/targets with exact copy/reference ownership and emission-line changes.
-   Converted Expr_List keeps List.kind plus destructuringArrayKind (original long1,
-   short2); long-array rejection must precede mixed-style classification. First-hole
-   compiler consumption remains pending, despite accepted metadata transport.
-3. Ordinary Array_ omissions need a separate schema/compiler phase repair. Six
-   immutable originals in `coverage/semantics/array-hole-phase-originals.json`
-   include native-valid skipped logical/prepass branches. Do not exclude them as
-   parser failures. Reviewer/root favor nullable Array_.items plus exact initial
-   omission context; an ArrayHole constructor has no demonstrated need.
-   Zend `zend_try_ct_eval_array` visits values before keys, continues past dynamic
-   entries, and reports a visited null using the previous nonempty element's
-   ORIGINAL AST line, or current compiler line when first. Do not use comma line
-   for every hole or a folded child line. Add multiline keyed/unpack/folded/first
-   nested-array witnesses before selecting the exact context transport. The 16
-   author-only observations `.tools/array-hole-line-originals.json` now retain
-   those cases: keyed value4, unpack3, original arithmetic2, parser-folded concat4
-   or grouped concat5, nested first omission outercontext2 versus assignment
-   barrier4. Repeat independently and archive unchanged before implementation.
-4. Nullable schema change is manageable but cross-cutting. Current Array_.items is
-   phpType12=list(ArrayItem), item phpType13; List.items is nullable phpType26/27.
-   Making Array_.items nullable merges old26->new12 and old27->new13; later numbered
-   domains shift by two (currently maximum71, 72 total domains including statement/
-   expression). Confirm by normalized domain keys after generating; never assume
-   IDs from position. Old13 widens and array consumers need explicit ABSENT handling.
-   Remap both bare type names and variable suffixes. At least 18 production semantic/
-   helper files mention old26+ types, including 11/16–18/20–21/30/36–37/40–41/45–47/50.
-   Also regenerate schema/occurrence walkers and inspect all repository consumers.
-   Preserve nullable item indices and fresh trailing-hole commas, with no invented
-   expression values. Gate original→checked→printer→frontend and exact skipped/
-   visited compiler behavior together; syntax acceptance change is intentional.
-5. Unpack drafts `.tools/45-unpack-compiler.watsup`, `46-unpack-compiler.watsup` and
-   18 originals predate comparisons; rebase before use. Prepass all values/unpack
-   operands before constant construction. Scalar unpack fails statically only for
-   a fully constant array; dynamic/reference entries defer to runtime. Integer keys
-   append, string keys replace, append overflow defers, partial facts remain roots.
-   Foreach requires persistent buckets/cursors and mutation/COW/reference lifetime.
-6. Declaration/default/frame and call integration follows LINKING-HANDOFF and the
-   reviewed pure static/signature helpers. Actual functions/closures/classes,
-   properties, exceptions/unwinding, generators/Fibers, dynamic sources, callbacks
-   and collection remain open; helper success is not source activation.
-
-## Evidence and scope discipline
-
-The incdec compiler helper embeds original bytes rather than reading oracle archives;
-source catalog copies those literals to avoid a `source_compiler` import cycle.
-Keep author and independent source/state/resumption gates separate. Retained prepass,
-callable-line and nullsafe-overlap failures must remain immutable with explicit
-resolution evidence. Header assignment flags, computed plain-write/reference/unset environment-name
-protocols and broad frame/object contexts are still assigned obligations, not inferred from update tests.
-
-The namespace-relative `static` discrepancy remains the sole intentional divergence,
-with source activation evidence pending. All other irregularities follow the pin.
-The historical 30,980-record syntax audit must be rerun at final closure after all
-metadata/schema changes; copied binaries do not establish offline portability.
+Namespace-relative static remains the sole intentional divergence, with source
+activation pending. Every other quirk follows the pin. Record bounded evidence
+and pending outcomes separately; finish all core obligations before closure.

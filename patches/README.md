@@ -10,6 +10,8 @@ BSD-3-Clause license.
 | Add `T_PROPERTY_C` to semi-reserved identifiers; regenerate the PHP 8 tables | Valid `function __PROPERTY__()` in a class; target Zend grammar and `reserved-identifiers.php` |
 | Defer four import-alias semantic checks from grammar reductions to compilation | `imports-reserved-*`: function/constant `Self` and `Parent` aliases compile; class aliases parse but fail compilation, matching `zend_compile_use` |
 | Retain ternary grouping as checked boolean metadata at the actual grouping reduction | `ternary_metadata.py`: parentheses in calls/control headers are not expression grouping; independent compiler checks consume the distinction |
+| Preserve ordinary array omissions through checking and fresh printing | `array_omission_metadata.py`: skipped holes can be valid; visited holes require compiler error ordering |
+| Retain concat, bare yield/exit and clone reduction context | `concat_line_metadata.py`, `nullary_line_metadata.py`, `clone_line_metadata.py`: identical earlier checked trees require different pinned compiler lines |
 | Retain the dynamic callable creation line at its grammar reduction | `callable_line_metadata.py`: identical prior checked trees need different native write-context diagnostic lines |
 | Select PHP 8 concatenation precedence between shifts and pipe | `precedence.php`: `('x' . 1) + 2` previously changed grouping |
 | Retain a trailing comma for singleton positional `clone` call nodes | `clone85.php`: `clone($a,)` otherwise reparsed as unary clone |

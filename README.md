@@ -55,6 +55,9 @@ current scalar/array locations, preserving copied results and diagnostic order;
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
+[Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
+slots and exact compiler diagnostic context. Reached destructuring and required
+class-constant lookup remain unfinished.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the
