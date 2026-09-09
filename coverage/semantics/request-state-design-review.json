@@ -1,0 +1,32 @@
+{
+  "scope": "Independent review of planned request ownership/symbol invariants, not acceptance of mutable runtime draft. Six exact native original controls; no source semantic agreements.",
+  "original": "coverage/semantics/request-symbol-independent-originals.json",
+  "sha256": "7b9136c0783c1bfbbb1913292e44eacc6a7b019ec6bd56eae3d01496bfb08259",
+  "exact_private_original": ".tools/review7-request-symbol-originals/originals.json",
+  "script": {
+    "path": ".tools/review7-request-symbol-originals.py",
+    "sha256": "c3739ce172b400b46b648415ff918231705ab18444a1e766cf01a2f30fd1c934",
+    "text": "from pathlib import Path\nimport base64,hashlib,json,os,struct,subprocess\nR=Path.cwd();O=R/'.tools/review7-request-symbol-originals';O.mkdir(exist_ok=False)\nprofile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[arg for k,v in profile.items() for arg in ['-d',k+'='+v]]\ncases=[('dynamic-unset-cv', [], [], b'<?php $a=1;$b=2;$n=\"a\";unset($$n);$$n=3; foreach($GLOBALS as $k=>$v){if($k===\"a\"||$k===\"b\")echo $k,$v;}'), ('dynamic-unset-noncv', [], [], b'<?php $n=\"a\";$$n=1;$m=\"b\";$$m=2;unset($$n);$$n=3; foreach($GLOBALS as $k=>$v){if($k===\"a\"||$k===\"b\")echo $k,$v;}'), ('globals-unset-cv', [], [], b'<?php $a=1;$b=2;unset($GLOBALS[\"a\"]);$GLOBALS[\"a\"]=3; foreach($GLOBALS as $k=>$v){if($k===\"a\"||$k===\"b\")echo $k,$v;}'), ('globals-unset-noncv', [], [], b'<?php $GLOBALS[\"a\"]=1;$GLOBALS[\"b\"]=2;unset($GLOBALS[\"a\"]);$GLOBALS[\"a\"]=3; foreach($GLOBALS as $k=>$v){if($k===\"a\"||$k===\"b\")echo $k,$v;}'), ('numeric-singleton-snapshot', [], [], b'<?php ${\"1\"}=1;$r=&${\"1\"};unset($r);$s=$GLOBALS;$s[1]=7;echo ${\"1\"};'), ('numeric-shared-snapshot', [], [], b'<?php ${\"1\"}=1;$r=&${\"1\"};$s=$GLOBALS;$s[1]=7;echo $r;')]\nrecords=[]\nfor name,env,ini,source in cases:\n p=O/(name+'.php');p.write_bytes(source);entries=[b'LC_ALL=C',b'TZ=UTC',*env];payload=b'PHPRQ001'+struct.pack('<qII',-1,500000,len(entries))+b''.join(struct.pack('<I',len(e))+e for e in entries);q=O/(name+'.input');q.write_bytes(payload);cmd=[str(R/'.tools/php/bin/php'),'-n',*flags,'-d','variables_order=EGPCS',*[arg for v in ini for arg in ['-d',v]],str(p),'alpha','beta']\n with q.open('rb') as f:\n  os.dup2(f.fileno(),198)\n  try:run=subprocess.run(cmd,env={'LD_PRELOAD':str(R/'.tools/request-clock.so')},pass_fds=(198,),cwd=O,capture_output=True,timeout=15)\n  finally:os.close(198)\n row={'id':name,'source_base64':base64.b64encode(source).decode(),'source_sha256':hashlib.sha256(source).hexdigest(),'context':str(p),'environment_base64':[base64.b64encode(e).decode() for e in entries],'clock':[-1,500000],'extra_ini':ini,'command':cmd,'cwd':str(O),'payload_base64':base64.b64encode(payload).decode(),'oracle':{'stdout':base64.b64encode(run.stdout).decode(),'stderr':base64.b64encode(run.stderr).decode(),'exit_status':run.returncode}};records.append(row);print(name,run.returncode,run.stdout,run.stderr,flush=True)\nr={'scope':'Independent symbol ordering and numeric snapshot native originals before request bootstrap implementation; provider instrumented pinned CLI, no semantic agreements claimed. Authored environment only.','inputs':{p:hashlib.sha256((R/p).read_bytes()).hexdigest() for p in ['.tools/php/bin/php','.tools/request-clock.so','native/request_clock.c','tests/semantics/profile.json','vendor/php-src/main/php_variables.c','vendor/php-src/sapi/cli/php_cli.c']},'records':records};(O/'originals.json').write_text(json.dumps(r,indent=2)+'\\n')\n"
+  },
+  "draft_observation": {
+    "root": ".tools/runtime5-request-env-first",
+    "files": {
+      "spec/semantics/30-storage.watsup": "8efa9bbb998e2955586f5022e9e94e649e774de8a8f6d983fefcc72ed216151a",
+      "spec/semantics/39-ownership.watsup": "34fefba6af08698669c5e4e8c2ebfe59ffdc6b84b544123ccadcc7432d28dd1a",
+      "spec/semantics/75-request-environment.watsup": "1cefebb509af58da29b09a2352f432fd964ae7f77fe826ad1b5dfe4fce295a5c"
+    },
+    "status": "Snapshot and symbol-unset rules not yet authored at review. Root-value ownership shape is appropriate; final rules/validation need review."
+  },
+  "required_invariants": [
+    "HTTPROOTS retain original G/P/C/S/E/F array values, independent of visible variable cells and alias promotion/rebinding. REQUEST has no separate PG root.",
+    "Only initialized lazy PG roots allocate; ACTIVATED prevents rearm after visible unset. Compiler effects run before source body.",
+    "CV names retain symbol positions through either unset opcode; non-CV dynamic symbol deletion removes its position. Undefined placeholders add no reference ownership.",
+    "Snapshots omit undefined/absent values, convert numeric string keys, preserve shared ref wrappers and detach singleton refs using live graph ownership including cycles and held operands.",
+    "PG array roots participate in COW and survive visible-global removal; saved snapshot results and old reference cells remain owned through rebinding."
+  ],
+  "pending": [
+    "Bounded source/state tests against frozen runtime candidate",
+    "Request transport validation and exact CLI invocation-path profile",
+    "Final canonical bridge and full quiet/CV checkpoint"
+  ]
+}
