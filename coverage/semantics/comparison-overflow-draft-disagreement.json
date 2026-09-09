@@ -1,0 +1,904 @@
+{
+  "classification": "unpublished comparison draft versus pinned PHP; raw output terms retained before repair",
+  "draft_inputs": {
+    "spec/php.watsup": "d42466070aa791c4d1b50b14f365505a7d1eb42bc1ac973f37f0aad81bdaa8e9",
+    "spec/semantics/11-source-occurrences.watsup": "dee3b76b313751b631c8ad48ea06e2a25e1b375b167262db4f0d85a879dc025f",
+    "spec/semantics/00-numeric.watsup": "f7d962c8314711ddbd0a0e6b5302ff0d7c61c0c38b454d225e7e8b4d0cf42652",
+    "spec/semantics/01-integer.watsup": "d1955f4f435421fbb8d1ffdda1587be0f62a3509994bcb4bfd20eb74a4ab55ef",
+    "spec/semantics/02-numeric-text.watsup": "84986b275e0c1e3aceac6fbce873fa2fe72f8d20406fd061929d7f9c367f1574",
+    "spec/semantics/03-numeric-format.watsup": "9ce53fca5a4316cb79676aa89d8e1a05826a090e6b883cb8d45cf30875f345ca",
+    "spec/semantics/04-numeric-context.watsup": "0218f142bfe9e03c25833f37cacceda4ce1ba4e1a4a09f397b4ff67405f654e0",
+    "spec/semantics/10-bytes.watsup": "7a01fb92f9f93c0508dbc99579e8e3e44e2637afc115ded1a2390e069f1e2a1b",
+    "spec/semantics/15-constant-names.watsup": "57aa5a92fb78842b926894af7fc4f7747c1aa069ce93689f3c7d574d1f009a3a",
+    ".tools/20-comparison.watsup": "bb0d684437f833714e83711cc3eb6196080708b7b4ab18e6967c2fc1a03133e7",
+    "spec/semantics/30-storage.watsup": "023b20c4146f0e951052d0f9b60504cf0a80169e904217a790a2ef94a7f7e63b",
+    "spec/semantics/31-source-origins.watsup": "7faf4a74a5fafa4a424c307e73781c00f81415900be033990f04738b593ca008",
+    "spec/semantics/35-scalar-operations.watsup": "9403c3bb24fa89085f40a0c7652724a999f2d8765db1b9cea97ebea5f4286cf8",
+    "spec/semantics/36-arrays.watsup": "c8e25d36fc0acfbc0840970ae3a53c64b952f07ac1077a888ae69162c2f058f4",
+    "spec/semantics/37-array-locations.watsup": "a8bb0c7ab7c7c19f27fe0a0b2f660330570fd6a75d5bb7148626244e67ca204e",
+    "spec/semantics/38-array-unset.watsup": "7a0f7488ede140f297fa3460229cbd18fa9162ff5559aa4e33f8c4c418ddb02e",
+    "spec/semantics/39-ownership.watsup": "e0839de4ab4db8799a1a370c2736b54d4bb5a0d8d14df29eeb35cb8d1a9105a1",
+    "spec/semantics/32-compiled-pools.watsup": "3eec8a6aa389b13d2032e6752386ba389da501e4987cdef363213fb43460ea3e",
+    "spec/semantics/16-static-types.watsup": "f5eaf8d1e2d0cceabe9159a098582e78e5353df9ac735f9d5e8ac4900e258f19",
+    "spec/semantics/21-source-context.watsup": "c4f52e5e6921b4c3020043d365d5b7bf3b394fba2d3a2f5beda5d62296d4169d",
+    "spec/semantics/22-name-resolution.watsup": "9f9dd44d1f444e8d05c376321ab4112066e6f9886cbf361f1fd6ad4ec051578a",
+    "spec/semantics/23-named-constants.watsup": "88e05728f18905b758b5c09254953635097244c92fdfd1e5bf1a9c4080e73438",
+    "spec/semantics/44-dimension-read.watsup": "f86f9bd85dc53ac227995b504ee53edeec2ef42b4e80846c9548e12c067ca9cb",
+    "spec/semantics/45-dimension-write.watsup": "c863bbac52fd9f6abdb26325a36f6d15be3e83ddb66f09e894c3f544a26dccdb",
+    ".tools/45-comparison-compiler.watsup": "5060f0eeb1885d41fec1f81213a9dd2a6766db4b4ea7173d6eb1500256ed107c",
+    "spec/semantics/46-source-compiler.watsup": "cc08ecaa9c5102324c8adbe970f5b13c58d06b143afe679d1bb5112f3eb58721",
+    "spec/semantics/47-control-compiler.watsup": "bf8d240a75ccbd6ba19db1107ea9aa74ca3ed722cb2f495d5a8b595ac32fa49b",
+    "spec/semantics/33-runtime-compiler.watsup": "117961441890c5be88d01ddbd67f047cfcae864c13273dc889747dfeeecffa48",
+    "spec/semantics/40-control.watsup": "271e7288bd6bbb5b5c7b523bcb7ddda872b74bc0bb5d457eaa16ff29707bc098",
+    "spec/semantics/41-array-control.watsup": "97ef55dfd2c9580cc8ec2cd9c0f3e91c24917824a4588322a04d201fb42f5056",
+    "spec/semantics/42-array-write-control.watsup": "4bfdbe4f841f4fef42c9eddbc60e571fca840d7e090b2aa65c954e81c0e1c893",
+    "spec/semantics/43-array-unset-control.watsup": "3c25d2fca48080c07ff9c1121805b3f9fab1db05143bf518b962561b3b715306",
+    "spec/semantics/50-control-flow.watsup": "ff825a29c466210f9b9eaf7b256b382bb315bb057c8e52340ea74e50c3c56f10",
+    "spec/semantics/51-truth-expressions.watsup": "16d2580a7171304abce7db060883189f06d5fa06b46ef53b65978e27b102d7d4",
+    ".tools/52-comparison.watsup": "1410b2268fbe3310c5074eb933b35783b45f13bdd099754d802bcd9ea85e864c"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "oracle_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "source_anchor": "vendor/php-src/Zend/zend_operators.c:3663-3691 and3421-3460",
+  "records": [
+    {
+      "id": "positive-long-prefix-exponent",
+      "source_base64": "PD9waHAgZWNobyAiMTAwMDAwMDAwMDAwMDAwMDAwMDBlLTE5IiA8PT4gIjIiOw==",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_BinaryOp_Spaceship",
+                  "fields": [
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "MTAwMDAwMDAwMDAwMDAwMDAwMDBlLTE5"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "36"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "IjEwMDAwMDAwMDAwMDAwMDAwMDAwZS0xOSI="
+                        },
+                        "startFilePos": {
+                          "int": "11"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "Mg=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "44"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "IjIi"
+                        },
+                        "startFilePos": {
+                          "int": "42"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "44"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "11"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "45"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/comparison-overflow.php"
+        ],
+        "status": 0,
+        "stdout_base64": "MQ==",
+        "stderr_base64": ""
+      },
+      "model": {
+        "command": [
+          "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+          "/home/user/workspace/php-spec/spec/php.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/11-source-occurrences.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/00-numeric.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/01-integer.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/02-numeric-text.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/03-numeric-format.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/04-numeric-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/10-bytes.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/15-constant-names.watsup",
+          "/home/user/workspace/php-spec/.tools/20-comparison.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/30-storage.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/31-source-origins.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/35-scalar-operations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/36-arrays.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/37-array-locations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/38-array-unset.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/39-ownership.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/32-compiled-pools.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/16-static-types.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/21-source-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/22-name-resolution.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/23-named-constants.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/44-dimension-read.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/45-dimension-write.watsup",
+          "/home/user/workspace/php-spec/.tools/45-comparison-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/46-source-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/47-control-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/33-runtime-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/40-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/41-array-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/42-array-write-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/43-array-unset-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/50-control-flow.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/51-truth-expressions.watsup",
+          "/home/user/workspace/php-spec/.tools/52-comparison.watsup",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/observation.watsup"
+        ],
+        "status": 0,
+        "stdout_term_base64": "WwogIDQ1LAogIDQ5Cl0K",
+        "stderr_base64": "",
+        "stdout_base64": "LTE="
+      },
+      "comparison": "known_pending_draft_difference"
+    },
+    {
+      "id": "negative-long-prefix-exponent",
+      "source_base64": "PD9waHAgZWNobyAiLTEwMDAwMDAwMDAwMDAwMDAwMDAwZS0xOSIgPD0+ICItMiI7",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_BinaryOp_Spaceship",
+                  "fields": [
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "LTEwMDAwMDAwMDAwMDAwMDAwMDAwZS0xOQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "37"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "Ii0xMDAwMDAwMDAwMDAwMDAwMDAwMGUtMTki"
+                        },
+                        "startFilePos": {
+                          "int": "11"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "LTI="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "46"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "Ii0yIg=="
+                        },
+                        "startFilePos": {
+                          "int": "43"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "46"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "11"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "47"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/comparison-overflow.php"
+        ],
+        "status": 0,
+        "stdout_base64": "LTE=",
+        "stderr_base64": ""
+      },
+      "model": {
+        "command": [
+          "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+          "/home/user/workspace/php-spec/spec/php.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/11-source-occurrences.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/00-numeric.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/01-integer.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/02-numeric-text.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/03-numeric-format.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/04-numeric-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/10-bytes.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/15-constant-names.watsup",
+          "/home/user/workspace/php-spec/.tools/20-comparison.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/30-storage.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/31-source-origins.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/35-scalar-operations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/36-arrays.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/37-array-locations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/38-array-unset.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/39-ownership.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/32-compiled-pools.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/16-static-types.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/21-source-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/22-name-resolution.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/23-named-constants.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/44-dimension-read.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/45-dimension-write.watsup",
+          "/home/user/workspace/php-spec/.tools/45-comparison-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/46-source-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/47-control-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/33-runtime-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/40-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/41-array-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/42-array-write-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/43-array-unset-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/50-control-flow.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/51-truth-expressions.watsup",
+          "/home/user/workspace/php-spec/.tools/52-comparison.watsup",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/observation.watsup"
+        ],
+        "status": 0,
+        "stdout_term_base64": "WwogIDQ5Cl0K",
+        "stderr_base64": "",
+        "stdout_base64": "MQ=="
+      },
+      "comparison": "known_pending_draft_difference"
+    },
+    {
+      "id": "short-prefix-exponent-control",
+      "source_base64": "PD9waHAgZWNobyAiMTAwMDAwMDAwMDAwMDAwMDAwMGUtMTgiIDw9PiAiMiI7",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_BinaryOp_Spaceship",
+                  "fields": [
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "MTAwMDAwMDAwMDAwMDAwMDAwMGUtMTg="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "35"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "IjEwMDAwMDAwMDAwMDAwMDAwMDBlLTE4Ig=="
+                        },
+                        "startFilePos": {
+                          "int": "11"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "Mg=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "43"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "IjIi"
+                        },
+                        "startFilePos": {
+                          "int": "41"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "43"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "11"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "44"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/comparison-overflow.php"
+        ],
+        "status": 0,
+        "stdout_base64": "LTE=",
+        "stderr_base64": ""
+      },
+      "model": {
+        "command": [
+          "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+          "/home/user/workspace/php-spec/spec/php.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/11-source-occurrences.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/00-numeric.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/01-integer.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/02-numeric-text.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/03-numeric-format.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/04-numeric-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/10-bytes.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/15-constant-names.watsup",
+          "/home/user/workspace/php-spec/.tools/20-comparison.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/30-storage.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/31-source-origins.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/35-scalar-operations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/36-arrays.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/37-array-locations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/38-array-unset.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/39-ownership.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/32-compiled-pools.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/16-static-types.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/21-source-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/22-name-resolution.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/23-named-constants.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/44-dimension-read.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/45-dimension-write.watsup",
+          "/home/user/workspace/php-spec/.tools/45-comparison-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/46-source-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/47-control-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/33-runtime-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/40-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/41-array-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/42-array-write-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/43-array-unset-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/50-control-flow.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/51-truth-expressions.watsup",
+          "/home/user/workspace/php-spec/.tools/52-comparison.watsup",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/observation.watsup"
+        ],
+        "status": 0,
+        "stdout_term_base64": "WwogIDQ1LAogIDQ5Cl0K",
+        "stderr_base64": "",
+        "stdout_base64": "LTE="
+      },
+      "comparison": "match"
+    },
+    {
+      "id": "decimal-long-prefix-control",
+      "source_base64": "PD9waHAgZWNobyAiMTAwMDAwMDAwMDAwMDAwMDAwMDAuMCIgPD0+ICIyIjs=",
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_BinaryOp_Spaceship",
+                  "fields": [
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "MTAwMDAwMDAwMDAwMDAwMDAwMDAuMA=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "34"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "IjEwMDAwMDAwMDAwMDAwMDAwMDAwLjAi"
+                        },
+                        "startFilePos": {
+                          "int": "11"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Scalar_String",
+                      "fields": [
+                        {
+                          "bytes": "Mg=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "42"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "rawValue": {
+                          "bytes": "IjIi"
+                        },
+                        "startFilePos": {
+                          "int": "40"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "42"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "11"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "43"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          }
+        ]
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/comparison-overflow.php"
+        ],
+        "status": 0,
+        "stdout_base64": "MQ==",
+        "stderr_base64": ""
+      },
+      "model": {
+        "command": [
+          "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+          "/home/user/workspace/php-spec/spec/php.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/11-source-occurrences.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/00-numeric.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/01-integer.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/02-numeric-text.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/03-numeric-format.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/04-numeric-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/10-bytes.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/15-constant-names.watsup",
+          "/home/user/workspace/php-spec/.tools/20-comparison.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/30-storage.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/31-source-origins.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/35-scalar-operations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/36-arrays.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/37-array-locations.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/38-array-unset.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/39-ownership.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/32-compiled-pools.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/16-static-types.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/21-source-context.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/22-name-resolution.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/23-named-constants.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/44-dimension-read.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/45-dimension-write.watsup",
+          "/home/user/workspace/php-spec/.tools/45-comparison-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/46-source-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/47-control-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/33-runtime-compiler.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/40-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/41-array-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/42-array-write-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/43-array-unset-control.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/50-control-flow.watsup",
+          "/home/user/workspace/php-spec/spec/semantics/51-truth-expressions.watsup",
+          "/home/user/workspace/php-spec/.tools/52-comparison.watsup",
+          "/home/user/workspace/php-spec/.tools/tmpehv1icma/observation.watsup"
+        ],
+        "status": 0,
+        "stdout_term_base64": "WwogIDQ5Cl0K",
+        "stderr_base64": "",
+        "stdout_base64": "MQ=="
+      },
+      "comparison": "match"
+    }
+  ],
+  "differences": 2
+}
