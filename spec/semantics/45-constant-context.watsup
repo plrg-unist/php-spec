@@ -6,7 +6,7 @@ syntax pfstate = { SOURCE pcunit, MEMORY pstate, FACTS pffact*, VALUE pvalue?, E
 syntax pfshape = PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
-  | PFTERNARY expression phpType5 expression | PFMEMBER expression phpType20 | PFNEW phpType28 phpType6 | PFCAST pcast expression | PFCAST_OBJECT expression | PFCAST_UNSET | PFCOALESCE expression expression | PFCLASSCONST phpType19 phpType20 | PFCLASSNAME phpType19 | PFSTOP | PFOTHER
+  | PFTERNARY expression phpType5 expression | PFMEMBER expression phpType20 | PFNEW phpType28 phpType6 | PFCAST pcast expression | PFCAST_OBJECT expression | PFCAST_UNSET | PFBITNOT expression | PFCOALESCE expression expression | PFCLASSCONST phpType19 phpType20 | PFCLASSNAME phpType19 | PFSTOP | PFOTHER
 syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool | PFSPREAD pvalue?
 syntax pfbuild = PFBUILT pstate | PFDEFER | PFSTATIC text
@@ -556,3 +556,25 @@ def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
   -- if $pfclassdynamic(phpType19)
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfunsupported(F, "constant class-name resolution")
   -- if ~$pfclassdynamic(phpType19)
+def $pfshape(NExprBinaryOpMod expression_1 expression_2 metadata) = PFBINARY MODULO expression_1 expression_2
+def $pfshape(NExprBinaryOpShiftLeft expression_1 expression_2 metadata) = PFBINARY SHIFTLEFT expression_1 expression_2
+def $pfshape(NExprBinaryOpShiftRight expression_1 expression_2 metadata) = PFBINARY SHIFTRIGHT expression_1 expression_2
+def $pfshape(NExprBinaryOpBitwiseAnd expression_1 expression_2 metadata) = PFBINARY BITAND expression_1 expression_2
+def $pfshape(NExprBinaryOpBitwiseOr expression_1 expression_2 metadata) = PFBINARY BITOR expression_1 expression_2
+def $pfshape(NExprBinaryOpBitwiseXor expression_1 expression_2 metadata) = PFBINARY BITXOR expression_1 expression_2
+def $pfshape(NExprBinaryOpPow expression_1 expression_2 metadata) = PFBINARY POWER expression_1 expression_2
+def $pfshape(NExprBinaryOpConcat expression_1 expression_2 metadata) = PFBINARY CONCAT expression_1 expression_2
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = eps
+def $pfshape(NExprBitwiseNot expression metadata) = PFBITNOT expression
+def $pfshape(NExprCastVoid expression metadata) = PFSTOP
+dec $pfbitnot(pfstate, pcpath, int) : pfstate
+def $pfdispatch(F, pcpath, PFBITNOT expression, z) = $pfbitnot($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, z)
+def $pfbitnot(F, pcpath, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfbitnot(F, pcpath, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.VALUE = (pvalue)
+  -- if $constant_state($bitnot_apply(F.MEMORY, pvalue, z)) = (S)
+  -- if S.RESULT = KNOWN pvalue_result
+def $pfbitnot(F, pcpath, z) = F[.VALUE = eps]
+  -- otherwise

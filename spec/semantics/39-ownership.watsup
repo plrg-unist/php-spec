@@ -113,6 +113,7 @@ def $task_nodes(ARRAY_VALUE n (poperand) phpType13* z) = [HARRAY n] ++ $operand_
 def $task_nodes(ARRAY_REF_KEY n expression phpType13*) = [HARRAY n]
 def $task_nodes(ARRAY_REF_VALUE n eps phpType13* z) = [HARRAY n]
 def $task_nodes(ARRAY_REF_VALUE n (poperand) phpType13* z) = [HARRAY n] ++ $operand_nodes(poperand)
+def $task_nodes(CONCAT_RIGHT poperand b_left b_right z) = $operand_nodes(poperand)
 def $task_nodes(BINARY_RIGHT pbin poperand z) = $operand_nodes(poperand)
 def $task_nodes(WRITE_DYNAMIC poperand z) = $operand_nodes(poperand)
 def $task_nodes(REF_CAPTURE poperand z) = $operand_nodes(poperand)

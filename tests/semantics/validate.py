@@ -522,6 +522,8 @@ from array_omissions import CASES as OMISSION_CASES
 CASES.update({"array-omission-"+name:source for name,source in OMISSION_CASES.items()})
 from compound import CASES as COMPOUND_CASES
 CASES.update(COMPOUND_CASES)
+from ordinary import CASES as ORDINARY_CASES
+CASES.update(ORDINARY_CASES)
 from incdec import CASES as INCDEC_CASES
 CASES.update(INCDEC_CASES)
 from write_fetch import CASES as WRITE_FETCH_CASES

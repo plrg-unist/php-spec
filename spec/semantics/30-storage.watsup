@@ -14,7 +14,7 @@ syntax pcoderedirect = CODEREDIRECT pcpath pcpath bool
 syntax pcode = { UNIT nat, EXPRESSIONS pcodeexpr*, NAMES pcodename*, REDIRECTS pcoderedirect* }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pupdate = INCREMENT | DECREMENT
-syntax ptask = COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
+syntax ptask = CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
   | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int

@@ -293,3 +293,6 @@ def $php_run(program, n, text_file) = $drive($compile_source($initial_state(NORM
   -- if $source_filename(n_file*)
 def $php_run(program, n, text_file) = $initial_state(UNSUPPORTED "invalid source filename")
   -- if ~$source_filename($base64(text_file))
+
+def $cv_name(NExprBinaryOpConcat expression_1 expression_2 metadata) = (n*)
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING n*)

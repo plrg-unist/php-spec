@@ -291,6 +291,7 @@ def $ppbinarydone(P, pcpath, pbin, pvalue?) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppbinarydone(P, pcpath, pbin, pvalue?) = $ppoperandresult(P, $pfbinary(P.FOLD, pcpath, pbin, pvalue?, P.FOLD.VALUE, P.LOCATION.LINE))
   -- if P.COMPLETION = PPCNORMAL
+  -- if pbin =/= CONCAT
 def $ppunarydone(P, pcpath, punary) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppunarydone(P, pcpath, punary) = $ppoperandresult(P, $pfunary(P.FOLD, pcpath, punary, P.LOCATION.LINE))
@@ -486,3 +487,39 @@ def $ppternarychain(P, true, false) = $ppcheck(P, $context_error("Unparenthesize
 def $ppternarychain(P, false, true) = $ppcheck(P, $context_error("Unparenthesized `a ?: b ? c : d` is not supported. Use either `(a ?: b) ? c : d` or `a ?: (b ? c : d)`", P.LOCATION.LINE))
 def $ppternarychain(P, false, false) = P
 def $ppdispatch(P, pcpath, NExprTernary expression_cond phpType5 expression_false metadata, PPR) = $ppclearvalue($ppexpr($ppitemkey($ppexpr($ppternarycheck(P, expression_cond, phpType5), pcpath ++ [PCFIELD 0], expression_cond, PPR), pcpath ++ [PCFIELD 1], phpType5), pcpath ++ [PCFIELD 2], expression_false, PPR))
+
+dec $ppunsetcast(ppstate) : ppstate
+dec $ppbitnotdone(ppstate, pcpath) : ppstate
+def $pptemporary_shape(PFBITNOT expression) = true
+def $pptemporary_shape(PFCAST pcast expression) = true
+def $ppdispatch(P, pcpath, NExprBinaryOpConcat expression_1 expression_2 metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
+  -- if $pfshape(NExprBinaryOpConcat expression_1 expression_2 metadata) = PFSCALAR pvalue z
+def $ppdispatch(P, pcpath, expression_outer, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+  -- if $pfshape(expression_outer) = PFCAST pcast expression
+def $ppdispatch(P, pcpath, NExprCastVoid expression metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $ppdispatch(P, pcpath, NExprCastUnset expression metadata, PPR) = $ppunsetcast($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $ppunsetcast(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppunsetcast(P) = $ppcheck(P, $context_error("The (unset) cast is no longer supported", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdispatch(P, pcpath, NExprBitwiseNot expression metadata, PPR) = $ppbitnotdone($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
+def $ppbitnotdone(P, pcpath) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppbitnotdone(P, pcpath) = $ppoperandresult(P, $pfbitnot(P.FOLD, pcpath, P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+
+;; Zend emits scalar conversion diagnostics only after both operands compile.
+;; Constant arrays retain their values for the later runtime CAST instructions.
+dec $ppconcatconstant(pfstate, pcpath, pvalue?, int) : pfstate
+def $ppconcatconstant(F, pcpath, (pvalue), z) = $pfwarned(F, pcpath, $stringify(F.MEMORY, pvalue, z))[.VALUE = eps]
+  -- if ~$is_array_value(pvalue)
+def $ppconcatconstant(F, pcpath, pvalue?, z) = F[.VALUE = eps]
+  -- otherwise
+def $ppbinarydone(P, pcpath, CONCAT, pvalue_left?) = $ppoperandresult(P, F)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if F = $pfbinary(P.FOLD, pcpath, CONCAT, pvalue_left?, P.FOLD.VALUE, P.LOCATION.LINE)
+  -- if F.VALUE = (pvalue)
+def $ppbinarydone(P, pcpath, CONCAT, pvalue_left?) = $ppoperandresult(P, $ppconcatconstant($ppconcatconstant(F, pcpath, pvalue_left?, P.LOCATION.LINE), pcpath, P.FOLD.VALUE, P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if F = $pfbinary(P.FOLD, pcpath, CONCAT, pvalue_left?, P.FOLD.VALUE, P.LOCATION.LINE)
+  -- if F.VALUE = eps

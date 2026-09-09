@@ -1,0 +1,17 @@
+dec $bitnot_apply(pstate, pvalue, int) : pstate
+dec $bitnot_value(pstate, pvalue, int) : pstate
+dec $bitnot_type(pvalue) : nat*
+def $bitnot_apply(S, pvalue, z) = S
+  -- if S.COMPLETION =/= NORMAL
+def $bitnot_apply(S, pvalue, z) = $bitnot_value(S, pvalue, z)
+  -- if S.COMPLETION = NORMAL
+def $bitnot_value(S, PINT i, z) = S[.RESULT = KNOWN (PINT $long_not(i))]
+def $bitnot_value(S, PFLOAT n, z) = $cast_notices(S, castnotice*, n, z)[.RESULT = KNOWN (PINT $long_not(i))]
+  -- if (i, castnotice*) = $float_long(n, true)
+def $bitnot_value(S, PSTRING n*, z) = S[.RESULT = KNOWN (PSTRING $string_not(n*))]
+def $bitnot_value(S, pvalue, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,112,101,114,102,111,114,109,32,98,105,116,119,105,115,101,32,110,111,116,32,111,110,32] ++ $bitnot_type(pvalue), z)
+  -- otherwise
+def $bitnot_type(PBOOL true) = [116,114,117,101]
+def $bitnot_type(PBOOL false) = [102,97,108,115,101]
+def $bitnot_type(pvalue) = $type_bytes(pvalue)
+  -- otherwise
