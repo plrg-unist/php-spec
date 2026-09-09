@@ -101,8 +101,11 @@ binds source, allocation-class, state/resume and shared quiet/call checks.
 [Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) now preserve
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)
-binds exact909 source, protocol, state and production checks. Types, reference
-returns and remaining callable protocols stay pending.
+binds exact909 source, protocol, state and production checks.
+[Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) now
+execute with source-checked unit/function flags; [independent review](coverage/semantics/strict-declaration-review.json)
+binds917 source, protocol, cache/resume and complete weak-state bridges. Typed
+checks, reference returns and remaining callable protocols stay pending.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

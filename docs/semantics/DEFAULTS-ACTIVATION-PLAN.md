@@ -1,5 +1,11 @@
 # Untyped defaults checkpoint and continuation
 
+Strict92/runtime93 subsequently passed independent review on917/309b046c; see the
+[current contract](SOURCE-STRICT-DECLARATIONS.md) and
+[review](../../coverage/semantics/strict-declaration-review.json). This document's
+909/910 preparation identities remain historical. Typed parameter/return integration
+is next; no typed execution or full callable closure is claimed.
+
 Compiler90/runtime91 are independently accepted at c7cb1b44 on exact909/e25eb2b9:
 code1fce6586, compiler2b247d81 and runtime8151b96d. The
 [review](../../coverage/semantics/default-parameter-review.json) binds native
