@@ -249,9 +249,10 @@ def implementation_fingerprint():
     # Dune bookkeeping is generated, but executed artifacts remain evidence
     # inputs. Syntax-only builds need not have built the semantic helper yet;
     # helper campaigns also require and fingerprint this binary directly.
-    helper = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
-    if helper.exists():
-        paths.append(helper)
+    for name in ('tests/semantics/_build/default/numeric_runner.exe', '.tools/request-clock.so'):
+        helper = ROOT / name
+        if helper.exists():
+            paths.append(helper)
     digest = hashlib.sha256()
     for path in sorted(set(paths)):
         digest.update(str(path.relative_to(ROOT)).encode() + b'\0')

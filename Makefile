@@ -5,6 +5,7 @@ deps:
 
 build:
 	./scripts/build-file-helper.sh
+	./scripts/build-request-provider.sh
 	./scripts/opam-exec.sh dune build
 
 schema:
@@ -47,6 +48,7 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
 	python3 tests/semantics/source_context.py

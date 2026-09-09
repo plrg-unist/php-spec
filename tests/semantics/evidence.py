@@ -189,7 +189,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix='php-evidence-') as directory:
         root = Path(directory)
         fixed = ['Makefile', 'dune-project', '.tools/php/bin/php',
-                 '.tools/php-file.so', '_build/default/adapter/main.exe',
+                 '.tools/php-file.so', '.tools/request-clock.so', '_build/default/adapter/main.exe',
                  'coverage/encoding-spellings.json']
         helper_name = 'tests/semantics/_build/default/numeric_runner.exe'
         for name in fixed + ARCHIVES + [helper_name, 'spec/semantics/rules.watsup', 'tests/fixture.php',
@@ -265,12 +265,18 @@ def main():
             helper.unlink()
             assert before != validate.implementation_fingerprint(), 'deleted helper binary ignored'
             helper.write_bytes(b'original')
+            provider = root / '.tools/request-clock.so'
+            provider.write_bytes(b'modified')
+            assert before != validate.implementation_fingerprint(), 'changed request provider ignored'
+            provider.unlink()
+            assert before != validate.implementation_fingerprint(), 'deleted request provider ignored'
+            provider.write_bytes(b'original')
             assert before == validate.implementation_fingerprint(), 'restored artifacts differ'
         finally:
             validate.ROOT = original_root
     check_inventory_paths()
     check_closure_bindings()
-    print('15 stale-identity, 3 invalid-path and 17 invalid-closure checks rejected; valid source/divergence bindings passed; 9 build-log changes ignored')
+    print('17 stale-identity, 3 invalid-path and 17 invalid-closure checks rejected; valid source/divergence bindings passed; 9 build-log changes ignored')
 
 
 if __name__ == '__main__':
