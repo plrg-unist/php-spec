@@ -1,10 +1,10 @@
 # Request state and symbol-table design review
 
-This reviews the proposed state model before runtime snapshot/unset rules exist.
-It does not accept a mutable runtime candidate. The
+The private840 runtime has [246 independent exact source comparisons](../../coverage/semantics/request-environment-independent-source-review.json)
+and [eight state programs/1,936 assertions](../../coverage/semantics/request-environment-independent-state-review.json).
+Canonical publication and the final magic/CWD bridge remain pending. The earlier
 [design evidence](../../coverage/semantics/request-state-design-review.json)
-retains observed draft hashes, six additional exact native controls and the
-remaining validation obligations. Existing
+retains the draft model and six native controls. Existing
 [GLOBALS originals](../../coverage/semantics/globals-snapshot-originals.json)
 and [primitive request originals](../../coverage/semantics/request-bootstrap-independent-originals.json)
 cover the adjacent boundaries.
@@ -16,6 +16,11 @@ retarget the hidden PG value. Consequently a user write separates a shared array
 from its PG root. REQUEST uses a local merged table and has no seventh PG root.
 Lazy ENV has no root until initialized; activation is request-wide and does not
 rearm when a visible name is removed. Compiler activation precedes source effects.
+A later unit can first activate ENV or REQUEST after an ordinary global binding
+exists. The callback replaces that binding; aliases keep the previous cell. The
+[isolated replacement review](../../coverage/semantics/request-callback-independent-review.json)
+reproduces both original failures and passes28 author plus34 independent checks.
+Its two native `eval` witnesses remain pending dynamic-source execution.
 
 `SYMBOLS` records table order independently of current bindings. CV names acquire
 positions in compiler order even while undefined; these placeholders do not own
@@ -35,10 +40,10 @@ write changes the shared value to7. Existing array copy/merge helpers provide th
 relevant ownership distinctions. Building a snapshot must retain all captured
 values until its result is owned.
 
-The proposed optional primitive request record and value-based root list can
-express these rules. Final review must check repeated snapshot COW, alias and
-rebind behavior, both unset paths, missing-name omission, hidden-root retention,
-heap validity and complete budget resumption. Protocol controls must reject
+The optional primitive request record and value-based root list express these
+rules. The private source/state reviews check snapshots, aliases, rebindings,
+unset, omission, hidden roots, heap validity and bounded resumption. Protocol
+controls must reject
 untransportable byte strings and clock ranges before PHP semantics. The CLI invocation spelling and checked source filename are separate facts.
 [Relative and symlink controls](../../coverage/semantics/request-path-independent-review.json)
 confirm SERVER path fields and argv retain the invocation spelling while

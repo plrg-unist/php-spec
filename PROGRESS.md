@@ -24,8 +24,9 @@ namespaces with identical provider bytes. This does not admit PHP bootstrap rule
 or replace the eventual whole-project offline audit.
 The frozen private840 request/GLOBALS candidate has [246 independent exact source
 comparisons](coverage/semantics/request-environment-independent-source-review.json)
-and20 descriptor controls; state review and the later callback/magic/CWD candidate
-remain pending. These do not change the canonical835 checkpoint.
+and20 descriptor controls. [Eight state programs/1,936 assertions](coverage/semantics/request-environment-independent-state-review.json)
+and the isolated callback replacement are reviewed; final magic/CWD pairing
+remains pending. These do not change the canonical835 checkpoint.
 
 After the paired request/GLOBALS increment, run the full quiet/CV integration
 checkpoint before broader calls/frames. Then continue declarations, linked objects,
