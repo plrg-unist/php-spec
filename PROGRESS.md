@@ -25,126 +25,104 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Active ownership
 
-- Reviewer: independent source/helper gates, discrepancy history, inventory and closure evidence.
-- Runtime bridge: truth/short-circuit/ternary and comparisons, then compound/numeric operations and arrays/foreach.
-- Compiler successor: coordinate truth folding, then unpack/destructuring descriptors and declarations/defaults/frames.
-- Shared tree: stage owned files, commit independently reviewed increments, never push.
+- Runtime successor: comparisons, then compound/numeric operations and arrays/foreach.
+- Compiler: unpack/destructuring preservation and descriptors, then declarations/defaults/frames.
+- Reviewer: independent gates, discrepancy history, inventory, progress and closure evidence.
+- Shared tree: stage owned files, commit reviewed increments, never push. Coordinate final watched freezes.
 
-## Accepted evidence
+[Runtime handoff](docs/semantics/RUNTIME-SUCCESSOR-HANDOFF.md) `6873f110` records
+accepted contracts, comparison drafts and a retained scanner-overflow defect.
+[Reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) records commands and risks.
 
-- **169 constructors, 306 runtime obligations; one obligation closed**:
-  [oracle selection/identity](coverage/semantics/oracle-pin-review.json), independently
-  reviewed at `6b5981cc`. No constructor or PHP semantic family closes. Governance
-  `ffdc131d` binds closure to source cases/raw bytes and independent review;
-  `--complete` additionally rejects stale fingerprints and unfinished obligations.
-- Source machine passed **854 exact source comparisons +25 outcome negatives**
-  after reviewed truth activation `e7dac829`. Control `d87f3f9f` remains covered. Legacy traversal retirement `846dc3d2` and
-  temporary-lvalue errors `32d4163a` remain covered.
-  [Independent review](coverage/semantics/traversal-temporary-review.json) records
-  38 alternate exact sources plus two Unsupported boundaries at `57bff379`. Compiler/pool bridge `537d13de` makes full compilation
-  precede execution; real filename bytes are bound before compilation, failed
-  compilation suppresses recorded work, and successful work executes once with
-  lexical origins. Permanent pools supply compiled read operands with effective lines and byte diagnostics.
-  [Independent evidence](coverage/semantics/runtime-compiler-review.json) retains source, state and byte probes.
-  Generic scalar/string reads are now active, with 64 additional exact source
-  probes in [read evidence](coverage/semantics/dimension-read-review.json).
-  String writes/reference errors passed 103 alternate exact sources. Temporary
-  scalar/array/expression targets now reject during compilation with correct ordering. [Write evidence](coverage/semantics/dimension-write-review.json)
-  retains ordering, captured locations/COW and the final helper gates.
-- Ordered compiler/access and constant helpers passed **896 native lint cases,
-  15 emission-line observations, 4 Unsupported contexts**, 8 sources/24 access
-  roles, metadata/export controls and independent alternates. Partial AST facts,
-  ordinary code-generation values and executable access descriptors stay distinct.
-  [SOURCE-COMPILER](docs/semantics/SOURCE-COMPILER.md) and
-  [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md) describe the source consumer.
-- Origin/pool/ownership gates passed 25 checked traces/333 assertions,
-  24 pool boundaries +100 graphs/1,623 assertions, and 617 ownership graphs
-  +96 boundaries/5,434 assertions. Expanded independent graphs, multiple units,
-  equal-metadata paths, encoded sources and budget resumption also passed.
-  [COMPILED-POOLS](docs/semantics/COMPILED-POOLS.md) records permanent roots and
-  identity contracts. Source loops preserve them; functions and dynamic instances remain pending.
-- Array element references `f56e12bc` preserve entry alias replacement,
-  target-before-CV initialization, captured-source ownership across COW and cycles.
-  [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md) retains reviewed contracts.
-  Pure dimension reads `9ec050a1` and writes/errors `9990d23e` passed 583 and
-  2,220 runtime comparisons plus boundary controls. Source dispatch is active; see
-  [DIMENSIONS](docs/semantics/DIMENSIONS.md).
-- Compiler/frontend `9658958c` passed 233 checked prefixes plus 64 independent
-  alternates, seen-symbol/barrier/resumption controls and four encoding profiles.
-  Anonymous brace metadata and valid import aliases are corrected. Terminator
-  metadata `64e320b0` corrects all 14 bare-break line witnesses; 20 metadata
-  profiles/200 checks, eight alternate sources/five mutations, schema parity,
-  bounded syntax tests and inventory passed. Declaration/default and function-body compilation remain incomplete. Control body metadata `3a137a36` also
-  passes 43 profiles/430 checks, 12 independent profiles/96 checks, deterministic
-  schema regeneration and bounded syntax tests;
-  [review evidence](coverage/semantics/control-metadata-review.json) distinguishes
-  single statements from synthetic brace/colon bodies. Checked ternary grouping `6005090b`
-  additionally passes 19 profiles/228 checks, 11 independent profiles/88 checks,
-  bounded syntax and exact parser regeneration;
-  [grouping review](coverage/semantics/ternary-metadata-review.json) separates this
-  prerequisite from subsequent ternary execution. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
-  +15 descriptor checks,43 independent sources and19 runtime states passed.
-  [Namespace evidence](coverage/semantics/namespace-constants-review.json) retains
-  qualification, fallback timing, cache contexts and resumed origins.
-- [Historical full syntax audit](coverage/frontend-syntax-repair.json): **30,980 ordered records**
-  — 30,671 pass, 254 parser rejections, 41 individually classified compile-phase
-  differences, 6 redirects and 8 non-source records. Targeted/generated/deep checks
-  passed; 539 inputs matched the snapshot. Copied executables
-  establish no new rebuild/portability claim. This audit is historical after the
-  terminator metadata change; final full syntax/offline validation remains required.
-- Numeric suffix/NUL repair `9fc9628f`, compiler replacement lines `72d3a65d`,
-  heredoc/nowdoc lines `4297dadf`, filename transport `0270197e` and lossless test
-  diagnostics `49854949` are reviewed. Original failures remain unchanged in
-  [DISCREPANCIES](docs/semantics/DISCREPANCIES.md); relevant regressions remain in
-  current campaigns. See [NUMERICS](docs/semantics/NUMERICS.md) and [STATIC](docs/semantics/STATIC.md).
-- Control if/elseif/else, while/do/for and literal-depth jumps pass 67 independent
-  exact sources, 20 alternate compiler cases, 16 metadata and two path-order checks.
-  Canonical 40 source/41 state cases pass 1,231 assertions; dense replay adds
-  2,493 assertions over 163 budgets for each of three nested/COW programs.
-  [Control review](coverage/semantics/control-review.json) retains exact evidence.
-- Truth/logical operators and full/shorthand ternary pass 44 independent exact
-  sources, 44 alternate compiler cases, five redirect/access and three grouping
-  checks. Canonical 71 source/state cases pass 1,344 assertions; dense replay adds
-  3,316 assertions over 163 budgets for each of four selected-value/reference
-  programs. All 63 archived oracle phase/copy/grouping originals are integrated.
-  [Truth review](coverage/semantics/truth-review.json) records source redirects,
-  warning order and archive-fingerprint rejection evidence.
-- **146 independent oracle targets; 86 integrated**. Edited helper checks and
-  oracle-only observations establish no source runtime coverage.
+## Latest accepted checkpoints
 
-## Next gates and retained decisions
+The inventory has **169 constructors and 306 runtime obligations**. Only
+[oracle selection/identity](coverage/semantics/oracle-pin-review.json) closes;
+no constructor or PHP semantic family closes. Closure governance `ffdc131d`
+requires exact original-source/raw-byte bindings, independent review and current
+fingerprints. `--complete` must reject unfinished or stale entries.
 
-Runtime next connects comparisons, then compound
-lvalues and remaining numeric operations/casts. The compiler successor coordinates
-further constant-fold ordering before unpack/destructuring and declaration/default/frame work.
-Array unpack/destructuring precedes foreach's persistent cursor/ownership rules. The
-[qualified constant alias discrepancy](coverage/semantics/qualified-constant-alias-disagreement.json)
-is resolved by `d5d28dc6`: all seven originals agree, including preceding output
-before missing-name errors. Original failures and temporary guard `ff941f17`
-remain in the ledger.
+Source truth/logical operators and full/shorthand ternary `e7dac829`, independently
+reviewed in `682bcba0`, passed **854 exact sources +25 outcome negatives** on
+`10a40a12`. All 63 archived phase/copy/grouping originals are integrated. Review
+adds 44 exact sources, 44 alternate compiler cases, five redirect/access and three
+grouping checks; dense replay adds 3,316 assertions over 163 budgets for each of
+four programs. [Truth evidence](coverage/semantics/truth-review.json) also binds
+the compiler's consumed oracle archive and its mutation-rejection test.
 
-All 16 read/prepass and eight write/error-order witnesses, array/reference
-regressions and applicable compiler emission-line witnesses are mandatory when
-those source branches activate. Ordinary compilation visits below assignment
-prepass barriers; preserve key coercion, delayed reads and owner timing.
+At that source checkpoint, canonical truth71/1,344, compiler896 lint +15 emission
+observations, truth compiler79/3/3, constant42/5, origins25/333, runtime bridge15/148
+and ownership617+96/5,434 passed. Descriptor roles and edited metadata remain
+separate from original-source execution evidence.
 
-Uncollected cycles retain observable reference owners. Constant occurrences reuse
-installed values; distinct NaN-array occurrences retain distinct identity.
-Collection and repeated function execution remain pending; repeated loop
-occurrences now reuse their installed pools.
-Production bare source helpers and recursive classifiers are retired; unchecked
-origin tracing exists only in the test fixture.
-The reviewed [reviewer handoff](docs/semantics/REVIEWER-HANDOFF.md) records exact
-commands, ownership and high-risk next witnesses.
+Frontend prerequisite `d4706937` subsequently preserves nested destructuring
+unpack flags. [Review](coverage/semantics/destructuring-unpack-review.json) passes
+16 author profiles/96 checks, ten independent profiles/80 checks, bounded syntax,
+inventory and exact distribution patch reconstruction on `108f3eda`. This is a
+new watched closure, with no refreshed full source campaign claimed. Original
+long-array syntax kind and first-hole comma context remain pending; all 28
+[original loss witnesses](coverage/semantics/destructuring-metadata-disagreement.json)
+are preserved beside their partial resolution.
 
-CORE's environment/intrinsic boundary remains fixed. Numeric source contexts,
-remaining control, calls, linking, objects, dynamic sources, callbacks and resumable lifetime
-remain incomplete. Relative `static` has one intentional divergence in the ledger,
-with source activation evidence pending. Other observed engine irregularities
-follow the pin.
+## Retained evidence and contracts
+
+- [Control review](coverage/semantics/control-review.json): source `d87f3f9f`
+  covers if/elseif/else, while/do/for and literal-depth jumps; 67 independent
+  sources, compiler metadata/order controls and dense nested/COW resumption pass.
+  Exceptions, switch/goto, foreach and lifecycle remain pending.
+- [Read](coverage/semantics/dimension-read-review.json),
+  [write](coverage/semantics/dimension-write-review.json) and
+  [traversal retirement](coverage/semantics/traversal-temporary-review.json)
+  evidence retain scalar/array/string lvalues, captured ownership, delayed reads,
+  reference errors and temporary-target compiler errors. Production unchecked
+  source traversal/classifiers are retired; only test fixtures retain a wrapper.
+- [Compiler](docs/semantics/SOURCE-COMPILER.md),
+  [constant context](docs/semantics/CONSTANT-CONTEXT.md),
+  [pools](docs/semantics/COMPILED-POOLS.md) and
+  [namespace review](coverage/semantics/namespace-constants-review.json) retain
+  ordered compilation, structural origins, effective lines and reusable constant
+  occurrences. FACTS, ordinary code-generation values and executable ACCESS roles
+  remain distinct. Only actual compiled reads consume pooled values/redirects.
+- [Numeric](docs/semantics/NUMERICS.md), [static](docs/semantics/STATIC.md) and
+  [linking handoff](docs/semantics/LINKING-HANDOFF.md) retain earlier helper
+  contracts; source context and declaration/frame integration remain partial.
+- **146 independent oracle targets; 86 integrated**. Oracle-only and edited-helper
+  evidence establish no additional source runtime coverage.
+
+## Next gates and decisions
+
+Finish the comparison draft's two retained integer-prefix overflow disagreements
+before admission. A later exponent can rescale the float into range while the
+scanner's earlier overflow flag still changes smart string comparison. Preserve
+original left-to-right operand evaluation for greater comparisons, NaN/array
+non-antisymmetry and recursion/ownership behavior. No intentional divergence is
+selected for these draft defects.
+
+Complete remaining destructuring provenance prerequisites, then pair compiler
+and runtime unpack/destructuring. Foreach needs persistent bucket/cursor and
+ownership rules. Compound lvalues, remaining numeric operators/casts, calls,
+classes/objects, dynamic sources, callbacks and resumable lifetime remain open.
+CORE's environment/intrinsic boundary is unchanged; ordinary-library exclusions
+cannot discharge core obligations.
+
+Preserve all retained read/prepass, write/error, phase/copy and emission-line
+witnesses when their branches activate. Ordinary ternary copies selected values;
+raw prepass redirects preserve delayed operands. Uncollected cycles retain
+observable owners. Constant occurrences reuse installed values; distinct NaN
+arrays retain distinct identity. Source collection and repeated function
+execution remain pending.
+
+[Discrepancies](docs/semantics/DISCREPANCIES.md) preserve raw failures and later
+resolutions. Namespace-relative `static` remains the sole intentional divergence,
+with source activation proof pending; other observed irregularities follow the
+pin. The qualified import-prefix discrepancy is resolved by `d5d28dc6`.
+
+The [30,980-record full syntax audit](coverage/frontend-syntax-repair.json) is
+historical after metadata changes: 30,671 pass, 254 parser rejections, 41 classified
+compile-phase differences, six redirects and eight non-source records. Copied
+executables establish no new portability claim. Final full syntax validation and
+fresh offline rebuild remain required.
 
 Unsupported, crashes, timeouts and interrupted runs never count as passes.
-Closure requires full obligation scope, specific original-source cases, current
-fingerprints, independent review and separate intentional-divergence evidence.
-`python3 scripts/check-semantic-inventory.py --complete` must reject unfinished
-entries; evidence-negative checks remain part of `make test-semantics`.
+Run evidence-integrity negatives with inventory checks; finish every core
+obligation and independently review full scope before closing the project.

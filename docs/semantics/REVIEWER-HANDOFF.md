@@ -21,6 +21,13 @@ Accepted fingerprint: `10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf779
 `846dc3d2`, temporary-lvalue rejection `32d4163a`, body metadata `3a137a36` and
 grouping metadata `6005090b` remain covered.
 
+Subsequent frontend prerequisite `d4706937` preserves nested unpack flags, with
+16 author profiles/96 checks, ten independent profiles/80 checks and bounded
+syntax/inventory/patch reconstruction on `108f3eda`. It changes the watched
+closure without claiming a refreshed full source campaign. Original long-array
+syntax kind and first-hole comma context remain pending. Runtime ownership now
+passes through [successor handoff](RUNTIME-SUCCESSOR-HANDOFF.md) `6873f110`.
+
 The inventory contains 169 constructors and 306 obligations. Only
 `validation.oracle-pin` closes, against the archived six-case source evidence
 and independent review at `6b5981cc`. That scope establishes oracle selection,

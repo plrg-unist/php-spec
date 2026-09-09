@@ -1,0 +1,135 @@
+{
+  "fingerprint": {
+    "sha256": "108f3eda075274b06b1626862aae4329f9d24c283a10b853ac8ea964ff7c9690",
+    "files": 772,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "cases": [
+    {
+      "id": "keyed-nested",
+      "source_base64": "PD9waHAgWzA9PlsuLi5bJHhdXV09JGE7",
+      "profile": {},
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "list-spread",
+      "source_base64": "PD9waHAgbGlzdCguLi5bJHhdKT0kYTs=",
+      "profile": {},
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "references-and-spreads",
+      "source_base64": "PD9waHAgWy4uLlsmJHgsLi4uWyR5XV1dPSRhOw==",
+      "profile": {},
+      "expected_unpack_flags": 2,
+      "checks": 8
+    },
+    {
+      "id": "foreach-keyed",
+      "source_base64": "PD9waHAgZm9yZWFjaCgkeHMgYXMgJGs9PlsuLi5bJHhdXSl7fQ==",
+      "profile": {},
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "siblings",
+      "source_base64": "PD9waHAgWyRwLFsuLi5bJHhdLCRxXSxdPSRhOw==",
+      "profile": {},
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "long-holes",
+      "source_base64": "PD9waHAgWy4uLmFycmF5KCwkeCwsKV09JGE7",
+      "profile": {},
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "string-key",
+      "source_base64": "PD9waHAgWy4uLlsiLi4uIj0+JHhdXT0kYTs=",
+      "profile": {},
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "nested-triple",
+      "source_base64": "PD9waHAgWy4uLlsuLi5bLi4uWyR4XV1dXT0kYTs=",
+      "profile": {},
+      "expected_unpack_flags": 3,
+      "checks": 8
+    },
+    {
+      "id": "encoded-long-holes",
+      "source_base64": "//48AD8AcABoAHAAIABbAC4ALgAuAGEAcgByAGEAeQAoACwAJAB4ACwALAApAF0APQAkAGEAOwA=",
+      "profile": {
+        "zend.multibyte": "1",
+        "internal_encoding": "UTF-8"
+      },
+      "expected_unpack_flags": 1,
+      "checks": 8
+    },
+    {
+      "id": "encoded-comment",
+      "source_base64": "PD9waHAgWy4uLlsvKv8qLyR4XV09JGE7",
+      "profile": {
+        "zend.multibyte": "1",
+        "internal_encoding": "UTF-8",
+        "zend.script_encoding": "ISO-8859-1"
+      },
+      "expected_unpack_flags": 1,
+      "checks": 8
+    }
+  ],
+  "checks": 80,
+  "scope": "independent nested destructuring unpack transport, edited boolean consumption and malformed rejection",
+  "status": "accepted narrow frontend preservation prerequisite",
+  "author_gate": {
+    "source_encoding_profiles": 16,
+    "checks": 96,
+    "targeted_sources": 97,
+    "generated_sources": 4103,
+    "deep_sources": 1,
+    "grammar_productions": 635,
+    "constructors": 169,
+    "scanner_actions": 191,
+    "scanner_alternatives": 264,
+    "encoding_lookups": 685
+  },
+  "distribution_patch": "Existing fifth ArrayItem constructor argument now receives item.unpack; full recorded patch reverses cleanly and reconstructs all four changed distribution files.",
+  "limits": [
+    "No unpack/destructuring source execution admission or semantic-family closure.",
+    "Original long-array syntax kind and leading-hole comma line remain pending prerequisites.",
+    "Full corpus syntax/offline audit remains pending."
+  ],
+  "logs": {
+    "make-test": {
+      "path": ".tools/unpack-flag-make-test.log",
+      "sha256": "afe618237d2060e052ea5833092817a9dc81c38704171c5682d4997060482735"
+    },
+    "inventory": {
+      "path": ".tools/unpack-flag-inventory.log",
+      "sha256": "0f9815db1b1c99ca2975ba52ff484e42f54437a71dde22abb2c22dee922a13d3"
+    },
+    "patch": {
+      "path": ".tools/unpack-flag-patch.log",
+      "sha256": "170744b7892b7b03196b3a1f6f993e3e9339dd2bec757133efa4c11d910e4fdf"
+    }
+  },
+  "implementation_commit": "d4706937"
+}

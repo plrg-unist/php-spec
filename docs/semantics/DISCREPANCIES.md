@@ -250,3 +250,9 @@ Independent frontend/checked-adapter and native-lint repeats reproduce all 28
 streams and statuses. These observations establish the preservation prerequisite;
 destructuring execution remains pending. Original records remain unchanged, and
 no intentional divergence is selected.
+
+Nested unpack preservation is now repaired by `d4706937`, forwarding the existing
+item flag during recursive conversion. [Independent review](../../coverage/semantics/destructuring-unpack-review.json)
+adds ten profiles/80 checks to 16 author profiles/96 checks; bounded syntax,
+inventory and exact distribution patch reconstruction pass. Original syntax kind,
+comma context and later compiler/runtime admission remain pending.
