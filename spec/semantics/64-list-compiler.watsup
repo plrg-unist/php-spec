@@ -36,6 +36,7 @@ def $pplist_rhscheck(P, expression, b) = P -- otherwise
 dec $pplist_rhs(ppstate, pcpath, expression, bool) : ppstate
 def $pplist_rhs(P, pcpath, NExprVariable phpType32 metadata, false) = $ppdone($ppvariable(P, pcpath, phpType32, PPR), pcpath, PPR)
   -- if P.COMPLETION = PPCNORMAL
+def $pplist_rhs(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, true) = $ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR)
 def $pplist_rhs(P, pcpath, expression, b) = $ppexpr(P, pcpath, expression, $ppvaluemode(b)) -- otherwise
 
 dec $pplist_assignment(ppstate, pcpath, expression, expression, phpType13*) : ppstate

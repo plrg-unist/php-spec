@@ -1,0 +1,14 @@
+{
+  "list-variable": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[1];f([$x]=$a);echo $x,$a[0];",
+  "list-call": "<?php function g(){return [1];}function f(&$v){$v=[9];echo $v[0];}f([$x]=g());echo $x;",
+  "list-literal": "<?php function f(&$v){$v=[9];echo $v[0];}f([$x]=[1]);echo $x;",
+  "list-reference-variable": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[1];f([&$x]=$a);echo $x,$a[0];",
+  "list-reference-call": "<?php function g(){return [1];}function f(&$v){$v=[9];echo $v[0];}f([&$x]=g());echo $x;",
+  "list-reference-dimension": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[[1]];f([&$x]=$a[0]);echo $x,$a[0][0];",
+  "list-value-dimension": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[[1]];f([$x]=$a[0]);echo $x,$a[0][0];",
+  "list-reference-nested": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[[1]];f([[&$x]]=$a);echo $x,$a[0];",
+  "forward-list-call": "<?php function g(){return [1];}f([$x]=g());echo $x;function f(&$v){$v=[9];echo $v[0];}",
+  "forward-list-reference-variable": "<?php $a=[1];f([&$x]=$a);echo $x,$a[0];function f(&$v){$v=[9];echo $v[0];}",
+  "constant-ternary-variable": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[1];f(true?$a:$a);",
+  "constant-coalesce-variable": "<?php function f(&$v){$v=[9];echo $v[0];}$a=[1];f(null??$a);"
+}

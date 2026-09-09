@@ -22,9 +22,11 @@ dec $psendline(metadata) : nat
 dec $ppfunction_early(pfunction*, ptbytes) : pfunction?
 dec $ppfunction_duplicate(ppstate, pfunction) : ppstate
 dec $ppcall_name(ppstate, pcpath, pnresult) : ppstate
+dec $ppbuiltin_prepare(ppstate, pcpath, pnresult, phpType7*) : ppstate
 dec $ppcall_done(ppstate, pcpath, int) : ppstate
 dec $ppcall_args(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
 dec $ppcall_mode(ppstate, pnresult, nat, expression) : ppmode
+dec $ppfunction_parameter_ref(pfunction?, nat) : bool
 dec $ppcall_variable(expression) : bool
 dec $ppcall_deferred(expression) : ppmode
 dec $ppglobal_variables(ppstate, pcpath, nat, expression*) : ppstate
@@ -120,6 +122,13 @@ def $ppcall_variable(NExprPropertyFetch expression phpType20 metadata) = true
 def $ppcall_variable(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
 def $ppcall_variable(expression) = false -- otherwise
 
+;; Parameter flags are selected only from a finalized earlier declaration.
+def $ppfunction_parameter_ref((pfunction), n) = psparam.BYREF
+  -- if $(n > 0 /\ n <= |pfunction.SIGNATURE.PARAMETERS|)
+  -- if n_i = $(n - 1)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_i]
+def $ppfunction_parameter_ref(pfunction?, n) = false -- otherwise
+
 ;; Only finalized earlier declarations are compile-known. Namespace fallback,
 ;; forward declarations and the body currently being compiled defer fetch mode.
 def $ppcall_mode(P, pnresult, n, expression) = PPR
@@ -127,11 +136,11 @@ def $ppcall_mode(P, pnresult, n, expression) = PPR
 def $ppcall_mode(P, PNRESOLVED pnreference, n, expression) = PPW
   -- if $ppcall_variable(expression)
   -- if pnreference.FALLBACK = eps
-  -- if $pfunction_builtin_ref(pnreference.RESOLVED, n)
+  -- if $pfunction_builtin_ref(pnreference.RESOLVED, n) \/ $ppfunction_parameter_ref($ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED), n)
 def $ppcall_mode(P, PNRESOLVED pnreference, n, expression) = PPR
   -- if $ppcall_variable(expression)
   -- if pnreference.FALLBACK = eps
-  -- if (($pfunction_builtin(pnreference.RESOLVED) /\ ~$pfunction_builtin_ref(pnreference.RESOLVED, n)) \/ $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) =/= eps)
+  -- if (($pfunction_builtin(pnreference.RESOLVED) /\ ~$pfunction_builtin_ref(pnreference.RESOLVED, n)) \/ ($ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) =/= eps /\ ~$ppfunction_parameter_ref($ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED), n)))
 def $ppcall_mode(P, pnresult, n, expression) = $ppcall_deferred(expression)
   -- otherwise
 
@@ -148,7 +157,7 @@ def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN 
   -- if P.COMPLETION = PPCNORMAL
 def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, unpacked or reference call argument compilation")
   -- otherwise
-def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_done($ppcall_args($ppcall_name(P, pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult), pcpath, $source_line(metadata))
+def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_done($ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult), pcpath, $source_line(metadata))
   -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
 
 def $ppglobal_variables(P, pcpath, n, eps) = P
@@ -198,7 +207,7 @@ def $ppownglobal(pfunction*, pcpath :: pcpath_tail*) = pcpath :: $ppownglobal(pf
 ;; paired, including declarations in files that never invoke the function.
 def $ppplain_signature(pssignature) = (~pssignature.BYREF /\ pssignature.RETURNS = eps /\ $ppplain_params(pssignature.PARAMETERS))
 def $ppplain_params(eps) = true
-def $ppplain_params(psparam :: psparam_tail*) = (~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.TYPE = eps /\ psparam.DEFAULT = PSNONE /\ $ppplain_params(psparam_tail*))
+def $ppplain_params(psparam :: psparam_tail*) = (~psparam.VARIADIC /\ psparam.TYPE = eps /\ psparam.DEFAULT = PSNONE /\ $ppplain_params(psparam_tail*))
 
 ;; zend_compile_call_common restores the call line after compiling sends.
 ;; An abrupt operand keeps its original diagnostic location.
@@ -206,3 +215,14 @@ def $ppcall_done(P, pcpath, z) = $pplocate(P, pcpath, z)
   -- if P.COMPLETION = PPCNORMAL
 def $ppcall_done(P, pcpath, z) = P
   -- if P.COMPLETION =/= PPCNORMAL
+
+;; Result kind for admitted nonvariable argument expressions. Read fetches and
+;; ordinary assignments/conditionals are TMP values; lists retain their RHS
+;; result, except reference lists first emit MAKE_REF (VAR). This is not a
+;; writable-expression predicate and never selects argument acquisition mode.
+dec $ppsend_var(expression) : bool
+def $ppsend_var(NExprFuncCall phpType19 phpType6 metadata) = true
+def $ppsend_var(NExprAssignRef expression_1 expression_2 metadata) = true
+def $ppsend_var(NExprAssign expression_pattern expression_rhs metadata) = ($list_references(phpType13*) \/ $ppsend_var(expression_rhs))
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+def $ppsend_var(expression) = false -- otherwise

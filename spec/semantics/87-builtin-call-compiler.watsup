@@ -1,0 +1,149 @@
+;; Pinned special call lowering determines whether a call can be a write base.
+;; These are compiler facts only. No builtin body is executed here. Frameless
+;; calls and chr/ord special lowering require BP_VAR_R and do not apply to PPW.
+dec $ppwrite_call(ppstate, pcpath, expression, ppmode) : ppstate
+dec $ppbuiltin_arguments(phpType7*) : expression*?
+dec $ppbuiltin_tmp(ppstate, pcpath, ptbytes, expression*) : bool
+dec $ppbuiltin_one(ptbytes) : bool
+dec $ppbuiltin_operand(ppexprdone*, pcpath) : (nat, pvalue?)?
+dec $ppbuiltin_value(ppstate, pcpath, nat) : pvalue?
+dec $ppbuiltin_line(ppstate, pcpath, nat, nat) : nat
+dec $ppbuiltin_errorline(ppstate, pcpath, ptbytes, expression*, nat) : nat
+dec $ppbuiltin_defined(expression) : bool
+dec $ppbuiltin_constant(ppstate, expression) : pvalue?
+dec $ppbuiltin_strict(ppstate, expression) : bool?
+dec $ppbuiltin_in_array(ppstate, pcpath, expression*, bool?) : bool
+dec $ppbuiltin_in_values(pentry*, bool) : bool
+dec $ppbuiltin_nonnumeric(ptbytes) : bool
+dec $ppbuiltin_prepare_args(ppstate, pcpath, expression*) : ppstate
+dec $ppbuiltin_prepare_array(ppstate, pcpath, expression) : ppstate
+dec $ppbuiltin_format(pvalue?, nat) : bool
+dec $ppbuiltin_placeholders(nat*) : nat?
+dec $ppbuiltin_placeholder_add(nat?) : nat?
+dec $ppbuiltin_slice(ppstate, expression, expression) : bool
+
+def $ppdimension_base(P, pcpath, expression, ppmode) = $ppwrite_call($ppexpr(P, pcpath, expression, $ppbasemode(expression, ppmode)), pcpath, expression, ppmode)
+def $ppwrite_call(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPW) = $ppcheck(P, $context_error("Cannot use result of built-in function in write context", $ppbuiltin_errorline(P, pcpath, $ptlc(pnreference.RESOLVED), expression*, $psline(metadata))))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pnresolve(P.ENV, PLFUNCTION, name) = PNRESOLVED pnreference
+  -- if pnreference.FALLBACK = eps
+  -- if $pfunction_builtin(pnreference.RESOLVED)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $ppbuiltin_tmp(P, pcpath, $ptlc(pnreference.RESOLVED), expression*)
+def $ppwrite_call(P, pcpath, expression, ppmode) = P -- otherwise
+
+def $ppbuiltin_arguments(eps) = (eps)
+def $ppbuiltin_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = (expression :: expression_tail*)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression_tail*)
+def $ppbuiltin_arguments(phpType7*) = eps -- otherwise
+
+def $ppbuiltin_one(ptbytes) = (ptbytes <- [$ptascii("strlen"), $ptascii("is_null"), $ptascii("is_bool"), $ptascii("is_long"), $ptascii("is_int"), $ptascii("is_integer"), $ptascii("is_float"), $ptascii("is_double"), $ptascii("is_string"), $ptascii("is_array"), $ptascii("is_object"), $ptascii("is_resource"), $ptascii("is_scalar"), $ptascii("boolval"), $ptascii("intval"), $ptascii("floatval"), $ptascii("doubleval"), $ptascii("strval"), $ptascii("count"), $ptascii("sizeof"), $ptascii("gettype"), $ptascii("clone")])
+def $ppbuiltin_tmp(P, pcpath, ptbytes, [expression]) = true
+  -- if $ppbuiltin_one(ptbytes)
+def $ppbuiltin_tmp(P, pcpath, ptbytes, expression*) = $(|expression*| <= 1)
+  -- if ptbytes = $ptascii("get_class")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, expression*) = (expression* = eps)
+  -- if ptbytes = $ptascii("get_called_class")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, expression*) = (P.FOLD.FUNCTION =/= eps /\ expression* = eps)
+  -- if ptbytes <- [$ptascii("func_num_args"), $ptascii("func_get_args")]
+def $ppbuiltin_tmp(P, pcpath, ptbytes, expression*) = (|expression*| = 2)
+  -- if ptbytes = $ptascii("array_key_exists")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, [expression]) = $ppbuiltin_defined(expression)
+  -- if ptbytes = $ptascii("defined")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, [expression_1, expression_2]) = $ppbuiltin_in_array(P, pcpath, [expression_1, expression_2], (false))
+  -- if ptbytes = $ptascii("in_array")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, [expression_1, expression_2, expression_3]) = $ppbuiltin_in_array(P, pcpath, [expression_1, expression_2], $ppbuiltin_strict(P, expression_3))
+  -- if ptbytes = $ptascii("in_array")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, expression :: expression_tail*) = $ppbuiltin_format($ppbuiltin_value(P, pcpath, 0), |expression_tail*|)
+  -- if ptbytes = $ptascii("sprintf")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, [expression_1, expression_2]) = $ppbuiltin_slice(P, expression_1, expression_2)
+  -- if ptbytes = $ptascii("array_slice")
+def $ppbuiltin_tmp(P, pcpath, ptbytes, expression*) = false -- otherwise
+
+;; Reuse exact parser-literal and constant facts; no second constant evaluator.
+def $ppbuiltin_defined(expression) = true
+  -- if $parser_literal(expression) = (pvalue)
+  -- if ptbytes = $echo_value(pvalue)
+  -- if ~(92 <- ptbytes) /\ ~(58 <- ptbytes)
+def $ppbuiltin_defined(expression) = false -- otherwise
+def $ppbuiltin_constant(P, expression) = (pvalue)
+  -- if $parser_literal(expression) = (pvalue)
+def $ppbuiltin_constant(P, NExprConstFetch name metadata) = $pnfold(pnreference)
+  -- if $pnresolve(P.ENV, PLCONSTANT, name) = PNRESOLVED pnreference
+def $ppbuiltin_constant(P, expression) = eps -- otherwise
+def $ppbuiltin_strict(P, expression) = ($truth(P.FOLD.MEMORY, pvalue))
+  -- if $ppbuiltin_constant(P, expression) = (pvalue)
+def $ppbuiltin_strict(P, expression) = eps -- otherwise
+
+def $ppbuiltin_in_array(P, pcpath, [expression, NExprArray phpType12 metadata], (b)) = $ppbuiltin_in_values(P.FOLD.MEMORY.ARRAYS[n].ITEMS, b)
+  -- if $ppbuiltin_value(P, pcpath, 1) = (PARRAY n)
+def $ppbuiltin_in_array(P, pcpath, expression*, bool?) = false -- otherwise
+def $ppbuiltin_in_values(eps, b) = true
+def $ppbuiltin_in_values((ENTRY pkey (DIRECT (PINT i))) :: pentry*, true) = $ppbuiltin_in_values(pentry*, true)
+def $ppbuiltin_in_values((ENTRY pkey (DIRECT (PSTRING ptbytes))) :: pentry*, b) = $ppbuiltin_in_values(pentry*, b)
+  -- if b \/ $ppbuiltin_nonnumeric(ptbytes)
+def $ppbuiltin_in_values(pentry*, b) = false -- otherwise
+
+def $ppbuiltin_format((PSTRING ptbytes), n) = true
+  -- if $(|ptbytes| < 256)
+  -- if $ppbuiltin_placeholders(ptbytes) = (n)
+def $ppbuiltin_format(pvalue?, n) = false -- otherwise
+def $ppbuiltin_placeholders(eps) = (0)
+def $ppbuiltin_placeholders(37 :: 37 :: ptbytes) = $ppbuiltin_placeholders(ptbytes)
+def $ppbuiltin_placeholders(37 :: n :: ptbytes) = $ppbuiltin_placeholder_add($ppbuiltin_placeholders(ptbytes))
+  -- if n <- [100, 115]
+def $ppbuiltin_placeholders(n :: ptbytes) = $ppbuiltin_placeholders(ptbytes)
+  -- if n =/= 37
+def $ppbuiltin_placeholders(ptbytes) = eps -- otherwise
+def $ppbuiltin_placeholder_add((n)) = ($(n + 1))
+def $ppbuiltin_placeholder_add(eps) = eps
+
+def $ppbuiltin_slice(P, NExprFuncCall name (SEQUENCE eps) metadata, NScalarInt (INTEGER i) metadata_i) = true
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if $(i >= 0)
+  -- if $pnresolve(P.ENV, PLFUNCTION, name) = PNRESOLVED pnreference
+  -- if $ptlc(pnreference.RESOLVED) = $ptascii("func_get_args")
+def $ppbuiltin_slice(P, expression_1, expression_2) = false -- otherwise
+
+;; Special lowering may inspect arguments without emitting their expressions.
+;; Its error location is the last expression it actually compiled, not the outer
+;; call location restored for ordinary call traces.
+def $ppbuiltin_operand(eps, pcpath) = eps
+def $ppbuiltin_operand((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = ((n, pvalue?))
+def $ppbuiltin_operand((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $ppbuiltin_operand((PPCEFFECT pcpath_other) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppbuiltin_value(P, pcpath, n) = pvalue?
+  -- if $ppbuiltin_operand(P.EXPRESSIONS, pcpath ++ [PCFIELD 1, PCINDEX n, PCFIELD 1]) = ((n_line, pvalue?))
+def $ppbuiltin_value(P, pcpath, n) = eps -- otherwise
+def $ppbuiltin_line(P, pcpath, n, n_default) = n_line
+  -- if $ppbuiltin_operand(P.EXPRESSIONS, pcpath ++ [PCFIELD 1, PCINDEX n, PCFIELD 1]) = ((n_line, pvalue?))
+def $ppbuiltin_line(P, pcpath, n, n_default) = n_default -- otherwise
+def $ppbuiltin_errorline(P, pcpath, ptbytes, expression*, n) = $ppbuiltin_line(P, pcpath, n_last, n)
+  -- if ($ppbuiltin_one(ptbytes) \/ ptbytes <- [$ptascii("get_class"), $ptascii("array_key_exists")] \/ (ptbytes = $ptascii("sprintf") /\ $(|expression*| > 1)))
+  -- if expression* =/= eps
+  -- if n_last = $(|expression*| - 1)
+def $ppbuiltin_errorline(P, pcpath, ptbytes, expression*, n) = $ppbuiltin_line(P, pcpath, 0, n)
+  -- if ptbytes = $ptascii("in_array")
+def $ppbuiltin_errorline(P, pcpath, ptbytes, expression*, n) = n -- otherwise
+
+
+def $ppbuiltin_nonnumeric(ptbytes) = false
+  -- if $numeric_string(ptbytes) = FULLNUM pnumber
+def $ppbuiltin_nonnumeric(ptbytes) = true -- otherwise
+
+;; The in_array optimizer visits its constant haystack before compiling needle.
+;; Unknown strictness or namespace fallback declines this prepass entirely.
+def $ppbuiltin_prepare(P, pcpath, PNRESOLVED pnreference, phpType7*) = $ppbuiltin_prepare_args(P, pcpath, expression*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pnreference.FALLBACK = eps
+  -- if $ptlc(pnreference.RESOLVED) = $ptascii("in_array")
+  -- if $pfunction_builtin(pnreference.RESOLVED)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+def $ppbuiltin_prepare(P, pcpath, pnresult, phpType7*) = P -- otherwise
+def $ppbuiltin_prepare_args(P, pcpath, [expression_1, expression_2]) = $ppbuiltin_prepare_array(P, pcpath, expression_2)
+def $ppbuiltin_prepare_args(P, pcpath, [expression_1, expression_2, expression_3]) = $ppbuiltin_prepare_array(P, pcpath, expression_2)
+  -- if $ppbuiltin_strict(P, expression_3) =/= eps
+def $ppbuiltin_prepare_args(P, pcpath, expression*) = P -- otherwise
+def $ppbuiltin_prepare_array(P, pcpath, NExprArray phpType12 metadata) = $ppfoldresult(P, $pfprepare(P.FOLD, pcpath ++ [PCFIELD 1, PCINDEX 1, PCFIELD 1], NExprArray phpType12 metadata, P.ENV, $source_line(metadata)))
+def $ppbuiltin_prepare_array(P, pcpath, expression) = P -- otherwise

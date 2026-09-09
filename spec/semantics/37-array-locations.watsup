@@ -1,3 +1,5 @@
+dec $call_temporary_location(pbase) : bool
+dec $temporary_reference_target(pstate, pbase, int) : pstate
 ;; Direct cells and array element locations preserve designation through writes.
 dec $location_slot(pstate, plocation) : pslot
 def $location_slot(S, ROOT n) = S.STORE[n]
@@ -208,6 +210,7 @@ def $assign_array_reference(S, pbase, n_source, z) = S_place
   -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION =/= NORMAL
 def $assign_array_reference(S, pbase, n_source, z) = $bind_element_reference(S_place, n, pkey, n_source)
+  -- if ~$call_temporary_location(pbase)
   -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION = NORMAL
   -- if S_place.LOCATION = ELEMENT n pkey
@@ -222,6 +225,7 @@ def $assign_array_reference_cv(S, pbase, n_source*, z) = S_cell
   -- if S_cell = $acquire_name(S_place, n_source*)
   -- if S_cell.COMPLETION =/= NORMAL
 def $assign_array_reference_cv(S, pbase, n_source*, z) = $bind_element_reference(S_cell, n, pkey, S_cell.CELL)
+  -- if ~$call_temporary_location(pbase)
   -- if S_place = $reference_acquire(S, pbase, z)
   -- if S_place.COMPLETION = NORMAL
   -- if S_place.LOCATION = ELEMENT n pkey
@@ -243,3 +247,14 @@ def $assignment_self(expression_1, expression_2) = false
 def $location_name_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
   -- if $this_name(n_name*)
 def $location_name_at(S, n_name*, z) = $location_name(S, n_name*) -- if ~$this_name(n_name*)
+
+def $assign_array_reference(S, pbase, n_source, z) = $temporary_reference_target(S_place, pbase, z)
+  -- if $call_temporary_location(pbase)
+  -- if S_place = $reference_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+def $assign_array_reference_cv(S, pbase, n_source*, z) = $temporary_reference_target(S_cell, pbase, z)
+  -- if $call_temporary_location(pbase)
+  -- if S_place = $reference_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_place, n_source*)
+  -- if S_cell.COMPLETION = NORMAL

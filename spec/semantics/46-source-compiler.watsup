@@ -162,6 +162,7 @@ dec $ppbinarydone(ppstate, pcpath, pbin, pvalue?) : ppstate
 dec $ppunarydone(ppstate, pcpath, punary) : ppstate
 dec $ppdim(ppstate, pcpath, phpType5, ppmode) : ppstate
 dec $ppbasemode(expression, ppmode) : ppmode
+dec $ppdimension_base(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppglobals_base(expression) : bool
 dec $ppglobaldim(ppstate, pcpath, phpType5) : ppstate
 dec $ppglobalname(ppstate) : ppstate
@@ -260,7 +261,7 @@ def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, express
   -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
 def $ppdispatch(P, pcpath, expression_outer, PPR) = $ppunarydone($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, punary)
   -- if $pfshape(expression_outer) = PFUNARY punary expression
-def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppdim($ppexpr(P, pcpath ++ [PCFIELD 0], expression, $ppbasemode(expression, ppmode)), pcpath, phpType5, ppmode)
+def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppdim($ppdimension_base(P, pcpath ++ [PCFIELD 0], expression, ppmode), pcpath, phpType5, ppmode)
   -- if ~$ppglobals_base(expression)
 def $ppdispatch(P, pcpath, NExprArrayDimFetch expression phpType5 metadata, ppmode) = $ppglobaldim($ppexpr(P, pcpath ++ [PCFIELD 0], expression, ppmode), pcpath, phpType5)
   -- if $ppglobals_base(expression)
@@ -558,6 +559,7 @@ def $plmessage(PLDIAGNOSTIC "deprecated" "header-context" eps pllocation) = $pta
 
 ;; A non-variable dimension base is compiled as an ordinary expression even
 ;; when its enclosing fetch is quiet (zend_compile_var_inner fallback).
+def $ppbasemode(NExprFuncCall phpType19 phpType6 metadata, PPW) = PPR
 def $ppbasemode(expression, PPF) = PPR
   -- if ~$coalesce_quiet_operand(expression)
 def $ppbasemode(expression, PPIS) = PPR
