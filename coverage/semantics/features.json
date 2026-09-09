@@ -130,10 +130,20 @@
         "static.strict-types",
         "lifecycle.ticks"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/92-strict-compiler.watsup",
+        "spec/semantics/93-strict-declarations.watsup",
+        "spec/semantics/84-call-integrity.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/strict_declarations.py",
+        "tests/semantics/strict_declaration_compiler.py",
+        "tests/semantics/strict_declaration_protocol.py",
+        "tests/semantics/strict_declaration_state.py",
+        "coverage/semantics/strict-declaration-review.json"
+      ],
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, other declare directives and dependent core protocols remain pending; no family closes."
     },
     {
       "node": "Expr_Array",
@@ -2612,10 +2622,20 @@
         "static.strict-types",
         "lifecycle.ticks"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/92-strict-compiler.watsup",
+        "spec/semantics/93-strict-declarations.watsup",
+        "spec/semantics/84-call-integrity.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/strict_declarations.py",
+        "tests/semantics/strict_declaration_compiler.py",
+        "tests/semantics/strict_declaration_protocol.py",
+        "tests/semantics/strict_declaration_state.py",
+        "coverage/semantics/strict-declaration-review.json"
+      ],
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, other declare directives and dependent core protocols remain pending; no family closes."
     },
     {
       "node": "Stmt_Do",
@@ -6540,15 +6560,25 @@
     {
       "id": "static.strict-types",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/92-strict-compiler.watsup",
+        "spec/semantics/93-strict-declarations.watsup",
+        "spec/semantics/84-call-integrity.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/strict_declarations.py",
+        "tests/semantics/strict_declaration_compiler.py",
+        "tests/semantics/strict_declaration_protocol.py",
+        "tests/semantics/strict_declaration_state.py",
+        "coverage/semantics/strict-declaration-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null,
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, other declare directives and dependent core protocols remain pending; no family closes.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]

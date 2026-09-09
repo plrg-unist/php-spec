@@ -6,45 +6,48 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Untyped positional defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) are
-independently accepted at **c7cb1b44** in the
-[review](coverage/semantics/default-parameter-review.json). Code **1fce6586**,
-compiler evidence **2b247d81** and runtime evidence **8151b96d** bind exact
-canonical **909/e25eb2b9**. Every frozen input byte and mode matches production;
-canonical CLI 8 passes. No family closes.
+[Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md)
+are independently accepted at **85a16bae** in [strict-declaration-review.json](coverage/semantics/strict-declaration-review.json)
+on exact **917/309b046c** (code **c81fb14e**, compiler **410291bb**, author **3772ec36**).
+Compiler92/runtime93 compile legal strict-only directives,
+execute declaration work without runtime effects, and bind unit/function STRICT
+metadata to actual source. Setting 1 is sticky; zero does not clear it. Five original
+forged unit flags survived public resume before the repaired guard; existing
+function-flag rejection remains intact. Canonical CLI 8 passes. No family closes.
 
-Omitted parameters receive defaults in declaration context after supplied bindings.
-Supplied arguments skip evaluation. Omitted reference parameters begin in fresh
-ordinary cells; body aliases, array COW and recursive calls preserve ownership.
-Deferred caches retain actual allocation provenance and survive later failures.
-Dropped optional defaults still compile but receive no cache descriptor. Shared
-parameter-opcode error lines and ternary/coalesce readiness are repaired against
-retained native and complete-state counterexamples; queue guards reject trailing
-receive/bind tasks without reconstructing arbitrary runtime values.
+Independent gates retain 21 source profiles: 18 native agreements and three explicit
+encoding/type boundaries. Seven additional builtin profiles remain Unsupported.
+Two strict-cache programs pass 543 dense state/resumption assertions. Three no-directive
+programs preserve entire 909 states at seven cuts after removing only new false
+pcode.STRICT fields, including saved reference owners and cache-before-error behavior.
+Retained-context and fresh 17-control protocol runs each pass 168 assertions. Author
+8 sources/17 flag projections, 2 states/542 assertions and 17 protocol/168 assertions
+pass. The paired compiler gate has 37 exact phases/lines, two other-directive
+boundaries and 47 source projections. Source sets overlap and are not added.
 
-Independent gates pass 130 retained source profiles, 57 exact author-context
-replays, four dense state programs / 1,091 assertions, readiness six, and 12 source
-projections / 95 assertions. Two historical899 no-default programs preserve full
-states at six selected cuts/full after removing only new empty default fields and
-exact checked-source parameter descriptors. Author gates pass 57 sources,
-33 protocol assertions and four state programs / 1,082 assertions. Compiler902
-retains 54 exact phase comparisons, three pending controls, 51 descriptor
-assertions and focused signature/constant/magic regressions. The review binds
-452 independent raw responses / 14 clean closures and the author140 / 8 audit.
-Source sets overlap and are not added into a distinct-program count. The compiler
-archive retains its original filename-mismatched setup separately from corrected
-39 current899 originals; its decoded-worker transport limitation remains explicit.
+The review audits 236 independent recorded responses/23 clean closures, including
+historical originals and a separate precleanup tool attempt; author final 115/8
+is separate. Compiler910/912 preparation, unguarded913 and packaging917/15db remain
+historical. The 15db→309b bridge removes only an unused test dictionary; runtime,
+compiler and tools are byte-identical. Full frozen bytes and modes match canonical.
 
-The next unit is lexical strictness followed by parameter/return types and reference
-returns. The [phase plan](docs/semantics/DEFAULTS-ACTIVATION-PLAN.md) and
-[reviewer handoff](docs/semantics/DEFAULTS-REVIEWER-HANDOFF.md) bind exact continuation
-inputs. Private strict compiler910 is preparation; runtime/source acceptance is
-pending. The five remaining signature controls stay pending; only default-invalid
-and param-default moved into admitted compiler cases. PHP_VERSION value reads,
-other missing builtin constants, define/defined and legal object/class/callable
-constant forms remain open. NEW side effects must extend caching when admitted.
+[Untyped defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md) remain accepted at
+c7cb1b44 on909/e25eb2b9 (code1fce6586, compiler2b247d81, runtime8151b96d).
+Their [review](coverage/semantics/default-parameter-review.json) retains 130 source
+profiles, 57 exact author contexts, 4 states/1,091 assertions, 6 readiness programs,
+12 projections/95 assertions and two historical no-default bridges. Omitted
+receives, caches, declaration contexts and fresh reference/array ownership remain
+unchanged by strict declaration activation.
+
+The next increment connects scalar/container parameter and return types through
+existing 16/17 normalization and call/default machinery. Caller strictness governs
+argument checks; callee strictness governs returns. Successful deferred evaluation
+caches before type verification, and caches the uncoerced value. Reference returns,
+other callables, other declare directives and builtin execution remain required.
 The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains control,
 objects, exceptions, dynamic sources, generators/fibers, lifetime and core intrinsics.
+PHP_VERSION value reads, other missing builtin constants, define/defined and legal
+object/class/callable constants remain open. NEW side effects must extend caching.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -85,14 +88,14 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, first returns and fatal frame cleanup reviewed; exceptions pending |
-| 3b: calls, closures and static checks | Partial; named positional value/reference calls and untyped defaults reviewed; remaining call protocols pending |
+| 3b: calls, closures and static checks | Partial; named positional value/reference calls, untyped defaults and lexical strictness reviewed; typed and remaining call protocols pending |
 | 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records124 partial,181 pending and one validated
-obligation; accepted constants and untyped defaults are reflected in their partial rows.
+The runtime inventory now records125 partial,180 pending and one validated
+obligation; accepted constants, defaults and lexical strictness are reflected in their partial rows.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 
@@ -125,14 +128,13 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-Runtime6 and compiler6 retain implementation continuity for strictness/types.
-Review9 completed default acceptance and prepares rotation through the
-[reviewer handoff](docs/semantics/DEFAULTS-REVIEWER-HANDOFF.md); root assigns the next
-reviewer. Compiler5 authored the accepted constant and historical default preparation;
-runtime5/review8 own earlier checkpoints. Root orchestrates. Stage owned files,
-commit reviewed increments and never push. Coordinate canonical Dune builds, shared
-binaries and the index. The current [default review](coverage/semantics/default-parameter-review.json)
-binds this checkpoint; old constant/default handoffs are explicitly historical.
+Runtime6 and compiler6 continue with typed parameter/return integration after
+strict declaration acceptance. Review10 owns independent strict review and follows
+through types; root orchestrates. The [strict contract](docs/semantics/SOURCE-STRICT-DECLARATIONS.md)
+and [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) record current
+continuation. Stage owned files, commit reviewed increments and never push.
+Coordinate canonical builds, binaries and the index. Earlier handoffs retain
+historical identities and original failures.
 
 Each coherent increment needs native/source originals, focused phase/line checks,
 appropriate state/ownership/resumption gates and independent review. Run early

@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:124 partial,181 pending,1 validated
+has169 constructors and306 obligations:125 partial,180 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -29,11 +29,17 @@ claim that the inventory dependency graph is complete.
   c7cb1b44 on exact909/e25eb2b9. The [review](../../coverage/semantics/default-parameter-review.json)
   binds original-context receives/caches, fresh reference/array owners, shared
   opcode-line/readiness repairs, four independent states / 1,091 assertions and CLI8.
-- [ ] Complete lexical strictness, parameter/return types and reference returns.
+- [x] Strict-only source declarations and source-bound unit/function flags are
+  reviewed on917/309b046c in [strict-declaration-review.json](../../coverage/semantics/strict-declaration-review.json).
+  Compiler92/runtime93 preserve untyped calls/defaults/reference owners; two
+  independent cache states/543 assertions and three complete weak909 state bridges
+  pass. Other declare directives and actual strict/weak type checks remain open.
+- [ ] Complete parameter/return types and reference returns.
   Reuse signature/type/constant helpers; preserve caller/body strictness, cached
   defaults before type verification, diagnostic order and materialization ownership.
-  The [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) binds private strict92
-  preparation; typed/object defaults and remaining callable forms stay open.
+  The [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) retains historical strict92
+  preparation; the [current strict contract](SOURCE-STRICT-DECLARATIONS.md) supplies
+  typed integration inputs. Typed/object defaults and remaining callable forms stay open.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
