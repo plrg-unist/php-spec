@@ -297,7 +297,7 @@ def $base_read(S, BASE_NAME poperand z_name, z) = $read_name(S_name, n_name*, z_
 def $base_read(S, BASE_DIM pbase poperand z_key, z) = S_base
   -- if S_base = $base_read(S, pbase, z_key)
   -- if S_base.COMPLETION =/= NORMAL
-def $base_read(S, BASE_DIM pbase poperand z_key, z) = $array_read(S_base, pvalue, poperand, z_key)
+def $base_read(S, BASE_DIM pbase poperand z_key, z) = $dimension_read(S_base, pvalue, poperand, z_key)
   -- if S_base = $base_read(S, pbase, z_key)
   -- if S_base.COMPLETION = NORMAL
   -- if S_base.RESULT = KNOWN pvalue

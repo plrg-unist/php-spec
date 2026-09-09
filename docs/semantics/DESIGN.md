@@ -220,8 +220,10 @@ path. Ordinary compilation still shares its direct-CV predicate, which invokes
 the old constant classifier on literal name forms; retiring that narrow dependency
 and the legacy trace traversal is pending. Namespace/import work currently
 executes only expressions admitted by the ordered compiler; unresolved namespace
-constant lookup remains Unsupported. Generic string/scalar dimensions are still
-pending even though the compiler uses the pure string constant-read helper.
+constant lookup remains Unsupported. Ordinary string/scalar reads use the reviewed dimension helper through delayed
+base resolution. The compiler uses a separate constant-read leaf, preserving
+prepass suppression of warnings inside array literals. String writes/reference
+errors remain a separate activation gate.
 
 The compiler rejects unfinished syntax before source execution. This is a visible
 implementation boundary, not a claim that every unsupported expression would run.

@@ -414,6 +414,25 @@ COMPILER_ALIAS_UNSUPPORTED = [
     b'<?php use Vendor\\Package as A;$u=1;$a=[$u,A\\Missing];',
 ]
 
+# Existing compiler emission-line witnesses, now exercised through source execution.
+CASES.update({
+    'dimension-read-emission-00': b'<?php $u=7;\necho [$u, "abc"[\n"1x"]];',
+    'dimension-read-emission-01': b'<?php $u=7;\necho "abc"[\n"1x"];',
+    'dimension-read-emission-02': b'<?php $u=7;\necho ["abc"[\n"-1x"]];',
+    'dimension-read-emission-03': b'<?php $u=7;\necho [$u=["abc"[\n"1x"]]];',
+    'dimension-read-emission-04': b'<?php $u=[NAN];\necho ($u[\n0]=$u);',
+    'dimension-read-emission-05': b'<?php $u=1;\necho [\n $u,\n "abc"[\n "1x"\n ],\n];',
+    'dimension-read-emission-06': b'<?php $u=1;\necho [\n 1,\n $u,\n "abc"["1x"]\n];',
+    'dimension-read-emission-07': b'<?php $u=1;\necho [\n $u,\n NAN\n];',
+    'dimension-read-emission-08': b'<?php $u=1;\necho [\n $u,\n true\n];',
+    'dimension-read-emission-09': b'<?php $u=1;\necho [\n $u,\n 1+\n 2\n];',
+    'dimension-read-emission-10': b'<?php $u=1;\necho [\n $u,\n -\n 2\n];',
+    'dimension-read-emission-11': b'<?php $u=1;\necho [\n "abc"[\n "1x"\n]\n];',
+    'dimension-read-emission-12': b'<?php $u=1;\necho [\n $u,\n "last"\n];',
+    'dimension-read-emission-13': b'<?php $u=1;\necho [\n $u,\n $u+\n 2\n];',
+    'dimension-read-emission-14': b'<?php $u=1;\necho [\n $u,\n ($v="abc"[\n "1x"\n ])\n];',
+})
+
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
@@ -441,6 +460,7 @@ CONFORMANCE += ['numeric-min-trailing-space', 'numeric-min-nul-control',
                 'numeric-negative-overflow-incomplete-exponent',
                 'numeric-incomplete-exponent-overflow-control']
 CONFORMANCE += ['string-read-dynamic-literal-prepass']
+CONFORMANCE += ['scalar-read-ignores-key-coercion', 'scalar-read-undefined-order', 'string-read-array-key-error', 'string-read-assignment-prepass-barrier', 'string-read-delayed-base', 'string-read-float-casts', 'string-read-float-text-error', 'string-read-literal-prepass', 'string-read-missing-key', 'string-read-negative-bounds', 'string-read-negative-literal-prepass', 'string-read-null-bool-casts', 'string-read-numeric-keys', 'string-read-reference-key', 'string-read-trailing-key']
 for identifier in CONFORMANCE:
     CASES['conformance-' + identifier] = (ROOT / 'tests/semantics/conformance' / (identifier + '.php')).read_bytes()
 

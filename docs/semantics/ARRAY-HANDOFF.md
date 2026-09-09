@@ -1,8 +1,8 @@
 # Array/reference implementation handoff
 
 Read PLAN.md, PROGRESS.md, DESIGN.md and the php/php-spec/p4-spectec skills first.
-The current source machine supports ordinary ordered arrays, delayed dimension
-reads, simple/nested writes, append and unset. Variable-cell aliases and literal
+The current source machine supports ordinary ordered arrays, delayed array/string/scalar dimension
+reads, simple/nested array writes, append and unset. Variable-cell aliases and literal
 references to direct/dynamic variables and writable array elements work, including
 element reference assignment targets. String-offset references, foreach, callbacks
 and source GC are still pending. Do not infer

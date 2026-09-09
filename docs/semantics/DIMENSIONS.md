@@ -1,9 +1,8 @@
 # Scalar and string dimensions
 
-`44-dimension-read.watsup` supplies pure runtime R-fetch helpers. It is registered as a compiler dependency for its string constant-read leaf.
-Generic source scalar/string dimension reads remain pending after the checked
-constant-expression prepass and ordered compiler bridge activation.
-Array reads continue through the reviewed source path. Reference assignment and
+`44-dimension-read.watsup` supplies pure runtime R-fetch helpers. Delayed source dimension reads now delegate to it after resolving their base.
+The ordered compiler separately uses its string constant-read leaf.
+Array containers delegate to the existing array-read rules. Reference assignment and
 acquisition now cover writable array elements; string-offset reference/write
 contexts remain separate pending work.
 
@@ -46,8 +45,9 @@ pairs against the pinned PHP runtime, with exact result types, values, ordered
 messages, severity, lines and exception observations. Ten compiler-leaf assertions
 and five missing-line/borrowed-key boundaries are reported separately. The report
 retains original oracle source, input bytes, stdout, stderr, status and stable
-implementation/binary fingerprints. This is helper evidence, not source execution
-coverage or a proof that string dimensions are complete.
+implementation/binary fingerprints. This matrix is helper evidence. Source activation additionally retains all 16
+read/prepass conformance fixtures and 15 original compiler emission-line cases
+in `validate.py`; it does not establish complete dimension or callback behavior.
 
 
 `45-dimension-write.watsup` supplies separate callback-free write and reference

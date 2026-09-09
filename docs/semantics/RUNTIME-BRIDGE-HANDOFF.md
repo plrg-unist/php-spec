@@ -43,9 +43,8 @@ unit never recovers a missing descriptor from AST equality or source metadata.
 The old `$run_source` traversal remains an internal bare-task trace fixture,
 excluded from public `$php_run`. The compiler still shares its direct-CV predicate,
 which calls the legacy constant classifier on literal name forms. Retirement of
-that narrow dependency and the legacy test traversal is still pending. Generic44 is now registered as a compiler dependency; runtime
-`$base_read` still supports only its prior array path. String/scalar dynamic reads
-and all45 write helpers remain separate activation gates.
+that narrow dependency and the legacy test traversal is still pending. Module44 is registered and `$base_read` now delegates ordinary array/string/scalar
+reads to `$dimension_read`. Module45 write helpers remain a separate activation gate.
 
 The reviewed bridge passed 546 exact source comparisons and 28 explicit negative
 outcomes after the imported-class-prefix guard `ff941f17`. Independent review
@@ -115,9 +114,9 @@ per-unit teardown remain pending.
 
 The bridge newly admits constant string DIM reads folded inside constant and dynamic
 arrays, compile-time illegal array keys, and lexical compiler diagnostics. Exact
-source witnesses retain those support changes. Generic read activation must include
-all16 read/prepass fixtures; some fixtures intentionally combine a folded operand
-with an ordinary string read that remains Unsupported at this bridge milestone.
+source witnesses retain those support changes. Read activation retains all 16 read/prepass fixtures. Some fixtures combine a
+folded operand with an ordinary string read, preserving both prepass suppression
+and runtime diagnostics as source regressions.
 
 Constructed bridge tests check repeated occurrence reuse after temporary cleanup,
 distinct NaN-array occurrences and units, dynamic allocation disjointness, read versus
@@ -126,14 +125,18 @@ storage rejection and budget resumability. Existing source/origin/filename/owner
 regressions remain mandatory, including the encoded checked-program retention test.
 These constructed re-entry states do not claim PHP loop or function execution.
 
+The subsequent generic read activation passed 576 exact source comparisons and
+28 explicit negative outcomes. Independent review repeated 64 additional original
+sources, the 583-case read matrix, runtime compiler/origin/ownership controls, and
+612 ordered compiler lint cases with emission-line and access-role controls.
+
 ## Following gates and commands
 
-Immediately next: generic scalar/string reads through 44 and all sixteen retained
-read/prepass conformance fixtures (`string-read-*`, `scalar-read-*`; listed in
-DIMENSIONS.md/conformance catalog). Then 45 string writes/reference/nested errors
-and eight retained source ordering witnesses. Key conversion, negative bounds and
-append may stop before a delayed RHS is resolved; do not uniformly evaluate it
-first. Array unpack/destructuring and foreach/general control follow. Call frames,
+Ordinary scalar/string reads through 44 are connected, with all 16 retained
+read/prepass conformance fixtures and 15 compiler emission-line source cases.
+Next: 45 string writes/reference/nested errors and eight retained source ordering
+witnesses. Key conversion, negative bounds and append may stop before a delayed RHS
+is resolved; do not uniformly evaluate it first. Array unpack/destructuring and foreach/general control follow. Call frames,
 objects/properties, callbacks, source GC and lifecycle remain further core work.
 
 Useful commands, serialized around any required build and stable source freeze:

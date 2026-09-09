@@ -1,5 +1,5 @@
-;; Runtime R-fetch helpers. Source dispatch remains separate until the checked
-;; constant-expression prepass models string-dimension folding in array literals.
+;; Runtime R-fetch helpers used by delayed source dimension reads. The compiler
+;; uses the separate constant leaf below for string DIM folding in array literals.
 dec $dimension_value_name(pvalue) : nat*
 def $dimension_value_name(PBOOL false) = [102,97,108,115,101]
 def $dimension_value_name(PBOOL true) = [116,114,117,101]
@@ -64,7 +64,6 @@ def $string_operand_read(S, n_bytes*, poperand, z) = $string_dimension_read(S_ke
   -- if S_key.COMPLETION = NORMAL
   -- if S_key.RESULT = KNOWN pvalue_key
 
-dec $dimension_read(pstate, pvalue, poperand, int) : pstate
 def $dimension_read(S, PARRAY n, poperand, z) = $array_read(S, PARRAY n, poperand, z)
 def $dimension_read(S, PSTRING n_bytes*, poperand, z) = $string_operand_read(S, n_bytes*, poperand, z)
 def $dimension_read(S, pvalue, poperand, z) = $scalar_dimension_read(S, pvalue, poperand, z)
