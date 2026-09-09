@@ -1,4 +1,4 @@
-# Scalar and string dimension reads
+# Scalar and string dimensions
 
 `44-dimension-read.watsup` supplies pure runtime R-fetch helpers. It is not yet
 listed in the source machine's module catalog: source scalar/string dimension
@@ -48,3 +48,37 @@ and five missing-line/borrowed-key boundaries are reported separately. The repor
 retains original oracle source, input bytes, stdout, stderr, status and stable
 implementation/binary fingerprints. This is helper evidence, not source execution
 coverage or a proof that string dimensions are complete.
+
+
+`45-dimension-write.watsup` supplies separate callback-free write and reference
+fetch helpers, also outside the source module catalog. `$string_dimension_write`
+returns a state and updated container bytes. It resolves/converts the key first;
+an index below the negative bound warns and returns null before fetching a
+delayed RHS. Otherwise it stringifies the RHS, rejects empty strings, warns for
+multiple bytes, writes the first byte, and returns that byte as the assignment
+value. Positive offsets beyond the current length extend with spaces. The pure
+byte operation assumes allocation succeeds, like the current array model;
+allocation failure and environment memory limits remain separate pending effects.
+
+`$string_dimension_fetch` handles reference and nested-array W-fetch errors.
+These contexts check key conversion first, then reject the operation without
+checking byte bounds. An invalid key's TypeError therefore takes precedence over
+the reference/nested-array Error. Append syntax has its own Error. Scalar write
+promotion/errors remain in the existing array-location helpers.
+
+The pinned source anchors are `zend_assign_to_string_offset`,
+`zend_check_string_offset`, `zend_fetch_dimension_address`, and
+`zend_wrong_string_offset_error` in `Zend/zend_execute.c`. These helpers restore
+no temporary roots because they acquire none and never prune internally; callers
+must preserve the input operands while consuming them. Handler suspension and
+string replacement during warnings need an explicit resumable ownership protocol
+before callbacks are admitted. Source integration must commit returned bytes to
+the correct captured location and preserve delayed RHS timing.
+
+Run `python3 tests/semantics/dimension_write.py`. The canonical matrix compares
+2,220 writes/reference/nested fetches with the pinned oracle, checking updated
+container bytes, assignment results, ordered diagnostic bytes/levels/lines and
+exact exceptions. Twelve additional boundaries check missing source positions,
+request-environment rejection, borrowed reference operands and preservation of
+prior held roots. This validation does not admit new source syntax or establish
+callback behavior.

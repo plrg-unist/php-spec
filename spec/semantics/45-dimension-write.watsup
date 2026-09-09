@@ -1,0 +1,93 @@
+;; Pure callback-free string W-fetch helpers. The returned bytes are the updated
+;; container; RESULT is the assignment expression's one-byte result (or NULL).
+;; Source location commits and compiled occurrence facts are separate callers.
+dec $string_replace_byte(nat*, nat, nat) : nat*
+def $string_replace_byte(n_bytes*, n_index, n_byte) = n_bytes*[0:n_index] ++ [n_byte] ++ n_bytes*[n_after:n_count]
+  -- if $(n_index < |n_bytes*|)
+  -- if n_after = $(n_index + 1)
+  -- if n_count = $(|n_bytes*| - n_index - 1)
+def $string_replace_byte(n_bytes*, n_index, n_byte) = n_bytes* ++ $ntrepeat(32, $nabs($(n_index - |n_bytes*|))) ++ [n_byte]
+  -- if $(n_index >= |n_bytes*|)
+
+dec $string_write_bytes(pstate, nat*, nat, nat*, int) : (pstate, nat*)
+def $string_write_bytes(S, n_bytes*, n_index, eps, z) = ($throw_scalar(S, "Error", [67,97,110,110,111,116,32,97,115,115,105,103,110,32,97,110,32,101,109,112,116,121,32,115,116,114,105,110,103,32,116,111,32,97,32,115,116,114,105,110,103,32,111,102,102,115,101,116], z)[.RESULT = KNOWN PNULL], n_bytes*)
+def $string_write_bytes(S, n_bytes*, n_index, n_byte :: eps, z) = (S[.RESULT = KNOWN (PSTRING ([n_byte]))], $string_replace_byte(n_bytes*, n_index, n_byte))
+def $string_write_bytes(S, n_bytes*, n_index, n_byte :: n_tail*, z) = (S_warned, n_bytes*)
+  -- if n_tail* =/= eps
+  -- if S_warned = $diagnostic(S, "Warning", [79,110,108,121,32,116,104,101,32,102,105,114,115,116,32,98,121,116,101,32,119,105,108,108,32,98,101,32,97,115,115,105,103,110,101,100,32,116,111,32,116,104,101,32,115,116,114,105,110,103,32,111,102,102,115,101,116], z)
+  -- if S_warned.COMPLETION =/= NORMAL
+def $string_write_bytes(S, n_bytes*, n_index, n_byte :: n_tail*, z) = (S_warned[.RESULT = KNOWN (PSTRING ([n_byte]))], $string_replace_byte(n_bytes*, n_index, n_byte))
+  -- if n_tail* =/= eps
+  -- if S_warned = $diagnostic(S, "Warning", [79,110,108,121,32,116,104,101,32,102,105,114,115,116,32,98,121,116,101,32,119,105,108,108,32,98,101,32,97,115,115,105,103,110,101,100,32,116,111,32,116,104,101,32,115,116,114,105,110,103,32,111,102,102,115,101,116], z)
+  -- if S_warned.COMPLETION = NORMAL
+
+dec $string_write_value(pstate, nat*, nat, pvalue, int) : (pstate, nat*)
+def $string_write_value(S, n_bytes*, n_index, pvalue, z) = (S_string, n_bytes*)
+  -- if S_string = $stringify(S, pvalue, z)
+  -- if S_string.COMPLETION =/= NORMAL
+def $string_write_value(S, n_bytes*, n_index, pvalue, z) = $string_write_bytes(S_string, n_bytes*, n_index, n_value*, z)
+  -- if S_string = $stringify(S, pvalue, z)
+  -- if S_string.COMPLETION = NORMAL
+  -- if S_string.RESULT = KNOWN (PSTRING n_value*)
+
+dec $string_write_operand(pstate, nat*, nat, poperand, int) : (pstate, nat*)
+def $string_write_operand(S, n_bytes*, n_index, poperand, z) = (S_value, n_bytes*)
+  -- if S_value = $resolve_at(S, poperand, z)
+  -- if S_value.COMPLETION =/= NORMAL
+def $string_write_operand(S, n_bytes*, n_index, poperand, z) = $string_write_value(S_value, n_bytes*, n_index, pvalue, z)
+  -- if S_value = $resolve_at(S, poperand, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+
+;; An invalid negative index returns before a delayed RHS is fetched/coerced.
+dec $string_write_at(pstate, nat*, int, poperand, int) : (pstate, nat*)
+def $string_write_at(S, n_bytes*, i, poperand, z) = ($diagnostic(S, "Warning", [73,108,108,101,103,97,108,32,115,116,114,105,110,103,32,111,102,102,115,101,116,32] ++ $decimal_integer(i), z)[.RESULT = KNOWN PNULL], n_bytes*)
+  -- if $(i < 0 - |n_bytes*|)
+def $string_write_at(S, n_bytes*, i, poperand, z) = $string_write_operand(S, n_bytes*, n_index, poperand, z)
+  -- if $(i >= 0) -- if n_index = i
+def $string_write_at(S, n_bytes*, i, poperand, z) = $string_write_operand(S, n_bytes*, n_index, poperand, z)
+  -- if $(i < 0 /\ i >= 0 - |n_bytes*|) -- if n_index = $(|n_bytes*| + i)
+
+dec $string_write_key(pstate, nat*, pvalue, poperand, int) : (pstate, nat*)
+def $string_write_key(S, n_bytes*, pvalue_key, poperand_value, z) = (S_key, n_bytes*)
+  -- if S_key = $string_offset(S, pvalue_key, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $string_write_key(S, n_bytes*, pvalue_key, poperand_value, z) = $string_write_at(S_key, n_bytes*, i, poperand_value, z)
+  -- if S_key = $string_offset(S, pvalue_key, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.KEY = KINT i
+
+dec $string_dimension_write(pstate, nat*, poperand?, poperand, int) : (pstate, nat*)
+def $string_dimension_write(S, n_bytes*, eps, poperand_value, z) = ($throw_scalar(S, "Error", [91,93,32,111,112,101,114,97,116,111,114,32,110,111,116,32,115,117,112,112,111,114,116,101,100,32,102,111,114,32,115,116,114,105,110,103,115], z), n_bytes*)
+def $string_dimension_write(S, n_bytes*, (poperand_key), poperand_value, z) = (S_key, n_bytes*)
+  -- if S_key = $resolve_at(S, poperand_key, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $string_dimension_write(S, n_bytes*, (poperand_key), poperand_value, z) = $string_write_key(S_key, n_bytes*, pvalue_key, poperand_value, z)
+  -- if S_key = $resolve_at(S, poperand_key, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue_key
+
+;; Reference and nested-array fetches check the key, but never byte bounds.
+syntax pstringfetch = STRINGREFERENCE | STRINGNESTED
+
+dec $string_fetch_message(pstringfetch) : nat*
+def $string_fetch_message(STRINGREFERENCE) = [67,97,110,110,111,116,32,99,114,101,97,116,101,32,114,101,102,101,114,101,110,99,101,115,32,116,111,47,102,114,111,109,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]
+def $string_fetch_message(STRINGNESTED) = [67,97,110,110,111,116,32,117,115,101,32,115,116,114,105,110,103,32,111,102,102,115,101,116,32,97,115,32,97,110,32,97,114,114,97,121]
+
+dec $string_fetch_key(pstate, pvalue, pstringfetch, int) : pstate
+def $string_fetch_key(S, pvalue, pstringfetch, z) = S_key
+  -- if S_key = $string_offset(S, pvalue, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $string_fetch_key(S, pvalue, pstringfetch, z) = $throw_scalar(S_key, "Error", $string_fetch_message(pstringfetch), z)
+  -- if S_key = $string_offset(S, pvalue, z)
+  -- if S_key.COMPLETION = NORMAL
+
+dec $string_dimension_fetch(pstate, poperand?, pstringfetch, int) : pstate
+def $string_dimension_fetch(S, eps, pstringfetch, z) = $throw_scalar(S, "Error", [91,93,32,111,112,101,114,97,116,111,114,32,110,111,116,32,115,117,112,112,111,114,116,101,100,32,102,111,114,32,115,116,114,105,110,103,115], z)
+def $string_dimension_fetch(S, (poperand), pstringfetch, z) = S_key
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $string_dimension_fetch(S, (poperand), pstringfetch, z) = $string_fetch_key(S_key, pvalue, pstringfetch, z)
+  -- if S_key = $resolve_at(S, poperand, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue
