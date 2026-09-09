@@ -14,6 +14,10 @@ Ordinary assignment copies a value into the designated cell. Reference rebinding
 changes one name's cell identity, leaving other aliases attached to their original
 cell. Unset removes the binding. Writable paths designate either a variable cell
 or an element in an internal array container. Property type sources remain pending.
+Checked source units and structural occurrence paths now travel with task scopes;
+[Source origins](SOURCE-ORIGINS.md) describes retention, validation and budget
+restoration. This identity groundwork does not yet consume compiler facts or
+install constant-array pool roots.
 
 An operand is a captured value, a delayed compiled-variable read, or an owning
 reference-result cell. `ZEND_ASSIGN_REF` copies the reference wrapper into its
@@ -144,8 +148,9 @@ and `HELD`, even when the last task already emptied `TODO`; environment roots an
 uncollected cycles survive. This is temporary cleanup in the current machine
 without catch/finally or call frames, not effectful PHP request shutdown or future
 exception unwinding. Budget exhaustion preserves the interrupted state and roots.
-Constant-pool roots and source-unit/compiled-occurrence
-identities are also required before repeated literal execution in loops/calls.
+Source-unit/compiled-occurrence identities now travel with runtime tasks.
+Permanent constant-pool roots and fact consumption are still required before
+repeated literal execution in loops/calls.
 `tests/semantics/ownership.py` checks graph invariants separately from source claims.
 Source anchors are `i_zval_ptr_dtor`, `zend_array_dup_value`, and `zend_gc_collect_cycles`.
 

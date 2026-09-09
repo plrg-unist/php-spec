@@ -5,7 +5,8 @@ syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
 syntax pbase = BASE_VALUE poperand | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int
 syntax pnode = HCELL nat | HARRAY nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | NOWHERE
-syntax ptask = DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
+syntax porigin = PORIGIN nat pcpath
+syntax ptask = AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
   | ARRAY_REF_KEY nat expression phpType13* | ARRAY_REF_VALUE nat poperand? phpType13* int
@@ -15,7 +16,7 @@ syntax ptask = DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIG
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pstate = { TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode* }
+  ENV pbinding*, STORE pslot*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin? }
 dec $cv_name(phpType34) : (nat*)?
 dec $fold_constant(pstate, expression) : pstate?
 dec $initial_state(pcompletion) : pstate

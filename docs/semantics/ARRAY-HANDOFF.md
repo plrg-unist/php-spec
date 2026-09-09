@@ -15,7 +15,8 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 
 - `20-machine.watsup`: PHP values/completions, static availability checks and
   source/compiler line functions. `30-storage`: cells, operand/base/path/task
-  domains, state, variable binding operations.
+  domains, state, variable binding operations. `31-source-origins` supplies
+  checked unit/path task scopes; see [runtime origins](SOURCE-ORIGINS.md).
 - `36-arrays`: ordered entries/history, key coercions, reads, identity, union,
   isolated constant classifier. `37-array-locations`: location acquisition and
   conditional shallow path copying. `38-array-unset`: unset contexts.
@@ -48,8 +49,9 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
   prepass has a distinct traversal, including append rejection; see below.
 - Next: [scalar/string dimension helpers](DIMENSIONS.md), exact compiler prepass
   integration, string write/reference errors, array unpack and destructuring.
-  Before foreach/general loops, integrate [source-unit occurrence identities](SOURCE-CONTEXT.md)
-  and persistent literal-pool roots. Equal subtrees and editable metadata are not
+  Runtime tasks now retain [source-unit occurrence identities](SOURCE-ORIGINS.md);
+  before foreach/general loops, install persistent literal-pool roots and consume
+  compiler facts by those identities. Equal subtrees and editable metadata are not
   occurrence identities. Foreach additionally needs persistent bucket/cursor
   state and mutation/reference interaction tests.
 

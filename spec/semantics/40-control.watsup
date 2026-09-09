@@ -19,29 +19,29 @@ def $atomic_expression(NExprConstFetch name metadata) = true
 def $atomic_expression(expression) = false
   -- otherwise
 
-dec $statement_tasks(statement*) : ptask*
-def $statement_tasks(statement_tail*) = (STMT statement_tail)*
-dec $echo_tasks(expression*) : ptask*
-def $echo_tasks(eps) = eps
-def $echo_tasks(expression :: expression_tail*) = [EVAL expression, EMIT $compiled_line(expression)] ++ $echo_tasks(expression_tail*)
-dec $unset_tasks(expression*) : ptask*
-def $unset_tasks(expression_tail*) = (UNSET expression_tail)*
-
 relation PhpStep: pstate ~> pstate
   hint(input %0)
+rule PhpStep/origin-enter: S ~> S[.TODO = [ptask, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+  -- if $origin_accepts(S.SOURCES, porigin, ptask)
+rule PhpStep/origin-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid task source occurrence"]
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+  -- if ~$origin_accepts(S.SOURCES, porigin, ptask)
+rule PhpStep/origin-return: S ~> S[.TODO = ptask_tail*][.ORIGIN = porigin?]
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
 rule PhpStep/nop: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STMT (NStmtNop metadata)) :: ptask_tail*
-rule PhpStep/block: S ~> S[.TODO = $statement_tasks(statement_tail*) ++ ptask_tail*]
+rule PhpStep/block: S ~> S[.TODO = $statement_tasks(statement_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtBlock (SEQUENCE statement_tail*) metadata)) :: ptask_tail*
 rule PhpStep/inline: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT $base64(text)]]
   -- if S.TODO = (STMT (NStmtInlineHTML (BYTES text) metadata)) :: ptask_tail*
-rule PhpStep/echo: S ~> S[.TODO = $echo_tasks(expression_tail*) ++ ptask_tail*]
+rule PhpStep/echo: S ~> S[.TODO = $echo_tasks(expression_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
-rule PhpStep/expression: S ~> S[.TODO = [EVAL expression, DISCARD] ++ ptask_tail*]
+rule PhpStep/expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DISCARD] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtExpression expression metadata)) :: ptask_tail*
 rule PhpStep/discard: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = DISCARD :: ptask_tail*
-rule PhpStep/unset: S ~> S[.TODO = $unset_tasks(expression_tail*) ++ ptask_tail*]
+rule PhpStep/unset: S ~> S[.TODO = $unset_tasks(expression_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtUnset (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
 rule PhpStep/literal: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue]
   -- if S.TODO = (EVAL expression) :: ptask_tail*
@@ -59,7 +59,7 @@ rule PhpStep/environment-variable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
   -- if $environment_name(n_name*)
-rule PhpStep/dynamic-variable: S ~> S[.TODO = [EVAL expression, NAME_READ $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/dynamic-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), NAME_READ $compiled_line(expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
   -- if phpType34 = expression
@@ -92,23 +92,23 @@ rule PhpStep/emit-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION =/= NORMAL
-rule PhpStep/binary-plus: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT ADD expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+rule PhpStep/binary-plus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT ADD expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpPlus expression_1 expression_2 metadata)) :: ptask_tail*
-rule PhpStep/binary-minus: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT SUBTRACT expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+rule PhpStep/binary-minus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT SUBTRACT expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpMinus expression_1 expression_2 metadata)) :: ptask_tail*
-rule PhpStep/binary-mul: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT MULTIPLY expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+rule PhpStep/binary-mul: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT MULTIPLY expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpMul expression_1 expression_2 metadata)) :: ptask_tail*
-rule PhpStep/binary-div: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT DIVIDE expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+rule PhpStep/binary-div: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT DIVIDE expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpDiv expression_1 expression_2 metadata)) :: ptask_tail*
-rule PhpStep/unary-plus: S ~> S[.TODO = [EVAL expression, UNARY POSITIVE $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/unary-plus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), UNARY POSITIVE $compiled_line(expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprUnaryPlus expression metadata)) :: ptask_tail*
-rule PhpStep/unary-minus: S ~> S[.TODO = [EVAL expression, UNARY NEGATIVE $compiled_line(expression)] ++ ptask_tail*]
+rule PhpStep/unary-minus: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), UNARY NEGATIVE $compiled_line(expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprUnaryMinus expression metadata)) :: ptask_tail*
-rule PhpStep/binary-identical: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT IDENTICAL expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+rule PhpStep/binary-identical: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT IDENTICAL expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpIdentical expression_1 expression_2 metadata)) :: ptask_tail*
-rule PhpStep/binary-notidentical: S ~> S[.TODO = [EVAL expression_1, BINARY_LEFT NOTIDENTICAL expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
+rule PhpStep/binary-notidentical: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT NOTIDENTICAL expression_2 $compiled_line(expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpNotIdentical expression_1 expression_2 metadata)) :: ptask_tail*
-rule PhpStep/binary-left: S ~> S[.TODO = [EVAL expression, BINARY_RIGHT pbin S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/binary-left: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), BINARY_RIGHT pbin S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (BINARY_LEFT pbin expression z) :: ptask_tail*
 rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
@@ -139,14 +139,14 @@ rule PhpStep/unary-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (UNARY punary z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION =/= NORMAL
-rule PhpStep/assign-name: S ~> S[.TODO = [EVAL expression, WRITE_NAME n_name* $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
+rule PhpStep/assign-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), WRITE_NAME n_name* $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssign (NExprVariable phpType34 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
-rule PhpStep/assign-dynamic: S ~> S[.TODO = [EVAL expression_name, PREP_ASSIGN expression $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
+rule PhpStep/assign-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCFIELD 0]), EVAL expression_name), PREP_ASSIGN expression $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssign (NExprVariable phpType34 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
   -- if phpType34 = expression_name
-rule PhpStep/prepare-assign: S ~> S[.TODO = [EVAL expression, WRITE_DYNAMIC S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/prepare-assign: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), WRITE_DYNAMIC S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_ASSIGN expression z) :: ptask_tail*
 rule PhpStep/write-name: S ~> S_written[.TODO = ptask_tail*]
   -- if S.TODO = (WRITE_NAME n_name* z) :: ptask_tail*
@@ -168,14 +168,14 @@ rule PhpStep/write-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (WRITE_DYNAMIC poperand z) :: ptask_tail*
   -- if S_name = $resolve_name(S, poperand, z)
   -- if S_name.COMPLETION =/= NORMAL
-rule PhpStep/reference-name: S ~> S[.TODO = [ACQUIRE expression, REF_NAME n_name*] ++ ptask_tail*]
+rule PhpStep/reference-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), REF_NAME n_name*] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssignRef (NExprVariable phpType34 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if $cv_name(phpType34) = (n_name*)
-rule PhpStep/reference-dynamic: S ~> S[.TODO = [EVAL expression_name, PREP_REF expression $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
+rule PhpStep/reference-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0, PCFIELD 0]), EVAL expression_name), PREP_REF expression $variable_line(phpType34, metadata_1)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssignRef (NExprVariable phpType34 metadata_1) expression metadata_2)) :: ptask_tail*
   -- if $cv_name(phpType34) = eps
   -- if phpType34 = expression_name
-rule PhpStep/prepare-reference: S ~> S[.TODO = [ACQUIRE expression, REF_CAPTURE S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+rule PhpStep/prepare-reference: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), REF_CAPTURE S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PREP_REF expression z) :: ptask_tail*
   -- if $reference_cv(expression) = eps
 ;; A CV source is fetched by ASSIGN_REF after the delayed target FETCH_W.
@@ -187,7 +187,7 @@ rule PhpStep/prepare-reference-cv: S ~> S[.TODO = (REF_DYNAMIC_CV S.RESULT n_nam
 rule PhpStep/acquire-name: S ~> S_cell[.TODO = ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_cell = $acquire_name(S, $base64(text))
-rule PhpStep/acquire-dynamic: S ~> S[.TODO = [EVAL expression_name, ACQUIRE_DYNAMIC $compiled_line(expression_name)] ++ ptask_tail*]
+rule PhpStep/acquire-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_name), ACQUIRE_DYNAMIC $compiled_line(expression_name)] ++ ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if phpType34 = expression_name
 rule PhpStep/acquire-dynamic-cell: S ~> S_cell[.TODO = ptask_tail*]
@@ -237,7 +237,7 @@ rule PhpStep/bind-dynamic-cv-source-abrupt: S ~> S_cell[.TODO = eps]
 rule PhpStep/unset-name: S ~> S_unset[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (UNSET (NExprVariable (BYTES text) metadata)) :: ptask_tail*
   -- if S_unset = $unset_name(S, $base64(text))
-rule PhpStep/unset-dynamic: S ~> S[.TODO = [EVAL expression_name, UNSET_DYNAMIC $compiled_line(expression_name)] ++ ptask_tail*]
+rule PhpStep/unset-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_name), UNSET_DYNAMIC $compiled_line(expression_name)] ++ ptask_tail*]
   -- if S.TODO = (UNSET (NExprVariable phpType34 metadata)) :: ptask_tail*
   -- if phpType34 = expression_name
 rule PhpStep/unset-dynamic-name: S ~> S_unset[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
@@ -269,14 +269,20 @@ def $drive(S, n) = $drive($prune_allocations(S_next), n_next)
   -- if $(n - 1) = n_next
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps}
+def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps}
+dec $run_source(pcunit, nat) : pstate
+def $run_source(pcunit, n) = $drive(S[.TODO = $statement_tasks($pcprogram(pcunit.AST), (PORIGIN pcunit.ID eps), 0)], n)
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if $check_statements($pcprogram(pcunit.AST)) = READY
+  -- if S = $initial_state(NORMAL)[.SOURCES = [pcunit]]
+def $run_source(pcunit, n) = $initial_state(pcompletion)[.SOURCES = [pcunit]]
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if $check_statements($pcprogram(pcunit.AST)) = REJECT pcompletion
+def $run_source(pcunit, n) = $initial_state(UNSUPPORTED "invalid compiled source unit")
+  -- if pcunit =/= $pcsource(pcunit.ID, pcunit.AST)
+
 dec $run_statements(statement*, nat) : pstate
-def $run_statements(statement_tail*, n) = $drive(S[.TODO = $statement_tasks(statement_tail*)], n)
-  -- if $check_statements(statement_tail*) = READY
-  -- if S = $initial_state(NORMAL)
-def $run_statements(statement_tail*, n) = $initial_state(pcompletion)
-  -- if $check_statements(statement_tail*) = REJECT pcompletion
+def $run_statements(statement_tail*, n) = $run_source($pcsource(0, PROGRAM statement_tail*), n)
 
 dec $php_run(program, nat) : pstate
-def $php_run(PROGRAM statement_tail*, n) = $run_statements(statement_tail*, n)
-def $php_run(ENCODEDPROGRAM text_source text_lexer text_bom text_preamble text_original? statement_tail*, n) = $run_statements(statement_tail*, n)
+def $php_run(program, n) = $run_source($pcsource(0, program), n)

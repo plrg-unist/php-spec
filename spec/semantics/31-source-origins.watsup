@@ -1,0 +1,66 @@
+;; Task scopes retain the compiled source instance and structural occurrence.
+;; Metadata and expression equality never select an occurrence. Bare helper
+;; states may have no source context; their tasks keep that absence explicitly.
+dec $origin_child(porigin?, pcpath) : porigin?
+def $origin_child(eps, pcpath) = eps
+def $origin_child((PORIGIN n pcpath_parent), pcpath) = (PORIGIN n (pcpath_parent ++ pcpath))
+
+dec $at_task(porigin?, ptask) : ptask
+def $at_task(eps, ptask) = ptask
+def $at_task((porigin), ptask) = AT porigin ptask
+
+dec $occurrence_node(pcoccurrence*, pcpath) : pcnode?
+def $occurrence_node(eps, pcpath) = eps
+def $occurrence_node((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, pcpath) = (pcnode)
+def $occurrence_node((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath) = $occurrence_node(pcoccurrence*, pcpath)
+  -- if pcpath_other =/= pcpath
+dec $origin_node(pcunit*, porigin) : pcnode?
+def $origin_node(eps, porigin) = eps
+def $origin_node(pcunit :: pcunit_tail*, PORIGIN n pcpath) = $occurrence_node(pcunit.OCCURRENCES, pcpath)
+  -- if pcunit.ID = n
+def $origin_node(pcunit :: pcunit_tail*, PORIGIN n pcpath) = $origin_node(pcunit_tail*, PORIGIN n pcpath)
+  -- if pcunit.ID =/= n
+
+dec $task_source_node(ptask) : pcnode?
+def $task_source_node(STMT statement) = (statement)
+def $task_source_node(EVAL expression) = (expression)
+def $task_source_node(ACQUIRE expression) = (expression)
+def $task_source_node(DIM_PREP expression) = (expression)
+def $task_source_node(UNSET expression) = (expression)
+def $task_source_node(ptask) = eps
+  -- otherwise
+dec $origin_accepts(pcunit*, porigin, ptask) : bool
+def $origin_accepts(pcunit*, porigin, ptask) = true
+  -- if $origin_node(pcunit*, porigin) = (pcnode)
+  -- if $task_source_node(ptask) = (pcnode)
+def $origin_accepts(pcunit*, porigin, ptask) = true
+  -- if $origin_node(pcunit*, porigin) = (pcnode)
+  -- if $task_source_node(ptask) = eps
+def $origin_accepts(pcunit*, porigin, ptask) = false
+  -- otherwise
+
+dec $statement_tasks(statement*, porigin?, nat) : ptask*
+def $statement_tasks(eps, porigin?, n) = eps
+def $statement_tasks(statement :: statement_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), STMT statement)] ++ $statement_tasks(statement_tail*, porigin?, $(n + 1))
+
+dec $echo_tasks(expression*, porigin?, nat) : ptask*
+def $echo_tasks(eps, porigin?, n) = eps
+def $echo_tasks(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), EMIT $compiled_line(expression)] ++ $echo_tasks(expression_tail*, porigin?, $(n + 1))
+
+dec $unset_tasks(expression*, porigin?, nat) : ptask*
+def $unset_tasks(eps, porigin?, n) = eps
+def $unset_tasks(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), UNSET expression)] ++ $unset_tasks(expression_tail*, porigin?, $(n + 1))
+
+;; ARRAY_NEXT runs at the current item occurrence. Moving to a sibling does
+;; not add another scope; the surrounding array EVAL restores its caller.
+dec $origin_first_item(porigin?, phpType13*) : porigin?
+def $origin_first_item(porigin?, eps) = porigin?
+def $origin_first_item(porigin?, phpType13 :: phpType13_tail*) = $origin_child(porigin?, [PCFIELD 0, PCINDEX 0])
+dec $next_index_path(pcpath) : pcpath
+def $next_index_path([PCINDEX n]) = [PCINDEX $(n + 1)]
+def $next_index_path(pcstep :: pcstep_tail*) = pcstep :: $next_index_path(pcstep_tail*)
+  -- if pcstep_tail* =/= eps
+dec $origin_next_item(porigin?, phpType13*) : porigin?
+def $origin_next_item(eps, phpType13*) = eps
+def $origin_next_item((porigin), eps) = (porigin)
+def $origin_next_item((PORIGIN n pcpath), phpType13 :: phpType13_tail*) = (PORIGIN n $next_index_path(pcpath))
