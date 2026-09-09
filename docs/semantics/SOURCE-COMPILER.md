@@ -149,3 +149,13 @@ and printing derives fresh source from checked syntax rather than these position
 The fourteen original-source regressions retain semicolon and closing-tag failures
 and controls. Explicit break depths and continue remain part of pending source-control
 activation; their token locations are transported without claiming that activation.
+
+Temporary scalar, array, named-constant, admitted arithmetic/unary and assignment
+expressions cannot be used as writable or unset operands. Ordinary compilation
+rejects these shapes before compiling their children, using
+`zend_compile_var_inner`'s default write-context branch (`zend_compile.c:11998`).
+This admits exact static rejection for literal dimension targets such as
+`"abc"[0]="X"`; it does not evaluate the temporary or its dimension key. The
+surrounding assignment still compiles its right operand first, so an earlier
+right-side compile error retains priority. Call and property variable branches
+remain separate pending syntax; the default rejection does not classify them.

@@ -486,6 +486,32 @@ CASES.update({
     'compiler-break-terminator-trailing-comment': b'<?php break\n; /*\n*/',
 })
 
+# Known temporary write/unset targets reject before their children are compiled.
+CASES.update({
+    'compiler-temporary-literal-string-target-error': b'<?php "abc"[0]="X";',
+    'compiler-temporary-literal-target-rhs-order': b'<?php "abc"[0]=[&$x[]];',
+    'compiler-temporary-literal-target-key-not-compiled': b'<?php "abc"[[&$x[]]]="X";',
+    'compiler-temporary-literal-target-read-error-not-run': b'<?php (1/0)[0]="X";',
+    'compiler-temporary-literal-target-before-runtime': b'<?php echo "before"; "abc"[0]="X";',
+    'compiler-temporary-literal-target-unset': b'<?php unset("abc"[0]);',
+    'compiler-temporary-literal-target-reference': b'<?php "abc"[0]=&$x;',
+    'compiler-temporary-literal-source-reference': b'<?php $x=&"abc"[0];',
+    'compiler-temporary-literal-array-target': b'<?php [1][0]="X";',
+    'compiler-temporary-literal-array-target-prepass': b'<?php [&$x[]][0]="X";',
+    'compiler-temporary-literal-int-target': b'<?php (1)[0]="X";',
+    'compiler-temporary-literal-float-target': b'<?php (1.5)[0]="X";',
+    'compiler-temporary-literal-const-target': b'<?php NAN[0]="X";',
+    'compiler-temporary-literal-assignment-target': b'<?php ($a=[])[0]="X";',
+    'compiler-temporary-literal-ref-assignment-target': b'<?php ($a=&$b)[0]="X";',
+    'compiler-temporary-literal-unary-target': b'<?php (-1)[0]="X";',
+    'compiler-temporary-literal-multiline-target': b'<?php (1\n+2)[\n0]="X";',
+    'compiler-temporary-literal-string-multiline-target': b'<?php "abc"[\n0]="X";',
+    'compiler-temporary-literal-nowdoc-target': b"<?php (<<<'T'\nabc\nT\n)[0]='X';",
+    'compiler-temporary-literal-read-control': b'<?php echo "abc"[0];',
+    'compiler-temporary-literal-array-read-control': b'<?php echo [1][0];',
+    'compiler-temporary-variable-target-control': b'<?php $x="abc"; $x[0]="X"; echo $x;',
+})
+
 CONFORMANCE = ['reference-rebind', 'reference-assignment-result', 'dynamic-variable', 'delayed-read', 'array-alias-self-cycle', 'array-captured-lhs-key', 'array-captured-lhs-name', 'array-delayed-lhs-key', 'array-delayed-lhs-name', 'array-distinct-cycle-comparison', 'array-dynamic-self-cycle', 'array-nested-self-index', 'array-rhs-overwrites-root', 'array-self-append', 'array-self-index', 'array-self-key-side-effect']
 CONFORMANCE += ['array-reference-copy', 'array-singleton-reference-copy', 'array-late-singleton-reference',
                 'array-duplicate-reference-copy', 'array-union-left-singleton', 'array-union-right-singleton',
@@ -616,7 +642,7 @@ def main():
         negatives.append({"source": base64.b64encode(path.read_bytes()).decode(), "command": result.args,
                           "exit_status": result.returncode, "observation": json.loads(result.stdout)})
         assert result.returncode != 0 and json.loads(result.stdout)['status'] == 'runner_failure'
-        for source in [b'<?php echo $argc;', b'<?php $a=&$argc;',
+        for source in [b'<?php f()[0]="X";', b'<?php echo $argc;', b'<?php $a=&$argc;',
                        b'<?php $n="argc"; $a=&$$n;', b'<?php unset($GLOBALS);',
                        b'<?php $n="GLOBALS"; unset($$n);', b'<?php echo $missing; ${NAN}=1;',
                        b'<?php echo $missing; ${INF-INF}=1;',

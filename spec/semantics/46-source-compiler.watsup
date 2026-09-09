@@ -145,6 +145,24 @@ def $ppexprbody(P, pcpath, expression, ppmode) = $ppdispatch(P, pcpath, expressi
   -- if P.COMPLETION = PPCNORMAL
   -- if ppmode =/= PPR
 
+dec $pptemporary_shape(pfshape) : bool
+def $pptemporary_shape(PFBINARY pbin expression_1 expression_2) = true
+def $pptemporary_shape(PFUNARY punary expression) = true
+def $pptemporary_shape(pfshape) = false -- otherwise
+dec $pptemporary(expression) : bool
+def $pptemporary(NScalarInt (INTEGER i) metadata) = true
+def $pptemporary(NScalarFloat (FLOAT text) metadata) = true
+def $pptemporary(NScalarString (BYTES text) metadata) = true
+def $pptemporary(NExprConstFetch name metadata) = true
+def $pptemporary(NExprArray phpType12 metadata) = true
+def $pptemporary(NExprAssign expression_1 expression_2 metadata) = true
+def $pptemporary(NExprAssignRef expression_1 expression_2 metadata) = true
+def $pptemporary(expression) = $pptemporary_shape($pfshape(expression)) -- otherwise
+
+def $ppdispatch(P, pcpath, expression, ppmode) = $ppcheck(P, $context_error("Cannot use temporary expression in write context", P.LOCATION.LINE))
+  -- if ppmode =/= PPR
+  -- if $pptemporary(expression)
+
 def $ppdispatch(P, pcpath, NScalarInt (INTEGER i) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PINT i)]]
 def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PFLOAT $hex_bits(text, 0))]]
 def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
