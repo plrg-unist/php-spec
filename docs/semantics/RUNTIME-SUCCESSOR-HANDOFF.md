@@ -1,156 +1,200 @@
 # Runtime continuation
 
-Read PLAN, PROGRESS, AGENTS and the php/php-spec/p4-spectec skills first. Root
-orchestrates; compiler owns static/frontend work and reviewer owns independent
-evidence/PROGRESS. Never push. The oracle is pinned local PHP 8.5.10 CLI NTS64;
-semantic answers after checked syntax are pure executable `.watsup`. Complete core
-remains unfinished. Read [runtime interfaces](RUNTIME-BRIDGE-HANDOFF.md),
-[compiler continuation](COMPILER-HANDOFF.md) and the current review checkpoint.
+Read AGENTS, PLAN, PROGRESS and the php/php-spec/p4-spectec skills first. Root
+orchestrates, compiler4 preserves frontend/compiler continuity, and an independent
+reviewer owns evidence/PROGRESS. Never push. Semantic execution is pure SpecTec;
+the sole oracle is local PHP 8.5.10 CLI NTS64. Complete core remains unfinished.
+Read [bridge invariants](RUNTIME-BRIDGE-HANDOFF.md), [compiler continuation](COMPILER-HANDOFF.md),
+[reviewer continuation](REVIEWER-HANDOFF.md), [updates](UPDATES.md),
+[reference wrappers](REFERENCE-WRAPPERS.md) and [ordinary operators](ORDINARY-OPERATORS.md).
+All `.tools/` paths below are relative to the repository and survive this rotation.
 
-## Preserved corrections
+## Accepted ordinary checkpoint
 
-Comparison code `0e065cc6`, reports `c94459fd`, review `390ad301` connect seven
-operators for six current values. [COMPARISONS](COMPARISONS.md) records unordered
-values, recursion, reversed greater operands and overflow-prefix provenance.
-Both consumed comparison archives remain fingerprint-bound and byte-identical;
-never erase original disagreement records or relabel stale fingerprints.
+Nullable/context prerequisite code `9b82507a`, reports `22b36687`, review
+`91f035e0`, status `b5c6698b` precede ordinary code **`dba21cee`**, compiler reports
+**`a3290ae3`**, and source/state/contract **`e397b137`**. PROGRESS records the final
+independent review **`2ab579eb`**, private-list review **`d0c65f91`** and status
+**`5a2ef96f`**. Accepted closure is
+`a8f6aa0cac996578befe8fa49621af2fdc214a44e4d9612a4cb8ce5dcee05691` (799 inputs).
+The full **4,407 exact sources +25 outcome negatives pass**. Raw
+`coverage/results-semantic-source.jsonl` has SHA256
+`a1df0fdfcf893b067b4a581ad7a2c9e8c82a1014cfb542732b5f13cd2693695a`.
+Canonical ordinary.py adds 1,506 source literals and 25 state programs/2,875
+assertions, including five loops at every budget 0–100. All eleven compiler gates
+pass: 4,449 source lints; omissions 262/2,135 resumptions; constant42, truth79,
+comparison48, incdec108, compound289, control46, runtime15/148, context233,
+occurrences169/1,084/1,495. Independent 62 sources and the complete ordered raw
+audit pass; the audit binds 16 archive groups and 13 current reports.
 
-Wrapper code `3585707a` and review `5b0dc0f2` repaired five original FETCH/UNSET
-differences, but inadvertently marked ordinary computed-name writes as references.
-Correction `84d70299`, reports `fa691044`, review `24c681d7` separate initialized
-`fetch_write_name` from true `acquire_name`: only the latter adds wrapper history.
-All seven callers were audited; WRITE_DYNAMIC is the sole ordinary-fetch caller.
-The bounded correction passed 40 independent sources, prior 79 wrapper sources,
-49 state assertions and ownership; its full source refresh is shared with inc/dec.
-All original failures remain archived, with resolutions separate.
+Archive commit `ef9ed822` preserves exact 805 initial, 28 concat and 680 expansion
+originals. Precisely 673 expansion cases are admitted; seven request-environment
+Unsupported cases remain: computed-ternary `this` write/unset and literal-concat
+`GLOBALS` read/void/string-cast/write/unset. They are not passing source cases.
+All four earlier concat-CV originals are admitted. No semantic family closes.
+The accepted 13-path delta is preserved in `.tools/ordinary-production-delta.json`;
+`.tools/runtime-ordinary-final` is its immutable candidate. Older ordinary draft
+generators predate nullable remapping and compound/power helpers: never replay them
+over accepted code. Concat constant conversions, delayed CV capture, parser name
+provenance and five casts/bitnot/void are now production behavior, not pending drafts.
 
-[REFERENCE-WRAPPERS](REFERENCE-WRAPPERS.md) defines stable REFCELLS history.
-Writes and singleton unset preserve markers; fresh ordinary bindings are unmarked.
-Copying may unwrap a singleton ALIAS without erasing its original wrapper. Markers
-add no roots and cannot enter isolated compiler pools. Generic FETCH/intermediate
-UNSET differ from final ASSIGN_DIM/UNSET_DIM false-conversion warnings. Collection
-checks remain graph-helper evidence, not source GC admission.
+## First next task: immutable validation outputs
 
-## Accepted inc/dec source checkpoint
+Make a separate small harness commit before new source admission. validate.py
+around line756 still hardcodes broad/selected raw output paths. Use exclusive
+NamedTemporaryFile creation in coverage with existing
+`results-semantic-source[-selected]-` prefixes; report consumers already follow
+`raw_results.path`, and `.gitignore` covers these files. No new CLI/schema needed.
+Run the same selected prefix twice and prove distinct paths and preservation of
+the first raw bytes/hash plus historical selected/broad evidence. Also replace
+the stale report scope with “authored source fixtures for currently admitted core
+semantics”. Perform evidence/inventory/source-path preflight before costly runs.
 
-Code `7d5718fb`, reports `5b24a5f8` integrate 05 and new 53 with
-20/30/40/41/45/46. Independent review accepts 1,484 exact sources +25 negatives
-on `d399263a`; see incdec-review.json and PROGRESS. [UPDATES](UPDATES.md) defines captured RW
-locations, copied prefix/postfix results, diagnostics and current global `$this`.
-Four PFSTOP barriers stop constant preparation without suppressing later ordinary
-compilation. PPRW allows append and uses separate target/key access descriptors.
-Callable-expression line metadata and disjoint nullsafe rejection priority are
-required even for statically rejected targets.
+The negative preflight accidentally overwrote the previous four-case selected raw;
+the reviewer recovered its **exact** original SHA256
+`841d9a646dcaf859348d0c6214025ebfefdb51d53b7a2cee2bbd5653867d8ef3`.
+The committed ordinary-selected-raw-recovery.json proves recovery, not relabeling.
+`.tools/ordinary-negative-preflight/previous-*` preserves that selected evidence;
+the same directory keeps the new 1+25 preflight separately. Previous full 2,639
+source report/raw/inputs are in `.tools/ordinary-previous-source/`.
 
-Direct/literal `$this` uses eager FETCH_THIS in the global-only source machine;
-computed reads and updates use distinct local-name protocols. BASE_NAME carries
-its own compiler line: dynamic RW fetching uses that stored line, while direct CV
-fetching keeps its containing opcode line. Seven retained multiline originals
-expose four earlier draft differences; canonical cases include all seven exactly.
-No arbitrary constant-fact equality may classify a computed name as direct.
+Then publish coherent unpack/list/foreach increments with targeted exact source,
+compiler, state, ownership, dense-resumption and independent gates. Root requests
+one full current source campaign at the combined unpack+destructuring+foreach
+checkpoint, or earlier if a real unresolved shared regression risk demands it.
+After inputs change, older full reports remain explicitly historical. Final full
+syntax, fresh offline build and complete core validation are still required.
 
-Canonical `incdec.py` has 154 runtime programs/2,226 assertions and 271 source
-selections including all 108 compiler phase originals, eight emission originals
-and deep prepass barriers. That checkpoint catalog had 1,484 sources. Independent
-private gates include 177 value/location cases, 71 context cases, eight dense
-programs/4,152 assertions and compiler alternatives. Canonical production helper,
-compiler, ownership/origin/bridge gates pass; the final source/raw audit passes all1,484 exact originals and25 negatives. Original prepass, callable-line and computed-line failures are retained.
+## Immutable next candidate: private, not admitted
 
-## Accepted compound source checkpoint
+Use **`.tools/runtime-list-candidate/`**, not its mutable predecessors.
+`candidate-inputs.json` binds 55 modules, 66 local inputs, five canonical tools
+and eight report/fixture hashes. It contains accepted ordinary plus real unpack,
+destructuring, effectful known results and nonvariable-left coalesce. Preserve it;
+work in a distinct copy and deliberately rebase later compiler changes.
 
-Code `63028b5a`, reports `76129823` add all twelve compound source forms in 55,
-using pure 54 integer/byte/concat/power operations and 06–09 power helpers. The
-independent evidence is `d61eccde`; review/status is `3c0ab4e7`. Final 2,639 exact source
-comparisons and 25 negatives pass on `c394a6e7`; no semantic family closes.
-Canonical compound.py has 951 runtime programs/13,454 assertions and 1,155 unique
-new source selections; the full source catalog is 2,639. Dedicated compiler tests
-cover 289 lints, 34 access paths, 24 emission observations and 12 context boundaries.
-Independent tests cover 277 programs/5,393 assertions and 324 lints/156 access paths.
-The prior source filename failure was infrastructure: operator-bearing logical IDs
-contained slashes. validate.py now prewrites all sources to unique ordinal paths,
-retaining original logical IDs/bytes; independent hostile-ID checks cover collisions,
-separators, NUL, Unicode, surrogates and long names. All twelve canonical/independent final reports share the new closure; earlier
-passing reports are historical.
+* source-originals.json/source-replay.json: **251 exact agreements of252**, with
+  one retained `$http_response_header` Unsupported (`list-rhs-line-cv-deprecated`,
+  `compile-time http_response_header context`). Aggregate fail is intentional and
+  honest; exclude that boundary from any source admission count.
+* store-line-source-originals.json/store-line-source-replay.json: 12 exact extra
+  multiline target-fetch/store controls pass.
+* state-replay.json: seven checked source programs, 3,633 assertions, budgets0–100.
+  Resume only BUDGET states; resetting THROWN to NORMAL was a retained fixture defect.
+* mechanism.watsup/mechanism-result.json: 23 occurrence/effect/pool assertions.
+  quiet-boundaries.json records five explicit Unsupported cases, not agreements.
+* Independent frozen replay: 44 exact sources pass; see
+  coverage/semantics/list-source-review.json and reviewer handoff. Snapshot inputs,
+  tools and report hashes stayed unchanged.
 
-Production 20/30/39/45/46/54/55 and modules.json are the accepted implementation.
-Old compound drafts and generators are historical: do not restore old this guards
-or parent-line behavior. Corrected private baselines are 46-compound-checked and
-55-compound-checked. [UPDATES](UPDATES.md) records the value/location protocol.
-Target/name/key preparation occurs once; delayed CV reads, self-CV dimensions and
-eager direct FETCH_THIS preserve engine ordering. Array += retains same-table no-op
-and separates before union so reference singleton ownership stays exact.
+Earlier `.tools/runtime-unpack-joint` passed154 sources (112 runtime+42 compiler)
+and31 state cases/2,454 assertions. `.tools/runtime-unpack-final` rebases that work
+onto final ordinary; the immutable list candidate includes it. The earlier
+`.tools/runtime-list-next` 123 native-derived task fixtures/1,353 assertions,
+12 dense fixtures/6,192 assertions and value-helper68 assertions are **unchecked
+fixtures**, not source passes. `.tools/runtime-list-effects/paired` preserves
+first actual source failures and repair scripts, but its prepare.py predates later
+fixes. Do not regenerate or overwrite the immutable candidate with old scripts.
 
-Two independently exposed draft defects are retained with separate resolutions.
-Compound direct/literal $this is lint-valid, then fails at eager global FETCH_THIS;
-there is NO static direct-this rebinding guard, unlike plain assignment/unset.
-An invalid RHS can therefore fail during compilation first. Final dimension
-operator diagnostics use the captured DIM/APPEND opcode line, while the compiler
-expression descriptor retains its final context after RHS compilation. Computed
-name acquisition retains its own stored line. Immutable 72 this originals, 72 line
-observations and three exact runtime line failures are bound to canonical sources.
-No defect is an engine disagreement.
+## Paired APIs and semantic constraints
 
-## Immediate next interfaces
+60-array-unpack defines `array_unpack(state,target,value,line)` and shared
+`unpack_error_bytes(value)`: borrow source/target roots, append integer keys,
+replace string keys, apply merge_item singleton-reference unwrapping, stop on
+overflow. 61 schedules ARRAY_UNPACK at the original item FIELD1, then ARRAY_NEXT;
+preserve nullable item indices. Compiler45 PFSPREAD/PFSTATICBYTES shares the scalar
+error, checks holes first, and defers overflow through pfinserted. Load60 before45.
+Traversable objects remain future object-protocol work.
 
-Compiler4 owns private nullable ordinary-array items and parser-concat metadata,
-including exact constant-prepass traversal/omission ordering. Keep these snapshots
-outside watched inputs until its own reviewed publication, then rebase all widened syntax
-consumers by structural type identity. ARRAY_NEXT ABSENT needs an explicit raw
-helper boundary; reached source omissions are compiler errors, not runtime errors.
+62-list-values (before45/46) defines list_pattern, recursive list_references,
+list_read and list_acquire. Nested array/list operands under spread propagate
+references before spread rejection; nonnested spread contributes false. Array
+list reads copy values; null is silent; other scalars warn “Cannot use TYPE as
+array” without string-offset access or key coercion. Resolve undefined keys first.
+Reference acquisition uses dimension_location/element_reference and actual wrappers.
 
-Private array-unpack-transfer.watsup defines array_unpack(state,target,value,line).
-It borrows source/target roots, preserves source iteration order, renumbers integer
-keys, replaces string keys, uses merge_item singleton-reference unwrapping and stops
-on append overflow. Scalars throw Error with value-specific true/false type names.
-Its 25 state/owner assertions are helper-only evidence. Compiler scalar errors apply
-only to fully constant arrays; overflow defers. Runtime task admission, Traversables
-and source differential/resumption tests remain pending.
+63-list-control adds LIST_CAPTURE/PATTERN/NEXT/FETCH/STORE/STORE_NAME/STORE_DIM;
+30/31/39 carry tasks, origins and owners. Evaluate RHS once, retain one active
+source owner, evaluate key, fetch/copy/acquire element, then prepare target.
+Nested traversal finishes left-to-right; return original RHS. Ordinary CV RHS,
+including parser literal-concat names and `$this`, uses special list_value_cv;
+missing `$this` warns as a CV instead of generic FETCH_THIS Error. Initial nonref
+CV fetch line inherits pattern context exported by compiler64. Next unkeyed fetch
+carries original target source_line only for ordinary VAR; reference/DIM preserve
+prior fetch line. Computed name acquisition still has its own warning line; do
+not substitute variable_line(target) or generic ending context. Nested patterns
+carry actual final context. Compiler validates referenceability before RHS;
+style/empty/keyed-hole checks follow RHS, with key compilation before target/style.
 
-Private 56-casts-checked.watsup defines cast_apply(state,pcast,value,line) with
-CASTBOOL/CASTINT/CASTFLOAT/CASTSTRING/CASTARRAY; enum belongs in 20. It returns KNOWN
-values and exact diagnostics, preserves existing array IDs, allocates scalar/null
-arrays and passes abrupt states through. Its 155 native observations/496 assertions
-are helper-only evidence. The initial missing NaN-to-array warning is retained in
-cast-array-nan-original.json, then repaired in the distinct checked helper.
-Compiler eligibility remains separate: all NaNs, out-of-range float-to-int,
-float/array-to-string and object casts do not constant-fold. Ordinary casts compile
-an operand then emit a conversion; void is discard with delayed-CV behavior, while
-unset has distinct early-prepass versus late-ordinary static rejection.
+List assignment can return a compiler-known RHS while still emitting stores.
+Compiler46/64 adds PPCEFFECT(path), mapped by33 to CODEEFFECT(path). Runtime30/31/33
+select ordered topmost effect roots, deduplicate markers and run each under AT as
+nullary EVAL_EFFECT followed by DISCARD, then COMPILED_RESULT(bool) reads the pool.
+EVAL_EFFECT bypasses only its own root shortcut; children retain descriptors.
+COMPILED_RESULT false/true distinguishes ordinary/DIM-base reads without an extra
+held pooled owner. Missing/nonexpression origins and missing pools reject.
+Dynamic redirects also run effects **outside the redirected subtree** first;
+the target executes its own effects. Constant-only prefixes erase required stores.
+Path prefix uses guarded slices; an earlier repeated-pattern form crashed SpecTec
+anti-unification and is retained in first-source-* reports. No new pstate fields.
+Before admission compiler4 must update PPCEFFECT consumers in source_compiler.py
+(expression_paths and pprecord), incdec_compiler.py and compound_compiler.py.
 
-Private 57-bitnot.watsup uses separate bitnot_apply(state,value,line), avoiding
-numeric-unary rejection overlap; 31 native cases/87 assertions pass. Independent
-19-input/57-assertion review adds every byte, raw byte strings, subnormals, maximum
-finite values and signed64 conversion boundaries (bitnot-independent-review.json). Private
-30-ordinary-runtime adds CAST_RESULT, BITNOT_RESULT, CONCAT_LEFT and CONCAT_RIGHT;
-39-ordinary-runtime adds the captured concat operand root. 58-ordinary-expressions
-schedules seven binaries through existing BINARY_LEFT/RIGHT, five casts, bitnot and
-void via EVAL+DISCARD. 59-concat-expressions captures constant flags from compiled_read
-child origins, evaluates both operands, preconverts constants left-to-right, then
-resolves delayed operands and concatenates. Constant scalar conversion is warning-free
-because the compiler emitted those warnings; constant arrays stringify at final
-operator line. These task drafts elaborate but have NOT passed source execution.
-805 exact native source originals are in ordinary-runtime-originals.json, awaiting
-the joint compiler snapshot. Compiler4 separately retains 28 concat timing originals.
+36 key_value(PARRAY) now delegates dimension_key_value's TypeError in the candidate;
+compiler45 still emits its distinct static Illegal offset error. This closes two
+old runtime Unsupported failures while preserving prepass timing.
+65/66 implement only **nonvariable-left coalesce**: compile both sides, keep result
+TMP, resolve left once; nonnull copies/clears BASE, null evaluates right+VALUE_COPY.
+Existing PFCOALESCE prepass remains separate. Variable/DIM/property/nullsafe/static
+property left operands explicitly stop at coalesce quiet-access compilation.
+Seven environment cases, header context and full quiet access/IS/??/??= follow
+containers before broader calls; coordinate runtime/compiler ownership with root.
 
-The task drafts still use production generated phpType names. Reapply their tiny
-30/39 edits to compiler4's nullable-remapped snapshots before a joint source gate;
-58/59 have no generated phpType references. Compiler4's ordinary-operator-draft
-snapshot is currently unelaborated: its precompound 20 lacks power_complete required
-by current 54. Rebase from accepted compound 20, preserving all existing helpers,
-pbin variants and twelve update projections; do not restore stale precompound code. draft-ordinary-runtime.py regenerates
-30/39/58 against current production; do not use it blindly after nullable publication.
-56-casts-checked is the fixed helper; 56-casts retains the original NaN-array omission.
-Private helper/task input hashes are in runtime-next-inputs.json (same .tools directory).
-Independent cast review includes ten core-only NaN attribution sources and 62 owner,
-reference, cycle, signed-zero and abrupt-state assertions. Source frames/objects remain
-unadmitted; pure helper validation does not close source obligations.
+## Foreach work still to implement
 
-Connect remaining ordinary binary/bitnot/casts and array unpack in bounded source
-milestones after required compiler prerequisites. Concat has per-constant-operand
-compile conversions and constant-array CAST timing, so generic binary scheduling
-alone is insufficient. Literal-concat variable names need parser provenance;
-ternary-computed names differ. Computed plain this binding/unset remains an owned
-existing environment boundary. ??= needs quiet-read/memoized-write semantics.
-Destructuring, foreach stable cursors, frames/calls, declarations/linking, objects,
-dynamic sources, callbacks, lifetime and source GC remain pending. Complete core
-is unfinished; preserve the documented namespace-relative static divergence.
+`.tools/container-next/{RUNTIME-PLAN.md,native-originals.json}` retains60 initial
+list/foreach controls; `.tools/runtime-foreach-next/history-originals.json` retains
+30 COW/cursor witnesses; `.tools/foreach-prerequisite-originals.json` adds33 compiler
+controls. No foreach runtime implementation is admitted. Compiler4 owns its next
+private frontend/compiler work and has the exact captured multiline protocol.
+Its isolated `.tools/foreach-frontend-next` appends keyByRef at FIELD5, preserving
+FIELD0–4 and all70 domains; 33 parser, 29 checked-print and seven typed controls
+pass. Its67 compiler currently implements only key-reference/list-key prechecks;
+pair later against the unchanged runtime-list-candidate, preserving both originals.
+
+Current visible ITEMS order cannot represent cursor history. Track insertion
+occurrences and each iterator's separate saved positions in COW descendants;
+progress in the original must not advance saved copies. Choosing a descendant
+discards other copies; empty-array duplication does not copy iterators. By-value
+iteration holds HARRAY, by-reference holds the actual HCELL (temporary iterables
+may create owned wrappers). Cursor metadata adds no owners. Replacing an array
+switches traversal; rebinding/unsetting its source name retains the old wrapper.
+Preserve alias tails and cleanup on break/return/error; nested loops and budget
+pauses keep independent positions. Do not approximate bucket behavior by keys.
+
+Compiler rejects key-reference/list-key before iterable, propagates nested value
+references, uses PPW only for writable byref iterable, otherwise PPR. RESET/FETCH
+use iterable ending context; direct CV value target binds without advancing CG
+line, other targets/list and key use synthetic assignment. FOREACH original Zend
+line is iterable original AST line, not parser statement start; prechecks/final
+restore use that line. Pinned routes: zend_compile.c list3515/foreach6079,
+zend_vm_def.h FETCH_LIST2431/2443 and FE_RESET/FETCH6882–7256,
+zend_hash.c iterator-copy597/dup2444.
+
+## Preservation and process state
+
+Only actual reference acquisition marks REFCELLS; ordinary initialized writable
+fetch stays unmarked (84d70299 correction). Preserve singleton history, COW/union
+unwrapping, uncollected cycles, captured locations, delayed CV versus copied
+expression results, ternary copies versus raw redirects, permanent pools and
+exact origins. Numeric00–09 are pure and reviewed. Namespace-relative static
+resolution remains the sole intentional divergence, source activation pending.
+Frames/calls, classes/objects/protocols, dynamic sources, generators/Fibers,
+callbacks and lifecycle/source GC remain required; no family closure is claimed.
+
+Private helper campaigns must invoke the canonical numeric runner directly.
+Private Dune builds through shared _build previously changed it; restored hash is
+0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7.
+Candidate manifest and .tools/omission-restored-tools.json bind tools. No runtime
+campaign or owned process remains running at handoff. No owned uncommitted code
+remains; reviewer/compiler files are independently owned. Stage explicit paths.
