@@ -91,6 +91,8 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
+The runtime inventory now records122 partial,183 pending and one validated
+obligation; accepted first-call activation is reflected in its call/return rows.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 
