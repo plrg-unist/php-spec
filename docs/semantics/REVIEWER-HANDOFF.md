@@ -63,8 +63,13 @@ Independent commit `d0c65f91` records **44 source/native comparisons passing** i
 36 effect controls plus eight coalesce/conditional controls. Original sources are
 `list-independent-effects-originals.json` and `list-independent-coalesce-originals.json`.
 The private replay script is `.tools/review-list-candidate-independent.py`; it uses
-canonical workers without Dune. Independent mechanism/dense review and expanded
-source/archive audit still remain; inspect the actual candidate and report inputs.
+canonical workers without Dune. Independent mechanism/dense review is now recorded in
+`coverage/semantics/list-mechanism-review.json`: 264 exact archived observation
+reproductions (263 agreements, one header Unsupported), 23 mechanism assertions
+and 12 checked programs/6,192 assertions at budgets 0–100. Twelve private source
+paths were reused by store-line cases; exact old/new bytes are preserved in the
+review. Replay uses archived original bytes and explicit filename-only stderr
+normalization; no frozen archive was edited.
 
 Core design: a list assignment can return an IS_CONST RHS while emitting writes.
 Compiler-known results therefore cannot erase executable effects. `PPCEFFECT`
@@ -105,8 +110,10 @@ Gate typed/printer/schema/consumer behavior, source priority and edited metadata
 Compiler4 has `.tools/foreach-frontend-next/frontend-first-results.json`: author
 33 parser comparisons, 29 checked/print roundtrips and seven typed boundaries,
 binding eight frontend/schema files. All 70 domains and the original five field
-indices remain unchanged. These are private author gates; obtain a stable full
-candidate before independent review or source admission. Private compiler
+indices remain unchanged. The frozen prerequisite manifest and independent 33-original/29-roundtrip,
+17 exact compiler/12 explicit-pending and 26 metadata replays now pass in
+`coverage/semantics/foreach-prerequisite-review.json`. These remain private gates;
+coherent frontend/compiler/ledger publication follows list helper admission. Private compiler
 prechecks pass 17 lints; 12 normal targets remain pending. An edited true keyByRef
 with no key has no source grammar form: compiler returns Unsupported and the
 printer must reject it rather than silently dropping the flag.

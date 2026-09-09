@@ -74,9 +74,11 @@ semantic rules are unchanged. The earlier exact
 
 The immutable `.tools/runtime-list-candidate` contains unpublished unpack/list,
 constant-result effects and nonvariable-coalesce rules. Independent 44 source
-controls pass; author state/mechanism gates await independent review. Its expanded
-source run retains one `http_response_header` boundary, and five quiet-write
-boundaries remain pending. Additional foreach originals justify key-reference
+controls pass. Further [independent review](coverage/semantics/list-mechanism-review.json)
+reproduces 263 archived agreements plus the recorded header Unsupported, passes
+23 mechanism checks and 12 dense programs/6,192 assertions. Twelve reused private
+source filenames are preserved as an evidence incident; archived bytes remain intact.
+The `http_response_header` and five quiet-access boundaries remain pending. Additional foreach originals justify key-reference
 syntax and list keys for later compiler rejection; three syntax exemptions need
 proper retirement after representation/phase gates.
 
