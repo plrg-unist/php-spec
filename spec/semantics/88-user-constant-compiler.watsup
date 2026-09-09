@@ -1,0 +1,123 @@
+;; User constants compile their initializer before declaration-name checks.
+;; Constant AST validation follows existing45 folding and its original redirects.
+dec $ppconstant_validate(ppstate, pcpath, pcnode) : ppstate
+dec $ppconstant_node(ppstate, pcpath, pcnode) : ppstate
+dec $ppconstant_children(ppstate, pcoccurrence*) : ppstate
+dec $ppconstant_allowed(pcnode) : bool
+dec $ppconstant_shape(pfshape) : bool
+dec $ppconstant_expr(ppstate, pcpath, expression) : ppstate
+dec $ppconstant_emit(ppstate, pcpath, expression) : ppstate
+dec $ppconstant_location(ppstate, pcnode) : ppstate
+dec $ppconstant_class(ppstate, pcpath, phpType19) : ppstate
+dec $ppconstant_list(ppstate, pcpath, nat, phpType46*) : ppstate
+dec $ppconstant_name(ppstate, pcpath, phpType11) : ppstate
+dec $ppconstant_error(ppstate, ptbytes, nat) : ppstate
+def $ppconstant_error(P, ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes n)]
+
+dec $ppconstant_record(ppstate, pcpath, text, metadata) : ppstate
+
+def $ppstatement(P, pcpath, NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata) = $ppconstant_list($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 1], 0, phpType46*)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppconstant_list(P, pcpath, n, phpType46*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_list(P, pcpath, n, eps) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_list(P, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $ppconstant_list($ppconstant_name($ppconstant_expr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath ++ [PCINDEX n], phpType11), pcpath, $(n + 1), phpType46*)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppconstant_expr(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare(P.FOLD[.CONSTANT = true], pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)[.FOLD.CONSTANT = false]
+
+def $ppconstant_emit(P, pcpath, expression) = $ppcall_done($ppexpr(P, pcpath, expression, PPR), pcpath, P.LOCATION.LINE)
+
+def $ppconstant_name(P, pcpath, phpType11) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_name(P, pcpath, NIdentifier (BYTES text) metadata) = $ppconstant_error(P, $ptascii("Cannot redeclare constant '") ++ $base64(text) ++ $ptascii("'"), P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $special_constant($base64(text)) = (pvalue)
+def $ppconstant_name(P, pcpath, NIdentifier (BYTES text) metadata) = $ppconstant_error(P, $ptascii("Cannot declare const ") ++ $ptjoin(P.ENV.NAMESPACE, $base64(text)) ++ $ptascii(" because the name is already in use"), P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $special_constant($base64(text)) = eps
+  -- if $pllookup(P.ENV.CONSTANTS, $base64(text)) = ptbytes_import
+  -- if ptbytes_import =/= eps /\ ptbytes_import =/= $ptjoin(P.ENV.NAMESPACE, $base64(text))
+def $ppconstant_name(P, pcpath, NIdentifier (BYTES text) metadata) = $ppconstant_record(P, pcpath, text, metadata)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $special_constant($base64(text)) = eps
+  -- if $pllookup(P.ENV.CONSTANTS, $base64(text)) = eps \/ $pllookup(P.ENV.CONSTANTS, $base64(text)) = $ptjoin(P.ENV.NAMESPACE, $base64(text))
+def $ppconstant_name(P, pcpath, phpType11) = $ppunsupported(P, "edited constant declaration name")
+  -- otherwise
+
+def $ppconstant_record(P, pcpath, text, metadata) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR pcpath P.LOCATION.LINE eps]][.NAMES = P.NAMES ++ [(pcpath, { ORIGINAL NName (BYTES text) metadata, KIND PLCONSTANT, RESOLVED ptbytes, FULL true, FALLBACK eps })]][.ENV = P.ENV[.SEEN = P.ENV.SEEN ++ [(PLCONSTANT, ptbytes)]]]
+  -- if ptbytes = $ptjoin(P.ENV.NAMESPACE, $base64(text))
+
+def $ppconstant_validate(P, pcpath, pcnode) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_validate(P, pcpath, pcnode) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = (pvalue)
+def $ppconstant_validate(P, pcpath, pcnode) = $ppconstant_validate(P, pcpath_target, pcnode_target)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = eps
+  -- if $pfredirect(P.FOLD.REDIRECTS, pcpath) = (pcpath_target)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath_target) = (pcnode_target)
+def $ppconstant_validate(P, pcpath, pcnode) = $ppconstant_node(P, pcpath, pcnode)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = eps
+  -- if $pfredirect(P.FOLD.REDIRECTS, pcpath) = eps
+
+def $ppconstant_node(P, pcpath, pcnode) = $ppconstant_children($ppconstant_location(P, pcnode), $pcchildren(pcnode, pcpath))
+  -- if $ppconstant_allowed(pcnode)
+def $ppconstant_node(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppunsupported(P, "first-class callable constant initializer")
+def $ppconstant_node(P, pcpath, NExprClosure phpType14 phpType4 phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $ppunsupported(P, "closure constant initializer")
+def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppunsupported(P, "object constant initializer")
+def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
+def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
+def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppunsupported(P, "first-class callable constant initializer")
+def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_class(P, pcpath ++ [PCFIELD 0], phpType19)
+def $ppconstant_node(P, pcpath, pcnode) = $ppcheck(P, $context_error("Constant expression contains invalid operations", P.LOCATION.LINE))
+  -- otherwise
+
+def $ppconstant_children(P, eps) = P
+def $ppconstant_children(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $ppconstant_children($ppconstant_validate(P, pcpath, pcnode), pcoccurrence*)
+
+def $ppconstant_allowed(pcnode) = $ppconstant_shape($pfshape(expression))
+  -- if pcnode = (expression)
+def $ppconstant_allowed(NArrayItem phpType5 expression (BOOLEAN false) phpType4 metadata) = true
+def $ppconstant_allowed(NName phpType33 metadata) = true
+def $ppconstant_allowed(NNameFullyQualified phpType33 metadata) = true
+def $ppconstant_allowed(NNameRelative phpType33 metadata) = true
+def $ppconstant_allowed(pcnode) = false
+  -- otherwise
+
+def $ppconstant_shape(PFSCALAR pvalue z) = true
+def $ppconstant_shape(PFNAME name) = true
+def $ppconstant_shape(PFMAGIC pmagic z) = true
+def $ppconstant_shape(PFBINARY pbin expression expression_2) = true
+def $ppconstant_shape(PFUNARY punary expression) = true
+def $ppconstant_shape(PFDIM expression phpType5) = true
+def $ppconstant_shape(PFARRAY phpType13*) = true
+def $ppconstant_shape(PFNOT expression) = true
+def $ppconstant_shape(PFSHORT b expression expression_2) = true
+def $ppconstant_shape(PFTERNARY expression phpType5 expression_2) = true
+def $ppconstant_shape(PFCOALESCE expression expression_2) = true
+def $ppconstant_shape(PFCAST pcast expression) = true
+def $ppconstant_shape(PFBITNOT expression) = true
+def $ppconstant_shape(pfshape) = false
+  -- otherwise
+
+
+def $ppconstant_location(P, NExprConstFetch name metadata) = P[.LOCATION.LINE = $psline(metadata)]
+def $ppconstant_location(P, pcnode) = P
+  -- otherwise
+
+;; Class constants remain unconnected, but these source static restrictions apply
+;; after folded branch selection and before any runtime class lookup.
+def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("\"static::\" is not allowed in compile-time constants"), P.LOCATION.LINE)
+  -- if phpType19 = name
+  -- if $ptast(name) = PTNAME PTPLAIN ptbytes
+  -- if $ptlc(ptbytes) = [115,116,97,116,105,99]
+def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("Dynamic class names are not allowed in compile-time class constant references"), P.LOCATION.LINE)
+  -- if phpType19 = expression
+  -- if $pffact(P.FOLD.FACTS, pcpath) = eps
+def $ppconstant_class(P, pcpath, phpType19) = $ppunsupported(P, "constant class-constant lookup")
+  -- otherwise

@@ -87,6 +87,13 @@ test-semantics: build
 	python3 tests/semantics/function_references.py
 	python3 tests/semantics/function_reference_state.py
 	python3 tests/semantics/function_reference_protocol.py
+	python3 tests/semantics/user_constant_compiler.py
+	python3 tests/semantics/constant_class_compiler.py
+	python3 tests/semantics/user_constants.py
+	python3 tests/semantics/user_constant_protocol.py
+	python3 tests/semantics/user_constant_context_protocol.py
+	python3 tests/semantics/user_constant_branch_protocol.py
+	python3 tests/semantics/user_constant_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

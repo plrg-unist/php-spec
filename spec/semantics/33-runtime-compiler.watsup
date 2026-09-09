@@ -16,16 +16,17 @@ def $code_expression((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath) = ((z, b))
 def $code_expression((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
   -- if pcpath_other =/= pcpath
 
-def $runtime_line(S, pcpath, expression) = z
+dec $constant_runtime_line(pstate, int) : int
+def $runtime_line(S, pcpath, expression) = $constant_runtime_line(S, z)
   -- if S.ORIGIN = (PORIGIN n pcpath_parent)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = ((z, b))
-def $runtime_line(S, pcpath, expression) = 0
+def $runtime_line(S, pcpath, expression) = $constant_runtime_line(S, 0)
   -- if S.ORIGIN = (PORIGIN n pcpath_parent)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = eps
 ;; Uncompiled internal task fixtures carry direct source locations only.
-def $runtime_line(S, pcpath, expression) = $expression_line(expression)
+def $runtime_line(S, pcpath, expression) = $constant_runtime_line(S, $expression_line(expression))
   -- otherwise
 
 dec $compiled_read(pstate, porigin) : pvalue?
@@ -131,8 +132,9 @@ def $code_name((CODENAME pcpath n_name* n_fallback*?) :: pcodename*, pcpath) = (
 def $code_name((CODENAME pcpath_other n_name* n_fallback*?) :: pcodename*, pcpath) = $code_name(pcodename*, pcpath)
   -- if pcpath_other =/= pcpath
 
+dec $source_constant_fetch(pstate, nat*, (nat*)?, int) : peval
 dec $compiled_name(pstate, porigin) : peval?
-def $compiled_name(S, PORIGIN n pcpath) = ($constant_fetch(n_name*, n_fallback*?, z))
+def $compiled_name(S, PORIGIN n pcpath) = ($source_constant_fetch(S, n_name*, n_fallback*?, $constant_runtime_line(S, z)))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((n_name*, n_fallback*?))
@@ -219,6 +221,10 @@ dec $export_constants((pcpath, pvalue)*) : pconstant*
 def $export_constants(eps) = eps
 def $export_constants((pcpath, pvalue) :: (pcpath_tail, pvalue_tail)*) = (PCONSTANT pcpath pvalue) :: $export_constants((pcpath_tail, pvalue_tail)*)
 
+dec $export_classes((pcpath, pvalueclass)*) : pconstant*
+def $export_classes(eps) = eps
+def $export_classes((pcpath, pvalueclass) :: (pcpath_tail, pvalueclass_tail)*) = (PCCLASS pcpath pvalueclass) :: $export_classes((pcpath_tail, pvalueclass_tail)*)
+
 dec $compile_pool(pstate, ppstate, ppconstants) : pstate
 dec $compiler_diagnostics(pstate, pldiagnostic*) : pstate
 def $compiler_diagnostics(S, eps) = S
@@ -242,13 +248,13 @@ def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_functions(S_i
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if P.FOLD.MEMORY.REFCELLS = eps
-  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))
+  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))
   -- if S_installed.COMPLETION = NORMAL
 def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if P.FOLD.MEMORY.REFCELLS = eps
-  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*))
+  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))
   -- if S_installed.COMPLETION =/= NORMAL
 def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S[.COMPLETION = UNSUPPORTED "compiler variable storage in constant pool"]
   -- if (P.FOLD.MEMORY.ENV =/= eps \/ P.FOLD.MEMORY.STORE =/= eps \/ P.FOLD.MEMORY.REFCELLS =/= eps)

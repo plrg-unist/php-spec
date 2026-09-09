@@ -1,0 +1,325 @@
+dec $constant_fact_at(pconstantfact*, porigin) : pconstantfact?
+dec $constant_fact_put(pconstantfact*, pconstantfact) : pconstantfact*
+dec $constant_class(pstate, porigin) : pvalueclass
+dec $constant_operand(pstate, porigin) : pvalue?
+dec $constant_child(porigin, pcpath) : porigin
+dec $constant_result_class(pstate, porigin) : pvalueclass
+dec $constant_redirect_class(pstate, porigin, bool) : pvalueclass
+dec $constant_name_class(pstate, preqbytes, preqbytes?) : pvalueclass
+dec $constant_shape_class(pstate, porigin, pfshape) : pvalueclass
+dec $constant_has_fact(pstate, porigin) : bool
+dec $constant_dimension_class(pvalueclass, pvalue?) : pvalueclass
+dec $constant_nonstring_scalar(pvalue) : bool
+dec $constant_entries_class_valid(pstate, pentry*, (pkey, pvalueclass)*) : bool
+dec $constant_fact_value_valid(pconstantfact) : bool
+dec $constant_class_tree_valid(pvalueclass) : bool
+dec $constant_class_entries_valid((pkey, pvalueclass)*) : bool
+dec $constant_expression_below(pstate, porigin, porigin) : bool
+dec $constant_observer_valid(pstate, porigin) : bool
+dec $constant_array_start(phpType13*) : pvalueclass
+dec $constant_array_items(pstate, porigin, nat, phpType13*, pvalueclass, int) : pvalueclass
+dec $constant_array_key(pstate, porigin, phpType5) : pkey?
+dec $constant_pool_classes(pconstant*) : pconstant*
+dec $constant_pool_values_valid(pstate, pconstant*, pconstant*) : bool
+dec $constant_fact_truth(pconstantfact) : bool?
+dec $constant_recorded_truth(pstate, porigin) : bool?
+dec $constant_recorded_null(pstate, porigin) : bool?
+dec $constant_fact_below(porigin, porigin) : bool
+dec $constant_facts_below(pconstantfact*, porigin) : bool
+dec $constant_branch_truth_valid(pstate, porigin, porigin, bool) : bool
+dec $constant_branch_null_valid(pstate, porigin, porigin) : bool
+dec $constant_observing(pstate, porigin) : bool
+dec $constant_result_required(pstate, porigin) : bool
+dec $constant_ternary_ready(pstate, porigin, phpType5) : bool
+dec $constant_coalesce_ready(pstate, porigin) : bool
+dec $constant_node_branches_valid(pstate, porigin, pcnode) : bool
+dec $constant_branches_at(pstate, nat, pcoccurrence*) : bool
+dec $constant_fact_pool_valid(pstate, pconstantfact) : bool
+dec $constant_quiet_class(pstate, porigin, pvalue) : pvalueclass
+;; Actual constant-expression results carry non-owning allocation provenance.
+;; The ordinary evaluator remains responsible for values, keys and diagnostics.
+def $constant_fact_at(eps, porigin) = eps
+def $constant_fact_at(pconstantfact :: pconstantfact_tail*, porigin) = (pconstantfact)
+  -- if pconstantfact.ORIGIN = porigin
+def $constant_fact_at(pconstantfact :: pconstantfact_tail*, porigin) = $constant_fact_at(pconstantfact_tail*, porigin)
+  -- if pconstantfact.ORIGIN =/= porigin
+def $constant_fact_put(eps, pconstantfact) = [pconstantfact]
+def $constant_fact_put(pconstantfact_old :: pconstantfact_tail*, pconstantfact) = pconstantfact :: pconstantfact_tail*
+  -- if pconstantfact_old.ORIGIN = pconstantfact.ORIGIN
+def $constant_fact_put(pconstantfact_old :: pconstantfact_tail*, pconstantfact) = pconstantfact_old :: $constant_fact_put(pconstantfact_tail*, pconstantfact)
+  -- if pconstantfact_old.ORIGIN =/= pconstantfact.ORIGIN
+
+def $enter_constant_task(S, porigin, EVAL expression, ptask*) = $enter_compiled_task(S, porigin, EVAL expression, [CONSTANT_OBSERVE porigin] ++ ptask*)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $enter_constant_task(S, porigin, ptask, ptask_tail*) = $enter_compiled_task(S, porigin, ptask, ptask_tail*)
+  -- otherwise
+
+rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_result_class(S, porigin)})])][.TODO = ptask_tail*]
+  -- if S.TODO = (CONSTANT_OBSERVE porigin) :: ptask_tail*
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.RESULT = KNOWN pvalue
+
+def $constant_class(S, porigin) = pconstantfact.CLASS
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = (pconstantfact)
+def $constant_class(S, porigin) = $constant_result_class(S, porigin)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = eps
+
+def $constant_operand(S, porigin) = pconstantfact.VALUE
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = (pconstantfact)
+def $constant_operand(S, porigin) = $pvclass_operand(pvalue)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = eps
+  -- if $compiled_read(S, porigin) = (pvalue)
+
+def $constant_child(PORIGIN n pcpath, pcpath_child) = PORIGIN n (pcpath ++ pcpath_child)
+
+def $constant_received_class(S, porigin) = $pvclass_intern($constant_class(S, porigin_value))
+  -- if porigin_value = $constant_child(porigin, [PCFIELD 1])
+  -- if $compiled_read(S, porigin_value) = (pvalue)
+def $constant_received_class(S, porigin) = $constant_class(S, porigin_value)
+  -- if porigin_value = $constant_child(porigin, [PCFIELD 1])
+  -- if $compiled_read(S, porigin_value) = eps
+
+def $constant_result_class(S, porigin) = pvalueclass
+  -- if $pool_class(S.POOLS, porigin) = (pvalueclass)
+def $constant_result_class(S, porigin) = $constant_redirect_class(S, porigin_target, b)
+  -- if $pool_class(S.POOLS, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, b, z))
+def $constant_result_class(S, porigin) = $constant_shape_class(S, porigin, $pfshape(expression))
+  -- if $pool_class(S.POOLS, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $constant_redirect_class(S, porigin, true) = PVSCALAR
+def $constant_redirect_class(S, porigin, false) = $constant_class(S, porigin)
+
+def $constant_name_class(S, preqbytes, preqbytes_fallback?) = puserconstant.CLASS
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+def $constant_name_class(S, preqbytes, (preqbytes_fallback)) = $constant_name_class(S, preqbytes_fallback, eps)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $constant_lookup_bytes(preqbytes) = eps
+def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSCALAR
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $constant_lookup_bytes(preqbytes) = (VALUE pvalue)
+
+def $constant_shape_class(S, PORIGIN n pcpath, PFNAME name) = $constant_name_class(S, preqbytes, preqbytes_fallback?)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+def $constant_shape_class(S, porigin, PFSCALAR pvalue z) = PVSCALAR
+  -- if $constant_nonstring_scalar(pvalue)
+def $constant_shape_class(S, porigin, PFBINARY pbin expression expression_right) = $pvclass_binary(pbin, $constant_operand(S, porigin_left), $constant_class(S, porigin_left), $constant_operand(S, porigin_right), $constant_class(S, porigin_right))
+  -- if porigin_left = $constant_child(porigin, [PCFIELD 0])
+  -- if porigin_right = $constant_child(porigin, [PCFIELD 1])
+def $constant_shape_class(S, porigin, PFCAST pcast expression) = $pvclass_cast(PVEXEC, pcast, $constant_operand(S, porigin_child), $constant_class(S, porigin_child))
+  -- if porigin_child = $constant_child(porigin, [PCFIELD 0])
+def $constant_shape_class(S, porigin, PFBITNOT expression) = $pvclass_bitnot($constant_operand(S, $constant_child(porigin, [PCFIELD 0])))
+def $constant_shape_class(S, porigin, PFUNARY punary expression) = PVSCALAR
+def $constant_shape_class(S, porigin, PFNOT expression) = PVSCALAR
+def $constant_shape_class(S, porigin, PFSHORT b expression expression_right) = PVSCALAR
+
+def $constant_has_fact(S, porigin) = ($constant_fact_at(pconstantcontext.FACTS, porigin) =/= eps)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $constant_shape_class(S, porigin, PFTERNARY expression phpType5 expression_false) = $constant_class(S, $constant_child(porigin, [PCFIELD 2]))
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (false)
+def $constant_shape_class(S, porigin, PFTERNARY expression ABSENT expression_false) = $constant_class(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+def $constant_shape_class(S, porigin, PFTERNARY expression phpType5 expression_false) = $constant_class(S, $constant_child(porigin, [PCFIELD 1]))
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+  -- if phpType5 =/= ABSENT
+def $constant_shape_class(S, porigin, PFCOALESCE expression expression_right) = $constant_class(S, $constant_child(porigin, [PCFIELD 1]))
+  -- if $constant_recorded_null(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+def $constant_shape_class(S, porigin, PFCOALESCE expression expression_right) = $constant_class(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_null(S, $constant_child(porigin, [PCFIELD 0])) = (false)
+
+def $constant_dimension_class(PVSTRING b, pvalue?) = PVSTRING true
+def $constant_dimension_class(PVARRAY b (pkey, pvalueclass)*, (pvalue)) = pvalueclass_result
+  -- if $key_value($initial_state(NORMAL), pvalue, true, 1) = S_key
+  -- if $pvclass_get(PVARRAY b (pkey, pvalueclass)*, S_key.KEY) = (pvalueclass_result)
+def $constant_dimension_class(PVARRAY b (pkey, pvalueclass)*, (pvalue)) = PVSCALAR
+  -- if $key_value($initial_state(NORMAL), pvalue, true, 1) = S_key
+  -- if $pvclass_get(PVARRAY b (pkey, pvalueclass)*, S_key.KEY) = eps
+def $constant_dimension_class(PVSCALAR, pvalue?) = PVSCALAR
+def $constant_shape_class(S, porigin, PFDIM expression phpType5) = $constant_dimension_class($constant_class(S, $constant_child(porigin, [PCFIELD 0])), $constant_operand(S, $constant_child(porigin, [PCFIELD 1])))
+
+def $constant_nonstring_scalar(PINT i) = true
+def $constant_nonstring_scalar(PFLOAT n) = true
+def $constant_nonstring_scalar(PBOOL b) = true
+def $constant_nonstring_scalar(pvalue) = (pvalue = PNULL)
+  -- otherwise
+
+;; Validation checks value tags and live array topology, never allocation history.
+def $constant_value_class_valid(S, pvalue, PVSCALAR) = $constant_nonstring_scalar(pvalue)
+def $constant_value_class_valid(S, PSTRING n*, PVSTRING b) = true
+def $constant_value_class_valid(S, PARRAY n, PVARRAY b (pkey, pvalueclass)*) = $constant_entries_class_valid(S, S.ARRAYS[n].ITEMS, (pkey, pvalueclass)*)
+  -- if ~b \/ (pkey, pvalueclass)* = eps
+  -- if HARRAY n <- S.ALLOCATIONS
+  -- if $(n < |S.ARRAYS|)
+def $constant_value_class_valid(S, pvalue, pvalueclass) = false -- otherwise
+
+def $constant_entries_class_valid(S, eps, eps) = true
+def $constant_entries_class_valid(S, (ENTRY pkey pitem) :: pentry*, (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($constant_value_class_valid(S, $entry_value(S, pitem), pvalueclass) /\ $constant_entries_class_valid(S, pentry*, (pkey_tail, pvalueclass_tail)*))
+def $constant_entries_class_valid(S, pentry*, (pkey, pvalueclass)*) = false -- otherwise
+
+def $constant_fact_value_valid(pconstantfact) = $constant_nonstring_scalar(pvalue)
+  -- if pconstantfact.VALUE = (pvalue)
+  -- if pconstantfact.CLASS = PVSCALAR
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = (PSTRING n*)
+  -- if pconstantfact.CLASS = PVSTRING b
+def $constant_fact_value_valid(pconstantfact) = $constant_class_tree_valid(PVARRAY b (pkey, pvalueclass)*)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVARRAY b (pkey, pvalueclass)*
+def $constant_fact_value_valid(pconstantfact) = false -- otherwise
+
+def $constant_class_tree_valid(PVSCALAR) = true
+def $constant_class_tree_valid(PVSTRING b) = true
+def $constant_class_tree_valid(PVARRAY b (pkey, pvalueclass)*) = ((~b \/ (pkey, pvalueclass)* = eps) /\ $constant_class_entries_valid((pkey, pvalueclass)*))
+def $constant_class_entries_valid(eps) = true
+def $constant_class_entries_valid((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($pvclass_entries_get((pkey_tail, pvalueclass_tail)*, pkey) = eps /\ $constant_class_tree_valid(pvalueclass) /\ $constant_class_entries_valid((pkey_tail, pvalueclass_tail)*))
+
+def $constant_expression_below(S, PORIGIN n pcpath_decl, PORIGIN n pcpath) = true
+  -- if $effect_below(pcpath_decl ++ [PCFIELD 1], pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+def $constant_expression_below(S, porigin_decl, porigin) = false -- otherwise
+
+def $constant_facts_valid(S, porigin, eps) = true
+def $constant_facts_valid(S, porigin, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $constant_facts_valid(S, porigin, pconstantfact_tail*))
+
+def $constant_observer_valid(S, porigin) = $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $constant_observer_valid(S, porigin) = false -- otherwise
+def $call_task_valid(S, CONSTANT_OBSERVE porigin) = $constant_observer_valid(S, porigin)
+
+def $constant_array_start(phpType13*) = PVARRAY (phpType13* = eps) eps
+def $constant_array_items(S, porigin, n, eps, pvalueclass, i) = pvalueclass
+def $constant_array_items(S, porigin, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, pvalueclass, i) = $constant_array_items(S, porigin, $(n + 1), phpType13*, pvalueclass_next, i_next)
+  -- if porigin_item = $constant_child(porigin, [PCFIELD 0, PCINDEX n])
+  -- if (pvalueclass_next, i_next) = $pvclass_insert(pvalueclass, i, $constant_array_key(S, porigin_item, phpType5), $constant_class(S, $constant_child(porigin_item, [PCFIELD 1])))
+def $constant_array_items(S, porigin, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*, pvalueclass, i) = $constant_array_items(S, porigin, $(n + 1), phpType13*, pvalueclass_next, i_next)
+  -- if porigin_item = $constant_child(porigin, [PCFIELD 0, PCINDEX n])
+  -- if (pvalueclass_next, i_next) = $pvclass_spread(pvalueclass, i, $constant_class(S, $constant_child(porigin_item, [PCFIELD 1])))
+def $constant_array_key(S, porigin, ABSENT) = eps
+def $constant_array_key(S, porigin, phpType5) = (S_key.KEY)
+  -- if phpType5 = expression
+  -- if $constant_operand(S, $constant_child(porigin, [PCFIELD 0])) = (pvalue)
+  -- if S_key = $key_value($initial_state(NORMAL), pvalue, true, 1)
+def $constant_shape_class(S, porigin, PFARRAY phpType13*) = $constant_array_items(S, porigin, 0, phpType13*, $constant_array_start(phpType13*), $(-9223372036854775808))
+
+;; Compiler classes are exact source designations. Their paired runtime values
+;; retain the existing freedom to vary within valid value and heap structure.
+def $constant_pool_classes(eps) = eps
+def $constant_pool_classes((PCCLASS pcpath pvalueclass) :: pconstant*) = (PCCLASS pcpath pvalueclass) :: $constant_pool_classes(pconstant*)
+def $constant_pool_classes((PCONSTANT pcpath pvalue) :: pconstant*) = $constant_pool_classes(pconstant*)
+def $constant_pool_values_valid(S, pconstant_all*, eps) = true
+def $constant_pool_values_valid(S, pconstant_all*, (PCONSTANT pcpath pvalue) :: pconstant*) = $constant_pool_values_valid(S, pconstant_all*, pconstant*)
+def $constant_pool_values_valid(S, pconstant_all*, (PCCLASS pcpath pvalueclass) :: pconstant*) = true
+  -- if $constant_at(pconstant_all*, pcpath) = (pvalue)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $constant_pool_values_valid(S, pconstant_all*, pconstant*)
+def $constant_pool_values_valid(S, pconstant_all*, pconstant*) = false -- otherwise
+
+def $constant_unit_classes_valid(S, P) = true
+  -- if $pool_at(S.POOLS, P.FOLD.SOURCE.ID) = (ppool)
+  -- if $constant_pool_classes(ppool.CONSTANTS) = $export_classes(P.FOLD.CLASSFACTS)
+  -- if $constant_pool_values_valid(S, ppool.CONSTANTS, ppool.CONSTANTS)
+def $constant_unit_classes_valid(S, P) = false -- otherwise
+
+;; Conditional provenance consumes the operand already observed by the machine.
+;; These predicates neither revisit source expressions nor replay diagnostics.
+def $constant_fact_truth(pconstantfact) = ($truth($initial_state(NORMAL), pvalue))
+  -- if pconstantfact.VALUE = (pvalue)
+  -- if $constant_fact_value_valid(pconstantfact)
+def $constant_fact_truth(pconstantfact) = ((pkey, pvalueclass)* =/= eps)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVARRAY b (pkey, pvalueclass)*
+def $constant_fact_truth(pconstantfact) = eps -- otherwise
+
+def $constant_recorded_truth(S, porigin) = $constant_fact_truth(pconstantfact)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = (pconstantfact)
+def $constant_recorded_truth(S, porigin) = ($truth(S, pvalue))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = eps
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $constant_recorded_truth(S, porigin) = eps -- otherwise
+
+def $constant_recorded_null(S, porigin) = (pconstantfact.VALUE = (PNULL))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = (pconstantfact)
+def $constant_recorded_null(S, porigin) = (pvalue = PNULL)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin) = eps
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $constant_recorded_null(S, porigin) = eps -- otherwise
+
+def $constant_fact_below(PORIGIN n pcpath, PORIGIN n pcpath_fact) = $effect_below(pcpath, pcpath_fact)
+def $constant_fact_below(porigin, porigin_fact) = false -- otherwise
+def $constant_facts_below(eps, porigin) = false
+def $constant_facts_below(pconstantfact :: pconstantfact_tail*, porigin) = ($constant_fact_below(porigin, pconstantfact.ORIGIN) \/ $constant_facts_below(pconstantfact_tail*, porigin))
+def $constant_branch_truth_valid(S, porigin_condition, porigin_branch, b) = (~$constant_facts_below(pconstantcontext.FACTS, porigin_branch) \/ $constant_recorded_truth(S, porigin_condition) = (b))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $constant_branch_null_valid(S, porigin_left, porigin_right) = (~$constant_facts_below(pconstantcontext.FACTS, porigin_right) \/ $constant_recorded_null(S, porigin_left) = (true))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+
+def $constant_observing(S, porigin) = true
+  -- if S.TODO = (CONSTANT_OBSERVE porigin) :: ptask*
+def $constant_observing(S, porigin) = false -- otherwise
+def $constant_result_required(S, porigin) = (($constant_has_fact(S, porigin) \/ $constant_observing(S, porigin)) /\ $pool_class(S.POOLS, porigin) = eps /\ $compiled_redirect(S, porigin) = eps)
+
+def $constant_ternary_ready(S, porigin, phpType5) = true
+  -- if ~$constant_result_required(S, porigin)
+def $constant_ternary_ready(S, porigin, ABSENT) = true
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+def $constant_ternary_ready(S, porigin, phpType5) = true
+  -- if phpType5 =/= ABSENT
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 1]))
+def $constant_ternary_ready(S, porigin, phpType5) = true
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (false)
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 2]))
+def $constant_ternary_ready(S, porigin, phpType5) = false -- otherwise
+
+def $constant_coalesce_ready(S, porigin) = true
+  -- if ~$constant_result_required(S, porigin)
+def $constant_coalesce_ready(S, porigin) = true
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_null(S, $constant_child(porigin, [PCFIELD 0])) = (false)
+def $constant_coalesce_ready(S, porigin) = true
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
+  -- if $constant_recorded_null(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+  -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 1]))
+def $constant_coalesce_ready(S, porigin) = false -- otherwise
+
+def $constant_node_branches_valid(S, porigin, NExprTernary expression phpType5 expression_false metadata) = ($constant_branch_truth_valid(S, $constant_child(porigin, [PCFIELD 0]), $constant_child(porigin, [PCFIELD 1]), true) /\ $constant_branch_truth_valid(S, $constant_child(porigin, [PCFIELD 0]), $constant_child(porigin, [PCFIELD 2]), false) /\ $constant_ternary_ready(S, porigin, phpType5))
+def $constant_node_branches_valid(S, porigin, NExprBinaryOpCoalesce expression expression_right metadata) = ($constant_branch_null_valid(S, $constant_child(porigin, [PCFIELD 0]), $constant_child(porigin, [PCFIELD 1])) /\ $constant_coalesce_ready(S, porigin))
+def $constant_node_branches_valid(S, porigin, pcnode) = true -- otherwise
+
+def $constant_branches_at(S, n, eps) = true
+def $constant_branches_at(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($constant_node_branches_valid(S, PORIGIN n pcpath, pcnode) /\ $constant_branches_at(S, n, pcoccurrence*))
+def $constant_branches_valid(S) = $constant_branches_at(S, n, pcunit.OCCURRENCES)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = PORIGIN n pcpath
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+
+def $constant_fact_pool_valid(S, pconstantfact) = true
+  -- if $pool_class(S.POOLS, pconstantfact.ORIGIN) = eps
+def $constant_fact_pool_valid(S, pconstantfact) = (pconstantfact.CLASS = pvalueclass)
+  -- if $pool_class(S.POOLS, pconstantfact.ORIGIN) = (pvalueclass)
+
+;; Quiet DIM coalesce produces a real left result without an EVAL boundary.
+;; Record that result before coalesce releases its temporary base.
+def $constant_quiet_class(S, porigin, PNULL) = PVSCALAR
+def $constant_quiet_class(S, porigin, pvalue) = $constant_class(S, porigin)
+  -- if pvalue =/= PNULL
+def $constant_quiet_capture(S) = S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin_left, VALUE $pvclass_operand(pvalue), CLASS $constant_quiet_class(S, porigin_left, pvalue)})])]
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (porigin)
+  -- if porigin_left = $constant_child(porigin, [PCFIELD 0])
+  -- if S.RESULT = KNOWN pvalue
+def $constant_quiet_capture(S) = S
+  -- if S.CONSTCONTEXT = eps

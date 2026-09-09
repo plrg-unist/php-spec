@@ -1,0 +1,9 @@
+{
+  "scope": "Missing builtin constant values remain a required later core dependency. These native/old-runtime originals are retained as explicit source boundaries, not native agreements.",
+  "reason": "initial constant",
+  "cases": {
+    "builtin-initializer": "<?php const C=PHP_VERSION;echo C;",
+    "builtin-duplicate": "<?php const PHP_VERSION=\"x\";echo PHP_VERSION;",
+    "namespace-fallback-before-shadow": "<?php namespace N;echo PHP_VERSION,\"|\";const PHP_VERSION=\"x\";echo PHP_VERSION;"
+  }
+}
