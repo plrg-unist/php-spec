@@ -635,6 +635,8 @@ from foreach_compiler import CASES as FOREACH_PRECHECK_CASES
 CASES.update({"foreach-precheck-"+name:source for name,source in FOREACH_PRECHECK_CASES.items()})
 from foreach import CASES as FOREACH_CASES
 CASES.update({"foreach-"+name:source for name,source in FOREACH_CASES.items()})
+from coalesce_assignment import CASES as COALESCE_ASSIGNMENT_CASES
+CASES.update({"coalesce-assignment-"+name:source for name,source in COALESCE_ASSIGNMENT_CASES.items()})
 from quiet_access import CASES as QUIET_CASES
 CASES.update({"quiet-"+name:source for name,source in QUIET_CASES.items()})
 from array_unpack import CASES as UNPACK_CASES
