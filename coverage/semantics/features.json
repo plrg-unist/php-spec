@@ -1648,13 +1648,18 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup"
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
       ],
       "source_tests": [
+        "tests/semantics/control_flow.py",
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/control-review.json"
       ],
-      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_Case",
@@ -1749,10 +1754,20 @@
         "control.continue-level",
         "static.control-targets"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_Declare",
@@ -1773,10 +1788,20 @@
       "obligations": [
         "control.do"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_Echo",
@@ -1800,10 +1825,20 @@
       "obligations": [
         "control.conditionals"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_ElseIf",
@@ -1811,10 +1846,20 @@
       "obligations": [
         "control.conditionals"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_Enum",
@@ -1872,10 +1917,20 @@
       "obligations": [
         "control.for"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_Foreach",
@@ -1961,10 +2016,20 @@
       "obligations": [
         "control.conditionals"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "Stmt_InlineHTML",
@@ -2196,10 +2261,20 @@
       "obligations": [
         "control.while"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
+      "review": "Source activation independently reviewed with exact condition/loop behavior, static jump legality, occurrence/pool identity, nested origins and budget resumption. Broader expression, frame, callback and abrupt-control interactions remain pending; no constructor closure.",
+      "helper_tests": [
+        "tests/semantics/control_compiler.py"
+      ]
     },
     {
       "node": "UnionType",
@@ -2298,7 +2373,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Public execution completes ordered compilation, installs permanent per-unit pools and consumes exact occurrence descriptors for constants, names and effective lines. Namespace constant source lookup and scalar/string dimensions are active. Legacy production source traversal/classifiers are retired; unchecked trace execution exists only in test fixtures. Independent review records source, origin/resumption, pool and compiler gates. Declarations/defaults, source loops/functions and dynamic units remain pending."
+      "review": "Public execution completes ordered compilation, installs permanent per-unit pools and consumes exact occurrence descriptors for constants, names and effective lines. Namespace constant source lookup and scalar/string dimensions are active. Legacy production source traversal/classifiers are retired; unchecked trace execution exists only in test fixtures. Independent review records source, origin/resumption, pool and compiler gates. Source conditionals and while/do/for reuse descriptors/pools through nested jumps and budget resumption. Declarations/defaults, functions and dynamic units remain pending."
     },
     {
       "id": "source.encodings",
@@ -4280,54 +4355,94 @@
     {
       "id": "control.conditionals",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.while",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.do",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.for",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null,
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence.",
       "planned_source_tests": [
         "tests/semantics/conformance/nested-control.php"
       ]
@@ -4406,28 +4521,48 @@
     {
       "id": "control.break-level",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "control.continue-level",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null,
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence.",
       "planned_source_tests": [
         "tests/semantics/conformance/nested-control.php"
       ]
@@ -4933,15 +5068,25 @@
     {
       "id": "static.control-targets",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/47-control-compiler.watsup",
+        "spec/semantics/50-control-flow.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/control_compiler.py",
+        "tests/semantics/control_flow.py"
+      ],
+      "source_tests": [
+        "tests/semantics/control_flow.py",
+        "tests/semantics/validate.py",
+        "coverage/semantics/control-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": null
+      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/foreach/goto and exception/finally interactions require further rules and evidence."
     },
     {
       "id": "static.declarations",
