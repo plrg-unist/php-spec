@@ -50,19 +50,20 @@ grouping checks; dense replay adds 3,316 assertions over 163 budgets for each of
 four programs. [Truth evidence](coverage/semantics/truth-review.json) also binds
 the compiler's consumed oracle archive and its mutation-rejection test.
 
-At that source checkpoint, canonical truth71/1,344, compiler896 lint +15 emission
-observations, truth compiler79/3/3, constant42/5, origins25/333, runtime bridge15/148
-and ownership617+96/5,434 passed. Descriptor roles and edited metadata remain
+At that source checkpoint, canonical truth 71/1,344, compiler 896 lint +15 emission
+observations, truth compiler 79/3/3, constant 42/5, origins 25/333, runtime bridge 15/148
+and ownership 617+96/5,434 passed. Descriptor roles and edited metadata remain
 separate from original-source execution evidence.
 
-Frontend prerequisite `d4706937` subsequently preserves nested destructuring
-unpack flags. [Review](coverage/semantics/destructuring-unpack-review.json) passes
-16 author profiles/96 checks, ten independent profiles/80 checks, bounded syntax,
-inventory and exact distribution patch reconstruction on `108f3eda`. This is a
-new watched closure, with no refreshed full source campaign claimed. Original
-long-array syntax kind and first-hole comma context remain pending; all 28
+Frontend prerequisites preserve nested unpack flags (`d4706937`,
+[review](coverage/semantics/destructuring-unpack-review.json)) and original array
+syntax kind (`09f33419`, [review](coverage/semantics/destructuring-array-kind-review.json)).
+The latest gate passes 35 author profiles/437 checks, 12 independent profiles/88
+checks, bounded syntax/inventory and exact patch reconstruction on `e5b10450`.
+This new watched closure claims no refreshed full source campaign. First-hole
+comma context and a genuine-list early-check phase gap remain pending; all
 [original loss witnesses](coverage/semantics/destructuring-metadata-disagreement.json)
-are preserved beside their partial resolution.
+remain beside their partial resolutions.
 
 ## Retained evidence and contracts
 

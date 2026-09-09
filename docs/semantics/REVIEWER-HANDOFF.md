@@ -24,8 +24,10 @@ grouping metadata `6005090b` remain covered.
 Subsequent frontend prerequisite `d4706937` preserves nested unpack flags, with
 16 author profiles/96 checks, ten independent profiles/80 checks and bounded
 syntax/inventory/patch reconstruction on `108f3eda`. It changes the watched
-closure without claiming a refreshed full source campaign. Original long-array
-syntax kind and first-hole comma context remain pending. Runtime ownership now
+closure without claiming a refreshed full source campaign. Original long-array syntax kind subsequently passes `09f33419`: 35 author
+profiles/437 checks, 12 independent profiles/88 checks, bounded syntax/inventory
+and exact patch reconstruction on `e5b10450`. First-hole comma context and the
+retained genuine-list early-check phase gap remain pending. Runtime ownership now
 passes through [successor handoff](RUNTIME-SUCCESSOR-HANDOFF.md) `6873f110`.
 
 The inventory contains 169 constructors and 306 obligations. Only

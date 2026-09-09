@@ -256,3 +256,13 @@ item flag during recursive conversion. [Independent review](../../coverage/seman
 adds ten profiles/80 checks to 16 author profiles/96 checks; bounded syntax,
 inventory and exact distribution patch reconstruction pass. Original syntax kind,
 comma context and later compiler/runtime admission remain pending.
+
+Original array syntax is now preserved by `09f33419`: converted lists retain
+`destructuringArrayKind`, and printing restores long `array(...)` forms including
+omitted slots. [Style review](../../coverage/semantics/destructuring-array-kind-review.json)
+passes 35 author profiles/437 checks and 12 independent profiles/88 checks,
+including original/printed native diagnostic families and edited-kind consumption.
+First-hole token context remains pending. A separate [genuine-list phase witness](../../coverage/semantics/destructuring-list-hole-phase-disagreement.json)
+records `list(array(,$x))=$a`: the frontend rejects empty array entries early,
+while the pinned compiler rejects the long-array assignment target. Repair its
+phase before source destructuring admission; no divergence is selected.
