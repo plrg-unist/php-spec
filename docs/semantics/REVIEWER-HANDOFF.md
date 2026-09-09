@@ -33,28 +33,30 @@ No intentional divergence was selected. Original mismatch archives remain unchan
 
 ## Next bounded gates
 
-- Runtime private inc/dec draft: `.tools/{20-update-compiler,30-incdec,46-incdec-compiler,53-incdec-source}.watsup`,
-  `.tools/probe-incdec-source.py`, `.tools/incdec-source.json`. Author reports 77
-  original programs/1,148 assertions, including errors, strings, COW/references,
-  captured locations and two seven-budget loops. Independently inspect original
-  update archives before deriving broader probes; these drafts are not admitted.
-  Pair four forms with PPRW compiler access, copied pre/post results, exact error
-  lines, missing targets and append rules. Twelve compound forms follow; `??=`
-  requires distinct quiet-read/memoized-write behavior.
+- Runtime private inc/dec uses `.tools/{20-incdec-compiler,30-incdec,45-incdec-compiler,46-incdec-checked,53-incdec-source}.watsup`.
+  Corrected author gate passes 103 programs/1,512 assertions. Independent earlier
+  177 programs/2,478 assertions passed but exposed two array-prepass Unsupported
+  gaps, retained unchanged in incdec-prepass-originals.json. Review explicit PFSTOP
+  depth, static fallback priority and new callable metadata consumption before
+  publication. Canonical draft contains 191 exact source cases; `$this` context is
+  being assessed separately. Pair copied pre/post results, exact error lines,
+  missing targets, append rules and held locations. Compound updates follow.
+- Callable invocation metadata `c6a7d67d` is independently accepted in
+  callable-line-review.json: eight exact old-AST originals (identical pair reports
+  native lines 3/2), 35 canonical profiles/477 checks, 24 independent profiles/168
+  checks and 24 native error-line comparisons. Exact parser regeneration passes;
+  the one parser semantic action preserves opening argument-token context. Optional
+  integer transport is distinct from compiler requiredness/range checks. No source
+  call or update admission follows from this prerequisite alone.
 - First-hole token metadata `87341500`/review `79951ad4` is accepted: 31 author
   profiles/409 checks, 20 independent profiles/140 checks and all 12 original line
   witnesses. Empty list closing tokens are not commas. Integer metadata is checked
   transport; missing/range requirements remain compiler consumer obligations.
-- Genuine-list conversion is a separate private four-line change in
-  `.tools/ParserAbstract-list-targets.php`: postprocessList recursively converts
-  nested Array_ targets before the global omission check, retaining key/ref/unpack,
-  first-hole and original array kind. Author `.tools/probe-list-targets-checked.py`
-  passes 32 plain/UTF-16BE checked/printer/native-family profiles and two original
-  source executions. Independent `.tools/review5-list-phase.json` adds 18 exact
-  skipped logical/prepass source programs with actual override hashes. Production `5c756e5e` is now independently accepted in list-target-review.json:
-  20 exact skipped sources/25 negatives, 32 checked profiles, extra comment and
-  archive mutation checks. Fourteen reached originals remain Unsupported. Full
-  source refresh shares incdec activation; no complete destructuring claim.
+- Genuine-list conversion `5c756e5e`/review `861020db` is accepted: recursive nested
+  Array_ target conversion precedes ordinary omission checking and preserves all
+  original flags/context. Twenty exact skipped sources/25 negatives, 32 checked
+  profiles and independent comments/archive checks pass. Fourteen reached originals
+  remain Unsupported. Full source refresh shares incdec activation.
 - Ordinary array omissions should use nullable Array_.items and first-omission
   context; no new ArrayHole node is justified. `zend_try_ct_eval_array` uses NULL
   entries and diagnoses at the preceding nonempty element's original AST line;

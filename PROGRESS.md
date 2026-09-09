@@ -26,7 +26,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 ## Active ownership
 
 - Runtime: inc/dec, compound operations and remaining numeric dispatch, then arrays/foreach.
-- Compiler: genuine-list and ordinary-array omission phase repairs, update descriptors, then declarations/frames.
+- Compiler: update descriptors and ordinary-array omission phase repair, then declarations/frames.
 - Reviewer: independent gates, discrepancy history, inventory, concise docs and progress.
 - Stage owned files, commit reviewed increments, never push. Save watched bytes and run evidence/inventory preflight before long campaigns.
 
@@ -72,7 +72,10 @@ array-hole [phase originals](coverage/semantics/frontend-phase-originals-review.
 are independently repeated. Genuine-list conversion `5c756e5e` now passes 20 exact
 skipped sources +25 negatives, 32 checked/printer profiles and independent review;
 14 reached originals remain explicitly Unsupported. First-hole compiler consumption
-and ordinary-array omission repair remain pending.
+and ordinary-array omission repair remain pending. Callable invocation metadata
+`c6a7d67d` passes [independent review](coverage/semantics/callable-line-review.json):
+eight old-AST originals, 35 canonical profiles/477 checks, 24 additional profiles
+and 24 native error-line witnesses. Its semantic consumer remains a separate gate.
 
 ## Retained contracts
 
@@ -87,7 +90,9 @@ and ordinary-array omission repair remain pending.
 
 Pair four inc/dec forms with compiler PPRW access, then compound lvalues and the
 remaining numeric/string operations. The private update draft is not
-admitted; independent probes found missing array-prepass barriers, now under repair. Preserve acquisition timing, copied pre/post results, error lines,
+admitted; independent probes retained two missing array-prepass barriers and a control.
+The corrected private draft passes 103 author programs; acceptance remains pending.
+Preserve acquisition timing, copied pre/post results, error lines,
 append legality and held locations. Coalescing assignment needs a separate quiet
 read and memoized write path.
 

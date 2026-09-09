@@ -304,3 +304,22 @@ skipped branches currently rejected by the frontend. All 22 original captures ar
 [review](../../coverage/semantics/list-target-review.json) validates 20 skipped
 source cases and explicitly retains 14 reached originals as Unsupported. Ordinary
 Array_ omission representation remains open; this is not full destructuring admission.
+
+## Dynamic callable invocation lines: repaired transport prerequisite
+
+[Eight original captures](../../coverage/semantics/incdec-call-line-original-review.json)
+include two identical complete checked ASTs whose pinned write-context errors use
+lines 3 and 2. Dynamic calls take their compiler creation line from the opening
+argument token, which ordinary node positions cannot recover. `c6a7d67d` preserves
+that integer context. [Independent review](../../coverage/semantics/callable-line-review.json)
+validates checked transport and 24 additional native error lines; actual compiler
+consumption and update source admission remain separately gated.
+
+## Update array prepass: retained draft boundary
+
+[Three exact original observations](../../coverage/semantics/incdec-prepass-originals.json)
+retain two Unsupported draft results for updates in array values/keys and one
+matching skipped-branch control. Constant-expression traversal must stop at all
+four update forms without visiting their children. The corrected private draft
+adds those explicit barriers; source acceptance remains pending. Unsupported was
+not conformance success, and no intentional divergence is selected.

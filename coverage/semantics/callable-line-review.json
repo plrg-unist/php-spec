@@ -1,0 +1,71 @@
+{
+  "status": "accepted compatible checked-metadata prerequisite",
+  "implementation": "c6a7d67d",
+  "fingerprint": {
+    "sha256": "42aefd257dfe741ffc2dcee1e864b9f44a99630085d2da464a33ff2b897fe546",
+    "files": 781,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "scope": "Dynamic callable invocation opening-token line; no call or update source activation claimed",
+  "originals": {
+    "sources": 8,
+    "identical_complete_old_ast_ids": [
+      6,
+      7
+    ],
+    "distinct_native_lines": [
+      3,
+      2
+    ],
+    "archive": {
+      "path": "coverage/semantics/incdec-call-line-originals.json",
+      "sha256": "c1a41bbfff5061948f8049a447f1c064ede04cd2aa520e4cc0b4a60cba2d16f7"
+    },
+    "review": {
+      "path": "coverage/semantics/incdec-call-line-original-review.json",
+      "sha256": "f7c8f317bd5edd7b97a2b626217a35aaf56fb29bc974fb7e538448e599029a97"
+    }
+  },
+  "validation": {
+    "canonical_profiles": 35,
+    "canonical_checks": 477,
+    "independent_profiles": 24,
+    "independent_checks": 168,
+    "independent_native_error_lines": 24,
+    "source_review": {
+      "path": "coverage/semantics/callable-line-source-review.json",
+      "sha256": "d1ad9b0768291f17c67f314969fe34047ff3128f6ee4be0349e3eecbd10634e1"
+    },
+    "native_review": {
+      "path": "coverage/semantics/callable-line-native-review.json",
+      "sha256": "259d444a3471860e68888a37f3d0d39d9cfe6ef667cb4635d1ce86f73712033e"
+    },
+    "exact_parser_regeneration": "independently passed",
+    "evidence_preflight": "15 identity, 3 path, 17 closure negatives and 9 ignored-log invariances passed",
+    "inventory": "passed; 169 constructors, 306 obligations",
+    "author_bounded_syntax": "97 targeted, 4103 generated, 1 deep; classifications unchanged"
+  },
+  "design": [
+    "One generated callable_expr argument_list action preserves the opening argument token line; no parser table or syntax change.",
+    "Named calls retain their existing name anchor; method/static/nullsafe method nodes do not gain unrelated metadata.",
+    "Optional integer checked transport preserves absent/edited integer fields; requiredness and legal range remain separate semantic consumer obligations."
+  ],
+  "limits": [
+    "Full source regression will refresh with actual inc/dec admission.",
+    "Calls, object contexts, complete syntax audit and ordinary array omissions remain open."
+  ]
+}
