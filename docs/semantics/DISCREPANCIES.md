@@ -323,3 +323,16 @@ matching skipped-branch control. Constant-expression traversal must stop at all
 four update forms without visiting their children. The corrected private draft
 adds those explicit barriers; source acceptance remains pending. Unsupported was
 not conformance success, and no intentional divergence is selected.
+
+## Ordinary computed-name writes: admitted wrapper regression
+
+The wrapper-identity correction accidentally reused reference acquisition for an
+ordinary computed-name write: `$n="a";$$n=false;` marked `$a` as a reference.
+Later nested dimension mutation then omitted a required false-to-array deprecation.
+[Four author originals](../../coverage/semantics/wrapper-dynamic-write-originals.json)
+and [28 independent observations](../../coverage/semantics/wrapper-dynamic-write-original-review.json)
+retain three original mismatches, nine additional mismatches and sixteen controls.
+Existing references, singleton history and copied assignment results distinguish
+ordinary writable fetch from actual reference acquisition. Correction is pending;
+previous wrapper validation remains historical, not a proof of every protocol.
+No intentional divergence is selected.

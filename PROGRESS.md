@@ -36,6 +36,10 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Latest accepted checkpoints
 
+**Active correction:** ordinary computed-name writes incorrectly acquire reference
+history after `3585707a`. Four author originals and 28 independent observations
+retain twelve mismatches; repair this admitted regression before inc/dec publication.
+
 The inventory has **169 constructors and 306 runtime obligations**. Only
 [oracle selection/identity](coverage/semantics/oracle-pin-review.json) closes;
 no constructor or PHP semantic family closes. Closure governance `ffdc131d`

@@ -1,0 +1,2317 @@
+{
+  "status": "independently retained ordinary computed-write wrapper regression and controls",
+  "fingerprint": {
+    "sha256": "42aefd257dfe741ffc2dcee1e864b9f44a99630085d2da464a33ff2b897fe546",
+    "files": 781,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "author_archive_sha256": "8d861fac2e4fef0f2b4b9d9d9dc076e585a46fd2a8cdb124b4aafd8060b482cb",
+  "source_cases": 28,
+  "mismatches": 12,
+  "records": [
+    {
+      "id": "original-0",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1mYWxzZTskYVswXVswXT0xO2VjaG8gJGFbMF1bMF07",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-0.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTAucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-0.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "original-1",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1mYWxzZTt1bnNldCgkYVswXVswXSk7ZWNobyAkYT09PWZhbHNlOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-1.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTEucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-1.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "original-2",
+      "source_base64": "PD9waHAgJG49ImEiOyR4PSgkJG49ZmFsc2UpOyR4WzBdWzBdPTE7ZWNobyAkeFswXVswXTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-2.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-2.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "original-3",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyQkbj1mYWxzZTskYVswXVswXT0xO2VjaG8gJGFbMF1bMF07",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-3.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTMucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-3.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-0-0",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1mYWxzZTskYVswXVswXT0xO2VjaG8gMTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-4.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTQucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-4.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-0-1",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1mYWxzZTt1bnNldCgkYVswXVswXSk7ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-5.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTUucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-5.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-0-2",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1mYWxzZTskeD0mJGFbMF07ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-6.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTYucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-6.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-1-0",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyQkbj1mYWxzZTskYVswXVswXT0xO2VjaG8gMTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-7.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTcucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-7.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-1-1",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyQkbj1mYWxzZTt1bnNldCgkYVswXVswXSk7ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-8.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTgucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-8.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-1-2",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyQkbj1mYWxzZTskeD0mJGFbMF07ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-9.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTkucGhwIG9uIGxpbmUgMQo=",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-9.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-2-0",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JHI9JiRhOyRuPSJhIjskJG49ZmFsc2U7JGFbMF1bMF09MTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-10.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-10.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-2-1",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JHI9JiRhOyRuPSJhIjskJG49ZmFsc2U7dW5zZXQoJGFbMF1bMF0pO2VjaG8gMTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-11.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-11.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-2-2",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JHI9JiRhOyRuPSJhIjskJG49ZmFsc2U7JHg9JiRhWzBdO2VjaG8gMTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-12.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-12.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-3-0",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JHI9JiRhO3Vuc2V0KCRyKTskbj0iYSI7JCRuPWZhbHNlOyRhWzBdWzBdPTE7ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-13.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-13.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-3-1",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JHI9JiRhO3Vuc2V0KCRyKTskbj0iYSI7JCRuPWZhbHNlO3Vuc2V0KCRhWzBdWzBdKTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-14.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-14.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-3-2",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JHI9JiRhO3Vuc2V0KCRyKTskbj0iYSI7JCRuPWZhbHNlOyR4PSYkYVswXTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-15.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-15.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-4-0",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyR2PSgkJG49ZmFsc2UpOyRhWzBdWzBdPTE7ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-16.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTE2LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-16.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-4-1",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyR2PSgkJG49ZmFsc2UpO3Vuc2V0KCRhWzBdWzBdKTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-17.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTE3LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-17.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-4-2",
+      "source_base64": "PD9waHAgJGE9ZmFsc2U7JG49ImEiOyR2PSgkJG49ZmFsc2UpOyR4PSYkYVswXTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-18.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTE4LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-18.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": false
+    },
+    {
+      "id": "expanded-5-0",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1bZmFsc2VdOyRiPSRhOyRhWzBdWzBdPTE7ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-19.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTE5LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-19.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTE5LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-5-1",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1bZmFsc2VdOyRiPSRhO3Vuc2V0KCRhWzBdWzBdKTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-20.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIwLnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-20.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIwLnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-5-2",
+      "source_base64": "PD9waHAgJG49ImEiOyQkbj1bZmFsc2VdOyRiPSRhOyR4PSYkYVswXTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-21.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-21.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-6-0",
+      "source_base64": "PD9waHAgJGE9W2ZhbHNlXTskbj0iYSI7JCRuWzBdPWZhbHNlOyRhWzBdWzBdPTE7ZWNobyAxOw==",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-22.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIyLnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-22.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIyLnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-6-1",
+      "source_base64": "PD9waHAgJGE9W2ZhbHNlXTskbj0iYSI7JCRuWzBdPWZhbHNlO3Vuc2V0KCRhWzBdWzBdKTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-23.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIzLnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-23.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTIzLnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-6-2",
+      "source_base64": "PD9waHAgJGE9W2ZhbHNlXTskbj0iYSI7JCRuWzBdPWZhbHNlOyR4PSYkYVswXTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-24.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-24.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-7-0",
+      "source_base64": "PD9waHAgJGE9W2ZhbHNlXTskcj0mJGFbMF07dW5zZXQoJHIpOyRuPSJhIjskJG5bMF09ZmFsc2U7JGFbMF1bMF09MTtlY2hvIDE7",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-25.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTI1LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-25.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTI1LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-7-1",
+      "source_base64": "PD9waHAgJGE9W2ZhbHNlXTskcj0mJGFbMF07dW5zZXQoJHIpOyRuPSJhIjskJG5bMF09ZmFsc2U7dW5zZXQoJGFbMF1bMF0pO2VjaG8gMTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-26.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTI2LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-26.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "RGVwcmVjYXRlZDogQXV0b21hdGljIGNvbnZlcnNpb24gb2YgZmFsc2UgdG8gYXJyYXkgaXMgZGVwcmVjYXRlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3NS1keW5hbWljLXdyaXRlLW9yaWdpbmFsLTI2LnBocCBvbiBsaW5lIDEK",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "DIAGNOSTIC",
+            "args": [
+              "Deprecated",
+              [
+                "65",
+                "117",
+                "116",
+                "111",
+                "109",
+                "97",
+                "116",
+                "105",
+                "99",
+                "32",
+                "99",
+                "111",
+                "110",
+                "118",
+                "101",
+                "114",
+                "115",
+                "105",
+                "111",
+                "110",
+                "32",
+                "111",
+                "102",
+                "32",
+                "102",
+                "97",
+                "108",
+                "115",
+                "101",
+                "32",
+                "116",
+                "111",
+                "32",
+                "97",
+                "114",
+                "114",
+                "97",
+                "121",
+                "32",
+                "105",
+                "115",
+                "32",
+                "100",
+                "101",
+                "112",
+                "114",
+                "101",
+                "99",
+                "97",
+                "116",
+                "101",
+                "100"
+              ],
+              "1"
+            ]
+          },
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    },
+    {
+      "id": "expanded-7-2",
+      "source_base64": "PD9waHAgJGE9W2ZhbHNlXTskcj0mJGFbMF07dW5zZXQoJHIpOyRuPSJhIjskJG5bMF09ZmFsc2U7JHg9JiRhWzBdO2VjaG8gMTs=",
+      "native_command": [
+        "/home/user/workspace/php-spec/.tools/php/bin/php",
+        "-n",
+        "-d",
+        "opcache.enable_cli=0",
+        "-d",
+        "opcache.jit=disable",
+        "-d",
+        "precision=14",
+        "-d",
+        "serialize_precision=-1",
+        "-d",
+        "display_errors=stderr",
+        "-d",
+        "display_startup_errors=1",
+        "-d",
+        "html_errors=0",
+        "-d",
+        "log_errors=0",
+        "-d",
+        "error_reporting=30719",
+        "-d",
+        "date.timezone=UTC",
+        "-d",
+        "output_buffering=0",
+        "-d",
+        "implicit_flush=1",
+        "-d",
+        "zend.assertions=1",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-27.php"
+      ],
+      "oracle": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0
+      },
+      "semantic_command": [
+        "/home/user/workspace/php-spec/bin/php-semantics",
+        "/home/user/workspace/php-spec/.tools/review5-dynamic-write-original-27.php"
+      ],
+      "semantic_exit": 0,
+      "semantic": {
+        "status": "normal",
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "diagnostic": null,
+        "reason": null,
+        "events": [
+          {
+            "tag": "OUTPUT",
+            "args": [
+              [
+                "49"
+              ]
+            ]
+          }
+        ],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "exact_match": true
+    }
+  ]
+}
