@@ -38,7 +38,7 @@ that deleted fixture is claimed. The later completed19MB fixture, all native
 records and raw true result are retained. A legacy outer guard then failed on
 an unused canonical adapter rebuilt concurrently; actual845 inputs stayed exact.
 
-Full quiet/CV integration is launching under runtime5 on846 inputs,
+Full quiet/CV integration is running under runtime5 on846 inputs,
 14d1766202ddc2e5ba1b0223611b1a83084f34ee7a182550a6a9771ab503462f.
 The immutable campaign manifest is
 `.tools/runtime5-quiet-integration/final-inputs.json`; independent preflight is
@@ -46,7 +46,11 @@ The immutable campaign manifest is
 sources. Its outcome is PENDING: neither preflight nor earlier targeted results
 accept the full campaign. Runtime5 owns its processes, raw artifacts and eventual
 report; consult its active messages/PROGRESS for launch handles and completion.
-Keep this freeze intact while doing calls work privately.
+Active ordinary session50860 writes `ordinary-full.log`, raw
+`full-campaign-ikkbjhg2`; explicit-request session96390 writes `explicit-full.log`,
+raw `explicit-campaign-swr1h9d0`, under the integration directory. Separate
+`pending-preflight.json` records the assigned core boundaries. No build or watched
+edit is allowed during these runs. Keep this freeze intact for private calls work.
 
 Compiler4 is handing off frontend/schema/compiler ownership; runtime5 owns
 runtime integration, review7 independently gates and owns PROGRESS/inventory/
