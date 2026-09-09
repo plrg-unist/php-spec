@@ -1,0 +1,21 @@
+{
+  "scope": "Independent pre-repair first-call CURRENT trace-context integrity original; no acceptance or core closure.",
+  "source": "<?php function f($x){missing();}f(7);",
+  "cut": 11,
+  "mutation": "CURRENT.NAME only, f to g; source, selected descriptor and registry unchanged.",
+  "finding": "Execution throws the expected Error but emits the wrong function name g in its trace instead of native f.",
+  "original": ".tools/review8-call-context-380boads",
+  "classification": {
+    "classification": "Confirmed CURRENT.NAME context corruption changes actual f trace to g without rejecting execution.",
+    "cut": 11,
+    "outcome": "THROWN Error with wrong diagnostic trace name",
+    "reviewer_setup_failure": "Intended changed trace was captured successfully; final Python assertion expected quoted Error but numeric runner prints bare Error. Original assertion failure and complete raw state remain preserved."
+  },
+  "native_profile_bridge": ".tools/review8-trace-profile-audit.json",
+  "raw_archive": {
+    "path": "coverage/semantics/call-context-integrity-originals-raw.json.gz",
+    "sha256": "ff929f1e9f80dd0e39144db808a02614271b4044821af7a9da22c6d0ede5f0ec",
+    "files": 120,
+    "validation": "Every archive byte/hash/length checked against exact retained source records, checked AST, complete state, commands, loaded modules and first assertion-format failure."
+  }
+}
