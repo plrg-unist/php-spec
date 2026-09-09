@@ -1,0 +1,49 @@
+{
+  "classification": "oracle-only truth/conditional compilation and runtime observations before source admission",
+  "source_records": 63,
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "integer_bytes": 8,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary": ".tools/php/bin/php",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "raw": {
+    "path": "coverage/semantics/truth-oracle-review.jsonl",
+    "sha256": "c1d5d3ffa8ffb936dbf385e5486a5db141c265634d269a64816781132910f9d4"
+  },
+  "source_routes": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_short_circuiting",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_conditional",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_shorthand_conditional",
+    "vendor/php-src/Zend/zend_compile.c::zend_eval_const_expr"
+  ],
+  "findings": [
+    "Ordinary constant-left short-circuit compilation may skip the right operand; array prepass visits both operands first.",
+    "Ordinary ternary compiles both arms, while array prepass selects a single arm for constant conditions, including nonconstant selected children.",
+    "Selected-child replacement preserves delayed CV/reference reads; ordinary ternary value-copy observes the selected operand earlier.",
+    "Global NAN truth warnings differ in phase/count among operators and prepass versus ordinary compilation; namespace fallback stays late.",
+    "Nested ternary grouping errors belong to ordinary conditional compilation and can be erased by prior folding/skipping."
+  ],
+  "limitations": [
+    "These are raw pinned oracle observations, not source semantic passes.",
+    "No intentional engine divergence or inventory closure is introduced."
+  ]
+}
