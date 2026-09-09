@@ -95,6 +95,9 @@ omission rebuild incident records restoration of exact original tool hashes.
    variable_line for this special lowering, or use generic target end context.
    Target acquisition still needs its separate writable ending descriptor.
    Use original checked targets and occurrence descriptors, not synthetic ASTs.
+Quiet access and the seven request-environment/header boundaries are assigned in
+[QUIET-CV-HANDOFF](QUIET-CV-HANDOFF.md) after containers and before broader calls.
+
 4. Foreach needs persistent cursor/bucket ownership through append, deletion,
    reinsertion, array replacement, rebinding, unset, COW and references. Calls/
    frames/defaults, linking/objects, properties, exceptions/unwinding, generators,
