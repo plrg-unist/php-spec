@@ -11,6 +11,9 @@ Reference-assignment expressions now return owning `REFERENCE` operands. Their
 cell identity is captured but their contained value is read by the consumer;
 keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 
+The next compiler/pool source activation is described in
+[the runtime bridge handoff](RUNTIME-BRIDGE-HANDOFF.md).
+
 ## Entry points
 
 - `20-machine.watsup`: PHP values/completions, static availability checks and
