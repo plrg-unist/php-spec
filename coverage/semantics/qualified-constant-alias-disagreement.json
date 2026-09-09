@@ -1,5 +1,5 @@
 {
-  "status": "unresolved; original observations retained",
+  "status": "resolved at d5d28dc6; original raw disagreements preserved",
   "scope": "new source compiler admission loses matching class import prefix in compound constant names; fully qualified case remains an explicit Unsupported boundary",
   "fingerprint": {
     "sha256": "c583dabef91631b11ac7ae7ddb2503e11e98fcb24d0e2445fd6587017d2e1db2",
@@ -2563,5 +2563,394 @@
         }
       ]
     }
+  },
+  "resolution": {
+    "implementation_commit": "d5d28dc6",
+    "backend_commit": "e2e31084",
+    "fingerprint": {
+      "sha256": "a6c8c439fe93e647391902b0a1cdd793a439eb27bc0dab1d4e243dbbbbe750fb",
+      "files": 763,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "scope": "All four original admitted discrepancies and three original controls/boundaries now match native stdout/stderr/status, with preceding runtime output retained. No intentional divergence.",
+    "records": [
+      {
+        "id": "original-alias-0",
+        "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBBXE1pc3Npbmc7",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-0-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy0wLf8ucGhwOjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wX29wYTRjc2Uvb3JpZ2luYWwtYWxpYXMtMC3/LnBocCBvbiBsaW5lIDEK"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-0-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJbFpsYm1SdmNseFFZV05yWVdkbFhFMXBjM05wYm1jaUlHbHVJQzlvYjIxbEwzVnpaWEl2ZDI5eWEzTndZV05sTDNCb2NDMXpjR1ZqTHk1MGIyOXNjeTkwYlhCZmIzQmhOR056WlM5dmNtbG5hVzVoYkMxaGJHbGhjeTB3TGY4dWNHaHdPakVLVTNSaFkyc2dkSEpoWTJVNkNpTXdJSHR0WVdsdWZRb2dJSFJvY205M2JpQnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd1gyOXdZVFJqYzJVdmIzSnBaMmx1WVd3dFlXeHBZWE10TUMzL0xuQm9jQ0J2YmlCc2FXNWxJREVLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiRXJyb3IiLCAibWVzc2FnZSI6ICJWVzVrWldacGJtVmtJR052Ym5OMFlXNTBJQ0pXWlc1a2IzSmNVR0ZqYTJGblpWeE5hWE56YVc1bklnPT0iLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "original-alias-1",
+        "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEFsaWFzO2VjaG8gYUxpQXNcTWlzc2luZzs=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-1-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy0xLf8ucGhwOjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wX29wYTRjc2Uvb3JpZ2luYWwtYWxpYXMtMS3/LnBocCBvbiBsaW5lIDEK"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-1-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJbFpsYm1SdmNseFFZV05yWVdkbFhFMXBjM05wYm1jaUlHbHVJQzlvYjIxbEwzVnpaWEl2ZDI5eWEzTndZV05sTDNCb2NDMXpjR1ZqTHk1MGIyOXNjeTkwYlhCZmIzQmhOR056WlM5dmNtbG5hVzVoYkMxaGJHbGhjeTB4TGY4dWNHaHdPakVLVTNSaFkyc2dkSEpoWTJVNkNpTXdJSHR0WVdsdWZRb2dJSFJvY205M2JpQnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd1gyOXdZVFJqYzJVdmIzSnBaMmx1WVd3dFlXeHBZWE10TVMzL0xuQm9jQ0J2YmlCc2FXNWxJREVLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiRXJyb3IiLCAibWVzc2FnZSI6ICJWVzVrWldacGJtVmtJR052Ym5OMFlXNTBJQ0pXWlc1a2IzSmNVR0ZqYTJGblpWeE5hWE56YVc1bklnPT0iLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "original-alias-2",
+        "source_base64": "PD9waHAgZWNobyAiYmVmb3JlIjt1c2UgVmVuZG9yXFBhY2thZ2UgYXMgQTtlY2hvIEFcTWlzc2luZzs=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-2-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "YmVmb3Jl",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy0yLf8ucGhwOjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wX29wYTRjc2Uvb3JpZ2luYWwtYWxpYXMtMi3/LnBocCBvbiBsaW5lIDEK"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-2-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICJZbVZtYjNKbCIsICJzdGRlcnIiOiAiUm1GMFlXd2daWEp5YjNJNklGVnVZMkYxWjJoMElFVnljbTl5T2lCVmJtUmxabWx1WldRZ1kyOXVjM1JoYm5RZ0lsWmxibVJ2Y2x4UVlXTnJZV2RsWEUxcGMzTnBibWNpSUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OTBiWEJmYjNCaE5HTnpaUzl2Y21sbmFXNWhiQzFoYkdsaGN5MHlMZjh1Y0dod09qRUtVM1JoWTJzZ2RISmhZMlU2Q2lNd0lIdHRZV2x1ZlFvZ0lIUm9jbTkzYmlCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3WDI5d1lUUmpjMlV2YjNKcFoybHVZV3d0WVd4cFlYTXRNaTMvTG5Cb2NDQnZiaUJzYVc1bElERUsiLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSldaVzVrYjNKY1VHRmphMkZuWlZ4TmFYTnphVzVuSWc9PSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siOTgiLCAiMTAxIiwgIjEwMiIsICIxMTEiLCAiMTE0IiwgIjEwMSJdXX1dLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "original-alias-3",
+        "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7JHU9MTskYT1bJHUsQVxNaXNzaW5nXTs=",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-3-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy0zLf8ucGhwOjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wX29wYTRjc2Uvb3JpZ2luYWwtYWxpYXMtMy3/LnBocCBvbiBsaW5lIDEK"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-3-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJbFpsYm1SdmNseFFZV05yWVdkbFhFMXBjM05wYm1jaUlHbHVJQzlvYjIxbEwzVnpaWEl2ZDI5eWEzTndZV05sTDNCb2NDMXpjR1ZqTHk1MGIyOXNjeTkwYlhCZmIzQmhOR056WlM5dmNtbG5hVzVoYkMxaGJHbGhjeTB6TGY4dWNHaHdPakVLVTNSaFkyc2dkSEpoWTJVNkNpTXdJSHR0WVdsdWZRb2dJSFJvY205M2JpQnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd1gyOXdZVFJqYzJVdmIzSnBaMmx1WVd3dFlXeHBZWE10TXkzL0xuQm9jQ0J2YmlCc2FXNWxJREVLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiRXJyb3IiLCAibWVzc2FnZSI6ICJWVzVrWldacGJtVmtJR052Ym5OMFlXNTBJQ0pXWlc1a2IzSmNVR0ZqYTJGblpWeE5hWE56YVc1bklnPT0iLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "original-alias-4",
+        "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBCXE1pc3Npbmc7",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-4-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkJcTWlzc2luZyIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcF9vcGE0Y3NlL29yaWdpbmFsLWFsaWFzLTQt/y5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy00Lf8ucGhwIG9uIGxpbmUgMQo="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-4-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJa0pjVFdsemMybHVaeUlnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjRjl2Y0dFMFkzTmxMMjl5YVdkcGJtRnNMV0ZzYVdGekxUUXQveTV3YUhBNk1RcFRkR0ZqYXlCMGNtRmpaVG9LSXpBZ2UyMWhhVzU5Q2lBZ2RHaHliM2R1SUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OTBiWEJmYjNCaE5HTnpaUzl2Y21sbmFXNWhiQzFoYkdsaGN5MDBMZjh1Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSkNYRTFwYzNOcGJtY2kiLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "original-alias-5",
+        "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBNaXNzaW5nOw==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-5-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy01Lf8ucGhwOjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wX29wYTRjc2Uvb3JpZ2luYWwtYWxpYXMtNS3/LnBocCBvbiBsaW5lIDEK"
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-5-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJazFwYzNOcGJtY2lJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQmZiM0JoTkdOelpTOXZjbWxuYVc1aGJDMWhiR2xoY3kwMUxmOHVjR2h3T2pFS1UzUmhZMnNnZEhKaFkyVTZDaU13SUh0dFlXbHVmUW9nSUhSb2NtOTNiaUJwYmlBdmFHOXRaUzkxYzJWeUwzZHZjbXR6Y0dGalpTOXdhSEF0YzNCbFl5OHVkRzl2YkhNdmRHMXdYMjl3WVRSamMyVXZiM0pwWjJsdVlXd3RZV3hwWVhNdE5TMy9MbkJvY0NCdmJpQnNhVzVsSURFSyIsICJleGl0X3N0YXR1cyI6IDI1NSwgImRpYWdub3N0aWMiOiB7ImNsYXNzIjogIkVycm9yIiwgIm1lc3NhZ2UiOiAiVlc1a1pXWnBibVZrSUdOdmJuTjBZVzUwSUNKTmFYTnphVzVuSWc9PSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+          "stderr_base64": ""
+        }
+      },
+      {
+        "id": "original-alias-6",
+        "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBcQVxNaXNzaW5nOw==",
+        "match": true,
+        "oracle": {
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-6-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 255,
+          "stdout_base64": "",
+          "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkFcTWlzc2luZyIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcF9vcGE0Y3NlL29yaWdpbmFsLWFsaWFzLTYt/y5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXBfb3BhNGNzZS9vcmlnaW5hbC1hbGlhcy02Lf8ucGhwIG9uIGxpbmUgMQo="
+        },
+        "runtime": {
+          "command": [
+            "/home/user/workspace/php-spec/bin/php-semantics",
+            "/home/user/workspace/php-spec/.tools/tmp_opa4cse/original-alias-6-\udcff.php"
+          ],
+          "cwd": "/home/user/workspace/php-spec",
+          "status": 0,
+          "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJa0ZjVFdsemMybHVaeUlnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjRjl2Y0dFMFkzTmxMMjl5YVdkcGJtRnNMV0ZzYVdGekxUWXQveTV3YUhBNk1RcFRkR0ZqYXlCMGNtRmpaVG9LSXpBZ2UyMWhhVzU5Q2lBZ2RHaHliM2R1SUdsdUlDOW9iMjFsTDNWelpYSXZkMjl5YTNOd1lXTmxMM0JvY0MxemNHVmpMeTUwYjI5c2N5OTBiWEJmYjNCaE5HTnpaUzl2Y21sbmFXNWhiQzFoYkdsaGN5MDJMZjh1Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSkJYRTFwYzNOcGJtY2kiLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+          "stderr_base64": ""
+        }
+      }
+    ]
   }
 }

@@ -187,13 +187,13 @@ Missing or invalid ambiguous metadata rejects explicitly. The subsequent source 
 no intentional divergence is selected.
 
 
-## Qualified constant import prefixes: pending source resolution
+## Qualified constant import prefixes: resolved source resolution
 
 The first compiler/runtime bridge draft admitted `use Vendor\Package as A;
 echo A\Missing;` while retaining the original constant name for runtime lookup.
 PHP reports undefined `Vendor\Package\Missing`; the draft reports `A\Missing`.
-The shared lexical resolver already computes the correct name, but its consumers
-in ordinary compilation and execution are not connected yet.
+The shared lexical resolver supplied the right name; the source consumer was
+missing from that draft.
 
 [Seven retained observations](../../coverage/semantics/qualified-constant-alias-disagreement.json)
 include four admitted disagreements: an exact alias, ASCII case-folded alias,
@@ -203,5 +203,10 @@ Original source bytes, checked ASTs and exact native/runtime process observation
 are preserved. The precise temporary guard `ff941f17` now returns Unsupported for the four
 matching-prefix sources, suppressing execution, while both controls still agree.
 The report retains these boundary observations separately from the original
-failures. The resolver consumer remains required: the guard establishes no source
-conformance for these names and does not resolve the four discrepancies.
+failures. The guard alone established no source conformance. Source consumer `d5d28dc6`,
+following byte-backend prerequisite `e2e31084`, now resolves all four original
+failures. All seven original sources match native bytes and process status,
+including preceding output before the missing-name error. The report preserves
+original failures, temporary guard results and final resolution separately.
+The independent 621-source +24-negative gate and namespace/helper campaigns
+passed; no intentional divergence is selected.

@@ -2357,7 +2357,10 @@
         "spec/semantics/11-source-occurrences.watsup",
         "spec/semantics/21-source-context.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/22-name-resolution.watsup",
+        "spec/semantics/23-named-constants.watsup",
+        "spec/semantics/45-constant-context.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_context.py",
@@ -2368,12 +2371,15 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "tests/semantics/namespace_constants.py",
+        "coverage/semantics/namespace-constants.json",
+        "coverage/semantics/namespace-constants-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
+      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php",
         "tests/semantics/conformance/constant-import-mixed-namespace.php",
@@ -2390,7 +2396,10 @@
         "spec/semantics/11-source-occurrences.watsup",
         "spec/semantics/21-source-context.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/22-name-resolution.watsup",
+        "spec/semantics/23-named-constants.watsup",
+        "spec/semantics/45-constant-context.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_context.py",
@@ -2401,12 +2410,15 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "tests/semantics/namespace_constants.py",
+        "coverage/semantics/namespace-constants.json",
+        "coverage/semantics/namespace-constants-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
+      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php",
         "tests/semantics/conformance/constant-import-mixed-namespace.php",
@@ -4528,18 +4540,27 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/22-name-resolution.watsup"
+        "spec/semantics/22-name-resolution.watsup",
+        "spec/semantics/23-named-constants.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/name_resolution.py",
         "coverage/semantics/name-resolution.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/namespace_constants.py",
+        "coverage/semantics/namespace-constants.json",
+        "coverage/semantics/namespace-constants-review.json",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent lexical non-class resolver 5a6de4ca: 61 original-source observations plus 7 edited boundaries and 20 independent source probes passed. Function/constant alias casing, qualified class-prefix imports, namespace resets, original checked names and FULL/fallback descriptors are reviewed against the pinned resolver and native diagnostics/controls. Symbol lookup, special-constant folding, runtime namespace fallback, invocation and source activation remain pending."
+      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending."
     },
     {
       "id": "calls.namespace-fallback",
@@ -4547,18 +4568,27 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/22-name-resolution.watsup"
+        "spec/semantics/22-name-resolution.watsup",
+        "spec/semantics/23-named-constants.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/name_resolution.py",
         "coverage/semantics/name-resolution.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/namespace_constants.py",
+        "coverage/semantics/namespace-constants.json",
+        "coverage/semantics/namespace-constants-review.json",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent lexical non-class resolver 5a6de4ca: 61 original-source observations plus 7 edited boundaries and 20 independent source probes passed. Function/constant alias casing, qualified class-prefix imports, namespace resets, original checked names and FULL/fallback descriptors are reviewed against the pinned resolver and native diagnostics/controls. Symbol lookup, special-constant folding, runtime namespace fallback, invocation and source activation remain pending.",
+      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php"
       ]
@@ -4939,7 +4969,9 @@
         "spec/semantics/21-source-context.watsup",
         "spec/semantics/22-name-resolution.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/23-named-constants.watsup",
+        "spec/semantics/45-constant-context.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
@@ -4954,12 +4986,15 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "tests/semantics/namespace_constants.py",
+        "coverage/semantics/namespace-constants.json",
+        "coverage/semantics/namespace-constants-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
+      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-iterable-global.php",
         "tests/semantics/conformance/type-iterable-namespaced.php",
@@ -4992,7 +5027,9 @@
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/22-name-resolution.watsup",
+        "spec/semantics/23-named-constants.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -5007,12 +5044,15 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/runtime-compiler-review.json"
+        "coverage/semantics/runtime-compiler-review.json",
+        "tests/semantics/namespace_constants.py",
+        "coverage/semantics/namespace-constants.json",
+        "coverage/semantics/namespace-constants-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution.",
+      "review": "Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",

@@ -37,8 +37,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   reviewed at `6b5981cc`. No constructor or PHP semantic family closes. Governance
   `ffdc131d` binds closure to source cases/raw bytes and independent review;
   `--complete` additionally rejects stale fingerprints and unfinished obligations.
-- Source machine **`6b5981cc`** passed **576 exact source comparisons
-  +28 outcome negatives**. Compiler/pool bridge `537d13de` makes full compilation
+- Source machine **`d5d28dc6`** passed **621 exact source comparisons
+  +24 outcome negatives**. Compiler/pool bridge `537d13de` makes full compilation
   precede execution; real filename bytes are bound before compilation, failed
   compilation suppresses recorded work, and successful work executes once with
   lexical origins. Permanent per-unit pools remap array IDs and supply only compiled
@@ -47,8 +47,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   16 alternate sources, 16 constructed states/138 assertions and four byte probes.
   Generic scalar/string reads are now active, with 64 additional exact source
   probes in [read evidence](coverage/semantics/dimension-read-review.json).
-- Ordered compiler/access and constant helpers passed **612 native lint cases,
-  15 emission-line observations, 10 Unsupported contexts**, 8 sources/24 access
+- Ordered compiler/access and constant helpers passed **663 native lint cases,
+  15 emission-line observations, 4 Unsupported contexts**, 8 sources/24 access
   roles, metadata/export controls and independent alternates. Partial AST facts,
   ordinary code-generation values and executable access descriptors stay distinct.
   [SOURCE-COMPILER](docs/semantics/SOURCE-COMPILER.md) and
@@ -69,8 +69,10 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 - Compiler/frontend `9658958c` passed 233 checked prefixes plus 64 independent
   alternates, seen-symbol/barrier/resumption controls and four encoding profiles.
   Anonymous brace metadata and valid import aliases are corrected. Full declaration,
-  default and body compilation remain incomplete. Name resolver `5a6de4ca` passed
-  61 original sources +7 boundaries and 20 independent probes; runtime lookup is next.
+  default and body compilation remain incomplete. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
+  +15 descriptor checks,43 independent sources and19 runtime states passed.
+  [Namespace evidence](coverage/semantics/namespace-constants-review.json) retains
+  qualification, fallback timing, cache contexts and resumed origins.
 - [Full syntax audit](coverage/frontend-syntax-repair.json): **30,980 ordered records**
   — 30,671 pass, 254 parser rejections, 41 individually classified compile-phase
   differences, 6 redirects and 8 non-source records. Targeted/generated/deep checks
@@ -88,12 +90,11 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 ## Next gates and retained decisions
 
 Runtime proceeds through string writes/reference errors, control/loops, then
-unpack/destructuring/foreach. Compiler proceeds through
-namespace constant lookup, declarations/defaults and calls. The
+unpack/destructuring/foreach. Compiler proceeds through declarations/defaults and calls. The
 [qualified constant alias discrepancy](coverage/semantics/qualified-constant-alias-disagreement.json)
-has temporary guard `ff941f17`: four original failures now return Unsupported,
-while unmatched/unqualified controls agree. The guard is not a resolution; the
-resolver consumer must reproduce the original native observations next.
+is resolved by `d5d28dc6`: all seven originals agree, including preceding output
+before missing-name errors. Original failures and temporary guard `ff941f17`
+remain in the ledger.
 
 All 16 read/prepass and eight write/error-order witnesses, array/reference
 regressions and applicable compiler emission-line witnesses are mandatory when
