@@ -1,0 +1,2160 @@
+{
+  "status": "unresolved; original observations retained",
+  "scope": "new source compiler admission loses matching class import prefix in compound constant names; fully qualified case remains an explicit Unsupported boundary",
+  "fingerprint": {
+    "sha256": "c583dabef91631b11ac7ae7ddb2503e11e98fcb24d0e2445fd6587017d2e1db2",
+    "files": 761,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "records": [
+    {
+      "id": "matching-alias",
+      "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBBXE1pc3Npbmc7",
+      "match": false,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/matching-alias.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC9tYXRjaGluZy1hbGlhcy5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC9tYXRjaGluZy1hbGlhcy5waHAgb24gbGluZSAxCg=="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/matching-alias.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJa0ZjVFdsemMybHVaeUlnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjSGxuYm1RME9ISm9MMjFoZEdOb2FXNW5MV0ZzYVdGekxuQm9jRG94Q2xOMFlXTnJJSFJ5WVdObE9nb2pNQ0I3YldGcGJuMEtJQ0IwYUhKdmQyNGdhVzRnTDJodmJXVXZkWE5sY2k5M2IzSnJjM0JoWTJVdmNHaHdMWE53WldNdkxuUnZiMnh6TDNSdGNIbG5ibVEwT0hKb0wyMWhkR05vYVc1bkxXRnNhV0Z6TG5Cb2NDQnZiaUJzYVc1bElERUsiLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSkJYRTFwYzNOcGJtY2kiLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "startFilePos": {
+                          "int": "10"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "28"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "28"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "28"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "29"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "QVxNaXNzaW5n"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "43"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "11"
+                        },
+                        "startFilePos": {
+                          "int": "35"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "11"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "43"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "35"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "11"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "44"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "30"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "9"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"QQ==\"))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtEcho ((SEQUENCE ([(NExprConstFetch ((NName ((BYTES (\"QVxNaXNzaW5n\"))) ([(MendFilePos (43)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (43)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (44)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))]))]))",
+      "source_sha256": "cd7cef55df29ada1e6723cc42a6e3603fb8c505c903d93d5028eb9342350fc7b",
+      "classification": "admitted source disagreement"
+    },
+    {
+      "id": "casefolded-alias",
+      "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEFsaWFzO2VjaG8gYUxpQXNcTWlzc2luZzs=",
+      "match": false,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/casefolded-alias.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC9jYXNlZm9sZGVkLWFsaWFzLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlnbmQ0OHJoL2Nhc2Vmb2xkZWQtYWxpYXMucGhwIG9uIGxpbmUgMQo="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/casefolded-alias.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJbUZNYVVGelhFMXBjM05wYm1jaUlHbHVJQzlvYjIxbEwzVnpaWEl2ZDI5eWEzTndZV05sTDNCb2NDMXpjR1ZqTHk1MGIyOXNjeTkwYlhCNVoyNWtORGh5YUM5allYTmxabTlzWkdWa0xXRnNhV0Z6TG5Cb2NEb3hDbE4wWVdOcklIUnlZV05sT2dvak1DQjdiV0ZwYm4wS0lDQjBhSEp2ZDI0Z2FXNGdMMmh2YldVdmRYTmxjaTkzYjNKcmMzQmhZMlV2Y0dod0xYTndaV012TG5SdmIyeHpMM1J0Y0hsbmJtUTBPSEpvTDJOaGMyVm1iMnhrWldRdFlXeHBZWE11Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSmhUR2xCYzF4TmFYTnphVzVuSWc9PSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "startFilePos": {
+                          "int": "10"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QWxpYXM="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "32"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "28"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "32"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "33"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "YUxpQXNcTWlzc2luZw=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "51"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "11"
+                        },
+                        "startFilePos": {
+                          "int": "39"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "11"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "51"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "39"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "11"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "52"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "34"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "9"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"QWxpYXM=\"))) ([(MendFilePos (32)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (32)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (33)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtEcho ((SEQUENCE ([(NExprConstFetch ((NName ((BYTES (\"YUxpQXNcTWlzc2luZw==\"))) ([(MendFilePos (51)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (39)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (51)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (39)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (52)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (34)), (MstartLine (1)), (MstartTokenPos (9))]))]))",
+      "source_sha256": "bd567002b70f399886450330ec4b0403aee880c9972ec795bb9f8d68a49aa6a0",
+      "classification": "admitted source disagreement"
+    },
+    {
+      "id": "prefix-output",
+      "source_base64": "PD9waHAgZWNobyAiYmVmb3JlIjt1c2UgVmVuZG9yXFBhY2thZ2UgYXMgQTtlY2hvIEFcTWlzc2luZzs=",
+      "match": false,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/prefix-output.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "YmVmb3Jl",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC9wcmVmaXgtb3V0cHV0LnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlnbmQ0OHJoL3ByZWZpeC1vdXRwdXQucGhwIG9uIGxpbmUgMQo="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/prefix-output.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICJZbVZtYjNKbCIsICJzdGRlcnIiOiAiUm1GMFlXd2daWEp5YjNJNklGVnVZMkYxWjJoMElFVnljbTl5T2lCVmJtUmxabWx1WldRZ1kyOXVjM1JoYm5RZ0lrRmNUV2x6YzJsdVp5SWdhVzRnTDJodmJXVXZkWE5sY2k5M2IzSnJjM0JoWTJVdmNHaHdMWE53WldNdkxuUnZiMnh6TDNSdGNIbG5ibVEwT0hKb0wzQnlaV1pwZUMxdmRYUndkWFF1Y0dod09qRUtVM1JoWTJzZ2RISmhZMlU2Q2lNd0lIdHRZV2x1ZlFvZ0lIUm9jbTkzYmlCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3ZVdkdVpEUTRjbWd2Y0hKbFptbDRMVzkxZEhCMWRDNXdhSEFnYjI0Z2JHbHVaU0F4Q2c9PSIsICJleGl0X3N0YXR1cyI6IDI1NSwgImRpYWdub3N0aWMiOiB7ImNsYXNzIjogIkVycm9yIiwgIm1lc3NhZ2UiOiAiVlc1a1pXWnBibVZrSUdOdmJuTjBZVzUwSUNKQlhFMXBjM05wYm1jaSIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW3sidGFnIjogIk9VVFBVVCIsICJhcmdzIjogW1siOTgiLCAiMTAxIiwgIjEwMiIsICIxMTEiLCAiMTE0IiwgIjEwMSJdXX1dLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Scalar_String",
+                  "fields": [
+                    {
+                      "bytes": "YmVmb3Jl"
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "18"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "3"
+                    },
+                    "kind": {
+                      "int": "2"
+                    },
+                    "rawValue": {
+                      "bytes": "ImJlZm9yZSI="
+                    },
+                    "startFilePos": {
+                      "int": "11"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "19"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "4"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "37"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "24"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "42"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "11"
+                        },
+                        "startFilePos": {
+                          "int": "42"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "11"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "42"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "24"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "7"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "43"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "20"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "5"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "QVxNaXNzaW5n"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "57"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "15"
+                        },
+                        "startFilePos": {
+                          "int": "49"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "15"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "57"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "15"
+                    },
+                    "startFilePos": {
+                      "int": "49"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "15"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "58"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "16"
+              },
+              "startFilePos": {
+                "int": "44"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "13"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtEcho ((SEQUENCE ([(NScalarString ((BYTES (\"YmVmb3Jl\"))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (3)), (Mkind (2)), (MrawValue (\"ImJlZm9yZSI=\")), (MstartFilePos (11)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (19)), (MendLine (1)), (MendTokenPos (4)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (37)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (24)), (MstartLine (1)), (MstartTokenPos (7))]))) ((NIdentifier ((BYTES (\"QQ==\"))) ([(MendFilePos (42)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (42)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (42)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (24)), (MstartLine (1)), (MstartTokenPos (7))]))]))) ([(MendFilePos (43)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (20)), (MstartLine (1)), (MstartTokenPos (5))])), (NStmtEcho ((SEQUENCE ([(NExprConstFetch ((NName ((BYTES (\"QVxNaXNzaW5n\"))) ([(MendFilePos (57)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (49)), (MstartLine (1)), (MstartTokenPos (15))]))) ([(MendFilePos (57)), (MendLine (1)), (MendTokenPos (15)), (MstartFilePos (49)), (MstartLine (1)), (MstartTokenPos (15))]))]))) ([(MendFilePos (58)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (44)), (MstartLine (1)), (MstartTokenPos (13))]))]))",
+      "source_sha256": "0fa90ef346c211dd6f336565dcc46b94d8e7a731f18f3856654c697e4a2796b5",
+      "classification": "admitted source disagreement"
+    },
+    {
+      "id": "partial-array",
+      "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7JHU9MTskYT1bJHUsQVxNaXNzaW5nXTs=",
+      "match": false,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/partial-array.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIlZlbmRvclxQYWNrYWdlXE1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC9wYXJ0aWFsLWFycmF5LnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlnbmQ0OHJoL3BhcnRpYWwtYXJyYXkucGhwIG9uIGxpbmUgMQo="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/partial-array.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJa0ZjVFdsemMybHVaeUlnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjSGxuYm1RME9ISm9MM0JoY25ScFlXd3RZWEp5WVhrdWNHaHdPakVLVTNSaFkyc2dkSEpoWTJVNkNpTXdJSHR0WVdsdWZRb2dJSFJvY205M2JpQnBiaUF2YUc5dFpTOTFjMlZ5TDNkdmNtdHpjR0ZqWlM5d2FIQXRjM0JsWXk4dWRHOXZiSE12ZEcxd2VXZHVaRFE0Y21ndmNHRnlkR2xoYkMxaGNuSmhlUzV3YUhBZ2IyNGdiR2x1WlNBeENnPT0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSkJYRTFwYzNOcGJtY2kiLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "startFilePos": {
+                          "int": "10"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "28"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "28"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "28"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "29"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Expression",
+            "fields": [
+              {
+                "node": "Expr_Assign",
+                "fields": [
+                  {
+                    "node": "Expr_Variable",
+                    "fields": [
+                      {
+                        "bytes": "dQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "31"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "9"
+                      },
+                      "startFilePos": {
+                        "int": "30"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "9"
+                      }
+                    }
+                  },
+                  {
+                    "node": "Scalar_Int",
+                    "fields": [
+                      {
+                        "int": "1"
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "33"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "11"
+                      },
+                      "kind": {
+                        "int": "10"
+                      },
+                      "rawValue": {
+                        "bytes": "MQ=="
+                      },
+                      "startFilePos": {
+                        "int": "33"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "11"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "33"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "11"
+                  },
+                  "startFilePos": {
+                    "int": "30"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "9"
+                  }
+                }
+              }
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "34"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "30"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "9"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Expression",
+            "fields": [
+              {
+                "node": "Expr_Assign",
+                "fields": [
+                  {
+                    "node": "Expr_Variable",
+                    "fields": [
+                      {
+                        "bytes": "YQ=="
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "36"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "13"
+                      },
+                      "startFilePos": {
+                        "int": "35"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "13"
+                      }
+                    }
+                  },
+                  {
+                    "node": "Expr_Array",
+                    "fields": [
+                      [
+                        {
+                          "node": "ArrayItem",
+                          "fields": [
+                            null,
+                            {
+                              "node": "Expr_Variable",
+                              "fields": [
+                                {
+                                  "bytes": "dQ=="
+                                }
+                              ],
+                              "meta": {
+                                "endFilePos": {
+                                  "int": "40"
+                                },
+                                "endLine": {
+                                  "int": "1"
+                                },
+                                "endTokenPos": {
+                                  "int": "16"
+                                },
+                                "startFilePos": {
+                                  "int": "39"
+                                },
+                                "startLine": {
+                                  "int": "1"
+                                },
+                                "startTokenPos": {
+                                  "int": "16"
+                                }
+                              }
+                            },
+                            false,
+                            false
+                          ],
+                          "meta": {
+                            "endFilePos": {
+                              "int": "40"
+                            },
+                            "endLine": {
+                              "int": "1"
+                            },
+                            "endTokenPos": {
+                              "int": "16"
+                            },
+                            "startFilePos": {
+                              "int": "39"
+                            },
+                            "startLine": {
+                              "int": "1"
+                            },
+                            "startTokenPos": {
+                              "int": "16"
+                            }
+                          }
+                        },
+                        {
+                          "node": "ArrayItem",
+                          "fields": [
+                            null,
+                            {
+                              "node": "Expr_ConstFetch",
+                              "fields": [
+                                {
+                                  "node": "Name",
+                                  "fields": [
+                                    {
+                                      "bytes": "QVxNaXNzaW5n"
+                                    }
+                                  ],
+                                  "meta": {
+                                    "endFilePos": {
+                                      "int": "50"
+                                    },
+                                    "endLine": {
+                                      "int": "1"
+                                    },
+                                    "endTokenPos": {
+                                      "int": "18"
+                                    },
+                                    "startFilePos": {
+                                      "int": "42"
+                                    },
+                                    "startLine": {
+                                      "int": "1"
+                                    },
+                                    "startTokenPos": {
+                                      "int": "18"
+                                    }
+                                  }
+                                }
+                              ],
+                              "meta": {
+                                "endFilePos": {
+                                  "int": "50"
+                                },
+                                "endLine": {
+                                  "int": "1"
+                                },
+                                "endTokenPos": {
+                                  "int": "18"
+                                },
+                                "startFilePos": {
+                                  "int": "42"
+                                },
+                                "startLine": {
+                                  "int": "1"
+                                },
+                                "startTokenPos": {
+                                  "int": "18"
+                                }
+                              }
+                            },
+                            false,
+                            false
+                          ],
+                          "meta": {
+                            "endFilePos": {
+                              "int": "50"
+                            },
+                            "endLine": {
+                              "int": "1"
+                            },
+                            "endTokenPos": {
+                              "int": "18"
+                            },
+                            "startFilePos": {
+                              "int": "42"
+                            },
+                            "startLine": {
+                              "int": "1"
+                            },
+                            "startTokenPos": {
+                              "int": "18"
+                            }
+                          }
+                        }
+                      ]
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "51"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "19"
+                      },
+                      "kind": {
+                        "int": "2"
+                      },
+                      "startFilePos": {
+                        "int": "38"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "15"
+                      }
+                    }
+                  }
+                ],
+                "meta": {
+                  "endFilePos": {
+                    "int": "51"
+                  },
+                  "endLine": {
+                    "int": "1"
+                  },
+                  "endTokenPos": {
+                    "int": "19"
+                  },
+                  "startFilePos": {
+                    "int": "35"
+                  },
+                  "startLine": {
+                    "int": "1"
+                  },
+                  "startTokenPos": {
+                    "int": "13"
+                  }
+                }
+              }
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "52"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "20"
+              },
+              "startFilePos": {
+                "int": "35"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "13"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"QQ==\"))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtExpression ((NExprAssign ((NExprVariable ((BYTES (\"dQ==\"))) ([(MendFilePos (31)), (MendLine (1)), (MendTokenPos (9)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))]))) ((NScalarInt ((INTEGER (1))) ([(MendFilePos (33)), (MendLine (1)), (MendTokenPos (11)), (Mkind (10)), (MrawValue (\"MQ==\")), (MstartFilePos (33)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (33)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))]))) ([(MendFilePos (34)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))])), (NStmtExpression ((NExprAssign ((NExprVariable ((BYTES (\"YQ==\"))) ([(MendFilePos (36)), (MendLine (1)), (MendTokenPos (13)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (13))]))) ((NExprArray ((SEQUENCE ([(NArrayItem ((ABSENT)) ((NExprVariable ((BYTES (\"dQ==\"))) ([(MendFilePos (40)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (39)), (MstartLine (1)), (MstartTokenPos (16))]))) ((BOOLEAN (false))) ((BOOLEAN (false))) ([(MendFilePos (40)), (MendLine (1)), (MendTokenPos (16)), (MstartFilePos (39)), (MstartLine (1)), (MstartTokenPos (16))])), (NArrayItem ((ABSENT)) ((NExprConstFetch ((NName ((BYTES (\"QVxNaXNzaW5n\"))) ([(MendFilePos (50)), (MendLine (1)), (MendTokenPos (18)), (MstartFilePos (42)), (MstartLine (1)), (MstartTokenPos (18))]))) ([(MendFilePos (50)), (MendLine (1)), (MendTokenPos (18)), (MstartFilePos (42)), (MstartLine (1)), (MstartTokenPos (18))]))) ((BOOLEAN (false))) ((BOOLEAN (false))) ([(MendFilePos (50)), (MendLine (1)), (MendTokenPos (18)), (MstartFilePos (42)), (MstartLine (1)), (MstartTokenPos (18))]))]))) ([(MendFilePos (51)), (MendLine (1)), (MendTokenPos (19)), (Mkind (2)), (MstartFilePos (38)), (MstartLine (1)), (MstartTokenPos (15))]))) ([(MendFilePos (51)), (MendLine (1)), (MendTokenPos (19)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (13))]))) ([(MendFilePos (52)), (MendLine (1)), (MendTokenPos (20)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (13))]))]))",
+      "source_sha256": "c36009cfb32cb0d38463c2645480fae50419f4d42899b1d6040918126299eedc",
+      "classification": "admitted source disagreement"
+    },
+    {
+      "id": "unmatched-prefix-control",
+      "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBCXE1pc3Npbmc7",
+      "match": true,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/unmatched-prefix-control.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkJcTWlzc2luZyIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlnbmQ0OHJoL3VubWF0Y2hlZC1wcmVmaXgtY29udHJvbC5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC91bm1hdGNoZWQtcHJlZml4LWNvbnRyb2wucGhwIG9uIGxpbmUgMQo="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/unmatched-prefix-control.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJa0pjVFdsemMybHVaeUlnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjSGxuYm1RME9ISm9MM1Z1YldGMFkyaGxaQzF3Y21WbWFYZ3RZMjl1ZEhKdmJDNXdhSEE2TVFwVGRHRmpheUIwY21GalpUb0tJekFnZTIxaGFXNTlDaUFnZEdoeWIzZHVJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQjVaMjVrTkRoeWFDOTFibTFoZEdOb1pXUXRjSEpsWm1sNExXTnZiblJ5YjJ3dWNHaHdJRzl1SUd4cGJtVWdNUW89IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiRXJyb3IiLCAibWVzc2FnZSI6ICJWVzVrWldacGJtVmtJR052Ym5OMFlXNTBJQ0pDWEUxcGMzTnBibWNpIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "startFilePos": {
+                          "int": "10"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "28"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "28"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "28"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "29"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "QlxNaXNzaW5n"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "43"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "11"
+                        },
+                        "startFilePos": {
+                          "int": "35"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "11"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "43"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "35"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "11"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "44"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "30"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "9"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"QQ==\"))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtEcho ((SEQUENCE ([(NExprConstFetch ((NName ((BYTES (\"QlxNaXNzaW5n\"))) ([(MendFilePos (43)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (43)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (44)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))]))]))",
+      "source_sha256": "6ee74052a563c798c1f466518449d97ed2065481ab1a2dfee8801ec9f7efe554",
+      "classification": "exact source control"
+    },
+    {
+      "id": "unqualified-control",
+      "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBNaXNzaW5nOw==",
+      "match": true,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/unqualified-control.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1pc3NpbmciIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC91bnF1YWxpZmllZC1jb250cm9sLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlnbmQ0OHJoL3VucXVhbGlmaWVkLWNvbnRyb2wucGhwIG9uIGxpbmUgMQo="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/unqualified-control.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAicGhwX2Vycm9yIiwgInN0ZG91dCI6ICIiLCAic3RkZXJyIjogIlJtRjBZV3dnWlhKeWIzSTZJRlZ1WTJGMVoyaDBJRVZ5Y205eU9pQlZibVJsWm1sdVpXUWdZMjl1YzNSaGJuUWdJazFwYzNOcGJtY2lJR2x1SUM5b2IyMWxMM1Z6WlhJdmQyOXlhM053WVdObEwzQm9jQzF6Y0dWakx5NTBiMjlzY3k5MGJYQjVaMjVrTkRoeWFDOTFibkYxWVd4cFptbGxaQzFqYjI1MGNtOXNMbkJvY0RveENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLSUNCMGFISnZkMjRnYVc0Z0wyaHZiV1V2ZFhObGNpOTNiM0pyYzNCaFkyVXZjR2h3TFhOd1pXTXZMblJ2YjJ4ekwzUnRjSGxuYm1RME9ISm9MM1Z1Y1hWaGJHbG1hV1ZrTFdOdmJuUnliMnd1Y0dod0lHOXVJR3hwYm1VZ01Rbz0iLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJFcnJvciIsICJtZXNzYWdlIjogIlZXNWtaV1pwYm1Wa0lHTnZibk4wWVc1MElDSk5hWE56YVc1bklnPT0iLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "startFilePos": {
+                          "int": "10"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "28"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "28"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "28"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "29"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "TWlzc2luZw=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "41"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "11"
+                        },
+                        "startFilePos": {
+                          "int": "35"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "11"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "41"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "35"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "11"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "42"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "30"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "9"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"QQ==\"))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtEcho ((SEQUENCE ([(NExprConstFetch ((NName ((BYTES (\"TWlzc2luZw==\"))) ([(MendFilePos (41)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (41)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (42)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))]))]))",
+      "source_sha256": "f64e6a5c23d5abe3b432656b40209c0528b75ceb4c1194b87759526852bef4fe",
+      "classification": "exact source control"
+    },
+    {
+      "id": "fully-qualified-boundary",
+      "source_base64": "PD9waHAgdXNlIFZlbmRvclxQYWNrYWdlIGFzIEE7ZWNobyBcQVxNaXNzaW5nOw==",
+      "match": false,
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/fully-qualified-boundary.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkFcTWlzc2luZyIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3RtcHlnbmQ0OHJoL2Z1bGx5LXF1YWxpZmllZC1ib3VuZGFyeS5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy90bXB5Z25kNDhyaC9mdWxseS1xdWFsaWZpZWQtYm91bmRhcnkucGhwIG9uIGxpbmUgMQo="
+      },
+      "runtime": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmpygnd48rh/fully-qualified-boundary.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 1,
+        "stdout_base64": "eyJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLCAic3Rkb3V0IjogIiIsICJzdGRlcnIiOiAiIiwgImV4aXRfc3RhdHVzIjogbnVsbCwgImRpYWdub3N0aWMiOiBudWxsLCAicmVhc29uIjogIm9yZGluYXJ5IGV4cHJlc3Npb24gb3Igd3JpdGFibGUgb3BlcmFuZCBjb21waWxhdGlvbiIsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "checked_ast": {
+        "version": 1,
+        "program": [
+          {
+            "node": "Stmt_Use",
+            "fields": [
+              {
+                "int": "1"
+              },
+              [
+                {
+                  "node": "UseItem",
+                  "fields": [
+                    {
+                      "int": "0"
+                    },
+                    {
+                      "node": "Name",
+                      "fields": [
+                        {
+                          "bytes": "VmVuZG9yXFBhY2thZ2U="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "3"
+                        },
+                        "startFilePos": {
+                          "int": "10"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "3"
+                        }
+                      }
+                    },
+                    {
+                      "node": "Identifier",
+                      "fields": [
+                        {
+                          "bytes": "QQ=="
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "28"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "7"
+                        },
+                        "startFilePos": {
+                          "int": "28"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "7"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "28"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "7"
+                    },
+                    "startFilePos": {
+                      "int": "10"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "3"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "29"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "8"
+              },
+              "startFilePos": {
+                "int": "6"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "1"
+              }
+            }
+          },
+          {
+            "node": "Stmt_Echo",
+            "fields": [
+              [
+                {
+                  "node": "Expr_ConstFetch",
+                  "fields": [
+                    {
+                      "node": "Name_FullyQualified",
+                      "fields": [
+                        {
+                          "bytes": "QVxNaXNzaW5n"
+                        }
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "44"
+                        },
+                        "endLine": {
+                          "int": "1"
+                        },
+                        "endTokenPos": {
+                          "int": "11"
+                        },
+                        "startFilePos": {
+                          "int": "35"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "11"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "44"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "35"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "11"
+                    }
+                  }
+                }
+              ]
+            ],
+            "meta": {
+              "endFilePos": {
+                "int": "45"
+              },
+              "endLine": {
+                "int": "1"
+              },
+              "endTokenPos": {
+                "int": "12"
+              },
+              "startFilePos": {
+                "int": "30"
+              },
+              "startLine": {
+                "int": "1"
+              },
+              "startTokenPos": {
+                "int": "9"
+              }
+            }
+          }
+        ]
+      },
+      "checked_fixture": "(PROGRAM ([(NStmtUse ((INTEGER (1))) ((SEQUENCE ([(NUseItem ((INTEGER (0))) ((NName ((BYTES (\"VmVuZG9yXFBhY2thZ2U=\"))) ([(MendFilePos (23)), (MendLine (1)), (MendTokenPos (3)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))) ((NIdentifier ((BYTES (\"QQ==\"))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (28)), (MstartLine (1)), (MstartTokenPos (7))]))) ([(MendFilePos (28)), (MendLine (1)), (MendTokenPos (7)), (MstartFilePos (10)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (29)), (MendLine (1)), (MendTokenPos (8)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtEcho ((SEQUENCE ([(NExprConstFetch ((NNameFullyQualified ((BYTES (\"QVxNaXNzaW5n\"))) ([(MendFilePos (44)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))) ([(MendFilePos (44)), (MendLine (1)), (MendTokenPos (11)), (MstartFilePos (35)), (MstartLine (1)), (MstartTokenPos (11))]))]))) ([(MendFilePos (45)), (MendLine (1)), (MendTokenPos (12)), (MstartFilePos (30)), (MstartLine (1)), (MstartTokenPos (9))]))]))",
+      "source_sha256": "05a2bbad264b702534d61f36b7d2421ebb3d6e4600ced41aab345a52bfd223c9",
+      "classification": "existing Unsupported boundary"
+    }
+  ],
+  "counts": {
+    "admitted_disagreements": 4,
+    "exact_controls": 2,
+    "existing_unsupported_boundaries": 1
+  }
+}

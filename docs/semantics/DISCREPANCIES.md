@@ -185,3 +185,21 @@ agree. The independent 526-source gate plus 25 negatives passed; `0270197e`
 retains the twelve regular regressions and byte-preserving filename transport.
 Missing or invalid ambiguous metadata rejects explicitly. Source compiler/pool
 activation remains pending; no intentional divergence is selected.
+
+
+## Qualified constant import prefixes: pending source resolution
+
+The first compiler/runtime bridge draft admitted `use Vendor\Package as A;
+echo A\Missing;` while retaining the original constant name for runtime lookup.
+PHP reports undefined `Vendor\Package\Missing`; the draft reports `A\Missing`.
+The shared lexical resolver already computes the correct name, but its consumers
+in ordinary compilation and execution are not connected yet.
+
+[Seven retained observations](../../coverage/semantics/qualified-constant-alias-disagreement.json)
+include four admitted disagreements: an exact alias, ASCII case-folded alias,
+preceding output and a partial array. Unmatched-prefix and unqualified names are
+matching controls; fully qualified names remain an explicit Unsupported boundary.
+Original source bytes, checked ASTs and exact native/runtime process observations
+are preserved. A precise temporary Unsupported guard is required before bridge
+acceptance, followed by the resolver consumer. The guard establishes no source
+conformance for these names and does not resolve the four discrepancies.
