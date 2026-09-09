@@ -3900,7 +3900,8 @@
         "spec/semantics/44-dimension-read.watsup",
         "spec/semantics/45-dimension-write.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/36-arrays.watsup"
+        "spec/semantics/36-arrays.watsup",
+        "spec/semantics/37-array-locations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_read.py",
@@ -3911,13 +3912,14 @@
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "coverage/semantics/dimension-read-review.json"
+        "coverage/semantics/dimension-read-review.json",
+        "coverage/semantics/dimension-write-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent source read activation6b5981cc: 576 exact source comparisons +28 outcome negatives, all16 mandatory scalar/string read/prepass witnesses and15 compiler emission sources;64 alternate original sources passed. Read helper583+10leaf+5boundary/2318, ownership617+96/5434, origins25/333, runtimecompiler11/105 and orderedcompiler612+15+10Unsupported passed. Delayed key/base reads, scalar ignored coercion, negative byte bounds, numeric suffix/NUL behavior, warning/error order and compiler folding barriers are covered. String writes/reference errors, ArrayAccess and broader contexts remain pending.",
+      "review": "Independent read activation6b5981cc and write/reference-error activation8f1b47a2 after terminator64e320b0: final664 exact source comparisons +23 outcome negatives; all16 mandatory read/prepass and8 write/error witnesses integrated. Independent64 reads and103 writes agree; one temporary-expression write remains explicit compiler Unsupported, not a pass. Write2220+12/12040, ownership617+96/5434, origins25/333, runtimecompiler15/148 and orderedcompiler706+15line+4Unsupported passed. Captured locations, delayed CV RHS, reference versus nested errors, assignment result, extension and COW are covered. ArrayAccess, quiet/compound contexts and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-offset.php",
         "tests/semantics/conformance/string-read-numeric-keys.php",

@@ -211,7 +211,7 @@ original failures, temporary guard results and final resolution separately.
 The independent 621-source +24-negative gate and namespace/helper campaigns
 passed; no intentional divergence is selected.
 
-## Bare break ending lines: pending correction
+## Bare break ending lines: resolved token context
 
 The admitted out-of-loop `break` compiler rule uses the keyword start line.
 PHP creates its AST node at the statement ending line, so `break` followed by
@@ -229,4 +229,10 @@ line1. Six further observations (two admitted candidate regressions and four
 controls) are preserved in the same report. A closing tag can consume a newline
 without advancing the compiler line used for this statement. Ordinary AST end
 line alone is insufficient; the checked terminator/compiler line must be retained.
-The candidate remains unaccepted until these cases also agree.
+The token-derived `statementTerminatorLine` correction `64e320b0` now resolves
+all fourteen observations. Source checkpoint `8f1b47a2` passed 664 exact cases
++23 negatives, and the report retains the two original failure stages unchanged
+beside their final resolution. Twenty transport profiles/200 checks, eight
+additional original sources and five metadata controls passed, including encoded
+sources and in-range edited line consumption. This establishes no valid-loop or
+explicit-depth semantics; no intentional divergence is selected.
