@@ -1,9 +1,10 @@
 # Calls, frames and declaration activation after quiet access
 
-This is a proposed implementation sequence, not an admission or closure report.
-Isset/empty source activation is accepted. Complete request-environment/GLOBALS
-and the combined quiet checkpoint first. The current function, class and signature
-helpers remain prerequisites; ordinary function calls still return Unsupported.
+This sequence now has an accepted first named-call increment; see the
+[source-call contract](SOURCE-CALLS.md) and [independent review](../../coverage/semantics/calls-final-review.json).
+Plain positional value calls, declaration activation, recursion and frame/return
+cleanup execute through the checked source pipeline. The remaining protocols below
+are required work; helper or bounded source evidence does not close whole families.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 
@@ -64,9 +65,9 @@ budget suspension inside argument evaluation, body execution and return cleanup.
 
 The retained direct top-level witness is `copy-unwind-nested-return` in
 `coverage/semantics/foreach-runtime-originals.json`: nested reference foreach
-loops print `13`, then `return 7` skips the trailing `echo "bad"`. Its current
-Unsupported outcome remains assigned to this increment; the new cleanup gate
-must also check both iterator roots and surviving variable reference aliases.
+loops print `13`, then `return 7` skips the trailing `echo "bad"`. The exact source is now `calls0-top-return-alias` in the accepted139 catalogue:
+return7/output13, cleared iterator/task roots and both surviving variable aliases
+are independently checked. Its original Unsupported outcome stays historical.
 
 The first coherent source campaign must cover ordinary named positional calls,
 local/global separation, recursion, implicit and explicit return, alias/copy

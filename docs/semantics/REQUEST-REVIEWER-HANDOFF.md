@@ -1,4 +1,8 @@
-# Independent review continuation: request profile and first calls
+# Historical independent review: request profile and first-call preparation
+
+Current continuation: [first-call reviewer handoff](FIRST-CALLS-REVIEWER-HANDOFF.md).
+The private/pending states below are retained history and are superseded by the
+accepted first-call checkpoint recorded in PROGRESS.md.
 
 Read AGENTS, PLAN, PROGRESS, CORE and the php/php-spec/p4-spectec skills. Root
 orchestrates; runtime5 implements runtime, compiler5 owns compiler/frontend,
