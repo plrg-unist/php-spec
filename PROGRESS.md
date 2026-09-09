@@ -14,7 +14,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 | 1b | Pure binary64 and rounding | Partial — add/sub/mul/div reviewed through helper and scalar source paths |
 | 1c | Numeric text, conversions, formatting, power | Partial — text/formatting/context/power helpers reviewed; source contexts partial |
 | 2a | Slots, aliases, frames and access modes | Partial — scalar bindings/refs reviewed (`5a083605`); frames/global/property access pending |
-| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/unset and variable/element reference sources and targets reviewed; string offsets/foreach pending |
+| 2b | Arrays, strings, lvalues and sequencing | Partial — reads/writes/unset and variable/element reference sources and targets reviewed; pure string reads reviewed; source offsets/foreach pending |
 | 3a | Control, exceptions, diagnostics and unwinding | Pending |
 | 3b | Calls, closures, binding and independent static checks | Partial — local types/signatures reviewed; calls/activation pending |
 | 4a | Class linking, inheritance, traits, visibility and clone | Partial — local class headers reviewed; linking/activation pending |
@@ -30,16 +30,15 @@ timeouts and interrupted campaigns never count as validation passes.
 ## Assignments and interfaces
 
 - Reviewer owns progress/inventory/contracts, independent witnesses and review gates.
-- References agent owns source execution/storage after reviewed ownership `41e8fa2b`;
-  read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Scoped HELD and driver
-  pruning, owning reference results, COW/union and variable-source literal refs
-  `4b954dfa` and CV timing/classification repair `eea66b2d` are reviewed.
-  Element-reference targets `f56e12bc` are reviewed; scalar/string dimensions next.
-- Static worker: structural source-unit occurrences `898f0152` and bounded
-  namespace/import contexts `891c2c95` reviewed; next checked compiler-location
-  metadata and valid import-alias frontend repair, then further declarations.
-  [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md) records reviewed helper
-  interfaces and pending applicability, internal metadata, linking and activation.
+- References agent owns source execution/storage; read
+  [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Element-reference targets
+  `f56e12bc`, numeric-boundary repair `9fc9628f` and pure dimension reads
+  `9ec050a1` are reviewed; pure string writes and source dimensions are next.
+- Static worker owns checked compiler context and source facts. Structural
+  occurrences `898f0152`, bounded namespace/import contexts `891c2c95` and
+  frontend location/import-alias repair `9658958c` are reviewed. Shared constant
+  prepass facts are next. [LINKING-HANDOFF](docs/semantics/LINKING-HANDOFF.md)
+  records pending applicability, internal metadata, linking and activation.
   Coordinate source-unit/task integration with the references owner.
 - Numeric helpers are pure; runner owns PHP values/effects. See NUMERICS.
   Storage uses cells, captured versus delayed operands and internal array IDs.
@@ -54,19 +53,18 @@ timeouts and interrupted campaigns never count as validation passes.
   at full-core scope. `coverage/semantics/` retains bounded reports; git history
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
-- Source machine `f56e12bc`: independently repeated **507 exact source comparisons
-  +25 negatives**; variable/element references, literal entries, COW/union and
-  owning results included. **617 graph +96 boundary cases**, 5,434 assertions,
-  plus 57 independent target topology/timing probes passed. Element assignment
-  replaces the entry's alias; target designation precedes CV initialization,
-  while captured non-CV sources retain an owner across target COW.
-  String dimensions, nonarray reads and source GC remain pending.
-  See [handoff](docs/semantics/ARRAY-HANDOFF.md).
-- CV timing/classification defects are resolved in `eea66b2d`: delayed reference
-  target names now warn before direct source initialization; literal-float names
-  use delayed reads (PHP/spec 4). All nine witnesses are mandatory. The five
-  original disagreements, four controls and accepted resolution remain
-  [retained](coverage/semantics/reference-timing-disagreement.json).
+- Source machine: latest independently repeated **514 exact source comparisons
+  +25 negatives** at `9fc9628f`. Element-reference targets `f56e12bc` additionally
+  passed 617 graph +96 boundary cases and 57 independent topology/timing probes.
+  Entry alias replacement, target-before-CV initialization and captured-source
+  ownership across COW are reviewed. Earlier CV and reference-result defects and
+  mandatory witnesses remain linked in [DISCREPANCIES](docs/semantics/DISCREPANCIES.md).
+  String source dimensions, nonarray reads and source GC remain pending.
+- Pure dimension-read helper `9ec050a1`: **583 runtime comparisons +10 compiler
+  leaves +5 boundaries**, 2,318 assertions; 1,456 independent expanded runtime
+  pairs passed. This helper is unregistered in the source machine; constant leaf
+  folding alone does not establish compiler prepass traversal. See
+  [DIMENSIONS](docs/semantics/DIMENSIONS.md).
 - Numeric-boundary correction `9fc9628f` follows the pin’s suffix/NUL and invalid
   signed-exponent behavior, including wrapped integer results. Independently
   repeated **514 source comparisons +25 negatives**, 1,610 numeric-text, 5,961
@@ -83,14 +81,22 @@ timeouts and interrupted campaigns never count as validation passes.
   identities across all 169 constructors. [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md)
   records 1,497 structural assertions and expanded source checks. These are
   representation checks, with no source compilation/evaluation claim.
-- Namespace/import compiler helper `891c2c95`: **211 original checked prefix
-  comparisons** plus 64 independent alternates passed; 24 explicit seen-symbol
-  inputs, 6 work barriers, 3 environments, 13 resumption/missing-brace cases and
-  4 negatives. The multiline import-line defect is resolved and
-  [raw history retained](coverage/semantics/compiler-context-line-disagreement.json).
-  Anonymous brace locations and 12 valid function/constant alias frontend gaps
-  remain pending. Edited helper cases do not close source gaps; body compilation
-  and source runtime activation remain pending.
+- Namespace/import compiler and frontend repair `9658958c`: **233 original
+  checked prefix comparisons** plus 64 independent alternates passed; 24 explicit
+  seen-symbol inputs, 6 work barriers, 3 environments, 13 resumptions and 4
+  negatives. Checked anonymous-brace locations and valid function/constant import
+  aliases now cross the source frontend. Four encoding profiles/40 metadata checks
+  retain exact transport and reject malformed fields. Ordinary body/default
+  compilation and runtime activation remain pending; 27 grammar rejections remain
+  separately classified. [Raw line history](coverage/semantics/compiler-context-line-disagreement.json)
+  preserves the resolved defect.
+- Full syntax repair audit: **30,980 ordered corpus records**, 30,671 pass,
+  254 parser rejections, 41 individually classified compile-phase differences,
+  6 redirect containers and 8 non-source records. Targeted/generated/deep checks
+  and complete grammar/scanner inventory passed; 539 final syntax inputs match
+  the immutable snapshot. [Audit and commands](coverage/frontend-syntax-repair.json)
+  retain exact corpus membership and fingerprints. Copied executables establish
+  neither a fresh rebuild nor portability; syntax results establish no semantics.
 - **138 independent oracle targets**, 62 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Reference-result defect resolved in `751fbcff`: `($x=&$a)+($a=2)` with `$a=1`
@@ -109,15 +115,12 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Review pure scalar/string dimension helpers before source integration; preserve
-constant-array prepass folding and assignment barriers as well as key conversion,
-diagnostic and temporary-owner timing. All 16 new read/prepass oracle targets are
-mandatory in the next source gate; writable/reference string contexts follow. Element-target
-and array-prepass witnesses remain mandatory. The reviewed compiler helper uses name-derived import/namespace lines. Next
-repair missing anonymous-brace metadata and import-alias frontend acceptance,
-then independently validate the complete syntax corpus in an immutable snapshot.
-The next static source-context traversal and class linking must preserve pinned
-phase ordering and stable literal-occurrence identity.
+Independently review pure string-write/reference-error helpers and shared constant
+prepass facts before source integration. Preserve constant-array folding,
+assignment barriers, key conversion, diagnostic and temporary-owner timing.
+All 16 read/prepass oracle targets and existing element-target/prepass witnesses
+are mandatory in the next source gate. Source-context traversal and class linking
+must preserve pinned phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source
 activation, autoload schedule or production declaration diagnostics.
 Phase1 remains partial: source power, remainder/shifts/bitwise/incdec/casts,

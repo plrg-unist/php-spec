@@ -116,8 +116,10 @@ retain original source bytes, parsed nodes, exact oracle streams/status and the
 helper's diagnostic events under its recorded implementation fingerprint.
 Commit `891c2c95` uses the first imported name, group prefix or named namespace
 location; 211 mandatory prefix comparisons and 64 independent alternates passed.
-Anonymous namespace brace metadata remains an explicit Unsupported boundary when
-a diagnostic needs it. No intentional divergence or source activation is claimed.
+Commit `9658958c` subsequently transports checked anonymous namespace brace
+locations, with 233 source-prefix comparisons and four encoding profiles. Missing
+multiline or invalid locations remain explicit Unsupported boundaries. No
+intentional divergence or source runtime activation is claimed.
 
 
 ## Numeric-string boundary suffixes: resolved specification defect

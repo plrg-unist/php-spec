@@ -2,12 +2,13 @@
 
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
 PHP-Parser 5.8.0 to checked P4-SpecTec values. The complete grammar/scanner
-inventory and 169 constructors pass validation. All 30,976 corpus records are
-classified with no unresolved failures. A fresh offline rebuild and complete
-validation also pass with workspace resources unavailable; see the
-[portability evidence](coverage/portability.json).
-The [validation report](coverage/milestone4.json) records coverage and classified
-outcomes. Executable core semantics are now being implemented; see the
+inventory and 169 constructors pass validation. All 30,980 corpus records are
+classified with no unresolved failures; the [frontend repair audit](coverage/frontend-syntax-repair.json)
+records the full campaign and exact final syntax-input equality with its isolated
+validation snapshot. The earlier [portability evidence](coverage/portability.json)
+records a fresh offline rebuild before this frontend repair; the new audit uses
+copied executables and makes no new rebuild or portability claim.
+Executable core semantics are now being implemented; see the
 [plan](PLAN.md), [progress](PROGRESS.md) and [core contract](docs/semantics/CORE.md).
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
