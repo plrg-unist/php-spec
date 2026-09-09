@@ -47,7 +47,7 @@ class Worker:
                 self.p.wait(timeout=5)
 
 def byte_expr(s):
-    return '[' + ','.join(map(str, s.encode())) + ']'
+    return '[' + ','.join(map(str, s.encode('utf-8', 'surrogateescape'))) + ']'
 
 def type_expr(node):
     if node is None:

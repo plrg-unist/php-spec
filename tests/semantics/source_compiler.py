@@ -30,6 +30,7 @@ LINES=[b'<?php $u=7;\necho [$u, \"abc\"[\n\"1x\"]];',b'<?php $u=7;\necho \"abc\"
 # Rewritten values inherit the prepass compiler line; original scalar leaves do not.
 LINES += [b'<?php $u=1;\necho [\n $u,\n "abc"[\n "1x"\n ],\n];', b'<?php $u=1;\necho [\n 1,\n $u,\n "abc"["1x"]\n];', b'<?php $u=1;\necho [\n $u,\n NAN\n];', b'<?php $u=1;\necho [\n $u,\n true\n];', b'<?php $u=1;\necho [\n $u,\n 1+\n 2\n];', b'<?php $u=1;\necho [\n $u,\n -\n 2\n];', b'<?php $u=1;\necho [\n "abc"[\n "1x"\n]\n];', b'<?php $u=1;\necho [\n $u,\n "last"\n];', b'<?php $u=1;\necho [\n $u,\n $u+\n 2\n];', b'<?php $u=1;\necho [\n $u,\n ($v="abc"[\n "1x"\n ])\n];']
 CASES=[b'<?php use A; echo ${[[]=>1]}; use B;',b'<?php use A; $x=[($u=[&$v[]])]; use B;',b'<?php use A; echo ${[$u=[&$v[]]]}; use B;',b'<?php $u=7; echo ${[$u=["abc"["1x"]]]};',b'<?php $a=[[1]]; $a[0][0] = 2;',b'<?php $a=[[1]]; unset($a[0][]);',b'<?php namespace N; use function A as Self; echo 1;',b'<?php echo 1;',b'<?php $a=[NAN]+[];',b'<?php echo [NAN] === [NAN];',b'<?php $a=[1/0]; use A;',b'<?php $a=[1,2]; echo $a[0];',b'<?php $u=7; $a=[$u,"abc"["1x"]];',b'<?php $u=7; $a=[&$u,"abc"["1x"]];',b'<?php $a=[($u=["abc"["1x"]])];',b'<?php $a=[($u=&$v),["abc"["1x"]]];',b'<?php $a=[&$u[]];',b'<?php $a=[$u,&$v[]];',b'<?php $a=["abc"["1x"]=>$u[]];',b'<?php $a=[$u[]=>"abc"["1x"]];',b'<?php $a=[[]=>1];',b'<?php echo 1; $a=[&$u[]];',b'<?php use A; $a=[&$u[]]; use B;',b'<?php use A; echo 1; use A;',b'<?php use A; {break;} use B;',b'<?php $a=[1]; $a[0]=$a;',b'<?php $a=[1]; $a[0]=&$a;',b'<?php $a=[1]; unset($a[0]);',b'<?php $a=[1]; unset($a[]);',b'<?php $x=&$a[];',b'<?php namespace N; echo 1; use A; echo 2;',b'<?php namespace N {echo 1; use A;} namespace M {echo 2;}',b'<?php use A; {$x=[1,2];echo $x[0];} use B;',b'<?php {echo 1;} {echo 2;}',b'<?php $a=[[NAN],[NAN]]; $x=$a[0] === $a[1];']
+CASES.append(b'<?php use V\\A as X\xff\xc2\x85\xe2\x80\xa8; use V\\B as X\xff\xc2\x85\xe2\x80\xa8;')
 loader=importlib.util.spec_from_file_location('runtime_cases',ROOT/'tests/semantics/validate.py')
 runtime_cases=importlib.util.module_from_spec(loader);loader.loader.exec_module(runtime_cases)
 SOURCE_CASES=[('baseline/'+name,source) for name,source in runtime_cases.CASES.items()]+[('targeted/'+str(i),source) for i,source in enumerate(CASES)]
@@ -51,6 +52,13 @@ def oracle_record(source, checked, command, run):
     return {'source_base64':base64.b64encode(source).decode(), 'ast_sha256':hashlib.sha256(json.dumps(checked['ast'],sort_keys=True).encode()).hexdigest(), 'command':command, 'cwd':str(ROOT), 'status':run.returncode, 'stdout_base64':base64.b64encode(run.stdout).decode(), 'stderr_base64':base64.b64encode(run.stderr).decode()}
 
 def main():
+    # Oracle diagnostics are PHP bytes, including invalid UTF-8 and Unicode
+    # separator sequences that must not be mistaken for physical output lines.
+    raw_message=b'Cannot use X\xff\xc2\x85\xe2\x80\xa8 as Y'
+    probe=subprocess.CompletedProcess([],255,b'',b'Fatal error: '+raw_message+b' in input.php on line 1\n')
+    parsed_message=context.events(probe)[0][1]
+    assert parsed_message.encode('utf-8','surrogateescape')==raw_message
+    assert types.byte_expr(parsed_message)=='['+','.join(map(str,raw_message))+']'
     def expired(signum,frame): raise TimeoutError('compiler worker request exceeded30seconds')
     signal.signal(signal.SIGALRM,expired)
     subprocess.run([str(ROOT/'scripts/opam-exec.sh'),'dune','build','--root',str(types.HERE),'numeric_runner.exe'],cwd=ROOT,check=True,timeout=120)
@@ -139,7 +147,7 @@ def main():
             print(len(ACCESS_CASES),'access sources;',sum(len(probes) for source,probes in ACCESS_CASES),'access paths;',len(SOURCE_CASES),'compiler lint comparisons;',len(LINES),'emission-line observations; 6 Unsupported contexts; 3 metadata boundaries; constant export merge checks passed')
     finally:f.close();a.close()
     assert before==fingerprint(),'watched inputs changed'
-    report={'scope':'ordered compiler work, access and operand descriptors; no source runtime integration', 'profile':types.PROFILE,'oracle_identity':identity,'fingerprint':before,'baseline_cases':len(runtime_cases.CASES),'targeted_lint_cases':len(CASES),'access_sources':len(ACCESS_CASES),'access_paths':sum(len(probes) for source,probes in ACCESS_CASES),'emission_line_cases':len(LINES),'unsupported_contexts':6,'constant_export_checks':['matching duplicate','conflicting scalar','conflicting array ID','missing operand line','missing fact line','incomplete compilation'],'metadata_boundaries':[None,'0','-1'],'cases':records}
+    report={'scope':'ordered compiler work, access and operand descriptors; no source runtime integration', 'profile':types.PROFILE,'oracle_identity':identity,'fingerprint':before,'baseline_cases':len(runtime_cases.CASES),'targeted_lint_cases':len(CASES),'byte_diagnostic_checks':['invalid UTF-8 roundtrip','Unicode separators are not output line breaks'],'access_sources':len(ACCESS_CASES),'access_paths':sum(len(probes) for source,probes in ACCESS_CASES),'emission_line_cases':len(LINES),'unsupported_contexts':6,'constant_export_checks':['matching duplicate','conflicting scalar','conflicting array ID','missing operand line','missing fact line','incomplete compilation'],'metadata_boundaries':[None,'0','-1'],'cases':records}
     (ROOT/'coverage/semantics/source-compiler.json').write_text(json.dumps(report,indent=2)+'\n')
 
 

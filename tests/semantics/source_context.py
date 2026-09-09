@@ -49,7 +49,7 @@ PREFIX='\n'.join([x for x in PREFIX.splitlines() if x.startswith('dec ')]+[x for
 
 def events(run):
     out=[]
-    for line in run.stderr.decode().splitlines():
+    for line in run.stderr.decode('utf-8','surrogateescape').split('\n'):
         if not line.strip() or line=='Stack trace:' or re.match(r'#\d+ ',line): continue
         m=re.fullmatch(r'(?:PHP )?(Warning|Deprecated|Fatal error): (.*) in .* on line (\d+)',line)
         assert m,(run.returncode,run.stdout,run.stderr,line)
@@ -128,12 +128,12 @@ def main():
                     assert not native['accepted'] and run.returncode==255
                     classification='parser-rejection'
                     assert base64.b64decode(parsed['message']).decode()==message,(source,parsed)
-                    rejected.append({'source_base64':base64.b64encode(source).decode(),'classification':classification,'frontend':parsed,'native_parser':native,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+                    rejected.append({'source_base64':base64.b64encode(source).decode(),'classification':classification,'frontend':parsed,'native_parser':native,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode('utf-8','surrogateescape').replace(str(file),'input.php')})
                     continue
                 checked=adapter.request({'op':'check','ast':parsed['ast'],'fixture':True})
                 diagnostics=events(run)
                 fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if plresult = $plstart({i}, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if $pltestok(plresult) = '+str(run.returncode==0).lower()+'\n  -- if $pltestevents(plresult) = '+expected_events(diagnostics,file)+'\n')
-                records.append({'id':'source-'+str(i),'source_base64':base64.b64encode(source).decode(),'source_sha256':hashlib.sha256(source).hexdigest(),'ast_sha256':hashlib.sha256(json.dumps(checked['ast'],sort_keys=True).encode()).hexdigest(),'diagnostics':diagnostics,'oracle_exit':run.returncode,'oracle_stdout':run.stdout.decode().replace(str(file),'input.php'),'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+                records.append({'id':'source-'+str(i),'source_base64':base64.b64encode(source).decode(),'source_sha256':hashlib.sha256(source).hexdigest(),'ast_sha256':hashlib.sha256(json.dumps(checked['ast'],sort_keys=True).encode()).hexdigest(),'diagnostics':diagnostics,'oracle_exit':run.returncode,'oracle_stdout':run.stdout.decode('utf-8','surrogateescape').replace(str(file),'input.php'),'oracle_stderr':run.stderr.decode('utf-8','surrogateescape').replace(str(file),'input.php')})
             for i,source in enumerate(barriers):
                 parsed=frontend.request({'op':'parse','source':base64.b64encode(source).decode()})
                 assert parsed['accepted'],parsed
@@ -149,7 +149,7 @@ def main():
                 path,node=target(checked['ast']['program'])
                 file.write_bytes(source)
                 run=subprocess.run([str(types.PHP),'-n',*types.FLAGS,'-l',str(file)],capture_output=True,env=types.ENV,timeout=10)
-                barrier_records.append({'id':'barrier-'+str(i),'source_base64':base64.b64encode(source).decode(),'path':path,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+                barrier_records.append({'id':'barrier-'+str(i),'source_base64':base64.b64encode(source).decode(),'path':path,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode('utf-8','surrogateescape').replace(str(file),'input.php')})
                 expected='(PCOCCURRENCE '+occurrences.path_term(path)+' '+occurrences.node_term(node)+')'
                 fixtures.append(f'dec $barrier{i}() : bool\ndef $barrier{i}() = true\n  -- if plresult = $plstart(1000, {checked["fixture"]}, {types.byte_expr(str(file))})\n  -- if $pltestwork(plresult) = '+expected+'\n  -- if $pladvance($plteststate(plresult)) = PLUNSUPPORTED "pending statement compilation must supply its final compiler line"\n')
             descriptor_cases=[
@@ -190,7 +190,7 @@ def main():
                         inputs='['+','.join(occurrences.node_term(n) for n in use['fields'][1])+']'
                         i=len(seen_records)
                         fixtures.append(f'dec $seen{i}() : bool\ndef $seen{i}() = true\n  -- if plimports = $pluses('+env+', '+location+', '+inputs+', '+use['fields'][0]['int']+', eps)\n  -- if $pltestimportok(plimports) = '+str(run.returncode==0).lower()+'\n  -- if $pltestimportevents(plimports) = '+expected_events(events(run),file)+'\n')
-                        seen_records.append({'id':'seen-'+str(i),'scope':'import helper with explicitly supplied earlier declaration key','source_base64':base64.b64encode(source).decode(),'seen':[[kind,key]],'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+                        seen_records.append({'id':'seen-'+str(i),'scope':'import helper with explicitly supplied earlier declaration key','source_base64':base64.b64encode(source).decode(),'seen':[[kind,key]],'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode('utf-8','surrogateescape').replace(str(file),'input.php')})
             def parse_ast(source):
                 parsed=frontend.request({'op':'parse','source':base64.b64encode(source).decode()})
                 assert parsed['accepted'],parsed
@@ -228,7 +228,7 @@ def main():
                 else: assertions+='  -- if plresult_final = plresult\n'
                 assertions+='  -- if $pltestok(plresult_final) = '+str(run.returncode==0).lower()+'\n  -- if $pltestevents(plresult_final) = '+expected_events(events(run),file)+'\n'
                 fixtures.append(f'dec $resume{i}() : bool\ndef $resume{i}() = true\n'+assertions)
-                resume_records.append({'id':'resume-'+str(i),'scope':'checked edited namespace shape and/or explicitly supplied successful ordinary compiler result; no body compilation claimed','source_base64':base64.b64encode(source).decode(),'frontend':frontend.request({'op':'parse','source':base64.b64encode(source).decode()}),'native_parser':frontend.request({'op':'oracle','source':base64.b64encode(source).decode()}),'supplied_compiled':resume,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+                resume_records.append({'id':'resume-'+str(i),'scope':'checked edited namespace shape and/or explicitly supplied successful ordinary compiler result; no body compilation claimed','source_base64':base64.b64encode(source).decode(),'frontend':frontend.request({'op':'parse','source':base64.b64encode(source).decode()}),'native_parser':frontend.request({'op':'oracle','source':base64.b64encode(source).decode()}),'supplied_compiled':resume,'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode('utf-8','surrogateescape').replace(str(file),'input.php')})
             # Source-derived anonymous brace metadata supplies the compiler line.
             source=b'<?php namespace N; namespace\n{\n}'
             ast=parse_ast(b'<?php namespace N;')
@@ -263,7 +263,7 @@ def main():
                 else:
                     assertions+='  -- if '+outcome+' = PLERROR pldiagnostic_one*\n'
             fixtures.append('dec $anonymousline() : bool\ndef $anonymousline() = true\n'+assertions)
-            resume_records.append({'id':'anonymous-opening-brace-line','scope':'source-derived checked brace metadata consumed in edited namespace sequence; mutation changes compiler event line; missing edited metadata is Unsupported','source_base64':base64.b64encode(source).decode(),'brace_line':2,'mutated_line':3,'one_line_missing_field':'diagnostic line inferred','one_line_explicit_nonpositive':['0','-1'],'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode().replace(str(file),'input.php')})
+            resume_records.append({'id':'anonymous-opening-brace-line','scope':'source-derived checked brace metadata consumed in edited namespace sequence; mutation changes compiler event line; missing edited metadata is Unsupported','source_base64':base64.b64encode(source).decode(),'brace_line':2,'mutated_line':3,'one_line_missing_field':'diagnostic line inferred','one_line_explicit_nonpositive':['0','-1'],'oracle_exit':run.returncode,'oracle_stderr':run.stderr.decode('utf-8','surrogateescape').replace(str(file),'input.php')})
             seed=parse_ast(b'<?php use A;')
             negative_asts=[]
             missing=copy.deepcopy(seed);missing['program'][0]['meta']={};missing['program'][0]['fields'][1][0]['fields'][1]['meta']={};negative_asts.append((missing,'missing context metadata or edited namespace/import shape'))
