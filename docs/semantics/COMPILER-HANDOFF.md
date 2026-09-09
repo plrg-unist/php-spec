@@ -1,108 +1,140 @@
 # Compiler continuation
 
-Read PLAN, PROGRESS and the php/php-spec/p4-spectec skills first. Never push.
-Use only pinned PHP8.5.10 CLI NTS64, `.tools/php/bin/php` and vendor/php-src;
-meaning belongs in pure SpecTec. Original source bytes, raw failures and frozen
-input identities are required. Unsupported, budgets and tool failures never pass.
-No constructor or core family is complete; only oracle identity closes. Final
-whole syntax and fresh offline rebuild gates remain required.
+Read PLAN, PROGRESS and the php/php-spec/p4-spectec skills. Never push. The target
+is pinned PHP 8.5.10 CLI NTS64; use only `.tools/php/bin/php` and `vendor/php-src`
+as the oracle. Meaning belongs in pure SpecTec. Unsupported, tool failures and
+budget exhaustion never count as agreements. Full core remains unfinished: 169
+constructors, 70 field domains and 306 obligations; only oracle identity closes.
+Final full syntax, fresh offline build and complete core/source closure remain due.
 
-## Accepted prerequisite and ownership
+## Current checkpoint and ownership
 
-PROGRESS records current code/report/review commits. Compound63028b5a and its
-independent review remain accepted. Nullable ordinary arrays and compiler context
-are described in ARRAY-OMISSIONS.md; code9b82507a follows independent
-review of the frozen262-source candidate and its production replay. The two publication adjustments remove
-redundant EOF newlines in10/16 only. Original107, expanded195, first154 and all
-failure archives remain immutable. This bounded prerequisite does not refresh
-complete source closure or admit ordinary operators, unpack or reached lists.
+Quiet/header/name code `a42fddfe`, compiler evidence `cd0f3d3f`, runtime evidence
+`608a8752` and review `f3235689` are accepted. There are 295 selected source
+agreements +18 outcome negatives, eight state programs/3,760 assertions and
+independent source/ownership replay. The compiler group passes 5,336 native lints,
+240 focused traces/12 state-access controls, 90 foreach traces/20 controls and
+111 destructuring traces/32 controls. The remaining foreach compiler boundary is
+object-dependent nullsafe access; calls and object access remain explicit work.
 
-Compiler4 owns compiler45/46 and checked/schema work; runtime3 owns30/31/39 and
-56–63 runtime protocols. Coordinate20 and module catalogs explicitly. Compiler3
-owns independent review, phase ledger, inventory and PROGRESS. Save every watched
-input before evidence/inventory preflight, then hold a stable freeze through gates.
-General coverage archives are distinct from explicit watched oracle dependencies.
-Use canonical project Dune build roots; private helpers must reuse frozen canonical
-executables without rebuilding through their symlinked `_build`. The retained
-omission rebuild incident records restoration of exact original tool hashes.
+The full container campaign `96cbf051` passed 4,997 sources +24 negatives before
+the quiet changes. It remains historical, not refreshed full source closure for
+quiet code. Earlier ordinary, unpack, list and foreach checkpoints are recorded in
+PROGRESS and their contracts. `coverage/semantics/quiet-compiler-group.json` binds
+823 installed inputs and seven private campaign helpers separately; the reports
+retain their actual private execution scopes. The copied Zend compiler reference
+is a read-only test dependency, not a runtime evaluation shortcut.
 
-## Interfaces that must survive
+Compiler4 owns frontend/schema and compiler rules/tests. Runtime successors own
+storage/evaluation integration; review7 independently gates changes and owns the
+phase ledger, inventory and PROGRESS. Coordinate shared20/30/33, module catalogs,
+watched freezes and the Git index. Preserve raw originals before repairs. Draft
+outside watched inputs; preflight before campaigns; freeze complete inputs/tools.
+Private tests must reuse canonical executables without Dune builds through copied
+or symlinked roots. The raw source harness creates exclusive per-run artifacts.
 
-- Occurrence identity is compiled instance plus FIELD/INDEX path, never AST
-  equality or filename. Nullable items retain original indices; generated domains
-  merge old26→12 and27→13, later domains shift by two.169 constructors remain.
-- FACTS, selected-child REDIRECTS, queued WARNINGS and permanent POOLS differ.
-  Only visited PPR reads export constants/redirects; facts beneath folded parents
-  remain roots. Raw selected-child redirects preserve delayed reads; ordinary
-  ternary copies its selected result. Parser literal designation cannot follow
-  arbitrary compiler-fact equality.
-- Array prepass visits original values then keys, continuing after dynamic entries.
-  Hole errors precede pass-two insertion/scalar-unpack errors; preceding original
-  operand lines differ from folded child context. Initial holes retain active
-  compilation context. Explicit barriers and childwalks follow pinned Zend; no
-  catchall unknown expression becomes nonconstant.
-- Classconstant/named ::class lookup remains explicitly Unsupported when required
-  lookup APIs are absent. Discarding a potentially known value changes branch
-  selection; retained Attribute originals prove actual mismatches. Magicconstant
-  context and other pending folds must not be presented as closed prepass scope.
-- Runtime wrappers distinguish writable fetch from reference acquisition; a
-  singleton REF wrapper remains distinct without adding roots. Captured locations,
-  COW arrays, embedded shared references and delayed operand reads remain separate.
-- Compound targets use PPRW before RHS, keys PPR; direct$this is lint-valid and
-  errors at runtime acquisition without object context. Preserve captured DIM
-  final-opcode lines and dynamic-name fetch timing.
-- concatExprLine/nullaryExprLine/cloneExprLine are proven parser contexts, with
-  missing/nonpositive semantic boundaries. Bare null exit requires valid token
-  spans; parenthesized exit uses endLine. Unqualified synthetic exit/die/clone
-  calls use endLine, qualified/relative names keep ordinary name lines. Shared
-  ASCII folding moved16→10 without a change of function meaning.
+## Interfaces to preserve
 
-## Next source milestones
+- Occurrence identity is compiled unit plus FIELD/INDEX path, never AST equality.
+  Ordinary-array items are nullable and retain original indices through holes.
+  Foreach fields remain iterable0/key1/byRef2/value3/body4/keyByRef5.
+- Prepass FACTS, selected-child REDIRECTS, queued WARNINGS, ordinary operand facts
+  and permanent POOLS are different. Only visited PPR operands export constant
+  reads. Retain raw AST lines and parser literal designation; equality of a later
+  constant value cannot recreate a CV name or parser-folded concat.
+- Array prepass visits values then keys, including later entries after dynamic
+  operands. Hole errors precede pass-two insertion/scalar-unpack failures. Initial
+  holes retain compilation context; later holes use the preceding original value
+  or unpack operand line. Explicit Zend barriers/traversals are not a catchall
+  conversion of unknown expressions into nonconstant facts.
+- Class constants and named `::class` that need missing lookup APIs remain
+  Unsupported. Erasing a potentially known value changes branch/error priority;
+  retained builtin Attribute originals demonstrate the actual former defect.
+- `PPCEFFECT`/`CODEEFFECT` preserve ordered original side effects when ordinary
+  compilation returns a known operand. List assignments can return constant
+  operands after target effects; prepass still stops at the assignment. CAST and
+  coalesce produce temporaries absent an earlier AST fold. AND/OR/NOT/comparison
+  can fold while preserving effects. Never replay child conversions twice.
+- List fetch lines and target store lines differ. Nonreference CV RHS is copied
+  before targets and bypasses FETCH_THIS; reference RHS captures the wrapper.
+  Keys precede source fetches, then targets. Holes retain running context;
+  nonreference VAR targets carry their original AST line, reference/DIM targets
+  retain pretarget fetch context, and nested patterns carry their completion line.
+- Wrappers, copied array tables, embedded shared references and delayed operands
+  are distinct. Foreach uses insertion occurrence IDs and per-iterator saved
+  positions across COW descendants, not current item indices or shared lineage
+  progress. Metadata creates no artificial owners. Preserve caller continuations
+  during DIM setup and reset; the original lost-ORIGIN_RETURN defect is retained.
+- Compound targets use PPRW before RHS, keys PPR. Direct `$this` compound/incdec is
+  lint-valid and fails at runtime acquisition without object context. Keep captured
+  DIM final-opcode lines and dynamic-name fetch timing.
+- `concatExprLine`, `nullaryExprLine`, `cloneExprLine` and callable context have
+  source-backed designation and edited-boundary checks. Bare null exit requires
+  token spans; parenthesized exit uses endLine. Unqualified lowered exit/die/clone
+  names use their keyword protocol; qualified/relative names use ordinary calls.
+  Foreach reuses the existing statementBodyLine producer, including UTF-16 profiles.
 
-1. Runtime3 `.tools/runtime-ordinary-final` contains reviewed prerequisite plus
-   ordinary binary/cast/bitnot/void/concat activation. Publish only its bounded
-   13-path delta after prerequisite commit and recheck exact base hashes. Shared
-   pcast API56 differs from compiler CT eligibility. Runtime58 schedules ordinary
-   values;59 handles concat constant conversions and delayed CV resolution.
-   Retain compiler scalar-conversion warnings after both operand compilations and
-   runtime constant-array conversion at final operator line before delayed reads.
-   Parser-folded literalconcat names differ from unary/ternary computed names.
-   Private source gates and pending environment boundaries are separate from the
-   required frozen combined whole-source campaign. `power_complete` belongs09;
-   load06–09 and preserve accepted compound20/54/55 when merging.
-2. Pair actual array unpack with60 shared transfer and61 source tasks. Shared
-   unpack_error_bytes returns byte lists for scalar runtime Error and compiler
-   PFSTATICBYTES. PFSPREAD prepares all operands first; only fully constant arrays
-   fail scalar unpack statically. Array construction calls array_unpack followed
-   by pfinserted to defer append overflow. Integer keys append, strings replace;
-   preserve singleton/shared reference ownership and original paths. Private154
-   exact sources and31state programs/2454assertions are evidence, not production
-   source admission until the coherent compiler/runtime commit is reviewed.
-3. Implement reached destructuring with runtime3 private62/63 tasks. Existing
-   14 reached-list originals remain Unsupported; helpers/task fixtures alone
-   do not close them. Propagate nested reference requirements before RHS, check
-   referenceable RHS/nullsafe before compiling RHS, then evaluate RHS exactly
-   once. Style, empty-list and keyed-hole checks occur after RHS compilation;
-   key compilation precedes target/style validation. Retained20 multiline source
-   controls are `.tools/list-compiler-line-originals.json`.
+## Accepted quiet/header/name behavior
 
-   Unkeyed fetch inherits RHS/previous synthetic-assignment context; keyed fetch
-   uses key ending context. Holes preserve that carry. Synthetic assignment has
-   a ZNODE RHS created at the fetch line: nonreference VAR completion changes
-   carry to original target AST line, while reference/DIM targets preserve fetch
-   line; nested lists export nested completion. The computed name warning line
-   can differ from original VAR line. Do not reuse ppassignmentline's computed
-   variable_line for this special lowering, or use generic target end context.
-   Target acquisition still needs its separate writable ending descriptor.
-   Use original checked targets and occurrence descriptors, not synthetic ASTs.
-Quiet access and the seven request-environment/header boundaries are assigned in
-[QUIET-CV-HANDOFF](QUIET-CV-HANDOFF.md) after containers and before broader calls.
+`PPIS` preserves quiet variable/DIM traversal; nonvariable DIM bases and keys use
+PPR. Property/static/nullsafe quiet execution is still an object dependency.
+Runtime coalesce fetch differs from isset/empty terminal tests, especially for
+string offsets and invalid keys. Do not implement one by silently reusing the
+other's conversion or diagnostics.
 
-4. Foreach needs persistent cursor/bucket ownership through append, deletion,
-   reinsertion, array replacement, rebinding, unset, COW and references. Calls/
-   frames/defaults, linking/objects, properties, exceptions/unwinding, generators,
-   Fibers, dynamic sources and collection follow; see LINKING-HANDOFF.
+`HEADERASSIGNED` is a compilation-unit flag. Direct CV BP_VAR_W marks it, including
+a write compiled inside a dead branch. R, RW, UNSET and IS do not mark it. Direct
+header reads warn only before the flag; computed constant names warn independently.
+Future function/op-array compilation must start the correct fresh flag context.
+List RHS and foreach CV target lowering retain their special compiler protocols.
 
-Namespace-relative static remains the sole intentional divergence, with source
-activation pending. Every other quirk follows the pin. Record bounded evidence
-and pending outcomes separately; finish all core obligations before closure.
+Constant variable names convert during compilation, including array/NaN warnings.
+Keep original child operand facts and pools. Runtime `captured_name` normalizes
+only when `compiled_read` proves that exact name-child occurrence is constant;
+KNOWN alone is insufficient. This covers read/acquire/unset, assignment/reference
+preparation, DIM, list and foreach name capture. Delayed CV operands are not
+resolved early. Twenty-five original duplicate-warning failures are preserved.
+
+Two obsolete name Unsupported checks, the foreach header pending check and three
+list/header/quiet exclusions were retired with exact source/native observations.
+Three quiet object cases and the actual call boundaries remain explicit. No new
+intentional engine divergence was introduced; namespace-relative static remains
+the sole reviewed divergence with source activation still pending.
+
+## Next private candidates — not source admissions
+
+1. Guarded coalescing assignment is in the runtime successor handoff. Compiler
+   `.tools/coalesce-assignment-compiler-checked/frozen-review-inputs.json` binds
+   413 inputs: 266 compiler traces and eight malformed descriptor checks. Separate
+   `.tools/coalesce-assignment-guards` has 16 further exact traces and nine grammar
+   rejects; no speculative nonvariable-LHS source admission was added.
+   `WRITES (pcpath,nat)*` is separate from quiet ACCESS/EXPRESSIONS and exports
+   `CODEWRITE`. The second writable walk revisits VAR/DIM structure using original
+   AST lines and cached child facts, without compiling their effects again. It
+   repeats constant-name conversion diagnostics where Zend does. Descriptors must
+   be positive, unique and attached to PPIS occurrences. Runtime distinguishes
+   delayed CV rereads from captured temporaries; reference-valued temporaries retain
+   wrapper identity. Missing/zero/duplicate code descriptors reject explicitly.
+2. GLOBALS compiler-only revision is frozen at
+   `.tools/globals-name-compiler-checked/frozen-review-inputs.json` (428 inputs),
+   independently reviewed in `c2e3d1ea`. It passes 48 name-key and 16 phase/provenance
+   originals plus retained compiler/metadata regressions. Literal/parser-concat
+   GLOBALS DIM keys convert as global variable names, without the locally scoped
+   header diagnostic. Computed TMP names equal to GLOBALS stay ordinary DIM paths.
+   Direct global unset[] has its special unset-error message; nested GLOBALS[] still
+   gives append rejection. The first wrong-message state is retained. Pair46/71
+   with the guarded runtime candidate; do not overwrite its later ownership fixes.
+3. Isset/empty compiler73 is a private, unreviewed draft at
+   `.tools/isset-empty-compiler-first/73-isset-empty-compiler.watsup`. Its first gate
+   passes 169 native compiler traces: 132 terminal-matrix sources and 37 phase
+   controls. The original40 archive separately retains one grammar rejection and
+   two call/object dependencies. Variable operands use PPIS; empty(nonvariable)
+   compiles as NOT with retained effects; isset(nonvariable) rejects before child
+   compilation. Direct GLOBALS produces the special boolean constant. Multiple
+   isset arguments compile in order. Descriptor/phase expansion and actual source
+   runtime pairing are still required; do not confuse these checks with execution.
+
+Complete request environment, quiet assignment and isset/empty before broader
+calls. Then activate named/class/magic lookup, declarations/defaults, frames/calls,
+linked objects/properties, exceptions, dynamic source and resumable/lifetime/core
+intrinsic protocols. These remain required work, not permanent exclusions.
