@@ -1,0 +1,86 @@
+;; Edited internal code cannot substitute a missing/ambiguous write line.
+dec $code_write_lines(pcodeexpr*, pcpath) : int*
+def $code_write_lines(eps, pcpath) = eps
+def $code_write_lines((CODEWRITE pcpath z) :: pcodeexpr*, pcpath) = z :: $code_write_lines(pcodeexpr*, pcpath)
+def $code_write_lines((CODEWRITE pcpath_other z) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $code_write_lines((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $code_write_lines((CODEEFFECT pcpath_other) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+dec $write_descriptor_ready(pstate, pcpath) : bool
+def $write_descriptor_ready(S, pcpath) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_write_lines(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = [z]
+  -- if $(z > 0)
+def $write_descriptor_ready(S, pcpath) = false -- otherwise
+dec $memoized_write_ready(pstate, pbase, pcpath) : bool
+def $memoized_write_ready(S, BASE_DIM pbase poperand z, pcpath) = ($write_descriptor_ready(S, pcpath) /\ $memoized_write_ready(S, pbase, pcpath ++ [PCFIELD 0]))
+def $memoized_write_ready(S, pbase, pcpath) = $write_descriptor_ready(S, pcpath) -- otherwise
+
+;; Quiet and writable accesses share evaluated operands, but use separate
+;; compiler occurrence lines. REFERENCE temporaries retain their acquired cell.
+dec $memoized_write_base(pstate, pbase, pcpath) : pbase
+def $memoized_write_base(S, BASE_VALUE poperand, pcpath) = BASE_VALUE poperand
+def $memoized_write_base(S, BASE_NAME poperand z, pcpath) = BASE_NAME poperand $runtime_write_line(S, pcpath)
+def $memoized_write_base(S, BASE_DIM pbase poperand z, pcpath) = BASE_DIM $memoized_write_base(S, pbase, pcpath ++ [PCFIELD 0]) poperand $runtime_write_line(S, pcpath)
+
+dec $coalesce_assign_name(pstate, nat*, poperand, int) : pstate
+def $coalesce_assign_name(S, n_name*, poperand, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
+  -- if $this_name(n_name*)
+def $coalesce_assign_name(S, n_name*, poperand, z) = S_read
+  -- if ~$this_name(n_name*)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $coalesce_assign_name(S, n_name*, poperand, z) = $write_name(S_read, n_name*, pvalue)
+  -- if ~$this_name(n_name*)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+dec $coalesce_assign(pstate, pbase, poperand, int) : pstate
+def $coalesce_assign(S, BASE_VALUE (VARIABLE n_name* z_name), poperand, z) = $coalesce_assign_name(S, n_name*, poperand, z)
+def $coalesce_assign(S, BASE_NAME poperand_name z_name, poperand, z) = S_name
+  -- if S_name = $resolve_name(S, poperand_name, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $coalesce_assign(S, BASE_NAME poperand_name z_name, poperand, z) = $coalesce_assign_name(S_name, n_name*, poperand, z_name)
+  -- if S_name = $resolve_name(S, poperand_name, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $coalesce_assign(S, BASE_DIM pbase poperand_key z_key, poperand, z) = $assign_array(S, BASE_DIM pbase poperand_key z_key, poperand, z)
+
+rule PhpStep/coalesce-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_target), COALESCE_ASSIGN_PREP expression_target expression $runtime_line(S, eps, NExprAssignOpCoalesce expression_target expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignOpCoalesce expression_target expression metadata)) :: ptask_tail*
+rule PhpStep/coalesce-assignment-present: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
+  -- if S_read = $quiet_base(S, S.BASE, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if pvalue =/= PNULL
+rule PhpStep/coalesce-assignment-absent: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), COALESCE_ASSIGN_WRITE $memoized_write_base(S, S.BASE, [PCFIELD 0]) $assignment_self(expression_target, expression) z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
+  -- if S_read = $quiet_base(S, S.BASE, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN PNULL
+rule PhpStep/coalesce-assignment-quiet-abrupt: S ~> S_read[.TODO = eps][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
+  -- if S_read = $quiet_base(S, S.BASE, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/coalesce-assignment-write: S ~> S_written[.HELD = S.HELD]
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase false z) :: ptask_tail*
+  -- if S_written = $coalesce_assign($hold_task_inputs(S), pbase, S.RESULT, z)
+rule PhpStep/coalesce-assignment-self: S ~> S_written[.HELD = S.HELD]
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase true z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_written = $coalesce_assign($hold_task_inputs(S_read), pbase, S_read.RESULT, z)
+rule PhpStep/coalesce-assignment-self-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase true z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+
+rule PhpStep/coalesce-assignment-invalid-code: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid memoized write descriptor"]
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if ~$memoized_write_ready(S, S.BASE, [PCFIELD 0])

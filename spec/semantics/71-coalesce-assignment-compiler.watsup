@@ -1,0 +1,86 @@
+;; The second writable walk consumes memoized operand descriptors. It neither
+;; recompiles their children nor changes the first quiet access records.
+dec $ppcoalesceassign(ppstate, pcpath, expression, expression) : ppstate
+dec $ppcoalescethis(ppstate, expression) : ppstate
+dec $ppmemo_at(ppexprdone*, pcpath) : (nat, pvalue?)?
+dec $ppmemo(ppstate, pcpath, expression) : ppstate
+dec $pprefetch(ppstate, pcpath, expression) : ppstate
+dec $pprefetchbody(ppstate, pcpath, expression) : ppstate
+dec $pprefetchname(ppstate, pcpath, phpType32) : ppstate
+dec $pprefetchdim(ppstate, pcpath, phpType5) : ppstate
+dec $ppwritedone(ppstate, pcpath) : ppstate
+dec $ppwrite_at((pcpath, nat)*, pcpath) : nat?
+
+def $pptemporary(NExprAssignOpCoalesce expression_1 expression_2 metadata) = true
+def $ppdispatch(P, pcpath, NExprAssignOpCoalesce expression_1 expression_2 metadata, PPR) = $ppcoalesceassign($ppcoalescethis($ppupdatecheck(P, expression_1), expression_1), pcpath, expression_1, expression_2)
+def $ppcoalescethis(P, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcoalescethis(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $cv_name(phpType32) = ([116,104,105,115])
+def $ppcoalescethis(P, expression) = P -- otherwise
+
+def $ppcoalesceassign(P, pcpath, expression_1, expression_2) = $ppclearvalue($pprefetch($ppassignright($ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPIS), pcpath, expression_1, expression_2, false), pcpath ++ [PCFIELD 0], expression_1))
+
+def $ppmemo_at(eps, pcpath) = eps
+def $ppmemo_at((PPCEFFECT pcpath_effect) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppmemo_at((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = ((n, pvalue?))
+def $ppmemo_at((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+  -- if pcpath =/= pcpath_other
+
+def $ppmemo(P, pcpath, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppmemo(P, pcpath, expression) = $pplocate(P[.FOLD = P.FOLD[.VALUE = pvalue?]], pcpath, $expression_line(expression))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppmemo_at(P.EXPRESSIONS, pcpath) = ((n, pvalue?))
+  -- if $(n > 0)
+def $ppmemo(P, pcpath, expression) = $ppunsupported(P, "missing memoized operand descriptor")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppmemo_at(P.EXPRESSIONS, pcpath) = eps
+
+def $pprefetch(P, pcpath, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pprefetch(P, pcpath, expression) = $ppwritedone($pprefetchbody($pplocate(P, pcpath, $expression_line(expression)), pcpath, expression), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+def $pprefetchbody(P, pcpath, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pprefetchbody(P, pcpath, NExprVariable phpType32 metadata) = $pprefetchname(P, pcpath, phpType32)
+  -- if P.COMPLETION = PPCNORMAL
+def $pprefetchbody(P, pcpath, NExprArrayDimFetch expression phpType5 metadata) = $pprefetchdim($pprefetch(P, pcpath ++ [PCFIELD 0], expression), pcpath, phpType5)
+  -- if P.COMPLETION = PPCNORMAL
+def $pprefetchbody(P, pcpath, expression) = $ppcheck(P, $context_error("Cannot use temporary expression in write context", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pptemporary(expression)
+def $pprefetchbody(P, pcpath, expression) = $ppunsupported(P, "memoized writable operand compilation")
+  -- otherwise
+
+def $pprefetchname(P, pcpath, phpType32) = $ppcv(P, phpType32, PPW)
+  -- if $cv_name(phpType32) = (n*)
+def $pprefetchname(P, pcpath, phpType32) = $ppvarname($ppmemo(P, pcpath ++ [PCFIELD 0], expression), PPW)
+  -- if $cv_name(phpType32) = eps
+  -- if phpType32 = expression
+def $pprefetchdim(P, pcpath, phpType5) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pprefetchdim(P, pcpath, ABSENT) = $ppunsupported(P, "absent memoized dimension key")
+  -- if P.COMPLETION = PPCNORMAL
+def $pprefetchdim(P, pcpath, expression) = $ppclearvalue($ppmemo(P, pcpath ++ [PCFIELD 1], expression))
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppwritedone(P, pcpath) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppwritedone(P, pcpath) = P[.WRITES = P.WRITES ++ [(pcpath, P.LOCATION.LINE)]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $(P.LOCATION.LINE > 0)
+  -- if $ppwrite_at(P.WRITES, pcpath) = eps
+  -- if $ppaccess(P, pcpath) = (PPIS)
+def $ppwritedone(P, pcpath) = $ppunsupported(P, "invalid memoized write descriptor")
+  -- otherwise
+
+def $ppmemo(P, pcpath, expression) = $ppunsupported(P, "missing memoized operand line")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppmemo_at(P.EXPRESSIONS, pcpath) = ((0, pvalue?))
+
+def $ppwrite_at(eps, pcpath) = eps
+def $ppwrite_at((pcpath, n) :: (pcpath_tail, n_tail)*, pcpath) = (n)
+def $ppwrite_at((pcpath_other, n) :: (pcpath_tail, n_tail)*, pcpath) = $ppwrite_at((pcpath_tail, n_tail)*, pcpath)
+  -- if pcpath_other =/= pcpath

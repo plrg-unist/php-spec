@@ -8,6 +8,7 @@ def $code_at(pcode :: pcode_tail*, n) = $code_at(pcode_tail*, n)
   -- if pcode.UNIT =/= n
 dec $code_expression(pcodeexpr*, pcpath) : (int, bool)?
 def $code_expression((CODEEFFECT pcpath_effect) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_expression((CODEWRITE pcpath_write z) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
 def $code_expression(eps, pcpath) = eps
 def $code_expression((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath) = ((z, b))
 def $code_expression((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
@@ -31,6 +32,25 @@ def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
 def $compiled_read(S, porigin) = eps
   -- otherwise
+
+
+
+dec $compiled_writes((pcpath, nat)*) : pcodeexpr*
+def $compiled_writes(eps) = eps
+def $compiled_writes((pcpath, n) :: (pcpath_tail, n_tail)*) = (CODEWRITE pcpath n) :: $compiled_writes((pcpath_tail, n_tail)*)
+dec $code_write(pcodeexpr*, pcpath) : int?
+def $code_write(eps, pcpath) = eps
+def $code_write((CODEWRITE pcpath z) :: pcodeexpr*, pcpath) = (z)
+def $code_write((CODEWRITE pcpath_other z) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $code_write((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $code_write((CODEEFFECT pcpath_other) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+dec $runtime_write_line(pstate, pcpath) : int
+def $runtime_write_line(S, pcpath) = z
+  -- if S.ORIGIN = (PORIGIN n pcpath_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_write(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = (z)
+def $runtime_write_line(S, pcpath) = 0 -- otherwise
 
 
 ;; Constant variable names are converted while compiling. Preserve the original
@@ -61,6 +81,7 @@ def $effect_ancestor((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_parent, pcpath_ch
   -- if $effect_below(pcpath, pcpath_child)
   -- if pcpath =/= pcpath_child
 def $effect_ancestor((CODEEXPR pcpath z b) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_ancestor((CODEWRITE pcpath z) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
 def $effect_ancestor((CODEEFFECT pcpath) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
   -- if ~($effect_below(pcpath_parent, pcpath) /\ $effect_below(pcpath, pcpath_child) /\ pcpath =/= pcpath_child)
 dec $effect_select(pcodeexpr*, pcodeexpr*, pcpath) : pcodeexpr*
@@ -69,6 +90,7 @@ def $effect_select((CODEEFFECT pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_par
   -- if $effect_below(pcpath_parent, pcpath)
   -- if ~$effect_ancestor(pcodeexpr_all*, pcpath_parent, pcpath)
 def $effect_select((CODEEXPR pcpath z b) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $effect_select((CODEWRITE pcpath z) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
 def $effect_select((CODEEFFECT pcpath) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
   -- if ~($effect_below(pcpath_parent, pcpath) /\ ~$effect_ancestor(pcodeexpr_all*, pcpath_parent, pcpath))
 dec $effect_unique(pcodeexpr*, pcodeexpr*) : pcodeexpr*
@@ -207,7 +229,7 @@ def $compile_source(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $compiled_operands(P, P.EXPRESSIONS), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if P.FOLD.MEMORY.REFCELLS = eps
