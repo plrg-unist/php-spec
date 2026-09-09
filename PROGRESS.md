@@ -93,11 +93,12 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Next gates and retained decisions
 
-Heredoc/nowdoc lines are corrected in `4297dadf`; the
-[raw evidence](coverage/semantics/heredoc-line-disagreement.json) retains ten prior
-failures and twelve resolved observations. Filename transport `0270197e` passed
-16 canonical and 24 expanded byte/metadata checks. Integrate the ordered
-compiler and pools before source dimensions. Runtime tasks consume facts by unit/path, while
+The immediate runtime sequence is the compiler/pool source bridge, generic
+scalar/string reads, then string writes/reference errors. The bridge's
+[qualified constant alias gap](coverage/semantics/qualified-constant-alias-disagreement.json)
+requires an explicit temporary Unsupported boundary; the resolver consumer must
+then resolve its four retained failures. Compiler work advances namespace constant
+lookup, then declaration/default and call integration. Runtime facts use unit/path;
 ordinary compilation still visits children below constant-prepass assignment
 barriers. Preserve compiler lines, key conversion, delayed reads and owner timing.
 All 16 read/prepass and eight write/error-order witnesses, plus existing array and
