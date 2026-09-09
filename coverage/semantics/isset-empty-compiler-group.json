@@ -1,0 +1,63 @@
+{
+  "scope": "Canonical isset/empty source admission and GLOBALS/CV compiler prerequisite; GLOBALS runtime/requestbootstrap remains separately pending",
+  "code_commit": "701e39fa",
+  "fingerprint": {
+    "sha256": "afbaa198201e924dbc8256408ca222b107609ed856084e57f406cad9175eb028",
+    "files": 835,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "records": [
+    {
+      "report": "coverage/semantics/globals-compiler.json",
+      "sha256": "ef056138677edbb5bc1f257b68781f97825d1137c95c54b745531d99965f1b90",
+      "scope": "98 exact GLOBALS/compiler-allocation traces and37 allocation/operand/header controls; source execution tested separately",
+      "native_traces": 98,
+      "boundaries": 37,
+      "edited_metadata": 0,
+      "pending": 0
+    },
+    {
+      "report": "coverage/semantics/isset-empty-compiler.json",
+      "sha256": "1c0f29a32b0b040afe9cb74bc312a82f2154973e9755014f1fd8b427b14c4c2f",
+      "scope": "188 exact isset/empty compiler traces,10 known/access/effect controls,10 edited metadata boundaries and2 explicit pending call/object cases; runtime execution tested separately",
+      "native_traces": 188,
+      "boundaries": 10,
+      "edited_metadata": 10,
+      "pending": 2
+    },
+    {
+      "report": "coverage/semantics/coalesce-assignment-compiler.json",
+      "sha256": "522d2860c765d808bd01ed30ec46845c93267606c1e90d26d848a5a5a561688b",
+      "scope": "84 exact compiler traces,22 read/write/effect controls and8 malformed memoization/write descriptor controls; runtime source execution tested separately",
+      "native_traces": 84,
+      "boundaries": 22,
+      "edited_metadata": 0,
+      "pending": 0
+    },
+    {
+      "report": "coverage/semantics/quiet-access-compiler.json",
+      "sha256": "11a9eab85f8e71c9f2b66d1913fbfba2e6d83efc61c20a79da3997ab24f0d9ea",
+      "scope": "240 exact header/name/quiet compiler traces and12 compiler state/access/operand controls; source execution tested separately",
+      "native_traces": 240,
+      "boundaries": 12,
+      "edited_metadata": 0,
+      "pending": 0
+    }
+  ],
+  "coalescing_assignment_malformed_controls": 8,
+  "historical_scope": "Full5336 compiler andfull4997 runtime reports remain historical; current bounded gates do not claim refreshed full quiet closure."
+}
