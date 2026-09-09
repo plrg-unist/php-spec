@@ -1,0 +1,1758 @@
+{
+  "status": "two complete-identical-AST/different-line proofs and two qualified-name controls",
+  "inputs": {
+    "patches/php-parser-grammar.patch": "0b66d1567f19465ee3dce16211a8aca1d4c71ca434c6b8a423367541178d2fbe",
+    "patches/php-parser-printer.patch": "0b24f2ddd0b08b9cb9a985cda3ae8ce498a41acb4bfc22ce48eb3c36073a011a",
+    "scripts/generate-schema.py": "3e4fe1b418e056abb6050716b3d4bc8879f71421e473e370469e1e67c7e5e284",
+    "scripts/node-inventory.php": "619df6330f4922eb63bff80e3f394280d1d736f01e66b090c0dfee28656dc945",
+    "spec/nodes.json": "7c0071aefa26dc1e9e45127b6577bc5671b310485c42f66fb3473530f6ffb397",
+    "spec/php.watsup": "479f0c6377cf1de74b7f323a5b0ddded2f842f62e650a8e475ce1f74d010cb2c",
+    "spec/schema.json": "319123355c51b7fb2320a286d4f347caadf065814c3a78ce20a3e67ae7ca649a",
+    "spec/semantics/11-source-occurrences.watsup": "68bab3c795f62e36e61a178ec636b70e0bb6c447e8d8d5197391176628646e67",
+    "spec/semantics/16-static-types.watsup": "091b64f5e80c1b9eca719e5156b76893c3b4c8ff99bb517d9ea0f44e9d4f41a1",
+    "spec/semantics/17-signatures.watsup": "1e7de9179ede893c39e1e006b0a7332da2687b66bc26c5a99816f9748def55f9",
+    "spec/semantics/18-class-headers.watsup": "ca3b95217292783e5c26b919a5697ae24bc98e4673c0e1bb68f7ec3323019b2b",
+    "spec/semantics/20-machine.watsup": "a616a136d188d616c39dde83731feee0f8524490366dd58c0232fcbb319f9998",
+    "spec/semantics/21-source-context.watsup": "f68dda7b4e62fc62b09e96a8f8c7b8cd02f8597e7a41447e0e8b61756a7821bb",
+    "spec/semantics/30-storage.watsup": "ef549143baf833c0121a70bc519741b3256fc21c2b3d168b056769d9a25e7a2f",
+    "spec/semantics/36-arrays.watsup": "5809f5d87b897e43d14d05fac1bba1cffcfacd8092b293dfae2a3e1cc74ce422",
+    "spec/semantics/37-array-locations.watsup": "142ec8ace1dcf16b6366e47014a05ad83ef981f93772124749656c9e873b6a5b",
+    "spec/semantics/40-control.watsup": "6ad99b834480da59a91f8b764f1f251b1d072482cf7ffb0b01ac37da7fb30994",
+    "spec/semantics/41-array-control.watsup": "f81948389be101b53627cdf6633e1c0031f20d679c4ba9b7bca1186731141da5",
+    "spec/semantics/45-constant-context.watsup": "0679277847b9f8da3b5f991b6f97ca4e251c32d3b2a4163c26f85b414164cbfc",
+    "spec/semantics/46-source-compiler.watsup": "baa8a43e1b8e06afb9ae2a13756d2fde2e81fa13776df689ed7607ec688c4e7a",
+    "spec/semantics/47-control-compiler.watsup": "a3e5bab449365c62e368dc4448cb3fec92bb3a4228d60b6db30c4c51268794a2",
+    "spec/semantics/50-control-flow.watsup": "50999cefc35aae6baef3a6c7d747ebd09c870980561d3586ba88bc9bea9614a4",
+    "spec/semantics/56-casts.watsup": "a491681335f3366488d4c2a6efdb0fa5fa6dac96b3a9012c47130dd4601f8a98",
+    "spec/semantics/modules.json": "4d0910e39e33f04a9a2bb122e8024f873185a4d824be7483a16e5b8f087d35c8",
+    "tests/array_omission_metadata.py": "fc4e4f789eeee11a2b656f68e22b2f2a155ca3ee5b76083f8e38749b004c33d7",
+    "tests/concat_line_metadata.py": "9a2bee9767b3aaabb28fe45ba5755e20d23e2d7f0d2614fe9558ca62a786165d",
+    "tests/nullary_line_metadata.py": "559e61f33cda9d32cb82e59a23c06f23f9f91072a8d0c72396ec47dc5ccf65d7",
+    "tests/semantics/array_omissions.py": "c85b8e85b0f78669a4547a262e031fc97557b357b42411b2aaf5764bc372b50d",
+    "tests/semantics/class_headers.py": "1493b02b6fd78c6cc65fb63594f2ce58cd965ab969007e615d5fa739ecce88e3",
+    "tests/semantics/method_signatures.py": "c397072d734e25106fd5f8899237ce912d4fa8aaa3f79787977a7a726532a4c9",
+    "tests/semantics/signatures.py": "8cbc58d31736900f2c4d6f22ad8c8477e2bf4fc07f8caf4e3554e3b6f403418a",
+    "tests/validate.py": "ef26f24f002ad569150917d74e69bba3e2e8ba92b6d70df0b2d16bf9f7b1971d",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php": "7e47b227bad947abb25e0611dce8e46887364df6bad0d850ebb1ea3934eb026c",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php": "1c1184479caab83c305b0605a7c4eb2c1c8d9264c2d96aeb073608c5e1cb62e6",
+    "vendor/php-parser/lib/PhpParser/PrettyPrinter/Standard.php": "d8c6f2847c94ce5e72f32650b0b26f91810c5bdc4bc75464a9977347a1fb7fa1"
+  },
+  "records": [
+    {
+      "expression": "clone $x",
+      "same_complete_checked_ast": true,
+      "different_native_lines": true,
+      "pair": [
+        {
+          "source_base64": "PD9waHAgW2Nsb25lICR4CiAsCiAsXTs=",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_Clone",
+                                "fields": [
+                                  {
+                                    "node": "Expr_Variable",
+                                    "fields": [
+                                      {
+                                        "bytes": "eA=="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "14"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "4"
+                                      },
+                                      "startFilePos": {
+                                        "int": "13"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "4"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "14"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "4"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "14"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "4"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "21"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "9"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "22"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "10"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "source_base64": "PD9waHAgW2Nsb25lICR4ICAsCgosXTs=",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_Clone",
+                                "fields": [
+                                  {
+                                    "node": "Expr_Variable",
+                                    "fields": [
+                                      {
+                                        "bytes": "eA=="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "14"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "4"
+                                      },
+                                      "startFilePos": {
+                                        "int": "13"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "4"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "14"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "4"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "14"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "4"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "21"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "9"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "22"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "10"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "expression": "clone($x)",
+      "same_complete_checked_ast": true,
+      "different_native_lines": true,
+      "pair": [
+        {
+          "source_base64": "PD9waHAgW2Nsb25lKCR4KQogLAogLF07",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_Clone",
+                                "fields": [
+                                  {
+                                    "node": "Expr_Variable",
+                                    "fields": [
+                                      {
+                                        "bytes": "eA=="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "14"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "4"
+                                      },
+                                      "startFilePos": {
+                                        "int": "13"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "4"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "15"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "5"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "15"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "5"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "22"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "10"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "23"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "source_base64": "PD9waHAgW2Nsb25lKCR4KSAgLAoKLF07",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_Clone",
+                                "fields": [
+                                  {
+                                    "node": "Expr_Variable",
+                                    "fields": [
+                                      {
+                                        "bytes": "eA=="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "14"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "4"
+                                      },
+                                      "startFilePos": {
+                                        "int": "13"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "4"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "15"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "5"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "15"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "5"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "22"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "10"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "23"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "expression": "\\clone($x)",
+      "same_complete_checked_ast": true,
+      "different_native_lines": false,
+      "pair": [
+        {
+          "source_base64": "PD9waHAgW1xjbG9uZSgkeCkKICwKICxdOw==",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_FuncCall",
+                                "fields": [
+                                  {
+                                    "node": "Name_FullyQualified",
+                                    "fields": [
+                                      {
+                                        "bytes": "Y2xvbmU="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "12"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "2"
+                                      },
+                                      "startFilePos": {
+                                        "int": "7"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "2"
+                                      }
+                                    }
+                                  },
+                                  [
+                                    {
+                                      "node": "Arg",
+                                      "fields": [
+                                        null,
+                                        {
+                                          "node": "Expr_Variable",
+                                          "fields": [
+                                            {
+                                              "bytes": "eA=="
+                                            }
+                                          ],
+                                          "meta": {
+                                            "endFilePos": {
+                                              "int": "15"
+                                            },
+                                            "endLine": {
+                                              "int": "1"
+                                            },
+                                            "endTokenPos": {
+                                              "int": "4"
+                                            },
+                                            "startFilePos": {
+                                              "int": "14"
+                                            },
+                                            "startLine": {
+                                              "int": "1"
+                                            },
+                                            "startTokenPos": {
+                                              "int": "4"
+                                            }
+                                          }
+                                        },
+                                        false,
+                                        false
+                                      ],
+                                      "meta": {
+                                        "endFilePos": {
+                                          "int": "15"
+                                        },
+                                        "endLine": {
+                                          "int": "1"
+                                        },
+                                        "endTokenPos": {
+                                          "int": "4"
+                                        },
+                                        "startFilePos": {
+                                          "int": "14"
+                                        },
+                                        "startLine": {
+                                          "int": "1"
+                                        },
+                                        "startTokenPos": {
+                                          "int": "4"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "16"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "5"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "16"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "5"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "10"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "source_base64": "PD9waHAgW1xjbG9uZSgkeCkgICwKCixdOw==",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_FuncCall",
+                                "fields": [
+                                  {
+                                    "node": "Name_FullyQualified",
+                                    "fields": [
+                                      {
+                                        "bytes": "Y2xvbmU="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "12"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "2"
+                                      },
+                                      "startFilePos": {
+                                        "int": "7"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "2"
+                                      }
+                                    }
+                                  },
+                                  [
+                                    {
+                                      "node": "Arg",
+                                      "fields": [
+                                        null,
+                                        {
+                                          "node": "Expr_Variable",
+                                          "fields": [
+                                            {
+                                              "bytes": "eA=="
+                                            }
+                                          ],
+                                          "meta": {
+                                            "endFilePos": {
+                                              "int": "15"
+                                            },
+                                            "endLine": {
+                                              "int": "1"
+                                            },
+                                            "endTokenPos": {
+                                              "int": "4"
+                                            },
+                                            "startFilePos": {
+                                              "int": "14"
+                                            },
+                                            "startLine": {
+                                              "int": "1"
+                                            },
+                                            "startTokenPos": {
+                                              "int": "4"
+                                            }
+                                          }
+                                        },
+                                        false,
+                                        false
+                                      ],
+                                      "meta": {
+                                        "endFilePos": {
+                                          "int": "15"
+                                        },
+                                        "endLine": {
+                                          "int": "1"
+                                        },
+                                        "endTokenPos": {
+                                          "int": "4"
+                                        },
+                                        "startFilePos": {
+                                          "int": "14"
+                                        },
+                                        "startLine": {
+                                          "int": "1"
+                                        },
+                                        "startTokenPos": {
+                                          "int": "4"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "16"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "5"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "16"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "5"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "23"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "10"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "24"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "expression": "namespace\\clone($x)",
+      "same_complete_checked_ast": true,
+      "different_native_lines": false,
+      "pair": [
+        {
+          "source_base64": "PD9waHAgW25hbWVzcGFjZVxjbG9uZSgkeCkKICwKICxdOw==",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_FuncCall",
+                                "fields": [
+                                  {
+                                    "node": "Name_Relative",
+                                    "fields": [
+                                      {
+                                        "bytes": "Y2xvbmU="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "21"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "2"
+                                      },
+                                      "startFilePos": {
+                                        "int": "7"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "2"
+                                      }
+                                    }
+                                  },
+                                  [
+                                    {
+                                      "node": "Arg",
+                                      "fields": [
+                                        null,
+                                        {
+                                          "node": "Expr_Variable",
+                                          "fields": [
+                                            {
+                                              "bytes": "eA=="
+                                            }
+                                          ],
+                                          "meta": {
+                                            "endFilePos": {
+                                              "int": "24"
+                                            },
+                                            "endLine": {
+                                              "int": "1"
+                                            },
+                                            "endTokenPos": {
+                                              "int": "4"
+                                            },
+                                            "startFilePos": {
+                                              "int": "23"
+                                            },
+                                            "startLine": {
+                                              "int": "1"
+                                            },
+                                            "startTokenPos": {
+                                              "int": "4"
+                                            }
+                                          }
+                                        },
+                                        false,
+                                        false
+                                      ],
+                                      "meta": {
+                                        "endFilePos": {
+                                          "int": "24"
+                                        },
+                                        "endLine": {
+                                          "int": "1"
+                                        },
+                                        "endTokenPos": {
+                                          "int": "4"
+                                        },
+                                        "startFilePos": {
+                                          "int": "23"
+                                        },
+                                        "startLine": {
+                                          "int": "1"
+                                        },
+                                        "startTokenPos": {
+                                          "int": "4"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "25"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "5"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "25"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "5"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "32"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "10"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "33"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "source_base64": "PD9waHAgW25hbWVzcGFjZVxjbG9uZSgkeCkgICwKCixdOw==",
+          "command": [
+            "/home/user/workspace/php-spec/.tools/php/bin/php",
+            "-n",
+            "-d",
+            "opcache.enable_cli=0",
+            "-d",
+            "opcache.jit=disable",
+            "-d",
+            "precision=14",
+            "-d",
+            "serialize_precision=-1",
+            "-d",
+            "display_errors=stderr",
+            "-d",
+            "display_startup_errors=1",
+            "-d",
+            "html_errors=0",
+            "-d",
+            "log_errors=0",
+            "-d",
+            "error_reporting=30719",
+            "-d",
+            "date.timezone=UTC",
+            "-d",
+            "output_buffering=0",
+            "-d",
+            "implicit_flush=1",
+            "-d",
+            "zend.assertions=1",
+            "/home/user/workspace/php-spec/.tools/clone-reduction-review.php"
+          ],
+          "native_status": 255,
+          "native_stdout": "",
+          "native_stderr": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZW1wdHkgYXJyYXkgZWxlbWVudHMgaW4gYXJyYXlzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbG9uZS1yZWR1Y3Rpb24tcmV2aWV3LnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+          "checked": {
+            "ok": true,
+            "ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Expression",
+                  "fields": [
+                    {
+                      "node": "Expr_Array",
+                      "fields": [
+                        [
+                          {
+                            "node": "ArrayItem",
+                            "fields": [
+                              null,
+                              {
+                                "node": "Expr_FuncCall",
+                                "fields": [
+                                  {
+                                    "node": "Name_Relative",
+                                    "fields": [
+                                      {
+                                        "bytes": "Y2xvbmU="
+                                      }
+                                    ],
+                                    "meta": {
+                                      "endFilePos": {
+                                        "int": "21"
+                                      },
+                                      "endLine": {
+                                        "int": "1"
+                                      },
+                                      "endTokenPos": {
+                                        "int": "2"
+                                      },
+                                      "startFilePos": {
+                                        "int": "7"
+                                      },
+                                      "startLine": {
+                                        "int": "1"
+                                      },
+                                      "startTokenPos": {
+                                        "int": "2"
+                                      }
+                                    }
+                                  },
+                                  [
+                                    {
+                                      "node": "Arg",
+                                      "fields": [
+                                        null,
+                                        {
+                                          "node": "Expr_Variable",
+                                          "fields": [
+                                            {
+                                              "bytes": "eA=="
+                                            }
+                                          ],
+                                          "meta": {
+                                            "endFilePos": {
+                                              "int": "24"
+                                            },
+                                            "endLine": {
+                                              "int": "1"
+                                            },
+                                            "endTokenPos": {
+                                              "int": "4"
+                                            },
+                                            "startFilePos": {
+                                              "int": "23"
+                                            },
+                                            "startLine": {
+                                              "int": "1"
+                                            },
+                                            "startTokenPos": {
+                                              "int": "4"
+                                            }
+                                          }
+                                        },
+                                        false,
+                                        false
+                                      ],
+                                      "meta": {
+                                        "endFilePos": {
+                                          "int": "24"
+                                        },
+                                        "endLine": {
+                                          "int": "1"
+                                        },
+                                        "endTokenPos": {
+                                          "int": "4"
+                                        },
+                                        "startFilePos": {
+                                          "int": "23"
+                                        },
+                                        "startLine": {
+                                          "int": "1"
+                                        },
+                                        "startTokenPos": {
+                                          "int": "4"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "25"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "5"
+                                  },
+                                  "startFilePos": {
+                                    "int": "7"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "2"
+                                  }
+                                }
+                              },
+                              false,
+                              false
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "25"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "5"
+                              },
+                              "startFilePos": {
+                                "int": "7"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "2"
+                              }
+                            }
+                          },
+                          null
+                        ]
+                      ],
+                      "meta": {
+                        "endFilePos": {
+                          "int": "32"
+                        },
+                        "endLine": {
+                          "int": "3"
+                        },
+                        "endTokenPos": {
+                          "int": "10"
+                        },
+                        "kind": {
+                          "int": "2"
+                        },
+                        "startFilePos": {
+                          "int": "6"
+                        },
+                        "startLine": {
+                          "int": "1"
+                        },
+                        "startTokenPos": {
+                          "int": "1"
+                        }
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "33"
+                    },
+                    "endLine": {
+                      "int": "3"
+                    },
+                    "endTokenPos": {
+                      "int": "11"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

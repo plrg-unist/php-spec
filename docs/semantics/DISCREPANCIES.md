@@ -383,3 +383,21 @@ is retained as an infrastructure failure. Unique ordinal paths now materialize
 every selected source before execution; [independent checks](../../coverage/semantics/compound-path-review.json)
 cover all catalog IDs and ten hostile IDs. The corrected full campaign passes; no
 interrupted run was counted as semantic agreement.
+
+## Omission prepass drafts: preserve failure and pending lookup
+
+Expanded nullable-array preparation initially treated every class-constant fetch
+as nonconstant. Three [originals](../../coverage/semantics/omission-classconstant-originals.json)
+using core `Attribute` constants or a literal class name then visited an invalid
+branch that Zend had skipped. [Independent replay](../../coverage/semantics/omission-classconstant-independent-review.json)
+reproduces all eight full old states, including controls and existing boundaries.
+The corrected private candidate requires explicit Unsupported when constant lookup
+is needed; actual class lookup remains required work, not a resolved source pass.
+
+The final PHP 8.5 keyword audit found eleven actual line mismatches and one control
+in [exit/die/clone originals](../../coverage/semantics/omission-keyword-call-originals.json),
+all [independently reproduced](../../coverage/semantics/omission-keyword-call-independent-review.json).
+Synthetic keyword calls need their closing line; unary clone needs reduction
+lookahead. [Eight checked-AST witnesses](../../coverage/semantics/omission-clone-reduction-review-originals.json)
+prove the missing clone context while qualified/relative calls remain controls.
+Corrections are still private. No engine divergence is intended.

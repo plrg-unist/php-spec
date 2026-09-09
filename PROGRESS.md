@@ -23,7 +23,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Ownership and handoffs
 
-- Runtime successor: remaining ordinary operators/casts, then unpack/destructuring/foreach; `runtime_next` leaves the accepted compound checkpoint and exact private draft hashes.
+- `runtime3`: remaining ordinary operators/casts, then unpack/destructuring/foreach; accepted compound handoff `3b3a7cd6` preserves exact private draft hashes.
 - `compiler4`: nullable ordinary-array frontend/schema and exact prepass traversal, then paired operator and declaration/frame compilation.
 - `compiler3`: independent review, discrepancy history, inventory and concise documentation.
 - Stage owned files, commit reviewed increments, never push. Run evidence/inventory preflight after watched changes and before long campaigns.
@@ -85,17 +85,21 @@ Nullable ordinary Array_.items uses the existing list(ArrayItem|null) domain,
 keeping original indices and exact first-hole context; no ArrayHole node is needed.
 Parser concat metadata records reduction lookahead lines, while pure parser-literal
 classification remains separate from compiler constant facts. The frozen private
-107-source snapshot passes author lint/runtime/resumption/metadata gates; independent
-review repeats 68 revised originals and audits all 34 files. A further 15 prepass
-constructor originals expose explicit Unsupported gaps; compiler4 is resolving exact
-Zend barriers and coalesce/classconstant traversal in a distinct revision. Preserve
-all originals and rebase generated-domain consumers over accepted compound code.
+195-source snapshot passes author lint/runtime/resumption/metadata gates; independent
+review adds 117 retained and 32 new source observations, 72 metadata boundaries and
+all 35 file hashes. Classconstant lookup-as-nonconstant errors are preserved and
+replaced by explicit pending lookup, not claimed agreement. A final keyword audit
+found eleven clone/exit/die diagnostic-line errors plus an empty-shell boundary;
+raw originals are retained. Identical-checked-AST source pairs prove narrow clone
+reduction metadata is necessary. Compiler4 is correcting a distinct snapshot before
+publication and rebasing generated domains over accepted compound code.
 
 Shared cast helpers pass 155 native inputs/496 assertions; independent checks add
 NaN diagnostic attribution and 62 alias/cycle/allocation/abrupt-state assertions.
 Bitnot passes 31 author and 19 independent inputs. Ordinary operator/cast/concat
-runtime task drafts have only elaborated: 805 native originals await paired source
-execution. Cast CT eligibility differs from runtime conversion; parser designation
+runtime task drafts pass 833 initial and 673 expanded exact source observations,
+with seven environment cases explicitly Unsupported; final pairing/review remains
+pending. Five dense loops pass every budget 0–100. Cast CT eligibility differs from runtime conversion; parser designation
 must never follow arbitrary constant-fact equality. Quiet `??=` and computed plain
 write/reference/unset name protocols remain separate boundaries.
 
