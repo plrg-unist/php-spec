@@ -1,0 +1,92 @@
+{
+  "status": "accepted bounded corrective source checkpoint",
+  "implementation": "84d70299",
+  "author_reports": "fa691044",
+  "fingerprint": {
+    "sha256": "055e533c173d3bd16bcdc181b74767da2b66eb75f0b92190c19b7cf79f6a71b1",
+    "files": 782,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "problem": "Ordinary WRITE_DYNAMIC incorrectly called reference-acquiring fetch, marking previously ordinary cells and suppressing later false-to-array warnings.",
+  "design": "Initialized writable fetching preserves existing marker history but creates none; actual reference acquisition marks its successfully acquired cell.",
+  "callsite_audit": {
+    "ordinary_write": "40-control WRITE_DYNAMIC now uses fetch_write_name",
+    "genuine_reference_uses": [
+      "40-control ACQUIRE direct and dynamic",
+      "40-control REF_DYNAMIC_CV normal and source-abrupt branches",
+      "37-array-locations assign_array_reference_cv normal and source-abrupt branches"
+    ],
+    "all_seven_old_acquire_name_uses_checked": true
+  },
+  "original_resolution": {
+    "independent_original_sources": 28,
+    "retained_mismatches": 12,
+    "retained_controls": 16,
+    "all_resolve": true,
+    "raw_originals": {
+      "path": "coverage/semantics/wrapper-dynamic-write-originals.json",
+      "sha256": "8d861fac2e4fef0f2b4b9d9d9dc076e585a46fd2a8cdb124b4aafd8060b482cb"
+    },
+    "independent_originals": {
+      "path": "coverage/semantics/wrapper-dynamic-write-original-review.json",
+      "sha256": "ef6d48fcc63c27bac8401904e7cf241c0eeaf882ae87d3c998fe178f867ec471"
+    }
+  },
+  "independent_validation": {
+    "exact_public_sources": 40,
+    "source_review": {
+      "path": "coverage/semantics/wrapper-dynamic-write-source-review.json",
+      "sha256": "f8aeec22e78e32a34219c707f4e974e76f21c8707772f7ab12c0c2080feec2bb"
+    },
+    "prior_wrapper_sources": 79,
+    "prior_wrapper_review": {
+      "path": "coverage/semantics/wrapper-dynamic-write-prior-wrapper-review.json",
+      "sha256": "72d8beff8e3899ea03dc55947a87cb2bd9e6c7d793dbfed7f1368f14a2d94029"
+    },
+    "marker_state_checks": 49,
+    "state_review": {
+      "path": "coverage/semantics/wrapper-dynamic-write-state-review.json",
+      "sha256": "bfaf0678bf7c078020f96f2f2402e53e7c00d7d35dfb533ee99d1fe363eaa763"
+    },
+    "ownership_graph_cases": 617,
+    "ownership_boundaries": 96,
+    "ownership_assertions": 5434,
+    "ownership": {
+      "path": "coverage/semantics/ownership.json",
+      "sha256": "fb362a06c51d1fef798c17bd37e950144bd39040bcb6d75d5ba2da19935cea4b"
+    },
+    "raw_campaign_audit": {
+      "path": "coverage/semantics/wrapper-dynamic-write-campaign-audit.json",
+      "sha256": "94b31d33b36798f1c9ea227a92c903b91d145ce65f5c8b88ba6aa092c502baf6"
+    }
+  },
+  "author_validation": {
+    "canonical_sources": 30,
+    "canonical_state_programs": 31,
+    "canonical_assertions": 505,
+    "selected_exact_sources": 30,
+    "outcome_negatives": 25,
+    "prior_wrapper_sources": 21,
+    "prior_wrapper_assertions": 396
+  },
+  "preflight": "independently passed 15 identity, 3 path,17 closure negatives,9 ignored-log invariances; inventory169/306 unchanged",
+  "dependencies": "write_fetch.py embeds all28 exact original source bytes and two loops; no newly consumed archive dependency",
+  "limits": [
+    "The full1163-source wrapper campaign is historical; full refresh shares immediately following inc/dec candidate.",
+    "This correction admits no inc/dec, object context or source GC behavior."
+  ]
+}

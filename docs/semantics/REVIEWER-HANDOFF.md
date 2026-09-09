@@ -6,6 +6,19 @@ and frontend, reviewer owns independent evidence, inventory and concise docs.
 Never push. Stage owned files and coordinate index, build starts and watched freezes.
 No PHP semantic family or constructor closes from these bounded checkpoints.
 
+## Latest corrective checkpoint
+
+`84d70299`/reports `fa691044` repairs ordinary WRITE_DYNAMIC incorrectly marking
+reference history. All seven acquire_name call sites were audited; only that
+ordinary writable fetch changes. `fetch_write_name` initializes absent/undefined
+slots without adding markers; true acquisition marks afterward. Existing shared
+or singleton wrappers retain history. [Review](../../coverage/semantics/wrapper-dynamic-write-review.json)
+resolves all28 originals (12 mismatches/16 controls) and adds12 exact controls;
+prior79 wrapper sources,49 state assertions and ownership617+96/5434 pass.
+Selected30 sources/25 negatives and canonical30/505 pass `055e533c`. Helper embeds
+all original bytes; independent evidence/inventory preflight passes. Full source
+refresh shares the immediately following inc/dec gate, not this bounded correction.
+
 ## Accepted wrapper correction
 
 Code `3585707a`, reports `eebf79e9` and
@@ -34,12 +47,16 @@ No intentional divergence was selected. Original mismatch archives remain unchan
 ## Next bounded gates
 
 - Runtime private inc/dec uses `.tools/{20-incdec-compiler,30-incdec,45-incdec-compiler,46-incdec-checked,53-incdec-source}.watsup`.
-  Corrected author gate passes 103 programs/1,512 assertions. Independent earlier
+  Current this-inclusive paths30-incdec-this/40-incdec-this/41-incdec-this/53-incdec-this
+  plus20-incdec-compiler/45-incdec-compiler/46-incdec-this pass140 author programs/2030
+  assertions. Rebase independent dense/public gates onto these after this checkpoint. Independent earlier
   177 programs/2,478 assertions passed but exposed two array-prepass Unsupported
   gaps, retained unchanged in incdec-prepass-originals.json. Review explicit PFSTOP
   depth, static fallback priority and new callable metadata consumption before
-  publication. Canonical draft contains 191 exact source cases; `$this` context is
-  being assessed separately. Pair copied pre/post results, exact error lines,
+  publication. Canonical compiler draft has108 native lints,32 access paths,8 emission lines and12
+  source-context boundaries. Computed write/ref/unset remain previously explicit
+  environment boundaries. Literal concat names are a pending parser-folding context
+  (concat-cv-originals.json); ternary names stay computed. Pair copied pre/post results, exact error lines,
   missing targets, append rules and held locations. Compound updates follow.
 - Callable invocation metadata `c6a7d67d` is independently accepted in
   callable-line-review.json: eight exact old-AST originals (identical pair reports
@@ -62,7 +79,8 @@ No intentional divergence was selected. Original mismatch archives remain unchan
   entries and diagnoses at the preceding nonempty element's original AST line;
   a leading hole retains current compiler context. Preserve prepass order, skipped
   branches and hole indices. Approximately 21 consumer files need deterministic
-  generated-type remapping. Review metadata, generator/adapter/printer and semantic
+  generated-type remapping. Sixteen new exact line originals are retained at
+  `.tools/array-hole-line-originals.json` for later independent review. Review metadata, generator/adapter/printer and semantic
   consumers together. Compiler is retaining multiline/keyed/folded/nested evidence.
 
 [Frontend phase archives](../../coverage/semantics/frontend-phase-originals-review.json)

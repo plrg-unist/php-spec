@@ -52,7 +52,10 @@ and array values, with [independent evidence](coverage/semantics/comparison-revi
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the
-original disagreements and their source-level resolution.
+original disagreements and their source-level resolution. Ordinary computed-name
+writes preserve existing history without creating a reference;
+[corrective review](coverage/semantics/wrapper-dynamic-write-review.json) retains
+the later diagnostic regression and resolution.
 See [semantic design](docs/semantics/DESIGN.md) and
 [numeric reference](docs/semantics/NUMERICS.md) and
 [static checks](docs/semantics/STATIC.md) for interfaces and helper checks.

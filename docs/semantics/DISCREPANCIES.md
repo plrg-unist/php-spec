@@ -333,6 +333,9 @@ Later nested dimension mutation then omitted a required false-to-array deprecati
 and [28 independent observations](../../coverage/semantics/wrapper-dynamic-write-original-review.json)
 retain three original mismatches, nine additional mismatches and sixteen controls.
 Existing references, singleton history and copied assignment results distinguish
-ordinary writable fetch from actual reference acquisition. Correction is pending;
-previous wrapper validation remains historical, not a proof of every protocol.
+ordinary writable fetch from actual reference acquisition. Correction `84d70299` separates initialized writable fetch from actual reference
+acquisition. [Independent resolution](../../coverage/semantics/wrapper-dynamic-write-review.json)
+confirms all 28 originals and 12 additional source controls, 49 marker/state checks
+and the prior wrapper/ownership gates. Full source refresh shares the following
+update campaign; previous wrapper validation remains historical.
 No intentional divergence is selected.

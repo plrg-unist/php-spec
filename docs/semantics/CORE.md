@@ -182,6 +182,7 @@ reviewed through compiler-pool installation and loop source execution.
 Reference wrapper identity can outlive other aliases. Owner counts alone cannot
 recover the pinned false-to-array FETCH diagnostic behavior after singleton unset;
 the [reviewed wrapper state](REFERENCE-WRAPPERS.md) records that history without
-adding heap roots. [Independent resolution](../../coverage/semantics/reference-wrapper-review.json)
+adding heap roots. Ordinary writable-name fetch initializes storage without
+creating that marker; actual reference acquisition marks it. [Independent resolution](../../coverage/semantics/reference-wrapper-review.json)
 preserves the original differences and confirms intermediate FETCH/UNSET versus
 final mutation warnings. This introduces no new intrinsic or environment boundary.

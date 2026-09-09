@@ -36,9 +36,12 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 ## Latest accepted checkpoints
 
-**Active correction:** ordinary computed-name writes incorrectly acquire reference
-history after `3585707a`. Four author originals and 28 independent observations
-retain twelve mismatches; repair this admitted regression before inc/dec publication.
+Computed-write correction `84d70299`/reports `fa691044` fixes an admitted
+reference-history regression. [Independent review](coverage/semantics/wrapper-dynamic-write-review.json)
+resolves all 28 retained originals (12 mismatches/16 controls), adds 12 timing/COW
+sources, and passes 79 prior wrapper sources, 49 state checks and ownership
+617+96/5,434. Canonical 30-source/505-assertion and selected 30-source/25-negative
+gates pass on `055e533c`; full source refresh shares the following inc/dec gate.
 
 The inventory has **169 constructors and 306 runtime obligations**. Only
 [oracle selection/identity](coverage/semantics/oracle-pin-review.json) closes;
@@ -46,7 +49,7 @@ no constructor or PHP semantic family closes. Closure governance `ffdc131d`
 requires exact original-source/raw-byte bindings, independent review and current
 fingerprints. `--complete` must reject unfinished or stale entries.
 
-Reference-wrapper correction `3585707a` and reports `eebf79e9` pass
+Historical reference-wrapper correction `3585707a` and reports `eebf79e9` passed
 **1,163 exact sources +25 outcome negatives** on `1f71f10d`.
 [Independent review](coverage/semantics/reference-wrapper-review.json) verifies
 79 public sources, 72 replay programs/1,288 assertions and 45 additional state
@@ -55,18 +58,10 @@ and integrated; five prior mismatches now agree. Singleton wrapper history adds
 no roots, COW/union copies can unwrap independently, and intermediate FETCH/UNSET
 warnings remain distinct from final dimension mutation. No divergence was added.
 
-The stable closure also passes canonical wrappers 21 sources/396 assertions,
-compiler 1,205 lints +15 emission observations, origins 25/333, bridge 15/148 and
-ownership 617+96/5,434. The raw audit checks every ordered source ID, byte string,
-hash and exact stdout/stderr/status. Preflight passes 15 identity, three path and
-17 closure negatives, plus nine build-log invariances. The new helper embeds its
-source bytes; it introduces no consumed archive dependency. Source GC remains pending.
-
+That historical closure includes origins, compiler bridge and ownership gates.
 [Comparison review](coverage/semantics/comparison-review.json) retains `0e065cc6`:
-38 independent sources, 34 compiler alternatives/24 access checks and six dense
-replays/4,974 assertions. Both overflow draft mismatches and all 48 phase originals
-remain resolved and source-integrated. Earlier comparison campaigns are historical
-fingerprints; the current source gate includes their cases.
+38 independent sources, 34 compiler alternatives and six dense replays/4,974 checks.
+Its overflow and phase originals remain unchanged and source-integrated.
 
 First-hole metadata `87341500` is independently accepted in `79951ad4`:
 31 author profiles/409 checks, 20 additional profiles/140 checks, and 12 exact
@@ -95,7 +90,8 @@ and 24 native error-line witnesses. Its semantic consumer remains a separate gat
 Pair four inc/dec forms with compiler PPRW access, then compound lvalues and the
 remaining numeric/string operations. The private update draft is not
 admitted; independent probes retained two missing array-prepass barriers and a control.
-The corrected private draft passes 103 author programs; acceptance remains pending.
+The corrected private draft passes 140 author programs/2,030 assertions, including
+top-level `$this` contexts; independent acceptance remains pending.
 Preserve acquisition timing, copied pre/post results, error lines,
 append legality and held locations. Coalescing assignment needs a separate quiet
 read and memoized write path.
