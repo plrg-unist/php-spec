@@ -47,10 +47,11 @@ and namespace fallback rules, and ordinary arguments compile left to right. The 
 haystack prepass and builtin write-result checks are specified in
 [the builtin compiler contract](BUILTIN-CALL-COMPILER.md). An earlier
 compiler error survives later unsupported argument forms. Normalized signatures
-with types, defaults, reference returns or variadics remain explicit activation
-boundaries until their runtime checks and bindings are connected. Nonliteral
-defaults retain the existing constant-expression boundary. These are assigned
-next work, not permanent exclusions or native agreements.
+with types, reference returns or variadics remain explicit activation boundaries.
+[Compiler90](DEFAULT-PARAMETER-COMPILER.md) connects signature17 suspension to the
+shared constant compiler for untyped defaults, including actual parameter roots
+and emitted receive lines. Paired [runtime91](SOURCE-POSITIONAL-DEFAULTS.md) admits
+omitted receives and caching; remaining type/object forms are later core work.
 
 The pinned source routes are `zend_compile_top_stmt`, `zend_compile_func_decl_ex`,
 `zend_begin_func_decl`, `zend_compile_params`, `zend_compile_return`,

@@ -1,104 +1,65 @@
-# User constants and untyped positional defaults
+# Untyped defaults checkpoint and continuation
 
-Current accepted baseline: user-constant code5151608e, canonical899/ca3c06e5.
-The [independent review](../../coverage/semantics/user-constant-review.json) retains
-original899/e7d552ec gates and the one-test correction bridge.
-Historical reference baseline884/7399e812 and all native/current884 originals
-retain their original identities.
-This is the next bounded stage of the complete-core plan. Runtime6 owns runtime,
-compiler6 owns current compiler work, and review9 owns independent review.
-Compiler5 authored the accepted constant and historical signature prerequisites. No default
-source admission is claimed by this plan.
+Compiler90/runtime91 are independently accepted at c7cb1b44 on exact909/e25eb2b9:
+code1fce6586, compiler2b247d81 and runtime8151b96d. The
+[review](../../coverage/semantics/default-parameter-review.json) binds native
+originals, complete states, source projections, raw protocols and production CLI.
+This is a bounded stage of complete core; callable and constant families stay partial.
 
-## Coherent acceptance units
+## Accepted units
 
-1. Accepted: ordinary user-constant declaration, lookup and value ownership through
-   compiler88/runtime89. Positive defaults need this prerequisite. Preserve
-   declaration-time activation, sequential declarations, namespace/import/fallback
-   resolution, case-insensitive namespace prefixes and case-sensitive terminal
-   names, duplicate diagnostics, selected/skipped
-   constant-expression branches, original lines and abrupt cleanup. Constant table
-   values must own their arrays and preserve COW across reads and function calls.
-2. Integrate untyped positional defaults through compiler90/runtime91, starting
-   from the accepted constant checkpoint. Supply arguments first, enter the real
-   callee, receive omitted defaults in parameter order, then execute the body.
-   Supplied arguments never evaluate their defaults. Defaults before a later
-   required parameter are compiled and diagnosed but have no optional receive.
-3. Add types and reference returns in later call milestones. Variadics,
-   named/unpacked arguments, other callable forms and the remaining full core
-   stay explicit; this plan supplies no family closure.
+1. Ordinary user constants through compiler88/runtime89 supply ordered activation,
+   namespace/import/fallback lookup, value ownership and nonowning allocation
+   provenance. Their [899 review](../../coverage/semantics/user-constant-review.json)
+   and test-only correction bridge retain their historical identity.
+2. Untyped positional defaults through compiler90/runtime91 supply omitted receives
+   after provided binding and callee activation. Supplied arguments skip evaluation.
+   Declaration contexts, cache provenance, fresh reference cells, array COW and
+   abrupt cleanup are accepted in the [runtime contract](SOURCE-POSITIONAL-DEFAULTS.md).
+3. Lexical strictness, parameter/return types and reference returns follow. Named,
+   unpacked and variadic arguments, other callables, object defaults and the
+   remaining [core checklist](CORE-CONTINUATION-CHECKLIST.md) are required later work.
 
-## Shared interface and constraints
+## Interface and retained constraints
 
-The private signature17 prototype exposes a suspension after parameter guards
-and before default/type/optional normalization. Start/resume reuse the existing
-signature fold; legacy literal-only consumers retain their wrapper. The prototype
-on historical877 is helper preparation, with357 native signatures,28 descriptors,
-174 reference-return flags and eight shared-folder suspension controls. It is not
-an accepted replacement for current899.
+The [compiler contract](DEFAULT-PARAMETER-COMPILER.md) connects the byte-exact
+historical signature17 suspension to shared constant compiler45. Actual default
+origins are `declaration ++ [PCFIELD 3, PCINDEX i, PCFIELD 6]`. Default policy
+prevents ordinary/persistent constant substitution while preserving true/false/null
+and original declaration context. Every parameter emits its receive opcode line.
 
-The source compiler resolves each request using existing constant compiler45 at
-`declaration ++ [PCFIELD 3, PCINDEX i, PCFIELD 6]`. Parameter defaults disable
-ordinary/persistent constant substitution, preserve true/false/null, and establish
-original declaration magic/namespace/import context. Folding precedes validation
-of the remaining constant expression, so an invalid skipped arm can disappear.
-No second constant evaluator or host execution supplies semantics.
+`pfunction.DEFAULTS` contains ordered zero-based source indexes, original origins
+and `PDSTORED | PDDEFERRED`. Compiled pool/code roots include defaults dropped by
+required-after-optional normalization; receive/cache roots require surviving
+descriptors. Stored defaults borrow the existing pool. Deferred receives reuse
+actual expression evaluation and the constant observer. Public guards project
+source descriptors and validate runtime shape/ownership without reconstructing
+arbitrary legitimate values or their execution history.
 
-The agreed descriptor is `pdefault {INDEX nat, ORIGIN porigin, KIND pdefaultkind}`,
-with `PDSTORED | PDDEFERRED`, in ordered `pfunction.DEFAULTS`. Entries use zero-based
-source parameter indexes and survive only when signature normalization retains a
-default. Stored defaults borrow the existing unit constant pool;
-deferred defaults use original source and compiled code roots. Descriptor and
-root validation must be derived from checked source without reconstructing
-arbitrary runtime values. Compiled pool/code roots still include defaults dropped
-by required-after-optional normalization; receive/cache roots require a surviving
-descriptor. Extend the current NConst-only class guard atomically with admission.
-Omitted reference parameters receive fresh ordinary
-cells; actual alias acquisition promotes them, as in the pinned RECV_INIT.
+The owning DEFAULTCACHE table retains values plus nonowning classes. Cacheability
+comes from actual [allocation operations](CONSTANT-VALUE-CLASSES.md), never final
+string length. Successful non-refcounted, side-effect-free results can be cached;
+failed evaluation adds no entry, while previous successful entries survive later
+errors. Pinned RECV_INIT installs an evaluated cache before subsequent type checks.
+NEW is the only pinned AST side-effect setter and remains unadmitted: object
+activation must extend the cache condition atomically. Fresh omitted by-reference
+parameters begin as ordinary cells and are promoted only by actual alias acquisition.
 
-Runtime91 plans an origin-keyed cache of owning `VALUE` plus nonowning `CLASS`,
-explicit default receive/bind tasks and a source-typed receive context using the
-existing observer.
+## Evidence and next review
 
-Deferred receive caching is observable. Native originals show warnings once for
-cacheable scalar/empty results and repeated warnings for refcounted array/string
-results. String length alone does not identify cacheability. The [allocation-class contract](CONSTANT-VALUE-CLASSES.md) now records the
-pinned constructors and source-derived provenance. Default receive/cache
-activation must replay the retained original observations. Cache entries and constant values must retain their actual ownership;
-failures must not install successful cache entries or execute the body. Pinned
-RECV_INIT also requires no AST side effects. The only current pinned setter is
-NEW, which remains unadmitted; no speculative side-effect bit is needed in this
-scalar/array stage, but object admission must extend the predicate atomically.
-Empty strings and arrays can also be allocated; constant folding and runtime
-null-to-array casts differ. Transfer rules must preserve these source operations.
+The retained119 default/cache profiles were replayed on accepted899 before repairs;
+116 were Unsupported and three already agreed. Their
+[baseline archive](../../coverage/semantics/default-review-current-baseline.json)
+and [diagnosis](../../coverage/semantics/default-review-diagnosis.json) preserve
+original contexts, source bytes and failures. Final acceptance adds focused arity,
+cache-failure and coalesce controls, source/owner/resume gates and two complete
+historical no-default state bridges. Original compiler filename mismatch, fixture
+failures and interpreter nondeterminism remain classified separately from agreement.
 
-## Evidence and review gates
-
-Preserve native lint/run bytes, checked ASTs, complete accepted-baseline failure states,
-original file/request profiles and actual executable/source hashes before edits.
-Current independent originals cover omitted/supplied errors, selected/skipped
-invalid defaults, required-after-optional, declaration magic/imports, repeated
-array/reference defaults, escaped aliases, warning-cache result kinds and user
-constant activation/fallback. Old agreeing cases remain agreements under their
-original identity; Unsupported, timeouts and setup errors remain separate.
-119 independent default/cache observations remain for the receive stage,
-including the separate11 literal-constructor controls. Their exact native/source
-contexts now have a separate [current899 replay](../../coverage/semantics/default-review-current-baseline.json):116 Unsupported and three existing
-required-after-optional agreements, preserving original884 outcomes separately.
-The [106-source preparation](../../coverage/semantics/default-review-preparation.json)
-and [56-source diagnosis](../../coverage/semantics/constant-review-diagnosis.json)
-retain the exact old states, allocation observations and compiler boundary failures.
-
-Before each acceptance unit, replay exact native sources on frozen paired inputs,
-check descriptor projections and bounded public metadata corruptions, and run
-meaningful owner/state cuts, adjacent resumes, selected full resumes and cleanup.
-Review shared constant/compiler effects with focused existing gates; broaden only
-for a concrete unresolved shared risk. Publish small code/evidence/review/docs
-commits with exact production bridges. Final current-source/full-syntax/fresh
-offline and complete-core validation remain required.
-
-Authority: pinned `vendor/php-src`34308a6666b2d489c509541ea9befea9e2b42348;
-Zend compiler `zend_compile_const_decl`, `zend_compile_params`,
-`zend_const_expr_to_zval`, `zend_eval_const_expr`; VM DECLARE_CONST/RECV_INIT;
-Zend AST evaluator and constant registration/lookup. The sibling development
-source is not the oracle.
+The [reviewer handoff](DEFAULTS-REVIEWER-HANDOFF.md) binds private strict92/type
+preparation and the next audit. Preserve new concrete native/current909 failures
+before repair; derive finite descriptor/task invariants from actual source. Broaden
+regressions for changed shared paths or unresolved risk, not unchanged counts.
+Full current-source/full-syntax/fresh offline and complete-core validation remain
+mandatory. Authority is pinned `vendor/php-src` commit
+34308a6666b2d489c509541ea9befea9e2b42348, PHP8.5.10 CLI NTS64.

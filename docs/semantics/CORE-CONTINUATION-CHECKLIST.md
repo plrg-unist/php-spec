@@ -25,12 +25,15 @@ claim that the inventory dependency graph is complete.
   Frozen899/e7d552ec gates bridge to899/ca3c06e5 through one corrected state-test
   assertion. Constant-family closure, PHP_VERSION value reads, class/callable
   constants and dynamic registration remain pending.
-- [ ] Complete defaults, parameter/return types and reference returns. Reuse
-  existing signature/type/constant helpers; preserve caller/body strictness,
-  original default context, folding/diagnostic order and materialization ownership.
-  The [defaults phase plan](DEFAULTS-ACTIVATION-PLAN.md) now proceeds through
-  compiler90/runtime91.119 independent default/cache observations and historical
-  signature17 suspension evidence remain preparation, with no defaults activation.
+- [x] Untyped positional defaults through compiler90/runtime91 are accepted at
+  c7cb1b44 on exact909/e25eb2b9. The [review](../../coverage/semantics/default-parameter-review.json)
+  binds original-context receives/caches, fresh reference/array owners, shared
+  opcode-line/readiness repairs, four independent states / 1,091 assertions and CLI8.
+- [ ] Complete lexical strictness, parameter/return types and reference returns.
+  Reuse signature/type/constant helpers; preserve caller/body strictness, cached
+  defaults before type verification, diagnostic order and materialization ownership.
+  The [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) binds private strict92
+  preparation; typed/object defaults and remaining callable forms stay open.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

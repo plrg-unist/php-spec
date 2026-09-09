@@ -2153,10 +2153,23 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/17-signatures.watsup"
+        "spec/semantics/17-signatures.watsup",
+        "spec/semantics/90-parameter-defaults.watsup",
+        "spec/semantics/91-default-parameters.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
+      "source_tests": [
+        "tests/semantics/default_parameters.py",
+        "tests/semantics/default_runtime_cases.json",
+        "tests/semantics/default_parameter_protocol.py",
+        "tests/semantics/default_parameter_state.py",
+        "tests/semantics/default_readiness_protocol.py",
+        "coverage/semantics/default-parameter-review.json",
+        "coverage/semantics/default-parameters.json",
+        "coverage/semantics/default-parameter-protocol.json",
+        "coverage/semantics/default-parameter-state.json",
+        "coverage/semantics/default-readiness-protocol.json"
+      ],
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. Typed/object defaults, strict checks and remaining callable protocols stay pending; NParam promotion/variadic obligations also remain open.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json"
@@ -6159,18 +6172,31 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/17-signatures.watsup"
+        "spec/semantics/17-signatures.watsup",
+        "spec/semantics/90-parameter-defaults.watsup",
+        "spec/semantics/91-default-parameters.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/default_parameters.py",
+        "tests/semantics/default_runtime_cases.json",
+        "tests/semantics/default_parameter_protocol.py",
+        "tests/semantics/default_parameter_state.py",
+        "tests/semantics/default_readiness_protocol.py",
+        "coverage/semantics/default-parameter-review.json",
+        "coverage/semantics/default-parameters.json",
+        "coverage/semantics/default-parameter-protocol.json",
+        "coverage/semantics/default-parameter-state.json",
+        "coverage/semantics/default-readiness-protocol.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent reviewer: local signature helper ac5bc703;357 checked signature/lint comparisons,28 descriptors,174 return-reference flags,4 edited minimum-int descriptors,14 Unsupported;2 frontend compiler restrictions and2 equivalent edited checks are separate. Expanded reviewer matrix458 comparisons passed. Source activation, default materialization, constant imports and call binding remain pending.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. Typed/object defaults, strict checks and remaining callable protocols stay pending; NParam promotion/variadic obligations also remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php",
         "tests/semantics/conformance/parameter-global-relative-null.php",

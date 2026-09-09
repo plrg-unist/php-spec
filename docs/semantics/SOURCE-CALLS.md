@@ -87,7 +87,11 @@ in [independent acceptance](../../coverage/semantics/reference-parameter-review.
 
 ## Remaining call protocols
 
-Reference returns, defaults, variadics, named and unpacked arguments,
+[Untyped positional defaults](SOURCE-POSITIONAL-DEFAULTS.md) extend these frames
+with omitted receives, declaration-context evaluation and owning deferred caches.
+Parameter CODEEXPR entries preserve emitted receive lines for missing arguments.
+
+Reference returns, typed defaults, variadics, named and unpacked arguments,
 typed/strict argument and return enforcement, closures, variable calls, methods,
 objects, dynamic source units, handlers/finally and generators/fibers remain
 separate planned increments. Unsupported outcomes for those boundaries and
