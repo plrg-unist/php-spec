@@ -222,3 +222,11 @@ two controls. Both implementations suppress prior runtime output; the fatal
 line differs. A narrow ending-line correction and permanent source regressions
 are required before accepting the next source checkpoint. Numeric/expressive
 break depths and valid loop targets remain a separate pending control milestone.
+
+The first ending-line correction resolves those six cases but regresses closing
+tags: `break ?>` followed by a newline has checked `endLine=2`, while PHP reports
+line1. Six further observations (two admitted candidate regressions and four
+controls) are preserved in the same report. A closing tag can consume a newline
+without advancing the compiler line used for this statement. Ordinary AST end
+line alone is insufficient; the checked terminator/compiler line must be retained.
+The candidate remains unaccepted until these cases also agree.
