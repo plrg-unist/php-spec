@@ -74,17 +74,27 @@ dec $reference_cell(pstate, nat) : pstate
 def $reference_cell(S, n) = S -- if n <- S.REFCELLS
 def $reference_cell(S, n) = S[.REFCELLS = n :: S.REFCELLS] -- if ~(n <- S.REFCELLS)
 
-dec $acquire_name(pstate, nat*) : pstate
-def $acquire_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+;; Ordinary writable-name fetching initializes the slot without creating a
+;; reference wrapper. Reference-source acquisition adds the marker afterward.
+dec $fetch_write_name(pstate, nat*) : pstate
+def $fetch_write_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_name(n_name*)
-def $acquire_name(S, n_name*) = $reference_cell(S_found, S_found.CELL)
+def $fetch_write_name(S, n_name*) = S_found
   -- if ~$environment_name(n_name*)
   -- if S_found = $ensure(S, n_name*)
   -- if S_found.STORE[S_found.CELL] = DEFINED pvalue
-def $acquire_name(S, n_name*) = $reference_cell(S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED PNULL)], S_found.CELL)
+def $fetch_write_name(S, n_name*) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED PNULL)]
   -- if ~$environment_name(n_name*)
   -- if S_found = $ensure(S, n_name*)
   -- if S_found.STORE[S_found.CELL] = UNDEFINED
+
+dec $acquire_name(pstate, nat*) : pstate
+def $acquire_name(S, n_name*) = S_found
+  -- if S_found = $fetch_write_name(S, n_name*)
+  -- if S_found.COMPLETION =/= NORMAL
+def $acquire_name(S, n_name*) = $reference_cell(S_found, S_found.CELL)
+  -- if S_found = $fetch_write_name(S, n_name*)
+  -- if S_found.COMPLETION = NORMAL
 
 dec $missing(pstate, nat*, int) : pstate
 def $missing(S, n_name*, z) = S[.RESULT = KNOWN PNULL][.EVENTS = S.EVENTS ++ [WARNING n_name* z]]

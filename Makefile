@@ -50,4 +50,5 @@ test-semantics: build
 	python3 tests/semantics/comparison_compiler.py
 	python3 tests/semantics/comparison.py
 	python3 tests/semantics/reference_wrappers.py
+	python3 tests/semantics/write_fetch.py
 	python3 tests/semantics/validate.py
