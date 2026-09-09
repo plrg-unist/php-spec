@@ -81,7 +81,10 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 ## Next gates and retained decisions
 
 Review ordered compiler work, then install permanent compiled-unit pools before
-source dimensions. Pool roots must survive temporary cleanup; installation must
+source dimensions. The draft currently loses effective lines on constant AST
+replacements: six raw disagreements and four controls are retained in
+[DISCREPANCIES](docs/semantics/DISCREPANCIES.md); correction is required before
+compiler acceptance. Pool roots must survive temporary cleanup; installation must
 reserve disjoint allocation IDs. Runtime tasks consume facts by unit/path, while
 ordinary compilation still visits children below constant-prepass assignment
 barriers. Preserve compiler lines, key conversion, delayed reads and owner timing.

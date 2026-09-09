@@ -142,3 +142,23 @@ source fixtures retain the principal discriminators. Correction `9fc9628f` follo
 the pin and keeps explicit float casts separate from the numeric classifier. All
 104 observations now agree; the independent 514-source gate and expanded numeric
 helper campaigns pass. No intentional divergence or family closure is selected.
+
+
+## Constant replacement lines: unresolved compiler-helper defect
+
+The ordered compiler draft locates a folded expression using its original AST
+line. Zend's `zend_eval_const_expr` instead creates its replacement ZVAL with
+`zend_ast_create_zval`, whose line is the current compiler invocation line.
+For a dynamic array beginning with a variable on line 3 and a folded string DIM
+on line 4, the native outer array-to-string warning is on line 3; the draft
+expression descriptor records line 4.
+
+[Ten independent observations](../../coverage/semantics/constant-rewrite-line-disagreement.json)
+retain exact original sources, checked ASTs, helper fixtures, raw oracle/helper
+streams, statuses and fingerprints. Six disagreements cover DIM, constant names,
+arithmetic and unary rewrites; four controls cover whole arrays, original scalar
+literals, nonfolding arithmetic and assignment barriers. Original scalar literals
+retain their original line, so assigning one surrounding line to every fact is
+incorrect. The ordered compiler and runtime fact consumer are not yet activated;
+this is an implementation defect to fix before their acceptance, not an
+intentional divergence or a failure of the accepted origin-only runtime gate.
