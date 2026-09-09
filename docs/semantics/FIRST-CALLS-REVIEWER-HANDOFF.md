@@ -118,3 +118,13 @@ results fail sends; reference-assignment expressions pass actual references.
 Multiline Notice, temporary append/nested dimensions, alias detachment, recursion,
 saved/surplus/held ownership and fallback selection have independent originals.
 These are preparation evidence until the paired candidate passes exact replays.
+
+The [subsequent diagnosis](../../coverage/semantics/reference-parameter-review-diagnosis.json)
+preserves12 additional DIM sources and the reconstructed first86 runtime. Three
+forward VAR bases (reference assignment, value-list call, reference-list CV)
+incorrectly raised temporary-write errors; their six known-target contrasts and
+three forward TMP controls matched native phases. Archive45752423 retains1069
+paths,152 exact responses and six clean closures, including the separate49-source
+passing early86 replay and three still-pending suppression controls. Reconstruction
+setup failures remain classified separately. Runtime6 pairs the source-derived
+result-kind correction; final source/state/resume acceptance is still required.
