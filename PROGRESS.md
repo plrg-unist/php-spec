@@ -67,6 +67,18 @@ retains source preprocessing, metadata, membership and injected timeout original
 [Independent prerequisite acceptance](coverage/semantics/builtin-functions-review.json)
 verifies exact canonical publication, 322 author files and 71 reviewer files.
 
+The positional builtin argument-mode prerequisite **eef227b2** now derives all
+780 configured signatures from those source arginfo tables. It distinguishes
+required/preferred reference parameters and variadic tails while leaving builtin
+execution separate. Its [contract](docs/semantics/BUILTIN-ARGUMENT-MODES.md),
+[canonical bridge](coverage/semantics/builtin-argument-modes-publication.json) and
+[400-file author archive](coverage/semantics/builtin-argument-mode-originals.json)
+retain 780 exact native metadata rows and 7,508 pure flag assertions, including
+the original standalone-loader setup failure. The exact publication files were
+independently checked; durable independent acceptance follows. No call source
+activation or core closure is claimed. Forward/known argument fetch compilation
+and multiline call-site metadata corrections remain in the private paired work.
+
 ## Milestones
 
 | Milestone | Status |
