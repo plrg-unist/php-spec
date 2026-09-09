@@ -6,79 +6,73 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-The **full quiet/request checkpoint is independently accepted** on 846/14d17662:
-5,706 ordinary comparisons and 263 explicit-request comparisons, plus 21 separate
-outcome controls. The [combined audit](coverage/semantics/quiet-integration-review.json)
-checks every ordinary source/subprocess pair and all 22,873 lossless author files;
-all 4,997 historical source bytes remain unchanged. Author **83cce919** binds the
-ordinary run. Request author **c9fce8c9** and acceptance **ba2e421a** separately
-bind 263 native calls,526 complete frontend/adapter responses and 2,381 raw files.
-These are 5,969 case/profile observations, with 5,926 distinct source-byte programs.
+The first actual [source calls](docs/semantics/SOURCE-CALLS.md) are independently
+accepted at **f3149e32** on **869/c946394c**. Code **a8fdac1e**, runtime author
+**d907c5db** and compiler author **04ac151f** retain their separate evidence.
+Named declarations activate at their compiler/runtime
+phase; untyped positional value calls execute through real local frames, including
+recursion, global/superglobal access, returns and fatal unwinding. The paired
+compiler/runtime change retains deferred argument fetch timing and source-derived
+resume metadata. Builtin registration/signature tables supply compiler facts;
+their bodies remain separate required work.
 
-Request/GLOBALS/top-level magic code **652d10b7** is accepted at **eed5bf8d**,
-after author **d3dfb87a** and compiler **ca3ac883**. Its historical845 bridge
-retains260+3 private request observations and44 ordinary magic sources, eight
-independent state programs/1,936 assertions,72 final state comparisons and six
-author programs/2,619 assertions. [Input](docs/semantics/REQUEST-INPUTS.md) and
-[state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts cover external facts,
-PG ownership, CV order, callback replacement and source identity.
+The [independent review](coverage/semantics/calls-final-review.json) binds 139 exact
+source/native comparisons, fresh complete recorded responses on 866 and 870, and
+an explicit 870→869 production bridge. All loaded modules and five tools are
+identical across that last bridge. Nine current production state programs check
+2,079 assertions: heap/frame/iterator ownership, request roots, adjacent-step
+resumption, selected full resumes and final cleanup. Forty protocol fixtures cover
+source-derived metadata and controls; fresh production saved-target/fallback and
+20 no-call full-response checks supplement the audit. Eight public CLI sources
+match the retained native profiles. Original defects, setup failures, transport
+bytes, process outcomes and immutable input snapshots remain archived.
 
-Next complete [source calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md).
-[Independent preflight](coverage/semantics/quiet-integration-preflight-review.json)
-verifies5,706 ordinary cases retain all 4,997 historical source bytes, plus263
-explicit-request cases; immediate raw retention is checked for both profiles.
-Preserve ordinary uninstrumented results and count new shared-input observations separately.
-The five remaining old container controls are three object quiet forms, return
-and nullsafe-reference iterable compilation; four parser controls stay separate.
-Seven old request-environment controls, four isset/empty GLOBALS controls and the
-guarded GLOBALS original now have explicit-request witnesses. Their original
-Unsupported outcomes remain unchanged history. Two later-eval callback witnesses
-still await dynamic-source execution. Ordinary-library exclusions cannot close core work.
+The fresh broad compiler checkpoint on 866 has **5,751 native lint comparisons
+and 5,783 aggregate assertions**. Its complete 70,239-file archive retains exact
+native/SpecTec subprocess bytes and 11,561 decoded Worker exchanges. Those older
+Worker records are not exact transport wire; the independent 139 source bridge
+provides separate exact-wire evidence. Focused compiler groups add 848 phase
+comparisons, with emission/context assertions counted separately. Historical
+compiler 5753/5786 and its 5750 subset retain their original identities.
 
-Validation infrastructure **9fc1ce9f** now gives **846/14d17662** inputs. Its
-[independent review](coverage/semantics/private-validation-infrastructure-review.json)
-binds13-reference private preflight and exclusive compiler timeout/failure
-retention. Runtime, adapter and catalogues are unchanged. Earlier reports keep
-their exact845 identities; the accepted broad checkpoint binds846 separately.
+The [reviewer handoff](docs/semantics/FIRST-CALLS-REVIEWER-HANDOFF.md) and
+[runtime handoff](docs/semantics/RUNTIME-CALLS-HANDOFF.md) give exact continuation inputs.
+Next complete positional reference parameters, then the remaining argument,
+return, type/default and callable protocols in the
+[calls plan](docs/semantics/CALLS-ACTIVATION-PLAN.md). Private reference-parameter
+preparation has 48 compiler phase comparisons and 16 descriptor checks; runtime
+send/bind/ownership pairing and source acceptance remain pending.
+The [core continuation checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md)
+keeps switch/match/labels/goto, objects/properties, exceptions, dynamic sources,
+generators/fibers, observable lifetime, core intrinsics and source-input gaps
+explicit. Global function `namespace\static` signature
+rejection matches the pin; the sole intentional divergence remains the pending
+class-scope relative-static branch.
 
-The actual private full compiler gate passes5,753 lints/5,786 aggregate assertions;
-current5,750 is its exact ordered subset after three magic sources moved profiles.
-The [compiler binding](coverage/semantics/request-compiler-group.json) retains the
-missing-reference setup, first120s timeout and unused canonical-wrapper failure
-separately. The new audit rechecks its exact catalogue binding and the
-infrastructure-only846 bridge; it does not relabel that private run as canonical.
+The exact old nested-foreach return witness now prints 13, returns 7, clears both
+iterator roots and preserves `v`/`w` aliases. Four old property/nullsafe container
+controls remain pending, plus two later-eval ENV/REQUEST callback witnesses; four
+parser controls remain separate. This source witness retires its old boundary
+case without closing the complete return or function family.
 
-First calls remain private and unaccepted. Real declaration/body/frame/return/
-recursion examples run, with global scope, fatal unwinding and dense ownership
-checks in progress. Independent originals **8d65b928** preserve two compiler
-priority defects, now corrected in a private recheck. **4f639832** adds eight
-paired native ownership witnesses (77 with retained roots,17 without them).
-Originals **b16ec243** retain literal/computed autoglobal binding, intermediate
-error-iterator and unchecked callable-mapping defects before repair. The source-derived 780-name builtin occupancy prerequisite
-is now published as a standalone pure predicate, source generator and focused test.
-Its [source audit](docs/semantics/BUILTIN-FUNCTIONS.md) derives 780 names from 13
-configured C registration tables and 238 actual source/configuration inputs.
-It implements no builtin bodies and closes no core obligation; declaration and
-call consumers remain in the private paired milestone. Implementation **87519651** has
-780 exact native registration names and 1,569 pure membership assertions, plus a
-[canonical reproduction bridge](coverage/semantics/builtin-functions-publication.json).
-The [lossless author archive](coverage/semantics/builtin-function-originals.json)
-retains source preprocessing, metadata, membership and injected timeout originals;
-[Independent prerequisite acceptance](coverage/semantics/builtin-functions-review.json)
-verifies exact canonical publication, 322 author files and 71 reviewer files.
+The full quiet/request checkpoint remains accepted **historical 846/14d17662**:
+5,706 ordinary comparisons plus 263 explicit-request comparisons and 21 separate
+outcome controls. [Its audit](coverage/semantics/quiet-integration-review.json)
+retains all 4,997 historical source bytes and 22,873 ordinary author files; explicit
+request acceptance retains 263 native calls, 526 responses and 2,381 files. These
+are 5,969 case/profile observations and 5,926 distinct source programs. Those full
+runtime campaigns have not been relabeled current after calls. Refresh the
+combined current source campaign at the callable checkpoint or earlier shared
+risk; the final full-source/full-syntax/fresh network-isolated offline gates remain
+required before complete-core acceptance.
 
-The positional builtin argument-mode prerequisite **eef227b2** now derives all
-780 configured signatures from those source arginfo tables. It distinguishes
-required/preferred reference parameters and variadic tails while leaving builtin
-execution separate. Its [contract](docs/semantics/BUILTIN-ARGUMENT-MODES.md),
-[canonical bridge](coverage/semantics/builtin-argument-modes-publication.json) and
-[400-file author archive](coverage/semantics/builtin-argument-mode-originals.json)
-retain 780 exact native metadata rows and 7,508 pure flag assertions, including
-the original standalone-loader setup failure. [Independent acceptance](coverage/semantics/builtin-argument-modes-review.json)
-checks all 400 author files and 73 reviewer files, reproduces the exact source-derived
-table, and replays all 7,508 flags on the standalone prerequisites. No call source
-activation or core closure is claimed. Forward/known argument fetch compilation
-and multiline call-site metadata corrections remain in the private paired work.
+The source-only [builtin occupancy](docs/semantics/BUILTIN-FUNCTIONS.md) and
+[positional mode](docs/semantics/BUILTIN-ARGUMENT-MODES.md) prerequisites remain
+independently accepted: 780 names/signatures from 238 configured source inputs,
+1,569 membership and 7,508 argument-mode assertions. They implement no builtin
+bodies and close no core obligation. Request table/callback interfaces remain in
+[the input](docs/semantics/REQUEST-INPUTS.md) and
+[state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts.
 
 ## Milestones
 
@@ -86,9 +80,9 @@ and multiline call-site metadata corrections remain in the private paired work.
 | --- | --- |
 | 0a–b: contracts, inventory, checked runner, source harness | Complete for bounded bootstrap |
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
-| 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS reviewed, frame/object protocols pending |
-| 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps reviewed, return/frames and exceptions pending |
-| 3b: calls, closures and static checks | Partial; source activation pending |
+| 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
+| 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, first returns and fatal frame cleanup reviewed; exceptions pending |
+| 3b: calls, closures and static checks | Partial; plain named source calls reviewed; remaining call protocols pending |
 | 4a–b: linking, objects, traits and properties | Partial; header/relation helpers reviewed, execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |

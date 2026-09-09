@@ -9,8 +9,8 @@ claim that the inventory dependency graph is complete.
 
 ## Checkpoint and next acceptance units
 
-- [ ] Finish firstcalls' current final state/reviewer gate and exact canonical
-  publication bridge. Its5751-lint/5783-assertion broad compiler gate is reviewed;
+- [x] Firstcalls' current state/reviewer gate and exact canonical publication
+  bridge accepted at **f3149e32**. Its5751-lint/5783-assertion broad compiler gate is reviewed;
   it does not replace full runtime/syntax/offline gates. Preserve firstcall versus
   historical quiet/request identities and newly retired control source hashes.
 - [ ] Pair positional reference parameters with runtime sends, cell binding,
@@ -53,8 +53,8 @@ combined candidate independently.
 
 ## Closure gates
 
-- [ ] Update PROGRESS's historical5753/current5750 compiler paragraph and pending
-  frame/return/call rows only with checkpoint acceptance; leave later stages explicit.
+- [x] PROGRESS distinguishes historical5753/current5750 compiler evidence from
+  the accepted5751 checkpoint and first frame/return/call slice; later stages remain explicit.
 - [ ] Populate/audit dependencies and every obligation's remaining branches.
   Namespace-relative static remains the sole intentional divergence, confined to
   the pending class-scope declaration-type branch.
