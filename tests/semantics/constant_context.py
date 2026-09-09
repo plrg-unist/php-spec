@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'tests/semantics'))
 import static_types as types, source_occurrences as occurrences
 MODULE=ROOT/'spec/semantics/45-constant-context.watsup'
-SPECS=[ROOT/p for p in json.loads((ROOT/'spec/semantics/modules.json').read_text())]+[ROOT/'spec/semantics/11-source-occurrences.watsup',ROOT/'spec/semantics/16-static-types.watsup',ROOT/'spec/semantics/21-source-context.watsup',ROOT/'spec/semantics/44-dimension-read.watsup',MODULE]
+SPECS=list(dict.fromkeys([ROOT/p for p in json.loads((ROOT/'spec/semantics/modules.json').read_text())]+[ROOT/'spec/semantics/11-source-occurrences.watsup',ROOT/'spec/semantics/16-static-types.watsup',ROOT/'spec/semantics/21-source-context.watsup',ROOT/'spec/semantics/44-dimension-read.watsup',MODULE]))
 PREFIX='''
 syntax pftestvalue = PFNULL | PFBOOL bool | PFINT int | PFFLOAT nat | PFSTRING nat* | PFARRAYVALUE (pkey, pftestvalue)*
 dec $pfobserve(pstate, pvalue) : pftestvalue
