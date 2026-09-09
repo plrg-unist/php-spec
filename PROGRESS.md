@@ -33,7 +33,8 @@ timeouts and interrupted campaigns never count as validation passes.
 - References agent owns source execution/storage; read
   [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md). Element-reference targets
   `f56e12bc`, numeric-boundary repair `9fc9628f` and pure dimension reads
-  `9ec050a1` are reviewed; pure string writes `9990d23e` are reviewed; source dimensions are next.
+  `9ec050a1` are reviewed; pure string writes `9990d23e` and runtime origins `cb02399c` are reviewed;
+  permanent compiled pools and source dimensions are next.
 - Static worker owns checked compiler context and source facts. Structural
   occurrences `898f0152`, bounded namespace/import contexts `891c2c95` and
   frontend location/import-alias repair `9658958c` are reviewed. Shared constant
@@ -54,7 +55,7 @@ timeouts and interrupted campaigns never count as validation passes.
   records earlier milestone counts. Historical acceptance fingerprints are
   explicit; later implementation changes require fresh applicable evidence.
 - Source machine: latest independently repeated **514 exact source comparisons
-  +25 negatives** at `9fc9628f`. Element-reference targets `f56e12bc` additionally
+  +25 negatives** at `cb02399c` (independent run 167 seconds). Element-reference targets `f56e12bc` additionally
   passed 617 graph +96 boundary cases and 57 independent topology/timing probes.
   Entry alias replacement, target-before-CV initialization and captured-source
   ownership across COW are reviewed. Earlier CV and reference-result defects and
@@ -90,6 +91,13 @@ timeouts and interrupted campaigns never count as validation passes.
   identities across all 169 constructors. [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md)
   records 1,497 structural assertions and expanded source checks. These are
   representation checks, with no source compilation/evaluation claim.
+- Runtime origins `cb02399c` retain checked source units and explicit task paths,
+  including encoded programs. **25 trace sources/331 assertions**, 41 expanded
+  sources/491 assertions, seven explicit equal-metadata path sequences, distinct
+  source IDs, budget resumption and transparent root checks passed independently.
+  Invalid unit/path/node tags reject explicitly; occurrence lookup never chooses
+  identity from node equality. [SOURCE-ORIGINS](docs/semantics/SOURCE-ORIGINS.md)
+  separates retained syntax from pending permanent runtime pool ownership.
 - Namespace/import compiler and frontend repair `9658958c`: **233 original
   checked prefix comparisons** plus 64 independent alternates passed; 24 explicit
   seen-symbol inputs, 6 work barriers, 3 environments, 13 resumptions and 4
@@ -120,8 +128,9 @@ timeouts and interrupted campaigns never count as validation passes.
 
 ## Next gates
 
-Thread source origins through the unchanged source machine, then integrate ordered
-compiler work and the reviewed constant pool before source dimensions. Preserve folding,
+Review ordered compiler work and install permanent compiled-unit pools before
+source dimensions. Persistent pool roots must survive temporary cleanup, and
+installation must reserve disjoint allocation IDs. Preserve folding,
 assignment barriers, key conversion, diagnostic and temporary-owner timing.
 All 16 read/prepass and eight write/error-order oracle targets, plus existing element-target/prepass witnesses
 are mandatory in the next source gate. Source-context traversal and class linking

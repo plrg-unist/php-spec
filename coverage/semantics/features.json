@@ -2264,17 +2264,28 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/11-source-occurrences.watsup"
+        "spec/semantics/11-source-occurrences.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/31-source-origins.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/42-array-write-control.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_occurrences.py",
-        "coverage/semantics/source-occurrences.json"
+        "coverage/semantics/source-occurrences.json",
+        "tests/semantics/source_origins.py",
+        "coverage/semantics/source-origins.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/validate.py",
+        "coverage/semantics/source.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent structural source-unit helper 898f0152: 169 constructor shapes, 1086 domain alternatives, 14 checked sources and 1497 assertions repeated; expanded 32 sources/1587 assertions and isolated generation-drift rejection passed. Retains exact checked AST and metadata with typed field/index occurrence paths scoped to caller-supplied compiled-source ID. Representation evidence only: no lexical compiler contexts, diagnostic order, source activation or runtime literal allocation yet."
+      "review": "Independent runtime occurrence propagation cb02399c: 514 exact source comparisons plus 25 negatives passed unchanged; 25 trace sources/331 assertions, 41 expanded sources/491 assertions, seven explicit equal-metadata path sequences and multiunit/root probes passed. Canonical checked PROGRAM/ENCODEDPROGRAM units and explicit task origins persist through execution and budget resumption. Invalid unit/path/node tags reject; wrappers preserve existing root projection (617 graph plus 96 boundary cases, 5434 assertions). Structural inventory remains169 constructors/1086 alternatives. Ordered compiler scheduling, permanent constant pools, dynamic source instances and repeated literal execution remain pending."
     },
     {
       "id": "source.encodings",
