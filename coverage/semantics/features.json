@@ -107,10 +107,20 @@
       "obligations": [
         "declarations.constants"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/88-user-constant-compiler.watsup",
+        "spec/semantics/89-user-constants.watsup",
+        "spec/semantics/89-constant-classes.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/user_constants.py",
+        "tests/semantics/user_constant_state.py",
+        "tests/semantics/user_constant_protocol.py",
+        "tests/semantics/user_constant_context_protocol.py",
+        "tests/semantics/user_constant_branch_protocol.py"
+      ],
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure."
     },
     {
       "node": "DeclareItem",
@@ -1425,13 +1435,21 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup"
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/88-user-constant-compiler.watsup",
+        "spec/semantics/89-user-constants.watsup",
+        "spec/semantics/89-constant-classes.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/phase0.json",
+        "tests/semantics/user_constants.py",
+        "tests/semantics/user_constant_state.py",
+        "tests/semantics/user_constant_protocol.py",
+        "tests/semantics/user_constant_context_protocol.py",
+        "tests/semantics/user_constant_branch_protocol.py"
       ],
-      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure."
     },
     {
       "node": "Expr_Empty",
@@ -2536,10 +2554,20 @@
       "obligations": [
         "declarations.constants"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/88-user-constant-compiler.watsup",
+        "spec/semantics/89-user-constants.watsup",
+        "spec/semantics/89-constant-classes.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/user_constants.py",
+        "tests/semantics/user_constant_state.py",
+        "tests/semantics/user_constant_protocol.py",
+        "tests/semantics/user_constant_context_protocol.py",
+        "tests/semantics/user_constant_branch_protocol.py"
+      ],
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure."
     },
     {
       "node": "Stmt_Continue",
@@ -6512,7 +6540,9 @@
         "spec/semantics/22-name-resolution.watsup",
         "spec/semantics/23-named-constants.watsup",
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/56-casts.watsup"
+        "spec/semantics/56-casts.watsup",
+        "spec/semantics/88-user-constant-compiler.watsup",
+        "spec/semantics/30-value-classes.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -6522,7 +6552,9 @@
         "tests/semantics/source_compiler.py",
         "coverage/semantics/source-compiler.json",
         "tests/semantics/runtime_compiler.py",
-        "coverage/semantics/runtime-compiler.json"
+        "coverage/semantics/runtime-compiler.json",
+        "tests/semantics/user_constant_compiler.py",
+        "tests/semantics/constant_class_compiler.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -6531,12 +6563,14 @@
         "tests/semantics/namespace_constants.py",
         "coverage/semantics/namespace-constants.json",
         "coverage/semantics/namespace-constants-review.json",
-        "tests/semantics/array_omissions.py"
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/user_constants.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/user-constant-review.json"
       ],
-      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet ordinary coalescing, classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
+      "review": "Historical ordinary folding/array omissions and quiet-access prerequisites retain their linked evidence. User-constant declaration initializers now use shared45 folding and88 remaining-expression validation, preserving skipped branches, original diagnostics and nonowning source allocation classes; see user-constant-review.json. Defaults, class/member/callable constant expressions and remaining source contexts stay pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-global-relative-null.php",
         "tests/semantics/conformance/parameter-global-relative-true.php",
@@ -7194,15 +7228,31 @@
     {
       "id": "declarations.constants",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/88-user-constant-compiler.watsup",
+        "spec/semantics/89-user-constants.watsup",
+        "spec/semantics/89-constant-classes.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/user_constant_compiler.py",
+        "tests/semantics/constant_class_compiler.py"
+      ],
+      "source_tests": [
+        "tests/semantics/user_constants.py",
+        "tests/semantics/user_constant_state.py",
+        "tests/semantics/user_constant_protocol.py",
+        "tests/semantics/user_constant_context_protocol.py",
+        "tests/semantics/user_constant_branch_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_constants.c",
+        "vendor/php-src/Zend/zend_ast.c",
+        "coverage/semantics/user-constant-review.json"
+      ],
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure."
     },
     {
       "id": "declarations.typed-class-constants",
@@ -8944,7 +8994,9 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/56-casts.watsup"
+        "spec/semantics/56-casts.watsup",
+        "spec/semantics/88-user-constant-compiler.watsup",
+        "spec/semantics/30-value-classes.watsup"
       ],
       "helper_tests": [
         "tests/semantics/constant_context.py",
@@ -8952,7 +9004,9 @@
         "tests/semantics/source_compiler.py",
         "coverage/semantics/source-compiler.json",
         "tests/semantics/runtime_compiler.py",
-        "coverage/semantics/runtime-compiler.json"
+        "coverage/semantics/runtime-compiler.json",
+        "tests/semantics/user_constant_compiler.py",
+        "tests/semantics/constant_class_compiler.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -8961,12 +9015,14 @@
         "tests/semantics/array_omissions.py",
         "tests/semantics/quiet_access.py",
         "tests/semantics/quiet_access_compiler.py",
-        "coverage/semantics/quiet-access-review.json"
+        "coverage/semantics/quiet-access-review.json",
+        "tests/semantics/user_constants.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/user-constant-review.json"
       ],
-      "review": "Reviewed nullable-array prerequisite models exact omission/prepass ordering, parser reduction contexts, selected coalesce redirects and eligible pure cast facts.262 source/lint cases plus independent source/context and preserved-compound gates pass; no refreshed full-source closure claim. Quiet variable/DIM access and compiled name warning conversion are now reviewed at a42fddfe/quiet-access-review.json. Classconstant/named-class lookup, magic context and remaining operator folds remain required source work. Accepted9b82507a/reports22b36687; see array-omission-review.json.",
+      "review": "Historical ordinary folding/array omissions and quiet-access prerequisites retain their linked evidence. User-constant declaration initializers now use shared45 folding and88 remaining-expression validation, preserving skipped branches, original diagnostics and nonowning source allocation classes; see user-constant-review.json. Defaults, class/member/callable constant expressions and remaining source contexts stay pending; no family closure.",
       "notes": "Compile-time folding and literal name coercion can emit warnings before any runtime output; preserve source line and ordering. Current source runner explicitly marks folded NaN variable names Unsupported.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-read-literal-prepass.php",

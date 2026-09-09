@@ -1,14 +1,17 @@
 # User constants and untyped positional defaults
 
-Current accepted baseline: reference code31640654, compiler7263bf5b,
-author7aed92c3, independent3956fbe1, docs8eae3f4c; canonical884/7399e812.
+Current accepted baseline: user-constant code5151608e, canonical899/ca3c06e5.
+The [independent review](../../coverage/semantics/user-constant-review.json) retains
+original899/e7d552ec gates and the one-test correction bridge.
+Historical reference baseline884/7399e812 and all native/current884 originals
+retain their original identities.
 This is the next bounded stage of the complete-core plan. Runtime6 owns runtime,
 compiler5 owns compiler work, and review9 owns independent review. No default
 source admission is claimed by this plan.
 
 ## Coherent acceptance units
 
-1. Complete ordinary user-constant declaration, lookup and value ownership through
+1. Accepted: ordinary user-constant declaration, lookup and value ownership through
    compiler88/runtime89. Positive defaults need this prerequisite. Preserve
    declaration-time activation, sequential declarations, namespace/import/fallback
    resolution, case-insensitive namespace prefixes and case-sensitive terminal
@@ -49,9 +52,9 @@ cells; actual alias acquisition promotes them, as in the pinned RECV_INIT.
 
 Deferred receive caching is observable. Native originals show warnings once for
 cacheable scalar/empty results and repeated warnings for refcounted array/string
-results. String length alone does not identify cacheability. Resolve the precise
-result/provenance contract against pinned source and original controls before
-admission. Cache entries and constant values must retain their actual ownership;
+results. String length alone does not identify cacheability. The [allocation-class contract](CONSTANT-VALUE-CLASSES.md) now records the
+pinned constructors and source-derived provenance. Default receive/cache
+activation must replay the retained original observations. Cache entries and constant values must retain their actual ownership;
 failures must not install successful cache entries or execute the body.
 Empty strings and arrays can also be allocated; constant folding and runtime
 null-to-array casts differ. Transfer rules must preserve these source operations.
@@ -65,6 +68,8 @@ invalid defaults, required-after-optional, declaration magic/imports, repeated
 array/reference defaults, escaped aliases, warning-cache result kinds and user
 constant activation/fallback. Old agreeing cases remain agreements under their
 original identity; Unsupported, timeouts and setup errors remain separate.
+119 independent default/cache observations remain for the receive stage,
+including the separate11 literal-constructor controls.
 The [106-source preparation](../../coverage/semantics/default-review-preparation.json)
 and [56-source diagnosis](../../coverage/semantics/constant-review-diagnosis.json)
 retain the exact old states, allocation observations and compiler boundary failures.

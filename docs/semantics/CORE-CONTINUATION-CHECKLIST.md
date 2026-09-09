@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:123 partial,182 pending,1 validated
+has169 constructors and306 obligations:124 partial,181 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -20,12 +20,17 @@ claim that the inventory dependency graph is complete.
   61 independent original agreements, 283 shared regressions and independent
   state8/1,868 assertions. Author state6/1,413 and canonical CLI8 pass.
   This bounded acceptance closes no callable or core family.
+- [x] Ordinary user-constant declarations/reads and nonowning allocation classes
+  are accepted in [user-constant-review.json](../../coverage/semantics/user-constant-review.json).
+  Frozen899/e7d552ec gates bridge to899/ca3c06e5 through one corrected state-test
+  assertion. Constant-family closure, PHP_VERSION value reads, class/callable
+  constants and dynamic registration remain pending.
 - [ ] Complete defaults, parameter/return types and reference returns. Reuse
   existing signature/type/constant helpers; preserve caller/body strictness,
   original default context, folding/diagnostic order and materialization ownership.
-  The [separate callable-stage plan](CALLS-ACTIVATION-PLAN.md) retains defaults
-  as subsequent work;114 earlier and12 additional observations remain preparation,
-  with no defaults activation.
+  The [defaults phase plan](DEFAULTS-ACTIVATION-PLAN.md) now proceeds through
+  compiler90/runtime91.119 independent default/cache observations and historical
+  signature17 suspension evidence remain preparation, with no defaults activation.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
