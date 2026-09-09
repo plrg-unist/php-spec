@@ -431,9 +431,9 @@ def $ppaccess(P, pcpath) = eps
 ;; prepass facts consumed as values never create a runtime lookup entry.
 def $ppnamed(P, pcpath, PNUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppnamed(P, pcpath, PNRESOLVED pnreference) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
-  -- if $pnfold(pnreference) = (pvalue)
+  -- if $pffoldname(P.FOLD, pnreference) = (pvalue)
 def $ppnamed(P, pcpath, PNRESOLVED pnreference) = P[.FOLD = P.FOLD[.VALUE = eps]][.NAMES = P.NAMES ++ [(pcpath, pnreference)]]
-  -- if $pnfold(pnreference) = eps
+  -- if $pffoldname(P.FOLD, pnreference) = eps
 
 ;; Compiler warnings share lexical diagnostic ordering and exact original paths.
 def $ppfoldwarnings(eps, pllocation) = eps

@@ -12,6 +12,8 @@ import source_context as context
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    'default-invalid': b'<?php function f($a=[[]=>1]){}',
+    'param-default': b'<?php function f($a=1){}',
     'import-around-function': b'<?php use A; function f(){} use B;',
     'ordinary': b'<?php echo f(3); function f($n) { $x=$n+1; return $x; }',
     'recursive': b'<?php function f($n) { if ($n) return $n*f($n-1); return 1; } echo f(4);',
@@ -55,9 +57,7 @@ CASES = {
 PENDING = {
     'void-return': b'<?php function f():void{return 1;}',
     'never-return': b'<?php function f():never{return;}',
-    'default-invalid': b'<?php function f($a=[[]=>1]){}',
     'byref-return': b'<?php function &f(){return 1;}',
-    'param-default': b'<?php function f($a=1){}',
     'param-type': b'<?php function f(int $a){}',
     'variadic': b'<?php function f(...$a){}',
 }
@@ -109,7 +109,7 @@ def main():
             assertion = (f'dec $case{index}() : bool\ndef $case{index}() = true\n'
                          f'  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n')
             if name in PENDING:
-                reason = ("nonliteral parameter default requires constant-expression compilation" if name == "default-invalid" else "function type, default, reference or variadic activation")
+                reason = "function type, reference return or variadic activation"
                 assertion += '  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED ' + json.dumps(reason) + ')\n'
             else:
                 assertion += '  -- if $pptrace(P) = ' + context.expected_events(events, file) + '\n'

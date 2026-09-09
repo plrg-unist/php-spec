@@ -179,8 +179,15 @@ def $constant_class_tree_valid(PVARRAY b (pkey, pvalueclass)*) = ((~b \/ (pkey, 
 def $constant_class_entries_valid(eps) = true
 def $constant_class_entries_valid((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($pvclass_entries_get((pkey_tail, pvalueclass_tail)*, pkey) = eps /\ $constant_class_tree_valid(pvalueclass) /\ $constant_class_entries_valid((pkey_tail, pvalueclass_tail)*))
 
-def $constant_expression_below(S, PORIGIN n pcpath_decl, PORIGIN n pcpath) = true
-  -- if $effect_below(pcpath_decl ++ [PCFIELD 1], pcpath)
+dec $constant_expression_root(pstate, porigin) : porigin?
+def $constant_expression_root(S, PORIGIN n pcpath) = (PORIGIN n (pcpath ++ [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
+def $constant_expression_root(S, PORIGIN n pcpath) = (PORIGIN n (pcpath ++ [PCFIELD 6]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 expression phpType37 metadata)
+def $constant_expression_root(S, porigin) = eps -- otherwise
+def $constant_expression_below(S, porigin_root, PORIGIN n pcpath) = true
+  -- if $constant_expression_root(S, porigin_root) = (PORIGIN n pcpath_root)
+  -- if $effect_below(pcpath_root, pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
 def $constant_expression_below(S, porigin_decl, porigin) = false -- otherwise
 
@@ -271,14 +278,17 @@ def $constant_result_required(S, porigin) = (($constant_has_fact(S, porigin) \/ 
 def $constant_ternary_ready(S, porigin, phpType5) = true
   -- if ~$constant_result_required(S, porigin)
 def $constant_ternary_ready(S, porigin, ABSENT) = true
+  -- if $constant_result_required(S, porigin)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
   -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
 def $constant_ternary_ready(S, porigin, phpType5) = true
+  -- if $constant_result_required(S, porigin)
   -- if phpType5 =/= ABSENT
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
   -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 1]))
 def $constant_ternary_ready(S, porigin, phpType5) = true
+  -- if $constant_result_required(S, porigin)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
   -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (false)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 2]))
@@ -287,13 +297,16 @@ def $constant_ternary_ready(S, porigin, phpType5) = false -- otherwise
 def $constant_coalesce_ready(S, porigin) = true
   -- if ~$constant_result_required(S, porigin)
 def $constant_coalesce_ready(S, porigin) = true
+  -- if $constant_result_required(S, porigin)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
   -- if $constant_recorded_null(S, $constant_child(porigin, [PCFIELD 0])) = (false)
 def $constant_coalesce_ready(S, porigin) = true
+  -- if $constant_result_required(S, porigin)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 0]))
   -- if $constant_recorded_null(S, $constant_child(porigin, [PCFIELD 0])) = (true)
   -- if $constant_has_fact(S, $constant_child(porigin, [PCFIELD 1]))
 def $constant_coalesce_ready(S, porigin) = false -- otherwise
+
 
 def $constant_node_branches_valid(S, porigin, NExprTernary expression phpType5 expression_false metadata) = ($constant_branch_truth_valid(S, $constant_child(porigin, [PCFIELD 0]), $constant_child(porigin, [PCFIELD 1]), true) /\ $constant_branch_truth_valid(S, $constant_child(porigin, [PCFIELD 0]), $constant_child(porigin, [PCFIELD 2]), false) /\ $constant_ternary_ready(S, porigin, phpType5))
 def $constant_node_branches_valid(S, porigin, NExprBinaryOpCoalesce expression expression_right metadata) = ($constant_branch_null_valid(S, $constant_child(porigin, [PCFIELD 0]), $constant_child(porigin, [PCFIELD 1])) /\ $constant_coalesce_ready(S, porigin))

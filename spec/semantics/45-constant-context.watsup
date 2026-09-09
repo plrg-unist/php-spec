@@ -2,7 +2,7 @@
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
-syntax pfstate = { CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
+syntax pfstate = { DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
@@ -62,12 +62,13 @@ dec $pfselecteddone(pfstate, pcpath, pcpath) : pfstate
 dec $pfaddredirect(pfstate, pcpath, pcpath) : pfstate
 
 dec $pftracked(pfstate, pcpath, expression, int) : pfstate
+dec $pffoldname(pfstate, pnreference) : pvalue?
 dec $pfnamed(pfstate, pcpath, pnresult, int) : pfstate
 dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { CLASSFACTS eps, CONSTANT false, FUNCTION eps, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
+def $pfbegin(n, program) = { DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -175,7 +176,11 @@ def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expre
 
 def $pfdispatch(F, pcpath, PFSCALAR pvalue z_leaf, z) = $pfremember(F, pcpath, (pvalue), z_leaf)
 def $pfdispatch(F, pcpath, PFNAME name, z) = $pfnamed(F, pcpath, $pnresolve(F.ENV, PLCONSTANT, name), z)
-def $pfnamed(F, pcpath, PNRESOLVED pnreference, z) = $pfremember(F, pcpath, $pnfold(pnreference), z)
+def $pfnamed(F, pcpath, PNRESOLVED pnreference, z) = $pfremember(F, pcpath, $pffoldname(F, pnreference), z)
+def $pffoldname(F, pnreference) = $pnfold(pnreference)
+  -- if ~F.DEFAULT
+def $pffoldname(F, pnreference) = $special_constant($pnfoldname(pnreference))
+  -- if F.DEFAULT
 def $pfnamed(F, pcpath, PNUNSUPPORTED text, z) = $pfunsupported(F, text)
 def $pfdispatch(F, pcpath, PFSTOP, z) = F[.VALUE = eps]
 def $pfdispatch(F, pcpath, PFOTHER, z) = $pfunsupported(F, "constant-expression kind")

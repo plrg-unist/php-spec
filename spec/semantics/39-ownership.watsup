@@ -164,10 +164,11 @@ def $allocation_edges(S, pnode :: pnode_tail*) = $node_edges(pnode, $node_childr
 dec $table_roots(psymboltable?) : pnode*
 dec $frames_roots(pframe*) : pnode*
 dec $call_context_roots(pcallcontext?) : pnode*
+dec $default_cache_roots(pdefaultcache*) : pnode*
 dec $machine_roots(pstate) : pnode*
 dec $pools_nodes(ppool*) : pnode*
 dec $user_constant_roots(puserconstant*) : pnode*
-def $machine_roots(S) = $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
+def $machine_roots(S) = $default_cache_roots(S.DEFAULTCACHE) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}

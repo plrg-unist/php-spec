@@ -1,0 +1,77 @@
+dec $ppdefault_parameter(ppstate, pcpath, nat) : ppstate
+dec $ppdefault_path(pcpath, nat) : pcpath
+;; Parameter defaults use the shared signature suspension and constant compiler.
+;; Descriptors borrow original-source constant pools; receives are paired separately.
+dec $ppdefaults_step(ppstate, ppstate, pcpath, ptbytes, statement*, metadata, psprogress) : ppstate
+dec $ppdefaults_request(ppstate, ppstate, pcpath, ptbytes, statement*, metadata, pscontinuation) : ppstate
+dec $ppdefaults_ready(ppstate, ppstate, pcpath, ptbytes, statement*, metadata, pscontinuation, pcpath, expression) : ppstate
+dec $ppdefault_prepare(ppstate, pcpath, expression) : ppstate
+dec $ppdefault_kind(pvalue?) : text
+dec $ppdefault_descriptor(ppstate, pcpath) : pdefaultkind
+
+def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b }), pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
+
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, psprogress) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSUNSUPPORTED text)) = $ppunsupported(P, text)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSERROR psdiagnostic*)) = $ppsignature_diagnostics(P, psdiagnostic*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "function type, reference return or variadic activation")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~$ppplain_signature(pssignature)
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppfunction_finish(P_outer, P_body, pcpath, ptbytes, pssignature, metadata)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppplain_signature(pssignature)
+  -- if psparam* = pssignature.PARAMETERS
+  -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+  -- if P_body = $ppstatements(P_header, pcpath ++ [PCFIELD 5], 0, statement*)
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppdefaults_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppdefaults_request(P_outer, P, pcpath, ptbytes, statement*, metadata, pscontinuation) = $ppdefaults_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, statement*, metadata, $psstep_resume(pscontinuation, PSNONE))
+  -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+def $ppdefaults_request(P_outer, P, pcpath, ptbytes, statement*, metadata, pscontinuation) = $ppdefaults_ready(P_outer, $ppdefault_prepare(P[.LOCATION = P.LOCATION[.LINE = pscontinuation.PARAMETER.LINE]][.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath_default, expression), pcpath, ptbytes, statement*, metadata, pscontinuation, pcpath_default, expression)
+  -- if pscontinuation.PARAMETER.DEFAULT = (expression)
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if pcpath_default = $ppdefault_path(pcpath, n_index)
+def $ppdefaults_ready(P_outer, P, pcpath, ptbytes, statement*, metadata, pscontinuation, pcpath_default, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppdefaults_ready(P_outer, P, pcpath, ptbytes, statement*, metadata, pscontinuation, pcpath_default, expression) = $ppdefaults_step(P_outer, $ppdefault_parameter(P, pcpath, n_index), pcpath, ptbytes, statement*, metadata, $psstep_resume(pscontinuation, PSDEFAULT expression $ppdefault_kind(P.FOLD.VALUE)))
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppdefault_prepare(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare(P.FOLD, pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)
+
+dec $ppdefault_value_kind(pvalue) : text
+def $ppdefault_kind(eps) = "deferred"
+def $ppdefault_kind((pvalue)) = $ppdefault_value_kind(pvalue)
+def $ppdefault_value_kind(PNULL) = "null"
+def $ppdefault_value_kind(PBOOL true) = "true"
+def $ppdefault_value_kind(PBOOL false) = "false"
+def $ppdefault_value_kind(PINT i) = "int"
+def $ppdefault_value_kind(PFLOAT n) = "float"
+def $ppdefault_value_kind(PSTRING ptbytes) = "string"
+def $ppdefault_value_kind(PARRAY n) = "array"
+
+def $ppfunction_defaults(P, pcpath, eps, n) = eps
+def $ppfunction_defaults(P, pcpath, psparam :: psparam_tail*, n) = $ppfunction_defaults(P, pcpath, psparam_tail*, $(n + 1))
+  -- if psparam.DEFAULT = PSNONE
+def $ppfunction_defaults(P, pcpath, psparam :: psparam_tail*, n) = { INDEX n, ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath_default, KIND $ppdefault_descriptor(P, pcpath_default) } :: $ppfunction_defaults(P, pcpath, psparam_tail*, $(n + 1))
+  -- if $pshasdefault(psparam.DEFAULT)
+  -- if pcpath_default = pcpath ++ [PCFIELD 3, PCINDEX n, PCFIELD 6]
+def $ppdefault_descriptor(P, pcpath) = PDSTORED
+  -- if $ppconstants(P) = PPCCONSTANTS (pcpath_constant, pvalue_constant)*
+  -- if $ppconstant_at((pcpath_constant, pvalue_constant)*, pcpath) = (pvalue)
+def $ppdefault_descriptor(P, pcpath) = PDDEFERRED
+  -- if $ppconstants(P) = PPCCONSTANTS (pcpath_constant, pvalue_constant)*
+  -- if $ppconstant_at((pcpath_constant, pvalue_constant)*, pcpath) = eps
+
+;; A function owns compiled parameter roots even when normalization removes an
+;; optional receive. Nested functions must not leak those roots into their parent.
+def $ppdefault_path(pcpath, n) = pcpath ++ [PCFIELD 3, PCINDEX n, PCFIELD 6]
+def $ppfunction_contains(pfunction, pcpath) = ($effect_below(pfunction.BODY, pcpath) \/ $effect_below(pcpath_decl ++ [PCFIELD 3], pcpath))
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_decl
+
+def $ppdefault_parameter(P, pcpath, n) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR (pcpath ++ [PCFIELD 3, PCINDEX n]) P.LOCATION.LINE eps]]

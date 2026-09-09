@@ -1,3 +1,6 @@
+dec $ppfunction_defaults(ppstate, pcpath, psparam*, nat) : pdefault*
+dec $ppdefaults_begin(ppstate, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, bool) : ppstate
+dec $ppfunction_contains(pfunction, pcpath) : bool
 dec $ppfunction_special(ppstate, ptbytes) : ppstate
 dec $ppplain_signature(pssignature) : bool
 dec $ppplain_params(psparam*) : bool
@@ -13,9 +16,7 @@ dec $ppsignature_diagnostics(ppstate, psdiagnostic*) : ppstate
 dec $ppsignature_diagnostic(ppstate, psdiagnostic) : ppstate
 dec $ppsignature_issue(ppstate, text, ptbytes, nat) : ppstate
 dec $ppfunction_name(ppstate, ptbytes) : ppstate
-dec $ppfunction_signature(ppstate, pcpath, ptbytes, statement*, metadata, psresult) : ppstate
 dec $ppfunction_start(ppstate, ptbytes, pssignature) : ppstate
-dec $ppfunction_body(ppstate, pcpath, ptbytes, statement*, metadata, pssignature) : ppstate
 dec $ppfunction_code(ppstate) : pcode
 dec $ppfunction_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
 dec $psendline(metadata) : nat
@@ -58,27 +59,14 @@ def $ppfunction_special(P, ptbytes) = $ppcheck(P, $context_error("__autoload() i
 def $ppfunction_special(P, ptbytes) = P[.ENV = P.ENV[.SEEN = P.ENV.SEEN ++ [(PLFUNCTION, $ptlc($ptjoin(P.ENV.NAMESPACE, ptbytes)))]]]
   -- otherwise
 
-def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSUNSUPPORTED text) = $ppunsupported(P, text)
-def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSERROR psdiagnostic*) = $ppsignature_diagnostics(P, psdiagnostic*)
-def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSOK pssignature psdiagnostic*) = $ppfunction_body($ppsignature_diagnostics(P, psdiagnostic*), pcpath, ptbytes, statement*, metadata, pssignature)
-  -- if $ppplain_signature(pssignature)
-def $ppfunction_signature(P, pcpath, ptbytes, statement*, metadata, PSOK pssignature psdiagnostic*) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "function type, default, reference or variadic activation")
-  -- if ~$ppplain_signature(pssignature)
-
 def $ppfunction_start(P, ptbytes, pssignature) = P[.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.LOOPS = 0][.EARLY = eps][.FOLD = P.FOLD[.FUNCTION = ptbytes][.VALUE = eps]][.EXPRESSIONS = eps][.ACCESS = eps][.NAMES = eps][.REDIRECTS = eps][.WRITES = eps][.GLOBALS = eps]
   -- if psparam* = pssignature.PARAMETERS
-
-def $ppfunction_body(P, pcpath, ptbytes, statement*, metadata, pssignature) = P
-  -- if P.COMPLETION =/= PPCNORMAL
-def $ppfunction_body(P, pcpath, ptbytes, statement*, metadata, pssignature) = $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata)
-  -- if P.COMPLETION = PPCNORMAL
-  -- if P_body = $ppstatements($ppfunction_start(P, ptbytes, pssignature), pcpath ++ [PCFIELD 5], 0, statement*)
 
 def $ppfunction_code(P) = { GLOBALS $ppownglobal(P.FUNCTIONS, P.GLOBALS), UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $ppownexpr(P.FUNCTIONS, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $ppownname(P.FUNCTIONS, $compiled_names(P.NAMES)), REDIRECTS $ppownredirect(P.FUNCTIONS, $compiled_redirects(P.REDIRECTS)) }
 
 def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
   -- if P_body.COMPLETION =/= PPCNORMAL
-def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppfunction_duplicate(P_restored, { ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $psline(metadata) })
+def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppfunction_duplicate(P_restored, { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $psline(metadata) })
   -- if P_body.COMPLETION = PPCNORMAL
   -- if P_restored = P_body[.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
 
@@ -98,7 +86,7 @@ def $ppfunction_duplicate(P, pfunction) = P[.COMPLETION = PPCABRUPT (STATICBYTES
   -- if pfunction.EARLY /\ ~$pfunction_builtin(pfunction.NAME)
   -- if $ppfunction_early(P.FUNCTIONS, pfunction.NAME) = (pfunction_old)
 
-def $ppstatement(P, pcpath, NStmtFunction (SEQUENCE eps) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $ppfunction_signature(P_name, pcpath, $ptjoin(P.ENV.NAMESPACE, $base64(text)), statement*, metadata, $pscompile(phpType16, phpType18, b, $ppfunction_context(P_name, $ptjoin(P.ENV.NAMESPACE, $base64(text)))))
+def $ppstatement(P, pcpath, NStmtFunction (SEQUENCE eps) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $ppdefaults_begin(P_name, pcpath, $ptjoin(P.ENV.NAMESPACE, $base64(text)), statement*, metadata, phpType16, phpType18, b)
   -- if P.COMPLETION = PPCNORMAL
   -- if P_name = $ppfunction_name($pplocate(P, pcpath, $source_line(metadata)), $base64(text))
   -- if P_name.COMPLETION = PPCNORMAL
@@ -177,7 +165,7 @@ def $ppglobal_variable(P, pcpath, phpType32, metadata) = $ppdone($ppvarname($ppe
   -- if phpType32 = expression
 
 def $ppinner(eps, pcpath) = false
-def $ppinner(pfunction :: pfunction_tail*, pcpath) = $effect_below(pfunction.BODY, pcpath) \/ $ppinner(pfunction_tail*, pcpath)
+def $ppinner(pfunction :: pfunction_tail*, pcpath) = $ppfunction_contains(pfunction, pcpath) \/ $ppinner(pfunction_tail*, pcpath)
 def $ppcodepath(CODEARG pcpath) = pcpath
 def $ppcodepath(CODEEXPR pcpath z b) = pcpath
 def $ppcodepath(CODEEFFECT pcpath) = pcpath
@@ -207,7 +195,7 @@ def $ppownglobal(pfunction*, pcpath :: pcpath_tail*) = pcpath :: $ppownglobal(pf
 ;; paired, including declarations in files that never invoke the function.
 def $ppplain_signature(pssignature) = (~pssignature.BYREF /\ pssignature.RETURNS = eps /\ $ppplain_params(pssignature.PARAMETERS))
 def $ppplain_params(eps) = true
-def $ppplain_params(psparam :: psparam_tail*) = (~psparam.VARIADIC /\ psparam.TYPE = eps /\ psparam.DEFAULT = PSNONE /\ $ppplain_params(psparam_tail*))
+def $ppplain_params(psparam :: psparam_tail*) = (~psparam.VARIADIC /\ psparam.TYPE = eps /\ $ppplain_params(psparam_tail*))
 
 ;; zend_compile_call_common restores the call line after compiling sends.
 ;; An abrupt operand keeps its original diagnostic location.

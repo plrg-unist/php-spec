@@ -85,7 +85,7 @@ rule PhpStep/call-send-abrupt: S ~> S_value
 
 dec $plain_parameters(psparam*) : bool
 def $plain_parameters(eps) = true
-def $plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.VARIADIC /\ psparam.DEFAULT = PSNONE /\ $plain_parameters(psparam_tail*))
+def $plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.VARIADIC /\ $plain_parameters(psparam_tail*))
 dec $bind_parameters(pstate, psparam*, poperand*) : pstate
 def $bind_parameters(S, eps, poperand*) = S
 def $bind_parameters(S, psparam :: psparam_tail*, eps) = S
@@ -103,7 +103,8 @@ def $call_received(n_args, n_params) = n_params -- if $(n_args >= n_params)
 dec $call_arity(pstate, pfunction, nat, porigin?, int) : pstate
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = $function_tasks(S, pfunction)]
   -- if $(n_args >= |pfunction.SIGNATURE.PARAMETERS|)
-def $call_arity(S, pfunction, n_args, (porigin), z) = $throw_scalar(S, "ArgumentCountError", $ptascii("Too few arguments to function ") ++ pfunction.NAME ++ $ptascii("(), ") ++ $ntunsigned(n_args) ++ $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $ptascii(" and exactly ") ++ $ntunsigned(|pfunction.SIGNATURE.PARAMETERS|) ++ $ptascii(" expected"), pfunction.LINE)
+dec $default_begin(pstate, pfunction, nat) : pstate
+def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction, n_args)
   -- if $(n_args < |pfunction.SIGNATURE.PARAMETERS|)
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
 def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra]})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)

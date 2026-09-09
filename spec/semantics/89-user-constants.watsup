@@ -1,3 +1,6 @@
+dec $default_code_below(pcoccurrence*, pcpath) : bool
+dec $default_below(pcoccurrence*, pcpath) : bool
+dec $default_context_valid(pstate, pconstantcontext) : bool
 dec $constant_branches_valid(pstate) : bool
 dec $constant_unit_classes_valid(pstate, ppstate) : bool
 dec $constant_value_class_valid(pstate, pvalue, pvalueclass) : bool
@@ -91,9 +94,9 @@ def $constant_codepath(CODEEFFECT pcpath) = pcpath
 dec $constant_codeexprs(pcoccurrence*, pcodeexpr*) : pcodeexpr*
 def $constant_codeexprs(pcoccurrence*, eps) = eps
 def $constant_codeexprs(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = pcodeexpr :: $constant_codeexprs(pcoccurrence*, pcodeexpr_tail*)
-  -- if $constant_below(pcoccurrence*, $constant_codepath(pcodeexpr))
+  -- if ($constant_below(pcoccurrence*, $constant_codepath(pcodeexpr)) \/ $default_code_below(pcoccurrence*, $constant_codepath(pcodeexpr)))
 def $constant_codeexprs(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $constant_codeexprs(pcoccurrence*, pcodeexpr_tail*)
-  -- if ~$constant_below(pcoccurrence*, $constant_codepath(pcodeexpr))
+  -- if ~($constant_below(pcoccurrence*, $constant_codepath(pcodeexpr)) \/ $default_code_below(pcoccurrence*, $constant_codepath(pcodeexpr)))
 def $constant_unit_code_valid(S, P, pcode) = ($constant_unit_classes_valid(S, P) /\ $constant_codeexprs(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $constant_codeexprs(P.FOLD.SOURCE.OCCURRENCES, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)))
 
 def $user_constants_valid(S, eps) = true
@@ -137,9 +140,12 @@ def $constant_context_valid(S) = true
   -- if $constant_bindings(S.TODO) = [pconstantcontext.ORIGIN]
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
+def $constant_context_valid(S) = $default_context_valid(S, pconstantcontext)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_declaration(S, pconstantcontext.ORIGIN) = eps
 def $constant_context_valid(S) = false -- otherwise
 
-def $constant_class_origin_allowed(pcunit, pcpath) = $constant_below(pcunit.OCCURRENCES, pcpath)
+def $constant_class_origin_allowed(pcunit, pcpath) = ($constant_below(pcunit.OCCURRENCES, pcpath) \/ $default_below(pcunit.OCCURRENCES, pcpath))
 
 ;; Validation scans the remaining continuation in the same declaration order.
 def $call_after_origin(S, CONSTANT_BIND porigin) = S[.CONSTCONTEXT = eps]
