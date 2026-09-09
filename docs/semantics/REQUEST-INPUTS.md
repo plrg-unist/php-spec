@@ -63,3 +63,18 @@ configuration, argument/stdin bytes, source/cwd identities and finite service
 facts alongside clock and ordered environment entries. Missing required facts
 remain Unsupported until provided. Shared fixture inputs cannot be replaced by
 hardcoded sample globals or native output-derived semantic defaults.
+
+## Bootstrap originals
+
+[Eight independent originals](../../coverage/semantics/request-bootstrap-independent-originals.json)
+retain explicit native request inputs before runtime admission. They confirm that
+`check_http_proxy` replaces imported HTTP_PROXY with the first matching native
+environment entry, whereas ordinary duplicate keys keep the last value. Empty
+first values and case-sensitive names remain distinct. Reserved SERVER entries
+are overwritten without changing their existing insertion positions; later
+script metadata keys append. CLI argc/argv remain present even with
+`register_argc_argv=0`; omitting S from `variables_order` leaves SERVER empty while
+global argc/argv remain. The JIT-disabled registration order is also retained.
+These source-backed observations are requirements for bootstrap semantics, not
+semantic agreements. The [binding](../../coverage/semantics/request-bootstrap-independent-binding.json)
+retains the exact capture script and immutable original hash.
