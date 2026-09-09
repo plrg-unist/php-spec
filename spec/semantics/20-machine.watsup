@@ -348,39 +348,61 @@ def $lower_byte(n) = $(n + 32)
 def $lower_byte(n) = n
   -- otherwise
 
-dec $builtin_value(text) : pvalue?
-def $builtin_value("UEhQX0lOVF9NQVg=") = (PINT 9223372036854775807)
-def $builtin_value("UEhQX0lOVF9NSU4=") = (PINT $(-9223372036854775808))
-def $builtin_value("UEhQX0lOVF9TSVpF") = (PINT 8)
-def $builtin_value("RV9BTEw=") = (PINT 30719)
-def $builtin_value("SU5G") = (PFLOAT 9218868437227405312)
-def $builtin_value("TkFO") = (PFLOAT 9221120237041090560)
-def $builtin_value(text) = eps
+;; Shared byte-keyed startup values; wire-text callers decode once.
+dec $builtin_value_bytes(nat*) : pvalue?
+def $builtin_value_bytes([80, 72, 80, 95, 73, 78, 84, 95, 77, 65, 88]) = (PINT 9223372036854775807)
+def $builtin_value_bytes([80, 72, 80, 95, 73, 78, 84, 95, 77, 73, 78]) = (PINT $(-9223372036854775808))
+def $builtin_value_bytes([80, 72, 80, 95, 73, 78, 84, 95, 83, 73, 90, 69]) = (PINT 8)
+def $builtin_value_bytes([69, 95, 65, 76, 76]) = (PINT 30719)
+def $builtin_value_bytes([73, 78, 70]) = (PFLOAT 9218868437227405312)
+def $builtin_value_bytes([78, 65, 78]) = (PFLOAT 9221120237041090560)
+def $builtin_value_bytes(n*) = eps
   -- otherwise
 
+dec $special_constant(nat*) : pvalue?
+def $special_constant(n*) = (PNULL)
+  -- if ($lower_byte(n))* = [110, 117, 108, 108]
+def $special_constant(n*) = (PBOOL true)
+  -- if ($lower_byte(n))* = [116, 114, 117, 101]
+def $special_constant(n*) = (PBOOL false)
+  -- if ($lower_byte(n))* = [102, 97, 108, 115, 101]
+def $special_constant(n*) = eps
+  -- otherwise
+
+dec $constant_lookup_bytes(nat*) : peval?
+def $constant_lookup_bytes(n*) = (VALUE pvalue)
+  -- if $builtin_value_bytes(n*) = (pvalue)
+def $constant_lookup_bytes(n*) = (ABRUPT (UNSUPPORTED "initial constant"))
+  -- if $builtin_value_bytes(n*) = eps
+  -- if $initial_constant_bytes(n*)
+def $constant_lookup_bytes(n*) = eps
+  -- otherwise
+
+dec $constant_candidates(nat*, (nat*)?) : peval?
+def $constant_candidates(n*, n_fallback*?) = (peval)
+  -- if $constant_lookup_bytes(n*) = (peval)
+def $constant_candidates(n*, (n_fallback*)) = $constant_lookup_bytes(n_fallback*)
+  -- if $constant_lookup_bytes(n*) = eps
+def $constant_candidates(n*, eps) = eps
+  -- if $constant_lookup_bytes(n*) = eps
+
+dec $constant_fetch(nat*, (nat*)?, int) : peval
+def $constant_fetch(n*, n_fallback*?, z) = peval
+  -- if $constant_candidates(n*, n_fallback*?) = (peval)
+def $constant_fetch(n*, n_fallback*?, z) = ABRUPT (UNSUPPORTED "missing source line")
+  -- if $constant_candidates(n*, n_fallback*?) = eps
+  -- if $(z <= 0)
+def $constant_fetch(n*, n_fallback*?, z) = ABRUPT (PHPERROR n* z)
+  -- if $constant_candidates(n*, n_fallback*?) = eps
+  -- if $(z > 0)
+
+dec $builtin_value(text) : pvalue?
+def $builtin_value(text) = $builtin_value_bytes($base64(text))
 dec $constant(text, nat*, int) : peval
 def $constant(text, n*, z) = VALUE pvalue
-  -- if $builtin_value(text) = (pvalue)
-def $constant(text, n*, z) = VALUE PNULL
-  -- if ($lower_byte(n))* = [110, 117, 108, 108]
-def $constant(text, n*, z) = VALUE (PBOOL true)
-  -- if ($lower_byte(n))* = [116, 114, 117, 101]
-def $constant(text, n*, z) = VALUE (PBOOL false)
-  -- if ($lower_byte(n))* = [102, 97, 108, 115, 101]
-def $constant(text, n*, z) = ABRUPT (UNSUPPORTED "initial constant")
-  -- if $initial_constant(text)
-  -- if $builtin_value(text) = eps
-  -- if ($lower_byte(n))* =/= [110, 117, 108, 108]
-  -- if ($lower_byte(n))* =/= [116, 114, 117, 101]
-  -- if ($lower_byte(n))* =/= [102, 97, 108, 115, 101]
-def $constant(text, n*, z) = ABRUPT (UNSUPPORTED "missing source line")
-  -- if $(z <= 0)
-  -- if ($lower_byte(n))* =/= [110, 117, 108, 108]
-  -- if ($lower_byte(n))* =/= [116, 114, 117, 101]
-  -- if ($lower_byte(n))* =/= [102, 97, 108, 115, 101]
-  -- if ~$initial_constant(text)
-def $constant(text, n*, z) = ABRUPT (PHPERROR n* z)
-  -- otherwise
+  -- if $special_constant(n*) = (pvalue)
+def $constant(text, n*, z) = $constant_fetch(n*, eps, z)
+  -- if $special_constant(n*) = eps
 
 dec $evaluate(expression) : peval
 def $evaluate(NScalarString (BYTES text) metadata) = VALUE (PSTRING $base64(text))
