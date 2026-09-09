@@ -1,0 +1,106 @@
+;; Compiled constants outlive task temporaries. This internal installation API
+;; consumes compiler-proved values; structural validation does not re-prove
+;; constant evaluation. Source execution does not install or consume pools yet.
+dec $constant_at(pconstant*, pcpath) : pvalue?
+def $constant_at(eps, pcpath) = eps
+def $constant_at((PCONSTANT pcpath pvalue) :: pconstant*, pcpath) = (pvalue)
+def $constant_at((PCONSTANT pcpath_other pvalue) :: pconstant*, pcpath) = $constant_at(pconstant*, pcpath)
+  -- if pcpath_other =/= pcpath
+
+dec $pool_at(ppool*, nat) : ppool?
+def $pool_at(eps, n) = eps
+def $pool_at(ppool :: ppool_tail*, n) = (ppool)
+  -- if ppool.UNIT = n
+def $pool_at(ppool :: ppool_tail*, n) = $pool_at(ppool_tail*, n)
+  -- if ppool.UNIT =/= n
+dec $pool_value(ppool*, porigin) : pvalue?
+def $pool_value(ppool_tail*, PORIGIN n pcpath) = $constant_at(ppool.CONSTANTS, pcpath)
+  -- if $pool_at(ppool_tail*, n) = (ppool)
+def $pool_value(ppool_tail*, PORIGIN n pcpath) = eps
+  -- if $pool_at(ppool_tail*, n) = eps
+
+dec $constants_nodes(pconstant*) : pnode*
+def $constants_nodes(eps) = eps
+def $constants_nodes((PCONSTANT pcpath pvalue) :: pconstant*) = $value_nodes(pvalue) ++ $constants_nodes(pconstant*)
+def $pools_nodes(eps) = eps
+def $pools_nodes(ppool :: ppool_tail*) = $constants_nodes(ppool.CONSTANTS) ++ $pools_nodes(ppool_tail*)
+
+dec $source_unit(pcunit*, nat) : pcunit?
+def $source_unit(eps, n) = eps
+def $source_unit(pcunit :: pcunit_tail*, n) = (pcunit)
+  -- if pcunit.ID = n
+def $source_unit(pcunit :: pcunit_tail*, n) = $source_unit(pcunit_tail*, n)
+  -- if pcunit.ID =/= n
+dec $pool_sources(pcunit*, pcunit) : pcunit*?
+def $pool_sources(pcunit_tail*, pcunit) = (pcunit_tail* ++ [pcunit])
+  -- if $source_unit(pcunit_tail*, pcunit.ID) = eps
+def $pool_sources(pcunit_tail*, pcunit) = (pcunit_tail*)
+  -- if $source_unit(pcunit_tail*, pcunit.ID) = (pcunit)
+def $pool_sources(pcunit_tail*, pcunit) = eps
+  -- otherwise
+
+dec $constant_occurrence(pcnode) : bool
+def $constant_occurrence(expression) = true
+def $constant_occurrence(pcnode) = false
+  -- otherwise
+dec $constants_valid(pcunit, pconstant*, pnode*) : bool
+def $constants_valid(pcunit, eps, pnode*) = true
+def $constants_valid(pcunit, (PCONSTANT pcpath pvalue) :: pconstant*, pnode*) = true
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (pcnode)
+  -- if $constant_occurrence(pcnode)
+  -- if $constant_at(pconstant*, pcpath) = eps
+  -- if $heap_subset($value_nodes(pvalue), pnode*)
+  -- if $constants_valid(pcunit, pconstant*, pnode*)
+def $constants_valid(pcunit, pconstant*, pnode*) = false
+  -- otherwise
+
+;; Constant tables have direct entries only. Backing slots may already have
+;; been reclaimed; live tables must point only to other live allocations.
+dec $pool_entries_valid(pentry*, pnode*) : bool
+def $pool_entries_valid(eps, pnode*) = true
+def $pool_entries_valid((ENTRY pkey (DIRECT pvalue)) :: pentry*, pnode*) = ($heap_subset($value_nodes(pvalue), pnode*) /\ $pool_entries_valid(pentry*, pnode*))
+def $pool_entries_valid(pentry*, pnode*) = false
+  -- otherwise
+dec $pool_arrays_valid(parray*, pnode*, pnode*) : bool
+def $pool_arrays_valid(parray_tail*, eps, pnode*) = true
+def $pool_arrays_valid(parray_tail*, (HARRAY n) :: pnode_tail*, pnode*) = ($pool_entries_valid(parray_tail*[n].ITEMS, pnode*) /\ $pool_arrays_valid(parray_tail*, pnode_tail*, pnode*))
+  -- if $(n < |parray_tail*|)
+def $pool_arrays_valid(parray_tail*, pnode_tail*, pnode*) = false
+  -- otherwise
+
+dec $pool_shift_value(pvalue, nat) : pvalue
+def $pool_shift_value(PARRAY n, n_base) = PARRAY $(n + n_base)
+def $pool_shift_value(pvalue, n_base) = pvalue
+  -- otherwise
+dec $pool_shift_entries(pentry*, nat) : pentry*
+def $pool_shift_entries(eps, n) = eps
+def $pool_shift_entries((ENTRY pkey (DIRECT pvalue)) :: pentry*, n) = (ENTRY pkey (DIRECT $pool_shift_value(pvalue, n))) :: $pool_shift_entries(pentry*, n)
+def $pool_shift_entries((ENTRY pkey (ALIAS n_cell)) :: pentry*, n) = (ENTRY pkey (ALIAS n_cell)) :: $pool_shift_entries(pentry*, n)
+def $pool_shift_entries((ENTRY pkey UNINITIALIZED) :: pentry*, n) = (ENTRY pkey UNINITIALIZED) :: $pool_shift_entries(pentry*, n)
+dec $pool_shift_arrays(parray*, nat) : parray*
+def $pool_shift_arrays(eps, n) = eps
+def $pool_shift_arrays(parray :: parray_tail*, n) = parray[.ITEMS = $pool_shift_entries(parray.ITEMS, n)] :: $pool_shift_arrays(parray_tail*, n)
+dec $pool_shift_nodes(pnode*, nat) : pnode*
+def $pool_shift_nodes(eps, n) = eps
+def $pool_shift_nodes((HARRAY n_old) :: pnode*, n) = (HARRAY $(n_old + n)) :: $pool_shift_nodes(pnode*, n)
+dec $pool_shift_constants(pconstant*, nat) : pconstant*
+def $pool_shift_constants(eps, n) = eps
+def $pool_shift_constants((PCONSTANT pcpath pvalue) :: pconstant*, n) = (PCONSTANT pcpath $pool_shift_value(pvalue, n)) :: $pool_shift_constants(pconstant*, n)
+
+;; Preserve all backing slots so neither reclaimed IDs nor retained dynamic
+;; arrays collide with this unit. Duplicate installation is an internal error;
+;; subsequent execution looks up the existing unit/path without allocation.
+dec $install_pool(pstate, pcunit, parray*, pnode*, pconstant*) : pstate
+def $install_pool(S, pcunit, parray_tail*, pnode*, pconstant*) = S
+  -- if S.COMPLETION =/= NORMAL
+def $install_pool(S, pcunit, parray_tail*, pnode*, pconstant*) = S[.SOURCES = pcunit_sources*][.ARRAYS = S.ARRAYS ++ $pool_shift_arrays(parray_tail*, n)][.ALLOCATIONS = S.ALLOCATIONS ++ $pool_shift_nodes(pnode*, n)][.POOLS = S.POOLS ++ [{UNIT pcunit.ID, CONSTANTS $pool_shift_constants(pconstant*, n)}]]
+  -- if S.COMPLETION = NORMAL
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if $pool_at(S.POOLS, pcunit.ID) = eps
+  -- if $pool_sources(S.SOURCES, pcunit) = (pcunit_sources*)
+  -- if $heap_unique(pnode*)
+  -- if $pool_arrays_valid(parray_tail*, pnode*, pnode*)
+  -- if $constants_valid(pcunit, pconstant*, pnode*)
+  -- if n = |S.ARRAYS|
+def $install_pool(S, pcunit, parray_tail*, pnode*, pconstant*) = S[.COMPLETION = UNSUPPORTED "invalid compiled constant pool"]
+  -- otherwise

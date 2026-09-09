@@ -38,10 +38,10 @@ item siblings. Fifteen interruption/resumption checks, invalid unit/path/node
 checks and transparent reference-root checks supplement the trace comparisons.
 The full source and ownership gates still validate behavior and lifetimes.
 
-The next stage must register permanent roots for compiled array values separately
-from `HELD`, reserve disjoint allocation IDs when installing a compiler store,
-and consume compiled facts by unit/path. Those roots survive temporary cleanup
-until the corresponding source unit is torn down. The checked compiler traversal
+The internal [pool installer](COMPILED-POOLS.md) now supplies permanent roots
+separate from `HELD` and reserves disjoint allocation IDs. Source execution still
+needs to invoke it and consume compiled facts by unit/path. Those roots survive
+temporary cleanup; compiled-unit teardown remains pending. The checked compiler traversal
 must still visit child arrays normally below an assignment/variable barrier that
 stops an enclosing constant-evaluation traversal. Repeated literal execution,
 foreach and general control remain pending until these integrations are tested.

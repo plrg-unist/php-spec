@@ -269,7 +269,7 @@ def $drive(S, n) = $drive($prune_allocations(S_next), n_next)
   -- if $(n - 1) = n_next
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps}
+def $initial_state(pcompletion) = {TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps}
 dec $run_source(pcunit, nat) : pstate
 def $run_source(pcunit, n) = $drive(S[.TODO = $statement_tasks($pcprogram(pcunit.AST), (PORIGIN pcunit.ID eps), 0)], n)
   -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)

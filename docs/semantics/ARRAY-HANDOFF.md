@@ -17,6 +17,9 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
   source/compiler line functions. `30-storage`: cells, operand/base/path/task
   domains, state, variable binding operations. `31-source-origins` supplies
   checked unit/path task scopes; see [runtime origins](SOURCE-ORIGINS.md).
+- `32-compiled-pools`: internal per-unit constant storage, disjoint array-ID
+  installation and permanent roots; see [compiled pools](COMPILED-POOLS.md).
+  Source execution does not yet invoke it.
 - `36-arrays`: ordered entries/history, key coercions, reads, identity, union,
   isolated constant classifier. `37-array-locations`: location acquisition and
   conditional shallow path copying. `38-array-unset`: unset contexts.
@@ -50,8 +53,9 @@ keep this distinct from both a captured `KNOWN` value and a delayed `VARIABLE`.
 - Next: [scalar/string dimension helpers](DIMENSIONS.md), exact compiler prepass
   integration, string write/reference errors, array unpack and destructuring.
   Runtime tasks now retain [source-unit occurrence identities](SOURCE-ORIGINS.md);
-  before foreach/general loops, install persistent literal-pool roots and consume
-  compiler facts by those identities. Equal subtrees and editable metadata are not
+  before foreach/general loops, connect the permanent pool installer and consume
+  compiler facts by those identities. Pool roots are separate from task `HELD`
+  and survive temporary cleanup. Equal subtrees and editable metadata are not
   occurrence identities. Foreach additionally needs persistent bucket/cursor
   state and mutation/reference interaction tests.
 
