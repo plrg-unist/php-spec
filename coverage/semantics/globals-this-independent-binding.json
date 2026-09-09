@@ -1,0 +1,59 @@
+{
+  "scope": "Ten native/lint/checked GLOBALS this-name originals; no runtime semantic agreements. Constant and dynamic keys share this special runtime protocol.",
+  "original": "coverage/semantics/globals-this-independent-originals.json",
+  "sha256": "b583dc6fe532c854c9c6d4f1386c1a925f507bc8689346906ae76673941a17eb",
+  "checked_input_manifest": {
+    "path": ".tools/runtime5-isset-publication-manifest.json",
+    "sha256": "f0ec31ab7b136e2aab0f399de0f40e30221a7bc335eba783ae8079ed06351926",
+    "fingerprint": {
+      "sha256": "afbaa198201e924dbc8256408ca222b107609ed856084e57f406cad9175eb028",
+      "files": 835,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    }
+  },
+  "interpretation": [
+    "All10 sources lint successfully.",
+    "Missing reads warn Undefined variable $this, not Undefined global variable.",
+    "Quiet read returns fallback and unset succeeds.",
+    "Write and reference acquisition throw runtime Error Cannot re-assign $this after preceding source output."
+  ],
+  "capture_artifacts": {
+    ".tools/review7-globals-this-originals.py": {
+      "sha256": "7d05fb04e5e12658931a383d8c8077b96abd2816f62bb8bcf3ba3e3a22ace45e",
+      "text": "from pathlib import Path\nimport base64,hashlib,json,os,struct,subprocess,sys\nR=Path.cwd();O=R/'.tools/review7-globals-this-checked';O.mkdir(exist_ok=False)\nprofile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[arg for k,v in profile.items() for arg in ['-d',k+'='+v]]\ncases=[('constant-read', [], [], b'<?php echo \"A\";echo $GLOBALS[\"this\"];echo \"B\";'), ('constant-write', [], [], b'<?php echo \"A\";$GLOBALS[\"this\"]=7;echo \"done\";echo \"B\";'), ('constant-quiet', [], [], b'<?php echo \"A\";echo $GLOBALS[\"this\"]??7;echo \"B\";'), ('constant-unset', [], [], b'<?php echo \"A\";unset($GLOBALS[\"this\"]);echo \"done\";echo \"B\";'), ('constant-reference', [], [], b'<?php echo \"A\";$r=&$GLOBALS[\"this\"];echo \"done\";echo \"B\";'), ('dynamic-read', [], [], b'<?php echo \"A\";$n=\"this\";echo $GLOBALS[$n];echo \"B\";'), ('dynamic-write', [], [], b'<?php echo \"A\";$n=\"this\";$GLOBALS[$n]=7;echo \"done\";echo \"B\";'), ('dynamic-quiet', [], [], b'<?php echo \"A\";$n=\"this\";echo $GLOBALS[$n]??7;echo \"B\";'), ('dynamic-unset', [], [], b'<?php echo \"A\";$n=\"this\";unset($GLOBALS[$n]);echo \"done\";echo \"B\";'), ('dynamic-reference', [], [], b'<?php echo \"A\";$n=\"this\";$r=&$GLOBALS[$n];echo \"done\";echo \"B\";')]\nsys.path.insert(0,str(R/'tests/semantics'));import source_compiler as c\nfrontend_worker=c.types.Worker([str(c.types.PHP),'-n','-d','extension='+str(R/'.tools/php-file.so'),str(R/'frontend/worker.php')]);a=c.types.Worker([str(R/'_build/default/adapter/main.exe'),str(R)])\nrecords=[]\nfor name,env,ini,source in cases:\n p=O/(name+'.php');p.write_bytes(source);entries=[b'LC_ALL=C',b'TZ=UTC',*env];payload=b'PHPRQ001'+struct.pack('<qII',-1,500000,len(entries))+b''.join(struct.pack('<I',len(e))+e for e in entries);q=O/(name+'.input');q.write_bytes(payload);cmd=[str(R/'.tools/php/bin/php'),'-n',*flags,'-d','variables_order=EGPCS',*[arg for v in ini for arg in ['-d',v]],str(p),'alpha','beta']\n with q.open('rb') as f:\n  os.dup2(f.fileno(),198)\n  try:run=subprocess.run(cmd,env={'LD_PRELOAD':str(R/'.tools/request-clock.so')},pass_fds=(198,),cwd=O,capture_output=True,timeout=15)\n  finally:os.close(198)\n lint=subprocess.run(cmd[:-3]+['-l',str(p)],capture_output=True,env={'LC_ALL':'C','TZ':'UTC'},timeout=15);parsed=frontend_worker.request({'op':'parse','source':base64.b64encode(source).decode()});assert parsed['accepted'];checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})\n row={'lint':{'status':lint.returncode,'stdout':base64.b64encode(lint.stdout).decode(),'stderr':base64.b64encode(lint.stderr).decode()},'checked':checked,'id':name,'source_base64':base64.b64encode(source).decode(),'source_sha256':hashlib.sha256(source).hexdigest(),'context':str(p),'environment_base64':[base64.b64encode(e).decode() for e in entries],'clock':[-1,500000],'extra_ini':ini,'command':cmd,'cwd':str(O),'payload_base64':base64.b64encode(payload).decode(),'oracle':{'stdout':base64.b64encode(run.stdout).decode(),'stderr':base64.b64encode(run.stderr).decode(),'exit_status':run.returncode}};records.append(row);print(name,run.returncode,run.stdout,run.stderr,flush=True)\nr={'scope':'Independent GLOBALS this-name native/lint/checked originals before request globals implementation; provider instrumented pinned CLI, no semantic agreements claimed. Authored environment only.','inputs':{p:hashlib.sha256((R/p).read_bytes()).hexdigest() for p in ['.tools/php/bin/php','.tools/request-clock.so','native/request_clock.c','tests/semantics/profile.json','vendor/php-src/main/php_variables.c','vendor/php-src/sapi/cli/php_cli.c']},'records':records};(O/'originals.json').write_text(json.dumps(r,indent=2)+'\\n')\n\nfrontend_worker.close();a.close()\n"
+    },
+    ".tools/review7-globals-this-first-setup.py": {
+      "sha256": "8e39ded47866a4390467ef9449d08ec3f0656c9837e345671de7f2a26756123b",
+      "text": "from pathlib import Path\nimport base64,hashlib,json,os,struct,subprocess,sys\nR=Path.cwd();O=R/'.tools/review7-globals-this-originals';O.mkdir(exist_ok=False)\nprofile=json.loads((R/'tests/semantics/profile.json').read_text());flags=[arg for k,v in profile.items() for arg in ['-d',k+'='+v]]\ncases=[('constant-read', [], [], b'<?php echo \"A\";echo $GLOBALS[\"this\"];echo \"B\";'), ('constant-write', [], [], b'<?php echo \"A\";$GLOBALS[\"this\"]=7;echo \"done\";echo \"B\";'), ('constant-quiet', [], [], b'<?php echo \"A\";echo $GLOBALS[\"this\"]??7;echo \"B\";'), ('constant-unset', [], [], b'<?php echo \"A\";unset($GLOBALS[\"this\"]);echo \"done\";echo \"B\";'), ('constant-reference', [], [], b'<?php echo \"A\";$r=&$GLOBALS[\"this\"];echo \"done\";echo \"B\";'), ('dynamic-read', [], [], b'<?php echo \"A\";$n=\"this\";echo $GLOBALS[$n];echo \"B\";'), ('dynamic-write', [], [], b'<?php echo \"A\";$n=\"this\";$GLOBALS[$n]=7;echo \"done\";echo \"B\";'), ('dynamic-quiet', [], [], b'<?php echo \"A\";$n=\"this\";echo $GLOBALS[$n]??7;echo \"B\";'), ('dynamic-unset', [], [], b'<?php echo \"A\";$n=\"this\";unset($GLOBALS[$n]);echo \"done\";echo \"B\";'), ('dynamic-reference', [], [], b'<?php echo \"A\";$n=\"this\";$r=&$GLOBALS[$n];echo \"done\";echo \"B\";')]\nsys.path.insert(0,str(R/'tests/semantics'));import source_compiler as c\nf=c.types.Worker([str(c.types.PHP),'-n','-d','extension='+str(R/'.tools/php-file.so'),str(R/'frontend/worker.php')]);a=c.types.Worker([str(R/'_build/default/adapter/main.exe'),str(R)])\nrecords=[]\nfor name,env,ini,source in cases:\n p=O/(name+'.php');p.write_bytes(source);entries=[b'LC_ALL=C',b'TZ=UTC',*env];payload=b'PHPRQ001'+struct.pack('<qII',-1,500000,len(entries))+b''.join(struct.pack('<I',len(e))+e for e in entries);q=O/(name+'.input');q.write_bytes(payload);cmd=[str(R/'.tools/php/bin/php'),'-n',*flags,'-d','variables_order=EGPCS',*[arg for v in ini for arg in ['-d',v]],str(p),'alpha','beta']\n with q.open('rb') as f:\n  os.dup2(f.fileno(),198)\n  try:run=subprocess.run(cmd,env={'LD_PRELOAD':str(R/'.tools/request-clock.so')},pass_fds=(198,),cwd=O,capture_output=True,timeout=15)\n  finally:os.close(198)\n lint=subprocess.run(cmd[:-3]+['-l',str(p)],capture_output=True,env={'LC_ALL':'C','TZ':'UTC'},timeout=15);parsed=f.request({'op':'parse','source':base64.b64encode(source).decode()});assert parsed['accepted'];checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})\n row={'lint':{'status':lint.returncode,'stdout':base64.b64encode(lint.stdout).decode(),'stderr':base64.b64encode(lint.stderr).decode()},'checked':checked,'id':name,'source_base64':base64.b64encode(source).decode(),'source_sha256':hashlib.sha256(source).hexdigest(),'context':str(p),'environment_base64':[base64.b64encode(e).decode() for e in entries],'clock':[-1,500000],'extra_ini':ini,'command':cmd,'cwd':str(O),'payload_base64':base64.b64encode(payload).decode(),'oracle':{'stdout':base64.b64encode(run.stdout).decode(),'stderr':base64.b64encode(run.stderr).decode(),'exit_status':run.returncode}};records.append(row);print(name,run.returncode,run.stdout,run.stderr,flush=True)\nr={'scope':'Independent GLOBALS this-name native/lint/checked originals before request globals implementation; provider instrumented pinned CLI, no semantic agreements claimed. Authored environment only.','inputs':{p:hashlib.sha256((R/p).read_bytes()).hexdigest() for p in ['.tools/php/bin/php','.tools/request-clock.so','native/request_clock.c','tests/semantics/profile.json','vendor/php-src/main/php_variables.c','vendor/php-src/sapi/cli/php_cli.c']},'records':records};(O/'originals.json').write_text(json.dumps(r,indent=2)+'\\n')\n\nf.close();a.close()\n"
+    },
+    ".tools/review7-globals-this-first-setup.json": {
+      "sha256": "d16a598cdfa5119547b26dff4abd2cd74e9563670c582842cdc4d2e187f6c89e",
+      "text": "{\n  \"classification\": \"Reviewer capture setup failure; file-handle variable shadowed frontend worker after first native invocation, before any accepted control record. No semantic comparison/pass.\",\n  \"script_sha256\": \"8e39ded47866a4390467ef9449d08ec3f0656c9837e345671de7f2a26756123b\",\n  \"exception\": \"AttributeError: '_io.BufferedReader' object has no attribute 'request'\",\n  \"original_directory\": \".tools/review7-globals-this-originals\"\n}\n"
+    }
+  },
+  "first_setup_files": {
+    ".tools/review7-globals-this-originals/constant-read.php": {
+      "sha256": "6bd1422c7fd618488ba619f4084e31836eb3d65e1b8fd701db4fa995042d0355",
+      "base64": "PD9waHAgZWNobyAiQSI7ZWNobyAkR0xPQkFMU1sidGhpcyJdO2VjaG8gIkIiOw=="
+    },
+    ".tools/review7-globals-this-originals/constant-read.input": {
+      "sha256": "ddf046384c1f82a6643fc949bbd47fc62e61bb1b2aa3fe61f51c94e59654e528",
+      "base64": "UEhQUlEwMDH//////////yChBwACAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQw=="
+    }
+  },
+  "first_failure_classification": "Capture frontend variable was shadowed by payload file handle; original script/files and exact exception retained. Corrected10 control records are separately scoped; no semantic defect or pass assigned to failed capture."
+}
