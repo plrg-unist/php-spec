@@ -1,0 +1,480 @@
+{
+  "scope": "Independent native-only originals before function/frame source activation. Explicit reviewed request primitives; no semantic pass claim.",
+  "fingerprint": {
+    "sha256": "14d1766202ddc2e5ba1b0223611b1a83084f34ee7a182550a6a9771ab503462f",
+    "files": 846,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "records": [
+    {
+      "id": "caller-held-array-across-call",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigpe3JldHVybiBbMl07fSR4PTE7ZWNobyAoWyR4XStmKCkpWzBdOw==",
+      "source_sha256": "fc24e736ea1149dbb65cbb5a5d128ee76c7805fa9d35d9616b97a82494d1e040",
+      "context": "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case0.php",
+      "request": {
+        "env": [
+          [
+            "TENfQUxM",
+            "Qw=="
+          ],
+          [
+            "VFo=",
+            "VVRD"
+          ],
+          [
+            "RklSU1Q=",
+            "b25l"
+          ]
+        ],
+        "argv": [
+          "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTAucGhw",
+          "YWxwaGE=",
+          "YmV0YQ=="
+        ],
+        "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTAucGhw",
+        "seconds": "1700000000",
+        "microseconds": 125000,
+        "variables": "RUdQQ1M=",
+        "jit": true,
+        "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18="
+      },
+      "payload_base64": "UEhQUlEwMDEA8VNlAAAAAEjoAQADAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmU=",
+      "payload_sha256": "76119571cf6861d20de360a0e144c5c239a43332752127050a41f0d541be64f4",
+      "native": {
+        "stdout": "MQ==",
+        "stderr": "",
+        "exit_status": 0,
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-d",
+          "variables_order=EGPCS",
+          "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case0.php",
+          "alpha",
+          "beta"
+        ]
+      }
+    },
+    {
+      "id": "caller-foreach-reference-across-call",
+      "source_base64": "PD9waHAgJGE9WzEsMl07ZnVuY3Rpb24gZigpe2dsb2JhbCAkYTskYVtdPTM7cmV0dXJuIDc7fWZvcmVhY2goJGEgYXMgJiR2KXtlY2hvICR2O2lmKCR2PT09MSllY2hvIGYoKTt9ZWNobyAkdjs=",
+      "source_sha256": "a88cb345055ef8037b8422be526502c40cd5344b9137676849d0b3aa546e1e34",
+      "context": "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case1.php",
+      "request": {
+        "env": [
+          [
+            "TENfQUxM",
+            "Qw=="
+          ],
+          [
+            "VFo=",
+            "VVRD"
+          ],
+          [
+            "RklSU1Q=",
+            "b25l"
+          ]
+        ],
+        "argv": [
+          "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTEucGhw",
+          "YWxwaGE=",
+          "YmV0YQ=="
+        ],
+        "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTEucGhw",
+        "seconds": "1700000000",
+        "microseconds": 125000,
+        "variables": "RUdQQ1M=",
+        "jit": true,
+        "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18="
+      },
+      "payload_base64": "UEhQUlEwMDEA8VNlAAAAAEjoAQADAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmU=",
+      "payload_sha256": "76119571cf6861d20de360a0e144c5c239a43332752127050a41f0d541be64f4",
+      "native": {
+        "stdout": "MTcyMzM=",
+        "stderr": "",
+        "exit_status": 0,
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-d",
+          "variables_order=EGPCS",
+          "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case1.php",
+          "alpha",
+          "beta"
+        ]
+      }
+    },
+    {
+      "id": "callee-arg-survives-global-unset",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigkeCl7dW5zZXQoJEdMT0JBTFNbImEiXSk7JHhbMF09MjtyZXR1cm4gJHg7fSRhPVsxXTskcj1mKCRhKTtlY2hvICRyWzBdLGlzc2V0KCRhKTs=",
+      "source_sha256": "4fad713c93b2cfee623469050b2a8a47be542a97f0c4a6a3953e1dcc68108a3f",
+      "context": "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case2.php",
+      "request": {
+        "env": [
+          [
+            "TENfQUxM",
+            "Qw=="
+          ],
+          [
+            "VFo=",
+            "VVRD"
+          ],
+          [
+            "RklSU1Q=",
+            "b25l"
+          ]
+        ],
+        "argv": [
+          "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTIucGhw",
+          "YWxwaGE=",
+          "YmV0YQ=="
+        ],
+        "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTIucGhw",
+        "seconds": "1700000000",
+        "microseconds": 125000,
+        "variables": "RUdQQ1M=",
+        "jit": true,
+        "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18="
+      },
+      "payload_base64": "UEhQUlEwMDEA8VNlAAAAAEjoAQADAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmU=",
+      "payload_sha256": "76119571cf6861d20de360a0e144c5c239a43332752127050a41f0d541be64f4",
+      "native": {
+        "stdout": "Mg==",
+        "stderr": "",
+        "exit_status": 0,
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-d",
+          "variables_order=EGPCS",
+          "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case2.php",
+          "alpha",
+          "beta"
+        ]
+      }
+    },
+    {
+      "id": "returned-local-singleton-reference-cow",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigpeyR4PTE7JGE9WyYkeF07cmV0dXJuICRhO30kYT1mKCk7JGI9JGE7JGJbMF09NztlY2hvICRhWzBdLCRiWzBdOw==",
+      "source_sha256": "5e3ce1c65fa501520981dc59ba3db09ba06a099f5374e0507c0d4d710da36e85",
+      "context": "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case3.php",
+      "request": {
+        "env": [
+          [
+            "TENfQUxM",
+            "Qw=="
+          ],
+          [
+            "VFo=",
+            "VVRD"
+          ],
+          [
+            "RklSU1Q=",
+            "b25l"
+          ]
+        ],
+        "argv": [
+          "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTMucGhw",
+          "YWxwaGE=",
+          "YmV0YQ=="
+        ],
+        "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTMucGhw",
+        "seconds": "1700000000",
+        "microseconds": 125000,
+        "variables": "RUdQQ1M=",
+        "jit": true,
+        "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18="
+      },
+      "payload_base64": "UEhQUlEwMDEA8VNlAAAAAEjoAQADAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmU=",
+      "payload_sha256": "76119571cf6861d20de360a0e144c5c239a43332752127050a41f0d541be64f4",
+      "native": {
+        "stdout": "MTc=",
+        "stderr": "",
+        "exit_status": 0,
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-d",
+          "variables_order=EGPCS",
+          "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case3.php",
+          "alpha",
+          "beta"
+        ]
+      }
+    },
+    {
+      "id": "returned-global-shared-reference-cow",
+      "source_base64": "PD9waHAgJGc9MTtmdW5jdGlvbiBmKCl7Z2xvYmFsICRnO3JldHVybiBbJiRnXTt9JGE9ZigpOyRiPSRhOyRiWzBdPTc7ZWNobyAkZywkYVswXSwkYlswXTs=",
+      "source_sha256": "705a7cddaff62481b22ed506c9b437891cbba115cd025bffecd7e8791e3a54a0",
+      "context": "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case4.php",
+      "request": {
+        "env": [
+          [
+            "TENfQUxM",
+            "Qw=="
+          ],
+          [
+            "VFo=",
+            "VVRD"
+          ],
+          [
+            "RklSU1Q=",
+            "b25l"
+          ]
+        ],
+        "argv": [
+          "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTQucGhw",
+          "YWxwaGE=",
+          "YmV0YQ=="
+        ],
+        "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTQucGhw",
+        "seconds": "1700000000",
+        "microseconds": 125000,
+        "variables": "RUdQQ1M=",
+        "jit": true,
+        "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18="
+      },
+      "payload_base64": "UEhQUlEwMDEA8VNlAAAAAEjoAQADAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmU=",
+      "payload_sha256": "76119571cf6861d20de360a0e144c5c239a43332752127050a41f0d541be64f4",
+      "native": {
+        "stdout": "Nzc3",
+        "stderr": "",
+        "exit_status": 0,
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-d",
+          "variables_order=EGPCS",
+          "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case4.php",
+          "alpha",
+          "beta"
+        ]
+      }
+    },
+    {
+      "id": "callee-fatal-stack-and-output",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigpe2VjaG8gIkEiO3JldHVybiAxLzA7fWVjaG8gIkIiLGYoKSwiQyI7",
+      "source_sha256": "61cd1c14261d3eb0ad4694645f24b8ac939eb709b39e0e72e9cac88d00b41b80",
+      "context": "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case5.php",
+      "request": {
+        "env": [
+          [
+            "TENfQUxM",
+            "Qw=="
+          ],
+          [
+            "VFo=",
+            "VVRD"
+          ],
+          [
+            "RklSU1Q=",
+            "b25l"
+          ]
+        ],
+        "argv": [
+          "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTUucGhw",
+          "YWxwaGE=",
+          "YmV0YQ=="
+        ],
+        "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTUucGhw",
+        "seconds": "1700000000",
+        "microseconds": 125000,
+        "variables": "RUdQQ1M=",
+        "jit": true,
+        "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18="
+      },
+      "payload_base64": "UEhQUlEwMDEA8VNlAAAAAEjoAQADAAAACAAAAExDX0FMTD1DBgAAAFRaPVVUQwkAAABGSVJTVD1vbmU=",
+      "payload_sha256": "76119571cf6861d20de360a0e144c5c239a43332752127050a41f0d541be64f4",
+      "native": {
+        "stdout": "QkE=",
+        "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IERpdmlzaW9uQnlaZXJvRXJyb3I6IERpdmlzaW9uIGJ5IHplcm8gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3JldmlldzctY2FsbC1vd25lcnNoaXAtNHBic2c2M18vY2FzZTUucGhwOjEKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9yZXZpZXc3LWNhbGwtb3duZXJzaGlwLTRwYnNnNjNfL2Nhc2U1LnBocCgxKTogZigpCiMxIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcmV2aWV3Ny1jYWxsLW93bmVyc2hpcC00cGJzZzYzXy9jYXNlNS5waHAgb24gbGluZSAxCg==",
+        "exit_status": 255,
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "-d",
+          "variables_order=EGPCS",
+          "/home/user/workspace/php-spec/.tools/review7-call-ownership-4pbsg63_/case5.php",
+          "alpha",
+          "beta"
+        ]
+      }
+    }
+  ],
+  "review": "Native originals only. First source checks a caller-owned temporary across invocation; second suspends a reference iterator while a callee appends to its global array. A passed array survives global unset. Returned local singleton references separate on COW (17), while an additional global reference owner preserves sharing (777). Callee division failure retains outputBA and native call stack. These are future frame ownership/diagnostic obligations, not accepted source execution.",
+  "originals_sha256": "db922769c6b73f114140ca9d1a65b2a9eb3a7d701edbfdc686731ce7c8b5065b",
+  "capture": {
+    "sha256": "07ea21558e298118b767e1a11e98fa11243fdf1244f8ee13ff5764524d0a4655",
+    "text": "from pathlib import Path\nimport base64,hashlib,json,os,sys,tempfile\nR=Path.cwd();sys.path.insert(0,str(R/'tests/semantics'));import request_environment as q\nD=Path(tempfile.mkdtemp(prefix='review7-call-ownership-',dir=R/'.tools'))\nCASES={\n 'caller-held-array-across-call':b'<?php function f(){return [2];}$x=1;echo ([$x]+f())[0];',\n 'caller-foreach-reference-across-call':b'<?php $a=[1,2];function f(){global $a;$a[]=3;return 7;}foreach($a as &$v){echo $v;if($v===1)echo f();}echo $v;',\n 'callee-arg-survives-global-unset':b'<?php function f($x){unset($GLOBALS[\"a\"]);$x[0]=2;return $x;}$a=[1];$r=f($a);echo $r[0],isset($a);',\n 'returned-local-singleton-reference-cow':b'<?php function f(){$x=1;$a=[&$x];return $a;}$a=f();$b=$a;$b[0]=7;echo $a[0],$b[0];',\n 'returned-global-shared-reference-cow':b'<?php $g=1;function f(){global $g;return [&$g];}$a=f();$b=$a;$b[0]=7;echo $g,$a[0],$b[0];',\n 'callee-fatal-stack-and-output':b'<?php function f(){echo \"A\";return 1/0;}echo \"B\",f(),\"C\";',\n}\nrecords=[];before=q.t.syntax_validation.implementation_fingerprint()\nfor i,(name,source) in enumerate(CASES.items()):\n path=D/f'case{i}.php';path.write_bytes(source);entries=[b'LC_ALL=C',b'TZ=UTC',b'FIRST=one'];packet=q.packet(1700000000,125000,entries);payload=D/f'case{i}.input';payload.write_bytes(packet)\n request={'env':[[q.b64(k),q.b64(v)] for k,v in (entry.split(b'=',1) for entry in entries)],'argv':[q.b64(os.fsencode(path)),q.b64(b'alpha'),q.b64(b'beta')],'file':q.b64(os.fsencode(path)),'seconds':'1700000000','microseconds':125000,'variables':q.b64(b'EGPCS'),'jit':True,'cwd':q.b64(os.fsencode(D))}\n row={'id':name,'source_base64':q.b64(source),'source_sha256':hashlib.sha256(source).hexdigest(),'context':str(path),'request':request,'payload_base64':q.b64(packet),'payload_sha256':hashlib.sha256(packet).hexdigest()}\n (D/f'case{i}-input.json').write_text(json.dumps(row,indent=2)+'\\n')\n row['native']=q.invoke(path,payload,[],[b'alpha',b'beta'],D);records.append(row);(D/'originals.json').write_text(json.dumps({'scope':'Independent native-only originals before function/frame source activation. Explicit reviewed request primitives; no semantic pass claim.','fingerprint':before,'records':records},indent=2)+'\\n')\n assert row['native']['exit_status']==(255 if name=='callee-fatal-stack-and-output' else 0)\n print(name,base64.b64decode(row['native']['stdout']),row['native']['exit_status'])\nassert before==q.t.syntax_validation.implementation_fingerprint();(D/'capture.py').write_bytes(Path(__file__).read_bytes());print(D)\n"
+  }
+}
