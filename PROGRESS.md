@@ -37,8 +37,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   reviewed at `6b5981cc`. No constructor or PHP semantic family closes. Governance
   `ffdc131d` binds closure to source cases/raw bytes and independent review;
   `--complete` additionally rejects stale fingerprints and unfinished obligations.
-- Source machine passed **747 exact source comparisons +25 outcome negatives**
-  after reviewed control activation `d87f3f9f`. Legacy traversal retirement `846dc3d2` and
+- Source machine passed **854 exact source comparisons +25 outcome negatives**
+  after reviewed truth activation `e7dac829`. Control `d87f3f9f` remains covered. Legacy traversal retirement `846dc3d2` and
   temporary-lvalue errors `32d4163a` remain covered.
   [Independent review](coverage/semantics/traversal-temporary-review.json) records
   38 alternate exact sources plus two Unsupported boundaries at `57bff379`. Compiler/pool bridge `537d13de` makes full compilation
@@ -51,7 +51,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   String writes/reference errors passed 103 alternate exact sources. Temporary
   scalar/array/expression targets now reject during compilation with correct ordering. [Write evidence](coverage/semantics/dimension-write-review.json)
   retains ordering, captured locations/COW and the final helper gates.
-- Ordered compiler/access and constant helpers passed **789 native lint cases,
+- Ordered compiler/access and constant helpers passed **896 native lint cases,
   15 emission-line observations, 4 Unsupported contexts**, 8 sources/24 access
   roles, metadata/export controls and independent alternates. Partial AST facts,
   ordinary code-generation values and executable access descriptors stay distinct.
@@ -82,7 +82,7 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   additionally passes 19 profiles/228 checks, 11 independent profiles/88 checks,
   bounded syntax and exact parser regeneration;
   [grouping review](coverage/semantics/ternary-metadata-review.json) separates this
-  prerequisite from pending ternary execution. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
+  prerequisite from subsequent ternary execution. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
   +15 descriptor checks,43 independent sources and19 runtime states passed.
   [Namespace evidence](coverage/semantics/namespace-constants-review.json) retains
   qualification, fallback timing, cache contexts and resumed origins.
@@ -102,14 +102,21 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   Canonical 40 source/41 state cases pass 1,231 assertions; dense replay adds
   2,493 assertions over 163 budgets for each of three nested/COW programs.
   [Control review](coverage/semantics/control-review.json) retains exact evidence.
+- Truth/logical operators and full/shorthand ternary pass 44 independent exact
+  sources, 44 alternate compiler cases, five redirect/access and three grouping
+  checks. Canonical 71 source/state cases pass 1,344 assertions; dense replay adds
+  3,316 assertions over 163 budgets for each of four selected-value/reference
+  programs. All 63 archived oracle phase/copy/grouping originals are integrated.
+  [Truth review](coverage/semantics/truth-review.json) records source redirects,
+  warning order and archive-fingerprint rejection evidence.
 - **146 independent oracle targets; 86 integrated**. Edited helper checks and
   oracle-only observations establish no source runtime coverage.
 
 ## Next gates and retained decisions
 
-Runtime next connects truth/short-circuit/ternary and comparisons, then compound
+Runtime next connects comparisons, then compound
 lvalues and remaining numeric operations/casts. The compiler successor coordinates
-truth-fold ordering before unpack/destructuring and declaration/default/frame work.
+further constant-fold ordering before unpack/destructuring and declaration/default/frame work.
 Array unpack/destructuring precedes foreach's persistent cursor/ownership rules. The
 [qualified constant alias discrepancy](coverage/semantics/qualified-constant-alias-disagreement.json)
 is resolved by `d5d28dc6`: all seven originals agree, including preceding output

@@ -44,6 +44,9 @@ four independently checked shards and verifies their complete ordered merge;
 `bin/php-semantics FILE` executes the currently implemented rules through checked
 SpecTec values and emits a structured observation. `make test-semantics` runs the
 source execution regressions; unfinished behavior returns explicit Unsupported.
+Reviewed truth/logical operators and ternary preserve PHP's distinct compiler
+and runtime phases; [truth evidence](coverage/semantics/truth-review.json) records
+source comparisons, selected-value copying and budget resumption.
 See [semantic design](docs/semantics/DESIGN.md) and
 [numeric reference](docs/semantics/NUMERICS.md) and
 [static checks](docs/semantics/STATIC.md) for interfaces and helper checks.

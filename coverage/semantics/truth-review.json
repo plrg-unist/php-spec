@@ -1,0 +1,1110 @@
+{
+  "status": "accepted bounded source truth, logical operators and ternary",
+  "fingerprint": {
+    "sha256": "10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e",
+    "files": 771,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "source_gate": {
+    "cases": 854,
+    "negative_outcomes": 25,
+    "report": "coverage/semantics/source.json",
+    "sha256": "998792fd3e1de89833d4ce6324d83d1b5e7ebc65161a208d7cbea42519a1817b",
+    "raw": {
+      "path": "coverage/results-semantic-source.jsonl",
+      "sha256": "5e2ad8a4ce7680905393b1fce8fbe2b96fce5878c03faedb9e0b1cf2f0e3c9e3",
+      "records": 854
+    },
+    "independent_audit": "Exact ordered source bytes/hashes, accepted outcome categories and stdout/stderr/status verified against current selection."
+  },
+  "oracle_archive": {
+    "path": "coverage/semantics/truth-oracle-review.jsonl",
+    "sha256": "c1d5d3ffa8ffb936dbf385e5486a5db141c265634d269a64816781132910f9d4",
+    "records": 63,
+    "commit": "529559a7",
+    "all_sources_in_current_selection": true
+  },
+  "independent_observations": {
+    "source": {
+      "path": "coverage/semantics/truth-source-review.jsonl",
+      "sha256": "5569d988d28565e0a7f0b88d091e30506067d6ca74a537f0073bd3935b5ad1bb",
+      "records": 44,
+      "summary": {
+        "scope": "Independent truth redirects, phase/order, value-copy and grouping alternatives",
+        "profile": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        },
+        "fingerprints_before": {
+          "sha256": "10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e",
+          "files": 771,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory"
+          ]
+        },
+        "fingerprints_after": {
+          "sha256": "10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e",
+          "files": 771,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory"
+          ]
+        },
+        "stable": true
+      }
+    },
+    "compiler": {
+      "path": "coverage/semantics/truth-compiler-review.jsonl",
+      "sha256": "41a0c601d7a6fddcb2befe2dcdff1f4254392e92aadf12fa2d5e0d1dedf8773a",
+      "records": 44,
+      "summary": {
+        "scope": "original source truth compile/prepass diagnostics and executable redirects; runtime evidence separate",
+        "fingerprint": {
+          "sha256": "10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e",
+          "files": 771,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory"
+          ]
+        },
+        "profile": {
+          "opcache.enable_cli": "0",
+          "opcache.jit": "disable",
+          "precision": "14",
+          "serialize_precision": "-1",
+          "display_errors": "stderr",
+          "display_startup_errors": "1",
+          "html_errors": "0",
+          "log_errors": "0",
+          "error_reporting": "30719",
+          "date.timezone": "UTC",
+          "output_buffering": "0",
+          "implicit_flush": "1",
+          "zend.assertions": "1"
+        },
+        "source_cases": 44,
+        "metadata_mutations": [
+          {
+            "source_base64": "PD9waHAgZWNobyAoMT8yOjMpPzQ6NTs=",
+            "grouping": null,
+            "checked_ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Echo",
+                  "fields": [
+                    [
+                      {
+                        "node": "Expr_Ternary",
+                        "fields": [
+                          {
+                            "node": "Expr_Ternary",
+                            "fields": [
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "1"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "12"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "4"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "MQ=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "12"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "4"
+                                  }
+                                }
+                              },
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "2"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "14"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "6"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "Mg=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "14"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "6"
+                                  }
+                                }
+                              },
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "3"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "16"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "8"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "Mw=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "16"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "8"
+                                  }
+                                }
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "16"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "8"
+                              },
+                              "startFilePos": {
+                                "int": "12"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "4"
+                              }
+                            }
+                          },
+                          {
+                            "node": "Scalar_Int",
+                            "fields": [
+                              {
+                                "int": "4"
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "19"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "11"
+                              },
+                              "kind": {
+                                "int": "10"
+                              },
+                              "rawValue": {
+                                "bytes": "NA=="
+                              },
+                              "startFilePos": {
+                                "int": "19"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "11"
+                              }
+                            }
+                          },
+                          {
+                            "node": "Scalar_Int",
+                            "fields": [
+                              {
+                                "int": "5"
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "21"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "13"
+                              },
+                              "kind": {
+                                "int": "10"
+                              },
+                              "rawValue": {
+                                "bytes": "NQ=="
+                              },
+                              "startFilePos": {
+                                "int": "21"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "13"
+                              }
+                            }
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "21"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "13"
+                          },
+                          "parenthesizedConditional": false,
+                          "startFilePos": {
+                            "int": "11"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "3"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "22"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "14"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            },
+            "assertions": [
+              "P.COMPLETION = PPCABRUPT (UNSUPPORTED \"missing nested conditional grouping context\")"
+            ]
+          },
+          {
+            "source_base64": "PD9waHAgZWNobyAoMT8yOjMpPzQ6NTs=",
+            "grouping": false,
+            "checked_ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Echo",
+                  "fields": [
+                    [
+                      {
+                        "node": "Expr_Ternary",
+                        "fields": [
+                          {
+                            "node": "Expr_Ternary",
+                            "fields": [
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "1"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "12"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "4"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "MQ=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "12"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "4"
+                                  }
+                                }
+                              },
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "2"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "14"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "6"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "Mg=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "14"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "6"
+                                  }
+                                }
+                              },
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "3"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "16"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "8"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "Mw=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "16"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "8"
+                                  }
+                                }
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "16"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "8"
+                              },
+                              "parenthesizedConditional": false,
+                              "startFilePos": {
+                                "int": "12"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "4"
+                              }
+                            }
+                          },
+                          {
+                            "node": "Scalar_Int",
+                            "fields": [
+                              {
+                                "int": "4"
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "19"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "11"
+                              },
+                              "kind": {
+                                "int": "10"
+                              },
+                              "rawValue": {
+                                "bytes": "NA=="
+                              },
+                              "startFilePos": {
+                                "int": "19"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "11"
+                              }
+                            }
+                          },
+                          {
+                            "node": "Scalar_Int",
+                            "fields": [
+                              {
+                                "int": "5"
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "21"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "13"
+                              },
+                              "kind": {
+                                "int": "10"
+                              },
+                              "rawValue": {
+                                "bytes": "NQ=="
+                              },
+                              "startFilePos": {
+                                "int": "21"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "13"
+                              }
+                            }
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "21"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "13"
+                          },
+                          "parenthesizedConditional": false,
+                          "startFilePos": {
+                            "int": "11"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "3"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "22"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "14"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            },
+            "assertions": [
+              "P.COMPLETION = PPCABRUPT (STATICERROR text z)"
+            ]
+          },
+          {
+            "source_base64": "PD9waHAgZWNobyAoMT8yOjMpPzQ6NTs=",
+            "grouping": true,
+            "checked_ast": {
+              "version": 1,
+              "program": [
+                {
+                  "node": "Stmt_Echo",
+                  "fields": [
+                    [
+                      {
+                        "node": "Expr_Ternary",
+                        "fields": [
+                          {
+                            "node": "Expr_Ternary",
+                            "fields": [
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "1"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "12"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "4"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "MQ=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "12"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "4"
+                                  }
+                                }
+                              },
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "2"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "14"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "6"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "Mg=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "14"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "6"
+                                  }
+                                }
+                              },
+                              {
+                                "node": "Scalar_Int",
+                                "fields": [
+                                  {
+                                    "int": "3"
+                                  }
+                                ],
+                                "meta": {
+                                  "endFilePos": {
+                                    "int": "16"
+                                  },
+                                  "endLine": {
+                                    "int": "1"
+                                  },
+                                  "endTokenPos": {
+                                    "int": "8"
+                                  },
+                                  "kind": {
+                                    "int": "10"
+                                  },
+                                  "rawValue": {
+                                    "bytes": "Mw=="
+                                  },
+                                  "startFilePos": {
+                                    "int": "16"
+                                  },
+                                  "startLine": {
+                                    "int": "1"
+                                  },
+                                  "startTokenPos": {
+                                    "int": "8"
+                                  }
+                                }
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "16"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "8"
+                              },
+                              "parenthesizedConditional": true,
+                              "startFilePos": {
+                                "int": "12"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "4"
+                              }
+                            }
+                          },
+                          {
+                            "node": "Scalar_Int",
+                            "fields": [
+                              {
+                                "int": "4"
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "19"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "11"
+                              },
+                              "kind": {
+                                "int": "10"
+                              },
+                              "rawValue": {
+                                "bytes": "NA=="
+                              },
+                              "startFilePos": {
+                                "int": "19"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "11"
+                              }
+                            }
+                          },
+                          {
+                            "node": "Scalar_Int",
+                            "fields": [
+                              {
+                                "int": "5"
+                              }
+                            ],
+                            "meta": {
+                              "endFilePos": {
+                                "int": "21"
+                              },
+                              "endLine": {
+                                "int": "1"
+                              },
+                              "endTokenPos": {
+                                "int": "13"
+                              },
+                              "kind": {
+                                "int": "10"
+                              },
+                              "rawValue": {
+                                "bytes": "NQ=="
+                              },
+                              "startFilePos": {
+                                "int": "21"
+                              },
+                              "startLine": {
+                                "int": "1"
+                              },
+                              "startTokenPos": {
+                                "int": "13"
+                              }
+                            }
+                          }
+                        ],
+                        "meta": {
+                          "endFilePos": {
+                            "int": "21"
+                          },
+                          "endLine": {
+                            "int": "1"
+                          },
+                          "endTokenPos": {
+                            "int": "13"
+                          },
+                          "parenthesizedConditional": false,
+                          "startFilePos": {
+                            "int": "11"
+                          },
+                          "startLine": {
+                            "int": "1"
+                          },
+                          "startTokenPos": {
+                            "int": "3"
+                          }
+                        }
+                      }
+                    ]
+                  ],
+                  "meta": {
+                    "endFilePos": {
+                      "int": "22"
+                    },
+                    "endLine": {
+                      "int": "1"
+                    },
+                    "endTokenPos": {
+                      "int": "14"
+                    },
+                    "startFilePos": {
+                      "int": "6"
+                    },
+                    "startLine": {
+                      "int": "1"
+                    },
+                    "startTokenPos": {
+                      "int": "1"
+                    }
+                  }
+                }
+              ]
+            },
+            "assertions": [
+              "P.COMPLETION = PPCNORMAL"
+            ]
+          }
+        ],
+        "roles": [
+          {
+            "source_base64": "PD9waHAgZWNobyB0cnVlICYmICR4Ow==",
+            "assertions": [
+              "P.COMPLETION = PPCNORMAL",
+              "P.REDIRECTS = [(([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0)]), ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1)]), true)]",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0)])) = (PPR)",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1)])) = (PPR)"
+            ]
+          },
+          {
+            "source_base64": "PD9waHAgZWNobyBbdHJ1ZSA/ICR4IDogJHldOw==",
+            "assertions": [
+              "P.COMPLETION = PPCNORMAL",
+              "P.REDIRECTS = [(([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1)]), ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 1)]), false)]",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1)])) = (PPR)",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 1)])) = (PPR)",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 0)])) = eps",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 2)])) = eps"
+            ]
+          },
+          {
+            "source_base64": "PD9waHAgZWNobyBbZmFsc2UgPyAkeCA6ICR5XTs=",
+            "assertions": [
+              "P.COMPLETION = PPCNORMAL",
+              "P.REDIRECTS = [(([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1)]), ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 2)]), false)]",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1)])) = (PPR)",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 2)])) = (PPR)",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 0)])) = eps",
+              "$ppaccess(P, ([(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 0),(PCINDEX 0),(PCFIELD 1),(PCFIELD 1)])) = eps"
+            ]
+          },
+          {
+            "source_base64": "PD9waHAgZWNobyBbdHJ1ZSB8fCAodHJ1ZSA/ICR4IDogJHkpXTs=",
+            "assertions": [
+              "P.COMPLETION = PPCNORMAL",
+              "P.REDIRECTS = eps",
+              "P.FOLD.REDIRECTS =/= eps",
+              "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+            ]
+          },
+          {
+            "source_base64": "PD9waHAgZWNobyBbZmFsc2UgJiYgKGZhbHNlID8gJHggOiAkeSldOw==",
+            "assertions": [
+              "P.COMPLETION = PPCNORMAL",
+              "P.REDIRECTS = eps",
+              "P.FOLD.REDIRECTS =/= eps",
+              "$access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)"
+            ]
+          }
+        ]
+      }
+    },
+    "resumption": {
+      "path": "coverage/semantics/truth-resumption-review.jsonl",
+      "sha256": "a3a50b00f7d73ce4ad19908524cd01126cfe85a6fdc3cab8698ef8ef6e0ddac6",
+      "records": 4,
+      "summary": {
+        "result": "pass",
+        "classification": "checked-source truth operators and ternary; compiled redirects, phase warnings, selected values and budget resumption",
+        "source_cases": 4,
+        "state_cases": 4,
+        "assertions": 3316,
+        "fingerprint": {
+          "sha256": "10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e",
+          "files": 771,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory"
+          ]
+        }
+      }
+    }
+  },
+  "canonical_gates": {
+    "truth-expressions": {
+      "path": "coverage/semantics/truth-expressions.json",
+      "sha256": "f8731af8beaa4a539ce1428e876bdaecc8fb333e43da4fa3328f67cce91722fb",
+      "summary": {
+        "result": "pass",
+        "classification": "checked-source truth operators and ternary; compiled redirects, phase warnings, selected values and budget resumption",
+        "source_cases": 71,
+        "state_cases": 71,
+        "assertions": 1344,
+        "independently_repeated": true
+      }
+    },
+    "truth-compiler": {
+      "path": "coverage/semantics/truth-compiler.json",
+      "sha256": "2da2d91ecdf27c8f96ebaae561eb2dab6a4a1765c3cfde7d06ba19af05654cc7",
+      "summary": {
+        "scope": "original source truth compile/prepass diagnostics and executable redirects; runtime evidence separate",
+        "source_cases": 79,
+        "independently_repeated": false
+      }
+    },
+    "source-compiler": {
+      "path": "coverage/semantics/source-compiler.json",
+      "sha256": "f270f6805dee2c01ba4f1dd8d7e01cc0663c48ce29162c9b690dd4ae66be9f8b",
+      "summary": {
+        "scope": "ordered compiler work, access and operand descriptors; source execution tested separately",
+        "baseline_cases": 854,
+        "targeted_lint_cases": 42,
+        "access_sources": 8,
+        "access_paths": 24,
+        "emission_line_cases": 15,
+        "unsupported_contexts": 4,
+        "independently_repeated": false
+      }
+    },
+    "constant-context": {
+      "path": "coverage/semantics/constant-context.json",
+      "sha256": "15a1471abbb0e26db9dc9dc48e8a98d9b8e72fe3f8612f32261540c89e687ac2",
+      "summary": {
+        "scope": "selected checked constant-expression invocations; source runtime integration tested separately",
+        "source_cases": 42,
+        "boundary_probes": 5,
+        "independently_repeated": false
+      }
+    },
+    "ownership": {
+      "path": "coverage/semantics/ownership.json",
+      "sha256": "3bb2a45ff7061c91643c75aed42dc23f220cc401ec6dd611225ea79553e036c0",
+      "summary": {
+        "result": "pass",
+        "classification": "helper-only allocation graph; callback lifetimes and source GC remain pending",
+        "graph_cases": 617,
+        "machine_and_boundary_cases": 96,
+        "assertions": 5434,
+        "seed": 8501039,
+        "manifest_sha256": "a14e7b2e4cbab8d9ca91a37ab1f95a2f7041333a83a26f115e5bd37c0eea220a",
+        "independently_repeated": true
+      }
+    },
+    "source-origins": {
+      "path": "coverage/semantics/source-origins.json",
+      "sha256": "2c299a55320e40b67ee1d63c482cbef21b913a8eb696721d03bcb0cf45da958e",
+      "summary": {
+        "result": "pass",
+        "classification": "checked occurrence propagation and task scopes; no pool/fact consumption",
+        "source_cases": 25,
+        "assertions": 333,
+        "independently_repeated": true
+      }
+    },
+    "runtime-compiler": {
+      "path": "coverage/semantics/runtime-compiler.json",
+      "sha256": "68a50a3342ac8da31866698bf547f877bd64a1b2c34798524bfe58b60a8dbf6c",
+      "summary": {
+        "result": "pass",
+        "classification": "checked-source compilation and constructed execution/resumption states; no loop support claim",
+        "cases": 15,
+        "assertions": 148,
+        "independently_repeated": true
+      }
+    }
+  },
+  "findings": [
+    "Ordinary constant-left short circuiting can skip RHS compilation; constant prepass visits both operands first. Warning order and multiplicity agree with the pinned compiler.",
+    "Raw selected-child redirects preserve delayed CV/reference reads while ordinary ternary materializes the selected value. Dimension preparation and nested redirects retain exact occurrence identity.",
+    "Prepass redirects below folded parents do not become executable access/redirect descriptors. Grouping checks consume explicit checked grammar metadata only when ordinary compilation reaches the conditional.",
+    "Dense replay across 163 budgets per program preserves exact final states, permanent pools/CODE, origins and valid heap ownership.",
+    "No intentional engine disagreement introduced."
+  ],
+  "limits": [
+    "All seven relevant constructors and four runtime obligations remain partial; no new inventory closure.",
+    "Additional comparisons, casts, compound lvalues, objects/callbacks and broader source contexts remain pending.",
+    "Final full syntax and offline rebuild audit remain required."
+  ],
+  "archive_input_integrity": {
+    "path": "coverage/semantics/truth-input-review.json",
+    "sha256": "c3ac9909d4d0c2f759610824dde4ed5a3df96b509b0474f7cb56aed46e451b92",
+    "independent_review": "Actual fingerprint implementation and mutation/restoration assertions inspected; archived bytes separately bound to529559a7 and final source selection."
+  },
+  "implementation_commit": "e7dac829"
+}

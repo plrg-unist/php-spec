@@ -9,17 +9,17 @@ freezes and stage only owned files. Selected tests do not close a family.
 
 ## Current gate
 
-Source control `d87f3f9f` passed **747 exact source comparisons +25 outcome
-negatives**. Independent review adds 67 exact sources, 20 alternate compiler cases,
-16 metadata controls and two path-order checks. Canonical control state checks
-pass 40 sources/41 states/1,231 assertions; dense replay adds 2,493 assertions over
-163 budgets for each of three nested/jump/COW programs. Source compiler 789 lint
-cases +15 emission observations, ownership 617+96/5,434, origins 25/333 and compiler
-bridge 15/148 share the final closure. See
-[control review](../../coverage/semantics/control-review.json).
-Accepted fingerprint: `ff73f0181b1fb5b61beb3427967cc05c20bc78d91f3957eba10f0ab4654dd7af`
-(767 files). Legacy traversal retirement `846dc3d2`, temporary-lvalue rejection
-`32d4163a` and checked body metadata `3a137a36` remain covered.
+Source truth activation `e7dac829` passed **854 exact source comparisons +25
+outcome negatives**. Independent review adds 44 exact sources, 44 alternate
+compiler cases, five redirect/access checks and three grouping controls. Canonical
+truth checks pass 71 sources/states and 1,344 assertions; dense replay adds 3,316
+assertions over 163 budgets for each of four reference/pool/NaN programs.
+Compiler 896 lint cases +15 emission observations, truth79/3/3, constant42/5,
+ownership617+96/5,434, origins25/333 and runtime compiler15/148 share the final
+closure. See [truth review](../../coverage/semantics/truth-review.json).
+Accepted fingerprint: `10a40a1220568664d8abdeda7b7f57276381dde680a3b48736d6bf7790bab22e`. Control `d87f3f9f`, traversal retirement
+`846dc3d2`, temporary-lvalue rejection `32d4163a`, body metadata `3a137a36` and
+grouping metadata `6005090b` remain covered.
 
 The inventory contains 169 constructors and 306 obligations. Only
 `validation.oracle-pin` closes, against the archived six-case source evidence
@@ -41,6 +41,7 @@ semantics remain pure `.watsup`; host services do not evaluate PHP operations.
   descriptor roles, effective lines and malformed metadata/export boundaries.
 - `python3 tests/semantics/namespace_constants.py`, `constant_context.py`,
   `runtime_compiler.py`, `control_flow.py`, `control_compiler.py`,
+  `truth_expressions.py`, `truth_compiler.py`,
   `source_origins.py`, `compiled_pools.py`, `ownership.py`,
   `dimension_read.py`, `dimension_write.py`: applicable helper/source contracts
   under `tests/semantics/`. Helpers build their runner briefly at startup;
@@ -95,7 +96,7 @@ overwrites a tracked discrepancy capture.
   transport and explicit semantic consumption; do not guess from nearby nodes.
   Metadata type/range checks do not authenticate edited in-range source positions.
 
-- Next truth operators need separate compiler/runtime decisions: constant-left
+- Truth operators preserve separate compiler/runtime decisions: constant-left
   false&& and true|| may skip RHS compilation, while a runtime variable does not.
   Global NaN short-circuit conversion warnings may occur at compile time; unary
   not/ternary and namespace late NaN differ. The 63 tracked
@@ -107,10 +108,12 @@ overwrites a tracked discrepancy capture.
 
 ## Remaining boundaries
 
-Runtime next connects truth/short-circuit/ternary/comparisons, then compound
+Runtime next connects comparisons, then compound
 lvalues and remaining numeric operations/casts. The compiler successor coordinates
-truth folding before unpack/destructuring and declaration/default/frame work.
-Array unpack/destructuring precedes foreach cursor/ownership integration. Objects, linking, dynamic
+further folding before unpack/destructuring and declaration/default/frame work.
+Array unpack/destructuring precedes foreach cursor/ownership integration. Retained
+next-step frontend probes expose lost nested unpack flags and array() versus []
+destructuring provenance; repair transport before source admission. Objects, linking, dynamic
 sources, callbacks, collection and resumable lifetime remain incomplete.
 Frontend early compile restrictions (including some parameter/type restrictions)
 still need proper source-phase treatment. The intentional namespace-relative
