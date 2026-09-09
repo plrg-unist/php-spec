@@ -18,8 +18,11 @@ and [state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts distinguish explic
 external facts, PG ownership, CV order, callback replacement and source identity.
 
 Next, run full quiet/CV integration with a frozen catalogue and explicit invocation
-profiles before [calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md). Preserve
-ordinary uninstrumented results and count new shared-input observations separately.
+profiles before [calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md).
+[Independent preflight](coverage/semantics/quiet-integration-preflight-review.json)
+verifies5,706 ordinary cases retain all4,997 historical source bytes, plus263
+explicit-request cases; immediate raw retention is checked for both profiles.
+Preserve ordinary uninstrumented results and count new shared-input observations separately.
 The five remaining old container controls are three object quiet forms, return
 and nullsafe-reference iterable compilation; four parser controls stay separate.
 Seven old request-environment controls, four isset/empty GLOBALS controls and the
