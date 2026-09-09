@@ -3,13 +3,18 @@
 This is an independent, source-backed design review, not runtime acceptance.
 Array foreach execution remains pending. The pinned engine is PHP 8.5.10;
 [18 native originals](../../coverage/semantics/foreach-independent-cursor-originals.json)
-retain exact source bytes and observations before implementation.
+retain exact source bytes and observations before implementation. A further
+[12 native originals](../../coverage/semantics/foreach-independent-copy-unwind-originals.json)
+cover copy versus reconstruction, source/target overlap and nested abrupt exits.
 
 Each active by-reference iterator needs its own class of saved positions across
 copy-on-write descendants. `zend_array_dup_ht_iterators` copies each iterator's
 current position. `zend_hash_iterator_find_copy_pos` selects one saved copy and
 removes that iterator's other copies. It does not remove another active iterator's
-saved positions. Once a discarded descendant is selected later, the old saved
+saved positions. Array union preserves cursor copies from its left operand;
+constructing a new array by spread or using that array as the right union operand
+starts from the new table's beginning. The originals distinguish both union orders
+and an empty left operand. Once a discarded descendant is selected later, the old saved
 position is unavailable; `zend_hash_iterator_pos_ex` uses that table's current
 internal pointer, separating a shared table as needed.
 
