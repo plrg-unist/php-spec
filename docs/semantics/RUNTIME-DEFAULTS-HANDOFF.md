@@ -1,5 +1,10 @@
 # Runtime successor: positional untyped defaults
 
+Historical899 handoff. Defaults are now accepted on909; use the
+[current reviewer handoff](DEFAULTS-REVIEWER-HANDOFF.md) and
+[runtime contract](SOURCE-POSITIONAL-DEFAULTS.md). The preparation statements below
+retain their original checkpoint meaning.
+
 Constants paired code is5151608e, compiler evidence41b2c1a2 and historical default preparation3452d7d4. Full current executable input closure is899/ca3c06e5. Author evidence06b64f88 and the [independent review3341519d](../../coverage/semantics/user-constant-review.json) close this bounded checkpoint. Start the default candidate from the accepted canonical899 root once the checkpoint closes, and keep this constant candidate immutable.
 
 Reserve compiler90/runtime91. Compiler17 pause/resume preparation is historical877 and must be transplanted surgically, never replacing current source/runtime modules. The earlier DEFAULT-MILESTONE.md used88/89 and accepted884; those reservations and base are superseded. The [compiler handoff](CONSTANTS-COMPILER-HANDOFF.md) is the paired continuity contract.

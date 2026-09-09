@@ -2,8 +2,8 @@
 
 Equal PHP values can have different observable omitted-default caching behavior.
 The class model records that provenance without retaining additional PHP values,
-heap identities, or owners. It is a prerequisite interface; defaults90/91 remain
-unimplemented at this checkpoint.
+heap identities, or owners. [Defaults90/91](SOURCE-POSITIONAL-DEFAULTS.md) now use
+this interface for accepted omitted-receive caching.
 
 `PVSCALAR` describes null, Boolean, integer and float values. `PVSTRING bool`
 records whether the string is interned/non-refcounted. `PVARRAY bool entries`
@@ -55,8 +55,8 @@ refcounted. Empty missing magic contexts use the engine empty string.
 
 Source-backed descriptor assertions are not native allocation observations.
 The independent retained default-cache sources supply the observable native
-basis; default receive integration must still establish effect order, cache behavior,
-ownership and public-resume integrity against those originals.
+basis; the [default review](../../coverage/semantics/default-parameter-review.json)
+binds effect order, caching, ownership and public-resume checks to those originals.
 
 Pinned source anchors: `zend_language_scanner.l` escape/single-quote/heredoc/
 nowdoc constructors; `zend_language_parser.y` empty doc-string production;

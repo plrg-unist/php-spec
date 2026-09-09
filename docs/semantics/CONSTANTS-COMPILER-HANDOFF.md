@@ -1,5 +1,10 @@
 # Compiler continuation after user constants
 
+Historical899 handoff. Defaults are now accepted on909; use the
+[current reviewer handoff](DEFAULTS-REVIEWER-HANDOFF.md) and
+[runtime contract](SOURCE-POSITIONAL-DEFAULTS.md). The preparation statements below
+retain their original checkpoint meaning.
+
 The constants prerequisite is independently accepted: code5151608e,
 compiler evidence41b2c1a2, runtime evidence06b64f88;
 [review3341519d](../../coverage/semantics/user-constant-review.json) binds current899/ca3c06e5
