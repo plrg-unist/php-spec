@@ -78,3 +78,23 @@ global argc/argv remain. The JIT-disabled registration order is also retained.
 These source-backed observations are requirements for bootstrap semantics, not
 semantic agreements. The [binding](../../coverage/semantics/request-bootstrap-independent-binding.json)
 retains the exact capture script and immutable original hash.
+
+## Checked adapter request transport
+
+The [private adapter review](../../coverage/semantics/request-adapter-independent-review.json)
+binds370 inputs and a fresh61-control replay, including eight retained source
+observations. It does not accept canonical runtime publication. An execute request
+may contain an optional `request` object with exactly `env`, `argv`, `file`,
+`seconds`, `microseconds`, `variables` and `jit`. Env is an ordered list of
+base64 name/value pairs; argv is a list of base64 byte strings. File and effective
+variables_order are base64 strings, seconds is a canonical signed64 decimal
+string, microseconds is a JSON nonnegative integer, and jit is boolean.
+
+The adapter checks transport shape and builds a typed SpecTec request record.
+Pure runtime rules check native input admissibility, including NUL/byte ranges,
+environment-name separators, argv/file agreement and microsecond bounds. Invalid
+transport is a runner rejection; invalid primitive facts are explicit Unsupported.
+Both are protocol controls. Omitting request selects the unchanged ordinary
+`php_run` path. The adapter contains no PHP bootstrap computations or source
+execution shortcut. Canonical pairing and complete request state/source review
+remain separate acceptance steps.
