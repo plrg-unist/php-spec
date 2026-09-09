@@ -43,11 +43,23 @@ retains this checkpoint when later selections run. Its sixteen required core con
 immutable report. Quiet publication below retires four of those core controls;
 twelve remain. No full-core or final-syntax claim follows.
 
+Variable/DIM `isset` and `empty` code **`701e39fa`**, author evidence
+**`65cefcc1`** and compiler evidence **`72c30740`** are accepted by
+[independent review](coverage/semantics/isset-empty-review.json):232 exact sources,
+22 separate controls, author9 state programs/4,230 assertions and independent7/
+2,655. Twelve fresh canonical CLI probes and the exact frozen831-to-canonical835
+bridge pass. Four GLOBALS outcomes remain Unsupported. Ordered CV descriptors and
+GLOBALS compiler prerequisites are reviewed; request bootstrap and snapshots remain
+pending. Current835/`afbaa198` supersedes earlier checkpoint identities.
+[Contract](docs/semantics/ISSET-EMPTY-REVIEW.md) records terminal string behavior,
+quiet ancestors, effects, static rejection and cleanup. The full quiet/CV campaign
+is still due after request/GLOBALS integration.
+
 Request fixture transport **`be12200b`** and evidence **`add0e4c1`** are
 [independently reviewed](coverage/semantics/request-provider-independent-review.json).
 It supplies explicit native clock/environment facts; PHP bootstrap/source semantics
 remain pending. Both fresh copied-source builds passed under separate network
-namespaces with identical provider bytes. The closure is now 830 inputs/`96c18e4d`;
+namespaces with identical provider bytes. Its checkpoint has 830 inputs/`96c18e4d`;
 prior 826 source reports retain their historical identity. Final whole-project
 offline validation remains required.
 

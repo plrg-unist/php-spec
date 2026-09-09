@@ -1432,13 +1432,20 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/73-isset-empty-compiler.watsup",
+        "spec/semantics/74-isset-empty-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/isset_empty.py",
+        "tests/semantics/isset_empty_compiler.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
+      "evidence": [
+        "coverage/semantics/isset-empty-review.json"
+      ]
     },
     {
       "node": "Expr_ErrorSuppress",
@@ -1560,13 +1567,20 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/73-isset-empty-compiler.watsup",
+        "spec/semantics/74-isset-empty-control.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/isset_empty.py",
+        "tests/semantics/isset_empty_compiler.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
+      "evidence": [
+        "coverage/semantics/isset-empty-review.json"
+      ]
     },
     {
       "node": "Expr_List",
@@ -5251,15 +5265,22 @@
     {
       "id": "expression.isset",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "implementation": [
+        "spec/semantics/73-isset-empty-compiler.watsup",
+        "spec/semantics/74-isset-empty-control.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/isset_empty.py",
+        "tests/semantics/isset_empty_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/isset-empty-review.json"
+      ],
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/missing-null-access.php"
       ]
@@ -5267,15 +5288,22 @@
     {
       "id": "expression.empty",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "implementation": [
+        "spec/semantics/73-isset-empty-compiler.watsup",
+        "spec/semantics/74-isset-empty-control.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/isset_empty.py",
+        "tests/semantics/isset_empty_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/isset-empty-review.json"
+      ],
+      "review": "Variable/DIM isset and empty accepted at701e39fa/isset-empty-review.json:232 exact sources,22 separate controls,author9/4230 and independent7/2655 state assertions. Four GLOBALS source boundaries and object protocols remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/missing-null-access.php"
       ]

@@ -1,0 +1,87 @@
+{
+  "result": "pass",
+  "reviewer": "independent review7",
+  "scope": "Bounded scalar/array/string isset and empty with compiler CV/GLOBALS prerequisites. Request bootstrap, GLOBALS access/snapshot and object protocols remain incomplete.",
+  "code_commit": "701e39fa",
+  "runtime_evidence_commit": "65cefcc1",
+  "compiler_evidence_commit": "72c30740",
+  "fingerprint": {
+    "sha256": "afbaa198201e924dbc8256408ca222b107609ed856084e57f406cad9175eb028",
+    "files": 835,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_cases": 232,
+  "outcome_controls": 22,
+  "independent_fresh_canonical_sources": 12,
+  "pending_globals_sources": [
+    "isset-globals-temp",
+    "empty-globals-temp",
+    "isset-global-array-key",
+    "empty-global-array-key"
+  ],
+  "author_state": {
+    "programs": 9,
+    "assertions": 4230,
+    "fresh_canonical": true
+  },
+  "independent_state": {
+    "programs": 7,
+    "assertions": 2655,
+    "budgets": "0..48,64,96,128",
+    "dependency_bridge": "All frozen831 runtime modules and tools exact canonical835; original report identities retained."
+  },
+  "independent_compiler": {
+    "fresh_native_lint_checked_cv": 34,
+    "ordered_cv_assertions": 34,
+    "isset_source_traces": 188,
+    "edited_metadata": 10,
+    "explicit_pending": 2
+  },
+  "compiler_author": {
+    "globals_sources": 98,
+    "globals_controls": 37,
+    "isset_sources": 188,
+    "known_effect_controls": 10,
+    "metadata_controls": 10,
+    "pending_call_object": 2,
+    "coalesce_sources": 84,
+    "coalesce_descriptors": 22,
+    "coalesce_malformed": 8,
+    "quiet_sources": 240,
+    "quiet_controls": 12
+  },
+  "source_raw_audit": {
+    "path": "coverage/results-semantic-source-selected-30i8d0lc.jsonl",
+    "sha256": "dea3c5bbc3a0d3eb48d0409346db065cc1739c9a0bc8648daa7f06ff5f063361",
+    "records": 232,
+    "checks": "Every ordered source hash, admissible semantic outcome and exact native/semantic stdout stderr exit status."
+  },
+  "setup_failures": "Original reviewer static-rejection selection is retained separately; no dense pass claimed for that failed setup.",
+  "pending": [
+    "Request bootstrap and four GLOBALS source boundaries",
+    "Object/property/nullsafe/static-property protocols",
+    "Twelve historical full-container core controls",
+    "Full quiet/CV checkpoint and eventual full core/syntax/offline audit"
+  ],
+  "evidence": {
+    "coverage/semantics/isset-empty-independent-evidence.json": "9012983be2cb9bc286de3f862148a0a89bcc5fd3fce27731234bfe7d4054edaf",
+    "coverage/semantics/isset-empty-independent-raw.json.gz": "938b80360046ea30eb6882aa31de072228b13b7b4845cbf95aa3d6575791f08e",
+    "coverage/semantics/isset-empty-source.json": "525827fbd336358063171642013c8099ac1a5572573b04f5fc1ec2c08cbc9cc0",
+    "coverage/semantics/isset-empty.json": "24f60d49bdc7932e5668e6a45f4b61eafbf922acecd62085eb339da67be8ec44",
+    "coverage/semantics/isset-empty-compiler-group.json": "af99dd2384e1018754e2414be62110587d7833f273227d3f80221dac21bb9065"
+  }
+}
