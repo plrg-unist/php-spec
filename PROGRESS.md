@@ -59,7 +59,12 @@ is now published as a standalone pure predicate, source generator and focused te
 Its [source audit](docs/semantics/BUILTIN-FUNCTIONS.md) derives 780 names from 13
 configured C registration tables and 238 actual source/configuration inputs.
 It implements no builtin bodies and closes no core obligation; declaration and
-call consumers remain in the private paired milestone.
+call consumers remain in the private paired milestone. Implementation **87519651** has
+780 exact native registration names and 1,569 pure membership assertions, plus a
+[canonical reproduction bridge](coverage/semantics/builtin-functions-publication.json).
+The [lossless author archive](coverage/semantics/builtin-function-originals.json)
+retains source preprocessing, metadata, membership and injected timeout originals;
+independent prerequisite acceptance is recorded separately.
 
 ## Milestones
 
