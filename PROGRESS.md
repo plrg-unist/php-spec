@@ -78,7 +78,11 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
   passes 43 profiles/430 checks, 12 independent profiles/96 checks, deterministic
   schema regeneration and bounded syntax tests;
   [review evidence](coverage/semantics/control-metadata-review.json) distinguishes
-  single statements from synthetic brace/colon bodies. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
+  single statements from synthetic brace/colon bodies. Checked ternary grouping `6005090b`
+  additionally passes 19 profiles/228 checks, 11 independent profiles/88 checks,
+  bounded syntax and exact parser regeneration;
+  [grouping review](coverage/semantics/ternary-metadata-review.json) separates this
+  prerequisite from pending ternary execution. Name resolver `5a6de4ca` now feeds constant source lookup `d5d28dc6`: 40 sources
   +15 descriptor checks,43 independent sources and19 runtime states passed.
   [Namespace evidence](coverage/semantics/namespace-constants-review.json) retains
   qualification, fallback timing, cache contexts and resumed origins.

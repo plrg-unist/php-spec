@@ -1,0 +1,164 @@
+{
+  "status": "accepted compatible checked ternary grouping metadata; execution admission separate",
+  "independent": {
+    "fingerprint": {
+      "sha256": "fcce72ce2ad5a344c7573800ac56517877add35d676474a0ed275ffa6b804c1d",
+      "files": 768,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory"
+      ]
+    },
+    "cases": [
+      {
+        "id": "callable",
+        "source_base64": "PD9waHAgKHRydWU/ImYiOiJnIikoKTs=",
+        "profile": {},
+        "expected_grouping": [
+          false
+        ],
+        "checks": 8
+      },
+      {
+        "id": "callable-group",
+        "source_base64": "PD9waHAgKCh0cnVlPyJmIjoiZyIpKSgpOw==",
+        "profile": {},
+        "expected_grouping": [
+          true
+        ],
+        "checks": 8
+      },
+      {
+        "id": "class-name",
+        "source_base64": "PD9waHAgbmV3ICh0cnVlPyJBIjoiQiIpOw==",
+        "profile": {},
+        "expected_grouping": [
+          false
+        ],
+        "checks": 8
+      },
+      {
+        "id": "class-name-group",
+        "source_base64": "PD9waHAgbmV3ICgodHJ1ZT8iQSI6IkIiKSk7",
+        "profile": {},
+        "expected_grouping": [
+          true
+        ],
+        "checks": 8
+      },
+      {
+        "id": "dimension",
+        "source_base64": "PD9waHAgZWNobyAodHJ1ZT9bMV06WzJdKVswXTs=",
+        "profile": {},
+        "expected_grouping": [
+          false
+        ],
+        "checks": 8
+      },
+      {
+        "id": "dimension-group",
+        "source_base64": "PD9waHAgZWNobyAoKHRydWU/WzFdOlsyXSkpWzBdOw==",
+        "profile": {},
+        "expected_grouping": [
+          true
+        ],
+        "checks": 8
+      },
+      {
+        "id": "static-property",
+        "source_base64": "PD9waHAgZWNobyAodHJ1ZT8iQSI6IkIiKTo6JHA7",
+        "profile": {},
+        "expected_grouping": [
+          false
+        ],
+        "checks": 8
+      },
+      {
+        "id": "static-property-group",
+        "source_base64": "PD9waHAgZWNobyAoKHRydWU/IkEiOiJCIikpOjokcDs=",
+        "profile": {},
+        "expected_grouping": [
+          true
+        ],
+        "checks": 8
+      },
+      {
+        "id": "condition-group",
+        "source_base64": "PD9waHAgd2hpbGUoKHRydWU/MToyKSl7fQ==",
+        "profile": {},
+        "expected_grouping": [
+          true
+        ],
+        "checks": 8
+      },
+      {
+        "id": "heredoc",
+        "source_base64": "PD9waHAgZWNobyAodHJ1ZT88PDxUCigKVAo6Mik7",
+        "profile": {},
+        "expected_grouping": [
+          true
+        ],
+        "checks": 8
+      },
+      {
+        "id": "encoded-callable",
+        "source_base64": "//48AD8AcABoAHAAIAAoAHQAcgB1AGUAPwAiAGYAIgA6ACIAZwAiACkAKAApADsA",
+        "profile": {
+          "zend.multibyte": "1",
+          "internal_encoding": "UTF-8"
+        },
+        "expected_grouping": [
+          false
+        ],
+        "checks": 8
+      }
+    ],
+    "checks": 88,
+    "scope": "independent grammar-context grouping and checked transport/printing"
+  },
+  "author_gates": {
+    "grouping_profiles": 19,
+    "grouping_checks": 228,
+    "targeted": 97,
+    "generated": 4103,
+    "deep": 1,
+    "inventory": "635 productions;169 constructors;191 scanner actions;264 alternatives;685 encoding lookups",
+    "parser_regeneration": "scripts/rebuild-parser.sh compared regenerated parser with checked-in parser successfully"
+  },
+  "logs": {
+    "make-test": {
+      "path": ".tools/ternary-metadata-make-test.log",
+      "sha256": "d80e2f78994e42b93f89167b68ac8d7cebdeb98b31a465bc6ee83d7dee3ef54e"
+    },
+    "inventory": {
+      "path": ".tools/ternary-metadata-inventory.log",
+      "sha256": "0f9815db1b1c99ca2975ba52ff484e42f54437a71dde22abb2c22dee922a13d3"
+    },
+    "regenerate": {
+      "path": ".tools/ternary-metadata-regenerate.log",
+      "sha256": "0f4c0c75cf87894b7edbde73bef6dbec0d5ed4c7f4bbbdd9c2b8649ccdcf6bba"
+    }
+  },
+  "review_findings": [
+    "Only the matching expression grouping grammar reduction sets the flag; ternary construction explicitly initializes false.",
+    "Callable/class-name/dereference grammar parentheses remain false unless an inner expression grouping reduction occurred, matching the pinned Zend grammar.",
+    "Generated schema and strict adapter transport preserve the boolean; absent values remain explicit edited input and malformed payloads reject.",
+    "Fresh printing derives syntax from the checked tree independently of edited grouping metadata."
+  ],
+  "limits": [
+    "No new semantic source admission or inventory closure.",
+    "Ordinary ternary legality must consume this flag after applicable constant rewrites and skipped-child decisions.",
+    "Full classified syntax/offline audit remains pending."
+  ],
+  "implementation_commit": "6005090b"
+}

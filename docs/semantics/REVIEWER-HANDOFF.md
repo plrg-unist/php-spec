@@ -98,8 +98,12 @@ overwrites a tracked discrepancy capture.
 - Next truth operators need separate compiler/runtime decisions: constant-left
   false&& and true|| may skip RHS compilation, while a runtime variable does not.
   Global NaN short-circuit conversion warnings may occur at compile time; unary
-  not/ternary and namespace late NaN differ. Runtime retains 15 original phase
-  witnesses under `.tools/next-truth-oracle.json`; archive them before activation.
+  not/ternary and namespace late NaN differ. The 63 tracked
+  [oracle witnesses](../../coverage/semantics/truth-oracle-review.json) cover phase,
+  prepass, selected-child copy/identity and grouping effects. Array prepass can
+  replace a ternary with a nonconstant child, preserving delayed reads; ordinary
+  ternary materializes a value. Checked `parenthesizedConditional` metadata now
+  distinguishes grouping for ordinary static checks after applicable rewrites.
 
 ## Remaining boundaries
 
