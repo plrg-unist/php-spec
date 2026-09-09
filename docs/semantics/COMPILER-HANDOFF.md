@@ -138,3 +138,6 @@ Complete request environment, quiet assignment and isset/empty before broader
 calls. Then activate named/class/magic lookup, declarations/defaults, frames/calls,
 linked objects/properties, exceptions, dynamic source and resumable/lifetime/core
 intrinsic protocols. These remain required work, not permanent exclusions.
+
+The maintained [calls activation plan](CALLS-ACTIVATION-PLAN.md) gives the next
+source/frame/return increments after the complete quiet checkpoint.
