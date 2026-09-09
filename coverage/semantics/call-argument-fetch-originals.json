@@ -1,0 +1,77 @@
+{
+  "scope": "Independent named positional-value call argument-fetch timing originals on immutable pre-repair calls-next856. No signature/reference/builtin body or core closure.",
+  "records": [
+    {
+      "id": "self-recursive-dead",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigkeCl7aWYoZmFsc2Upe2YoJGFbXSk7fX1lY2hvICJvayI7",
+      "native_lint_status": 0,
+      "native_runtime_status": 0,
+      "native_stdout_base64": "b2s=",
+      "classification": "preserved compiler-phase defect",
+      "candidate_completion": "PPCABRUPT STATICERROR Cannot use [] for reading +1",
+      "raw_prefix": ".tools/review8-argument-timing-3decwf18/self-recursive-dead"
+    },
+    {
+      "id": "forward-other-dead",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZigkeCl7aWYoZmFsc2Upe2coJGFbXSk7fX1mdW5jdGlvbiBnKCR4KXt9ZWNobyAib2siOw==",
+      "native_lint_status": 0,
+      "native_runtime_status": 0,
+      "native_stdout_base64": "b2s=",
+      "classification": "preserved compiler-phase defect",
+      "candidate_completion": "PPCABRUPT STATICERROR Cannot use [] for reading +1",
+      "raw_prefix": ".tools/review8-argument-timing-3decwf18/forward-other-dead"
+    },
+    {
+      "id": "known-other-dead",
+      "source_base64": "PD9waHAgZnVuY3Rpb24gZygkeCl7fWZ1bmN0aW9uIGYoJHgpe2lmKGZhbHNlKXtnKCRhW10pO319ZWNobyAib2siOw==",
+      "native_lint_status": 255,
+      "native_runtime_status": 255,
+      "native_stdout_base64": "",
+      "classification": "correct known-signature static control",
+      "candidate_completion": "PPCABRUPT STATICERROR Cannot use [] for reading +1",
+      "raw_prefix": ".tools/review8-argument-timing-3decwf18/known-other-dead"
+    },
+    {
+      "id": "undefined-priority",
+      "source_base64": "PD9waHAgbWlzc2luZygkYVtdKTs=",
+      "native_lint_status": 0,
+      "native_runtime_status": 255,
+      "native_stdout_base64": "",
+      "classification": "preserved compiler-phase defect",
+      "candidate_completion": "PPCABRUPT STATICERROR Cannot use [] for reading +1",
+      "raw_prefix": ".tools/review8-argument-timing-3decwf18/undefined-priority"
+    },
+    {
+      "id": "namespace-fallback",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIHtmdW5jdGlvbiBmKCR4KXt9fW5hbWVzcGFjZSBOIHtmKCRhW10pO30=",
+      "native_lint_status": 0,
+      "native_runtime_status": 255,
+      "native_stdout_base64": "",
+      "classification": "preserved compiler-phase defect",
+      "candidate_completion": "PPCABRUPT STATICERROR Cannot use [] for reading +1",
+      "raw_prefix": ".tools/review8-argument-timing-3decwf18/namespace-fallback"
+    },
+    {
+      "id": "import-known-target",
+      "source_base64": "PD9waHAgbmFtZXNwYWNlIHtmdW5jdGlvbiBmKCR4KXt9fW5hbWVzcGFjZSBOIHt1c2UgZnVuY3Rpb24gZiBhcyBoO2goJGFbXSk7fQ==",
+      "native_lint_status": 255,
+      "native_runtime_status": 255,
+      "native_stdout_base64": "",
+      "classification": "correct known-signature static control",
+      "candidate_completion": "PPCABRUPT STATICERROR Cannot use [] for reading +1",
+      "raw_prefix": ".tools/review8-argument-timing-3decwf18/import-known-target"
+    }
+  ],
+  "findings": [
+    "Self-recursive and forward-other calls in dead bodies compile and print ok; eager PPR append checking incorrectly rejects the whole source.",
+    "A previously compiled early function and an imported known target reject append reading statically; these controls already match.",
+    "An undefined call target throws before argument fetching, while namespace fallback to a by-value function throws the append-read error at runtime. Both compile successfully.",
+    "Declaration-time signature knowledge must remain distinct from runtime selected-target resolution."
+  ],
+  "raw_archive": {
+    "path": "coverage/semantics/call-argument-fetch-originals-raw.json.gz",
+    "sha256": "ddd123d016e4bba56bc3478702d127318daf95adbe1b77aab269615701d5ac0e",
+    "files": 144,
+    "validation": "Every source, native lint/runtime output/status, checked AST, complete compiler state, command and loaded module payload exact byte/hash/length checked; actual tool hashes retained."
+  }
+}
