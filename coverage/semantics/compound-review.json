@@ -1,0 +1,105 @@
+{
+  "status": "accepted bounded compound assignment source activation",
+  "implementation": "63028b5a",
+  "author_reports": "76129823",
+  "fingerprint": {
+    "sha256": "c394a6e74ba417b846a720371a0eb9b381921ea8e8e478df22c9772e415ed8e8",
+    "files": 789,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "scope": "Twelve compound forms over current null/bool/int/binary64/byte-string/array values and direct/computed variable/dimension/append targets; global-only this context",
+  "source_gate": {
+    "exact_sources": 2639,
+    "outcome_negatives": 25,
+    "audit": {
+      "path": "coverage/semantics/compound-campaign-audit.json",
+      "sha256": "3b811aed6393ade7b5b88bb7a54497eb3c6ff7694e25b5c0749f25ad287f1155"
+    }
+  },
+  "independent": {
+    "source_programs": 277,
+    "state_assertions": 5393,
+    "dense_programs": 3,
+    "dense_budgets_per_program": 101,
+    "source_review": {
+      "path": "coverage/semantics/compound-source-review.json",
+      "sha256": "a358b0ebe26f248ec7917dfd5fd525b0d497483db942118ab967f8b7ffeeff0e"
+    },
+    "compiler_sources": 324,
+    "access_paths": 156,
+    "compiler_line_checks": 6,
+    "compiler_review": {
+      "path": "coverage/semantics/compound-compiler-review.json",
+      "sha256": "68a90862cc1511646befd0c78eb8446a7c179bab4c351e15a04409fc3f7a400d"
+    },
+    "path_preflight": {
+      "path": "coverage/semantics/compound-path-review.json",
+      "sha256": "c2d7b7e887b6ab793196f18c834a65e4a3e43884a62db215a56faefe382a8458"
+    }
+  },
+  "author_and_regression": {
+    "compound_runtime_programs": 951,
+    "runtime_assertions": 13454,
+    "new_source_selections": 1155,
+    "dedicated_compiler_lints": 289,
+    "dedicated_access_paths": 34,
+    "dedicated_emission_lines": 24,
+    "dedicated_contexts": 12,
+    "broad_compiler_lints": 2681,
+    "broad_emission_lines": 15,
+    "incdec": "154 programs/2226 assertions;108 compiler lints/32 paths/8 lines/12 contexts",
+    "origins": "25 sources/333 assertions",
+    "bridge": "15 cases/148 assertions",
+    "ownership": "617 graph+96 boundary cases/5434 assertions",
+    "writable_fetch": "30 sources/505 assertions",
+    "wrappers": "21 sources/396 assertions"
+  },
+  "resolved_history": {
+    "this_phase": {
+      "path": "coverage/semantics/compound-this-originals.json",
+      "sha256": "953a56d0f4dff05430985c50e17dbf556bc2b34d8de8dbd55cf5d1b21d1c160f"
+    },
+    "compiler_vs_opcode_line": {
+      "path": "coverage/semantics/compound-line-originals.json",
+      "sha256": "6f1954a8db22eb480e00b58d4f760d961c30ebab53351134fdd74fea0d96a85d"
+    },
+    "actual_runtime_line_mismatches": {
+      "path": "coverage/semantics/compound-line-runtime-originals.json",
+      "sha256": "6567569a73dad37457aea276acabf759210f1373ae4efefab155b3a728f3b60d"
+    },
+    "filename_infrastructure_failure": {
+      "path": "coverage/semantics/compound-path-original.json",
+      "sha256": "c6843e9887bf09eb9c6eeb6d0b87685dcefd4dd2ae1ff48004cf02841af43fa2"
+    },
+    "resolution": "All retained source bytes are included unchanged in the current full source catalog; independent audit verifies every exact outcome. The filename failure is infrastructure, not a semantic mismatch."
+  },
+  "design": [
+    "Compound targets acquire RW locations once; deferred CV reads, forced RHS evaluation, self-DIM scheduling and copied results preserve PHP ordering.",
+    "Array += preserves same-table identity and COW/reference singleton ownership before union.",
+    "Twelve explicit PFSTOPs stop constant preparation but preserve later ordinary compiler traversal; direct/literal this has no compound static rebinding guard.",
+    "Direct global this uses eager FETCH_THIS; computed name rebinding keeps its separate runtime protocol.",
+    "Captured DIM/APPEND opcode lines control delayed RHS reads and operation diagnostics; parent compiler endingline remains its final context after RHS compilation.",
+    "Source IDs remain logical identifiers; ordinal fixture paths are unique and all selected bytes are written before subprocess execution."
+  ],
+  "dependency_preflight": "15 identity/3 path/17 closure negatives and9 ignored-log invariances independently pass. New helpers embed source literals, adding no archive dependencies. Inventory169/306; only oracle identity closes.",
+  "limits": [
+    "No constructor/family closure. Typed references, properties, objects, frames and source GC remain pending.",
+    "Remaining ordinary binary/concat/casts and bitnot are not source-admitted by compound helper reuse. Quiet coalescing assignment and computed plain-write/reference/unset names remain separate boundaries.",
+    "Nullable array omissions, unpack, reached destructuring, foreach and broader core families remain pending.",
+    "No new intentional engine divergence. Final full syntax and fresh offline rebuild remain required."
+  ]
+}

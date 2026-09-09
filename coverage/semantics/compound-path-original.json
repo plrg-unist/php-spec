@@ -1,0 +1,28 @@
+{
+  "classification": "interrupted infrastructure failure; no completed full campaign or semantic mismatch",
+  "original_fingerprint": {
+    "sha256": "5db195947faf689f4706f712151ef476b4e22631b082cab84040723d7986f023",
+    "files": 789,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "logical_id": "compound-rebased-/=-5-2",
+  "source_base64": "PD9waHAgJGE9NTtlY2hvICgkYSAvPSAyKTtlY2hvICI6IiwkYTs=",
+  "source_sha256": "f382c69af183bbb32eb4f50ef685d38c1cad608780858f04660b5b59df090993",
+  "failure_log": "Traceback (most recent call last):\n  File \"/home/user/workspace/php-spec/tests/semantics/validate.py\", line 761, in <module>\n    main()\n  File \"/home/user/workspace/php-spec/tests/semantics/validate.py\", line 644, in main\n    path.write_bytes(source)\n  File \"/usr/lib/python3.12/pathlib.py\", line 1038, in write_bytes\n    with self.open(mode='wb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/php-semantics-uqiljurs/compound-rebased-/=-5-2.php'\n",
+  "cause": "Logical source ID containing /= was concatenated into a filesystem path.",
+  "resolution": "Ordinal unique fixture filenames and all-selected-source materialization before subprocess execution. Logical IDs and exact source bytes remain in run records; final full campaign rerun required."
+}
