@@ -2,7 +2,7 @@
 
 Read AGENTS, PLAN, PROGRESS, CORE and the php/php-spec/p4-spectec skills. Root
 orchestrates; runtime5 implements runtime, compiler5 owns compiler/frontend,
-reviewer independently checks evidence and updates inventory/docs. Never push.
+review8 independently checks evidence and updates inventory/docs. Never push.
 Pure SpecTec defines PHP; sole native oracle is `.tools/php/bin/php`, PHP8.5.10
 CLI NTS64. Only oracle identity closes among169 constructors/306 obligations.
 Full core/source/syntax and fresh whole-project offline build remain mandatory.
@@ -16,7 +16,7 @@ parent plus3 consumer successor,44 ordinary magic, author6dense2,619 and prior
 independent8dense1,936. Seventy-two old840/new845 states differ only by new absent
 REQUEST.CWD;72 final private/canonical states match completely. Canonical Dune
 adapter differs from direct private linking, closed by71 exact adapter replays
-and7 CLI comparisons. Full compiler5753/5786 is actual private845; current5750
+and7 CLI comparisons. Full compiler5753/5786 is actual private845; current 5750
 is its exact ordered subset plus3 valid request-routed magic lints. Keep its
 missing-reference, first120s timeout/deleted-first-fixture limitation and unused
 canonical-wrapper failure distinct from the completed600s aggregate.
@@ -28,58 +28,47 @@ preflight script was added;844 prior inputs match. Private roots must run
 then read-only preflight. It never overwrites mismatches; it does not provision
 all tools or full syntax corpus. Preserve actual executable/producer dependencies.
 
-Independent preflight80af8f7c freezes5706 ordinary and263 explicit-request cases.
+Independent preflight80af8f7c freezes5706 ordinary and 263 explicit-request cases.
 All4997 historical ordinary source IDs/bytes are retained exactly from raw
 f0fc89de. Request per-case environment/clock/argv/config/path overrides match.
 Both wrappers retain immediate evidence; ordinary invocation remains uninstrumented,
 request invocation uses the reviewed external-fact provider. No native output is
 used as a semantic default. Do not archive inherited process secrets as fixtures.
 
-## Active ordinary campaign and completed request audit
+## Completed quiet checkpoint
 
-Freeze: `.tools/runtime5-quiet-integration/final-inputs.json`,846 implementation
-paths plus separately bound Zend compiler reference, catalogue and wrappers.
-Ordinary **5706 is still running** at handoff; runtime5 owns session50860.
-Raw: `.tools/runtime5-quiet-integration/full-campaign-ikkbjhg2`.
-Log: `.tools/runtime5-quiet-integration/ordinary-full.log`.
-Do not mutate watched files, rebuild canonical binaries or start duplicate broad
-campaigns while it runs. Preserve any first failure before investigating/repair.
+Full quiet/request integration is independently accepted by
+`coverage/semantics/quiet-integration-review.json` on 846/14d17662. Ordinary
+**5,706 comparisons plus 21 distinct outcome controls** completed; former runtime
+session50860 is closed. Author **83cce919** retains 22,873 lossless files at
+`coverage/semantics/quiet-ordinary-integration-raw.json.gz`, SHAee5d60d4. All
+11,434 subprocess records, original source copies, outputs/statuses, commands,
+contexts and ordered cases were independently checked. All 4,997 historical source
+bytes survive, and their old summary equals its d71d4107 Git blob549b9889.
 
-Explicit263 completed successfully; former session96390 closed0.
-Raw: `.tools/runtime5-quiet-integration/explicit-campaign-swr1h9d0`.
-Native originals/results: `.tools/request-source-ozp7g7r9`.
-Independent audit: `.tools/review7-quiet-request-audit/results.json`, script
-`.tools/review7-quiet-request-audit.py`. It checks all263 payloads/argv/cwd/config/
-loader inputs, exact source bytes, frontend ASTs and526 full Worker responses,
-typed execute requests, complete state hashes and exact output/status. All846
-hashes match before/after. Author c9fce8c9 and independent **ba2e421a** ([review](../../coverage/semantics/quiet-request-integration-review.json))
-retain2,381 lossless files, all byte/hash/length checked. This profile is separately
-accepted; it does not close
-the pending ordinary campaign or full core.
+Explicit-request263 remains separately accepted at **ba2e421a**, authorc9fce8c9:
+263 native calls,526 complete Worker responses and 2,381 raw files. Its earlier
+raw audit was reused, not rerun. Combined scope is 5,969 case/profile observations
+and 5,926 distinct source-byte programs. Ordinary inherited environment values
+are not archived; its LC_ALL=C/TZ=UTC controls and the separate explicit primitive
+request profile remain distinct. Historical canonical17 request identity stays
+bound by `historical-request-binding.json`, Git blob13a85ab9/SHAfb51a903.
 
-Historical canonical17 request report is preserved by
-`.tools/runtime5-quiet-integration/historical-request-binding.json` at d3dfb87a,
-Git blob13a85ab9, SHAfb51a903. The intermediate three-source wrapper smoke and
-final263 report are distinct observations. Stable report replacement never
-relabels the earlier publication evidence.
+Independent ordinary audit: `.tools/review8-quiet-ordinary-audit/results.json`;
+script `.tools/review8-quiet-ordinary-audit.py`. Archive check:
+`.tools/review8-quiet-ordinary-archive-audit.json`. All raw indexed payloads were
+byte/hash/length checked. The independent compressed archive preserves scripts,
+results, full raw index, and separate reviewer setup failures: the inherited
+draft's `validate` import-name collision and an archive JSON-versus-payload size
+assumption. Neither was a PHP disagreement; corrected audits pass.
 
-A not-yet-executed ordinary audit draft is
-`.tools/review7-quiet-ordinary-audit-draft.py`. Read it before use and retain any
-reviewer setup failure separately. It requires completed5706 summary/raw JSONL,
-checks each ordered source against catalogue and native/semantic subprocess pair,
-then all separate negatives, oracle identity, exact4997 old bytes and846 hashes.
-The raw wrapper records two subprocesses per ordinary case, one per negative and
-one final identity query. Check actual counts, no exceptions/missing files, exact
-commands, context, source bytes, outputs/status, edited-input controls and hashes.
-Final audit must preserve the full raw index/archive, not just summary totals.
-Do not rerun5706 merely to audit its completed immutable artifacts.
-
-After ordinary success, combine only clearly labeled profile counts and their
-shared846 identity. Bind full compiler5753 to current5750 catalogue and the
-infrastructure-only bridge; report actual run identities. Mark older fullsource
-reports historical. Perform inventory/evidence preflight and concise PROGRESS
-update before moving to calls publication. Final whole-project source/syntax/
-offline closure remains future work.
+`.tools/review8-quiet-compiler-binding.json` rechecks actual private 5753 compiler
+lints/5786 aggregate against the exact current 5750 ordered catalogue, three
+request-routed extra literals and the infrastructure-only845→846 bridge. It does
+not claim a fresh canonical full compiler invocation. Current inventory/evidence
+preflight passes; only oracle identity closes. The 846 manifest remains immutable
+historical evidence after any new watched source/tool publication. No campaign
+process remains; coordinate subsequent canonical builds and atomic publication.
 
 ## Pending routing and first calls
 
@@ -144,3 +133,54 @@ output; cleanup must preserve surviving aliases. It belongs in the first coheren
 return/call increment. Function/class/trait/closure magic contexts, linked objects,
 exceptions, dynamic sources, services, lifetime and core intrinsics remain open.
 Namespace-relative static is the sole intentional divergence, activation pending.
+
+## Review8 private calls continuation
+
+Compiler priority originals **8d65b928** preserve two cases where a later named
+argument's Unsupported boundary replaced an earlier static error. Independent
+recheck of corrected `check-aycf9bym` passes both exact original diagnostics and
+one unchanged global$this control at
+`.tools/review8-call-priority-recheck-_2ooxg31`. Immutable prerequisite replay
+`.tools/review8-call-prerequisites-eg28o6bv` passes 32 compiler programs, 8 context
+programs and 20 frame assertions, and audits 20 no-call response projections.
+
+Eight paired ownership originals **4f639832** supplement the earlier six at
+f5cbac10. Four owner-present programs print 77 and owner-absent controls print 17:
+active surplus argument, saved caller surplus argument, caller-held temporary,
+and an earlier argument during later-call evaluation. Raw roots are
+`.tools/review8-call-owner-originals-v1tw_oro` and
+`.tools/review8-call-owner-controls-50r7fnlz`; runtime5 is adding dense gates.
+
+Actual private calls run in `.tools/runtime5-calls-paired`: 20 initial source
+comparisons at `source-ldd6ks9x`, 11 traces at `trace-source-hrvnohol`, with exact
+loaded modules under each `original-inputs`. No source-call acceptance yet.
+Independent error originals `.tools/review8-call-error-iterator-o2qomkrj` have
+correct final cleanup, but `.tools/review8-error-iterator-cuts-yeh5k6ic` retains
+orphan iterator metadata at budget 33 (1 iterator/0 continuations) and 50 (2/1).
+Runtime5's repaired 12-cut snapshot is `error-iterator-8yzh5_86`; author dense
+2-program/564-assertion gate is `error-dense-xyetj986`. Independent repair review
+is pending; original states must remain archived.
+
+Independent literal/computed-known `global $_ENV` originals are at
+`.tools/review8-global-binding-originals-nqcjz_0r`: native A versus candidate L
+(spurious function-local binding). Successful full-state replay is
+`.tools/review8-global-binding-replay-v7erqyx9`; earlier handwritten request
+fixture syntax failures remain separately preserved. Compiler5 owns the fix in
+`.tools/compiler5-superglobals` and also verifies activated dynamic names retain
+local binding. Do not mistake the inactive-ENV dynamicA control for a scope proof.
+
+The builtin occupancy prerequisite is independently acceptable at the frozen
+`.tools/compiler5-calls/builtin-prerequisite-manifest.json`: 780 names derived
+from 238 configured source inputs, 13 preprocessed tables and 1,569 pure checks.
+Author 322-file archive is `builtin-function-originals.tar.xz`, SHAb9584a85.
+Independent review is staged under `.tools/review8-builtin-stage` for publication
+after author files; it retains 68 lossless review files and reproduction proof.
+Its producer root is canonical; private tools/spec/test roots are explicit.
+It implements no builtin bodies. Preserve first missing-mbstring command
+nonretention, injected timeouts and reviewer setup failures as separate limits.
+
+After these private repairs, finish actual source calls with scope/ownership/
+error/resumption review and publish the paired compiler/runtime atomically.
+Defaults, refs, strictness, other callables, objects/properties/exceptions/dynamic
+sources/resumability/lifetime/core intrinsics remain mandatory. Final full source,
+syntax and fresh network-isolated offline whole-project rebuild remain pending.

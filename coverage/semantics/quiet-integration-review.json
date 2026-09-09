@@ -1,0 +1,175 @@
+{
+  "result": "pass",
+  "decision": "Independent acceptance of full quiet/request integration on the frozen846-input implementation. No whole-core or syntax/offline closure.",
+  "reviewer": "review8",
+  "fingerprint": {
+    "sha256": "14d1766202ddc2e5ba1b0223611b1a83084f34ee7a182550a6a9771ab503462f",
+    "files": 846,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_profile_counts": {
+    "ordinary_cases": 5706,
+    "request_cases": 263,
+    "profile_case_observations": 5969,
+    "ordinary_distinct_source_bytes": 5672,
+    "request_distinct_source_bytes": 257,
+    "cross_profile_same_source_bytes": 3,
+    "all_distinct_source_bytes": 5926,
+    "note": "Accepted case/profile observations, not unique source-byte programs or whole-core closure."
+  },
+  "ordinary": {
+    "source_comparisons": 5706,
+    "negative_outcome_controls": 21,
+    "retained_subprocesses": 11434,
+    "all_historical4997_bytes_unchanged": true,
+    "author_commit": "83cce919",
+    "author_report": {
+      "path": "coverage/semantics/quiet-ordinary-integration.json",
+      "sha256": "81a85c0d8027cc9ad9abe3368ca4bd6478b8d94645a1dd5362374f5e09d64312"
+    },
+    "source_report": {
+      "path": "coverage/semantics/source.json",
+      "sha256": "993684cba7457bc6fc90a6efa912928a2da39fe1ea500661206b7adfdc478ab2"
+    },
+    "raw_results": {
+      "path": "coverage/results-semantic-source-h8devvgv.jsonl",
+      "sha256": "44e0eec6c8b73eb2b45ec643bc336621a11356a99317d6192819d0f17890d3dc",
+      "records": 5706
+    },
+    "lossless_archive_audit": {
+      "result": "pass",
+      "author_commit": "83cce919",
+      "archive": "coverage/semantics/quiet-ordinary-integration-raw.json.gz",
+      "archive_sha256": "ee5d60d41bec92e8f154e5336bf561ba348c34ad513171ae689701f891b6dac6",
+      "files": 22873,
+      "uncompressed_json_bytes": 39990952,
+      "decoded_payload_bytes": 26823173,
+      "all_raw_audit_files_bound": 22864,
+      "historical_report_git_binding": {
+        "commit": "d71d4107ef7b096bb03c760b48d15af762de8977",
+        "path": "coverage/semantics/source.json",
+        "blob": "549b98893db111037700c446d2e9856bb75b871e",
+        "sha256": "ec7054668e92c7fc4e07fe2d477b70507365d021e78ae7cc710c393ea277d19b",
+        "cases": 4997
+      },
+      "scope": "Every lossless archive entry independently decoded, byte/hash/length checked, exact ordered index checked, all audited raw observations bound, historical summary equals committed Git blob."
+    },
+    "audit_details_in_review_archive": ".tools/review8-quiet-ordinary-audit/results.json"
+  },
+  "explicit_request": {
+    "source_comparisons": 263,
+    "native_calls": 263,
+    "frontend_adapter_responses": 526,
+    "author_commit": "c9fce8c9",
+    "independent_acceptance_commit": "ba2e421a",
+    "existing_review": {
+      "path": "coverage/semantics/quiet-request-integration-review.json",
+      "sha256": "80bc2d1597616aa1ee8de491e8cbb8df1d7ed842a453d12661dd068ed21de3bc"
+    },
+    "source_report": {
+      "path": "coverage/semantics/request-environment-source.json",
+      "sha256": "9fb54b3812349a06b175bca487b0a01299024b3d4c07c48d3a6dce5e51203b0f"
+    },
+    "scope": "Reuse already accepted exact primitive-profile and2381-file raw audit; not a duplicate campaign or re-audit."
+  },
+  "compiler_binding": {
+    "result": "pass",
+    "actual_private_full_fingerprint": {
+      "sha256": "5a3b22e317ee69bcbe962c6997a11d086037972c1f9e8159f511493b63b8a4e7",
+      "files": 845,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "actual_private_lints": 5753,
+    "actual_aggregate_assertions": 5786,
+    "current_ordered_subset": 5750,
+    "extra_valid_request_routed": [
+      {
+        "id": "baseline/magic-magic-autoglobal-name",
+        "sha256": "e640766f1e15ba91af2bcb703a8aec81192b7e234cba95e9b29efa7af7522ec0"
+      },
+      {
+        "id": "baseline/magic-magic-concat-globals-name",
+        "sha256": "a1a9821f4b540b2cbe9f67145000dc6cc2338b7c844f85657b8e074303a9a923"
+      },
+      {
+        "id": "baseline/magic-computed-global-priority",
+        "sha256": "20db47262463c20082250266f9921493c9a9c968915ba50df1eeb43b0af6f2a3"
+      }
+    ],
+    "full_report_sha256": "3a22ea091365bacf5c561561054544b365e8a3323640c7bcdb4efea2802e7ad4",
+    "aggregate_fixture_sha256": "672482385157f9d0194ad826ddded53a48e6584aaf3c3776d4bfdc93b654591b",
+    "infrastructure_review_sha256": "402ce73cc0453f77fffda8edbc1fba5d5f1396ca1f3e7dcf28c606e8274a8158",
+    "bridge": {
+      "review": "coverage/semantics/request-environment-review.json",
+      "unchanged_prior_inputs": 844,
+      "changed": {
+        "tests/semantics/source_compiler.py": {
+          "old": "99967265fca5943d03945d7bbe801b4753c3bb2c94eb9f52f5f334d7abf1ffba",
+          "new": "6c2002af79a245a1dc84d07e8926dabd429128db28b59b9015c3f7c77a378a72"
+        }
+      },
+      "added": {
+        "scripts/private-semantics-references.py": "789c8b0f977aee94de4f0200e134881a331deaada3e3b5831397d140f968ae98"
+      },
+      "scope": "Only verification infrastructure changed after reviewed845 request publication. Runtime/compiler semantics, native provider, adapter and source catalogues remain byte-identical. Current846 broad campaign is separate."
+    },
+    "scope": "Independent exact current5750 catalogue/byte/order binding to previously accepted private5753 full run and retained845-to846 infrastructure-only bridge. No fresh canonical full compiler invocation claimed."
+  },
+  "preflight": {
+    "path": "coverage/semantics/quiet-integration-preflight-review.json",
+    "sha256": "7aae8ce8e8e42afafcbfac30ca21f73780b58f5c73e200963ecb92211795c9a0"
+  },
+  "checks": [
+    "All5706 ordered case IDs/source hashes/bytes match current frozen catalogue and report/raw JSONL; each has exact semantic/native subprocess pair, command, file/cwd, timeout and byte/status observation.",
+    "All21 negative controls retain their specific Unsupported, budget, timeout, runner-error or edited-AST boundary outcomes. None contributes a differential pass. Native runtime identity and flags checked.",
+    "All22873 author archive files match exact original bytes, length and hash; all11434 subprocess records and22864 immediate raw files are bound. Historical4997 report equals its committed Git blob.",
+    "Current5750 compiler catalogue is the exact ordered byte-identical subset of previously accepted5753 private compiler lints/5786 aggregate assertions. Its actual845 identity, three extra request-routed magic literals and infrastructure-only846 bridge stay explicit.",
+    "Inventory check passes169 constructors/306 obligations with onlyoracle identity closed. Evidence preflight passes17 stale-identity,3 invalid-path,17 invalid-closure and9 ignored build-log controls. All846 implementation hashes remain frozen."
+  ],
+  "limits": [
+    "5969 means case/profile comparisons;5926 distinct source-byte programs. The ordinary profile inherits environment with controlled LC_ALL=C/TZ=UTC; inherited values are not archived. Explicit request fixtures supply separate authored external facts.",
+    "Five old core controls remain pending: quiet property, quiet nullsafe, quiet static property, nested return, nullsafe-reference iterable. Four parser controls remain separate history. Two later-eval callback source witnesses remain pending.",
+    "Request-environment witnesses do not relabel prior absent-request Unsupported originals. Earlier full source/compiler reports remain historical at their recorded identities.",
+    "Compiler setup missing-reference,120-second timeout/deleted initial fixture and unused-canonical-wrapper failure remain separate nonpasses in the accepted compiler binding.",
+    "Reviewer first import-name collision and archive-size unit assumption were setup failures; retained separately, corrected audit completed.",
+    "Calls/objects/properties/exceptions/dynamic sources/resumability/lifetime/core intrinsics, final current-source closure, full syntax validation and a fresh offline whole-project rebuild remain required."
+  ],
+  "pending_originals": {
+    "path": ".tools/runtime5-quiet-integration/pending-preflight.json",
+    "sha256": "d2df0c5eebab3eff35e56270891d0ae7a21219c952b84c5a2c02f3e3c1c1ba46"
+  },
+  "raw_archive": {
+    "path": "coverage/semantics/quiet-integration-review-raw.json.gz",
+    "sha256": "b38a0fedf3e3a53e5ca9a651173962b08368621c4011e8e4a3028db721187937",
+    "files": 12,
+    "validation": "Every independent payload byte/length/hash checked against retained originals."
+  }
+}

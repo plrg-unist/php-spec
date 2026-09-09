@@ -58,12 +58,12 @@ records 2,639 exact source comparisons and the corrected diagnostic phases.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
-seven preserved request-environment boundaries remain separate unfinished work.
+seven preserved request-environment boundaries now have separate explicit-input witnesses.
 [Destructuring and retained expression effects](docs/semantics/DESTRUCTURING.md)
 now execute current scalar/array list patterns and nonvariable-left coalescing.
 [Independent acceptance](coverage/semantics/destructuring-review.json) binds 263
-new source cases, effect ordering, aliases and dense resumption. Quiet coalescing,
-header diagnostics and object/frame-dependent targets remain unfinished.
+new source cases, effect ordering, aliases and dense resumption.
+Object/frame-dependent targets remain unfinished.
 [Array unpacking](docs/semantics/ARRAY-UNPACK.md) now preserves key order, copied
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
@@ -77,9 +77,16 @@ and list keys through checked printing and report exact compiler errors;
 the original sources and retired exceptions. [Array foreach execution](docs/semantics/FOREACH-REVIEW.md)
 now retains captured values/reference cells, saved copy positions and abrupt-exit
 cleanup. [Targeted acceptance](coverage/semantics/foreach-runtime-review.json) binds
-155 sources and complementary dense state checks. The [full container audit](coverage/semantics/container-campaign-audit.json)
+155 sources and complementary dense state checks. The historical [full container audit](coverage/semantics/container-campaign-audit.json)
 passes 4,997 exact sources and 24 outcome controls; objects, frames and two compiler
 contexts remain unfinished.
+Current variable/array quiet access, isset/empty, coalescing assignment,
+request initialization/GLOBALS and top-level magic constants have a combined
+[independent checkpoint](coverage/semantics/quiet-integration-review.json):
+5,706 ordinary and 263 explicit-request comparisons, with21 separate outcome
+controls on 846/14d17662. All 4,997 historical source bytes and the complete raw
+archives are retained. Source calls and the remaining core families are still
+being implemented; this checkpoint does not close the full-core inventory.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the

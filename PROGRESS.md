@@ -6,12 +6,14 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-The fresh **263-source explicit-request campaign passes** on846/14d17662.
-[Independent raw audit](coverage/semantics/quiet-request-integration-review.json)
-checks263 native calls,526 complete frontend/adapter responses and every primitive
-input/source/state/output; the2,381-file lossless archive is byte-verified.
-Author evidence is **c9fce8c9**. The5,706-case ordinary campaign remains running;
-its results and full quiet/CV acceptance are pending.
+The **full quiet/request checkpoint is independently accepted** on 846/14d17662:
+5,706 ordinary comparisons and 263 explicit-request comparisons, plus 21 separate
+outcome controls. The [combined audit](coverage/semantics/quiet-integration-review.json)
+checks every ordinary source/subprocess pair and all 22,873 lossless author files;
+all 4,997 historical source bytes remain unchanged. Author **83cce919** binds the
+ordinary run. Request author **c9fce8c9** and acceptance **ba2e421a** separately
+bind 263 native calls,526 complete frontend/adapter responses and 2,381 raw files.
+These are 5,969 case/profile observations, with 5,926 distinct source-byte programs.
 
 Request/GLOBALS/top-level magic code **652d10b7** is accepted at **eed5bf8d**,
 after author **d3dfb87a** and compiler **ca3ac883**. Its historical845 bridge
@@ -21,10 +23,9 @@ author programs/2,619 assertions. [Input](docs/semantics/REQUEST-INPUTS.md) and
 [state](docs/semantics/REQUEST-STATE-REVIEW.md) contracts cover external facts,
 PG ownership, CV order, callback replacement and source identity.
 
-Complete the running full quiet/CV integration with its frozen catalogue and invocation
-profiles before [calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md).
+Next complete [source calls/frames](docs/semantics/CALLS-ACTIVATION-PLAN.md).
 [Independent preflight](coverage/semantics/quiet-integration-preflight-review.json)
-verifies5,706 ordinary cases retain all4,997 historical source bytes, plus263
+verifies5,706 ordinary cases retain all 4,997 historical source bytes, plus263
 explicit-request cases; immediate raw retention is checked for both profiles.
 Preserve ordinary uninstrumented results and count new shared-input observations separately.
 The five remaining old container controls are three object quiet forms, return
@@ -38,13 +39,23 @@ Validation infrastructure **9fc1ce9f** now gives **846/14d17662** inputs. Its
 [independent review](coverage/semantics/private-validation-infrastructure-review.json)
 binds13-reference private preflight and exclusive compiler timeout/failure
 retention. Runtime, adapter and catalogues are unchanged. Earlier reports keep
-their exact845 identities; the running broad campaign binds846 separately.
+their exact845 identities; the accepted broad checkpoint binds846 separately.
 
 The actual private full compiler gate passes5,753 lints/5,786 aggregate assertions;
 current5,750 is its exact ordered subset after three magic sources moved profiles.
 The [compiler binding](coverage/semantics/request-compiler-group.json) retains the
 missing-reference setup, first120s timeout and unused canonical-wrapper failure
-separately. Source/tool bridges do not replace the required broad integration run.
+separately. The new audit rechecks its exact catalogue binding and the
+infrastructure-only846 bridge; it does not relabel that private run as canonical.
+
+First calls remain private and unaccepted. Real declaration/body/frame/return/
+recursion examples run, with global scope, fatal unwinding and dense ownership
+checks in progress. Independent originals **8d65b928** preserve two compiler
+priority defects, now corrected in a private recheck. **4f639832** adds eight
+paired native ownership witnesses (77 with retained roots,17 without them).
+Literal/computed autoglobal binding and intermediate error-iterator defects are
+retained before repair. The source-derived 780-name builtin occupancy prerequisite
+has separate review; it implements no builtin bodies and closes no core obligation.
 
 ## Milestones
 
@@ -92,8 +103,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-Runtime5 owns storage/request/source integration; compiler4 owns paired compiler
-work; review7 owns independent evidence/inventory/docs. Root orchestrates. Stage
+Runtime5 owns storage/request/source integration; compiler5 owns paired compiler
+work; review8 owns independent evidence/inventory/docs. Root orchestrates. Stage
 owned files, commit reviewed increments and never push. Use canonical-root Dune
 builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-QUIET-HANDOFF.md),
 [compiler](docs/semantics/COMPILER-HANDOFF.md) and
