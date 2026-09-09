@@ -87,13 +87,15 @@ request initialization/GLOBALS and top-level magic constants have a combined
 controls on 846/14d17662. All 4,997 historical source bytes and the complete raw
 archives are retained. This full runtime checkpoint remains historical after later
 call changes and does not close the full-core inventory.
-[Named source calls](docs/semantics/SOURCE-CALLS.md) now execute declarations,
-plain positional value calls, recursion, local/global frames, returns and fatal
-cleanup. [Independent acceptance](coverage/semantics/calls-final-review.json)
-binds 139 source comparisons, nine current state programs with 2,079 assertions,
-40 protocol fixtures and a broad 5,751-lint compiler checkpoint. Reference/type/
-default and remaining callable protocols, objects, exceptions, dynamic sources,
-resumability, lifetime and core intrinsics remain unfinished.
+[Named source calls](docs/semantics/SOURCE-CALLS.md) execute declarations,
+positional value/reference parameters, recursion, local/global frames, returns
+and fatal cleanup. [Reference-parameter acceptance](coverage/semantics/reference-parameter-review.json)
+binds 166 exact source replays, 61 independent original agreements, 283 shared
+destructuring regressions and eight independent state programs with 1,868 assertions.
+[Reference sends and temporary DIM/list behavior](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md)
+preserve alias cells, COW, diagnostic phases and checked continuation ownership.
+Defaults, types, reference returns and remaining callable protocols are pending.
+Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the

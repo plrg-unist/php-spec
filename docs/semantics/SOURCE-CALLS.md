@@ -79,9 +79,15 @@ terminal outcomes remain intact. Internal steps retain ordinary step accounting;
 external validation adds no PHP transition. These controls establish the tested
 protocol boundary, not a proof of semantic equivalence or arbitrary-state safety.
 
+The [positional reference increment](SOURCE-REFERENCE-PARAMETERS.md) extends these
+frames with reference sends and parameter binding. Pending cells, saved contexts,
+surplus values and temporary DIM/list owners use the same lifetime protocol.
+Its source, state, compiler and production input evidence is recorded separately
+in [independent acceptance](../../coverage/semantics/reference-parameter-review.json).
+
 ## Remaining call protocols
 
-Reference parameters/returns, defaults, variadics, named and unpacked arguments,
+Reference returns, defaults, variadics, named and unpacked arguments,
 typed/strict argument and return enforcement, closures, variable calls, methods,
 objects, dynamic source units, handlers/finally and generators/fibers remain
 separate planned increments. Unsupported outcomes for those boundaries and

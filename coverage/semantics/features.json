@@ -1527,16 +1527,20 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "node": "Expr_Include",
@@ -2757,14 +2761,18 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "node": "Stmt_Global",
@@ -2778,14 +2786,18 @@
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/81-global-frames.watsup"
+        "spec/semantics/81-global-frames.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "node": "Stmt_Goto",
@@ -2953,14 +2965,18 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "node": "Stmt_Static",
@@ -4377,7 +4393,8 @@
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/81-global-frames.watsup",
-        "spec/semantics/82-superglobal-scope.watsup"
+        "spec/semantics/82-superglobal-scope.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -4385,15 +4402,19 @@
         "tests/semantics/request_environment_protocol.py",
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/request-environment-review.json",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Current source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "id": "storage.superglobals",
@@ -4408,7 +4429,8 @@
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/81-global-frames.watsup",
-        "spec/semantics/82-superglobal-scope.watsup"
+        "spec/semantics/82-superglobal-scope.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -4416,15 +4438,19 @@
         "tests/semantics/request_environment_protocol.py",
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/request-environment-review.json",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Current source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "id": "storage.globals-restrictions",
@@ -5757,20 +5783,25 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open.",
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-return.php"
       ]
@@ -5860,20 +5891,25 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open.",
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
       "planned_source_tests": [
         "tests/semantics/conformance/declaration-timing.php"
       ]
@@ -5892,7 +5928,8 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [
         "tests/semantics/name_resolution.py",
@@ -5905,15 +5942,19 @@
         "coverage/semantics/source.json",
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Historical prerequisite review: Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending. Current source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Historical prerequisite review: Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "id": "calls.namespace-fallback",
@@ -5929,7 +5970,8 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [
         "tests/semantics/name_resolution.py",
@@ -5942,15 +5984,19 @@
         "coverage/semantics/source.json",
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Historical prerequisite review: Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending. Current source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open.",
+      "review": "Historical prerequisite review: Independent namespace constant source consumer d5d28dc6, backend e2e31084: 621 exact source +24 outcome negatives,40 namespace source+15 descriptor/cache/lookup controls,43 alternate original sources and19 runtime states/187 assertions passed. Compiler663 lint+15 endingline+4 Unsupported boundaries, constant42+5, runtime15/148, origin25/333 and ownership617+96/5434 passed. Resolved/fallback bytes preserve qualification/case and late error timing; special constants fold using FULL distinction, namespace NAN stays a late lookup, cached paths reject changed lexical context. All seven retained alias sources now match native observations. Function invocation, user declarations/constants, class/magic constant access and complete language contexts remain pending. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
       "planned_source_tests": [
         "tests/semantics/conformance/namespace-import.php"
       ]
@@ -5964,20 +6010,25 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "id": "calls.named",
@@ -6030,15 +6081,29 @@
     {
       "id": "calls.byref-argument",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/78-function-compiler.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/80-call-control.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/reference-parameter-review.json",
+        "docs/semantics/SOURCE-REFERENCE-PARAMETERS.md"
+      ],
+      "review": "Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-rebind.php",
         "tests/semantics/conformance/unpacked-byref.php"
@@ -6188,20 +6253,25 @@
         "spec/semantics/78-function-compiler.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/86-reference-arguments.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/function_calls.py",
         "tests/semantics/function_call_state.py",
-        "tests/semantics/function_call_protocol.py"
+        "tests/semantics/function_call_protocol.py",
+        "tests/semantics/function_references.py",
+        "tests/semantics/function_reference_state.py",
+        "tests/semantics/function_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "coverage/semantics/calls-final-review.json",
-        "docs/semantics/SOURCE-CALLS.md"
+        "docs/semantics/SOURCE-CALLS.md",
+        "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. Reference/default/typed/named/unpacked/variadic and remaining callable/object/exception protocols are subsequent work; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
     },
     {
       "id": "calls.pipe",

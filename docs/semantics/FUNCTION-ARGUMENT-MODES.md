@@ -1,8 +1,11 @@
 # Positional argument compilation and deferred fetches
 
 This compiler work is paired with the accepted [source-call runtime](SOURCE-CALLS.md)
-and [independent review](../../coverage/semantics/calls-final-review.json). It does not admit reference parameters, defaults, named/unpacked
-arguments, builtin bodies or the remaining callable protocols.
+and [independent review](../../coverage/semantics/calls-final-review.json). The original value-call checkpoint remains historical; positional reference
+parameters extend these modes through the
+[reference compiler contract](REFERENCE-PARAMETER-COMPILER.md). Defaults,
+named/unpacked arguments, builtin bodies and remaining callable protocols keep
+their separate activation boundaries.
 
 At PHP 8.5.10, an earlier finalized exact function name supplies compile-time
 argument modes. Forward calls, conditional declarations, the function currently

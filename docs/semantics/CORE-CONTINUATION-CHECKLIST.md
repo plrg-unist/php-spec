@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:122 partial,183 pending,1 validated
+has169 constructors and306 obligations:123 partial,182 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -13,11 +13,13 @@ claim that the inventory dependency graph is complete.
   bridge accepted at **f3149e32**. Its5751-lint/5783-assertion broad compiler gate is reviewed;
   it does not replace full runtime/syntax/offline gates. Preserve firstcall versus
   historical quiet/request identities and newly retired control source hashes.
-- [ ] Pair positional reference parameters with runtime sends, cell binding,
-  temporary-reference diagnostics, ownership and public resume integrity.
-  [Successor handoff](RUNTIME-CALLS-HANDOFF.md) binds frozen869,
-  five-path delta,48 phases and archive3cc3c691. Publish compiler/runtime/admission
-  atomically after firstcalls; author/reference interface review alone is insufficient.
+- [x] Positional reference parameters, temporary DIM/list ownership and checked
+  resume integrity are accepted in code **31640654**. The
+  [review](../../coverage/semantics/reference-parameter-review.json) retains
+  frozen882 and its explicit canonical884 bridge, 166 source replays,
+  61 independent original agreements, 283 shared regressions and independent
+  state8/1,868 assertions. Author state6/1,413 and canonical CLI8 pass.
+  This bounded acceptance closes no callable or core family.
 - [ ] Complete defaults, parameter/return types and reference returns. Reuse
   existing signature/type/constant helpers; preserve caller/body strictness,
   original default context, folding/diagnostic order and materialization ownership.
