@@ -27,8 +27,8 @@ Complete core remains the goal. Syntax coverage is not semantic coverage.
 
 - Reviewer: progress/inventory/contracts, independent witnesses and acceptance gates.
 - References: runtime/storage, now permanent compiled-unit pool ownership and source
-  consumers. Read [ARRAY-HANDOFF](docs/semantics/ARRAY-HANDOFF.md) and
-  [SOURCE-ORIGINS](docs/semantics/SOURCE-ORIGINS.md).
+  consumers. The reviewed [runtime handoff](docs/semantics/RUNTIME-BRIDGE-HANDOFF.md)
+  records the clean checkpoint and exact next activation gates.
 - Compiler: ordered ordinary compilation, lexical context and retained constant
   facts; ordered helper/access `00e27843` is reviewed. Read [CONSTANT-CONTEXT](docs/semantics/CONSTANT-CONTEXT.md),
   [SOURCE-CONTEXT](docs/semantics/SOURCE-CONTEXT.md) and
