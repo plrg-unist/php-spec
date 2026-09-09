@@ -120,12 +120,13 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-Runtime5 owns storage/request/source integration; compiler5 owns paired compiler
-work; review8 owns independent evidence/inventory/docs. Root orchestrates. Stage
+Runtime6 owns positional reference-parameter runtime integration; compiler5 owns
+paired compiler work; review9 owns independent evidence/inventory/docs. Runtime5
+and review8 authored/reviewed the historical checkpoints above. Root orchestrates. Stage
 owned files, commit reviewed increments and never push. Use canonical-root Dune
-builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-QUIET-HANDOFF.md),
+builds and coordinate shared binaries. Current [runtime](docs/semantics/RUNTIME-CALLS-HANDOFF.md),
 [compiler](docs/semantics/COMPILER-HANDOFF.md) and
-[reviewer](docs/semantics/REQUEST-REVIEWER-HANDOFF.md) handoffs retain interfaces.
+[reviewer](docs/semantics/FIRST-CALLS-REVIEWER-HANDOFF.md) handoffs retain interfaces.
 
 Each coherent increment needs native/source originals, focused phase/line checks,
 appropriate state/ownership/resumption gates and independent review. Run early
