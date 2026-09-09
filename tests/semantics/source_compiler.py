@@ -18,6 +18,14 @@ def $pptrace(P) = ($pltestevent(pldiagnostic))* ++ [("fatal",$ptascii(text),P.LO
   -- if P.COMPLETION = PPCABRUPT (STATICERROR text z)
   -- if z = n
 '''
+PREFIX+='''
+dec $access_paths((pcpath, ppmode)*) : pcpath*
+def $access_paths(eps) = eps
+def $access_paths((pcpath, ppmode) :: (pcpath_tail, ppmode_tail)*) = pcpath :: $access_paths((pcpath_tail, ppmode_tail)*)
+dec $expression_paths(ppexprdone*) : pcpath*
+def $expression_paths(eps) = eps
+def $expression_paths((PPCEXPR pcpath n pvalue?) :: ppexprdone*) = pcpath :: $expression_paths(ppexprdone*)
+'''
 LINES=[b'<?php $u=7;\necho [$u, \"abc\"[\n\"1x\"]];',b'<?php $u=7;\necho \"abc\"[\n\"1x\"];',b'<?php $u=7;\necho [\"abc\"[\n\"-1x\"]];',b'<?php $u=7;\necho [$u=[\"abc\"[\n\"1x\"]]];',b'<?php $u=[NAN];\necho ($u[\n0]=$u);']
 # Rewritten values inherit the prepass compiler line; original scalar leaves do not.
 LINES += [b'<?php $u=1;\necho [\n $u,\n "abc"[\n "1x"\n ],\n];', b'<?php $u=1;\necho [\n 1,\n $u,\n "abc"["1x"]\n];', b'<?php $u=1;\necho [\n $u,\n NAN\n];', b'<?php $u=1;\necho [\n $u,\n true\n];', b'<?php $u=1;\necho [\n $u,\n 1+\n 2\n];', b'<?php $u=1;\necho [\n $u,\n -\n 2\n];', b'<?php $u=1;\necho [\n "abc"[\n "1x"\n]\n];', b'<?php $u=1;\necho [\n $u,\n "last"\n];', b'<?php $u=1;\necho [\n $u,\n $u+\n 2\n];', b'<?php $u=1;\necho [\n $u,\n ($v="abc"[\n "1x"\n ])\n];']
@@ -25,6 +33,19 @@ CASES=[b'<?php use A; echo ${[[]=>1]}; use B;',b'<?php use A; $x=[($u=[&$v[]])];
 loader=importlib.util.spec_from_file_location('runtime_cases',ROOT/'tests/semantics/validate.py')
 runtime_cases=importlib.util.module_from_spec(loader);loader.loader.exec_module(runtime_cases)
 SOURCE_CASES=[('baseline/'+name,source) for name,source in runtime_cases.CASES.items()]+[('targeted/'+str(i),source) for i,source in enumerate(CASES)]
+
+I=lambda n:('INDEX',n)
+F=lambda n:('FIELD',n)
+ACCESS_CASES=[
+ (b'<?php echo $a[0];', [([I(0),F(0),I(0)],'PPR'),([I(0),F(0),I(0),F(0)],'PPR'),([I(0),F(0),I(0),F(1)],'PPR')]),
+ (b'<?php $a[0]=1;', [([I(0),F(0)],'PPR'),([I(0),F(0),F(0)],'PPW'),([I(0),F(0),F(0),F(0)],'PPW'),([I(0),F(0),F(0),F(1)],'PPR'),([I(0),F(0),F(1)],'PPR')]),
+ (b'<?php $x=&$a[0];', [([I(0),F(0),F(0)],'PPW'),([I(0),F(0),F(1)],'PPW'),([I(0),F(0),F(1),F(0)],'PPW'),([I(0),F(0),F(1),F(1)],'PPR')]),
+ (b'<?php unset($a[0]);', [([I(0),F(0),I(0)],'PPUNSET'),([I(0),F(0),I(0),F(0)],'PPUNSET'),([I(0),F(0),I(0),F(1)],'PPR')]),
+ (b'<?php $a=[&$x,$k=>$v];', [([I(0),F(0),F(1)],'PPR'),([I(0),F(0),F(1),F(0),I(0),F(1)],'PPW'),([I(0),F(0),F(1),F(0),I(1),F(0)],'PPR'),([I(0),F(0),F(1),F(0),I(1),F(1)],'PPR')]),
+ (b'<?php ${$name}=1;', [([I(0),F(0),F(0)],'PPW'),([I(0),F(0),F(0),F(0)],'PPR')]),
+ (b'<?php $u=0;echo [$u,"abc"["1x"]];', [([I(1),F(0),I(0),F(0),I(1),F(1)],'PPR'),([I(1),F(0),I(0),F(0),I(1),F(1),F(0)],None)]),
+ (b'<?php $a[0]=$a;', [([I(0),F(0),F(1)],'PPR')]),
+]
 
 def oracle_record(source, checked, command, run):
     return {'source_base64':base64.b64encode(source).decode(), 'ast_sha256':hashlib.sha256(json.dumps(checked['ast'],sort_keys=True).encode()).hexdigest(), 'command':command, 'cwd':str(ROOT), 'status':run.returncode, 'stdout_base64':base64.b64encode(run.stdout).decode(), 'stderr_base64':base64.b64encode(run.stderr).decode()}
@@ -97,14 +118,28 @@ def main():
             child=occurrences.path_term([('INDEX',0),('FIELD',0),('INDEX',0),('FIELD',0),('INDEX',0),('FIELD',1)])
             i=len(fixtures)
             fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, ([120]))\n  -- if P.COMPLETION = PPCNORMAL\n  -- if $pffact(P.FOLD.FACTS, {path}) = (PARRAY n_root)\n  -- if $pffact(P.FOLD.FACTS, {child}) = (PARRAY n_child)\n  -- if n_root =/= n_child\n  -- if $ppconstants(P) = PPCCONSTANTS (pcpath_constants, pvalue_constants)*\n  -- if $ppconstant_at((pcpath_constants, pvalue_constants)*, {path}) = (PARRAY n_root)\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 1 (PARRAY n_root)]]) = $ppconstants(P)\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 1 (PINT 9)]]) = PPCINVALID "conflicting constant values for one source occurrence"\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 1 (PARRAY n_child)]]) = PPCINVALID "conflicting constant values for one source occurrence"\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 0 eps]]) = PPCINVALID "missing compiled operand line"\n  -- if $ppconstants(P[.FOLD = P.FOLD[.FACTS = [PFFACT {path} (PARRAY n_root) 0]]]) = PPCINVALID "missing constant rewrite line"\n  -- if $ppconstants(P[.COMPLETION = PPCNAMESPACE]) = PPCINVALID "incomplete source compilation"\n')
+            for source, probes in ACCESS_CASES:
+                i=len(fixtures);parsed=f.request({'op':'parse','source':base64.b64encode(source).decode()});assert parsed['accepted'],parsed
+                checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})
+                body=f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, ([120]))\n  -- if P.COMPLETION = PPCNORMAL\n'
+                for steps,mode in probes:
+                    path=occurrences.path_term(steps)
+                    body+='  -- if $ppaccess(P, '+path+') = '+('eps' if mode is None else '('+mode+')')+'\n'
+                present=occurrences.path_term(next(steps for steps,mode in probes if mode is not None))
+                body+='  -- if $ppaccess(P[.COMPLETION = PPCNAMESPACE], '+present+') = eps\n  -- if $ppaccess(P[.COMPLETION = PPCABRUPT (UNSUPPORTED "probe")], '+present+') = eps\n  -- if $access_paths(P.ACCESS) = $expression_paths(P.EXPRESSIONS)\n'
+                file.write_bytes(source);command=[str(types.PHP),'-n',*types.FLAGS,'-l',str(file)]
+                run=subprocess.run(command,capture_output=True,cwd=ROOT,env=types.ENV,timeout=10)
+                assert run.returncode==0,(source,run.stdout,run.stderr)
+                records.append({'id':'access-'+str(i),'kind':'compiler-access','oracle':oracle_record(source,checked,command,run),'expected_access':[{'path':occurrences.path_term(steps),'mode':mode} for steps,mode in probes]})
+                fixtures.append(body)
             file=Path(tmp)/'cases.watsup' ;file.write_text(prefix+'\n'.join(fixtures)+'\ndec $main() : bool\ndef $main() = true\n'+''.join(f'  -- if $case{i}()\n' for i in range(len(fixtures))))
             run=subprocess.run([str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*map(str,SPECS),str(file)],capture_output=True,text=True,timeout=120)
             if run.returncode or run.stdout.strip()!='true':
                 (ROOT/'.tools/source-compiler-failure.watsup').write_text(file.read_text());raise AssertionError((run.returncode,run.stdout,run.stderr))
-            print(len(SOURCE_CASES),'compiler lint comparisons;',len(LINES),'emission-line observations; 6 Unsupported contexts; 3 metadata boundaries; constant export merge checks passed')
+            print(len(ACCESS_CASES),'access sources;',sum(len(probes) for source,probes in ACCESS_CASES),'access paths;',len(SOURCE_CASES),'compiler lint comparisons;',len(LINES),'emission-line observations; 6 Unsupported contexts; 3 metadata boundaries; constant export merge checks passed')
     finally:f.close();a.close()
     assert before==fingerprint(),'watched inputs changed'
-    report={'scope':'ordered compiler work and operand descriptors; no source runtime integration', 'profile':types.PROFILE,'oracle_identity':identity,'fingerprint':before,'baseline_cases':len(runtime_cases.CASES),'targeted_lint_cases':len(CASES),'emission_line_cases':len(LINES),'unsupported_contexts':6,'constant_export_checks':['matching duplicate','conflicting scalar','conflicting array ID','missing operand line','missing fact line','incomplete compilation'],'metadata_boundaries':[None,'0','-1'],'cases':records}
+    report={'scope':'ordered compiler work, access and operand descriptors; no source runtime integration', 'profile':types.PROFILE,'oracle_identity':identity,'fingerprint':before,'baseline_cases':len(runtime_cases.CASES),'targeted_lint_cases':len(CASES),'access_sources':len(ACCESS_CASES),'access_paths':sum(len(probes) for source,probes in ACCESS_CASES),'emission_line_cases':len(LINES),'unsupported_contexts':6,'constant_export_checks':['matching duplicate','conflicting scalar','conflicting array ID','missing operand line','missing fact line','incomplete compilation'],'metadata_boundaries':[None,'0','-1'],'cases':records}
     (ROOT/'coverage/semantics/source-compiler.json').write_text(json.dumps(report,indent=2)+'\n')
 
 

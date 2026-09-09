@@ -12,6 +12,7 @@ operand descriptors from the retained AST. It is not yet the runtime entry point
 | `FOLD` | Original canonical source unit, isolated constant store and partial constant-evaluation facts. Its `VALUE` is a working register, not a whole-program value. |
 | `WORK` | Successfully compiled ordinary statements, in compilation order, with original paths, exact statements, lexical environments and final compiler lines. |
 | `EXPRESSIONS` | Per-expression path, final compiler line and optional constant code-generation operand. |
+| `ACCESS` | The corresponding ordinary compiler operand mode at each expression path, in the same order. |
 | `DIAGNOSTICS` | Ordered namespace/import compiler diagnostics, including exact byte messages and their source-unit locations. |
 | `LOCATION` | Active or last ordinary compiler position. Lexical diagnostic locations are carried by the diagnostics themselves. |
 | `ENV` | Current lexical environment returned by the namespace/import traversal. Each work descriptor retains its own environment. |
@@ -72,6 +73,24 @@ partial-fold line effects and assignment's explicit target-line reset. A direct
 assignment-to-self dimension path preserves the compiler's special CV behavior.
 Emission-line tests observe native runtime warnings because those reveal the
 line attached by compilation; they do not claim that this helper executes PHP.
+
+`$ppaccess(state, path)` exposes `PPR` (read), `PPW` (write fetch, including
+reference acquisition), or `PPUNSET` for successfully compiled expressions. These
+modes are recorded from the actual compiler call, independently of the retained
+AST node's kind. Array keys and computed variable-name expressions are reads even
+inside writable paths; DIM bases inherit the surrounding mode. The current
+reference forms use the same write-fetch mode as ordinary targets. Runtime tasks
+retain their separate reference-acquisition protocol.
+
+The runtime consumer may intercept a pooled value only for a `PPR` occurrence;
+it must preserve write and unset path preparation. Constant facts beneath an
+entirely folded parent can have no ordinary expression/access descriptor because
+normal compilation never enters those children. They remain constant-store
+owners, not executable entry points. Missing access or unsuccessful compilation
+returns no mode. The current checked compiler constructs one matching access
+record per expression descriptor; this internal API does not accept arbitrary
+forged compiler states. Quiet access, compound read/write operators and dynamic
+argument modes require explicit later extensions.
 
 The source anchors are the pinned PHP 8.5.10 `Zend/zend_compile.c`:
 `zend_compile_expr_inner` (11804), `zend_compile_var_inner` (11955),
