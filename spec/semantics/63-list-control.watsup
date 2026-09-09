@@ -1,3 +1,6 @@
+dec $list_temporary_rhs(expression) : bool
+dec $list_capture_value(pstate, int) : pstate
+dec $list_call_rhs(expression) : bool
 dec $list_value_cv(expression) : (nat*)?
 def $list_value_cv(NExprVariable phpType32 metadata) = $cv_name(phpType32)
 def $list_value_cv(expression) = eps -- otherwise
@@ -21,13 +24,20 @@ rule PhpStep/list-assignment-reference: S ~> S[.TODO = [$at_task($origin_child(S
   -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
   -- if $list_pattern(expression_pattern) = (phpType13*)
   -- if $list_references(phpType13*)
+  -- if ~$list_call_rhs(expression_rhs)
+  -- if ~$list_temporary_rhs(expression_rhs)
+rule PhpStep/list-assignment-reference-call: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_rhs), LIST_CAPTURE expression_pattern false $runtime_line(S, [PCFIELD 1], expression_rhs)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if $list_references(phpType13*)
+  -- if $list_call_rhs(expression_rhs)
 rule PhpStep/list-capture-value: S ~> S_read[.TODO = $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), LIST_PATTERN expression S_read.RESULT z) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_CAPTURE expression false z) :: ptask_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read = $list_capture_value(S, z)
   -- if S_read.COMPLETION = NORMAL
 rule PhpStep/list-capture-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (LIST_CAPTURE expression false z) :: ptask_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read = $list_capture_value(S, z)
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/list-capture-reference: S ~> S[.TODO = $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), LIST_PATTERN expression (REFERENCE S.CELL) z) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (LIST_CAPTURE expression true z) :: ptask_tail*

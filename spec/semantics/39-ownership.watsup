@@ -181,7 +181,10 @@ def $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE =
 ;; ADD_ARRAY_ELEMENT owns the acquired wrapper before delayed key conversion.
 ;; Acquisition itself remains borrowed; insertion moves this owner into ALIAS.
 dec $hold_literal_reference(pstate) : pstate
+def $hold_literal_reference(S) = $hold_task_inputs(S)
+  -- if S.RESULT = REFERENCE S.CELL
 def $hold_literal_reference(S) = S_inputs[.HELD = S_inputs.HELD ++ [HCELL S.CELL]]
+  -- if S.RESULT =/= REFERENCE S.CELL
   -- if S_inputs = $hold_task_inputs(S)
 
 ;; Called on completed task states and the explicit location-separation boundary

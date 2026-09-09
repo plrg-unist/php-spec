@@ -1,0 +1,167 @@
+dec $call_fresh_reference(pstate, pvalue) : pstate
+dec $list_temporary_leaf(pstate, expression) : pstate
+;; Positional sends select their parameter before evaluating the actual argument.
+def $call_parameter_reference(S, porigin, n) = psparam.BYREF
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+def $call_parameter_reference(S, porigin, n) = false -- otherwise
+
+def $call_reference_variable(NExprVariable phpType32 metadata) = ~$ppglobals_base(NExprVariable phpType32 metadata)
+def $call_reference_variable(NExprArrayDimFetch expression phpType5 metadata) = true
+def $call_reference_variable(expression) = false -- otherwise
+
+def $call_argument_task(S, porigin_function, n, expression, porigin?) = CALL_REF_PREP porigin_function n porigin?
+  -- if $call_parameter_reference(S, porigin_function, n)
+  -- if $call_reference_variable(expression)
+def $call_argument_task(S, porigin_function, n, expression, porigin?) = EVAL expression -- otherwise
+
+;; Fetch and promote the acquired cell in the same transition. The resulting
+;; reference operand owns it even when a later argument removes its old name.
+rule PhpStep/call-reference-prepare: S ~> S[.TODO = [DIM_PREP expression, CALL_REF_FETCH porigin_function n porigin?] ++ ptask_tail*]
+  -- if S.TODO = (CALL_REF_PREP porigin_function n porigin?) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_arg)
+  -- if $origin_node(S.SOURCES, porigin_arg) = (expression)
+
+dec $call_temporary_base(expression) : bool
+def $call_temporary_base(NExprArrayDimFetch expression phpType5 metadata) = $call_temporary_base(expression)
+def $call_temporary_base(NExprVariable phpType32 metadata) = false
+def $call_temporary_base(expression) = ~$ppsend_var(expression) -- otherwise
+
+def $base_acquire(S, BASE_VALUE (REFERENCE n), z) = S[.LOCATION = ROOT n]
+
+rule PhpStep/call-reference-temporary: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use temporary expression in write context"), $runtime_line(S, eps, expression))
+  -- if S.TODO = (CALL_REF_FETCH porigin_function n porigin?) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_arg)
+  -- if $origin_node(S.SOURCES, porigin_arg) = (expression)
+  -- if $call_temporary_base(expression)
+
+dec $call_location_reference(pstate) : pstate
+def $call_location_reference(S) = S -- if S.COMPLETION =/= NORMAL
+def $call_location_reference(S) = $reference_cell(S, n)[.CELL = n][.STORE = $set_cell(S.STORE, n, $reference_slot(S.STORE[n]))][.RESULT = REFERENCE n]
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = ROOT n
+def $call_location_reference(S) = S_cell[.RESULT = REFERENCE S_cell.CELL]
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = ELEMENT n pkey
+  -- if S_cell = $element_reference(S, n, pkey)
+
+dec $call_reference_base(pstate, pbase, int) : pstate
+def $call_reference_base(S, BASE_DIM pbase poperand z_key, z) = $reference_acquire(S, BASE_DIM pbase poperand z_key, z)
+def $call_reference_base(S, BASE_APPEND pbase z_key, z) = $reference_acquire(S, BASE_APPEND pbase z_key, z)
+def $call_reference_base(S, pbase, z) = $base_acquire(S, pbase, z) -- otherwise
+
+rule PhpStep/call-reference-fetch: S ~> S_cell[.TODO = ptask_tail*][.HELD = S.HELD][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CALL_REF_FETCH porigin_function n porigin?) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_arg)
+  -- if $origin_node(S.SOURCES, porigin_arg) = (expression)
+  -- if ~$call_temporary_base(expression)
+  -- if S_cell = $call_location_reference($call_reference_base($hold_task_inputs(S), S.BASE, $runtime_line(S, eps, expression)))
+
+dec $call_argument_expression(pstate, porigin?, nat) : expression
+def $call_argument_expression(S, (porigin), n) = expression
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+
+dec $call_send_line(pstate, porigin?, nat) : int
+def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1])], eps, $call_argument_expression(S, porigin?, n))
+
+def $call_send_operand(S, porigin_function, n, porigin?, z) = $resolve(S, S.RESULT)
+  -- if ~$call_parameter_reference(S, porigin_function, n)
+def $call_send_operand(S, porigin_function, n, porigin?, z) = S
+  -- if $call_parameter_reference(S, porigin_function, n)
+  -- if S.RESULT = REFERENCE n_cell
+  -- if $call_reference_variable($call_argument_expression(S, porigin?, n)) \/ $ppsend_var($call_argument_expression(S, porigin?, n))
+def $call_send_operand(S, porigin_function, n, porigin?, z) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") could not be passed by reference"), $call_send_line(S, porigin?, n))
+  -- if $call_parameter_reference(S, porigin_function, n)
+  -- if ~$call_reference_variable($call_argument_expression(S, porigin?, n))
+  -- if ~$ppsend_var($call_argument_expression(S, porigin?, n))
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+
+
+def $call_send_operand(S, porigin_function, n, porigin?, z) = $diagnostic($call_fresh_reference(S, pvalue), "Notice", $ptascii("Only variables should be passed by reference"), $call_send_line(S, porigin?, n))
+  -- if $call_parameter_reference(S, porigin_function, n)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $ppsend_var($call_argument_expression(S, porigin?, n))
+
+;; A VAR list result retains an actual reference. Non-reference returned arrays
+;; stay values: each requested reference leaf warns and receives its own cell.
+def $list_call_rhs(NExprFuncCall phpType19 phpType6 metadata) = true
+def $list_call_rhs(expression) = false -- otherwise
+def $list_capture_value(S, z) = S
+  -- if S.RESULT = REFERENCE n
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $ppsend_var(expression_rhs)
+def $list_capture_value(S, z) = $resolve_at(S, S.RESULT, z) -- otherwise
+
+def $call_fresh_reference(S, pvalue) = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.RESULT = REFERENCE n], n)
+  -- if n = |S.STORE|
+
+rule PhpStep/list-fetch-temporary-reference: S ~> S_leaf[.TODO = $list_fetched_tasks(S_leaf, KNOWN pvalue_source, n, expression, true, phpType13*, z) ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (LIST_FETCH (KNOWN pvalue_source) n expression true phpType13* z) :: ptask_tail*
+  -- if S_read = $list_read($diagnostic(S, "Notice", $ptascii("Attempting to set reference to non referenceable value"), z), KNOWN pvalue_source, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_leaf = $list_temporary_leaf(S_read, expression)
+rule PhpStep/list-fetch-temporary-reference-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (LIST_FETCH (KNOWN pvalue_source) n expression true phpType13* z) :: ptask_tail*
+  -- if S_read = $list_read($diagnostic(S, "Notice", $ptascii("Attempting to set reference to non referenceable value"), z), KNOWN pvalue_source, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $list_temporary_leaf(S, expression) = S -- if $list_pattern(expression) = (phpType13*)
+def $list_temporary_leaf(S, expression) = $call_fresh_reference(S, pvalue)
+  -- if $list_pattern(expression) = eps
+  -- if S.RESULT = KNOWN pvalue
+
+;; Writable dimensions of call results have an unnamed, non-reference slot.
+;; Move the held value owner into that slot before COW counts other owners.
+dec $call_remove_owner(pnode*, pnode) : pnode*
+def $call_remove_owner(eps, pnode) = eps
+def $call_remove_owner(pnode :: pnode_tail*, pnode) = pnode_tail*
+def $call_remove_owner(pnode_head :: pnode_tail*, pnode) = pnode_head :: $call_remove_owner(pnode_tail*, pnode)
+  -- if pnode_head =/= pnode
+dec $call_move_value_owner(pnode*, pvalue) : pnode*
+def $call_move_value_owner(pnode*, PARRAY n) = $call_remove_owner(pnode*, HARRAY n)
+def $call_move_value_owner(pnode*, pvalue) = pnode* -- otherwise
+
+def $base_acquire(S, BASE_VALUE (KNOWN pvalue), z) = S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.HELD = $call_move_value_owner(S.HELD, pvalue) ++ [HCELL n]][.LOCATION = ROOT n]
+  -- if n = |S.STORE|
+
+def $call_temporary_location(BASE_VALUE (KNOWN pvalue)) = true
+def $call_temporary_location(BASE_VALUE (REFERENCE n)) = true
+def $call_temporary_location(BASE_DIM pbase poperand z) = $call_temporary_location(pbase)
+def $call_temporary_location(BASE_APPEND pbase z) = $call_temporary_location(pbase)
+def $call_temporary_location(pbase) = false -- otherwise
+
+def $acquired_reference_operand(S, pbase) = REFERENCE S.CELL
+  -- if S.COMPLETION = NORMAL
+  -- if $call_temporary_location(pbase)
+def $acquired_reference_operand(S, pbase) = KNOWN PNULL -- otherwise
+
+def $temporary_reference_target(S, pbase, z) = $throw_scalar(S, "Error", $ptascii("Cannot assign by reference to an array dimension of an object"), z)
+
+def $list_temporary_rhs(NExprArrayDimFetch expression phpType5 metadata) = ($list_call_rhs(expression) \/ $list_temporary_rhs(expression))
+def $list_temporary_rhs(expression) = false -- otherwise
+rule PhpStep/list-assignment-reference-temporary: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), DIM_PREP expression_rhs), LIST_TEMP_CAPTURE expression_pattern $runtime_line(S, [PCFIELD 1], expression_rhs)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssign expression_pattern expression_rhs metadata)) :: ptask_tail*
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if $list_references(phpType13*)
+  -- if $list_temporary_rhs(expression_rhs)
+
+dec $list_temporary_operand(pstate) : pstate
+def $list_temporary_operand(S) = S -- if S.COMPLETION =/= NORMAL
+def $list_temporary_operand(S) = $call_location_reference(S)
+  -- if S.COMPLETION = NORMAL
+  -- if $location_reference(S, S.LOCATION)
+def $list_temporary_operand(S) = S[.RESULT = KNOWN pvalue]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$location_reference(S, S.LOCATION)
+  -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
+rule PhpStep/list-temporary-capture: S ~> S_read[.TODO = $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), LIST_PATTERN expression S_read.RESULT z) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (LIST_TEMP_CAPTURE expression z) :: ptask_tail*
+  -- if S_read = $list_temporary_operand($call_reference_base($hold_task_inputs(S), S.BASE, z))
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/list-temporary-capture-abrupt: S ~> S_read[.HELD = S.HELD]
+  -- if S.TODO = (LIST_TEMP_CAPTURE expression z) :: ptask_tail*
+  -- if S_read = $list_temporary_operand($call_reference_base($hold_task_inputs(S), S.BASE, z))
+  -- if S_read.COMPLETION =/= NORMAL

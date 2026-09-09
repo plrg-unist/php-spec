@@ -1,3 +1,7 @@
+dec $call_parameter_reference(pstate, porigin, nat) : bool
+dec $call_reference_variable(expression) : bool
+dec $call_argument_task(pstate, porigin, nat, expression, porigin?) : ptask
+dec $call_send_operand(pstate, porigin, nat, porigin?, int) : pstate
 dec $call_sourcefile(psourcefile*, porigin) : preqbytes
 def $call_sourcefile(eps, porigin) = eps
 def $call_sourcefile((SOURCEFILE n preqbytes) :: psourcefile*, PORIGIN n pcpath) = preqbytes
@@ -68,25 +72,27 @@ rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
 
-rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), EVAL expression), CALL_SEND porigin_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
+rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), $call_argument_task(S, porigin_function, n, expression, porigin?)), CALL_SEND porigin_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
   -- if S.TODO = (CALL_ARGS porigin_function ((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) n poperand* porigin? z) :: ptask_tail*
-rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS porigin_function phpType7* $(n + 1) (poperand* ++ [KNOWN pvalue]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS porigin_function phpType7* $(n + 1) (poperand* ++ [S_value.RESULT]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CALL_SEND porigin_function phpType7* n poperand* porigin? z) :: ptask_tail*
-  -- if S_value = $resolve(S, S.RESULT)
+  -- if S_value = $call_send_operand(S, porigin_function, n, porigin?, z)
   -- if S_value.COMPLETION = NORMAL
-  -- if S_value.RESULT = KNOWN pvalue
 rule PhpStep/call-send-abrupt: S ~> S_value
   -- if S.TODO = (CALL_SEND porigin_function phpType7* n poperand* porigin? z) :: ptask_tail*
-  -- if S_value = $resolve(S, S.RESULT)
+  -- if S_value = $call_send_operand(S, porigin_function, n, porigin?, z)
   -- if S_value.COMPLETION =/= NORMAL
 
 dec $plain_parameters(psparam*) : bool
 def $plain_parameters(eps) = true
-def $plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.DEFAULT = PSNONE /\ $plain_parameters(psparam_tail*))
+def $plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.VARIADIC /\ psparam.DEFAULT = PSNONE /\ $plain_parameters(psparam_tail*))
 dec $bind_parameters(pstate, psparam*, poperand*) : pstate
 def $bind_parameters(S, eps, poperand*) = S
 def $bind_parameters(S, psparam :: psparam_tail*, eps) = S
 def $bind_parameters(S, psparam :: psparam_tail*, (KNOWN pvalue) :: poperand*) = $bind_parameters($write_name(S, psparam.NAME, pvalue), psparam_tail*, poperand*)
+  -- if ~psparam.BYREF
+def $bind_parameters(S, psparam :: psparam_tail*, (REFERENCE n) :: poperand*) = $bind_parameters($bind_reference(S[.CELL = n], psparam.NAME), psparam_tail*, poperand*)
+  -- if psparam.BYREF
 dec $function_tasks(pstate, pfunction) : ptask*
 def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [RETURN_NULL]
   -- if pfunction.ORIGIN = PORIGIN n pcpath

@@ -14,11 +14,12 @@ import static_types as types
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def main():
+def main(catalogue=None, campaign="function-call-protocol"):
     before = types.syntax_validation.implementation_fingerprint()
-    catalogue = ROOT / 'tests/semantics/function_call_protocol_cases.json'
+    if catalogue is None:
+        catalogue = ROOT / 'tests/semantics/function_call_protocol_cases.json'
     cases = json.loads(catalogue.read_text())
-    out = Path(tempfile.mkdtemp(prefix='function-call-protocol-', dir=ROOT / '.tools'))
+    out = Path(tempfile.mkdtemp(prefix=campaign+'-', dir=ROOT / '.tools'))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
     inputs = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
@@ -70,7 +71,7 @@ def main():
     assert before == types.syntax_validation.implementation_fingerprint()
     report = {'result': 'pass', 'fingerprint': before, 'inputs': inputs, 'raw': str(out), 'cases': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2))
-    (ROOT / 'coverage/semantics/function-call-protocol.json').write_text(json.dumps(report, indent=2))
+    (ROOT / 'coverage/semantics' / (campaign+'.json')).write_text(json.dumps(report, indent=2))
     return True
 
 
