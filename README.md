@@ -52,6 +52,9 @@ and array values, with [independent evidence](coverage/semantics/comparison-revi
 [Prefix/postfix increment and decrement](docs/semantics/UPDATES.md) execute for
 current scalar/array locations, preserving copied results and diagnostic order;
 [independent review](coverage/semantics/incdec-review.json) records the source and resumption gates.
+All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
+targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
+records 2,639 exact source comparisons and the corrected diagnostic phases.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
 [independent review](coverage/semantics/reference-wrapper-review.json) retains the

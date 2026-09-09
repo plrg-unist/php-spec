@@ -362,7 +362,9 @@ object-context error. An invalid RHS can fail during compilation first.
 [72 originals](../../coverage/semantics/compound-this-originals.json) preserve
 both native phases and the rejected draft's exact completion trace. The correction
 uses `zend_compile_compound_assign` and `zend_compile_simple_var`; no engine
-divergence is intended. Production admission and resolution evidence remain pending.
+divergence is intended. Code `63028b5a` removes the incorrect static guard;
+[independent resolution](../../coverage/semantics/compound-review.json) passes all
+original bytes in the 2,639-source campaign.
 
 A second draft error used the final compiler line for a delayed dimension opcode.
 [Three runtime originals](../../coverage/semantics/compound-line-runtime-originals.json)
@@ -371,5 +373,13 @@ retain a native arithmetic warning on line 3 versus the draft's line 5;
 separate final compiler context from the earlier target opcode's line. The parent
 expression descriptor correctly retains final compiler context. Final DIM compound
 conversion and delayed RHS reads must use the captured target opcode line, while
-forced RHS expressions retain their own diagnostics. Production resolution remains
-pending; `zend_delayed_compile_end` explains the distinction.
+forced RHS expressions retain their own diagnostics. Code `63028b5a` preserves
+that split; the current source/raw audit resolves all original failures unchanged.
+`zend_delayed_compile_end` explains the distinction.
+
+The first broad compound run stopped because a logical source ID containing `/=`
+was used as a filesystem path. The [original traceback](../../coverage/semantics/compound-path-original.json)
+is retained as an infrastructure failure. Unique ordinal paths now materialize
+every selected source before execution; [independent checks](../../coverage/semantics/compound-path-review.json)
+cover all catalog IDs and ten hostile IDs. The corrected full campaign passes; no
+interrupted run was counted as semantic agreement.
