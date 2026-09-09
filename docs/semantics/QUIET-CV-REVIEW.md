@@ -15,9 +15,9 @@ right expression. The write phase must resolve the current target after right
 side effects, including array replacement and scalar failure. See
 `zend_compile_assign_coalesce` in `vendor/php-src/Zend/zend_compile.c`.
 
-Quiet access suppresses missing-value diagnostics, but does not erase all
-exceptions or expression effects. Missing nested dimensions still evaluate their
-key expressions. Array/string access with an array key throws; a null base
+Coalescing quiet access suppresses missing-value diagnostics, but does not erase
+all exceptions or expression effects. Missing nested dimensions still evaluate
+their key expressions. Array/string access with an array key throws; a null base
 quietly falls back. A missing ordinary property base evaluates a dynamic property
 name, while nullsafe access to null skips that expression. A missing static class
 still throws. Literal `$this ?? 7` throws outside object context, while a dynamic
@@ -35,3 +35,20 @@ Computed `$this` writes and folded `$GLOBALS` names must retain their own static
 versus runtime outcomes. These originals complement the seven preserved ordinary
 request-environment boundaries; they do not discharge object callbacks, class
 lookup, global environment, or frame semantics.
+
+Twenty further [original multiline controls](../../coverage/semantics/coalesce-assignment-line-originals.json)
+and their [independent native/lint replay](../../coverage/semantics/coalesce-assignment-line-review.json)
+separate the initial quiet-read line from the later write-refetch line. Constant
+or temporary float keys warn on the ending line during initial evaluation, then
+on the original expression line when reused for writing; a CV key keeps its own
+line for both reads. Nested targets preserve each key's own line. The engine sets
+AST line before memoized FETCH. Retained temporary copies must also be released
+when a non-null result skips the write branch.
+
+Coalesce dimension fetch and `isset`/`empty` dimension checks need distinct
+protocols. For a string base, key `"0x"` warns and reads offset zero with `??`,
+while `isset` is false and `empty` true silently. An array key throws with `??`
+but gives those same silent boolean results for a string base with `isset`/`empty`.
+A float key1.5 is silent with `??`, but `isset`/`empty` report lossy conversion.
+Array-base illegal-key diagnostic text also differs. Runtime4's retained198-source
+matrix supplies the next integration controls; this document makes no admission.
