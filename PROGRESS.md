@@ -106,7 +106,7 @@ timeouts and interrupted campaigns never count as validation passes.
   the immutable snapshot. [Audit and commands](coverage/frontend-syntax-repair.json)
   retain exact corpus membership and fingerprints. Copied executables establish
   neither a fresh rebuild nor portability; syntax results establish no semantics.
-- **138 independent oracle targets**, 62 integrated into the reviewed source
+- **146 independent oracle targets**, 62 integrated into the reviewed source
   harness. `conformance-oracle.json` alone never establishes semantic coverage.
 - Preserve delayed reads, self-assignment capture, cyclic arrays, NaN identity
   and exact compiler lines. [CORE](docs/semantics/CORE.md) records pending literal
@@ -123,7 +123,7 @@ timeouts and interrupted campaigns never count as validation passes.
 Thread source origins through the unchanged source machine, then integrate ordered
 compiler work and the reviewed constant pool before source dimensions. Preserve folding,
 assignment barriers, key conversion, diagnostic and temporary-owner timing.
-All 16 read/prepass oracle targets and existing element-target/prepass witnesses
+All 16 read/prepass and eight write/error-order oracle targets, plus existing element-target/prepass witnesses
 are mandatory in the next source gate. Source-context traversal and class linking
 must preserve pinned phase ordering and stable literal-occurrence identity.
 Covariance remains a helper over supplied visible class graphs, with no source

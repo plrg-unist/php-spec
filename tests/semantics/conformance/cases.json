@@ -1968,6 +1968,126 @@
       "expected_exit_status": 0,
       "provenance": "independent arithmetic-source reproduction of pinned _is_numeric_string_ex bound/suffix behavior; raw earlier specification discrepancy retained",
       "semantic_status": "pending"
+    },
+    {
+      "id": "string-write-negative-before-rhs",
+      "file": "tests/semantics/conformance/string-write-negative-before-rhs.php",
+      "purpose": "An out-of-range negative offset returns null before resolving an undefined RHS.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": ":abc",
+      "expected_stderr": "Warning: Illegal string offset -4 in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-write-key-warning-before-bound",
+      "file": "tests/semantics/conformance/string-write-key-warning-before-bound.php",
+      "purpose": "Leading numeric key warning precedes negative-bound warning and skips delayed RHS.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": ":abc",
+      "expected_stderr": "Warning: Illegal string offset \"-4tail\" in {FILE} on line 2\nWarning: Illegal string offset -4 in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-write-extension-result",
+      "file": "tests/semantics/conformance/string-write-extension-result.php",
+      "purpose": "Extension fills spaces, truncates RHS to one byte and returns the written byte.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "X:ab   X:Q:ab  QX",
+      "expected_stderr": "Warning: Only the first byte will be assigned to the string offset in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-write-empty-after-key",
+      "file": "tests/semantics/conformance/string-write-empty-after-key.php",
+      "purpose": "Null-key cast warning precedes empty-string assignment Error.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "start:",
+      "expected_stderr": "Warning: String offset cast occurred in {FILE} on line 2\nFatal error: Uncaught Error: Cannot assign an empty string to a string offset in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-write-array-rhs-order",
+      "file": "tests/semantics/conformance/string-write-array-rhs-order.php",
+      "purpose": "Key cast precedes array-to-string warning and first-byte warning.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "A:Abc",
+      "expected_stderr": "Warning: String offset cast occurred in {FILE} on line 2\nWarning: Array to string conversion in {FILE} on line 2\nWarning: Only the first byte will be assigned to the string offset in {FILE} on line 2\n",
+      "expected_exit_status": 0,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-write-append-before-rhs",
+      "file": "tests/semantics/conformance/string-write-append-before-rhs.php",
+      "purpose": "Append Error occurs before resolving an undefined delayed RHS.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "start:",
+      "expected_stderr": "Fatal error: Uncaught Error: [] operator not supported for strings in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-reference-key-before-error",
+      "file": "tests/semantics/conformance/string-reference-key-before-error.php",
+      "purpose": "Reference fetch converts and warns on its key, then errors without checking bounds.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Warning: Illegal string offset \"-999tail\" in {FILE} on line 2\nFatal error: Uncaught Error: Cannot create references to/from string offsets in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
+    },
+    {
+      "id": "string-nested-key-before-error",
+      "file": "tests/semantics/conformance/string-nested-key-before-error.php",
+      "purpose": "Nested dimension fetch emits key cast warning before its string-as-array Error.",
+      "obligations": [
+        "containers.string-offsets",
+        "expression.lvalue-order",
+        "expression.operand-order"
+      ],
+      "expected_stdout": "",
+      "expected_stderr": "Warning: String offset cast occurred in {FILE} on line 2\nFatal error: Uncaught Error: Cannot use string offset as an array in {FILE}:2\nStack trace:\n#0 {main}\n  thrown in {FILE} on line 2\n",
+      "expected_exit_status": 255,
+      "provenance": "independently authored source witness for reviewed pure helper; source activation remains pending",
+      "semantic_status": "pending"
     }
   ]
 }

@@ -47,7 +47,7 @@
   "fingerprints": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "tests/semantics/conformance/cases.json": "958e901f3abe70ba51a6244c1da07fde9dac75c08a220a29a10aa929b465a64e",
+    "tests/semantics/conformance/cases.json": "af21912404747760f893e7ec3479a7bb9757151b7b336b03f34f2d2e16e54edf",
     "tests/semantics/conformance/oracle.py": "448e42aa0ec1de11e4320560a1963fba4e137fa8fe75aebc990368394dde4eb5",
     "tests/semantics/conformance/reference-rebind.php": "dc15bd827772853aeb79674b28ee9eb1336b5456beb357618b31e37c2b869f90",
     "tests/semantics/conformance/parameter-rebind.php": "224cc5bb5368885190fc1da819357b304ef2714de08a1c511208741ba09465d9",
@@ -187,6 +187,14 @@
     "tests/semantics/conformance/numeric-positive-overflow-incomplete-exponent.php": "b46d4b489aac4a8f1f3ae8b52f44975b6cac878b415653b6dca9f82c6784566d",
     "tests/semantics/conformance/numeric-negative-overflow-incomplete-exponent.php": "5dda06461751effe5d1555e77e95d5b6f0fd9d6768d653fb6b7f37a1fd66bd21",
     "tests/semantics/conformance/numeric-incomplete-exponent-overflow-control.php": "4d64adc1ac244f9b732c517c6cc78000cf3f40dbbe1b6ab3e35840d1f2253877",
+    "tests/semantics/conformance/string-write-negative-before-rhs.php": "522356b26a5234e77ac0b5a564b384949854ea7646a34a16bde84cb908173352",
+    "tests/semantics/conformance/string-write-key-warning-before-bound.php": "0aeb4a9e1d6acb612d357466f87c4d1d9d6cd2ff58de33f00612b1a322691eba",
+    "tests/semantics/conformance/string-write-extension-result.php": "0fac277a8fc9a0a66db17344e284d65e638c660b7b7c4a2bf117c6cdf0a3dfdc",
+    "tests/semantics/conformance/string-write-empty-after-key.php": "fa4f60e0005c42e30a91e67723e5372d57e47dfb26a8b9a252de492f76981639",
+    "tests/semantics/conformance/string-write-array-rhs-order.php": "b13c7730d1b2211b7b017177be4beac93d79ff9c26da05e8d989e29b5bf6045b",
+    "tests/semantics/conformance/string-write-append-before-rhs.php": "6864321d84080052e2829d5ddcf9e5890618ac269f739c01e73abb03e655062f",
+    "tests/semantics/conformance/string-reference-key-before-error.php": "54789596e09682cdb16d593947affc5d4a389aa9f5bd07287dfddd606584716a",
+    "tests/semantics/conformance/string-nested-key-before-error.php": "a76d375160bf2be66b863c21e5f457d342ed3b7e1b7ddafe476c96b26666112b",
     "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
     "vendor/php-src/Zend/zend_operators.c": "e622dedbe5b1ad0584080a192a133b1a6d214f66238b8ef91e298a1110af87a2",
     "vendor/php-src/Zend/zend_hash.c": "b1cb1c89213ae91a9c21ee69abaf9f05a0dbe5f8358bf0076a7b1dfe251914e5",
@@ -1575,6 +1583,86 @@
       "stdout": "Ojox",
       "stderr": "V2FybmluZzogQSBub24tbnVtZXJpYyB2YWx1ZSBlbmNvdW50ZXJlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2UvbnVtZXJpYy1pbmNvbXBsZXRlLWV4cG9uZW50LW92ZXJmbG93LWNvbnRyb2wucGhwIG9uIGxpbmUgMgo=",
       "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-write-negative-before-rhs",
+      "source_sha256": "522356b26a5234e77ac0b5a564b384949854ea7646a34a16bde84cb908173352",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-write-negative-before-rhs.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "OmFiYw==",
+      "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0IC00IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUtbmVnYXRpdmUtYmVmb3JlLXJocy5waHAgb24gbGluZSAyCg==",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-write-key-warning-before-bound",
+      "source_sha256": "0aeb4a9e1d6acb612d357466f87c4d1d9d6cd2ff58de33f00612b1a322691eba",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-write-key-warning-before-bound.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "OmFiYw==",
+      "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0ICItNHRhaWwiIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUta2V5LXdhcm5pbmctYmVmb3JlLWJvdW5kLnBocCBvbiBsaW5lIDIKV2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0IC00IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUta2V5LXdhcm5pbmctYmVmb3JlLWJvdW5kLnBocCBvbiBsaW5lIDIK",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-write-extension-result",
+      "source_sha256": "0fac277a8fc9a0a66db17344e284d65e638c660b7b7c4a2bf117c6cdf0a3dfdc",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-write-extension-result.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "WDphYiAgIFg6UTphYiAgUVg=",
+      "stderr": "V2FybmluZzogT25seSB0aGUgZmlyc3QgYnl0ZSB3aWxsIGJlIGFzc2lnbmVkIHRvIHRoZSBzdHJpbmcgb2Zmc2V0IGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUtZXh0ZW5zaW9uLXJlc3VsdC5waHAgb24gbGluZSAyCg==",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-write-empty-after-key",
+      "source_sha256": "fa4f60e0005c42e30a91e67723e5372d57e47dfb26a8b9a252de492f76981639",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-write-empty-after-key.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "c3RhcnQ6",
+      "stderr": "V2FybmluZzogU3RyaW5nIG9mZnNldCBjYXN0IG9jY3VycmVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUtZW1wdHktYWZ0ZXIta2V5LnBocCBvbiBsaW5lIDIKRmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYXNzaWduIGFuIGVtcHR5IHN0cmluZyB0byBhIHN0cmluZyBvZmZzZXQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy13cml0ZS1lbXB0eS1hZnRlci1rZXkucGhwOjIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2Uvc3RyaW5nLXdyaXRlLWVtcHR5LWFmdGVyLWtleS5waHAgb24gbGluZSAyCg==",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "string-write-array-rhs-order",
+      "source_sha256": "b13c7730d1b2211b7b017177be4beac93d79ff9c26da05e8d989e29b5bf6045b",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-write-array-rhs-order.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "QTpBYmM=",
+      "stderr": "V2FybmluZzogU3RyaW5nIG9mZnNldCBjYXN0IG9jY3VycmVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUtYXJyYXktcmhzLW9yZGVyLnBocCBvbiBsaW5lIDIKV2FybmluZzogQXJyYXkgdG8gc3RyaW5nIGNvbnZlcnNpb24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy13cml0ZS1hcnJheS1yaHMtb3JkZXIucGhwIG9uIGxpbmUgMgpXYXJuaW5nOiBPbmx5IHRoZSBmaXJzdCBieXRlIHdpbGwgYmUgYXNzaWduZWQgdG8gdGhlIHN0cmluZyBvZmZzZXQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy13cml0ZS1hcnJheS1yaHMtb3JkZXIucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 0,
+      "expected_match": true
+    },
+    {
+      "id": "string-write-append-before-rhs",
+      "source_sha256": "6864321d84080052e2829d5ddcf9e5890618ac269f739c01e73abb03e655062f",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-write-append-before-rhs.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "c3RhcnQ6",
+      "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBbXSBvcGVyYXRvciBub3Qgc3VwcG9ydGVkIGZvciBzdHJpbmdzIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctd3JpdGUtYXBwZW5kLWJlZm9yZS1yaHMucGhwOjIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2Uvc3RyaW5nLXdyaXRlLWFwcGVuZC1iZWZvcmUtcmhzLnBocCBvbiBsaW5lIDIK",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "string-reference-key-before-error",
+      "source_sha256": "54789596e09682cdb16d593947affc5d4a389aa9f5bd07287dfddd606584716a",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-reference-key-before-error.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "V2FybmluZzogSWxsZWdhbCBzdHJpbmcgb2Zmc2V0ICItOTk5dGFpbCIgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy1yZWZlcmVuY2Uta2V5LWJlZm9yZS1lcnJvci5waHAgb24gbGluZSAyCkZhdGFsIGVycm9yOiBVbmNhdWdodCBFcnJvcjogQ2Fubm90IGNyZWF0ZSByZWZlcmVuY2VzIHRvL2Zyb20gc3RyaW5nIG9mZnNldHMgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy1yZWZlcmVuY2Uta2V5LWJlZm9yZS1lcnJvci5waHA6MgpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctcmVmZXJlbmNlLWtleS1iZWZvcmUtZXJyb3IucGhwIG9uIGxpbmUgMgo=",
+      "exit_status": 255,
+      "expected_match": true
+    },
+    {
+      "id": "string-nested-key-before-error",
+      "source_sha256": "a76d375160bf2be66b863c21e5f457d342ed3b7e1b7ddafe476c96b26666112b",
+      "file": "/home/user/workspace/php-spec/tests/semantics/conformance/string-nested-key-before-error.php",
+      "cwd": "/home/user/workspace/php-spec/tests/semantics/conformance",
+      "stdout": "",
+      "stderr": "V2FybmluZzogU3RyaW5nIG9mZnNldCBjYXN0IG9jY3VycmVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjL3Rlc3RzL3NlbWFudGljcy9jb25mb3JtYW5jZS9zdHJpbmctbmVzdGVkLWtleS1iZWZvcmUtZXJyb3IucGhwIG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogVW5jYXVnaHQgRXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIG9mZnNldCBhcyBhbiBhcnJheSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy90ZXN0cy9zZW1hbnRpY3MvY29uZm9ybWFuY2Uvc3RyaW5nLW5lc3RlZC1rZXktYmVmb3JlLWVycm9yLnBocDoyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvdGVzdHMvc2VtYW50aWNzL2NvbmZvcm1hbmNlL3N0cmluZy1uZXN0ZWQta2V5LWJlZm9yZS1lcnJvci5waHAgb24gbGluZSAyCg==",
+      "exit_status": 255,
       "expected_match": true
     }
   ]

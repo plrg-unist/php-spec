@@ -35,3 +35,9 @@ The scalar/string read targets follow `zend_fetch_dimension_address_read` in
 from array canonical keys, cast warnings precede byte lookup, and negative offsets
 address bytes. Missing-container/key lines and captured versus delayed operands
 have separate targets. They are oracle evidence until integrated and reviewed.
+
+String-write targets distinguish key conversion, negative bounds before delayed
+RHS reads, byte extension and assignment results, empty/array RHS diagnostics,
+append errors and reference/nested fetches. Their warning order follows
+`zend_assign_to_string_offset` and `zend_check_string_offset`; pure helper
+agreement does not establish the pending source-location bridge.
