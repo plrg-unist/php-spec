@@ -41,7 +41,10 @@ Next complete positional reference parameters, then the remaining argument,
 return, type/default and callable protocols in the
 [calls plan](docs/semantics/CALLS-ACTIVATION-PLAN.md). Private reference-parameter
 preparation has 48 compiler phase comparisons and 16 descriptor checks; runtime
-send/bind/ownership pairing and source acceptance remain pending.
+send/bind/ownership pairing and source acceptance remain pending. Independent
+[pre-repair originals](coverage/semantics/reference-parameter-review-preparation.json)
+retain 49 additional reference witnesses and three separate suppression controls;
+all 52 old runtime outcomes are Unsupported, with no new acceptance claim.
 The [core continuation checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md)
 keeps switch/match/labels/goto, objects/properties, exceptions, dynamic sources,
 generators/fibers, observable lifetime, core intrinsics and source-input gaps
