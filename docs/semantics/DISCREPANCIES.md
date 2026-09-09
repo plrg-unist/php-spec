@@ -210,3 +210,15 @@ including preceding output before the missing-name error. The report preserves
 original failures, temporary guard results and final resolution separately.
 The independent 621-source +24-negative gate and namespace/helper campaigns
 passed; no intentional divergence is selected.
+
+## Bare break ending lines: pending correction
+
+The admitted out-of-loop `break` compiler rule uses the keyword start line.
+PHP creates its AST node at the statement ending line, so `break` followed by
+a newline and semicolon reports that later line. [Eight exact original-source
+observations](../../coverage/semantics/break-line-disagreement.json) retain six
+admitted mismatches (newlines, comments, CRLF, preceding output and a block) and
+two controls. Both implementations suppress prior runtime output; the fatal
+line differs. A narrow ending-line correction and permanent source regressions
+are required before accepting the next source checkpoint. Numeric/expressive
+break depths and valid loop targets remain a separate pending control milestone.

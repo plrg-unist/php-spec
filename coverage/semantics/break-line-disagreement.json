@@ -1,0 +1,866 @@
+{
+  "status": "unresolved admitted bare-break ending-line disagreement",
+  "fingerprint": {
+    "sha256": "2ca4a6bf12533cd2b8d0ee78441ad19ff269be725a7f5f633546325615da7941",
+    "files": 763,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "fingerprint_after": {
+    "sha256": "2ca4a6bf12533cd2b8d0ee78441ad19ff269be725a7f5f633546325615da7941",
+    "files": 763,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory"
+    ]
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "records": [
+    {
+      "id": "same-line",
+      "source_base64": "PD9waHAgYnJlYWs7",
+      "source_sha256": "6f07871ea9c4fdcc58f1b130c03cf9553cac9f9d7ff848343a601056923b7546",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "11"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "2"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBreak ((ABSENT)) ([(MendFilePos (11)), (MendLine (1)), (MendTokenPos (2)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/same-line.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvc2FtZS1saW5lLnBocCBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/same-line.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2YzJGdFpTMXNhVzVsTG5Cb2NDQnZiaUJzYVc1bElERUtVM1JoWTJzZ2RISmhZMlU2Q2lNd0lIdHRZV2x1ZlFvPSIsICJleGl0X3N0YXR1cyI6IDI1NSwgImRpYWdub3N0aWMiOiB7ImNsYXNzIjogIkNvbXBpbGVFcnJvciIsICJtZXNzYWdlIjogIkoySnlaV0ZySnlCdWIzUWdhVzRnZEdobElDZHNiMjl3SnlCdmNpQW5jM2RwZEdOb0p5QmpiMjUwWlhoMCIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+        "stderr_base64": ""
+      },
+      "comparison": "pass"
+    },
+    {
+      "id": "newline",
+      "source_base64": "PD9waHAgYnJlYWsKOw==",
+      "source_sha256": "ff68675767115e0f08cfba920a5d2d953cb8942c31bca5daf6e8d2620f68c639",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "12"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "3"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBreak ((ABSENT)) ([(MendFilePos (12)), (MendLine (2)), (MendTokenPos (3)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/newline.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvbmV3bGluZS5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/newline.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2Ym1WM2JHbHVaUzV3YUhBZ2IyNGdiR2x1WlNBeENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiSjJKeVpXRnJKeUJ1YjNRZ2FXNGdkR2hsSUNkc2IyOXdKeUJ2Y2lBbmMzZHBkR05vSnlCamIyNTBaWGgwIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "comparison": "admitted-line-disagreement"
+    },
+    {
+      "id": "blank-line",
+      "source_base64": "PD9waHAgYnJlYWsKCjs=",
+      "source_sha256": "762d0ddd45e086e20c11fa0aedf9fa613039405b9cf8d38516e7291f6fdb8f77",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "13"
+                },
+                "endLine": {
+                  "int": "3"
+                },
+                "endTokenPos": {
+                  "int": "3"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBreak ((ABSENT)) ([(MendFilePos (13)), (MendLine (3)), (MendTokenPos (3)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/blank-line.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvYmxhbmstbGluZS5waHAgb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/blank-line.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2WW14aGJtc3RiR2x1WlM1d2FIQWdiMjRnYkdsdVpTQXhDbE4wWVdOcklIUnlZV05sT2dvak1DQjdiV0ZwYm4wSyIsICJleGl0X3N0YXR1cyI6IDI1NSwgImRpYWdub3N0aWMiOiB7ImNsYXNzIjogIkNvbXBpbGVFcnJvciIsICJtZXNzYWdlIjogIkoySnlaV0ZySnlCdWIzUWdhVzRnZEdobElDZHNiMjl3SnlCdmNpQW5jM2RwZEdOb0p5QmpiMjUwWlhoMCIsICJsaW5lIjogMX0sICJyZWFzb24iOiBudWxsLCAiZXZlbnRzIjogW10sICJmcm9udGVuZCI6ICJhY2NlcHRlZCIsICJjaGVja2VkIjogInByb2dyYW0ifQo=",
+        "stderr_base64": ""
+      },
+      "comparison": "admitted-line-disagreement"
+    },
+    {
+      "id": "comment",
+      "source_base64": "PD9waHAgYnJlYWsgLyogb25lCnR3byAqLzs=",
+      "source_sha256": "7aa9d6a25e5047928f07aa062083432ebc2eac9a2be64722b413c882400654f1",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "comments": [
+                  {
+                    "comment": [
+                      false,
+                      "Lyogb25lCnR3byAqLw==",
+                      "1",
+                      "12",
+                      "3",
+                      "2",
+                      "24",
+                      "3"
+                    ]
+                  }
+                ],
+                "endFilePos": {
+                  "int": "25"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "4"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBreak ((ABSENT)) ([(Mcomments ([(COMMENT (false) (\"Lyogb25lCnR3byAqLw==\") (1) (12) (3) (2) (24) (3))])), (MendFilePos (25)), (MendLine (2)), (MendTokenPos (4)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/comment.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvY29tbWVudC5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/comment.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2WTI5dGJXVnVkQzV3YUhBZ2IyNGdiR2x1WlNBeENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiSjJKeVpXRnJKeUJ1YjNRZ2FXNGdkR2hsSUNkc2IyOXdKeUJ2Y2lBbmMzZHBkR05vSnlCamIyNTBaWGgwIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "comparison": "admitted-line-disagreement"
+    },
+    {
+      "id": "crlf",
+      "source_base64": "PD9waHAgYnJlYWsNCjs=",
+      "source_sha256": "7358301b8a429edfaf4dc591f4588d248a11aa3af375e741f8d3f6877e420ea1",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "13"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "3"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBreak ((ABSENT)) ([(MendFilePos (13)), (MendLine (2)), (MendTokenPos (3)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/crlf.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvY3JsZi5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/crlf.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2WTNKc1ppNXdhSEFnYjI0Z2JHbHVaU0F4Q2xOMFlXTnJJSFJ5WVdObE9nb2pNQ0I3YldGcGJuMEsiLCAiZXhpdF9zdGF0dXMiOiAyNTUsICJkaWFnbm9zdGljIjogeyJjbGFzcyI6ICJDb21waWxlRXJyb3IiLCAibWVzc2FnZSI6ICJKMkp5WldGckp5QnViM1FnYVc0Z2RHaGxJQ2RzYjI5d0p5QnZjaUFuYzNkcGRHTm9KeUJqYjI1MFpYaDAiLCAibGluZSI6IDF9LCAicmVhc29uIjogbnVsbCwgImV2ZW50cyI6IFtdLCAiZnJvbnRlbmQiOiAiYWNjZXB0ZWQiLCAiY2hlY2tlZCI6ICJwcm9ncmFtIn0K",
+        "stderr_base64": ""
+      },
+      "comparison": "admitted-line-disagreement"
+    },
+    {
+      "id": "preceding-output",
+      "source_base64": "PD9waHAgZWNobyAiaGlkZGVuIjticmVhawo7",
+      "source_sha256": "d46318822698bdebc6eef185959601a904a2a0e703748b9b04c2858afdfd40e4",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Echo",
+              "fields": [
+                [
+                  {
+                    "node": "Scalar_String",
+                    "fields": [
+                      {
+                        "bytes": "aGlkZGVu"
+                      }
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "18"
+                      },
+                      "endLine": {
+                        "int": "1"
+                      },
+                      "endTokenPos": {
+                        "int": "3"
+                      },
+                      "kind": {
+                        "int": "2"
+                      },
+                      "rawValue": {
+                        "bytes": "ImhpZGRlbiI="
+                      },
+                      "startFilePos": {
+                        "int": "11"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "3"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "19"
+                },
+                "endLine": {
+                  "int": "1"
+                },
+                "endTokenPos": {
+                  "int": "4"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            },
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "26"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "7"
+                },
+                "startFilePos": {
+                  "int": "20"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "5"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtEcho ((SEQUENCE ([(NScalarString ((BYTES (\"aGlkZGVu\"))) ([(MendFilePos (18)), (MendLine (1)), (MendTokenPos (3)), (Mkind (2)), (MrawValue (\"ImhpZGRlbiI=\")), (MstartFilePos (11)), (MstartLine (1)), (MstartTokenPos (3))]))]))) ([(MendFilePos (19)), (MendLine (1)), (MendTokenPos (4)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))])), (NStmtBreak ((ABSENT)) ([(MendFilePos (26)), (MendLine (2)), (MendTokenPos (7)), (MstartFilePos (20)), (MstartLine (1)), (MstartTokenPos (5))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/preceding-output.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvcHJlY2VkaW5nLW91dHB1dC5waHAgb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/preceding-output.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2Y0hKbFkyVmthVzVuTFc5MWRIQjFkQzV3YUhBZ2IyNGdiR2x1WlNBeENsTjBZV05ySUhSeVlXTmxPZ29qTUNCN2JXRnBibjBLIiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiSjJKeVpXRnJKeUJ1YjNRZ2FXNGdkR2hsSUNkc2IyOXdKeUJ2Y2lBbmMzZHBkR05vSnlCamIyNTBaWGgwIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "comparison": "admitted-line-disagreement"
+    },
+    {
+      "id": "block",
+      "source_base64": "PD9waHAge2JyZWFrCjt9",
+      "source_sha256": "315435132ff3f1cf5ae9fafe8cb1d4757169fe9530b25839227ca952c363c90e",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Block",
+              "fields": [
+                [
+                  {
+                    "node": "Stmt_Break",
+                    "fields": [
+                      null
+                    ],
+                    "meta": {
+                      "endFilePos": {
+                        "int": "13"
+                      },
+                      "endLine": {
+                        "int": "2"
+                      },
+                      "endTokenPos": {
+                        "int": "4"
+                      },
+                      "startFilePos": {
+                        "int": "7"
+                      },
+                      "startLine": {
+                        "int": "1"
+                      },
+                      "startTokenPos": {
+                        "int": "2"
+                      }
+                    }
+                  }
+                ]
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "14"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "5"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "1"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBlock ((SEQUENCE ([(NStmtBreak ((ABSENT)) ([(MendFilePos (13)), (MendLine (2)), (MendTokenPos (4)), (MstartFilePos (7)), (MstartLine (1)), (MstartTokenPos (2))]))]))) ([(MendFilePos (14)), (MendLine (2)), (MendTokenPos (5)), (MstartFilePos (6)), (MstartLine (1)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/block.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvYmxvY2sucGhwIG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/block.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2WW14dlkyc3VjR2h3SUc5dUlHeHBibVVnTVFwVGRHRmpheUIwY21GalpUb0tJekFnZTIxaGFXNTlDZz09IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiSjJKeVpXRnJKeUJ1YjNRZ2FXNGdkR2hsSUNkc2IyOXdKeUJ2Y2lBbmMzZHBkR05vSnlCamIyNTBaWGgwIiwgImxpbmUiOiAxfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "comparison": "admitted-line-disagreement"
+    },
+    {
+      "id": "leading-newline",
+      "source_base64": "PD9waHAKYnJlYWs7",
+      "source_sha256": "e9da08a17a70541a86504848a90100c39f4de9407a49f633c2c6bab04f7454d3",
+      "checked": {
+        "ok": true,
+        "ast": {
+          "version": 1,
+          "program": [
+            {
+              "node": "Stmt_Break",
+              "fields": [
+                null
+              ],
+              "meta": {
+                "endFilePos": {
+                  "int": "11"
+                },
+                "endLine": {
+                  "int": "2"
+                },
+                "endTokenPos": {
+                  "int": "2"
+                },
+                "startFilePos": {
+                  "int": "6"
+                },
+                "startLine": {
+                  "int": "2"
+                },
+                "startTokenPos": {
+                  "int": "1"
+                }
+              }
+            }
+          ]
+        },
+        "fixture": "(PROGRAM ([(NStmtBreak ((ABSENT)) ([(MendFilePos (11)), (MendLine (2)), (MendTokenPos (2)), (MstartFilePos (6)), (MstartLine (2)), (MstartTokenPos (1))]))]))"
+      },
+      "oracle": {
+        "command": [
+          "/home/user/workspace/php-spec/.tools/php/bin/php",
+          "-n",
+          "-d",
+          "opcache.enable_cli=0",
+          "-d",
+          "opcache.jit=disable",
+          "-d",
+          "precision=14",
+          "-d",
+          "serialize_precision=-1",
+          "-d",
+          "display_errors=stderr",
+          "-d",
+          "display_startup_errors=1",
+          "-d",
+          "html_errors=0",
+          "-d",
+          "log_errors=0",
+          "-d",
+          "error_reporting=30719",
+          "-d",
+          "date.timezone=UTC",
+          "-d",
+          "output_buffering=0",
+          "-d",
+          "implicit_flush=1",
+          "-d",
+          "zend.assertions=1",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/leading-newline.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 255,
+        "stdout_base64": "",
+        "stderr_base64": "RmF0YWwgZXJyb3I6ICdicmVhaycgbm90IGluIHRoZSAnbG9vcCcgb3IgJ3N3aXRjaCcgY29udGV4dCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvdG1wM21ubHExbzkvbGVhZGluZy1uZXdsaW5lLnBocCBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+      },
+      "semantic": {
+        "command": [
+          "/home/user/workspace/php-spec/bin/php-semantics",
+          "/home/user/workspace/php-spec/.tools/tmp3mnlq1o9/leading-newline.php"
+        ],
+        "cwd": "/home/user/workspace/php-spec",
+        "status": 0,
+        "stdout_base64": "eyJzdGF0dXMiOiAic3RhdGljX3JlamVjdGlvbiIsICJzdGRvdXQiOiAiIiwgInN0ZGVyciI6ICJSbUYwWVd3Z1pYSnliM0k2SUNkaWNtVmhheWNnYm05MElHbHVJSFJvWlNBbmJHOXZjQ2NnYjNJZ0ozTjNhWFJqYUNjZ1kyOXVkR1Y0ZENCcGJpQXZhRzl0WlM5MWMyVnlMM2R2Y210emNHRmpaUzl3YUhBdGMzQmxZeTh1ZEc5dmJITXZkRzF3TTIxdWJIRXhiemt2YkdWaFpHbHVaeTF1Wlhkc2FXNWxMbkJvY0NCdmJpQnNhVzVsSURJS1UzUmhZMnNnZEhKaFkyVTZDaU13SUh0dFlXbHVmUW89IiwgImV4aXRfc3RhdHVzIjogMjU1LCAiZGlhZ25vc3RpYyI6IHsiY2xhc3MiOiAiQ29tcGlsZUVycm9yIiwgIm1lc3NhZ2UiOiAiSjJKeVpXRnJKeUJ1YjNRZ2FXNGdkR2hsSUNkc2IyOXdKeUJ2Y2lBbmMzZHBkR05vSnlCamIyNTBaWGgwIiwgImxpbmUiOiAyfSwgInJlYXNvbiI6IG51bGwsICJldmVudHMiOiBbXSwgImZyb250ZW5kIjogImFjY2VwdGVkIiwgImNoZWNrZWQiOiAicHJvZ3JhbSJ9Cg==",
+        "stderr_base64": ""
+      },
+      "comparison": "pass"
+    }
+  ],
+  "counts": {
+    "disagreements": 6,
+    "controls": 2
+  }
+}
