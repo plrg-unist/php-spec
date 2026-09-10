@@ -111,7 +111,10 @@ need the retained native notice behavior.
 
 `$x =& g()` for a value-returning call is a necessary source/compiler ACQUIRE
 prerequisite: native emits `Only variables should be assigned by reference` and
-binds a fresh cell. This differs from parameter-send and return-reference notices.
+performs an ordinary target write, preserving existing target aliases. Accepted926
+originals confirm this for literal, computed-variable and dimension targets.
+`ZEND_MAKE_REF` leaves an ordinary call value unwrapped: its VAR branch wraps only
+an indirect location. This differs from parameter-send and return-reference notices.
 Admit only actual reference-source contexts; do not make arbitrary calls writable.
 Preserve current call-DIM base lowering and temporary-array/reference-argument
 behavior. Actual reference-return results retain their cell through ACQUIRE;

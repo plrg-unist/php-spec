@@ -126,8 +126,9 @@ exact originals, subprocesses, failures and scope.
 
 The [runtime successor handoff](docs/semantics/RUNTIME-REFERENCE-RETURNS-HANDOFF.md)
 records exact typed inputs, interfaces, gates and the next reference-return
-preparation. Compiler6 and review10 retain continuity; root orchestrates the fresh
-runtime implementer. Stage owned files, commit reviewed increments and never push.
+preparation. Runtime7 now owns the call-reference acquisition prerequisite and
+reference returns; compiler6 and review10 retain continuity under root coordination.
+Accepted926 originals precede new admission. Stage owned files, commit reviewed increments and never push.
 Coordinate canonical builds, binaries and the index. Preserve earlier identities
 and original failures instead of rebuilding historical counts.
 
