@@ -1,0 +1,227 @@
+{
+  "decision": "accept bounded parameter frontend phase prerequisite",
+  "code_commit": "c00a5c38",
+  "compiler_evidence_commit": "4290295e",
+  "fingerprint": {
+    "sha256": "440f3966e3d9a1ec7155a7c51015aa125ad307db25ebe26dfc6004182811b384",
+    "files": 951,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "baseline": {
+    "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+    "files": 951,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "canonical_bytes_modes_exact": true,
+  "watched_delta": [
+    "tests/phase-discrepancies.json",
+    "tests/semantics/signatures.py",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php"
+  ],
+  "implementation_paths": {
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php": {
+      "sha256": "6a3db744348694f2dea281180308b804eb475745e62aea50809d3fe03a67fa95",
+      "mode": 436
+    },
+    "tests/phase-discrepancies.json": {
+      "sha256": "36e509db131c0cc8cc6ea565151eed14ffccbca1a3fffe638903d2ec092db444",
+      "mode": 436
+    },
+    "tests/semantics/signatures.py": {
+      "sha256": "a9a4da56bfacd63d4d773fef40a6967bcca1b91fa41bb0644c72661310a1652d",
+      "mode": 436
+    },
+    "patches/php-parser-printer.patch": {
+      "sha256": "33d63e87981b6cd50c728ce3880fe72ec822d09dc9a28f4632c5212f7324f0ac",
+      "mode": 436
+    },
+    "patches/README.md": {
+      "sha256": "fb6461cbfbb952df5b466b46ae6a880d6ebc5055b1e6fafc570191bbe7ab13aa",
+      "mode": 436
+    },
+    "vendor/php-parser.UPSTREAM.md": {
+      "sha256": "8c0292aac9f96bec2b5b76a3e26dc7aa45acc23c8b38bd4e3dc81432037cc3d6",
+      "mode": 436
+    }
+  },
+  "scope": "Remove only two eager ParserAbstract.checkParam restrictions. Existing17/16/90 source compiler supplies native named-function parameter diagnostic priority. Unchanged parser pin/generated parser/checked transport/semantic modules. No positional variadic runtime admission or family closure.",
+  "independent_gates": {
+    "retained_source_profiles": 14,
+    "native_agreements": 13,
+    "pending_valid_variadic": 1,
+    "public_cli_controls": 8,
+    "cli_native_agreements": 7,
+    "cli_pending_valid_variadic": 1,
+    "exact_retired_PHPT_sources": 2,
+    "PHPT_native_parser_acceptance": 2,
+    "PHPT_lint_static_rejections": 2,
+    "PHPT_original_frontend_failures": 2,
+    "PHPT_repaired_CLI_native_static_agreements": 2,
+    "zero_fuzz_handwritten_patch_outputs": 5,
+    "raw": {
+      "decoded_responses": 36,
+      "clean_worker_closures": 4
+    },
+    "scope": "Overlapping source/CLI/PHPT controls; retained originals remain bound to original filenames/request/provider observations. Unsupported valid variadic and original frontend failures are never agreements."
+  },
+  "author_gates": {
+    "native_originals": 14,
+    "native_agreements": 13,
+    "explicit_variadic_boundary": 1,
+    "elaborated_roundtrips": 14,
+    "public_cli": 14,
+    "signature_comparisons": 359,
+    "descriptor_checks": 28,
+    "return_reference_checks": 174,
+    "reproduced_handwritten_files": 5,
+    "generated_parser_reproduction": "exact"
+  },
+  "compiler_archive_audit": {
+    "result": "pass",
+    "archive": "0f6bea05dc2c68821023c10d18670f5013a05825754a5547d1720b4cba6fd5e8",
+    "paths": 8251,
+    "tool_bindings": 10,
+    "decoded_responses": 1280,
+    "clean_worker_closures": 8,
+    "implementation_paths": {
+      "vendor/php-parser/lib/PhpParser/ParserAbstract.php": {
+        "sha256": "6a3db744348694f2dea281180308b804eb475745e62aea50809d3fe03a67fa95",
+        "mode": 436
+      },
+      "tests/phase-discrepancies.json": {
+        "sha256": "36e509db131c0cc8cc6ea565151eed14ffccbca1a3fffe638903d2ec092db444",
+        "mode": 436
+      },
+      "tests/semantics/signatures.py": {
+        "sha256": "a9a4da56bfacd63d4d773fef40a6967bcca1b91fa41bb0644c72661310a1652d",
+        "mode": 436
+      },
+      "patches/php-parser-printer.patch": {
+        "sha256": "33d63e87981b6cd50c728ce3880fe72ec822d09dc9a28f4632c5212f7324f0ac",
+        "mode": 436
+      },
+      "patches/README.md": {
+        "sha256": "fb6461cbfbb952df5b466b46ae6a880d6ebc5055b1e6fafc570191bbe7ab13aa",
+        "mode": 436
+      },
+      "vendor/php-parser.UPSTREAM.md": {
+        "sha256": "8c0292aac9f96bec2b5b76a3e26dc7aa45acc23c8b38bd4e3dc81432037cc3d6",
+        "mode": 436
+      }
+    },
+    "baseline": {
+      "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "candidate": {
+      "sha256": "440f3966e3d9a1ec7155a7c51015aa125ad307db25ebe26dfc6004182811b384",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    }
+  },
+  "review_archive": {
+    "archive": "coverage/semantics/parameter-phase-review-originals.tar.xz",
+    "sha256": "6898c6d5fcbe4206ea7597e6fbe4d8129e0b6123d7beb44f4748e83e3e7c374c",
+    "paths": 366,
+    "bytes": 293552,
+    "tools": {
+      "raw/review10-parameter-phase-replay-it328f78/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-parameter-phase-replay-it328f78/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-parameter-phase-replay-it328f78/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-parameter-phase-replay-it328f78/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-parameter-phase-replay-it328f78/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      }
+    },
+    "decoded_responses": 36,
+    "clean_worker_closures": 4,
+    "scope": "Independent exact951 candidate copy and five-file zero-fuzz reproduction; fourteen retained source replays and eight CLI controls; two exact retired PHPT FILE sources with fresh native/parser/lint and baseline/repaired CLI observations. Full raw packets and closures, exact producers/audits, original source/provider contexts. Tools bound by hash/mode; source closures depend on compiler archive0f6bea05. No runtime implementation change or variadic activation."
+  },
+  "retired_exceptions": [
+    "vendor/php-src/Zend/tests/return_types/void_parameter.phpt",
+    "vendor/php-src/Zend/tests/variadic/no_default_error.phpt"
+  ],
+  "reviewed_invariants": [
+    "Only checkParam variadic-default and void checks removed; API and callers retained.",
+    "Name/redefinition/nonfinal variadic/default/type priority remains existing source compiler behavior; mixed same/later-slot and multiline native diagnostics agree.",
+    "Unchanged upstream PHP-Parser v5.8.0 distribution plus complete handwritten zero-fuzz patch reproduces all five patched files exactly; upstream source/pins are unchanged.",
+    "Source transport is global; bounded static agreements concern admitted named functions, not pending class/closure consumers.",
+    "Snapshot tool copies are nonexecuted0664; actual tool hashes and executable modes remain bound by full input manifests and compiler archive."
+  ],
+  "required_next": [
+    "Pair102/103 positional variadic source/receive semantics with sequential typed tail coercion, reference/COW ownership, empty local-cell independence and source-bound task guards.",
+    "Named/default holes and unpacked numeric/string argument ordering, closures/dynamic callables, remaining full-core obligations.",
+    "Full callable source integration and final all-source/full-syntax/fresh network-isolated offline validation."
+  ],
+  "inventory": "169 constructors/306 obligations,131 partial/174 pending/one oracle validated unchanged."
+}
