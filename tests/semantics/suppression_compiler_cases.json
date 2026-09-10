@@ -1,0 +1,19 @@
+{
+  "suppress-variable-used-and-restored": "<?php echo @$missing;echo $other,\"DONE\";",
+  "suppress-computed-variable": "<?php $n=\"missing\";echo @$$n;echo \"DONE\";",
+  "suppress-static-array-hole": "<?php @([,1]);",
+  "suppress-static-write-priority": "<?php $x=@($GLOBALS=1);",
+  "suppress-variable-reference-send": "<?php function f(&$x){$x=2;}$a=1;f(@$a);echo $a;",
+  "suppress-call-reference-send": "<?php $a=1;function &g(){global $a;return $a;}function f(&$x){$x=2;}f(@g());echo $a;",
+  "suppress-reference-return-variable": "<?php $a=1;function &f(){global $a;return @$a;}$r=&f();$r=2;echo $a,$r;",
+  "suppress-reference-return-call": "<?php $a=1;function &g(){global $a;return $a;}function &f(){return @g();}$r=&f();$r=2;echo $a,$r;",
+  "suppress-constant-default": "<?php function f($x=@1){}",
+  "suppress-multiline-call-parent": "<?php\nfunction g($x){return [];}\nfunction f():int {\n return @g(\n 1\n );\n}\nf();",
+  "silence-constant-dead-write": "<?php @false && ($GLOBALS=1);echo \"DONE\";",
+  "silence-constant-dead-hole": "<?php @true || [,1];echo \"DONE\";",
+  "silence-constant-folded-list-effects": "<?php echo (@([$x]=[2]))[0]+3,$x,$after,\"DONE\";",
+  "silence-nested-constant-effects": "<?php echo @(@([$x]=[2])),$x,$after,\"DONE\";",
+  "silence-constant-parent-warning": "<?php echo (@NAN).\"x\";echo $after,\"DONE\";",
+  "silence-folded-append-once": "<?php $a=[];echo (@([$a[]]=[2]))[0]+3,$a[0],$a[1]??\"N\",$after,\"DONE\";",
+  "silence-nested-append-once": "<?php $a=[];echo (@(@([$a[]]=[2])))[0]+3,$a[0],$a[1]??\"N\",$after,\"DONE\";"
+}

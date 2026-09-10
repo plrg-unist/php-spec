@@ -43,7 +43,7 @@ def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError"
 
 dec $leading_warning(pstate, bool, int) : pstate
 def $leading_warning(S, false, z) = S
-def $leading_warning(S, true, z) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" ([65,32,110,111,110,45,110,117,109,101,114,105,99,32,118,97,108,117,101,32,101,110,99,111,117,110,116,101,114,101,100]) z]]
+def $leading_warning(S, true, z) = $report_event(S, DIAGNOSTIC "Warning" ([65,32,110,111,110,45,110,117,109,101,114,105,99,32,118,97,108,117,101,32,101,110,99,111,117,110,116,101,114,101,100]) z, 2)
   -- if $(z > 0)
 def $leading_warning(S, true, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
   -- if $(z <= 0)
@@ -111,7 +111,7 @@ def $unary_apply(S, NEGATIVE, pvalue, z) = S_warned[.RESULT = KNOWN $number_valu
 dec $stringify(pstate, pvalue, int) : pstate
 def $stringify(S, PFLOAT n, z) = S[.RESULT = KNOWN (PSTRING n_out*)]
   -- if (n_out*, false) = $number_text(NFLOAT n, 14)
-def $stringify(S, PFLOAT n, z) = S[.RESULT = KNOWN (PSTRING n_out*)][.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" ([117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,115,116,114,105,110,103]) z]]
+def $stringify(S, PFLOAT n, z) = $report_event(S[.RESULT = KNOWN (PSTRING n_out*)], DIAGNOSTIC "Warning" ([117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,115,116,114,105,110,103]) z, 2)
   -- if (n_out*, true) = $number_text(NFLOAT n, 14)
   -- if $(z > 0)
 def $stringify(S, PFLOAT n, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]

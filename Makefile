@@ -116,6 +116,11 @@ test-semantics: build
 	python3 tests/semantics/reference_return_demand.py
 	python3 tests/semantics/reference_return_protocol.py
 	python3 tests/semantics/reference_return_state.py
+	python3 tests/semantics/suppression_compiler.py
+	python3 tests/semantics/suppression.py
+	python3 tests/semantics/suppression_reporting.py
+	python3 tests/semantics/error_suppression_protocol.py
+	python3 tests/semantics/suppression_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

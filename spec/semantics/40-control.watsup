@@ -283,6 +283,7 @@ rule PhpStep/unset-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 
+dec $silence_unwind(pstate) : pstate
 dec $drive_steps(pstate, nat) : pstate
 dec $drive_checked(pstate, nat) : pstate
 def $drive_checked(S, n) = $drive_steps(S, n) -- if S.COMPLETION = NORMAL
@@ -295,7 +296,7 @@ def $drive_steps(S, n) = S
   -- if S.COMPLETION = NORMAL
 def $drive_steps(S, n) = S
   -- if S.COMPLETION = BUDGET
-def $drive_steps(S, n) = $prune_allocations($release_temporaries(S))
+def $drive_steps(S, n) = $prune_allocations($release_temporaries($silence_unwind(S)))
   -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
   -- if S.FRAMES = eps
 def $drive_steps(S, n) = $drive_steps($start_error_unwind(S), n)
@@ -311,7 +312,7 @@ def $drive_steps(S, n) = $drive_steps($prune_allocations(S_next), n_next)
   -- if $(n - 1) = n_next
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {DEFAULTCACHE eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORORIGIN eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, FRAMES eps, CURRENT eps, REQUEST eps, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
+def $initial_state(pcompletion) = {REPORTING 30719, SILENCES eps, DEFAULTCACHE eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORORIGIN eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, FRAMES eps, CURRENT eps, REQUEST eps, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
 dec $source_filename(nat*) : bool
 def $source_filename(n*) = (n* =/= eps /\ ~(0 <- n*))
 dec $php_run(program, nat, text) : pstate

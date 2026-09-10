@@ -65,12 +65,12 @@ def main():
     assert result.returncode == 0 and result.stdout == b'true\n' and not result.stderr, result
     assert before == scope.q.t.syntax_validation.implementation_fingerprint()
     report = {'result': 'pass', 'fingerprint': before, 'inputs': inputs, 'records': records,
-              'assertions': len(checks), 'runtime_boundaries': [r['id'] for r in records if r['runtime_boundary']],
-              'scope': 'Source-demand projection only; no ordinary runtime agreement asserted for opcode instrumentation.',
+              'assertions': len(checks), 'historical_runtime_boundaries': [r['id'] for r in records if r['runtime_boundary']],
+              'scope': 'Source-demand projection only; two historical boundary labels describe original933 capture. Current runtime activation is tested separately.',
               'raw': str(out)}
     (out / 'report.json').write_text(json.dumps(report, indent=2))
     (ROOT / 'coverage/semantics/reference-return-demand.json').write_text(json.dumps(report, indent=2))
-    print(len(records), 'opcode-derived source projections;', report['runtime_boundaries'], flush=True)
+    print(len(records), 'opcode-derived source projections;', report['historical_runtime_boundaries'], flush=True)
 
 
 if __name__ == '__main__':

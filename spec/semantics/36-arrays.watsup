@@ -46,8 +46,9 @@ dec $allocate_array(pstate, parray) : pstate
 def $allocate_array(S, parray) = S[.ARRAYS = S.ARRAYS ++ [parray]][.RESULT = KNOWN (PARRAY n)][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n]]
   -- if n = |S.ARRAYS|
 
+dec $diagnostic_level(text) : int
 dec $diagnostic(pstate, text, nat*, int) : pstate
-def $diagnostic(S, text, n_message*, z) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC text n_message* z]]
+def $diagnostic(S, text, n_message*, z) = $report_event(S, DIAGNOSTIC text n_message* z, $diagnostic_level(text))
   -- if $(z > 0)
 def $diagnostic(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
   -- if $(z <= 0)

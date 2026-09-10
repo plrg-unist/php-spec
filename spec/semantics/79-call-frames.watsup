@@ -17,20 +17,20 @@ def $frames_roots(eps) = eps
 def $frames_roots(pframe :: pframe_tail*) = $table_roots(pframe.LOCALS) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD ++ $call_context_roots(pframe.CONTEXT) ++ $frames_roots(pframe_tail*)
 
 dec $save_frame(pstate) : pstate
-def $save_frame(S) = $set_active_table(S[.GLOBALTABLE = ($active_table(S))][.FRAMES = [{LOCALS eps, TODO S.TODO, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT}]][.TODO = eps][.HELD = eps][.CURRENT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $empty_table())
+def $save_frame(S) = $set_active_table(S[.GLOBALTABLE = ($active_table(S))][.FRAMES = [{SILENCES S.SILENCES, LOCALS eps, TODO S.TODO, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT}]][.TODO = eps][.HELD = eps][.CURRENT = eps][.SILENCES = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $empty_table())
   -- if S.GLOBALTABLE = eps
   -- if S.FRAMES = eps
   -- if S.CURRENT = eps
-def $save_frame(S) = $set_active_table(S[.FRAMES = {LOCALS ($active_table(S)), TODO S.TODO, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT} :: S.FRAMES][.TODO = eps][.HELD = eps][.CURRENT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $empty_table())
+def $save_frame(S) = $set_active_table(S[.FRAMES = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO S.TODO, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT} :: S.FRAMES][.TODO = eps][.HELD = eps][.CURRENT = eps][.SILENCES = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $empty_table())
   -- if S.GLOBALTABLE = (psymboltable)
 
 ;; RESULT already owns the returned operand when the callee table is released.
 dec $restore_frame(pstate) : pstate
-def $restore_frame(S) = $set_active_table(S[.GLOBALTABLE = eps][.FRAMES = eps][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
+def $restore_frame(S) = $set_active_table(S[.GLOBALTABLE = eps][.FRAMES = eps][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if S.FRAMES = [pframe]
   -- if pframe.LOCALS = eps
   -- if S.GLOBALTABLE = (psymboltable)
-def $restore_frame(S) = $set_active_table(S[.FRAMES = pframe_tail*][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
+def $restore_frame(S) = $set_active_table(S[.FRAMES = pframe_tail*][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.LOCALS = (psymboltable)
 
