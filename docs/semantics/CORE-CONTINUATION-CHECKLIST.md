@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:130 partial,175 pending,1 validated
+has169 constructors and306 obligations:131 partial,174 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -50,11 +50,16 @@ claim that the inventory dependency graph is complete.
   binds12 native,26 protocol/378,4 states/1282 and2 exact933 bridges; author31,
   compiler56+2/49, demand19/38,2 states/777, typed38/acquisition17 and CLI8 pass.
   Semantic7951 and regressiondd8 retain a one-state-test bridge to3c.
-- [ ] Complete source suppression next; read the
-  [runtime handoff](RUNTIME-SUPPRESSION-HANDOFF.md). Two suppression demand/phase
-  controls above remain explicit boundaries, not execution agreements.
-  Class/object/callable/iterable types, typed-property reference constraints and
+- [x] Source suppression through100/101 is accepted at29baca42 on951/c6501bd8,
+  code14003331. [Review](../../coverage/semantics/error-suppression-review.json)
+  binds4 native,23 protocol/489,4 states/1312 and2 exact942 old-field bridges;
+  author26,37 reporter checks,17 compiler/131,19 demand/38,2 states/779,
+  reference-return31 and CLI8 pass. Semanticff8d retains a one-print bridge.
+- [ ] General reporting configuration, handlers and configured fatal display;
+  class/object/callable/iterable types, typed-property reference constraints and
   mixed-unit strictness source integration remain required dependent work.
+- [ ] Resolve eager variadic-default parser rejection through the reviewed source
+  compiler, then positional variadic receives; see the [handoff](RUNTIME-VARIADIC-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
@@ -64,7 +69,7 @@ claim that the inventory dependency graph is complete.
 | Lane | Required work and dependencies | Evidence/exit route |
 | --- | --- | --- |
 | Existing scalar/container closure | Remaining numeric/byte/interpolation/string-increment, source encoding/preamble/halt, access/COW/typed-reference and object-coercion branches remain open. Preserve reviewed scalar/array behavior while completing dependent objects/types. | [Array omissions](../../docs/semantics/ARRAY-OMISSIONS.md), [numerics](../../docs/semantics/NUMERICS.md), inventory phase0b–2b |
-| Control and diagnostics | Switch/match, labels/goto, throw/catch/finally, suppression/handler stacks and exit remain explicit. Throwable objects and callbacks depend on minimal objects plus calls; nested cleanup must use shared unwinding. | Inventory3a/diagnostics; [CORE execution](../../docs/semantics/CORE.md) |
+| Control and diagnostics | Switch/match, labels/goto, throw/catch/finally, reporting/handler stacks and exit remain explicit. Throwable objects and callbacks depend on minimal objects plus calls; nested cleanup must use shared unwinding. | Inventory3a/diagnostics; [CORE execution](../../docs/semantics/CORE.md) |
 | Objects/declarations | Ordered member compilation/linking/availability, inheritance/interfaces/traits/visibility, identity/creation/clone, method invocation and late-static scope; then typed/readonly/asymmetric/hooked/magic properties, enums, attributes and constants. | [Linking handoff](../../docs/semantics/LINKING-HANDOFF.md); source activation and alias/type-source/reentry gates, not header helpers alone |
 | Required intrinsics/protocols | Implement the reviewed CORE catalog through ordinary calls: Throwable/Closure, iteration/ArrayAccess/Stringable, exit/clone, assertions, introspection, registration APIs and builtin attribute behavior. Registered-name780/arginfo metadata is not builtin execution. | [Exact catalog](../../docs/semantics/CORE.md); no ordinary-library exclusion may discharge a core obligation |
 | Dynamic sources/environment | Checked eval/include/require/once, source identity/scope/failure, dynamic declarations and autoload; explicit finite shell/source services. Two later-eval request callback witnesses remain pending. | Inventory5a/environment; actual source-service→compile→execution path, no Zend evaluation fallback |

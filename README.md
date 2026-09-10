@@ -116,7 +116,10 @@ now preserves target aliases, source diagnostic lines and returned-array ownersh
 gates, exact926 state bridges and canonical CLI8.
 [Source reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md) now preserve
 caller demand, alias ownership and shared-cell type coercion; [independent review](coverage/semantics/reference-return-review.json)
-binds942 source/state/protocol gates and the one-state-test bridge. Suppression,
+binds942 source/state/protocol gates and the one-state-test bridge.
+[Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
+effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
+binds951 gates and its print-only bridge. Reporting configuration, handlers,
 remaining call protocols and full callable integration remain required.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves

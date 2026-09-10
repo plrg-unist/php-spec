@@ -1,5 +1,7 @@
 # Source suppression after reference returns
 
+Historical preparation for accepted951; use [the current variadic handoff](RUNTIME-VARIADIC-HANDOFF.md).
+
 Start from accepted **942/3c331e74**, code563fee7a, compiler46c7d848,
 author1c96b30b and [independent review9959e771](../../coverage/semantics/reference-return-review.json).
 The complete input/hash/mode manifest is retained in the publication evidence

@@ -6,41 +6,38 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Source reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md) are independently
-accepted at **9959e771** in [reference-return-review.json](coverage/semantics/reference-return-review.json).
-Canonical **942/3c331e74** binds code **563fee7a**, compiler evidence **46c7d848**
-and author evidence **1c96b30b**. Compiler98/runtime99 preserve source return
-classification, caller result demand, owning cells through frame cleanup, typed
-shared-cell coercion and value-consumer COW. Whole GLOBALS copies and ordinary
-CV versus computed/DIM verification retain their distinct behavior.
+[Source error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) is independently
+accepted at **29baca42** in [error-suppression-review.json](coverage/semantics/error-suppression-review.json).
+Canonical **951/c6501bd8** binds code **14003331**, compiler evidence **601b496d**
+and author evidence **5535cffc**. Compiler100/runtime101 preserve folded effects,
+read deferred CVs inside suppression, filter runtime nonfatal events and restore
+frame-owned masks through normal return and abrupt cleanup. The pinned C-int
+reporting field and saved masks use signed32; arbitrary valid masks and owning
+values remain legal paused-state controls.
 
-Independent gates pass12 native profiles,26 protocol controls/378 assertions,
-4 dense states/1,282 assertions and2 complete933 state bridges at seven cuts with
-no normalization. Author31 source, compiler56 exact phases plus2 suppression
-boundaries/49 projections,19 demand projections/38 assertions,2 states/777,
-typed38 and acquisition17 regressions pass. Canonical CLI8 agrees. Sets overlap;
-164 independent responses/53 clean closures and author332/12 plus4 standalone
-runner closures are audited. Suppression opcode/projection controls are not
-runtime agreements.
+Independent gates pass4 native profiles,23 protocol controls/489 assertions,
+4 dense states/1,312 assertions and2 complete942 state bridges at seven cuts,
+removing only new default reporting/empty silence fields. Author26 source,
+37 reporter checks, compiler17 phases/131 projections,19 demand/38,2 states/779,
+31 reference-return regressions and canonical CLI8 pass. Sets overlap. Independent
+90 responses/33 worker closures and author198/14 plus corrected demand38/2 are
+audited; successful standalone and retained fixture failures remain distinct.
 
-Semantic gates retain **942/7951a08f** and author regression gates **942/dd8cbc49**.
-Three author fixture preparation failures led to one corrected state-test file;
-941 other files and all942 modes remain identical to final3c. Corrected author
-dense gates and canonical CLI8 use3c. Original guard, source-line and setup failures
-remain retained rather than relabelled current.
+Semantic gates retain **951/ff8d4b9f**. Final c650 changes only a demand-report
+print key after its assertions passed;950 other files and all951 modes are exact.
+Original scope/source-line/mask counterexamples and setup failures remain retained.
+General reporting APIs, handlers and configured fatal display remain required;
+the native source profile is30719, with fatal mask4437 inside `@`.
 
-[Acquisition](docs/semantics/SOURCE-CALL-REFERENCE-ASSIGNMENT.md) remains accepted
-at36224bc3 on933/7391ccdf; [typed value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
-at e097f95e on926/599f3963 retain their semantic926/baa one-test bridge. Earlier
-strict917 and default909 checkpoints retain their linked historical reviews.
+Reference returns remain accepted at9959e771 on942/3c331e74, preserving their
+7951/dd8 one-state-test bridges. Acquisition933, typed926, strict917 and defaults909
+retain their historical linked reviews and source identities.
 
-Next is source error suppression (`@`), proposed compiler100/runtime101; use the
-[suppression handoff](docs/semantics/RUNTIME-SUPPRESSION-HANDOFF.md) and frozen
-f38c33f7 preparation. Runtime7/review10 retain continuity; the fresh compiler
-successor reads `.tools/compiler6-suppression/STARTUP.md`. Start from all942 final
-inputs. Mask emission, eager CV fetch, saved scopes and abrupt cleanup require
-paired source/state review before activation; no suppression implementation is
-accepted yet.
+Next is positional variadic receive, preceded by the bounded PHP-Parser
+variadic-default source-pipeline correction; read the
+[successor handoff](docs/semantics/RUNTIME-VARIADIC-HANDOFF.md).
+Compiler7/runtime7/review10 continue under root coordination. Frozen56f4d181
+preparation and its later STARTUP proposal are not implementation acceptance.
 
 The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains named,
 unpacked/variadic and other callable protocols, objects, exceptions, dynamic
@@ -87,15 +84,16 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 0a–b: contracts, inventory, checked runner, source harness | Complete for bounded bootstrap |
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
-| 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, first returns and fatal frame cleanup reviewed; exceptions pending |
+| 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, returns, suppression and fatal frame cleanup reviewed; exceptions/handlers pending |
 | 3b: calls, closures and static checks | Partial; positional value/reference parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns reviewed; remaining call protocols pending |
 | 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records130 partial,175 pending and one validated
-obligation; accepted constants, defaults, lexical strictness and builtin parameter/value-return types and source reference returns are reflected in partial rows.
+The runtime inventory now records131 partial,174 pending and one validated
+obligation. Accepted constants, defaults, strictness, builtin value types,
+reference returns and suppression remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 
@@ -128,13 +126,12 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [runtime successor handoff](docs/semantics/RUNTIME-REFERENCE-RETURNS-HANDOFF.md)
-records exact typed inputs, interfaces, gates and the next reference-return
-preparation. Runtime7 now owns the call-reference acquisition prerequisite and
-reference returns; compiler6 and review10 retain continuity under root coordination.
-Accepted926 originals precede new admission. Stage owned files, commit reviewed increments and never push.
-Coordinate canonical builds, binaries and the index. Preserve earlier identities
-and original failures instead of rebuilding historical counts.
+The [current successor handoff](docs/semantics/RUNTIME-VARIADIC-HANDOFF.md)
+binds951 inputs and the next source-pipeline/variadic prerequisites. Compiler7,
+runtime7 and independent review10 coordinate private roots, exact frozen gates,
+canonical builds and the index under root. Preserve baseline originals before
+admission, stage only reviewed files, commit small increments and never push.
+Earlier identities and failures remain historical rather than rebuilt counts.
 
 Each coherent increment needs native/source originals, focused phase/line checks,
 appropriate state/ownership/resumption gates and independent review. Run early
