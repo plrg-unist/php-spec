@@ -110,6 +110,10 @@ now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
 binds926 source/state/protocol gates and the one-test correction bridge. Reference
 returns and remaining callable/type protocols stay pending.
+[Call-result reference assignment](docs/semantics/SOURCE-CALL-REFERENCE-ASSIGNMENT.md)
+now preserves target aliases, source diagnostic lines and returned-array ownership;
+[its review](coverage/semantics/call-reference-review.json) binds933 source/state/protocol
+gates, exact926 state bridges and canonical CLI8.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

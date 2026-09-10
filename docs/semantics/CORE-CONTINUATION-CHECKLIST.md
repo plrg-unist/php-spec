@@ -40,7 +40,12 @@ claim that the inventory dependency graph is complete.
   plus3 dependency controls,5 states/1357,19 retained protocol/217 and2 complete
   untyped917 bridges. Author38/3 cache projections,4 states/1096, compiler56+8/38,
   corrected fresh19/218 and CLI8 pass; semantic926/baa identities remain distinct.
-- [ ] Complete reference returns and call-reference acquisition next; read the
+- [x] Direct-call reference assignment is accepted at36224bc3 on933/7391ccdf,
+  codeaf228143. [Review](../../coverage/semantics/call-reference-review.json)
+  binds7 native+4 pending controls,13 protocol/227,3 states/819 and2 exact926
+  bridges; author17/2 states553, compiler26+3/29, typed38/adjacent13 and CLI8 pass.
+  Shared call/enclosing emission lines and finite source/result guards are reviewed.
+- [ ] Complete source reference returns next through compiler98/runtime99; read the
   [runtime handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md). Preserve source
   classifications, alias identity, current detached value returns and typed caches.
   Class/object/callable/iterable types, typed-property reference constraints and

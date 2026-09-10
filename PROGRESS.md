@@ -6,37 +6,36 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
-are independently accepted at **e097f95e** in [typed-function-review.json](coverage/semantics/typed-function-review.json).
-Canonical **926/599f3963** contains code **0ed17419**, compiler evidence
-**2ea12015** and author evidence **dabc28d9**. Compiler 94/runtime 95 connect
-builtin scalar/container singleton and union types, sequential receives, stored
-float defaults, uncoerced deferred caches, reference-parameter coercion and
-detached value returns. Source-derived return locations and saved caller task
-contexts are checked. Class/object/callable types and reference returns remain open.
+[Call results in reference assignments](docs/semantics/SOURCE-CALL-REFERENCE-ASSIGNMENT.md)
+are independently accepted at **36224bc3** in [call-reference-review.json](coverage/semantics/call-reference-review.json).
+Canonical **933/7391ccdf** binds code **af228143**, compiler evidence **ca6b7044**
+and author evidence **971c9550**. Compiler96/runtime97 preserve existing target
+aliases when value calls emit the assignment Notice and perform ordinary writes.
+Source guards bind acquisition/result shape and assignment locations. A shared
+compiler correction separates call instruction lines from enclosing post-argument
+lines, fixing a retained typed-return line4/5 disagreement.
 
-Independent gates pass 18 source profiles (15 native agreements, three explicit
-mixed-strictness ticks dependencies), five dense states/1,357 assertions,
-19 retained-context protocol controls/217 assertions and two complete untyped
-917 state bridges at seven cuts. Author 38 source profiles plus three cache
-projections/12 assertions, four states/1,096 assertions and compiler 56 exact
-phases plus eight boundaries/38 projections pass. Sets overlap and are not added.
+Independent gates pass7 native profiles plus4 pending reference-return controls,
+13 protocol controls/227 assertions,3 dense states/819 and2 complete926 state
+bridges at seven cuts with no normalization. Author17 source, compiler26 exact
+phases plus3 boundaries/29 projections, protocol13/227,2 states/553, typed38 and
+adjacent13 regressions pass. Canonical CLI8 agrees. Sets overlap. Raw audits bind
+142 independent responses/43 clean closures and separate author206/14 plus16
+standalone runner closures. Historical initial compiler and runtime snapshots
+retain their own identities; all final gates bind933.
 
-Those semantic gates retain **926/baa85f57**. A missing standalone test output
-helper was corrected in one file: all 925 other bytes and all 926 modes remain
-identical. The corrected fresh 19-control protocol passes 218 assertions on599,
-including arbitrary return output9911; canonical CLI8 passes. Raw audits cover
-202 independent responses/42 clean closures and separate author234/8, with23
-successful author state/protocol runner closures. Original failures remain retained.
+[Typed parameters/value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md) remain
+accepted at e097f95e on926/599f3963, with the exact semantic926/baa85f57 one-test
+bridge retained. [Strict declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md)
+remain accepted at85a16bae on917/309b046c and [untyped defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md)
+atc7cb1b44 on909/e25eb2b9. Linked reviews preserve their historical counts.
 
-[Strict declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) remain accepted
-at85a16bae on917/309b046c; [untyped defaults](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md)
-atc7cb1b44 on909/e25eb2b9. Their exact historical gates remain in linked reviews.
-The next bounded increment is reference returns and required call-reference
-acquisition; use the [runtime handoff](docs/semantics/RUNTIME-REFERENCE-RETURNS-HANDOFF.md)
-and its pinned13b3 preparation. Replay the retained917 originals on accepted926
-before new admission. Root orchestrates, compiler6/review10 retain continuity,
-and a fresh runtime implementer starts from all926 canonical inputs.
+The next bounded increment is source reference returns, compiler98/runtime99;
+use the [runtime handoff](docs/semantics/RUNTIME-REFERENCE-RETURNS-HANDOFF.md).
+Compiler6/runtime7/review10 continue from all933 canonical inputs. Retained13b3
+originals have exact926 replays; new933 demand observations distinguish unused
+quiet CV/DIM returns from emitted typed verification and actual caller consumers.
+No reference-return source admission or full-family closure is claimed yet.
 
 The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains named,
 unpacked/variadic and other callable protocols, objects, exceptions, dynamic
@@ -84,7 +83,7 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, first returns and fatal frame cleanup reviewed; exceptions pending |
-| 3b: calls, closures and static checks | Partial; positional value/reference parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference returns and remaining call protocols pending |
+| 3b: calls, closures and static checks | Partial; positional value/reference parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; call-result reference assignment reviewed; source reference returns and remaining call protocols pending |
 | 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |

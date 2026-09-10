@@ -1,33 +1,23 @@
-# Runtime successor after typed value returns
+# Source reference returns after call-result acquisition
 
-This handoff starts after the typed checkpoint is independently accepted. The
-next bounded increment is reference returns and the necessary call-reference
-acquisition consumer. It does not close calls or PHP core. Compiler6 and review10
-retain continuity; a fresh runtime implementer should use their source evidence.
-No next compiler/runtime source admission is present yet.
+Compiler6/runtime7/review10 continue with compiler98/runtime99. The next bounded
+increment connects source reference returns and caller result demand. Calls and
+PHP core remain incomplete.
 
 ## Exact starting point
 
-Paired code `0ed17419`, compiler evidence `2ea12015`, author `dabc28d9` and
-[independent review e097f95e](../../coverage/semantics/typed-function-review.json)
-bind canonical **926 inputs**, SHA256
-`599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7`.
-The full path/hash/mode manifest is retained in the author publication archive and
-`.tools/runtime6-typed-calls/final-inputs.json`. Start a new private root from all
-926 canonical files, including pre-existing helpers, binaries and comparison
-archives; do not copy a historical compiler root wholesale.
+Canonical **933/7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910**
+binds codeaf228143, compiler evidenceca6b7044, author971c9550 and
+[independent acceptance36224bc3](../../coverage/semantics/call-reference-review.json).
+Start from all933 files and modes in the retained publication manifest or
+`.tools/runtime7-acquire-candidate/final-inputs.json`; do not copy an old compiler
+root wholesale. All acquisition final gates use933. Typed semantic gates retain
+926/baa85f57 and their one-test bridge to926/599f3963.
 
-The author source/compiler/state gates and independent semantic gates tested
-926/`baa85f57`; only the maintained protocol output helper changed afterward.
-`gate-input-bridge.json` proves 925 unchanged files, equal path sets/modes, and
-exactly one test-file change to final926/`599f3963`. The corrected fresh protocol
-and canonical CLI8 tested final599. Preserve these identities rather than
-relabeling the earlier gates.
-
-Pinned PHP8.5.10: `vendor/php-src` commit
-`34308a6666b2d489c509541ea9befea9e2b42348`; `.tools/php/bin/php` is the comparison
-oracle, never a semantic evaluator. The typed evidence binds 17 pinned source
-inputs, including `Zend/zend_exceptions.c` for uncaught display formatting.
+Pinned PHP8.5.10 CLI NTS64: `vendor/php-src` commit
+`34308a6666b2d489c509541ea9befea9e2b42348`. The native binary is only the
+comparison oracle. Use the retained full primitive requests, raw packets and
+process closures; tool failure and Unsupported are never agreement.
 
 ## Current runtime interfaces
 
@@ -81,51 +71,74 @@ adjacent public resumes and selected full suffixes, including abrupt conversion
 errors. Do not infer compiler operand/reference designation from current heap
 ownership or reconstruct arbitrary runtime history to validate metadata.
 
-Accepted typed evidence: author38 native source profiles plus3 uncoerced-cache
-projections/12 assertions; compiler56 native phases+8 explicit boundaries/38
-projections; author4 dense states/1096 assertions; corrected protocol19/218;
-independent15 native profiles+3 ticks-dependent controls,5 dense/1357, retained
-protocol19/217, and2 exact no-type917 state bridges at seven cuts. Author raw
-234 responses/8 worker closures and23 standalone runner closures were audited;
-canonical CLI8 agrees exactly. Reuse these gates selectively according to actual
-shared changes; do not repeat unchanged broad campaigns just for counts.
+## Accepted acquisition interfaces
 
-## Next source preparation and concrete work
+`96-call-reference-compiler.watsup` admits only direct named positional calls on
+reference-assignment RHS; generic writable calls and reference array call items
+remain rejected. Existing87 optimized builtin write checks still apply.
+`97-call-reference-acquisition.watsup` preserves KNOWN values through ACQUIRE_CALL.
+Assignment consumers emit their Notice and perform ordinary writes preserving
+existing CV/computed/DIM aliases; actual REFERENCE results use the binding path.
+Target fetch errors precede Notice and callee errors prevent it. Native MAKE_REF
+leaves ordinary call VAR values unwrapped. Do not replace this with fresh cells.
 
-Read `.tools/compiler6-reference-returns/PLAN.md`, `originals.json`,
-`valuecall-original.json`, and `historical-index.json`. Frozen preparation archive
-`originals.tar.xz` SHA256
-`13b3c242a1c54247df27e966bd784293447d985877e41148948ace2eeb534aca`
-contains 1397 paths: nine new reference-return sources, one value-call reference
-assignment source, and seven selected historical114 identities. Their recorded
-current-runtime baseline is917, with Unsupported results. Replay the exact
-retained native/source/request contexts on accepted926 before new admission;
-keep the old917/full primitive and separate lint/compiler evidence unchanged.
+The call instruction line differs from its enclosing post-argument emission line.
+Shared46/78 preserve both, including nested calls and typed returns;88 constant
+location restoration remains unchanged. Narrow source projection binds assignment
+root lines. The active acquisition guard follows leading AT/ORIGIN_RETURN only,
+accepts arbitrary valid KNOWN/REFERENCE results and rejects VARIABLE before step;
+saved tasks validate metadata without using unrelated active results.
 
-Agree compiler/runtime classification first. Pinned `zend_compile_return`
-compiles variable reference returns in write mode, call returns as expressions
-with RETURNS_FUNCTION, and other expressions as values. Native notices remain
-observable even when a literal or forwarded value-call result is unused; unused
-local-variable returns do not notice. Bare and implicit reference returns also
-need the retained native notice behavior.
+Final independent acquisition evidence is7 native+4 pending profiles,13/227
+protocol,3 dense/819 and2 exact complete926 state bridges at seven cuts. Author17
+source,2 dense/553, compiler26+3/29, typed38/adjacent13 and CLI8 pass. Linked review
+retains all failures, raw closure audits and historical identities. Repeat only
+focused gates justified by new shared changes; full callable integration and final
+current-source/full-syntax/fresh offline checks remain mandatory.
 
-`$x =& g()` for a value-returning call is a necessary source/compiler ACQUIRE
-prerequisite: native emits `Only variables should be assigned by reference` and
-performs an ordinary target write, preserving existing target aliases. Accepted926
-originals confirm this for literal, computed-variable and dimension targets.
-`ZEND_MAKE_REF` leaves an ordinary call value unwrapped: its VAR branch wraps only
-an indirect location. This differs from parameter-send and return-reference notices.
-Admit only actual reference-source contexts; do not make arbitrary calls writable.
-Preserve current call-DIM base lowering and temporary-array/reference-argument
-behavior. Actual reference-return results retain their cell through ACQUIRE;
-ordinary value consumers resolve them. Typed reference-return coercion must write
-the shared source alias (retained native `1133`), whereas current typed value
-returns preserve the external source strings (`211`).
+## Next source preparation
 
-Keep new source-derived task/result classifications finite, paired with source
-admission and meaningful ownership tests. Module numbers/schema for this next
-increment are not yet agreed. Reference constraints from typed properties,
-finally rechecks, generators, objects/methods, multi-unit execution, named/unpacked
-and variadic calls remain required later core work, not implemented by this
-checkpoint. No push; publish reviewed paired code, evidence and concise docs in
-separate small commits after exact canonical input equality and CLI validation.
+Read `.tools/compiler6-reference-returns/PLAN.md` and its13b3c242 archive
+(1397 paths:9 new sources,1 value-call assignment,7 historical114 contexts).
+The exact10 requests now have accepted926 replays in
+`.tools/compiler6-reference-returns/current926-originals/report.json`; old917
+identities remain historical. Source reference-return declarations are still
+Unsupported on933.
+
+The separate7 current933 originals are at
+`.tools/review10-reference-final/.tools/review10-return-demand-originals-dori_xf6/report.json`.
+Unused untyped/mixed undefined CV returns are quiet; int CV return emits an
+undefined-variable Warning before TypeError. Undefined GLOBALS DIM write fetch
+creates null quietly, then int verification errors. Unused typed reference returns
+still coerce the shared cell; value-return detachment must remain unchanged.
+Explicit mixed returns omit VERIFY, even if an unreachable implicit verifier
+occurs elsewhere in the body. Preserve position-aware evidence.
+
+Compiler demand observations are in `.tools/compiler6-reference-demand/`:
+`opcode-originals/report.json` retains19 caller contexts; `return-positions.json`
+reuses those7 reviewer sources. Direct statements, @ and discarded for clauses
+have unused slots; void casts, ternary/coalesce, final for conditions and actual
+consumers retain used slots. Diagnostic opcode profiles are separate from ordinary
+native observations. Derive demand from original source ancestry at CALLSITE,
+not arbitrary continuation/result history; stop at a real consumer.
+
+The proposed source classification is in
+`.tools/compiler6-reference-demand/INTERFACE-98.md`. New933 class controls retain
+whole `$GLOBALS` as a copied value without Notice, despite VARIABLE designation;
+`return ($x =& $y)` remains VALUE-designated and notices even with a REFERENCE
+operand. Neither should be mistaken for a lazy literal-CV alias path.
+
+Agree finite stages and source guards before admission. Literal CV verification
+must read before quiet write fetch when emitted; computed/DIM returns retain
+write-fetch timing. Successful reference conversion writes the shared location;
+only a demanded variable result is promoted to an owning reference. Preserve
+return/source classification independently of runtime operand shape: literals
+and forwarded value calls retain return Notices even when unused. Bare/implicit
+returns need their own source/ENDLINE behavior. Keep return/send/assignment
+Notices distinct, preserve cell owners through unwind, and test byvalue consumers,
+external aliases, held arrays, conversion failure and adjacent/full resumption.
+
+Typed-property reference constraints, finally rechecks, objects/methods, dynamic
+sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
+required later core work. Publish reviewed paired code, evidence and concise docs
+in small commits after exact canonical equality and CLI validation. Never push.
