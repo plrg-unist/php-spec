@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:125 partial,180 pending,1 validated
+has169 constructors and306 obligations:129 partial,176 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -33,13 +33,18 @@ claim that the inventory dependency graph is complete.
   reviewed on917/309b046c in [strict-declaration-review.json](../../coverage/semantics/strict-declaration-review.json).
   Compiler92/runtime93 preserve untyped calls/defaults/reference owners; two
   independent cache states/543 assertions and three complete weak909 state bridges
-  pass. Other declare directives and actual strict/weak type checks remain open.
-- [ ] Complete parameter/return types and reference returns.
-  Reuse signature/type/constant helpers; preserve caller/body strictness, cached
-  defaults before type verification, diagnostic order and materialization ownership.
-  The [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) retains historical strict92
-  preparation; the [current strict contract](SOURCE-STRICT-DECLARATIONS.md) supplies
-  typed integration inputs. Typed/object defaults and remaining callable forms stay open.
+  pass. Other declare directives remain open.
+- [x] Builtin scalar/container positional parameters and value returns through
+  compiler94/runtime95 are accepted at e097f95e on926/599f3963, code0ed17419.
+  [Review](../../coverage/semantics/typed-function-review.json):15 native profiles
+  plus3 dependency controls,5 states/1357,19 retained protocol/217 and2 complete
+  untyped917 bridges. Author38/3 cache projections,4 states/1096, compiler56+8/38,
+  corrected fresh19/218 and CLI8 pass; semantic926/baa identities remain distinct.
+- [ ] Complete reference returns and call-reference acquisition next; read the
+  [runtime handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md). Preserve source
+  classifications, alias identity, current detached value returns and typed caches.
+  Class/object/callable/iterable types, typed-property reference constraints and
+  mixed-unit strictness source integration remain required dependent work.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

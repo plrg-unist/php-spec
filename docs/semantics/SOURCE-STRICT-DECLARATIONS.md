@@ -1,6 +1,7 @@
 # Source strict_types declarations
 
-This prerequisite admits checked `declare(strict_types=0|1);` declarations without a body and records lexical strictness in unit and function CODE. It preserves existing untyped calls, defaults, references and ownership. Typed parameter/return admission follows separately; other declare directives and registered builtin bodies remain explicit later core dependencies.
+This prerequisite admits checked `declare(strict_types=0|1);` declarations without a body and records lexical strictness in unit and function CODE. It preserves existing untyped calls, defaults, references and ownership. Builtin scalar/container typed admission is now covered by the subsequent
+[typed contract](SOURCE-TYPED-FUNCTIONS.md); other declare directives and registered builtin bodies remain explicit later core dependencies.
 
 Compiler92 uses the existing parser-literal and lexical environment machinery. Source placement is checked against the original top-level statement list. Earlier Nop or Declare statements are allowed; nested strict declarations and block form fail. Declaration names are case-insensitive, values must be integer zero or one, and setting one is sticky across subsequent zero declarations. Diagnostics use the first declaration item's compiler line, including later-item failures. The compiler retains the original declaration in executable work.
 
@@ -25,7 +26,8 @@ pass168 assertions. Source sets overlap and are not added as distinct programs.
 The paired compiler gate retains37 exact phase/line comparisons, two other-directive
 boundaries and47 source projections. Historical910/912 preparation,913 unguarded
 unit metadata and917/15db packaging precede final917/309b and remain distinct.
-Typed parameter/return verification is the next increment; cached defaults must
+The subsequent [typed increment](SOURCE-TYPED-FUNCTIONS.md) connects builtin
+parameter/value-return verification; cached defaults must
 retain successful evaluation before type checking, caller strictness governs
 arguments and callee strictness governs returns. Full callable integration and
 final all-source, full-syntax and fresh offline gates remain required.

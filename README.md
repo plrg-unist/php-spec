@@ -104,8 +104,12 @@ ownership. [Independent acceptance](coverage/semantics/default-parameter-review.
 binds exact909 source, protocol, state and production checks.
 [Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) now
 execute with source-checked unit/function flags; [independent review](coverage/semantics/strict-declaration-review.json)
-binds917 source, protocol, cache/resume and complete weak-state bridges. Typed
-checks, reference returns and remaining callable protocols stay pending.
+binds917 source, protocol, cache/resume and complete weak-state bridges.
+[Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
+now execute builtin scalar/container checks, sequential receives and uncoerced
+default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
+binds926 source/state/protocol gates and the one-test correction bridge. Reference
+returns and remaining callable/type protocols stay pending.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
