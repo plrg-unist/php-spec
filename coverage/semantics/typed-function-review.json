@@ -1,0 +1,1421 @@
+{
+  "decision": "accept bounded typed positional parameter and value-return source/compiler/runtime increment",
+  "scope": "Compiler94/runtime95 normalized builtin scalar/container singleton/union parameters and value returns, with void/never return rules. Reference returns, object/class/callable/iterable types and remaining core protocols stay pending.",
+  "implementation": {
+    "code_commit": "0ed17419",
+    "compiler_evidence_commit": "2ea12015",
+    "author_evidence_commit": "dabc28d9",
+    "fingerprint": {
+      "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "semantic_gate_fingerprint": {
+      "sha256": "baa85f5771107fc40899fc8ecc6472234ac1dbecbea27edbff6347cd32db5d34",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "all_bytes_modes_match_canonical": true,
+    "input_manifest": "typed-function-review-publication-originals.tar.xz:canonical926/inputs.json",
+    "test_only_bridge": {
+      "result": "pass",
+      "tested": {
+        "sha256": "baa85f5771107fc40899fc8ecc6472234ac1dbecbea27edbff6347cd32db5d34",
+        "files": 926,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "canonical_candidate": {
+        "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+        "files": 926,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed_paths": [
+        "tests/semantics/typed_function_protocol.py"
+      ],
+      "unchanged_files": 925,
+      "all_modes_equal": true,
+      "scope": "One standalone protocol helper definition and assertion call correction; exact925 other bytes unchanged. Source/state/retained protocol/bridge gates remain labeled926/baa."
+    }
+  },
+  "independent_gates": {
+    "source": {
+      "profiles": 18,
+      "native_agreements": 15,
+      "pending_controls": 3,
+      "pending_ids": [
+        "mixed-weak-caller-strict-callee",
+        "mixed-strict-caller-weak-return",
+        "mixed-weak-caller-strict-return"
+      ],
+      "raw_archive_root": "raw/review10-types-replay-pm40natw",
+      "baseline917_originals": {
+        "profiles": 13,
+        "unsupported": 10,
+        "existing_native_agreements": 3
+      }
+    },
+    "states": {
+      "programs": 5,
+      "assertions": 1357,
+      "adjacent_resume_cuts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        64,
+        128
+      ],
+      "full_resume_cuts": [
+        0,
+        1,
+        7,
+        16,
+        32,
+        64,
+        128
+      ],
+      "raw_archive_root": "raw/review10-types-state-f76v7p6c"
+    },
+    "untyped_full_state_bridge": {
+      "programs": 2,
+      "cuts": [
+        0,
+        8,
+        16,
+        32,
+        64,
+        128,
+        10000
+      ],
+      "max_saved_frames": 2,
+      "projection": "Remove only source-end-checked function ENDLINE and CODEEXPR entries whose exact source node is NStmtReturn; all other state fields equal accepted917.",
+      "raw_archive_root": "raw/review10-types-untyped-bridge-4wmqqdr2"
+    },
+    "protocol": {
+      "retained_source_contexts": 6,
+      "controls": 19,
+      "assertions": 217,
+      "metadata_rejections": 12,
+      "valid_controls": 7,
+      "raw_archive_root": "raw/review10-types-protocol-15uc1hru",
+      "strengthened_positive": "Actual author fixture helper-only correction proves arbitrary returned PINT99 produces9911 while referenced strings remain unchanged; corrected fresh19/218 repeats this."
+    },
+    "compiler_projection": {
+      "profiles": 9,
+      "assertions": 46,
+      "admitted": 6,
+      "ticks_dependent": 3,
+      "raw_archive_root": "raw/review10-types-projection-9nrni2s6"
+    },
+    "renderer": {
+      "result": "pass",
+      "candidate": "/home/user/workspace/php-spec/.tools/review10-types-final",
+      "renderer_sha256": "a64111928d9a2f60f12996b816bbd8c6d13a3707d3b8fb294bc770e1929ad666",
+      "pinned_source": "vendor/php-src/Zend/zend_exceptions.c:740",
+      "pinned_source_sha256": "81b576a3b89a982c6f6b1f730cdaf4cfadff11220a086393621e55e6538d18a9",
+      "records": [
+        {
+          "id": "typed-default-scalar-cache-before-array-error",
+          "class": "TypeError",
+          "line": "3",
+          "trace_frames": 1,
+          "display_suffix": true,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "typed-default-null-cache-before-int-error",
+          "class": "TypeError",
+          "line": "3",
+          "trace_frames": 1,
+          "display_suffix": true,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "typed-return-array-local-cleanup",
+          "class": "TypeError",
+          "line": "2",
+          "trace_frames": 1,
+          "display_suffix": false,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "typed-return-array-global-owner",
+          "class": "TypeError",
+          "line": "2",
+          "trace_frames": 1,
+          "display_suffix": false,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "first-type-before-missing",
+          "class": "TypeError",
+          "line": "1",
+          "trace_frames": 1,
+          "display_suffix": true,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "second-type-before-missing",
+          "class": "TypeError",
+          "line": "1",
+          "trace_frames": 1,
+          "display_suffix": true,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "valid-type-before-missing",
+          "class": "ArgumentCountError",
+          "line": "1",
+          "trace_frames": 1,
+          "display_suffix": false,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "ref-warning-before-missing",
+          "class": "ArgumentCountError",
+          "line": "1",
+          "trace_frames": 1,
+          "display_suffix": false,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "all-argument-effects-before-type",
+          "class": "TypeError",
+          "line": "1",
+          "trace_frames": 1,
+          "display_suffix": true,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "calls1-two-frames",
+          "class": "Error",
+          "line": "1",
+          "trace_frames": 2,
+          "display_suffix": false,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        },
+        {
+          "id": "calls3-callee-fatal-stack-and-output",
+          "class": "DivisionByZeroError",
+          "line": "1",
+          "trace_frames": 1,
+          "display_suffix": false,
+          "native_exact": true,
+          "report": ".tools/review10-types-replay-pm40natw/report.json",
+          "report_sha256": "6d208328c37cc2bf99aa2b7afc5fad71ab39dfb0820132cf73419021dffc61a5"
+        }
+      ],
+      "scope": "Exact native displays/trace lines remain equal; semantic THROWN class/message/line retained separately from temporary uncaught display suffix. Existing Error and DivisionByZeroError controls included."
+    },
+    "raw": {
+      "result": "pass",
+      "records": [
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-originals-brma4fpo",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-originals-brma4fpo/frontend-wire",
+              "responses": 7,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-originals-brma4fpo/adapter-wire",
+              "responses": 7,
+              "clean_closure": true
+            }
+          ],
+          "responses": 14
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-return-alias-originals-ixu_0zfk",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-return-alias-originals-ixu_0zfk/frontend-wire",
+              "responses": 2,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-return-alias-originals-ixu_0zfk/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 4
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-nested-originals-4jnh3zul",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-nested-originals-4jnh3zul/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-nested-originals-4jnh3zul/adapter-wire",
+              "responses": 1,
+              "clean_closure": true
+            }
+          ],
+          "responses": 2
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-top-return-originals-32gd60ea",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-top-return-originals-32gd60ea/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-top-return-originals-32gd60ea/adapter-wire",
+              "responses": 1,
+              "clean_closure": true
+            }
+          ],
+          "responses": 2
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-render-originals-pk3ckd1i",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-render-originals-pk3ckd1i/frontend-wire",
+              "responses": 2,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-render-originals-pk3ckd1i/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 4
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-replay-g3px7aj0",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-replay-g3px7aj0/frontend-wire",
+              "responses": 14,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-replay-g3px7aj0/adapter-wire",
+              "responses": 14,
+              "clean_closure": true
+            }
+          ],
+          "responses": 28
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-replay-qcjt4l6f",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-replay-qcjt4l6f/frontend-wire",
+              "responses": 2,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-replay-qcjt4l6f/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 4
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-replay-pm40natw",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-replay-pm40natw/frontend-wire",
+              "responses": 18,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-replay-pm40natw/adapter-wire",
+              "responses": 18,
+              "clean_closure": true
+            }
+          ],
+          "responses": 36
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-tvmh06b7",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-tvmh06b7/frontend-wire",
+              "responses": 3,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-tvmh06b7/adapter-wire",
+              "responses": 6,
+              "clean_closure": true
+            }
+          ],
+          "responses": 9
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-_ealdbq_",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-_ealdbq_/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-_ealdbq_/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-l69frhbl",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-l69frhbl/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-l69frhbl/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-dadztpwv",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-dadztpwv/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-dadztpwv/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-uhxecig7",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-uhxecig7/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-uhxecig7/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-6sbhvt8v",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-6sbhvt8v/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-6sbhvt8v/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-1tcusbw8",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-1tcusbw8/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-1tcusbw8/adapter-wire",
+              "responses": 2,
+              "clean_closure": true
+            }
+          ],
+          "responses": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-15uc1hru",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-15uc1hru/frontend-wire",
+              "responses": 6,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-protocol-15uc1hru/adapter-wire",
+              "responses": 12,
+              "clean_closure": true
+            }
+          ],
+          "responses": 18
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-state-f76v7p6c",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-state-f76v7p6c/frontend-wire",
+              "responses": 5,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-state-f76v7p6c/adapter-wire",
+              "responses": 10,
+              "clean_closure": true
+            }
+          ],
+          "responses": 15
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2/saved-param-owner/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2/saved-param-owner/new-wire",
+              "responses": 7,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2/saved-param-owner/old-wire",
+              "responses": 7,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2/weak-cache-control/frontend-wire",
+              "responses": 1,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2/weak-cache-control/new-wire",
+              "responses": 7,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-untyped-bridge-4wmqqdr2/weak-cache-control/old-wire",
+              "responses": 7,
+              "clean_closure": true
+            }
+          ],
+          "responses": 30
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-projection-9nrni2s6",
+          "workers": [
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-projection-9nrni2s6/frontend-wire",
+              "responses": 9,
+              "clean_closure": true
+            },
+            {
+              "directory": "/home/user/workspace/php-spec/.tools/review10-types-projection-9nrni2s6/adapter-wire",
+              "responses": 9,
+              "clean_closure": true
+            }
+          ],
+          "responses": 18
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-types-protocol-output-helper-e1qk7a35",
+          "workers": [],
+          "responses": 0
+        }
+      ],
+      "responses": 202,
+      "clean_closures": 42,
+      "scope": "Complete recorded worker request/response packets, parseability, ok flags, stderr, trailing stdout and process closures. Includes historical917 originals,920 guard defects, failed fixture setup attempts and926 final gates; categories are not semantic agreement counts."
+    },
+    "source_count_note": "Source, phase, state, protocol and CLI sets overlap and are not added as distinct source programs."
+  },
+  "author_audit": {
+    "result": "pass",
+    "tested": {
+      "sha256": "baa85f5771107fc40899fc8ecc6472234ac1dbecbea27edbff6347cd32db5d34",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "corrected": {
+      "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "source": 38,
+    "cache_projections": 3,
+    "cache_projection_assertions": 12,
+    "state": 4,
+    "state_assertions": 1096,
+    "protocol": 19,
+    "protocol_assertions": 218,
+    "compiler_exact_phases": 56,
+    "compiler_boundaries": 8,
+    "compiler_projections": 38,
+    "workers": [
+      {
+        "gate": "source",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-functions-4bwhg8kg/frontend-wire",
+        "responses": 38
+      },
+      {
+        "gate": "source",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-functions-4bwhg8kg/adapter-wire",
+        "responses": 38
+      },
+      {
+        "gate": "state",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-function-state-azdf3m1w/frontend-wire",
+        "responses": 4
+      },
+      {
+        "gate": "state",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-function-state-azdf3m1w/adapter-wire",
+        "responses": 8
+      },
+      {
+        "gate": "compiler",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-function-compiler-ua7qw1gb/frontend-wire",
+        "responses": 64
+      },
+      {
+        "gate": "compiler",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-function-compiler-ua7qw1gb/adapter-wire",
+        "responses": 64
+      },
+      {
+        "gate": "protocol",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-function-protocol-z164quxw/frontend-wire",
+        "responses": 6
+      },
+      {
+        "gate": "protocol",
+        "directory": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-function-protocol-z164quxw/adapter-wire",
+        "responses": 12
+      }
+    ],
+    "responses": 234,
+    "closures": 8,
+    "runner_true_closures": 23,
+    "scope": "Every final source outcome/native packet and uncoerced cache, all recorded protocol/state/compiler wire closures and loaded input hashes, plus23 successful standalone state/protocol runner closures. Tested926/baa retained separately from one-test-corrected926/599."
+  },
+  "compiler_archive_audit": {
+    "result": "pass",
+    "archive": "/home/user/workspace/php-spec/.tools/compiler6-typed-calls/originals.tar.xz",
+    "sha256": "0950b94c367058f494b636700720b80f8d9f069c87c1c4fb327a9648b596be88",
+    "paths": 6523,
+    "tools_bound": 15,
+    "historical_native_aliases_bound": 2,
+    "all_payload_bytes_modes": true,
+    "compiler": {
+      "sha256": "495fd39b501f4e7785d50f10b8f89a530b9524977bf5f125398ed7568a37a99c",
+      "files": 920,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "scope": "Independent compiler archive payload/mode,920source/toolclosure and historical native executable bindings. Gate observation/protocol and runtime95 acceptance remain separately reviewed."
+  },
+  "compiler_gate_audit": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "495fd39b501f4e7785d50f10b8f89a530b9524977bf5f125398ed7568a37a99c",
+      "files": 920,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "typed_exact_native_phases": 56,
+    "dependent_boundaries": 8,
+    "source_projections": 38,
+    "native_profiles": 64,
+    "workers": [
+      {
+        "directory": "/home/user/workspace/php-spec/.tools/compiler6-typed-calls/.tools/typed-function-compiler-h9pwiwv2/frontend-wire",
+        "responses": 64
+      },
+      {
+        "directory": "/home/user/workspace/php-spec/.tools/compiler6-typed-calls/.tools/typed-function-compiler-h9pwiwv2/adapter-wire",
+        "responses": 64
+      }
+    ],
+    "raw_responses": 128,
+    "clean_closures": 2,
+    "scope": "Portable typed compiler gate: exact source bytes/native exit envelopes, sole pinned executable commands, actual SpecTec runner true with clean status, loaded920 input hashes, full worker packets and closures. Runtime95 acceptance remains separate."
+  },
+  "compiler_pairing_audit": {
+    "result": "pass",
+    "bridge": ".tools/compiler6-typed-calls/paired926-bridge.json",
+    "bridge_sha256": "5729b413cfc94d58424a5b9569bf9bcff5bc0241dbb5c358a08e2d4b8a47fd16",
+    "copied_files": 7,
+    "paired_fingerprint": {
+      "sha256": "baa85f5771107fc40899fc8ecc6472234ac1dbecbea27edbff6347cd32db5d34",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "source_function_schema_equal": true,
+    "ordered_registry_equal_plus_two_runtime_modules": true
+  },
+  "compiler_publication_audit": {
+    "result": "pass",
+    "compiler_commit": "2ea12015",
+    "code_commit": "0ed17419",
+    "publication_files": {
+      "coverage/semantics/typed-function-compiler-originals.json": {
+        "sha256": "88871585e873708470c8f307c0c68ebf993d1ab2398b63ac02edf56040ed17bd",
+        "mode": 436
+      },
+      "coverage/semantics/typed-function-compiler-originals.tar.xz": {
+        "sha256": "0950b94c367058f494b636700720b80f8d9f069c87c1c4fb327a9648b596be88",
+        "mode": 436
+      },
+      "coverage/semantics/typed-function-compiler-pairing.json": {
+        "sha256": "b025d94be93e7aa89d64263ed61a3a724308e4cff7707dcabc47783f52f111d5",
+        "mode": 436
+      },
+      "docs/semantics/TYPED-FUNCTION-COMPILER.md": {
+        "sha256": "2726345fc44e8a6cc552fa7bee26781a7a4d215ca9797d98ccb84920ab8aabcc",
+        "mode": 436
+      }
+    },
+    "canonical_fingerprint": {
+      "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "canonical926_bytes_modes_match": true,
+    "compiler_archive_payload_unchanged": true,
+    "gate_bridge_exact": true
+  },
+  "runtime_archive_audit": {
+    "result": "pass",
+    "archive": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/coverage/semantics/typed-function-runtime-originals.tar.xz",
+    "sha256": "4fcbf798694d98aa78df8953495dc23337798b70ab7270fbbf260aeeebea84e2",
+    "index_sha256": "cf2946e3df4764c0de95b4803af3d0cc09a329662086ef698d0828584629ddd6",
+    "paths": 7942,
+    "unique_payloads": 3448,
+    "bytes": 25955596,
+    "all_payload_bytes_verified": true,
+    "indexed_modes_verified_against_retained_paths": true,
+    "all926_final_inputs_exact": true,
+    "pinned_reference_inputs": 17,
+    "fingerprint": {
+      "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "scope": "One-pass archive verification checks every content-addressed payload, every indexed size/mode, all926 frozen source/tool inputs and all pinned source-reference hashes. Source/state/compiler gate identities remain926/baa, protocol926/599; setup and legacy scopes remain as recorded in index classifications."
+  },
+  "publication_audit": {
+    "result": "pass",
+    "canonical_fingerprint": {
+      "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "all926_bytes_modes_match": true,
+    "canonical_cli": 8,
+    "cli_raw": "/home/user/workspace/php-spec/.tools/runtime6-typed-calls/.tools/typed-publication-cli-drhbhr0b",
+    "publication_archive": {
+      "scope": "Full926 canonical path/hash/mode equality and eight exact source-context native-agreeing CLI observations after paired typed parameter/value-return installation; original baa semantic gates and final599 test-only bridge remain distinct.",
+      "history_sha256": "4fcbf798694d98aa78df8953495dc23337798b70ab7270fbbf260aeeebea84e2",
+      "fingerprint": {
+        "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+        "files": 926,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "archive": "coverage/semantics/typed-function-runtime-publication-originals.tar.xz",
+      "sha256": "6eb7981c3b518c6afcdc40a0b4c0ef24bd1ef53400663bd22ed2e3c67a9f5d79",
+      "archive_bytes": 50604,
+      "paths": 55,
+      "new_payloads": 30,
+      "index_sha256": "8e146edd0c010f9d4f62ae9890a4e1344721195ce0b73036880c85da81484f31"
+    },
+    "all55_indexed_paths_and30_new_payloads_verified": true,
+    "history_payload_dependency_verified": true,
+    "scope": "Eight canonical CLI commands, process closures, parsed outcomes, exact source/request/native-context equality, and complete supplement byte/mode audit. Prior source/state/compiler gates remain bound to926/baa; corrected protocol/canonical publication bind926/599."
+  },
+  "review_archive": {
+    "archive": "coverage/semantics/typed-function-review-originals.tar.xz",
+    "sha256": "576f395f7b96c044626b5c123b6775711c8a671dbcc8430e35b9fd197defc2bc",
+    "paths": 5689,
+    "bytes": 1064228,
+    "tools": {
+      "baseline917/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "baseline917/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "baseline917/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "baseline917/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "baseline917/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "first920/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "first920/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "first920/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "first920/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "first920/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "tested926/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "tested926/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "tested926/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "tested926/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "tested926/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "raw/review10-types-originals-brma4fpo/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-originals-brma4fpo/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-originals-brma4fpo/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-originals-brma4fpo/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-originals-brma4fpo/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-return-alias-originals-ixu_0zfk/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-return-alias-originals-ixu_0zfk/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-return-alias-originals-ixu_0zfk/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-return-alias-originals-ixu_0zfk/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-return-alias-originals-ixu_0zfk/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-nested-originals-4jnh3zul/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-nested-originals-4jnh3zul/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-nested-originals-4jnh3zul/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-nested-originals-4jnh3zul/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-nested-originals-4jnh3zul/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-top-return-originals-32gd60ea/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-top-return-originals-32gd60ea/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-top-return-originals-32gd60ea/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-top-return-originals-32gd60ea/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-top-return-originals-32gd60ea/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-render-originals-pk3ckd1i/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-render-originals-pk3ckd1i/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-render-originals-pk3ckd1i/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-render-originals-pk3ckd1i/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-render-originals-pk3ckd1i/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-replay-g3px7aj0/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-replay-g3px7aj0/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-replay-g3px7aj0/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-replay-g3px7aj0/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-replay-g3px7aj0/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-replay-qcjt4l6f/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-replay-qcjt4l6f/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-replay-qcjt4l6f/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-replay-qcjt4l6f/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-replay-qcjt4l6f/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-replay-pm40natw/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-replay-pm40natw/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-types-replay-pm40natw/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-replay-pm40natw/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-replay-pm40natw/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-tvmh06b7/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-tvmh06b7/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-tvmh06b7/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-tvmh06b7/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-_ealdbq_/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-_ealdbq_/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-_ealdbq_/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-_ealdbq_/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-l69frhbl/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-l69frhbl/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-l69frhbl/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-l69frhbl/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-dadztpwv/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-dadztpwv/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-dadztpwv/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-dadztpwv/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-uhxecig7/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-uhxecig7/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-uhxecig7/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-uhxecig7/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-6sbhvt8v/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-6sbhvt8v/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-6sbhvt8v/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-6sbhvt8v/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-1tcusbw8/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-1tcusbw8/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-1tcusbw8/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-1tcusbw8/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-15uc1hru/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-15uc1hru/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-15uc1hru/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-types-protocol-15uc1hru/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-types-state-f76v7p6c/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      }
+    },
+    "scope": "Independent typed source originals on accepted917, actual first920 receive/fallthrough/return metadata defects and failed fixture setup attempts, exact tested926 source/state/protocol gates, complete untyped917 state bridges, recorded raw audits and source producers. The three mixed-strictness ticks cases remain dependency controls. Excluded binaries bind immutable input manifests; copied raw evidence modes remain distinct from invoked tool modes. The one-test output helper correction is retained separately and does not relabel926/baa semantic gates.",
+    "baseline": {
+      "sha256": "309b046c37559bd36d044bb5e77825b386d12dd3a95f1af45579658e60cdee8f",
+      "files": 917,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "tested": {
+      "sha256": "baa85f5771107fc40899fc8ecc6472234ac1dbecbea27edbff6347cd32db5d34",
+      "files": 926,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "historical_archive_path": "/home/user/workspace/php-spec/.tools/review10-types-review-originals.tar.xz"
+  },
+  "publication_archive": {
+    "archive": "coverage/semantics/typed-function-review-publication-originals.tar.xz",
+    "sha256": "23d4c9328843d45bddcce471059c3285931a49cf4cf90ac43a0ed7a844cf6c73",
+    "paths": 50,
+    "bytes": 66988,
+    "scope": "Final author/archive/CLI/compiler publication audits, corrected926 manifest and one-test helper bridge, original audit flag assumption and exact producers; main576f395f review originals remain immutable."
+  },
+  "reviewed_invariants": [
+    "All argument evaluation/binding precedes sequential typed receives; a provided parameter type error can precede a later missing-argument error. Untyped receive schedules remain unchanged.",
+    "Caller CODE strictness governs provided/deferred parameter verification; callee CODE strictness governs returns. Native mixed-strictness ticks witnesses remain explicit source dependencies.",
+    "Stored float defaults follow normalized kind. Successful deferred evaluation caches the uncoerced value before verification; later type failure retains cache, and omitted reference cells remain fresh.",
+    "Parameter reference coercions write shared cells without persistent type constraints. Value-return coercion detaches from source aliases and preserves externally rooted values during failure cleanup.",
+    "Receive/fallthrough/return tasks bind actual function/source metadata and saved caller context. Return source unit/root/line and unit CODEEXPR projection are checked without reconstructing arbitrary runtime history.",
+    "Semantic TypeError message/class/line remain separate from pinned uncaught display-only and-defined formatting; existing Error and DivisionByZeroError displays remain exact."
+  ],
+  "original_failures": [
+    "Author initial public SL receive dispatch failed despite an AL helper result; preserved standard head/tail repair changes no engine.",
+    "Seven native uncaught rendering mismatches and one false given-type mismatch are retained in author history before their fixes.",
+    "Actual first920 source states admitted wrong receive/fallthrough tasks at zero budget and then failed public full resume; forged RETURN_VALUE line changed TypeError line2 to102. Unit-only and saved-line metadata gaps are retained separately.",
+    "Reviewer return-filter otherwise/pattern and saved ORIGIN_RETURN fixture setup failures are retained; these are not semantic agreements.",
+    "The final926/baa strengthened protocol output assertion lacked a standalone helper. Exact one-file correction preserves925 other bytes/all926 modes; earlier source/state gates retainbaa while corrected fresh19 binds599.",
+    "An audit initially omitted the native wrapper variables_order flag; original producer retained and corrected validation binds it to explicit request facts. Archive verification was restarted sequentially; no semantic gate was interrupted."
+  ],
+  "limitations": [
+    "No reference-return, named/unpacked/variadic, closure/method/dynamic-callable or object/class/callable/iterable type admission.",
+    "Mixed caller/callee strictness needs an admitted cross-unit/dynamic/callback or later declare route; current ticks-block native witnesses are dependency controls, not runtime agreements.",
+    "Registered builtin bodies, missing builtin constant values, define/defined, ordinary exceptions, objects, dynamic sources, generators/fibers/lifetime and remaining core obligations stay explicit.",
+    "Compiler920 preparation, first runtime920, tested926/baa and corrected926/599 identities remain distinct. Historical32 no-provider author observations are not promoted to fresh explicit-request agreements.",
+    "Full callable integration and final current-source/full-syntax/fresh network-isolated offline rebuild remain mandatory. No full-core or BOLA claim."
+  ],
+  "source_authority": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "vendor/php-src/Zend/zend_compile.c:zend_emit_return_type_check,zend_compile_return",
+      "vendor/php-src/Zend/zend_execute.c:zend_check_type_slow,zend_verify_recv_arg_type",
+      "vendor/php-src/Zend/zend_vm_def.h:RECV,RECV_INIT,VERIFY_RETURN_TYPE",
+      "vendor/php-src/Zend/zend_exceptions.c:740"
+    ]
+  }
+}
