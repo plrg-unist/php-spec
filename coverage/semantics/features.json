@@ -5976,9 +5976,10 @@
         "coverage/semantics/reference-parameter-review.json",
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/typed-function-review.json",
-        "coverage/semantics/call-reference-review.json"
+        "coverage/semantics/call-reference-review.json",
+        "coverage/semantics/reference-return-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Shared933 call emission repair preserves enclosing post-argument locations, including native typed-return line5 instead of926 line4; historical typed evidence retains its scope.",
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Shared933 call emission repair preserves enclosing post-argument locations, including native typed-return line5 instead of926 line4; historical typed evidence retains its scope. Source reference returns accepted9959e771 on942/3c preserve return designation, caller demand and typed shared-cell coercion; value returns remain detached. The linked review retains exact source/state/protocol and old-state bridges; remaining callable/dependent-type protocols stay pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-return.php"
       ]
@@ -6221,9 +6222,10 @@
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/typed-function-review.json",
-        "coverage/semantics/call-reference-review.json"
+        "coverage/semantics/call-reference-review.json",
+        "coverage/semantics/reference-return-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Call-result reference-assignment prerequisite accepted36224bc3 on933/7391ccdf: ordinary value-call writes preserve existing target aliases and exact source Notice timing; source reference returns remain pending. See call-reference-review.json for original failures, source/state/protocol and complete926 bridges."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Call-result reference-assignment prerequisite accepted36224bc3 on933/7391ccdf: ordinary value-call writes preserve existing target aliases and exact source Notice timing; source reference returns remain pending. See call-reference-review.json for original failures, source/state/protocol and complete926 bridges. Source reference returns accepted9959e771 on942/3c preserve return designation, caller demand and typed shared-cell coercion; value returns remain detached. The linked review retains exact source/state/protocol and old-state bridges; remaining callable/dependent-type protocols stay pending."
     },
     {
       "id": "calls.named",
@@ -6318,15 +6320,28 @@
     {
       "id": "calls.byref-return",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/98-reference-return-compiler.watsup",
+        "spec/semantics/99-reference-returns.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/reference_returns.py",
+        "tests/semantics/reference_return_state.py",
+        "tests/semantics/reference_return_protocol.py",
+        "tests/semantics/reference_return_demand.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/reference-return-review.json"
+      ],
+      "review": "Bounded named positional source reference returns accepted9959e771, code563fee7a on942/3c331e74 with explicit7951/dd8 state-test-only bridges. Source classification, caller demand, typed shared-cell coercion and owning reference/value consumers are reviewed through12 native profiles,26/378 protocol,4dense1282 and2 exact933 bridges; linked review preserves author gates and originals. Suppression, object/typed-property reference constraints, finally/generators and full callable closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/return-reference.php"
       ]
@@ -6407,9 +6422,10 @@
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/typed-function-review.json",
-        "coverage/semantics/call-reference-review.json"
+        "coverage/semantics/call-reference-review.json",
+        "coverage/semantics/reference-return-review.json"
       ],
-      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Shared933 call emission repair preserves enclosing post-argument locations, including native typed-return line5 instead of926 line4; historical typed evidence retains its scope.",
+      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Shared933 call emission repair preserves enclosing post-argument locations, including native typed-return line5 instead of926 line4; historical typed evidence retains its scope. Source reference returns accepted9959e771 on942/3c preserve return designation, caller demand and typed shared-cell coercion; value returns remain detached. The linked review retains exact source/state/protocol and old-state bridges; remaining callable/dependent-type protocols stay pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php",
         "tests/semantics/conformance/type-static-outside-class.php"

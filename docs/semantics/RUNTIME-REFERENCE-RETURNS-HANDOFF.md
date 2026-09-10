@@ -1,8 +1,8 @@
 # Source reference returns after call-result acquisition
 
-Compiler6/runtime7/review10 continue with compiler98/runtime99. The next bounded
-increment connects source reference returns and caller result demand. Calls and
-PHP core remain incomplete.
+This preparation handoff is superseded by [accepted reference returns](SOURCE-REFERENCE-RETURNS.md)
+at9959e771, final942/3c331e74. Its933 baseline and original evidence below retain
+their historical identities. Continue with the [suppression handoff](RUNTIME-SUPPRESSION-HANDOFF.md).
 
 ## Exact starting point
 
