@@ -121,6 +121,10 @@ binds942 source/state/protocol gates and the one-state-test bridge.
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. Reporting configuration, handlers,
 remaining call protocols and full callable integration remain required.
+[Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
+and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
+binds exact PHPT/CLI diagnostics and reproducible parser patches. Positional
+variadic execution is the next paired increment.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

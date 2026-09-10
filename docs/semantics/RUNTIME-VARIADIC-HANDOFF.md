@@ -1,6 +1,13 @@
-# Runtime/source successor after suppression
+# Runtime/source successor: positional variadics
 
-Accepted951/c6501bd8: code14003331, compiler601b496d, author5535cffc,
+Start from accepted951/440f3966: parser code c00a5c38, compiler evidence4290295e,
+independent review51ca21db; [parameter contract](PARAMETER-PHASE.md) and
+[review](../../coverage/semantics/parameter-phase-review.json). Its three watched
+changes defer only variadic-default/void checks and retire exact expectations;
+all semantic modules and modes remain unchanged. Refresh private102/103 from
+this baseline while preserving original951/c650 observations.
+
+The preceding semantic checkpoint951/c6501bd8: code14003331, compiler601b496d, author5535cffc,
 independent review29baca42; [contract](SOURCE-ERROR-SUPPRESSION.md) and
 [review](../../coverage/semantics/error-suppression-review.json) bind exact gates.
 Semantic951/ff8d differs only in a stale demand-report print key:950 identical
@@ -21,15 +28,17 @@ Next preparation is `.tools/compiler7-callable-next/PLAN.md` and archive
 parser-boundary sidecar are explicitly outside that frozen archive. No next
 source admission follows from preparation or opcode observations.
 
-First remove only PHP-Parser's eager variadic-default restriction through a
-reproducible vendored patch. The checked AST already represents the source and
-17/90 owns the static diagnostic. Retire only the matching phase exception;
-review native source acceptance, diagnostic priority/multiline locations, edited
-AST rejection and public CLI behavior before activating positional variadics.
-Keep the parser pin, checked frontend trust boundary and original failures exact.
+The parser prerequisite is complete: both eager checks now reach existing17/16/90
+static diagnostics in native order, including same/later-slot priorities. Exact
+retired PHPT sources, fourteen controls, edited-AST/signature checks, CLI and
+zero-fuzz patch/generated-parser reproduction are reviewed. Source transport is
+global; class/closure consumers remain independently pending.
 
-Then use sequential typed receive, fresh variadic arrays, reference/COW ownership
-and caller strictness. Named binding/default holes and unpacked numeric/string
+Use sequential typed receive, independent variadic variable/reference cells,
+reference/COW ownership and caller strictness. Native empty tails use an immutable
+empty-array singleton; tests must not infer a fresh native HashTable. Preserve
+EXTRA owners through collection/cleanup and earlier alias coercions before a
+later type error; already checked fixed/tail slots need no historical type guard. Named binding/default holes and unpacked numeric/string
 keys require their own ordered receive/error protocol. Root coordinates compiler7,
 runtime7 and independent review10; freeze coherent source/runtime pairs and
 publish reviewed small commits, never push. Full callable integration and final

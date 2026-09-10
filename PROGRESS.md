@@ -6,9 +6,29 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
+[Parameter source phases](docs/semantics/PARAMETER-PHASE.md) are independently
+accepted at **51ca21db** in [parameter-phase-review.json](coverage/semantics/parameter-phase-review.json).
+Canonical **951/440f3966** binds code **c00a5c38** and compiler evidence **4290295e**.
+Only PHP-Parser's eager variadic-default and void-parameter checks are deferred;
+existing17/16/90 supplies native static diagnostic order. Exactly three watched
+paths and three patch/provenance files change; semantic modules and all modes
+remain unchanged. The two exact phase exceptions are retired.
+
+Independent fourteen-source and eight-CLI controls preserve one valid-variadic
+Unsupported boundary; two exact retired PHPT FILE sources pass native parsing,
+lint and repaired CLI diagnostics, with original frontend failures retained.
+Zero-fuzz reproduction matches all five handwritten patch outputs. Author checks
+include fourteen checked roundtrips/CLI controls,359 signature comparisons,
+28 descriptors,174 reference-return assertions and exact generated-parser
+reproduction. Compiler archive0f6bea05 binds8,251 paths/1,280 responses/8 closures;
+independent archive6898c6d5 binds366 paths/36 responses/4 closures. Counts overlap.
+Inventory remains169 constructors/306 obligations,131 partial/174 pending and
+one validated oracle; this parser prerequisite adds no runtime admission.
+
+The preceding semantic checkpoint is source suppression:
 [Source error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) is independently
 accepted at **29baca42** in [error-suppression-review.json](coverage/semantics/error-suppression-review.json).
-Canonical **951/c6501bd8** binds code **14003331**, compiler evidence **601b496d**
+Historical **951/c6501bd8** binds code **14003331**, compiler evidence **601b496d**
 and author evidence **5535cffc**. Compiler100/runtime101 preserve folded effects,
 read deferred CVs inside suppression, filter runtime nonfatal events and restore
 frame-owned masks through normal return and abrupt cleanup. The pinned C-int
@@ -33,8 +53,7 @@ Reference returns remain accepted at9959e771 on942/3c331e74, preserving their
 7951/dd8 one-state-test bridges. Acquisition933, typed926, strict917 and defaults909
 retain their historical linked reviews and source identities.
 
-Next is positional variadic receive, preceded by the bounded PHP-Parser
-variadic-default source-pipeline correction; read the
+Next is paired compiler102/runtime103 positional variadic receive; read the
 [successor handoff](docs/semantics/RUNTIME-VARIADIC-HANDOFF.md).
 Compiler7/runtime7/review10 continue under root coordination. Frozen56f4d181
 preparation and its later STARTUP proposal are not implementation acceptance.
