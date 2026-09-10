@@ -1,0 +1,2187 @@
+{
+  "result": "pass",
+  "scope": "Positional variadic receives on executable named functions with supported types and existing value/reference sends. Source, state, compiler and regression sets overlap. Named/unpack/catch boundaries are required subsequent core work, never agreement.",
+  "paired_code": "b49a564c137964de3bac6f6b6c4d208a274fbad9",
+  "fingerprint": {
+    "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+    "files": 959,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "baseline": {
+    "sha256": "440f3966e3d9a1ec7155a7c51015aa125ad307db25ebe26dfc6004182811b384",
+    "files": 951,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_pin": {
+    "version": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "authority": [
+      "Zend/zend_vm_def.h: RECV_VARIADIC sequential verify/insert and empty-array branch; SEND_REF/SEND_FUNC_ARG",
+      "Zend/zend_execute.c: argument type/reference errors and call frame cleanup",
+      "Zend/zend_compile.c: variadic signature and known argument compilation"
+    ]
+  },
+  "gates": {
+    "variadic": {
+      "result": "pass",
+      "report_sha256": "6f0828ab97b5a07c2b02e65892a1934ac67fe428da65b0399f3e6227ba878c75",
+      "archive_member": "reports/.tools/runtime7-variadic-final/coverage/semantics/variadic.json",
+      "fingerprint": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz",
+      "selected_cases": 28,
+      "records": 28
+    },
+    "variadic-compiler": {
+      "result": "pass",
+      "report_sha256": "450aa1b97f3905f3af936ea7a3173f7e9e6ee03261f5200adf65fa0cb331b4f2",
+      "archive_member": "reports/.tools/runtime7-variadic-final/coverage/semantics/variadic-compiler.json",
+      "fingerprint": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-compiler-wr0qd9ff",
+      "compared": 23,
+      "pending": {
+        "variadic-typed-alias-known-catch-projection": "ordinary statement compilation",
+        "variadic-typed-alias-deferred-catch-projection": "ordinary statement compilation"
+      },
+      "context_assertions": 194
+    },
+    "variadic-protocol": {
+      "result": "pass",
+      "report_sha256": "f566b7104fde94dcbc79cf65c6033ad8ee17606d768a2b3a28fc6198774d9855",
+      "archive_member": "reports/.tools/runtime7-variadic-final/coverage/semantics/variadic-protocol.json",
+      "fingerprint": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9",
+      "assertions": 372,
+      "controls": 20,
+      "records": 20
+    },
+    "variadic-regressions": {
+      "result": "pass",
+      "report_sha256": "8d8f3611074da4ac9e9f92d9263a4915fb45b4ed9ff15e5ddf1df84b1d1cd46d",
+      "archive_member": "reports/.tools/runtime7-variadic-final/coverage/semantics/variadic-regressions.json",
+      "fingerprint": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-regressions-b0mew7y_",
+      "selected_cases": 8,
+      "records": 8
+    },
+    "variadic-state": {
+      "result": "pass",
+      "report_sha256": "ca32b5eb5ef66ba96ff0481fc3ba8cabd20ca1f156b8c54a7c4b1a7327f044e2",
+      "archive_member": "reports/.tools/runtime7-variadic-state-timeout/coverage/semantics/variadic-state.json",
+      "fingerprint": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-preparation/dense-timeout-replay-lew2al1r",
+      "assertions": 829,
+      "records": 2
+    }
+  },
+  "bridges": {
+    "protocol-cleanup-bridge": {
+      "before": {
+        "sha256": "e8c189ce379751677d29447538a431bc7342e76458d40ac7b2a7fb9f5bba9d2b",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "tests/semantics/variadic_protocol.py"
+      ],
+      "unchanged_files": 958,
+      "all_modes_equal": true,
+      "scope": "Reviewer portable driver removes dead pre-repair branch, ifTrue and unused import; assertions unchanged. Fresh final20 protocol run still required."
+    },
+    "semantic-test-bridge": {
+      "before": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "4d69c52f7379e3cdb4594f3d161a2e6d93726a5d780946a4ed29dd08c79a1c0e",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "tests/semantics/function_compiler.py"
+      ],
+      "unchanged_files": 958,
+      "all_modes_equal": true,
+      "scope": "Unchanged variadic source moved from stale PENDING to CASES in existing function compiler gate. Original959/cee5 failure retained; corrected compiler-owned46 gate passes. All runtime/compiler/protocol/state/source producers unchanged."
+    },
+    "state-timeout-bridge": {
+      "before": {
+        "sha256": "4d69c52f7379e3cdb4594f3d161a2e6d93726a5d780946a4ed29dd08c79a1c0e",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "tests/semantics/variadic_state.py"
+      ],
+      "unchanged_files": 958,
+      "all_modes_equal": true,
+      "scope": "Per-case standalone dense runner allowance300 to900 seconds only. Every generated assertion/fixture and native/request selection unchanged. Original first timeout and unexecuted second prepared fixture remain retained."
+    }
+  },
+  "raw_audit": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+      "files": 959,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "gates": [
+      {
+        "gate": "variadic",
+        "identity": {
+          "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+          "files": 959,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/coverage/semantics/variadic.json",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz",
+        "native_profiles": 28,
+        "workers": [
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/adapter-wire",
+            "responses": 28,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/frontend-wire",
+            "responses": 28,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": []
+      },
+      {
+        "gate": "variadic-compiler",
+        "identity": {
+          "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+          "files": 959,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/coverage/semantics/variadic-compiler.json",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-compiler-wr0qd9ff",
+        "native_profiles": 0,
+        "workers": [
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-compiler-wr0qd9ff/adapter-wire",
+            "responses": 25,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-compiler-wr0qd9ff/frontend-wire",
+            "responses": 25,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": [
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-compiler-wr0qd9ff/spectec.command.json"
+        ]
+      },
+      {
+        "gate": "variadic-protocol",
+        "identity": {
+          "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+          "files": 959,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/coverage/semantics/variadic-protocol.json",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9",
+        "native_profiles": 1,
+        "workers": [
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/adapter-wire",
+            "responses": 2,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/frontend-wire",
+            "responses": 1,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": [
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/begin-arbitrary-result.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/begin-before-array.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/begin-control.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/begin-tail-already-defined.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/begin-wrong-function.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/begin-wrong-origin.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/control.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-arbitrary-collected-value.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-arbitrary-result.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-extra-queue.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-nonpacked-key.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-outside-arguments.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-reset-tail.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-rewind-tail.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-shared-value-evolution.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-skip-last.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-tail-not-array.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-wrong-function.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-wrong-next.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/review10-variadic-protocol-gkwtjum9/receive-wrong-origin.command.json"
+        ]
+      },
+      {
+        "gate": "variadic-regressions",
+        "identity": {
+          "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+          "files": 959,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/coverage/semantics/variadic-regressions.json",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-regressions-b0mew7y_",
+        "native_profiles": 8,
+        "workers": [
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-regressions-b0mew7y_/adapter-wire",
+            "responses": 8,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-regressions-b0mew7y_/frontend-wire",
+            "responses": 8,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": []
+      },
+      {
+        "gate": "variadic-state",
+        "identity": {
+          "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+          "files": 959,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-variadic-state-timeout/coverage/semantics/variadic-state.json",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-preparation/dense-timeout-replay-lew2al1r",
+        "native_profiles": 2,
+        "workers": [
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-state-xn74afvb/adapter-wire",
+            "responses": 4,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-state-xn74afvb/frontend-wire",
+            "responses": 2,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": [
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-preparation/dense-timeout-replay-lew2al1r/variadic-returned-reference-tail/runner.command.json",
+          "/home/user/workspace/php-spec/.tools/runtime7-variadic-preparation/dense-timeout-replay-lew2al1r/variadic-tail-singleton-after-cleanup/runner.command.json"
+        ]
+      }
+    ],
+    "native_profiles": 39,
+    "worker_closures": 10,
+    "responses": 131,
+    "standalone_runner_closures": 23
+  },
+  "history_archive": {
+    "archive": "coverage/semantics/variadic-runtime-originals.tar.xz",
+    "sha256": "1eb028b0d9830b0dfbbc8ecbd935711aff38915d745c610349cd42bbcf5b85f2",
+    "bytes": 49395800,
+    "payload_files": 14215,
+    "members": 14216,
+    "manifest_sha256": "e85918874e4de6c40e64d7e38e86209cdf4a989bc6ff8b1efadc8cd0c5265c30",
+    "snapshots": {
+      "baseline951": {
+        "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "baseline-parser951": {
+        "sha256": "440f3966e3d9a1ec7155a7c51015aa125ad307db25ebe26dfc6004182811b384",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "first": {
+        "sha256": "77919aedb9796973024c7073669926c2f349e605bb04098537fccd3e34b8bff9",
+        "files": 953,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "task-pattern": {
+        "sha256": "53d6a9db253ec382861de192e0cc759d1f425734d10cae6102fed2014d5835f8",
+        "files": 953,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "repaired": {
+        "sha256": "296b569e30dec57ba1968c4539f7e597f9b302ebf77f2844c9a50d6024440e9b",
+        "files": 953,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "trace": {
+        "sha256": "51571d3942ed5e497b4d35dd230ea86aa3ee9001f8c60ec7b75dbe75caa508db",
+        "files": 953,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "guarded": {
+        "sha256": "c47c8fe66b595382e9a396547339d306a22a32454a5c1d197f7b3fe95c66b6e2",
+        "files": 953,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "integration": {
+        "sha256": "e8c189ce379751677d29447538a431bc7342e76458d40ac7b2a7fb9f5bba9d2b",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final": {
+        "sha256": "cee51dd2308ab465205852548faae21b4f2885ea556e15f49aa9af34341b1320",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "accepted-tests": {
+        "sha256": "4d69c52f7379e3cdb4594f3d161a2e6d93726a5d780946a4ed29dd08c79a1c0e",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "state-timeout": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "scope": "Eleven complete snapshots: accepted suppression951/c650 and parser951/440f, first/task-pattern structural failures953, trace/arity mismatch953, runnable trace953 and guarded953, integration959, semantic959/cee5, compiler-test959/4d69 and timeout-only959/4854. Author9 original native/full-request sources, retained16 and32 replays, exact failed and successful gates, portable20 protocol preflight/final, selected8 regressions and original300s timeout plus exact prepared900s rerun are retained. Compiler archives separately own earlier16/new7 native sources and SL rule isolation; independent review archives own source/stage counterexamples. Setup/tool failures and four explicit named/unpack/catch dependencies are not agreement.",
+    "compiler_archives": [
+      "coverage/semantics/variadic-compiler-originals.tar.xz",
+      "coverage/semantics/variadic-compiler-final-originals.tar.xz"
+    ]
+  },
+  "history_audit": {
+    "result": "pass",
+    "sha256": "1eb028b0d9830b0dfbbc8ecbd935711aff38915d745c610349cd42bbcf5b85f2",
+    "payload_files": 14215,
+    "regular_files": 2393,
+    "hardlinks": 11822,
+    "scope": "Every regular payload hashed; each earlier-target content+mode hardlink verified against its manifest entry, with exact member set and no escaping paths."
+  },
+  "publication_archive": {
+    "archive": "coverage/semantics/variadic-runtime-publication-originals.tar.xz",
+    "sha256": "c6f76aa01e897a978b90bfab3a43a830fce23d664558f6db5ed4c7f41f118e68",
+    "bytes": 60852,
+    "payload_files": 62,
+    "members": 63,
+    "manifest_sha256": "5d7e0bbcfcbfa2faf69a7a6c2e62ceb8078e7c25ec8db7c5d57ca0de4c9bb68d",
+    "fingerprint": {
+      "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+      "files": 959,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "history_archive_sha256": "1eb028b0d9830b0dfbbc8ecbd935711aff38915d745c610349cd42bbcf5b85f2"
+  },
+  "canonical_installation": {
+    "paths": 959,
+    "sha256": "dcd7aba803832fba01fb128287238b1d8dc3ef6aa339f22dc21a8b9222019f2a",
+    "exact_bytes_and_modes": true,
+    "changed_paths": [
+      "Makefile",
+      "spec/semantics/102-variadic-compiler.watsup",
+      "spec/semantics/103-positional-variadics.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/78-function-compiler.watsup",
+      "spec/semantics/80-call-control.watsup",
+      "spec/semantics/83-call-traces.watsup",
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/86-reference-arguments.watsup",
+      "spec/semantics/91-default-parameters.watsup",
+      "spec/semantics/95-typed-calls.watsup",
+      "spec/semantics/modules.json",
+      "tests/semantics/function_compiler.py",
+      "tests/semantics/variadic.py",
+      "tests/semantics/variadic_cases.json",
+      "tests/semantics/variadic_compiler.py",
+      "tests/semantics/variadic_compiler_cases.json",
+      "tests/semantics/variadic_protocol.py",
+      "tests/semantics/variadic_state.py"
+    ]
+  },
+  "canonical_cli": {
+    "result": "pass",
+    "scope": "Canonical CLI8 uses exact retained native source paths and full primitive request facts; raw process closure and decoded observations checked separately.",
+    "fingerprint": {
+      "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+      "files": 959,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "raw": "/home/user/workspace/php-spec/.tools/runtime7-variadic-preparation/variadic-publication-cli-61v2k4v3",
+    "records": [
+      {
+        "id": "variadic-reference-value-error",
+        "source_sha256": "6be6b5a44f81c5dc0ee3584af86ed10a8c857ff2de716d0521a2a4bb90e2f7a9",
+        "original": {
+          "id": "variadic-reference-value-error",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZigmLi4uJHhzKXt9ZWNobyAiQkVGT1JFIjtmKDEpO2VjaG8gIkFGVEVSIjs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-reference-value-error/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1yZWZlcmVuY2UtdmFsdWUtZXJyb3Ivc291cmNlLnBocA=="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1yZWZlcmVuY2UtdmFsdWUtZXJyb3Ivc291cmNlLnBocA==",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1yZWZlcmVuY2UtdmFsdWUtZXJyb3I="
+          },
+          "native": {
+            "stdout": "QkVGT1JF",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBmKCk6IEFyZ3VtZW50ICMxIGNvdWxkIG5vdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtcmVmZXJlbmNlLXZhbHVlLWVycm9yL3NvdXJjZS5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtcmVmZXJlbmNlLXZhbHVlLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+            "exit_status": 255,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-reference-value-error/source.php"
+            ]
+          },
+          "actual": {
+            "status": "php_error",
+            "stdout": "QkVGT1JF",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBmKCk6IEFyZ3VtZW50ICMxIGNvdWxkIG5vdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtcmVmZXJlbmNlLXZhbHVlLWVycm9yL3NvdXJjZS5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtcmVmZXJlbmNlLXZhbHVlLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+            "exit_status": 255,
+            "diagnostic": {
+              "class": "Error",
+              "message": "ZigpOiBBcmd1bWVudCAjMSBjb3VsZCBub3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZQ==",
+              "line": 1
+            },
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "66",
+                    "69",
+                    "70",
+                    "79",
+                    "82",
+                    "69"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "php_error",
+          "stdout": "QkVGT1JF",
+          "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBmKCk6IEFyZ3VtZW50ICMxIGNvdWxkIG5vdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtcmVmZXJlbmNlLXZhbHVlLWVycm9yL3NvdXJjZS5waHA6MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtcmVmZXJlbmNlLXZhbHVlLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+          "exit_status": 255,
+          "diagnostic": {
+            "class": "Error",
+            "message": "ZigpOiBBcmd1bWVudCAjMSBjb3VsZCBub3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZQ==",
+            "line": 1
+          },
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "66",
+                  "69",
+                  "70",
+                  "79",
+                  "82",
+                  "69"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "variadic-typed-alias-late-error-deferred",
+        "source_sha256": "d8d95c7a60cab7b084da1f5f35f6b2d8ca0f80366098aa365e2e78f07f39e427",
+        "original": {
+          "id": "variadic-typed-alias-late-error-deferred",
+          "source_base64": "PD9waHAgJGE9IjEiOyRiPVtdO2VjaG8gIkJFRk9SRSI7ZigkYSwkYSwkYik7ZWNobyAiQUZURVIiO2Z1bmN0aW9uIGYoaW50ICYuLi4keHMpe2VjaG8gIkJPRFkiO30=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-typed-alias-late-error-deferred/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy10eXBlZC1hbGlhcy1sYXRlLWVycm9yLWRlZmVycmVkL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy10eXBlZC1hbGlhcy1sYXRlLWVycm9yLWRlZmVycmVkL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy10eXBlZC1hbGlhcy1sYXRlLWVycm9yLWRlZmVycmVk"
+          },
+          "native": {
+            "stdout": "QkVGT1JF",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMSBhbmQgZGVmaW5lZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXR5cGVkLWFsaWFzLWxhdGUtZXJyb3ItZGVmZXJyZWQvc291cmNlLnBocDoxClN0YWNrIHRyYWNlOgojMCAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXR5cGVkLWFsaWFzLWxhdGUtZXJyb3ItZGVmZXJyZWQvc291cmNlLnBocCgxKTogZigxLCAxLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 255,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-typed-alias-late-error-deferred/source.php"
+            ]
+          },
+          "actual": {
+            "status": "php_error",
+            "stdout": "QkVGT1JF",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMSBhbmQgZGVmaW5lZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXR5cGVkLWFsaWFzLWxhdGUtZXJyb3ItZGVmZXJyZWQvc291cmNlLnBocDoxClN0YWNrIHRyYWNlOgojMCAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXR5cGVkLWFsaWFzLWxhdGUtZXJyb3ItZGVmZXJyZWQvc291cmNlLnBocCgxKTogZigxLCAxLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 255,
+            "diagnostic": {
+              "class": "TypeError",
+              "message": "ZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMQ==",
+              "line": 1
+            },
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "66",
+                    "69",
+                    "70",
+                    "79",
+                    "82",
+                    "69"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "php_error",
+          "stdout": "QkVGT1JF",
+          "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMSBhbmQgZGVmaW5lZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXR5cGVkLWFsaWFzLWxhdGUtZXJyb3ItZGVmZXJyZWQvc291cmNlLnBocDoxClN0YWNrIHRyYWNlOgojMCAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXR5cGVkLWFsaWFzLWxhdGUtZXJyb3ItZGVmZXJyZWQvc291cmNlLnBocCgxKTogZigxLCAxLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+          "exit_status": 255,
+          "diagnostic": {
+            "class": "TypeError",
+            "message": "ZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovdmFyaWFkaWMtdHlwZWQtYWxpYXMtbGF0ZS1lcnJvci1kZWZlcnJlZC9zb3VyY2UucGhwIG9uIGxpbmUgMQ==",
+            "line": 1
+          },
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "66",
+                  "69",
+                  "70",
+                  "79",
+                  "82",
+                  "69"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "variadic-returned-reference-tail",
+        "source_sha256": "08b30b1f75c9f2c964dca651a1dc182e6baaabcf12447e238bfa5ea17b790778",
+        "original": {
+          "id": "variadic-returned-reference-tail",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gJmNvbGxlY3QoJi4uLiR4cyl7cmV0dXJuICR4czt9ZnVuY3Rpb24gJnJlbGF5KCYkYSwmJGIpe3JldHVybiBjb2xsZWN0KCRhLCRiKTt9JGE9WzFdOyRiPTI7JHI9JnJlbGF5KCRhLCRiKTskdj0kcjskclswXVswXT0zOyR2WzFdPTQ7ZWNobyAkYVswXSwkYiwkclsxXTs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-returned-reference-tail/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1yZXR1cm5lZC1yZWZlcmVuY2UtdGFpbC9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1yZXR1cm5lZC1yZWZlcmVuY2UtdGFpbC9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1yZXR1cm5lZC1yZWZlcmVuY2UtdGFpbA=="
+          },
+          "native": {
+            "stdout": "MzQ0",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-returned-reference-tail/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MzQ0",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MzQ0",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "variadic-array-default-prefix",
+        "source_sha256": "87bdb1148a70aad9763c23ed4ed4ee8a3d4e3c04a793b532f27510446e09c347",
+        "original": {
+          "id": "variadic-array-default-prefix",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZihhcnJheSAkYT1bMV0saW50IC4uLiR4cyl7JGFbMF09MztyZXR1cm4gWyRhLCR4c107fSR4PWYoKTskeT1mKFsyXSwiNCIsIjUiKTtlY2hvICR4WzBdWzBdLGlzc2V0KCR4WzFdWzBdKT8iWCI6Ik4iLCR5WzBdWzBdLCR5WzFdWzBdLCR5WzFdWzFdOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-array-default-prefix/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1hcnJheS1kZWZhdWx0LXByZWZpeC9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1hcnJheS1kZWZhdWx0LXByZWZpeC9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1hcnJheS1kZWZhdWx0LXByZWZpeA=="
+          },
+          "native": {
+            "stdout": "M04zNDU=",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-array-default-prefix/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "M04zNDU=",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "78"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "53"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "M04zNDU=",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "78"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "53"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "variadic-fixed-tail-shared-coercion",
+        "source_sha256": "7c3c21a02cbc31ab5f4406a26cbb6fb5be2a64ae6386ee7b5800f459f2650183",
+        "original": {
+          "id": "variadic-fixed-tail-shared-coercion",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZihzdHJpbmcgJiRwLGludCAmLi4uJHhzKXtlY2hvICRwPT09MT8iSSI6IlMiLCR4c1swXTt9JGE9IjEiO2YoJGEsJGEpO2VjaG8gJGE9PT0xPyJJIjoiUyI7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-fixed-tail-shared-coercion/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1maXhlZC10YWlsLXNoYXJlZC1jb2VyY2lvbi9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1maXhlZC10YWlsLXNoYXJlZC1jb2VyY2lvbi9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy1maXhlZC10YWlsLXNoYXJlZC1jb2VyY2lvbg=="
+          },
+          "native": {
+            "stdout": "STFJ",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-fixed-tail-shared-coercion/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "STFJ",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "73"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "73"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "STFJ",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "73"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "73"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "variadic-tail-singleton-after-cleanup",
+        "source_sha256": "11197a1820ad15951d547562bfe2eddc116a32d166fa1aa88ed9ac5452874773",
+        "original": {
+          "id": "variadic-tail-singleton-after-cleanup",
+          "source_base64": "PD9waHAgJGE9WzFdO2Z1bmN0aW9uIGtpbGwoKXt1bnNldCgkR0xPQkFMU1siYSJdKTtyZXR1cm4gMjt9ZnVuY3Rpb24gZigmLi4uJHhzKXtyZXR1cm4gJHhzO30kcj1mKCRhLGtpbGwoKSk7JHY9JHI7JHZbMF1bMF09MztlY2hvICRyWzBdWzBdLCR2WzBdWzBdLCRyWzFdOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-tail-singleton-after-cleanup/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy10YWlsLXNpbmdsZXRvbi1hZnRlci1jbGVhbnVwL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy10YWlsLXNpbmdsZXRvbi1hZnRlci1jbGVhbnVwL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei92YXJpYWRpYy10YWlsLXNpbmdsZXRvbi1hZnRlci1jbGVhbnVw"
+          },
+          "native": {
+            "stdout": "MTMy",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXRhaWwtc2luZ2xldG9uLWFmdGVyLWNsZWFudXAvc291cmNlLnBocCBvbiBsaW5lIDEK",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/variadic-tail-singleton-after-cleanup/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTMy",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXRhaWwtc2luZ2xldG9uLWFmdGVyLWNsZWFudXAvc291cmNlLnBocCBvbiBsaW5lIDEK",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "112",
+                    "97",
+                    "115",
+                    "115",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "1"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "50"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTMy",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctdmFyaWFkaWMtZmluYWwvLnRvb2xzL3ZhcmlhZGljLWIyM2Y3dnd6L3ZhcmlhZGljLXRhaWwtc2luZ2xldG9uLWFmdGVyLWNsZWFudXAvc291cmNlLnBocCBvbiBsaW5lIDEK",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "112",
+                  "97",
+                  "115",
+                  "115",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "1"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "50"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "multiline-known-typed-tail",
+        "source_sha256": "6b82422474748e6486194e1188b73c1f44a5b0f80abc2fb96128bdf786f7b13c",
+        "original": {
+          "id": "multiline-known-typed-tail",
+          "source_base64": "PD9waHAKZnVuY3Rpb24gZigKIGludCAuLi4keHMKKSB7ZWNobyAiQk9EWSI7fQplY2hvICJCRUZPUkUiOwpmKAogMSwKIDIsCiBbXQopOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/multiline-known-typed-tail/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9tdWx0aWxpbmUta25vd24tdHlwZWQtdGFpbC9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9tdWx0aWxpbmUta25vd24tdHlwZWQtdGFpbC9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9tdWx0aWxpbmUta25vd24tdHlwZWQtdGFpbA=="
+          },
+          "native": {
+            "stdout": "QkVGT1JF",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDYgYW5kIGRlZmluZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9tdWx0aWxpbmUta25vd24tdHlwZWQtdGFpbC9zb3VyY2UucGhwOjMKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCg2KTogZigxLCAyLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDMK",
+            "exit_status": 255,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/multiline-known-typed-tail/source.php"
+            ]
+          },
+          "actual": {
+            "status": "php_error",
+            "stdout": "QkVGT1JF",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDYgYW5kIGRlZmluZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9tdWx0aWxpbmUta25vd24tdHlwZWQtdGFpbC9zb3VyY2UucGhwOjMKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCg2KTogZigxLCAyLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDMK",
+            "exit_status": 255,
+            "diagnostic": {
+              "class": "TypeError",
+              "message": "ZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDY=",
+              "line": 3
+            },
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "66",
+                    "69",
+                    "70",
+                    "79",
+                    "82",
+                    "69"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "php_error",
+          "stdout": "QkVGT1JF",
+          "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDYgYW5kIGRlZmluZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9tdWx0aWxpbmUta25vd24tdHlwZWQtdGFpbC9zb3VyY2UucGhwOjMKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCg2KTogZigxLCAyLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDMK",
+          "exit_status": 255,
+          "diagnostic": {
+            "class": "TypeError",
+            "message": "ZigpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy12YXJpYWRpYy1maW5hbC8udG9vbHMvdmFyaWFkaWMtYjIzZjd2d3ovbXVsdGlsaW5lLWtub3duLXR5cGVkLXRhaWwvc291cmNlLnBocCBvbiBsaW5lIDY=",
+            "line": 3
+          },
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "66",
+                  "69",
+                  "70",
+                  "79",
+                  "82",
+                  "69"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "suppressed-reference-call-tail",
+        "source_sha256": "d775efa686dfdc997adc318826a65606d14df0996c547b32d798a077fc891341",
+        "original": {
+          "id": "suppressed-reference-call-tail",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gJmcoKXtnbG9iYWwgJGE7cmV0dXJuICRhO31mdW5jdGlvbiBmKCYuLi4keHMpeyR4c1sxXT03O30kYT0xO2YoJGEsQGcoKSk7ZWNobyAkYTs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/suppressed-reference-call-tail/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9zdXBwcmVzc2VkLXJlZmVyZW5jZS1jYWxsLXRhaWwvc291cmNlLnBocA=="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9zdXBwcmVzc2VkLXJlZmVyZW5jZS1jYWxsLXRhaWwvc291cmNlLnBocA==",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXZhcmlhZGljLWZpbmFsLy50b29scy92YXJpYWRpYy1iMjNmN3Z3ei9zdXBwcmVzc2VkLXJlZmVyZW5jZS1jYWxsLXRhaWw="
+          },
+          "native": {
+            "stdout": "Nw==",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-variadic-final/.tools/variadic-b23f7vwz/suppressed-reference-call-tail/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "Nw==",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "55"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "Nw==",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "55"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      }
+    ]
+  },
+  "retained_history": {
+    "scope": "Preparation failures are retained separately from execution observations and never counted as agreement.",
+    "failures": [
+      {
+        "kind": "producer path",
+        "stage": "before native execution",
+        "evidence": "author-setup-failure.json and baseline951/.tools/author-originals951-initial.py",
+        "reason": "function_scope requires its producer path within the exact private ROOT; initial external preparation producer was rejected by pathlib.relative_to"
+      },
+      {
+        "kind": "snapshot directory preparation",
+        "stage": "no execution",
+        "reason": "coverage/semantics already existed after complete watched copy; final mkdir raised FileExistsError. All copied files remained intact and subsequent helpers use exist_ok."
+      },
+      {
+        "kind": "AL syntax/elaboration",
+        "stage": "before source execution",
+        "evidence": "candidate/.tools/syntax103-* commands/stdout/stderr/status and stored103/84 before fragments",
+        "reason": "computed array index needed a bound nat; forward call_sent_operands_valid declaration needed moving; recursive nat subtraction needed a bound successor. Later AL main=true passed; it does not exercise the adapter SL structural pass."
+      },
+      {
+        "kind": "SL structural pass",
+        "stage": "source execution returned runner_failure",
+        "evidence": "first953/77919 and task-pattern953/53d6, retained25-first-q0sy_kbi and retained25-task-pattern-jfyx6ppq",
+        "reason": "compiler singleton/recursive supported-params partition triggered casify.ml83. Equivalent task-list pattern rewrite did not fix it. Compiler independently isolated and repaired its rule partition without framework changes."
+      },
+      {
+        "kind": "runtime integration",
+        "stage": "native mismatch and interpreter_failure",
+        "evidence": "repaired953/296b retained25-repaired-kxl4vkh5",
+        "reason": "trace included collected tail as an argument and lacked REFERENCE extras; required-prefix wording used total parameter count. Fixed83 trace prefix/extra resolution and91 fixed count before runnable5157."
+      },
+      {
+        "kind": "dense runner timeout",
+        "stage": "standalone runner",
+        "evidence": "semantic959/cee5 .tools/variadic-state-xn74afvb and final-gates-2cvsct8d",
+        "reason": "first dense case reached300s with no assertion result; second native/fixture prepared but runner not started. Exact prepared fixtures retried with900s allowance and no native reexecution; state-timeout bridge changes only allowance."
+      }
+    ]
+  },
+  "required_next": "Named destination/hole/default preflight and trace metadata, then array unpacking, remaining callable/object/dynamic/exception/generator/lifecycle/intrinsic/reporting core obligations and final complete integration/source/syntax/fresh offline validation."
+}
