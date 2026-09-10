@@ -1,0 +1,118 @@
+{
+  "scope": "Exact corrected compiler929/d365 to paired933 source/test hash+mode bridge. Prior compiler929/4633 and initial/9331 regression identities remain unchanged; runtime acceptance separate.",
+  "compiler": {
+    "sha256": "d365385a6786186a0dac5d969c040840929a6fcc6b95cdd47fd652d1b111de12",
+    "files": 929,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "paired": {
+    "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+    "files": 933,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "copied_exact_files": {
+    "spec/semantics/46-source-compiler.watsup": {
+      "sha256": "edfc23b8de236ba4e22790cef8387b262b47cc5e0e4ca5cbbf68cc5856d9a4e7",
+      "mode": 436
+    },
+    "spec/semantics/78-function-compiler.watsup": {
+      "sha256": "606a3999f05adb74c7f0e1bedaac0bc168bc4b9deedb88fca7deee614c7f989c",
+      "mode": 436
+    },
+    "spec/semantics/96-call-reference-compiler.watsup": {
+      "sha256": "3c86fa425ad65ad60fb5f6965e0e6d08b99c05707c8845c54d80d6c5f3635a16",
+      "mode": 436
+    },
+    "tests/semantics/call_reference_cases.json": {
+      "sha256": "70a1a5ec4b6c058a3cd630b6184fa216bf69fb73b0b44bfaac9942fee28ca1f8",
+      "mode": 436
+    },
+    "tests/semantics/call_reference_compiler.py": {
+      "sha256": "81eda00f4f0b3c07e12dbda7c952c7c5266c477493fdef7f51c71b89665ce518",
+      "mode": 436
+    }
+  },
+  "registry": {
+    "ordered_compiler_modules_preserved": true,
+    "runtime_additions": [
+      "spec/semantics/97-call-reference-acquisition.watsup"
+    ]
+  },
+  "code_final_bridge": {
+    "before": {
+      "sha256": "9331a80c4b0012661620d13c4d226ff3f303142d12eb203b32561e28e8a54122",
+      "files": 929,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "after": {
+      "sha256": "d365385a6786186a0dac5d969c040840929a6fcc6b95cdd47fd652d1b111de12",
+      "files": 929,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changed_paths": [
+      "spec/semantics/78-function-compiler.watsup",
+      "tests/semantics/call_reference_cases.json",
+      "tests/semantics/call_reference_compiler.py"
+    ],
+    "scope": "After focused regression freeze9331, module78 changes only its misleading comment; two maintained test files add7line controls. Compiler semantic source otherwise unchanged. Prior gate fingerprints are retained.",
+    "before78_sha256": "f7207a64021c5f432c1721c3325d76193b5cea43b426f45470716d1976108354",
+    "after78_sha256": "606a3999f05adb74c7f0e1bedaac0bc168bc4b9deedb88fca7deee614c7f989c"
+  },
+  "canonical_code_commit": "af228143"
+}
