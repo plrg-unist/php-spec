@@ -1,0 +1,1154 @@
+{
+  "decision": "accept bounded source error suppression",
+  "implementation": {
+    "code_commit": "14003331",
+    "compiler_evidence_commit": "601b496d",
+    "author_evidence_commit": "5535cffc",
+    "fingerprint": {
+      "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "semantic_gate_fingerprint": {
+      "sha256": "ff8d4b9fea38d7c2cd5e4952ca76a7b9f22537611f6116ee784291d2f7438ba7",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "baseline": {
+      "sha256": "3c331e7478283407f0e37874f9134344dc8c0d86f0ad978d59fbc35b15d8ba2d",
+      "files": 942,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changed_paths": 21,
+    "canonical_bytes_modes_exact": true,
+    "print_only_bridge": {
+      "result": "pass",
+      "before": {
+        "sha256": "ff8d4b9fea38d7c2cd5e4952ca76a7b9f22537611f6116ee784291d2f7438ba7",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "delta": [
+        "tests/semantics/reference_return_demand.py"
+      ],
+      "unchanged_bytes": 950,
+      "unchanged_modes": 951,
+      "semantic_scope": "Only stale final report print key changed; all runtime/compiler/source-gate/protocol/state producer bytes identical."
+    }
+  },
+  "scope": "Compiler100/runtime101 execute ordinary @ under the pinned30719 reporting profile, preserving deferred fetch/effect/ownership and conditional per-frame mask restoration. General reporting configuration, handlers and configured fatal display remain required. No family closure.",
+  "independent_gates": {
+    "source": {
+      "profiles": 4,
+      "native_agreements": 4,
+      "raw": "raw/review10-return-reference-replay-szxj0sw4",
+      "originals": "raw/review10-suppression-originals-q1nzdxv_"
+    },
+    "protocol": {
+      "controls": 23,
+      "assertions": 489,
+      "fresh_native_contexts": 2,
+      "raw": "raw/error-suppression-protocol-3b_lvz1f"
+    },
+    "states": {
+      "programs": 4,
+      "assertions": 1312,
+      "one_step_cuts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        64,
+        128
+      ],
+      "full_cuts": [
+        0,
+        1,
+        7,
+        16,
+        32,
+        64,
+        128
+      ],
+      "source_cuts": "Actual DEFAULT_BIND or DEFAULT_RECEIVE before failed evaluation, minus1 through plus3 with adjacent/full suffixes, saved caller masks and all heap/call/source/request roots.",
+      "raw": "raw/review10-suppression-state-guid6fm5"
+    },
+    "old_state_bridge": {
+      "baseline": "942/3c331e74",
+      "programs": 2,
+      "cuts": [
+        0,
+        8,
+        16,
+        32,
+        64,
+        128,
+        10000
+      ],
+      "projection": "Only new state REPORTING=30719 and empty state/frame SILENCES removed; every old response/state field exactly equal.",
+      "raw": "raw/review10-suppression-compatibility-b0esgf13"
+    },
+    "raw": {
+      "result": "pass",
+      "records": [
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-originals-q1nzdxv_",
+          "scope": "baseline942",
+          "responses": 8,
+          "clean_worker_closures": 2,
+          "native_processes": 4,
+          "true_standalone_closures": 0,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-return-reference-replay-utvzhs1l",
+          "scope": "first944-source",
+          "responses": 8,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 0,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-return-reference-replay-szxj0sw4",
+          "scope": "semantic951-source",
+          "responses": 8,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 0,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-state-guid6fm5",
+          "scope": "semantic951-state",
+          "responses": 12,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 4,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-compatibility-b0esgf13",
+          "scope": "942-to951-bridge",
+          "responses": 30,
+          "clean_worker_closures": 3,
+          "native_processes": 0,
+          "true_standalone_closures": 0,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-integration/.tools/error-suppression-protocol-3b_lvz1f",
+          "scope": "semantic951-protocol",
+          "responses": 6,
+          "clean_worker_closures": 4,
+          "native_processes": 2,
+          "true_standalone_closures": 23,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-kd0isg_1",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 10,
+          "retained_fixture_failures": 1
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-g9ia539_",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 1,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-hpzcn4f0",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 6,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-f_onaw2j",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 11,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-7mozwz_1",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 6,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-_ch09_3e",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 0,
+          "retained_fixture_failures": 3
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-id3ickl4",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 3,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-wv13ao8l",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 5,
+          "retained_fixture_failures": 0
+        },
+        {
+          "root": "/home/user/workspace/php-spec/.tools/review10-suppression-protocol-rnibgcb8",
+          "scope": "original-and-repair-protocol",
+          "responses": 2,
+          "clean_worker_closures": 2,
+          "native_processes": 0,
+          "true_standalone_closures": 3,
+          "retained_fixture_failures": 0
+        }
+      ],
+      "responses": 90,
+      "clean_worker_closures": 33,
+      "true_standalone_closures": 72,
+      "retained_fixture_failures": 4,
+      "scope": "Actual942 Unsupported originals, first944 counterexamples, intermediate guard replays and semantic951 source/protocol/state/old-field bridges remain distinct. Four fixture syntax/elaboration failures are preserved; no tool failure is a semantic agreement."
+    },
+    "overlap": "Source/protocol/state/native/compiler/CLI sets overlap and are not counted as unique programs."
+  },
+  "author_gates": {
+    "source": 26,
+    "primitive_reporting": 37,
+    "protocol": [
+      23,
+      489
+    ],
+    "compiler": [
+      17,
+      131
+    ],
+    "demand": [
+      19,
+      38
+    ],
+    "states": [
+      2,
+      779
+    ],
+    "reference_return_regression": 31,
+    "canonical_cli": 8,
+    "identities": "Source/state/protocol/compiler/reporter/refreturn and independent gates951/ff8d; final corrected demand and canonicalCLI951/c650. One print-only bridge preserves950 identical files and all951 modes.",
+    "outer_failure": "Originalff8d demand assertions and report pass followed by stale print-key KeyError; not counted as a successful outer process. Fresh final demand process passes."
+  },
+  "author_audit": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "ff8d4b9fea38d7c2cd5e4952ca76a7b9f22537611f6116ee784291d2f7438ba7",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "gates": [
+      {
+        "name": "suppression-compiler",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/suppression-compiler.json",
+        "sha256": "2fe0ee4f3cb5efd0f70ed0c06267f040552f0f499462d0effc795345deb156f3",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/suppression-compiler-lxa0h1p6",
+        "responses": 34
+      },
+      {
+        "name": "suppression",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/suppression.json",
+        "sha256": "8e64e4692132ac1a9fa531243d822a55c487db3609e88a271668a3aa56552279",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/suppression-q8cb7sbq",
+        "responses": 52
+      },
+      {
+        "name": "reference-return-demand",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/reference-return-demand.json",
+        "sha256": "7b530d1e1516040b440283acca142ac450b0c989f9a127d30c75777d291438d3",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/reference-return-demand-bnpfance",
+        "responses": 38
+      },
+      {
+        "name": "suppression-state",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/suppression-state.json",
+        "sha256": "ba5d419d37f94f4e05c568522467741ce7a4d01228deefacae4878b35fd13648",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/suppression-state-yrunb87m",
+        "responses": 6
+      },
+      {
+        "name": "reference-returns",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/reference-returns.json",
+        "sha256": "e93c811da729f627b0cdc03196f7fbd30ea7c1a36fec4594b1b3984675773dd5",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/reference-returns-rv2fjb1e",
+        "responses": 62
+      },
+      {
+        "name": "suppression-reporting",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/suppression-reporting.json",
+        "sha256": "ab7c84d8652a0b86fef450fd5a1646598ad695a27394e4f328a596bbde827db3",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/suppression-reporting-z0geklbm",
+        "responses": 0
+      },
+      {
+        "name": "error-suppression-protocol",
+        "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/coverage/semantics/error-suppression-protocol.json",
+        "sha256": "8a2a169edece6e52d865826d229822b83dba89d47df2c8089cff7408552a837e",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-integration/.tools/error-suppression-protocol-wd5t5877",
+        "responses": 6
+      }
+    ],
+    "responses": 198,
+    "clean_closures": 14,
+    "standalone_true_closures": 28,
+    "source_native_agreements": 59,
+    "scope": "All951/ff8d semantic bytes/modes and direct gate inputs; complete packets/clean workers and standalone true runners. Native source/status/provider packets for source26+state2+reference-return31, with demand19/38, compiler17/131, primitive37 and protocol23/489 separately identified; overlapping counts. Final c650 demand-print correction is separately bridged.",
+    "final_demand": {
+      "result": "pass",
+      "report": "/home/user/workspace/php-spec/.tools/runtime7-suppression-final/coverage/semantics/reference-return-demand.json",
+      "sha256": "c3feff5bbb2f0a211efbd6fc3d40ac1e47f014ef58e3fa07c7f51f64341542ed",
+      "fingerprint": {
+        "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "records": 19,
+      "assertions": 38,
+      "responses": 38,
+      "clean_closures": 2,
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-suppression-final/.tools/reference-return-demand-ztk0if8_",
+      "scope": "Fresh corrected final print producer; prior ff8d fixture/report pass with stale final print KeyError remains distinct."
+    }
+  },
+  "compiler_archive_audit": {
+    "result": "pass",
+    "scope": "All compiler archive payloads/hashes/modes and full942/946 source+tool maps; nested retained preparation and send-kind archives independently payload-audited, distinct phases/opcode profiles retained. No paired runtime inference.",
+    "archive": "2cb921c7788ab453380f79aeb2259977efec3532d45f89edaa3091d7769ccae7",
+    "paths": 3515,
+    "tools": 23,
+    "baseline": {
+      "sha256": "3c331e7478283407f0e37874f9134344dc8c0d86f0ad978d59fbc35b15d8ba2d",
+      "files": 942,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "candidate": {
+      "sha256": "2e82245fd302d666b10fa945ed1c42fc4e97c4da13d8ceac0eb2bb4ad4393465",
+      "files": 946,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "responses": 288,
+    "clean_closures": 16,
+    "nested": [
+      {
+        "archive": "historical/suppression933.tar.xz",
+        "sha256": "f38c33f7e0d38ff904106bb4bc09f624f25d9a9b12e35ff97fb483312e3ae961",
+        "paths": 1257,
+        "mode_manifest_present": true,
+        "tools": 10,
+        "responses": 20,
+        "clean_closures": 2
+      },
+      {
+        "archive": "historical/demand933.tar.xz",
+        "sha256": "e39cda145721a1aa10564b726722c7bd6e9696f277ca98432e3d187831637dd6",
+        "paths": 1782,
+        "mode_manifest_present": true,
+        "tools": 20,
+        "responses": 54,
+        "clean_closures": 6
+      },
+      {
+        "archive": "historical/send-kinds.tar.xz",
+        "sha256": "547bc6742983ec0812f3e1bdf5f90e7b30777f7199289afc0300ec609c5a92f9",
+        "paths": 3216,
+        "mode_manifest_present": false,
+        "tools": 5,
+        "responses": 0,
+        "clean_closures": 0
+      }
+    ],
+    "gates": {
+      "retained_lints": 17,
+      "retained_source_assertions": 179,
+      "maintained_lints": 17,
+      "maintained_contexts": 131,
+      "reference_return_lints": 58,
+      "reference_return_contexts": 49,
+      "historical_fixture_replays": [
+        {
+          "phases": 12,
+          "projections": 36
+        },
+        {
+          "phases": 111,
+          "projections": 32
+        }
+      ]
+    },
+    "raw_boundary": "Full recorded frontend/adapter packets and clean closures for new source and phase runs; raw native/lint/opcode/runner output and status. Historical send/destructuring worker limitation remains in nested original archive. Setup failures before native execution have descriptions rather than standalone original stderr capture.",
+    "tool_modes": "Full active942/946 executable modes match pinned baseline. Original-inputs tool copies retain archived non-executable mode0664 and executable SHA bindings; they are snapshots, not executed paths.",
+    "historical_mode_scope": "Nested 547bc send-kind archive has no per-path mode manifest; its exact archive hash fixes the tar headers. No new historical mode-manifest claim."
+  },
+  "runtime_archive_audit": {
+    "result": "pass",
+    "archive_sha256": "c71b37f8f12eb9c973aa76e9d615eea6e6086733e614146a91cabef956abac9f",
+    "payload_paths": 11145,
+    "snapshots": {
+      "baseline942": {
+        "sha256": "3c331e7478283407f0e37874f9134344dc8c0d86f0ad978d59fbc35b15d8ba2d",
+        "files": 942,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "first944": {
+        "sha256": "e02f4d9cf54dca20d3f653076fa0bc1bc799d8b0541bf437af805a37a4c1506a",
+        "files": 944,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "guarded944": {
+        "sha256": "30cc6cf63e9b74bc75b695ea88b0816ce8fd89b94f7fc3b5680110283993f8ba",
+        "files": 944,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "integration951": {
+        "sha256": "ff8d4b9fea38d7c2cd5e4952ca76a7b9f22537611f6116ee784291d2f7438ba7",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final951": {
+        "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+        "files": 951,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "runtime7-suppression-reporting-nz3yhg2q": {
+        "sha256": "5c8406827f2c81ecb02ce140c369bfbed64cd8ddc37463aae4d0c7984ce631e5",
+        "files": 950,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "runtime7-suppression-reporting-zxips930": {
+        "sha256": "979eeaebaa00efe9ba941bf44d0f165e3559a17aee973331ab11c37de4f6bb3e",
+        "files": 950,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "runtime7-suppression-reporting-6zwzyc2j": {
+        "sha256": "605cf26bce58eb79c646d82e6f7b0b201ab3b3ab946d1b7098c0b53ecd207b74",
+        "files": 950,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "binary_payloads": "Actual retained bytes, hashes and modes verified in each full snapshot.",
+    "pinned_sources": 7,
+    "scope": "Every author archive payload/hardlink/hash/length/mode and all eight complete manifests. Independently held baseline942 and final951 files/modes match, with actual binary payloads and pinned C sources. First944, guarded944, three failed950 reporter preparations, semantic951/ff8d and final951/c650 preserve exact identities."
+  },
+  "compiler_publication_audit": {
+    "result": "pass",
+    "code_commit": "14003331",
+    "compiler_commit": "601b496d",
+    "compiler": {
+      "sha256": "2e82245fd302d666b10fa945ed1c42fc4e97c4da13d8ceac0eb2bb4ad4393465",
+      "files": 946,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "final": {
+      "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "files": {
+      "docs/semantics/SUPPRESSION-COMPILER.md": {
+        "sha256": "86cf1a58ab325e232a9ae72178ca7c3c0e946437355964907b4c6cbdd0a69cbe",
+        "mode": 436
+      },
+      "coverage/semantics/suppression-compiler-originals.json": {
+        "sha256": "106344ab917e6f02592308a74892640bc5d087f9dfa9cc868f401965309b111c",
+        "mode": 436
+      },
+      "coverage/semantics/suppression-compiler-originals.tar.xz": {
+        "sha256": "2cb921c7788ab453380f79aeb2259977efec3532d45f89edaa3091d7769ccae7",
+        "mode": 436
+      },
+      "coverage/semantics/suppression-compiler-pairing.json": {
+        "sha256": "2cabde29cf3760fecc84e39033fb9424025f74ec6201d5eae8fe00a3470fb2f4",
+        "mode": 436
+      }
+    },
+    "owned_paths": 4,
+    "unchanged": 942,
+    "changed": 4,
+    "added": 5,
+    "mode_changes": 0,
+    "scope": "Exact full946/951 byte and mode bridge independently derived. Old58 phase identity retained; final951 owns only fresh17/131 plus paired runtime review."
+  },
+  "publication_audit": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "canonical_files_modes": 951,
+    "publication_archive_sha256": "2a7609b9b38624145ad412f3b55e684ea01b12cfe7f2321768f97130098b9f78",
+    "payloads": 61,
+    "history_dependency": "c71b37f8f12eb9c973aa76e9d615eea6e6086733e614146a91cabef956abac9f",
+    "canonical_cli": {
+      "native_agreements": 8,
+      "clean_process_closures": 8,
+      "source_request_and_raw_observations_exact": true
+    },
+    "paths": {
+      "docs/semantics/SOURCE-ERROR-SUPPRESSION.md": {
+        "sha256": "ceb6738a5fddec813a3dfe2eff27f9ad5f5be81087cff17c19522cd250c73d2c",
+        "mode": 436
+      },
+      "coverage/semantics/error-suppression-runtime-originals.json": {
+        "sha256": "8c8127c3f1f12260928d886c011bcaa4d14169834783991a11bd89f630c29a1c",
+        "mode": 436
+      },
+      "coverage/semantics/error-suppression-runtime-publication-originals.tar.xz": {
+        "sha256": "2a7609b9b38624145ad412f3b55e684ea01b12cfe7f2321768f97130098b9f78",
+        "mode": 436
+      },
+      "coverage/semantics/suppression-compiler.json": {
+        "sha256": "2fe0ee4f3cb5efd0f70ed0c06267f040552f0f499462d0effc795345deb156f3",
+        "mode": 436
+      },
+      "coverage/semantics/error-suppression-runtime-publication-originals.json": {
+        "sha256": "94b51fcf14f9380ce558ca42f6b094a60b21f1ca1da47a0c62a3dcf88adc4b0e",
+        "mode": 436
+      },
+      "coverage/semantics/error-suppression-runtime.json": {
+        "sha256": "d9541b5c52f78f8ab1027831dc393f2e3f09d9a6b89f3acc44df7a42527bf053",
+        "mode": 436
+      },
+      "coverage/semantics/error-suppression-runtime-originals.tar.xz": {
+        "sha256": "c71b37f8f12eb9c973aa76e9d615eea6e6086733e614146a91cabef956abac9f",
+        "mode": 436
+      }
+    }
+  },
+  "review_archive": {
+    "archive": "coverage/semantics/error-suppression-review-originals.tar.xz",
+    "sha256": "e73986e11c8c999dcbb7a97bcb9ad23200325dbac5eb75f978ef2a5a1e5784bf",
+    "paths": 6128,
+    "bytes": 979036,
+    "tools": {
+      "baseline942/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "baseline942/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "baseline942/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "baseline942/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "baseline942/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "first944/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "first944/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "first944/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "first944/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "first944/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "guarded944/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "guarded944/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "guarded944/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "guarded944/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "guarded944/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "semantic951/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "semantic951/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "semantic951/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "semantic951/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "semantic951/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "final951/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "final951/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "final951/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "final951/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "final951/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "raw/review10-suppression-originals-q1nzdxv_/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-suppression-originals-q1nzdxv_/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-suppression-originals-q1nzdxv_/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-suppression-originals-q1nzdxv_/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-suppression-originals-q1nzdxv_/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-utvzhs1l/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-utvzhs1l/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-utvzhs1l/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-utvzhs1l/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-utvzhs1l/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-szxj0sw4/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-szxj0sw4/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-szxj0sw4/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-szxj0sw4/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-szxj0sw4/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-suppression-state-guid6fm5/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/error-suppression-protocol-3b_lvz1f/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/error-suppression-protocol-3b_lvz1f/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/error-suppression-protocol-3b_lvz1f/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/error-suppression-protocol-3b_lvz1f/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      }
+    },
+    "baseline": {
+      "sha256": "3c331e7478283407f0e37874f9134344dc8c0d86f0ad978d59fbc35b15d8ba2d",
+      "files": 942,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "tested": {
+      "sha256": "ff8d4b9fea38d7c2cd5e4952ca76a7b9f22537611f6116ee784291d2f7438ba7",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "final": {
+      "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+      "files": 951,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "compiler_originals_archive": "2cb921c7788ab453380f79aeb2259977efec3532d45f89edaa3091d7769ccae7",
+    "scope": "Independent four original942 native/full-request Unsupported sources; immutable first944 scope/task/source-line/mask counterexamples and explicit fixture failures; signed32 boundary correction with validmask/value positives. Semantic951/ff8d source4, protocol23/489, states4/1312, two full942 old-field bridges. Final951/c650 changes only demand report print. All90 decoded responses/33 clean worker closures audited;72 true standalone and4 retained fixture setup failures distinct. Full source/tool hash-mode maps retained; actual executable bytes are in linked author runtime archive. One reused933 variable context retain original native provenance through compiler2cb nestedf38 archive.",
+    "scope_note": "The archived packager wording said two reused933 contexts; exact raw records bind one reused933 variable source, plus two fresh native contexts in the maintained final protocol. Archive payloade739 is unchanged.",
+    "historical_archive_path": "/home/user/workspace/php-spec/.tools/review10-suppression-review-originals.tar.xz"
+  },
+  "publication_archive": {
+    "archive": "coverage/semantics/error-suppression-review-publication-originals.tar.xz",
+    "sha256": "2336b914a6d5158fa127315958ab5f5d59240fb4116ccc7e6b7bbacf95b93254",
+    "paths": 12,
+    "bytes": 65300,
+    "scope": "Final author raw/archive/CLI publication and compiler pairing audits with exact producers and final951 manifest. Main review historye739 remains immutable."
+  },
+  "reviewed_invariants": [
+    "Compiler preserves CONST/FOLD and known suppression effect roots; existing ancestor effect selection avoids duplicate nested/list replay and keeps static phase diagnostics outside runtime suppression.",
+    "Deferred CV fetch occurs inside END before restoration; owning KNOWN/REFERENCE identities remain intact. Suppression retains call VAR versus direct variable TMP for reference sends and VALUE designation for source reference-return Notices after END.",
+    "REPORTING is request-global, while source-bound SILENCES belong to active/saved frames. Normal callee return preserves caller scope, and abrupt cleanup restores discarded scopes independently of TODO.",
+    "Pinned EG(error_reporting) is signed32 C int; BEGIN widens an existing field value into zend_long. Current/saved masks are finite runtime values, not reconstructed history. Conditional restoration preserves arbitrary valid current masks and restores saved nonfatal masks only while current reporting remains fatal-only.",
+    "Actual current/saved scope owners, nesting, END order/origin and checked unit suppression/child/effect projection are finite guards. Arbitrary valid signed masks and owning values stay accepted; invalid masks/source metadata fail both zero and full drive.",
+    "Suppressed deferred constant-warning results cache uncoerced scalar3 before later type failure, omitted reference defaults receive fresh cells while cache3 survives, failed evaluation leaves no cache, and all cases restore reporting on final cleanup."
+  ],
+  "original_failures": [
+    "First944 accepted missing/current/saved scopes, wrong END/source origins and forged child metadata; with arbitrary live warning mask2, the source Warning line1 was changed to101.",
+    "Private first/guarded944 admitted values beyond the pinned signed32 field. Exact \u00b12^31 boundary counterexamples precede narrowing; signed32 min/max, saved-1, live2, fatal-only saved0 and arbitrary owning99 remain valid.",
+    "Four reviewer fixture syntax/elaboration failures (negative literal and otherwise helper) are retained separately from agreements.",
+    "Compiler retained two phase fixture parser failures and exact producers; pre-native setup failures have descriptions only, not invented stderr.",
+    "Author retained three reporter fixture preparations and a final demand-print stale-key failure; only the last print correction changes ff8d to c650.",
+    "Archive auditor initially conflated nonexecuted0664 tool copies with active executable modes and assumed a mode map in the older send archive. Corrected scope and initial producer are retained; historical send archive has exact hash/payload binding but no new mode-manifest claim."
+  ],
+  "required_next": [
+    "Resolve the known eager variadic-default PHP-Parser source rejection through a bounded reproducible vendor patch and existing17/90 static check, then positional variadic receive; named/unpacked sends retain independent ordering/default/refcell obligations.",
+    "Reporting configuration/error_reporting/INI/custom handlers and configurable fatal display; fixed30719 source @ and primitive masks do not establish those source routes.",
+    "Closures/dynamic callables, objects/types/properties, exceptions/finally, dynamic source services, generators/Fibers/lifetime/core intrinsics and remaining obligations.",
+    "Full callable current-source integration and final full-source/full-syntax/fresh network-isolated offline validation; only oracle identity closes."
+  ],
+  "authority": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source_pin": "vendor/php-src",
+    "references": [
+      "Zend/zend_compile.c",
+      "Zend/zend_vm_def.h",
+      "Zend/zend_execute.c",
+      "Zend/zend_globals.h",
+      "Zend/zend_builtin_functions.c",
+      "Zend/zend_errors.h",
+      "main/main.c"
+    ],
+    "opcode_scope": "Retained pre-optimizer observations remain separately profiled and never substitute for ordinary native source/request agreement."
+  }
+}
