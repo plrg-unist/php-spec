@@ -9,7 +9,9 @@ The current [typed checkpoint](SOURCE-TYPED-FUNCTIONS.md) also connects position
 reference parameters, defaults and builtin scalar/container value types. The
 [call-result reference assignment](SOURCE-CALL-REFERENCE-ASSIGNMENT.md) is accepted
 on933 and [source reference returns](SOURCE-REFERENCE-RETURNS.md) on942;
-the [next handoff](RUNTIME-SUPPRESSION-HANDOFF.md) schedules source suppression. The sequence below retains its historical role.
+[source suppression](SOURCE-ERROR-SUPPRESSION.md) is accepted on951. The
+[next handoff](RUNTIME-VARIADIC-HANDOFF.md) schedules the source-pipeline correction
+and positional variadic receive. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 

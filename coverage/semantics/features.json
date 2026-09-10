@@ -1493,14 +1493,19 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/100-suppression-compiler.watsup",
+        "spec/semantics/101-error-suppression.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
       "source_tests": [
-        "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/suppression.py",
+        "tests/semantics/suppression_compiler.py",
+        "tests/semantics/suppression_state.py",
+        "tests/semantics/error_suppression_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Accepted bounded source suppression100/101 at29baca42, exact951/c650 with semanticff8d print-only bridge; see error-suppression-review.json. Known compiler results retain once-only effects, deferred CV reads occur before conditional END restoration, frame-owned scopes survive calls and unwind, and runtime nonfatal events respect signed32 masks. Independent4 source/23 protocol/4 dense/2 old-field bridges and author source/reporter/compiler/ownership/CLI gates pass. Reporting configuration, handlers, configurable fatal display and dependent core protocols remain required; no family closure."
     },
     {
       "node": "Expr_Eval",
@@ -8082,15 +8087,31 @@
     {
       "id": "diagnostics.suppression",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/100-suppression-compiler.watsup",
+        "spec/semantics/101-error-suppression.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/suppression_reporting.py"
+      ],
+      "source_tests": [
+        "tests/semantics/suppression.py",
+        "tests/semantics/suppression_compiler.py",
+        "tests/semantics/suppression_state.py",
+        "tests/semantics/error_suppression_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_globals.h",
+        "vendor/php-src/Zend/zend_errors.h"
+      ],
+      "review": "Accepted bounded source suppression100/101 at29baca42, exact951/c650 with semanticff8d print-only bridge; see error-suppression-review.json. Known compiler results retain once-only effects, deferred CV reads occur before conditional END restoration, frame-owned scopes survive calls and unwind, and runtime nonfatal events respect signed32 masks. Independent4 source/23 protocol/4 dense/2 old-field bridges and author source/reporter/compiler/ownership/CLI gates pass. Reporting configuration, handlers, configurable fatal display and dependent core protocols remain required; no family closure."
     },
     {
       "id": "diagnostics.error-reporting",
