@@ -83,3 +83,8 @@ remain mandatory. Unsupported outcomes and tool failures never count as agreemen
 
 The [runtime successor handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md) supplies
 the exact926 starting point and reference-return/call-acquisition preparation.
+
+The later [call-reference increment](SOURCE-CALL-REFERENCE-ASSIGNMENT.md) on933
+corrects shared post-argument emission locations: a retained typed return around
+a multiline call now reports native line5 instead of926 line4. Historical typed
+gates and the926/baa-to599 test-only bridge above retain their original scope.

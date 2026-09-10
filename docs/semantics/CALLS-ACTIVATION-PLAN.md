@@ -7,8 +7,9 @@ cleanup execute through the checked source pipeline. The remaining protocols bel
 are required work; helper or bounded source evidence does not close whole families.
 The current [typed checkpoint](SOURCE-TYPED-FUNCTIONS.md) also connects positional
 reference parameters, defaults and builtin scalar/container value types. The
-[next handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md) schedules reference returns
-and call-reference acquisition; the sequence below retains its historical role.
+[call-result reference assignment](SOURCE-CALL-REFERENCE-ASSIGNMENT.md) is accepted
+on933; the [next handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md) schedules source
+reference returns. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 
