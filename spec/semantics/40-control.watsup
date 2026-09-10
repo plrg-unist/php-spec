@@ -221,10 +221,11 @@ rule PhpStep/acquire-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/bind-reference: S ~> S_bound[.TODO = ptask_tail*]
   -- if S.TODO = (REF_NAME n_name*) :: ptask_tail*
-  -- if S_bound = $scope_bind_name(S, [PCFIELD 0], n_name*, 0)
+  -- if S_bound = $reference_bind_name(S, n_name*)
 ;; Exact nonliteral target / non-CV source condition from zend_compile_assign_ref.
 rule PhpStep/capture-reference: S ~> S[.TODO = (REF_DYNAMIC poperand S.CELL z) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (REF_CAPTURE poperand z) :: ptask_tail*
+  -- if ~$reference_value_call(S)
 rule PhpStep/bind-dynamic: S ~> S_bound[.TODO = ptask_tail*]
   -- if S.TODO = (REF_DYNAMIC poperand n_source z) :: ptask_tail*
   -- if S_name = $resolve_name(S, poperand, z)

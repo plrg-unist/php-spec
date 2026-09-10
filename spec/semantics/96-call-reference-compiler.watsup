@@ -1,0 +1,9 @@
+;; Reference assignment accepts a call source without making calls writable.
+def $ppassignsource(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, true) = $ppwrite_call($ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR), pcpath, NExprFuncCall phpType19 phpType6 metadata, PPW)
+def $ppassignsource(P, pcpath, expression, b) = $ppexpr(P, pcpath, expression, $ppvaluemode(b))
+  -- otherwise
+
+;; Array reference items reject direct calls before compiling their arguments.
+;; The key was already compiled; reuse the existing writable-source diagnostic.
+def $pparrayrefcheck(P, NExprFuncCall phpType19 phpType6 metadata, true) = $ppupdatecheck(P, NExprFuncCall phpType19 phpType6 metadata)
+def $pparrayrefcheck(P, expression, b) = P -- otherwise

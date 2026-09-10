@@ -56,6 +56,7 @@ dec $ppstatement(ppstate, pcpath, statement) : ppstate
 dec $ppstatements(ppstate, pcpath, nat, statement*) : ppstate
 dec $ppblockstatements(ppstate, pcpath, nat, statement*, bool) : ppstate
 dec $ppexpr(ppstate, pcpath, expression, ppmode) : ppstate
+dec $ppcall_read(expression, ppmode) : bool
 dec $ppexprbody(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppdone(ppstate, pcpath, ppmode) : ppstate
 dec $ppexprs(ppstate, pcpath, nat, expression*, ppmode) : ppstate
@@ -141,6 +142,7 @@ def $ppeffective_line(pffact*, pcpath, expression, ppmode) = $expression_line(ex
 def $ppexpr(P, pcpath, expression, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppexpr(P, pcpath, expression, ppmode) = $ppdone($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, expression, ppmode)), pcpath, expression, ppmode), pcpath, ppmode)
+  -- if ~$ppcall_read(expression, ppmode)
   -- if P.COMPLETION = PPCNORMAL
 def $ppdone(P, pcpath, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -169,6 +171,8 @@ dec $ppglobalname(ppstate) : ppstate
 dec $coalesce_quiet_operand(expression) : bool
 dec $ppassign(ppstate, pcpath, expression, expression, bool) : ppstate
 dec $ppassignright(ppstate, pcpath, expression, expression, bool) : ppstate
+dec $ppassignsource(ppstate, pcpath, expression, bool) : ppstate
+dec $pparrayrefcheck(ppstate, expression, bool) : ppstate
 dec $ppassignmentline(ppstate, expression, bool) : ppstate
 dec $ppcompound(ppstate, pcpath, expression, expression) : ppstate
 dec $pparray(ppstate, pcpath, phpType13*) : ppstate
@@ -347,7 +351,7 @@ def $ppassignright(P, pcpath, NExprArrayDimFetch expression_base phpType5 metada
   -- if P.COMPLETION = PPCNORMAL
   -- if $assignment_self(NExprArrayDimFetch expression_base phpType5 metadata, expression_2)
   -- if expression_2 = NExprVariable phpType32 metadata_rhs
-def $ppassignright(P, pcpath, expression_1, expression_2, b) = $ppexpr(P, pcpath ++ [PCFIELD 1], expression_2, $ppvaluemode(b))
+def $ppassignright(P, pcpath, expression_1, expression_2, b) = $ppassignsource(P, pcpath ++ [PCFIELD 1], expression_2, b)
   -- otherwise
 def $ppassignmentline(P, expression, b) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -368,7 +372,7 @@ def $ppitems(P, pcpath, n, phpType13*) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppitems(P, pcpath, n, eps) = P[.FOLD = P.FOLD[.VALUE = eps]]
   -- if P.COMPLETION = PPCNORMAL
-def $ppitems(P, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*) = $ppitems($ppexpr($ppitemkey(P, pcpath ++ [PCINDEX n, PCFIELD 0], phpType5), pcpath ++ [PCINDEX n, PCFIELD 1], expression, $ppvaluemode(b)), pcpath, $(n + 1), phpType13*)
+def $ppitems(P, pcpath, n, (NArrayItem phpType5 expression (BOOLEAN b) (BOOLEAN false) metadata) :: phpType13*) = $ppitems($ppexpr($pparrayrefcheck($ppitemkey(P, pcpath ++ [PCINDEX n, PCFIELD 0], phpType5), expression, b), pcpath ++ [PCINDEX n, PCFIELD 1], expression, $ppvaluemode(b)), pcpath, $(n + 1), phpType13*)
   -- if P.COMPLETION = PPCNORMAL
 def $ppitems(P, pcpath, n, phpType13*) = $ppunsupported(P, "ordinary array unpack or edited item")
   -- otherwise

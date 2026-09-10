@@ -30,7 +30,7 @@ syntax ptask = TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_REC
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
-  | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
+  | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pcursor = CURSOR nat nat
 syntax piterator = ITERATOR nat nat bool pcursor*
 syntax preqbytes = nat*
@@ -233,3 +233,6 @@ dec $scope_codes_valid(pstate, pcode*) : bool
 dec $scope_check(pstate) : pstate
 
 dec $call_entry_check(pstate) : pstate
+
+dec $reference_value_call(pstate) : bool
+dec $reference_bind_name(pstate, nat*) : pstate
