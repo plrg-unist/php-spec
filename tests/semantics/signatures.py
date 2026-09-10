@@ -145,11 +145,6 @@ def main():
                 file.write_text(source)
                 oracle=subprocess.run([str(PHP),'-n',*types.FLAGS,'-l',str(file)],capture_output=True,text=True,timeout=10,env=types.ENV)
                 assert oracle.returncode in (0,255), (source,oracle.returncode,oracle.stderr)
-                if params in restrictions:
-                    assert not parsed['accepted'] and base64.b64decode(parsed['message']).decode() == restrictions[params]+' on line 1', (source,parsed)
-                    assert oracle.returncode == 255 and oracle.stderr == 'Fatal error: '+restrictions[params]+' in '+str(file)+' on line 1\nStack trace:\n#0 {main}\n', (source,oracle.stderr)
-                    records.append({'source':source,'classification':'frontend-compile-restriction','frontend':parsed,'native':native,'exit':oracle.returncode,'stdout':oracle.stdout,'stderr':oracle.stderr})
-                    continue
                 assert parsed['accepted'], (source,parsed)
                 checked=adapter.request({'op':'check','ast':parsed['ast'],'fixture':True})
                 events=[]
@@ -235,7 +230,7 @@ def main():
     finally:
         frontend.close(); adapter.close()
     assert before==fingerprint(),'inputs changed during validation'
-    report={'target':'PHP 8.5.10 CLI NTS signed64','result':'pass','comparisons':sum(r['classification']=='compared' for r in records),'descriptor_checks':descriptor_checks,'return_reference_checks':return_reference_checks,'edited_numeric_descriptors':4,'explicit_unsupported':len(pending)+len(negatives),'edited_compiler_restrictions':len(restrictions),'frontend_compile_restrictions':len(restrictions),'parser_rejected':0,'environment':{'LC_ALL':'C','TZ':'UTC'},'budgets':{'request_seconds':30,'shutdown_seconds':5,'lint_seconds':10,'batch_seconds':120},'comparison':'ordered severity, exact message bytes, original file and compiler line; descriptor fields and retained checked default AST; pending outcomes separate','identity':identity,'profile':types.PROFILE,'fingerprints':before,'cases':records}
+    report={'target':'PHP 8.5.10 CLI NTS signed64','result':'pass','comparisons':sum(r['classification']=='compared' for r in records),'descriptor_checks':descriptor_checks,'return_reference_checks':return_reference_checks,'edited_numeric_descriptors':4,'explicit_unsupported':len(pending)+len(negatives),'edited_compiler_restrictions':len(restrictions),'frontend_compile_restrictions':0,'parser_rejected':0,'environment':{'LC_ALL':'C','TZ':'UTC'},'budgets':{'request_seconds':30,'shutdown_seconds':5,'lint_seconds':10,'batch_seconds':120},'comparison':'ordered severity, exact message bytes, original file and compiler line; descriptor fields and retained checked default AST; pending outcomes separate','identity':identity,'profile':types.PROFILE,'fingerprints':before,'cases':records}
     (ROOT/'coverage/semantics/signatures.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ['cases','identity','fingerprints','profile']}))
 

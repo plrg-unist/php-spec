@@ -380,19 +380,6 @@
     "ini": {}
   },
   {
-    "id": "vendor/php-src/Zend/tests/return_types/void_parameter.phpt",
-    "sha256": "b367c69cc3fc2f51260dfb8898157a8f90d6113030563c1701bf5ed42ce3f9bb",
-    "frontend_message": "void cannot be used as a parameter type on line 3",
-    "lint_contains": "void cannot be used as a parameter type",
-    "restriction": "void_parameter",
-    "reason": "The source uses void as a parameter type.",
-    "evidence": [
-      "vendor/php-src/Zend/zend_compile.c:7870",
-      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1084"
-    ],
-    "ini": {}
-  },
-  {
     "id": "vendor/php-src/Zend/tests/traits/static_in_trait_insteadof_reference.phpt",
     "sha256": "f63db11464ab4317f82b19e995baa835cad7b6b7b487d3b073f5293550d53d03",
     "frontend_message": "Syntax error, unexpected T_PAAMAYIM_NEKUDOTAYIM, expecting T_AS on line 9",
@@ -415,19 +402,6 @@
     "evidence": [
       "vendor/php-src/Zend/zend_compile.c:6749",
       "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1093"
-    ],
-    "ini": {}
-  },
-  {
-    "id": "vendor/php-src/Zend/tests/variadic/no_default_error.phpt",
-    "sha256": "f0729cfa6de51f7c6603153764219d52d260e51faa223f3834528156986906d0",
-    "frontend_message": "Variadic parameter cannot have a default value on line 3",
-    "lint_contains": "Variadic parameter cannot have a default value",
-    "restriction": "variadic_default",
-    "reason": "The source variadic parameter declares a default value.",
-    "evidence": [
-      "vendor/php-src/Zend/zend_compile.c:7826",
-      "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1077"
     ],
     "ini": {}
   }

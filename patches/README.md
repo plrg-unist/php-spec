@@ -8,6 +8,7 @@ BSD-3-Clause license.
 | Correction | Evidence |
 | --- | --- |
 | Add `T_PROPERTY_C` to semi-reserved identifiers; regenerate the PHP 8 tables | Valid `function __PROPERTY__()` in a class; target Zend grammar and `reserved-identifiers.php` |
+| Defer variadic-default and void-parameter restrictions to source compilation | Existing17/16 checks preserve native parameter diagnostic order; exact source/multiline and mixed-priority controls |
 | Defer four import-alias semantic checks from grammar reductions to compilation | `imports-reserved-*`: function/constant `Self` and `Parent` aliases compile; class aliases parse but fail compilation, matching `zend_compile_use` |
 | Retain ternary grouping as checked boolean metadata at the actual grouping reduction | `ternary_metadata.py`: parentheses in calls/control headers are not expression grouping; independent compiler checks consume the distinction |
 | Preserve ordinary array omissions through checking and fresh printing | `array_omission_metadata.py`: skipped holes can be valid; visited holes require compiler error ordering |
