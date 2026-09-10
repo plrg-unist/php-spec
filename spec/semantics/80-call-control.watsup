@@ -1,3 +1,5 @@
+dec $reference_returning(pstate) : bool
+dec $reference_empty_task(pstate, int) : ptask
 dec $typed_parameters(psparam*) : bool
 dec $typed_fallthrough(pfunction) : ptask
 dec $typed_return_line(pstate, int) : int
@@ -129,7 +131,8 @@ rule PhpStep/call-enter: S ~> $call_enter(S[.TODO = ptask_tail*], pfunction, pop
 
 rule PhpStep/return-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), RETURN_VALUE $typed_return_line(S, $runtime_line(S, [PCFIELD 0], expression))] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtReturn expression metadata)) :: ptask_tail*
-rule PhpStep/return-empty: S ~> S[.TODO = RETURN_NULL :: ptask_tail*]
+  -- if ~$reference_returning(S)
+rule PhpStep/return-empty: S ~> S[.TODO = $reference_empty_task(S, $typed_return_line(S, $source_line(metadata))) :: ptask_tail*]
   -- if S.TODO = (STMT (NStmtReturn ABSENT metadata)) :: ptask_tail*
 rule PhpStep/return-null: S ~> S[.TODO = (RETURN_UNWIND (KNOWN PNULL)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = RETURN_NULL :: ptask_tail*

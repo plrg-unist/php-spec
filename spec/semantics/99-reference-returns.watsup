@@ -1,0 +1,206 @@
+dec $reference_origin_parent(porigin, nat) : (porigin, pcpath)?
+dec $reference_call_used(pstate, porigin) : bool
+dec $reference_return_used(pstate) : bool
+dec $reference_verifies(pstate) : bool
+dec $reference_return_fetch(pstate, pbase, int) : pstate
+dec $reference_cv_base(pbase) : bool
+dec $reference_return_location(pstate, int) : pstate
+dec $reference_return_store(pstate, pvalue) : pstate
+dec $reference_return_notice(pstate, poperand) : bool
+dec $reference_return_value(pstate, poperand, int) : pstate
+dec $reference_return_write_operand(pstate, poperand, pvalue) : pstate
+dec $reference_return_diagnostic(pstate, poperand, int) : pstate
+dec $reference_return_materialize(pstate, poperand, pvalue) : pstate
+dec $reference_operand(poperand) : bool
+dec $reference_return_unwind(pstate, pnode*) : pstate
+
+;; Caller result demand follows original source consumers, including folded ones.
+def $reference_origin_parent(PORIGIN n pcpath, n_count) = ((PORIGIN n pcpath[0:n_parent], pcpath[n_parent:n_count]))
+  -- if $(|pcpath| >= n_count)
+  -- if n_parent = $(|pcpath| - n_count)
+def $reference_origin_parent(porigin, n_count) = eps -- otherwise
+def $reference_call_used(S, porigin) = false
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtExpression expression metadata)
+def $reference_call_used(S, porigin) = $reference_call_used(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprErrorSuppress expression metadata)
+def $reference_call_used(S, porigin) = false
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_parent, [PCFIELD n_field, PCINDEX n_index]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtFor phpType25 (SEQUENCE expression*) phpType25_loop phpType23 metadata)
+  -- if n_field = 0 \/ n_field = 2 \/ (n_field = 1 /\ $(n_index + 1 < |expression*|))
+def $reference_call_used(S, porigin) = true -- otherwise
+
+def $reference_return_used(S) = $reference_call_used(S, porigin)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+def $reference_return_used(S) = true -- otherwise
+
+def $reference_returning(S) = pfunction.SIGNATURE.BYREF
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+def $reference_returning(S) = false -- otherwise
+
+def $reference_empty_task(S, z) = RETURN_REF_NULL z -- if $reference_returning(S)
+def $reference_empty_task(S, z) = RETURN_NULL -- if ~$reference_returning(S)
+
+rule PhpStep/return-reference-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), RETURN_REF_FETCH $typed_return_line(S, $runtime_line(S, [PCFIELD 0], expression))] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtReturn expression metadata)) :: ptask_tail*
+  -- if $reference_returning(S)
+  -- if $call_reference_variable(expression)
+rule PhpStep/return-reference-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), RETURN_REF_VALUE $typed_return_line(S, $runtime_line(S, [PCFIELD 0], expression))] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtReturn expression metadata)) :: ptask_tail*
+  -- if $reference_returning(S)
+  -- if ~$call_reference_variable(expression)
+
+;; An unused variable is still fetched, but does not gain a reference wrapper.
+;; VERIFY_RETURN_TYPE reads an ordinary CV before its quiet RETURN_BY_REF fetch.
+def $reference_verifies(S) = (pfunction.SIGNATURE.RETURNS =/= eps /\ ~("mixed" <- $ptmasks(pfunction.SIGNATURE.RETURNS)))
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = S_read
+  -- if $reference_verifies(S)
+  -- if S_read = $typed_return_check($read_name(S, n_name*, z), z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $reference_return_store($base_acquire(S_read, BASE_VALUE (VARIABLE n_name* z_name), z), pvalue)
+  -- if $reference_verifies(S)
+  -- if S_read = $typed_return_check($read_name(S, n_name*, z), z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+def $reference_return_fetch(S, pbase, z) = $reference_return_location($call_reference_base(S, pbase, z), z)
+  -- if ~($reference_verifies(S) /\ $reference_cv_base(pbase))
+def $reference_cv_base(BASE_VALUE (VARIABLE n_name* z)) = true
+def $reference_cv_base(pbase) = false -- otherwise
+
+def $reference_return_location(S, z) = S -- if S.COMPLETION =/= NORMAL
+def $reference_return_location(S, z) = S_checked
+  -- if S.COMPLETION = NORMAL
+  -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
+  -- if S_checked = $typed_return_check($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z)
+  -- if S_checked.COMPLETION =/= NORMAL
+def $reference_return_location(S, z) = $reference_return_store(S_checked, pvalue_new)
+  -- if S.COMPLETION = NORMAL
+  -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
+  -- if S_checked = $typed_return_check($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_checked.RESULT = KNOWN pvalue_new
+
+def $reference_return_store(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
+def $reference_return_store(S, pvalue) = $call_location_reference($location_write(S, S.LOCATION, pvalue))
+  -- if S.COMPLETION = NORMAL
+  -- if $reference_return_used(S)
+def $reference_return_store(S, pvalue) = $location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN PNULL]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$reference_return_used(S)
+
+;; Source VALUE designation notices even when its operand already owns a cell.
+def $reference_return_notice(S, poperand) = false
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn expression metadata)
+  -- if $ppreturn_variable(expression)
+def $reference_return_notice(S, REFERENCE n) = false
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn expression metadata)
+  -- if $ppreturn_call(expression)
+def $reference_return_notice(S, poperand) = true -- otherwise
+
+def $reference_return_value(S, poperand, z) = S_checked
+  -- if S_checked = $typed_return_check($resolve_at(S, poperand, z), z)
+  -- if S_checked.COMPLETION =/= NORMAL
+def $reference_return_value(S, poperand, z) = $reference_return_materialize($reference_return_diagnostic(S_written, poperand, z), poperand, pvalue)
+  -- if S_checked = $typed_return_check($resolve_at(S, poperand, z), z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_checked.RESULT = KNOWN pvalue
+  -- if S_written = $reference_return_write_operand(S_checked, poperand, pvalue)
+def $reference_return_write_operand(S, REFERENCE n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
+def $reference_return_write_operand(S, poperand, pvalue) = S -- otherwise
+
+def $reference_return_diagnostic(S, poperand, z) = $diagnostic(S, "Notice", $ptascii("Only variable references should be returned by reference"), z)
+  -- if $reference_return_notice(S, poperand)
+def $reference_return_diagnostic(S, poperand, z) = S -- if ~$reference_return_notice(S, poperand)
+def $reference_return_materialize(S, poperand, pvalue) = S -- if S.COMPLETION =/= NORMAL
+def $reference_return_materialize(S, poperand, pvalue) = S[.RESULT = KNOWN PNULL]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$reference_return_used(S)
+def $reference_return_materialize(S, REFERENCE n, pvalue) = S[.RESULT = REFERENCE n]
+  -- if S.COMPLETION = NORMAL
+  -- if $reference_return_used(S)
+def $reference_return_materialize(S, poperand, pvalue) = $call_fresh_reference(S, pvalue)
+  -- if S.COMPLETION = NORMAL
+  -- if $reference_return_used(S)
+  -- if ~$reference_operand(poperand)
+def $reference_operand(REFERENCE n) = true
+def $reference_operand(poperand) = false -- otherwise
+
+def $reference_return_unwind(S, pnode*) = S[.HELD = pnode*][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION =/= NORMAL
+def $reference_return_unwind(S, pnode*) = S[.TODO = (RETURN_UNWIND S.RESULT) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode*]
+  -- if S.COMPLETION = NORMAL
+rule PhpStep/return-reference-fetch: S ~> $reference_return_unwind($reference_return_fetch($hold_task_inputs(S), S.BASE, z), S.HELD)
+  -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
+rule PhpStep/return-reference-value: S ~> $reference_return_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD)
+  -- if S.TODO = (RETURN_REF_VALUE z) :: ptask_tail*
+rule PhpStep/return-reference-null: S ~> $reference_return_unwind($reference_return_materialize($diagnostic($hold_task_inputs(S), "Notice", $ptascii("Only variable references should be returned by reference"), z), KNOWN PNULL, PNULL), S.HELD)
+  -- if S.TODO = (RETURN_REF_NULL z) :: ptask_tail*
+
+;; Return stages bind source designation and emission metadata, not value history.
+dec $reference_return_source(pstate, int) : bool
+def $reference_return_source(S, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if n = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtReturn phpType5 metadata)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, false))
+def $reference_return_source(S, z) = false -- otherwise
+
+dec $reference_return_fetch_valid(pstate, int) : bool
+def $reference_return_fetch_valid(S, z) = true
+  -- if $reference_return_source(S, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn expression metadata)
+  -- if $call_reference_variable(expression)
+def $reference_return_fetch_valid(S, z) = false -- otherwise
+
+dec $reference_return_value_valid(pstate, int) : bool
+def $reference_return_value_valid(S, z) = true
+  -- if $reference_return_source(S, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn expression metadata)
+  -- if ~$call_reference_variable(expression)
+def $reference_return_value_valid(S, z) = false -- otherwise
+
+dec $reference_return_null_valid(pstate, int) : bool
+def $reference_return_null_valid(S, z) = true
+  -- if $reference_return_source(S, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn ABSENT metadata)
+def $reference_return_null_valid(S, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if S.ORIGIN = (pfunction.ORIGIN)
+  -- if z = pfunction.ENDLINE
+  -- if pfunction.SIGNATURE.RETURNS = eps \/ "void" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
+def $reference_return_null_valid(S, z) = false -- otherwise
+
+def $call_task_valid(S, RETURN_REF_FETCH z) = $reference_return_fetch_valid(S, z)
+def $call_task_valid(S, RETURN_REF_VALUE z) = $reference_return_value_valid(S, z)
+def $call_task_valid(S, RETURN_REF_NULL z) = $reference_return_null_valid(S, z)
+
+def $call_task_valid(S, RETURN_NULL) = ~$reference_returning(S)
+
+;; Each context's callsite is the immediate caller frame's saved source origin.
+def $reference_call_frames_valid(eps, eps) = true
+def $reference_call_frames_valid((pcallcontext), pframe :: pframe_tail*) = (pcallcontext.CALLSITE = pframe.ORIGIN /\ $reference_call_frames_valid(pframe.CONTEXT, pframe_tail*))
+def $reference_call_frames_valid(pcallcontext?, pframe*) = false -- otherwise
+
+;; Only a leading administrative prefix can expose the current result consumer.
+dec $reference_return_result_tasks(poperand, ptask*) : bool
+def $reference_return_result_tasks(poperand, (AT porigin ptask) :: ptask_tail*) = $reference_return_result_tasks(poperand, ptask :: ptask_tail*)
+def $reference_return_result_tasks(poperand, (ORIGIN_RETURN porigin?) :: ptask_tail*) = $reference_return_result_tasks(poperand, ptask_tail*)
+def $reference_return_result_tasks(KNOWN pvalue, (RETURN_REF_VALUE z) :: ptask_tail*) = true
+def $reference_return_result_tasks(REFERENCE n, (RETURN_REF_VALUE z) :: ptask_tail*) = true
+def $reference_return_result_tasks(VARIABLE n_name* z_name, (RETURN_REF_VALUE z) :: ptask_tail*) = false
+def $reference_return_result_tasks(poperand, ptask*) = true -- otherwise
+def $reference_return_result_valid(S) = $reference_return_result_tasks(S.RESULT, S.TODO)
