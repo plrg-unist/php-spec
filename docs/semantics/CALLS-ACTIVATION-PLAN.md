@@ -10,8 +10,9 @@ reference parameters, defaults and builtin scalar/container value types. The
 [call-result reference assignment](SOURCE-CALL-REFERENCE-ASSIGNMENT.md) is accepted
 on933 and [source reference returns](SOURCE-REFERENCE-RETURNS.md) on942;
 [source suppression](SOURCE-ERROR-SUPPRESSION.md) is accepted on951. The
-[next handoff](RUNTIME-VARIADIC-HANDOFF.md) schedules the source-pipeline correction
-and positional variadic receive. The sequence below retains its historical role.
+[parameter phase correction](PARAMETER-PHASE.md) is accepted on951/440f3966; the
+[next handoff](RUNTIME-VARIADIC-HANDOFF.md) schedules paired102/103 positional
+variadic receive. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 

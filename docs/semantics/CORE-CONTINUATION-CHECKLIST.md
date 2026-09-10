@@ -58,8 +58,10 @@ claim that the inventory dependency graph is complete.
 - [ ] General reporting configuration, handlers and configured fatal display;
   class/object/callable/iterable types, typed-property reference constraints and
   mixed-unit strictness source integration remain required dependent work.
-- [ ] Resolve eager variadic-default parser rejection through the reviewed source
-  compiler, then positional variadic receives; see the [handoff](RUNTIME-VARIADIC-HANDOFF.md).
+- [x] Defer eager variadic-default/void parser checks to existing static compilation;
+  accepted51ca21db on951/440f3966, code c00a5c38. Exact PHPT/source/CLI phases and
+  patch reproduction are bound by the [review](../../coverage/semantics/parameter-phase-review.json).
+- [ ] Pair102/103 positional variadic receives; see the [handoff](RUNTIME-VARIADIC-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
