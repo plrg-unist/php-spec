@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:129 partial,176 pending,1 validated
+has169 constructors and306 obligations:130 partial,175 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -45,9 +45,14 @@ claim that the inventory dependency graph is complete.
   binds7 native+4 pending controls,13 protocol/227,3 states/819 and2 exact926
   bridges; author17/2 states553, compiler26+3/29, typed38/adjacent13 and CLI8 pass.
   Shared call/enclosing emission lines and finite source/result guards are reviewed.
-- [ ] Complete source reference returns next through compiler98/runtime99; read the
-  [runtime handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md). Preserve source
-  classifications, alias identity, current detached value returns and typed caches.
+- [x] Source reference returns through98/99 are accepted at9959e771 on942/3c331e74,
+  code563fee7a. [Review](../../coverage/semantics/reference-return-review.json)
+  binds12 native,26 protocol/378,4 states/1282 and2 exact933 bridges; author31,
+  compiler56+2/49, demand19/38,2 states/777, typed38/acquisition17 and CLI8 pass.
+  Semantic7951 and regressiondd8 retain a one-state-test bridge to3c.
+- [ ] Complete source suppression next; read the
+  [runtime handoff](RUNTIME-SUPPRESSION-HANDOFF.md). Two suppression demand/phase
+  controls above remain explicit boundaries, not execution agreements.
   Class/object/callable/iterable types, typed-property reference constraints and
   mixed-unit strictness source integration remain required dependent work.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,

@@ -8,8 +8,8 @@ are required work; helper or bounded source evidence does not close whole famili
 The current [typed checkpoint](SOURCE-TYPED-FUNCTIONS.md) also connects positional
 reference parameters, defaults and builtin scalar/container value types. The
 [call-result reference assignment](SOURCE-CALL-REFERENCE-ASSIGNMENT.md) is accepted
-on933; the [next handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md) schedules source
-reference returns. The sequence below retains its historical role.
+on933 and [source reference returns](SOURCE-REFERENCE-RETURNS.md) on942;
+the [next handoff](RUNTIME-SUPPRESSION-HANDOFF.md) schedules source suppression. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 
