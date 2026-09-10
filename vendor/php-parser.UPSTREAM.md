@@ -11,9 +11,9 @@
 - License: [BSD-3-Clause](php-parser/LICENSE)
 
 `php-parser/` contains all 274 regular files from this upstream distribution,
-with its enclosing archive directory removed. Four runtime files now carry
-[documented grammar/printer corrections](../patches/README.md); all other
-distribution files remain unchanged. The original archives are retained locally. The upstream archive includes the generated parsers,
+with its enclosing archive directory removed. Runtime files carry
+[documented grammar, printer and parameter-phase corrections](../patches/README.md);
+all other distribution files remain unchanged. The original archives are retained locally. The upstream archive includes the generated parsers,
 library, CLI, README, license and Composer metadata; it omits development
 tests, grammar sources and documentation. No nested Git repository is included.
 

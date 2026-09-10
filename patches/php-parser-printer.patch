@@ -564,7 +564,29 @@
              }
          }
      }
-@@ -1293,6 +1306,9 @@
+@@ -1072,19 +1085,8 @@
+     }
+ 
+     protected function checkParam(Param $node): void {
+-        if ($node->variadic && null !== $node->default) {
+-            $this->emitError(new Error(
+-                'Variadic parameter cannot have a default value',
+-                $node->default->getAttributes()
+-            ));
+-        }
+-
+-        if ($node->type instanceof Identifier && $node->type->name === 'void') {
+-            $this->emitError(new Error(
+-                'void cannot be used as a parameter type',
+-                $node->type->getAttributes()
+-            ));
+-        }
++        // Parameter semantic restrictions are checked in source compilation.
++
+     }
+ 
+     protected function checkTryCatch(TryCatch $node): void {
+@@ -1293,6 +1295,9 @@
          if ($this->isSimpleExit($args)) {
              // Create Exit node for backwards compatibility.
              $attrs['kind'] = strtolower($name) === 'exit' ? Expr\Exit_::KIND_EXIT : Expr\Exit_::KIND_DIE;
