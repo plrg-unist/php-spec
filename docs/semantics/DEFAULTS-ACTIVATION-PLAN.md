@@ -1,10 +1,10 @@
 # Untyped defaults checkpoint and continuation
 
-Strict92/runtime93 subsequently passed independent review on917/309b046c; see the
-[current contract](SOURCE-STRICT-DECLARATIONS.md) and
-[review](../../coverage/semantics/strict-declaration-review.json). This document's
-909/910 preparation identities remain historical. Typed parameter/return integration
-is next; no typed execution or full callable closure is claimed.
+Strict92/runtime93 and builtin scalar/container typed94/runtime95 have since
+passed independent review. See the [typed contract](SOURCE-TYPED-FUNCTIONS.md),
+[review](../../coverage/semantics/typed-function-review.json) and
+[runtime successor handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md). This document's
+909/910 preparation identities remain historical; no full callable closure is claimed.
 
 Compiler90/runtime91 are independently accepted at c7cb1b44 on exact909/e25eb2b9:
 code1fce6586, compiler2b247d81 and runtime8151b96d. The
@@ -22,7 +22,8 @@ This is a bounded stage of complete core; callable and constant families stay pa
    after provided binding and callee activation. Supplied arguments skip evaluation.
    Declaration contexts, cache provenance, fresh reference cells, array COW and
    abrupt cleanup are accepted in the [runtime contract](SOURCE-POSITIONAL-DEFAULTS.md).
-3. Lexical strictness, parameter/return types and reference returns follow. Named,
+3. Lexical strictness and builtin scalar/container parameter/value-return types
+   are now connected. Reference returns follow. Named,
    unpacked and variadic arguments, other callables, object defaults and the
    remaining [core checklist](CORE-CONTINUATION-CHECKLIST.md) are required later work.
 

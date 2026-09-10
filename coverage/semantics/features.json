@@ -2058,10 +2058,22 @@
       "obligations": [
         "calls.name-resolution"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending."
     },
     {
       "node": "InterpolatedStringPart",
@@ -2143,10 +2155,21 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. At that helper checkpoint, source declaration activation and broader family rules remained pending. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
@@ -2165,7 +2188,11 @@
       "implementation": [
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/90-parameter-defaults.watsup",
-        "spec/semantics/91-default-parameters.watsup"
+        "spec/semantics/91-default-parameters.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -2177,9 +2204,15 @@
         "coverage/semantics/default-parameters.json",
         "coverage/semantics/default-parameter-protocol.json",
         "coverage/semantics/default-parameter-state.json",
-        "coverage/semantics/default-readiness-protocol.json"
+        "coverage/semantics/default-readiness-protocol.json",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. Typed/object defaults, strict checks and remaining callable protocols stay pending; NParam promotion/variadic obligations also remain open.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json"
@@ -2823,7 +2856,10 @@
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/86-reference-arguments.watsup"
+        "spec/semantics/86-reference-arguments.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
@@ -2831,9 +2867,15 @@
         "tests/semantics/function_call_protocol.py",
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending."
     },
     {
       "node": "Stmt_Global",
@@ -3027,7 +3069,10 @@
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/86-reference-arguments.watsup"
+        "spec/semantics/86-reference-arguments.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
@@ -3035,9 +3080,15 @@
         "tests/semantics/function_call_protocol.py",
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending."
     },
     {
       "node": "Stmt_Static",
@@ -3192,10 +3243,21 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. At that helper checkpoint, source declaration activation and broader family rules remained pending. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
@@ -4201,15 +4263,30 @@
     {
       "id": "coercion.weak-types",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_operators.c"
+      "implementation": [
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php"
       ]
@@ -4217,15 +4294,30 @@
     {
       "id": "coercion.strict-types",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_operators.c"
+      "implementation": [
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]
@@ -5845,7 +5937,10 @@
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/86-reference-arguments.watsup"
+        "spec/semantics/86-reference-arguments.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -5854,15 +5949,23 @@
         "tests/semantics/function_call_protocol.py",
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/calls-final-review.json",
         "docs/semantics/SOURCE-CALLS.md",
-        "coverage/semantics/reference-parameter-review.json"
+        "coverage/semantics/reference-parameter-review.json",
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-return.php"
       ]
@@ -6072,7 +6175,10 @@
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/86-reference-arguments.watsup"
+        "spec/semantics/86-reference-arguments.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -6081,15 +6187,24 @@
         "tests/semantics/function_call_protocol.py",
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "coverage/semantics/calls-final-review.json",
         "docs/semantics/SOURCE-CALLS.md",
-        "coverage/semantics/reference-parameter-review.json"
+        "coverage/semantics/reference-parameter-review.json",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending."
     },
     {
       "id": "calls.named",
@@ -6149,22 +6264,33 @@
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/86-reference-arguments.watsup"
+        "spec/semantics/86-reference-arguments.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/reference-parameter-review.json",
-        "docs/semantics/SOURCE-REFERENCE-PARAMETERS.md"
+        "docs/semantics/SOURCE-REFERENCE-PARAMETERS.md",
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
+      "review": "Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-rebind.php",
         "tests/semantics/conformance/unpacked-byref.php"
@@ -6194,7 +6320,11 @@
       "implementation": [
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/90-parameter-defaults.watsup",
-        "spec/semantics/91-default-parameters.watsup"
+        "spec/semantics/91-default-parameters.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -6210,13 +6340,22 @@
         "coverage/semantics/default-parameters.json",
         "coverage/semantics/default-parameter-protocol.json",
         "coverage/semantics/default-parameter-state.json",
-        "coverage/semantics/default-readiness-protocol.json"
+        "coverage/semantics/default-readiness-protocol.json",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. Typed/object defaults, strict checks and remaining callable protocols stay pending; NParam promotion/variadic obligations also remain open.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php",
         "tests/semantics/conformance/parameter-global-relative-null.php",
@@ -6227,15 +6366,30 @@
     {
       "id": "calls.return-types",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php",
         "tests/semantics/conformance/type-static-outside-class.php"
@@ -6565,7 +6719,10 @@
       "implementation": [
         "spec/semantics/92-strict-compiler.watsup",
         "spec/semantics/93-strict-declarations.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -6573,12 +6730,21 @@
         "tests/semantics/strict_declaration_compiler.py",
         "tests/semantics/strict_declaration_protocol.py",
         "tests/semantics/strict_declaration_state.py",
-        "coverage/semantics/strict-declaration-review.json"
+        "coverage/semantics/strict-declaration-review.json",
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, other declare directives and dependent core protocols remain pending; no family closes.",
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. At917, parameter/return enforcement, builtin execution, other declare directives and dependent core protocols remained pending; no family closes. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]
@@ -6639,17 +6805,31 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
       ],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. At that helper checkpoint, source declaration activation and broader family rules remained pending. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-nullable-mixed.php"
       ]
@@ -6660,17 +6840,31 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
       ],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. At that helper checkpoint, source declaration activation and broader family rules remained pending. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-duplicate-case.php",
         "tests/semantics/conformance/type-iterable-global.php",
@@ -6727,17 +6921,31 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
       ],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. At that helper checkpoint, source declaration activation and broader family rules remained pending. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-nullable-mixed.php"
       ]
@@ -6778,15 +6986,30 @@
     {
       "id": "static.never-return",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "implementation": [
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/typed_functions.py",
+        "tests/semantics/typed_runtime_cases.json",
+        "tests/semantics/typed_function_compiler.py",
+        "tests/semantics/typed_function_protocol.py",
+        "tests/semantics/typed_function_state.py",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/typed-function-review.json"
+      ],
+      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending."
     },
     {
       "id": "classes.linking",

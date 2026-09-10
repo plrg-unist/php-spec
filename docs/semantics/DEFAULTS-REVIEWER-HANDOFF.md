@@ -1,10 +1,10 @@
 # Reviewer continuation after positional defaults
 
-Strict92/runtime93 subsequently passed independent review on917/309b046c; see the
-[current contract](SOURCE-STRICT-DECLARATIONS.md) and
-[review](../../coverage/semantics/strict-declaration-review.json). This document's
-909/910 preparation identities remain historical. Typed parameter/return integration
-is next; no typed execution or full callable closure is claimed.
+Strict92/runtime93 and builtin scalar/container typed94/runtime95 have since
+passed independent review. See the [typed contract](SOURCE-TYPED-FUNCTIONS.md),
+[review](../../coverage/semantics/typed-function-review.json) and
+[runtime successor handoff](RUNTIME-REFERENCE-RETURNS-HANDOFF.md). This document's
+909/910 preparation identities remain historical; no full callable closure is claimed.
 
 Review9 recommends rotation to review10; root assigns the successor. Runtime6 and
 compiler6 retain continuity. Read workspace AGENTS.md, PLAN.md, PROGRESS.md and
@@ -64,7 +64,7 @@ DISCARD. Arbitrary consistent runtime/cache values remain valid. Historical no-d
 bridges remove only empty DEFAULTCACHE/DEFAULTS and exact source-derived NParam
 CODEEXPR additions; existing state/descriptors compare completely.
 
-## Next: strictness and types
+## Historical strictness/type preparation
 
 Private `.tools/compiler6-strict-paired/HANDOFF.md` binds minimal
 **910/e7227852**, five changes against909:92+registry, pcode.STRICT, unit/function
