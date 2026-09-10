@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:131 partial,174 pending,1 validated
+has169 constructors and306 obligations:132 partial,173 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -61,7 +61,12 @@ claim that the inventory dependency graph is complete.
 - [x] Defer eager variadic-default/void parser checks to existing static compilation;
   accepted51ca21db on951/440f3966, code c00a5c38. Exact PHPT/source/CLI phases and
   patch reproduction are bound by the [review](../../coverage/semantics/parameter-phase-review.json).
-- [ ] Pair102/103 positional variadic receives; see the [handoff](RUNTIME-VARIADIC-HANDOFF.md).
+- [x] Paired102/103 positional variadics accepted at4187c887 on959/4854, codeb49a564c.
+  [Review](../../coverage/semantics/variadic-review.json) binds4 native profiles,
+  20 protocol/372,4 states/1322 and2 exact951 bridges with no projection;
+  author28 source,23+2 compiler/194,2 states/829,8 regressions andCLI8 pass.
+  Semanticcee5, compiler-test4d69 and timeout-only4854 retain separate identities.
+- [ ] Named binding/hole preflight; see the [handoff](RUNTIME-NAMED-ARGUMENTS-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

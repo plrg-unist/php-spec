@@ -1,4 +1,8 @@
-# Runtime/source successor: positional variadics
+# Historical handoff: positional variadics
+
+Completed at4187c887 on959/4854. Continue from the
+[named-argument handoff](RUNTIME-NAMED-ARGUMENTS-HANDOFF.md); the original baseline
+and preparation below retain their historical identities.
 
 Start from accepted951/440f3966: parser code c00a5c38, compiler evidence4290295e,
 independent review51ca21db; [parameter contract](PARAMETER-PHASE.md) and

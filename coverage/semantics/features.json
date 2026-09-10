@@ -2197,7 +2197,9 @@
         "spec/semantics/94-typed-function-compiler.watsup",
         "spec/semantics/95-type-values.watsup",
         "spec/semantics/95-typed-calls.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/102-variadic-compiler.watsup",
+        "spec/semantics/103-positional-variadics.watsup"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -2215,9 +2217,16 @@
         "tests/semantics/typed_function_compiler.py",
         "tests/semantics/typed_function_protocol.py",
         "tests/semantics/typed_function_state.py",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "tests/semantics/variadic.py",
+        "tests/semantics/variadic_cases.json",
+        "tests/semantics/variadic_compiler.py",
+        "tests/semantics/variadic_compiler_cases.json",
+        "tests/semantics/variadic_protocol.py",
+        "tests/semantics/variadic_state.py",
+        "coverage/semantics/variadic-review.json"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json"
@@ -6267,15 +6276,31 @@
     {
       "id": "calls.variadic",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/102-variadic-compiler.watsup",
+        "spec/semantics/103-positional-variadics.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/variadic.py",
+        "tests/semantics/variadic_cases.json",
+        "tests/semantics/variadic_compiler.py",
+        "tests/semantics/variadic_compiler_cases.json",
+        "tests/semantics/variadic_protocol.py",
+        "tests/semantics/variadic_state.py",
+        "coverage/semantics/variadic-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/variadic-review.json",
+        "docs/semantics/SOURCE-POSITIONAL-VARIADICS.md"
+      ],
+      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php"
       ]
@@ -6293,7 +6318,9 @@
         "spec/semantics/86-reference-arguments.watsup",
         "spec/semantics/94-typed-function-compiler.watsup",
         "spec/semantics/95-type-values.watsup",
-        "spec/semantics/95-typed-calls.watsup"
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/102-variadic-compiler.watsup",
+        "spec/semantics/103-positional-variadics.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -6305,7 +6332,14 @@
         "tests/semantics/typed_function_compiler.py",
         "tests/semantics/typed_function_protocol.py",
         "tests/semantics/typed_function_state.py",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "tests/semantics/variadic.py",
+        "tests/semantics/variadic_cases.json",
+        "tests/semantics/variadic_compiler.py",
+        "tests/semantics/variadic_compiler_cases.json",
+        "tests/semantics/variadic_protocol.py",
+        "tests/semantics/variadic_state.py",
+        "coverage/semantics/variadic-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -6314,9 +6348,11 @@
         "coverage/semantics/reference-parameter-review.json",
         "docs/semantics/SOURCE-REFERENCE-PARAMETERS.md",
         "vendor/php-src/Zend/zend_execute.c",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "coverage/semantics/variadic-review.json",
+        "docs/semantics/SOURCE-POSITIONAL-VARIADICS.md"
       ],
-      "review": "Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
+      "review": "Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/parameter-rebind.php",
         "tests/semantics/conformance/unpacked-byref.php"

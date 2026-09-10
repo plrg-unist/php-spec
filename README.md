@@ -124,7 +124,10 @@ remaining call protocols and full callable integration remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
 binds exact PHPT/CLI diagnostics and reproducible parser patches. Positional
-variadic execution is the next paired increment.
+variadic execution is now [independently reviewed](coverage/semantics/variadic-review.json).
+[Positional tails](docs/semantics/SOURCE-POSITIONAL-VARIADICS.md) preserve ordered
+coercion, reference owners and error traces; named binding and argument unpacking
+remain required next work.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

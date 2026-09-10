@@ -6,60 +6,44 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Parameter source phases](docs/semantics/PARAMETER-PHASE.md) are independently
-accepted at **51ca21db** in [parameter-phase-review.json](coverage/semantics/parameter-phase-review.json).
-Canonical **951/440f3966** binds code **c00a5c38** and compiler evidence **4290295e**.
-Only PHP-Parser's eager variadic-default and void-parameter checks are deferred;
-existing17/16/90 supplies native static diagnostic order. Exactly three watched
-paths and three patch/provenance files change; semantic modules and all modes
-remain unchanged. The two exact phase exceptions are retired.
+[Positional variadic receives](docs/semantics/SOURCE-POSITIONAL-VARIADICS.md) are
+independently accepted at **4187c887** in [variadic-review.json](coverage/semantics/variadic-review.json).
+Canonical **959/4854ee08** binds code **b49a564c**, compiler evidence **3c27910a**
+and author evidence **81a7b991**. Compiler102/runtime103 collect positional tails
+in order, preserve reference owners and earlier coercions before later errors,
+and retain native argument numbering, trace slots and suppression cleanup.
+Finite source/index/packed-container guards preserve arbitrary consistent values.
 
-Independent fourteen-source and eight-CLI controls preserve one valid-variadic
-Unsupported boundary; two exact retired PHPT FILE sources pass native parsing,
-lint and repaired CLI diagnostics, with original frontend failures retained.
-Zero-fuzz reproduction matches all five handwritten patch outputs. Author checks
-include fourteen checked roundtrips/CLI controls,359 signature comparisons,
-28 descriptors,174 reference-return assertions and exact generated-parser
-reproduction. Compiler archive0f6bea05 binds8,251 paths/1,280 responses/8 closures;
-independent archive6898c6d5 binds366 paths/36 responses/4 closures. Counts overlap.
-Inventory remains169 constructors/306 obligations,131 partial/174 pending and
-one validated oracle; this parser prerequisite adds no runtime admission.
+Independent gates pass4 native profiles,20 protocol controls/372 assertions,
+4 dense states/1,322 assertions and2 complete951/440f state bridges at seven cuts
+with no projection. Author28 source,23 compiler phases plus2 catch boundaries/194
+projections,20 protocol/372,8 regressions,2 dense states/829 and canonical CLI8
+pass. Counts overlap. Independent70 responses/29 worker closures/46 true runners
+and author131/10/23 are audited; author39 native profiles overlap these gates.
 
-The preceding semantic checkpoint is source suppression:
-[Source error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) is independently
-accepted at **29baca42** in [error-suppression-review.json](coverage/semantics/error-suppression-review.json).
-Historical **951/c6501bd8** binds code **14003331**, compiler evidence **601b496d**
-and author evidence **5535cffc**. Compiler100/runtime101 preserve folded effects,
-read deferred CVs inside suppression, filter runtime nonfatal events and restore
-frame-owned masks through normal return and abrupt cleanup. The pinned C-int
-reporting field and saved masks use signed32; arbitrary valid masks and owning
-values remain legal paused-state controls.
+Semantic gates retain **959/cee51dd2**. A stale compiler expectation correction
+passes46 phases on **959/4d69c52f**; the final **4854** change raises only the dense
+runner allowance300→900 seconds. Each bridge preserves958 files and all959 modes.
+The original timeout remains a failure to finish. Exact prepared fixtures pass in
+459 and369 seconds, without native reruns or assertion changes. Compiler archives
+d286/10d1, author1eb/c6f7 and independentfe0b/429b preserve raw failures, full
+snapshot/tool bindings and publication closures.
 
-Independent gates pass4 native profiles,23 protocol controls/489 assertions,
-4 dense states/1,312 assertions and2 complete942 state bridges at seven cuts,
-removing only new default reporting/empty silence fields. Author26 source,
-37 reporter checks, compiler17 phases/131 projections,19 demand/38,2 states/779,
-31 reference-return regressions and canonical CLI8 pass. Sets overlap. Independent
-90 responses/33 worker closures and author198/14 plus corrected demand38/2 are
-audited; successful standalone and retained fixture failures remain distinct.
+[Parameter source phases](docs/semantics/PARAMETER-PHASE.md) remain accepted at
+51ca21db on951/440f: code c00a5c38 and compiler4290295e defer exactly the eager
+variadic-default/void checks to native-order static diagnostics. Source suppression
+remains accepted at29baca42 on951/c650, with its ff8d print-only bridge. Reference
+returns942, acquisition933, typed926, strict917 and defaults909 retain their own
+historical reviews. Reporting APIs/handlers/configured fatal display remain open;
+the current native profile is30719, with fatal mask4437 inside `@`.
 
-Semantic gates retain **951/ff8d4b9f**. Final c650 changes only a demand-report
-print key after its assertions passed;950 other files and all951 modes are exact.
-Original scope/source-line/mask counterexamples and setup failures remain retained.
-General reporting APIs, handlers and configured fatal display remain required;
-the native source profile is30719, with fatal mask4437 inside `@`.
-
-Reference returns remain accepted at9959e771 on942/3c331e74, preserving their
-7951/dd8 one-state-test bridges. Acquisition933, typed926, strict917 and defaults909
-retain their historical linked reviews and source identities.
-
-Next is paired compiler102/runtime103 positional variadic receive; read the
-[successor handoff](docs/semantics/RUNTIME-VARIADIC-HANDOFF.md).
-Compiler7/runtime7/review10 continue under root coordination. Frozen56f4d181
-preparation and its later STARTUP proposal are not implementation acceptance.
+Next is named argument binding and hole-default preflight; read the
+[successor handoff](docs/semantics/RUNTIME-NAMED-ARGUMENTS-HANDOFF.md).
+Compiler7/runtime7/review10 continue under root coordination. Frozen88d514f8
+and independent9369a2a0 preparation are not implementation acceptance.
 
 The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains named,
-unpacked/variadic and other callable protocols, objects, exceptions, dynamic
+unpacked and remaining variadic/callable protocols, objects, exceptions, dynamic
 sources, generators/fibers, lifetime and core intrinsics. Mixed caller/callee
 strictness still needs an admitted source route. PHP_VERSION value reads, other
 missing builtin constants, define/defined and legal object/class/callable constants
@@ -104,15 +88,15 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, returns, suppression and fatal frame cleanup reviewed; exceptions/handlers pending |
-| 3b: calls, closures and static checks | Partial; positional value/reference parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns reviewed; remaining call protocols pending |
+| 3b: calls, closures and static checks | Partial; positional value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns reviewed; remaining call protocols pending |
 | 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records131 partial,174 pending and one validated
+The runtime inventory now records132 partial,173 pending and one validated
 obligation. Accepted constants, defaults, strictness, builtin value types,
-reference returns and suppression remain partial.
+reference returns, suppression and positional variadics remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 
@@ -145,8 +129,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/RUNTIME-VARIADIC-HANDOFF.md)
-binds951 inputs and the next source-pipeline/variadic prerequisites. Compiler7,
+The [current successor handoff](docs/semantics/RUNTIME-NAMED-ARGUMENTS-HANDOFF.md)
+binds959 inputs and the next named-slot/default/trace prerequisites. Compiler7,
 runtime7 and independent review10 coordinate private roots, exact frozen gates,
 canonical builds and the index under root. Preserve baseline originals before
 admission, stage only reviewed files, commit small increments and never push.
