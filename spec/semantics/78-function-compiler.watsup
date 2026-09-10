@@ -199,6 +199,7 @@ def $ppownglobal(pfunction*, pcpath :: pcpath_tail*) = pcpath :: $ppownglobal(pf
 def $ppsupported_signature(pssignature) = ($ppsupported_types(pssignature.RETURNS) /\ $ppsupported_params(pssignature.PARAMETERS))
 def $ppsupported_params(eps) = true
 def $ppsupported_params(psparam :: psparam_tail*) = (~psparam.VARIADIC /\ $ppsupported_types(psparam.TYPE) /\ $ppsupported_params(psparam_tail*))
+  -- if ~psparam.VARIADIC
 
 ;; Locate a call instruction or restore a constant diagnostic context.
 ;; Call expressions separately preserve the surrounding post-argument location.

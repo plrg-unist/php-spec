@@ -58,10 +58,9 @@ CASES = {
     'void-return': b'<?php function f():void{return 1;}',
     'never-return': b'<?php function f():never{return;}',
     'param-type': b'<?php function f(int $a){}',
-}
-PENDING = {
     'variadic': b'<?php function f(...$a){}',
 }
+PENDING = {}
 
 CONTEXTS = {'ordinary': ['P.CVS = eps', 'P.FUNCTIONS = [pfunction]', 'pfunction.CVS = [([110]),([120])]', 'pfunction.EARLY', 'pfunction.ORIGIN = PORIGIN 91 ([PCINDEX 1])', 'pfunction.BODY = [PCINDEX 1, PCFIELD 5]', 'pfunction.CODE.UNIT = 91', 'P.FOLD.FUNCTION = eps'], 'nested': ['P.CVS = eps', 'P.FUNCTIONS = [pfunction_g,pfunction_f]', 'pfunction_f.CVS = [([97]),([120])]', 'pfunction_g.CVS = [([98]),([122])]', 'pfunction_f.EARLY', '~pfunction_g.EARLY', 'pfunction_f.CODE.EXPRESSIONS = $ppownexpr([pfunction_g], pfunction_f.CODE.EXPRESSIONS)', 'pfunction_g.CODE.EXPRESSIONS =/= eps', 'P.FOLD.FUNCTION = eps'], 'cv': ['P.CVS = [([98,101,102,111,114,101]),([97,102,116,101,114])]', 'P.FUNCTIONS = [pfunction]', 'pfunction.CVS = [([97,114,103]),([108,111,99,97,108]),([110,97,109,101])]', 'P.AUTOGLOBALS = [([95,71,69,84]),([95,83,69,82,86,69,82])]', '|pfunction.CODE.GLOBALS| = 2', 'pfunction.CODE.GLOBALS = P.GLOBALS'], 'magic': ['P.FUNCTIONS = [pfunction]', 'pfunction.NAME = [78,92,102]', 'pfunction.ENV.NAMESPACE = [78]', 'P.FOLD.FUNCTION = eps'], 'block': ['P.FUNCTIONS = [pfunction]', 'pfunction.EARLY'], 'conditional': ['P.FUNCTIONS = [pfunction]', '~pfunction.EARLY'], 'global': ['P.CVS = [([97])]', 'P.FUNCTIONS = [pfunction]', 'pfunction.CVS = [([97])]'], 'function-globals': ['P.FUNCTIONS = [pfunction]', 'pfunction.CVS = eps', 'P.AUTOGLOBALS = [([71,76,79,66,65,76,83])]']}
 
