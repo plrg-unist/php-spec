@@ -11,8 +11,9 @@ reference parameters, defaults and builtin scalar/container value types. The
 on933 and [source reference returns](SOURCE-REFERENCE-RETURNS.md) on942;
 [source suppression](SOURCE-ERROR-SUPPRESSION.md) is accepted on951. The
 [parameter phase correction](PARAMETER-PHASE.md) is accepted on951/440f3966; the
-[next handoff](RUNTIME-VARIADIC-HANDOFF.md) schedules paired102/103 positional
-variadic receive. The sequence below retains its historical role.
+[positional variadic contract](SOURCE-POSITIONAL-VARIADICS.md) is accepted at4187c887
+on959/4854. The [next handoff](RUNTIME-NAMED-ARGUMENTS-HANDOFF.md) schedules
+named-slot/default preflight and extra-key traces. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 
