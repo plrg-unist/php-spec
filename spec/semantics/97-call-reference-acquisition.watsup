@@ -1,0 +1,132 @@
+dec $acquire_call_parent(pstate) : pcnode?
+dec $acquire_call_valid(pstate) : bool
+dec $reference_assignment_notice(pstate) : pstate
+dec $reference_call_name(pstate, nat*, pvalue, int) : pstate
+dec $reference_written_result(pstate) : pstate
+dec $reference_call_dynamic(pstate, poperand, pvalue, int) : pstate
+dec $reference_call_array(pstate, pbase, pvalue, int) : pstate
+dec $reference_location_result(pstate, pvalue) : pstate
+
+;; A call is acquired only at an actual reference-source occurrence. Its result
+;; owns a returned reference independently of the callee's released frame.
+def $acquire_call_parent(S) = $origin_node(S.SOURCES, PORIGIN n pcpath_parent)
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath_parent = pcpath[0:n_parent]
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+def $acquire_call_parent(S) = eps -- otherwise
+
+def $acquire_call_valid(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 phpType6 metadata_call)
+  -- if $acquire_call_parent(S) = (NExprAssignRef expression (NExprFuncCall phpType19 phpType6 metadata_call) metadata)
+def $acquire_call_valid(S) = false -- otherwise
+
+rule PhpStep/acquire-call: S ~> S[.TODO = [EVAL (NExprFuncCall phpType19 phpType6 metadata), ACQUIRE_CALL] ++ ptask_tail*]
+  -- if S.TODO = (ACQUIRE (NExprFuncCall phpType19 phpType6 metadata)) :: ptask_tail*
+  -- if $acquire_call_valid(S)
+rule PhpStep/acquire-call-reference: S ~> S[.TODO = ptask_tail*][.CELL = n]
+  -- if S.TODO = ACQUIRE_CALL :: ptask_tail*
+  -- if S.RESULT = REFERENCE n
+rule PhpStep/acquire-call-value: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = ACQUIRE_CALL :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+
+;; ASSIGN_REF on a value-call result writes through an existing target alias.
+;; MAKE_REF preserves a plain call value; it promotes only indirect variables.
+def $reference_value_call(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target (NExprFuncCall phpType19 phpType6 metadata_call) metadata)
+  -- if S.RESULT = KNOWN pvalue
+def $reference_value_call(S) = false -- otherwise
+def $reference_bind_name(S, n_name*) = $scope_bind_name(S, [PCFIELD 0], n_name*, 0)
+  -- if ~$reference_value_call(S)
+def $reference_bind_name(S, n_name*) = $reference_call_name(S, n_name*, pvalue, 0)
+  -- if $reference_value_call(S)
+  -- if S.RESULT = KNOWN pvalue
+
+;; Fetching the destination may fail before ASSIGN_REF emits its Notice.
+def $reference_assignment_notice(S) = $diagnostic(S, "Notice", $ptascii("Only variables should be assigned by reference"), $runtime_line(S, eps, expression))
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $reference_call_name(S, n_name*, pvalue, z) = S_target
+  -- if S_target = $scope_fetch_name(S, [PCFIELD 0], n_name*, z)
+  -- if S_target.COMPLETION =/= NORMAL
+def $reference_call_name(S, n_name*, pvalue, z) = $reference_written_result($scope_write_name($reference_assignment_notice(S_target), [PCFIELD 0], n_name*, pvalue))
+  -- if S_target = $scope_fetch_name(S, [PCFIELD 0], n_name*, z)
+  -- if S_target.COMPLETION = NORMAL
+
+def $reference_written_result(S) = S[.RESULT = REFERENCE S.CELL]
+  -- if S.COMPLETION = NORMAL
+  -- if S.CELL <- S.REFCELLS
+def $reference_written_result(S) = S -- otherwise
+
+def $reference_call_dynamic(S, poperand, pvalue, z) = S_name
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION =/= NORMAL
+def $reference_call_dynamic(S, poperand, pvalue, z) = $reference_call_name(S_name, $echo_value(pvalue_name), pvalue, z)
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+rule PhpStep/reference-call-dynamic: S ~> S_written[.HELD = S.HELD]
+  -- if S.TODO = (REF_CAPTURE poperand z) :: ptask_tail*
+  -- if $reference_value_call(S)
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_written = $reference_call_dynamic($hold_task_inputs(S), poperand, pvalue, z)
+
+def $reference_call_array(S, pbase, pvalue, z) = S_place
+  -- if S_place = $reference_acquire(S, pbase, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $reference_call_array(S, pbase, pvalue, z) = $temporary_reference_target(S_place, pbase, z)
+  -- if S_place = $reference_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $call_temporary_location(pbase)
+def $reference_call_array(S, pbase, pvalue, z) = $reference_location_result($location_write($reference_assignment_notice(S_place), S_place.LOCATION, pvalue), pvalue)
+  -- if S_place = $reference_acquire(S, pbase, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if ~$call_temporary_location(pbase)
+def $reference_location_result(S, pvalue) = S[.RESULT = REFERENCE n]
+  -- if S.LOCATION = ROOT n
+  -- if n <- S.REFCELLS
+def $reference_location_result(S, pvalue) = S[.RESULT = REFERENCE n_cell]
+  -- if S.LOCATION = ELEMENT n pkey
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $reference_location_result(S, pvalue) = S[.RESULT = KNOWN pvalue] -- otherwise
+rule PhpStep/reference-call-array: S ~> S_written[.HELD = S.HELD]
+  -- if S.TODO = (REF_ARRAY_CAPTURE pbase z) :: ptask_tail*
+  -- if $reference_value_call(S)
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_written = $reference_call_array($hold_task_inputs(S), pbase, pvalue, z)
+
+def $call_task_valid(S, ACQUIRE_CALL) = $acquire_call_valid(S)
+
+;; ASSIGN_REF has its own emission line after the call and delayed target fetch.
+;; Bind the line read by its Notice to the exact source compiler projection.
+dec $reference_assignment_root(pcoccurrence*, pcpath) : bool
+def $reference_assignment_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprAssignRef expression (NExprFuncCall phpType19 phpType6 metadata_call) metadata)
+def $reference_assignment_root(pcoccurrence*, pcpath) = false -- otherwise
+dec $reference_assignment_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $reference_assignment_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $reference_assignment_root(pcoccurrence*, pcpath)
+def $reference_assignment_entry(pcoccurrence*, CODEEXPR pcpath z b) = eps
+  -- if ~$reference_assignment_root(pcoccurrence*, pcpath)
+def $reference_assignment_entry(pcoccurrence*, CODEARG pcpath) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEWRITE pcpath z) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEEFFECT pcpath) = eps
+dec $reference_assignment_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $reference_assignment_code(pcoccurrence*, eps) = eps
+def $reference_assignment_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $reference_assignment_entry(pcoccurrence*, pcodeexpr) ++ $reference_assignment_code(pcoccurrence*, pcodeexpr_tail*)
+def $reference_unit_code_valid(P, pcode) = ($reference_assignment_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $reference_assignment_code(P.FOLD.SOURCE.OCCURRENCES, $compiled_operands(P, P.EXPRESSIONS)))
+
+;; Only the active acquisition stage consumes RESULT. Queued and saved stages
+;; validate their source occurrence without inspecting an unrelated operand.
+def $acquire_call_result_valid(S) = $acquire_call_result_valid(S[.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $acquire_call_result_valid(S) = $acquire_call_result_valid(S[.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $acquire_call_result_valid(S) = false
+  -- if S.TODO = ACQUIRE_CALL :: ptask*
+  -- if S.RESULT = VARIABLE n_name* z
+def $acquire_call_result_valid(S) = true -- otherwise

@@ -147,7 +147,7 @@ def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN 
   -- if P.COMPLETION = PPCNORMAL
 def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, unpacked or reference call argument compilation")
   -- otherwise
-def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_done($ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult), pcpath, $source_line(metadata))
+def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
   -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
 
 def $ppglobal_variables(P, pcpath, n, eps) = P
@@ -199,7 +199,8 @@ def $ppsupported_signature(pssignature) = (~pssignature.BYREF /\ $ppsupported_ty
 def $ppsupported_params(eps) = true
 def $ppsupported_params(psparam :: psparam_tail*) = (~psparam.VARIADIC /\ $ppsupported_types(psparam.TYPE) /\ $ppsupported_params(psparam_tail*))
 
-;; zend_compile_call_common restores the call line after compiling sends.
+;; Locate a call instruction or restore a constant diagnostic context.
+;; Call expressions separately preserve the surrounding post-argument location.
 ;; An abrupt operand keeps its original diagnostic location.
 def $ppcall_done(P, pcpath, z) = $pplocate(P, pcpath, z)
   -- if P.COMPLETION = PPCNORMAL
@@ -216,3 +217,14 @@ def $ppsend_var(NExprAssignRef expression_1 expression_2 metadata) = true
 def $ppsend_var(NExprAssign expression_pattern expression_rhs metadata) = ($list_references(phpType13*) \/ $ppsend_var(expression_rhs))
   -- if $list_pattern(expression_pattern) = (phpType13*)
 def $ppsend_var(expression) = false -- otherwise
+
+;; A call instruction uses its own source line, while the enclosing instruction
+;; inherits the compiler location left by its arguments. Constants also use
+;; ppcall_done deliberately, so retain that helper's restoration semantics.
+dec $ppcall_expression(ppstate, pcpath, int) : ppstate
+def $ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR)), pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR), pcpath, $source_line(metadata))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcall_expression(P, pcpath, z) = $ppdone($ppcall_done(P, pcpath, z), pcpath, PPR)[.LOCATION = P.LOCATION]
+
+def $ppcall_read(NExprFuncCall phpType19 phpType6 metadata, PPR) = true
+def $ppcall_read(expression, ppmode) = false -- otherwise

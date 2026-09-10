@@ -36,6 +36,7 @@ rule PhpStep/array-reference-source-cv: S ~> S[.TODO = (REF_ARRAY_CV S.BASE n_na
   -- if $reference_cv(expression) = (n_name*)
 rule PhpStep/array-reference-capture: S ~> S[.TODO = (REF_ARRAY pbase S.CELL z) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (REF_ARRAY_CAPTURE pbase z) :: ptask_tail*
+  -- if ~$reference_value_call(S)
 rule PhpStep/array-reference-bind: S ~> S_bound[.HELD = S.HELD]
   -- if S.TODO = (REF_ARRAY pbase n_source z) :: ptask_tail*
   -- if S_bound = $assign_array_reference($hold_task_inputs(S), pbase, n_source, z)
