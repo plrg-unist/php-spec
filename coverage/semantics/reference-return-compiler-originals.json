@@ -1,0 +1,191 @@
+{
+  "scope": "Compiler98 reference return declaration/source lowering, metadata and native compilation phases. Runtime99 source admission, ownership, result demand and source guard acceptance are separate; no family/core closure.",
+  "archive": "coverage/semantics/reference-return-compiler-originals.tar.xz",
+  "sha256": "b6fccf718a1d98dc12a9b06adf8c27993327e14f64605f04a0c457a4cc465b4f",
+  "bytes": 1297156,
+  "paths": 5383,
+  "candidate": {
+    "sha256": "f2f8674ddb1be3ffe2c321abfd869e9f81f7ba8e4cae8d16b5ceed7e0debc250",
+    "files": 936,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "baseline": {
+    "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+    "files": 933,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "tools": {
+    "compiler936/.tools/php-file.so": {
+      "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+      "mode": 509
+    },
+    "compiler936/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493
+    },
+    "compiler936/.tools/request-clock.so": {
+      "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+      "mode": 509
+    },
+    "compiler936/_build/default/adapter/main.exe": {
+      "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+      "mode": 365
+    },
+    "compiler936/tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "mode": 365
+    },
+    "baseline933/.tools/php-file.so": {
+      "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+      "mode": 509
+    },
+    "baseline933/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493
+    },
+    "baseline933/.tools/request-clock.so": {
+      "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+      "mode": 509
+    },
+    "baseline933/_build/default/adapter/main.exe": {
+      "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+      "mode": 365
+    },
+    "baseline933/tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "mode": 365
+    }
+  },
+  "historical_native_tool_aliases": {
+    "/home/user/workspace/php-spec/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493,
+      "current_binding": "compiler936/.tools/php/bin/php"
+    },
+    "/home/user/workspace/php-spec/.tools/compiler5-call-protocol/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493,
+      "current_binding": "compiler936/.tools/php/bin/php"
+    },
+    "/home/user/workspace/php-spec/.tools/compiler6-reference-demand/baseline933/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493,
+      "current_binding": "compiler936/.tools/php/bin/php"
+    },
+    "/home/user/workspace/php-spec/.tools/review10-reference-final/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493,
+      "current_binding": "compiler936/.tools/php/bin/php"
+    },
+    "/home/user/workspace/php-spec/.tools/runtime6-strict-directive/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493,
+      "current_binding": "compiler936/.tools/php/bin/php"
+    }
+  },
+  "source_cases": 58,
+  "new_baseline933_originals": 14,
+  "gates": {
+    "reference-return-compiler": {
+      "report": "/home/user/workspace/php-spec/.tools/compiler6-reference-return98/coverage/semantics/reference-return-compiler.json",
+      "raw": ".tools/reference-return-compiler-_iq5g1o2",
+      "compared": 56,
+      "pending": {
+        "suppression": "ordinary expression or writable operand compilation",
+        "void-suppression": "ordinary expression or writable operand compilation"
+      },
+      "projections": 49
+    },
+    "function-compiler": {
+      "report": "/home/user/workspace/php-spec/.tools/compiler6-reference-return98/coverage/semantics/function-compiler.json",
+      "raw": ".tools/function-compiler-dgg75bhe",
+      "compared": null,
+      "pending": null,
+      "projections": 37
+    },
+    "call-reference-compiler": {
+      "report": "/home/user/workspace/php-spec/.tools/compiler6-reference-return98/coverage/semantics/call-reference-compiler.json",
+      "raw": ".tools/call-reference-compiler-0vdgw47y",
+      "compared": 27,
+      "pending": {
+        "dynamic-call-boundary": "ordinary expression or writable operand compilation",
+        "named-call-boundary": "named, unpacked or reference call argument compilation"
+      },
+      "projections": 29
+    },
+    "typed-function-compiler": {
+      "report": "/home/user/workspace/php-spec/.tools/compiler6-reference-return98/coverage/semantics/typed-function-compiler.json",
+      "raw": ".tools/typed-function-compiler-owvkchg6",
+      "compared": 56,
+      "pending": {
+        "default-cache-before-type-failure": "ordinary statement compilation",
+        "default-null-before-required": "named, unpacked or reference call argument compilation",
+        "class-parameter": "dependent function type or variadic activation",
+        "object-parameter": "dependent function type or variadic activation",
+        "callable-parameter": "dependent function type or variadic activation",
+        "iterable-parameter": "dependent function type or variadic activation",
+        "intersection-parameter": "dependent function type or variadic activation",
+        "class-return": "dependent function type or variadic activation"
+      },
+      "projections": 38
+    }
+  },
+  "initial_retained_phase_gate": {
+    "compared": 17,
+    "fingerprint": {
+      "sha256": "ebbe19989857aff41a912ae894145744504444364dac8d88d273be7eb99c342b",
+      "files": 934,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "raw": ".tools/retained-reference-phases-m7y3yiro"
+  },
+  "failures": [
+    "First934 multiline nullsafe return checked at keyword line3 instead of inherited expression line4. Exact initial gate/98 snapshot and whole ppstate retained in first-phase-failure."
+  ],
+  "preparation_archive": "e39cda145721a1aa10564b726722c7bd6e9696f277ca98432e3d187831637dd6",
+  "demand_projection": "19 expected origin/result slots supplied to runtime99 via demand-catalogue.json; this archive does not claim execution of that runtime projection.",
+  "transport": "New maintained gate and source originals retain raw frontend/adapter wire, stderr and clean closure; native and compiler process streams/status retained. Legacy named-function gate retains decoded wrapper observations and its existing raw subprocess outputs. Unsupported/tool failure never agreement.",
+  "build": "Copied accepted tool bytes/modes; no rebuild."
+}
