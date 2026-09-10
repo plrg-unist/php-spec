@@ -52,12 +52,13 @@ rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
   -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
 
 ;; Value returns resolve their source operand but never write coercions back to it.
-def $typed_fallthrough(pfunction) = RETURN_NULL -- if pfunction.SIGNATURE.RETURNS = eps
+def $typed_fallthrough(pfunction) = RETURN_NULL -- if pfunction.SIGNATURE.RETURNS = eps /\ ~pfunction.SIGNATURE.BYREF
+def $typed_fallthrough(pfunction) = RETURN_REF_NULL pfunction.ENDLINE -- if pfunction.SIGNATURE.RETURNS = eps /\ pfunction.SIGNATURE.BYREF
 def $typed_fallthrough(pfunction) = TYPE_FALLTHROUGH pfunction.ORIGIN -- if pfunction.SIGNATURE.RETURNS =/= eps
 def $typed_return_line(S, z) = z_return
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
-  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if pfunction.SIGNATURE.RETURNS =/= eps \/ pfunction.SIGNATURE.BYREF
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if n = pfunction.CODE.UNIT
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z_return, false))
@@ -80,7 +81,7 @@ def $typed_return_check(S, z) = $throw_scalar(S, "TypeError", pfunction.NAME ++ 
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if S.RESULT = KNOWN pvalue
   -- if $typed_conversion(pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT) = TYPEREJECT
-rule PhpStep/type-fallthrough-void: S ~> S[.TODO = RETURN_NULL :: ptask*]
+rule PhpStep/type-fallthrough-void: S ~> S[.TODO = $reference_empty_task(S, pfunction.ENDLINE) :: ptask*]
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
   -- if "void" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
@@ -123,10 +124,12 @@ def $typed_return_task_valid(S, z) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS = eps
+  -- if ~pfunction.SIGNATURE.BYREF
 def $typed_return_task_valid(S, z) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if ~pfunction.SIGNATURE.BYREF
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if n = pfunction.CODE.UNIT
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtReturn expression metadata)

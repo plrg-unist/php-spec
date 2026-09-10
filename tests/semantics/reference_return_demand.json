@@ -1,0 +1,177 @@
+{
+  "scope": "Source result-use projection from nineteen separately instrumented pinned PHP8.5.10 pre-optimizer opcode facts; two suppression sources remain explicit runtime boundaries.",
+  "provenance": "compiler6 reference-demand archive e39cda14; exact original ids and opcode instructions retained in each row.",
+  "records": [
+    {
+      "id": "ref-return-unused-local",
+      "source_sha256": "a89886301c509c0fc5e8af3f2b191dcda185ff99c2950909d1a5b9fc201f1fbd",
+      "pcpath": "[PCINDEX 1,PCFIELD 0]",
+      "expected_result_used": false,
+      "opcode_instruction": "0001 DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgZnVuY3Rpb24gJmYoKXskeD0xO3JldHVybiAkeDt9ZigpO2VjaG8gIkUiOw=="
+    },
+    {
+      "id": "void",
+      "source_sha256": "8a9705023661f683b5beab660eda98de369f60c90f7b9a15581cebfa7585a2a5",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 0]",
+      "expected_result_used": true,
+      "opcode_instruction": "0003 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KKHZvaWQpZigpOw=="
+    },
+    {
+      "id": "suppression",
+      "source_sha256": "3b9eb86e2a178cdd35a420b0fbfda3d47a9ddac556126d46f350779af8178e79",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 0]",
+      "expected_result_used": false,
+      "opcode_instruction": "0004 DO_UCALL",
+      "runtime_boundary": true,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KQGYoKTs="
+    },
+    {
+      "id": "void-suppression",
+      "source_sha256": "5b8c5a6b2cbdcc761df048b7b50a65763d8f36f4dcfc10647497b4f4d52d69f1",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 0,PCFIELD 0]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V5 = DO_UCALL",
+      "runtime_boundary": true,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KKHZvaWQpQGYoKTs="
+    },
+    {
+      "id": "ternary-true",
+      "source_sha256": "2c0999a80ef177c250bd9b134ecfc0ffc81394526d35b745cf4132739cf3c6ad",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KdHJ1ZT9mKCk6MDs="
+    },
+    {
+      "id": "ternary-false",
+      "source_sha256": "5ec5201e981d4053a418adf15e7cdbce9a9a265910715bbac9aaaac171b57cb7",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 2]",
+      "expected_result_used": true,
+      "opcode_instruction": "0006 V5 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KZmFsc2U/MDpmKCk7"
+    },
+    {
+      "id": "ternary-dynamic",
+      "source_sha256": "68c862d850a70a99f6e4804ee6d21f29f1c4880f30c29beb7b30a43596516bb8",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KJGM/ZigpOjA7"
+    },
+    {
+      "id": "coalesce-null",
+      "source_sha256": "1a89f3d1c9061d296d2e3313af54780a99d66b2b12ef4c32dac0fccbad326e45",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V5 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KbnVsbD8/ZigpOw=="
+    },
+    {
+      "id": "coalesce-dynamic",
+      "source_sha256": "dbcd7b2d5aa74011a62bca86da7fcebf95e0464355538189a60713626278ed32",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V5 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KJGM/P2YoKTs="
+    },
+    {
+      "id": "shorthand-false",
+      "source_sha256": "5e7f36ef83761932baff22b91a2b3b61a2dbe60351d69945744bcf361d9cc9bd",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 2]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V5 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KZmFsc2U/OmYoKTs="
+    },
+    {
+      "id": "void-folded-ternary",
+      "source_sha256": "2985b566bd4db49310c539d1dbf1ef9b64e4335c60412cc0ff26463b43943ce3",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KKHZvaWQpKHRydWU/ZigpOjApOw=="
+    },
+    {
+      "id": "for-init",
+      "source_sha256": "69dab8dee18dc11d2b8ace07ca0bb71648295813c9e00e471d18b2fb82445938",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCINDEX 0]",
+      "expected_result_used": false,
+      "opcode_instruction": "0003 DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KZm9yKGYoKTtmYWxzZTspe30="
+    },
+    {
+      "id": "for-update",
+      "source_sha256": "6809e5a70417e202d3f01378d7b3febbad28d5c2a2ee365f22914f1c26c5a3bf",
+      "pcpath": "[PCINDEX 4,PCFIELD 2,PCINDEX 0]",
+      "expected_result_used": false,
+      "opcode_instruction": "0005 DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KZm9yKCRpPTA7JGk8MTtmKCksJGkrKyl7fQ=="
+    },
+    {
+      "id": "for-condition-nonlast",
+      "source_sha256": "b759ca2e7c5a37df0c1414457f13914bf122f3d8f1993334df1df8185cbc2482",
+      "pcpath": "[PCINDEX 4,PCFIELD 1,PCINDEX 0]",
+      "expected_result_used": false,
+      "opcode_instruction": "0004 DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KZm9yKDtmKCksZmFsc2U7KXt9"
+    },
+    {
+      "id": "for-condition-last",
+      "source_sha256": "7f7159d71d834bbe8e6e2a65f9ada57a10fb06395fbd36dcae0ae39d0b3cbd18",
+      "pcpath": "[PCINDEX 4,PCFIELD 1,PCINDEX 0]",
+      "expected_result_used": true,
+      "opcode_instruction": "0005 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KZm9yKDtmKCk7KXticmVhazt9"
+    },
+    {
+      "id": "nested-value-consumer",
+      "source_sha256": "dcfa09df2ef7673effdf1c66f12bf32624c7ca4ec8352e4d9f97f9a386ad994d",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KaChmKCkpOw=="
+    },
+    {
+      "id": "value-assignment",
+      "source_sha256": "20a483793eec8568f4b8f83d47e1530473c97496a1a379616553751d8d1b502c",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0003 V5 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KJGE9ZigpOw=="
+    },
+    {
+      "id": "array-value",
+      "source_sha256": "8405a19d37b6002a91b85fd97ced13092eef3f6c8aefe0107259522aea1eb097",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 0,PCINDEX 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0003 V4 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KW2YoKV07"
+    },
+    {
+      "id": "coalesce-assignment",
+      "source_sha256": "32eb88df2e291cbdc2f219806314a94b1ec5b3b21604c25a2a73fc6b2e15e924",
+      "pcpath": "[PCINDEX 4,PCFIELD 0,PCFIELD 1]",
+      "expected_result_used": true,
+      "opcode_instruction": "0004 V6 = DO_UCALL",
+      "runtime_boundary": false,
+      "source_base64": "PD9waHAgJHg9MTskYz0xO2Z1bmN0aW9uICZmKCl7Z2xvYmFsICR4O3JldHVybiAkeDt9ZnVuY3Rpb24gaCgkdil7cmV0dXJuICR2O30KJGE/Pz1mKCk7"
+    }
+  ]
+}

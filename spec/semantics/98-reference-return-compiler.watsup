@@ -1,0 +1,28 @@
+;; Pinned source designation is independent of the eventual operand ownership.
+dec $ppreturn_variable(expression) : bool
+dec $ppreturn_call(expression) : bool
+dec $ppreturn_mode(bool, expression) : ppmode
+dec $ppreturn_refcheck(ppstate, expression) : ppstate
+
+def $ppreturn_variable(NExprVariable phpType32 metadata) = true
+def $ppreturn_variable(NExprArrayDimFetch expression phpType5 metadata) = true
+def $ppreturn_variable(NExprPropertyFetch expression phpType20 metadata) = true
+def $ppreturn_variable(NExprNullsafePropertyFetch expression phpType20 metadata) = true
+def $ppreturn_variable(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
+def $ppreturn_variable(expression) = false -- otherwise
+
+def $ppreturn_call(NExprFuncCall phpType19 phpType6 metadata) = true
+def $ppreturn_call(NExprMethodCall expression phpType20 phpType6 metadata) = true
+def $ppreturn_call(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
+def $ppreturn_call(NExprStaticCall phpType19 phpType20 phpType6 metadata) = true
+def $ppreturn_call(NExprBinaryOpPipe expression_1 expression_2 metadata) = true
+def $ppreturn_call(expression) = false -- otherwise
+
+;; Writable return fetches reuse ordinary dimension/CV compilation. In particular,
+;; a temporary call dimension base is not a parameter-send reference restriction.
+def $ppreturn_mode(true, expression) = PPW -- if $ppreturn_variable(expression)
+def $ppreturn_mode(b, expression) = PPR -- otherwise
+def $ppreturn_refcheck(P, expression) = $ppcheck(P, $context_error("Cannot take reference of a nullsafe chain", P.LOCATION.LINE))
+  -- if P.RETURNREF /\ $ppreturn_variable(expression) /\ $ppnullsafe(expression)
+def $ppreturn_refcheck(P, expression) = P -- otherwise
+def $ppreturn_expression(P, pcpath, expression) = $ppexpr($ppreturn_refcheck($pplocate(P, pcpath, $expression_line(expression)), expression), pcpath, expression, $ppreturn_mode(P.RETURNREF, expression))

@@ -111,6 +111,11 @@ test-semantics: build
 	python3 tests/semantics/call_reference_acquisition.py
 	python3 tests/semantics/call_reference_protocol.py
 	python3 tests/semantics/call_reference_acquisition_state.py
+	python3 tests/semantics/reference_return_compiler.py
+	python3 tests/semantics/reference_returns.py
+	python3 tests/semantics/reference_return_demand.py
+	python3 tests/semantics/reference_return_protocol.py
+	python3 tests/semantics/reference_return_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

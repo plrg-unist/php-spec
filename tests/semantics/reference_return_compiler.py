@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Call reference assignment phases and source operand modes/lines."""
+"""Reference return compiler phases and source designation/mode/emission metadata."""
 import base64
 import hashlib
 import json
@@ -12,11 +12,11 @@ import source_context as context
 from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = json.loads((ROOT / 'tests/semantics/call_reference_cases.json').read_text())
+CASES = json.loads((ROOT / 'tests/semantics/reference_return_cases.json').read_text())
 
 
-CONTEXTS = {'acquire-multiline-cv': ['$ppaccess(P, [PCINDEX 1,PCFIELD 0,PCFIELD 1]) = (PPR)', '$ppaccess(P, [PCINDEX 1,PCFIELD 0,PCFIELD 0]) = (PPW)', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 1,PCFIELD 0,PCFIELD 1]) = ((4,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 1,PCFIELD 0]) = ((4,false))'], 'acquire-multiline-computed': ['$ppaccess(P, [PCINDEX 2,PCFIELD 0,PCFIELD 1]) = (PPR)', '$ppaccess(P, [PCINDEX 2,PCFIELD 0,PCFIELD 0]) = (PPW)', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0,PCFIELD 1]) = ((5,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0]) = ((5,false))'], 'existing-temporary-call-dim': ['$ppaccess(P, [PCINDEX 1,PCFIELD 0,PCFIELD 0,PCFIELD 0]) = (PPR)', '$ppaccess(P, [PCINDEX 1,PCFIELD 0,PCFIELD 0]) = (PPW)'], 'existing-variable-array-ref': ['$ppaccess(P, [PCINDEX 1,PCFIELD 0,PCFIELD 1,PCFIELD 0,PCINDEX 0,PCFIELD 1]) = (PPW)'], 'acquire-argument-line-cv': ['$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 1,PCFIELD 0]) = ((4,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 1,PCFIELD 0,PCFIELD 1]) = ((3,false))'], 'acquire-argument-line-computed': ['$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0]) = ((5,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0,PCFIELD 1]) = ((4,false))'], 'acquire-argument-line-dim': ['$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0]) = ((7,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0,PCFIELD 1]) = ((6,false))'], 'acquire-argument-line-nested': ['$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0]) = ((6,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 2,PCFIELD 0,PCFIELD 1]) = ((4,false))'], 'typed-return-call-argument-emission': ['P.FUNCTIONS = [pfunction_g,pfunction_f]', 'pfunction_f.ENDLINE = 7', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 1,PCFIELD 5,PCINDEX 0]) = ((5,false))', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = ((4,false))'], 'ordinary-value-assignment-line': ['$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 1,PCFIELD 0]) = ((3,false))', '$code_expression($compiled_operands(P,P.EXPRESSIONS), [PCINDEX 1,PCFIELD 0,PCFIELD 1]) = ((4,false))'], 'typed-return-nested-call-line': ['P.FUNCTIONS = [pfunction_g,pfunction_h,pfunction_f]', 'pfunction_f.ENDLINE = 10', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 2,PCFIELD 5,PCINDEX 0]) = ((7,false))', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 2,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = ((5,false))']}
-PENDING = {'dynamic-call-boundary': 'ordinary expression or writable operand compilation', 'named-call-boundary': 'named, unpacked or reference call argument compilation'}
+CONTEXTS = {'ref-bare-multiline': ['P.FUNCTIONS = [pfunction]', 'pfunction.SIGNATURE.BYREF', 'pfunction.ENDLINE = 5', '$code_expression(pfunction.CODE.EXPRESSIONS, [PCINDEX 0,PCFIELD 5,PCINDEX 0]) = ((4,false))'], 'ref-implicit-multiline': ['P.FUNCTIONS = [pfunction]', 'pfunction.SIGNATURE.BYREF', 'pfunction.ENDLINE = 5'], 'ref-outer-value-inner': ['P.FUNCTIONS = [pfunction_g,pfunction_f]', 'pfunction_f.SIGNATURE.BYREF', '~pfunction_g.SIGNATURE.BYREF', 'pfunction_f.CODE.EXPRESSIONS = $ppownexpr([pfunction_g],pfunction_f.CODE.EXPRESSIONS)', '$ppaccess(P, [PCINDEX 0,PCFIELD 5,PCINDEX 1,PCFIELD 0]) = (PPW)', '$ppaccess(P, [PCINDEX 0,PCFIELD 5,PCINDEX 0,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = (PPR)'], 'value-outer-ref-inner': ['P.FUNCTIONS = [pfunction_g,pfunction_f]', '~pfunction_f.SIGNATURE.BYREF', 'pfunction_g.SIGNATURE.BYREF', 'pfunction_f.CODE.EXPRESSIONS = $ppownexpr([pfunction_g],pfunction_f.CODE.EXPRESSIONS)', '$ppaccess(P, [PCINDEX 0,PCFIELD 5,PCINDEX 1,PCFIELD 0]) = (PPR)', '$ppaccess(P, [PCINDEX 0,PCFIELD 5,PCINDEX 0,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = (PPW)'], 'ref-return-call-argument-line': ['P.FUNCTIONS = [pfunction_g,pfunction_f]', 'pfunction_f.SIGNATURE.BYREF', 'pfunction_f.ENDLINE = 7', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 1,PCFIELD 5,PCINDEX 0]) = ((5,false))', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = ((4,false))', '$occurrence_node(P.FOLD.SOURCE.OCCURRENCES, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = (expression)', '~$ppreturn_variable(expression)', '$ppreturn_call(expression)'], 'ref-return-nested-call-line': ['P.FUNCTIONS = [pfunction_g,pfunction_h,pfunction_f]', 'pfunction_f.SIGNATURE.BYREF', 'pfunction_f.ENDLINE = 10', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 2,PCFIELD 5,PCINDEX 0]) = ((7,false))', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 2,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = ((5,false))'], 'ref-return-nullary-call-line': ['P.FUNCTIONS = [pfunction_g,pfunction_f]', 'pfunction_f.SIGNATURE.BYREF', 'pfunction_f.ENDLINE = 6', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 1,PCFIELD 5,PCINDEX 0]) = ((5,false))', '$code_expression(pfunction_f.CODE.EXPRESSIONS, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = ((5,false))'], 'ref-temporary-call-dim': ['$ppaccess(P, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = (PPW)', '$ppaccess(P, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0,PCFIELD 0]) = (PPR)', '$occurrence_node(P.FOLD.SOURCE.OCCURRENCES, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = (expression)', '$ppreturn_variable(expression)', '~$ppreturn_call(expression)'], 'ref-computed-variable-mode': ['$ppaccess(P, [PCINDEX 0,PCFIELD 5,PCINDEX 1,PCFIELD 0]) = (PPW)'], 'return-whole-globals-copy': ['$occurrence_node(P.FOLD.SOURCE.OCCURRENCES, [PCINDEX 1,PCFIELD 5,PCINDEX 0,PCFIELD 0]) = (expression)', '$ppreturn_variable(expression)', '~$ppreturn_call(expression)'], 'return-reference-assignment-value-class': ['$occurrence_node(P.FOLD.SOURCE.OCCURRENCES, [PCINDEX 2,PCFIELD 5,PCINDEX 1,PCFIELD 0]) = (expression)', '~$ppreturn_variable(expression)', '~$ppreturn_call(expression)']}
+PENDING = {'suppression': 'ordinary expression or writable operand compilation', 'void-suppression': 'ordinary expression or writable operand compilation'}
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -27,11 +27,11 @@ def main():
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
     adapter_path = ROOT / '_build/default/adapter/main.exe'
     files = [*modules, runner, adapter_path, types.PHP, Path(__file__),
-             ROOT / 'tests/semantics/call_reference_cases.json',
+             ROOT / 'tests/semantics/reference_return_cases.json',
              ROOT / 'frontend/worker.php', ROOT / '.tools/php-file.so',
              ROOT / 'tests/semantics/recorded_worker.py']
     before = {str(p.relative_to(ROOT)): digest(p) for p in files}
-    out = Path(tempfile.mkdtemp(prefix='call-reference-compiler-', dir=ROOT / '.tools'))
+    out = Path(tempfile.mkdtemp(prefix='reference-return-compiler-', dir=ROOT / '.tools'))
     print(out, flush=True)
 
     def run(command, label):
@@ -73,7 +73,7 @@ def main():
             if name in PENDING:
                 body += '  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED '+json.dumps(PENDING[name])+')\n'
             elif native.returncode == 0:
-                body += '  -- if P.COMPLETION = PPCNORMAL\n'
+                body += '  -- if P.COMPLETION = PPCNORMAL\n  -- if ~P.RETURNREF\n'
                 body += ''.join('  -- if '+condition+'\n' for condition in CONTEXTS.get(name, []))
             assertions.append(f'dec $case{index}() : bool\ndef $case{index}() = true\n' + body)
             (out / (name + '.state.watsup')).write_text(f'dec $main() : ppstate\ndef $main() = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n')
@@ -87,10 +87,10 @@ def main():
         finally:
             adapter.close()
     assert before == {str(p.relative_to(ROOT)): digest(p) for p in files}
-    report = {'scope': 'Call reference compiler phases and source modes/lines; runtime acquisition/ownership pairing is a separate gate.',
+    report = {'scope': 'Reference return compiler source phases, return designation, mode restoration and emission metadata; runtime ownership/demand pairing is separate.',
               'result': 'pass', 'compared': len(CASES)-len(PENDING), 'pending': PENDING, 'context_assertions':sum(map(len,CONTEXTS.values())), 'cases': records, 'inputs': before, 'raw': str(out.relative_to(ROOT)),
               'fixture_sha256': digest(fixture)}
-    (ROOT / 'coverage/semantics/call-reference-compiler.json').write_text(json.dumps(report, indent=2) + '\n')
+    (ROOT / 'coverage/semantics/reference-return-compiler.json').write_text(json.dumps(report, indent=2) + '\n')
     print(len(records)-len(PENDING), 'exact compiler phase comparisons;',len(PENDING),'explicit pending controls')
 
 

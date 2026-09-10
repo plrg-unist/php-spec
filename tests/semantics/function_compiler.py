@@ -12,6 +12,8 @@ import source_context as context
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    'byref-return': b'<?php function &f(){return 1;}',
+
     'default-invalid': b'<?php function f($a=[[]=>1]){}',
     'param-default': b'<?php function f($a=1){}',
     'import-around-function': b'<?php use A; function f(){} use B;',
@@ -58,7 +60,6 @@ CASES = {
     'param-type': b'<?php function f(int $a){}',
 }
 PENDING = {
-    'byref-return': b'<?php function &f(){return 1;}',
     'variadic': b'<?php function f(...$a){}',
 }
 
@@ -109,7 +110,7 @@ def main():
             assertion = (f'dec $case{index}() : bool\ndef $case{index}() = true\n'
                          f'  -- if P = $ppstart(91, {checked["fixture"]}, {types.byte_expr(str(file))})\n')
             if name in PENDING:
-                reason = "dependent function type, reference return or variadic activation"
+                reason = "dependent function type or variadic activation"
                 assertion += '  -- if P.COMPLETION = PPCABRUPT (UNSUPPORTED ' + json.dumps(reason) + ')\n'
             else:
                 assertion += '  -- if $pptrace(P) = ' + context.expected_events(events, file) + '\n'

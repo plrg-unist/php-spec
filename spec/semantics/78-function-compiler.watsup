@@ -1,4 +1,5 @@
 dec $ppreturn_compile(ppstate, pcpath, bool) : ppstate
+dec $ppreturn_expression(ppstate, pcpath, expression) : ppstate
 dec $ppsupported_types(ptbranch*) : bool
 dec $ppfunction_defaults(ppstate, pcpath, psparam*, nat) : pdefault*
 dec $ppdefaults_begin(ppstate, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, bool) : ppstate
@@ -70,7 +71,7 @@ def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_bo
   -- if P_body.COMPLETION =/= PPCNORMAL
 def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppfunction_duplicate(P_restored, { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $psline(metadata), ENDLINE $psendline(metadata) })
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if P_restored = P_body[.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
+  -- if P_restored = P_body[.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
 
 def $psendline(metadata) = n
   -- if $source_end_line(metadata) = n
@@ -100,7 +101,7 @@ def $ppstatement(P, pcpath, NStmtFunction (SEQUENCE eps) (BOOLEAN b) (NIdentifie
 ;; Returning an expression compiles even inside a dead branch; no body effect runs.
 def $ppstatement(P, pcpath, NStmtReturn ABSENT metadata) = $ppreturn_compile($pplocate(P, pcpath, $source_line(metadata)), pcpath, false)
   -- if P.COMPLETION = PPCNORMAL
-def $ppstatement(P, pcpath, NStmtReturn expression metadata) = $ppreturn_compile($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, true)
+def $ppstatement(P, pcpath, NStmtReturn expression metadata) = $ppreturn_compile($ppreturn_expression($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 0], expression), pcpath, true)
   -- if P.COMPLETION = PPCNORMAL
 
 ;; Calls resolve through the existing lexical function namespace/fallback rules.
@@ -195,7 +196,7 @@ def $ppownglobal(pfunction*, pcpath :: pcpath_tail*) = pcpath :: $ppownglobal(pf
 
 ;; Other signature protocols remain explicit until checks and runtime binding are
 ;; paired, including declarations in files that never invoke the function.
-def $ppsupported_signature(pssignature) = (~pssignature.BYREF /\ $ppsupported_types(pssignature.RETURNS) /\ $ppsupported_params(pssignature.PARAMETERS))
+def $ppsupported_signature(pssignature) = ($ppsupported_types(pssignature.RETURNS) /\ $ppsupported_params(pssignature.PARAMETERS))
 def $ppsupported_params(eps) = true
 def $ppsupported_params(psparam :: psparam_tail*) = (~psparam.VARIADIC /\ $ppsupported_types(psparam.TYPE) /\ $ppsupported_params(psparam_tail*))
 
