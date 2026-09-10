@@ -8,6 +8,8 @@ def $call_argument_paths((CODEEFFECT pcpath) :: pcodeexpr*) = $call_argument_pat
 ;; steps preserve them; no duplicate trusted registry or host evaluation exists.
 syntax pfunctioncheck = FUNCTIONCHECK pfunction* | FUNCTIONINVALID
 
+dec $silence_unit_code_valid(ppstate, pcode) : bool
+dec $silences_valid(pstate) : bool
 dec $typed_unit_code_valid(ppstate, pcode) : bool
 dec $reference_unit_code_valid(ppstate, pcode) : bool
 dec $acquire_call_result_valid(pstate) : bool
@@ -70,6 +72,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $constant_unit_code_valid(S, P, pcode)
   -- if $typed_unit_code_valid(P, pcode)
   -- if $reference_unit_code_valid(P, pcode)
+  -- if $silence_unit_code_valid(P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -226,6 +229,7 @@ def $call_descriptors_valid(S) = true
   -- if $reference_return_result_valid(S)
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $acquire_call_result_valid(S)
+  -- if $silences_valid(S)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $constant_context_valid(S)
   -- if $default_caches_valid(S, S.DEFAULTCACHE)

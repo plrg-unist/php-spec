@@ -1,0 +1,119 @@
+;; EG(error_reporting) is request-global; live silence slots belong to frames.
+def $diagnostic_level("Warning") = 2
+def $diagnostic_level("Notice") = 8
+def $diagnostic_level("Deprecated") = 8192
+def $diagnostic_level(text) = 1 -- otherwise
+def $report_event(S, pevent, i_level) = S[.EVENTS = S.EVENTS ++ [pevent]]
+  -- if $long_and(S.REPORTING, i_level) =/= 0
+def $report_event(S, pevent, i_level) = S
+  -- if $long_and(S.REPORTING, i_level) = 0
+
+dec $silence_restore(pstate, int) : pstate
+def $silence_restore(S, i_saved) = S[.REPORTING = i_saved]
+  -- if $long_and(S.REPORTING, 4437) = S.REPORTING
+  -- if $long_and(i_saved, 4437) =/= i_saved
+def $silence_restore(S, i_saved) = S -- otherwise
+
+def $silence_unwind(S) = S -- if S.SILENCES = eps
+def $silence_unwind(S) = $silence_unwind($silence_restore(S[.SILENCES = psilence*], i_saved))
+  -- if S.SILENCES = (SILENCE porigin i_saved) :: psilence*
+
+dec $silence_begin(pstate, porigin) : pstate
+def $silence_begin(S, porigin) = S[.REPORTING = $long_and(S.REPORTING, 4437)][.SILENCES = (SILENCE porigin S.REPORTING) :: S.SILENCES]
+
+dec $silence_read(pstate, porigin) : pstate
+def $silence_read(S, porigin) = $resolve_at(S, S.RESULT, $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression))
+  -- if S.RESULT = VARIABLE n* z
+  -- if $origin_node(S.SOURCES, porigin) = (NExprErrorSuppress expression metadata)
+def $silence_read(S, porigin) = S -- otherwise
+
+dec $silence_finish(pstate, porigin) : pstate
+def $silence_finish(S, porigin) = $silence_restore(S[.SILENCES = psilence*], i_saved)
+  -- if S.SILENCES = (SILENCE porigin i_saved) :: psilence*
+
+def $return_discard(S, SILENCE_END porigin) = $silence_finish(S, porigin)
+
+rule PhpStep/silence-begin: S ~> $silence_begin(S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), SILENCE_END porigin] ++ ptask_tail*], porigin)
+  -- if S.TODO = (EVAL (NExprErrorSuppress expression metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/silence-end: S ~> $silence_finish(S_read[.TODO = ptask_tail*], porigin)
+  -- if S.TODO = (SILENCE_END porigin) :: ptask_tail*
+  -- if S_read = $silence_read(S, porigin)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/silence-end-abrupt: S ~> S_read
+  -- if S.TODO = (SILENCE_END porigin) :: ptask_tail*
+  -- if S_read = $silence_read(S, porigin)
+  -- if S_read.COMPLETION =/= NORMAL
+
+;; Saved masks are runtime values. Source roots, ownership and pending closes
+;; are finite metadata; no execution history or operand value is reconstructed.
+def $call_declaration_node(NExprErrorSuppress expression metadata) = true
+
+dec $reporting_valid(int) : bool
+def $reporting_valid(i) = $(i >= -2147483648 /\ i <= 2147483647)
+dec $silence_root(pcoccurrence*, pcpath) : bool
+def $silence_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprErrorSuppress expression metadata)
+def $silence_root(pcoccurrence*, pcpath) = false -- otherwise
+dec $silence_child(pcoccurrence*, pcpath) : bool
+def $silence_child(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n = $(|pcpath| - 1)
+  -- if pcpath[n:1] = [PCFIELD 0]
+  -- if $silence_root(pcoccurrence*, pcpath[0:n])
+def $silence_child(pcoccurrence*, pcpath) = false -- otherwise
+dec $silence_code_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $silence_code_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $silence_root(pcoccurrence*, pcpath) \/ $silence_child(pcoccurrence*, pcpath)
+def $silence_code_entry(pcoccurrence*, CODEEFFECT pcpath) = [CODEEFFECT pcpath]
+  -- if $silence_root(pcoccurrence*, pcpath)
+def $silence_code_entry(pcoccurrence*, pcodeexpr) = eps -- otherwise
+dec $silence_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $silence_code(pcoccurrence*, eps) = eps
+def $silence_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $silence_code_entry(pcoccurrence*, pcodeexpr) ++ $silence_code(pcoccurrence*, pcodeexpr_tail*)
+def $silence_unit_code_valid(P, pcode) = ($silence_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $silence_code(P.FOLD.SOURCE.OCCURRENCES, $compiled_operands(P, P.EXPRESSIONS)))
+
+dec $silence_in_function(pfunction*, nat, pcpath) : bool
+def $silence_in_function(eps, n, pcpath) = false
+def $silence_in_function(pfunction :: pfunction_tail*, n, pcpath) = ((pfunction.CODE.UNIT = n /\ $ppfunction_contains(pfunction, pcpath)) \/ $silence_in_function(pfunction_tail*, n, pcpath))
+dec $silence_owner(pstate, porigin) : bool
+def $silence_owner(S, PORIGIN n pcpath) = ~$silence_in_function(S.FUNCTIONS, n, pcpath)
+  -- if S.CURRENT = eps
+def $silence_owner(S, PORIGIN n pcpath) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.CODE.UNIT = n
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, b))
+def $silence_owner(S, porigin) = false -- otherwise
+dec $silence_origin_valid(pstate, porigin) : bool
+def $silence_origin_valid(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprErrorSuppress expression metadata)
+  -- if $silence_owner(S, porigin)
+def $silence_origin_valid(S, porigin) = false -- otherwise
+
+def $call_task_valid(S, SILENCE_END porigin) = (S.ORIGIN = (porigin) /\ $silence_origin_valid(S, porigin))
+dec $silence_task(ptask) : porigin*
+def $silence_task(SILENCE_END porigin) = [porigin]
+def $silence_task(AT porigin ptask) = $silence_task(ptask)
+def $silence_task(ptask) = eps -- otherwise
+dec $silence_tasks(ptask*) : porigin*
+def $silence_tasks(eps) = eps
+def $silence_tasks(ptask :: ptask_tail*) = $silence_task(ptask) ++ $silence_tasks(ptask_tail*)
+dec $silence_origins(psilence*) : porigin*
+def $silence_origins(eps) = eps
+def $silence_origins((SILENCE porigin i) :: psilence*) = porigin :: $silence_origins(psilence*)
+dec $silence_nested(porigin, psilence*) : bool
+def $silence_nested(porigin, eps) = true
+def $silence_nested(PORIGIN n pcpath_inner, (SILENCE (PORIGIN n pcpath_outer) i) :: psilence*) = $effect_below(pcpath_outer ++ [PCFIELD 0], pcpath_inner)
+def $silence_nested(porigin, psilence*) = false -- otherwise
+dec $silence_stack_valid(pstate, psilence*) : bool
+def $silence_stack_valid(S, eps) = true
+def $silence_stack_valid(S, (SILENCE porigin i) :: psilence*) = ($reporting_valid(i) /\ $silence_origin_valid(S, porigin) /\ $silence_nested(porigin, psilence*) /\ $silence_stack_valid(S, psilence*))
+dec $silence_pending(pstate) : bool
+def $silence_pending(S) = ($silence_origins(S.SILENCES) = $silence_tasks(S.TODO))
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $silence_pending(S) = true -- otherwise
+dec $silence_frames_valid(pstate, pframe*) : bool
+def $silence_frames_valid(S, eps) = true
+def $silence_frames_valid(S, pframe :: pframe_tail*) = ($silence_stack_valid(S[.CURRENT = pframe.CONTEXT], pframe.SILENCES) /\ $silence_origins(pframe.SILENCES) = $silence_tasks(pframe.TODO) /\ $silence_frames_valid(S, pframe_tail*))
+def $silences_valid(S) = ($reporting_valid(S.REPORTING) /\ $silence_stack_valid(S, S.SILENCES) /\ $silence_pending(S) /\ $silence_frames_valid(S, S.FRAMES))

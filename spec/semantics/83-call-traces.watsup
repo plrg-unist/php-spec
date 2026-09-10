@@ -91,9 +91,9 @@ def $error_keep_iterators((ITERATOR n n_array b pcursor*) :: piterator*, n_keep*
 dec $error_release_iterators(pstate) : pstate
 def $error_release_iterators(S) = S[.ITERATORS = $error_keep_iterators(S.ITERATORS, $error_saved_iterators(S.FRAMES))]
 
-def $start_error_unwind(S) = $error_release_iterators(S)[.CONSTCONTEXT = eps][.TRACE = $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $start_error_unwind(S) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
 dec $error_unwind(pstate, pcompletion) : pstate
-def $error_unwind(S, pcompletion) = $error_release_iterators($restore_frame(S))[.TODO = [ERROR_UNWIND pcompletion]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $error_unwind(S, pcompletion) = $error_release_iterators($silence_unwind($restore_frame(S)))[.TODO = [ERROR_UNWIND pcompletion]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if S.FRAMES =/= eps
 def $error_unwind(S, pcompletion) = S[.TODO = eps][.COMPLETION = pcompletion]
   -- if S.FRAMES = eps

@@ -58,7 +58,7 @@ def $constant_declaration(S, porigin) = eps -- otherwise
 dec $constant_activate(pstate, porigin, preqbytes, pvalue, pvalueclass, int) : pstate
 def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]]
   -- if $source_constant_lookup(S, preqbytes) = eps
-def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Warning" ($ptascii("Constant ") ++ $user_constant_key(preqbytes) ++ $ptascii(" already defined, this will be an error in PHP 9")) z]]
+def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = $report_event(S, DIAGNOSTIC "Warning" ($ptascii("Constant ") ++ $user_constant_key(preqbytes) ++ $ptascii(" already defined, this will be an error in PHP 9")) z, 2)
   -- if $source_constant_lookup(S, preqbytes) = (peval)
 rule PhpStep/constant-bind: S ~> $constant_activate(S_value[.CONSTCONTEXT = eps][.TODO = ptask_tail*][.RESULT = KNOWN PNULL], porigin, preqbytes, pvalue, $constant_received_class(S_value, porigin), z)
   -- if S.TODO = (CONSTANT_BIND porigin) :: ptask_tail*

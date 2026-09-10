@@ -1,0 +1,11 @@
+;; BEGIN/END retain the child's operand kind, including a known constant.
+;; Keep an effect root so folded parents still enter the silenced evaluation.
+dec $ppsilenced(ppstate, pcpath) : ppstate
+def $ppdispatch(P, pcpath, NExprErrorSuppress expression metadata, PPR) = $ppsilenced($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
+def $ppsilenced(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEFFECT pcpath]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE =/= eps
+def $ppsilenced(P, pcpath) = P -- otherwise
+
+;; Suppression preserves a VAR result, while an ordinary CV read becomes TMP.
+def $ppsend_var(NExprErrorSuppress expression metadata) = $ppsend_var(expression)
