@@ -1,0 +1,2254 @@
+{
+  "result": "pass",
+  "scope": "Bounded author source/runtime acceptance for call reference assignment; actual reference-return declarations and complete callable/core closure remain pending. Source sets overlap and are not additive.",
+  "paired_code": "af228143",
+  "fingerprint": {
+    "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+    "files": 933,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "baseline": {
+    "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+    "files": 926,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_pin": {
+    "version": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "authority": [
+      "Zend/zend_compile.c: zend_compile_assign_ref, zend_compile_call_common",
+      "Zend/zend_vm_def.h: ZEND_ASSIGN_REF, ZEND_MAKE_REF",
+      "Zend/zend_execute.c: zend_wrong_assign_to_variable_reference"
+    ]
+  },
+  "gates": {
+    "call-reference-compiler": {
+      "result": "pass",
+      "report_sha256": "479ea4ce78c74e866fbf3b78a6ea0ead163f65f19013e3f9fa2e9c351814c993",
+      "archive_member": "reports/.tools/runtime7-acquire-candidate/coverage/semantics/call-reference-compiler.json",
+      "raw": ".tools/call-reference-compiler-okvveqbc",
+      "compared": 26,
+      "pending": {
+        "reference-return-boundary": "dependent function type, reference return or variadic activation",
+        "dynamic-call-boundary": "ordinary expression or writable operand compilation",
+        "named-call-boundary": "named, unpacked or reference call argument compilation"
+      },
+      "context_assertions": 29
+    },
+    "call-reference-acquisition": {
+      "result": "pass",
+      "report_sha256": "b89ea2c47c6b4964f80f7540252948a74af65f32142a3432f31e60f05e21f4ee",
+      "archive_member": "reports/.tools/runtime7-acquire-candidate/coverage/semantics/call-reference-acquisition.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c",
+      "selected_cases": 17,
+      "records": 17
+    },
+    "call-reference-protocol": {
+      "result": "pass",
+      "report_sha256": "b278aff4ac5df5ae66f30b21071681df5f6f27f6b8c9f06a686a9a9e325fc6fd",
+      "archive_member": "reports/.tools/runtime7-acquire-candidate/coverage/semantics/call-reference-protocol.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-protocol-zuo4pea3",
+      "assertions": 227,
+      "records": 13
+    },
+    "call-reference-acquisition-state": {
+      "result": "pass",
+      "report_sha256": "decb566d2f60fbe84f4d0aa6ff434df8e36cbd02d80a115de6bd5483aff6690e",
+      "archive_member": "reports/.tools/runtime7-acquire-candidate/coverage/semantics/call-reference-acquisition-state.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-state-1llhpoc6",
+      "assertions": 553,
+      "records": 2
+    },
+    "typed-functions": {
+      "result": "pass",
+      "report_sha256": "c1c5ae92319a97aff06c0ffeb6c5c4c9320350791ea36f540fda297d7ff21233",
+      "archive_member": "reports/.tools/runtime7-acquire-candidate/coverage/semantics/typed-functions.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/typed-functions-zk886q0h",
+      "selected_cases": 38,
+      "records": 38
+    },
+    "call-reference-adjacent-regressions": {
+      "result": "pass",
+      "report_sha256": "737607ca754180ad190ea6c87f6e9cf6849c256451614634864a7be70458b57d",
+      "archive_member": "reports/.tools/runtime7-acquire-candidate/coverage/semantics/call-reference-adjacent-regressions.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-adjacent-regressions-dzhet0uv",
+      "selected_cases": 13,
+      "records": 13
+    }
+  },
+  "raw_audit": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+      "files": 933,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "gates": [
+      {
+        "gate": "call-reference-compiler",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-compiler-okvveqbc",
+        "workers": [
+          {
+            "path": ".tools/call-reference-compiler-okvveqbc/adapter-wire",
+            "responses": 29,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-compiler-okvveqbc/frontend-wire",
+            "responses": 29,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": [
+          ".tools/call-reference-compiler-okvveqbc/spectec.command.json"
+        ]
+      },
+      {
+        "gate": "call-reference-acquisition",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c",
+        "workers": [
+          {
+            "path": ".tools/call-reference-acquisition-i8y4ep7c/adapter-wire",
+            "responses": 17,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-acquisition-i8y4ep7c/frontend-wire",
+            "responses": 17,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": []
+      },
+      {
+        "gate": "call-reference-protocol",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-protocol-zuo4pea3",
+        "workers": [
+          {
+            "path": ".tools/call-reference-protocol-zuo4pea3/alias/adapter-wire",
+            "responses": 2,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-protocol-zuo4pea3/alias/frontend-wire",
+            "responses": 1,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-protocol-zuo4pea3/nested/adapter-wire",
+            "responses": 2,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-protocol-zuo4pea3/nested/frontend-wire",
+            "responses": 1,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": [
+          ".tools/call-reference-protocol-zuo4pea3/alias/absent-origin.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/arbitrary-known.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/control.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/existing-reference.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/origin-variable-result.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/parent-origin.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/unit-assignment-line.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/unit-call-line.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/variable-result.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/wrapped-variable-result.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/alias/wrong-unit.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/nested/control.command.json",
+          ".tools/call-reference-protocol-zuo4pea3/nested/plain-call-origin.command.json"
+        ]
+      },
+      {
+        "gate": "call-reference-acquisition-state",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-state-1llhpoc6",
+        "workers": [
+          {
+            "path": ".tools/call-reference-acquisition-state-1llhpoc6/adapter-wire",
+            "responses": 4,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-acquisition-state-1llhpoc6/frontend-wire",
+            "responses": 2,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": [
+          ".tools/call-reference-acquisition-state-1llhpoc6/call-ref-append-returned-array/runner.command.json",
+          ".tools/call-reference-acquisition-state-1llhpoc6/call-ref-rebind-target-array/runner.command.json"
+        ]
+      },
+      {
+        "gate": "typed-functions",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/typed-functions-zk886q0h",
+        "workers": [
+          {
+            "path": ".tools/typed-functions-zk886q0h/adapter-wire",
+            "responses": 38,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/typed-functions-zk886q0h/frontend-wire",
+            "responses": 38,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": []
+      },
+      {
+        "gate": "call-reference-adjacent-regressions",
+        "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-adjacent-regressions-dzhet0uv",
+        "workers": [
+          {
+            "path": ".tools/call-reference-adjacent-regressions-dzhet0uv/adapter-wire",
+            "responses": 13,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          },
+          {
+            "path": ".tools/call-reference-adjacent-regressions-dzhet0uv/frontend-wire",
+            "responses": 13,
+            "closure": {
+              "status": "exit",
+              "exit_status": 0,
+              "final_exit_status": 0
+            }
+          }
+        ],
+        "runners": []
+      }
+    ],
+    "worker_closures": 14,
+    "responses": 206,
+    "standalone_runner_closures": 16
+  },
+  "history_archive": {
+    "archive": "coverage/semantics/call-reference-runtime-originals.tar.xz",
+    "sha256": "d0bb8b8aa8a03cb02409d23e4d2f04ed6f3edc85ba849637300d357b217d1237",
+    "bytes": 49178332,
+    "payload_files": 7073,
+    "members": 7074,
+    "manifest_sha256": "a6e7b0c288ccf1badd43ab1fe137c9ddfbfa05e54bfd103d522bf1277a35349a",
+    "snapshots": {
+      "baseline926": {
+        "sha256": "599f3963f5e347c41ba7dd0c632a407f73f7f9157ca8e64c6191ba6d32cc3de7",
+        "files": 926,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "first928": {
+        "sha256": "1c1177d1ba32e8fbb9ac1f9eb9a47c23e738bd42d7146269b8fb18cfeb167e87",
+        "files": 928,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "author930": {
+        "sha256": "cca036d3194a7aa5e1000ffad8d663212d663e7b901fddc63491aa2d21834a86",
+        "files": 930,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final933": {
+        "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+        "files": 933,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "scope": "Complete exact baseline926/first928/author930/final933 snapshots and author native/current-source/phase/state/protocol history; compiler and reviewer defect archives are separate linked evidence. No earlier input or failed preparation is relabeled as final agreement.",
+    "compiler_archive": "coverage/semantics/call-reference-compiler-originals.tar.xz"
+  },
+  "history_audit": {
+    "result": "pass",
+    "sha256": "d0bb8b8aa8a03cb02409d23e4d2f04ed6f3edc85ba849637300d357b217d1237",
+    "payload_files": 7073,
+    "regular_files": 2433,
+    "hardlinks": 4640,
+    "scope": "Every regular payload hashed; each earlier-target content+mode hardlink verified against its manifest entry, with exact member set and no escaping paths."
+  },
+  "publication_archive": {
+    "archive": "coverage/semantics/call-reference-runtime-publication-originals.tar.xz",
+    "sha256": "d32eb1eddceef5dd4570a0f0854cace9013c4b479be6d7c200be0ee360170dc8",
+    "bytes": 57120,
+    "payload_files": 58,
+    "members": 59,
+    "manifest_sha256": "79c64634c726d5165042ade82a28e8914c6760fce4cd4a4721449b837140eeeb",
+    "fingerprint": {
+      "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+      "files": 933,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "history_archive_sha256": "d0bb8b8aa8a03cb02409d23e4d2f04ed6f3edc85ba849637300d357b217d1237"
+  },
+  "canonical_installation": {
+    "paths": 933,
+    "sha256": "90a89575e854970610cdc99120c91c63dbddde31d8d0f663a242d0e7f8254a05",
+    "exact_bytes_and_modes": true,
+    "changed_paths": [
+      "Makefile",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/40-control.watsup",
+      "spec/semantics/42-array-write-control.watsup",
+      "spec/semantics/46-source-compiler.watsup",
+      "spec/semantics/78-function-compiler.watsup",
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/96-call-reference-compiler.watsup",
+      "spec/semantics/97-call-reference-acquisition.watsup",
+      "spec/semantics/modules.json",
+      "tests/semantics/call_reference_acquisition.py",
+      "tests/semantics/call_reference_acquisition_state.py",
+      "tests/semantics/call_reference_cases.json",
+      "tests/semantics/call_reference_compiler.py",
+      "tests/semantics/call_reference_protocol.py"
+    ]
+  },
+  "canonical_cli": {
+    "result": "pass",
+    "scope": "Canonical CLI8 uses exact retained native source paths and full primitive request facts; raw process closure and decoded observations checked separately.",
+    "fingerprint": {
+      "sha256": "7391ccdfe25882e01f21d1fe338763d6530cc55865cdf493f6c337677db8d910",
+      "files": 933,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "raw": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-publication-cli-l3qnroxt",
+    "records": [
+      {
+        "id": "call-ref-rebind-target-array",
+        "source_sha256": "7d281ca1ef54cf01ba7df42010c7bbf7e4316738ef2795956bdeea3fbb001e3c",
+        "original": {
+          "id": "call-ref-rebind-target-array",
+          "source_base64": "PD9waHAgJGE9WzFdOyRvbGQ9JiRhWzBdO2Z1bmN0aW9uIGcoKXtnbG9iYWwgJGE7JGE9WzJdO3JldHVybiAzO30kYVswXT0mZygpO2VjaG8gJG9sZCwkYVswXTs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-rebind-target-array/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1yZWJpbmQtdGFyZ2V0LWFycmF5L3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1yZWJpbmQtdGFyZ2V0LWFycmF5L3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1yZWJpbmQtdGFyZ2V0LWFycmF5"
+          },
+          "native": {
+            "stdout": "MTM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtcmViaW5kLXRhcmdldC1hcnJheS9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-rebind-target-array/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtcmViaW5kLXRhcmdldC1hcnJheS9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "1"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTM=",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtcmViaW5kLXRhcmdldC1hcnJheS9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "1"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "call-ref-computed-name",
+        "source_sha256": "b0b742a5a93661e654ce4be21b1c9b53904cbad1ae5ad91d4e70ecf65ffb3bec",
+        "original": {
+          "id": "call-ref-computed-name",
+          "source_base64": "PD9waHAgJG49ImEiOyRhPTE7JGI9MjtmdW5jdGlvbiBnKCl7Z2xvYmFsICRuOyRuPSJiIjtyZXR1cm4gMzt9JCRuPSZnKCk7ZWNobyAkYSwkYjs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-computed-name/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1jb21wdXRlZC1uYW1lL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1jb21wdXRlZC1uYW1lL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1jb21wdXRlZC1uYW1l"
+          },
+          "native": {
+            "stdout": "MTM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtY29tcHV0ZWQtbmFtZS9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-computed-name/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtY29tcHV0ZWQtbmFtZS9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "1"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTM=",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtY29tcHV0ZWQtbmFtZS9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "1"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "call-ref-global-slot",
+        "source_sha256": "17853dd0d4fe936e3593e4514c20f4bee63920af1821fa1d039798f95536994a",
+        "original": {
+          "id": "call-ref-global-slot",
+          "source_base64": "PD9waHAgJHg9MTskYT0mJHg7ZnVuY3Rpb24gZygpe3JldHVybiAzO30kR0xPQkFMU1sieCJdPSZnKCk7ZWNobyAkYSwkeDs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-global-slot/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1nbG9iYWwtc2xvdC9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1nbG9iYWwtc2xvdC9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1nbG9iYWwtc2xvdA=="
+          },
+          "native": {
+            "stdout": "MzM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtZ2xvYmFsLXNsb3Qvc291cmNlLnBocCBvbiBsaW5lIDEK",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-global-slot/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MzM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtZ2xvYmFsLXNsb3Qvc291cmNlLnBocCBvbiBsaW5lIDEK",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "1"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MzM=",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtZ2xvYmFsLXNsb3Qvc291cmNlLnBocCBvbiBsaW5lIDEK",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "1"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "call-ref-superglobal-slot",
+        "source_sha256": "73852b4083f29907a38649a785576acc55b80187d952d60ba165c4d358a7d3f0",
+        "original": {
+          "id": "call-ref-superglobal-slot",
+          "source_base64": "PD9waHAgJF9HRVQ9WzFdOyRhPSYkX0dFVDtmdW5jdGlvbiBnKCl7cmV0dXJuIFszXTt9ZnVuY3Rpb24gZigpeyRfR0VUPSZnKCk7fWYoKTtlY2hvICRhWzBdLCRfR0VUWzBdOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-superglobal-slot/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdXBlcmdsb2JhbC1zbG90L3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdXBlcmdsb2JhbC1zbG90L3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdXBlcmdsb2JhbC1zbG90"
+          },
+          "native": {
+            "stdout": "MzM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtc3VwZXJnbG9iYWwtc2xvdC9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-superglobal-slot/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MzM=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtc3VwZXJnbG9iYWwtc2xvdC9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "1"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MzM=",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtc3VwZXJnbG9iYWwtc2xvdC9zb3VyY2UucGhwIG9uIGxpbmUgMQo=",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "1"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "call-ref-string-target-error",
+        "source_sha256": "673454b7b5a14c8c37b27c981fa7b0bbe5ae3cf8e0f80a602ffb3e48fe1e2458",
+        "original": {
+          "id": "call-ref-string-target-error",
+          "source_base64": "PD9waHAgJHM9ImFiYyI7ZnVuY3Rpb24gZygpe2VjaG8gIkciO3JldHVybiAzO30kc1swXT0mZygpOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-string-target-error/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdHJpbmctdGFyZ2V0LWVycm9yL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdHJpbmctdGFyZ2V0LWVycm9yL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdHJpbmctdGFyZ2V0LWVycm9y"
+          },
+          "native": {
+            "stdout": "Rw==",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIHJlZmVyZW5jZXMgdG8vZnJvbSBzdHJpbmcgb2Zmc2V0cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctYWNxdWlyZS1jYW5kaWRhdGUvLnRvb2xzL2NhbGwtcmVmZXJlbmNlLWFjcXVpc2l0aW9uLWk4eTRlcDdjL2NhbGwtcmVmLXN0cmluZy10YXJnZXQtZXJyb3Ivc291cmNlLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdHJpbmctdGFyZ2V0LWVycm9yL3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+            "exit_status": 255,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-string-target-error/source.php"
+            ]
+          },
+          "actual": {
+            "status": "php_error",
+            "stdout": "Rw==",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIHJlZmVyZW5jZXMgdG8vZnJvbSBzdHJpbmcgb2Zmc2V0cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctYWNxdWlyZS1jYW5kaWRhdGUvLnRvb2xzL2NhbGwtcmVmZXJlbmNlLWFjcXVpc2l0aW9uLWk4eTRlcDdjL2NhbGwtcmVmLXN0cmluZy10YXJnZXQtZXJyb3Ivc291cmNlLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdHJpbmctdGFyZ2V0LWVycm9yL3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+            "exit_status": 255,
+            "diagnostic": {
+              "class": "Error",
+              "message": "Q2Fubm90IGNyZWF0ZSByZWZlcmVuY2VzIHRvL2Zyb20gc3RyaW5nIG9mZnNldHM=",
+              "line": 1
+            },
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "71"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "php_error",
+          "stdout": "Rw==",
+          "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIHJlZmVyZW5jZXMgdG8vZnJvbSBzdHJpbmcgb2Zmc2V0cyBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctYWNxdWlyZS1jYW5kaWRhdGUvLnRvb2xzL2NhbGwtcmVmZXJlbmNlLWFjcXVpc2l0aW9uLWk4eTRlcDdjL2NhbGwtcmVmLXN0cmluZy10YXJnZXQtZXJyb3Ivc291cmNlLnBocDoxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1zdHJpbmctdGFyZ2V0LWVycm9yL3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+          "exit_status": 255,
+          "diagnostic": {
+            "class": "Error",
+            "message": "Q2Fubm90IGNyZWF0ZSByZWZlcmVuY2VzIHRvL2Zyb20gc3RyaW5nIG9mZnNldHM=",
+            "line": 1
+          },
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "71"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "call-ref-append-returned-array",
+        "source_sha256": "dbce5595f37ce5a31045892a6ff04ecfc4ab14d60090f9f22851b4dd1ad52245",
+        "original": {
+          "id": "call-ref-append-returned-array",
+          "source_base64": "PD9waHAgJGE9W107ZnVuY3Rpb24gZygpe3JldHVybiBbMl07fSRhW109JmcoKTskYj0kYTskYVswXVswXT0zO2VjaG8gJGFbMF1bMF0sJGJbMF1bMF07",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-append-returned-array/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1hcHBlbmQtcmV0dXJuZWQtYXJyYXkvc291cmNlLnBocA=="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1hcHBlbmQtcmV0dXJuZWQtYXJyYXkvc291cmNlLnBocA==",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9jYWxsLXJlZi1hcHBlbmQtcmV0dXJuZWQtYXJyYXk="
+          },
+          "native": {
+            "stdout": "MzI=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtYXBwZW5kLXJldHVybmVkLWFycmF5L3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/call-ref-append-returned-array/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MzI=",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtYXBwZW5kLXJldHVybmVkLWFycmF5L3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "1"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "50"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MzI=",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvY2FsbC1yZWYtYXBwZW5kLXJldHVybmVkLWFycmF5L3NvdXJjZS5waHAgb24gbGluZSAxCg==",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "1"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "50"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "acquire-argument-line-cv",
+        "source_sha256": "f4b91027ac1c57f8277ba20b24bddd78d5398724fcbefc9c7b6519ed1740cc11",
+        "original": {
+          "id": "acquire-argument-line-cv",
+          "source_base64": "PD9waHAKZnVuY3Rpb24gZygkeCl7cmV0dXJuICR4O30KJHg9JmcoCiAxCik7CmVjaG8gJHg7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/acquire-argument-line-cv/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9hY3F1aXJlLWFyZ3VtZW50LWxpbmUtY3Yvc291cmNlLnBocA=="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9hY3F1aXJlLWFyZ3VtZW50LWxpbmUtY3Yvc291cmNlLnBocA==",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9hY3F1aXJlLWFyZ3VtZW50LWxpbmUtY3Y="
+          },
+          "native": {
+            "stdout": "MQ==",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvYWNxdWlyZS1hcmd1bWVudC1saW5lLWN2L3NvdXJjZS5waHAgb24gbGluZSA0Cg==",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/acquire-argument-line-cv/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MQ==",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvYWNxdWlyZS1hcmd1bWVudC1saW5lLWN2L3NvdXJjZS5waHAgb24gbGluZSA0Cg==",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "4"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MQ==",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvYWNxdWlyZS1hcmd1bWVudC1saW5lLWN2L3NvdXJjZS5waHAgb24gbGluZSA0Cg==",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "4"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "acquire-argument-line-nested",
+        "source_sha256": "e3ce38dda0db7114125b45073faa5ae053b97fdfb78bbd523702c6648005f89c",
+        "original": {
+          "id": "acquire-argument-line-nested",
+          "source_base64": "PD9waHAKZnVuY3Rpb24gZygkeCl7cmV0dXJuICR4O30KZnVuY3Rpb24gaCgkeCl7cmV0dXJuICR4O30KJHg9JmcoCiBoKAogIDEKICkKKTsKZWNobyAkeDs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/acquire-argument-line-nested/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9hY3F1aXJlLWFyZ3VtZW50LWxpbmUtbmVzdGVkL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9hY3F1aXJlLWFyZ3VtZW50LWxpbmUtbmVzdGVkL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LWFjcXVpcmUtY2FuZGlkYXRlLy50b29scy9jYWxsLXJlZmVyZW5jZS1hY3F1aXNpdGlvbi1pOHk0ZXA3Yy9hY3F1aXJlLWFyZ3VtZW50LWxpbmUtbmVzdGVk"
+          },
+          "native": {
+            "stdout": "MQ==",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvYWNxdWlyZS1hcmd1bWVudC1saW5lLW5lc3RlZC9zb3VyY2UucGhwIG9uIGxpbmUgNgo=",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-acquire-candidate/.tools/call-reference-acquisition-i8y4ep7c/acquire-argument-line-nested/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MQ==",
+            "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvYWNxdWlyZS1hcmd1bWVudC1saW5lLW5lc3RlZC9zb3VyY2UucGhwIG9uIGxpbmUgNgo=",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "DIAGNOSTIC",
+                "args": [
+                  "Notice",
+                  [
+                    "79",
+                    "110",
+                    "108",
+                    "121",
+                    "32",
+                    "118",
+                    "97",
+                    "114",
+                    "105",
+                    "97",
+                    "98",
+                    "108",
+                    "101",
+                    "115",
+                    "32",
+                    "115",
+                    "104",
+                    "111",
+                    "117",
+                    "108",
+                    "100",
+                    "32",
+                    "98",
+                    "101",
+                    "32",
+                    "97",
+                    "115",
+                    "115",
+                    "105",
+                    "103",
+                    "110",
+                    "101",
+                    "100",
+                    "32",
+                    "98",
+                    "121",
+                    "32",
+                    "114",
+                    "101",
+                    "102",
+                    "101",
+                    "114",
+                    "101",
+                    "110",
+                    "99",
+                    "101"
+                  ],
+                  "6"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MQ==",
+          "stderr": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1hY3F1aXJlLWNhbmRpZGF0ZS8udG9vbHMvY2FsbC1yZWZlcmVuY2UtYWNxdWlzaXRpb24taTh5NGVwN2MvYWNxdWlyZS1hcmd1bWVudC1saW5lLW5lc3RlZC9zb3VyY2UucGhwIG9uIGxpbmUgNgo=",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "DIAGNOSTIC",
+              "args": [
+                "Notice",
+                [
+                  "79",
+                  "110",
+                  "108",
+                  "121",
+                  "32",
+                  "118",
+                  "97",
+                  "114",
+                  "105",
+                  "97",
+                  "98",
+                  "108",
+                  "101",
+                  "115",
+                  "32",
+                  "115",
+                  "104",
+                  "111",
+                  "117",
+                  "108",
+                  "100",
+                  "32",
+                  "98",
+                  "101",
+                  "32",
+                  "97",
+                  "115",
+                  "115",
+                  "105",
+                  "103",
+                  "110",
+                  "101",
+                  "100",
+                  "32",
+                  "98",
+                  "121",
+                  "32",
+                  "114",
+                  "101",
+                  "102",
+                  "101",
+                  "114",
+                  "101",
+                  "110",
+                  "99",
+                  "101"
+                ],
+                "6"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      }
+    ]
+  },
+  "historical_scope": [
+    "Exact926 author13 baseline originals were Unsupported; compiler preserves the separate ten earlier917/current926 originals.",
+    "Early928/1c1177d1 native7 preflight, and author930/cca036d3 source13/state2/553 remain historical.",
+    "Compiler preserves optimized-builtin and multiline-emission defects; reviewer preserves forged parent-line and direct/wrapped VARIABLE counterexamples.",
+    "Preparation DSL/path errors and redundant initial packaging remain classified separately; no failed/Unsupported outcomes count as agreement."
+  ],
+  "required_next": "Source reference returns, reference result demand and typed shared-cell conversion; then remaining callable and full-core obligations. No intentional engine departure is introduced."
+}
