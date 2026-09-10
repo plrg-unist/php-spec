@@ -1,3 +1,6 @@
+dec $call_fixed_parameters(psparam*) : psparam*
+dec $call_parameter_at(psparam*, nat) : psparam?
+dec $call_receive_body(pstate, pfunction) : ptask*
 dec $reference_returning(pstate) : bool
 dec $reference_empty_task(pstate, int) : ptask
 dec $typed_parameters(psparam*) : bool
@@ -104,25 +107,26 @@ dec $call_received(nat, nat) : nat
 def $call_received(n_args, n_params) = n_args -- if $(n_args < n_params)
 def $call_received(n_args, n_params) = n_params -- if $(n_args >= n_params)
 dec $call_arity(pstate, pfunction, nat, porigin?, int) : pstate
-def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = $function_tasks(S, pfunction)]
-  -- if $(n_args >= |pfunction.SIGNATURE.PARAMETERS|)
-  -- if ~$typed_parameters(pfunction.SIGNATURE.PARAMETERS)
+def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = $call_receive_body(S, pfunction)]
+  -- if $(n_args >= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if ~$typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 dec $default_begin(pstate, pfunction, nat) : pstate
 def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction, n_args)
-  -- if $(n_args < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if ~$typed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $(n_args < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if ~$typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = [TYPE_RECEIVE pfunction.ORIGIN 0]]
-  -- if $typed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
 def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra]})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |poperand*|
-  -- if n_params = |psparam*|
+  -- if psparam_fixed* = $call_fixed_parameters(psparam*)
+  -- if n_params = |psparam_fixed*|
   -- if n_received = $call_received(n_args, n_params)
   -- if n_extra = $(n_args - n_received)
   -- if $ppsupported_signature(pfunction.SIGNATURE)
   -- if S_entered = $save_frame(S)
-  -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam*, poperand*)
+  -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, poperand*)
 def $call_enter(S, pfunction, poperand*, porigin?, z) = S[.COMPLETION = UNSUPPORTED "unconnected function signature"]
   -- otherwise
 rule PhpStep/call-enter: S ~> $call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z)

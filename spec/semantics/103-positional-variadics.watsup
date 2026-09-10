@@ -1,0 +1,152 @@
+;; Positional tails retain their sent operands until frame cleanup, alongside the
+;; incrementally collected array. Element verification writes through references.
+def $call_fixed_parameters(eps) = eps
+def $call_fixed_parameters(psparam :: psparam_tail*) = eps -- if psparam.VARIADIC
+def $call_fixed_parameters(psparam :: psparam_tail*) = psparam :: $call_fixed_parameters(psparam_tail*) -- if ~psparam.VARIADIC
+
+def $call_parameter_at(eps, n) = eps
+def $call_parameter_at(psparam :: psparam_tail*, n) = (psparam) -- if n = 0 \/ psparam.VARIADIC
+def $call_parameter_at(psparam :: psparam_tail*, n) = $call_parameter_at(psparam_tail*, n_next) -- if $(n > 0) /\ ~psparam.VARIADIC
+  -- if $(n - 1) = n_next
+
+def $call_parameter_name(psparam) = eps -- if psparam.VARIADIC
+def $call_parameter_name(psparam) = $ptascii(" ($") ++ psparam.NAME ++ [41] -- if ~psparam.VARIADIC
+
+def $call_receive_body(S, pfunction) = [VARIADIC_BEGIN pfunction.ORIGIN]
+  -- if $(|$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)| < |pfunction.SIGNATURE.PARAMETERS|)
+def $call_receive_body(S, pfunction) = $function_tasks(S, pfunction) -- otherwise
+
+rule PhpStep/variadic-begin: S ~> $write_name(S_array, psparam.NAME, pvalue)[.TODO = [VARIADIC_RECEIVE porigin n_fixed]][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (VARIADIC_BEGIN porigin) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
+  -- if S_array = $allocate_array(S, $array_empty())
+  -- if S_array.RESULT = KNOWN pvalue
+
+dec $variadic_value(pstate, pfunction, nat, nat, pvalue) : pstate
+def $variadic_value(S, pfunction, n_fixed, n_arg, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
+  -- if ptypeconversion = $typed_conversion(pfunction.SIGNATURE.PARAMETERS[n_fixed].TYPE, pvalue, $typed_caller_strict(S))
+  -- if ptypeconversion =/= TYPEREJECT
+def $variadic_value(S, pfunction, n_fixed, n_arg, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n_arg + 1)) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
+  -- if $typed_conversion(psparam.TYPE, pvalue, $typed_caller_strict(S)) = TYPEREJECT
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+
+dec $variadic_operand_value(pstate, poperand) : pvalue
+def $variadic_operand_value(S, KNOWN pvalue) = pvalue
+def $variadic_operand_value(S, REFERENCE n) = pvalue -- if S.STORE[n] = DEFINED pvalue
+
+dec $variadic_replace(poperand*, nat, poperand) : poperand*
+def $variadic_replace(poperand_old :: poperand_tail*, 0, poperand) = poperand :: poperand_tail*
+def $variadic_replace(poperand_old :: poperand_tail*, n, poperand) = poperand_old :: $variadic_replace(poperand_tail*, n_next, poperand) -- if $(n > 0)
+  -- if $(n - 1) = n_next
+
+dec $variadic_coerced(pstate, nat, poperand, pvalue) : pstate
+def $variadic_coerced(S, n_extra, KNOWN pvalue_old, pvalue) = S[.CURRENT = (pcallcontext[.EXTRA = $variadic_replace(pcallcontext.EXTRA, n_extra, KNOWN pvalue)])]
+  -- if S.CURRENT = (pcallcontext)
+def $variadic_coerced(S, n_extra, REFERENCE n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
+
+dec $variadic_item(poperand, pvalue) : pitem
+def $variadic_item(KNOWN pvalue_old, pvalue) = DIRECT pvalue
+def $variadic_item(REFERENCE n, pvalue) = ALIAS n
+
+dec $variadic_receive(pstate, pfunction, nat) : pstate
+def $variadic_receive(S, pfunction, n_arg) = S_value
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if S.CURRENT = (pcallcontext)
+  -- if n_extra = $(n_arg - n_fixed)
+  -- if poperand = pcallcontext.EXTRA[n_extra]
+  -- if S_value = $variadic_value(S, pfunction, n_fixed, n_arg, $variadic_operand_value(S, poperand))
+  -- if S_value.COMPLETION =/= NORMAL
+def $variadic_receive(S, pfunction, n_arg) = $literal_item_insert(S_array, n_array, eps, $variadic_item(poperand, pvalue), z)[.TODO = [VARIADIC_RECEIVE pfunction.ORIGIN $(n_arg + 1)]][.RESULT = KNOWN PNULL]
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if S.CURRENT = (pcallcontext)
+  -- if n_extra = $(n_arg - n_fixed)
+  -- if poperand = pcallcontext.EXTRA[n_extra]
+  -- if S_value = $variadic_value(S, pfunction, n_fixed, n_arg, $variadic_operand_value(S, poperand))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if S_coerced = $variadic_coerced(S_value, n_extra, poperand, pvalue)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
+  -- if $lookup(S_coerced.ENV, psparam.NAME) = (n_cell)
+  -- if z = $default_parameter_line(S, pfunction.ORIGIN, n_fixed)
+  -- if S_array = $location_array(S_coerced, ROOT n_cell, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n_array)
+
+rule PhpStep/variadic-receive: S ~> $variadic_receive(S, pfunction, n_arg)
+  -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_arg < pcallcontext.ARGC)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+rule PhpStep/variadic-complete: S ~> S[.TODO = $function_tasks(S, pfunction)]
+  -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_arg >= pcallcontext.ARGC)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+
+;; Receive metadata is tied to the active source function and the partial packed
+;; container. Values and alias targets are not reconstructed from prior receives.
+dec $variadic_stage(pstate, porigin) : bool
+def $variadic_stage(S, porigin) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if S.ORIGIN = (porigin)
+  -- if S.CONSTCONTEXT = eps
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $(|psparam*| < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $default_received_slots(S, psparam*, |psparam*|)
+def $variadic_stage(S, porigin) = false -- otherwise
+
+dec $variadic_unreceived(pstate, preqbytes) : bool
+def $variadic_unreceived(S, preqbytes) = true -- if $lookup(S.ENV, preqbytes) = eps
+def $variadic_unreceived(S, preqbytes) = true
+  -- if $lookup(S.ENV, preqbytes) = (n)
+  -- if S.STORE[n] = UNDEFINED
+def $variadic_unreceived(S, preqbytes) = false -- otherwise
+
+dec $variadic_begin_valid(pstate, porigin) : bool
+def $variadic_begin_valid(S, porigin) = true
+  -- if S.TODO = (VARIADIC_BEGIN porigin) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $variadic_stage(S, porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if n = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $variadic_unreceived(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
+def $variadic_begin_valid(S, porigin) = false -- otherwise
+
+dec $variadic_keys(pentry*, nat) : bool
+def $variadic_keys(eps, n) = true
+def $variadic_keys((ENTRY (KINT z) pitem) :: pentry_tail*, n) = (z = n /\ $variadic_keys(pentry_tail*, $(n + 1)))
+def $variadic_keys(pentry*, n) = false -- otherwise
+
+dec $variadic_next(parray, nat) : bool
+def $variadic_next(parray, 0) = (parray.NEXT = $(-9223372036854775808))
+def $variadic_next(parray, n) = (parray.NEXT = n) -- if $(n > 0)
+
+dec $variadic_receive_valid(pstate, porigin, nat) : bool
+def $variadic_receive_valid(S, porigin, n_arg) = true
+  -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $variadic_stage(S, porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_arg >= n_fixed)
+  -- if $(n_arg <= n_fixed + |pcallcontext.EXTRA|)
+  -- if n_collected = $(n_arg - n_fixed)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n_fixed].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if parray = S.ARRAYS[n_array]
+  -- if |parray.ITEMS| = n_collected
+  -- if $variadic_keys(parray.ITEMS, 0)
+  -- if $variadic_next(parray, n_collected)
+def $variadic_receive_valid(S, porigin, n_arg) = false -- otherwise
+
+def $call_task_valid(S, VARIADIC_BEGIN porigin) = $variadic_begin_valid(S, porigin)
+def $call_task_valid(S, VARIADIC_RECEIVE porigin n_arg) = $variadic_receive_valid(S, porigin, n_arg)

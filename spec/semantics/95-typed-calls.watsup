@@ -40,7 +40,7 @@ rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, p
   -- if S.CURRENT = (pcallcontext)
   -- if $(n < pcallcontext.ARGC)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
 rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
@@ -49,7 +49,7 @@ rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
   -- if S.CURRENT = (pcallcontext)
   -- if $(n >= pcallcontext.ARGC)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
 
 ;; Value returns resolve their source operand but never write coercions back to it.
 def $typed_fallthrough(pfunction) = RETURN_NULL -- if pfunction.SIGNATURE.RETURNS = eps /\ ~pfunction.SIGNATURE.BYREF
@@ -104,8 +104,8 @@ def $typed_receive_valid(S, porigin, n) = true
   -- if pcallcontext.FUNCTION = porigin
   -- if S.ORIGIN = (porigin)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-  -- if $typed_parameters(pfunction.SIGNATURE.PARAMETERS)
-  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, n)
 def $typed_receive_valid(S, porigin, n) = false -- otherwise
 

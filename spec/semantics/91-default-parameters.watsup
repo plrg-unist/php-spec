@@ -18,8 +18,8 @@ def $default_required(eps) = 0
 def $default_required(psparam :: psparam_tail*) = $(1 + $default_required(psparam_tail*)) -- if psparam.REQUIRED
 def $default_required(psparam :: psparam_tail*) = $default_required(psparam_tail*) -- if ~psparam.REQUIRED
 dec $default_required_text(psparam*) : preqbytes
-def $default_required_text(psparam*) = $ptascii("exactly ") -- if $default_required(psparam*) = |psparam*|
-def $default_required_text(psparam*) = $ptascii("at least ") -- if $default_required(psparam*) =/= |psparam*|
+def $default_required_text(psparam*) = $ptascii("exactly ") -- if $default_required(psparam*) = |$call_fixed_parameters(psparam*)|
+def $default_required_text(psparam*) = $ptascii("at least ") -- if $default_required(psparam*) =/= |$call_fixed_parameters(psparam*)|
 
 def $default_begin(S, pfunction, n) = S[.TODO = [DEFAULT_RECEIVE pfunction.ORIGIN n]]
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -46,12 +46,12 @@ def $default_cache_value(S, porigin, pvalue, pvalueclass) = S
 
 dec $default_next(pstate, pfunction, nat) : ptask*
 def $default_next(S, pfunction, n) = [DEFAULT_RECEIVE pfunction.ORIGIN n]
-  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if ~$typed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if ~$typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 def $default_next(S, pfunction, n) = [TYPE_RECEIVE pfunction.ORIGIN n]
-  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if $typed_parameters(pfunction.SIGNATURE.PARAMETERS)
-def $default_next(S, pfunction, n) = $function_tasks(S, pfunction) -- if n = |pfunction.SIGNATURE.PARAMETERS|
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
+def $default_next(S, pfunction, n) = $call_receive_body(S, pfunction) -- if n = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
 dec $default_store(pstate, pfunction, nat, pvalue) : pstate
 def $default_store(S, pfunction, n, pvalue) = $write_name(S, psparam.NAME, pvalue)[.TODO = $default_next(S, pfunction, $(n + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]

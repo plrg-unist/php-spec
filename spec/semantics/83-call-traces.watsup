@@ -50,14 +50,18 @@ def $trace_parameters(S, pbinding*, preqbytes*, 0) = eps
 def $trace_parameters(S, pbinding*, eps, n) = eps -- if $(n > 0)
 def $trace_parameters(S, pbinding*, preqbytes :: preqbytes_tail*, n) = $trace_slot(S, pbinding*, preqbytes) :: $trace_parameters(S, pbinding*, preqbytes_tail*, $nabs($(n - 1)))
   -- if $(n > 0)
-dec $trace_extra(poperand*) : pvalue*
-def $trace_extra(eps) = eps
-def $trace_extra((KNOWN pvalue) :: poperand*) = pvalue :: $trace_extra(poperand*)
+dec $trace_extra(pstate, poperand*) : pvalue*
+def $trace_extra(S, eps) = eps
+def $trace_extra(S, (KNOWN pvalue) :: poperand*) = pvalue :: $trace_extra(S, poperand*)
+def $trace_extra(S, (REFERENCE n) :: poperand*) = pvalue :: $trace_extra(S, poperand*)
+  -- if S.STORE[n] = DEFINED pvalue
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 def $trace_context(S, pbinding*, eps) = eps
 def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME pcallcontext.NAME, VALUES pvalue*, ARGTEXT $trace_arguments_text(pvalue*)}]
   -- if pcallcontext.CALLSITE = (porigin)
-  -- if pvalue* = $trace_parameters(S, pbinding*, pcallcontext.PARAMS, pcallcontext.ARGC) ++ $trace_extra(pcallcontext.EXTRA)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 dec $trace_saved(pstate, pframe*) : ptraceframe*
 def $trace_saved(S, eps) = eps
 def $trace_saved(S, pframe :: pframe_tail*) = $trace_saved(S, pframe_tail*) -- if pframe.CONTEXT = eps

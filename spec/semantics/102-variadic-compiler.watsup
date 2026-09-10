@@ -1,0 +1,9 @@
+;; Only a final variadic descriptor is admitted; signature checking precedes this.
+def $ppsupported_params(psparam :: psparam_tail*) = ($ppsupported_types(psparam.TYPE) /\ psparam_tail* = eps)
+  -- if psparam.VARIADIC
+
+;; A known variadic reference parameter controls every positional tail send.
+def $ppfunction_parameter_ref((pfunction), n) = psparam.BYREF
+  -- if $(n > |pfunction.SIGNATURE.PARAMETERS|)
+  -- if n_i = $(n - 1)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n_i) = (psparam)

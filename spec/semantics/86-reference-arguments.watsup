@@ -1,10 +1,10 @@
+dec $call_parameter_name(psparam) : preqbytes
 dec $call_fresh_reference(pstate, pvalue) : pstate
 dec $list_temporary_leaf(pstate, expression) : pstate
 ;; Positional sends select their parameter before evaluating the actual argument.
 def $call_parameter_reference(S, porigin, n) = psparam.BYREF
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
 def $call_parameter_reference(S, porigin, n) = false -- otherwise
 
 def $call_reference_variable(NExprVariable phpType32 metadata) = ~$ppglobals_base(NExprVariable phpType32 metadata)
@@ -72,12 +72,12 @@ def $call_send_operand(S, porigin_function, n, porigin?, z) = S
   -- if $call_parameter_reference(S, porigin_function, n)
   -- if S.RESULT = REFERENCE n_cell
   -- if $call_reference_variable($call_argument_expression(S, porigin?, n)) \/ $ppsend_var($call_argument_expression(S, porigin?, n))
-def $call_send_operand(S, porigin_function, n, porigin?, z) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") could not be passed by reference"), $call_send_line(S, porigin?, n))
+def $call_send_operand(S, porigin_function, n, porigin?, z) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), $call_send_line(S, porigin?, n))
   -- if $call_parameter_reference(S, porigin_function, n)
   -- if ~$call_reference_variable($call_argument_expression(S, porigin?, n))
   -- if ~$ppsend_var($call_argument_expression(S, porigin?, n))
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
-  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
 
 
 def $call_send_operand(S, porigin_function, n, porigin?, z) = $diagnostic($call_fresh_reference(S, pvalue), "Notice", $ptascii("Only variables should be passed by reference"), $call_send_line(S, porigin?, n))
