@@ -1,0 +1,131 @@
+{
+  "archive": "parameter-phase-originals.tar.xz",
+  "sha256": "0f6bea05dc2c68821023c10d18670f5013a05825754a5547d1720b4cba6fd5e8",
+  "bytes": 4254992,
+  "paths": 8251,
+  "tools": {
+    "baseline951/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493
+    },
+    "baseline951/.tools/php-file.so": {
+      "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+      "mode": 509
+    },
+    "baseline951/.tools/request-clock.so": {
+      "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+      "mode": 509
+    },
+    "baseline951/_build/default/adapter/main.exe": {
+      "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+      "mode": 365
+    },
+    "baseline951/tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "mode": 365
+    },
+    "candidate/.tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "mode": 493
+    },
+    "candidate/.tools/php-file.so": {
+      "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+      "mode": 509
+    },
+    "candidate/.tools/request-clock.so": {
+      "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+      "mode": 509
+    },
+    "candidate/_build/default/adapter/main.exe": {
+      "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+      "mode": 365
+    },
+    "candidate/tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "mode": 365
+    }
+  },
+  "baseline": {
+    "sha256": "c6501bd894594205af63a8606a37669165c6f4dd8f6c264360a8e9eec3ce7070",
+    "files": 951,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "candidate": {
+    "sha256": "440f3966e3d9a1ec7155a7c51015aa125ad307db25ebe26dfc6004182811b384",
+    "files": 951,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "changed_watched_paths": [
+    "tests/phase-discrepancies.json",
+    "tests/semantics/signatures.py",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php"
+  ],
+  "all_shared_modes_equal": true,
+  "gates": {
+    "native_originals": 14,
+    "native_agreements": 13,
+    "explicit_variadic_boundary": 1,
+    "elaborated_roundtrips": 14,
+    "public_cli": 14,
+    "signature_comparisons": 359,
+    "descriptor_checks": 28,
+    "return_reference_checks": 174,
+    "reproduced_handwritten_files": 5,
+    "generated_parser_reproduction": "exact"
+  },
+  "scope": "Two eager parameter restrictions deferred to existing source static compilation. Named-function source priority only; no pending class/closure or variadic runtime activation. Full raw original requests, native/lint/parser outputs, checked worker streams/closures, public CLI streams and maintained signature subprocesses retained. Signature harness build request explicitly not run against exact accepted runner; reproducibility gate separately regenerated PHP8 parser. Large executable tools are bound by exact hash/mode, not copied into this archive.",
+  "implementation_paths": {
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php": {
+      "sha256": "6a3db744348694f2dea281180308b804eb475745e62aea50809d3fe03a67fa95",
+      "mode": 436
+    },
+    "tests/phase-discrepancies.json": {
+      "sha256": "36e509db131c0cc8cc6ea565151eed14ffccbca1a3fffe638903d2ec092db444",
+      "mode": 436
+    },
+    "tests/semantics/signatures.py": {
+      "sha256": "a9a4da56bfacd63d4d773fef40a6967bcca1b91fa41bb0644c72661310a1652d",
+      "mode": 436
+    },
+    "patches/php-parser-printer.patch": {
+      "sha256": "33d63e87981b6cd50c728ce3880fe72ec822d09dc9a28f4632c5212f7324f0ac",
+      "mode": 436
+    },
+    "patches/README.md": {
+      "sha256": "fb6461cbfbb952df5b466b46ae6a880d6ebc5055b1e6fafc570191bbe7ab13aa",
+      "mode": 436
+    },
+    "vendor/php-parser.UPSTREAM.md": {
+      "sha256": "8c0292aac9f96bec2b5b76a3e26dc7aa45acc23c8b38bd4e3dc81432037cc3d6",
+      "mode": 436
+    }
+  }
+}
