@@ -2536,7 +2536,9 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/111-function-statics-compiler.watsup",
-        "spec/semantics/112-function-statics.watsup"
+        "spec/semantics/112-function-statics.watsup",
+        "spec/semantics/113-main-statics-compiler.watsup",
+        "spec/semantics/114-main-statics.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -2544,9 +2546,15 @@
         "tests/semantics/function_static_compiler.py",
         "tests/semantics/function_statics_protocol.py",
         "tests/semantics/function_statics_state.py",
-        "coverage/semantics/function-statics-review.json"
+        "coverage/semantics/function-statics-review.json",
+        "tests/semantics/main_statics.py",
+        "tests/semantics/main_statics_cases.json",
+        "tests/semantics/main_static_compiler.py",
+        "tests/semantics/main_statics_protocol.py",
+        "tests/semantics/main_statics_state.py",
+        "coverage/semantics/main-statics-review.json"
       ],
-      "review": "Named-function statics111/112: source-bound initialized-only persistent reference cells preserve null caching, recursive initialization winners, local/reference replacement, return aliases, COW and suppression/error cleanup. Independent function-statics-review.json binds source32, compiler29+1 catch/121 projections, protocol26/486, author dense2/325, independent dense4/779 and22 old990 compatibility responses. Source guard repair442a and protocol-only0484 retain predecessor4419 evidence separately. Main-script global views, closure/method/trait/inherited identity, objects/destructors, exceptions/retry and dynamic-source lifetime remain required; no storage family closure."
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure."
     },
     {
       "node": "Stmt_Block",
@@ -3156,7 +3164,9 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/111-function-statics-compiler.watsup",
-        "spec/semantics/112-function-statics.watsup"
+        "spec/semantics/112-function-statics.watsup",
+        "spec/semantics/113-main-statics-compiler.watsup",
+        "spec/semantics/114-main-statics.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -3164,9 +3174,15 @@
         "tests/semantics/function_static_compiler.py",
         "tests/semantics/function_statics_protocol.py",
         "tests/semantics/function_statics_state.py",
-        "coverage/semantics/function-statics-review.json"
+        "coverage/semantics/function-statics-review.json",
+        "tests/semantics/main_statics.py",
+        "tests/semantics/main_statics_cases.json",
+        "tests/semantics/main_static_compiler.py",
+        "tests/semantics/main_statics_protocol.py",
+        "tests/semantics/main_statics_state.py",
+        "coverage/semantics/main-statics-review.json"
       ],
-      "review": "Named-function statics111/112: source-bound initialized-only persistent reference cells preserve null caching, recursive initialization winners, local/reference replacement, return aliases, COW and suppression/error cleanup. Independent function-statics-review.json binds source32, compiler29+1 catch/121 projections, protocol26/486, author dense2/325, independent dense4/779 and22 old990 compatibility responses. Source guard repair442a and protocol-only0484 retain predecessor4419 evidence separately. Main-script global views, closure/method/trait/inherited identity, objects/destructors, exceptions/retry and dynamic-source lifetime remain required; no storage family closure."
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure."
     },
     {
       "node": "Stmt_Switch",
@@ -4851,7 +4867,9 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/111-function-statics-compiler.watsup",
-        "spec/semantics/112-function-statics.watsup"
+        "spec/semantics/112-function-statics.watsup",
+        "spec/semantics/113-main-statics-compiler.watsup",
+        "spec/semantics/114-main-statics.watsup"
       ],
       "helper_tests": [
         "tests/semantics/function_statics_protocol.py",
@@ -4863,14 +4881,20 @@
         "tests/semantics/function_static_compiler.py",
         "tests/semantics/function_statics_protocol.py",
         "tests/semantics/function_statics_state.py",
-        "coverage/semantics/function-statics-review.json"
+        "coverage/semantics/function-statics-review.json",
+        "tests/semantics/main_statics.py",
+        "tests/semantics/main_statics_cases.json",
+        "tests/semantics/main_static_compiler.py",
+        "tests/semantics/main_statics_protocol.py",
+        "tests/semantics/main_statics_state.py",
+        "coverage/semantics/main-statics-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/function-statics-review.json"
       ],
-      "review": "Named-function statics111/112: source-bound initialized-only persistent reference cells preserve null caching, recursive initialization winners, local/reference replacement, return aliases, COW and suppression/error cleanup. Independent function-statics-review.json binds source32, compiler29+1 catch/121 projections, protocol26/486, author dense2/325, independent dense4/779 and22 old990 compatibility responses. Source guard repair442a and protocol-only0484 retain predecessor4419 evidence separately. Main-script global views, closure/method/trait/inherited identity, objects/destructors, exceptions/retry and dynamic-source lifetime remain required; no storage family closure.",
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]

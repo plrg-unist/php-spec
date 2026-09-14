@@ -89,8 +89,11 @@ claim that the inventory dependency graph is complete.
   binds32 source,29 compiler phases+1 catch dependency/121 projections,26 protocol/486,
   author2 dense/325, independent4 dense/779 and22 complete old990 response bridges.
   The retained105 paused-receive overlap is repaired with disjoint source lanes.
-- [ ] Main-script static declarations with global binding/view synchronization,
-  then closure/method static identity and lifetime.
+- [x] Initial-main-script statics113/114 on1008/2829; [review](../../coverage/semantics/main-statics-review.json)
+  binds16 source,12 compiler phases/59 projections,9 protocol/173, author2 dense/283,
+  independent4 dense/623 and20 complete old999 responses with no projection.
+- [ ] Closure/arrow instance identity/captures/invocation, then method/trait/inherited
+  static identity and dynamic-source lifetime.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, remaining static scopes, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

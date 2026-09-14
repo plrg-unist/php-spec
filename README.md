@@ -143,8 +143,10 @@ retains5706 ordinary comparisons,263 explicit requests,751 callable rows and5751
 compiler phases on981 under distinct profiles. [Named-function statics](docs/semantics/SOURCE-FUNCTION-STATICS.md) now retain
 persistent reference cells through recursive initialization, local rebinding and
 error cleanup; [review](coverage/semantics/function-statics-review.json) binds
-source/state/protocol evidence and22 old-state bridges. Main-script statics and
-closure/method lifetime remain required.
+source/state/protocol evidence and22 old-state bridges. [Main-script statics](docs/semantics/SOURCE-MAIN-STATICS.md)
+now bind persistent cells through the global symbol table; [review](coverage/semantics/main-statics-review.json)
+retains source/state/protocol checks and20 complete old-state responses.
+Closure/method identity and dynamic-source lifetime remain required.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
