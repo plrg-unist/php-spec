@@ -6,44 +6,51 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Dynamic string user-function calls109/110 are independently accepted at **178f993c** in
-[dynamic-call-review.json](coverage/semantics/dynamic-call-review.json), on exact
-**990/866a6afd**. Code/evidence commits are recorded in that review. Callee lookup
-and owner release precede arguments; initial parser strings, later compiled CONST
-strings and runtime values preserve their distinct name/reference-mode behavior.
-Source-derived INIT and outer call lines remain separate, including nested calls.
-The existing99/105/107/108 return, named and array-unpack consumers are exercised.
+Named-function statics111/112 are independently accepted at **c00a5d53** in
+[function-statics-review.json](coverage/semantics/function-statics-review.json)
+on exact **999/0484**. Persistent reference cells distinguish uninitialized entries
+from cached null, survive local unset/rebinding and preserve recursive inner
+initialization winners. Compiler declaration priorities, stored versus dynamic
+initializers, CV inventory and source lines remain source-authenticated.
 
-Current gates pass 45 author source cases,42 compiler phases plus 2 explicit initial
-builtin boundaries/275 projections,19 protocol controls/278 assertions, 12 focused
-runtime regressions and 2 author dense cases/385 assertions. Independent 7 retained
-native source contexts, 4 dense cases/652 assertions and 14 complete old981 response
-bridges pass; compatibility uses no state projection. Canonical CLI8 and archive
-payload/byte/mode audits are bound in the review. These profiles overlap and are
-not unique-program coverage. Actual old line/CONST lookup discrepancies and
-malformed-state counterexamples remain retained before their repairs.
+Gates retain their executed identities: predecessor4419 author source32,
+compiler29 phases plus one catch dependency/121 projections, regression12 and
+dense2/325; semantic442a replays46 overlapping contexts and four paused receive
+controls/112 assertions after repairing an actual shared105 guard ambiguity.
+Independent442a source6 plus one catch dependency, protocol25/452, dense4/779
+and22 complete old990 response bridges pass. Dense checks cover68 one-step and68
+full suffixes. Compatibility removes only a verified empty STATICS field.
+Final0484 changes only the maintained protocol to26/486; the test-only bridge
+preserves every other file and all modes. Native profiles overlap and are not
+unique-program coverage. Original defects and fixture failures remain separate.
+
+Dynamic109/110 remains accepted historical **178f993c**, on990/866, in the
+[dynamic-call review](coverage/semantics/dynamic-call-review.json). Its45 source,
+42 compiler phases plus two boundaries/275 projections,19 protocol/278,
+author2 dense/385, independent4 dense/652 and14 old981 responses retain their
+original identities. Full archive and current canonical evidence are bound in
+the named-function review.
 
 The broad [integration checkpoint](coverage/semantics/callable-integration-review.json)
 **f244a78e**, on 981/764 and its one-test8051f53e bridge from981/3f3, is now historical:
 5706 ordinary comparisons plus21 outcome controls,263 explicit requests,751 callable
 rows across 13 suites and5751 compiler phases. Their native/request/configuration
 profiles and identities remain separate; these gates were not rerun or relabelled
-for 109/110. The compiler reused a verified binary. Callable entry alarm60 is
+for 109/110 or111/112. The compiler reused a verified binary. Callable entry alarm60 is
 replaced/cancelled by per-packet alarm30, not a continuous whole-case deadline.
 
-Inventory remains 134 partial/171 pending/1 oracle validated. Full syntax, a fresh
-network-isolated offline rebuild/audit and complete core remain required. Builtin
-compilation/bodies/defaults/callbacks, other callable forms, Traversable, exceptions,
-reporting configuration and object/dynamic-source lifetimes stay open.
+Inventory now records135 partial/170 pending/1 oracle validated. Full syntax,
+a fresh network-isolated offline rebuild/audit and complete core remain required.
+Builtin compilation/bodies/defaults/callbacks, other callable forms, Traversable,
+exceptions, reporting configuration and object/dynamic-source lifetimes stay open.
 
-Next proposed111/112 named-function statics require root's accepted-checkpoint
-read. Compiler7, runtime7 and independent review10 coordinate under root; read the
-[function-statics handoff](docs/semantics/FUNCTION-STATICS-HANDOFF.md). Preparation
-retains compiler 14 native contexts/four separate opcode profiles on 981/764, with
-runtime 5 originals (four ordinary candidates and one catch dependency) retained
-separately. Replay preserved contexts on the accepted990 baseline without duplicate native execution. Review persistent
-cell ownership, null versus uninitialized entries, declaration priorities and
-initializer reentry before selecting the new state schema. No next code is active.
+Next is the bounded initial-main-script statics slice, followed by remaining
+static scopes and callable protocols. Read the
+[main-statics handoff](docs/semantics/MAIN-STATICS-HANDOFF.md). Six native/source
+contexts and three separate opcode profiles remain preparation on990; replay
+originals on the accepted successor without duplicate native execution. Main
+binding/global views and lexical-unit lifetime need independent review before
+source admission. No next code is active.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -90,7 +97,7 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records134 partial,171 pending and one validated
+The runtime inventory now records135 partial,170 pending and one validated
 obligation. Accepted constants, defaults, strictness, builtin value types,
 reference returns, suppression, positional variadics, named binding and call unpack remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
@@ -125,12 +132,12 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/FUNCTION-STATICS-HANDOFF.md)
-binds990/866 dynamic calls and the proposed named-function statics increment. Compiler7,
-runtime7 and independent review10 coordinate private roots, exact frozen gates,
-canonical builds and the index under root. Preserve baseline originals before
-admission, stage only reviewed files, commit small increments and never push.
-Earlier identities and failures remain historical rather than rebuilt counts.
+The [current successor handoff](docs/semantics/MAIN-STATICS-HANDOFF.md)
+binds999/0484 named-function statics and the proposed initial-main-script slice.
+Compiler7, runtime7 and independent review11 coordinate private roots, exact
+frozen gates, canonical builds and the index under root. Preserve baseline
+originals before admission, stage only reviewed files, commit small increments
+and never push. Earlier identities and failures remain historical.
 
 Each coherent increment needs native/source originals, focused phase/line checks,
 appropriate state/ownership/resumption gates and independent review. Run early
