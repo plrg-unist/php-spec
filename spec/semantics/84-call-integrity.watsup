@@ -1,3 +1,5 @@
+dec $dynamic_unit_code_valid(ppstate, pcode) : bool
+dec $dynamic_result_valid(pstate) : bool
 dec $unpack_unit_code_valid(ppstate, pcode) : bool
 dec $unpack_result_valid(pstate) : bool
 dec $call_extent_valid(pstate, pcallcontext) : bool
@@ -80,6 +82,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $silence_unit_code_valid(P, pcode)
   -- if $send_unit_code_valid(P, pcode)
   -- if $unpack_unit_code_valid(P, pcode)
+  -- if $dynamic_unit_code_valid(P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -238,6 +241,7 @@ def $call_descriptors_valid(S) = true
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $acquire_call_result_valid(S)
   -- if $unpack_result_valid(S)
+  -- if $dynamic_result_valid(S)
   -- if $silences_valid(S)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $constant_context_valid(S)

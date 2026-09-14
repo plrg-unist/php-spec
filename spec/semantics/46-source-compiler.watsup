@@ -2,7 +2,7 @@
 syntax ppmode = PPF | PPR | PPW | PPRW | PPUNSET | PPIS
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
-syntax ppexprdone = PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath
+syntax ppexprdone = PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath | PPCCALL_INIT pcpath nat
 syntax ppstate = { RETURNREF bool, RETURNS ptbranch*, FUNCTIONS pfunction*, GLOBALS pcpath*, EARLY pcpath?, LOOPS nat, HEADERASSIGNED bool, CVS ptbytes*, AUTOGLOBALS ptbytes*, FOLD pfstate, ENV plenv, LOCATION pllocation,
   COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, WRITES (pcpath, nat)*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate

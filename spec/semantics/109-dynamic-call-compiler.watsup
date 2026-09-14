@@ -1,0 +1,61 @@
+;; Initial parser ZVAL strings use finalized-function modes. A string produced
+;; by later expression compilation still follows INIT_FCALL_BY_NAME with no fbc.
+dec $ppcall_literal(expression) : ptbytes?
+dec $ppcall_dynamic(expression) : bool
+dec $ppcall_literal_name(ptbytes) : ptbytes
+dec $ppcall_literal_reference(ptbytes, metadata) : pnresult
+dec $ppcall_literal_compile(ppstate, pcpath, ptbytes, phpType7*, metadata) : ppstate
+dec $ppcall_init(ppstate, pcpath) : ppstate
+dec $ppcall_constant_name(ppstate, pcpath, metadata) : ppstate
+
+def $ppcall_literal(expression) = (ptbytes)
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+def $ppcall_literal(expression) = eps -- otherwise
+def $ppcall_dynamic(expression) = ($ppcall_literal(expression) = eps)
+def $ppcall_literal_name(92 :: ptbytes) = ptbytes
+def $ppcall_literal_name(ptbytes) = ptbytes -- otherwise
+
+;; ORIGINAL is an unused internal mode-carrier placeholder, not a checked source
+;; name. CODENAME exports only the actual resolved bytes and absence of fallback.
+def $ppcall_literal_reference(ptbytes, metadata) = PNRESOLVED { ORIGINAL NName (BYTES "") metadata, KIND PLFUNCTION, RESOLVED $ppcall_literal_name(ptbytes), FULL true, FALLBACK eps }
+
+def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata)
+  -- if $ppcall_literal(expression) = (ptbytes)
+def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_init($ppcall_constant_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, metadata), pcpath), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "dynamic call has deferred parameter modes")
+  -- if $ppcall_dynamic(expression)
+
+def $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata) = $ppunsupported(P, "initial literal builtin call lowering")
+  -- if $pfunction_builtin($ppcall_literal_name(ptbytes))
+def $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata) = $ppcall_args($ppcall_init($ppcall_name(P, pcpath, pnresult), pcpath), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
+  -- if ~$pfunction_builtin($ppcall_literal_name(ptbytes))
+  -- if pnresult = $ppcall_literal_reference(ptbytes, metadata)
+
+def $ppcall_init(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCCALL_INIT pcpath P.LOCATION.LINE]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcall_init(P, pcpath) = P -- if P.COMPLETION =/= PPCNORMAL
+
+;; INIT lookup has its own emitted line. It is neither a value/constant operand
+;; nor a write/effect marker, and leaves the callee's CODEEXPR descriptor intact.
+def $compiled_operands(P, (PPCCALL_INIT pcpath n) :: ppexprdone*) = (CODECALL_INIT pcpath n) :: $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCCALL_INIT pcpath n) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCCALL_INIT pcpath_init n) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCCALL_INIT pcpath_init n) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppcodepath(CODECALL_INIT pcpath z) = pcpath
+
+;; True expression calls return VAR regardless of their callee operand's class.
+;; Initial literal and ordinary name calls retain the builtin-result dependency.
+def $ppunpack_function_class(pcode, pcpath, expression) = (UNPACK_VAR)
+  -- if $ppcall_dynamic(expression)
+def $ppunpack_function_class(pcode, pcpath, phpType19) = $ppunpack_call_class(pcode.NAMES, pcpath)
+  -- otherwise
+
+;; The parser records CG(zend_lineno) after callable_expr, separately from the
+;; source span and the location left by compiling the callee for INIT lookup.
+def $ppcall_instruction_line(expression, metadata) = $callable_line(metadata)
+
+;; INIT_FCALL_BY_NAME uses the fixed raw CONST string, including a leading slash.
+;; This descriptor does not make argument modes compile-known.
+def $ppcall_constant_name(P, pcpath, metadata) = $ppcall_name(P, pcpath, PNRESOLVED { ORIGINAL NName (BYTES "") metadata, KIND PLFUNCTION, RESOLVED ptbytes, FULL true, FALLBACK eps })
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PSTRING ptbytes)
+def $ppcall_constant_name(P, pcpath, metadata) = P -- otherwise

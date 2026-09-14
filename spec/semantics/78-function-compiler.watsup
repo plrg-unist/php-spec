@@ -226,7 +226,9 @@ def $ppsend_var(expression) = false -- otherwise
 ;; inherits the compiler location left by its arguments. Constants also use
 ;; ppcall_done deliberately, so retain that helper's restoration semantics.
 dec $ppcall_expression(ppstate, pcpath, int) : ppstate
-def $ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR)), pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR), pcpath, $source_line(metadata))
+dec $ppcall_instruction_line(phpType19, metadata) : int
+def $ppcall_instruction_line(phpType19, metadata) = $source_line(metadata) -- otherwise
+def $ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR)), pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR), pcpath, $ppcall_instruction_line(phpType19, metadata))
   -- if P.COMPLETION = PPCNORMAL
 def $ppcall_expression(P, pcpath, z) = $ppdone($ppcall_done(P, pcpath, z), pcpath, PPR)[.LOCATION = P.LOCATION]
 

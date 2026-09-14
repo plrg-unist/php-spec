@@ -137,6 +137,11 @@ test-semantics: build
 	python3 tests/semantics/call_unpack_regression.py
 	python3 tests/semantics/call_unpack_protocol.py
 	python3 tests/semantics/call_unpack_state.py
+	python3 tests/semantics/dynamic_call_compiler.py
+	python3 tests/semantics/dynamic_call.py
+	python3 tests/semantics/dynamic_call_regression.py
+	python3 tests/semantics/dynamic_call_protocol.py
+	python3 tests/semantics/dynamic_call_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py

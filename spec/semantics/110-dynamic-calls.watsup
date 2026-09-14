@@ -1,0 +1,173 @@
+dec $dynamic_fixed_name(pstate, porigin) : preqbytes?
+dec $dynamic_lookup(pstate, porigin, int, int) : pstate
+dec $dynamic_arguments(pstate, porigin) : phpType7*
+dec $dynamic_site(pstate, porigin?) : bool
+dec $code_call_init(pcodeexpr*, pcpath) : int?
+dec $dynamic_init_line(pstate, porigin) : int
+dec $dynamic_lookup_name(preqbytes) : preqbytes
+dec $dynamic_method_scan(preqbytes, bool, bool) : bool
+dec $dynamic_name(pstate, preqbytes, preqbytes, porigin, int, int) : pstate
+dec $dynamic_value(pstate, porigin, int, int) : pstate
+
+;; A computed name is consumed before any argument evaluation. Selected calls
+;; then use the existing positional/named/unpack send and receive machinery.
+def $dynamic_arguments(S, porigin) = phpType7*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+def $dynamic_site(S, (porigin)) = $ppcall_dynamic(expression)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression phpType6 metadata)
+def $dynamic_site(S, porigin?) = false -- otherwise
+
+def $code_call_init(eps, pcpath) = eps
+def $code_call_init((CODECALL_INIT pcpath z) :: pcodeexpr*, pcpath) = (z)
+def $code_call_init((CODECALL_INIT pcpath_other z) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $code_call_init((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_call_init((CODEARG pcpath_other) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_call_init((CODEWRITE pcpath_other z) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_call_init((CODEEFFECT pcpath_other) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+
+def $dynamic_init_line(S, PORIGIN n pcpath) = z
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z)
+
+rule PhpStep/dynamic-literal-call: S ~> $dynamic_name(S[.TODO = ptask_tail*], preqbytes, preqbytes, porigin, $dynamic_init_line(S, porigin), $runtime_line(S, eps, NExprFuncCall expression (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprFuncCall expression (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if ~$ppcall_dynamic(expression)
+  -- if S.ORIGIN = (porigin)
+  -- if porigin = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+rule PhpStep/dynamic-evaluate-callee: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), CALL_DYNAMIC porigin $dynamic_init_line(S, porigin) $runtime_line(S, eps, NExprFuncCall expression (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprFuncCall expression (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if $ppcall_dynamic(expression)
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/dynamic-lookup-callee: S ~> $dynamic_lookup(S[.TODO = ptask_tail*], porigin, z_init, z_call)
+  -- if S.TODO = (CALL_DYNAMIC porigin z_init z_call) :: ptask_tail*
+
+;; A later CONST string has a fixed opcode name but deferred argument modes.
+;; Evaluate its source effects first, then release the unused owning result.
+def $dynamic_fixed_name(S, PORIGIN n pcpath) = (preqbytes)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+def $dynamic_fixed_name(S, porigin) = eps -- otherwise
+def $dynamic_lookup(S, porigin, z_init, z_call) = $dynamic_name(S, preqbytes, preqbytes, porigin, z_init, z_call)
+  -- if $dynamic_fixed_name(S, porigin) = (preqbytes)
+def $dynamic_lookup(S, porigin, z_init, z_call) = $dynamic_value($resolve_at(S, S.RESULT, z_init), porigin, z_init, z_call)
+  -- if $dynamic_fixed_name(S, porigin) = eps
+
+def $dynamic_lookup_name(92 :: n*) = n*
+def $dynamic_lookup_name(n*) = n* -- otherwise
+;; Zend tests the final colon and its immediate predecessor, using full bytes.
+def $dynamic_method_scan(eps, b_previous, b_method) = b_method
+def $dynamic_method_scan(58 :: n*, b_previous, b_method) = $dynamic_method_scan(n*, true, b_previous)
+def $dynamic_method_scan(n :: n_tail*, b_previous, b_method) = $dynamic_method_scan(n_tail*, false, b_method) -- if n =/= 58
+
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "static method string callable"]
+  -- if $dynamic_method_scan(preqbytes_original, false, false)
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.TODO = $named_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = (pfunction)
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "registered builtin call"]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if $call_builtin(preqbytes_lookup, eps)
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ $c_string(preqbytes_original) ++ $ptascii("()"), z_init)
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if ~$call_builtin(preqbytes_lookup, eps)
+
+def $dynamic_value(S, porigin, z_init, z_call) = S -- if S.COMPLETION =/= NORMAL
+def $dynamic_value(S, porigin, z_init, z_call) = $dynamic_name(S, n*, $dynamic_lookup_name(n*), porigin, z_init, z_call)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PSTRING n*)
+def $dynamic_value(S, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "array callable"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Value of type ") ++ $type_bytes(pvalue) ++ $ptascii(" is not callable"), z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $constant_nonstring_scalar(pvalue)
+
+;; After lookup, runtime selection is an existing registered function identity.
+;; No source string is invented for an already evaluated dynamic callee.
+def $call_selected_valid(S, porigin_function, (porigin)) = true
+  -- if $dynamic_site(S, (porigin))
+  -- if $dynamic_fixed_name(S, porigin) = eps
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+
+;; INIT lines are neither expression values, write instructions nor effects.
+def $code_expression((CODECALL_INIT pcpath_init z) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_write((CODECALL_INIT pcpath_init z) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODECALL_INIT pcpath z) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODECALL_INIT pcpath z) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODECALL_INIT pcpath_other z) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODECALL_INIT pcpath z) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODECALL_INIT pcpath z) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODECALL_INIT pcpath z) = pcpath
+def $typed_return_entry(pcoccurrence*, CODECALL_INIT pcpath z) = eps
+def $reference_assignment_entry(pcoccurrence*, CODECALL_INIT pcpath z) = eps
+def $named_send_entry(pcoccurrence*, CODECALL_INIT pcpath z) = eps
+
+;; A queued lookup keeps its original call occurrence and both emitted lines.
+dec $dynamic_task_valid(pstate, porigin, int, int) : bool
+def $call_task_valid(S, CALL_DYNAMIC porigin z_init z_call) = $dynamic_task_valid(S, porigin, z_init, z_call)
+def $dynamic_task_valid(S, porigin, z_init, z_call) = true
+  -- if $dynamic_site(S, (porigin))
+  -- if S.ORIGIN = (porigin)
+  -- if z_init = $dynamic_init_line(S, porigin)
+  -- if $call_line_valid(S, (porigin), z_call)
+def $dynamic_task_valid(S, porigin, z_init, z_call) = false -- otherwise
+
+;; Only actual expression-call roots and their callee operands consume this
+;; projection. Compiled values remain runtime values rather than source history.
+dec $dynamic_root(pcoccurrence*, pcpath) : bool
+def $dynamic_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall expression phpType6 metadata)
+def $dynamic_root(pcoccurrence*, pcpath) = false -- otherwise
+dec $dynamic_child(pcoccurrence*, pcpath) : bool
+def $dynamic_child(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $dynamic_root(pcoccurrence*, pcpath[0:n_parent])
+def $dynamic_child(pcoccurrence*, pcpath) = false -- otherwise
+dec $dynamic_code_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $dynamic_code_entry(pcoccurrence*, CODECALL_INIT pcpath z) = [CODECALL_INIT pcpath z]
+  -- if $dynamic_root(pcoccurrence*, pcpath)
+def $dynamic_code_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $dynamic_root(pcoccurrence*, pcpath) \/ $dynamic_child(pcoccurrence*, pcpath)
+def $dynamic_code_entry(pcoccurrence*, pcodeexpr) = eps -- otherwise
+dec $dynamic_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $dynamic_code(pcoccurrence*, eps) = eps
+def $dynamic_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $dynamic_code_entry(pcoccurrence*, pcodeexpr) ++ $dynamic_code(pcoccurrence*, pcodeexpr_tail*)
+dec $dynamic_cv_entries(pcode, pcunit, pcoccurrence*) : (pcpath, ptbytes?)*
+def $dynamic_cv_entries(pcode, pcunit, eps) = eps
+def $dynamic_cv_entries(pcode, pcunit, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = [(pcpath, $unpack_class_name(pcode, pcunit, pcpath ++ [PCFIELD 0]))] ++ $dynamic_cv_entries(pcode, pcunit, pcoccurrence*)
+  -- if $dynamic_root(pcunit.OCCURRENCES, pcpath)
+def $dynamic_cv_entries(pcode, pcunit, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $dynamic_cv_entries(pcode, pcunit, pcoccurrence*)
+  -- if ~$dynamic_root(pcunit.OCCURRENCES, pcpath)
+def $dynamic_unit_code_valid(P, pcode) = true
+  -- if pcode_expected = pcode[.EXPRESSIONS = $compiled_operands(P, P.EXPRESSIONS)][.NAMES = $compiled_names(P.NAMES)][.REDIRECTS = $compiled_redirects(P.REDIRECTS)]
+  -- if $dynamic_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $dynamic_code(P.FOLD.SOURCE.OCCURRENCES, pcode_expected.EXPRESSIONS)
+  -- if $dynamic_cv_entries(pcode, P.FOLD.SOURCE, P.FOLD.SOURCE.OCCURRENCES) = $dynamic_cv_entries(pcode_expected, P.FOLD.SOURCE, P.FOLD.SOURCE.OCCURRENCES)
+def $dynamic_unit_code_valid(P, pcode) = false -- otherwise
+
+dec $dynamic_cv_name(pstate, porigin) : ptbytes?
+def $dynamic_cv_name(S, PORIGIN n pcpath) = $unpack_class_name(pcode, pcunit, pcpath ++ [PCFIELD 0])
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+dec $dynamic_operand_valid(pstate, porigin) : bool
+def $dynamic_operand_valid(S, porigin) = true
+  -- if $dynamic_cv_name(S, porigin) = (ptbytes)
+  -- if S.RESULT = VARIABLE ptbytes z
+def $dynamic_operand_valid(S, porigin) = $unpack_owned(S, S.RESULT)
+  -- if $dynamic_cv_name(S, porigin) = eps
+def $dynamic_operand_valid(S, porigin) = false -- otherwise
+def $dynamic_result_valid(S) = $dynamic_result_valid(S[.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $dynamic_result_valid(S) = $dynamic_result_valid(S[.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $dynamic_result_valid(S) = $dynamic_operand_valid(S, porigin)
+  -- if S.TODO = (CALL_DYNAMIC porigin z_init z_call) :: ptask_tail*
+def $dynamic_result_valid(S) = true -- otherwise
