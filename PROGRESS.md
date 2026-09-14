@@ -6,21 +6,29 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Initial-main-script statics113/114 are independently accepted at **5ef385d6** in
-[main-statics-review.json](coverage/semantics/main-statics-review.json) on exact
-**1008/2829c2a0**. Main bindings use the active global symbol table, preserve prior
-reference aliases, survive unset and initializer calls, and remain distinct from
-named-function slots. Source-authenticated unit0 declarations exclude nested
-function bodies; persistent entries stay valid during calls independently of
-current scope and initialization history. No state schema or binding repair was needed.
+Real explicit closure instances115/116 are independently accepted at **14e3bf7d** in
+[closures-review.json](coverage/semantics/closures-review.json) on exact
+**1017/9325300f**, code **875c7867**. Source templates stay separate from shared
+object identities. Ordered captures, fresh value bindings per invocation, shared
+references and instance statics survive selected-callee argument effects and
+frame cleanup. Source guards authenticate live state without replaying its history.
 
-Author final gates pass16 source contexts,12 compiler phases/59 projections,
-9 protocol controls/173 assertions,12 regressions and dense2/283. Independent
-final gates pass4 retained native contexts,9 controls/173, dense4/623
-and20 complete old999 responses without projection. Dense checks cover48 zero,
-48 one-step and48 complete suffixes. Fixture errors and every raw outcome remain
-separate; no semantic defect was found. First1001/ebf differs from final only in
-maintained tests/Makefile. Source/native profiles overlap and retain exact identities.
+Author final gates pass70 source outcomes,26 compiler phases/109 projections,
+20 protocol controls/217 assertions,12 regressions and dense2/443. Independent
+final gates pass27 retained native observations plus one explicit method-service
+dependency,20 controls/217, dense4/621 and24 complete old1008 response bridges.
+The bridge removes only verified empty object/template fields and absent instance
+fields, including actual active and saved call contexts. Dense checks compare48
+one-step and48 complete resumptions. All source/state failures and fixture-only
+corrections remain archived; final archive cross-audits and canonical CLI8 pass.
+Fresh maintained profiles, exact original70 model-only replays and28 historical
+ordinary CLI regressions retain separate identities and are not added together.
+
+Initial-main statics113/114 remain accepted historical **5ef385d6**, on1008/2829,
+in [main-statics-review.json](coverage/semantics/main-statics-review.json).
+Their global-table bindings, prior aliases, initializer calls and unit0 eligibility
+retain the original16 source,12/59 compiler,9/173 protocol,2/283 author dense,
+4/623 independent dense and20 complete old999-response evidence.
 
 Named-function statics111/112 remain accepted historical **c00a5d53** in
 [function-statics-review.json](coverage/semantics/function-statics-review.json)
@@ -43,16 +51,19 @@ profiles and identities remain separate; these gates were not rerun or relabelle
 for 109/110 or111/112. The compiler reused a verified binary. Callable entry alarm60 is
 replaced/cancelled by per-packet alarm30, not a continuous whole-case deadline.
 
-Inventory now records135 partial/170 pending/1 oracle validated. Full syntax,
+Inventory now records140 partial/165 pending/1 oracle validated. Full syntax,
 a fresh network-isolated offline rebuild/audit and complete core remain required.
 Builtin compilation/bodies/defaults/callbacks, other callable forms, Traversable,
 exceptions, reporting configuration and object/dynamic-source lifetimes stay open.
 
-Next is the closure identity, explicit-capture and invocation foundation, followed
-by arrow implicit captures and remaining callable/static scopes. Read the
-[closure handoff](docs/semantics/CLOSURES-HANDOFF.md) before representation changes.
-Closure instances require independent capture/static ownership; declaration-only
-static origins do not establish their runtime identity. No closure code is active.
+Next is the bounded arrow-function implicit-capture and expression-return slice.
+Read the [arrow handoff](docs/semantics/ARROWS-HANDOFF.md) before any new schema or
+native campaign. Completed undefined captures must remain distinct from pending
+construction; source discovery and runtime ownership need separate review.
+A refreshed broad integration checkpoint follows arrows before further callable
+or class expansion, unless a concrete shared defect requires it sooner. Required
+Closure method services, ordinary objects, cycle collection and dynamic lifetime
+remain open; valid Closure::fromCallable type checking is explicitly Unsupported.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -91,15 +102,15 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | --- | --- |
 | 0a–b: contracts, inventory, checked runner, source harness | Complete for bounded bootstrap |
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
-| 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
+| 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS, call frames and shared real-closure identities reviewed; general object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, returns, suppression and fatal frame cleanup reviewed; exceptions/handlers pending |
-| 3b: calls, closures and static checks | Partial; positional/named value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns reviewed; remaining call protocols pending |
-| 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
+| 3b: calls, closures and static checks | Partial; positional/named value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns and explicit closures/captures reviewed; arrows and remaining call protocols pending |
+| 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; ordinary object/class execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records135 partial,170 pending and one validated
+The runtime inventory now records140 partial,165 pending and one validated
 obligation. Accepted constants, defaults, strictness, builtin value types,
 reference returns, suppression, positional variadics, named binding and call unpack remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
