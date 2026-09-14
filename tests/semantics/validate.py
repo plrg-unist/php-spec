@@ -719,9 +719,19 @@ def main():
             result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path)], capture_output=True,
                                     env=ENV, timeout=35, cwd=directory)
             response = json.loads(result.stdout)
-            assert result.returncode != 0 and response['status'] == 'unsupported', response
-            negatives.append({'source': base64.b64encode(source).decode(), 'exit_status': result.returncode,
-                              'observation': response})
+            control = {'source': base64.b64encode(source).decode(), 'exit_status': result.returncode,
+                       'observation': response}
+            if source == b'<?php f()[0]="X";':
+                oracle = subprocess.run([str(PHP), '-n', *FLAGS, str(path)], cwd=directory,
+                                        capture_output=True, env=ENV, timeout=30)
+                expected = {'stdout': base64.b64encode(oracle.stdout).decode(),
+                            'stderr': base64.b64encode(oracle.stderr).decode(), 'exit_status': oracle.returncode}
+                assert result.returncode == 0 and response['status'] == 'php_error', response
+                assert all(response[k] == value for k, value in expected.items()), (response, expected)
+                control['oracle'] = expected
+            else:
+                assert result.returncode != 0 and response['status'] == 'unsupported', response
+            negatives.append(control)
         # A compiled infinite loop is budget exhaustion, with no native run.
         path.write_bytes(b'<?php for(;;);')
         result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path), '--steps', '40'],
