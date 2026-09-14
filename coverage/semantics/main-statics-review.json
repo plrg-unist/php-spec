@@ -1,0 +1,1103 @@
+{
+  "result": "pass",
+  "target": {
+    "version": "PHP 8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "ordinary_reporting": 30719,
+    "suppressed_reporting": 4437
+  },
+  "fingerprint": {
+    "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+    "files": 1008,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "predecessor": {
+    "accepted": "c00a5d53",
+    "docs": "5a276d1a",
+    "fingerprint": "999/048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423"
+  },
+  "interface": [
+    "No new state/task/value schema; compiler113 reuses111 ordered main declaration traversal and folding; runtime114 reuses112 binding/reference/persistent roots.",
+    "Main eligibility requires actual NStaticVar in initial unit0 outside named-function source ancestry; CODESTATIC descriptors remain source-authenticated even without function declarations.",
+    "Persistent entry source eligibility is independent of current function and initialization history. Current static tasks separately require correct main/function context.",
+    "Existing79 moves main ENV/CVS/SYMBOLS into GLOBALTABLE on calls and restores before STATIC_BIND; direct/computed/GLOBALS views therefore share the bound cell.",
+    "A compiler-generated additional unit with consistent source/code/heap remains valid; reassociating a MAIN static entry or task into unit1 rejects. No include/eval lifetime claim."
+  ],
+  "source_routes": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_static_var",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BIND_STATIC",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BIND_INIT_STATIC_OR_JMP",
+    "vendor/php-src/Zend/zend_vm_execute.skl:main symbol-table selection",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_attach_symbol_table"
+  ],
+  "gates": {
+    "author_final": {
+      "fingerprint": {
+        "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+        "files": 1008,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "source_contexts": 16,
+      "source_outcomes": {
+        "normal": 13,
+        "php_error": 1,
+        "static_error": 2
+      },
+      "compiler_phases": 12,
+      "compiler_projections": 59,
+      "protocol_controls": 9,
+      "protocol_assertions": 173,
+      "shared_regression_sources": 12,
+      "dense_programs": 2,
+      "dense_assertions": 283,
+      "report": "coverage/semantics/main-statics-runtime.json",
+      "ordinary_native_profiles": 30,
+      "profiles_note": "16 source +12 regression +2 dense overlap, with12 separate compiler lint profiles and5 checked-source-only protocol contexts."
+    },
+    "independent_final": {
+      "source_contexts": 4,
+      "native_repeated": false,
+      "source_report": ".tools/review12-main-statics-dense-jc92_672/records.json",
+      "protocol_controls": 9,
+      "protocol_assertions": 173,
+      "protocol_report": ".tools/review12-main-statics-final-protocol-ccuaf_01/report.json",
+      "dense_programs": 4,
+      "dense_assertions": 623,
+      "dense_zero_step_cuts": 48,
+      "dense_one_step_cuts": 48,
+      "dense_full_suffix_cuts": 48,
+      "dense_report": ".tools/review12-main-statics-dense-corrected-8zjn48p9/report.json",
+      "dense_contexts": [
+        "main-static-initializer-mutates-prior-array-alias",
+        "main-static-global-call-unset-cache",
+        "main-static-named-return-alias-isolation",
+        "main-static-array-owner-suppressed-typed-error"
+      ],
+      "compatibility_responses": 20,
+      "compatibility_projection": "none: every decoded response field exactly equal",
+      "compatibility_budgets": [
+        0,
+        16,
+        32,
+        64,
+        10000
+      ],
+      "compatibility_report": ".tools/review12-main-statics-bridge20-ddqczty3/report.json"
+    },
+    "initial_interface": {
+      "fingerprint": "1001/ebf638bfe82a3f8e984d413426c0d1cdcaa389e69a47bc706d3806d80d915b8d",
+      "reviewer11_source_contexts": 4,
+      "reviewer11_controls": 6,
+      "reviewer11_assertions": 101,
+      "reviewer12_extra_unit_controls": 3,
+      "reviewer12_extra_unit_assertions": 72,
+      "semantic_defects_found": 0
+    },
+    "compiler_focused": {
+      "fingerprint": "1003/a53a60af202637984279528505691a09d828a1e7a27a159e86db983b50175139",
+      "main_phases": 12,
+      "projections": 59,
+      "shared_named_static_phases": 29,
+      "catch_dependencies": 1,
+      "shared_function_phases": 46,
+      "report": "coverage/semantics/main-static-compiler-originals.json"
+    }
+  },
+  "fixture_failures": [
+    {
+      "path": ".tools/review12-main-statics-unit-controls-sjx1bhy9",
+      "classification": "DSL syntax setup error; no semantic execution"
+    },
+    {
+      "path": ".tools/review12-main-statics-unit-controls-blsy8evm",
+      "classification": "DSL SOURCEFILE bytes need grouped constructor argument; no semantic execution"
+    },
+    {
+      "path": ".tools/review12-main-statics-dense-jc92_672",
+      "classification": "Three false fixture expectations: literal return has compiler-pool plus current-result owners; stage budget/cell variable name collision; suppression resides in saved MAIN frame during callee receive. Corrected zero-resume preserves abrupt completion through established helper. Passing loop retained unchanged."
+    }
+  ],
+  "failure_disposition": "All failed fixtures/raw stdout/stderr/status and diagnostic owner roots preserved. No compiler/runtime code repair or spec/native disagreement in this slice. Fixture failures never count as passing controls.",
+  "archives": {
+    "independent": {
+      "archive": "coverage/semantics/main-statics-review-originals.tar.xz",
+      "sha256": "2ea3c6862c85b021d14f26607890c7818cabaee935ab44fb4eebade484acd8cc",
+      "bytes": 49526888,
+      "payload_files": 1344,
+      "manifest_sha256": "5782e942b18d86efd15fbaa0e8a00d72a5b3beddfd42a3f2fefaf14df36c336f",
+      "fingerprint": {
+        "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+        "files": 1008,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "embedded_initial_archive": {
+        "member": "dependencies/initial-stage-originals.tar.xz",
+        "sha256": "be8a7a9e96fa169566fe87ededfd7ee6c33763716fbc8e06ea720ca7144cf0e5",
+        "payloads": 2292,
+        "maps": [
+          "999/0484",
+          "1001/ebf"
+        ]
+      },
+      "scope": "One full final map and actual tools; embedded independently audited initial archive retains two further full maps, native/source/request originals and older finite controls. Corrected dense evidence reuses one unchanged passing first-run fixture; all failures and exact original sources remain retained. No runtime/compiler repair or native recapture."
+    },
+    "initial_stage_audit": {
+      "result": "pass",
+      "archive_sha256": "be8a7a9e96fa169566fe87ededfd7ee6c33763716fbc8e06ea720ca7144cf0e5",
+      "payloads": 2292,
+      "hardlinks": 1122,
+      "full_maps": [
+        "999/048498dc",
+        "1001/ebf638bf"
+      ],
+      "scope": "Independently opened every payload through hardlinks and checked hashes, sizes, modes, complete membership and both full map digests; actual binaries included."
+    },
+    "author_audits": {
+      "result": "pass",
+      "archives": [
+        {
+          "name": "runtime",
+          "archive_sha256": "bd7a32857a03e2c377ece4dac7bb5b0bcc244f5ee59fb470d409eaf00cb13eab",
+          "payloads": 4852,
+          "hardlinks": 3154,
+          "maps": [
+            {
+              "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+              "files": 999,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "ebf638bfe82a3f8e984d413426c0d1cdcaa389e69a47bc706d3806d80d915b8d",
+              "files": 1001,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+              "files": 1008,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            }
+          ],
+          "actual_tool_aliases": {},
+          "result": "pass"
+        },
+        {
+          "name": "compiler",
+          "archive_sha256": "53b9605bdd510de25af0b8ae1d8cefb30b8ee9d2326fd503a715913406ce5b0f",
+          "payloads": 7365,
+          "hardlinks": 5396,
+          "maps": [
+            {
+              "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+              "files": 990,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+              "files": 999,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "599fdfbadfb0376d0147575488ac26f8fd1609f4f42c7f907956fb9e0d1bca9e",
+              "files": 1000,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "ebf638bfe82a3f8e984d413426c0d1cdcaa389e69a47bc706d3806d80d915b8d",
+              "files": 1001,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "a53a60af202637984279528505691a09d828a1e7a27a159e86db983b50175139",
+              "files": 1003,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            },
+            {
+              "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+              "files": 1008,
+              "scope": [
+                "frontend",
+                "adapter",
+                "spec",
+                "native",
+                "tests",
+                "scripts",
+                "bin",
+                "vendor/php-parser",
+                "Makefile",
+                "dune-project",
+                "runtime binaries",
+                "encoding-spellings inventory",
+                "comparison oracle archives"
+              ]
+            }
+          ],
+          "actual_tool_aliases": {
+            "baseline990/.tools/php/bin/php": "snapshots/first/.tools/php/bin/php",
+            "baseline990/.tools/php-file.so": "snapshots/first/.tools/php-file.so",
+            "baseline990/.tools/request-clock.so": "snapshots/first/.tools/request-clock.so",
+            "baseline990/_build/default/adapter/main.exe": "snapshots/first/_build/default/adapter/main.exe",
+            "baseline990/tests/semantics/_build/default/numeric_runner.exe": "snapshots/first/tests/semantics/_build/default/numeric_runner.exe",
+            "baseline999/.tools/php/bin/php": "snapshots/first/.tools/php/bin/php",
+            "baseline999/.tools/php-file.so": "snapshots/first/.tools/php-file.so",
+            "baseline999/.tools/request-clock.so": "snapshots/first/.tools/request-clock.so",
+            "baseline999/_build/default/adapter/main.exe": "snapshots/first/_build/default/adapter/main.exe",
+            "baseline999/tests/semantics/_build/default/numeric_runner.exe": "snapshots/first/tests/semantics/_build/default/numeric_runner.exe",
+            "first1000/.tools/php/bin/php": "snapshots/first/.tools/php/bin/php",
+            "first1000/.tools/php-file.so": "snapshots/first/.tools/php-file.so",
+            "first1000/.tools/request-clock.so": "snapshots/first/.tools/request-clock.so",
+            "first1000/_build/default/adapter/main.exe": "snapshots/first/_build/default/adapter/main.exe",
+            "first1000/tests/semantics/_build/default/numeric_runner.exe": "snapshots/first/tests/semantics/_build/default/numeric_runner.exe",
+            "paired-first1001/.tools/php/bin/php": "snapshots/first/.tools/php/bin/php",
+            "paired-first1001/.tools/php-file.so": "snapshots/first/.tools/php-file.so",
+            "paired-first1001/.tools/request-clock.so": "snapshots/first/.tools/request-clock.so",
+            "paired-first1001/_build/default/adapter/main.exe": "snapshots/first/_build/default/adapter/main.exe",
+            "paired-first1001/tests/semantics/_build/default/numeric_runner.exe": "snapshots/first/tests/semantics/_build/default/numeric_runner.exe",
+            "compiler-final1003/.tools/php/bin/php": "snapshots/first/.tools/php/bin/php",
+            "compiler-final1003/.tools/php-file.so": "snapshots/first/.tools/php-file.so",
+            "compiler-final1003/.tools/request-clock.so": "snapshots/first/.tools/request-clock.so",
+            "compiler-final1003/_build/default/adapter/main.exe": "snapshots/first/_build/default/adapter/main.exe",
+            "compiler-final1003/tests/semantics/_build/default/numeric_runner.exe": "snapshots/first/tests/semantics/_build/default/numeric_runner.exe",
+            "paired-final1008/.tools/php/bin/php": "snapshots/first/.tools/php/bin/php",
+            "paired-final1008/.tools/php-file.so": "snapshots/first/.tools/php-file.so",
+            "paired-final1008/.tools/request-clock.so": "snapshots/first/.tools/request-clock.so",
+            "paired-final1008/_build/default/adapter/main.exe": "snapshots/first/_build/default/adapter/main.exe",
+            "paired-final1008/tests/semantics/_build/default/numeric_runner.exe": "snapshots/first/tests/semantics/_build/default/numeric_runner.exe"
+          },
+          "result": "pass"
+        }
+      ],
+      "scope": "Independent everypayload hash/size/mode/membership and full map audit; all compiler executable aliases resolve to actual mode/hash-identical runtime archive payloads."
+    },
+    "independent_archive_audit": {
+      "result": "pass",
+      "archive_sha256": "2ea3c6862c85b021d14f26607890c7818cabaee935ab44fb4eebade484acd8cc",
+      "payloads": 1344,
+      "hardlinks": 150,
+      "full_final_map": {
+        "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+        "files": 1008,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "embedded_initial_archive": "be8a7a9e96fa169566fe87ededfd7ee6c33763716fbc8e06ea720ca7144cf0e5",
+      "scope": "Every outer payload hash/size/mode/membership and complete final map; embedded archive bytes match independently audited2292-payload/two-map original."
+    }
+  },
+  "raw_audit": {
+    "result": "pass",
+    "workers": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-baseline999/.tools/review11-main-statics-originals-zlnug0p5/frontend-wire",
+        "packets": 4,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-baseline999/.tools/review11-main-statics-originals-zlnug0p5/adapter-wire",
+        "packets": 4,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-old999-vk9j3vb0/adapter-wire",
+        "packets": 20,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-replay-c00rq5xs/frontend-wire",
+        "packets": 4,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-replay-c00rq5xs/adapter-wire",
+        "packets": 4,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-controls-524w35j6/frontend-wire",
+        "packets": 3,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review11-main-statics-controls-524w35j6/adapter-wire",
+        "packets": 3,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review12-main-statics-dense-jc92_672/frontend-wire",
+        "packets": 4,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review12-main-statics-dense-jc92_672/adapter-wire",
+        "packets": 8,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review12-main-statics-bridge20-ddqczty3/adapter-wire",
+        "packets": 20,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-fb2kxxo3/frontend-wire",
+        "packets": 16,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-fb2kxxo3/adapter-wire",
+        "packets": 16,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-static-compiler-9ldyl_5x/frontend-wire",
+        "packets": 12,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-static-compiler-9ldyl_5x/adapter-wire",
+        "packets": 12,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-protocol-gyeoh25z/frontend-wire",
+        "packets": 5,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-protocol-gyeoh25z/adapter-wire",
+        "packets": 5,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-regression-oda2yuh2/frontend-wire",
+        "packets": 12,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-regression-oda2yuh2/adapter-wire",
+        "packets": 12,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-state-0fahm1bz/frontend-wire",
+        "packets": 2,
+        "closed": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/runtime7-main-statics-final/.tools/main-statics-state-0fahm1bz/adapter-wire",
+        "packets": 4,
+        "closed": true
+      }
+    ],
+    "worker_count": 20,
+    "packets": 170,
+    "author_native_profiles": [
+      {
+        "gate": "main-statics",
+        "id": "main-static-stored-global-alias",
+        "source_sha256": "dbfe3090a10aa61248c766ea1b57d5be737907ac328c880a6e761c08b2ab8f5e"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-dynamic-loop-unset",
+        "source_sha256": "d658c5384b1edf95bc995c8768d12361dbbb08d76b18c49ae64e784786ef9be6"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-autoglobal-views",
+        "source_sha256": "49f1e5200eb9f47ca6b58191b99bb87db64724d7e316c6aa2f867f360fa5aae2"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-globals-views",
+        "source_sha256": "6d1c1679af8d49a954092f6033ba28b6b7ac4601c7136fe7aec624972e448eab"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-duplicate-priority",
+        "source_sha256": "642ea35019a0de14287688aa63f269a7eab842ea613d1c845fa29eb3208f0078"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-named-scope-isolation",
+        "source_sha256": "f12c411d42efd657058f2839b2764f35a17729bec658ceaa308a62e506d4895f"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-this-priority",
+        "source_sha256": "e6de941f4dacde135be3c534149264920b97ea10b9db153126224b0dd43f5177"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-multiline-deferred-cv",
+        "source_sha256": "06a6d6f6b00853d7cea5262745f608c7b26f895b8949634e88cf8cb36da6a01f"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-folded-selected-effect-once",
+        "source_sha256": "792a39818bb531a71a07f6202ef2755f99d372a7fc13289878f08e5e233ad459"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-preceding-named-declaration",
+        "source_sha256": "c21010ee8b28d2b661dec99a36802dd9868aad927c3ed9f70a6e069071c43042"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-bare-null-cached",
+        "source_sha256": "7a36cf03b3b2ef3e01e6b218b173c57a688994cc60992e825233881efd30d290"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-namespace-deferred-constant",
+        "source_sha256": "1f438337d8924d1557fa46fe95e0e488b23967122ad5ebd2e8af6383fd0d3d1e"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-initializer-mutates-prior-array-alias",
+        "source_sha256": "30ae4353dcd4e74bc19d2143a5e0271a019475103f82fcbd7c169c82e9120db8"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-global-call-unset-cache",
+        "source_sha256": "852229dcee7d662997bcd8bbd0d5a5931dece0cb191a1b7484b22dc2f5795de4"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-named-return-alias-isolation",
+        "source_sha256": "d628a2ab938793f023d984e6f5e814f8365070184cfa983cc80b152f55017969"
+      },
+      {
+        "gate": "main-statics",
+        "id": "main-static-array-owner-suppressed-typed-error",
+        "source_sha256": "d62324d70b658314c94dd0e399ed5e4ec4511fd123edf9258fc842062f94dd46"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-reentry-inner-wins",
+        "source_sha256": "bea1ee5f210297a12492ebf05daa8f23304dcadae3359f71f2fb94333cd8b1ef"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-binding-releases-prior-reference",
+        "source_sha256": "14f4b1865ea46434a2636299bf23b780008b01e51158cd9e50c30cee4f56d06a"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-bare-null-returned-alias",
+        "source_sha256": "77dcb8e953efc209c62f96db78ea853c9e7967be970163a805297af92e24e9b0"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-stored-array-null-distinct-cells",
+        "source_sha256": "b3b3d6fa519e00e18598ef0172bd990312945b7a640b25a872496bb4f1e03c99"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-autoglobal-hidden-local-cv",
+        "source_sha256": "fd8c135fa2c6628111d59863a84dafc74663bb329d57936138dcce7ce0286b8f"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-globals-hidden-local-cv",
+        "source_sha256": "d1f567a11be2d17c9c6db9c9d3087981c37dd571782619936cfcf699d0cf92ab"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-saved-suppression-typed-initializer-error",
+        "source_sha256": "b9a1c3123704d361b6263df674b42673a3195f43b833b493f7a77cdcfcaea0eb"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "static-bare-cv-current-parameter",
+        "source_sha256": "ccab1dfc78e4649f6207175acb4de83d9a0c85a18fb8787f97c3eb46770271f9"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "dynamic-reference-return",
+        "source_sha256": "2821908ca596e8d3575d05b635912f145896e8a6e87aa54527e00a3cd8615e3e"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "dynamic-successful-multiline-callee-type",
+        "source_sha256": "8a43b1c8945d439ea970a063da1ca216d40e43be1ddab2f5aa324581267e8c5a"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "named-hole-deferred-warning-before-type",
+        "source_sha256": "bdaf1809d1e6c35ffac01dc3512d7ff719f92f2054d866d4060106a5948979fd"
+      },
+      {
+        "gate": "main-statics-regression",
+        "id": "unpack-held-owner-after-later-call",
+        "source_sha256": "2c16a4c2e122016ce172b278678d138b91f1ed9fb0b73c02de03e533d7fce066"
+      },
+      {
+        "gate": "main-statics-state",
+        "id": "main-static-stored-global-alias",
+        "source_sha256": "dbfe3090a10aa61248c766ea1b57d5be737907ac328c880a6e761c08b2ab8f5e"
+      },
+      {
+        "gate": "main-statics-state",
+        "id": "main-static-dynamic-loop-unset",
+        "source_sha256": "d658c5384b1edf95bc995c8768d12361dbbb08d76b18c49ae64e784786ef9be6"
+      }
+    ],
+    "independent_final_native_agreements": 4,
+    "scope": "Independent raw request/response decoding and exact closure audit, original and current gates. Thirty overlapping author profiles plus four retained independent final contexts; no native reruns."
+  },
+  "test_only_bridge": {
+    "before": {
+      "sha256": "ebf638bfe82a3f8e984d413426c0d1cdcaa389e69a47bc706d3806d80d915b8d",
+      "files": 1001,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "after": {
+      "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+      "files": 1008,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changed": [
+      "Makefile",
+      "tests/semantics/main_static_compiler.py",
+      "tests/semantics/main_static_compiler_cases.json",
+      "tests/semantics/main_statics.py",
+      "tests/semantics/main_statics_cases.json",
+      "tests/semantics/main_statics_protocol.py",
+      "tests/semantics/main_statics_regression.py",
+      "tests/semantics/main_statics_state.py"
+    ],
+    "semantic_bytes_unchanged": true,
+    "scope": "First1001/ebf runtime/compiler semantic code unchanged; maintained compiler/source/protocol/regression/state producers and Makefile integrated before final fresh gates."
+  },
+  "canonical_publication": {
+    "result": "pass",
+    "installed_paths": 13,
+    "all_paths": 1008,
+    "map_audit": {
+      "result": "pass",
+      "fingerprint": {
+        "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+        "files": 1008,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "paths": 1008,
+      "scope": "Independent canonical complete membership/fingerprint and every1008 byte/mode match after b260fc955ca4f79f5b62714c10f8051385620c94; no test projection."
+    },
+    "cli_audit": {
+      "result": "pass",
+      "fingerprint": {
+        "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+        "files": 1008,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "canonical_cli_cases": 8,
+      "records": [
+        {
+          "id": "main-static-stored-global-alias",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-dynamic-loop-unset",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-autoglobal-views",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-globals-views",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-named-scope-isolation",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-multiline-deferred-cv",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-initializer-mutates-prior-array-alias",
+          "status": "normal",
+          "pass": true
+        },
+        {
+          "id": "main-static-array-owner-suppressed-typed-error",
+          "status": "php_error",
+          "pass": true
+        }
+      ],
+      "scope": "Independent raw canonical CLI stdout/stderr/zero-exit, exact source bytes and primitive requests, decoded observations and retained native output/error/status comparisons."
+    },
+    "runtime_seven_path_audit": {
+      "result": "pass",
+      "paths": {
+        "coverage/semantics/main-statics-runtime-originals.json": {
+          "sha256": "922c0a2fe2352622903d5da59ef89d47b19a8fe3783b7e44ed214a374d4ed80c",
+          "mode": 436
+        },
+        "coverage/semantics/main-statics-runtime-originals.tar.xz": {
+          "sha256": "bd7a32857a03e2c377ece4dac7bb5b0bcc244f5ee59fb470d409eaf00cb13eab",
+          "mode": 436
+        },
+        "coverage/semantics/main-statics-runtime-publication-originals.json": {
+          "sha256": "da299edaa889e075a58b91cd12afcbc1b29ffa45951e72cc894f50c5d274212f",
+          "mode": 436
+        },
+        "coverage/semantics/main-statics-runtime-publication-originals.tar.xz": {
+          "sha256": "53e20d9397539f241ec81d7a8fbbc3870c6dbe8bb543ed3cf686097ba0bf4ab4",
+          "mode": 436
+        },
+        "coverage/semantics/main-statics-runtime.json": {
+          "sha256": "6b39e97e43a2be33732d5c7a80ea7d839341897be66518e15378682d55547482",
+          "mode": 436
+        },
+        "coverage/semantics/main-static-compiler.json": {
+          "sha256": "40f4fa547b2c86ed3448adb631063b535a5b0d01b0d3c7b1309471c3c2eecd35",
+          "mode": 436
+        },
+        "docs/semantics/SOURCE-MAIN-STATICS.md": {
+          "sha256": "f14795eb84ceb81145d0949caa148b7ee7a6a30f509c4f5fda8372065db55078",
+          "mode": 436
+        }
+      },
+      "supplement_payloads": 62,
+      "supplement_hardlinks": 15,
+      "scope": "Exact seven final publication bytes/modes, every supplement payload, pinned two main symbol-table source files, report identity/outcomes and CLI receipts."
+    }
+  },
+  "inventory": {
+    "partial": 135,
+    "pending": 170,
+    "validated": 1,
+    "family_closed": false
+  },
+  "remaining": [
+    "Closure/arrow identity, captures, invocation and other callable protocols",
+    "Method/trait/inherited static table identity",
+    "Include/eval and repeated op-array activation",
+    "Objects, destructors, catch/retry and exception lifetime",
+    "Full current syntax audit, fresh network-isolated offline rebuild/audit and every full-core obligation"
+  ],
+  "scope": "Bounded initial script/main statics evidence; tests are not a PHP equivalence theorem or BOLA proof. Earlier broad integration and syntax evidence retain historical identities.",
+  "disposition": "independently accepted bounded initial-main-script statics",
+  "commits": {
+    "paired_code": "b260fc955ca4f79f5b62714c10f8051385620c94",
+    "compiler_publication": "0d81fa0c18c20ff930876f13f99744d9e199a322",
+    "runtime_publication": "fd179d7318b3a873e1bfb75d3c27b8ce82800b85"
+  },
+  "independent_numeric_audit": {
+    "result": "pass",
+    "true_runners": 13,
+    "runners": [
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/additional-unit-persistent-origin/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/additional-unit-current-task/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/persistent-entry-named-reassociation/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/main-initializer-control/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/main-owner-and-saved-task-during-callee/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/pure-main-forged-marker/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/additional-unit-source-context/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/arbitrary-main-cell-value/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-final-protocol-ccuaf_01/nested-function-task-in-main/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-dense-corrected-8zjn48p9/main-static-array-owner-suppressed-typed-error/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-dense-corrected-8zjn48p9/main-static-initializer-mutates-prior-array-alias/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-dense-corrected-8zjn48p9/main-static-named-return-alias-isolation/runner.command.json",
+      "/home/user/workspace/php-spec/.tools/review12-main-statics-dense-jc92_672/main-static-global-call-unset-cache/runner.command.json"
+    ],
+    "scope": "Nine independent controls plus four final dense fixtures, including retained unchanged loop fixture; exact true newline/zero exit/empty stderr."
+  },
+  "reviewer_archive_cross_audit": {
+    "result": "pass",
+    "archive_sha256": "2ea3c6862c85b021d14f26607890c7818cabaee935ab44fb4eebade484acd8cc",
+    "outer": {
+      "payloads": 1344,
+      "hardlinks": 150,
+      "manifest_sha256": "5782e942b18d86efd15fbaa0e8a00d72a5b3beddfd42a3f2fefaf14df36c336f"
+    },
+    "embedded": {
+      "payloads": 2292,
+      "hardlinks": 1122,
+      "manifest_sha256": "9027f853cd2fbff44e158b041e46bf5b8b35bbad57b93604d9345fe60c67bf3c"
+    },
+    "complete_maps": [
+      {
+        "archive": "outer",
+        "prefix": "snapshots/final",
+        "fingerprint": {
+          "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+          "files": 1008,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      {
+        "archive": "embedded",
+        "prefix": "snapshots/baseline999",
+        "fingerprint": {
+          "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+          "files": 999,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      {
+        "archive": "embedded",
+        "prefix": "snapshots/first",
+        "fingerprint": {
+          "sha256": "ebf638bfe82a3f8e984d413426c0d1cdcaa389e69a47bc706d3806d80d915b8d",
+          "files": 1001,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      }
+    ],
+    "workers": [
+      {
+        "root": ".tools/review12-main-statics-bridge20-ddqczty3/adapter-wire",
+        "responses": 20
+      },
+      {
+        "root": ".tools/review12-main-statics-dense-jc92_672/adapter-wire",
+        "responses": 8
+      },
+      {
+        "root": ".tools/review12-main-statics-dense-jc92_672/frontend-wire",
+        "responses": 4
+      },
+      {
+        "root": ".tools/review11-main-statics-baseline999/.tools/review11-main-statics-originals-zlnug0p5/adapter-wire",
+        "responses": 4
+      },
+      {
+        "root": ".tools/review11-main-statics-baseline999/.tools/review11-main-statics-originals-zlnug0p5/frontend-wire",
+        "responses": 4
+      },
+      {
+        "root": ".tools/review11-main-statics-controls-524w35j6/adapter-wire",
+        "responses": 3
+      },
+      {
+        "root": ".tools/review11-main-statics-controls-524w35j6/frontend-wire",
+        "responses": 3
+      },
+      {
+        "root": ".tools/review11-main-statics-old999-vk9j3vb0/adapter-wire",
+        "responses": 20
+      },
+      {
+        "root": ".tools/review11-main-statics-replay-c00rq5xs/adapter-wire",
+        "responses": 4
+      },
+      {
+        "root": ".tools/review11-main-statics-replay-c00rq5xs/frontend-wire",
+        "responses": 4
+      }
+    ],
+    "clean_workers": 10,
+    "decoded_responses": 74,
+    "final_numeric_true": 13,
+    "protocol_controls": 9,
+    "protocol_assertions": 173,
+    "dense_cases": 4,
+    "dense_assertions": 623,
+    "whole_response_bridges": 20,
+    "retained_native_agreements": 4,
+    "scope": "Independent complete outer and nested payload/membership/hash/length/mode/hardlink audit; three maps match independently held actual binaries/source bytes/modes. Archived workers decoded with clean closures; final thirteen fixtures/status/commands and complete twenty old/current responses independently checked. Four exact retained native observations, no executable gate or native rerun. Earlier failed fixture artifacts remain included."
+  },
+  "publication_supplement": {
+    "archive": "coverage/semantics/main-statics-runtime-publication-originals.tar.xz",
+    "sha256": "53e20d9397539f241ec81d7a8fbbc3870c6dbe8bb543ed3cf686097ba0bf4ab4",
+    "bytes": 77888,
+    "payload_files": 62,
+    "members": 63,
+    "manifest_sha256": "a9f1507c7197eb076ec4e2706903655de269ae822ec02469d62493ff12aef46f",
+    "fingerprint": {
+      "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+      "files": 1008,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "history_archive_sha256": "bd7a32857a03e2c377ece4dac7bb5b0bcc244f5ee59fb470d409eaf00cb13eab"
+  }
+}
