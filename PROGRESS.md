@@ -38,6 +38,17 @@ profiles, tools and modes after root reads this checkpoint; validate a represent
 full request/source/native profile through the prepared raw wrapper before263.
 Historical full campaigns remain historical until these current runs are accepted.
 
+Current integration is in progress on independently copied **981/3f3** inputs;
+accepted108 remains the checkpoint above. Shared membership is frozen at5706
+ordinary cases,263 explicit requests,751 callable rows across13 suites and5751
+ordered compiler sources, with distinct profiles and overlapping counts. Four
+full request-wrapper preflight profiles pass (8 responses,6 clean closures);
+runtime7 is independently auditing that preflight before the full263 run.
+Compiler7 owns ordinary/compiler execution, runtime7 callable execution, and
+review10 requests plus ordinary-lane audit. No109 source activation or semantic
+mutation is authorized during these runs. Current results will be published
+with exact raw closures; historical full campaigns remain separately scoped.
+
 Builtin106 name/mode metadata remains accepted on972/e1bf; builtin bodies,
 default filling and callbacks remain required. Traversable, dynamic callables,
 function statics, closures, objects, exceptions, reporting APIs/configuration,
