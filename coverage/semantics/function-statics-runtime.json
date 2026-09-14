@@ -1,0 +1,2760 @@
+{
+  "result": "pass",
+  "scope": "Named user-function static declarations: initialized-only persistent reference cells; null, constant-pool and evaluated initialization; recursive winner, prior local/reference replacement, aliases and COW; saved suppression/error cleanup; source-bound stage and heap guards. Main-script, closure/method statics and remaining full core are separate required work. No family closure.",
+  "paired_code": "bb4b7cea07901e070f505e2d585e2d45e70baee5",
+  "fingerprint": {
+    "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+    "files": 999,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "baseline": {
+    "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+    "files": 990,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "source_pin": {
+    "version": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "authority": [
+      "Zend/zend_compile.c: static declarations and constant preparation",
+      "Zend/zend_vm_def.h: BIND_INIT_STATIC_OR_JMP and BIND_STATIC",
+      "Zend/zend_execute.c: persistent cells and reference binding"
+    ]
+  },
+  "gates": {
+    "function-statics": {
+      "fingerprint": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "report_sha256": "2293ee3b4dc0ab4c2de69f58378c595de6ce11e46c2594f6c5f18c1524958b96",
+      "original_report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey",
+      "records": 32,
+      "assertions": null,
+      "compiler_phases": null,
+      "source_projections": null
+    },
+    "function-static-compiler": {
+      "fingerprint": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "report_sha256": "949654a581a0739fb604e4b6f552c29a0daecbb2d6ce7823b7fd386f3ffef06a",
+      "original_report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-static-compiler.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-static-compiler-ldxqv3u0",
+      "records": 0,
+      "assertions": null,
+      "compiler_phases": 29,
+      "source_projections": 121
+    },
+    "function-statics-protocol": {
+      "fingerprint": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "report_sha256": "a8e90563a3203f3c0701df536fea0000c3f261f9ab9b43db52fbfde7fc5cb7a9",
+      "original_report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/coverage/semantics/function-statics-protocol.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct",
+      "records": 26,
+      "assertions": 486,
+      "compiler_phases": null,
+      "source_projections": null
+    },
+    "function-statics-regression": {
+      "fingerprint": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "report_sha256": "7c5a7a0e37b241eca080b03e1183b22b15000ba1bdba01688df56049f390d05b",
+      "original_report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics-regression.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf",
+      "records": 12,
+      "assertions": null,
+      "compiler_phases": null,
+      "source_projections": null
+    },
+    "function-statics-state": {
+      "fingerprint": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "report_sha256": "eb72ab1439751c69b658704f800bb19284287151a648dd337b448cf76456d19a",
+      "original_report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics-state.json",
+      "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c",
+      "records": 2,
+      "assertions": 325,
+      "compiler_phases": null,
+      "source_projections": null
+    }
+  },
+  "source_outcomes": {
+    "native_agreements": 32,
+    "normal": 24,
+    "php_error": 2,
+    "static_rejection": 6,
+    "separate_catch_dependencies": 2,
+    "compiler_native_phases": 29,
+    "compiler_catch_dependency": 1,
+    "compiler_projections": 121
+  },
+  "profile_counts": {
+    "ordinary_native_profiles": 46,
+    "compiler_lint_profiles": 30,
+    "qualification": "Source32, regression12 and dense2 profiles overlap sources. Protocol26 has four checked-source contexts and no native calls. Repair source/state replays reuse retained native contexts."
+  },
+  "final_gate_index": {
+    "fingerprint": {
+      "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+      "files": 999,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "predecessor_gates": {
+      "result": "pass",
+      "fingerprint": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "gates": [
+        {
+          "gate": "function-statics",
+          "report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics.json",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey",
+          "workers": [
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/adapter-wire",
+              "responses": 32,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            },
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/frontend-wire",
+              "responses": 32,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            }
+          ],
+          "runners": [],
+          "ordinary_native_profiles": 32,
+          "protocol_only_source_contexts": 0,
+          "lint_profiles": []
+        },
+        {
+          "gate": "function-static-compiler",
+          "report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-static-compiler.json",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-static-compiler-ldxqv3u0",
+          "workers": [
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-static-compiler-ldxqv3u0/adapter-wire",
+              "responses": 30,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            },
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-static-compiler-ldxqv3u0/frontend-wire",
+              "responses": 30,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            }
+          ],
+          "runners": [
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-static-compiler-ldxqv3u0/spectec.command.json"
+          ],
+          "ordinary_native_profiles": 0,
+          "protocol_only_source_contexts": 0,
+          "lint_profiles": [
+            {
+              "id": "static-counter",
+              "source_sha256": "d5fcbf6c3db5e06c09a35a3b79049bae8c5a41ed42ee90517eb95cfae281356c",
+              "exit_status": 0
+            },
+            {
+              "id": "static-null-cached",
+              "source_sha256": "e2169c48a0f30962a3b00c72034991f5f007d6a4c758c024ffeba5d0778c1a68",
+              "exit_status": 0
+            },
+            {
+              "id": "static-comma-order",
+              "source_sha256": "a91bc8707bf6fd2933a0b218b26c25fe239861cc5856e784f1b340fae669b3aa",
+              "exit_status": 0
+            },
+            {
+              "id": "static-parameter-prior-value",
+              "source_sha256": "8b47985d240ac134aab735ae3f493e2ea7a70469d2b31ebfb455a5c980fb1554",
+              "exit_status": 0
+            },
+            {
+              "id": "static-local-prior-value",
+              "source_sha256": "1f5779d13a0ab5757dbf6cc5a779064e1d57d201f70c62ed19f9b4e266ecdd86",
+              "exit_status": 0
+            },
+            {
+              "id": "static-unset-local",
+              "source_sha256": "45a980d5fef67c7c7adb1b322b142d9bba4ca8901b14c8133cdb39f776d6c393",
+              "exit_status": 0
+            },
+            {
+              "id": "static-rebind-local",
+              "source_sha256": "d1cd7c5152ebfe133b51ccfd54c6a22debf3d67bec77f3ce09c4082db24997b0",
+              "exit_status": 0
+            },
+            {
+              "id": "static-duplicate-list",
+              "source_sha256": "ee9f1cfed2b8e5e045e1c448e583940b4c834f04032b1b985e9268389e9475ce",
+              "exit_status": 255
+            },
+            {
+              "id": "static-duplicate-dead-branch",
+              "source_sha256": "039eb0dbd08f5a8e9d7111a646e627d5aef7682aa090fbdeabba93c8cf3700cb",
+              "exit_status": 255
+            },
+            {
+              "id": "static-duplicate-before-initializer",
+              "source_sha256": "c7221ab0852b8b75c410434e3fda8b0381c972491aa113b9a3a89f697a90aec1",
+              "exit_status": 255
+            },
+            {
+              "id": "static-this-before-initializer",
+              "source_sha256": "5d9d9ff4d4126c8538efdeccac677a057bbd5f21e5e7ad4cbf3e87e69747978d",
+              "exit_status": 255
+            },
+            {
+              "id": "static-multiline-undefined-constant",
+              "source_sha256": "b38d6f3d2e68c338dcc861fa1a0a061458c7f0ce19948c63c80bb426fc2884a2",
+              "exit_status": 0
+            },
+            {
+              "id": "static-namespace-constant",
+              "source_sha256": "492287458b1b1ed5062b48dad615e1b09225884beb4cd654ac869375d1f684a7",
+              "exit_status": 0
+            },
+            {
+              "id": "static-skipped-then-entered",
+              "source_sha256": "3147bee1866f8992b82708a9080d6c5e38eedeb81e171e69390f2f0d7b6e23c0",
+              "exit_status": 0
+            },
+            {
+              "id": "static-folded-conditional-skips-invalid",
+              "source_sha256": "60bfe762e1f0019675dc529d1f9de5344d239c2d78c73ea658f63f79e8cbda5c",
+              "exit_status": 0
+            },
+            {
+              "id": "static-dynamic-conditional-checks-invalid",
+              "source_sha256": "35b587820bc371e0b1969a7148ca2b6c44bdf68d8359209ba516c882d3f5aaf7",
+              "exit_status": 255
+            },
+            {
+              "id": "static-folded-conditional-effect-once",
+              "source_sha256": "a691fb175937f40293da103f3ce324b131781d88a2e0a638f23b0cb6bf061b90",
+              "exit_status": 0
+            },
+            {
+              "id": "static-suppressed-literal-initializer",
+              "source_sha256": "ecccf0fec5febdcfd831908390fd8f4a5c493515af95eca235892db833ee33cc",
+              "exit_status": 0
+            },
+            {
+              "id": "static-nested-function-name-isolation",
+              "source_sha256": "5510ef792f5ebee21bbc8bc2af72ab3e9279bdf7413fc68b4f2e7b99739e094b",
+              "exit_status": 0
+            },
+            {
+              "id": "static-multiline-comma-duplicate",
+              "source_sha256": "1c6fde374d1d49a4759b5409a9f9d2302f8b2db13ac015b36060ace881ce0ae7",
+              "exit_status": 255
+            },
+            {
+              "id": "static-bare-null-returned-alias",
+              "source_sha256": "77dcb8e953efc209c62f96db78ea853c9e7967be970163a805297af92e24e9b0",
+              "exit_status": 0
+            },
+            {
+              "id": "static-reentry-inner-wins",
+              "source_sha256": "bea1ee5f210297a12492ebf05daa8f23304dcadae3359f71f2fb94333cd8b1ef",
+              "exit_status": 0
+            },
+            {
+              "id": "static-reentry-array-shared-alias",
+              "source_sha256": "a0db814fcac27e6fc49c4faf035be51dc4742047d5931c72e97933190be4a710",
+              "exit_status": 0
+            },
+            {
+              "id": "static-binding-releases-prior-reference",
+              "source_sha256": "14f4b1865ea46434a2636299bf23b780008b01e51158cd9e50c30cee4f56d06a",
+              "exit_status": 0
+            },
+            {
+              "id": "static-undefined-initializer-retry-dependency",
+              "source_sha256": "866018b8025cae0c34b377516ecc74890573bd3e4a43353809856b0362efdbfd",
+              "exit_status": 0
+            },
+            {
+              "id": "static-autoglobal-hidden-local-cv",
+              "source_sha256": "fd8c135fa2c6628111d59863a84dafc74663bb329d57936138dcce7ce0286b8f",
+              "exit_status": 0
+            },
+            {
+              "id": "static-globals-hidden-local-cv",
+              "source_sha256": "d1f567a11be2d17c9c6db9c9d3087981c37dd571782619936cfcf699d0cf92ab",
+              "exit_status": 0
+            },
+            {
+              "id": "static-stored-array-null-distinct-cells",
+              "source_sha256": "b3b3d6fa519e00e18598ef0172bd990312945b7a640b25a872496bb4f1e03c99",
+              "exit_status": 0
+            },
+            {
+              "id": "static-dynamic-array-element-once",
+              "source_sha256": "081e6c0e4a0f7f73552eec0572b5bebb613004abf6d196c3446ba46b76192cd7",
+              "exit_status": 0
+            },
+            {
+              "id": "static-bare-cv-current-parameter",
+              "source_sha256": "ccab1dfc78e4649f6207175acb4de83d9a0c85a18fb8787f97c3eb46770271f9",
+              "exit_status": 0
+            }
+          ]
+        },
+        {
+          "gate": "function-statics-protocol",
+          "report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics-protocol.json",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z",
+          "workers": [
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/adapter-wire",
+              "responses": 3,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            },
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/frontend-wire",
+              "responses": 3,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            }
+          ],
+          "runners": [
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/arbitrary-bind-owned-value.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/arbitrary-deferred-cv-value.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/arbitrary-distinct-cell-values.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/arbitrary-initialized-value.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/arbitrary-owning-result.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/control-bind.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/control-initialized.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/deferred-cv-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/deferred-cv-forged-owning-result.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/duplicate-entry.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/local-alias-retains-distinct-static-cells.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/marker-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/missing-reference-class.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/owning-result-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/suppression-result-forged-deferred-name.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/two-cell-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/two-static-entries-share-cell.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/undefined-persistent-cell.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-bind-origin.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-deferred-cv-name.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-entry-origin.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-marker-begin-line.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-marker-bind-line.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-marker-name.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-protocol-8u6q9n2z/wrong-marker-stored-mode.command.json"
+          ],
+          "ordinary_native_profiles": 0,
+          "protocol_only_source_contexts": 3,
+          "lint_profiles": []
+        },
+        {
+          "gate": "function-statics-regression",
+          "report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics-regression.json",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf",
+          "workers": [
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/adapter-wire",
+              "responses": 12,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            },
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/frontend-wire",
+              "responses": 12,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            }
+          ],
+          "runners": [],
+          "ordinary_native_profiles": 12,
+          "protocol_only_source_contexts": 0,
+          "lint_profiles": []
+        },
+        {
+          "gate": "function-statics-state",
+          "report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/coverage/semantics/function-statics-state.json",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c",
+          "workers": [
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c/adapter-wire",
+              "responses": 4,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            },
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c/frontend-wire",
+              "responses": 2,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            }
+          ],
+          "runners": [
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c/static-binding-releases-prior-reference/runner.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c/static-reentry-inner-wins/runner.command.json"
+          ],
+          "ordinary_native_profiles": 2,
+          "protocol_only_source_contexts": 0,
+          "lint_profiles": []
+        }
+      ],
+      "ordinary_native_profiles": 46,
+      "protocol_only_source_contexts": 3,
+      "ordinary_source_statuses": {
+        "normal": 33,
+        "static_rejection": 6,
+        "php_error": 7
+      },
+      "lint_profiles": 30,
+      "responses": 160,
+      "clean_worker_closures": 10,
+      "standalone_true_closures": 28,
+      "ordinary_records": [
+        {
+          "gate": "function-statics",
+          "id": "static-counter",
+          "source_sha256": "d5fcbf6c3db5e06c09a35a3b79049bae8c5a41ed42ee90517eb95cfae281356c",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-counter/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-null-cached",
+          "source_sha256": "e2169c48a0f30962a3b00c72034991f5f007d6a4c758c024ffeba5d0778c1a68",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-null-cached/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-comma-order",
+          "source_sha256": "a91bc8707bf6fd2933a0b218b26c25fe239861cc5856e784f1b340fae669b3aa",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-comma-order/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-parameter-prior-value",
+          "source_sha256": "8b47985d240ac134aab735ae3f493e2ea7a70469d2b31ebfb455a5c980fb1554",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-parameter-prior-value/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-local-prior-value",
+          "source_sha256": "1f5779d13a0ab5757dbf6cc5a779064e1d57d201f70c62ed19f9b4e266ecdd86",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-local-prior-value/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-unset-local",
+          "source_sha256": "45a980d5fef67c7c7adb1b322b142d9bba4ca8901b14c8133cdb39f776d6c393",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-unset-local/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-rebind-local",
+          "source_sha256": "d1cd7c5152ebfe133b51ccfd54c6a22debf3d67bec77f3ce09c4082db24997b0",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-rebind-local/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-duplicate-list",
+          "source_sha256": "ee9f1cfed2b8e5e045e1c448e583940b4c834f04032b1b985e9268389e9475ce",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-duplicate-list/source.php",
+          "status": "static_rejection"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-duplicate-dead-branch",
+          "source_sha256": "039eb0dbd08f5a8e9d7111a646e627d5aef7682aa090fbdeabba93c8cf3700cb",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-duplicate-dead-branch/source.php",
+          "status": "static_rejection"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-duplicate-before-initializer",
+          "source_sha256": "c7221ab0852b8b75c410434e3fda8b0381c972491aa113b9a3a89f697a90aec1",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-duplicate-before-initializer/source.php",
+          "status": "static_rejection"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-this-before-initializer",
+          "source_sha256": "5d9d9ff4d4126c8538efdeccac677a057bbd5f21e5e7ad4cbf3e87e69747978d",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-this-before-initializer/source.php",
+          "status": "static_rejection"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-multiline-undefined-constant",
+          "source_sha256": "b38d6f3d2e68c338dcc861fa1a0a061458c7f0ce19948c63c80bb426fc2884a2",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-multiline-undefined-constant/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-namespace-constant",
+          "source_sha256": "492287458b1b1ed5062b48dad615e1b09225884beb4cd654ac869375d1f684a7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-namespace-constant/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-skipped-then-entered",
+          "source_sha256": "3147bee1866f8992b82708a9080d6c5e38eedeb81e171e69390f2f0d7b6e23c0",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-skipped-then-entered/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-bare-null-returned-alias",
+          "source_sha256": "77dcb8e953efc209c62f96db78ea853c9e7967be970163a805297af92e24e9b0",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-bare-null-returned-alias/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-reentry-inner-wins",
+          "source_sha256": "bea1ee5f210297a12492ebf05daa8f23304dcadae3359f71f2fb94333cd8b1ef",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-reentry-inner-wins/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-reentry-array-shared-alias",
+          "source_sha256": "a0db814fcac27e6fc49c4faf035be51dc4742047d5931c72e97933190be4a710",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-reentry-array-shared-alias/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-binding-releases-prior-reference",
+          "source_sha256": "14f4b1865ea46434a2636299bf23b780008b01e51158cd9e50c30cee4f56d06a",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-binding-releases-prior-reference/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-folded-conditional-skips-invalid",
+          "source_sha256": "60bfe762e1f0019675dc529d1f9de5344d239c2d78c73ea658f63f79e8cbda5c",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-folded-conditional-skips-invalid/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-dynamic-conditional-checks-invalid",
+          "source_sha256": "35b587820bc371e0b1969a7148ca2b6c44bdf68d8359209ba516c882d3f5aaf7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-dynamic-conditional-checks-invalid/source.php",
+          "status": "static_rejection"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-folded-conditional-effect-once",
+          "source_sha256": "a691fb175937f40293da103f3ce324b131781d88a2e0a638f23b0cb6bf061b90",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-folded-conditional-effect-once/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-suppressed-literal-initializer",
+          "source_sha256": "ecccf0fec5febdcfd831908390fd8f4a5c493515af95eca235892db833ee33cc",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-suppressed-literal-initializer/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-nested-function-name-isolation",
+          "source_sha256": "5510ef792f5ebee21bbc8bc2af72ab3e9279bdf7413fc68b4f2e7b99739e094b",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-nested-function-name-isolation/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-multiline-comma-duplicate",
+          "source_sha256": "1c6fde374d1d49a4759b5409a9f9d2302f8b2db13ac015b36060ace881ce0ae7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-multiline-comma-duplicate/source.php",
+          "status": "static_rejection"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-stored-array-null-distinct-cells",
+          "source_sha256": "b3b3d6fa519e00e18598ef0172bd990312945b7a640b25a872496bb4f1e03c99",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-stored-array-null-distinct-cells/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-dynamic-array-element-once",
+          "source_sha256": "081e6c0e4a0f7f73552eec0572b5bebb613004abf6d196c3446ba46b76192cd7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-dynamic-array-element-once/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-suppressed-null-cache-restoration",
+          "source_sha256": "4a7d8fdf55f180d804c9a487390b55d458e7635c4ccc271c34768b32357a63f1",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-suppressed-null-cache-restoration/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-suppressed-float-return-cache",
+          "source_sha256": "364baf29543a5b91d68affb84c842d0b94bb0cfa762d136055cfc4f429cf5220",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-suppressed-float-return-cache/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-saved-suppression-typed-initializer-error",
+          "source_sha256": "b9a1c3123704d361b6263df674b42673a3195f43b833b493f7a77cdcfcaea0eb",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-saved-suppression-typed-initializer-error/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-autoglobal-hidden-local-cv",
+          "source_sha256": "fd8c135fa2c6628111d59863a84dafc74663bb329d57936138dcce7ce0286b8f",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-autoglobal-hidden-local-cv/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-globals-hidden-local-cv",
+          "source_sha256": "d1f567a11be2d17c9c6db9c9d3087981c37dd571782619936cfcf699d0cf92ab",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-globals-hidden-local-cv/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics",
+          "id": "static-bare-cv-current-parameter",
+          "source_sha256": "ccab1dfc78e4649f6207175acb4de83d9a0c85a18fb8787f97c3eb46770271f9",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-bare-cv-current-parameter/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "dynamic-callee-before-arguments",
+          "source_sha256": "dc09e0a996273f564fe910d09989ecf5f6f2f404d165bdeb3d5d347f9666f2c8",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/dynamic-callee-before-arguments/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "dynamic-reference-return",
+          "source_sha256": "2821908ca596e8d3575d05b635912f145896e8a6e87aa54527e00a3cd8615e3e",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/dynamic-reference-return/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "dynamic-hole-float-cache-fresh-reference",
+          "source_sha256": "389a55c55cd01ab933b3dac41dc8382403d654e084b44c9a28891521182e4fc9",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/dynamic-hole-float-cache-fresh-reference/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "dynamic-saved-suppression-hole-type-error",
+          "source_sha256": "f9ad57b2562762f36191a38685f52d4a58ea1ce2f48b4fea4110ed6232d89c24",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/dynamic-saved-suppression-hole-type-error/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "dynamic-successful-multiline-callee-type",
+          "source_sha256": "8a43b1c8945d439ea970a063da1ca216d40e43be1ddab2f5aa324581267e8c5a",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/dynamic-successful-multiline-callee-type/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "dynamic-reference-result-unpack",
+          "source_sha256": "57beb411a3c249def3c176c52fbf0b66cd637afa13e853471117720d71458fd8",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/dynamic-reference-result-unpack/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "named-hole-deferred-warning-before-type",
+          "source_sha256": "bdaf1809d1e6c35ffac01dc3512d7ff719f92f2054d866d4060106a5948979fd",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/named-hole-deferred-warning-before-type/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "named-hole-uncoerced-string-reference-cache",
+          "source_sha256": "f5a97850316867d70e6bf7601b5772a09a057aa75001bb00837b565abb7bd8fc",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/named-hole-uncoerced-string-reference-cache/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "named-deferred-cv-typed-return-line",
+          "source_sha256": "523e9f251f4b6325adfdba55aa1b89fe324de5c01ef7b089f9de1bc7d21691f8",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/named-deferred-cv-typed-return-line/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "unpack-reference-assignment-result",
+          "source_sha256": "bf398aef5f581e6437c87c30e54fcbeada2045ddfcab26d71079da00d5706d92",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/unpack-reference-assignment-result/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "unpack-held-owner-after-later-call",
+          "source_sha256": "2c16a4c2e122016ce172b278678d138b91f1ed9fb0b73c02de03e533d7fce066",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/unpack-held-owner-after-later-call/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-regression",
+          "id": "unpack-nested-call-callee-type-line",
+          "source_sha256": "91c2e881f3816b187be84f06fba14bbab82560dd3c31347a87f0e82c9578352d",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-regression-fsp3geyf/unpack-nested-call-callee-type-line/source.php",
+          "status": "php_error"
+        },
+        {
+          "gate": "function-statics-state",
+          "id": "static-reentry-inner-wins",
+          "source_sha256": "bea1ee5f210297a12492ebf05daa8f23304dcadae3359f71f2fb94333cd8b1ef",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c/static-reentry-inner-wins/source.php",
+          "status": "normal"
+        },
+        {
+          "gate": "function-statics-state",
+          "id": "static-binding-releases-prior-reference",
+          "source_sha256": "14f4b1865ea46434a2636299bf23b780008b01e51158cd9e50c30cee4f56d06a",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-state-g0ewfh7c/static-binding-releases-prior-reference/source.php",
+          "status": "normal"
+        }
+      ]
+    },
+    "semantic_repair": {
+      "result": "pass",
+      "before": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "spec/semantics/105-named-arguments.watsup"
+      ],
+      "unchanged_files": 998,
+      "modes_unchanged": true,
+      "premises_added": 3,
+      "source_context_replays": 46,
+      "receive_stage_sources": 4,
+      "receive_stage_assertions": 112,
+      "raw_responses": 100,
+      "clean_worker_closures": 6,
+      "true_runners": 4,
+      "roots": [
+        "/home/user/workspace/php-spec/.tools/runtime7-statics112/selected-runtime7-statics-receive-repair-mpx_zow1",
+        "/home/user/workspace/php-spec/.tools/runtime7-statics112/selected-runtime7-statics-receive-repair-n84p_sj6",
+        "/home/user/workspace/php-spec/.tools/runtime7-statics112/receive-stage-mm7o6x5n"
+      ],
+      "qualification": "Real semantic guard repair. Source32+regression12 completed before producer-only duplicate output-directory failure; only remaining dense-source2 contexts replayed afterward. Four paused receive controls include adjacent cuts/full suffixes. No native reruns; original999/4419 and compiler gates retain their identities. Initial malformed nested arithmetic fixture is preserved separately."
+    },
+    "dense_repair": {
+      "result": "pass",
+      "fingerprint": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "raw": ".tools/runtime7-statics112/receive-state2-8utjkeg9",
+      "sources": 2,
+      "assertions": 325,
+      "exact_predecessor_fixture_reuse": true
+    },
+    "test_bridge": {
+      "result": "pass",
+      "before": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "tests/semantics/function_statics_protocol.py"
+      ],
+      "unchanged_files": 998,
+      "all_modes_unchanged": true,
+      "scope": "Sole maintained protocol addition: exact prior25 controls/452 assertions retained, plus actual typed initializer receive and adjacent-state/full-suffix regression34 assertions; total26/486 in four checked-source contexts. No runtime/compiler bytes changed;442a source/state/compatibility gates retain exact original identities. No native calls in protocol."
+    },
+    "final_protocol": {
+      "result": "pass",
+      "fingerprint": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "gates": [
+        {
+          "gate": "function-statics-protocol",
+          "report": "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/coverage/semantics/function-statics-protocol.json",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct",
+          "workers": [
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/adapter-wire",
+              "responses": 4,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            },
+            {
+              "path": "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/frontend-wire",
+              "responses": 4,
+              "closure": {
+                "status": "exit",
+                "exit_status": 0,
+                "final_exit_status": 0
+              }
+            }
+          ],
+          "runners": [
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/arbitrary-bind-owned-value.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/arbitrary-deferred-cv-value.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/arbitrary-distinct-cell-values.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/arbitrary-initialized-value.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/arbitrary-owning-result.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/control-bind.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/control-initialized.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/deferred-cv-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/deferred-cv-forged-owning-result.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/duplicate-entry.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/local-alias-retains-distinct-static-cells.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/marker-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/missing-reference-class.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/owning-result-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/suppression-result-forged-deferred-name.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/two-cell-control.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/two-static-entries-share-cell.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/typed-initializer-receive-resumption.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/undefined-persistent-cell.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-bind-origin.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-deferred-cv-name.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-entry-origin.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-marker-begin-line.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-marker-bind-line.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-marker-name.command.json",
+            "/home/user/workspace/php-spec/.tools/runtime7-statics-final26/.tools/function-statics-protocol-m6wuqsct/wrong-marker-stored-mode.command.json"
+          ],
+          "ordinary_native_profiles": 0,
+          "protocol_only_source_contexts": 4,
+          "lint_profiles": []
+        }
+      ],
+      "ordinary_native_profiles": 0,
+      "protocol_only_source_contexts": 4,
+      "ordinary_source_statuses": {},
+      "lint_profiles": 0,
+      "responses": 8,
+      "clean_worker_closures": 2,
+      "standalone_true_closures": 26,
+      "ordinary_records": []
+    },
+    "scope": "Predecessor4419 source/compiler/protocol25/regression/state gates retain original identities. Repaired442a actual source/state replays and0484 finalprotocol26 establish successor; no native duplication."
+  },
+  "history_archive": {
+    "archive": "coverage/semantics/function-statics-runtime-originals.tar.xz",
+    "sha256": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04",
+    "bytes": 49539068,
+    "payload_files": 17674,
+    "members": 17675,
+    "manifest_sha256": "37adfdc2a27548e5eb3b6f5ada6c35b71bb9e6c44b7cf25054fb4202e99df092",
+    "snapshots": {
+      "baseline990": {
+        "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+        "files": 990,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "runtime-only": {
+        "sha256": "8deeb6419ce9bae9c33ff18361bfe0418a9767e3f4c850cf439e443f646fd376",
+        "files": 991,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "first": {
+        "sha256": "e615c4eb070c54c770184a0e87df9127ecdbad5214d37cd4a13777f43513fc02",
+        "files": 992,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "pool-repair": {
+        "sha256": "d735045afab965b336f64dbea280b538171e5e0b6492e914b3bf87eee9a8c032",
+        "files": 992,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "stored-read-repair": {
+        "sha256": "07b6d313e52e1a4eaeb8bd78750317ea5d6a5968f684c18c388b213643e3b45e",
+        "files": 992,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "guarded": {
+        "sha256": "6bdf262a005f0e9c460b2aae66b4bc2b73d7e66efc31f1182a34e498de271fd1",
+        "files": 992,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "cell-guard": {
+        "sha256": "32b15686e90f30479a4882ee5617ebd76b092b056089ece050af6bd9793222be",
+        "files": 995,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "state-preflight": {
+        "sha256": "90d2014dec98327eaff1e663ba944f91517ac22b95c0e7cc2abaf4f367d509c4",
+        "files": 995,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "operand-guard": {
+        "sha256": "09c4ffe746336f7e8a801269eebae985c1344d008d37b5f60169649e8e60d233",
+        "files": 995,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "operand-repair": {
+        "sha256": "71462c84c78efbcd98445afb057a96fdc6c974fd8ac5f89363d50d7417f77ca4",
+        "files": 995,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "receive-repair": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final26": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "scope": "Thirteen complete snapshots bind accepted990 dynamic baseline, runtime-only draft, first992/e615 invalid static constant-pool admission, pool-only992/d735 stored-read interpreter failure, stored-pool repair07b6, initial source/entry guards6bdf, distinct-cell guard32b, state fixture preparation90d, operand guard09c4 declaration elaboration failure, repaired7146, first final999/4419, shared receive-readiness guard repair999/442a, and final protocol-only999/0484. Exact native/source/request originals, original failures and repair bridges, maintained producer raw and final source32/compiler29+1/protocol25/regression12/dense2 gates keep their original4419 identities. Source46 replay and receive4/112 plus exact dense2/325 fixture replay establish semantic442a; maintained26/486 executes on0484. Native46 and compiler30 lint contexts overlap sources and are distinct from checked-source-only protocol contexts; no native replay is performed by repair gates. Two catch/retry sources remain explicit dependencies. Independent malformed-state and dense originals belong to reviewer archive; compiler original/projection/shared gates belong to compiler archive. Earlier981 source preparation closure is explicitly linked to accepted dynamic02e and runtime preparation157628 archives. No canonical activation or full-family closure is claimed.",
+    "compiler_archives": [
+      "coverage/semantics/function-static-compiler-originals.tar.xz"
+    ],
+    "prior_dependencies": [
+      {
+        "archive": "coverage/semantics/dynamic-call-runtime-originals.tar.xz",
+        "sha256": "02e9788173bdd5220fc0e762195b8b8cbfbdc6fe165a7ee2c78338aead58b876"
+      },
+      {
+        "archive": ".tools/runtime7-function-statics-next/originals.tar.xz",
+        "sha256": "157628f459936237775208d1828040950af643dc959f7f7f8d3842dc22d1b7c7"
+      }
+    ]
+  },
+  "history_audit": {
+    "result": "pass",
+    "sha256": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04",
+    "payload_files": 17674,
+    "regular_files": 2492,
+    "hardlinks": 15182,
+    "scope": "Every regular payload hashed; each earlier-target content+mode hardlink verified against its manifest entry, with exact member set and no escaping paths."
+  },
+  "publication_archive": {
+    "archive": "coverage/semantics/function-statics-runtime-publication-originals.tar.xz",
+    "sha256": "0586566b5610dc4ac05ff2c4b417e4f5607b5dab5d89538878c76d7ea65c4eaf",
+    "bytes": 68008,
+    "payload_files": 65,
+    "members": 66,
+    "manifest_sha256": "a914eae2fb967968ec202f9979644e84f91c4cc33e9d861350df4feb9494fdd4",
+    "fingerprint": {
+      "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+      "files": 999,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "history_archive_sha256": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04"
+  },
+  "canonical_installation": {
+    "paths": 999,
+    "exact_bytes_and_modes": true,
+    "sha256": "fed330c6a057c850d7a0be177c0aba2e64a62be35ec81920c2cd9799fe0bb8d5",
+    "changed_paths": [
+      "Makefile",
+      "spec/semantics/105-named-arguments.watsup",
+      "spec/semantics/111-function-statics-compiler.watsup",
+      "spec/semantics/112-function-statics.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/39-ownership.watsup",
+      "spec/semantics/40-control.watsup",
+      "spec/semantics/46-source-compiler.watsup",
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/89-user-constants.watsup",
+      "spec/semantics/modules.json",
+      "tests/semantics/function_static_compiler.py",
+      "tests/semantics/function_static_compiler_cases.json",
+      "tests/semantics/function_statics.py",
+      "tests/semantics/function_statics_cases.json",
+      "tests/semantics/function_statics_protocol.py",
+      "tests/semantics/function_statics_regression.py",
+      "tests/semantics/function_statics_state.py",
+      "tests/semantics/source_compiler.py"
+    ]
+  },
+  "canonical_cli": {
+    "result": "pass",
+    "scope": "Canonical CLI8 uses exact retained native source paths and full primitive request facts; raw process closure and decoded observations checked separately.",
+    "fingerprint": {
+      "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+      "files": 999,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "raw": "/home/user/workspace/php-spec/.tools/runtime7-statics112/function-statics-publication-cli-yo7hcfo2",
+    "records": [
+      {
+        "id": "static-counter",
+        "source_sha256": "d5fcbf6c3db5e06c09a35a3b79049bae8c5a41ed42ee90517eb95cfae281356c",
+        "original": {
+          "id": "static-counter",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZigpe3N0YXRpYyAkeD0xO2VjaG8gJHgrKzt9ZigpO2YoKTs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-counter/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWNvdW50ZXIvc291cmNlLnBocA=="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWNvdW50ZXIvc291cmNlLnBocA==",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWNvdW50ZXI="
+          },
+          "native": {
+            "stdout": "MTI=",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-counter/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTI=",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "50"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTI=",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "50"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-bare-null-returned-alias",
+        "source_sha256": "77dcb8e953efc209c62f96db78ea853c9e7967be970163a805297af92e24e9b0",
+        "original": {
+          "id": "static-bare-null-returned-alias",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gJmYoKXtzdGF0aWMgJHg7cmV0dXJuICR4O30kYT0mZigpO2VjaG8gJGE9PT1udWxsOyRhPTI7JGI9JmYoKTtlY2hvICRiOyRiPTM7ZWNobyAkYTs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-bare-null-returned-alias/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWJhcmUtbnVsbC1yZXR1cm5lZC1hbGlhcy9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWJhcmUtbnVsbC1yZXR1cm5lZC1hbGlhcy9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWJhcmUtbnVsbC1yZXR1cm5lZC1hbGlhcw=="
+          },
+          "native": {
+            "stdout": "MTIz",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-bare-null-returned-alias/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTIz",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "50"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTIz",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "50"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-reentry-inner-wins",
+        "source_sha256": "bea1ee5f210297a12492ebf05daa8f23304dcadae3359f71f2fb94333cd8b1ef",
+        "original": {
+          "id": "static-reentry-inner-wins",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZigkbil7c3RhdGljICR4PSRuP2YoMCkrMTA6MTtyZXR1cm4gJHg7fWVjaG8gZigxKSxmKDApOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-reentry-inner-wins/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXJlZW50cnktaW5uZXItd2lucy9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXJlZW50cnktaW5uZXItd2lucy9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXJlZW50cnktaW5uZXItd2lucw=="
+          },
+          "native": {
+            "stdout": "MTE=",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-reentry-inner-wins/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTE=",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTE=",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-binding-releases-prior-reference",
+        "source_sha256": "14f4b1865ea46434a2636299bf23b780008b01e51158cd9e50c30cee4f56d06a",
+        "original": {
+          "id": "static-binding-releases-prior-reference",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZigmJHkpeyR4PSYkeTtzdGF0aWMgJHg9JHgrMTskeCsrO2VjaG8gJHg7fSAkeT0xO2YoJHkpO2VjaG8gJHk7ZigkeSk7ZWNobyAkeTs=",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-binding-releases-prior-reference/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWJpbmRpbmctcmVsZWFzZXMtcHJpb3ItcmVmZXJlbmNlL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWJpbmRpbmctcmVsZWFzZXMtcHJpb3ItcmVmZXJlbmNlL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWJpbmRpbmctcmVsZWFzZXMtcHJpb3ItcmVmZXJlbmNl"
+          },
+          "native": {
+            "stdout": "MzE0MQ==",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-binding-releases-prior-reference/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MzE0MQ==",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MzE0MQ==",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-stored-array-null-distinct-cells",
+        "source_sha256": "b3b3d6fa519e00e18598ef0172bd990312945b7a640b25a872496bb4f1e03c99",
+        "original": {
+          "id": "static-stored-array-null-distinct-cells",
+          "source_base64": "PD9waHAgZnVuY3Rpb24gZigpe3N0YXRpYyAkYT1bWzFdXSwkbj1udWxsO2VjaG8gKyskYVswXVswXSwkbj09PW51bGw7fWZ1bmN0aW9uIGcoKXtzdGF0aWMgJGE9W1sxXV07ZWNobyAkYVswXVswXTt9ZigpO2coKTtmKCk7ZygpOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-stored-array-null-distinct-cells/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXN0b3JlZC1hcnJheS1udWxsLWRpc3RpbmN0LWNlbGxzL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXN0b3JlZC1hcnJheS1udWxsLWRpc3RpbmN0LWNlbGxzL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXN0b3JlZC1hcnJheS1udWxsLWRpc3RpbmN0LWNlbGxz"
+          },
+          "native": {
+            "stdout": "MjExMzEx",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-stored-array-null-distinct-cells/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MjExMzEx",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "50"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "51"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MjExMzEx",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "50"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "51"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-suppressed-null-cache-restoration",
+        "source_sha256": "4a7d8fdf55f180d804c9a487390b55d458e7635c4ccc271c34768b32357a63f1",
+        "original": {
+          "id": "static-suppressed-null-cache-restoration",
+          "source_base64": "PD9waHAKZnVuY3Rpb24gZigpe3N0YXRpYyAkeD1AJG1pc3Npbmc7ZWNobyAkeD09PW51bGw7fQpmKCk7ZigpO2VjaG8gJG91dHNpZGU7",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-suppressed-null-cache-restoration/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXN1cHByZXNzZWQtbnVsbC1jYWNoZS1yZXN0b3JhdGlvbi9zb3VyY2UucGhw"
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXN1cHByZXNzZWQtbnVsbC1jYWNoZS1yZXN0b3JhdGlvbi9zb3VyY2UucGhw",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXN1cHByZXNzZWQtbnVsbC1jYWNoZS1yZXN0b3JhdGlvbg=="
+          },
+          "native": {
+            "stdout": "MTE=",
+            "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRvdXRzaWRlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zdXBwcmVzc2VkLW51bGwtY2FjaGUtcmVzdG9yYXRpb24vc291cmNlLnBocCBvbiBsaW5lIDMK",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-suppressed-null-cache-restoration/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "MTE=",
+            "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRvdXRzaWRlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zdXBwcmVzc2VkLW51bGwtY2FjaGUtcmVzdG9yYXRpb24vc291cmNlLnBocCBvbiBsaW5lIDMK",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              },
+              {
+                "tag": "WARNING",
+                "args": [
+                  [
+                    "111",
+                    "117",
+                    "116",
+                    "115",
+                    "105",
+                    "100",
+                    "101"
+                  ],
+                  "3"
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  []
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "MTE=",
+          "stderr": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRvdXRzaWRlIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zdXBwcmVzc2VkLW51bGwtY2FjaGUtcmVzdG9yYXRpb24vc291cmNlLnBocCBvbiBsaW5lIDMK",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            },
+            {
+              "tag": "WARNING",
+              "args": [
+                [
+                  "111",
+                  "117",
+                  "116",
+                  "115",
+                  "105",
+                  "100",
+                  "101"
+                ],
+                "3"
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                []
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-saved-suppression-typed-initializer-error",
+        "source_sha256": "b9a1c3123704d361b6263df674b42673a3195f43b833b493f7a77cdcfcaea0eb",
+        "original": {
+          "id": "static-saved-suppression-typed-initializer-error",
+          "source_base64": "PD9waHAKZnVuY3Rpb24gZyhpbnQgJHgpe2VjaG8gInVucmVhY2hlZCI7cmV0dXJuICR4O30KZnVuY3Rpb24gZigpe3N0YXRpYyAkYT0wO2VjaG8gKyskYTtzdGF0aWMgJGI9CiBnKFtdKTt9CmZ1bmN0aW9uIHJlbGF5KCl7cmV0dXJuIEBmKCk7fQpyZWxheSgpOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-saved-suppression-typed-initializer-error/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9y"
+          },
+          "native": {
+            "stdout": "MQ==",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZygpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSA0IGFuZCBkZWZpbmVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwOjIKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwKDQpOiBnKEFycmF5KQojMSAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctc3RhdGljcy1maW5hbC8udG9vbHMvZnVuY3Rpb24tc3RhdGljcy1qZHI3YWZleS9zdGF0aWMtc2F2ZWQtc3VwcHJlc3Npb24tdHlwZWQtaW5pdGlhbGl6ZXItZXJyb3Ivc291cmNlLnBocCg1KTogZigpCiMyIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwKDYpOiByZWxheSgpCiMzIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctc3RhdGljcy1maW5hbC8udG9vbHMvZnVuY3Rpb24tc3RhdGljcy1qZHI3YWZleS9zdGF0aWMtc2F2ZWQtc3VwcHJlc3Npb24tdHlwZWQtaW5pdGlhbGl6ZXItZXJyb3Ivc291cmNlLnBocCBvbiBsaW5lIDIK",
+            "exit_status": 255,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-saved-suppression-typed-initializer-error/source.php"
+            ]
+          },
+          "actual": {
+            "status": "php_error",
+            "stdout": "MQ==",
+            "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZygpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSA0IGFuZCBkZWZpbmVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwOjIKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwKDQpOiBnKEFycmF5KQojMSAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctc3RhdGljcy1maW5hbC8udG9vbHMvZnVuY3Rpb24tc3RhdGljcy1qZHI3YWZleS9zdGF0aWMtc2F2ZWQtc3VwcHJlc3Npb24tdHlwZWQtaW5pdGlhbGl6ZXItZXJyb3Ivc291cmNlLnBocCg1KTogZigpCiMyIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwKDYpOiByZWxheSgpCiMzIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctc3RhdGljcy1maW5hbC8udG9vbHMvZnVuY3Rpb24tc3RhdGljcy1qZHI3YWZleS9zdGF0aWMtc2F2ZWQtc3VwcHJlc3Npb24tdHlwZWQtaW5pdGlhbGl6ZXItZXJyb3Ivc291cmNlLnBocCBvbiBsaW5lIDIK",
+            "exit_status": 255,
+            "diagnostic": {
+              "class": "TypeError",
+              "message": "ZygpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSA0",
+              "line": 2
+            },
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "49"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "php_error",
+          "stdout": "MQ==",
+          "stderr": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogZygpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSA0IGFuZCBkZWZpbmVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwOjIKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwKDQpOiBnKEFycmF5KQojMSAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctc3RhdGljcy1maW5hbC8udG9vbHMvZnVuY3Rpb24tc3RhdGljcy1qZHI3YWZleS9zdGF0aWMtc2F2ZWQtc3VwcHJlc3Npb24tdHlwZWQtaW5pdGlhbGl6ZXItZXJyb3Ivc291cmNlLnBocCg1KTogZigpCiMyIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9ydW50aW1lNy1zdGF0aWNzLWZpbmFsLy50b29scy9mdW5jdGlvbi1zdGF0aWNzLWpkcjdhZmV5L3N0YXRpYy1zYXZlZC1zdXBwcmVzc2lvbi10eXBlZC1pbml0aWFsaXplci1lcnJvci9zb3VyY2UucGhwKDYpOiByZWxheSgpCiMzIHttYWlufQogIHRocm93biBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvcnVudGltZTctc3RhdGljcy1maW5hbC8udG9vbHMvZnVuY3Rpb24tc3RhdGljcy1qZHI3YWZleS9zdGF0aWMtc2F2ZWQtc3VwcHJlc3Npb24tdHlwZWQtaW5pdGlhbGl6ZXItZXJyb3Ivc291cmNlLnBocCBvbiBsaW5lIDIK",
+          "exit_status": 255,
+          "diagnostic": {
+            "class": "TypeError",
+            "message": "ZygpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLXNhdmVkLXN1cHByZXNzaW9uLXR5cGVkLWluaXRpYWxpemVyLWVycm9yL3NvdXJjZS5waHAgb24gbGluZSA0",
+            "line": 2
+          },
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "49"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      },
+      {
+        "id": "static-autoglobal-hidden-local-cv",
+        "source_sha256": "fd8c135fa2c6628111d59863a84dafc74663bb329d57936138dcce7ce0286b8f",
+        "original": {
+          "id": "static-autoglobal-hidden-local-cv",
+          "source_base64": "PD9waHAKJF9HRVQ9NDtmdW5jdGlvbiBmKCl7c3RhdGljICRfR0VUPTc7JG49Il9HRVQiO2VjaG8gJF9HRVQsJCRuOyQkbisrO30KZigpO2YoKTtlY2hvICRfR0VUOw==",
+          "context": "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-autoglobal-hidden-local-cv/source.php",
+          "request": {
+            "env": [
+              [
+                "TENfQUxM",
+                "Qw=="
+              ],
+              [
+                "VFo=",
+                "VVRD"
+              ],
+              [
+                "RklSU1Q=",
+                "b25l"
+              ]
+            ],
+            "argv": [
+              "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWF1dG9nbG9iYWwtaGlkZGVuLWxvY2FsLWN2L3NvdXJjZS5waHA="
+            ],
+            "file": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWF1dG9nbG9iYWwtaGlkZGVuLWxvY2FsLWN2L3NvdXJjZS5waHA=",
+            "seconds": "1700000000",
+            "microseconds": 125000,
+            "variables": "RUdQQ1M=",
+            "jit": true,
+            "cwd": "L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL3J1bnRpbWU3LXN0YXRpY3MtZmluYWwvLnRvb2xzL2Z1bmN0aW9uLXN0YXRpY3MtamRyN2FmZXkvc3RhdGljLWF1dG9nbG9iYWwtaGlkZGVuLWxvY2FsLWN2"
+          },
+          "native": {
+            "stdout": "NDc0ODQ=",
+            "stderr": "",
+            "exit_status": 0,
+            "command": [
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/php/bin/php",
+              "-n",
+              "-d",
+              "opcache.enable_cli=0",
+              "-d",
+              "opcache.jit=disable",
+              "-d",
+              "precision=14",
+              "-d",
+              "serialize_precision=-1",
+              "-d",
+              "display_errors=stderr",
+              "-d",
+              "display_startup_errors=1",
+              "-d",
+              "html_errors=0",
+              "-d",
+              "log_errors=0",
+              "-d",
+              "error_reporting=30719",
+              "-d",
+              "date.timezone=UTC",
+              "-d",
+              "output_buffering=0",
+              "-d",
+              "implicit_flush=1",
+              "-d",
+              "zend.assertions=1",
+              "-d",
+              "variables_order=EGPCS",
+              "/home/user/workspace/php-spec/.tools/runtime7-statics-final/.tools/function-statics-jdr7afey/static-autoglobal-hidden-local-cv/source.php"
+            ]
+          },
+          "actual": {
+            "status": "normal",
+            "stdout": "NDc0ODQ=",
+            "stderr": "",
+            "exit_status": 0,
+            "diagnostic": null,
+            "reason": null,
+            "events": [
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "55"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "56"
+                  ]
+                ]
+              },
+              {
+                "tag": "OUTPUT",
+                "args": [
+                  [
+                    "52"
+                  ]
+                ]
+              }
+            ]
+          },
+          "pass": true
+        },
+        "actual": {
+          "status": "normal",
+          "stdout": "NDc0ODQ=",
+          "stderr": "",
+          "exit_status": 0,
+          "diagnostic": null,
+          "reason": null,
+          "events": [
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "55"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "56"
+                ]
+              ]
+            },
+            {
+              "tag": "OUTPUT",
+              "args": [
+                [
+                  "52"
+                ]
+              ]
+            }
+          ],
+          "frontend": "accepted",
+          "checked": "program"
+        },
+        "pass": true
+      }
+    ]
+  },
+  "retained_history": {
+    "scope": "Original failures retain their actual producer, input map, raw response, process status and closure. No failed tool fixture is counted as a PHP agreement.",
+    "semantic_repairs": [
+      {
+        "before": "992/e615c4eb",
+        "issue": "Actual stored static sources rejected as invalid compiled constant pool.",
+        "repair": "Source-authenticated static initializer FIELD1 class-pool allowance in89; no general pool admission.",
+        "after": "992/d735045a"
+      },
+      {
+        "before": "992/d735045a",
+        "issue": "Actual stored initializer static_value/compiled_read interpreter failure: stored initializer has no expression opcode.",
+        "repair": "Read the source-bound static initializer constant pool directly.",
+        "after": "992/07b6d313"
+      },
+      {
+        "before": "992/07b6d313",
+        "issue": "Actual malformed static marker/origin/entry/reference-cell states admitted.",
+        "repair": "Source-authenticated markers and current task/entry guards preserve arbitrary consistent values.",
+        "after": "992/6bdf262a"
+      },
+      {
+        "before": "992/6bdf262a",
+        "issue": "Distinct declarations could forge one shared persistent cell, and current bind operand class/source name could be forged.",
+        "repair": "Distinct persistent wrappers and active-prefix operand class/source-CV validation, with arbitrary local aliases and values retained.",
+        "after": "995/71462c84"
+      },
+      {
+        "before": "999/4419c071",
+        "issue": "Independent full dense typed-initializer pause exposed nondeterministic ordinary/named readiness overlap.",
+        "repair": "Named readiness requires a named source argument; ordinary/named/unpack lanes disjoint. Actual adjacent pauses/full suffixes validated.",
+        "after": "999/442a0861"
+      }
+    ],
+    "compiler_projection_only": "First111 omitted auto-global static CV inventory even though source outputs agreed; native BIND_STATIC CV0 projection justified local static-CV recorder. Compiler archive retains exact original and repaired phase fixtures.",
+    "tool_and_fixture_repairs": [
+      "Initial runtime smoke omitted required filename; corrected producer only.",
+      "Compiler initial snapshot fingerprint sorted strings instead of pathlib.Path components; complete bytes/modes unchanged, original manifest and correction retained in compiler evidence.",
+      "995/09c4 source helper recursion beside otherwise caused actual DSL elaboration failure; factored single-entry selector in7146.",
+      "Draft state selection typo found before execution; no semantic failure claimed.",
+      "Receive-stage first fixture nested arithmetic expression was syntactically invalid; retained original and corrected only bound budget expression.",
+      "Repair source replay completed44 contexts before output-directory collision on an overlapping source ID; only remaining two contexts replayed separately. Native originals were never rerun."
+    ],
+    "final_test_bridge": "999/048498dc changes only maintained protocol producer: prior25/452 retained plus typed receive/adjacent/full suffix regression34 assertions, total26/486. Compiler/runtime semantic gates keep442a identities."
+  },
+  "required_next": "Main-script static declarations after accepted checkpoint and source-owned global binding preparation; closures/arrows/methods/traits/inheritance, objects/destructors, exceptions/retry, dynamic-source lifetime, builtin bodies/callbacks, generators and final complete-core offline validation remain required."
+}
