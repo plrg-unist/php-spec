@@ -160,11 +160,12 @@
   ],
   "limits": {
     "steps": 10000,
-    "case_watchdog_seconds": 60,
     "worker_packet_seconds": 30,
     "worker_close_seconds": 5,
     "native_seconds": 10,
-    "changes": "none"
+    "changes": "none",
+    "case_entry_alarm_seconds": 60,
+    "timer_behavior": "function_scope sets the entry alarm to60 seconds; each RecordedWorker request replaces ITIMER_REAL with30 seconds and cancels it on completion. The60-second entry alarm is not a continuously enforced whole-case deadline. Native calls retain10 seconds and worker close retains5 seconds."
   },
   "profile": "Unchanged function_scope primitive request: ordered LC_ALL=C/TZ=UTC/FIRST=one; fixed clock1700000000.125000; full per-case filename/argv/cwd; EGPCS/JIT true. Equal sources under different contexts remain distinct observations.",
   "dependencies": {
