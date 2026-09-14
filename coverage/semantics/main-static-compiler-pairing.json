@@ -1,0 +1,176 @@
+{
+  "scope": "Exact compiler113 code/test bytes and modes paired with runtime114. Compiler12/59 and shared named29+1/function46 gates retain1003/a53a identity; final runtime1008/2829 gates and installation are separate. No semantic repair from first paired1001/ebf to final1008. Canonical installation is the independently reviewed1008/2829 code commit recorded below.",
+  "compiler": {
+    "sha256": "a53a60af202637984279528505691a09d828a1e7a27a159e86db983b50175139",
+    "files": 1003,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "runtime": {
+    "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+    "files": 1008,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "compiler_inputs_sha256": "a4d1fdffa4065887105b9c847dbee0d96e630897854fb4bb4159e2b3f4e9e15d",
+  "runtime_inputs_sha256": "f8109e4f80ccc7689a47893fe08efd8e569f50d478047cf5f9690c35c7d77303",
+  "exact_compiler_inputs": {
+    "spec/semantics/111-function-statics-compiler.watsup": {
+      "sha256": "e15313e2880c737950e573722399bf9971ba87447cfe7b31e7f85e25d0c9d527",
+      "mode": 436
+    },
+    "spec/semantics/113-main-statics-compiler.watsup": {
+      "sha256": "657a65e87a9fa5b2acc1850367572c18ccc707f63a0da03571bb7d8751821f5b",
+      "mode": 436
+    },
+    "tests/semantics/main_static_compiler.py": {
+      "sha256": "2740c1f7a6343536454fab65ac6d26ecdf4d23cf8f7a51b7d0cd7da64d00dddc",
+      "mode": 436
+    },
+    "tests/semantics/main_static_compiler_cases.json": {
+      "sha256": "99182d0999fc8cbcd322645a540931ab54ac9bf7f02162f092f10cbf91aff9ad",
+      "mode": 436
+    }
+  },
+  "changed_common": {
+    "Makefile": {
+      "before": "56c9ddc674b1b045c2c611764941c221adb1d9bfcabdbce7601dbb9077875341",
+      "after": "08e3dbd834f4f876e0a0db680756f0234419959bdd904f466e1ee7f7d1e4b792"
+    }
+  },
+  "added": {
+    "tests/semantics/main_statics.py": "5ef8e612e7b741e252df9d135bc2985d1aa6f7147d9de6ebaecab113116c3f40",
+    "tests/semantics/main_statics_cases.json": "412816f3dcf6265505f46443fe7a073b21e01d99cb200955041d7be2d1d467f8",
+    "tests/semantics/main_statics_protocol.py": "0b6da9f8cf6a0c3046f592a9c13d2d392094a31f4a2b8fa19b0e82327bca17c3",
+    "tests/semantics/main_statics_regression.py": "90d86c788ffb98c4f388b931f1a91e7d4b46508869b4ac43a730e7d504ae4404",
+    "tests/semantics/main_statics_state.py": "bada828aa62f8df61b9733058a196b37dd95bbf36f46a56397274d6dae7bbbc1"
+  },
+  "removed": [],
+  "changed_common_modes": {},
+  "gates": {
+    "compiler": {
+      "sha256": "a53a60af202637984279528505691a09d828a1e7a27a159e86db983b50175139",
+      "files": 1003,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "paired_runtime": {
+      "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+      "files": 1008,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "compiler_paths": {
+      "spec/semantics/111-function-statics-compiler.watsup": {
+        "sha256": "e15313e2880c737950e573722399bf9971ba87447cfe7b31e7f85e25d0c9d527",
+        "mode": 436
+      },
+      "spec/semantics/113-main-statics-compiler.watsup": {
+        "sha256": "657a65e87a9fa5b2acc1850367572c18ccc707f63a0da03571bb7d8751821f5b",
+        "mode": 436
+      },
+      "tests/semantics/main_static_compiler.py": {
+        "sha256": "2740c1f7a6343536454fab65ac6d26ecdf4d23cf8f7a51b7d0cd7da64d00dddc",
+        "mode": 436
+      },
+      "tests/semantics/main_static_compiler_cases.json": {
+        "sha256": "99182d0999fc8cbcd322645a540931ab54ac9bf7f02162f092f10cbf91aff9ad",
+        "mode": 436
+      }
+    },
+    "main": {
+      "report": "maintained-replay/report.json",
+      "phases": 12,
+      "projections": 59,
+      "native_repeat": false
+    },
+    "shared": {
+      "report": "shared-gates-zninw45y/report.json",
+      "named_statics": [
+        29,
+        1
+      ],
+      "function": [
+        46,
+        0
+      ]
+    },
+    "scope": "Compiler main gate and shared source gates retain exact1003/a53a identity; final author1008/2829 gate identities separately paired. Main aggregate/own-function markers, initializers, CVs and source lines are explicit; no full family/core closure."
+  },
+  "archive": "53b9605bdd510de25af0b8ae1d8cefb30b8ee9d2326fd503a715913406ce5b0f",
+  "canonical_installation": {
+    "commit": "b260fc955ca4f79f5b62714c10f8051385620c94",
+    "fingerprint": {
+      "sha256": "2829c2a07869d73679116f24fa232f84ce80ba17eb85d3fdca70428b9f1b0097",
+      "files": 1008,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "all_files_and_modes_verified": true
+  }
+}
