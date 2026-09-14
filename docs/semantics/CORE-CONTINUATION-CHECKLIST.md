@@ -82,8 +82,11 @@ claim that the inventory dependency graph is complete.
 - [x] Current ordinary/request/callable integration before109; [review](../../coverage/semantics/callable-integration-review.json)
   binds5706+21 ordinary,263 request,751 callable and5751 compiler observations,
   exact profiles/raw closures and981/3f3→764 one-test bridge.
-- [ ] Dynamic string calls109/110 after root checkpoint read; see the
-  [handoff](DYNAMIC-CALL-HANDOFF.md).
+- [x] Dynamic string user calls109/110 on990/866; [review](../../coverage/semantics/dynamic-call-review.json)
+  binds45 source,42 compiler phases+2 boundaries/275 projections,19 protocol/278,
+  author2 dense/385, independent4 dense/652 and14 complete old981 responses.
+- [ ] Named-function statics111/112 after root checkpoint read; see the
+  [handoff](FUNCTION-STATICS-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

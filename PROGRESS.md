@@ -6,50 +6,44 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Current ordinary/request/callable integration is independently accepted at
-**f244a78e** in [callable-integration-review.json](coverage/semantics/callable-integration-review.json).
-Canonical **981/7640870f** includes the one-test correction **8051f53e** over
-accepted107/108 **981/3f3ca6b6**. `f()[0]="X"` now requires the native undefined-function
-Error instead of a stale Unsupported expectation. All980 other watched files, including every
-semantic module, remain byte-identical; all981 modes are unchanged.
+Dynamic string user-function calls109/110 are independently accepted at **178f993c** in
+[dynamic-call-review.json](coverage/semantics/dynamic-call-review.json), on exact
+**990/866a6afd**. Code/evidence commits are recorded in that review. Callee lookup
+and owner release precede arguments; initial parser strings, later compiled CONST
+strings and runtime values preserve their distinct name/reference-mode behavior.
+Source-derived INIT and outer call lines remain separate, including nested calls.
+The existing99/105/107/108 return, named and array-unpack consumers are exercised.
 
-The current campaigns retain distinct profiles and actual execution identities:
+Current gates pass 45 author source cases,42 compiler phases plus 2 explicit initial
+builtin boundaries/275 projections,19 protocol controls/278 assertions, 12 focused
+runtime regressions and 2 author dense cases/385 assertions. Independent 7 retained
+native source contexts, 4 dense cases/652 assertions and 14 complete old981 response
+bridges pass; compatibility uses no state projection. Canonical CLI8 and archive
+payload/byte/mode audits are bound in the review. These profiles overlap and are
+not unique-program coverage. Actual old line/CONST lookup discrepancies and
+malformed-state counterexamples remain retained before their repairs.
 
-- **5706 ordinary comparisons** on7640:4060 normal,1006 PHP errors,640 static
-  rejections;21 separate outcome controls include expected timeout/runner failures.
-- **263 explicit requests** on3f3, with526 raw responses and2 clean worker closures;
-  the representative4-source full-profile preflight remains separately recorded.
-- **751 callable rows across13 suites** on3f3, with1502 responses and26 closures;
-  three builtin-result dependencies remain explicitly Unsupported.
-- **5751 compiler lint comparisons** on7640, with15 emitted-line cases,8 access
-  sources/24 paths,7 metadata boundaries and constant checks in5783 fixture cases.
-  The557.41s aggregate passed within its original600s allowance.
+The broad [integration checkpoint](coverage/semantics/callable-integration-review.json)
+**f244a78e**, on 981/764 and its one-test8051f53e bridge from981/3f3, is now historical:
+5706 ordinary comparisons plus21 outcome controls,263 explicit requests,751 callable
+rows across 13 suites and5751 compiler phases. Their native/request/configuration
+profiles and identities remain separate; these gates were not rerun or relabelled
+for 109/110. The compiler reused a verified binary. Callable entry alarm60 is
+replaced/cancelled by per-packet alarm30, not a continuous whole-case deadline.
 
-Independent audits verify ordered source membership, native outcomes, full request
-FD198/environment/argv/path/clock/config facts, raw packets, fixtures, closures and
-all archive payload hashes/modes. Counts overlap and are not unique-program coverage.
-Ordinary inherited-environment execution, explicit primitive requests and callable
-fixed-clock requests remain distinct. The compiler used an explicitly verified
-existing binary; this is not a fresh build. Callable entry alarm60 is replaced and
-cancelled by per-packet alarm30, so it is not a continuous whole-case deadline.
+Inventory remains 134 partial/171 pending/1 oracle validated. Full syntax, a fresh
+network-isolated offline rebuild/audit and complete core remain required. Builtin
+compilation/bodies/defaults/callbacks, other callable forms, Traversable, exceptions,
+reporting configuration and object/dynamic-source lifetimes stay open.
 
-[Array call unpacking](docs/semantics/SOURCE-CALL-UNPACK.md) remains accepted at
-**e45c7139**, code **adb21f56**, with its source/state/compatibility evidence in
-[call-unpack-review.json](coverage/semantics/call-unpack-review.json). This integration
-refreshes the broad evidence after107/108 and closes no new inventory obligation.
-Inventory remains134 partial/171 pending/1 oracle validated. Full syntax, a fresh
-network-isolated offline rebuild/audit, complete core and later callable/object
-lifetime integration remain required.
-
-Next109/110 dynamic string user calls require root's accepted-checkpoint read.
-Root coordinates compiler7, runtime7 and review10; read the
-[successor handoff](docs/semantics/DYNAMIC-CALL-HANDOFF.md). Replay20 preserved972
-native contexts without duplicate native execution. Preserve initial parser-string,
-later compiled-constant and runtime-callee modes, selected-function ownership,
-source-derived emitted lines and shared99/105/107/108 consumers. No next code was
-activated during integration. Builtin bodies/defaults/callbacks, Traversable,
-function statics, closures, objects, exceptions, reporting configuration, dynamic
-sources and remaining lifetime protocols stay required.
+Next proposed111/112 named-function statics require root's accepted-checkpoint
+read. Compiler7, runtime7 and independent review10 coordinate under root; read the
+[function-statics handoff](docs/semantics/FUNCTION-STATICS-HANDOFF.md). Preparation
+retains compiler 14 native contexts/four separate opcode profiles on 981/764, with
+runtime 5 originals (four ordinary candidates and one catch dependency) retained
+separately. Replay preserved contexts on the accepted990 baseline without duplicate native execution. Review persistent
+cell ownership, null versus uninitialized entries, declaration priorities and
+initializer reentry before selecting the new state schema. No next code is active.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -69,8 +63,8 @@ outcome controls. [Its audit](coverage/semantics/quiet-integration-review.json)
 retains all 4,997 historical source bytes and 22,873 ordinary author files; explicit
 request acceptance retains 263 native calls, 526 responses and 2,381 files. These
 are 5,969 case/profile observations and 5,926 distinct source programs. Those full
-runtime campaigns retain their historical identity. The fresh current integration
-above supplies separate post-call evidence; the final full-source/full-syntax/
+runtime campaigns retain their historical identity. The later integration above supplied separate post-call evidence and retains
+its historical981 identity; the final full-source/full-syntax/
 fresh network-isolated offline gates remain
 required before complete-core acceptance.
 
@@ -131,8 +125,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/DYNAMIC-CALL-HANDOFF.md)
-binds981/764 integration and the next dynamic string user-call increment. Compiler7,
+The [current successor handoff](docs/semantics/FUNCTION-STATICS-HANDOFF.md)
+binds990/866 dynamic calls and the proposed named-function statics increment. Compiler7,
 runtime7 and independent review10 coordinate private roots, exact frozen gates,
 canonical builds and the index under root. Preserve baseline originals before
 admission, stage only reviewed files, commit small increments and never push.
