@@ -135,7 +135,7 @@
         "tests/semantics/closures_state.py",
         "tests/semantics/closure_compiler.py"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
     },
     {
       "node": "Const",
@@ -266,13 +266,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/117-arrow-compiler.watsup",
+        "spec/semantics/118-arrows.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/arrows.py",
+        "tests/semantics/arrows_protocol.py",
+        "tests/semantics/arrows_state.py",
+        "tests/semantics/arrow_compiler.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim."
     },
     {
       "node": "Expr_Assign",
@@ -1367,7 +1373,7 @@
         "tests/semantics/closures_state.py",
         "tests/semantics/closure_compiler.py"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
     },
     {
       "node": "Expr_Cast_String",
@@ -1486,7 +1492,7 @@
         "tests/semantics/closures_state.py",
         "tests/semantics/closure_compiler.py"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
     },
     {
       "node": "Expr_ConstFetch",
@@ -4336,9 +4342,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/closures-review.json"
+        "coverage/semantics/closures-review.json",
+        "coverage/semantics/arrows-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
     },
     {
       "id": "coercion.cast-void",
@@ -5198,9 +5205,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/closures-review.json"
+        "coverage/semantics/closures-review.json",
+        "coverage/semantics/arrows-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
     },
     {
       "id": "containers.cycles",
@@ -6685,9 +6693,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/closures-review.json"
+        "coverage/semantics/closures-review.json",
+        "coverage/semantics/arrows-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure.",
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -6713,9 +6722,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/closures-review.json"
+        "coverage/semantics/closures-review.json",
+        "coverage/semantics/arrows-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure.",
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -6723,15 +6733,26 @@
     {
       "id": "calls.arrows",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/117-arrow-compiler.watsup",
+        "spec/semantics/118-arrows.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/arrows.py",
+        "tests/semantics/arrows_protocol.py",
+        "tests/semantics/arrows_state.py",
+        "tests/semantics/arrow_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/arrows-review.json"
+      ],
+      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -8094,9 +8115,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/closures-review.json"
+        "coverage/semantics/closures-review.json",
+        "coverage/semantics/arrows-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
     },
     {
       "id": "protocols.Throwable",

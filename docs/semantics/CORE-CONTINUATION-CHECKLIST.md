@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:140 partial,165 pending,1 validated
+has169 constructors and306 obligations:141 partial,164 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -97,7 +97,12 @@ claim that the inventory dependency graph is complete.
   author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges.
   Original-context70 and ordinary28 model-only replays preserve distinct profiles;
   a valid method-callable type remains one explicit dependency.
-- [ ] Arrow implicit captures, ordinary objects, closure method/bind/clone/first-class
+- [x] Arrow implicit captures and expression returns117/118 on1026/0ec5, with an exact test-only365a bridge;
+  [review](../../coverage/semantics/arrows-review.json) binds32 sources, compiler20/223,
+  protocol26/264, regression13, old closure protocol20/217, author493/960 and independent731 dense assertions.
+  Original32 model-only contexts remain separate from fresh maintained profiles.
+  Actual never-demand and shared explicit/arrow suppression-guard defects are retained.
+- [ ] Broad current integration, ordinary objects, closure method/bind/clone/first-class
   services, method/trait/inherited statics, cycle collection and dynamic-source lifetime.
 - [ ] Complete named/unpacked/variadic sends, then remaining closure/arrow services,
   first-class/dynamic callables, remaining static scopes, pipe and argument introspection.

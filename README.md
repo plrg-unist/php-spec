@@ -149,8 +149,11 @@ retains source/state/protocol checks and20 complete old-state responses.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
-operation, ownership and compatibility evidence. Arrow functions, ordinary objects,
-method/Closure services, cycle collection and dynamic-source lifetime remain required.
+operation, ownership and compatibility evidence. [Arrow functions](docs/semantics/SOURCE-ARROWS.md)
+add implicit undefined snapshots and source-authenticated expression returns; their
+[review](coverage/semantics/arrows-review.json) also records the shared suppression
+guard correction. Ordinary objects, method/Closure services, cycle collection and
+dynamic-source lifetime remain required.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
