@@ -1,5 +1,8 @@
 # Implementation plan: executable PHP core semantics
 
+Compressed historical evidence is stored outside Git; see the
+[artifact locations and commit map](docs/ARTIFACTS.md) for lookup and recovery.
+
 This is a standalone handoff for extending this project from checked PHP syntax
 to executable PHP language semantics in P4-SpecTec. It records the agreed scope,
 the inspected starting architecture, and the proposed implementation sequence.

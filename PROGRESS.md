@@ -1,5 +1,8 @@
 # Core semantics progress
 
+Compressed historical evidence is stored outside Git; see the
+[artifact locations and commit map](docs/ARTIFACTS.md) for lookup and recovery.
+
 Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 [plan](PLAN.md), [contract](docs/semantics/CORE.md) and
 [inventory](coverage/semantics/features.json). Syntax coverage is not semantic coverage.

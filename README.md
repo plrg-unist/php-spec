@@ -1,5 +1,8 @@
 # PHP syntax in P4-SpecTec
 
+Compressed historical evidence is stored outside Git; see the
+[artifact locations and commit map](docs/ARTIFACTS.md) for lookup and recovery.
+
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
 PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory contains 169 constructors. The historical
 [frontend repair audit](coverage/frontend-syntax-repair.json) classified all
