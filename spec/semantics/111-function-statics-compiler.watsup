@@ -13,9 +13,6 @@ dec $ppstatic_record(ppstate, pcpath, ptbytes, nat, bool) : ppstate
 def $ppstatement(P, pcpath, NStmtStatic (SEQUENCE phpType59*) metadata) = $ppstatic_vars(P, pcpath ++ [PCFIELD 0], 0, phpType59*)
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.FUNCTION =/= eps
-def $ppstatement(P, pcpath, NStmtStatic (SEQUENCE phpType59*) metadata) = $ppunsupported(P, "main-unit static bindings")
-  -- if P.COMPLETION = PPCNORMAL
-  -- if P.FOLD.FUNCTION = eps
 
 def $ppstatic_vars(P, pcpath, n, eps) = P
 def $ppstatic_vars(P, pcpath, n, phpType59 :: phpType59_tail*) = $ppstatic_vars($ppstatic_var(P, pcpath ++ [PCINDEX n], phpType59), pcpath, $(n + 1), phpType59_tail*)

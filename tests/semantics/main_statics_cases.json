@@ -1,0 +1,18 @@
+{
+  "main-static-stored-global-alias": "<?php $x=4;$a=&$x;static $x=7;echo $x,$a,$GLOBALS[\"x\"];++$x;echo $a,$GLOBALS[\"x\"];",
+  "main-static-dynamic-loop-unset": "<?php function n(){echo \"N\";return 1;}foreach([1,2] as $i){static $x=n();echo ++$x;unset($x);}",
+  "main-static-autoglobal-views": "<?php $_GET=4;static $_GET=7;$n=\"_GET\";echo $_GET,$$n,$GLOBALS[\"_GET\"];++$$n;echo $_GET,$GLOBALS[\"_GET\"];",
+  "main-static-globals-views": "<?php $x=4;static $GLOBALS=7;$n=\"GLOBALS\";echo $$n;echo $GLOBALS[\"x\"];++$$n;echo $$n,$GLOBALS[\"x\"];",
+  "main-static-duplicate-priority": "<?php static $x=1;if(false){static $x=$a[];}",
+  "main-static-named-scope-isolation": "<?php static $x=1;function f(){static $x=3;echo $x++;}echo $x++;f();f();echo $x;",
+  "main-static-this-priority": "<?php static $this=$a[];",
+  "main-static-multiline-deferred-cv": "<?php\nforeach([1,2] as $i){\n static\n $x =\n $missing;\n echo $x===null;\n}",
+  "main-static-folded-selected-effect-once": "<?php function n(){echo \"N\";return 1;}foreach([1,2] as $i){static $x=true?n():$a[];echo ++$x;}",
+  "main-static-preceding-named-declaration": "<?php function f(){static $x=4;echo $x++;}static $x=1;f();echo $x;",
+  "main-static-bare-null-cached": "<?php foreach([1,2] as $i){static $x;echo $x===null;$x??=2;echo $x;unset($x);}",
+  "main-static-namespace-deferred-constant": "<?php namespace A;const C=3;foreach([1,2] as $i){static $x=C;echo $x++;}",
+  "main-static-initializer-mutates-prior-array-alias": "<?php\n$x=[1];$old=&$x;\nfunction init(){global $x;$x[0]=2;return [3];}\nstatic $x=init();\necho $old[0],$x[0],$GLOBALS[\"x\"][0];$name=\"x\";${$name}[0]=4;echo $x[0],$old[0];",
+  "main-static-global-call-unset-cache": "<?php\nfunction bump(){global $x;$x++;}\nfor($i=0;$i<2;$i++){static $x=4;bump();echo $x;unset($GLOBALS[\"x\"]);echo isset($x);}",
+  "main-static-named-return-alias-isolation": "<?php\nstatic $x=1;\nfunction &f(){static $x=7;return $x;}\n$y=&f();function bump(){global $x;$x++;}\nbump();$y++;echo $x,$y,f(),$GLOBALS[\"x\"];",
+  "main-static-array-owner-suppressed-typed-error": "<?php\nstatic $a=[1];$alias=&$a;echo $a[0];\nfunction g(int $x){return $x;}\nstatic $b=\n @g([]);"
+}

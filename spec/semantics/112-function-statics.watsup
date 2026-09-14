@@ -134,9 +134,13 @@ dec $static_cell_present(pstaticcell*, nat) : bool
 def $static_cell_present(eps, n) = false
 def $static_cell_present(pstaticcell :: pstaticcell_tail*, n) = (pstaticcell.CELL = n \/ $static_cell_present(pstaticcell_tail*, n))
 
+dec $main_static_origin(pstate, porigin) : bool
+dec $static_origin_valid(pstate, porigin) : bool
+def $static_origin_valid(S, porigin) = ($static_function_at(S.FUNCTIONS, porigin) =/= eps \/ $main_static_origin(S, porigin))
+
 def $static_cells_valid(S, eps) = true
 def $static_cells_valid(S, pstaticcell :: pstaticcell_tail*) = true
-  -- if $static_function_at(S.FUNCTIONS, pstaticcell.ORIGIN) = (pfunction)
+  -- if $static_origin_valid(S, pstaticcell.ORIGIN)
   -- if $static_at(pstaticcell_tail*, pstaticcell.ORIGIN) = eps
   -- if n = pstaticcell.CELL
   -- if ~$static_cell_present(pstaticcell_tail*, n)

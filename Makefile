@@ -147,6 +147,11 @@ test-semantics: build
 	python3 tests/semantics/function_statics_regression.py
 	python3 tests/semantics/function_statics_protocol.py
 	python3 tests/semantics/function_statics_state.py
+	python3 tests/semantics/main_static_compiler.py
+	python3 tests/semantics/main_statics.py
+	python3 tests/semantics/main_statics_regression.py
+	python3 tests/semantics/main_statics_protocol.py
+	python3 tests/semantics/main_statics_state.py
 	python3 tests/semantics/function_scope_state.py
 	python3 tests/semantics/coalesce_assignment.py
 	python3 tests/semantics/coalesce_assignment_compiler.py
