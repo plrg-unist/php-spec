@@ -173,7 +173,7 @@ def $default_context_valid(S, pconstantcontext) = true
   -- if pconstantcontext.ORIGIN = $default_parameter_origin(pfunction.ORIGIN, pdefault.INDEX)
   -- if pconstantcontext.LINE = $default_parameter_line(S, pfunction.ORIGIN, pdefault.INDEX)
   -- if $constant_bindings(S.TODO) = [pconstantcontext.ORIGIN]
-  -- if $default_task_valid(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $default_task_valid(S, pfunction.ORIGIN, pdefault.INDEX) \/ $named_default_task_valid(S, pfunction.ORIGIN, pdefault.INDEX)
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)

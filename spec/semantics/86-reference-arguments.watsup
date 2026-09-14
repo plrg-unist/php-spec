@@ -66,24 +66,26 @@ def $call_argument_expression(S, (porigin), n) = expression
 dec $call_send_line(pstate, porigin?, nat) : int
 def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1])], eps, $call_argument_expression(S, porigin?, n))
 
-def $call_send_operand(S, porigin_function, n, porigin?, z) = $resolve(S, S.RESULT)
+dec $call_send_parameter(pstate, porigin, nat, expression, int) : pstate
+def $call_send_operand(S, porigin_function, n, porigin?, z) = $call_send_parameter(S, porigin_function, n, $call_argument_expression(S, porigin?, n), $call_send_line(S, porigin?, n))
+def $call_send_parameter(S, porigin_function, n, expression, z) = $resolve_at(S, S.RESULT, z)
   -- if ~$call_parameter_reference(S, porigin_function, n)
-def $call_send_operand(S, porigin_function, n, porigin?, z) = S
+def $call_send_parameter(S, porigin_function, n, expression, z) = S
   -- if $call_parameter_reference(S, porigin_function, n)
   -- if S.RESULT = REFERENCE n_cell
-  -- if $call_reference_variable($call_argument_expression(S, porigin?, n)) \/ $ppsend_var($call_argument_expression(S, porigin?, n))
-def $call_send_operand(S, porigin_function, n, porigin?, z) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), $call_send_line(S, porigin?, n))
+  -- if $call_reference_variable(expression) \/ $ppsend_var(expression)
+def $call_send_parameter(S, porigin_function, n, expression, z) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z)
   -- if $call_parameter_reference(S, porigin_function, n)
-  -- if ~$call_reference_variable($call_argument_expression(S, porigin?, n))
-  -- if ~$ppsend_var($call_argument_expression(S, porigin?, n))
+  -- if ~$call_reference_variable(expression)
+  -- if ~$ppsend_var(expression)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
 
 
-def $call_send_operand(S, porigin_function, n, porigin?, z) = $diagnostic($call_fresh_reference(S, pvalue), "Notice", $ptascii("Only variables should be passed by reference"), $call_send_line(S, porigin?, n))
+def $call_send_parameter(S, porigin_function, n, expression, z) = $diagnostic($call_fresh_reference(S, pvalue), "Notice", $ptascii("Only variables should be passed by reference"), z)
   -- if $call_parameter_reference(S, porigin_function, n)
   -- if S.RESULT = KNOWN pvalue
-  -- if $ppsend_var($call_argument_expression(S, porigin?, n))
+  -- if $ppsend_var(expression)
 
 ;; A VAR list result retains an actual reference. Non-reference returned arrays
 ;; stay values: each requested reference leaf warns and receives its own cell.

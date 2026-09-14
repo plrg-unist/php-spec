@@ -1,3 +1,4 @@
+dec $named_roots((preqbytes, poperand)*) : pnode*
 ;; An active symbol table is moved, never copied, across the main/function edge.
 dec $active_table(pstate) : psymboltable
 def $active_table(S) = {ENV S.ENV, CVS S.CVS, SYMBOLS S.SYMBOLS}
@@ -12,7 +13,7 @@ def $operands_roots(poperand :: poperand_tail*) = $operand_nodes(poperand) ++ $o
 def $table_roots(eps) = eps
 def $table_roots((psymboltable)) = $environment_nodes(psymboltable.ENV)
 def $call_context_roots(eps) = eps
-def $call_context_roots((pcallcontext)) = $operands_roots(pcallcontext.EXTRA)
+def $call_context_roots((pcallcontext)) = $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED)
 def $frames_roots(eps) = eps
 def $frames_roots(pframe :: pframe_tail*) = $table_roots(pframe.LOCALS) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD ++ $call_context_roots(pframe.CONTEXT) ++ $frames_roots(pframe_tail*)
 

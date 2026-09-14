@@ -1,0 +1,64 @@
+dec $ppnamed_known(ppstate, pnresult, ptbytes) : bool
+;; Fixed parameter names are case-sensitive; the variadic name remains an extra key.
+dec $fixed_parameter_index(psparam*, ptbytes) : nat?
+dec $fixed_parameter_index_at(psparam*, ptbytes, nat) : nat?
+def $fixed_parameter_index(psparam*, ptbytes) = $fixed_parameter_index_at(psparam*, ptbytes, 0)
+def $fixed_parameter_index_at(eps, ptbytes, n) = eps
+def $fixed_parameter_index_at(psparam :: psparam_tail*, ptbytes, n) = (n)
+  -- if ~psparam.VARIADIC /\ psparam.NAME = ptbytes
+def $fixed_parameter_index_at(psparam :: psparam_tail*, ptbytes, n) = eps
+  -- if psparam.VARIADIC
+def $fixed_parameter_index_at(psparam :: psparam_tail*, ptbytes, n) = $fixed_parameter_index_at(psparam_tail*, ptbytes, $(n + 1))
+  -- if ~psparam.VARIADIC /\ psparam.NAME =/= ptbytes
+
+;; Compile-known fixed destinations select the existing fetch mode. Extra named
+;; keys deliberately retain deferred mode even when the tail is by-reference.
+dec $ppnamed_mode(ppstate, pnresult, ptbytes, expression) : ppmode
+def $ppnamed_mode(P, pnresult, ptbytes, expression) = PPR
+  -- if ~$ppcall_variable(expression)
+def $ppnamed_mode(P, PNRESOLVED pnreference, ptbytes, expression) = $ppcall_mode(P, PNRESOLVED pnreference, $(n + 1), expression)
+  -- if $ppcall_variable(expression)
+  -- if pnreference.FALLBACK = eps
+  -- if $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) = (pfunction)
+  -- if $fixed_parameter_index(pfunction.SIGNATURE.PARAMETERS, ptbytes) = (n)
+def $ppnamed_mode(P, pnresult, ptbytes, expression) = $ppcall_deferred(expression) -- otherwise
+
+dec $ppnamed_args(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
+dec $ppnamed_begin(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
+def $ppnamed_begin(P, pcpath, n, phpType7*, PNRESOLVED pnreference) = $ppunsupported(P, "named builtin call compilation")
+  -- if pnreference.FALLBACK = eps /\ $pfunction_builtin(pnreference.RESOLVED)
+def $ppnamed_begin(P, pcpath, n, phpType7*, pnresult) = $ppnamed_args(P, pcpath, n, phpType7*, pnresult) -- otherwise
+def $ppcall_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppnamed_begin(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppnamed_args(P, pcpath, n, phpType7*, pnresult) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppnamed_args(P, pcpath, n, eps, pnresult) = $ppclearvalue(P) -- if P.COMPLETION = PPCNORMAL
+def $ppnamed_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppnamed_args($ppcall_argument(P, pcpath, n, expression, $ppnamed_mode(P, pnresult, $base64(text), expression), ~$ppnamed_known(P, pnresult, $base64(text))), pcpath, $(n + 1), phpType7*, pnresult)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppnamed_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppcheck(P, $context_error("Cannot use positional argument after named argument", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppnamed_args(P, pcpath, n, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, pnresult) = $ppcheck(P, $context_error("Cannot use argument unpacking after named arguments", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppnamed_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named reference argument compilation") -- otherwise
+
+;; Deferred CV sends inherit the Zend argument-list AST line. Original SOURCE
+;; lines stay intact; the emitted operand descriptor and compiler location differ.
+def $ppnamed_known(P, PNRESOLVED pnreference, ptbytes) = true
+  -- if pnreference.FALLBACK = eps
+  -- if $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) = (pfunction)
+  -- if $fixed_parameter_index(pfunction.SIGNATURE.PARAMETERS, ptbytes) = (n)
+def $ppnamed_known(P, pnresult, ptbytes) = false -- otherwise
+def $ppcall_known(P, PNRESOLVED pnreference) = true
+  -- if pnreference.FALLBACK = eps
+  -- if $pfunction_builtin(pnreference.RESOLVED) \/ $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) =/= eps
+def $ppcall_known(P, pnresult) = false -- otherwise
+
+dec $ppcall_list_line(ppstate, pcpath) : int
+def $ppcall_list_line(P, pcpath) = $source_line(metadata_name)
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath ++ [PCINDEX 0]) = (NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata)
+def $ppcall_list_line(P, pcpath) = $expression_line(expression)
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath ++ [PCINDEX 0]) = (NArg ABSENT expression phpType4_ref phpType4_unpack metadata)
+
+def $ppcall_argument(P, pcpath, n, NExprVariable phpType32 metadata, ppmode, true) = $ppdone($ppexprbody($pplocate(P, pcpath_arg, $ppcall_list_line(P, pcpath)), pcpath_arg, NExprVariable phpType32 metadata, ppmode), pcpath_arg, ppmode)
+  -- if $ppforeach_cv(phpType32)
+  -- if pcpath_arg = pcpath ++ [PCINDEX n, PCFIELD 1]
+def $ppcall_argument(P, pcpath, n, expression, ppmode, b) = $ppexpr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression, ppmode) -- otherwise

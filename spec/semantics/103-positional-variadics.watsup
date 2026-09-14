@@ -82,7 +82,7 @@ rule PhpStep/variadic-receive: S ~> $variadic_receive(S, pfunction, n_arg)
   -- if S.CURRENT = (pcallcontext)
   -- if $(n_arg < pcallcontext.ARGC)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-rule PhpStep/variadic-complete: S ~> S[.TODO = $function_tasks(S, pfunction)]
+rule PhpStep/variadic-complete: S ~> S[.TODO = $named_after_positional(S, pfunction)]
   -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)

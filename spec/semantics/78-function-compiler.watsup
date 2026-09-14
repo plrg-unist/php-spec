@@ -29,6 +29,8 @@ dec $ppcall_name(ppstate, pcpath, pnresult) : ppstate
 dec $ppbuiltin_prepare(ppstate, pcpath, pnresult, phpType7*) : ppstate
 dec $ppcall_done(ppstate, pcpath, int) : ppstate
 dec $ppcall_args(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
+dec $ppcall_argument(ppstate, pcpath, nat, expression, ppmode, bool) : ppstate
+dec $ppcall_known(ppstate, pnresult) : bool
 dec $ppcall_mode(ppstate, pnresult, nat, expression) : ppmode
 dec $ppfunction_parameter_ref(pfunction?, nat) : bool
 dec $ppcall_variable(expression) : bool
@@ -144,7 +146,7 @@ def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppcall_args(P, pcpath, n, eps, pnresult) = $ppclearvalue(P)
   -- if P.COMPLETION = PPCNORMAL
-def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppcall_args($ppexpr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression, $ppcall_mode(P, pnresult, $(n + 1), expression)), pcpath, $(n + 1), phpType7*, pnresult)
+def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppcall_args($ppcall_argument(P, pcpath, n, expression, $ppcall_mode(P, pnresult, $(n + 1), expression), ~$ppcall_known(P, pnresult)), pcpath, $(n + 1), phpType7*, pnresult)
   -- if P.COMPLETION = PPCNORMAL
 def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, unpacked or reference call argument compilation")
   -- otherwise

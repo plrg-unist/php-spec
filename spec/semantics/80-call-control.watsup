@@ -1,3 +1,9 @@
+dec $named_call_valid(pstate, porigin, porigin?) : bool
+dec $named_start(pfunction, phpType7*, porigin?, int) : ptask
+dec $named_call_extent(pstate, porigin, porigin?) : nat
+dec $named_context_valid(pstate, pcallcontext) : bool
+dec $named_default_task_valid(pstate, porigin, nat) : bool
+dec $named_after_positional(pstate, pfunction) : ptask*
 dec $call_fixed_parameters(psparam*) : psparam*
 dec $call_parameter_at(psparam*, nat) : psparam?
 dec $call_receive_body(pstate, pfunction) : ptask*
@@ -67,7 +73,7 @@ dec $call_builtin(preqbytes, preqbytes?) : bool
 def $call_builtin(preqbytes, eps) = $pfunction_builtin(preqbytes)
 def $call_builtin(preqbytes, (preqbytes_fallback)) = ($pfunction_builtin(preqbytes) \/ $pfunction_builtin(preqbytes_fallback))
 dec $call_prepare(pstate, preqbytes, preqbytes?, phpType7*, int) : pstate
-def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.TODO = (CALL_ARGS pfunction.ORIGIN phpType7* 0 eps S.ORIGIN z) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.TODO = $named_start(pfunction, phpType7*, S.ORIGIN, z) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
 def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ preqbytes ++ $ptascii("()"), z)
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
@@ -117,7 +123,7 @@ def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = [TYPE_RECEIVE pfunction.ORIGIN 0]]
   -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
-def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra]})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
+def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |poperand*|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)

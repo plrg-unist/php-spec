@@ -95,6 +95,7 @@ rule PhpStep/type-fallthrough-value: S ~> $throw_scalar(S, "TypeError", pfunctio
   -- if ~("void" <- $ptmasks(pfunction.SIGNATURE.RETURNS) \/ "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
 
 ;; Source-bound stages constrain metadata, not the values already received.
+dec $named_receives_ready(pstate, pfunction) : bool
 dec $typed_receive_valid(pstate, porigin, nat) : bool
 def $typed_receive_valid(S, porigin, n) = true
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask*
@@ -107,6 +108,7 @@ def $typed_receive_valid(S, porigin, n) = true
   -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
   -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, n)
+  -- if $named_receives_ready(S, pfunction)
 def $typed_receive_valid(S, porigin, n) = false -- otherwise
 
 dec $typed_fallthrough_valid(pstate, porigin) : bool

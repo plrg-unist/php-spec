@@ -1,3 +1,4 @@
+dec $named_present(phpType7*) : bool
 dec $call_argument_paths(pcodeexpr*) : pcpath*
 def $call_argument_paths(eps) = eps
 def $call_argument_paths((CODEARG pcpath) :: pcodeexpr*) = [pcpath] ++ $call_argument_paths(pcodeexpr*)
@@ -8,6 +9,7 @@ def $call_argument_paths((CODEEFFECT pcpath) :: pcodeexpr*) = $call_argument_pat
 ;; steps preserve them; no duplicate trusted registry or host evaluation exists.
 syntax pfunctioncheck = FUNCTIONCHECK pfunction* | FUNCTIONINVALID
 
+dec $send_unit_code_valid(ppstate, pcode) : bool
 dec $silence_unit_code_valid(ppstate, pcode) : bool
 dec $silences_valid(pstate) : bool
 dec $typed_unit_code_valid(ppstate, pcode) : bool
@@ -73,6 +75,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $typed_unit_code_valid(P, pcode)
   -- if $reference_unit_code_valid(P, pcode)
   -- if $silence_unit_code_valid(P, pcode)
+  -- if $send_unit_code_valid(P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -128,6 +131,7 @@ def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if ~$named_present(phpType7*)
   -- if n_index = |poperand*|
   -- if n_offset = $(n_index + n_sent)
   -- if $(n_offset <= |phpType7*|)
@@ -139,7 +143,9 @@ dec $call_arity_valid(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
-  -- if pcallcontext.ARGC = |phpType7*|
+  -- if $named_call_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if pcallcontext.ARGC = $named_call_extent(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if $named_context_valid(S, pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if n_received = $call_received(pcallcontext.ARGC, n_fixed)
