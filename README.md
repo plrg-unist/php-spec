@@ -140,8 +140,11 @@ now preserve callee selection, reference modes and ownership before argument eff
 [review](coverage/semantics/dynamic-call-review.json) binds990 source/state/protocol
 gates and complete old-state bridges. The [earlier integration](coverage/semantics/callable-integration-review.json)
 retains5706 ordinary comparisons,263 explicit requests,751 callable rows and5751
-compiler phases on981 under distinct profiles. [Function statics](docs/semantics/FUNCTION-STATICS-HANDOFF.md)
-are the proposed next increment after root reads the accepted checkpoint.
+compiler phases on981 under distinct profiles. [Named-function statics](docs/semantics/SOURCE-FUNCTION-STATICS.md) now retain
+persistent reference cells through recursive initialization, local rebinding and
+error cleanup; [review](coverage/semantics/function-statics-review.json) binds
+source/state/protocol evidence and22 old-state bridges. Main-script statics and
+closure/method lifetime remain required.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

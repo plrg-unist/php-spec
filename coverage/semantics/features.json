@@ -2533,10 +2533,20 @@
       "obligations": [
         "storage.static-bindings"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/111-function-statics-compiler.watsup",
+        "spec/semantics/112-function-statics.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/function_statics.py",
+        "tests/semantics/function_statics_cases.json",
+        "tests/semantics/function_static_compiler.py",
+        "tests/semantics/function_statics_protocol.py",
+        "tests/semantics/function_statics_state.py",
+        "coverage/semantics/function-statics-review.json"
+      ],
+      "review": "Named-function statics111/112: source-bound initialized-only persistent reference cells preserve null caching, recursive initialization winners, local/reference replacement, return aliases, COW and suppression/error cleanup. Independent function-statics-review.json binds source32, compiler29+1 catch/121 projections, protocol26/486, author dense2/325, independent dense4/779 and22 old990 compatibility responses. Source guard repair442a and protocol-only0484 retain predecessor4419 evidence separately. Main-script global views, closure/method/trait/inherited identity, objects/destructors, exceptions/retry and dynamic-source lifetime remain required; no storage family closure."
     },
     {
       "node": "Stmt_Block",
@@ -3143,10 +3153,20 @@
       "obligations": [
         "storage.static-bindings"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/111-function-statics-compiler.watsup",
+        "spec/semantics/112-function-statics.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/function_statics.py",
+        "tests/semantics/function_statics_cases.json",
+        "tests/semantics/function_static_compiler.py",
+        "tests/semantics/function_statics_protocol.py",
+        "tests/semantics/function_statics_state.py",
+        "coverage/semantics/function-statics-review.json"
+      ],
+      "review": "Named-function statics111/112: source-bound initialized-only persistent reference cells preserve null caching, recursive initialization winners, local/reference replacement, return aliases, COW and suppression/error cleanup. Independent function-statics-review.json binds source32, compiler29+1 catch/121 projections, protocol26/486, author dense2/325, independent dense4/779 and22 old990 compatibility responses. Source guard repair442a and protocol-only0484 retain predecessor4419 evidence separately. Main-script global views, closure/method/trait/inherited identity, objects/destructors, exceptions/retry and dynamic-source lifetime remain required; no storage family closure."
     },
     {
       "node": "Stmt_Switch",
@@ -4827,15 +4847,30 @@
     {
       "id": "storage.static-bindings",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/111-function-statics-compiler.watsup",
+        "spec/semantics/112-function-statics.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/function_statics_protocol.py",
+        "tests/semantics/function_statics_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/function_statics.py",
+        "tests/semantics/function_statics_cases.json",
+        "tests/semantics/function_static_compiler.py",
+        "tests/semantics/function_statics_protocol.py",
+        "tests/semantics/function_statics_state.py",
+        "coverage/semantics/function-statics-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/function-statics-review.json"
+      ],
+      "review": "Named-function statics111/112: source-bound initialized-only persistent reference cells preserve null caching, recursive initialization winners, local/reference replacement, return aliases, COW and suppression/error cleanup. Independent function-statics-review.json binds source32, compiler29+1 catch/121 projections, protocol26/486, author dense2/325, independent dense4/779 and22 old990 compatibility responses. Source guard repair442a and protocol-only0484 retain predecessor4419 evidence separately. Main-script global views, closure/method/trait/inherited identity, objects/destructors, exceptions/retry and dynamic-source lifetime remain required; no storage family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]

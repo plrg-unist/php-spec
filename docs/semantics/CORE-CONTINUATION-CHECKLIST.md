@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:134 partial,171 pending,1 validated
+has169 constructors and306 obligations:135 partial,170 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -85,10 +85,14 @@ claim that the inventory dependency graph is complete.
 - [x] Dynamic string user calls109/110 on990/866; [review](../../coverage/semantics/dynamic-call-review.json)
   binds45 source,42 compiler phases+2 boundaries/275 projections,19 protocol/278,
   author2 dense/385, independent4 dense/652 and14 complete old981 responses.
-- [ ] Named-function statics111/112 after root checkpoint read; see the
-  [handoff](FUNCTION-STATICS-HANDOFF.md).
+- [x] Named-function statics111/112 on999/0484; [review](../../coverage/semantics/function-statics-review.json)
+  binds32 source,29 compiler phases+1 catch dependency/121 projections,26 protocol/486,
+  author2 dense/325, independent4 dense/779 and22 complete old990 response bridges.
+  The retained105 paused-receive overlap is repaired with disjoint source lanes.
+- [ ] Main-script static declarations with global binding/view synchronization,
+  then closure/method static identity and lifetime.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
-  first-class/dynamic callables, function statics, pipe and argument introspection.
+  first-class/dynamic callables, remaining static scopes, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
 
 ## Remaining dependency lanes
