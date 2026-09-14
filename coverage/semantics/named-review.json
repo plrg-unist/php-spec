@@ -1,0 +1,1691 @@
+{
+  "baseline": {
+    "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+    "files": 959,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "semantic": {
+    "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+    "files": 968,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "installation_candidate": {
+    "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+    "files": 968,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "implementation_delta": [
+    "Makefile",
+    "spec/semantics/103-positional-variadics.watsup",
+    "spec/semantics/104-named-compiler.watsup",
+    "spec/semantics/105-named-arguments.watsup",
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/78-function-compiler.watsup",
+    "spec/semantics/79-call-frames.watsup",
+    "spec/semantics/80-call-control.watsup",
+    "spec/semantics/83-call-traces.watsup",
+    "spec/semantics/84-call-integrity.watsup",
+    "spec/semantics/86-reference-arguments.watsup",
+    "spec/semantics/91-default-parameters.watsup",
+    "spec/semantics/95-typed-calls.watsup",
+    "spec/semantics/modules.json",
+    "tests/semantics/call_reference_compiler.py",
+    "tests/semantics/named.py",
+    "tests/semantics/named_cases.json",
+    "tests/semantics/named_compiler.py",
+    "tests/semantics/named_compiler_cases.json",
+    "tests/semantics/named_protocol.py",
+    "tests/semantics/named_regression.py",
+    "tests/semantics/named_state.py",
+    "tests/semantics/typed_function_compiler.py"
+  ],
+  "test_bridge": {
+    "result": "pass",
+    "before": {
+      "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "after": {
+      "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changed": [
+      "tests/semantics/named_regression.py"
+    ],
+    "unchanged_files": 967,
+    "all_modes_equal": true,
+    "reason": "Correct regression catalogue selection: remove unsupported catch source and replace static-only source with admitted default-reference-cache and type-before-missing runtime controls. No executable semantics changes."
+  },
+  "independent": {
+    "source_profiles": 5,
+    "protocol_controls": 44,
+    "protocol_assertions": 935,
+    "dense_programs": 4,
+    "dense_assertions": 731,
+    "compatibility_programs": 2,
+    "compatibility_cuts_each": 7,
+    "compatibility_projection": "Only new empty NAMED fields in current/saved pcallcontext records; all other complete response/state fields exactly equal to accepted959.",
+    "raw": {
+      "result": "pass",
+      "rows": [
+        {
+          "raw": "review10-named-protocol-26gzopdc",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-2q_3e7gu",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 8,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-2y73uos9",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 8,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-637p5xl_",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 1
+        },
+        {
+          "raw": "review10-named-protocol-9_twgmy9",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-9a9fo34a",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 2,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-9oercr4l",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 2,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-_7bxktdg",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 2,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-_eicahah",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 2,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-mqtkuhzr",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-mrfffss9",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 1
+        },
+        {
+          "raw": "review10-named-protocol-n597ti9e",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-p2ev6toy",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 12,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-qkb3rdfr",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 8,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-repolq9a",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 8,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-rm4h2z_w",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-rsuup72o",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 10,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-rwwk6304",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 1
+        },
+        {
+          "raw": "review10-named-protocol-slk7o01s",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 10,
+          "retained_failures": 2
+        },
+        {
+          "raw": "review10-named-protocol-sqxlfg_r",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-wc5r9s80",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 1
+        },
+        {
+          "raw": "review10-named-protocol-wq8o7t1x",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-xfjac6ne",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 2,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-protocol-ysxu705z",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 10,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-return-reference-replay-biw9y6c_",
+          "responses": 4,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-return-reference-replay-q22_b1qw",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-return-reference-replay-l__0bn4w",
+          "responses": 10,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-return-reference-replay-edw1tx02",
+          "responses": 10,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-state-mljr78qg",
+          "responses": 12,
+          "clean_closures": 2,
+          "standalone_true": 3,
+          "retained_failures": 1
+        },
+        {
+          "raw": "review10-named-state-x9mud20m",
+          "responses": 3,
+          "clean_closures": 2,
+          "standalone_true": 1,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-state-icdb4r22",
+          "responses": 12,
+          "clean_closures": 2,
+          "standalone_true": 4,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-compatibility-rwi3zbdo",
+          "responses": 30,
+          "clean_closures": 3,
+          "standalone_true": 0,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-final/.tools/named-protocol-qa7wdm67",
+          "responses": 9,
+          "clean_closures": 6,
+          "standalone_true": 44,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-baseline959/.tools/review10-named-originals-n9g_c97_",
+          "responses": 4,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 0
+        },
+        {
+          "raw": "review10-named-baseline959/.tools/review10-named-string-cache-original-_36yrq5q",
+          "responses": 2,
+          "clean_closures": 2,
+          "standalone_true": 0,
+          "retained_failures": 0
+        }
+      ],
+      "decoded_responses": 146,
+      "clean_worker_closures": 75,
+      "standalone_true": 144,
+      "retained_non_ok_responses": [
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-return-reference-replay-q22_b1qw/adapter-wire/0.response",
+          "packet": {
+            "ok": false,
+            "category": "interpreter_failure",
+            "message": "function php_request_run failed\n\u2502 \u00b7\u00b7\u00b7 omitting 22 traces \u00b7\u00b7\u00b7\n/home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\nfunction drive_steps failed\n\u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\n    function drive_steps failed\n    \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\n        function drive_steps failed\n        \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\n            function drive_steps failed\n            \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:295.9-295.21\n                condition (S.TODO matches pattern []) was not met\n                \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:298.9-298.30\n                    condition (S.COMPLETION matches pattern `BUDGET`) was not met\n                    \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:300.9-300.61\n                        condition ((S.COMPLETION =/= (NORMAL)) /\\ (S.COMPLETION =/= (BUDGET))) was not met\n                        \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:305.21-305.22\n                            condition (n = 0) was not met\n                            \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:313.6-313.13\n                                relation PhpStep failed\n                                \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:34.18-34.36\n                                    no case matched for ptask'\n"
+          }
+        }
+      ],
+      "retained_runner_failures": [
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-637p5xl_/legacy-send-substitution.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "invalid_legacy_task_interpreter_failure",
+          "stderr_sha256": "dc0de1eb46f6ce1ad48bc11d07d1f6bb59fd54250133a723439062af3128555a"
+        },
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-mrfffss9/legacy-send-substitution.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "fixture_setup",
+          "stderr_sha256": "2c124a267badadf8da5610fddb483d6b0d40ad00e625ff26d3eac20a4f2bfade"
+        },
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-rwwk6304/line-child-forgery.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "existing_callroot_guard",
+          "stderr_sha256": "13a368b8725f5d259178171bc487dba3aad7e5d33793be880bd84f8ce5186613"
+        },
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-slk7o01s/tail-wrong-collected-key.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "fixture_setup",
+          "stderr_sha256": "6065111db149b87902da5a58561f8f79de2d8b8314296bad057e6c81da6699cd"
+        },
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-slk7o01s/tail-unowned-variable-slot.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "fixture_setup",
+          "stderr_sha256": "2a8c42c45880ba17614519176e478a9fca3bccae2a148f2dc072466b9aefdbb5"
+        },
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-wc5r9s80/legacy-args-substitution.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "fixture_setup",
+          "stderr_sha256": "68b538e977baedc386d393783b5ca69dcfe5ac51dbfd5a0195ce411b5be22303"
+        },
+        {
+          "path": "/home/user/workspace/php-spec/.tools/review10-named-state-mljr78qg/named-hole-uncoerced-string-reference-cache/runner.command.json",
+          "status": {
+            "status": "exit",
+            "exit_status": 1
+          },
+          "kind": "wrong_string_class_fixture",
+          "stderr_sha256": "a70205012109bc9f551f0571986143080e0ca3758994df6e9ddd73d1b00c7df6"
+        }
+      ],
+      "portable_native_agreements": 3,
+      "scope": "Exact independent original source requests, first singleton-task interpreter failure, guarded actual-source controls and malformed-state failures, final44/935 plus5source agreements/four dense states/two959 bridges. Counts include retained duplicate historical controls; no failures counted as agreement. Portable native3 overlap source controls and are independently byte/request/observation checked."
+    },
+    "raw_scope": "Original failures and guard controls retain their own snapshots. Final source5/protocol44/dense4/compatibility2 bind968/55cd; only one regression test changes in installation968/ab389."
+  },
+  "author": {
+    "result": "pass",
+    "semantic": {
+      "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "regression_and_state": {
+      "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "source": 70,
+    "compiler_native_phases": 55,
+    "compiler_pending": 6,
+    "compiler_projections": 129,
+    "protocol": 44,
+    "protocol_assertions": 935,
+    "regressions": 12,
+    "state": 2,
+    "state_assertions": 373,
+    "raw_roots": [
+      "/home/user/workspace/php-spec/.tools/runtime7-named-final/.tools/named-asz7o8er",
+      "/home/user/workspace/php-spec/.tools/runtime7-named-final/.tools/named-compiler-3jj9mj_2",
+      "/home/user/workspace/php-spec/.tools/runtime7-named-final/.tools/named-protocol-0zyc6kis",
+      "/home/user/workspace/php-spec/.tools/runtime7-named-regression-selection/.tools/named-regression-p2v70q6v",
+      "/home/user/workspace/php-spec/.tools/runtime7-named-regression-selection/.tools/named-state-q2ytzkox"
+    ],
+    "decoded_responses": 301,
+    "clean_worker_closures": 14,
+    "standalone_true": 47,
+    "overlapping_native_profiles": 87,
+    "scope": "Author final source/compiler/protocol968/55cd and corrected regression/state968/ab389; exact fullmaps/modes, directcompilerinputhashes, wire/runnerclosures and all native/source/request/profile outcomes. Raw counts overlap sources and compiler profiles; failed catch-selection campaign remains separate, never acceptance."
+  },
+  "compiler_archives": [
+    {
+      "result": "pass",
+      "archive_sha256": "049c3bbefb6be003f400358f326d512843842519740f925ce4782882432f2e7b",
+      "payloads": 9227,
+      "tool_bindings": 20,
+      "native_originals": 24,
+      "decoded_responses": 984,
+      "clean_worker_closures": 38,
+      "retained_non_ok_responses": [],
+      "baseline": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "scope": "Full payload hashes/modes and four complete input maps; tools bound to exact independently copied959 baseline. All new native bytes/request/raw outcomes and all worker packets/closures. Phase, opcode and runtime outcomes remain distinct; later SEND-line failures outside this immutable archive remain required correction."
+    },
+    {
+      "result": "pass",
+      "archive_sha256": "5ae1314c8b17431167595a7ff646ebd2e4a560ecb6d75e9d318a037e2e746e81",
+      "payloads": 9097,
+      "tool_bindings": 30,
+      "native_originals": 14,
+      "decoded_responses": 605,
+      "clean_worker_closures": 28,
+      "retained_non_ok_responses": [
+        {
+          "path": "source-isolate-ai1zb0_k/adapter/0.response",
+          "response": {
+            "ok": false,
+            "category": "runner_failure",
+            "message": "Failure(\"/home/user/workspace/php-spec/.tools/compiler7-named-line-check/compiler-only/spec/semantics/104-named-compiler.watsup:34.273-34.287: function `ppnamed_known` is undefined\")"
+          }
+        }
+      ],
+      "baseline": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "scope": "Full payload hashes/modes and six complete input maps; tools bound to exact independently copied959 baseline. All new native bytes/request/raw outcomes and all worker packets/closures. Phase, opcode and runtime outcomes remain distinct; ten retained SEND/return line failures and four unchanged contrasts preserve original profiles; paired runtime final evidence remains separate."
+    }
+  ],
+  "runtime_archive": {
+    "result": "pass",
+    "archive_sha256": "820dea7735767772ee8c3ddc0aeab786f96a2e8931dde1585df8eade5d082789",
+    "payload_paths": 19658,
+    "snapshots": {
+      "baseline959": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "first": {
+        "sha256": "55f846841f30a06c35a35ed93b38355a7b45a5c1bcf7278dc85f753931bed1a8",
+        "files": 961,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "task-pattern": {
+        "sha256": "6d70e3f9668481b004f3f0ad28f76505e0dc3a8cdc6c44f11539db166ba5a3e4",
+        "files": 961,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "preflight-guard": {
+        "sha256": "078f15daf5584dcd279fcd41a0c3bbc533cf7e44c3deb71e50b657cfd37eb363",
+        "files": 961,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "pending-tail-guard": {
+        "sha256": "6c5e529c4eb2adf9d119a30ace9a28549f3fb7def2e757f4ef2e508563704d0c",
+        "files": 967,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "protocol-integration": {
+        "sha256": "73fdc0cd49a3c6297a5c205a50898613e66def1787ee3cb5167d85242a25f2de",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "state-fixture": {
+        "sha256": "1027843e60ef53de1b8f4dc8f7f925f4b66ab61067c597e22b082c010eda9489",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "send-lines": {
+        "sha256": "6134417ba132b1f5a88897ead8c08f572f31707e36d6f3aa4d4d3e6cf51336cc",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "lane-guard": {
+        "sha256": "7ae024bfbb8f4a71e50b57afa0483600a8d5863f72ccf7d994501459b7901bb5",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "lane-declaration": {
+        "sha256": "d03509536442fc0aa2990594aa8dbf328b5bceb44ac60557b50b167962da5417",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final": {
+        "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "regression-selection": {
+        "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "binary_payloads": "Actual retained bytes, hashes and modes verified in each full snapshot.",
+    "pinned_sources": 7,
+    "scope": "Every author archive payload/hardlink/hash/length/mode and all twelve complete manifests. Independently held baseline959/4854 and final968/ab389 files/modes match, including actual binary payloads and pinned C sources. Initial task-dispatch/declaration-order failures, guarded source relations, semantic55cd and regression-selection-onlyab389 retain original identities."
+  },
+  "review_archive": {
+    "archive": "coverage/semantics/named-review-originals.tar.xz",
+    "sha256": "8461272d3810194974e16fe69bd279fed1254eb4430d70ac58cb7b8be2a4196e",
+    "paths": 11319,
+    "bytes": 1356500,
+    "snapshots": {
+      "baseline959": {
+        "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+        "files": 959,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "first961-55f8": {
+        "sha256": "55f846841f30a06c35a35ed93b38355a7b45a5c1bcf7278dc85f753931bed1a8",
+        "files": 961,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "runnable961-6d70": {
+        "sha256": "6d70e3f9668481b004f3f0ad28f76505e0dc3a8cdc6c44f11539db166ba5a3e4",
+        "files": 961,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "preflight961-078f": {
+        "sha256": "078f15daf5584dcd279fcd41a0c3bbc533cf7e44c3deb71e50b657cfd37eb363",
+        "files": 961,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "pending967-6c5e": {
+        "sha256": "6c5e529c4eb2adf9d119a30ace9a28549f3fb7def2e757f4ef2e508563704d0c",
+        "files": 967,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "line968-6134": {
+        "sha256": "6134417ba132b1f5a88897ead8c08f572f31707e36d6f3aa4d4d3e6cf51336cc",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "lane968-d035": {
+        "sha256": "d03509536442fc0aa2990594aa8dbf328b5bceb44ac60557b50b167962da5417",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "semantic968-55cd": {
+        "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "selection968-ab389": {
+        "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "tool_bindings": {
+      "raw/review10-return-reference-replay-biw9y6c_/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-biw9y6c_/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-biw9y6c_/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-biw9y6c_/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-biw9y6c_/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-q22_b1qw/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-q22_b1qw/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-q22_b1qw/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-q22_b1qw/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-q22_b1qw/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-l__0bn4w/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-l__0bn4w/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-l__0bn4w/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-l__0bn4w/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-l__0bn4w/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-edw1tx02/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-edw1tx02/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-edw1tx02/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-edw1tx02/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-return-reference-replay-edw1tx02/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-named-state-mljr78qg/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-named-state-x9mud20m/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-named-state-icdb4r22/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-originals-n9g_c97_/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-originals-n9g_c97_/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-originals-n9g_c97_/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-originals-n9g_c97_/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-originals-n9g_c97_/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-string-cache-original-_36yrq5q/original-inputs/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-string-cache-original-_36yrq5q/original-inputs/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-string-cache-original-_36yrq5q/original-inputs/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-string-cache-original-_36yrq5q/original-inputs/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 436
+      },
+      "raw/review10-named-baseline959/.tools/review10-named-string-cache-original-_36yrq5q/original-inputs/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 436
+      },
+      "snapshots/baseline959/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/baseline959/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/baseline959/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/baseline959/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/baseline959/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/first961-55f8/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/first961-55f8/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/first961-55f8/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/first961-55f8/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/first961-55f8/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/runnable961-6d70/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/runnable961-6d70/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/runnable961-6d70/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/runnable961-6d70/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/runnable961-6d70/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/preflight961-078f/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/preflight961-078f/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/preflight961-078f/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/preflight961-078f/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/preflight961-078f/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/pending967-6c5e/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/pending967-6c5e/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/pending967-6c5e/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/pending967-6c5e/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/pending967-6c5e/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/line968-6134/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/line968-6134/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/line968-6134/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/line968-6134/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/line968-6134/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/lane968-d035/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/lane968-d035/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/lane968-d035/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/lane968-d035/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/lane968-d035/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/semantic968-55cd/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/semantic968-55cd/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/semantic968-55cd/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/semantic968-55cd/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/semantic968-55cd/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      },
+      "snapshots/selection968-ab389/.tools/php-file.so": {
+        "sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+        "mode": 509
+      },
+      "snapshots/selection968-ab389/.tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": 493
+      },
+      "snapshots/selection968-ab389/.tools/request-clock.so": {
+        "sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+        "mode": 509
+      },
+      "snapshots/selection968-ab389/_build/default/adapter/main.exe": {
+        "sha256": "c0f880fabdfa4a3546a8245e5cbba900e55edb8e28fd4c91acad8b93d94c200a",
+        "mode": 365
+      },
+      "snapshots/selection968-ab389/tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": 365
+      }
+    },
+    "decoded_responses": 146,
+    "clean_worker_closures": 75,
+    "standalone_true": 144,
+    "retained_non_ok_responses": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-return-reference-replay-q22_b1qw/adapter-wire/0.response",
+        "packet": {
+          "ok": false,
+          "category": "interpreter_failure",
+          "message": "function php_request_run failed\n\u2502 \u00b7\u00b7\u00b7 omitting 22 traces \u00b7\u00b7\u00b7\n/home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\nfunction drive_steps failed\n\u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\n    function drive_steps failed\n    \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\n        function drive_steps failed\n        \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:308.27-308.39\n            function drive_steps failed\n            \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:295.9-295.21\n                condition (S.TODO matches pattern []) was not met\n                \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:298.9-298.30\n                    condition (S.COMPLETION matches pattern `BUDGET`) was not met\n                    \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:300.9-300.61\n                        condition ((S.COMPLETION =/= (NORMAL)) /\\ (S.COMPLETION =/= (BUDGET))) was not met\n                        \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:305.21-305.22\n                            condition (n = 0) was not met\n                            \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:313.6-313.13\n                                relation PhpStep failed\n                                \u2514\u2500\u2500 /home/user/workspace/php-spec/.tools/review10-named-first/spec/semantics/40-control.watsup:34.18-34.36\n                                    no case matched for ptask'\n"
+        }
+      }
+    ],
+    "retained_runner_failures": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-637p5xl_/legacy-send-substitution.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "invalid_legacy_task_interpreter_failure",
+        "stderr_sha256": "dc0de1eb46f6ce1ad48bc11d07d1f6bb59fd54250133a723439062af3128555a"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-mrfffss9/legacy-send-substitution.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "fixture_setup",
+        "stderr_sha256": "2c124a267badadf8da5610fddb483d6b0d40ad00e625ff26d3eac20a4f2bfade"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-rwwk6304/line-child-forgery.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "existing_callroot_guard",
+        "stderr_sha256": "13a368b8725f5d259178171bc487dba3aad7e5d33793be880bd84f8ce5186613"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-slk7o01s/tail-wrong-collected-key.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "fixture_setup",
+        "stderr_sha256": "6065111db149b87902da5a58561f8f79de2d8b8314296bad057e6c81da6699cd"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-slk7o01s/tail-unowned-variable-slot.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "fixture_setup",
+        "stderr_sha256": "2a8c42c45880ba17614519176e478a9fca3bccae2a148f2dc072466b9aefdbb5"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-protocol-wc5r9s80/legacy-args-substitution.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "fixture_setup",
+        "stderr_sha256": "68b538e977baedc386d393783b5ca69dcfe5ac51dbfd5a0195ce411b5be22303"
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-named-state-mljr78qg/named-hole-uncoerced-string-reference-cache/runner.command.json",
+        "status": {
+          "status": "exit",
+          "exit_status": 1
+        },
+        "kind": "wrong_string_class_fixture",
+        "stderr_sha256": "a70205012109bc9f551f0571986143080e0ca3758994df6e9ddd73d1b00c7df6"
+      }
+    ],
+    "scope": "Nine exact source/tool maps, historical9369 preparation, independent current959 originals, first961 task dispatch failure, actual malformed pending/preflight/cache/tail/task-lane/line counterexamples and guarded positives. Final semantic968/55cd source5, protocol44/935, dense4/731, two complete959 bridges removing only empty NAMED. Regression-selection successorab389 changes only one test. Compiler049c/5ae and author runtime evidence bind separately retained native/profile/source histories and actual binary bytes; no failed or historical gate relabeled current.",
+    "historical_archive_path": "/home/user/workspace/php-spec/.tools/review10-named-review-originals.tar.xz"
+  },
+  "reviewed_contracts": [
+    "Original source argument order/index is separate from case-sensitive fixed destination slots, positional extent and ordered extra names.",
+    "Literal CV name validation precedes read/acquisition; computed FETCH_R/W precedes SEND, with writable location acquisition separated from reference promotion.",
+    "Interior holes cache successful uncoerced defaults before ordinary typed receive; trailing defaults retain normal receive schedule. Fresh omitted reference cells and cache-before-failure are directly tested.",
+    "Extra named SEND reference diagnostic uses fixed_count+1; fixed named destinations use mapped fixed index+1; named-tail TypeError uses max(fixed_count,effective_positional_ARGC)+1 for each named entry.",
+    "Trace holes remain absent machine slots while rendering NULL; named trace keys and effective positional extent remain distinct from source expression count.",
+    "Owning pending/current/saved extra slots and collected entries survive alias coercion, COW, suppression and abrupt cleanup.",
+    "Finite source-prefix/task-kind/cursor/key/mode/source-line guards reject malformed public states without reconstructing previous values or verified types.",
+    "Source-derived emitted deferred CV lines correct retained named and previously admitted positional diagnostics and surrounding return/static lines; original SOURCE metadata stays unchanged."
+  ],
+  "required_pending": [
+    "Builtin named compiler name/mode/static-priority prerequisite; no builtin body execution inferred from780-name inventory.",
+    "Array/Traversable call unpack, dynamic callables, closures/arrows/capture, object/default side effects, caught exceptions and full callable integration.",
+    "Reporting configuration/handlers, dynamic source, objects, generators/Fibers, lifetime/intrinsics and all other full-core obligations.",
+    "Final full current source, full syntax and fresh network-isolated offline rebuild."
+  ],
+  "family_closure": false,
+  "decision": "accept bounded direct user-function named arguments and shared deferred-CV emission-line correction",
+  "implementation": {
+    "code_commit": "cb1febe7d45b35b5e8fa0d7614cd3d5baebe759e",
+    "compiler_evidence_commit": "5a19646a60dc95b5fdc7298a7fac84770c15247b",
+    "author_evidence_commit": "2a0e077406dbfaea7f2cefc487341a17481e8dfe",
+    "fingerprint": {
+      "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "semantic_gate_fingerprint": {
+      "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "baseline": {
+      "sha256": "4854ee087558ad851875db4bcca7245e19d96df4ddb2051e41dfa55cdb75debc",
+      "files": 959,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "changed_paths": 23,
+    "canonical_bytes_modes_exact": true
+  },
+  "publication_audit": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+      "files": 968,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "canonical_files_modes": 968,
+    "publication_archive_sha256": "52171ff62f7ab10e847100860c0ca1715b3fe92ed48fe775c49a65be0b88239a",
+    "payloads": 60,
+    "history_dependency": "820dea7735767772ee8c3ddc0aeab786f96a2e8931dde1585df8eade5d082789",
+    "canonical_cli": {
+      "native_agreements": 8,
+      "clean_process_closures": 8,
+      "source_request_and_raw_observations_exact": true
+    },
+    "paths": {
+      "docs/semantics/SOURCE-NAMED-ARGUMENTS.md": {
+        "sha256": "8bb13ead23bc4ea3e131d0212c3648f186f1b3f0a01ad86ed8e6b6989e396959",
+        "mode": 436
+      },
+      "coverage/semantics/named-runtime-publication-originals.tar.xz": {
+        "sha256": "52171ff62f7ab10e847100860c0ca1715b3fe92ed48fe775c49a65be0b88239a",
+        "mode": 436
+      },
+      "coverage/semantics/named-compiler.json": {
+        "sha256": "64081087d38d12f56b8183a683c05d429e0c4a203a1c589563a1b22e947b3400",
+        "mode": 436
+      },
+      "coverage/semantics/named-runtime-publication-originals.json": {
+        "sha256": "18ebd4c9e1c807b80ff6f5e525391e83366e11cfd981e98883f96dd58d9ed8df",
+        "mode": 436
+      },
+      "coverage/semantics/named-runtime.json": {
+        "sha256": "d7fc2dd83f8ad5fae10accfdd4126a50fb06cbbb86ceae718200ca9e00d9d4dd",
+        "mode": 436
+      },
+      "coverage/semantics/named-runtime-originals.tar.xz": {
+        "sha256": "820dea7735767772ee8c3ddc0aeab786f96a2e8931dde1585df8eade5d082789",
+        "mode": 436
+      },
+      "coverage/semantics/named-runtime-originals.json": {
+        "sha256": "6f3b119e46c4935106d666c95ed561e38a20fe40c18b060683e1dd56f71c9ccb",
+        "mode": 436
+      }
+    }
+  },
+  "compiler_publication_audit": {
+    "result": "pass",
+    "files": {
+      "NAMED-ARGUMENT-COMPILER.md": {
+        "sha256": "e9781d5a55ed43a78a8f61ae27adf45c9e4643aff7d9fe57a10905671c9bef5b",
+        "mode": 436
+      },
+      "named-compiler-line-originals.json": {
+        "sha256": "0ee4d772c46f71ae2aa4ae44fcb96bd64c967aa42389a4ecea4b7f386d5c339b",
+        "mode": 436
+      },
+      "named-compiler-line-originals.tar.xz": {
+        "sha256": "5ae1314c8b17431167595a7ff646ebd2e4a560ecb6d75e9d318a037e2e746e81",
+        "mode": 436
+      },
+      "named-compiler-originals.json": {
+        "sha256": "9a40104130c456de956d9efcbf31d0fe93edc73399b566cd468a58bec5d20e70",
+        "mode": 436
+      },
+      "named-compiler-originals.tar.xz": {
+        "sha256": "049c3bbefb6be003f400358f326d512843842519740f925ce4782882432f2e7b",
+        "mode": 436
+      },
+      "named-compiler-pairing.json": {
+        "sha256": "e488798efefa84686963fb5ba6dfb02c8fc65dbd2d46a2aa9b0ad944644c278e",
+        "mode": 436
+      }
+    },
+    "compiler_paths_exact": [
+      "spec/semantics/78-function-compiler.watsup",
+      "spec/semantics/104-named-compiler.watsup",
+      "tests/semantics/named_compiler.py",
+      "tests/semantics/named_compiler_cases.json",
+      "tests/semantics/call_reference_compiler.py",
+      "tests/semantics/typed_function_compiler.py"
+    ],
+    "canonical_installation": {
+      "commit": "cb1febe7d45b35b5e8fa0d7614cd3d5baebe759e",
+      "fingerprint": {
+        "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "all_file_hashes_match": true,
+      "all_file_modes_match": true,
+      "verified_files": 968,
+      "index_clean_before_publication": true
+    },
+    "regression_selection_bridge": {
+      "before": {
+        "sha256": "55cd8ab1c45299adcea69423300d015fc4fadde45ad1ea83a4644556934ffc4b",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+        "files": 968,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "tests/semantics/named_regression.py"
+      ],
+      "unchanged_files": 967,
+      "all_modes_equal": true,
+      "reason": "Correct regression catalogue selection: remove unsupported catch source and replace static-only source with admitted default-reference-cache and type-before-missing runtime controls. No executable semantics changes."
+    },
+    "scope": "Exact six compiler publication bytes/modes and archive bindings, full final canonical968/ab389 versus independent copy, six unchanged compiler/test paths and original55cd identity. Semantic acceptance remains separate."
+  },
+  "canonical_cli": 8,
+  "publication_archive": {
+    "archive": "coverage/semantics/named-review-publication-originals.tar.xz",
+    "sha256": "1fadad476f7191d16b9d6554060781048659e8f4a4b9b62d45e52867a0546a60",
+    "paths": 15,
+    "bytes": 63432,
+    "scope": "Final author raw/native/archive/CLI and compiler publication audits, exact producers and968/ab389 map with the regression-selection-only bridge; main8461272d immutable."
+  },
+  "original_failures": [
+    "First961 singleton named task dispatch failure is retained; equivalent head/tail patterns fix executable rules without framework changes.",
+    "Original preflight skips and legacy typed receives bypass deferred warnings/cache; malformed tail cursor skips its TypeError. Final finite guards reject these while preserving arbitrary supplied/cache/collected values and changed aliases.",
+    "Legacy positional task substitutions on named source are initially admitted; CALL_SEND full resume interpreter-fails. Source-lane guards reject both task classes before evaluation.",
+    "Retained named and previously admitted positional deferred-CV SEND line discrepancies require source-derived emitted argument lines and86 resolution, also repairing surrounding static/return lines. Actual childCODEEXPR+100 changes Error5 to105 before the narrow source projection repair; existing callroot forgery was already rejected.",
+    "Independent constructor-binder fixture errors and wrong PVSCALAR expectation for cached string remain retained; the correct cache is PSTRING2/PVSTRING true before integer receive. Author unsupported-catch regression selection is corrected in one test only.",
+    "Packaging report variable shadowing failed after first complete archive self-audit; first artifact/producer remain retained and no semantic process was affected."
+  ],
+  "authority": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source_pin": "vendor/php-src",
+    "opcode_scope": "Separately profiled observations do not replace ordinary source/request native agreement."
+  }
+}
