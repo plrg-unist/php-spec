@@ -6,7 +6,36 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Real explicit closure instances115/116 are independently accepted at **14e3bf7d** in
+Arrow implicit captures and expression returns117/118 are accepted at **6df5ecfa**
+in [arrows-review.json](coverage/semantics/arrows-review.json), code **1d438e8a**.
+The installed identity is **1026/0ec57507**, with an exact one-test bridge from
+**1026/365a0464**: only the maintained dense test partitions independent budget
+checks. Semantic rules, source fixtures and all other test/tool bytes are identical.
+Earlier measured results retain their actual365a identity.
+
+Arrow templates use existing real closure identities. Ordered implicit capture
+preserves missing values without a creation warning; invocation gets fresh locals.
+Actual expression origins authenticate value/reference returns and never-body
+reference demand. The checkpoint also repairs a shared suppression-owner guard
+that affected paused explicit closures on accepted1017; that failure is preserved.
+
+Author gates pass32 arrow source outcomes (23 normal,7 PHP errors,2 static
+rejections),20 compiler phases/223 projections,26 protocol controls/264 assertions,
+13 regressions and old closure protocol20/217. Original32 model-only replays are
+separate from fresh maintained native profiles. Independent365a gates pass9 exact
+retained source observations including the separate explicit suppression regression,
+26/264, dense4/731 and32 complete old1017 responses with no projection. Dense checks
+compare56 one-step and56 complete resumptions at actual capture/receive/return and
+selected-owner cuts.
+
+The initial author COW dense fixture timed out after900 seconds with no semantic
+verdict; the second numeric fixture was not run. Both source/native setups remain
+retained. A reviewed test-only partition preserves all493 unique assertions and36
+each zero/one/full budget checks in9 fixtures,960 executed premises, each with the
+same900-second bound. All nine numeric fixtures pass on0ec5 while reusing the original contexts. Final
+archive cross-audits and canonical CLI8 pass; no timeout is a pass.
+
+Real explicit closure instances115/116 remain accepted historical **14e3bf7d** in
 [closures-review.json](coverage/semantics/closures-review.json) on exact
 **1017/9325300f**, code **875c7867**. Source templates stay separate from shared
 object identities. Ordered captures, fresh value bindings per invocation, shared
@@ -51,18 +80,19 @@ profiles and identities remain separate; these gates were not rerun or relabelle
 for 109/110 or111/112. The compiler reused a verified binary. Callable entry alarm60 is
 replaced/cancelled by per-packet alarm30, not a continuous whole-case deadline.
 
-Inventory now records140 partial/165 pending/1 oracle validated. Full syntax,
+Inventory now records141 partial/164 pending/1 oracle validated. Full syntax,
 a fresh network-isolated offline rebuild/audit and complete core remain required.
 Builtin compilation/bodies/defaults/callbacks, other callable forms, Traversable,
 exceptions, reporting configuration and object/dynamic-source lifetimes stay open.
 
-Next is the bounded arrow-function implicit-capture and expression-return slice.
-Read the [arrow handoff](docs/semantics/ARROWS-HANDOFF.md) before any new schema or
-native campaign. Completed undefined captures must remain distinct from pending
-construction; source discovery and runtime ownership need separate review.
-A refreshed broad integration checkpoint follows arrows before further callable
-or class expansion, unless a concrete shared defect requires it sooner. Required
-Closure method services, ordinary objects, cycle collection and dynamic lifetime
+Next is the refreshed broad integration checkpoint. Read the
+[successor handoff](docs/semantics/ARROWS-HANDOFF.md) before freezing campaigns.
+The planned distinct memberships are5706 ordinary comparisons plus21 controls,
+263 explicit requests,5751 compiler phases plus8 access/15 line cases, and946
+callable rows across18 whole suites plus one separate explicit suppression
+regression. Refresh exact memberships and profiles on the installed identity;
+these scheduled counts are not current passing results or unique program totals.
+Required Closure methods, ordinary objects, cycle collection and dynamic lifetime
 remain open; valid Closure::fromCallable type checking is explicitly Unsupported.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
@@ -104,13 +134,13 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS, call frames and shared real-closure identities reviewed; general object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, returns, suppression and fatal frame cleanup reviewed; exceptions/handlers pending |
-| 3b: calls, closures and static checks | Partial; positional/named value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns and explicit closures/captures reviewed; arrows and remaining call protocols pending |
+| 3b: calls, closures and static checks | Partial; positional/named value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns, explicit closures and arrow captures/returns reviewed; remaining call protocols pending |
 | 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; ordinary object/class execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records140 partial,165 pending and one validated
+The runtime inventory now records141 partial,164 pending and one validated
 obligation. Accepted constants, defaults, strictness, builtin value types,
 reference returns, suppression, positional variadics, named binding and call unpack remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
@@ -146,8 +176,8 @@ exact originals, subprocesses, failures and scope.
 ## Coordination and validation
 
 The [current successor handoff](docs/semantics/ARROWS-HANDOFF.md)
-binds accepted1017/9325 explicit closures and the proposed arrow117/118 slice.
-Compiler7, runtime7 and independent review12 coordinate private roots, exact
+binds accepted arrow117/118 semantics and the post-arrow integration checkpoint.
+Compiler7, the runtime author and independent review13 coordinate private roots, exact
 frozen gates, canonical builds and the index under root. Preserve baseline
 originals before admission, stage only reviewed files, commit small increments
 and never push. Earlier identities and failures remain historical.
