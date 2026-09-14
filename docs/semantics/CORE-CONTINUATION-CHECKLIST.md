@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:132 partial,173 pending,1 validated
+has169 constructors and306 obligations:133 partial,172 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -66,7 +66,13 @@ claim that the inventory dependency graph is complete.
   20 protocol/372,4 states/1322 and2 exact951 bridges with no projection;
   author28 source,23+2 compiler/194,2 states/829,8 regressions andCLI8 pass.
   Semanticcee5, compiler-test4d69 and timeout-only4854 retain separate identities.
-- [ ] Named binding/hole preflight; see the [handoff](RUNTIME-NAMED-ARGUMENTS-HANDOFF.md).
+- [x] Named104/105 accepted at1a562e8f on968/ab389, codecb1febe7.
+  [Review](../../coverage/semantics/named-review.json) binds5 source profiles,
+  44 protocol/935,4 states/731 and2 complete959 bridges removing only empty NAMED;
+  author70 source,55+6 compiler/129,12 regressions,2 states/373 andCLI8 pass.
+  Semantic55cd and regression-selection-onlyab389 retain distinct identities.
+- [ ] Builtin named compiler prerequisite, then array call unpack;
+  see the [successor handoff](RUNTIME-NAMED-SUCCESSOR-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

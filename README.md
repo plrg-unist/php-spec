@@ -126,8 +126,10 @@ and void-parameter sources through the existing static compiler; [review](covera
 binds exact PHPT/CLI diagnostics and reproducible parser patches. Positional
 variadic execution is now [independently reviewed](coverage/semantics/variadic-review.json).
 [Positional tails](docs/semantics/SOURCE-POSITIONAL-VARIADICS.md) preserve ordered
-coercion, reference owners and error traces; named binding and argument unpacking
-remain required next work.
+coercion, reference owners and error traces. [Named user-function arguments](docs/semantics/SOURCE-NAMED-ARGUMENTS.md)
+are now [independently reviewed](coverage/semantics/named-review.json), including
+hole-default preflight, typed/reference aliases and source-bound SEND lines.
+Builtin named compilation and argument unpacking remain required next work.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

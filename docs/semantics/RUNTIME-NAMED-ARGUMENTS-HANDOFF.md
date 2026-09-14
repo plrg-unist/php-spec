@@ -1,4 +1,8 @@
-# Successor: named argument binding
+# Historical handoff: named argument binding
+
+Completed at1a562e8f on968/ab389. Continue from the
+[builtin-name/call-unpack successor](RUNTIME-NAMED-SUCCESSOR-HANDOFF.md); the original
+baseline and preparation below retain their historical identities.
 
 Start from accepted959/4854ee08: codeb49a564c, compiler3c27910a,
 author81a7b991 and independent4187c887. The

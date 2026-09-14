@@ -6,56 +6,43 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Positional variadic receives](docs/semantics/SOURCE-POSITIONAL-VARIADICS.md) are
-independently accepted at **4187c887** in [variadic-review.json](coverage/semantics/variadic-review.json).
-Canonical **959/4854ee08** binds code **b49a564c**, compiler evidence **3c27910a**
-and author evidence **81a7b991**. Compiler102/runtime103 collect positional tails
-in order, preserve reference owners and earlier coercions before later errors,
-and retain native argument numbering, trace slots and suppression cleanup.
-Finite source/index/packed-container guards preserve arbitrary consistent values.
+[Named arguments](docs/semantics/SOURCE-NAMED-ARGUMENTS.md) are independently
+accepted at **1a562e8f** in [named-review.json](coverage/semantics/named-review.json).
+Canonical **968/ab3897e2** binds code **cb1febe7**, compiler evidence **5a19646a**
+and author evidence **2a0e0774**. Compiler104/runtime105 separate source sends,
+fixed slots, positional extent and extra names. Interior holes cache uncoerced
+defaults before typed receives; reference owners, traces and suppression cleanup
+survive later errors. Finite source/stage guards preserve arbitrary consistent values.
 
-Independent gates pass4 native profiles,20 protocol controls/372 assertions,
-4 dense states/1,322 assertions and2 complete951/440f state bridges at seven cuts
-with no projection. Author28 source,23 compiler phases plus2 catch boundaries/194
-projections,20 protocol/372,8 regressions,2 dense states/829 and canonical CLI8
-pass. Counts overlap. Independent70 responses/29 worker closures/46 true runners
-and author131/10/23 are audited; author39 native profiles overlap these gates.
+Independent5 source profiles,44 protocol controls/935 assertions,4 dense states/731
+and2 complete959 compatibility bridges pass. The bridges remove only empty NAMED
+context fields; every other response/state field is equal at seven cuts. Author70
+source cases (including8 static outcomes),55 compiler phases plus6 boundaries/129
+projections,44 protocol/935,12 runtime regressions,2 dense states/373 andCLI8 pass.
+Counts overlap. Audits retain independent146 responses/75 worker closures/144 true
+runners and author301/14/47; author87 native profiles overlap these campaigns.
 
-Semantic gates retain **959/cee51dd2**. A stale compiler expectation correction
-passes46 phases on **959/4d69c52f**; the final **4854** change raises only the dense
-runner allowance300→900 seconds. Each bridge preserves958 files and all959 modes.
-The original timeout remains a failure to finish. Exact prepared fixtures pass in
-459 and369 seconds, without native reruns or assertion changes. Compiler archives
-d286/10d1, author1eb/c6f7 and independentfe0b/429b preserve raw failures, full
-snapshot/tool bindings and publication closures.
+Semantic/source/protocol and independent dense gates retain **968/55cd8ab1**.
+Finalab389 changes only the regression selection test, preserving967 files and
+all968 modes. Its unsupported catch selection remains a retained failure. Shared
+module78/104/86 corrections fix actual deferred-CV SEND lines, including a previously
+admitted positional warning and surrounding return/static diagnostics; original
+SOURCE lines stay unchanged. Compiler049c/5ae, author820d/5217 and independent8461/1fad
+archives preserve distinct failures, profiles, full maps and publication closures.
 
-[Parameter source phases](docs/semantics/PARAMETER-PHASE.md) remain accepted at
-51ca21db on951/440f: code c00a5c38 and compiler4290295e defer exactly the eager
-variadic-default/void checks to native-order static diagnostics. Source suppression
-remains accepted at29baca42 on951/c650, with its ff8d print-only bridge. Reference
-returns942, acquisition933, typed926, strict917 and defaults909 retain their own
-historical reviews. Reporting APIs/handlers/configured fatal display remain open;
-the current native profile is30719, with fatal mask4437 inside `@`.
+The preceding [positional variadic review](coverage/semantics/variadic-review.json)
+remains accepted4187c887 on959/4854. Earlier parameter-phase, suppression,
+reference-return, acquisition, typed, strict and default checkpoints retain their
+own linked identities. Reporting APIs/handlers/configured fatal display remain
+open; the current native reporting profile is30719, with fatal mask4437 inside `@`.
 
-Next is named argument binding and hole-default preflight; read the
-[successor handoff](docs/semantics/RUNTIME-NAMED-ARGUMENTS-HANDOFF.md).
-Compiler7/runtime7/review10 continue under root coordination. Frozen88d514f8
-and independent9369a2a0 preparation are not implementation acceptance.
+Next is the builtin named compiler name/mode prerequisite, then array call unpack;
+read the [successor handoff](docs/semantics/RUNTIME-NAMED-SUCCESSOR-HANDOFF.md).
+Compiler7/runtime7/review10 continue under root coordination. Builtin metadata
+and compiler admission do not imply body/default/callback execution.
 
-Named104/105 is in private review; canonical959/4854 is unchanged. Resume from
-`.tools/review10-named-review-plan.md` and runtime
-`.tools/runtime7-named-preparation/INTERFACE105.md`. Independent preflight/bind18
-and pending/tail20 controls pass the repaired078f/6c5e snapshots; arbitrary
-consistent values remain valid. Retained source failures require the shared
-deferred-CV SEND line correction and source-bound argument metadata. Private code
-968/d035 includes those repairs and excludes named calls from legacy positional
-tasks; final968/55cd freezes the maintained producers. Portable44 and source70 are
-running. Final state/compatibility gates and archive publication
-remain pending; early compiler049c and its later line supplement keep distinct
-identities. No named acceptance or family closure is claimed.
-
-The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains named,
-unpacked and remaining variadic/callable protocols, objects, exceptions, dynamic
+The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains builtin named,
+unpacked and remaining callable protocols, objects, exceptions, dynamic
 sources, generators/fibers, lifetime and core intrinsics. Mixed caller/callee
 strictness still needs an admitted source route. PHP_VERSION value reads, other
 missing builtin constants, define/defined and legal object/class/callable constants
@@ -100,15 +87,15 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 1a–c: numeric/byte conversions and operators | Partial; admitted scalar/array paths reviewed |
 | 2a–b: storage, references, arrays, strings and sequencing | Partial; request/GLOBALS and first call frames reviewed; object protocols pending |
 | 3a: control, exceptions, diagnostics and unwinding | Partial; loops/jumps, returns, suppression and fatal frame cleanup reviewed; exceptions/handlers pending |
-| 3b: calls, closures and static checks | Partial; positional value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns reviewed; remaining call protocols pending |
+| 3b: calls, closures and static checks | Partial; positional/named value/reference and variadic parameters, defaults, lexical strictness and builtin scalar/container value types reviewed; reference assignment/returns reviewed; remaining call protocols pending |
 | 4a–b: linking and declarations | Partial; user constants and header/relation helpers reviewed; object execution pending |
 | 5a–b: dynamic sources, services, resumability and lifetime | Pending |
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records132 partial,173 pending and one validated
+The runtime inventory now records133 partial,172 pending and one validated
 obligation. Accepted constants, defaults, strictness, builtin value types,
-reference returns, suppression and positional variadics remain partial.
+reference returns, suppression, positional variadics and named binding remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 
@@ -141,8 +128,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/RUNTIME-NAMED-ARGUMENTS-HANDOFF.md)
-binds959 inputs and the next named-slot/default/trace prerequisites. Compiler7,
+The [current successor handoff](docs/semantics/RUNTIME-NAMED-SUCCESSOR-HANDOFF.md)
+binds968 inputs and the next builtin-name/compiler and call-unpack prerequisites. Compiler7,
 runtime7 and independent review10 coordinate private roots, exact frozen gates,
 canonical builds and the index under root. Preserve baseline originals before
 admission, stage only reviewed files, commit small increments and never push.
