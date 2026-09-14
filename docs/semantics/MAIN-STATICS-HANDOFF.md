@@ -1,5 +1,10 @@
 # Main-script statics after named-function statics
 
+This is the historical pre-implementation handoff. Initial-main statics113/114
+are now independently accepted on1008/2829; see the [review](../../coverage/semantics/main-statics-review.json)
+and [current closure handoff](CLOSURES-HANDOFF.md). The preparation below retains
+its original identities and does not describe current unsupported scope.
+
 Read [PLAN](../../PLAN.md), [PROGRESS](../../PROGRESS.md) and the accepted
 [named-function review](../../coverage/semantics/function-statics-review.json)
 before source admission. Complete PHP core remains the goal. Compiler111/runtime112

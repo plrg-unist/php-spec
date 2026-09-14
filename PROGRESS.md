@@ -6,23 +6,27 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-Named-function statics111/112 are independently accepted at **c00a5d53** in
-[function-statics-review.json](coverage/semantics/function-statics-review.json)
-on exact **999/0484**. Persistent reference cells distinguish uninitialized entries
-from cached null, survive local unset/rebinding and preserve recursive inner
-initialization winners. Compiler declaration priorities, stored versus dynamic
-initializers, CV inventory and source lines remain source-authenticated.
+Initial-main-script statics113/114 are independently accepted at **5ef385d6** in
+[main-statics-review.json](coverage/semantics/main-statics-review.json) on exact
+**1008/2829c2a0**. Main bindings use the active global symbol table, preserve prior
+reference aliases, survive unset and initializer calls, and remain distinct from
+named-function slots. Source-authenticated unit0 declarations exclude nested
+function bodies; persistent entries stay valid during calls independently of
+current scope and initialization history. No state schema or binding repair was needed.
 
-Gates retain their executed identities: predecessor4419 author source32,
-compiler29 phases plus one catch dependency/121 projections, regression12 and
-dense2/325; semantic442a replays46 overlapping contexts and four paused receive
-controls/112 assertions after repairing an actual shared105 guard ambiguity.
-Independent442a source6 plus one catch dependency, protocol25/452, dense4/779
-and22 complete old990 response bridges pass. Dense checks cover68 one-step and68
-full suffixes. Compatibility removes only a verified empty STATICS field.
-Final0484 changes only the maintained protocol to26/486; the test-only bridge
-preserves every other file and all modes. Native profiles overlap and are not
-unique-program coverage. Original defects and fixture failures remain separate.
+Author final gates pass16 source contexts,12 compiler phases/59 projections,
+9 protocol controls/173 assertions,12 regressions and dense2/283. Independent
+final gates pass4 retained native contexts,9 controls/173, dense4/623
+and20 complete old999 responses without projection. Dense checks cover48 zero,
+48 one-step and48 complete suffixes. Fixture errors and every raw outcome remain
+separate; no semantic defect was found. First1001/ebf differs from final only in
+maintained tests/Makefile. Source/native profiles overlap and retain exact identities.
+
+Named-function statics111/112 remain accepted historical **c00a5d53** in
+[function-statics-review.json](coverage/semantics/function-statics-review.json)
+on999/0484. Their recursive initialization, hidden CVs, cached null and source-line
+checks retain original gates, including the repaired105 receive ambiguity on442a
+and test-only0484 protocol bridge. Initial-main statics reuse these rules.
 
 Dynamic109/110 remains accepted historical **178f993c**, on990/866, in the
 [dynamic-call review](coverage/semantics/dynamic-call-review.json). Its45 source,
@@ -44,13 +48,11 @@ a fresh network-isolated offline rebuild/audit and complete core remain required
 Builtin compilation/bodies/defaults/callbacks, other callable forms, Traversable,
 exceptions, reporting configuration and object/dynamic-source lifetimes stay open.
 
-Next is the bounded initial-main-script statics slice, followed by remaining
-static scopes and callable protocols. Read the
-[main-statics handoff](docs/semantics/MAIN-STATICS-HANDOFF.md). Six native/source
-contexts and three separate opcode profiles remain preparation on990; replay
-originals on the accepted successor without duplicate native execution. Main
-binding/global views and lexical-unit lifetime need independent review before
-source admission. No next code is active.
+Next is the closure identity, explicit-capture and invocation foundation, followed
+by arrow implicit captures and remaining callable/static scopes. Read the
+[closure handoff](docs/semantics/CLOSURES-HANDOFF.md) before representation changes.
+Closure instances require independent capture/static ownership; declaration-only
+static origins do not establish their runtime identity. No closure code is active.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -132,9 +134,9 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/MAIN-STATICS-HANDOFF.md)
-binds999/0484 named-function statics and the proposed initial-main-script slice.
-Compiler7, runtime7 and independent review11 coordinate private roots, exact
+The [current successor handoff](docs/semantics/CLOSURES-HANDOFF.md)
+binds1008/2829 initial-main statics and the proposed closure foundation.
+Compiler7, runtime7 and independent review12 coordinate private roots, exact
 frozen gates, canonical builds and the index under root. Preserve baseline
 originals before admission, stage only reviewed files, commit small increments
 and never push. Earlier identities and failures remain historical.
