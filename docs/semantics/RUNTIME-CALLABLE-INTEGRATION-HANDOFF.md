@@ -1,4 +1,9 @@
-# Current callable integration before further activation
+# Completed callable integration plan
+
+This plan was executed and independently accepted in the
+[current integration review](../../coverage/semantics/callable-integration-review.json).
+Its preparation and launch instructions below are historical. Continue with the
+[dynamic-call handoff](DYNAMIC-CALL-HANDOFF.md) after root reads current PROGRESS.
 
 Start from accepted107/108 code **adb21f56**, compiler evidence **50d0fbbc** and
 runtime evidence **5318ed52**, canonical **981/3f3ca6b6**. Read current PROGRESS,

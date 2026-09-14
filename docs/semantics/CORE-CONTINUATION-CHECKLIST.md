@@ -79,8 +79,11 @@ claim that the inventory dependency graph is complete.
   source outcomes,29 compiler phases/56 projections,34 protocol/824, author2
   states/435, independent4 states/1063 and14 full old972 compatibility cuts.
   Traversable and builtin execution remain required.
-- [ ] Current ordinary/request/callable integration before109; see the
-  [handoff](RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md). Preserve full profiles and raw closures.
+- [x] Current ordinary/request/callable integration before109; [review](../../coverage/semantics/callable-integration-review.json)
+  binds5706+21 ordinary,263 request,751 callable and5751 compiler observations,
+  exact profiles/raw closures and981/3f3→764 one-test bridge.
+- [ ] Dynamic string calls109/110 after root checkpoint read; see the
+  [handoff](DYNAMIC-CALL-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
@@ -115,8 +118,8 @@ combined candidate independently.
 - [ ] Populate/audit dependencies and every obligation's remaining branches.
   Namespace-relative static remains the sole intentional divergence, confined to
   the pending class-scope declaration-type branch.
-- [ ] Run current all-source campaigns at the combined callable checkpoint, or
-  sooner for unresolved shared regressions. Preserve raw failures and all source
+- [x] Run current all-source campaigns at the combined callable checkpoint; repeat
+  when unresolved shared regressions require it. Preserve raw failures and all source
   identities; Unsupported, timeouts and tool errors never pass.
 - [ ] Finish complete inventory/review, full syntax, and a fresh network-isolated
   offline rebuild/audit against actual final inputs. No full-core completion report

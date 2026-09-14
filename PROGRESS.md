@@ -6,56 +6,50 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Array call argument unpacking](docs/semantics/SOURCE-CALL-UNPACK.md) is independently
-accepted at **e45c7139** in [call-unpack-review.json](coverage/semantics/call-unpack-review.json).
-Canonical **981/3f3ca6b6** binds code **adb21f56**, compiler evidence **50d0fbbc** and
-runtime evidence **5318ed52**. Direct user calls expand integer keys in insertion
-order and map string keys through the named binder. Emitted operand class controls
-reference eligibility; container and sent owners survive later effects and errors.
-Default holes, uncoerced caches, typed receives and saved suppression keep their
-reviewed ordering. NArg markers preserve SEND_UNPACK lines separately from child calls.
+Current ordinary/request/callable integration is independently accepted at
+**f244a78e** in [callable-integration-review.json](coverage/semantics/callable-integration-review.json).
+Canonical **981/7640870f** includes the one-test correction **8051f53e** over
+accepted107/108 **981/3f3ca6b6**. `f()[0]="X"` now requires the native undefined-function
+Error instead of a stale Unsupported expectation. All980 other watched files, including every
+semantic module, remain byte-identical; all981 modes are unchanged.
 
-Author55 exact source outcomes (31 normal,18 PHP errors,6 static rejections),
-29 compiler phases/56 projections,34 protocol controls/824 assertions,12 adjacent
-profiles and2 ownership cases/435 assertions pass. Independent7 source profiles,
-4 state cases/1063 assertions and14 complete-response cuts for2 old972 programs
-pass; compatibility needs no projection. Canonical CLI8 passes. Counts overlap.
-Three builtin-result contexts remain explicit dependencies.
+The current campaigns retain distinct profiles and actual execution identities:
 
-The [review](coverage/semantics/call-unpack-review.json) binds compiler cb917,
-runtime5175 and independent review archives, original failures and raw closures.
-Final source/protocol/state gates retain **981/ec4cf850**. Earlier862d compiler and
-regression gates retain their identity; the cursor guard and protocol successor
-bridges are explicit. Installation3f3 removes only an unused two-line helper,
-with zero-reference and exact byte/mode proof. All other final files are unchanged.
-Class passthrough, emitted-line and finite source/state guard repairs preserve
-arbitrary consistent values; no prior execution history is reconstructed.
+- **5706 ordinary comparisons** on7640:4060 normal,1006 PHP errors,640 static
+  rejections;21 separate outcome controls include expected timeout/runner failures.
+- **263 explicit requests** on3f3, with526 raw responses and2 clean worker closures;
+  the representative4-source full-profile preflight remains separately recorded.
+- **751 callable rows across13 suites** on3f3, with1502 responses and26 closures;
+  three builtin-result dependencies remain explicitly Unsupported.
+- **5751 compiler lint comparisons** on7640, with15 emitted-line cases,8 access
+  sources/24 paths,7 metadata boundaries and constant checks in5783 fixture cases.
+  The557.41s aggregate passed within its original600s allowance.
 
-Next is the current ordinary/request/callable integration checkpoint, before any
-109 source activation. Read the [handoff](docs/semantics/RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md).
-Root coordinates compiler7, runtime7 and review10. Freeze current memberships,
-profiles, tools and modes after root reads this checkpoint; validate a representative
-full request/source/native profile through the prepared raw wrapper before263.
-Historical full campaigns remain historical until these current runs are accepted.
+Independent audits verify ordered source membership, native outcomes, full request
+FD198/environment/argv/path/clock/config facts, raw packets, fixtures, closures and
+all archive payload hashes/modes. Counts overlap and are not unique-program coverage.
+Ordinary inherited-environment execution, explicit primitive requests and callable
+fixed-clock requests remain distinct. The compiler used an explicitly verified
+existing binary; this is not a fresh build. Callable entry alarm60 is replaced and
+cancelled by per-packet alarm30, so it is not a continuous whole-case deadline.
 
-Current integration is in progress on independently copied inputs; accepted108
-remains the checkpoint above. The complete263 request lane is published at
-**5a5f69a0** and751 callable rows across13 suites at **ebdcdf65**, with reporting-only
-timer clarification **ea8df631**. Both execute981/3f3 and have independent raw audits.
-Current5751 compiler sources also pass independent packet/fixture review on981/7640;
-that successor changes only one stale ordinary outcome expectation to an exact
-native PHP-error comparison. All source memberships/profiles remain unchanged.
-The full5706 ordinary run continues on7640. Combined acceptance waits for its
-complete source/raw audit and final archive checks; no109 or semantic mutation
-occurs during these runs. Historical full campaigns remain separately scoped.
+[Array call unpacking](docs/semantics/SOURCE-CALL-UNPACK.md) remains accepted at
+**e45c7139**, code **adb21f56**, with its source/state/compatibility evidence in
+[call-unpack-review.json](coverage/semantics/call-unpack-review.json). This integration
+refreshes the broad evidence after107/108 and closes no new inventory obligation.
+Inventory remains134 partial/171 pending/1 oracle validated. Full syntax, a fresh
+network-isolated offline rebuild/audit, complete core and later callable/object
+lifetime integration remain required.
 
-Builtin106 name/mode metadata remains accepted on972/e1bf; builtin bodies,
-default filling and callbacks remain required. Traversable, dynamic callables,
-function statics, closures, objects, exceptions, reporting APIs/configuration,
-dynamic sources and lifetime protocols remain open. Current native reporting
-profile30719 uses fatal mask4437 inside `@`. The
-[core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains complete
-inventory, source, full syntax and fresh offline gates. No family closes.
+Next109/110 dynamic string user calls require root's accepted-checkpoint read.
+Root coordinates compiler7, runtime7 and review10; read the
+[successor handoff](docs/semantics/DYNAMIC-CALL-HANDOFF.md). Replay20 preserved972
+native contexts without duplicate native execution. Preserve initial parser-string,
+later compiled-constant and runtime-callee modes, selected-function ownership,
+source-derived emitted lines and shared99/105/107/108 consumers. No next code was
+activated during integration. Builtin bodies/defaults/callbacks, Traversable,
+function statics, closures, objects, exceptions, reporting configuration, dynamic
+sources and remaining lifetime protocols stay required.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -75,9 +69,9 @@ outcome controls. [Its audit](coverage/semantics/quiet-integration-review.json)
 retains all 4,997 historical source bytes and 22,873 ordinary author files; explicit
 request acceptance retains 263 native calls, 526 responses and 2,381 files. These
 are 5,969 case/profile observations and 5,926 distinct source programs. Those full
-runtime campaigns have not been relabeled current after calls. Refresh the
-combined current source campaign at the callable checkpoint or earlier shared
-risk; the final full-source/full-syntax/fresh network-isolated offline gates remain
+runtime campaigns retain their historical identity. The fresh current integration
+above supplies separate post-call evidence; the final full-source/full-syntax/
+fresh network-isolated offline gates remain
 required before complete-core acceptance.
 
 The source-only [builtin occupancy](docs/semantics/BUILTIN-FUNCTIONS.md) and
@@ -137,8 +131,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/RUNTIME-NAMED-SUCCESSOR-HANDOFF.md)
-binds968 inputs and the next builtin-name/compiler and call-unpack prerequisites. Compiler7,
+The [current successor handoff](docs/semantics/DYNAMIC-CALL-HANDOFF.md)
+binds981/764 integration and the next dynamic string user-call increment. Compiler7,
 runtime7 and independent review10 coordinate private roots, exact frozen gates,
 canonical builds and the index under root. Preserve baseline originals before
 admission, stage only reviewed files, commit small increments and never push.

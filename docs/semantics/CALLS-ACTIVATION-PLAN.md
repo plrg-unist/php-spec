@@ -15,8 +15,9 @@ on933 and [source reference returns](SOURCE-REFERENCE-RETURNS.md) on942;
 on959/4854. Named binding is accepted at1a562e8f
 on968/ab389. Builtin-name compilation is now accepted on972/e1bf. Array call unpack107/108 is accepted on981/3f3; its
 [review](../../coverage/semantics/call-unpack-review.json) preserves final ec4 gates
-and explicit installation bridges. The [next handoff](RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md)
-requires current ordinary/request/callable integration before109. The sequence below retains its historical role.
+and explicit installation bridges. The [current ordinary/request/callable integration](../../coverage/semantics/callable-integration-review.json)
+is accepted before109; continue with the [dynamic-call handoff](DYNAMIC-CALL-HANDOFF.md)
+after root reads the checkpoint. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 

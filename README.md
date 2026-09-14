@@ -135,8 +135,10 @@ fixed-name lookup and fetch modes. [Array call arguments](docs/semantics/SOURCE-
 now preserve insertion order, named holes and reference owners through errors;
 [independent review](coverage/semantics/call-unpack-review.json) binds source/state
 checks and complete old-state compatibility. Builtin execution and Traversable
-remain required. The next [current integration checkpoint](docs/semantics/RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md)
-precedes further callable activation.
+remain required. The [current integration review](coverage/semantics/callable-integration-review.json)
+validates5706 ordinary comparisons,263 explicit requests,751 callable rows and5751
+compiler phases under separately retained profiles. [Dynamic string calls](docs/semantics/DYNAMIC-CALL-HANDOFF.md)
+are the next source increment after root reads the accepted checkpoint.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
