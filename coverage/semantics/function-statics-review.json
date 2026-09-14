@@ -1,0 +1,1270 @@
+{
+  "result": "accepted",
+  "scope": "Bounded named-function static locals compiler111/runtime112. Storage/static/callable families and complete PHP core remain partial.",
+  "fingerprint": {
+    "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+    "files": 999,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "commits": {
+    "code": "bb4b7cea07901e070f505e2d585e2d45e70baee5",
+    "compiler_evidence": "7c988c693e0c01e7b35cf240ecaf6a05fc5b0036",
+    "runtime_evidence": "3cd83bc3c03ac934473d4907a4ee0e87159d78b5"
+  },
+  "oracle": {
+    "version": "PHP8.5.10 CLI NTS64",
+    "reporting": 30719,
+    "suppressed_reporting": 4437,
+    "source": "vendor/php-src at pinned34308 revision; pinned source bytes retained in runtime26007 archive",
+    "tool_bindings": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "qualification": "Exact ordinary native source paths, lint/opcode profiles and primitive request facts remain separate. No native rerun merely for snapshot changes; unsupported, interpreter/fixture failures and timeouts never pass."
+  },
+  "interface": [
+    "Initialized-only STATICS entries own unique live marked-reference wrapper cells. Missing entries are uninitialized; a reference containing null is initialized.",
+    "Pinned compiler rejects duplicate static names within the same function, including dead branches, before initializer folding. Thus each admitted declaration ORIGIN identifies one persistent function slot; nested named functions have distinct origins.",
+    "CODESTATIC binds source name, stored/dynamic mode and begin/bind lines. Stored/no-default initializers do not require emitted CODEEXPR; stored values read the checked constant pool.",
+    "Dynamic initializers use current locals; binding rechecks for a recursive inner winner before resolving the outer operand. Unset/rebinding and frame return do not erase persistent cells.",
+    "Source-authenticated CV classification distinguishes deferred current-variable reads from owning results. Finite guards constrain source/owner/shape facts without reconstructing history or fixing runtime values."
+  ],
+  "independent_gates": {
+    "source": {
+      "report_sha256": "99ca1794e494600f05525a9ac61e73604f93989c487199564573204c6677a6d4",
+      "archive_member": "raw/.tools/review11-statics-replay-9stg_yza/report.json",
+      "fingerprint": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "result": "pass",
+      "ordinary": 6,
+      "catch_dependencies": 1,
+      "native_replays": 0
+    },
+    "protocol": {
+      "report_sha256": "ec936b4a9e3514f6235b2e9164d5bf46d6b56eab04a08895de931242eedd1e21",
+      "archive_member": "raw/.tools/review11-statics-controls-replay-7lszirf9/report.json",
+      "fingerprint": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "result": "pass",
+      "controls": 25,
+      "assertions": 452,
+      "negative": 13,
+      "positive": 12,
+      "scope": "Actual source states plus wrong marker/owner/deferred-read relations; arbitrary owning/deferred/initialized values and local aliases accepted."
+    },
+    "dense": {
+      "report_sha256": "236c2d2bd7643ac1d0d8c31cdf09389f744d1ae70682716126943d7faa166363",
+      "archive_member": "raw/.tools/review11-statics-dense-j2qmt2xo/report.json",
+      "fingerprint": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "result": "pass",
+      "cases": 4,
+      "assertions": 779,
+      "one_step_checks": 68,
+      "full_suffix_checks": 68,
+      "case_assertions": [
+        224,
+        224,
+        142,
+        189
+      ],
+      "scope": "Suppressed null cache/restoration; float static cache with typed returns; prior initialized slot survives saved-suppression typed initializer fatal; recursive array inner winner and returned reference aliases with compiled-pool owner retained."
+    },
+    "compatibility": {
+      "report_sha256": "8bc7e4dfbf5e6d6bbbb96c0344625b911200e4e3234acd99a715b04dbdb909fa",
+      "archive_member": "raw/.tools/review11-statics-final-bridges-u7sp17gp/report.json",
+      "fingerprint": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "result": "pass",
+      "responses": 22,
+      "source_contexts": 4,
+      "baseline": {
+        "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+        "files": 990,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "projection": "Require actual state.STATICS=[] then remove only that new field. Every other decoded response field remains exact; no runtime value or budget normalization."
+    }
+  },
+  "author_gates": {
+    "predecessor_4419": {
+      "source": 32,
+      "compiler_phases": 29,
+      "compiler_catch_dependencies": 1,
+      "compiler_projections": 121,
+      "protocol": 25,
+      "protocol_assertions": 452,
+      "regressions": 12,
+      "dense": 2,
+      "dense_assertions": 325
+    },
+    "semantic_442a": {
+      "replayed_overlapping_source_contexts": 46,
+      "paused_receive_controls": 4,
+      "paused_receive_assertions": 112,
+      "exact_dense_replays": 2,
+      "dense_assertions": 325
+    },
+    "final_0484": {
+      "protocol": 26,
+      "protocol_assertions": 486,
+      "checked_source_only_contexts": 4,
+      "native_calls": 0
+    },
+    "compiler_separate": {
+      "maintained_fingerprint": "994/208969a4",
+      "phases": 29,
+      "catch_dependencies": 1,
+      "projections": 121,
+      "shared_fingerprint": "994/eaa55075",
+      "shared_suites": {
+        "function": 46,
+        "dynamic": "42+2 boundaries",
+        "reference_return": 58,
+        "typed": "57+7 boundaries"
+      }
+    },
+    "qualification": "Profiles overlap; counts are not unique-program coverage. Source/compiler/dense gates retain actual predecessor identities; semantic/test successor bridges are explicit."
+  },
+  "repairs_and_retained_originals": [
+    {
+      "original": "992/e615c4eb",
+      "issue": "Stored initializer constant-class facts rejected as invalid compiled pool.",
+      "repair": "Narrow static FIELD1 subtree admission in89; class/value checks retained."
+    },
+    {
+      "original": "992/d735045a",
+      "issue": "Actual stored initializer interpreter failure through compiled_read without CODEEXPR.",
+      "repair": "Read checked stored FIELD1 pool directly."
+    },
+    {
+      "original": "992/e615c4eb",
+      "issue": "Forged declaration/marker/origin, missing reference classification, undefined persistent cell and duplicate entry accepted.",
+      "repair": "Source-authenticated marker/task and finite initialized-cell guards."
+    },
+    {
+      "original": "992/6bdf262a",
+      "issue": "Distinct static origins forged to share one persistent wrapper cell.",
+      "repair": "Distinct persistent CELL guard; local alias and arbitrary equal-value controls remain valid."
+    },
+    {
+      "original": "992/6bdf262a",
+      "issue": "Owning suppression result forged as deferred CV; bare-CV initializer forged wrong name or owning operand.",
+      "repair": "Active STATIC_BIND operand lane/source-name validation."
+    },
+    {
+      "original": "compiler first992/e615c4eb",
+      "issue": "Autoglobal static BIND CV inventory omitted, although ordinary outputs already agreed.",
+      "repair": "Compiler111 static-only CV registration, bound to two separate native opcode profiles."
+    },
+    {
+      "original": "999/4419c071",
+      "archive_member": "raw/.tools/review11-statics-dense-omig313f/static-saved-suppression-typed-initializer-error/runner.stderr",
+      "issue": "Actual paused TYPE_RECEIVE descriptor check yielded named_receives_ready nondeterminism0/1.",
+      "repair": "105 named clause gains actual FuncCall/CALLSITE/named_present premises on442a; maintained26th control on0484."
+    }
+  ],
+  "fixture_failures": "Preserved separately: recursive otherwise DSL helpers; post-bind BUDGET test normalization; incorrect discarded constant-array allocation assertion despite a compiled-pool owner; author elaboration/test-selection/numeric syntax/setup errors; audit report field/layout assumptions. These are not runtime mismatches or passing rejections.",
+  "bridges": {
+    "semantic_repair": {
+      "result": "pass",
+      "before": {
+        "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "after": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "spec/semantics/105-named-arguments.watsup"
+      ],
+      "unchanged_files": 998,
+      "modes_unchanged": true,
+      "premises_added": 3,
+      "source_context_replays": 46,
+      "receive_stage_sources": 4,
+      "receive_stage_assertions": 112,
+      "raw_responses": 100,
+      "clean_worker_closures": 6,
+      "true_runners": 4,
+      "roots": [
+        "/home/user/workspace/php-spec/.tools/runtime7-statics112/selected-runtime7-statics-receive-repair-mpx_zow1",
+        "/home/user/workspace/php-spec/.tools/runtime7-statics112/selected-runtime7-statics-receive-repair-n84p_sj6",
+        "/home/user/workspace/php-spec/.tools/runtime7-statics112/receive-stage-mm7o6x5n"
+      ],
+      "qualification": "Real semantic guard repair. Source32+regression12 completed before producer-only duplicate output-directory failure; only remaining dense-source2 contexts replayed afterward. Four paused receive controls include adjacent cuts/full suffixes. No native reruns; original999/4419 and compiler gates retain their identities. Initial malformed nested arithmetic fixture is preserved separately."
+    },
+    "test_only": {
+      "result": "pass",
+      "executed_runtime": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "publication": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changed": [
+        "tests/semantics/function_statics_protocol.py"
+      ],
+      "unchanged_inputs": 998,
+      "all_modes_equal": true,
+      "old_protocol_controls_exact": 25,
+      "new_control_assertions": 34,
+      "scope": "Sole maintained-test addition, no semantic/source/runner changes. Existing442a independent source/protocol25/dense/22bridges retain their identities and are explicitly bridged; new26/486 maintained gate executes final0484."
+    },
+    "compiler_pairing": "coverage/semantics/function-static-compiler-pairing.json",
+    "fingerprint_metadata_correction": "Original compiler55433 string-sorted map and corrected e615 Path-sorted map have identical992 file hashes/modes. The erroneous first correction sidecar is preserved; authoritative binding is embedded in compiler pairing."
+  },
+  "evidence": {
+    "archives": {
+      "compiler": {
+        "manifest": "coverage/semantics/function-static-compiler-originals.json",
+        "manifest_sha256": "c3b5381f8d6060a574df831965aa2f35468bd192fcb9e7fa7530b75f4af136b5",
+        "archive": "function-static-compiler-originals.tar.xz",
+        "sha256": "2fd142438845f89a3ff7040588eab113c809cfa294988a3157d6a6dbae5630ab"
+      },
+      "runtime": {
+        "manifest": "coverage/semantics/function-statics-runtime-originals.json",
+        "manifest_sha256": "d3d058237124b22d26689e83f704edf0d33b4227dd9acdd9b10767eeaac3cb13",
+        "archive": "coverage/semantics/function-statics-runtime-originals.tar.xz",
+        "sha256": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04"
+      },
+      "runtime_publication": {
+        "manifest": "coverage/semantics/function-statics-runtime-publication-originals.json",
+        "manifest_sha256": "9793c912cb2d2c55a36d6fac19f60a2291d5cf2c4201d903400cdb14a9cd5682",
+        "archive": "coverage/semantics/function-statics-runtime-publication-originals.tar.xz",
+        "sha256": "0586566b5610dc4ac05ff2c4b417e4f5607b5dab5d89538878c76d7ea65c4eaf"
+      }
+    },
+    "independent_archive": {
+      "archive": "coverage/semantics/function-statics-review-originals.tar.xz",
+      "sha256": "03e8d80d551be4ddbd9ad4a829ba1bc837bd18728f10db6225ae93374f7e5050",
+      "bytes": 24925236,
+      "payload_files": 12104,
+      "manifest_sha256": "38740bd1be25c10045913134b068c31610026b10c12e0f5d07ba7a2bd362d3e5",
+      "snapshots": {
+        "baseline990": {
+          "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+          "files": 990,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "first": {
+          "sha256": "e615c4eb070c54c770184a0e87df9127ecdbad5214d37cd4a13777f43513fc02",
+          "files": 992,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "pool-repair": {
+          "sha256": "d735045afab965b336f64dbea280b538171e5e0b6492e914b3bf87eee9a8c032",
+          "files": 992,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "stored-read-repair": {
+          "sha256": "07b6d313e52e1a4eaeb8bd78750317ea5d6a5968f684c18c388b213643e3b45e",
+          "files": 992,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "guarded": {
+          "sha256": "6bdf262a005f0e9c460b2aae66b4bc2b73d7e66efc31f1182a34e498de271fd1",
+          "files": 992,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "cell-guard": {
+          "sha256": "32b15686e90f30479a4882ee5617ebd76b092b056089ece050af6bd9793222be",
+          "files": 995,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "operand-repair": {
+          "sha256": "71462c84c78efbcd98445afb057a96fdc6c974fd8ac5f89363d50d7417f77ca4",
+          "files": 995,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "final": {
+          "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+          "files": 999,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "receive-repair": {
+          "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+          "files": 999,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "final26": {
+          "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+          "files": 999,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      "scope": "Ten complete reviewer snapshots with actual tools, seven original native/source/request/lint contexts, all independent raw worker and numeric outputs including original defects and separate fixture failures. Independent final source6+catch, protocol25/452, dense4/779 with68 one-step/68 full-suffix,22 exact old990 response bridges execute on semantic442a. Final0484 only protocol test changes; portable26/486 and explicit bridge preserved. Compiler/runtime author evidence remains separately archived. No full storage/callable/core closure.",
+      "author_archives": {
+        "compiler": "2fd142438845f89a3ff7040588eab113c809cfa294988a3157d6a6dbae5630ab",
+        "runtime": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04"
+      }
+    },
+    "compiler_audit": {
+      "result": "pass",
+      "archive_sha256": "2fd142438845f89a3ff7040588eab113c809cfa294988a3157d6a6dbae5630ab",
+      "payloads": 12803,
+      "hardlinks": 9289,
+      "snapshots": 9,
+      "tool_bindings": 51,
+      "native_contexts": 30,
+      "compiler_phases": 29,
+      "catch_dependencies": 1,
+      "projections": 121,
+      "shared_gates": 4,
+      "scope": "All compiler archive bytes/modes/hardlinks, nine exact complete file maps, actual tool bindings and thirty original native/source/request streams. Maintained compiler and shared gate identities remain separate. Original5543 manifest recomputes under string sorting; e615 under Path sorting; bad old field in first correction sidecar is explicitly corrected by later binding."
+    },
+    "runtime_audit": {
+      "result": "pass",
+      "archive_sha256": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04",
+      "payloads": 17674,
+      "hardlinks": 15182,
+      "snapshots": 13,
+      "responses": 268,
+      "clean_workers": 18,
+      "true_numeric_runners": 58,
+      "overlapping_native_profiles": 46,
+      "compiler_phases": 29,
+      "compiler_catch_dependencies": 1,
+      "compiler_projections": 121,
+      "scope": "Every payload byte/mode and backward hardlink; thirteen complete maps with actual tool bytes; selected final/predecessor/semantic-repair workers and numeric runners; original exact source/request/native streams and observation matches. Two successor deltas checked exactly; original identities preserved."
+    },
+    "own_raw_audit": {
+      "result": "pass",
+      "snapshots": {
+        "baseline990": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-baseline990",
+          "fingerprint": {
+            "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+            "files": 990,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "89108f7d3e387eb6cda6de31b100b6cace37c7566eaabf4b731fb70712a81557"
+        },
+        "first": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-first",
+          "fingerprint": {
+            "sha256": "e615c4eb070c54c770184a0e87df9127ecdbad5214d37cd4a13777f43513fc02",
+            "files": 992,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "bf04f80b5f80a12fc0940621314f118a965f5912d1dd9ef47d75cf2bb06c8be3"
+        },
+        "pool-repair": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-pool-repair",
+          "fingerprint": {
+            "sha256": "d735045afab965b336f64dbea280b538171e5e0b6492e914b3bf87eee9a8c032",
+            "files": 992,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "8742b0de370bb67a79e289bccee937e9b6635070f24e5029b891c310aed08621"
+        },
+        "stored-read-repair": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-stored-read-repair",
+          "fingerprint": {
+            "sha256": "07b6d313e52e1a4eaeb8bd78750317ea5d6a5968f684c18c388b213643e3b45e",
+            "files": 992,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "686d4c021f9fb38dedeca97dff5eaac3fe49eb4f1d7cc3e4c86f7c8e8a671658"
+        },
+        "guarded": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-guarded",
+          "fingerprint": {
+            "sha256": "6bdf262a005f0e9c460b2aae66b4bc2b73d7e66efc31f1182a34e498de271fd1",
+            "files": 992,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "d6116f48fb9d30aecad0038fb8fa6d7974386df6722bb6861fc9499492ecaf51"
+        },
+        "cell-guard": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-cell-guard",
+          "fingerprint": {
+            "sha256": "32b15686e90f30479a4882ee5617ebd76b092b056089ece050af6bd9793222be",
+            "files": 995,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "83bd9144af4616f403083308a27980016e20ac5dba925a2ec4af38ff1def82d4"
+        },
+        "operand-repair": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-operand-repair",
+          "fingerprint": {
+            "sha256": "71462c84c78efbcd98445afb057a96fdc6c974fd8ac5f89363d50d7417f77ca4",
+            "files": 995,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "26717ed8531c9b29d2ff04d5f6c815be8558156ec966dbfce7584c6e602e0017"
+        },
+        "final": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-final",
+          "fingerprint": {
+            "sha256": "4419c071cb22a8b5ecce55419fc32bec0a09b1aa88733428db3894fb845dcb7b",
+            "files": 999,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "7200b4e932d9db271357f4cb4e06661fc4f53ad67f177f676bbdaead61720df3"
+        },
+        "receive-repair": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-receive-repair",
+          "fingerprint": {
+            "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+            "files": 999,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "118e4ab9992f3048d100522286a9dd26ceb7dc32ec9c76233387c06c7d957a3f"
+        },
+        "final26": {
+          "path": "/home/user/workspace/php-spec/.tools/review11-statics-final26",
+          "fingerprint": {
+            "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+            "files": 999,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "manifest_sha256": "0458ea5ed9eee70fff1c7386e1928fc3e9da945dffd2e62841f749f02e618c86"
+        }
+      },
+      "rows": [
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-cell-identity-_hjg5qr3",
+          "classification": "counterexample observations",
+          "files": 38
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-controls-replay-3y0tqnoc",
+          "classification": "pass",
+          "files": 94
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-controls-replay-7lszirf9",
+          "classification": "pass",
+          "files": 130
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-controls-replay-a43abtjy",
+          "classification": "pass",
+          "files": 130
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-controls-replay-gxy27h11",
+          "classification": "fail",
+          "files": 74
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-controls-replay-k77vax97",
+          "classification": "pass",
+          "files": 74
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-controls-replay-qjuczep8",
+          "classification": "pass",
+          "files": 129
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-cv-controls-m_dkv4hk",
+          "classification": "counterexample observations",
+          "files": 38
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-dense-89tjrzsj",
+          "classification": "fail",
+          "files": 72
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-dense-j2qmt2xo",
+          "classification": "pass",
+          "files": 73
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-dense-omig313f",
+          "classification": "fail",
+          "files": 73
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-dense-ppsnyzgz",
+          "classification": "pass",
+          "files": 27
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-dense-ve82spub",
+          "classification": "pass",
+          "files": 72
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-final-bridges-c7ng5sq3",
+          "classification": "pass",
+          "files": 97
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-final-bridges-u7sp17gp",
+          "classification": "pass",
+          "files": 97
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-first-controls-_kqosnpw",
+          "classification": "counterexample observations",
+          "files": 63
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-marker-controls-8f5d1niu",
+          "classification": "counterexample observations",
+          "files": 43
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-marker-controls-repaired-n5l8v1mh",
+          "classification": "counterexample observations",
+          "files": 43
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-old990-c240yopj",
+          "classification": "retained baseline",
+          "files": 99
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-25pvnxwj",
+          "classification": "partial tool failure",
+          "files": 36
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-6bgzp1tx",
+          "classification": "pass",
+          "files": 60
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-9stg_yza",
+          "classification": "pass",
+          "files": 69
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-agbac3d7",
+          "classification": "pass",
+          "files": 69
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-tsa2iwhz",
+          "classification": "pass",
+          "files": 68
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-v2d76k93",
+          "classification": "pass",
+          "files": 60
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-replay-xc4iv3aw",
+          "classification": "fail",
+          "files": 60
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-result-lane-e3cksg67",
+          "classification": "counterexample observations",
+          "files": 33
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-baseline990/.tools/review11-statics-bare-cv-e4vxj112",
+          "classification": "baseline observations only",
+          "files": 31
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-baseline990/.tools/review11-statics-originals-h44u7qa0",
+          "classification": "baseline observations only",
+          "files": 85
+        },
+        {
+          "raw": "/home/user/workspace/php-spec/.tools/review11-statics-baseline990/.tools/review11-statics-special-names-n0xvm_hs",
+          "classification": "baseline observations only",
+          "files": 49
+        }
+      ],
+      "native_contexts": 7,
+      "lint_profiles": 7,
+      "worker_closures": 45,
+      "worker_responses": 227,
+      "retained_false_interpreter_packets": 1,
+      "scope": "All ten full snapshot hashes/modes and Path-ordered fingerprints; seven exact independent native/source/request/lint contexts; all own worker packets and clean closures; final source/protocol/dense/complete-response bridge identity. Earlier malformed acceptances, failed fixtures and one interpreter failure remain separately classified."
+    },
+    "canonical_and_cli_audit": {
+      "result": "pass",
+      "archive_sha256": "0586566b5610dc4ac05ff2c4b417e4f5607b5dab5d89538878c76d7ea65c4eaf",
+      "payloads": 65,
+      "hardlinks": 15,
+      "canonical_fingerprint": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "canonical_paths_and_modes": 999,
+      "changed_code_paths": 19,
+      "cli_cases": 8,
+      "publication_paths": {
+        "coverage/semantics/function-statics-runtime-originals.json": {
+          "sha256": "d3d058237124b22d26689e83f704edf0d33b4227dd9acdd9b10767eeaac3cb13",
+          "mode": 436
+        },
+        "coverage/semantics/function-statics-runtime-originals.tar.xz": {
+          "sha256": "26007d2057799165cc2c02e2ce5916a158bbf48cbe90c53609168c71d8e72a04",
+          "mode": 436
+        },
+        "coverage/semantics/function-statics-runtime-publication-originals.json": {
+          "sha256": "9793c912cb2d2c55a36d6fac19f60a2291d5cf2c4201d903400cdb14a9cd5682",
+          "mode": 436
+        },
+        "coverage/semantics/function-statics-runtime-publication-originals.tar.xz": {
+          "sha256": "0586566b5610dc4ac05ff2c4b417e4f5607b5dab5d89538878c76d7ea65c4eaf",
+          "mode": 436
+        },
+        "coverage/semantics/function-statics-runtime.json": {
+          "sha256": "334b8f1484ba983ae0297be6ddc135165408b5c69f481740823537a76441f464",
+          "mode": 436
+        },
+        "coverage/semantics/function-static-compiler.json": {
+          "sha256": "949654a581a0739fb604e4b6f552c29a0daecbb2d6ce7823b7fd386f3ffef06a",
+          "mode": 436
+        },
+        "docs/semantics/SOURCE-FUNCTION-STATICS.md": {
+          "sha256": "fd397a5afe4f81ab7b66b3901b3f18a44720a97986e32d2b6462ba7567a1129c",
+          "mode": 436
+        }
+      },
+      "scope": "All supplement payload bytes/modes/hardlinks and actual canonical999 files; eight exact retained native/request CLI contexts with clean process status/streams; exact19 code delta and seven publication hashes."
+    },
+    "compiler_publication_audit": {
+      "result": "pass",
+      "installed_code_commit": "bb4b7cea07901e070f505e2d585e2d45e70baee5",
+      "canonical": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "files": {
+        "docs/semantics/FUNCTION-STATICS-COMPILER.md": {
+          "sha256": "3cb1e4c7d01b50dfff79d5dbce0dc50bfb90e2b43a5447b867f33b6401b9d140",
+          "mode": 436
+        },
+        "coverage/semantics/function-static-compiler-originals.json": {
+          "sha256": "c3b5381f8d6060a574df831965aa2f35468bd192fcb9e7fa7530b75f4af136b5",
+          "mode": 436
+        },
+        "coverage/semantics/function-static-compiler-originals.tar.xz": {
+          "sha256": "2fd142438845f89a3ff7040588eab113c809cfa294988a3157d6a6dbae5630ab",
+          "mode": 436
+        },
+        "coverage/semantics/function-static-compiler-pairing.json": {
+          "sha256": "ee0673b573c01298bf338a6bc4c6a4ab24f72cbe37fecc3d445793362c9d2554",
+          "mode": 436
+        }
+      }
+    },
+    "independent_publication_archive": {
+      "archive": "coverage/semantics/function-statics-review-publication-originals.tar.xz",
+      "sha256": "af9e6cb0908e667992024dd5eb6708585b3009743e35b347fa0aade825edadb4",
+      "bytes": 55040,
+      "payload_files": 13,
+      "manifest_sha256": "429515532387b8b2a723d24c5bbf96d02bc356ac5fc1b5e130ca0f5591db733e",
+      "history_archive_sha256": "03e8d80d551be4ddbd9ad4a829ba1bc837bd18728f10db6225ae93374f7e5050",
+      "fingerprint": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      }
+    },
+    "independent_cross_audit": {
+      "result": "pass",
+      "archive_sha256": "03e8d80d551be4ddbd9ad4a829ba1bc837bd18728f10db6225ae93374f7e5050",
+      "payloads": 12104,
+      "hardlinks": 10433,
+      "full_snapshots": 10,
+      "actual_tool_bindings": 50,
+      "raw_responses": 227,
+      "clean_workers": 45,
+      "preserved_false_packets": [
+        "raw/.tools/review11-statics-replay-25pvnxwj/adapter-wire/2.response"
+      ],
+      "native_contexts": 7,
+      "dense_cases": 4,
+      "dense_assertions": 779,
+      "one_step_checks": 68,
+      "full_suffix_checks": 68,
+      "old990_complete_response_bridges": 22,
+      "canonical": {
+        "sha256": "048498dca2fca35e570753fc5616dcb4b9e085b408957534c6715f100ac3c423",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "scope": "Independent every-payload bytes/length/mode and hardlink audit; ten reconstructed complete maps and actual executable bytes, final canonical identity, raw JSON requests/responses/closures, seven retained native contexts, final442a dense outputs/cuts and first4419 named receive failure, exact22 old-state bridges and linked author audits. No native or semantic gate rerun."
+    },
+    "final_numeric_audit": {
+      "result": "pass",
+      "fingerprint": {
+        "sha256": "442a0861b84902341fb3baaf1a2783f70679dbcd7c93efd39557d51d7f5ba46c",
+        "files": 999,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "true_numeric_runners": 29,
+      "rows": [
+        ".tools/review11-statics-controls-replay-7lszirf9/arbitrary-bind-owned-value/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/arbitrary-deferred-cv-value/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/arbitrary-distinct-cell-values/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/arbitrary-initialized-value/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/arbitrary-owning-result/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/control-bind/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/control-initialized/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/deferred-cv-control/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/deferred-cv-forged-owning-result/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/duplicate-entry/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/local-alias-retains-distinct-static-cells/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/marker-control/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/missing-reference-class/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/owning-result-control/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/suppression-result-forged-deferred-name/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/two-cell-control/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/two-static-entries-share-cell/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/undefined-persistent-cell/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-bind-origin/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-deferred-cv-name/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-entry-origin/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-marker-begin-line/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-marker-bind-line/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-marker-name/runner.command.json",
+        ".tools/review11-statics-controls-replay-7lszirf9/wrong-marker-stored-mode/runner.command.json",
+        ".tools/review11-statics-dense-j2qmt2xo/static-reentry-array-shared-alias/runner.command.json",
+        ".tools/review11-statics-dense-j2qmt2xo/static-saved-suppression-typed-initializer-error/runner.command.json",
+        ".tools/review11-statics-dense-j2qmt2xo/static-suppressed-float-return-cache/runner.command.json",
+        ".tools/review11-statics-dense-j2qmt2xo/static-suppressed-null-cache-restoration/runner.command.json"
+      ],
+      "scope": "Exact final25 protocol and4 dense runner commands/tool hashes/modes, zero exit, stdout true and empty stderr."
+    }
+  },
+  "inventory": {
+    "constructors": 169,
+    "obligations": 306,
+    "partial": 135,
+    "pending": 170,
+    "validated": 1,
+    "changed_obligation": "storage.static-bindings pending\u2192partial",
+    "changed_constructors": [
+      "NStaticVar",
+      "NStmtStatic"
+    ],
+    "qualification": "Only oracle identity is validated; source helper/prepass coverage does not close a family."
+  },
+  "remaining": [
+    "Main-script static/global-view synchronization",
+    "Closure/arrow/method/trait/inherited static identity",
+    "Objects/destructors and exception/catch retries",
+    "Dynamic include/eval source and op-array lifetime",
+    "Remaining builtin/callable protocols and complete core inventory",
+    "Full current syntax audit and fresh network-isolated offline rebuild/audit"
+  ],
+  "next_handoff": "docs/semantics/MAIN-STATICS-HANDOFF.md",
+  "historical_integration": {
+    "review": "coverage/semantics/callable-integration-review.json",
+    "commit": "f244a78e",
+    "fingerprint": "981/764",
+    "qualification": "Broad5706 ordinary/263 request/751 callable/5751 compiler profiles remain historical, not rerun or relabelled for111/112."
+  }
+}
