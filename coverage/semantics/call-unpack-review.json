@@ -1,0 +1,980 @@
+{
+  "status": "accepted",
+  "scope": "Bounded direct user-function array call unpack107/108, source-derived emitted class/line, binding/default ordering and ownership. No Traversable, builtin body/default/callback, dynamic callable, exception or full core/family closure.",
+  "implementation": {
+    "commit": "adb21f56",
+    "fingerprint": {
+      "sha256": "3f3ca6b6576f8463ed7f954ec664e5169872b669d6b24e5580e1671d46c1d6e6",
+      "files": 981,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "paths": [
+      "Makefile",
+      "spec/semantics/105-named-arguments.watsup",
+      "spec/semantics/107-call-unpack-compiler.watsup",
+      "spec/semantics/108-call-unpack.watsup",
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/modules.json",
+      "tests/semantics/call_unpack.py",
+      "tests/semantics/call_unpack_cases.json",
+      "tests/semantics/call_unpack_compiler.py",
+      "tests/semantics/call_unpack_compiler_cases.json",
+      "tests/semantics/call_unpack_protocol.py",
+      "tests/semantics/call_unpack_regression.py",
+      "tests/semantics/call_unpack_state.py",
+      "tests/semantics/named_compiler.py"
+    ]
+  },
+  "semantic_gate_identity": {
+    "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+    "files": 981,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "bridges": {
+    "cursor_and_protocol": {
+      "result": "pass",
+      "baseline": {
+        "sha256": "e1bf0d3ee61f60eb23dcc7ae5ce895291fbff552d55982d91c717e59ca7c234b",
+        "files": 972,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "original_final": {
+        "sha256": "862dc220efc0c8935eee91e507e6deab0ab71bf8206bd853bef97c556c3820a0",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "cursor_guard": {
+        "sha256": "3a108db31a636b6140156a996d641b0fe63ad4b8424fef185c1e3a0f94d75ed8",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "final": {
+        "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "guard_delta": [
+        "spec/semantics/108-call-unpack.watsup"
+      ],
+      "exact_added_guard_premise": "-- if $(n > 0) \\/ $unpack_before_valid(S, punpackcall, 1)",
+      "test_delta": [
+        "tests/semantics/call_unpack_protocol.py"
+      ],
+      "unchanged_across_both": 979,
+      "all_modes_equal": true,
+      "compiler_paths_exact": [
+        "spec/semantics/107-call-unpack-compiler.watsup",
+        "tests/semantics/call_unpack_compiler.py",
+        "tests/semantics/call_unpack_compiler_cases.json",
+        "tests/semantics/named_compiler.py"
+      ],
+      "installation_paths": [
+        "Makefile",
+        "spec/semantics/105-named-arguments.watsup",
+        "spec/semantics/107-call-unpack-compiler.watsup",
+        "spec/semantics/108-call-unpack.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/modules.json",
+        "tests/semantics/call_unpack.py",
+        "tests/semantics/call_unpack_cases.json",
+        "tests/semantics/call_unpack_compiler.py",
+        "tests/semantics/call_unpack_compiler_cases.json",
+        "tests/semantics/call_unpack_protocol.py",
+        "tests/semantics/call_unpack_regression.py",
+        "tests/semantics/call_unpack_state.py",
+        "tests/semantics/named_compiler.py"
+      ],
+      "scope": "One finite first-container cursor0 premise and one maintained protocol successor; prior gate identities remain unchanged."
+    },
+    "unused_helper_removal": {
+      "result": "pass",
+      "semantic_gates": {
+        "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "installation": {
+        "sha256": "3f3ca6b6576f8463ed7f954ec664e5169872b669d6b24e5580e1671d46c1d6e6",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "changes": [
+        "spec/semantics/108-call-unpack.watsup"
+      ],
+      "removed_lines": [
+        "dec $unpack_expression(pstate, punpackcall) : expression\n",
+        "def $unpack_expression(S, punpackcall) = $named_expression($named_source(S, punpackcall.CALLSITE, punpackcall.INDEX))\n"
+      ],
+      "before_occurrences": [
+        [
+          "spec/semantics/108-call-unpack.watsup",
+          2
+        ]
+      ],
+      "after_occurrences": [],
+      "unchanged": 980,
+      "all_modes_equal": true,
+      "scope": "Unused unpublished helper declaration/definition removal only; no runtime source/result/state behavior or test changed."
+    }
+  },
+  "independent": {
+    "result": "pass",
+    "fingerprint": {
+      "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+      "files": 981,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "source_contexts": 7,
+    "protocol_cases": 34,
+    "protocol_assertions": 824,
+    "protocol_fresh_native_contexts": 7,
+    "dense_cases": 4,
+    "dense_assertions": 1063,
+    "compatibility_cases": 2,
+    "complete_response_cuts": 14,
+    "compatibility_projection": "none",
+    "decoded_responses": 61,
+    "clean_worker_closures": 13,
+    "standalone_true": 38,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-source-final-moxz5r47/report.json",
+        "sha256": "1ff85f764a4b1e1a6d41ee231ea0d51af8591ed61b7836e7ef695c33b3d9cd76",
+        "assertions": null,
+        "cases": 7
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-compatibility-final-szjqekaq/report.json",
+        "sha256": "8e46ef31894cb1c959eed7896806a9fad2757a59f0fef671cffe713966eab385",
+        "assertions": null,
+        "cases": 2
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-final-cursor/.tools/call-unpack-protocol-lfoqjqyn/report.json",
+        "sha256": "20c17bd66b19e4f9c633cb51f3e26cb6b566a3f0e9b2a343d0e690b3b35f3ea6",
+        "assertions": 824,
+        "cases": 34
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-state-w4afv15n/report.json",
+        "sha256": "0e451ffd0e1cd3b17f3851f27179d2bfcafc68d561a7439458fe190550641e09",
+        "assertions": 273,
+        "cases": 1
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-state-261zznk0/report.json",
+        "sha256": "af561df4151c41d9ace4dbe2b5f70e7dc00e29c545b5615100c651c7dcee34f0",
+        "assertions": 225,
+        "cases": 1
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-state-umdu8bhe/report.json",
+        "sha256": "55c999a6ae9ed3e6c5e68bf4985f7dda2307908605717694bd4af4dc5a198227",
+        "assertions": 285,
+        "cases": 1
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/review10-unpack-state-fmu43ioy/report.json",
+        "sha256": "27abff04b3042213a6f89b413632220ddb4dedb391eabcab16514794b5db0698",
+        "assertions": 280,
+        "cases": 1
+      }
+    ]
+  },
+  "author": {
+    "source_profiles": 55,
+    "normal": 31,
+    "php_errors": 18,
+    "static_errors": 6,
+    "compiler_phases": 29,
+    "compiler_projections": 56,
+    "protocol_controls": 34,
+    "protocol_assertions": 824,
+    "dense_cases": 2,
+    "dense_assertions": 435,
+    "adjacent_runtime_profiles": 12,
+    "builtin_result_dependencies": 3,
+    "raw_audit": {
+      "result": "pass",
+      "installation": {
+        "sha256": "3f3ca6b6576f8463ed7f954ec664e5169872b669d6b24e5580e1671d46c1d6e6",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "gates": [
+        {
+          "gate": "call-unpack",
+          "identity": {
+            "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+            "files": 981,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "report_sha256": "f823e14371156fd8efa56776310f7203ce5c4b94e49dc06a54670b4d16fce13a",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-unpack108/retained55-final981cursor-qb67ye86"
+        },
+        {
+          "gate": "call-unpack-protocol",
+          "identity": {
+            "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+            "files": 981,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "report_sha256": "0bba7a3c618e3fe665da84b9e49bd307356f91be8c55659298cb5b2997a8a0c5",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-unpack-final-cursor/.tools/call-unpack-protocol-_wom8kyt"
+        },
+        {
+          "gate": "call-unpack-state",
+          "identity": {
+            "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+            "files": 981,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "report_sha256": "8b74a21e50b765d8eabbba9bce72541a6e7a97fc5c10e8aa2ae394b33da2fa92",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-unpack108/dense2-cursor-successor-hj6ouimf"
+        },
+        {
+          "gate": "call-unpack-compiler",
+          "identity": {
+            "sha256": "862dc220efc0c8935eee91e507e6deab0ab71bf8206bd853bef97c556c3820a0",
+            "files": 981,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "report_sha256": "3b53b0d4b1261cdddff4fb08945cc15a318a39f22874e682c0c1d88b751b32fb",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-unpack-final/.tools/call-unpack-compiler-sniri3pe"
+        },
+        {
+          "gate": "call-unpack-regression",
+          "identity": {
+            "sha256": "862dc220efc0c8935eee91e507e6deab0ab71bf8206bd853bef97c556c3820a0",
+            "files": 981,
+            "scope": [
+              "frontend",
+              "adapter",
+              "spec",
+              "native",
+              "tests",
+              "scripts",
+              "bin",
+              "vendor/php-parser",
+              "Makefile",
+              "dune-project",
+              "runtime binaries",
+              "encoding-spellings inventory",
+              "comparison oracle archives"
+            ]
+          },
+          "report_sha256": "c3e3560ccbb2f981fecc4fe4ac442f71cdec4886cb4ba14d068a085c8577c83e",
+          "raw": "/home/user/workspace/php-spec/.tools/runtime7-unpack-final/.tools/call-unpack-regression-uze2qf4p"
+        }
+      ],
+      "decoded_responses": 219,
+      "clean_worker_closures": 10,
+      "standalone_true": 37,
+      "overlapping_runtime_native_profiles": 76,
+      "dense_fixtures_identical": true,
+      "scope": "Source55/protocol34/state2 on ec4; compiler29/regression12 on862d. Exact native/context and unchanged prepared state fixtures retained. Dead-helper-only3f3 bridge separate."
+    }
+  },
+  "publication": {
+    "result": "pass",
+    "canonical": {
+      "sha256": "3f3ca6b6576f8463ed7f954ec664e5169872b669d6b24e5580e1671d46c1d6e6",
+      "files": 981,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "code_commit": "adb21f56",
+    "compiler_paths": {
+      "coverage/semantics/call-unpack-compiler-originals.json": {
+        "sha256": "3929c9a62c971ccf030a6c34482cc406b1f5bf7e0b9e488822f292e2c4dd78ff",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-compiler-originals.tar.xz": {
+        "sha256": "cb917ba96b9585658c971fb0856155995912dd3588c681a846cc950581c978ee",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-compiler-pairing.json": {
+        "sha256": "9cc63839e512860ca744689d24c8e9a82b915b1b2c169f61cf456fb3de99347a",
+        "mode": 436
+      },
+      "docs/semantics/CALL-UNPACK-COMPILER.md": {
+        "sha256": "574c5026f28b52b84bbce52a6fbe95a6a66f131eb4b5ee440ec37287c3c6536a",
+        "mode": 436
+      }
+    },
+    "author_paths": {
+      "coverage/semantics/call-unpack-runtime-originals.json": {
+        "sha256": "1d7fab53d276a08347e2c3f1cbded35917b3fb4f2af8a3317b1fffdac1167913",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-runtime-originals.tar.xz": {
+        "sha256": "51759cc45a9fc2cbcb57b86035e18a8d005ccdc2657e4588038311fa7c72db39",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-runtime-publication-originals.json": {
+        "sha256": "f84250cef782146177fb5f84e203d59e40cb51eaf9e30f4b65df976cad271e17",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-runtime-publication-originals.tar.xz": {
+        "sha256": "e70de69230d5533ef8a9c6732b5ab4f9e15259b03a2c2edc2fee96a836981d28",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-runtime.json": {
+        "sha256": "cf408dbad4de2a953a55e343de68b1f6c175c6c12d89064b66c5b7ab7262a786",
+        "mode": 436
+      },
+      "coverage/semantics/call-unpack-compiler.json": {
+        "sha256": "3b53b0d4b1261cdddff4fb08945cc15a318a39f22874e682c0c1d88b751b32fb",
+        "mode": 436
+      },
+      "docs/semantics/SOURCE-CALL-UNPACK.md": {
+        "sha256": "20b69d5242e88726ce122536dce0fef4cfea56968c04418d8bf56525f0e65505",
+        "mode": 436
+      }
+    },
+    "publication_archive": {
+      "archive": "coverage/semantics/call-unpack-runtime-publication-originals.tar.xz",
+      "sha256": "e70de69230d5533ef8a9c6732b5ab4f9e15259b03a2c2edc2fee96a836981d28",
+      "bytes": 61736,
+      "payload_files": 62,
+      "members": 63,
+      "manifest_sha256": "ea5803f41fdb16fa42e4d97aa7957d0e06602ee0d3615e2e45565278a58ba832",
+      "fingerprint": {
+        "sha256": "3f3ca6b6576f8463ed7f954ec664e5169872b669d6b24e5580e1671d46c1d6e6",
+        "files": 981,
+        "scope": [
+          "frontend",
+          "adapter",
+          "spec",
+          "native",
+          "tests",
+          "scripts",
+          "bin",
+          "vendor/php-parser",
+          "Makefile",
+          "dune-project",
+          "runtime binaries",
+          "encoding-spellings inventory",
+          "comparison oracle archives"
+        ]
+      },
+      "history_archive_sha256": "51759cc45a9fc2cbcb57b86035e18a8d005ccdc2657e4588038311fa7c72db39"
+    },
+    "cli_profiles": 8,
+    "scope": "All canonical981 hashes/modes; exact four compiler and seven author publication files; all62 publication payload hashes/lengths/modes; canonical CLI8 raw JSON/empty stderr/exit0 and full retained source/request/native observations."
+  },
+  "reviewed_contracts": [
+    "Integer insertion order and per-container named phase; original source indices, effective positional extent, fixed holes and extra named entries remain separate.",
+    "Eligible CV/VAR prescan separates before per-entry errors; each NEXT container and accumulated SENT entry owns independently. Captured references preserve identity, while temporary values retain existing aliases and create fresh references for other entries.",
+    "Compiler emitted class uses actual checked source, including conditional/coalesce materialization, list forwarding and suppression VAR preservation; no change to101. Known builtin result classes remain dependent.",
+    "NArg false CODEEXPR records SEND_UNPACK emission line independently of child/outer call lines. Narrow compiler projection binds marker, computed class and consumed CV name.",
+    "Finite source lane/callee/suffix/index, active PREP result shape, NEXT cursor/key phase/presence, first-container cursor-zero prefix and preflight extent/definedness guards reject retained originals without reconstructing prior values. Arbitrary consistent container, reference and sent values remain valid.",
+    "Cacheable interior hole defaults cache before ordinary typed receive; trailing defaults retain ordinary order; cached uncoerced values and fresh omitted reference cells are preserved. Saved suppression and abrupt owner cleanup remain coherent.",
+    "Full non-unpack baseline972 states and responses agree at14 cuts for two programs without projection."
+  ],
+  "retained_failures": [
+    "Initial compiler structural formulation and optional-pattern VAR passthrough failures are in compiler history.",
+    "Actual source @AssignRef result22 versus11 and nested SEND line5 versus4 repaired before acceptance.",
+    "Actual source/state line, class, CV-name, result-shape, lane, cursor, phase, presence and default-extent counterexamples retained with repaired positives. Cursor-zero replay guard was added after former862 gates; affected final source/protocol/dense/compatibility checks reran on ec4.",
+    "Independent fixture syntax/binder/expected-event/lane assumptions and publication audit status-field assumption retained separately from PHP mismatches."
+  ],
+  "archives": {
+    "review": {
+      "archive": "coverage/semantics/call-unpack-review-originals.tar.xz",
+      "sha256": "804ceb0ed9f4d89149a7f05fda7f4ae93fb71113dadc5f0b93df869d47f048e4",
+      "bytes": 24496280,
+      "paths": 3004,
+      "dependencies": {
+        "runtime": "51759cc45a9fc2cbcb57b86035e18a8d005ccdc2657e4588038311fa7c72db39",
+        "compiler": "cb917ba96b9585658c971fb0856155995912dd3588c681a846cc950581c978ee"
+      },
+      "scope": "Independent original source/native contexts, actual pre-fix source/state counterexamples and repaired arbitrary-consistent positives, retained fixture/auditor failures, final source/protocol/dense/full-state compatibility gates, raw wires/process closures, exact producers and publication/archive audits. Full immutable source/tool snapshots are bound in linked runtime/compiler archives; independently copied manifests are retained here. Historical gate identities are not relabeled."
+    },
+    "compiler_audit": {
+      "result": "pass",
+      "archive": "cb917ba96b9585658c971fb0856155995912dd3588c681a846cc950581c978ee",
+      "payloads": 11752,
+      "bytes": 1533652,
+      "snapshots": {
+        "baseline972": {
+          "sha256": "e1bf0d3ee61f60eb23dcc7ae5ce895291fbff552d55982d91c717e59ca7c234b",
+          "files": 972,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "first": {
+          "sha256": "b457e4baad3c9e2fe2881c132e1dc59603eb4e774c8fca9f28d10ec962f91210",
+          "files": 973,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "repaired": {
+          "sha256": "9d4492e2546f776160ec564efe87a158199ec3723a5868a49e5aada1cdba85ce",
+          "files": 973,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "class-repair": {
+          "sha256": "06a4f0b0165d383d50d964ad18750ddffa66016106e13c5bbb9d8826aef079c9",
+          "files": 973,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "send-line-repair": {
+          "sha256": "3d35dccbc905aa2ac18052bfe58a1db71061a6d8768a231c17e482bf41889622",
+          "files": 973,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "compiler-tests": {
+          "sha256": "c46eee8a3c5a7333be9981d3deb01cd04d6e96b9b480bc0c4de02f39922da9e6",
+          "files": 975,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "compiler-tests-final": {
+          "sha256": "ca70926d2dac771ad943571390dd3b408bb5bd718e8d395f6c730b09b93e0402",
+          "files": 975,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      "tools_verified": 35,
+      "scope": "Compiler history and exact source/tool closures only; final pairing and runtime gates remain separate."
+    },
+    "runtime_audit": {
+      "result": "pass",
+      "archive_sha256": "51759cc45a9fc2cbcb57b86035e18a8d005ccdc2657e4588038311fa7c72db39",
+      "payload_paths": 17980,
+      "snapshots": {
+        "baseline968": {
+          "sha256": "ab3897e27acbc938b0d9cd49fb9b092400e5e3574f08f0af0b3f329bce95a2c2",
+          "files": 968,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "baseline972": {
+          "sha256": "e1bf0d3ee61f60eb23dcc7ae5ce895291fbff552d55982d91c717e59ca7c234b",
+          "files": 972,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "first": {
+          "sha256": "7e818717ec42ea65b8102ccb132a0a5270d96c36a19e834003c906bf4ede33ac",
+          "files": 974,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "class-repair": {
+          "sha256": "a3ee121b6fd8ea192d9eee5bd1e554473fffe25752bd28be736b2f192d11f94c",
+          "files": 974,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "send-lines": {
+          "sha256": "f0c98eeab08c51bacb5d21dced7f00155780021cd7b56da72d6953e9ed53537b",
+          "files": 976,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "guarded": {
+          "sha256": "43be5e83fc4251b0094314c6a63304e24a4c66d6b1439ac4e75d7e90ceb99459",
+          "files": 977,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "cv-projection": {
+          "sha256": "02112e0f09d25d360f9046d91aba103fc3fb451ff63b0eb17c6d531e09573f80",
+          "files": 980,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "final": {
+          "sha256": "862dc220efc0c8935eee91e507e6deab0ab71bf8206bd853bef97c556c3820a0",
+          "files": 981,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "cursor-zero": {
+          "sha256": "3a108db31a636b6140156a996d641b0fe63ad4b8424fef185c1e3a0f94d75ed8",
+          "files": 981,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "final-cursor": {
+          "sha256": "ec4cf850d02bc06eb13d58684480e0be34000211abf17895623ee17d78551a4f",
+          "files": 981,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        },
+        "final-clean": {
+          "sha256": "3f3ca6b6576f8463ed7f954ec664e5169872b669d6b24e5580e1671d46c1d6e6",
+          "files": 981,
+          "scope": [
+            "frontend",
+            "adapter",
+            "spec",
+            "native",
+            "tests",
+            "scripts",
+            "bin",
+            "vendor/php-parser",
+            "Makefile",
+            "dune-project",
+            "runtime binaries",
+            "encoding-spellings inventory",
+            "comparison oracle archives"
+          ]
+        }
+      },
+      "independent_snapshot_matches": {
+        "baseline972": "review10-unpack-baseline972",
+        "first": "review10-unpack-first",
+        "send-lines": "review10-unpack-send-lines",
+        "guarded": "review10-unpack-guarded",
+        "cv-projection": "review10-unpack-cv-projection",
+        "final": "review10-unpack-final",
+        "cursor-zero": "review10-unpack-cursor-zero",
+        "final-cursor": "review10-unpack-final-cursor",
+        "final-clean": "review10-unpack-final-clean"
+      },
+      "pinned_sources": 7,
+      "scope": "Every author payload/hardlink/hash/length/mode and all eleven complete source/binary manifests; independently held nine snapshots exact. Historical identities and staged guard/test/dead-helper bridges remain explicit."
+    }
+  },
+  "next": "After root reads accepted checkpoint: freeze current ordinary/request/callable integration membership and profiles; validate representative full request wrapper source/native profile before263 campaign. No109 admission until this checkpoint. Complete core, full syntax and fresh offline gates remain required.",
+  "compiler_evidence_commit": "50d0fbbceac2610a9c4bb7e873dc485ef487b149",
+  "runtime_evidence_commit": "5318ed520095e1ce67b8909a30e2a4167e040701"
+}
