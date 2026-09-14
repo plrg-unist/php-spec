@@ -1,0 +1,168 @@
+{
+  "scope": "Exact compiler source/test bytes and modes paired with installed runtime110 snapshot. Compiler gates retain985/614f identity; author runtime and fresh maintained compiler gates retain990/866 identity. Independent source/protocol acceptance remains separately linked.",
+  "compiler": {
+    "sha256": "614fc2f04122ef17745d60f41501b12f3bfa311626b760f4943692838853be34",
+    "files": 985,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "runtime": {
+    "sha256": "866a6afd418595d15fd253eaf8b3ebf20181918abf711b979000367a9e47cb64",
+    "files": 990,
+    "scope": [
+      "frontend",
+      "adapter",
+      "spec",
+      "native",
+      "tests",
+      "scripts",
+      "bin",
+      "vendor/php-parser",
+      "Makefile",
+      "dune-project",
+      "runtime binaries",
+      "encoding-spellings inventory",
+      "comparison oracle archives"
+    ]
+  },
+  "compiler_inputs_sha256": "590395a0d8a348c249451c091c68390b3f6080f27d66f7c39224c865cea3082f",
+  "runtime_inputs_sha256": "89108f7d3e387eb6cda6de31b100b6cace37c7566eaabf4b731fb70712a81557",
+  "exact_compiler_inputs": {
+    "spec/semantics/46-source-compiler.watsup": {
+      "sha256": "5df2f56f1abcf41ae4f684866cd745d269b3fc96df207b71fce183178e94fd59",
+      "mode": 436
+    },
+    "spec/semantics/78-function-compiler.watsup": {
+      "sha256": "b5cce3ff6f8f5491d6a0d6d920d433f67d079559e3ccf79189286c39e5d635b2",
+      "mode": 436
+    },
+    "spec/semantics/107-call-unpack-compiler.watsup": {
+      "sha256": "3393343a8dc225af9fd1db5dcb4a3f6e06ef39ad345eecb43a51f18ab563ab90",
+      "mode": 436
+    },
+    "spec/semantics/109-dynamic-call-compiler.watsup": {
+      "sha256": "773000bc643bce76e33341ec900807b12522d0736ea61e974b66f2021ceb302d",
+      "mode": 436
+    },
+    "tests/semantics/dynamic_call_compiler.py": {
+      "sha256": "4575b2cb3f1121ab56d27ad24a22216f545c56d28b0b606989ca08cdf751219d",
+      "mode": 436
+    },
+    "tests/semantics/dynamic_call_compiler_cases.json": {
+      "sha256": "1e0af76d20b845a03d6cbd024ea9cab23fedb181c23cbbf791bc15d73663a267",
+      "mode": 436
+    },
+    "tests/semantics/source_compiler.py": {
+      "sha256": "1e31ea66140b5c88d1ff274b727451cb440113ece405a75f20aeef90c5adf27e",
+      "mode": 436
+    },
+    "tests/semantics/call_reference_compiler.py": {
+      "sha256": "9772d2f9040bd4ec4e9b2d0d970b290b343ea3030208397f31f7253918743032",
+      "mode": 436
+    }
+  },
+  "changed_common": {
+    "Makefile": {
+      "before": "02625b58c9b7b26673a3376bffb0b261d465b912c579243ae2d60ca9cf8f0e3e",
+      "after": "ea0925140fce78a151c25a1972157f3282e410ebcef652dfa60626511935488e"
+    },
+    "spec/semantics/110-dynamic-calls.watsup": {
+      "before": "86ec381831e35aee444dad65eca65f91aa0bbbc5026477608ada499dca7dfbe6",
+      "after": "d6fc5f078725c2fe92400dd26be60cfb179ac7e9749ba987dd290dbf92e5d50f"
+    },
+    "spec/semantics/84-call-integrity.watsup": {
+      "before": "9d17c9e6c83d1b59c7ee0cb12788928d2a077e5ccc8c5a0bc3aa594f62d23eb0",
+      "after": "c86b6ce09f39430199b6b2a354f524f0b8e6b72ce57dd238e689e5e7178d1de1"
+    }
+  },
+  "added": {
+    "tests/semantics/dynamic_call.py": "f992174cfeb9e1b03501201bda28c6637bf6f7a596e7a085f11023bd51227764",
+    "tests/semantics/dynamic_call_cases.json": "a666b09be263c4a52dfd984b7309eefc561ca92c64af75eecbc37f892ff90f5b",
+    "tests/semantics/dynamic_call_protocol.py": "484e86015e9b709a79ccd60b7410ca8fa498ff2387c6daad16e359226da6cc84",
+    "tests/semantics/dynamic_call_regression.py": "af3934bec8b33076490a50745b979f55d9bafba017f286ddd39e6564997a3e5f",
+    "tests/semantics/dynamic_call_state.py": "0b4b28277dd80e59031b1abd1d3a9146f4521da9b4cad4443bf31b364774c27e"
+  },
+  "removed": [],
+  "changed_common_modes": {},
+  "gates": {
+    "compiler_first": "first/inputs.json",
+    "compiler_first_identity": "982/0b2f342a",
+    "first_phase31": "phase-uxnjg3e7/report.json",
+    "first_projection31": "phase-mwfohwg8/report.json",
+    "pre_repair_outer_call_projection": {
+      "path": "phase-qjq19eyw/report.json",
+      "qualification": "Passed the pre-repair model projection outer CALL4. Native successful source proves CALL6; this is not native line agreement."
+    },
+    "line_repair": {
+      "identity": "985/99e97733",
+      "gate": "phase-d_4mkny1/report.json",
+      "source_controls": 3
+    },
+    "constant_name_repair": {
+      "identity": "985/79d87c90",
+      "gate": "phase-cxxemw8j/report.json",
+      "source_controls": 7
+    },
+    "final": {
+      "identity": "985/614fc2f0",
+      "inputs": "compiler-final/inputs.json",
+      "gate": "final-phase-rc3yl936/report.json",
+      "source_rows": 44,
+      "compiler_phases": 42,
+      "compiler_boundaries": 2,
+      "projections": 275
+    },
+    "shared_current_source": {
+      "identity": "985/3eafae4b",
+      "first": "shared-gates-ltezcu2_",
+      "remaining": "shared-gates-nemg0fuf",
+      "qualification": "Call-reference29 completed. Function-argument39 completed with both clean workers/report pass, then wrapper cleanup used nonexistent proc instead of p. Outer exit1 retained; no native or compiler rerun for that wrapper failure."
+    },
+    "shared_corrected_code": {
+      "identity": "985/614fc2f0",
+      "gate": "shared-final-ctbl53hu/report.json",
+      "qualification": "Six exact current-source packets re-executed under corrected78/109; native observations retain their original985/3eaf contexts.",
+      "counts": {
+        "call_reference": 29,
+        "function_argument": 39,
+        "named": 60,
+        "named_pending": 1,
+        "call_unpack": 29,
+        "reference_return": 58,
+        "typed": 57,
+        "typed_pending": 7
+      }
+    },
+    "originals": {
+      "retained972": 20,
+      "new981": 24,
+      "new_manifest": "records24-new.json",
+      "separate_opcode_profiles_new": 14,
+      "separate_opcode_profiles_retained": 9
+    },
+    "stale_expectation": "stale-compiler-original-failure/report.json",
+    "runtime_pairing": "Separate runtime110 evidence retains first invalid descriptor, actual multiline CALL4vs6 and raw CONST slash lookup failures. Final source/protocol identity is not relabeled as this compiler985 gate.",
+    "scope": "Dynamic string user-call compilation, source-derived initial/later constant distinction, explicit callee INIT versus call instruction lines, and shared named/unpack/reference/type compiler paths. Initial literal builtin compilation, builtin bodies and object/Closure callable protocols remain required dependencies. Accepted full integration981/764 is historical once109/110 changes activate."
+  },
+  "installed_code_commit": "8ec071580ccf179769eed820b51434b8986d9801",
+  "canonical_verified": true,
+  "compiler_archive": {
+    "manifest": "coverage/semantics/dynamic-call-compiler-originals.json",
+    "sha256": "6ce68d42e3a7665f5229b86d0af328b451fb536994f736b1307baf444c8ee518"
+  },
+  "runtime_evidence": "coverage/semantics/dynamic-call-runtime.json",
+  "independent_review": "coverage/semantics/dynamic-call-review.json"
+}
