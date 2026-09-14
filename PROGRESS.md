@@ -42,6 +42,18 @@ Next is named argument binding and hole-default preflight; read the
 Compiler7/runtime7/review10 continue under root coordination. Frozen88d514f8
 and independent9369a2a0 preparation are not implementation acceptance.
 
+Named104/105 is in private review; canonical959/4854 is unchanged. Resume from
+`.tools/review10-named-review-plan.md` and runtime
+`.tools/runtime7-named-preparation/INTERFACE105.md`. Independent preflight/bind18
+and pending/tail20 controls pass the repaired078f/6c5e snapshots; arbitrary
+consistent values remain valid. Retained source failures require the shared
+deferred-CV SEND line correction and source-bound argument metadata. Private code
+968/d035 includes those repairs and excludes named calls from legacy positional
+tasks; final968/55cd freezes the maintained producers. Portable44 and source70 are
+running. Final state/compatibility gates and archive publication
+remain pending; early compiler049c and its later line supplement keep distinct
+identities. No named acceptance or family closure is claimed.
+
 The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains named,
 unpacked and remaining variadic/callable protocols, objects, exceptions, dynamic
 sources, generators/fibers, lifetime and core intrinsics. Mixed caller/callee
