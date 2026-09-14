@@ -12,7 +12,8 @@ dec $ppclosure_uses(ppstate, pcpath, nat, phpType22*, ptbytes*) : ppstate
 dec $ppclosure_use(ppstate, pcpath, ptbytes, bool, metadata, ptbytes*) : ppstate
 dec $ppclosure_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
 
-def $ppclosure_template(pfunction) = (pfunction.BODY = pcpath ++ [PCFIELD 6])
+dec $pparrow_template(pfunction) : bool
+def $ppclosure_template(pfunction) = (pfunction.BODY = pcpath ++ [PCFIELD 6] \/ $pparrow_template(pfunction))
   -- if pfunction.ORIGIN = PORIGIN n pcpath
 def $ppclosure_parent(P) = P.LOCATION.FILE -- if P.FOLD.FUNCTION = eps
 def $ppclosure_parent(P) = P.FOLD.FUNCTION -- if P.FOLD.FUNCTION =/= eps /\ P.CLOSURE

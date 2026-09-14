@@ -119,6 +119,7 @@ def $typed_fallthrough_valid(S, porigin) = true
   -- if pfunction.SIGNATURE.RETURNS =/= eps
 def $typed_fallthrough_valid(S, porigin) = false -- otherwise
 
+dec $arrow_context(pstate) : bool
 dec $typed_return_task_valid(pstate, int) : bool
 def $typed_return_task_valid(S, z) = true
   -- if S.CURRENT = eps
@@ -127,6 +128,7 @@ def $typed_return_task_valid(S, z) = true
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS = eps
   -- if ~pfunction.SIGNATURE.BYREF
+  -- if ~$arrow_context(S)
 def $typed_return_task_valid(S, z) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)

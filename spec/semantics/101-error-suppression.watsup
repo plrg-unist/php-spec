@@ -77,11 +77,11 @@ dec $silence_in_function(pfunction*, nat, pcpath) : bool
 def $silence_in_function(eps, n, pcpath) = false
 def $silence_in_function(pfunction :: pfunction_tail*, n, pcpath) = ((pfunction.CODE.UNIT = n /\ $ppfunction_contains(pfunction, pcpath)) \/ $silence_in_function(pfunction_tail*, n, pcpath))
 dec $silence_owner(pstate, porigin) : bool
-def $silence_owner(S, PORIGIN n pcpath) = ~$silence_in_function(S.FUNCTIONS, n, pcpath)
+def $silence_owner(S, PORIGIN n pcpath) = ~$silence_in_function($all_functions(S), n, pcpath)
   -- if S.CURRENT = eps
 def $silence_owner(S, PORIGIN n pcpath) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.CODE.UNIT = n
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, b))
 def $silence_owner(S, porigin) = false -- otherwise

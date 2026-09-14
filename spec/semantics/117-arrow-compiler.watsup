@@ -1,0 +1,142 @@
+;; Arrow discovery follows Zend AST child order and creates real closure templates.
+dec $pparrow_variable(phpType32) : ptbytes?
+def $pparrow_variable(BYTES text) = ($base64(text))
+def $pparrow_variable(expression) = (ptbytes_name) -- if $parser_literal(expression) = (PSTRING ptbytes_name)
+def $pparrow_variable(phpType32) = eps -- otherwise
+dec $pparrow_add(ptbytes*, ptbytes*) : ptbytes*
+def $pparrow_add(ptbytes_seen*, eps) = ptbytes_seen*
+def $pparrow_add(ptbytes_seen*, ptbytes_name :: ptbytes_tail*) = $pparrow_add(ptbytes_seen*, ptbytes_tail*) -- if ptbytes_name <- ptbytes_seen*
+def $pparrow_add(ptbytes_seen*, ptbytes_name :: ptbytes_tail*) = $pparrow_add(ptbytes_seen* ++ [ptbytes_name], ptbytes_tail*) -- if ~(ptbytes_name <- ptbytes_seen*)
+dec $pparrow_discover(pcnode) : ptbytes*
+dec $pparrow_walk(pcoccurrence*) : ptbytes*
+def $pparrow_walk(eps) = eps
+def $pparrow_walk((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $pparrow_add($pparrow_discover(pcnode), $pparrow_walk(pcoccurrence*))
+dec $pparrow_explicit(phpType22*) : ptbytes*
+def $pparrow_explicit(eps) = eps
+def $pparrow_explicit((NClosureUse (NExprVariable (BYTES text) metadata_var) phpType4 metadata) :: phpType22*) = $pparrow_add([$base64(text)], $pparrow_explicit(phpType22*))
+def $pparrow_discover(NExprVariable phpType32 metadata) = [ptbytes_name]
+  -- if $pparrow_variable(phpType32) = (ptbytes_name)
+  -- if ptbytes_name =/= $ptascii("this") /\ ~$psautoglobal(ptbytes_name)
+def $pparrow_discover(NExprVariable phpType32 metadata) = eps
+  -- if $pparrow_variable(phpType32) = (ptbytes_name)
+  -- if ptbytes_name = $ptascii("this") \/ $psautoglobal(ptbytes_name)
+def $pparrow_discover(NExprVariable phpType32 metadata) = $pparrow_walk($pcfield_phpType32(phpType32, eps))
+  -- if $pparrow_variable(phpType32) = eps
+def $pparrow_discover(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 (SEQUENCE phpType22*) phpType18 phpType23 metadata) = $pparrow_explicit(phpType22*)
+def $pparrow_discover(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = $pparrow_discover(expression)
+;; Zend ARRAY_ELEM stores value before key even though PHP-Parser lists key first.
+def $pparrow_discover(NArrayItem phpType5 expression phpType4_ref phpType4_unpack metadata) = $pparrow_add($pparrow_discover(expression), $pparrow_walk($pcfield_phpType5(phpType5, eps)))
+def $pparrow_discover(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = eps
+def $pparrow_discover(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = eps
+def $pparrow_discover(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = eps
+def $pparrow_discover(NStmtTrait phpType14 phpType3 phpType23 metadata) = eps
+def $pparrow_discover(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = eps
+def $pparrow_discover(pcnode) = $pparrow_walk($pcchildren(pcnode, eps)) -- otherwise
+
+dec $pparrow_param_name(phpType17) : ptbytes*
+def $pparrow_param_name(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_variadic (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = [$base64(text)]
+def $pparrow_param_name(phpType17) = eps -- otherwise
+dec $pparrow_param_names(phpType16) : ptbytes*
+dec $pparrow_param_list(phpType17*) : ptbytes*
+def $pparrow_param_names(SEQUENCE phpType17*) = $pparrow_param_list(phpType17*)
+def $pparrow_param_list(eps) = eps
+def $pparrow_param_list(phpType17 :: phpType17_tail*) = $pparrow_param_name(phpType17) ++ $pparrow_param_list(phpType17_tail*)
+dec $pparrow_remove(ptbytes*, ptbytes*) : ptbytes*
+def $pparrow_remove(eps, ptbytes_params*) = eps
+def $pparrow_remove(ptbytes_name :: ptbytes_tail*, ptbytes_params*) = $pparrow_remove(ptbytes_tail*, ptbytes_params*) -- if ptbytes_name <- ptbytes_params*
+def $pparrow_remove(ptbytes_name :: ptbytes_tail*, ptbytes_params*) = ptbytes_name :: $pparrow_remove(ptbytes_tail*, ptbytes_params*) -- if ~(ptbytes_name <- ptbytes_params*)
+dec $pparrow_outer(ppstate, ptbytes*) : ppstate
+def $pparrow_outer(P, eps) = P
+def $pparrow_outer(P, ptbytes_name :: ptbytes_tail*) = $pparrow_outer($ppstatic_cvrecord(P, ptbytes_name), ptbytes_tail*)
+
+dec $pparrow_begin(ppstate, pcpath, phpType16, ptbytes*, phpType18, expression, bool, metadata) : ppstate
+dec $pparrow_step(ppstate, ppstate, pcpath, ptbytes, ptbytes*, expression, metadata, psprogress) : ppstate
+dec $pparrow_request(ppstate, ppstate, pcpath, ptbytes, ptbytes*, expression, metadata, pscontinuation) : ppstate
+dec $pparrow_ready(ppstate, ppstate, pcpath, ptbytes, ptbytes*, expression, metadata, pscontinuation, pcpath, expression) : ppstate
+dec $pparrow_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+dec $pparrow_uses(ppstate, pcpath, ptbytes*) : ppstate
+dec $pparrow_body(ppstate, pcpath, expression) : ppstate
+dec $pparrow_return(ppstate, pcpath, text?) : ppstate
+
+def $ppdispatch(P, pcpath, NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 phpType18 expression metadata, PPR) = $pparrow_begin($pparrow_outer(P, ptbytes_names*), pcpath, phpType16, ptbytes_names*, phpType18, expression, b_ref, metadata)
+  -- if ptbytes_names* = $pparrow_remove($pparrow_discover(expression), $pparrow_param_names(phpType16))
+
+def $pparrow_uses(P, pcpath, eps) = P
+def $pparrow_uses(P, pcpath, ptbytes_name :: ptbytes_tail*) = $pparrow_uses($ppstatic_cvrecord(P, ptbytes_name)[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCIMPLICIT pcpath ptbytes_name P.LOCATION.LINE]], pcpath, ptbytes_tail*)
+def $pparrow_body(P, pcpath, expression) = P -- if P.COMPLETION =/= PPCNORMAL
+def $pparrow_body(P, pcpath, expression) = $pparrow_return(P_expr, pcpath, eps)
+  -- if P.COMPLETION = PPCNORMAL /\ "never" <- $ptmasks(P.RETURNS)
+  -- if P_expr = $ppexpr(P, pcpath, expression, PPR)
+def $pparrow_body(P, pcpath, expression) = $pparrow_return(P_expr, pcpath, $ppreturn_issue(P.RETURNS, true, P_expr.FOLD.VALUE))
+  -- if P.COMPLETION = PPCNORMAL /\ ~("never" <- $ptmasks(P.RETURNS))
+  -- if P_expr = $ppreturn_expression(P, pcpath, expression)
+def $pparrow_return(P, pcpath, text?) = P -- if P.COMPLETION =/= PPCNORMAL
+def $pparrow_return(P, pcpath, eps) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCARROW pcpath P.LOCATION.LINE]] -- if P.COMPLETION = PPCNORMAL
+def $pparrow_return(P, pcpath, (text)) = $ppconstant_error(P, $ptascii(text), P.LOCATION.LINE) -- if P.COMPLETION = PPCNORMAL
+
+def $pparrow_begin(P, pcpath, phpType16, ptbytes_names*, phpType18, expression_body, b, metadata) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pparrow_begin(P, pcpath, phpType16, ptbytes_names*, phpType18, expression_body, b, metadata) = $pparrow_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true], pcpath, ptbytes, ptbytes_names*, expression_body, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ptbytes = $ppclosure_name(P, metadata)
+
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, psprogress) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSUNSUPPORTED text)) = $ppunsupported(P, text)
+  -- if P.COMPLETION = PPCNORMAL
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSERROR psdiagnostic*)) = $ppsignature_diagnostics(P, psdiagnostic*)
+  -- if P.COMPLETION = PPCNORMAL
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent closure signature")
+  -- if P.COMPLETION = PPCNORMAL /\ ~$ppsupported_signature(pssignature)
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $pparrow_finish(P_outer, P_body, pcpath, ptbytes, pssignature, metadata)
+  -- if P.COMPLETION = PPCNORMAL /\ $ppsupported_signature(pssignature)
+  -- if psparam* = pssignature.PARAMETERS
+  -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+  -- if P_uses = $pparrow_uses(P_header, pcpath ++ [PCFIELD 5], ptbytes_names*)
+  -- if P_body = $pparrow_body(P_uses, pcpath ++ [PCFIELD 5], expression_body)
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDEFAULTREQUEST pscontinuation) = $pparrow_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation[.DIAGNOSTICS = eps])
+  -- if P.COMPLETION = PPCNORMAL
+
+def $pparrow_request(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation) = $pparrow_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, $psstep_resume(pscontinuation, PSNONE))
+  -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+def $pparrow_request(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation) = $pparrow_ready(P_outer, $ppdefault_prepare(P[.LOCATION = P.LOCATION[.LINE = pscontinuation.PARAMETER.LINE]][.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath_default, expression), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation, pcpath_default, expression)
+  -- if pscontinuation.PARAMETER.DEFAULT = (expression)
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if pcpath_default = $ppdefault_path(pcpath, n_index)
+def $pparrow_ready(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation, pcpath_default, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pparrow_ready(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation, pcpath_default, expression) = $pparrow_step(P_outer, $ppdefault_parameter(P, pcpath, n_index), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, $psstep_resume(pscontinuation, PSDEFAULT expression $ppdefault_kind(P.FOLD.VALUE)))
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if P.COMPLETION = PPCNORMAL
+
+
+def $pparrow_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
+  -- if P_body.COMPLETION =/= PPCNORMAL
+def $pparrow_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_restored[.CLOSURETEMPLATES = P_body.CLOSURETEMPLATES ++ [pfunction]]
+  -- if P_body.COMPLETION = PPCNORMAL
+  -- if pfunction = { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY false, LINE $psline(metadata), ENDLINE $psendline(metadata) }
+  -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
+
+
+
+dec $pparrow_entry(pcodeexpr, pcpath) : bool
+def $pparrow_entry(CODEARROW pcpath_arrow z, pcpath) = (pcpath_arrow = pcpath)
+def $pparrow_entry(pcodeexpr, pcpath) = false -- otherwise
+dec $pparrow_marker(pcodeexpr*, pcpath) : bool
+def $pparrow_marker(eps, pcpath) = false
+def $pparrow_marker(pcodeexpr :: pcodeexpr_tail*, pcpath) = ($pparrow_entry(pcodeexpr, pcpath) \/ $pparrow_marker(pcodeexpr_tail*, pcpath))
+def $pparrow_template(pfunction) = $pparrow_marker(pfunction.CODE.EXPRESSIONS, pfunction.BODY)
+
+def $compiled_operands(P, (PPCIMPLICIT pcpath ptbytes n_line) :: ppexprdone*) = (CODEIMPLICIT pcpath ptbytes n_line) :: $compiled_operands(P, ppexprdone*)
+def $compiled_operands(P, (PPCARROW pcpath n_line) :: ppexprdone*) = (CODEARROW pcpath n_line) :: $compiled_operands(P, ppexprdone*)
+def $ppstatic_seen_entry(pfunction*, PPCIMPLICIT pcpath ptbytes_name n_line, ptbytes) = (ptbytes_name = ptbytes /\ ~$ppinner(pfunction*, pcpath))
+def $ppstatic_seen_entry(pfunction*, PPCARROW pcpath n_line, ptbytes) = false
+def $ppmergeoperands(ppconstants, (PPCIMPLICIT pcpath_implicit ptbytes n_line) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCIMPLICIT pcpath_implicit ptbytes n_line) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCIMPLICIT pcpath_implicit ptbytes n_line) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppmergeoperands(ppconstants, (PPCARROW pcpath_arrow n_line) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCARROW pcpath_arrow n_line) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCARROW pcpath_arrow n_line) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppcodepath(CODEIMPLICIT pcpath ptbytes z) = pcpath
+def $ppcodepath(CODEARROW pcpath z) = pcpath

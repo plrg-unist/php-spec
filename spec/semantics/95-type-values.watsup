@@ -85,16 +85,9 @@ def $typed_apply(S, TYPEBOOL pvalue, z) = $truth_value(S, pvalue, z)
 
 ;; The runtime wrapper preserves pure scalar conversion for compiler consumers.
 ;; Only live real closures satisfy the known Closure class in this foundation.
-dec $typed_capture_complete(pitem*) : bool
-def $typed_capture_complete(eps) = true
-def $typed_capture_complete(pitem :: pitem_tail*) = (pitem =/= UNINITIALIZED /\ $typed_capture_complete(pitem_tail*))
+dec $closure_callable(pstate, nat) : bool
 dec $typed_closure(pstate, nat) : bool
-def $typed_closure(S, n) = true
-  -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
-  -- if $typed_capture_complete(pitem*)
-  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
-def $typed_closure(S, n) = false -- otherwise
+def $typed_closure(S, n) = $closure_callable(S, n)
 
 dec $typed_closure_branch(ptbranch) : bool
 def $typed_closure_branch(PTBRANCH ([PTCLASS ptbytes])) = ($ptlc(ptbytes) = $ptascii("closure"))

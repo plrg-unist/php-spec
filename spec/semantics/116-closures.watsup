@@ -1,6 +1,6 @@
 ;; Real closure instances own lexical values and their own initialized static cells.
 ;; Backing storage is not a root: the common reference-count graph owns instances.
-syntax plexical = LEXICAL ptbytes bool int
+syntax plexical = LEXICAL ptbytes bool int | IMPLICIT ptbytes int
 
 dec $closure_lexical_entry(pcodeexpr) : plexical*
 def $closure_lexical_entry(CODELEXICAL pcpath ptbytes b z) = [LEXICAL ptbytes b z]
@@ -107,10 +107,6 @@ def $target_after_enter(S, pcalltarget) = S[.CURRENT = (pcallcontext[.INSTANCE =
   -- if S.CURRENT = (pcallcontext)
 def $target_after_enter(S, pcalltarget) = S -- otherwise
 
-dec $closure_complete(pitem*) : bool
-def $closure_complete(eps) = true
-def $closure_complete(pitem :: pitem_tail*) = (pitem =/= UNINITIALIZED /\ $closure_complete(pitem_tail*))
-
 dec $closure_target_start(pfunction, phpType7*, porigin?, int, nat) : ptask
 dec $closure_retarget(ptask, nat) : ptask
 def $closure_target_start(pfunction, phpType7*, porigin?, z, n) = $closure_retarget($named_start(pfunction, phpType7*, porigin?, z), n)
@@ -121,14 +117,14 @@ def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $closure_target_start
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
-  -- if $closure_complete(pitem*)
+  -- if $closure_callable(S, n)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
   -- if $dynamic_site(S, (porigin))
   -- if $dynamic_fixed_name(S, porigin) = eps
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
-  -- if $closure_complete(pitem*)
+  -- if $closure_callable(S, n)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
 
 ;; Lexical descriptors carry source binding metadata, not an operand value.

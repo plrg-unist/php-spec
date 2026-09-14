@@ -1,0 +1,160 @@
+;; Implicit captures use the existing real object store. Undefined is a completed
+;; value only in a source-authenticated implicit slot, never a callable partial.
+
+def $closure_lexical_entry(CODEIMPLICIT pcpath ptbytes z) = [IMPLICIT ptbytes z]
+dec $arrow_line_entry(pcodeexpr, pcpath) : int?
+def $arrow_line_entry(CODEARROW pcpath z, pcpath) = (z)
+def $arrow_line_entry(pcodeexpr, pcpath) = eps -- otherwise
+dec $arrow_line(pcodeexpr*, pcpath) : int?
+def $arrow_line(eps, pcpath) = eps
+def $arrow_line(pcodeexpr :: pcodeexpr_tail*, pcpath) = (z)
+  -- if $arrow_line_entry(pcodeexpr, pcpath) = (z)
+def $arrow_line(pcodeexpr :: pcodeexpr_tail*, pcpath) = $arrow_line(pcodeexpr_tail*, pcpath)
+  -- if $arrow_line_entry(pcodeexpr, pcpath) = eps
+
+dec $implicit_item(pstate, ptbytes) : pitem
+def $implicit_item(S, ptbytes) = DIRECT pvalue
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if S.STORE[n] = DEFINED pvalue
+def $implicit_item(S, ptbytes) = UNINITIALIZED -- otherwise
+def $closure_capture_read(S, IMPLICIT ptbytes z) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
+  -- if $environment_blocked(S, ptbytes)
+def $closure_capture_read(S, IMPLICIT ptbytes z) = S[.RESULT = KNOWN PNULL]
+  -- if ~$environment_blocked(S, ptbytes)
+def $closure_capture(S, n_object, n_slot, IMPLICIT ptbytes z) = S[.OBJECTS = $object_set(S.OBJECTS, n_object, REALCLOSURE porigin $closure_item_set(pitem*, n_slot, $implicit_item(S, ptbytes)) pstaticcell*)][.RESULT = KNOWN PNULL][.TODO = (CLOSURE_CAPTURE n_object $(n_slot + 1)) :: ptask_tail*]
+  -- if S.TODO = (CLOSURE_CAPTURE n_object n_slot) :: ptask_tail*
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if S.OBJECTS[n_object] = REALCLOSURE porigin pitem* pstaticcell*
+
+def $closure_local(S, ptbytes, UNINITIALIZED) = S_local[.STORE = $set_cell(S_local.STORE, S_local.CELL, UNDEFINED)]
+  -- if S_local = $ensure(S, ptbytes)
+rule PhpStep/arrow-receive-next: S ~> $closure_local(S, ptbytes, pitem*[n_slot])[.TODO = [CLOSURE_RECEIVE porigin $(n_slot + 1)]][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (CLOSURE_RECEIVE porigin n_slot) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.INSTANCE = (n_object)
+  -- if S.OBJECTS[n_object] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if plexical* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
+  -- if $(n_slot < |plexical*|)
+  -- if plexical*[n_slot] = IMPLICIT ptbytes z
+
+rule PhpStep/arrow-create: S ~> $closure_create(S[.TODO = ptask_tail*], pfunction)
+  -- if S.TODO = (EVAL (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+
+dec $arrow_tasks(pfunction, expression, int) : ptask*
+def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), DISCARD, $typed_fallthrough(pfunction)]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
+def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), RETURN_VALUE z]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+  -- if ~pfunction.SIGNATURE.BYREF
+def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), DIM_PREP expression), RETURN_REF_FETCH z]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+  -- if pfunction.SIGNATURE.BYREF
+  -- if $call_reference_variable(expression)
+def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), RETURN_REF_VALUE z]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+  -- if pfunction.SIGNATURE.BYREF
+  -- if ~$call_reference_variable(expression)
+def $closure_body(S, pfunction) = $arrow_tasks(pfunction, expression, z)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+
+;; Source-kind and compiler-projected marker data bind the new return route.
+dec $arrow_return(pstate, int) : expression?
+def $arrow_return(S, z) = (expression)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if $function_at(S.CLOSURETEMPLATES, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+  -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+def $arrow_return(S, z) = eps -- otherwise
+
+def $reference_return_source(S, z) = true
+  -- if $reference_returning(S)
+  -- if $arrow_return(S, z) = (expression)
+def $reference_return_fetch_valid(S, z) = true
+  -- if $reference_return_source(S, z)
+  -- if $arrow_return(S, z) = (expression)
+  -- if $call_reference_variable(expression)
+def $reference_return_value_valid(S, z) = true
+  -- if $reference_return_source(S, z)
+  -- if $arrow_return(S, z) = (expression)
+  -- if ~$call_reference_variable(expression)
+def $reference_return_notice(S, poperand) = false
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $ppreturn_variable(expression)
+def $reference_return_notice(S, REFERENCE n) = false
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $ppreturn_call(expression)
+
+;; This predicate also excludes a capture task at its end cursor before transfer.
+def $closure_callable(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n) = eps
+  -- if plexical* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
+  -- if $closure_capture_prefix(S, pitem*, plexical*, |plexical*|)
+def $closure_callable(S, n) = false -- otherwise
+
+def $closure_item_valid(S, DIRECT pvalue, IMPLICIT ptbytes z) = true
+def $closure_item_valid(S, UNINITIALIZED, IMPLICIT ptbytes z) = true
+def $call_declaration_node(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = true
+def $main_static_function(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata, pcpath_function, pcpath) = $effect_below(pcpath_function, pcpath)
+def $closure_template_origins_valid(S, pfunction :: pfunction_tail*) = true
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $function_at(pfunction_tail*, pfunction.ORIGIN) = eps
+  -- if $closure_template_origins_valid(S, pfunction_tail*)
+
+
+def $arrow_context(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $origin_node(S.SOURCES, pcallcontext.FUNCTION) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+def $arrow_context(S) = false -- otherwise
+def $typed_return_task_valid(S, z) = true
+  -- if ~$reference_returning(S)
+  -- if $arrow_return(S, z) = (expression)
+
+def $code_expression((CODEIMPLICIT pcpath_init ptbytes z_bind) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_write((CODEIMPLICIT pcpath_init ptbytes z_bind) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODEIMPLICIT pcpath ptbytes z_bind) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODEIMPLICIT pcpath ptbytes z_bind) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODEIMPLICIT pcpath_other ptbytes z_bind) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODEIMPLICIT pcpath ptbytes z_bind) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODEIMPLICIT pcpath ptbytes z_bind) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODEIMPLICIT pcpath ptbytes z_bind) = pcpath
+def $typed_return_entry(pcoccurrence*, CODEIMPLICIT pcpath ptbytes z_bind) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEIMPLICIT pcpath ptbytes z_bind) = eps
+def $named_send_entry(pcoccurrence*, CODEIMPLICIT pcpath ptbytes z_bind) = eps
+def $code_call_init((CODEIMPLICIT pcpath_other ptbytes z_bind) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $static_code((CODEIMPLICIT pcpath_other ptbytes z) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+def $code_expression((CODEARROW pcpath_init z_bind) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_write((CODEARROW pcpath_init z_bind) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODEARROW pcpath z_bind) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODEARROW pcpath z_bind) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODEARROW pcpath_other z_bind) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODEARROW pcpath z_bind) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODEARROW pcpath z_bind) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODEARROW pcpath z_bind) = pcpath
+def $typed_return_entry(pcoccurrence*, CODEARROW pcpath z_bind) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEARROW pcpath z_bind) = eps
+def $named_send_entry(pcoccurrence*, CODEARROW pcpath z_bind) = eps
+def $code_call_init((CODEARROW pcpath_other z_bind) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $static_code((CODEARROW pcpath_other z) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+
+;; Never arrows evaluate a discarded expression. Suppression wrappers already
+;; recurse to this source parent; ordinary arrow implicit returns remain used.
+def $reference_call_used(S, porigin) = false
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 5]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_parent) = (pfunction)
+  -- if "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
