@@ -1,3 +1,5 @@
+dec $closure_unit_code_valid(pstate, ppstate, pcode) : bool
+dec $closure_state_valid(pstate) : bool
 dec $dynamic_unit_code_valid(ppstate, pcode) : bool
 dec $dynamic_result_valid(pstate) : bool
 dec $unpack_unit_code_valid(ppstate, pcode) : bool
@@ -85,6 +87,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $unpack_unit_code_valid(P, pcode)
   -- if $dynamic_unit_code_valid(P, pcode)
   -- if $static_unit_code_valid(P, pcode)
+  -- if $closure_unit_code_valid(S, P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -123,7 +126,7 @@ def $call_early_bindings((preqbytes, porigin)*, pfunction :: pfunction_tail*) = 
 dec $call_candidate(preqbytes, preqbytes, preqbytes?) : bool
 def $call_candidate(preqbytes_name, preqbytes_primary, eps) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary))
 def $call_candidate(preqbytes_name, preqbytes_primary, (preqbytes_fallback)) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary) \/ $ptlc(preqbytes_name) = $ptlc(preqbytes_fallback))
-dec $call_selected_valid(pstate, porigin, porigin?) : bool
+dec $call_selected_valid(pstate, pcalltarget, porigin?) : bool
 def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
@@ -131,7 +134,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, porigin_function, porigin?) = false -- otherwise
+def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_at(S.CODE, n) = (pcode)
@@ -147,7 +150,7 @@ def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remainin
   -- if n_remaining = $(|phpType7*| - n_offset)
   -- if phpType7_remaining* = phpType7*[n_offset:n_remaining]
 def $call_arguments_valid(S, porigin?, n_index, phpType7*, poperand*, n_sent) = false -- otherwise
-dec $call_sent_operands_valid(pstate, porigin, nat, poperand*) : bool
+dec $call_sent_operands_valid(pstate, pcalltarget, nat, poperand*) : bool
 dec $call_arity_valid(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
@@ -155,7 +158,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if $named_call_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
   -- if $call_extent_valid(S, pcallcontext)
   -- if $named_context_valid(S, pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if n_received = $call_received(pcallcontext.ARGC, n_fixed)
   -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
@@ -171,29 +174,29 @@ def $call_reference_operand_valid(S, KNOWN pvalue) = true
 def $call_reference_operand_valid(S, VARIABLE n_name* z) = true
 def $call_reference_operand_valid(S, poperand) = false -- otherwise
 
-dec $call_sent_operand_valid(pstate, porigin, nat, poperand) : bool
-def $call_sent_operand_valid(S, porigin, n, KNOWN pvalue) = ~$call_parameter_reference(S, porigin, n)
-def $call_sent_operand_valid(S, porigin, n, REFERENCE n_cell) = ($call_parameter_reference(S, porigin, n) /\ $call_reference_operand_valid(S, REFERENCE n_cell))
-def $call_sent_operand_valid(S, porigin, n, poperand) = false -- otherwise
-def $call_sent_operands_valid(S, porigin, n, eps) = true
-def $call_sent_operands_valid(S, porigin, n, poperand :: poperand_tail*) = ($call_sent_operand_valid(S, porigin, n, poperand) /\ $call_sent_operands_valid(S, porigin, $(n + 1), poperand_tail*))
+dec $call_sent_operand_valid(pstate, pcalltarget, nat, poperand) : bool
+def $call_sent_operand_valid(S, pcalltarget, n, KNOWN pvalue) = ~$call_parameter_reference(S, pcalltarget, n)
+def $call_sent_operand_valid(S, pcalltarget, n, REFERENCE n_cell) = ($call_parameter_reference(S, pcalltarget, n) /\ $call_reference_operand_valid(S, REFERENCE n_cell))
+def $call_sent_operand_valid(S, pcalltarget, n, poperand) = false -- otherwise
+def $call_sent_operands_valid(S, pcalltarget, n, eps) = true
+def $call_sent_operands_valid(S, pcalltarget, n, poperand :: poperand_tail*) = ($call_sent_operand_valid(S, pcalltarget, n, poperand) /\ $call_sent_operands_valid(S, pcalltarget, $(n + 1), poperand_tail*))
 
-dec $call_reference_task_valid(pstate, porigin, nat, porigin?) : bool
-def $call_reference_task_valid(S, porigin_function, n, (porigin)) = true
-  -- if $call_selected_valid(S, porigin_function, (porigin))
-  -- if $call_parameter_reference(S, porigin_function, n)
+dec $call_reference_task_valid(pstate, pcalltarget, nat, porigin?) : bool
+def $call_reference_task_valid(S, pcalltarget_function, n, (porigin)) = true
+  -- if $call_selected_valid(S, pcalltarget_function, (porigin))
+  -- if $call_parameter_reference(S, pcalltarget_function, n)
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $call_reference_variable(expression)
   -- if S.ORIGIN = $origin_child((porigin), [PCFIELD 1, PCINDEX n, PCFIELD 1])
-def $call_reference_task_valid(S, porigin_function, n, porigin?) = false -- otherwise
+def $call_reference_task_valid(S, pcalltarget_function, n, porigin?) = false -- otherwise
 dec $call_task_valid(pstate, ptask) : bool
 def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S[.ORIGIN = (porigin)], ptask)
-def $call_task_valid(S, CALL_REF_PREP porigin_function n porigin?) = $call_reference_task_valid(S, porigin_function, n, porigin?)
-def $call_task_valid(S, CALL_REF_FETCH porigin_function n porigin?) = $call_reference_task_valid(S, porigin_function, n, porigin?)
-def $call_task_valid(S, CALL_ARGS porigin_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, porigin_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, porigin_function, 0, poperand*))
-def $call_task_valid(S, CALL_SEND porigin_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, porigin_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 1) /\ $call_sent_operands_valid(S, porigin_function, 0, poperand*))
+def $call_task_valid(S, CALL_REF_PREP pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
+def $call_task_valid(S, CALL_REF_FETCH pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
+def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
+def $call_task_valid(S, CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 1) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, ptask) = true -- otherwise
 dec $call_after_origin(pstate, ptask) : pstate
 def $call_after_origin(S, ORIGIN_RETURN porigin?) = S[.ORIGIN = porigin?]
@@ -203,12 +206,13 @@ def $call_tasks_valid(S, eps) = true
 def $call_tasks_valid(S, ptask :: ptask_tail*) = ($call_task_valid(S, ptask) /\ $call_tasks_valid($call_after_origin(S, ptask), ptask_tail*))
 dec $call_context_valid(pstate, pcallcontext, preqbytes*) : bool
 def $call_context_valid(S, pcallcontext, preqbytes*) = true
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if pcallcontext.NAME = pfunction.NAME
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
-  -- if $call_selected_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE)
   -- if $call_arity_valid(S, pcallcontext)
 def $call_context_valid(S, pcallcontext, preqbytes*) = false -- otherwise
@@ -252,6 +256,7 @@ def $call_descriptors_valid(S) = true
   -- if $constant_context_valid(S)
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)
+  -- if $closure_state_valid(S)
 def $call_descriptors_valid(S) = false -- otherwise
 
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL

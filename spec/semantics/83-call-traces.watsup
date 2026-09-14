@@ -34,6 +34,7 @@ def $trace_value_text(PINT z) = $decimal_integer(z)
 def $trace_value_text(PFLOAT n) = $trace_float(n)
 def $trace_value_text(PSTRING n*) = $trace_string(n*)
 def $trace_value_text(PARRAY n) = $ptascii("Array")
+def $trace_value_text(POBJECT n) = $ptascii("Object(Closure)")
 dec $trace_arguments_text(pvalue*) : preqbytes
 def $trace_arguments_text(eps) = eps
 def $trace_arguments_text([pvalue]) = $trace_value_text(pvalue)
@@ -61,7 +62,7 @@ dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 def $trace_context(S, pbinding*, eps) = eps
 def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME pcallcontext.NAME, VALUES pvalue_all*, ARGTEXT $named_trace_arguments(S, pvalue*, pcallcontext.NAMED)}]
   -- if pcallcontext.CALLSITE = (porigin)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
   -- if pvalue_all* = pvalue* ++ $named_values(S, pcallcontext.NAMED)

@@ -1,0 +1,106 @@
+;; Real closure templates are source descriptors, never named callable entries.
+dec $ppclosure_name(ppstate, metadata) : ptbytes
+dec $ppclosure_parent(ppstate) : ptbytes
+dec $ppclosure_outer(ppstate, pcpath, nat, phpType22*, ptbytes*) : ppstate
+dec $ppclosure_outer_line(ppstate, pcpath, metadata) : ppstate
+dec $ppclosure_outer_check(ppstate, ptbytes, ptbytes*) : ppstate
+dec $ppclosure_begin(ppstate, pcpath, phpType16, phpType22*, phpType18, statement*, bool, metadata) : ppstate
+dec $ppclosure_step(ppstate, ppstate, pcpath, ptbytes, phpType22*, statement*, metadata, psprogress) : ppstate
+dec $ppclosure_request(ppstate, ppstate, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation) : ppstate
+dec $ppclosure_ready(ppstate, ppstate, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation, pcpath, expression) : ppstate
+dec $ppclosure_uses(ppstate, pcpath, nat, phpType22*, ptbytes*) : ppstate
+dec $ppclosure_use(ppstate, pcpath, ptbytes, bool, metadata, ptbytes*) : ppstate
+dec $ppclosure_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+
+def $ppclosure_template(pfunction) = (pfunction.BODY = pcpath ++ [PCFIELD 6])
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+def $ppclosure_parent(P) = P.LOCATION.FILE -- if P.FOLD.FUNCTION = eps
+def $ppclosure_parent(P) = P.FOLD.FUNCTION -- if P.FOLD.FUNCTION =/= eps /\ P.CLOSURE
+def $ppclosure_parent(P) = P.FOLD.FUNCTION ++ $ptascii("()") -- if P.FOLD.FUNCTION =/= eps /\ ~P.CLOSURE
+def $ppclosure_name(P, metadata) = $ptascii("{closure:") ++ $ppclosure_parent(P) ++ [58] ++ $ntunsigned($psline(metadata)) ++ [125]
+
+def $ppdispatch(P, pcpath, NExprClosure (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 (SEQUENCE phpType22*) phpType18 (SEQUENCE statement*) metadata, PPR) = $ppclosure_begin(P_outer, pcpath, phpType16, phpType22*, phpType18, statement*, b_ref, metadata)
+  -- if P_outer = $ppclosure_outer(P, pcpath ++ [PCFIELD 4], 0, phpType22*, eps)
+
+def $ppclosure_outer(P, pcpath, n, eps, ptbytes_seen*) = P
+def $ppclosure_outer(P, pcpath, n, phpType22 :: phpType22_tail*, ptbytes_seen*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_outer(P, pcpath, n, (NClosureUse (NExprVariable (BYTES text) metadata_var) (BOOLEAN b) metadata) :: phpType22*, ptbytes_seen*) = $ppclosure_outer(P_checked, pcpath, $(n + 1), phpType22*, ptbytes_seen* ++ [$base64(text)])
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_checked = $ppclosure_outer_line($ppclosure_outer_check(P, $base64(text), ptbytes_seen*), pcpath ++ [PCINDEX n], metadata_var)
+def $ppclosure_outer_line(P, pcpath, metadata) = $pplocate(P, pcpath, $source_line(metadata))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppclosure_outer_line(P, pcpath, metadata) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = $ppcheck(P, $context_error("Cannot use $this as lexical variable", P.LOCATION.LINE))
+  -- if ptbytes = $ptascii("this")
+def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = $ppcheck(P, $context_error("Cannot use auto-global as lexical variable", P.LOCATION.LINE))
+  -- if ptbytes =/= $ptascii("this") /\ $psautoglobal(ptbytes)
+def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Cannot use variable $") ++ ptbytes ++ $ptascii(" twice")) P.LOCATION.LINE)]
+  -- if ptbytes =/= $ptascii("this") /\ ~$psautoglobal(ptbytes) /\ ptbytes <- ptbytes_seen*
+def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = $ppstatic_cvrecord(P, ptbytes)
+  -- if ptbytes =/= $ptascii("this") /\ ~$psautoglobal(ptbytes) /\ ~(ptbytes <- ptbytes_seen*)
+
+def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppclosure_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true], pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ptbytes = $ppclosure_name(P, metadata)
+
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, psprogress) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDONE (PSUNSUPPORTED text)) = $ppunsupported(P, text)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDONE (PSERROR psdiagnostic*)) = $ppsignature_diagnostics(P, psdiagnostic*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent closure signature")
+  -- if P.COMPLETION = PPCNORMAL /\ ~$ppsupported_signature(pssignature)
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppclosure_finish(P_outer, P_body, pcpath, ptbytes, pssignature, metadata)
+  -- if P.COMPLETION = PPCNORMAL /\ $ppsupported_signature(pssignature)
+  -- if psparam* = pssignature.PARAMETERS
+  -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+  -- if P_uses = $ppclosure_uses(P_header, pcpath ++ [PCFIELD 4], 0, phpType22*, (psparam.NAME)*)
+  -- if P_body = $ppstatements(P_uses, pcpath ++ [PCFIELD 6], 0, statement*)
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppclosure_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppclosure_request(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation) = $ppclosure_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_resume(pscontinuation, PSNONE))
+  -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+def $ppclosure_request(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation) = $ppclosure_ready(P_outer, $ppdefault_prepare(P[.LOCATION = P.LOCATION[.LINE = pscontinuation.PARAMETER.LINE]][.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath_default, expression), pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation, pcpath_default, expression)
+  -- if pscontinuation.PARAMETER.DEFAULT = (expression)
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if pcpath_default = $ppdefault_path(pcpath, n_index)
+def $ppclosure_ready(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation, pcpath_default, expression) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_ready(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation, pcpath_default, expression) = $ppclosure_step(P_outer, $ppdefault_parameter(P, pcpath, n_index), pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_resume(pscontinuation, PSDEFAULT expression $ppdefault_kind(P.FOLD.VALUE)))
+  -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppclosure_uses(P, pcpath, n, eps, ptbytes_seen*) = P
+def $ppclosure_uses(P, pcpath, n, (NClosureUse (NExprVariable (BYTES text) metadata_var) (BOOLEAN b) metadata) :: phpType22*, ptbytes_seen*) = $ppclosure_uses($ppclosure_use(P, pcpath ++ [PCINDEX n], $base64(text), b, metadata_var, ptbytes_seen*), pcpath, $(n + 1), phpType22*, ptbytes_seen*)
+def $ppclosure_use(P, pcpath, ptbytes, b, metadata, ptbytes_seen*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_use(P, pcpath, ptbytes, b, metadata, ptbytes_seen*) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Cannot use lexical variable $") ++ ptbytes ++ $ptascii(" as a parameter name")) P.LOCATION.LINE)]
+  -- if P.COMPLETION = PPCNORMAL /\ ptbytes <- ptbytes_seen*
+def $ppclosure_use(P, pcpath, ptbytes, b, metadata, ptbytes_seen*) = $ppstatic_cvrecord($pplocate(P, pcpath, $source_line(metadata)), ptbytes)[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCLEXICAL pcpath ptbytes b ($psline(metadata))]]
+  -- if P.COMPLETION = PPCNORMAL /\ ~(ptbytes <- ptbytes_seen*)
+
+def $ppclosure_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
+  -- if P_body.COMPLETION =/= PPCNORMAL
+def $ppclosure_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_restored[.CLOSURETEMPLATES = P_body.CLOSURETEMPLATES ++ [pfunction]]
+  -- if P_body.COMPLETION = PPCNORMAL
+  -- if pfunction = { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $psline(metadata), ENDLINE $psendline(metadata) }
+  -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
+
+def $ppstatic_seen_entry(pfunction*, PPCLEXICAL pcpath ptbytes_name b n_line, ptbytes) = (ptbytes_name = ptbytes /\ ~$ppinner(pfunction*, pcpath))
+def $compiled_operands(P, (PPCLEXICAL pcpath ptbytes b n_line) :: ppexprdone*) = (CODELEXICAL pcpath ptbytes b n_line) :: $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCLEXICAL pcpath ptbytes b n_line) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCLEXICAL pcpath_lexical ptbytes b n_line) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCLEXICAL pcpath_lexical ptbytes b n_line) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppcodepath(CODELEXICAL pcpath ptbytes b z) = pcpath
+
+;; Casting an existing closure to object preserves identity at runtime; other
+;; object-construction casts remain an explicit runtime dependency.
+def $ppdispatch(P, pcpath, NExprCastObject expression metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $pptemporary_shape(PFCAST_OBJECT expression) = true

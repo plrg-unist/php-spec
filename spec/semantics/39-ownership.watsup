@@ -90,6 +90,7 @@ def $heap_collect(H) = H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES
 
 dec $value_nodes(pvalue) : pnode*
 def $value_nodes(PARRAY n) = [HARRAY n]
+def $value_nodes(POBJECT n) = [HOBJECT n]
 def $value_nodes(pvalue) = eps
   -- otherwise
 

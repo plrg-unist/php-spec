@@ -18,6 +18,7 @@ def $operator_bytes(CONCAT) = [46]
 
 dec $long_convertible(pvalue) : bool
 def $long_convertible(PARRAY n) = false
+def $long_convertible(POBJECT n) = false
 def $long_convertible(PSTRING n*) = ($string_long(n*) =/= STRINTERROR)
 def $long_convertible(pvalue) = true -- otherwise
 
@@ -80,8 +81,10 @@ def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $integer_result(S_right, $in
 
 def $binary_apply(S, CONCAT, pvalue_1, pvalue_2, z) = S_right[.RESULT = KNOWN (PSTRING (n_1* ++ n_2*))]
   -- if S_left = $stringify(S, pvalue_1, z)
+  -- if S_left.COMPLETION = NORMAL
   -- if S_left.RESULT = KNOWN (PSTRING n_1*)
   -- if S_right = $stringify(S_left, pvalue_2, z)
+  -- if S_right.COMPLETION = NORMAL
   -- if S_right.RESULT = KNOWN (PSTRING n_2*)
 
 dec $power_result(pstate, pnumber, pnumber, int) : pstate
@@ -97,3 +100,12 @@ def $binary_apply(S, POWER, pvalue_1, pvalue_2, z) = $type_failure($leading_warn
 def $binary_apply(S, POWER, pvalue_1, pvalue_2, z) = $power_result($leading_warning($leading_warning(S, b_1, z), b_2, z), pnumber_1, pnumber_2, z)
   -- if $coerce_number(pvalue_1) = COERCED pnumber_1 b_1
   -- if $coerce_number(pvalue_2) = COERCED pnumber_2 b_2
+
+def $binary_apply(S, CONCAT, pvalue_1, pvalue_2, z) = S_left
+  -- if S_left = $stringify(S, pvalue_1, z)
+  -- if S_left.COMPLETION =/= NORMAL
+def $binary_apply(S, CONCAT, pvalue_1, pvalue_2, z) = S_right
+  -- if S_left = $stringify(S, pvalue_1, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_right = $stringify(S_left, pvalue_2, z)
+  -- if S_right.COMPLETION =/= NORMAL

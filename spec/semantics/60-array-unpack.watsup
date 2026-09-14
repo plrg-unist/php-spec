@@ -3,7 +3,7 @@
 dec $unpack_type_bytes(pvalue) : nat*
 def $unpack_type_bytes(PBOOL true) = [116,114,117,101]
 def $unpack_type_bytes(PBOOL false) = [102,97,108,115,101]
-def $unpack_type_bytes(pvalue) = $type_bytes(pvalue) -- otherwise
+def $unpack_type_bytes(pvalue) = $value_type_bytes(pvalue) -- otherwise
 
 dec $unpack_error_bytes(pvalue) : nat*
 def $unpack_error_bytes(pvalue) = [79,110,108,121,32,97,114,114,97,121,115,32,97,110,100,32,84,114,97,118,101,114,115,97,98,108,101,115,32,99,97,110,32,98,101,32,117,110,112,97,99,107,101,100,44,32] ++ $unpack_type_bytes(pvalue) ++ [32,103,105,118,101,110]
@@ -24,6 +24,8 @@ dec $array_unpack(pstate, nat, pvalue, int) : pstate
 def $array_unpack(S, n_target, pvalue, z) = S
   -- if S.COMPLETION =/= NORMAL
 def $array_unpack(S, n_target, PARRAY n_source, z) = $array_unpack_entries(S[.HELD = S.HELD ++ [HARRAY n_target, HARRAY n_source]], n_target, S.ARRAYS[n_source].ITEMS, z)[.HELD = S.HELD]
+  -- if S.COMPLETION = NORMAL
+def $array_unpack(S, n_target, POBJECT n, z) = $throw_scalar(S, "TypeError", $unpack_error_bytes(POBJECT n), z)
   -- if S.COMPLETION = NORMAL
 def $array_unpack(S, n_target, pvalue, z) = $throw_scalar(S, "Error", $unpack_error_bytes(pvalue), z)
   -- otherwise

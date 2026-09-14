@@ -36,7 +36,7 @@ def $static_local(S, ptbytes, n) = $bind_reference(S[.CELL = n], ptbytes)[.RESUL
 dec $static_install(pstate, porigin, ptbytes, pvalue) : pstate
 def $static_install(S, porigin, ptbytes, pvalue) = $static_local(S_cell, ptbytes, n)
   -- if n = |S.STORE|
-  -- if S_cell = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.STATICS = S.STATICS ++ [{ORIGIN porigin, CELL n}]], n)
+  -- if S_cell = $reference_cell($state_static_add(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]], {ORIGIN porigin, CELL n}), n)
 
 dec $static_value(pstate, porigin) : pvalue
 def $static_value(S, porigin) = PNULL
@@ -49,14 +49,14 @@ def $static_value(S, PORIGIN n pcpath) = pvalue
 ;; already have installed the winner, making this outer operand unused.
 dec $static_finish(pstate, porigin, ptbytes, int) : pstate
 def $static_finish(S, porigin, ptbytes, z) = $static_local(S, ptbytes, n)
-  -- if $static_at(S.STATICS, porigin) = (n)
+  -- if $state_static_at(S, porigin) = (n)
 def $static_finish(S, porigin, ptbytes, z) = $static_install(S_value, porigin, ptbytes, pvalue)
-  -- if $static_at(S.STATICS, porigin) = eps
+  -- if $state_static_at(S, porigin) = eps
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
 def $static_finish(S, porigin, ptbytes, z) = S_value
-  -- if $static_at(S.STATICS, porigin) = eps
+  -- if $state_static_at(S, porigin) = eps
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION =/= NORMAL
 
@@ -65,15 +65,15 @@ rule PhpStep/static-statement: S ~> S[.TODO = $static_tasks(phpType59*, $origin_
 rule PhpStep/static-existing: S ~> $static_local(S[.TODO = ptask_tail*], ptbytes, n)
   -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*
   -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, b))
-  -- if $static_at(S.STATICS, porigin) = (n)
+  -- if $state_static_at(S, porigin) = (n)
 rule PhpStep/static-stored: S ~> $static_install(S[.TODO = ptask_tail*], porigin, ptbytes, $static_value(S, porigin))
   -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*
   -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, true))
-  -- if $static_at(S.STATICS, porigin) = eps
+  -- if $state_static_at(S, porigin) = eps
 rule PhpStep/static-evaluate: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1]), EVAL expression), STATIC_BIND porigin] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*
   -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, false))
-  -- if $static_at(S.STATICS, porigin) = eps
+  -- if $state_static_at(S, porigin) = eps
   -- if $origin_node(S.SOURCES, porigin) = (NStaticVar phpType10 expression metadata)
 rule PhpStep/static-bind: S ~> $static_finish(S[.TODO = ptask_tail*], porigin, ptbytes, z_bind)
   -- if S.TODO = (STATIC_BIND porigin) :: ptask_tail*
@@ -155,7 +155,7 @@ dec $static_task_valid(pstate, porigin, bool) : bool
 def $static_task_valid(S, porigin, b_bind) = true
   -- if S.ORIGIN = (porigin)
   -- if S.CURRENT = (pcallcontext)
-  -- if $static_function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $static_function_at($all_functions(S), porigin) = (pfunction)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, b_stored))
   -- if ~b_bind \/ ~b_stored

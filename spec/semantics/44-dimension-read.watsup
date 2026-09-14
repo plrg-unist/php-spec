@@ -24,7 +24,7 @@ def $string_offset(S, PSTRING n*, z) = S_warned[.KEY = KINT i]
 def $string_offset(S, pvalue, z) = S_warned[.KEY = KINT i]
   -- if $offset_cast_integer(pvalue) = (i)
   -- if S_warned = $diagnostic(S, "Warning", [83,116,114,105,110,103,32,111,102,102,115,101,116,32,99,97,115,116,32,111,99,99,117,114,114,101,100], z)
-def $string_offset(S, pvalue, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,97,99,99,101,115,115,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32] ++ $type_bytes(pvalue) ++ [32,111,110,32,115,116,114,105,110,103], z)
+def $string_offset(S, pvalue, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,97,99,99,101,115,115,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32] ++ $value_type_bytes(pvalue) ++ [32,111,110,32,115,116,114,105,110,103], z)
   -- otherwise
 
 dec $string_byte_read(pstate, nat*, int, int) : pstate
@@ -66,6 +66,7 @@ def $string_operand_read(S, n_bytes*, poperand, z) = $string_dimension_read(S_ke
 
 def $dimension_read(S, PARRAY n, poperand, z) = $array_read(S, PARRAY n, poperand, z)
 def $dimension_read(S, PSTRING n_bytes*, poperand, z) = $string_operand_read(S, n_bytes*, poperand, z)
+def $dimension_read(S, POBJECT n, poperand, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
 def $dimension_read(S, pvalue, poperand, z) = $scalar_dimension_read(S, pvalue, poperand, z)
   -- otherwise
 

@@ -63,6 +63,7 @@ def $quiet_string(S, n_bytes*, PARRAY n, z) = $string_offset(S, PARRAY n, z)
 dec $quiet_dimension_value(pstate, pvalue, pvalue, int) : pstate
 def $quiet_dimension_value(S, PARRAY n, pvalue_key, z) = $quiet_array(S, n, pvalue_key, z)
 def $quiet_dimension_value(S, PSTRING n_bytes*, pvalue_key, z) = $quiet_string(S, n_bytes*, pvalue_key, z)
+def $quiet_dimension_value(S, POBJECT n, pvalue_key, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
 def $quiet_dimension_value(S, pvalue_base, pvalue_key, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 
 dec $quiet_dimension(pstate, pvalue, poperand, int) : pstate
@@ -104,3 +105,5 @@ rule PhpStep/coalesce-quiet-abrupt: S ~> S_read
   -- if S.TODO = (COALESCE_QUIET expression z_left z_right) :: ptask_tail*
   -- if S_read = $quiet_base(S, S.BASE, z_left)
   -- if S_read.COMPLETION =/= NORMAL
+
+def $quiet_string(S, n_bytes*, POBJECT n, z) = $string_offset(S, POBJECT n, z)

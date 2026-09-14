@@ -118,3 +118,5 @@ rule PhpStep/continue: S ~> $jump_loop(S[.TODO = ptask_tail*], $jump_depth(phpTy
 
 ;; Nested continuation lists can carry live operands in constructed machine states.
 def $task_nodes(CHOOSE ptask_true* ptask_false* z) = $tasks_nodes(ptask_true*) ++ $tasks_nodes(ptask_false*)
+
+def $truth(S, POBJECT n) = true

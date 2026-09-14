@@ -38,7 +38,7 @@ def $reference_return_used(S) = true -- otherwise
 
 def $reference_returning(S) = pfunction.SIGNATURE.BYREF
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $reference_returning(S) = false -- otherwise
 
 def $reference_empty_task(S, z) = RETURN_REF_NULL z -- if $reference_returning(S)
@@ -57,7 +57,7 @@ rule PhpStep/return-reference-expression: S ~> S[.TODO = [$at_task($origin_child
 ;; VERIFY_RETURN_TYPE reads an ordinary CV before its quiet RETURN_BY_REF fetch.
 def $reference_verifies(S) = (pfunction.SIGNATURE.RETURNS =/= eps /\ ~("mixed" <- $ptmasks(pfunction.SIGNATURE.RETURNS)))
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = S_read
   -- if $reference_verifies(S)
   -- if S_read = $typed_return_check($read_name(S, n_name*, z), z)
@@ -146,7 +146,7 @@ rule PhpStep/return-reference-null: S ~> $reference_return_unwind($reference_ret
 dec $reference_return_source(pstate, int) : bool
 def $reference_return_source(S, z) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if n = pfunction.CODE.UNIT
@@ -177,7 +177,7 @@ def $reference_return_null_valid(S, z) = true
   -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn ABSENT metadata)
 def $reference_return_null_valid(S, z) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
   -- if S.ORIGIN = (pfunction.ORIGIN)
   -- if z = pfunction.ENDLINE

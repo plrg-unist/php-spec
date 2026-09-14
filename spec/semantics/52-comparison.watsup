@@ -89,9 +89,22 @@ def $scalar_order(S, PSTRING n_string*, PFLOAT n) = $(-$number_string_order(NFLO
 def $scalar_order(S, PARRAY n, pvalue) = 1
   -- if ~$boolish(pvalue)
   -- if $type_bytes(pvalue) =/= [97,114,114,97,121]
+  -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
 def $scalar_order(S, pvalue, PARRAY n) = $(-1)
   -- if ~$boolish(pvalue)
   -- if $type_bytes(pvalue) =/= [97,114,114,97,121]
+  -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
+
+def $scalar_order(S, POBJECT n, POBJECT n) = 0
+def $scalar_order(S, POBJECT n_left, POBJECT n_right) = 1 -- if n_left =/= n_right
+def $scalar_order(S, POBJECT n, PINT i) = $compare_int(1, i)
+def $scalar_order(S, PINT i, POBJECT n) = $compare_int(i, 1)
+def $scalar_order(S, POBJECT n_object, PFLOAT n) = $num_compare(NINT 1, NFLOAT n)
+def $scalar_order(S, PFLOAT n, POBJECT n_object) = $num_compare(NFLOAT n, NINT 1)
+def $scalar_order(S, POBJECT n, PSTRING n_bytes*) = 1
+def $scalar_order(S, PSTRING n_bytes*, POBJECT n) = $(-1)
+def $scalar_order(S, POBJECT n_object, PARRAY n_array) = 1
+def $scalar_order(S, PARRAY n_array, POBJECT n_object) = $(-1)
 
 dec $value_order(pstate, pvalue, pvalue, nat*) : porder
 dec $entries_order(pstate, pentry*, pentry*, nat*) : porder
@@ -123,6 +136,31 @@ def $value_order(S, PARRAY n_left, PARRAY n_right, n_seen*) = $entries_order(S, 
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
 def $value_order(S, pvalue_left, pvalue_right, n_seen*) = ORDER $scalar_order(S, pvalue_left, pvalue_right) -- otherwise
 
+dec $object_comparison_notice(pstate, pvalue, pvalue, int) : pstate
+def $object_comparison_notice(S, POBJECT n, PINT i, z) = $diagnostic(S, "Notice", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 105, 110, 116], z)
+def $object_comparison_notice(S, PINT i, POBJECT n, z) = $diagnostic(S, "Notice", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 105, 110, 116], z)
+def $object_comparison_notice(S, POBJECT n_object, PFLOAT n, z) = $diagnostic(S, "Notice", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 102, 108, 111, 97, 116], z)
+def $object_comparison_notice(S, PFLOAT n, POBJECT n_object, z) = $diagnostic(S, "Notice", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 102, 108, 111, 97, 116], z)
+def $object_comparison_notice(S, pvalue_left, pvalue_right, z) = S -- otherwise
+
+dec $value_order_effect(pstate, pvalue, pvalue, nat*, int) : (pstate, porder)
+dec $entries_order_effect(pstate, pentry*, pentry*, nat*, int) : (pstate, porder)
+dec $entries_order_continue(pstate, porder, pentry*, pentry*, nat*, int) : (pstate, porder)
+def $entries_order_continue(S, ORDER 0, pentry_left*, pentry_right*, n_seen*, z) = $entries_order_effect(S, pentry_left*, pentry_right*, n_seen*, z)
+def $entries_order_continue(S, porder, pentry_left*, pentry_right*, n_seen*, z) = (S, porder) -- otherwise
+
+def $entries_order_effect(S, eps, pentry_right*, n_seen*, z) = (S, ORDER 0)
+def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, n_seen*, z) = (S, ORDER 1)
+  -- if $entry_lookup(pentry_right*, pkey) = eps
+def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, n_seen*, z) = $entries_order_continue(S_next, porder, pentry_left*, pentry_right*, n_seen*, z)
+  -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
+  -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), n_seen*, z)
+def $value_order_effect(S, PARRAY n_left, PARRAY n_right, n_seen*, z) = $entries_order_effect(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, n_left :: n_seen*, z)
+  -- if n_left =/= n_right
+  -- if ~(n_left <- n_seen*)
+  -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
+def $value_order_effect(S, pvalue_left, pvalue_right, n_seen*, z) = ($object_comparison_notice(S, pvalue_left, pvalue_right, z), $value_order(S, pvalue_left, pvalue_right, n_seen*)) -- otherwise
+
 dec $comparison_operator(pbin) : bool
 def $comparison_operator(pbin) = (pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, SPACESHIP])
 dec $comparison_value(pbin, int) : pvalue
@@ -136,11 +174,13 @@ def $comparison_value(SPACESHIP, i) = PINT i
 dec $comparison_result(pstate, pbin, porder, int) : pstate
 def $comparison_result(S, pbin, ORDER i, z) = S[.RESULT = KNOWN $comparison_value(pbin, i)]
 def $comparison_result(S, pbin, ORDERRECURSIVE, z) = $throw_scalar(S, "Error", [78,101,115,116,105,110,103,32,108,101,118,101,108,32,116,111,111,32,100,101,101,112,32,45,32,114,101,99,117,114,115,105,118,101,32,100,101,112,101,110,100,101,110,99,121,63], z)
-def $binary_apply(S, pbin, pvalue_left, pvalue_right, z) = $comparison_result(S, pbin, $value_order(S, pvalue_right, pvalue_left, eps), z)
+def $binary_apply(S, pbin, pvalue_left, pvalue_right, z) = $comparison_result(S_next, pbin, porder, z)
   -- if pbin = GREATER \/ pbin = GREATEREQUAL
-def $binary_apply(S, pbin, pvalue_left, pvalue_right, z) = $comparison_result(S, pbin, $value_order(S, pvalue_left, pvalue_right, eps), z)
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_right, pvalue_left, eps, z)
+def $binary_apply(S, pbin, pvalue_left, pvalue_right, z) = $comparison_result(S_next, pbin, porder, z)
   -- if $comparison_operator(pbin)
   -- if pbin =/= GREATER /\ pbin =/= GREATEREQUAL
+  -- if (S_next, porder) = $value_order_effect(S, pvalue_left, pvalue_right, eps, z)
 
 rule PhpStep/comparison-equal: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), BINARY_LEFT EQUAL expression_2 $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpEqual expression_1 expression_2 metadata)) :: ptask_tail*

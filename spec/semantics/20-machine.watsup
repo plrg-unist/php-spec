@@ -1,6 +1,6 @@
 ;; Request state and pending work are explicit; PHP effects never use host I/O.
 syntax pmagic = MAGICFILE | MAGICDIR | MAGICLINE | MAGICNAMESPACE | MAGICCLASS | MAGICFUNCTION | MAGICMETHOD | MAGICTRAIT | MAGICPROPERTY
-syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PARRAY nat
+syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PARRAY nat | POBJECT nat
 syntax pkey = KINT int | KSTRING nat*
 syntax pitem = DIRECT pvalue | UNINITIALIZED | ALIAS nat
 syntax pentry = ENTRY pkey pitem
@@ -12,7 +12,7 @@ syntax pcheck = READY | REJECT pcompletion
 syntax peval = VALUE pvalue | ABRUPT pcompletion
 syntax pbin = MODULO | SHIFTLEFT | SHIFTRIGHT | BITAND | BITOR | BITXOR | POWER | CONCAT | EQUAL | NOTEQUAL | LESS | LESSEQUAL | GREATER | GREATEREQUAL | SPACESHIP | LOGICALXOR | ADD | SUBTRACT | MULTIPLY | DIVIDE | IDENTICAL | NOTIDENTICAL
 syntax punary = POSITIVE | NEGATIVE
-syntax pcast = CASTBOOL | CASTINT | CASTFLOAT | CASTSTRING | CASTARRAY
+syntax pcast = CASTBOOL | CASTINT | CASTFLOAT | CASTSTRING | CASTARRAY | CASTOBJECT
 syntax pcomparison = COMPARED bool | RECURSIVE
 var z : int
 

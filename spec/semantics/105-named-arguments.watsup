@@ -77,9 +77,9 @@ dec $named_argument_task(pfunction, pnamedtarget, expression) : ptask
 def $named_argument_task(pfunction, pnamedtarget, expression) = DIM_PREP expression
   -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression)
 def $named_argument_task(pfunction, pnamedtarget, expression) = EVAL expression -- otherwise
-rule PhpStep/named-next: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), $named_argument_task(pfunction, $named_arg_target(pfunction, phpType7, n), $named_expression(phpType7))), NAMED_SEND porigin_function phpType7_tail* n pnamedargs porigin? z] ++ ptask_tail*]
-  -- if S.TODO = (NAMED_ARGS porigin_function (phpType7 :: phpType7_tail*) n pnamedargs porigin? z) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+rule PhpStep/named-next: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), $named_argument_task(pfunction, $named_arg_target(pfunction, phpType7, n), $named_expression(phpType7))), NAMED_SEND pcalltarget_function phpType7_tail* n pnamedargs porigin? z] ++ ptask_tail*]
+  -- if S.TODO = (NAMED_ARGS pcalltarget_function (phpType7 :: phpType7_tail*) n pnamedargs porigin? z) :: ptask_tail*
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
 
 dec $named_fetch(pstate, pfunction, pnamedtarget, expression, int) : pstate
 def $named_fetch(S, pfunction, pnamedtarget, expression, z) = $call_reference_base($hold_task_inputs(S), S.BASE, z)
@@ -131,14 +131,14 @@ def $named_send_value(S, pfunction, pnamedargs, porigin?, n) = S_promoted
   -- if S_checked.COMPLETION = NORMAL
   -- if S_promoted = $named_promote(S_checked, pfunction, pnamedtarget, expression, z)
   -- if S_promoted.COMPLETION =/= NORMAL
-rule PhpStep/named-send: S ~> S_value[.TODO = (NAMED_ARGS porigin_function phpType7* $(n + 1) $named_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n), S_value.RESULT) porigin? z) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (NAMED_SEND porigin_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+rule PhpStep/named-send: S ~> S_value[.TODO = (NAMED_ARGS pcalltarget_function phpType7* $(n + 1) $named_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n), S_value.RESULT) porigin? z) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if S_value = $named_send_value(S, pfunction, pnamedargs, porigin?, n)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/named-send-abrupt: S ~> S_value[.HELD = S.HELD]
-  -- if S.TODO = (NAMED_SEND porigin_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if S_value = $named_send_value(S, pfunction, pnamedargs, porigin?, n)
   -- if S_value.COMPLETION =/= NORMAL
 
@@ -152,7 +152,7 @@ dec $named_operands(pnamedslot*) : poperand*
 def $named_operands(eps) = eps
 def $named_operands((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $named_operands(pnamedslot*)
 dec $named_enter(pstate, pfunction, pnamedargs, porigin?, int) : pstate
-def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA $named_operands(pnamedargs.SLOTS[n_received:n_extra]), NAMED pnamedargs.NAMED})][.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN 0]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({INSTANCE eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA $named_operands(pnamedargs.SLOTS[n_received:n_extra]), NAMED pnamedargs.NAMED})][.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN 0]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |pnamedargs.SLOTS|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)
@@ -160,9 +160,9 @@ def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({F
   -- if n_extra = $(n_args - n_received)
   -- if S_entered = $save_frame(S)
   -- if S_bound = $named_bind(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, pnamedargs.SLOTS)
-rule PhpStep/named-enter: S ~> $named_enter(S[.TODO = ptask_tail*], pfunction, pnamedargs, porigin?, z)
-  -- if S.TODO = (NAMED_ARGS porigin_function eps n pnamedargs porigin? z) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+rule PhpStep/named-enter: S ~> $target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, pnamedargs, porigin?, z), pcalltarget_function)
+  -- if S.TODO = (NAMED_ARGS pcalltarget_function eps n pnamedargs porigin? z) :: ptask_tail*
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
 
 def $named_roots(eps) = eps
 def $named_roots((preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = $operand_nodes(poperand) ++ $named_roots((preqbytes_tail, poperand_tail)*)
@@ -170,8 +170,8 @@ dec $named_slots_roots(pnamedslot*) : pnode*
 def $named_slots_roots(eps) = eps
 def $named_slots_roots(NAMED_HOLE :: pnamedslot*) = $named_slots_roots(pnamedslot*)
 def $named_slots_roots((NAMED_SENT poperand) :: pnamedslot*) = $operand_nodes(poperand) ++ $named_slots_roots(pnamedslot*)
-def $task_nodes(NAMED_ARGS porigin_function phpType7* n pnamedargs porigin? z) = $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
-def $task_nodes(NAMED_SEND porigin_function phpType7* n pnamedargs porigin? z) = $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
+def $task_nodes(NAMED_ARGS pcalltarget_function phpType7* n pnamedargs porigin? z) = $target_nodes(pcalltarget_function) ++ $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
+def $task_nodes(NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) = $target_nodes(pcalltarget_function) ++ $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
 
 ;; Holes are filled and cached before the ordinary parameter type receives.
 dec $named_defined(pstate, preqbytes) : bool
@@ -185,20 +185,20 @@ rule PhpStep/named-preflight-done: S ~> $call_arity(S, pfunction, pcallcontext.A
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n >= pcallcontext.ARGC) \/ $(n >= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
 rule PhpStep/named-preflight-supplied: S ~> S[.TODO = [NAMED_PREFLIGHT porigin $(n + 1)]]
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
 rule PhpStep/named-preflight-required: S ~> $throw_scalar(S, "ArgumentCountError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ pfunction.SIGNATURE.PARAMETERS[n].NAME ++ $ptascii(") not passed"), $default_parameter_line(S, porigin, n))
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = eps
@@ -206,7 +206,7 @@ rule PhpStep/named-preflight-stored: S ~> $named_hole_store(S, pfunction, n, $ty
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -216,7 +216,7 @@ rule PhpStep/named-preflight-cached: S ~> $named_hole_store(S, pfunction, n, pde
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -226,7 +226,7 @@ rule PhpStep/named-preflight-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_p
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -237,7 +237,7 @@ rule PhpStep/named-preflight-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_p
 rule PhpStep/named-default-bind: S ~> $named_hole_store($default_cache_value(S_value[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
   -- if S.TODO = (NAMED_DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
   -- if S_value.COMPLETION = NORMAL
@@ -255,7 +255,7 @@ def $named_default_task_valid(S, porigin, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
   -- if $(n < pcallcontext.ARGC)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
 def $named_default_task_valid(S, porigin, n) = false -- otherwise
@@ -301,29 +301,29 @@ rule PhpStep/named-tail-receive: S ~> $named_receive(S, pfunction, n)
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
   -- if $(n < |pcallcontext.NAMED|)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
 rule PhpStep/named-tail-done: S ~> S[.TODO = $function_tasks(S, pfunction)]
   -- if S.TODO = (NAMED_VARIADIC_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
   -- if n = |pcallcontext.NAMED|
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
 
 ;; Current context extent and names come from the selected checked call.
 dec $named_shape(psparam*, phpType7*, nat, pnamedargs) : pnamedargs
 def $named_shape(psparam*, eps, n, pnamedargs) = pnamedargs
 def $named_shape(psparam*, (NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*, n, pnamedargs) = $named_shape(psparam*, phpType7*, $(n + 1), $named_store(pnamedargs, $named_target(psparam*, phpType3, n), KNOWN PNULL))
-dec $named_call_shape(pstate, porigin, porigin?) : pnamedargs
-def $named_call_shape(S, porigin_function, (porigin)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, {SLOTS eps, NAMED eps})
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+dec $named_call_shape(pstate, pcalltarget, porigin?) : pnamedargs
+def $named_call_shape(S, pcalltarget_function, (porigin)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, {SLOTS eps, NAMED eps})
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
-def $named_call_extent(S, porigin_function, porigin?) = |pnamedargs.SLOTS|
-  -- if pnamedargs = $named_call_shape(S, porigin_function, porigin?)
-dec $named_entries_valid(pstate, porigin, nat, (preqbytes, poperand)*, (preqbytes, poperand)*) : bool
+def $named_call_extent(S, pcalltarget_function, porigin?) = |pnamedargs.SLOTS|
+  -- if pnamedargs = $named_call_shape(S, pcalltarget_function, porigin?)
+dec $named_entries_valid(pstate, pcalltarget, nat, (preqbytes, poperand)*, (preqbytes, poperand)*) : bool
 def $named_context_valid(S, pcallcontext) = true
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
   -- if pnamedargs = $named_call_shape(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if $named_entries_valid(S, pcallcontext.FUNCTION, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pcallcontext.NAMED, pnamedargs.NAMED)
 def $named_context_valid(S, pcallcontext) = false -- otherwise
 
@@ -354,12 +354,12 @@ def $named_source_valid(psparam*, (NArg phpType3 expression (BOOLEAN false) (BOO
   -- if $named_source_valid(psparam*, phpType7*, $(n + 1), (b_named \/ phpType3 =/= ABSENT), $named_store(pnamedargs, pnamedtarget, KNOWN PNULL))
 def $named_source_valid(psparam*, phpType7*, n, b_named, pnamedargs) = false -- otherwise
 
-def $named_call_valid(S, porigin_function, (porigin)) = true
+def $named_call_valid(S, pcalltarget_function, (porigin)) = true
   -- if ~$call_unpack_site(S, (porigin))
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if $named_source_valid(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, false, {SLOTS eps, NAMED eps})
-def $named_call_valid(S, porigin_function, porigin?) = false -- otherwise
+def $named_call_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 
 dec $named_previous(nat) : nat
 def $named_previous(0) = 0
@@ -380,9 +380,9 @@ def $named_preflight_stage(S, porigin, n) = true
   -- if ~$call_unpack_site(S, $unpack_current_site(S))
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
-  -- if $call_selected_valid(S, porigin, pcallcontext.CALLSITE)
+  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $named_call_valid(S, porigin, pcallcontext.CALLSITE)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if pcallcontext.CALLSITE = (porigin_call)
   -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if $named_present(phpType7*)
@@ -428,7 +428,7 @@ def $named_bind_valid(S, porigin, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pnamedargs = $named_call_shape(S, porigin, pcallcontext.CALLSITE)
   -- if $named_slot_at(pnamedargs.SLOTS, n) = NAMED_HOLE
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
@@ -436,23 +436,23 @@ def $named_bind_valid(S, porigin, n) = true
 def $named_bind_valid(S, porigin, n) = false -- otherwise
 def $call_task_valid(S, NAMED_DEFAULT_BIND porigin n) = $named_bind_valid(S, porigin, n)
 
-dec $named_slots_valid(pstate, porigin, nat, pnamedslot*, pnamedslot*) : bool
-def $named_slots_valid(S, porigin, n, eps, eps) = true
-def $named_slots_valid(S, porigin, n, NAMED_HOLE :: pnamedslot*, NAMED_HOLE :: pnamedslot_source*) = $named_slots_valid(S, porigin, $(n + 1), pnamedslot*, pnamedslot_source*)
-def $named_slots_valid(S, porigin, n, (NAMED_SENT poperand) :: pnamedslot*, (NAMED_SENT poperand_source) :: pnamedslot_source*) = ($call_sent_operand_valid(S, porigin, n, poperand) /\ $named_slots_valid(S, porigin, $(n + 1), pnamedslot*, pnamedslot_source*))
-def $named_slots_valid(S, porigin, n, pnamedslot*, pnamedslot_source*) = false -- otherwise
+dec $named_slots_valid(pstate, pcalltarget, nat, pnamedslot*, pnamedslot*) : bool
+def $named_slots_valid(S, pcalltarget, n, eps, eps) = true
+def $named_slots_valid(S, pcalltarget, n, NAMED_HOLE :: pnamedslot*, NAMED_HOLE :: pnamedslot_source*) = $named_slots_valid(S, pcalltarget, $(n + 1), pnamedslot*, pnamedslot_source*)
+def $named_slots_valid(S, pcalltarget, n, (NAMED_SENT poperand) :: pnamedslot*, (NAMED_SENT poperand_source) :: pnamedslot_source*) = ($call_sent_operand_valid(S, pcalltarget, n, poperand) /\ $named_slots_valid(S, pcalltarget, $(n + 1), pnamedslot*, pnamedslot_source*))
+def $named_slots_valid(S, pcalltarget, n, pnamedslot*, pnamedslot_source*) = false -- otherwise
 
-def $named_entries_valid(S, porigin, n, eps, eps) = true
-def $named_entries_valid(S, porigin, n, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*, (preqbytes, poperand_source) :: (preqbytes_rest, poperand_rest)*) = ($call_sent_operand_valid(S, porigin, n, poperand) /\ $named_entries_valid(S, porigin, n, (preqbytes_tail, poperand_tail)*, (preqbytes_rest, poperand_rest)*))
-def $named_entries_valid(S, porigin, n, (preqbytes, poperand)*, (preqbytes_source, poperand_source)*) = false -- otherwise
+def $named_entries_valid(S, pcalltarget, n, eps, eps) = true
+def $named_entries_valid(S, pcalltarget, n, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*, (preqbytes, poperand_source) :: (preqbytes_rest, poperand_rest)*) = ($call_sent_operand_valid(S, pcalltarget, n, poperand) /\ $named_entries_valid(S, pcalltarget, n, (preqbytes_tail, poperand_tail)*, (preqbytes_rest, poperand_rest)*))
+def $named_entries_valid(S, pcalltarget, n, (preqbytes, poperand)*, (preqbytes_source, poperand_source)*) = false -- otherwise
 
-dec $named_pending_valid(pstate, porigin, phpType7*, nat, pnamedargs, porigin?, int, nat) : bool
-def $named_pending_valid(S, porigin_function, phpType7_remaining*, n, pnamedargs, (porigin), z, n_sent) = true
+dec $named_pending_valid(pstate, pcalltarget, phpType7*, nat, pnamedargs, porigin?, int, nat) : bool
+def $named_pending_valid(S, pcalltarget_function, phpType7_remaining*, n, pnamedargs, (porigin), z, n_sent) = true
   -- if ~$call_unpack_site(S, (porigin))
-  -- if $call_selected_valid(S, porigin_function, (porigin))
+  -- if $call_selected_valid(S, pcalltarget_function, (porigin))
   -- if $call_line_valid(S, (porigin), z)
   -- if S.ORIGIN = (porigin)
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if $named_present(phpType7*)
   -- if n_offset = $(n + n_sent)
@@ -462,12 +462,12 @@ def $named_pending_valid(S, porigin_function, phpType7_remaining*, n, pnamedargs
   -- if phpType7_prefix* = phpType7*[0:n]
   -- if $named_source_valid(pfunction.SIGNATURE.PARAMETERS, phpType7_prefix*, 0, false, {SLOTS eps, NAMED eps})
   -- if pnamedargs_source = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7_prefix*, 0, {SLOTS eps, NAMED eps})
-  -- if $named_slots_valid(S, porigin_function, 0, pnamedargs.SLOTS, pnamedargs_source.SLOTS)
-  -- if $named_entries_valid(S, porigin_function, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pnamedargs.NAMED, pnamedargs_source.NAMED)
-def $named_pending_valid(S, porigin_function, phpType7*, n, pnamedargs, porigin?, z, n_sent) = false -- otherwise
+  -- if $named_slots_valid(S, pcalltarget_function, 0, pnamedargs.SLOTS, pnamedargs_source.SLOTS)
+  -- if $named_entries_valid(S, pcalltarget_function, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pnamedargs.NAMED, pnamedargs_source.NAMED)
+def $named_pending_valid(S, pcalltarget_function, phpType7*, n, pnamedargs, porigin?, z, n_sent) = false -- otherwise
 
-def $call_task_valid(S, NAMED_ARGS porigin_function phpType7* n pnamedargs porigin? z) = $named_pending_valid(S, porigin_function, phpType7*, n, pnamedargs, porigin?, z, 0)
-def $call_task_valid(S, NAMED_SEND porigin_function phpType7* n pnamedargs porigin? z) = $named_pending_valid(S, porigin_function, phpType7*, n, pnamedargs, porigin?, z, 1)
+def $call_task_valid(S, NAMED_ARGS pcalltarget_function phpType7* n pnamedargs porigin? z) = $named_pending_valid(S, pcalltarget_function, phpType7*, n, pnamedargs, porigin?, z, 0)
+def $call_task_valid(S, NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) = $named_pending_valid(S, pcalltarget_function, phpType7*, n, pnamedargs, porigin?, z, 1)
 
 dec $named_collected_keys(pentry*, (preqbytes, poperand)*) : bool
 def $named_collected_keys(eps, eps) = true
@@ -479,7 +479,7 @@ def $named_tail_valid(S, porigin, n) = true
   -- if S.TODO = (NAMED_VARIADIC_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $variadic_stage(S, porigin)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.NAMED =/= eps
   -- if $(n <= |pcallcontext.NAMED|)

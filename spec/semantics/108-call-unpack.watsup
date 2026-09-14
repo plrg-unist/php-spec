@@ -34,23 +34,23 @@ rule PhpStep/unpack-next-source: S ~> S[.TODO = [$at_task($unpack_origin(punpack
 rule PhpStep/unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(punpackcall), $named_argument_task(pfunction, pnamedtarget, expression)), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pnamedtarget = $named_target(pfunction.SIGNATURE.PARAMETERS, phpType3, |punpackcall.SENT.SLOTS|)
 rule PhpStep/unpack-explicit-send: S ~> S_value[.TODO = (UNPACK_ARGS $unpack_advance(punpackcall, $named_store(punpackcall.SENT, pnamedtarget, S_value.RESULT))) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (UNPACK_SEND punpackcall) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, punpackcall.CALLSITE, punpackcall.INDEX), |punpackcall.SENT.SLOTS|)
   -- if S_value = $named_send_value(S, pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/unpack-explicit-abrupt: S ~> S_value[.HELD = S.HELD]
   -- if S.TODO = (UNPACK_SEND punpackcall) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if S_value = $named_send_value(S, pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
   -- if S_value.COMPLETION =/= NORMAL
-rule PhpStep/unpack-enter: S ~> $named_enter(S[.TODO = ptask_tail*], pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.LINE)
+rule PhpStep/unpack-enter: S ~> $target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.LINE), punpackcall.FUNCTION)
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = eps
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
 
 ;; The native prescan can reach later entries before an earlier name error.
 ;; Unknown names use the wrapped zero argument number (zero-based -1).
@@ -102,7 +102,7 @@ def $unpack_prepare(S, punpackcall) = $unpack_separate(S_read, S.RESULT, $unpack
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PARRAY n)
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if $unpack_class(S, punpackcall) =/= eps
 def $unpack_prepare(S, punpackcall) = S_read[.COMPLETION = UNSUPPORTED "unpack operand lowering"]
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
@@ -160,14 +160,14 @@ dec $unpack_entry(pstate, punpackcall, poperand, nat, bool) : pstate
 def $unpack_entry(S, punpackcall, poperand, n_cursor, b_named) = S_checked
   -- if n_array = $unpack_array(S, poperand)
   -- if S.ARRAYS[n_array].ITEMS[n_cursor] = ENTRY pkey pitem
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |punpackcall.SENT.SLOTS|)
   -- if S_checked = $unpack_check(S, punpackcall.SENT, pnamedtarget, pkey, b_named, $unpack_line(S, punpackcall))
   -- if S_checked.COMPLETION =/= NORMAL
 def $unpack_entry(S, punpackcall, poperand, n_cursor, b_named) = $unpack_item(S_checked, n_array, pkey, $named_reference(pfunction, pnamedtarget), $unpack_writable(S, punpackcall))
   -- if n_array = $unpack_array(S, poperand)
   -- if S.ARRAYS[n_array].ITEMS[n_cursor] = ENTRY pkey pitem
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |punpackcall.SENT.SLOTS|)
   -- if S_checked = $unpack_check(S, punpackcall.SENT, pnamedtarget, pkey, b_named, $unpack_line(S, punpackcall))
   -- if S_checked.COMPLETION = NORMAL
@@ -176,7 +176,7 @@ rule PhpStep/unpack-entry: S ~> S_entry[.TODO = (UNPACK_NEXT punpackcall[.SENT =
   -- if n_array = $unpack_array(S, poperand)
   -- if $(n_cursor < |S.ARRAYS[n_array].ITEMS|)
   -- if S.ARRAYS[n_array].ITEMS[n_cursor] = ENTRY pkey pitem
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |punpackcall.SENT.SLOTS|)
   -- if S_entry = $unpack_entry(S, punpackcall, poperand, n_cursor, b_named)
   -- if S_entry.COMPLETION = NORMAL
@@ -192,14 +192,14 @@ rule PhpStep/unpack-container-done: S ~> S[.TODO = (UNPACK_ARGS $unpack_advance(
   -- if n_cursor = |S.ARRAYS[n_array].ITEMS|
 
 dec $unpack_call_roots(punpackcall) : pnode*
-def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED)
+def $unpack_call_roots(punpackcall) = $target_nodes(punpackcall.FUNCTION) ++ $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED)
 def $task_nodes(UNPACK_ARGS punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_SEND punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_PREP punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $unpack_call_roots(punpackcall) ++ $operand_nodes(poperand)
 
 ;; Expanded contexts retain runtime slots, not a replay of old source containers.
-def $named_call_valid(S, porigin_function, porigin?) = true -- if $call_unpack_site(S, porigin?)
+def $named_call_valid(S, pcalltarget_function, porigin?) = true -- if $call_unpack_site(S, porigin?)
 def $call_extent_valid(S, pcallcontext) = true -- if $call_unpack_site(S, pcallcontext.CALLSITE)
 def $call_extent_valid(S, pcallcontext) = (pcallcontext.ARGC = $named_call_extent(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE))
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
@@ -215,7 +215,7 @@ def $unpack_names_valid(S, pfunction, (preqbytes, poperand) :: (preqbytes_tail, 
 def $unpack_names_valid(S, pfunction, (preqbytes, poperand)*) = false -- otherwise
 def $named_context_valid(S, pcallcontext) = $unpack_names_valid(S, pfunction, pcallcontext.NAMED)
   -- if $call_unpack_site(S, pcallcontext.CALLSITE)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 
 dec $unpack_defined_prefix(pstate, psparam*, nat) : bool
 def $unpack_defined_prefix(S, psparam*, 0) = true
@@ -233,8 +233,8 @@ def $named_preflight_stage(S, porigin, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
   -- if $call_unpack_site(S, pcallcontext.CALLSITE)
-  -- if $call_selected_valid(S, porigin, pcallcontext.CALLSITE)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $(n <= n_limit)
   -- if $unpack_absent_suffix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_limit)
@@ -249,7 +249,7 @@ def $named_bind_valid(S, porigin, n) = true
   -- if $default_final_task(S.TODO, NAMED_DEFAULT_BIND porigin n)
   -- if $named_preflight_stage(S, porigin, n)
   -- if $named_default_task_valid(S, porigin, n)
-  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
@@ -309,7 +309,7 @@ def $unpack_pending_valid(S, punpackcall, n_sent) = true
   -- if $(n_offset <= |phpType7*|)
   -- if n_remaining = $(|phpType7*| - n_offset)
   -- if punpackcall.ARGUMENTS = phpType7*[n_offset:n_remaining]
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if $unpack_slots_valid(S, pfunction, 0, punpackcall.SENT.SLOTS)
   -- if $unpack_names_valid(S, pfunction, punpackcall.SENT.NAMED)
 def $unpack_pending_valid(S, punpackcall, n_sent) = false -- otherwise
@@ -324,7 +324,7 @@ def $unpack_before_valid(S, punpackcall, n) = true
   -- if $unpack_pending_valid(S, punpackcall, n)
   -- if punpackcall.CALLSITE = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if phpType7_prefix* = phpType7*[0:punpackcall.INDEX]
   -- if $call_unpack_present(phpType7_prefix*) \/ $unpack_static_prefix(S, pfunction, phpType7_prefix*, punpackcall.SENT)
 def $unpack_before_valid(S, punpackcall, n) = false -- otherwise
@@ -373,7 +373,7 @@ def $unpack_next_valid(S, punpackcall, poperand, n, b) = true
   -- if $(n <= |S.ARRAYS[n_array].ITEMS|)
   -- if pentry* = S.ARRAYS[n_array].ITEMS[0:n]
   -- if b = $unpack_prefix_named(pentry*)
-  -- if $function_at(S.FUNCTIONS, punpackcall.FUNCTION) = (pfunction)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if $unpack_prefix_valid(pfunction, punpackcall.SENT, pentry*, false, 0)
 def $unpack_next_valid(S, punpackcall, poperand, n, b) = false -- otherwise
 def $call_task_valid(S, UNPACK_NEXT punpackcall poperand n b) = $unpack_next_valid(S, punpackcall, poperand, n, b)

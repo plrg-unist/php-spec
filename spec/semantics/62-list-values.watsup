@@ -2,6 +2,7 @@
 ;; null is silent, and other scalars warn once per fetch after a delayed key read.
 dec $list_scalar_value(pstate, pvalue, int) : pstate
 def $list_scalar_value(S, PNULL, z) = S[.RESULT = KNOWN PNULL]
+def $list_scalar_value(S, POBJECT n, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
 def $list_scalar_value(S, pvalue, z) = $diagnostic(S, "Warning", [67,97,110,110,111,116,32,117,115,101,32] ++ $type_bytes(pvalue) ++ [32,97,115,32,97,114,114,97,121], z)[.RESULT = KNOWN PNULL]
   -- otherwise
 

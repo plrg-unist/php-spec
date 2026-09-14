@@ -30,7 +30,7 @@ def $ppstatic_check(P, ptbytes) = $ppcheck(P, $context_error("Cannot use $this a
   -- if ptbytes = $ptascii("this")
 def $ppstatic_check(P, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Duplicate declaration of static variable $") ++ ptbytes) P.LOCATION.LINE)]
   -- if ptbytes =/= $ptascii("this")
-  -- if $ppstatic_seen(P.FUNCTIONS, P.EXPRESSIONS, ptbytes)
+  -- if $ppstatic_seen(P.FUNCTIONS ++ P.CLOSURETEMPLATES, P.EXPRESSIONS, ptbytes)
 def $ppstatic_check(P, ptbytes) = P
   -- otherwise
 

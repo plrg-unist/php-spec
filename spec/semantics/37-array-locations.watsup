@@ -52,6 +52,8 @@ def $location_array(S, plocation, z) = $diagnostic(S_written, "Deprecated", ([65
   -- if S_written = $location_write(S_new, plocation, pvalue)
 def $location_array(S, plocation, z) = S[.COMPLETION = UNSUPPORTED "string offset write"]
   -- if $location_slot(S, plocation) = DEFINED (PSTRING n*)
+def $location_array(S, plocation, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
+  -- if $location_slot(S, plocation) = DEFINED (POBJECT n)
 def $location_array(S, plocation, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,115,101,32,97,32,115,99,97,108,97,114,32,118,97,108,117,101,32,97,115,32,97,110,32,97,114,114,97,121]), z)
   -- otherwise
 

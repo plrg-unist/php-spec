@@ -27,6 +27,7 @@ def $foreach_start(S, statement, plocation, b, z) = $foreach_warning(S, pvalue, 
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN pvalue
   -- if ~$is_array_value(pvalue)
+  -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
 
 rule PhpStep/foreach-value: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_iterable), FOREACH_RESET (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) NOWHERE false z] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)) :: ptask_tail*
@@ -170,6 +171,7 @@ rule PhpStep/foreach-fetch-scalar: S ~> $foreach_finish($foreach_warning(S[.ORIG
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
   -- if pvalue = $foreach_owner_value(S, pnode)
   -- if ~$is_array_value(pvalue)
+  -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
 rule PhpStep/foreach-fetch-end: S ~> $foreach_finish(S_selected, n)
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
   -- if $foreach_owner_value(S, pnode) = PARRAY n_original
@@ -207,3 +209,11 @@ def $jump_loop(S, n_depth, b) = $jump_loop($foreach_finish(S, n), $nabs($(n_dept
   -- if $(n_depth > 1)
 
 def $task_nodes(FOREACH_NEXT n pnode statement porigin? z) = [pnode]
+
+def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN (POBJECT n)
+
+rule PhpStep/foreach-fetch-object: S ~> $foreach_finish(S[.ORIGIN = porigin?], n)
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
+  -- if $foreach_owner_value(S, pnode) = POBJECT n_object

@@ -44,3 +44,9 @@ def $cast_array_notice(S, PFLOAT n, z) = $diagnostic(S, "Warning", [117, 110, 10
   -- if $fparts_nan($float_decode(n))
 def $cast_array_notice(S, pvalue, z) = S
   -- otherwise
+
+def $cast_value(S, CASTINT, POBJECT n, z) = $diagnostic(S, "Warning", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 105, 110, 116], z)[.RESULT = KNOWN (PINT 1)]
+def $cast_value(S, CASTFLOAT, POBJECT n, z) = $diagnostic(S, "Warning", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 102, 108, 111, 97, 116], z)[.RESULT = KNOWN (PFLOAT $float_of_int(1))]
+def $cast_value(S, CASTOBJECT, POBJECT n, z) = S[.RESULT = KNOWN (POBJECT n)]
+def $cast_value(S, CASTOBJECT, pvalue, z) = S[.COMPLETION = UNSUPPORTED "non-object cast to object"]
+  -- if $type_bytes(pvalue) =/= [111,98,106,101,99,116]

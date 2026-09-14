@@ -46,3 +46,6 @@ rule PhpStep/ordinary-bitnot_result-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION =/= NORMAL
+
+rule PhpStep/ordinary-castobject: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), CAST_RESULT CASTOBJECT $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprCastObject expression metadata)) :: ptask_tail*

@@ -1,3 +1,4 @@
+dec $ppclosure_template(pfunction) : bool
 dec $ppdefault_parameter(ppstate, pcpath, nat) : ppstate
 dec $ppdefault_path(pcpath, nat) : pcpath
 ;; Parameter defaults use the shared signature suspension and constant compiler.
@@ -71,7 +72,7 @@ def $ppdefault_descriptor(P, pcpath) = PDDEFERRED
 ;; A function owns compiled parameter roots even when normalization removes an
 ;; optional receive. Nested functions must not leak those roots into their parent.
 def $ppdefault_path(pcpath, n) = pcpath ++ [PCFIELD 3, PCINDEX n, PCFIELD 6]
-def $ppfunction_contains(pfunction, pcpath) = ($effect_below(pfunction.BODY, pcpath) \/ $effect_below(pcpath_decl ++ [PCFIELD 3], pcpath))
+def $ppfunction_contains(pfunction, pcpath) = ($effect_below(pfunction.BODY, pcpath) \/ $effect_below(pcpath_decl ++ [PCFIELD 3], pcpath) \/ ($ppclosure_template(pfunction) /\ $effect_below(pcpath_decl ++ [PCFIELD 4], pcpath)))
   -- if pfunction.ORIGIN = PORIGIN n pcpath_decl
 
 def $ppdefault_parameter(P, pcpath, n) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR (pcpath ++ [PCFIELD 3, PCINDEX n]) P.LOCATION.LINE eps]]

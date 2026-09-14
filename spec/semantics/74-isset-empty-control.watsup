@@ -7,6 +7,7 @@ def $isset_value(S, pvalue, true, z) = $boolean_result(S[.RESULT = KNOWN pvalue]
 dec $isset_array(pstate, nat, pvalue, bool, int) : pstate
 dec $isset_key(pstate, pvalue, int) : pstate
 def $isset_key(S, PARRAY n_key, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,97,99,99,101,115,115,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32,97,114,114,97,121,32,105,110,32,105,115,115,101,116,32,111,114,32,101,109,112,116,121], z)
+def $isset_key(S, POBJECT n, z) = $throw_scalar(S, "TypeError", [67, 97, 110, 110, 111, 116, 32, 97, 99, 99, 101, 115, 115, 32, 111, 102, 102, 115, 101, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 105, 110, 32, 105, 115, 115, 101, 116, 32, 111, 114, 32, 101, 109, 112, 116, 121], z)
 def $isset_key(S, pvalue, z) = $dimension_key_value(S, pvalue, z) -- otherwise
 def $isset_array(S, n, pvalue, b, z) = S_key
   -- if S_key = $isset_key(S, pvalue, z)
@@ -45,6 +46,7 @@ def $isset_string_at(S, n_bytes*, i, true) = S_read[.RESULT = KNOWN (PBOOL (n_va
 dec $isset_dimension_value(pstate, pvalue, pvalue, bool, int) : pstate
 def $isset_dimension_value(S, PARRAY n, pvalue, b, z) = $isset_array(S, n, pvalue, b, z)
 def $isset_dimension_value(S, PSTRING n_bytes*, pvalue, b, z) = $isset_string(S, n_bytes*, pvalue, b, z)
+def $isset_dimension_value(S, POBJECT n, pvalue, b, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
 def $isset_dimension_value(S, pvalue_base, pvalue, b, z) = S[.RESULT = KNOWN (PBOOL b)] -- otherwise
 
 dec $isset_simple(pstate, pbase, bool, int) : pstate

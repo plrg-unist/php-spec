@@ -1,6 +1,6 @@
 ;; User parameter/return scalar conversion, pinned zend_check_type semantics.
 ;; Selection is pure; existing scalar helpers emit conversion diagnostics.
-syntax ptypeconversion = TYPEVALUE pvalue | TYPEINTEGER pvalue | TYPESTRING pvalue | TYPEBOOL pvalue | TYPEREJECT
+syntax ptypeconversion = TYPEDEPENDENT text | TYPEVALUE pvalue | TYPEINTEGER pvalue | TYPESTRING pvalue | TYPEBOOL pvalue | TYPEREJECT
 
 dec $typed_tag(pvalue) : text
 def $typed_tag(PNULL) = "null"
@@ -82,3 +82,92 @@ def $typed_apply(S, TYPEVALUE pvalue, z) = S[.RESULT = KNOWN pvalue]
 def $typed_apply(S, TYPEINTEGER pvalue, z) = $integer_coerce(S, pvalue, z)
 def $typed_apply(S, TYPESTRING pvalue, z) = $stringify(S, pvalue, z)
 def $typed_apply(S, TYPEBOOL pvalue, z) = $truth_value(S, pvalue, z)
+
+;; The runtime wrapper preserves pure scalar conversion for compiler consumers.
+;; Only live real closures satisfy the known Closure class in this foundation.
+dec $typed_capture_complete(pitem*) : bool
+def $typed_capture_complete(eps) = true
+def $typed_capture_complete(pitem :: pitem_tail*) = (pitem =/= UNINITIALIZED /\ $typed_capture_complete(pitem_tail*))
+dec $typed_closure(pstate, nat) : bool
+def $typed_closure(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $typed_capture_complete(pitem*)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+def $typed_closure(S, n) = false -- otherwise
+
+dec $typed_closure_branch(ptbranch) : bool
+def $typed_closure_branch(PTBRANCH ([PTCLASS ptbytes])) = ($ptlc(ptbytes) = $ptascii("closure"))
+def $typed_closure_branch(ptbranch) = false -- otherwise
+dec $typed_closure_type(ptbranch*) : bool
+def $typed_closure_type(eps) = false
+def $typed_closure_type(ptbranch :: ptbranch_tail*) = ($typed_closure_branch(ptbranch) \/ $typed_closure_type(ptbranch_tail*))
+
+dec $typed_callable_name(ptbytes) : ptbytes
+def $typed_callable_name(92 :: n*) = n*
+def $typed_callable_name(ptbytes) = ptbytes -- otherwise
+dec $typed_callable_method(ptbytes, bool, bool) : bool
+def $typed_callable_method(eps, b_previous, b_method) = b_method
+def $typed_callable_method(58 :: n*, b_previous, b_method) = $typed_callable_method(n*, true, b_previous)
+def $typed_callable_method(n :: n_tail*, b_previous, b_method) = $typed_callable_method(n_tail*, false, b_method) -- if n =/= 58
+
+dec $typed_registered(pstate, ptbytes) : bool
+def $typed_registered(S, ptbytes) = true -- if $pfunction_builtin($typed_callable_name(ptbytes))
+def $typed_registered(S, ptbytes) = true
+  -- if ~$pfunction_builtin($typed_callable_name(ptbytes))
+  -- if $callable_at(S.CALLABLES, $ptlc($typed_callable_name(ptbytes))) = (porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+def $typed_registered(S, ptbytes) = false -- otherwise
+
+;; Invalid callback array shapes are false; class/method services are pending.
+dec $typed_callback_receiver(pvalue) : bool
+def $typed_callback_receiver(PSTRING ptbytes) = true
+def $typed_callback_receiver(POBJECT n) = true
+def $typed_callback_receiver(pvalue) = false -- otherwise
+dec $typed_callback_array(pstate, nat) : bool
+def $typed_callback_array(S, n) = true
+  -- if S.ARRAYS[n] = parray
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
+  -- if $typed_callback_receiver($entry_value(S, pitem_receiver))
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+def $typed_callback_array(S, n) = false -- otherwise
+
+dec $typed_callable(pstate, pvalue) : bool?
+def $typed_callable(S, POBJECT n) = (true) -- if $typed_closure(S, n)
+def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n)
+def $typed_callable(S, PSTRING ptbytes) = (true) -- if $typed_registered(S, ptbytes)
+def $typed_callable(S, PSTRING ptbytes) = eps
+  -- if ~$typed_registered(S, ptbytes)
+  -- if $typed_callable_method(ptbytes, false, false)
+def $typed_callable(S, PSTRING ptbytes) = (false)
+  -- if ~$typed_registered(S, ptbytes)
+  -- if ~$typed_callable_method(ptbytes, false, false)
+def $typed_callable(S, PARRAY n) = eps -- if $typed_callback_array(S, n)
+def $typed_callable(S, PARRAY n) = (false) -- if ~$typed_callback_array(S, n)
+def $typed_callable(S, pvalue) = (false) -- otherwise
+
+dec $typed_object_exact(pstate, ptbranch*, pvalue) : bool
+def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_closure_type(ptbranch*) /\ $typed_closure(S, n))
+def $typed_object_exact(S, ptbranch*, pvalue) = false -- otherwise
+
+dec $typed_conversion_at(pstate, ptbranch*, pvalue, bool) : ptypeconversion
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEVALUE pvalue
+  -- if $typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue)
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEVALUE pvalue
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if "callable" <- $ptmasks(ptbranch*)
+  -- if $typed_callable(S, pvalue) = (true)
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "class or method callable type checking"
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if "callable" <- $ptmasks(ptbranch*)
+  -- if $typed_callable(S, pvalue) = eps
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*, pvalue, b)
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if ~("callable" <- $ptmasks(ptbranch*)) \/ $typed_callable(S, pvalue) = (false)
+
+dec $typed_given(pstate, pvalue) : ptbytes
+def $typed_given(S, POBJECT n) = $ptascii("Closure") -- if $typed_closure(S, n)
+def $typed_given(S, pvalue) = $ptascii($typed_tag(pvalue)) -- otherwise
+def $typed_apply(S, TYPEDEPENDENT text, z) = S[.COMPLETION = UNSUPPORTED text]

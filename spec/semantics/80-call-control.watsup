@@ -1,6 +1,6 @@
-dec $named_call_valid(pstate, porigin, porigin?) : bool
+dec $named_call_valid(pstate, pcalltarget, porigin?) : bool
 dec $named_start(pfunction, phpType7*, porigin?, int) : ptask
-dec $named_call_extent(pstate, porigin, porigin?) : nat
+dec $named_call_extent(pstate, pcalltarget, porigin?) : nat
 dec $named_context_valid(pstate, pcallcontext) : bool
 dec $named_default_task_valid(pstate, porigin, nat) : bool
 dec $named_after_positional(pstate, pfunction) : ptask*
@@ -13,10 +13,10 @@ dec $typed_parameters(psparam*) : bool
 dec $typed_fallthrough(pfunction) : ptask
 dec $typed_return_line(pstate, int) : int
 dec $typed_return_value(pstate, int) : pstate
-dec $call_parameter_reference(pstate, porigin, nat) : bool
+dec $call_parameter_reference(pstate, pcalltarget, nat) : bool
 dec $call_reference_variable(expression) : bool
-dec $call_argument_task(pstate, porigin, nat, expression, porigin?) : ptask
-dec $call_send_operand(pstate, porigin, nat, porigin?, int) : pstate
+dec $call_argument_task(pstate, pcalltarget, nat, expression, porigin?) : ptask
+dec $call_send_operand(pstate, pcalltarget, nat, porigin?, int) : pstate
 dec $call_sourcefile(psourcefile*, porigin) : preqbytes
 def $call_sourcefile(eps, porigin) = eps
 def $call_sourcefile((SOURCEFILE n preqbytes) :: psourcefile*, PORIGIN n pcpath) = preqbytes
@@ -87,15 +87,15 @@ rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
 
-rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), $call_argument_task(S, porigin_function, n, expression, porigin?)), CALL_SEND porigin_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
-  -- if S.TODO = (CALL_ARGS porigin_function ((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) n poperand* porigin? z) :: ptask_tail*
-rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS porigin_function phpType7* $(n + 1) (poperand* ++ [S_value.RESULT]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (CALL_SEND porigin_function phpType7* n poperand* porigin? z) :: ptask_tail*
-  -- if S_value = $call_send_operand(S, porigin_function, n, porigin?, z)
+rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), $call_argument_task(S, pcalltarget_function, n, expression, porigin?)), CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
+  -- if S.TODO = (CALL_ARGS pcalltarget_function ((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) n poperand* porigin? z) :: ptask_tail*
+rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS pcalltarget_function phpType7* $(n + 1) (poperand* ++ [S_value.RESULT]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if S_value = $call_send_operand(S, pcalltarget_function, n, porigin?, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/call-send-abrupt: S ~> S_value
-  -- if S.TODO = (CALL_SEND porigin_function phpType7* n poperand* porigin? z) :: ptask_tail*
-  -- if S_value = $call_send_operand(S, porigin_function, n, porigin?, z)
+  -- if S.TODO = (CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if S_value = $call_send_operand(S, pcalltarget_function, n, porigin?, z)
   -- if S_value.COMPLETION =/= NORMAL
 
 dec $bind_parameters(pstate, psparam*, poperand*) : pstate
@@ -123,7 +123,7 @@ def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = [TYPE_RECEIVE pfunction.ORIGIN 0]]
   -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
-def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
+def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({INSTANCE eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |poperand*|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)
@@ -135,9 +135,9 @@ def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CUR
   -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, poperand*)
 def $call_enter(S, pfunction, poperand*, porigin?, z) = S[.COMPLETION = UNSUPPORTED "unconnected function signature"]
   -- otherwise
-rule PhpStep/call-enter: S ~> $call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z)
-  -- if S.TODO = (CALL_ARGS porigin_function eps n poperand* porigin? z) :: ptask_tail*
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+rule PhpStep/call-enter: S ~> $target_after_enter($call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z), pcalltarget_function)
+  -- if S.TODO = (CALL_ARGS pcalltarget_function eps n poperand* porigin? z) :: ptask_tail*
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
 
 rule PhpStep/return-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), RETURN_VALUE $typed_return_line(S, $runtime_line(S, [PCFIELD 0], expression))] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtReturn expression metadata)) :: ptask_tail*
@@ -168,6 +168,6 @@ def $return_step(S, poperand, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = 
 rule PhpStep/return-unwind: S ~> $return_step(S, poperand, ptask_tail*)
   -- if S.TODO = (RETURN_UNWIND poperand) :: ptask_tail*
 
-def $task_nodes(CALL_ARGS porigin_function phpType7* n poperand* porigin? z) = $operands_roots(poperand*)
-def $task_nodes(CALL_SEND porigin_function phpType7* n poperand* porigin? z) = $operands_roots(poperand*)
+def $task_nodes(CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = $target_nodes(pcalltarget_function) ++ $operands_roots(poperand*)
+def $task_nodes(CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) = $target_nodes(pcalltarget_function) ++ $operands_roots(poperand*)
 def $task_nodes(RETURN_UNWIND poperand) = $operand_nodes(poperand)
