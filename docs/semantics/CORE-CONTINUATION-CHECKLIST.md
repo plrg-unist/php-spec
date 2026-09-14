@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:133 partial,172 pending,1 validated
+has169 constructors and306 obligations:134 partial,171 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -74,7 +74,13 @@ claim that the inventory dependency graph is complete.
 - [x] Builtin named compiler106 acceptedbb38d1d7 on972/e1bf, code84fc35f5.
   [Review](../../coverage/semantics/builtin-named-review.json) binds780 signatures,
   source modes/static priorities and reproducible generation; no builtin execution.
-- [ ] Array call unpack; see the [successor handoff](RUNTIME-CALL-UNPACK-HANDOFF.md).
+- [x] Direct user-function array call unpack107/108 accepted e45c7139 on981/3f3,
+  codeadb21f56. [Review](../../coverage/semantics/call-unpack-review.json) binds55
+  source outcomes,29 compiler phases/56 projections,34 protocol/824, author2
+  states/435, independent4 states/1063 and14 full old972 compatibility cuts.
+  Traversable and builtin execution remain required.
+- [ ] Current ordinary/request/callable integration before109; see the
+  [handoff](RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md). Preserve full profiles and raw closures.
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

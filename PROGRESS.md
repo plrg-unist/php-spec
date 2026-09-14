@@ -6,48 +6,45 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Builtin named compilation](docs/semantics/BUILTIN-NAMED-COMPILER.md) is independently
-accepted at **bb38d1d7** in [builtin-named-review.json](coverage/semantics/builtin-named-review.json).
-Canonical **972/e1bf0d3e** binds code **84fc35f5** and compiler evidence **467e8788**.
-Generated106 maps exact fixed parameter names for780 configured signatures;
-104 selects existing value/reference fetch modes. Variadic names and unknown
-names stay deferred. Module25 positional bytes and87 shortcuts remain unchanged.
-Builtin bodies, default filling, callbacks and runtime name errors remain required.
+[Array call argument unpacking](docs/semantics/SOURCE-CALL-UNPACK.md) is independently
+accepted at **e45c7139** in [call-unpack-review.json](coverage/semantics/call-unpack-review.json).
+Canonical **981/3f3ca6b6** binds code **adb21f56**, compiler evidence **50d0fbbc** and
+runtime evidence **5318ed52**. Direct user calls expand integer keys in insertion
+order and map string keys through the named binder. Emitted operand class controls
+reference eligibility; container and sent owners survive later effects and errors.
+Default holes, uncoerced caches, typed receives and saved suppression keep their
+reviewed ordering. NArg markers preserve SEND_UNPACK lines separately from child calls.
 
-Independent103 byte controls and24 full-source profiles pass:11 exact native static
-outcomes and13 explicit builtin-body Unsupported boundaries. Two copied source
-reproductions each bind238 inputs/14 compiler commands, with only configured
-Makefile paths relocated. Author780/6589 lookup assertions,24 compiler phases/33
-projections,59 named phases plus2 boundaries/129 projections,91 builtin-write phases
-and7508 positional-mode assertions pass. CLI8 covers4 native static outcomes,
-3 Unsupported boundaries and1 prior named user-function agreement. Counts overlap.
+Author55 exact source outcomes (31 normal,18 PHP errors,6 static rejections),
+29 compiler phases/56 projections,34 protocol controls/824 assertions,12 adjacent
+profiles and2 ownership cases/435 assertions pass. Independent7 source profiles,
+4 state cases/1063 assertions and14 complete-response cuts for2 old972 programs
+pass; compatibility needs no projection. Canonical CLI8 passes. Counts overlap.
+Three builtin-result contexts remain explicit dependencies.
 
-Compiler0eef and independent2eee archives retain source/raw/tool/mode evidence.
-Independent source/helper gates retain969/8079; final972 adds tests and Makefile
-wiring with identical semantic bytes. The exact generated report7e9200 is also
-installed. Four stale compiler expectations and the CLI producer's incorrect
-Unsupported process-exit expectation remain retained; neither correction changed
-runtime semantics. Raw final compiler gates bind170 responses/4 worker closures/5
-true runners. CLI process status is separate from its decoded PHP outcome.
+The [review](coverage/semantics/call-unpack-review.json) binds compiler cb917,
+runtime5175 and independent review archives, original failures and raw closures.
+Final source/protocol/state gates retain **981/ec4cf850**. Earlier862d compiler and
+regression gates retain their identity; the cursor guard and protocol successor
+bridges are explicit. Installation3f3 removes only an unused two-line helper,
+with zero-reference and exact byte/mode proof. All other final files are unchanged.
+Class passthrough, emitted-line and finite source/state guard repairs preserve
+arbitrary consistent values; no prior execution history is reconstructed.
 
-Named user-function binding remains accepted1a562e8f on968/ab389, with its original
-[source/state review](coverage/semantics/named-review.json) and55cd test-only bridge.
-Earlier positional variadic, parameter-phase, suppression, reference-return,
-acquisition, typed, strict and default checkpoints retain their linked identities.
-Reporting APIs/handlers/configured fatal display remain open; current native
-reporting profile30719 uses fatal mask4437 inside `@`.
+Next is the current ordinary/request/callable integration checkpoint, before any
+109 source activation. Read the [handoff](docs/semantics/RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md).
+Root coordinates compiler7, runtime7 and review10. Freeze current memberships,
+profiles, tools and modes after root reads this checkpoint; validate a representative
+full request/source/native profile through the prepared raw wrapper before263.
+Historical full campaigns remain historical until these current runs are accepted.
 
-Next is array call unpack107/108; read the
-[successor handoff](docs/semantics/RUNTIME-CALL-UNPACK-HANDOFF.md).
-Compiler7/runtime7/review10 continue under root coordination. Prepared968 originals
-remain Unsupported evidence until an independently reviewed paired implementation.
-
-The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains builtin execution,
-unpacked and remaining callable protocols, objects, exceptions, dynamic
-sources, generators/fibers, lifetime and core intrinsics. Mixed caller/callee
-strictness still needs an admitted source route. PHP_VERSION value reads, other
-missing builtin constants, define/defined and legal object/class/callable constants
-remain open. NEW side effects must extend caching. No family closes.
+Builtin106 name/mode metadata remains accepted on972/e1bf; builtin bodies,
+default filling and callbacks remain required. Traversable, dynamic callables,
+function statics, closures, objects, exceptions, reporting APIs/configuration,
+dynamic sources and lifetime protocols remain open. Current native reporting
+profile30719 uses fatal mask4437 inside `@`. The
+[core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains complete
+inventory, source, full syntax and fresh offline gates. No family closes.
 
 Earlier checkpoints retain their own identities and detailed gates in linked
 reviews: [user constants](coverage/semantics/user-constant-review.json) **3341519d**,
@@ -94,9 +91,9 @@ bodies and close no core obligation. Request table/callback interfaces remain in
 | 6: complete inventory/review, differential campaign and offline audit | Pending |
 
 Inventory: **169 constructors/306 runtime obligations**, with70 field domains.
-The runtime inventory now records133 partial,172 pending and one validated
+The runtime inventory now records134 partial,171 pending and one validated
 obligation. Accepted constants, defaults, strictness, builtin value types,
-reference returns, suppression, positional variadics and named binding remain partial.
+reference returns, suppression, positional variadics, named binding and call unpack remain partial.
 Only oracle identity closes. Helper tests and compiler prepass traversal do not
 close ordinary source-execution families.
 

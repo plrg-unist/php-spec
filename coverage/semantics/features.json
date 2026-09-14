@@ -26,7 +26,9 @@
       "implementation": [
         "spec/semantics/104-named-compiler.watsup",
         "spec/semantics/105-named-arguments.watsup",
-        "spec/semantics/106-builtin-named-compiler.watsup"
+        "spec/semantics/106-builtin-named-compiler.watsup",
+        "spec/semantics/107-call-unpack-compiler.watsup",
+        "spec/semantics/108-call-unpack.watsup"
       ],
       "source_tests": [
         "tests/semantics/named.py",
@@ -39,9 +41,17 @@
         "coverage/semantics/named-review.json",
         "tests/semantics/builtin_named_compiler.py",
         "tests/semantics/builtin_named_modes.py",
-        "coverage/semantics/builtin-named-review.json"
+        "coverage/semantics/builtin-named-review.json",
+        "tests/semantics/call_unpack.py",
+        "tests/semantics/call_unpack_cases.json",
+        "tests/semantics/call_unpack_compiler.py",
+        "tests/semantics/call_unpack_compiler_cases.json",
+        "tests/semantics/call_unpack_protocol.py",
+        "tests/semantics/call_unpack_state.py",
+        "tests/semantics/call_unpack_regression.py",
+        "coverage/semantics/call-unpack-review.json"
       ],
-      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compiler106 acceptedbb38d1d7 on972/e1bf with exact configured fixed-name/mode lookup and source phases; builtin body/default contracts, call unpack and complete callable/object/exception protocols remain required; no family closure."
+      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compiler106 acceptedbb38d1d7 on972/e1bf with exact configured fixed-name/mode lookup and source phases; builtin body/default contracts and complete callable/object/exception protocols remain required; direct user array unpack is separately reviewed in call-unpack-review.json; no family closure."
     },
     {
       "node": "ArrayItem",
@@ -6288,7 +6298,7 @@
         "coverage/semantics/named-review.json",
         "docs/semantics/SOURCE-NAMED-ARGUMENTS.md"
       ],
-      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compiler106 acceptedbb38d1d7 on972/e1bf with exact configured fixed-name/mode lookup and source phases; builtin body/default contracts, call unpack and complete callable/object/exception protocols remain required; no family closure.",
+      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compiler106 acceptedbb38d1d7 on972/e1bf with exact configured fixed-name/mode lookup and source phases; builtin body/default contracts and complete callable/object/exception protocols remain required; direct user array unpack is now reviewed separately in call-unpack-review.json; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php"
       ]
@@ -6296,15 +6306,31 @@
     {
       "id": "calls.unpack",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/107-call-unpack-compiler.watsup",
+        "spec/semantics/108-call-unpack.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/call_unpack.py",
+        "tests/semantics/call_unpack_cases.json",
+        "tests/semantics/call_unpack_compiler.py",
+        "tests/semantics/call_unpack_compiler_cases.json",
+        "tests/semantics/call_unpack_protocol.py",
+        "tests/semantics/call_unpack_state.py",
+        "tests/semantics/call_unpack_regression.py",
+        "coverage/semantics/call-unpack-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/SOURCE-CALL-UNPACK.md",
+        "coverage/semantics/call-unpack-review.json"
+      ],
+      "review": "Accepted e45c7139: direct user-function array unpack107/108, codeadb21f56 on981/3f3, semantic gates981/ec4 with explicit cursor/test/dead-helper bridges. Integer insertion order, per-container named phase, default-hole/cache/type ordering and independent container/sent reference ownership are reviewed. Author55 sources,29/56 compiler,34/824 protocol,2/435 states; independent7 sources,4/1063 states,two full972 state bridges/14 cuts; CLI8 pass. Traversable, builtin bodies/defaults/callbacks and complete callable/object/exception integration remain required; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/unpacked-byref.php"
       ]
@@ -6336,7 +6362,7 @@
         "coverage/semantics/variadic-review.json",
         "docs/semantics/SOURCE-POSITIONAL-VARIADICS.md"
       ],
-      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named user-function binding is now accepted1a562e8f; builtin execution, argument unpacking and complete callable/type/object protocols remain required. No family closure.",
+      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named user-function binding is now accepted1a562e8f; builtin execution and complete callable/type/object protocols remain required; array call unpack is separately reviewed in call-unpack-review.json. No family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php"
       ]

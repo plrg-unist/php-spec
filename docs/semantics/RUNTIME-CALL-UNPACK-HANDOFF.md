@@ -1,4 +1,8 @@
-# Successor: array call unpack
+# Historical preparation: array call unpack
+
+Implemented107/108 is now accepted on981/3f3; see the [runtime contract](SOURCE-CALL-UNPACK.md)
+and [current integration handoff](RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md). The preparation
+below retains its original baseline and pending-at-the-time obligations.
 
 Start from accepted972/e1bf: code84fc35f5, compiler467e8788 and independentbb38d1d7.
 Read current PROGRESS and the [compiler106 contract](BUILTIN-NAMED-COMPILER.md).

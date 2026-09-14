@@ -67,7 +67,7 @@ Object/frame-dependent targets remain unfinished.
 [Array unpacking](docs/semantics/ARRAY-UNPACK.md) now preserves key order, copied
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
-sources; Traversable objects and argument unpacking remain unfinished.
+sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 class-constant lookup remain unfinished.
@@ -131,7 +131,12 @@ are now [independently reviewed](coverage/semantics/named-review.json), includin
 hole-default preflight, typed/reference aliases and source-bound SEND lines.
 [Builtin named compilation](docs/semantics/BUILTIN-NAMED-COMPILER.md) now has
 [independent review](coverage/semantics/builtin-named-review.json) of configured
-fixed-name lookup and fetch modes. Builtin execution and argument unpacking remain required.
+fixed-name lookup and fetch modes. [Array call arguments](docs/semantics/SOURCE-CALL-UNPACK.md)
+now preserve insertion order, named holes and reference owners through errors;
+[independent review](coverage/semantics/call-unpack-review.json) binds source/state
+checks and complete old-state compatibility. Builtin execution and Traversable
+remain required. The next [current integration checkpoint](docs/semantics/RUNTIME-CALLABLE-INTEGRATION-HANDOFF.md)
+precedes further callable activation.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
