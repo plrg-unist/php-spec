@@ -13,8 +13,8 @@ on933 and [source reference returns](SOURCE-REFERENCE-RETURNS.md) on942;
 [parameter phase correction](PARAMETER-PHASE.md) is accepted on951/440f3966; the
 [positional variadic contract](SOURCE-POSITIONAL-VARIADICS.md) is accepted at4187c887
 on959/4854. Named binding is accepted at1a562e8f
-on968/ab389. The [next handoff](RUNTIME-NAMED-SUCCESSOR-HANDOFF.md) schedules
-builtin-name compilation and array call unpack. The sequence below retains its historical role.
+on968/ab389. Builtin-name compilation is now accepted on972/e1bf. The
+[next handoff](RUNTIME-CALL-UNPACK-HANDOFF.md) schedules array call unpack. The sequence below retains its historical role.
 Use the pinned engine and the existing source-occurrence, namespace/import,
 constant-pool, ownership and diagnostic interfaces throughout.
 

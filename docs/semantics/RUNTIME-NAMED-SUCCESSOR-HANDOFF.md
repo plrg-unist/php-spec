@@ -1,4 +1,8 @@
-# Successor: builtin named compilation and call unpacking
+# Historical handoff: builtin named compilation
+
+The compiler prerequisite is acceptedbb38d1d7 on972/e1bf. Continue from the
+[array call-unpack handoff](RUNTIME-CALL-UNPACK-HANDOFF.md). The968 baseline and
+preparation below retain their historical identities.
 
 Start from accepted968/ab389: codecb1febe7, compiler5a19646a,
 author2a0e0774 and independent1a562e8f. The

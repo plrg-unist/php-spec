@@ -71,8 +71,10 @@ claim that the inventory dependency graph is complete.
   44 protocol/935,4 states/731 and2 complete959 bridges removing only empty NAMED;
   author70 source,55+6 compiler/129,12 regressions,2 states/373 andCLI8 pass.
   Semantic55cd and regression-selection-onlyab389 retain distinct identities.
-- [ ] Builtin named compiler prerequisite, then array call unpack;
-  see the [successor handoff](RUNTIME-NAMED-SUCCESSOR-HANDOFF.md).
+- [x] Builtin named compiler106 acceptedbb38d1d7 on972/e1bf, code84fc35f5.
+  [Review](../../coverage/semantics/builtin-named-review.json) binds780 signatures,
+  source modes/static priorities and reproducible generation; no builtin execution.
+- [ ] Array call unpack; see the [successor handoff](RUNTIME-CALL-UNPACK-HANDOFF.md).
 - [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
   first-class/dynamic callables, function statics, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.

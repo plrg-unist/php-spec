@@ -6,42 +6,43 @@ Target: PHP 8.5.10 CLI NTS 64-bit. Complete core remains the goal; see the
 
 ## Current checkpoint and next work
 
-[Named arguments](docs/semantics/SOURCE-NAMED-ARGUMENTS.md) are independently
-accepted at **1a562e8f** in [named-review.json](coverage/semantics/named-review.json).
-Canonical **968/ab3897e2** binds code **cb1febe7**, compiler evidence **5a19646a**
-and author evidence **2a0e0774**. Compiler104/runtime105 separate source sends,
-fixed slots, positional extent and extra names. Interior holes cache uncoerced
-defaults before typed receives; reference owners, traces and suppression cleanup
-survive later errors. Finite source/stage guards preserve arbitrary consistent values.
+[Builtin named compilation](docs/semantics/BUILTIN-NAMED-COMPILER.md) is independently
+accepted at **bb38d1d7** in [builtin-named-review.json](coverage/semantics/builtin-named-review.json).
+Canonical **972/e1bf0d3e** binds code **84fc35f5** and compiler evidence **467e8788**.
+Generated106 maps exact fixed parameter names for780 configured signatures;
+104 selects existing value/reference fetch modes. Variadic names and unknown
+names stay deferred. Module25 positional bytes and87 shortcuts remain unchanged.
+Builtin bodies, default filling, callbacks and runtime name errors remain required.
 
-Independent5 source profiles,44 protocol controls/935 assertions,4 dense states/731
-and2 complete959 compatibility bridges pass. The bridges remove only empty NAMED
-context fields; every other response/state field is equal at seven cuts. Author70
-source cases (including8 static outcomes),55 compiler phases plus6 boundaries/129
-projections,44 protocol/935,12 runtime regressions,2 dense states/373 andCLI8 pass.
-Counts overlap. Audits retain independent146 responses/75 worker closures/144 true
-runners and author301/14/47; author87 native profiles overlap these campaigns.
+Independent103 byte controls and24 full-source profiles pass:11 exact native static
+outcomes and13 explicit builtin-body Unsupported boundaries. Two copied source
+reproductions each bind238 inputs/14 compiler commands, with only configured
+Makefile paths relocated. Author780/6589 lookup assertions,24 compiler phases/33
+projections,59 named phases plus2 boundaries/129 projections,91 builtin-write phases
+and7508 positional-mode assertions pass. CLI8 covers4 native static outcomes,
+3 Unsupported boundaries and1 prior named user-function agreement. Counts overlap.
 
-Semantic/source/protocol and independent dense gates retain **968/55cd8ab1**.
-Finalab389 changes only the regression selection test, preserving967 files and
-all968 modes. Its unsupported catch selection remains a retained failure. Shared
-module78/104/86 corrections fix actual deferred-CV SEND lines, including a previously
-admitted positional warning and surrounding return/static diagnostics; original
-SOURCE lines stay unchanged. Compiler049c/5ae, author820d/5217 and independent8461/1fad
-archives preserve distinct failures, profiles, full maps and publication closures.
+Compiler0eef and independent2eee archives retain source/raw/tool/mode evidence.
+Independent source/helper gates retain969/8079; final972 adds tests and Makefile
+wiring with identical semantic bytes. The exact generated report7e9200 is also
+installed. Four stale compiler expectations and the CLI producer's incorrect
+Unsupported process-exit expectation remain retained; neither correction changed
+runtime semantics. Raw final compiler gates bind170 responses/4 worker closures/5
+true runners. CLI process status is separate from its decoded PHP outcome.
 
-The preceding [positional variadic review](coverage/semantics/variadic-review.json)
-remains accepted4187c887 on959/4854. Earlier parameter-phase, suppression,
-reference-return, acquisition, typed, strict and default checkpoints retain their
-own linked identities. Reporting APIs/handlers/configured fatal display remain
-open; the current native reporting profile is30719, with fatal mask4437 inside `@`.
+Named user-function binding remains accepted1a562e8f on968/ab389, with its original
+[source/state review](coverage/semantics/named-review.json) and55cd test-only bridge.
+Earlier positional variadic, parameter-phase, suppression, reference-return,
+acquisition, typed, strict and default checkpoints retain their linked identities.
+Reporting APIs/handlers/configured fatal display remain open; current native
+reporting profile30719 uses fatal mask4437 inside `@`.
 
-Next is the builtin named compiler name/mode prerequisite, then array call unpack;
-read the [successor handoff](docs/semantics/RUNTIME-NAMED-SUCCESSOR-HANDOFF.md).
-Compiler7/runtime7/review10 continue under root coordination. Builtin metadata
-and compiler admission do not imply body/default/callback execution.
+Next is array call unpack107/108; read the
+[successor handoff](docs/semantics/RUNTIME-CALL-UNPACK-HANDOFF.md).
+Compiler7/runtime7/review10 continue under root coordination. Prepared968 originals
+remain Unsupported evidence until an independently reviewed paired implementation.
 
-The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains builtin named,
+The [core checklist](docs/semantics/CORE-CONTINUATION-CHECKLIST.md) retains builtin execution,
 unpacked and remaining callable protocols, objects, exceptions, dynamic
 sources, generators/fibers, lifetime and core intrinsics. Mixed caller/callee
 strictness still needs an admitted source route. PHP_VERSION value reads, other

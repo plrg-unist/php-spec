@@ -25,7 +25,8 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/104-named-compiler.watsup",
-        "spec/semantics/105-named-arguments.watsup"
+        "spec/semantics/105-named-arguments.watsup",
+        "spec/semantics/106-builtin-named-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/named.py",
@@ -35,9 +36,12 @@
         "tests/semantics/named_protocol.py",
         "tests/semantics/named_state.py",
         "tests/semantics/named_regression.py",
-        "coverage/semantics/named-review.json"
+        "coverage/semantics/named-review.json",
+        "tests/semantics/builtin_named_compiler.py",
+        "tests/semantics/builtin_named_modes.py",
+        "coverage/semantics/builtin-named-review.json"
       ],
-      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compilation/body contracts, call unpack and complete callable/object/exception protocols remain required; no family closure."
+      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compiler106 acceptedbb38d1d7 on972/e1bf with exact configured fixed-name/mode lookup and source phases; builtin body/default contracts, call unpack and complete callable/object/exception protocols remain required; no family closure."
     },
     {
       "node": "ArrayItem",
@@ -6260,7 +6264,8 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/104-named-compiler.watsup",
-        "spec/semantics/105-named-arguments.watsup"
+        "spec/semantics/105-named-arguments.watsup",
+        "spec/semantics/106-builtin-named-compiler.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -6271,7 +6276,10 @@
         "tests/semantics/named_protocol.py",
         "tests/semantics/named_state.py",
         "tests/semantics/named_regression.py",
-        "coverage/semantics/named-review.json"
+        "coverage/semantics/named-review.json",
+        "tests/semantics/builtin_named_compiler.py",
+        "tests/semantics/builtin_named_modes.py",
+        "coverage/semantics/builtin-named-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -6280,7 +6288,7 @@
         "coverage/semantics/named-review.json",
         "docs/semantics/SOURCE-NAMED-ARGUMENTS.md"
       ],
-      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compilation/body contracts, call unpack and complete callable/object/exception protocols remain required; no family closure.",
+      "review": "Named user-function arguments accepted1a562e8f: codecb1febe7, semantic968/55cd and regression-selection-onlyab389. Source-order sends map to fixed slots/ordered extra names; hole defaults cache uncoerced values before typed receives, owning references and trace names survive cleanup. Deferred-CV emitted source lines and finite stage/source guards reviewed. Independent5 source/44protocol935/4state731/two complete959 bridges removing only empty NAMED; author70source/55+6compiler129/12regression/2state373/CLI8. Builtin named compiler106 acceptedbb38d1d7 on972/e1bf with exact configured fixed-name/mode lookup and source phases; builtin body/default contracts, call unpack and complete callable/object/exception protocols remain required; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php"
       ]
@@ -6328,7 +6336,7 @@
         "coverage/semantics/variadic-review.json",
         "docs/semantics/SOURCE-POSITIONAL-VARIADICS.md"
       ],
-      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named user-function binding is now accepted1a562e8f; builtin named, argument unpacking and complete callable/type/object protocols remain required. No family closure.",
+      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named user-function binding is now accepted1a562e8f; builtin execution, argument unpacking and complete callable/type/object protocols remain required. No family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php"
       ]

@@ -129,7 +129,9 @@ variadic execution is now [independently reviewed](coverage/semantics/variadic-r
 coercion, reference owners and error traces. [Named user-function arguments](docs/semantics/SOURCE-NAMED-ARGUMENTS.md)
 are now [independently reviewed](coverage/semantics/named-review.json), including
 hole-default preflight, typed/reference aliases and source-bound SEND lines.
-Builtin named compilation and argument unpacking remain required next work.
+[Builtin named compilation](docs/semantics/BUILTIN-NAMED-COMPILER.md) now has
+[independent review](coverage/semantics/builtin-named-review.json) of configured
+fixed-name lookup and fetch modes. Builtin execution and argument unpacking remain required.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

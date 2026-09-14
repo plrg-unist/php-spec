@@ -41,17 +41,13 @@ typed-function 57 compiler phases pass. Original producer failures also remain:
 one omitted the test-only pptrace definition; one reused a metadata binder for two
 different NArgs. Their repaired producers pass without compiler semantic edits.
 
-Named builtin compilation is an explicit required next prerequisite. The existing
-configured 780-function arginfo inventory contains fixed names and reference modes,
-but generated compiler lookup currently covers positional modes only. Root's
-bounded successor plan adds fixed-name lookup before array call unpacking. Pinned
-zend_compile.c:5065 disables special/frameless lowering for named/unpacked calls,
-so module 87's positional-only shortcut behavior remains correct. In particular,
-strlen(string:"a")[0]=1 is native lint-normal and fails at runtime as a scalar
-array write. Builtin named→positional/unpack controls remain explicitly pending
-under the present guard; no generic builtin static-priority closure is claimed.
-Builtin runtime bodies/default filling, array call unpacking, caught exceptions,
-objects and the rest of the core checklist remain required work.
+The original104/105 checkpoint kept named builtin compilation behind an explicit
+boundary. [Compiler106](BUILTIN-NAMED-COMPILER.md) now supplies configured fixed-name
+lookup and retires the four matching phase expectations; the original results
+below retain their historical identities. Module87 still excludes named/unpacked
+calls from special lowering, as required by pinned zend_compile.c:5065.
+Builtin bodies/default filling, array call unpacking, caught exceptions, objects
+and the rest of the core checklist remain required work.
 
 A later line audit found ten real disagreements in the first runtime pair. Deferred
 literal CV sends use the first argument's native AST line; known fixed and computed
