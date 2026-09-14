@@ -1,0 +1,199 @@
+{
+  "unpack-assignment-result": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$b=$a;f(...($c=$a));echo $a[0],$b[0],$c[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-reference-assignment-result": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$b=$a;f(...($c=&$a));echo $a[0],$b[0],$c[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VAR)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-dynamic-conditional-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$b=[3];$p=true;f(...($p?$a:$b));echo $a[0],$b[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_redirect($ppfunction_code(P).REDIRECTS, [PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-constant-conditional-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$b=[3];f(...(true?$a:$b));echo $a[0],$b[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_redirect($ppfunction_code(P).REDIRECTS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-constant-conditional-reference": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$b=[3];f(...(true?($c=&$a):$b));echo $a[0],$b[0],$c[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_redirect($ppfunction_code(P).REDIRECTS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-dynamic-conditional-reference": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$b=[3];$p=true;f(...($p?($c=&$a):$b));echo $a[0],$b[0],$c[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_redirect($ppfunction_code(P).REDIRECTS, [PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 4,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-null-coalesce-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];f(...(null??$a));echo $a[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_redirect($ppfunction_code(P).REDIRECTS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-dynamic-coalesce-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];$p=null;f(...($p??$a));echo $a[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_redirect($ppfunction_code(P).REDIRECTS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-value-list-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];f(...([$x]=$a));echo $a[0],$x;",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-reference-list-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];f(...([&$x]=$a));echo $a[0],$x;",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VAR)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-value-list-call": {
+    "source": "<?php function g(){global $a;return $a;} function f(&$x){$x=2;} $a=[1];f(...([$x]=g()));echo $a[0],$x;",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VAR)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 3,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-suppressed-cv": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];f(...@$a);echo $a[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-suppressed-reference-assignment": {
+    "source": "<?php function f(&$x){$x=2;} $a=[1];f(...@($c=&$a));echo $a[0],$c[0];",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VAR)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-positional-static-priority": {
+    "source": "<?php function f(...$x){} f(...[1],$GLOBALS=1);",
+    "checks": []
+  },
+  "unpack-named-positional-static-priority": {
+    "source": "<?php function f(...$x){} f(...[],x:1,$GLOBALS=1);",
+    "checks": []
+  },
+  "unpack-named-unpack-static-priority": {
+    "source": "<?php function f(...$x){} f(...[],x:1,...($GLOBALS=1));",
+    "checks": []
+  },
+  "named-unpack-static-priority": {
+    "source": "<?php function f(...$x){} f(x:1,...($GLOBALS=1));",
+    "checks": []
+  },
+  "unpack-read-before-order-priority": {
+    "source": "<?php function f(...$x){} f(...$a[],1);",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = eps"
+    ]
+  },
+  "unpack-global-write-before-order": {
+    "source": "<?php function f(...$x){} f(...($GLOBALS=1),1);",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = eps"
+    ]
+  },
+  "unpack-named-reference-deferred-empty": {
+    "source": "<?php function f(&$x){$x=3;} f(...[],x:$a[]);echo $a[0];",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))",
+      "$ppaccess(P,[PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 1,PCFIELD 1]) = (PPF)"
+    ]
+  },
+  "unpack-first-multiline-deferred-cv": {
+    "source": "<?php\nfunction f($x){}\n$a=[];\nf(\n ...\n $a,\n z:\n $u\n);",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((6,false))"
+    ]
+  },
+  "unpack-first-multiline-valid-cv": {
+    "source": "<?php\nfunction f($x){echo $x===null;}\n$a=[];\nf(\n ...\n $a,\n x:\n $u\n);",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((6,false))"
+    ]
+  },
+  "unpack-multiline-typed-return": {
+    "source": "<?php\nfunction r():int {\n $a=[];$u=1;\n return f(\n  ...\n  $a,\n  x:\n  $u\n );\n}\nfunction f($x){return [];}\nr();",
+    "checks": [
+      "P.FUNCTIONS = [pfunction_r,pfunction_f]",
+      "$code_expression(pfunction_r.CODE.EXPRESSIONS,[PCINDEX 0,PCFIELD 5,PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((6,false))",
+      "$code_expression(pfunction_r.CODE.EXPRESSIONS,[PCINDEX 0,PCFIELD 5,PCINDEX 2,PCFIELD 0]) = ((4,false))",
+      "$code_expression(pfunction_r.CODE.EXPRESSIONS,[PCINDEX 0,PCFIELD 5,PCINDEX 2]) = ((6,false))"
+    ]
+  },
+  "unpack-truth-redirect-value": {
+    "source": "<?php function f(&$x){} $a=[1];f(...(true&&$a));",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P), P.FOLD.SOURCE, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (UNPACK_VALUE)",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((1,false))"
+    ]
+  },
+  "unpack-nested-call-send-line": {
+    "source": "<?php\nfunction f(...$x){}\nfunction g($x){return 1;}\nf(...g(\n 1\n));",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((5,false))",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS,[PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = ((4,false))",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS,[PCINDEX 2,PCFIELD 0]) = ((4,false))"
+    ]
+  },
+  "unpack-nested-call-callee-type-line": {
+    "source": "<?php\nfunction f(array $x){}\nfunction g($x){return [1];}\nf(...g(\n 1\n));",
+    "checks": [
+      "$code_expression($ppfunction_code(P).EXPRESSIONS, [PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0]) = ((5,false))",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS,[PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = ((4,false))",
+      "$code_expression($ppfunction_code(P).EXPRESSIONS,[PCINDEX 2,PCFIELD 0]) = ((4,false))"
+    ]
+  },
+  "unpack-builtin-result-lowering-dependency": {
+    "source": "<?php function f(...$x){} f(...array_reverse([1]));",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P),P.FOLD.SOURCE,[PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$ppaccess(P,[PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (PPR)"
+    ]
+  },
+  "unpack-builtin-alias-result-lowering-dependency": {
+    "source": "<?php use function array_reverse as rev; function f(...$x){} f(...rev([1]));",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P),P.FOLD.SOURCE,[PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$ppaccess(P,[PCINDEX 2,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (PPR)"
+    ]
+  },
+  "unpack-builtin-special-result-operand": {
+    "source": "<?php function f(...$x){} f(...strlen(\"a\"));",
+    "checks": [
+      "$ppunpack_class($ppfunction_code(P),P.FOLD.SOURCE,[PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = eps",
+      "$ppaccess(P,[PCINDEX 1,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1]) = (PPR)"
+    ]
+  }
+}

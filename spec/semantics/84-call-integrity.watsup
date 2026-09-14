@@ -1,3 +1,6 @@
+dec $unpack_unit_code_valid(ppstate, pcode) : bool
+dec $unpack_result_valid(pstate) : bool
+dec $call_extent_valid(pstate, pcallcontext) : bool
 dec $named_present(phpType7*) : bool
 dec $call_argument_paths(pcodeexpr*) : pcpath*
 def $call_argument_paths(eps) = eps
@@ -76,6 +79,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $reference_unit_code_valid(P, pcode)
   -- if $silence_unit_code_valid(P, pcode)
   -- if $send_unit_code_valid(P, pcode)
+  -- if $unpack_unit_code_valid(P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -144,7 +148,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if $named_call_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
-  -- if pcallcontext.ARGC = $named_call_extent(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if $call_extent_valid(S, pcallcontext)
   -- if $named_context_valid(S, pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
@@ -233,6 +237,7 @@ def $call_descriptors_valid(S) = true
   -- if $reference_return_result_valid(S)
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $acquire_call_result_valid(S)
+  -- if $unpack_result_valid(S)
   -- if $silences_valid(S)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $constant_context_valid(S)

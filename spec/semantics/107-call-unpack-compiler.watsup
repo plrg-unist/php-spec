@@ -1,0 +1,71 @@
+;; Source argument indices remain independent of expansion. After the first
+;; unpack Zend clears the known argument mapping, including later named sends.
+dec $ppunpack_args(ppstate, pcpath, nat, phpType7*, bool) : ppstate
+dec $ppunpack_mode(expression) : ppmode
+dec $ppunpack_argument(ppstate, pcpath, expression) : ppstate
+;; SEND_UNPACK uses final LOCATION; the child call keeps its own emitted line.
+def $ppunpack_argument(P, pcpath, expression) = $ppdone($ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR)), pcpath, PPR)
+def $ppunpack_mode(expression) = PPR -- if ~$ppcall_variable(expression)
+def $ppunpack_mode(expression) = $ppcall_deferred(expression) -- otherwise
+
+def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, pnresult) = $ppunpack_args($ppunpack_argument(P, pcpath ++ [PCINDEX n], expression), pcpath, $(n + 1), phpType7*, false)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunpack_args(P, pcpath, n, phpType7*, b) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppunpack_args(P, pcpath, n, eps, b) = $ppclearvalue(P) -- if P.COMPLETION = PPCNORMAL
+def $ppunpack_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, false) = $ppunpack_args($ppunpack_argument(P, pcpath ++ [PCINDEX n], expression), pcpath, $(n + 1), phpType7*, false)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunpack_args(P, pcpath, n, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, true) = $ppcheck(P, $context_error("Cannot use argument unpacking after named arguments", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunpack_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, b) = $ppunpack_args($ppcall_argument(P, pcpath, n, expression, $ppunpack_mode(expression), true), pcpath, $(n + 1), phpType7*, true)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunpack_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, b) = $ppcheck(P, $context_error("Cannot use positional argument after argument unpacking", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppunpack_args(P, pcpath, n, phpType7*, b) = $ppunsupported(P, "edited unpack call argument") -- otherwise
+
+;; Eligibility is an emitted operand fact, not return-value designation. Existing
+;; constant/redirect/name descriptors carry contextual folding and lexical names.
+;; A missing class keeps dependent builtin result lowering explicit.
+syntax punpackclass = UNPACK_CV | UNPACK_VAR | UNPACK_VALUE
+dec $ppunpack_class(pcode, pcunit, pcpath) : punpackclass?
+dec $ppunpack_node(pcode, pcunit, pcpath, expression) : punpackclass?
+dec $ppunpack_list_class(punpackclass?) : punpackclass?
+dec $ppunpack_call_class(pcodename*, pcpath) : punpackclass?
+def $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VALUE)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
+def $ppunpack_class(pcode, pcunit, pcpath) = $ppunpack_class(pcode, pcunit, pcpath_target)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = ((pcpath_target, false))
+  -- if $(|pcpath_target| > |pcpath|)
+def $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VALUE)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = ((pcpath_target, true))
+def $ppunpack_class(pcode, pcunit, pcpath) = $ppunpack_node(pcode, pcunit, pcpath, expression)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = eps
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (expression)
+def $ppunpack_class(pcode, pcunit, pcpath) = eps -- otherwise
+
+def $ppunpack_node(pcode, pcunit, pcpath, NExprVariable phpType32 metadata) = (UNPACK_CV)
+  -- if $ppforeach_cv(phpType32)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprAssignRef expression_1 expression_2 metadata) = (UNPACK_VAR)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 phpType6 metadata) = $ppunpack_call_class(pcode.NAMES, pcpath)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprAssign expression_pattern expression_rhs metadata) = (UNPACK_VAR)
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if $list_references(phpType13*)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprAssign expression_pattern expression_rhs metadata) = $ppunpack_list_class($ppunpack_class(pcode, pcunit, pcpath ++ [PCFIELD 1]))
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if ~$list_references(phpType13*)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprErrorSuppress expression metadata) = $ppunpack_list_class($ppunpack_class(pcode, pcunit, pcpath ++ [PCFIELD 0]))
+def $ppunpack_node(pcode, pcunit, pcpath, expression) = (UNPACK_VALUE) -- otherwise
+
+def $ppunpack_list_class(punpackclass?) = (UNPACK_VALUE) -- if punpackclass? = (UNPACK_CV)
+def $ppunpack_list_class(punpackclass?) = punpackclass? -- if punpackclass? =/= (UNPACK_CV)
+
+def $ppunpack_call_class(pcodename*, pcpath) = (UNPACK_VAR)
+  -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))
+  -- if ptbytes_fallback? =/= eps \/ ~$pfunction_builtin(ptbytes)
+def $ppunpack_call_class(pcodename*, pcpath) = eps -- otherwise
