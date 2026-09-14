@@ -70,6 +70,7 @@ dec $call_name_entries_valid(pstate, ppstate, pcode, pcodename*) : bool
 def $call_name_entries_valid(S, P, pcode, eps) = true
 def $call_name_entries_valid(S, P, pcode, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = ($call_name_entry_valid(S, P, pcode, pcpath) /\ $call_name_entries_valid(S, P, pcode, pcodename*))
 dec $constant_unit_code_valid(pstate, ppstate, pcode) : bool
+dec $static_unit_code_valid(ppstate, pcode) : bool
 dec $call_unit_names_valid(pstate, ppstate) : bool
 def $call_unit_names_valid(S, P) = true
   -- if $code_at(S.CODE, P.FOLD.SOURCE.ID) = (pcode)
@@ -83,6 +84,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $send_unit_code_valid(P, pcode)
   -- if $unpack_unit_code_valid(P, pcode)
   -- if $dynamic_unit_code_valid(P, pcode)
+  -- if $static_unit_code_valid(P, pcode)
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
@@ -228,6 +230,8 @@ def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
+dec $static_result_valid(pstate) : bool
+dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $call_descriptors_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
@@ -242,10 +246,12 @@ def $call_descriptors_valid(S) = true
   -- if $acquire_call_result_valid(S)
   -- if $unpack_result_valid(S)
   -- if $dynamic_result_valid(S)
+  -- if $static_result_valid(S)
   -- if $silences_valid(S)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $constant_context_valid(S)
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
+  -- if $static_cells_valid(S, S.STATICS)
 def $call_descriptors_valid(S) = false -- otherwise
 
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL

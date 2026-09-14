@@ -1,0 +1,71 @@
+;; Static declarations are local to their compiled named-function scope. Stored
+;; mode is determined before ordinary compilation, so @literal still initializes.
+dec $ppstatic_vars(ppstate, pcpath, nat, phpType59*) : ppstate
+dec $ppstatic_var(ppstate, pcpath, phpType59) : ppstate
+dec $ppstatic_check(ppstate, ptbytes) : ppstate
+dec $ppstatic_cvrecord(ppstate, ptbytes) : ppstate
+dec $ppstatic_seen(pfunction*, ppexprdone*, ptbytes) : bool
+dec $ppstatic_seen_entry(pfunction*, ppexprdone, ptbytes) : bool
+dec $ppstatic_init(ppstate, pcpath, ptbytes, phpType5) : ppstate
+dec $ppstatic_folded(ppstate, pcpath, ptbytes, expression, nat) : ppstate
+dec $ppstatic_record(ppstate, pcpath, ptbytes, nat, bool) : ppstate
+
+def $ppstatement(P, pcpath, NStmtStatic (SEQUENCE phpType59*) metadata) = $ppstatic_vars(P, pcpath ++ [PCFIELD 0], 0, phpType59*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.FUNCTION =/= eps
+def $ppstatement(P, pcpath, NStmtStatic (SEQUENCE phpType59*) metadata) = $ppunsupported(P, "main-unit static bindings")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.FUNCTION = eps
+
+def $ppstatic_vars(P, pcpath, n, eps) = P
+def $ppstatic_vars(P, pcpath, n, phpType59 :: phpType59_tail*) = $ppstatic_vars($ppstatic_var(P, pcpath ++ [PCINDEX n], phpType59), pcpath, $(n + 1), phpType59_tail*)
+def $ppstatic_var(P, pcpath, phpType59) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppstatic_var(P, pcpath, NStaticVar (NExprVariable (BYTES text) metadata_var) phpType5 metadata) = $ppstatic_init($ppstatic_check($pplocate(P, pcpath, $source_line(metadata)), $base64(text)), pcpath, $base64(text), phpType5)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppstatic_seen(pfunction*, eps, ptbytes) = false
+def $ppstatic_seen(pfunction*, ppexprdone :: ppexprdone_tail*, ptbytes) = ($ppstatic_seen_entry(pfunction*, ppexprdone, ptbytes) \/ $ppstatic_seen(pfunction*, ppexprdone_tail*, ptbytes))
+def $ppstatic_seen_entry(pfunction*, PPCSTATIC pcpath ptbytes_name n_begin n_bind b, ptbytes) = (ptbytes_name = ptbytes /\ ~$ppinner(pfunction*, pcpath))
+def $ppstatic_seen_entry(pfunction*, ppexprdone, ptbytes) = false -- otherwise
+
+def $ppstatic_check(P, ptbytes) = $ppcheck(P, $context_error("Cannot use $this as static variable", P.LOCATION.LINE))
+  -- if ptbytes = $ptascii("this")
+def $ppstatic_check(P, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Duplicate declaration of static variable $") ++ ptbytes) P.LOCATION.LINE)]
+  -- if ptbytes =/= $ptascii("this")
+  -- if $ppstatic_seen(P.FUNCTIONS, P.EXPRESSIONS, ptbytes)
+def $ppstatic_check(P, ptbytes) = P
+  -- otherwise
+
+def $ppstatic_init(P, pcpath, ptbytes, phpType5) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppstatic_init(P, pcpath, ptbytes, ABSENT) = $ppstatic_record($ppstatic_cvrecord(P, ptbytes), pcpath, ptbytes, P.LOCATION.LINE, true)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatic_init(P, pcpath, ptbytes, expression) = $ppstatic_folded($ppfoldresult($ppstatic_cvrecord(P, ptbytes), $pfprepare(P.FOLD[.CONSTANT = true][.VALUE = eps], pcpath ++ [PCFIELD 1], expression, P.ENV, P.LOCATION.LINE)), pcpath, ptbytes, expression, P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppstatic_folded(P, pcpath, ptbytes, expression, n_begin) = P[.FOLD.CONSTANT = false]
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppstatic_folded(P, pcpath, ptbytes, expression, n_begin) = $ppstatic_record(P[.FOLD.CONSTANT = false], pcpath, ptbytes, n_begin, true)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE =/= eps
+def $ppstatic_folded(P, pcpath, ptbytes, expression, n_begin) = $ppstatic_record($ppexpr(P[.FOLD.CONSTANT = false], pcpath ++ [PCFIELD 1], expression, PPR), pcpath, ptbytes, n_begin, false)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = eps
+
+def $ppstatic_record(P, pcpath, ptbytes, n_begin, b) = $ppclearvalue(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCSTATIC pcpath ptbytes n_begin P.LOCATION.LINE b]])
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatic_record(P, pcpath, ptbytes, n_begin, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+
+def $compiled_operands(P, (PPCSTATIC pcpath ptbytes n_begin n_bind b) :: ppexprdone*) = (CODESTATIC pcpath ptbytes n_begin n_bind b) :: $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCSTATIC pcpath ptbytes n_begin n_bind b) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCSTATIC pcpath_static ptbytes n_begin n_bind b) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCSTATIC pcpath_static ptbytes n_begin n_bind b) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppcodepath(CODESTATIC pcpath ptbytes z_begin z_bind b) = pcpath
+
+;; BIND_STATIC uses lookup_cv even for names whose ordinary reads are global.
+def $ppstatic_cvrecord(P, ptbytes) = P
+  -- if ptbytes <- P.CVS
+def $ppstatic_cvrecord(P, ptbytes) = P[.CVS = P.CVS ++ [ptbytes]]
+  -- if ~(ptbytes <- P.CVS)

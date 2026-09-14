@@ -30,6 +30,7 @@ def $access_paths((pcpath, ppmode) :: (pcpath_tail, ppmode_tail)*) = pcpath :: $
 dec $expression_paths(ppexprdone*) : pcpath*
 def $expression_paths(eps) = eps
 def $expression_paths((PPCEFFECT pcpath) :: ppexprdone*) = $expression_paths(ppexprdone*)
+def $expression_paths((PPCSTATIC pcpath ptbytes n_begin n_bind b) :: ppexprdone*) = $expression_paths(ppexprdone*)
 def $expression_paths((PPCCALL_INIT pcpath n) :: ppexprdone*) = $expression_paths(ppexprdone*)
 def $expression_paths((PPCEXPR pcpath n pvalue?) :: ppexprdone*) = pcpath :: $expression_paths(ppexprdone*)
 '''
@@ -89,6 +90,7 @@ def main():
     dec $pprecord(ppexprdone*, pcpath) : ppexprdone?
     def $pprecord(eps, pcpath) = eps
     def $pprecord((PPCEFFECT pcpath_effect) :: ppexprdone*, pcpath) = $pprecord(ppexprdone*, pcpath)
+    def $pprecord((PPCSTATIC pcpath_static ptbytes n_begin n_bind b) :: ppexprdone*, pcpath) = $pprecord(ppexprdone*, pcpath)
     def $pprecord((PPCCALL_INIT pcpath_init n) :: ppexprdone*, pcpath) = $pprecord(ppexprdone*, pcpath)
     def $pprecord((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = (PPCEXPR pcpath n pvalue?)
     def $pprecord((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $pprecord(ppexprdone*, pcpath)

@@ -1,0 +1,181 @@
+;; A completed static binding owns its cell independently of every local frame.
+;; Missing entries have not initialized; a reference to null is initialized.
+dec $static_at(pstaticcell*, porigin) : nat?
+def $static_at(eps, porigin) = eps
+def $static_at(pstaticcell :: pstaticcell_tail*, porigin) = (pstaticcell.CELL)
+  -- if pstaticcell.ORIGIN = porigin
+def $static_at(pstaticcell :: pstaticcell_tail*, porigin) = $static_at(pstaticcell_tail*, porigin)
+  -- if pstaticcell.ORIGIN =/= porigin
+def $static_roots(eps) = eps
+def $static_roots(pstaticcell :: pstaticcell_tail*) = [HCELL pstaticcell.CELL] ++ $static_roots(pstaticcell_tail*)
+
+dec $static_code(pcodeexpr*, pcpath) : (ptbytes, int, int, bool)?
+def $static_code(eps, pcpath) = eps
+def $static_code((CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath) = ((ptbytes, z_begin, z_bind, b))
+def $static_code((CODESTATIC pcpath_other ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $static_code((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+def $static_code((CODEARG pcpath_other) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+def $static_code((CODEWRITE pcpath_other z) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+def $static_code((CODEEFFECT pcpath_other) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+def $static_code((CODECALL_INIT pcpath_other z) :: pcodeexpr*, pcpath) = $static_code(pcodeexpr*, pcpath)
+
+dec $static_descriptor(pstate, porigin) : (ptbytes, int, int, bool)?
+def $static_descriptor(S, PORIGIN n pcpath) = $static_code(pcode.EXPRESSIONS, pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $static_descriptor(S, porigin) = eps -- otherwise
+
+dec $static_tasks(phpType59*, porigin?, nat) : ptask*
+def $static_tasks(eps, porigin?, n) = eps
+def $static_tasks(phpType59 :: phpType59_tail*, porigin?, n) = [$at_task((porigin_item), STATIC_INIT porigin_item)] ++ $static_tasks(phpType59_tail*, porigin?, $(n + 1))
+  -- if $origin_child(porigin?, [PCINDEX n]) = (porigin_item)
+
+dec $static_local(pstate, ptbytes, nat) : pstate
+def $static_local(S, ptbytes, n) = $bind_reference(S[.CELL = n], ptbytes)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
+dec $static_install(pstate, porigin, ptbytes, pvalue) : pstate
+def $static_install(S, porigin, ptbytes, pvalue) = $static_local(S_cell, ptbytes, n)
+  -- if n = |S.STORE|
+  -- if S_cell = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.STATICS = S.STATICS ++ [{ORIGIN porigin, CELL n}]], n)
+
+dec $static_value(pstate, porigin) : pvalue
+def $static_value(S, porigin) = PNULL
+  -- if $origin_node(S.SOURCES, porigin) = (NStaticVar phpType10 ABSENT metadata)
+def $static_value(S, PORIGIN n pcpath) = pvalue
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStaticVar phpType10 expression metadata)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue)
+
+;; The second check precedes resolving the result: a recursive initializer may
+;; already have installed the winner, making this outer operand unused.
+dec $static_finish(pstate, porigin, ptbytes, int) : pstate
+def $static_finish(S, porigin, ptbytes, z) = $static_local(S, ptbytes, n)
+  -- if $static_at(S.STATICS, porigin) = (n)
+def $static_finish(S, porigin, ptbytes, z) = $static_install(S_value, porigin, ptbytes, pvalue)
+  -- if $static_at(S.STATICS, porigin) = eps
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+def $static_finish(S, porigin, ptbytes, z) = S_value
+  -- if $static_at(S.STATICS, porigin) = eps
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/static-statement: S ~> S[.TODO = $static_tasks(phpType59*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtStatic (SEQUENCE phpType59*) metadata)) :: ptask_tail*
+rule PhpStep/static-existing: S ~> $static_local(S[.TODO = ptask_tail*], ptbytes, n)
+  -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*
+  -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, b))
+  -- if $static_at(S.STATICS, porigin) = (n)
+rule PhpStep/static-stored: S ~> $static_install(S[.TODO = ptask_tail*], porigin, ptbytes, $static_value(S, porigin))
+  -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*
+  -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, true))
+  -- if $static_at(S.STATICS, porigin) = eps
+rule PhpStep/static-evaluate: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1]), EVAL expression), STATIC_BIND porigin] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*
+  -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, false))
+  -- if $static_at(S.STATICS, porigin) = eps
+  -- if $origin_node(S.SOURCES, porigin) = (NStaticVar phpType10 expression metadata)
+rule PhpStep/static-bind: S ~> $static_finish(S[.TODO = ptask_tail*], porigin, ptbytes, z_bind)
+  -- if S.TODO = (STATIC_BIND porigin) :: ptask_tail*
+  -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, false))
+
+;; Static descriptors carry no operand, write or effect value themselves.
+def $code_expression((CODESTATIC pcpath_init ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_write((CODESTATIC pcpath_init ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODESTATIC pcpath_other ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODESTATIC pcpath ptbytes z_begin z_bind b) = pcpath
+def $typed_return_entry(pcoccurrence*, CODESTATIC pcpath ptbytes z_begin z_bind b) = eps
+def $reference_assignment_entry(pcoccurrence*, CODESTATIC pcpath ptbytes z_begin z_bind b) = eps
+def $named_send_entry(pcoccurrence*, CODESTATIC pcpath ptbytes z_begin z_bind b) = eps
+def $code_call_init((CODESTATIC pcpath_other ptbytes z_begin z_bind b) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+
+;; Compiler constant preparation also records facts beneath static initializers.
+;; The occurrence test admits only their expression subtree, never other fields.
+dec $static_node_below(pcnode, pcpath, pcpath) : bool
+def $static_node_below(NStaticVar phpType10 expression metadata, pcpath_static, pcpath) = $effect_below(pcpath_static ++ [PCFIELD 1], pcpath)
+def $static_node_below(pcnode, pcpath_static, pcpath) = false -- otherwise
+def $static_below(eps, pcpath) = false
+def $static_below((PCOCCURRENCE pcpath_static pcnode) :: pcoccurrence*, pcpath) = ($static_node_below(pcnode, pcpath_static, pcpath) \/ $static_below(pcoccurrence*, pcpath))
+
+;; The static descriptor is the source-authenticated function's declaration.
+;; Persistent values can evolve freely; names, lines and stored mode cannot.
+dec $static_code_entry(pcodeexpr) : pcodeexpr*
+def $static_code_entry(CODESTATIC pcpath ptbytes z_begin z_bind b) = [CODESTATIC pcpath ptbytes z_begin z_bind b]
+def $static_code_entry(pcodeexpr) = eps -- otherwise
+dec $static_code_entries(pcodeexpr*) : pcodeexpr*
+def $static_code_entries(eps) = eps
+def $static_code_entries(pcodeexpr :: pcodeexpr_tail*) = $static_code_entry(pcodeexpr) ++ $static_code_entries(pcodeexpr_tail*)
+dec $static_cv_entry(pcode, pcunit, pcodeexpr) : (pcpath, ptbytes?)*
+def $static_cv_entry(pcode, pcunit, CODESTATIC pcpath ptbytes z_begin z_bind false) = [(pcpath, $unpack_class_name(pcode, pcunit, pcpath ++ [PCFIELD 1]))]
+def $static_cv_entry(pcode, pcunit, pcodeexpr) = eps -- otherwise
+dec $static_cv_entries(pcode, pcunit, pcodeexpr*) : (pcpath, ptbytes?)*
+def $static_cv_entries(pcode, pcunit, eps) = eps
+def $static_cv_entries(pcode, pcunit, pcodeexpr :: pcodeexpr_tail*) = $static_cv_entry(pcode, pcunit, pcodeexpr) ++ $static_cv_entries(pcode, pcunit, pcodeexpr_tail*)
+def $static_unit_code_valid(P, pcode) = true
+  -- if pcode_expected = pcode[.EXPRESSIONS = $compiled_operands(P, P.EXPRESSIONS)][.NAMES = $compiled_names(P.NAMES)][.REDIRECTS = $compiled_redirects(P.REDIRECTS)]
+  -- if $static_code_entries(pcode.EXPRESSIONS) = $static_code_entries(pcode_expected.EXPRESSIONS)
+  -- if $static_cv_entries(pcode, P.FOLD.SOURCE, pcode.EXPRESSIONS) = $static_cv_entries(pcode_expected, P.FOLD.SOURCE, pcode_expected.EXPRESSIONS)
+def $static_unit_code_valid(P, pcode) = false -- otherwise
+
+dec $static_function_entry(pfunction, porigin) : bool
+def $static_function_entry(pfunction, PORIGIN n pcpath) = (pfunction.CODE.UNIT = n /\ $static_code(pfunction.CODE.EXPRESSIONS, pcpath) =/= eps)
+dec $static_function_at(pfunction*, porigin) : pfunction?
+def $static_function_at(eps, porigin) = eps
+def $static_function_at(pfunction :: pfunction_tail*, porigin) = (pfunction)
+  -- if $static_function_entry(pfunction, porigin)
+def $static_function_at(pfunction :: pfunction_tail*, porigin) = $static_function_at(pfunction_tail*, porigin)
+  -- if ~$static_function_entry(pfunction, porigin)
+
+dec $static_cell_present(pstaticcell*, nat) : bool
+def $static_cell_present(eps, n) = false
+def $static_cell_present(pstaticcell :: pstaticcell_tail*, n) = (pstaticcell.CELL = n \/ $static_cell_present(pstaticcell_tail*, n))
+
+def $static_cells_valid(S, eps) = true
+def $static_cells_valid(S, pstaticcell :: pstaticcell_tail*) = true
+  -- if $static_function_at(S.FUNCTIONS, pstaticcell.ORIGIN) = (pfunction)
+  -- if $static_at(pstaticcell_tail*, pstaticcell.ORIGIN) = eps
+  -- if n = pstaticcell.CELL
+  -- if ~$static_cell_present(pstaticcell_tail*, n)
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $static_cells_valid(S, pstaticcell_tail*)
+def $static_cells_valid(S, pstaticcell*) = false -- otherwise
+
+dec $static_task_valid(pstate, porigin, bool) : bool
+def $static_task_valid(S, porigin, b_bind) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $static_function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, b_stored))
+  -- if ~b_bind \/ ~b_stored
+def $static_task_valid(S, porigin, b_bind) = false -- otherwise
+def $call_task_valid(S, STATIC_INIT porigin) = $static_task_valid(S, porigin, false)
+def $call_task_valid(S, STATIC_BIND porigin) = $static_task_valid(S, porigin, true)
+
+;; Operand shape is checked only at the current administrative bind prefix.
+;; Saved initializer frames keep their own operands until origin restoration.
+dec $static_cv_name(pstate, porigin) : ptbytes?
+def $static_cv_name(S, PORIGIN n pcpath) = $unpack_class_name(pcode, pcunit, pcpath ++ [PCFIELD 1])
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+dec $static_operand_valid(pstate, porigin) : bool
+def $static_operand_valid(S, porigin) = true
+  -- if $static_cv_name(S, porigin) = (ptbytes)
+  -- if S.RESULT = VARIABLE ptbytes z
+def $static_operand_valid(S, porigin) = $unpack_owned(S, S.RESULT)
+  -- if $static_cv_name(S, porigin) = eps
+def $static_operand_valid(S, porigin) = false -- otherwise
+def $static_result_valid(S) = $static_result_valid(S[.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $static_result_valid(S) = $static_result_valid(S[.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $static_result_valid(S) = $static_operand_valid(S, porigin)
+  -- if S.TODO = (STATIC_BIND porigin) :: ptask_tail*
+def $static_result_valid(S) = true -- otherwise

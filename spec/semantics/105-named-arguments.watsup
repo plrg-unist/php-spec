@@ -411,6 +411,9 @@ def $named_receives_ready(S, pfunction) = true
 def $named_receives_ready(S, pfunction) = true
   -- if ~$call_unpack_site(S, $unpack_current_site(S))
   -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $named_present(phpType7*)
   -- if $named_call_valid(S, pfunction.ORIGIN, pcallcontext.CALLSITE)
   -- if pnamedargs = $named_call_shape(S, pfunction.ORIGIN, pcallcontext.CALLSITE)
   -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, pcallcontext.ARGC)
