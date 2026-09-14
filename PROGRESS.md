@@ -145,8 +145,8 @@ exact originals, subprocesses, failures and scope.
 
 ## Coordination and validation
 
-The [current successor handoff](docs/semantics/CLOSURES-HANDOFF.md)
-binds1008/2829 initial-main statics and the proposed closure foundation.
+The [current successor handoff](docs/semantics/ARROWS-HANDOFF.md)
+binds accepted1017/9325 explicit closures and the proposed arrow117/118 slice.
 Compiler7, runtime7 and independent review12 coordinate private roots, exact
 frozen gates, canonical builds and the index under root. Preserve baseline
 originals before admission, stage only reviewed files, commit small increments
