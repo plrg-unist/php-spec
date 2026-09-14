@@ -126,6 +126,8 @@ test-semantics: build
 	python3 tests/semantics/variadic_protocol.py
 	python3 tests/semantics/variadic_state.py
 	python3 tests/semantics/named_compiler.py
+	python3 tests/semantics/builtin_named_modes.py
+	python3 tests/semantics/builtin_named_compiler.py
 	python3 tests/semantics/named.py
 	python3 tests/semantics/named_regression.py
 	python3 tests/semantics/named_protocol.py

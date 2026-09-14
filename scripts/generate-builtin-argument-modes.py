@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract positional send flags from configured, preprocessed PHP arginfo.
+"""Extract send flags and fixed parameter names from configured PHP arginfo.
 
 Source only: does not invoke PHP or evaluate submitted programs. Reuses the
 namespace inventory's configured registration and preprocessor input audit.
@@ -63,6 +63,31 @@ def derive(producer):
     return '\n'.join(lines), report
 
 
+def fixed_name_output(records):
+    groups = {}
+    for record in records:
+        fixed = tuple(p['name'] for p in record['parameters'] if not p['variadic'])
+        assert len(fixed) == len(set(fixed)), record['name']
+        if fixed:
+            groups.setdefault(fixed, []).append(record['name'])
+    term = lambda name: '([' + ','.join(map(str, name.encode())) + '])'
+    lines = [';; Generated from configured PHP 8.5.10 fixed arginfo names.',
+             ';; Zero-based compiler lookup only; the variadic name is an extra key.',
+             'dec $pfunction_builtin_fixed_index(ptbytes, ptbytes) : nat?',
+             'dec $pfunction_builtin_fixed_names(ptbytes) : ptbytes*',
+             'dec $pfunction_builtin_fixed_index_at(ptbytes*, ptbytes, nat) : nat?',
+             'def $pfunction_builtin_fixed_index(ptbytes_f, ptbytes_p) = $pfunction_builtin_fixed_index_at($pfunction_builtin_fixed_names($ptlc(ptbytes_f)), ptbytes_p, 0)',
+             'def $pfunction_builtin_fixed_index_at(eps, ptbytes, n) = eps',
+             'def $pfunction_builtin_fixed_index_at(ptbytes :: ptbytes_tail*, ptbytes, n) = (n)',
+             'def $pfunction_builtin_fixed_index_at(ptbytes_head :: ptbytes_tail*, ptbytes, n) = $pfunction_builtin_fixed_index_at(ptbytes_tail*, ptbytes, $(n + 1))',
+             '  -- if ptbytes_head =/= ptbytes']
+    for fixed, names in sorted(groups.items()):
+        lines += ['def $pfunction_builtin_fixed_names(ptbytes) = [' + ', '.join(map(term, fixed)) + ']',
+                  '  -- if ptbytes <- [' + ', '.join(map(term, sorted(names))) + ']']
+    lines += ['def $pfunction_builtin_fixed_names(ptbytes) = eps -- otherwise', '']
+    return '\n'.join(lines)
+
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
@@ -70,11 +95,14 @@ if __name__ == '__main__':
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     output, report = derive(args.producer.resolve())
+    fixed_output = fixed_name_output(report['arguments'])
     target = ROOT / 'spec/semantics/25-builtin-argument-modes.watsup'
+    fixed_target = ROOT / 'spec/semantics/106-builtin-named-compiler.watsup'
     if args.check:
-        if target.read_text() != output:
+        if target.read_text() != output or fixed_target.read_text() != fixed_output:
             parser.exit(1, 'builtin argument modes differ from configured sources\n')
     else:
         target.write_text(output)
+        fixed_target.write_text(fixed_output)
         (ROOT / 'coverage/semantics/builtin-argument-modes.json').write_text(json.dumps(report, indent=2) + '\n')
-    print(len(report['arguments']), 'source-derived positional argument signatures')
+    print(len(report['arguments']), 'source-derived positional and named argument signatures')

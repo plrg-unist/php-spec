@@ -21,14 +21,14 @@ def $ppnamed_mode(P, PNRESOLVED pnreference, ptbytes, expression) = $ppcall_mode
   -- if pnreference.FALLBACK = eps
   -- if $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) = (pfunction)
   -- if $fixed_parameter_index(pfunction.SIGNATURE.PARAMETERS, ptbytes) = (n)
+def $ppnamed_mode(P, PNRESOLVED pnreference, ptbytes, expression) = $ppcall_mode(P, PNRESOLVED pnreference, $(n + 1), expression)
+  -- if $ppcall_variable(expression)
+  -- if pnreference.FALLBACK = eps
+  -- if $pfunction_builtin_fixed_index(pnreference.RESOLVED, ptbytes) = (n)
 def $ppnamed_mode(P, pnresult, ptbytes, expression) = $ppcall_deferred(expression) -- otherwise
 
 dec $ppnamed_args(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
-dec $ppnamed_begin(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
-def $ppnamed_begin(P, pcpath, n, phpType7*, PNRESOLVED pnreference) = $ppunsupported(P, "named builtin call compilation")
-  -- if pnreference.FALLBACK = eps /\ $pfunction_builtin(pnreference.RESOLVED)
-def $ppnamed_begin(P, pcpath, n, phpType7*, pnresult) = $ppnamed_args(P, pcpath, n, phpType7*, pnresult) -- otherwise
-def $ppcall_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppnamed_begin(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult)
+def $ppcall_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult) = $ppnamed_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnresult)
   -- if P.COMPLETION = PPCNORMAL
 def $ppnamed_args(P, pcpath, n, phpType7*, pnresult) = P -- if P.COMPLETION =/= PPCNORMAL
 def $ppnamed_args(P, pcpath, n, eps, pnresult) = $ppclearvalue(P) -- if P.COMPLETION = PPCNORMAL
@@ -46,6 +46,9 @@ def $ppnamed_known(P, PNRESOLVED pnreference, ptbytes) = true
   -- if pnreference.FALLBACK = eps
   -- if $ppfunction_early(P.FUNCTIONS, pnreference.RESOLVED) = (pfunction)
   -- if $fixed_parameter_index(pfunction.SIGNATURE.PARAMETERS, ptbytes) = (n)
+def $ppnamed_known(P, PNRESOLVED pnreference, ptbytes) = true
+  -- if pnreference.FALLBACK = eps
+  -- if $pfunction_builtin_fixed_index(pnreference.RESOLVED, ptbytes) = (n)
 def $ppnamed_known(P, pnresult, ptbytes) = false -- otherwise
 def $ppcall_known(P, PNRESOLVED pnreference) = true
   -- if pnreference.FALLBACK = eps

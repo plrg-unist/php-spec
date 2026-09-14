@@ -264,7 +264,8 @@ CONTEXTS = {'named-known-reference-reorder': ['$ppaccess(P, [PCINDEX 2,PCFIELD 0
                                          '(expression)',
                                          '$expression_line(expression) = 6']}
 
-PENDING = {'unpack-then-named-mapping-dependency': 'named, unpacked or reference call argument compilation', 'reference-cv-computed-catch-cell-projection': 'ordinary statement compilation', 'builtin-named-normal': 'named builtin call compilation', 'builtin-named-write': 'named builtin call compilation', 'builtin-named-positional-order': 'named builtin call compilation', 'builtin-named-unpack-order': 'named builtin call compilation'}
+PENDING = {'unpack-then-named-mapping-dependency': 'named, unpacked or reference call argument compilation', 'reference-cv-computed-catch-cell-projection': 'ordinary statement compilation'}
+
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -335,7 +336,7 @@ def main():
         finally:
             adapter.close()
     assert before == {str(p.relative_to(ROOT)): digest(p) for p in files}
-    report = {'scope': 'Named user-function source compile phases, case-sensitive fixed-name lookup and source argument paths/modes; catch, unpack and builtin compiler dependencies remain explicit. Runtime binding and native execution pairing is separate.',
+    report = {'scope': 'Named user-function source compile phases, case-sensitive fixed-name lookup and source argument paths/modes; catch and unpack dependencies remain explicit; builtin compilation does not implement builtin execution. Runtime binding and native execution pairing is separate.',
               'result': 'pass', 'compared': len(CASES)-len(PENDING), 'pending': PENDING, 'context_assertions':sum(map(len,CONTEXTS.values())), 'cases': records, 'inputs': before, 'raw': str(out.relative_to(ROOT)),
               'fixture_sha256': digest(fixture)}
     (ROOT / 'coverage/semantics/named-compiler.json').write_text(json.dumps(report, indent=2) + '\n')
