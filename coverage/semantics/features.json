@@ -122,10 +122,20 @@
       "obligations": [
         "calls.captures"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
+      ],
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
     },
     {
       "node": "Const",
@@ -1343,13 +1353,21 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
     },
     {
       "node": "Expr_Cast_String",
@@ -1454,13 +1472,21 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
     },
     {
       "node": "Expr_ConstFetch",
@@ -4292,15 +4318,27 @@
     {
       "id": "coercion.cast-object",
       "milestone": "1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_operators.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/closures-review.json"
+      ],
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
     },
     {
       "id": "coercion.cast-void",
@@ -5142,15 +5180,27 @@
     {
       "id": "containers.object-identities",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_hash.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/closures-review.json"
+      ],
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
     },
     {
       "id": "containers.cycles",
@@ -6617,15 +6667,27 @@
     {
       "id": "calls.closures",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/closures-review.json"
+      ],
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -6633,15 +6695,27 @@
     {
       "id": "calls.captures",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/closures-review.json"
+      ],
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -8002,15 +8076,27 @@
     {
       "id": "protocols.Closure",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/closures.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py",
+        "tests/semantics/closure_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/closures-review.json"
+      ],
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Arrow implicit captures, scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure."
     },
     {
       "id": "protocols.Throwable",

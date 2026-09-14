@@ -1,7 +1,7 @@
 # Full-core successor checklist
 
 Management snapshot, not coverage closure. The [inventory](../../coverage/semantics/features.json)
-has169 constructors and306 obligations:135 partial,170 pending,1 validated
+has169 constructors and306 obligations:140 partial,165 pending,1 validated
 (oracle identity). Only6 obligation rows currently record dependency edges.
 Scheduling dependencies below are derived from [PLAN phases12–14](../../PLAN.md)
 and the [activation plan](../../docs/semantics/CALLS-ACTIVATION-PLAN.md), not a
@@ -92,9 +92,14 @@ claim that the inventory dependency graph is complete.
 - [x] Initial-main-script statics113/114 on1008/2829; [review](../../coverage/semantics/main-statics-review.json)
   binds16 source,12 compiler phases/59 projections,9 protocol/173, author2 dense/283,
   independent4 dense/623 and20 complete old999 responses with no projection.
-- [ ] Closure/arrow instance identity/captures/invocation, then method/trait/inherited
-  static identity and dynamic-source lifetime.
-- [ ] Complete named/unpacked/variadic sends, then captures/closures/arrows,
+- [x] Real explicit closure instances115/116 on1017/9325; [review](../../coverage/semantics/closures-review.json)
+  binds70 source outcomes,26 compiler phases/109 projections,20 protocol/217,
+  author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges.
+  Original-context70 and ordinary28 model-only replays preserve distinct profiles;
+  a valid method-callable type remains one explicit dependency.
+- [ ] Arrow implicit captures, ordinary objects, closure method/bind/clone/first-class
+  services, method/trait/inherited statics, cycle collection and dynamic-source lifetime.
+- [ ] Complete named/unpacked/variadic sends, then remaining closure/arrow services,
   first-class/dynamic callables, remaining static scopes, pipe and argument introspection.
   Use the same call/ownership protocol; object-bound callable cases join objects.
 
