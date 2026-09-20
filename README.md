@@ -164,7 +164,7 @@ preserve named static roots and existing closure identity through conversion;
 [their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
 and the separate reference and paused-state gates.
 [Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) now survives
-checked syntax and printing, so a bare arrow RHS reaches the native compile
+checked syntax and printing, so a bare arrow RHS receives the matching compile
 error before operand effects. Pipe execution is a separate increment.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
