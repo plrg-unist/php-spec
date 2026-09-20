@@ -104,6 +104,11 @@ def $closure_callable(S, n) = true
   -- if $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n) = eps
   -- if plexical* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
   -- if $closure_capture_prefix(S, pitem*, plexical*, |plexical*|)
+def $closure_callable(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
 def $closure_callable(S, n) = false -- otherwise
 
 def $closure_item_valid(S, DIRECT pvalue, IMPLICIT ptbytes z) = true

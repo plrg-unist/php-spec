@@ -1,0 +1,91 @@
+;; Conversion retains the registered target identity without entering its body.
+dec $firstclass_evaluated(pstate, porigin) : bool
+def $firstclass_evaluated(S, PORIGIN n pcpath) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b))
+def $firstclass_evaluated(S, PORIGIN n pcpath) = false
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = eps
+
+dec $firstclass_site(pstate, porigin) : bool
+def $firstclass_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
+def $firstclass_site(S, porigin) = false -- otherwise
+
+dec $firstclass_task_valid(pstate, porigin, int, int) : bool
+def $firstclass_task_valid(S, porigin, z_init, z_convert) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $firstclass_site(S, porigin)
+  -- if z_init = $dynamic_init_line(S, porigin)
+  -- if $call_line_valid(S, (porigin), z_convert)
+def $firstclass_task_valid(S, porigin, z_init, z_convert) = false -- otherwise
+def $call_task_valid(S, FIRSTCLASS_CONVERT porigin z_init z_convert) = $firstclass_task_valid(S, porigin, z_init, z_convert)
+
+rule PhpStep/firstclass-fixed: S ~> S[.TODO = (FIRSTCLASS_CONVERT porigin $dynamic_init_line(S, porigin) $runtime_line(S, eps, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (EVAL (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if ~$firstclass_evaluated(S, porigin)
+rule PhpStep/firstclass-evaluate: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), FIRSTCLASS_CONVERT porigin $dynamic_init_line(S, porigin) $runtime_line(S, eps, NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $firstclass_evaluated(S, porigin)
+
+dec $firstclass_allocate(pstate, pfunction) : pstate
+def $firstclass_allocate(S, pfunction) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n = |S.OBJECTS|
+
+dec $firstclass_name(pstate, preqbytes, preqbytes, preqbytes?, int) : pstate
+def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = S[.COMPLETION = UNSUPPORTED "static method first-class callable"]
+  -- if $dynamic_method_scan(preqbytes_original, false, false)
+def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $firstclass_allocate(S, pfunction)
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = (pfunction)
+def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = S[.COMPLETION = UNSUPPORTED "registered builtin first-class callable"]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
+  -- if $call_builtin(preqbytes_lookup, preqbytes_fallback?)
+def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ $c_string(preqbytes_original) ++ $ptascii("()"), z_init)
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
+  -- if ~$call_builtin(preqbytes_lookup, preqbytes_fallback?)
+
+dec $firstclass_value(pstate, porigin, int) : pstate
+def $firstclass_value(S, porigin, z_init) = S -- if S.COMPLETION =/= NORMAL
+def $firstclass_value(S, porigin, z_init) = $firstclass_name(S, n*, $dynamic_lookup_name(n*), eps, z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PSTRING n*)
+def $firstclass_value(S, porigin, z_init) = S[.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S, n)
+def $firstclass_value(S, porigin, z_init) = S[.COMPLETION = UNSUPPORTED "array first-class callable"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $firstclass_value(S, porigin, z_init) = $throw_scalar(S, "Error", $ptascii("Value of type ") ++ $type_bytes(pvalue) ++ $ptascii(" is not callable"), z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $constant_nonstring_scalar(pvalue)
+
+dec $firstclass_convert(pstate, porigin, int, int) : pstate
+def $firstclass_convert(S, porigin, z_init, z_convert) = S -- if S.COMPLETION =/= NORMAL
+def $firstclass_convert(S, porigin, z_init, z_convert) = $firstclass_name(S, preqbytes, preqbytes, preqbytes_fallback?, z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
+  -- if ~$firstclass_evaluated(S, porigin)
+  -- if porigin = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+def $firstclass_convert(S, porigin, z_init, z_convert) = $firstclass_name(S, preqbytes, preqbytes, eps, z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
+  -- if $firstclass_evaluated(S, porigin)
+  -- if $dynamic_fixed_name(S, porigin) = (preqbytes)
+def $firstclass_convert(S, porigin, z_init, z_convert) = $firstclass_value($resolve_at(S, S.RESULT, z_init), porigin, z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
+  -- if $firstclass_evaluated(S, porigin)
+  -- if $dynamic_fixed_name(S, porigin) = eps
+
+rule PhpStep/firstclass-convert: S ~> $firstclass_convert(S[.TODO = ptask_tail*], porigin, z_init, z_convert)
+  -- if S.TODO = (FIRSTCLASS_CONVERT porigin z_init z_convert) :: ptask_tail*
+  -- if $firstclass_task_valid(S, porigin, z_init, z_convert)

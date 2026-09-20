@@ -13,8 +13,8 @@ dec $dynamic_value(pstate, porigin, int, int) : pstate
 ;; then use the existing positional/named/unpack send and receive machinery.
 def $dynamic_arguments(S, porigin) = phpType7*
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
-def $dynamic_site(S, (porigin)) = $ppcall_dynamic(expression)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression phpType6 metadata)
+def $dynamic_site(S, (porigin)) = (~$ppfirstclass(phpType7*) /\ $ppcall_dynamic(expression))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
 def $dynamic_site(S, porigin?) = false -- otherwise
 
 def $code_call_init(eps, pcpath) = eps
@@ -32,6 +32,7 @@ def $dynamic_init_line(S, PORIGIN n pcpath) = z
 
 rule PhpStep/dynamic-literal-call: S ~> $dynamic_name(S[.TODO = ptask_tail*], preqbytes, preqbytes, porigin, $dynamic_init_line(S, porigin), $runtime_line(S, eps, NExprFuncCall expression (SEQUENCE phpType7*) metadata))
   -- if S.TODO = (EVAL (NExprFuncCall expression (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if ~$ppfirstclass(phpType7*)
   -- if ~$ppcall_dynamic(expression)
   -- if S.ORIGIN = (porigin)
   -- if porigin = PORIGIN n pcpath
@@ -39,6 +40,7 @@ rule PhpStep/dynamic-literal-call: S ~> $dynamic_name(S[.TODO = ptask_tail*], pr
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
 rule PhpStep/dynamic-evaluate-callee: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), CALL_DYNAMIC porigin $dynamic_init_line(S, porigin) $runtime_line(S, eps, NExprFuncCall expression (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprFuncCall expression (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if ~$ppfirstclass(phpType7*)
   -- if $ppcall_dynamic(expression)
   -- if S.ORIGIN = (porigin)
 rule PhpStep/dynamic-lookup-callee: S ~> $dynamic_lookup(S[.TODO = ptask_tail*], porigin, z_init, z_call)
@@ -124,6 +126,8 @@ def $dynamic_task_valid(S, porigin, z_init, z_call) = false -- otherwise
 dec $dynamic_root(pcoccurrence*, pcpath) : bool
 def $dynamic_root(pcoccurrence*, pcpath) = true
   -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall expression phpType6 metadata)
+def $dynamic_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall name (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
 def $dynamic_root(pcoccurrence*, pcpath) = false -- otherwise
 dec $dynamic_child(pcoccurrence*, pcpath) : bool
 def $dynamic_child(pcoccurrence*, pcpath) = true

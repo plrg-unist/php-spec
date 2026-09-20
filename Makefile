@@ -159,6 +159,9 @@ test-semantics: build
 	python3 tests/semantics/closures_state.py
 	python3 tests/semantics/arrow_compiler.py
 	python3 tests/semantics/arrows.py
+	python3 tests/semantics/first_class_compiler.py
+	python3 tests/semantics/first_class.py
+	python3 tests/semantics/first_class_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

@@ -129,7 +129,8 @@ def $call_candidate(preqbytes_name, preqbytes_primary, (preqbytes_fallback)) = (
 dec $call_selected_valid(pstate, pcalltarget, porigin?) : bool
 def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)

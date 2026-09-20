@@ -17,6 +17,8 @@ def $closure_items_nodes(eps) = eps
 def $closure_items_nodes(pitem :: pitem_tail*) = $item_nodes(pitem) ++ $closure_items_nodes(pitem_tail*)
 def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $node_children(S, HOBJECT n) = eps
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
 
 dec $object_set(pobject*, nat, pobject) : pobject*
 def $object_set(pobject_old :: pobject_tail*, 0, pobject) = pobject :: pobject_tail*
@@ -73,6 +75,8 @@ def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES
 def $target_function(S, PORIGIN n pcpath) = $function_at($all_functions(S), PORIGIN n pcpath)
 def $target_function(S, CLOSURE_TARGET n) = $function_at(S.CLOSURETEMPLATES, porigin)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $target_function(S, CLOSURE_TARGET n) = $function_at(S.FUNCTIONS, porigin)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
 def $target_function(S, pcalltarget) = eps -- otherwise
 def $target_instance(PORIGIN n pcpath) = eps
 def $target_instance(CLOSURE_TARGET n) = (n)
@@ -119,6 +123,12 @@ def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $closure_target_start
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
   -- if $closure_callable(S, n)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
+def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $closure_target_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call, n) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
+  -- if $closure_callable(S, n)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
   -- if $dynamic_site(S, (porigin))
   -- if $dynamic_fixed_name(S, porigin) = eps
@@ -126,6 +136,13 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
   -- if $closure_callable(S, n)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $dynamic_site(S, (porigin))
+  -- if $dynamic_fixed_name(S, porigin) = eps
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
+  -- if $closure_callable(S, n)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 
 ;; Lexical descriptors carry source binding metadata, not an operand value.
 def $code_expression((CODELEXICAL pcpath_init ptbytes b z_bind) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
@@ -153,11 +170,17 @@ def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
 def $state_static_at(S, porigin) = $static_at(pstaticcell*, porigin)
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+  -- if $current_instance(S) = (n)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
 def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
   -- if $current_instance(S) = eps
 def $state_static_add(S, pstaticcell_new) = S[.OBJECTS = $object_set(S.OBJECTS, n, REALCLOSURE porigin_template pitem* (pstaticcell* ++ [pstaticcell_new]))]
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+  -- if $current_instance(S) = (n)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
 
 ;; Shared primitive type selection must be total for newly admitted object values.
 def $typed_tag(POBJECT n) = "object"
@@ -242,6 +265,12 @@ def $closure_live_object_valid(S, n) = true
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if $closure_object_progress(S, n, pitem*, $closure_lexicals(pfunction.CODE.EXPRESSIONS), pstaticcell*, $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n))
   -- if $closure_static_cells_valid(S, pfunction, pstaticcell*)
+def $closure_live_object_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
 def $closure_live_object_valid(S, n) = false -- otherwise
 
 dec $closure_live_node_valid(pstate, pnode) : bool

@@ -1,5 +1,9 @@
 ;; Reference assignment accepts a call source without making calls writable.
-def $ppassignsource(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, true) = $ppwrite_call($ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR), pcpath, NExprFuncCall phpType19 phpType6 metadata, PPW)
+dec $ppfirstclass_ref_error(ppstate) : ppstate
+def $ppfirstclass_ref_error(P) = $ppcheck(P, $context_error("Cannot use result of built-in function in write context", P.LOCATION.LINE))
+def $ppassignsource(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, true) = $ppfirstclass_ref_error($ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR))
+def $ppassignsource(P, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, true) = $ppwrite_call($ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, PPR), pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, PPW)
+  -- if ~$ppfirstclass(phpType7*)
 def $ppassignsource(P, pcpath, expression, b) = $ppexpr(P, pcpath, expression, $ppvaluemode(b))
   -- otherwise
 

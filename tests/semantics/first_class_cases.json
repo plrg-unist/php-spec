@@ -1,0 +1,19 @@
+{
+  "namespace-local": "<?php namespace N; function f(){return \"N\";} $c=f(...); echo $c();",
+  "namespace-fallback": "<?php namespace { function f(){return \"G\";} } namespace N { $c=f(...); echo $c(); }",
+  "namespace-import": "<?php namespace A { function f(){return \"A\";} } namespace B { use function A\\f as h; $c=h(...); echo $c(); }",
+  "initial-string": "<?php function f(){return \"F\";} $c=\"f\"(...); echo $c();",
+  "evaluated-string": "<?php function f(){return \"F\";} $name=\"f\"; $c=$name(...); echo $c();",
+  "deferred-body-default": "<?php function f($x=7){echo \"B\"; return $x;} echo \"A\"; $c=f(...); echo \"C\"; echo $c();",
+  "multiline-missing": "<?php\nfunction n($x) { return \"missing\"; }\nn(\n 1\n)(...);\n",
+  "later-fixed-name": "<?php function f1(){return \"F\";} $c=(\"f\".(1+0))(...); echo $c();\n",
+  "existing-identity": "<?php\nfunction f() { return 1; }\n$real = function () { return 2; };\n$arrow = fn () => 3;\n$fake = f(...);\necho (int)($real(...) === $real), (int)($arrow(...) === $arrow), (int)($fake(...) === $fake);\necho $real(), $arrow(), $fake();\n",
+  "named-statics-global": "<?php\n$n = 0;\nfunction tick() { global $n; echo \"I\"; return ++$n; }\nfunction f() { static $x = tick(); echo $x; $x++; }\n$a = f(...);\n$b = f(...);\necho \"A\";\n$a();\nf();\n$b();\n",
+  "recursive-statics-global": "<?php\n$inside = false;\nfunction init() {\n    global $inside;\n    echo \"I\";\n    if (!$inside) { $inside = true; f(); }\n    return 4;\n}\nfunction f() { static $x = init(); echo $x; $x++; }\n$a = f(...);\n$a();\nf();\n",
+  "reference-return": "<?php\nfunction &f() { static $x = 1; return $x; }\n$c = f(...);\n$r =& $c();\n$r = 9;\necho f();\n",
+  "selected-wrapper-rebind": "<?php\nfunction inner($v) { return $v + 1; }\nfunction f($v) { return inner($v); }\nfunction remove() { global $g; $g = null; return 6; }\n$g = f(...);\necho $g(remove());\n",
+  "wrapper-named-unpack": "<?php\nfunction f(int &$x, int $y = 7, int ...$rest): int {\n    $x += $y;\n    return $x + $rest['z'];\n}\n$v = 2;\n$c = f(...);\n$args = ['x' => &$v, 'z' => 3];\necho $c(...$args), ':', $v, '|';\necho $c(x: $v, z: 4), ':', $v;\n",
+  "wrapper-unpack-type-error": "<?php\nfunction f(int &$x, int $y = 7, int ...$rest): int { return $x + $y; }\n$v = 2;\n$c = f(...);\n$args = ['x' => &$v, 'z' => 'bad'];\necho 'A';\n$c(...$args);\necho 'Z';\n",
+  "compiler9-first-class-reference-assign": "<?php\nfunction f() { return 1; }\n$c =& f(...);\n",
+  "compiler9-first-class-reference-send": "<?php\nfunction f() { return 1; }\nfunction g(&$x) { echo \"G\"; }\ng(f(...));\n"
+}

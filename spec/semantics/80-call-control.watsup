@@ -83,6 +83,7 @@ def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.COMPLETI
   -- if $call_builtin(preqbytes, preqbytes_fallback?)
 rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes, preqbytes_fallback?, phpType7*, $runtime_line(S, eps, NExprFuncCall name (SEQUENCE phpType7*) metadata))
   -- if S.TODO = (EVAL (NExprFuncCall name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if ~$ppfirstclass(phpType7*)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))

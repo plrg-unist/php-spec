@@ -6760,15 +6760,27 @@
     {
       "id": "calls.first-class-callable",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/119-first-class-compiler.watsup",
+        "spec/semantics/120-first-class-callables.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/first_class_compiler.py",
+        "tests/semantics/first_class_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/first_class.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/first-class-review.json",
+        "docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md"
+      ],
+      "review": "Named user-function conversion and existing real/arrow/named callable object identity are reviewed with 17 source outcomes, four separate reference-context pairs and three paused-state stages/49 assertions. Builtin, method, array and constant-context conversion remain open; no full callable-family closure."
     },
     {
       "id": "calls.static-variables",

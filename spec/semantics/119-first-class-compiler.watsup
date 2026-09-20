@@ -1,0 +1,20 @@
+;; A singleton variadic placeholder converts a callable; it sends no arguments.
+;; Keep the ordinary call's name, callee and emitted-line descriptors.
+def $ppfirstclass([(NVariadicPlaceholder metadata_placeholder)]) = true
+def $ppfirstclass(phpType7*) = false -- otherwise
+
+;; CALLABLE_CONVERT is emitted at the compiler location left by callee
+;; compilation. It can differ from the call root on a multiline callee.
+dec $ppfirstclass_done(ppstate, pcpath) : ppstate
+def $ppfirstclass_done(P, pcpath) = $ppcall_expression(P, pcpath, P.LOCATION.LINE)
+def $ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppfirstclass_done($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR)), pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppcall_init($ppcall_name(P, pcpath, pnresult), pcpath)
+  -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
+
+def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppcall_init($ppcall_name(P, pcpath, $ppcall_literal_reference(ptbytes, metadata)), pcpath)
+  -- if $ppcall_literal(expression) = (ptbytes)
+
+def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppcall_init($ppcall_constant_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, metadata), pcpath)
+  -- if $ppcall_dynamic(expression)

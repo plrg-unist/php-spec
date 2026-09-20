@@ -157,6 +157,10 @@ add implicit undefined snapshots and source-authenticated expression returns; th
 [review](coverage/semantics/arrows-review.json) also records the shared suppression
 guard correction. Ordinary objects, method/Closure services, cycle collection and
 dynamic-source lifetime remain required.
+[First-class named function callables](docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md)
+preserve named static roots and existing closure identity through conversion;
+[their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
+and the separate reference and paused-state gates.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

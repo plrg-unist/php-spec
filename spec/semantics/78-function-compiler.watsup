@@ -35,6 +35,7 @@ dec $ppcall_mode(ppstate, pnresult, nat, expression) : ppmode
 dec $ppfunction_parameter_ref(pfunction?, nat) : bool
 dec $ppcall_variable(expression) : bool
 dec $ppcall_deferred(expression) : ppmode
+dec $ppfirstclass(phpType7*) : bool
 dec $ppglobal_variables(ppstate, pcpath, nat, expression*) : ppstate
 
 ;; Named declaration compilation preserves original source occurrences and gives
@@ -151,6 +152,7 @@ def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN 
 def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, unpacked or reference call argument compilation")
   -- otherwise
 def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
+  -- if ~$ppfirstclass(phpType7*)
   -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
 
 def $ppglobal_variables(P, pcpath, n, eps) = P
@@ -216,7 +218,8 @@ def $ppcall_done(P, pcpath, z) = P
 ;; result, except reference lists first emit MAKE_REF (VAR). This is not a
 ;; writable-expression predicate and never selects argument acquisition mode.
 dec $ppsend_var(expression) : bool
-def $ppsend_var(NExprFuncCall phpType19 phpType6 metadata) = true
+def $ppsend_var(NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = true
+  -- if ~$ppfirstclass(phpType7*)
 def $ppsend_var(NExprAssignRef expression_1 expression_2 metadata) = true
 def $ppsend_var(NExprAssign expression_pattern expression_rhs metadata) = ($list_references(phpType13*) \/ $ppsend_var(expression_rhs))
   -- if $list_pattern(expression_pattern) = (phpType13*)
@@ -228,8 +231,9 @@ def $ppsend_var(expression) = false -- otherwise
 dec $ppcall_expression(ppstate, pcpath, int) : ppstate
 dec $ppcall_instruction_line(phpType19, metadata) : int
 def $ppcall_instruction_line(phpType19, metadata) = $source_line(metadata) -- otherwise
-def $ppexpr(P, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR)), pcpath, NExprFuncCall phpType19 phpType6 metadata, PPR), pcpath, $ppcall_instruction_line(phpType19, metadata))
+def $ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, PPR), pcpath, $ppcall_instruction_line(phpType19, metadata))
   -- if P.COMPLETION = PPCNORMAL
+  -- if ~$ppfirstclass(phpType7*)
 def $ppcall_expression(P, pcpath, z) = $ppdone($ppcall_done(P, pcpath, z), pcpath, PPR)[.LOCATION = P.LOCATION]
 
 def $ppcall_read(NExprFuncCall phpType19 phpType6 metadata, PPR) = true
