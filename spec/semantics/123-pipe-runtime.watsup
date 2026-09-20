@@ -1,0 +1,205 @@
+;; Pipe sends the left expression as one value after evaluating it, before the
+;; right callable can observe or change its source variable.
+dec $pipe_site(pstate, porigin) : bool
+def $pipe_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+def $pipe_site(S, porigin) = false -- otherwise
+
+dec $pipe_rhs_origin(porigin) : porigin
+def $pipe_rhs_origin(PORIGIN n pcpath) = PORIGIN n (pcpath ++ [PCFIELD 1])
+
+dec $pipe_fixed_name(pstate, porigin) : (preqbytes, preqbytes?)?
+def $pipe_fixed_name(S, PORIGIN n pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((preqbytes, preqbytes_fallback?))
+def $pipe_fixed_name(S, porigin) = eps -- otherwise
+
+dec $pipe_lookup_line(pstate, porigin) : int
+def $pipe_lookup_line(S, porigin) = $dynamic_init_line(S, $pipe_rhs_origin(porigin))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $pppipe_optimized(expression_right)
+def $pipe_lookup_line(S, porigin) = $runtime_line(S[.ORIGIN = $origin_child((porigin), [PCFIELD 1])], eps, expression_right)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+
+dec $pipe_rhs_tasks(pstate, porigin) : ptask*
+def $pipe_rhs_tasks(S, porigin) = [$at_task($origin_child((porigin), [PCFIELD 1, PCFIELD 0]), EVAL expression_callee)]
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left (NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call) metadata)
+  -- if $pppipe_optimized(NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call)
+  -- if $firstclass_evaluated(S, $pipe_rhs_origin(porigin))
+def $pipe_rhs_tasks(S, porigin) = eps
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $pppipe_optimized(expression_right)
+  -- if ~$firstclass_evaluated(S, $pipe_rhs_origin(porigin))
+def $pipe_rhs_tasks(S, porigin) = [$at_task($origin_child((porigin), [PCFIELD 1]), EVAL expression_right)]
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+
+dec $code_pipe_send(pcodeexpr*, pcpath) : int?
+def $code_pipe_send(eps, pcpath) = eps
+def $code_pipe_send((CODEPIPE_SEND pcpath z) :: pcodeexpr*, pcpath) = (z)
+def $code_pipe_send((CODEPIPE_SEND pcpath_other z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $code_pipe_send((CODEIMPLICIT pcpath_other ptbytes z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODEARROW pcpath_other z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODELEXICAL pcpath_other ptbytes b z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODESTATIC pcpath_other ptbytes z_init z_bind b) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODECALL_INIT pcpath_other z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODEARG pcpath_other) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODEWRITE pcpath_other z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODEEXPR pcpath_other z b) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODEEFFECT pcpath_other) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+dec $pipe_send_line(pstate, porigin) : int
+def $pipe_send_line(S, PORIGIN n pcpath) = z_send
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_pipe_send(pcode.EXPRESSIONS, pcpath) = (z_send)
+
+dec $pipe_lines_valid(pstate, porigin, int, int) : bool
+def $pipe_lines_valid(S, porigin, z_send, z_call) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $pipe_site(S, porigin)
+  -- if z_send = $pipe_send_line(S, porigin)
+  -- if $call_line_valid(S, (porigin), z_call)
+  -- if porigin = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_read, b_left))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_right, b))
+def $pipe_lines_valid(S, porigin, z_send, z_call) = false -- otherwise
+dec $pipe_task_valid(pstate, porigin, int, int, int) : bool
+def $pipe_task_valid(S, porigin, z_read, z_send, z_call) = ($pipe_lines_valid(S, porigin, z_send, z_call) /\ $call_line_valid(S, ($origin_child((porigin), [PCFIELD 0])), z_read))
+def $call_task_valid(S, PIPE_FORCE porigin z_read z_send z_call) = $pipe_task_valid(S, porigin, z_read, z_send, z_call)
+dec $pipe_apply_task_valid(pstate, porigin, poperand, int, int) : bool
+def $pipe_apply_task_valid(S, porigin, KNOWN pvalue, z_send, z_call) = $pipe_lines_valid(S, porigin, z_send, z_call)
+def $pipe_apply_task_valid(S, porigin, poperand, z_send, z_call) = false -- otherwise
+def $call_task_valid(S, PIPE_APPLY porigin poperand z_send z_call) = $pipe_apply_task_valid(S, porigin, poperand, z_send, z_call)
+def $task_nodes(PIPE_APPLY porigin poperand z_send z_call) = $operand_nodes(poperand)
+
+rule PhpStep/pipe-left: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression_left), PIPE_FORCE porigin $runtime_line(S, [PCFIELD 0], expression_left) $pipe_send_line(S, porigin) $runtime_line(S, eps, NExprBinaryOpPipe expression_left expression_right metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpPipe expression_left expression_right metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/pipe-force: S ~> S_left[.TODO = $pipe_rhs_tasks(S_left, porigin) ++ [PIPE_APPLY porigin (KNOWN pvalue) z_send z_call] ++ S_left.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+  -- if S.TODO = (PIPE_FORCE porigin z_read z_send z_call) :: ptask_tail*
+  -- if $pipe_task_valid(S, porigin, z_read, z_send, z_call)
+  -- if S_left = $resolve_at($hold_task_inputs(S), S.RESULT, z_read)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_left.RESULT = KNOWN pvalue
+rule PhpStep/pipe-force-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
+  -- if S.TODO = (PIPE_FORCE porigin z_read z_send z_call) :: ptask_tail*
+  -- if $pipe_task_valid(S, porigin, z_read, z_send, z_call)
+  -- if S_left = $resolve_at($hold_task_inputs(S), S.RESULT, z_read)
+  -- if S_left.COMPLETION =/= NORMAL
+
+dec $pipe_start(pstate, pcalltarget, pvalue, porigin, int, int) : pstate
+dec $pipe_operand(pvalue) : poperand*
+def $pipe_operand(pvalue) = (KNOWN pvalue) :: eps
+def $pipe_start(S, pcalltarget, pvalue, porigin, z_send, z_call) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #1") ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z_send)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
+def $pipe_start(S, pcalltarget, pvalue, porigin, z_send, z_call) = S[.TODO = (CALL_ARGS pcalltarget eps 1 $pipe_operand(pvalue) (porigin) z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+
+dec $pipe_name(pstate, preqbytes, preqbytes, preqbytes?, pvalue, porigin, int, int, int) : pstate
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "static method pipe callable"]
+  -- if $dynamic_method_scan(preqbytes_original, false, false)
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $pipe_start(S, pfunction.ORIGIN, pvalue, porigin, z_send, z_call)
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = (pfunction)
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "registered builtin pipe callable"]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
+  -- if $call_builtin(preqbytes_lookup, preqbytes_fallback?)
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ $c_string(preqbytes_original) ++ $ptascii("()"), z_lookup)
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
+  -- if ~$call_builtin(preqbytes_lookup, preqbytes_fallback?)
+
+dec $pipe_value(pstate, poperand, pvalue, porigin, int, int, int) : pstate
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION =/= NORMAL
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_name(S_read, n*, $dynamic_lookup_name(n*), eps, pvalue_left, porigin, z_send, z_lookup, z_call)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING n*)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_start(S_read, CLOSURE_TARGET n, pvalue_left, porigin, z_send, z_call)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S_read, n)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "object pipe callable"]
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if ~$closure_callable(S_read, n)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "array pipe callable"]
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $throw_scalar(S_read, "Error", $ptascii("Value of type ") ++ $type_bytes(pvalue_right) ++ $ptascii(" is not callable"), z_lookup)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_right
+  -- if $constant_nonstring_scalar(pvalue_right)
+
+dec $pipe_apply(pstate, poperand, pvalue, porigin, int, int) : pstate
+def $pipe_apply(S, poperand_right, pvalue_left, porigin, z_send, z_call) = $pipe_name(S, preqbytes, preqbytes, preqbytes_fallback?, pvalue_left, porigin, z_send, $pipe_lookup_line(S, porigin), z_call)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $pppipe_optimized(expression_right)
+  -- if $pipe_fixed_name(S, porigin) = ((preqbytes, preqbytes_fallback?))
+def $pipe_apply(S, poperand_right, pvalue_left, porigin, z_send, z_call) = $pipe_value(S, poperand_right, pvalue_left, porigin, z_send, $pipe_lookup_line(S, porigin), z_call)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $pppipe_optimized(expression_right)
+  -- if $pipe_fixed_name(S, porigin) = eps
+def $pipe_apply(S, poperand_right, pvalue_left, porigin, z_send, z_call) = $pipe_value(S, poperand_right, pvalue_left, porigin, z_send, $pipe_lookup_line(S, porigin), z_call)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+
+rule PhpStep/pipe-apply: S ~> $pipe_apply($hold_task_inputs(S), S.RESULT, pvalue_left, porigin, z_send, z_call)[.HELD = S.HELD]
+  -- if S.TODO = (PIPE_APPLY porigin (KNOWN pvalue_left) z_send z_call) :: ptask_tail*
+  -- if $pipe_apply_task_valid(S, porigin, KNOWN pvalue_left, z_send, z_call)
+
+;; A completed pipe call carries one forced positional value, never a synthetic
+;; NArg source occurrence. Ordinary binder and frame rules remain unchanged.
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if $pipe_site(S, porigin)
+  -- if poperand = KNOWN pvalue
+def $named_call_shape(S, pcalltarget, (porigin)) = $named_store({SLOTS eps, NAMED eps}, NAMED_POSITION 0, KNOWN PNULL)
+  -- if $pipe_site(S, porigin)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+def $named_call_valid(S, pcalltarget, (porigin)) = true
+  -- if $pipe_site(S, porigin)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+def $call_arity_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $pipe_site(S, porigin)
+  -- if $named_call_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if $call_extent_valid(S, pcallcontext)
+  -- if $named_context_valid(S, pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_received = $call_received(pcallcontext.ARGC, n_fixed)
+  -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
+  -- if $call_sent_operands_valid(S, pcallcontext.FUNCTION, n_received, pcallcontext.EXTRA)
+def $call_selected_valid(S, porigin_function, (porigin)) = true
+  -- if $pipe_site(S, porigin)
+  -- if $pipe_fixed_name(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+def $call_selected_valid(S, porigin_function, (porigin)) = true
+  -- if $pipe_site(S, porigin)
+  -- if $pipe_fixed_name(S, porigin) = eps
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $pipe_site(S, porigin)
+  -- if $pipe_fixed_name(S, porigin) = eps
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+
+;; The forced input is a value, while the call result retains its own VAR mode.
+def $ppsend_var(NExprBinaryOpPipe expression_left expression_right metadata) = true

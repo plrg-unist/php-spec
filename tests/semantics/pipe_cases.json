@@ -1,0 +1,14 @@
+{
+  "dynamic-arrow": "<?php\nfunction left() { echo \"L\"; return 2; }\necho left() |> (fn($x) => $x + 1);\n",
+  "byref-left-multiline": "<?php\nfunction left($x) { return $x; }\nfunction f(&$x) { echo \"bad\"; }\necho left(\n    2\n) |> f(...);\n",
+  "optimized-multiline-missing": "<?php\nfunction n($x) { return \"missing\"; }\necho 2 |> n(\n 1\n)(...);\n",
+  "reference-result-send": "<?php\nfunction &f($x) { static $v = 1; return $v; }\nfunction g(&$x) { $x = 9; }\ng(2 |> f(...));\necho f(0);\n",
+  "optimized-named-admitted": "<?php\nfunction f($x) { echo \"F\"; echo $x; return $x + 1; }\nfunction left() { echo \"L\"; return 2; }\necho left() |> f(...);\n",
+  "evaluated-name-admitted": "<?php\nfunction f($x) { echo \"F\"; echo $x; return $x + 1; }\nfunction left() { echo \"L\"; return 2; }\n$name = \"f\";\necho left() |> $name(...);\n",
+  "body-callsite-admitted": "<?php\nfunction f($x) { missing(); }\necho 2 |>\n    f(...);\n",
+  "forced-before-rhs": "<?php\n$x = 2;\n$out = $x |> (function () use (&$x) { $x = 9; return fn($v) => $v; })();\necho $out, ':', $x;\n",
+  "pending-wrapper-rebind": "<?php\nfunction f() { return 7; }\n$g = f(...);\n$out = $g |> (function () { global $g; $g = null; return fn($fn) => $fn(); })();\necho $out;\n",
+  "reference-left-force": "<?php\n$x=2;\nfunction &left(){global $x; return $x;}\nfunction right(){global $x; $x=9; return fn($v)=>$v;}\necho left() |> right();\necho ':',$x;\n",
+  "invalid-dynamic-right": "<?php\nfunction right(){echo 'R';return 42;}\necho 2 |>\n right();\n",
+  "fatal-right-owned-left": "<?php\nfunction f($x){return $x;}\n$g=f(...);\nfunction right(){global $g;$g=null;echo 'R';return missing();}\necho $g |> right();\n"
+}

@@ -39,15 +39,21 @@ Pipe arrow grouping and static rejection 121 are installed after 119/120.
 [Syntax review](coverage/semantics/pipe-syntax-review.json) records the exact
 private-candidate file matches, eight focused source/roundtrip/lint profiles,
 missing-fact control, cumulative parser patch reproduction and the separately
-reviewed 30,980-entry classified syntax gate. Pipe execution remains in a
-private candidate with 12 maintained outcomes (7 normal, 5 PHP errors); its
-fingerprint and raw audit remain separate from this syntax checkpoint.
+reviewed 30,980-entry classified syntax gate. Pipe compiler/runtime 122/123 are
+now installed as a separate increment. [Runtime review](coverage/semantics/pipe-review.json)
+binds 12 maintained outcomes (7 normal, 5 PHP errors), nine separately reviewed
+original-source pairs, and paused task/ownership guards. Canonical checks passed:
+12 source outcomes, five protocol stages/89 assertions, first-class regression
+17 source outcomes and three stages/49 assertions, and inventory consistency.
+The canonical pipe report is under `.tools/pipe-xae4rjrd/` with implementation
+fingerprint f7ae0856; the accepted private 39b89d3c identity remains distinct.
+Builtin/method/array/object callable dependencies remain open.
 
 ## Next work
 
-Install the reviewed pipe runtime/compiler increment after the static prerequisite.
-Keep the parser's cumulative patches reproducible, preserve exact test profiles,
-and update the inventory and documentation with each accepted increment.
+Install the reviewed switch syntax/compiler 124 and, after independent runtime
+125 task/ownership review, its runtime increment. Preserve exact source and test
+profiles, update the inventory and documentation with each accepted increment.
 
 The next independent language lane is switch: case selection, fallthrough,
 continue/break levels, compile priorities and semicolon-case metadata. Empty

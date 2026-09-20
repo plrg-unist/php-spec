@@ -6833,17 +6833,25 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/121-pipe-compiler.watsup"
+        "spec/semantics/121-pipe-compiler.watsup",
+        "spec/semantics/122-pipe-compiler.watsup",
+        "spec/semantics/123-pipe-runtime.watsup"
       ],
       "helper_tests": [
-        "tests/pipe_parentheses.py"
+        "tests/pipe_parentheses.py",
+        "tests/semantics/pipe_protocol.py"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/pipe.py"
+      ],
       "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c",
-        "coverage/semantics/pipe-syntax-review.json"
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/pipe-syntax-review.json",
+        "coverage/semantics/pipe-review.json",
+        "docs/semantics/SOURCE-PIPE.md"
       ],
-      "review": "Parser-owned direct-arrow grouping metadata and compile-phase rejection are installed with checked roundtrip and missing-fact controls. The reviewed private full-syntax gate classifies 30,980 entries; pipe invocation and runtime effects remain pending."
+      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. Builtin/method/array/object callables remain open."
     },
     {
       "id": "calls.callable-visibility",

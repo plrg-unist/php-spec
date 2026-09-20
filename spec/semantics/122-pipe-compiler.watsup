@@ -1,0 +1,84 @@
+;; Pipe compilation preserves operand order and the checked RHS grouping fact.
+dec $pppipe_assert_callee(phpType19) : bool
+def $pppipe_assert_callee(NName (BYTES text) metadata) = true
+  -- if $ptlc($base64(text)) = $ptascii("assert")
+def $pppipe_assert_callee(NNameFullyQualified (BYTES text) metadata) = true
+  -- if $ptlc($base64(text)) = $ptascii("assert")
+def $pppipe_assert_callee(NNameRelative (BYTES text) metadata) = true
+  -- if $ptlc($base64(text)) = $ptascii("assert")
+def $pppipe_assert_callee(expression) = true
+  -- if $ppcall_literal(expression) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("assert")
+def $pppipe_assert_callee(phpType19) = false -- otherwise
+dec $pppipe_optimized(expression) : bool
+def $pppipe_optimized(NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = ~$pppipe_assert_callee(phpType19)
+def $pppipe_optimized(expression) = false -- otherwise
+
+dec $pipe_compile_ready(expression, metadata) : bool
+def $pipe_compile_ready(expression_right, metadata) = true
+  -- if $pipe_direct_arrow(expression_right)
+  -- if $pipe_bare(metadata) = (false)
+def $pipe_compile_ready(expression_right, metadata) = true
+  -- if ~$pipe_direct_arrow(expression_right)
+  -- if $pipe_bare(metadata) = eps
+def $pipe_compile_ready(expression_right, metadata) = false -- otherwise
+
+dec $pppipe_send(ppstate, pcpath) : ppstate
+def $ppdispatch(P, pcpath, NExprBinaryOpPipe expression_left expression_right metadata, PPR) = $ppclearvalue($ppexpr($pppipe_send($ppexpr(P, pcpath ++ [PCFIELD 0], expression_left, PPR), pcpath), pcpath ++ [PCFIELD 1], expression_right, PPR))
+  -- if $pipe_compile_ready(expression_right, metadata)
+
+def $pppipe_send(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCPIPE_SEND pcpath P.LOCATION.LINE]]
+  -- if P.COMPLETION = PPCNORMAL
+def $pppipe_send(P, pcpath) = P -- otherwise
+
+def $compiled_operands(P, (PPCPIPE_SEND pcpath z) :: ppexprdone*) = (CODEPIPE_SEND pcpath z) :: $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCPIPE_SEND pcpath z) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCPIPE_SEND pcpath_send z) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCPIPE_SEND pcpath_send z) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $ppcodepath(CODEPIPE_SEND pcpath z) = pcpath
+
+def $code_expression((CODEPIPE_SEND pcpath_send z) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_call_init((CODEPIPE_SEND pcpath_send z) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_write((CODEPIPE_SEND pcpath_send z) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODEPIPE_SEND pcpath z) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODEPIPE_SEND pcpath z) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODEPIPE_SEND pcpath_send z) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODEPIPE_SEND pcpath z) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODEPIPE_SEND pcpath z) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODEPIPE_SEND pcpath z) = pcpath
+def $typed_return_entry(pcoccurrence*, CODEPIPE_SEND pcpath z) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEPIPE_SEND pcpath z) = eps
+def $named_send_entry(pcoccurrence*, CODEPIPE_SEND pcpath z) = eps
+
+dec $pipe_root(pcoccurrence*, pcpath) : bool
+dec $pipe_node(pcnode) : bool
+def $pipe_node(NExprBinaryOpPipe expression_left expression_right metadata) = true
+def $pipe_node(pcnode) = false -- otherwise
+def $pipe_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (pcnode)
+  -- if $pipe_node(pcnode)
+def $pipe_root(pcoccurrence*, pcpath) = false -- otherwise
+dec $pipe_child(pcoccurrence*, pcpath) : bool
+def $pipe_child(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $pipe_root(pcoccurrence*, pcpath[0:n_parent])
+def $pipe_child(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+  -- if $pipe_root(pcoccurrence*, pcpath[0:n_parent])
+def $pipe_child(pcoccurrence*, pcpath) = false -- otherwise
+dec $pipe_code_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $pipe_code_entry(pcoccurrence*, CODEPIPE_SEND pcpath z) = [CODEPIPE_SEND pcpath z]
+def $pipe_code_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $pipe_root(pcoccurrence*, pcpath) \/ $pipe_child(pcoccurrence*, pcpath)
+def $pipe_code_entry(pcoccurrence*, pcodeexpr) = eps -- otherwise
+dec $pipe_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $pipe_code(pcoccurrence*, eps) = eps
+def $pipe_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $pipe_code_entry(pcoccurrence*, pcodeexpr) ++ $pipe_code(pcoccurrence*, pcodeexpr_tail*)
+def $pipe_unit_code_valid(P, pcode) = true
+  -- if pcode_expected = pcode[.EXPRESSIONS = $compiled_operands(P, P.EXPRESSIONS)]
+  -- if $pipe_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $pipe_code(P.FOLD.SOURCE.OCCURRENCES, pcode_expected.EXPRESSIONS)
+def $pipe_unit_code_valid(P, pcode) = false -- otherwise

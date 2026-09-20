@@ -163,9 +163,12 @@ dynamic-source lifetime remain required.
 preserve named static roots and existing closure identity through conversion;
 [their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
 and the separate reference and paused-state gates.
-[Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) now survives
-checked syntax and printing, so a bare arrow RHS receives the matching compile
-error before operand effects. Pipe execution is a separate increment.
+[Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) survives checked
+syntax and printing, so a bare arrow RHS receives the matching compile error
+before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces the
+left value before selecting a named or closure callable; its
+[runtime review](coverage/semantics/pipe-review.json) binds 12 source outcomes
+and separate paused-state controls.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

@@ -1,0 +1,28 @@
+{
+  "scope": "Forced left operand; named user-function and existing closure targets; optimized first-class right operand; reference result",
+  "private_review": ".tools/review14-pipe/private-review.json",
+  "maintained_source": {
+    "rows": 12,
+    "outcomes": {"normal": 7, "php_error": 5},
+    "responses": 24,
+    "implementation_fingerprint_sha256": "39b89d3c9fea79de43eaa6a29bafc2f97ee0caa21db2cdf5c3ce48eaec6bc052",
+    "audit": ".tools/review14-pipe/maintained12-source-audit.json",
+    "audit_sha256": "1bc12d8ee1ae8e989769818d432e0d0919f56dacac525e1abaad373af346c662"
+  },
+  "separate_gates": {
+    "independent_original_pairs": 3,
+    "author_original_pairs": 6,
+    "normal_paused_assertions": 45,
+    "abrupt_paused_assertions": 18,
+    "declared_and_pipe_only_guards": "20 each",
+    "maintained_protocol": "5 stages, 89 assertions"
+  },
+  "canonical_checks": {
+    "semantic_files": "five runtime/compiler files byte-identical to accepted private_review hashes; syntax 121 retains its own reviewed commit",
+    "source": "12/12 outcomes pass; .tools/pipe-xae4rjrd/report.json SHA-256 96f95797bd7972329139e1495fa21d1692e8c625f0da5d797920e848e796d686; implementation fingerprint f7ae0856cd6c68c8d569327eb8d331d53895343457c5face6361a00e1c4fdaeb",
+    "protocol": "5 stages, 89 assertions pass",
+    "first_class_protocol_regression": "3 stages, 49 assertions pass",
+    "inventory": "169 constructors, 306 obligations; consistent"
+  },
+  "boundary": "Private and canonical reports keep their original distinct input and tool fingerprints. This increment does not close builtin, method, array or object callable behavior."
+}
