@@ -1,0 +1,92 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "implementation": {
+    "files": 1026,
+    "sha256": "0ec57507c6d684170723de3d1b2bf197b3d7bdb016cfa8daf80635a46aa0fb20"
+  },
+  "review_status": "independently accepted",
+  "gates": {
+    "compiler": {
+      "lint_sources": 5751,
+      "access_sources": 8,
+      "line_observations": 15,
+      "profile": "checked source/compiler phases; verified prior binary reused",
+      "access_paths": 24,
+      "metadata_boundaries": 7,
+      "unsupported_contexts": 1,
+      "fixture_cases": 5783,
+      "responses": 11561,
+      "clean_workers": 2
+    },
+    "explicit_request": {
+      "source_profiles": 263,
+      "responses": 526,
+      "profile": "explicit primitive request, FD198/environment/clock/argv/configuration",
+      "native_calls": 263,
+      "clean_workers": 2
+    },
+    "callable": {
+      "maintained_rows": 946,
+      "separate_explicit_regression": 1,
+      "responses": 1894,
+      "profile": "suite-specific exact source/request/native contexts; interrupted prefix excluded",
+      "normal": 597,
+      "static_rejection": 66,
+      "php_error": 284,
+      "clean_workers": 38,
+      "closed_reused_suites": 2,
+      "recovered_whole_suites_and_explicit": 17
+    },
+    "ordinary": {
+      "comparisons": 5706,
+      "normal": 4060,
+      "php_error": 1006,
+      "static_rejection": 640,
+      "outcome_controls": 21,
+      "process_records": 11435,
+      "profile": "ordinary absent explicit primitive request; inherited process environment qualified by producer LC_ALL=C/TZ=UTC; transition budget100000; model35s/native30s per process"
+    }
+  },
+  "ordinary_control_outcomes": {
+    "unsupported": 11,
+    "budget_exhausted": 2,
+    "timeout": 1,
+    "runner_failure": 1,
+    "php_error": 1,
+    "edited-AST-unsupported": 5
+  },
+  "audits": {
+    "compiler": {
+      "path": ".tools/review13-post-arrow-integration/compiler-independent-audit.json",
+      "sha256": "69e7328cadccf1a86944875eb186193322d25545ae80ff421d695fa2791ad090"
+    },
+    "explicit_request": {
+      "path": ".tools/review13-post-arrow-integration/request-independent-audit.json",
+      "sha256": "9315da5afaf911d7799bac3cff425b906054810b4d2b46b28ff8954cb60139f2"
+    },
+    "callable": {
+      "path": ".tools/review14-post-arrow-integration/callable-summary.json",
+      "sha256": "c3decfb82d39355ed7a11ecaeeed5e4cdafe93d230a769cd8431e5ca0b5094d5"
+    },
+    "ordinary": {
+      "path": ".tools/review14-post-arrow-integration/ordinary-audit.json",
+      "sha256": "32ba160415273dad644c5f22514b24d37c9c88390b42b02f9c7783229d02bf0b"
+    },
+    "ordinary_outer": {
+      "path": ".tools/review14-post-arrow-integration/ordinary-outer-audit.json",
+      "sha256": "f3b401bf68238835bfe5d6a146ec4ed3488398b43826f3c8bdfbb1a664dd0f13"
+    }
+  },
+  "raw_recovery": {
+    "ordinary_root": ".tools/runtime9-post-arrow-integration/ordinary5706",
+    "ordinary_inputs": ".tools/runtime9-post-arrow-integration/inputs.json",
+    "callable": ".tools/review14-post-arrow-integration/callable-summary.json"
+  },
+  "qualifications": [
+    "Counts are separate case/profile observations, not unique PHP programs.",
+    "The earlier interrupted ordinary prefix and callable partial suite are not passing results.",
+    "The ordinary timeout and runner failure belong to expected outcome controls, never counted as source agreements.",
+    "This is integration on accepted arrow baseline; privately reviewed first-class and pipe semantics have different identities.",
+    "Ordinary inherited process environment is qualified by the producer LC_ALL/TZ settings; it is not a hermetic empty environment."
+  ]
+}
