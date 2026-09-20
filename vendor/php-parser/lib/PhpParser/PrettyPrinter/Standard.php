@@ -431,7 +431,7 @@ class Standard extends PrettyPrinterAbstract {
     }
 
     protected function pExpr_BinaryOp_Pipe(BinaryOp\Pipe $node, int $precedence, int $lhsPrecedence): string {
-        if ($node->right instanceof Expr\ArrowFunction) {
+        if ($node->right instanceof Expr\ArrowFunction && !$node->getAttribute('pipeBareArrow', false)) {
             // Force parentheses around arrow functions.
             $lhsPrecedence = $this->precedenceMap[Expr\ArrowFunction::class][0];
         }

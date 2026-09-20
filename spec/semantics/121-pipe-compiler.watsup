@@ -1,0 +1,21 @@
+;; Parser-owned direct-arrow grouping is retained until compile phase.
+dec $pipe_direct_arrow(expression) : bool
+def $pipe_direct_arrow(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = true
+def $pipe_direct_arrow(expression) = false -- otherwise
+
+dec $pipe_bare_entry(metadataEntry) : bool?
+def $pipe_bare_entry(MpipeBareArrow b) = (b)
+def $pipe_bare_entry(metadataEntry) = eps -- otherwise
+dec $pipe_bare(metadata) : bool?
+def $pipe_bare(eps) = eps
+def $pipe_bare(metadataEntry :: metadataEntry_tail*) = (b)
+  -- if $pipe_bare_entry(metadataEntry) = (b)
+def $pipe_bare(metadataEntry :: metadataEntry_tail*) = $pipe_bare(metadataEntry_tail*)
+  -- if $pipe_bare_entry(metadataEntry) = eps
+
+def $ppdispatch(P, pcpath, NExprBinaryOpPipe expression_left expression_right metadata, PPR) = $ppcheck(P, $context_error("Arrow functions on the right hand side of |> must be parenthesized", $source_line(metadata)))
+  -- if $pipe_direct_arrow(expression_right)
+  -- if $pipe_bare(metadata) = (true)
+def $ppdispatch(P, pcpath, NExprBinaryOpPipe expression_left expression_right metadata, PPR) = $ppunsupported(P, "missing pipe arrow grouping")
+  -- if $pipe_direct_arrow(expression_right)
+  -- if $pipe_bare(metadata) = eps

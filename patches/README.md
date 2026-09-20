@@ -25,6 +25,7 @@ BSD-3-Clause license.
 | Preserve comments on every node, including grouping, attributes and nonfinal empty statements | `comments-attachments.php`, generated operand combinations and minimized corpus regressions |
 | Attach otherwise unassigned token comments deterministically without losing declaration doc comments | `comments-parentheses.php`; independent token-comment retention assertion |
 | Keep interpolation comments inside the expression braces with a stable attachment | Seven `comments-interpolation-*` fixtures and the CodeMirror application example |
+| Retain whether a direct pipe arrow RHS was parenthesized, through checking and fresh printing | `pipe_parentheses.py`: bare RHS compiles to the pinned error before operand effects; parenthesized RHS stays valid |
 
 `php-parser-grammar.patch` changes the source grammar. Run
 `scripts/rebuild-parser.sh` to regenerate in a disposable directory and compare

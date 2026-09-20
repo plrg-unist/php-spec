@@ -35,15 +35,17 @@ source report is retained under `.tools/first-class-gsi1pf5r/` with the same
 4082bb8c implementation fingerprint as the accepted private audit. This is a
 partial callable increment; builtin/method/array/constant-context forms remain.
 
-Pipe semantics is reviewed in a private candidate but not installed. It has 12
-maintained outcomes (7 normal, 5 PHP errors) and a separately reviewed 30,980
-entry classified syntax gate for the pipe arrow grouping prerequisite. Their
-fingerprints and raw audits remain separate from this baseline.
+Pipe arrow grouping and static rejection 121 are installed after 119/120.
+[Syntax review](coverage/semantics/pipe-syntax-review.json) records the exact
+private-candidate file matches, eight focused source/roundtrip/lint profiles,
+missing-fact control, cumulative parser patch reproduction and the separately
+reviewed 30,980-entry classified syntax gate. Pipe execution remains in a
+private candidate with 12 maintained outcomes (7 normal, 5 PHP errors); its
+fingerprint and raw audit remain separate from this syntax checkpoint.
 
 ## Next work
 
-Install the reviewed pipe grouping/static prerequisite and pipe runtime/compiler
-increment as small commits after the first-class successor.
+Install the reviewed pipe runtime/compiler increment after the static prerequisite.
 Keep the parser's cumulative patches reproducible, preserve exact test profiles,
 and update the inventory and documentation with each accepted increment.
 

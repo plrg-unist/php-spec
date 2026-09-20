@@ -6830,15 +6830,20 @@
     {
       "id": "calls.pipe",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
+      "implementation": [
+        "spec/semantics/121-pipe-compiler.watsup"
+      ],
+      "helper_tests": [
+        "tests/pipe_parentheses.py"
+      ],
       "source_tests": [],
       "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "coverage/semantics/pipe-syntax-review.json"
       ],
-      "review": null
+      "review": "Parser-owned direct-arrow grouping metadata and compile-phase rejection are installed with checked roundtrip and missing-fact controls. The reviewed private full-syntax gate classifies 30,980 entries; pipe invocation and runtime effects remain pending."
     },
     {
       "id": "calls.callable-visibility",

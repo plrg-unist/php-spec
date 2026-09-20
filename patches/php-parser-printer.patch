@@ -100,6 +100,15 @@
      }
  
      protected function pNullableType(Node\NullableType $node): string {
+@@ -431,7 +431,7 @@
+     }
+ 
+     protected function pExpr_BinaryOp_Pipe(BinaryOp\Pipe $node, int $precedence, int $lhsPrecedence): string {
+-        if ($node->right instanceof Expr\ArrowFunction) {
++        if ($node->right instanceof Expr\ArrowFunction && !$node->getAttribute('pipeBareArrow', false)) {
+             // Force parentheses around arrow functions.
+             $lhsPrecedence = $this->precedenceMap[Expr\ArrowFunction::class][0];
+         }
 @@ -537,8 +537,16 @@
      // Function calls and similar constructs
  
@@ -586,7 +595,22 @@
      }
  
      protected function checkTryCatch(TryCatch $node): void {
-@@ -1293,6 +1295,9 @@
+@@ -1251,11 +1253,9 @@
+         }
+     }
+ 
+-    protected function checkPipeOperatorParentheses(Expr $node): void {
+-        if ($node instanceof Expr\ArrowFunction && !$this->parenthesizedArrowFunctions->offsetExists($node)) {
+-            $this->emitError(new Error(
+-                'Arrow functions on the right hand side of |> must be parenthesized', $node->getAttributes()));
+-        }
++    protected function pipeBareArrow(Expr $node): bool {
++        return $node instanceof Expr\ArrowFunction
++            && !$this->parenthesizedArrowFunctions->offsetExists($node);
+     }
+ 
+     /**
+@@ -1293,6 +1293,9 @@
          if ($this->isSimpleExit($args)) {
              // Create Exit node for backwards compatibility.
              $attrs['kind'] = strtolower($name) === 'exit' ? Expr\Exit_::KIND_EXIT : Expr\Exit_::KIND_DIE;

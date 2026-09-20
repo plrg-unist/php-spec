@@ -1253,11 +1253,9 @@ abstract class ParserAbstract implements Parser {
         }
     }
 
-    protected function checkPipeOperatorParentheses(Expr $node): void {
-        if ($node instanceof Expr\ArrowFunction && !$this->parenthesizedArrowFunctions->offsetExists($node)) {
-            $this->emitError(new Error(
-                'Arrow functions on the right hand side of |> must be parenthesized', $node->getAttributes()));
-        }
+    protected function pipeBareArrow(Expr $node): bool {
+        return $node instanceof Expr\ArrowFunction
+            && !$this->parenthesizedArrowFunctions->offsetExists($node);
     }
 
     /**

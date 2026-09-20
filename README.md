@@ -7,8 +7,10 @@ This project specifies the abstract syntax of **PHP 8.5.10** and connects
 PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory contains 169 constructors. The historical
 [frontend repair audit](coverage/frontend-syntax-repair.json) classified all
 30,980 corpus records with no unresolved failures and recorded exact syntax-input
-equality with its isolated validation snapshot. Later source-metadata changes
-have bounded regression evidence; a fresh full corpus audit remains pending. The earlier [portability evidence](coverage/portability.json)
+equality with its isolated validation snapshot. The later
+[pipe syntax audit](coverage/semantics/pipe-syntax-review.json) independently
+classified all 30,980 entries on a private snapshot whose changed syntax files
+match this checkout. The earlier [portability evidence](coverage/portability.json)
 records a fresh offline rebuild before this frontend repair; the new audit uses
 copied executables and makes no new rebuild or portability claim.
 Executable core semantics are now being implemented; see the
@@ -161,6 +163,9 @@ dynamic-source lifetime remain required.
 preserve named static roots and existing closure identity through conversion;
 [their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
 and the separate reference and paused-state gates.
+[Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) now survives
+checked syntax and printing, so a bare arrow RHS reaches the native compile
+error before operand effects. Pipe execution is a separate increment.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
