@@ -1,0 +1,215 @@
+;; Zend compiles the subject, every case condition, then every body.
+;; The optional jump-table analysis first folds leading eligible case values.
+syntax ppswitchpretype = PPSWPRENONE | PPSWPREINT | PPSWPRESTRING | PPSWPRESTOP
+dec $ppswitch_numeric(nat*) : bool
+def $ppswitch_numeric(n*) = true -- if $numeric_string(n*) = FULLNUM pnumber
+def $ppswitch_numeric(n*) = false -- otherwise
+dec $ppswitch_pretype(pvalue?) : ppswitchpretype
+def $ppswitch_pretype((PINT i)) = PPSWPREINT
+def $ppswitch_pretype((PSTRING n*)) = PPSWPRESTOP
+  -- if $ppswitch_numeric(n*)
+def $ppswitch_pretype((PSTRING n*)) = PPSWPRESTRING
+  -- if ~$ppswitch_numeric(n*)
+def $ppswitch_pretype(pvalue?) = PPSWPRESTOP -- otherwise
+dec $ppswitch_precompatible(ppswitchpretype, ppswitchpretype) : bool
+def $ppswitch_precompatible(PPSWPRENONE, PPSWPREINT) = true
+def $ppswitch_precompatible(PPSWPRENONE, PPSWPRESTRING) = true
+def $ppswitch_precompatible(PPSWPREINT, PPSWPREINT) = true
+def $ppswitch_precompatible(PPSWPRESTRING, PPSWPRESTRING) = true
+def $ppswitch_precompatible(ppswitchpretype_1, ppswitchpretype_2) = false -- otherwise
+dec $ppswitch_prepass(ppstate, pcpath, nat, phpType61*, ppswitchpretype) : ppstate
+dec $ppswitch_prefold(ppstate, pfstate, pcpath, nat, phpType61*, ppswitchpretype) : ppstate
+def $ppswitch_prepass(P, pcpath, n, phpType61*, ppswitchpretype) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppswitch_prepass(P, pcpath, n, eps, ppswitchpretype) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppswitch_prepass(P, pcpath, n, (NStmtCase ABSENT phpType23 metadata) :: phpType61*, ppswitchpretype) = $ppswitch_prepass(P, pcpath, $(n + 1), phpType61*, ppswitchpretype)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppswitch_prepass(P, pcpath, n, (NStmtCase expression phpType23 metadata) :: phpType61*, ppswitchpretype) = $ppswitch_prefold(P, F, pcpath, $(n + 1), phpType61*, ppswitchpretype)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if F = $pfprepare(P.FOLD[.VALUE = eps], pcpath ++ [PCINDEX n, PCFIELD 0], expression, P.ENV, P.LOCATION.LINE)
+def $ppswitch_prefold(P, F, pcpath, n, phpType61*, ppswitchpretype) = $ppfoldresult(P, F)
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $ppswitch_prefold(P, F, pcpath, n, phpType61*, ppswitchpretype) = $ppswitch_prepass($ppfoldresult(P, F), pcpath, n, phpType61*, ppswitchpretype_next)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ppswitchpretype_next = $ppswitch_pretype(F.VALUE)
+  -- if $ppswitch_precompatible(ppswitchpretype, ppswitchpretype_next)
+def $ppswitch_prefold(P, F, pcpath, n, phpType61*, ppswitchpretype) = $ppfoldresult(P, F)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ~$ppswitch_precompatible(ppswitchpretype, $ppswitch_pretype(F.VALUE))
+
+dec $ppcase_semicolon(metadata) : bool?
+dec $ppcase_semicolon_tag(metadataEntry) : bool
+def $ppcase_semicolon_tag(McaseSemicolon b) = true
+def $ppcase_semicolon_tag(metadataEntry) = false -- otherwise
+def $ppcase_semicolon(eps) = eps
+def $ppcase_semicolon((McaseSemicolon b) :: metadata) = (b)
+def $ppcase_semicolon(metadataEntry :: metadata) = $ppcase_semicolon(metadata)
+  -- if ~$ppcase_semicolon_tag(metadataEntry)
+
+dec $ppcase_start(ppstate, pcpath, metadata) : ppstate
+def $ppcase_start(P, pcpath, metadata) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcase_start(P, pcpath, metadata) = $ppunsupported(P, "missing switch case separator")
+  -- if $ppcase_semicolon(metadata) = eps
+def $ppcase_start(P, pcpath, metadata) = P
+  -- if $ppcase_semicolon(metadata) = (false)
+def $ppcase_start(P, pcpath, metadata) = P_line[.DIAGNOSTICS = P_line.DIAGNOSTICS ++ [PLDIAGNOSTIC "deprecated" "switch-case-semicolon" eps P_line.LOCATION]]
+  -- if $ppcase_semicolon(metadata) = (true)
+  -- if P_line = $pplocate(P, pcpath, $source_line(metadata))
+def $plmessage(PLDIAGNOSTIC "deprecated" "switch-case-semicolon" eps pllocation) = $ptascii("Case statements followed by a semicolon (;) are deprecated, use a colon (:) instead")
+
+dec $ppswitch_compare(ppstate, pcpath) : ppstate
+dec $ppswitch_conditions(ppstate, pcpath, nat, phpType61*, bool) : ppstate
+def $ppswitch_conditions(P, pcpath, n, phpType61*, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppswitch_conditions(P, pcpath, n, eps, b) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppswitch_conditions(P, pcpath, n, (NStmtCase ABSENT phpType23 metadata) :: phpType61*, false) = $ppswitch_conditions($ppcase_start(P, pcpath_case, metadata), pcpath, $(n + 1), phpType61*, true)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_case = pcpath ++ [PCINDEX n]
+def $ppswitch_conditions(P, pcpath, n, (NStmtCase ABSENT phpType23 metadata) :: phpType61*, true) = $ppswitch_conditions($ppcheck($pplocate(P_started, pcpath_case, $source_line(metadata)), $context_error("Switch statements may only contain one default clause", $source_line(metadata))), pcpath, $(n + 1), phpType61*, true)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_case = pcpath ++ [PCINDEX n]
+  -- if P_started = $ppcase_start(P, pcpath_case, metadata)
+def $ppswitch_conditions(P, pcpath, n, (NStmtCase expression phpType23 metadata) :: phpType61*, b) = $ppswitch_conditions(P_marked, pcpath, $(n + 1), phpType61*, b)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_case = pcpath ++ [PCINDEX n]
+  -- if P_started = $ppcase_start(P, pcpath_case, metadata)
+  -- if P_condition = $ppexpr(P_started, pcpath_case ++ [PCFIELD 0], expression, PPR)
+  -- if P_marked = $ppswitch_compare(P_condition, pcpath_case)
+def $ppswitch_compare(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCSWITCH_COMPARE pcpath P.LOCATION.LINE]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppswitch_compare(P, pcpath) = P -- otherwise
+dec $ppswitch_bool(ppstate, pcpath) : ppstate
+def $ppswitch_bool(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCSWITCH_BOOL pcpath b]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PBOOL b)
+def $ppswitch_bool(P, pcpath) = P -- otherwise
+
+dec $ppswitch_bodies(ppstate, pcpath, nat, phpType61*) : ppstate
+def $ppswitch_bodies(P, pcpath, n, phpType61*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppswitch_bodies(P, pcpath, n, eps) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppswitch_bodies(P, pcpath, n, (NStmtCase phpType5 (SEQUENCE statement*) metadata) :: phpType61*) = $ppswitch_bodies($ppstatements(P, pcpath ++ [PCINDEX n, PCFIELD 1], 0, statement*), pcpath, $(n + 1), phpType61*)
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppstatement(P, pcpath, NStmtSwitch expression (SEQUENCE phpType61*) metadata) = P_bodies[.LOOPS = P.LOOPS][.SWITCHES = P.SWITCHES]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_subject = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
+  -- if P_marked = $ppswitch_bool(P_subject, pcpath)
+  -- if P_enter = P_marked[.LOOPS = $(P.LOOPS + 1)][.SWITCHES = P.SWITCHES ++ [$(P.LOOPS + 1)]]
+  -- if P_prepass = $ppswitch_prepass(P_enter, pcpath ++ [PCFIELD 1], 0, phpType61*, PPSWPRENONE)
+  -- if P_conditions = $ppswitch_conditions(P_prepass, pcpath ++ [PCFIELD 1], 0, phpType61*, false)
+  -- if P_bodies = $ppswitch_bodies(P_conditions, pcpath ++ [PCFIELD 1], 0, phpType61*)
+
+dec $ppswitch_warning_bytes(nat, nat) : ptbytes
+def $ppswitch_warning_bytes(1, 1) = $ptascii("\"continue\" targeting switch is equivalent to \"break\"")
+def $ppswitch_warning_bytes(1, n_target) = $ptascii("\"continue\" targeting switch is equivalent to \"break\". Did you mean to use \"continue 2\"?")
+  -- if $(n_target > 1)
+def $ppswitch_warning_bytes(n_depth, 1) = $ptascii("\"continue ") ++ $ntunsigned(n_depth) ++ $ptascii("\" targeting switch is equivalent to \"break ") ++ $ntunsigned(n_depth) ++ $ptascii("\"")
+  -- if $(n_depth > 1)
+def $ppswitch_warning_bytes(n_depth, n_target) = $ptascii("\"continue ") ++ $ntunsigned(n_depth) ++ $ptascii("\" targeting switch is equivalent to \"break ") ++ $ntunsigned(n_depth) ++ $ptascii("\". Did you mean to use \"continue ") ++ $ntunsigned($(n_depth + 1)) ++ $ptascii("\"?")
+  -- if $(n_depth > 1 /\ n_target > 1)
+def $plmessage(PLDIAGNOSTIC "warning" "continue-switch" ([ptbytes]) pllocation) = ptbytes
+dec $ppswitch_warning(ppstate, ppdepth) : ppstate
+def $ppswitch_warning(P, PPDEPTH n_depth) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "continue-switch" ([$ppswitch_warning_bytes(n_depth, n_target)]) P.LOCATION]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $(n_depth <= P.LOOPS)
+  -- if n_target = $(P.LOOPS - n_depth + 1)
+  -- if n_target <- P.SWITCHES
+def $ppswitch_warning(P, ppdepth) = P -- otherwise
+def $ppswitch_continue(P, pcpath, phpType5, metadata) = $ppswitch_warning($ppjump(P, pcpath, phpType5, metadata, $ptascii("continue")), $ppdepth(phpType5))
+
+def $compiled_operands(P, (PPCSWITCH_COMPARE pcpath z) :: ppexprdone*) = (CODESWITCH_COMPARE pcpath z) :: $compiled_operands(P, ppexprdone*)
+def $compiled_operands(P, (PPCSWITCH_BOOL pcpath b) :: ppexprdone*) = (CODESWITCH_BOOL pcpath b) :: $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCSWITCH_COMPARE pcpath z) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCSWITCH_BOOL pcpath b) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCSWITCH_COMPARE pcpath z) :: ppexprdone*, pcpath_query) = $ppmemo_at(ppexprdone*, pcpath_query)
+def $ppmemo_at((PPCSWITCH_BOOL pcpath b) :: ppexprdone*, pcpath_query) = $ppmemo_at(ppexprdone*, pcpath_query)
+def $ppbuiltin_operand((PPCSWITCH_COMPARE pcpath z) :: ppexprdone*, pcpath_query) = $ppbuiltin_operand(ppexprdone*, pcpath_query)
+def $ppbuiltin_operand((PPCSWITCH_BOOL pcpath b) :: ppexprdone*, pcpath_query) = $ppbuiltin_operand(ppexprdone*, pcpath_query)
+def $ppcodepath(CODESWITCH_COMPARE pcpath z) = pcpath
+def $ppcodepath(CODESWITCH_BOOL pcpath b) = pcpath
+
+def $code_expression((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_expression((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_call_init((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_call_init((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_write((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $code_write((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_ancestor((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $effect_select((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $code_write_lines((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $scope_expressions_valid(S, pcode, (CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $call_argument_paths((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODESWITCH_COMPARE pcpath z) = pcpath
+def $constant_codepath(CODESWITCH_BOOL pcpath b) = pcpath
+def $typed_return_entry(pcoccurrence*, CODESWITCH_COMPARE pcpath z) = eps
+def $typed_return_entry(pcoccurrence*, CODESWITCH_BOOL pcpath b) = eps
+def $reference_assignment_entry(pcoccurrence*, CODESWITCH_COMPARE pcpath z) = eps
+def $reference_assignment_entry(pcoccurrence*, CODESWITCH_BOOL pcpath b) = eps
+def $named_send_entry(pcoccurrence*, CODESWITCH_COMPARE pcpath z) = eps
+def $named_send_entry(pcoccurrence*, CODESWITCH_BOOL pcpath b) = eps
+def $code_pipe_send((CODESWITCH_COMPARE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODESWITCH_BOOL pcpath_marker b) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+
+dec $code_switch_compare(pcodeexpr*, pcpath) : int?
+dec $switch_marker_at(pcodeexpr, pcpath) : bool
+def $switch_marker_at(CODESWITCH_COMPARE pcpath z, pcpath) = true
+def $switch_marker_at(pcodeexpr, pcpath) = false -- otherwise
+def $code_switch_compare(eps, pcpath) = eps
+def $code_switch_compare((CODESWITCH_COMPARE pcpath z) :: pcodeexpr*, pcpath) = (z)
+def $code_switch_compare(pcodeexpr :: pcodeexpr_tail*, pcpath) = $code_switch_compare(pcodeexpr_tail*, pcpath)
+  -- if ~$switch_marker_at(pcodeexpr, pcpath)
+
+dec $code_switch_bool(pcodeexpr*, pcpath) : bool?
+dec $switch_bool_at(pcodeexpr, pcpath) : bool
+def $switch_bool_at(CODESWITCH_BOOL pcpath b, pcpath) = true
+def $switch_bool_at(pcodeexpr, pcpath) = false -- otherwise
+def $code_switch_bool(eps, pcpath) = eps
+def $code_switch_bool((CODESWITCH_BOOL pcpath b) :: pcodeexpr*, pcpath) = (b)
+def $code_switch_bool(pcodeexpr :: pcodeexpr_tail*, pcpath) = $code_switch_bool(pcodeexpr_tail*, pcpath)
+  -- if ~$switch_bool_at(pcodeexpr, pcpath)
+
+dec $switch_root(pcoccurrence*, pcpath) : bool
+def $switch_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtSwitch expression phpType60 metadata)
+def $switch_root(pcoccurrence*, pcpath) = false -- otherwise
+dec $switch_case(pcoccurrence*, pcpath) : bool
+def $switch_case(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtCase phpType5 phpType23 metadata)
+def $switch_case(pcoccurrence*, pcpath) = false -- otherwise
+dec $switch_direct_child(pcoccurrence*, pcpath, pcstep) : bool
+def $switch_direct_child(pcoccurrence*, pcpath, pcstep) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [pcstep]
+  -- if $switch_root(pcoccurrence*, pcpath[0:n_parent])
+def $switch_direct_child(pcoccurrence*, pcpath, pcstep) = false -- otherwise
+dec $switch_case_condition(pcoccurrence*, pcpath) : bool
+def $switch_case_condition(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $switch_case(pcoccurrence*, pcpath[0:n_parent])
+def $switch_case_condition(pcoccurrence*, pcpath) = false -- otherwise
+dec $switch_code_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $switch_code_entry(pcoccurrence*, CODESWITCH_COMPARE pcpath z) = [CODESWITCH_COMPARE pcpath z]
+def $switch_code_entry(pcoccurrence*, CODESWITCH_BOOL pcpath b) = [CODESWITCH_BOOL pcpath b]
+def $switch_code_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $switch_direct_child(pcoccurrence*, pcpath, PCFIELD 0) \/ $switch_case_condition(pcoccurrence*, pcpath)
+def $switch_code_entry(pcoccurrence*, pcodeexpr) = eps -- otherwise
+dec $switch_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $switch_code(pcoccurrence*, eps) = eps
+def $switch_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $switch_code_entry(pcoccurrence*, pcodeexpr) ++ $switch_code(pcoccurrence*, pcodeexpr_tail*)
+def $switch_unit_code_valid(P, pcode) = true
+  -- if pcode_expected = pcode[.EXPRESSIONS = $compiled_operands(P, P.EXPRESSIONS)]
+  -- if $switch_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $switch_code(P.FOLD.SOURCE.OCCURRENCES, pcode_expected.EXPRESSIONS)
+def $switch_unit_code_valid(P, pcode) = false -- otherwise

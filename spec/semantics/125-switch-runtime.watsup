@@ -1,0 +1,169 @@
+;; Switch conditions run in source order. The subject remains owned through
+;; selected bodies, even after a default or the first matching case.
+dec $switch_cases(statement) : phpType61*
+def $switch_cases(NStmtSwitch expression (SEQUENCE phpType61*) metadata) = phpType61*
+
+dec $switch_case_at(phpType61*, nat) : phpType61?
+def $switch_case_at(eps, n) = eps
+def $switch_case_at(phpType61 :: phpType61_tail*, 0) = (phpType61)
+def $switch_case_at(phpType61 :: phpType61_tail*, n) = $switch_case_at(phpType61_tail*, $nabs($(n - 1)))
+  -- if $(n > 0)
+
+dec $switch_default(phpType61*, nat) : nat?
+def $switch_default(eps, n) = eps
+def $switch_default((NStmtCase ABSENT phpType23 metadata) :: phpType61_tail*, n) = (n)
+def $switch_default((NStmtCase expression phpType23 metadata) :: phpType61_tail*, n) = $switch_default(phpType61_tail*, $(n + 1))
+
+dec $switch_body_all(phpType61*, porigin, nat) : ptask*
+def $switch_body_all(eps, porigin, n) = eps
+def $switch_body_all((NStmtCase phpType5 (SEQUENCE statement*) metadata) :: phpType61_tail*, porigin, n) = $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 1, PCINDEX n, PCFIELD 1]), 0) ++ $switch_body_all(phpType61_tail*, porigin, $(n + 1))
+dec $switch_body_from(phpType61*, porigin, nat, nat) : ptask*
+def $switch_body_from(phpType61*, porigin, 0, n) = $switch_body_all(phpType61*, porigin, n)
+def $switch_body_from(phpType61 :: phpType61_tail*, porigin, n_skip, n) = $switch_body_from(phpType61_tail*, porigin, $nabs($(n_skip - 1)), $(n + 1))
+  -- if $(n_skip > 0)
+
+dec $switch_site(pstate, statement, porigin) : bool
+def $switch_site(S, statement, porigin) = true
+  -- if statement = NStmtSwitch expression phpType60 metadata
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+def $switch_site(S, statement, porigin) = false -- otherwise
+dec $switch_marker_line(pstate, porigin, nat) : int?
+def $switch_marker_line(S, PORIGIN n pcpath, n_case) = $code_switch_compare(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1, PCINDEX n_case])
+  -- if $code_at(S.CODE, n) = (pcode)
+def $switch_marker_line(S, porigin, n_case) = eps -- otherwise
+dec $switch_bool_mode(pstate, porigin) : bool?
+def $switch_bool_mode(S, PORIGIN n pcpath) = $code_switch_bool(pcode.EXPRESSIONS, pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $switch_bool_mode(S, porigin) = eps -- otherwise
+dec $switch_subject_valid(pstate, porigin, poperand) : bool
+def $switch_subject_valid(S, porigin, poperand) = true
+  -- if $switch_bool_mode(S, porigin) = eps
+def $switch_subject_valid(S, porigin, KNOWN (PBOOL b)) = true
+  -- if $switch_bool_mode(S, porigin) = (b)
+def $switch_subject_valid(S, porigin, poperand) = false -- otherwise
+dec $switch_scan_valid(pstate, statement, porigin, nat) : bool
+def $switch_scan_valid(S, statement, porigin, n) = true
+  -- if $switch_site(S, statement, porigin)
+  -- if $(n <= |$switch_cases(statement)|)
+def $switch_scan_valid(S, statement, porigin, n) = false -- otherwise
+dec $switch_compare_valid(pstate, statement, porigin, nat, int) : bool
+def $switch_compare_valid(S, statement, porigin, n, z) = true
+  -- if $switch_scan_valid(S, statement, porigin, n)
+  -- if $switch_case_at($switch_cases(statement), n) = (NStmtCase expression phpType23 metadata)
+  -- if $switch_marker_line(S, porigin, n) = (z)
+def $switch_compare_valid(S, statement, porigin, n, z) = false -- otherwise
+
+def $task_nodes(SWITCH_SCAN statement porigin poperand n) = $operand_nodes(poperand)
+def $task_nodes(SWITCH_COMPARE statement porigin poperand n z) = $operand_nodes(poperand)
+def $task_nodes(SWITCH_NEXT statement porigin poperand) = $operand_nodes(poperand)
+def $call_task_valid(S, SWITCH_START statement porigin) = ($switch_site(S, statement, porigin) /\ S.ORIGIN = (porigin))
+def $call_task_valid(S, SWITCH_SCAN statement porigin poperand n) = ($switch_scan_valid(S, statement, porigin, n) /\ $switch_subject_valid(S, porigin, poperand) /\ S.ORIGIN = (porigin))
+def $call_task_valid(S, SWITCH_COMPARE statement porigin poperand n z) = ($switch_compare_valid(S, statement, porigin, n, z) /\ $switch_subject_valid(S, porigin, poperand) /\ S.ORIGIN = (porigin))
+def $call_task_valid(S, SWITCH_NEXT statement porigin poperand) = ($switch_site(S, statement, porigin) /\ $switch_subject_valid(S, porigin, poperand) /\ S.ORIGIN = (porigin))
+
+rule PhpStep/switch-start: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), SWITCH_START statement porigin] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtSwitch expression phpType60 metadata)) :: ptask_tail*
+  -- if statement = NStmtSwitch expression phpType60 metadata
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/switch-start-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch source"]
+  -- if S.TODO = (STMT (NStmtSwitch expression phpType60 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = eps
+rule PhpStep/switch-capture: S ~> S[.TODO = (SWITCH_SCAN statement porigin S.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_START statement porigin) :: ptask_tail*
+  -- if $switch_site(S, statement, porigin)
+rule PhpStep/switch-capture-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch source"]
+  -- if S.TODO = (SWITCH_START statement porigin) :: ptask_tail*
+  -- if ~$switch_site(S, statement, porigin)
+
+rule PhpStep/switch-skip-default: S ~> S[.TODO = (SWITCH_SCAN statement porigin poperand $(n + 1)) :: ptask_tail*]
+  -- if S.TODO = (SWITCH_SCAN statement porigin poperand n) :: ptask_tail*
+  -- if $switch_scan_valid(S, statement, porigin, n)
+  -- if $switch_case_at($switch_cases(statement), n) = (NStmtCase ABSENT phpType23 metadata)
+rule PhpStep/switch-test-case: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1, PCINDEX n, PCFIELD 0]), EVAL expression), SWITCH_COMPARE statement porigin poperand n z] ++ ptask_tail*]
+  -- if S.TODO = (SWITCH_SCAN statement porigin poperand n) :: ptask_tail*
+  -- if $switch_scan_valid(S, statement, porigin, n)
+  -- if $switch_case_at($switch_cases(statement), n) = (NStmtCase expression phpType23 metadata)
+  -- if $switch_marker_line(S, porigin, n) = (z)
+rule PhpStep/switch-marker-missing: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "missing switch comparison"]
+  -- if S.TODO = (SWITCH_SCAN statement porigin poperand n) :: ptask_tail*
+  -- if $switch_scan_valid(S, statement, porigin, n)
+  -- if $switch_case_at($switch_cases(statement), n) = (NStmtCase expression phpType23 metadata)
+  -- if $switch_marker_line(S, porigin, n) = eps
+rule PhpStep/switch-default-selected: S ~> S[.TODO = $switch_body_from($switch_cases(statement), porigin, n_default, 0) ++ [SWITCH_NEXT statement porigin poperand] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_SCAN statement porigin poperand n) :: ptask_tail*
+  -- if $switch_scan_valid(S, statement, porigin, n)
+  -- if $(n = |$switch_cases(statement)|)
+  -- if $switch_default($switch_cases(statement), 0) = (n_default)
+rule PhpStep/switch-no-case: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_SCAN statement porigin poperand n) :: ptask_tail*
+  -- if $switch_scan_valid(S, statement, porigin, n)
+  -- if $(n = |$switch_cases(statement)|)
+  -- if $switch_default($switch_cases(statement), 0) = eps
+rule PhpStep/switch-scan-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch scan"]
+  -- if S.TODO = (SWITCH_SCAN statement porigin poperand n) :: ptask_tail*
+  -- if ~$switch_scan_valid(S, statement, porigin, n)
+
+dec $switch_case_test(pstate, porigin, pvalue, pvalue, int) : pstate
+def $switch_case_test(S, porigin, PBOOL b_subject, pvalue_case, z) = S_truth[.RESULT = KNOWN (PBOOL (b_subject = b_case))]
+  -- if $switch_bool_mode(S, porigin) = (b_subject)
+  -- if S_truth = $truth_value(S, pvalue_case, z)
+  -- if S_truth.RESULT = KNOWN (PBOOL b_case)
+def $switch_case_test(S, porigin, pvalue_subject, pvalue_case, z) = $binary_apply(S, EQUAL, pvalue_subject, pvalue_case, z)
+  -- if $switch_bool_mode(S, porigin) = eps
+
+dec $switch_compare_result(pstate, pstate, statement, porigin, poperand, nat, int, pvalue, pvalue) : pstate
+def $switch_compare_result(S_before, S, statement, porigin, poperand, n, z, pvalue_subject, pvalue_case) = S_next[.TODO = $switch_body_from($switch_cases(statement), porigin, n, 0) ++ [SWITCH_NEXT statement porigin poperand] ++ S_next.TODO][.HELD = S_before.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_next = $switch_case_test(S, porigin, pvalue_subject, pvalue_case, z)
+  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.RESULT = KNOWN (PBOOL true)
+def $switch_compare_result(S_before, S, statement, porigin, poperand, n, z, pvalue_subject, pvalue_case) = S_next[.TODO = (SWITCH_SCAN statement porigin poperand $(n + 1)) :: S_next.TODO][.HELD = S_before.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_next = $switch_case_test(S, porigin, pvalue_subject, pvalue_case, z)
+  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.RESULT = KNOWN (PBOOL false)
+def $switch_compare_result(S_before, S, statement, porigin, poperand, n, z, pvalue_subject, pvalue_case) = S_next[.TODO = eps][.HELD = S_before.HELD]
+  -- if S_next = $switch_case_test(S, porigin, pvalue_subject, pvalue_case, z)
+  -- if S_next.COMPLETION =/= NORMAL
+
+rule PhpStep/switch-compare: S ~> $switch_compare_result(S, S_case, statement, porigin, poperand, n, z, pvalue_subject, pvalue_case)
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand n z) :: ptask_tail*
+  -- if $switch_compare_valid(S, statement, porigin, n, z)
+  -- if poperand_case = S.RESULT
+  -- if S_subject = $resolve_at($hold_task_inputs(S), poperand, z)
+  -- if S_subject.COMPLETION = NORMAL
+  -- if S_subject.RESULT = KNOWN pvalue_subject
+  -- if S_case = $resolve_at(S_subject, poperand_case, z)
+  -- if S_case.COMPLETION = NORMAL
+  -- if S_case.RESULT = KNOWN pvalue_case
+rule PhpStep/switch-compare-subject-abrupt: S ~> S_subject[.TODO = eps][.HELD = S.HELD]
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand n z) :: ptask_tail*
+  -- if $switch_compare_valid(S, statement, porigin, n, z)
+  -- if S_subject = $resolve_at($hold_task_inputs(S), poperand, z)
+  -- if S_subject.COMPLETION =/= NORMAL
+rule PhpStep/switch-compare-case-abrupt: S ~> S_case[.TODO = eps][.HELD = S.HELD]
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand n z) :: ptask_tail*
+  -- if $switch_compare_valid(S, statement, porigin, n, z)
+  -- if S_subject = $resolve_at($hold_task_inputs(S), poperand, z)
+  -- if S_subject.COMPLETION = NORMAL
+  -- if S_case = $resolve_at(S_subject, S.RESULT, z)
+  -- if S_case.COMPLETION =/= NORMAL
+rule PhpStep/switch-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch comparison"]
+  -- if S.TODO = (SWITCH_COMPARE statement porigin poperand n z) :: ptask_tail*
+  -- if ~$switch_compare_valid(S, statement, porigin, n, z)
+
+rule PhpStep/switch-end: S ~> S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
+  -- if $switch_site(S, statement, porigin)
+rule PhpStep/switch-end-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch continuation"]
+  -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
+  -- if ~$switch_site(S, statement, porigin)
+def $loop_marker(SWITCH_NEXT statement porigin poperand) = true
+def $jump_loop(S, 1, b) = S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
+  -- if $switch_site(S, statement, porigin)
+def $jump_loop(S, n_depth, b) = $jump_loop(S[.TODO = ptask_tail*], $nabs($(n_depth - 1)), b)
+  -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
+  -- if $(n_depth > 1)
+  -- if $switch_site(S, statement, porigin)
+def $jump_loop(S, n_depth, b) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch continuation"]
+  -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
+  -- if ~$switch_site(S, statement, porigin)

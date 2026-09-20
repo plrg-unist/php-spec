@@ -41,7 +41,20 @@
      | T_FOREACH '(' expr error ')' foreach_statement
            { $$ = Stmt\Foreach_[$3, new Expr\Error(stackAttributes(#4)), ['stmts' => $6]]; }
      | T_DECLARE '(' declare_list ')' declare_statement      { $$ = Stmt\Declare_[$3, $5]; }
-@@ -1039,7 +1039,7 @@
+@@ -591,8 +591,10 @@
+ ;
+ 
+ case:
+-      T_CASE expr case_separator inner_statement_list_ex    { $$ = Stmt\Case_[$2, $4]; }
+-    | T_DEFAULT case_separator inner_statement_list_ex      { $$ = Stmt\Case_[null, $3]; }
++      T_CASE expr case_separator inner_statement_list_ex    { $$ = Stmt\Case_[$2, $4];
++                 $$->setAttribute('caseSemicolon', $this->caseSemicolon(#3)); }
++    | T_DEFAULT case_separator inner_statement_list_ex      { $$ = Stmt\Case_[null, $3];
++                 $$->setAttribute('caseSemicolon', $this->caseSemicolon(#2)); }
+ ;
+ 
+ case_separator:
+@@ -1039,7 +1041,7 @@
      | new_expr
      | match
      | T_CLONE clone_argument_list                           { $$ = Expr\FuncCall[new Node\Name($1, stackAttributes(#1)), $2]; }
@@ -50,7 +63,7 @@
      | variable T_PLUS_EQUAL expr                            { $$ = Expr\AssignOp\Plus      [$1, $3]; }
      | variable T_MINUS_EQUAL expr                           { $$ = Expr\AssignOp\Minus     [$1, $3]; }
      | variable T_MUL_EQUAL expr                             { $$ = Expr\AssignOp\Mul       [$1, $3]; }
-@@ -1066,7 +1066,7 @@
+@@ -1066,7 +1068,7 @@
      | expr T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG expr   { $$ = Expr\BinaryOp\BitwiseAnd[$1, $3]; }
      | expr T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG expr       { $$ = Expr\BinaryOp\BitwiseAnd[$1, $3]; }
      | expr '^' expr                                         { $$ = Expr\BinaryOp\BitwiseXor[$1, $3]; }
@@ -59,7 +72,7 @@
      | expr '+' expr                                         { $$ = Expr\BinaryOp\Plus      [$1, $3]; }
      | expr '-' expr                                         { $$ = Expr\BinaryOp\Minus     [$1, $3]; }
      | expr '*' expr                                         { $$ = Expr\BinaryOp\Mul       [$1, $3]; }
-@@ -1091,7 +1091,9 @@
+@@ -1091,7 +1093,9 @@
  #if PHP8
      | expr T_PIPE expr {
            $$ = Expr\BinaryOp\Pipe[$1, $3];
@@ -70,7 +83,7 @@
        }
  #endif
      | expr T_INSTANCEOF class_name_reference                { $$ = Expr\Instanceof_[$1, $3]; }
-@@ -1100,9 +1102,12 @@
+@@ -1100,9 +1104,12 @@
            if ($$ instanceof Expr\ArrowFunction) {
                $this->parenthesizedArrowFunctions->offsetSet($$);
            }
@@ -85,7 +98,7 @@
      | expr T_COALESCE expr                                  { $$ = Expr\BinaryOp\Coalesce[$1, $3]; }
      | T_ISSET '(' expr_list_allow_comma ')'                 { $$ = Expr\Isset_[$3]; }
      | T_EMPTY '(' expr ')'                                  { $$ = Expr\Empty_[$3]; }
-@@ -1137,7 +1142,7 @@
+@@ -1137,7 +1144,7 @@
      | scalar
      | '`' backticks_expr '`'                                { $$ = Expr\ShellExec[$2]; }
      | T_PRINT expr                                          { $$ = Expr\Print_[$2]; }
@@ -94,7 +107,7 @@
      | T_YIELD expr                                          { $$ = Expr\Yield_[$2, null]; }
      | T_YIELD expr T_DOUBLE_ARROW expr                      { $$ = Expr\Yield_[$4, $2]; }
      | T_YIELD_FROM expr                                     { $$ = Expr\YieldFrom[$2]; }
-@@ -1208,7 +1213,7 @@
+@@ -1208,7 +1215,7 @@
  function_call:
        name argument_list                                    { $$ = Expr\FuncCall[$1, $2]; }
      | name_readonly argument_list                           { $$ = Expr\FuncCall[$1, $2]; }

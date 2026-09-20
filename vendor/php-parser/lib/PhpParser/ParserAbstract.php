@@ -1258,6 +1258,10 @@ abstract class ParserAbstract implements Parser {
             && !$this->parenthesizedArrowFunctions->offsetExists($node);
     }
 
+    protected function caseSemicolon(int $stackPos): bool {
+        return $this->tokens[$this->tokenStartStack[$stackPos]]->text === ';';
+    }
+
     /**
      * @param Property|Param $node
      */

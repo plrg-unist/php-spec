@@ -988,7 +988,8 @@ class Standard extends PrettyPrinterAbstract {
     }
 
     protected function pStmt_Case(Stmt\Case_ $node): string {
-        return (null !== $node->cond ? 'case ' . $this->p($node->cond) : 'default') . ':'
+        return (null !== $node->cond ? 'case ' . $this->p($node->cond) : 'default')
+             . ($node->getAttribute('caseSemicolon', false) ? ';' : ':')
              . $this->pStmts($node->stmts);
     }
 

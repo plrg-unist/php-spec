@@ -65,7 +65,7 @@ def $ppfunction_special(P, ptbytes) = $ppcheck(P, $context_error("__autoload() i
 def $ppfunction_special(P, ptbytes) = P[.ENV = P.ENV[.SEEN = P.ENV.SEEN ++ [(PLFUNCTION, $ptlc($ptjoin(P.ENV.NAMESPACE, ptbytes)))]]]
   -- otherwise
 
-def $ppfunction_start(P, ptbytes, pssignature) = P[.CLOSURE = false][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.LOOPS = 0][.EARLY = eps][.FOLD = P.FOLD[.FUNCTION = ptbytes][.VALUE = eps]][.EXPRESSIONS = eps][.ACCESS = eps][.NAMES = eps][.REDIRECTS = eps][.WRITES = eps][.GLOBALS = eps]
+def $ppfunction_start(P, ptbytes, pssignature) = P[.CLOSURE = false][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.LOOPS = 0][.SWITCHES = eps][.EARLY = eps][.FOLD = P.FOLD[.FUNCTION = ptbytes][.VALUE = eps]][.EXPRESSIONS = eps][.ACCESS = eps][.NAMES = eps][.REDIRECTS = eps][.WRITES = eps][.GLOBALS = eps]
   -- if psparam* = pssignature.PARAMETERS
 
 def $ppfunction_code(P) = { STRICT P.ENV.STRICT, GLOBALS $ppownglobal(P.FUNCTIONS ++ P.CLOSURETEMPLATES, P.GLOBALS), UNIT P.FOLD.SOURCE.ID, EXPRESSIONS $ppownexpr(P.FUNCTIONS ++ P.CLOSURETEMPLATES, $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $ppownname(P.FUNCTIONS ++ P.CLOSURETEMPLATES, $compiled_names(P.NAMES)), REDIRECTS $ppownredirect(P.FUNCTIONS ++ P.CLOSURETEMPLATES, $compiled_redirects(P.REDIRECTS)) }
@@ -74,7 +74,7 @@ def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_bo
   -- if P_body.COMPLETION =/= PPCNORMAL
 def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppfunction_duplicate(P_restored, { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $psline(metadata), ENDLINE $psendline(metadata) })
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
+  -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.SWITCHES = P.SWITCHES][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
 
 def $psendline(metadata) = n
   -- if $source_end_line(metadata) = n

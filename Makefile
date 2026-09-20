@@ -28,6 +28,7 @@ test: build
 	python3 tests/list_target_metadata.py
 	python3 tests/callable_line_metadata.py
 	python3 tests/pipe_parentheses.py
+	python3 tests/switch_case_separator.py
 	python3 tests/array_omission_metadata.py
 	python3 tests/concat_line_metadata.py
 	python3 tests/nullary_line_metadata.py
@@ -165,6 +166,10 @@ test-semantics: build
 	python3 tests/semantics/first_class_protocol.py
 	python3 tests/semantics/pipe.py
 	python3 tests/semantics/pipe_protocol.py
+	python3 tests/semantics/switch_compiler.py
+	python3 tests/semantics/switch_bool_compiler.py
+	python3 tests/semantics/switch.py
+	python3 tests/semantics/switch_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

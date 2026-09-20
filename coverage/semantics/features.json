@@ -5999,15 +5999,28 @@
     {
       "id": "control.switch",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/124-switch-compiler.watsup",
+        "spec/semantics/125-switch-runtime.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/switch_case_separator.py",
+        "tests/semantics/switch_compiler.py",
+        "tests/semantics/switch_bool_compiler.py",
+        "tests/semantics/switch_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/switch.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/switch-review.json",
+        "docs/semantics/SOURCE-SWITCH.md"
+      ],
+      "review": "Ordered case/default/fallthrough, typed break/continue, compiler diagnostics, subject ownership and compiled boolean branch are reviewed with 18 source outcomes, compiler projections and six paused stages/85 assertions. Independent original6 and paused6 gates are separate. Object-dependent comparisons and wider control remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]

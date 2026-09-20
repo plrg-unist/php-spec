@@ -1,0 +1,20 @@
+{
+  "default-middle-order": "<?php\nfunction observed($x) { echo \"c\", $x; return $x; }\nswitch (2) {\n    case observed(1): echo \"A\"; break;\n    default: echo \"D\";\n    case observed(2): echo \"B\";\n    case observed(3): echo \"C\";\n}\nswitch (9) {\n    case observed(1): echo \"A\"; break;\n    default: echo \"D\";\n    case observed(2): echo \"B\"; break;\n}\n",
+  "subject-cv-tmp-reference": "<?php\nfunction bump(&$x) { $x = 2; return 2; }\nfunction &subject() { global $x; return $x; }\n$x = 1;\nswitch ($x) { case bump($x): echo \"C\"; break; default: echo \"N\"; }\n$x = 1;\nswitch ($x + 0) { case bump($x): echo \"C\"; break; default: echo \"N\"; }\n$x = 1;\nswitch (subject()) { case bump($x): echo \"R\"; break; default: echo \"N\"; }\n",
+  "continue-levels": "<?php\nwhile (false) {\n    switch (1) {\n        case 1:\n            continue;\n            continue 2;\n    }\n}\necho \"done\";\n",
+  "continue-nested-target": "<?php\nwhile (false) {\n    switch (1) {\n        case 1:\n            switch (2) {\n                case 2:\n                    continue 2;\n            }\n    }\n}\necho \"done\";\n",
+  "semicolon-duplicate-priority": "<?php\nswitch (1) {\n    case 0;\n        break 0;\n    default:\n    default:\n        echo \"unreachable\";\n}\n",
+  "comparison-multiline": "<?php\nfunction identity($x) { return $x; }\n$a = [];\n$a[0] =& $a;\n$b = [];\n$b[0] =& $b;\nswitch ($a) {\n    case identity(\n        $b\n    ):\n        echo \"matched\";\n}\n",
+  "prepass-literal": "<?php\nswitch (1) {\n case 0;\n default:\n default:\n case $a[]:\n}\n",
+  "prepass-dynamic": "<?php\nswitch (1) {\n case $x;\n default:\n default:\n case $a[]:\n}\n",
+  "prepass-warning": "<?php\nswitch (1) {\n case (NAN ? 1 : 2);\n default:\n default:\n case $a[]:\n}\n",
+  "prepass-warning-normal": "<?php\nswitch (1) {\n case (NAN ? 1 : 2);\n  echo \"A\"; break;\n case 3: echo \"B\";\n}\n",
+  "subject-tmp-owner-body": "<?php\nfunction target() { return 7; }\nfunction keep($x) { return $x; }\n$g = target(...);\nswitch (keep($g)) {\n    default:\n        $g = null;\n        echo 'A';\n        echo target();\n}\n",
+  "subject-tmp-owner-abrupt": "<?php\nfunction target() { return 7; }\nfunction keep($x) { return $x; }\n$g = target(...);\nswitch (keep($g)) {\n    default:\n        $g = null;\n        echo 'A';\n        missing_switch();\n}\n",
+  "boolean-literal-true": "<?php\nfunction nan_value() { return NAN; }\nswitch (true) { case nan_value(): echo 'T'; break; default: echo 'D'; }\n",
+  "boolean-literal-false": "<?php\nfunction nan_value() { return NAN; }\nswitch (false) { case nan_value(): echo 'T'; break; default: echo 'D'; }\n",
+  "boolean-folded-true": "<?php\nfunction nan_value() { return NAN; }\nswitch (1 === 1) { case nan_value(): echo 'T'; break; default: echo 'D'; }\n",
+  "boolean-dynamic-true": "<?php\nfunction nan_value() { return NAN; }\n$x = true;\nswitch ($x) { case nan_value(): echo 'T'; break; default: echo 'D'; }\n",
+  "boolean-named-constant": "<?php\nconst YES = true;\nfunction nan_value() { return NAN; }\nswitch (YES) { case nan_value(): echo 'T'; break; default: echo 'D'; }\n",
+  "boolean-assignment-true": "<?php\nfunction nan_value() { return NAN; }\n$x = false;\nswitch ($x = true) { case nan_value(): echo 'T'; break; default: echo 'D'; }\n"
+}

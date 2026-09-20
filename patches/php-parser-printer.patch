@@ -328,7 +328,17 @@
               . ($node->byRef ? '&' : '') . $this->p($node->valueVar) . ') {'
               . $this->pStmts($node->stmts) . $this->nl . '}';
      }
-@@ -995,11 +1021,11 @@
+@@ -962,7 +988,8 @@
+     }
+ 
+     protected function pStmt_Case(Stmt\Case_ $node): string {
+-        return (null !== $node->cond ? 'case ' . $this->p($node->cond) : 'default') . ':'
++        return (null !== $node->cond ? 'case ' . $this->p($node->cond) : 'default')
++             . ($node->getAttribute('caseSemicolon', false) ? ';' : ':')
+              . $this->pStmts($node->stmts);
+     }
+ 
+@@ -995,11 +1022,11 @@
      }
  
      protected function pStmt_Label(Stmt\Label $node): string {
@@ -342,7 +352,7 @@
      }
  
      // Other
-@@ -1062,7 +1088,7 @@
+@@ -1062,7 +1089,7 @@
              return '{' . $this->p($node) . '}';
          } else {
              assert($node instanceof Node\Identifier);
@@ -351,7 +361,7 @@
          }
      }
  
-@@ -1072,8 +1098,22 @@
+@@ -1072,8 +1099,22 @@
          foreach ($encapsList as $element) {
              if ($element instanceof Node\InterpolatedStringPart) {
                  $return .= $this->escapeString($element->value, $quote);
@@ -375,7 +385,7 @@
              }
          }
  
-@@ -1146,7 +1186,8 @@
+@@ -1146,7 +1187,8 @@
      }
  
      protected function pDereferenceLhs(Node $node): string {
@@ -385,7 +395,7 @@
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1154,7 +1195,8 @@
+@@ -1154,7 +1196,8 @@
      }
  
      protected function pStaticDereferenceLhs(Node $node): string {
@@ -395,7 +405,7 @@
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1162,7 +1204,8 @@
+@@ -1162,7 +1205,8 @@
      }
  
      protected function pCallLhs(Node $node): string {
@@ -405,7 +415,7 @@
              return $this->p($node);
          } else {
              return '(' . $this->p($node) . ')';
-@@ -1170,7 +1213,8 @@
+@@ -1170,7 +1214,8 @@
      }
  
      protected function pNewOperand(Node $node): string {
@@ -595,7 +605,7 @@
      }
  
      protected function checkTryCatch(TryCatch $node): void {
-@@ -1251,11 +1253,9 @@
+@@ -1251,11 +1253,13 @@
          }
      }
  
@@ -607,10 +617,14 @@
 +    protected function pipeBareArrow(Expr $node): bool {
 +        return $node instanceof Expr\ArrowFunction
 +            && !$this->parenthesizedArrowFunctions->offsetExists($node);
++    }
++
++    protected function caseSemicolon(int $stackPos): bool {
++        return $this->tokens[$this->tokenStartStack[$stackPos]]->text === ';';
      }
  
      /**
-@@ -1293,6 +1293,9 @@
+@@ -1293,6 +1297,9 @@
          if ($this->isSimpleExit($args)) {
              // Create Exit node for backwards compatibility.
              $attrs['kind'] = strtolower($name) === 'exit' ? Expr\Exit_::KIND_EXIT : Expr\Exit_::KIND_DIE;

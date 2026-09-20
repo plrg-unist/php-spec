@@ -8,7 +8,7 @@ PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory con
 [frontend repair audit](coverage/frontend-syntax-repair.json) classified all
 30,980 corpus records with no unresolved failures and recorded exact syntax-input
 equality with its isolated validation snapshot. The later
-[pipe syntax audit](coverage/semantics/pipe-syntax-review.json) independently
+[switch syntax audit](coverage/semantics/switch-review.json) independently
 classified all 30,980 entries on a private snapshot whose changed syntax files
 match this checkout. The earlier [portability evidence](coverage/portability.json)
 records a fresh offline rebuild before this frontend repair; the new audit uses
@@ -169,6 +169,10 @@ before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces t
 left value before selecting a named or closure callable; its
 [runtime review](coverage/semantics/pipe-review.json) binds 12 source outcomes
 and separate paused-state controls.
+[Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
+retains the subject through fallthrough, and distinguishes constant-boolean
+branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
+binds 18 source outcomes and separate compiler and paused-state checks.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

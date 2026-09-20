@@ -1813,9 +1813,11 @@ class Php8 extends \PhpParser\ParserAbstract
             },
             253 => static function ($self, $stackPos) {
                  $self->semValue = new Stmt\Case_($self->semStack[$stackPos-(4-2)], $self->semStack[$stackPos-(4-4)], $self->getAttributes($self->tokenStartStack[$stackPos-(4-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue->setAttribute('caseSemicolon', $self->caseSemicolon($stackPos-(4-3)));
             },
             254 => static function ($self, $stackPos) {
                  $self->semValue = new Stmt\Case_(null, $self->semStack[$stackPos-(3-3)], $self->getAttributes($self->tokenStartStack[$stackPos-(3-1)], $self->tokenEndStack[$stackPos]));
+                 $self->semValue->setAttribute('caseSemicolon', $self->caseSemicolon($stackPos-(3-2)));
             },
             255 => null,
             256 => null,

@@ -49,16 +49,22 @@ The canonical pipe report is under `.tools/pipe-xae4rjrd/` with implementation
 fingerprint f7ae0856; the accepted private 39b89d3c identity remains distinct.
 Builtin/method/array/object callable dependencies remain open.
 
+Switch syntax and compiler/runtime 124/125 now support ordered case scanning,
+default selection, fallthrough, typed break/continue, compile diagnostics and
+saved subject ownership. [Switch review](coverage/semantics/switch-review.json)
+binds 18 maintained source outcomes (12 normal, 2 PHP errors, 4 static
+rejections), six paused stages/85 assertions, and six independently replayed
+original-source pairs. The constant-boolean subject branch uses an authenticated
+compiler fact, preserving its NaN warning without changing dynamic equality.
+The full 30,980-entry classified syntax gate is recorded separately in the
+review. Object-dependent comparisons and remaining control forms are open.
+
 ## Next work
 
-Install the reviewed switch syntax/compiler 124 and, after independent runtime
-125 task/ownership review, its runtime increment. Preserve exact source and test
-profiles, update the inventory and documentation with each accepted increment.
-
-The next independent language lane is switch: case selection, fallthrough,
-continue/break levels, compile priorities and semicolon-case metadata. Empty
-class linking/allocation and object identity form a separate foundation for
-methods, properties and Throwable. Match, goto, exceptions/finally, remaining
+Class activation, allocation and identity are the next runtime foundation;
+labels/goto are the separate compiler lane. Continue the object work through
+inheritance, properties, methods and Throwable rather than treating empty
+classes as complete objects. Match, exceptions/finally, remaining
 core intrinsics, traversal, dynamic lifetime and collection obligations remain
 open. Full current-source closure and a fresh offline network-isolated rebuild
 are required before complete-core acceptance. The early research goal of Rocq

@@ -1,0 +1,32 @@
+{
+  "scope": "Ordered case scan, default and body fallthrough, typed break/continue, compiler priorities and diagnostics, saved subject ownership, compiled boolean subject branch",
+  "independent_review": ".tools/review15-switch",
+  "independent_gates": {
+    "preserved_original_source_pairs": "6/6 model-only replay; native observations reused; canonical-replay/report.json SHA-256 5c9c99a7f01dcc912124000967fca70e464c5f2c46fdf3dcf5c29b93e4635e18",
+    "normal_paused": "4 stages, 53 assertions; canonical-protocol/report.json SHA-256 d0911df14c8943edeebec86836f8662d96e1f009fdd4524cdd6094d3847de2dd",
+    "abrupt_paused": "1 stage, 17 assertions; canonical-abrupt/report.json SHA-256 ad247338cc440c90a8f91da41b88deb1102d5b4af5c7b82bf0f7febac576415d",
+    "boolean_paused": "1 stage, 15 assertions; canonical-bool-v2/report.json SHA-256 ef56e9f6083a5f1ce183ace591d73d9d4fb2cbe5c9fd658855b36b2920e8ab8d"
+  },
+  "maintained_gates": {
+    "source": "18/18 outcomes: 12 normal, 2 PHP errors, 4 static rejections; .tools/switch-yraunz5s/report.json SHA-256 bf9fd7b5ba0b0ec2834dae34341b311d790cc0cc29d73c75745884b58b25cedc",
+    "source_implementation_fingerprint_sha256": "37678487806b76feff346fcd3e1fea2ab60238cda5dba0ff88d3ed108af98048",
+    "compiler": "10 switch source phases, 1 missing-fact edit and 5 descriptor edits pass",
+    "boolean_compiler": "4 constant/folded/dynamic facts and 4 missing/inverted/duplicate/foreign marker projections pass",
+    "protocol": "6 stages, 85 assertions; .tools/switch-protocol-zk0oneqv/report.json SHA-256 0628316e30efa89804dceccbf5be7b5bd07f6a74cf951d69660b12ff171abfef"
+  },
+  "classified_syntax": {
+    "rows": 30980,
+    "pass": 30684,
+    "parser_rejection": 254,
+    "compile_phase_difference": 28,
+    "redirect_container": 6,
+    "non_source": 8,
+    "private_implementation_fingerprint": "1042/46b11e9e53e9d07adb69d504ad9735416fd3f7845557fe4ef6cf5e9a2609f8f6",
+    "raw_sha256": "ffd9fd01c170656b4e9e59bb05074395420a174636ea142a3bb9a564583aa7d6",
+    "summary_sha256": "67f936a4995019b2228b016b5cb2a22e2e515c2dda6a2c05ae808b1b7355fb92",
+    "catalogue_sha256": "30052406b5cf837f00ca5c270815965f6325f943666a31fb7c0a4810c0ce33ba",
+    "private_root": ".tools/compiler9-switch-syntax-candidate",
+    "bridge": ".tools/review15-switch/syntax-bridge.json: exact current syntax inputs; three retired pipe phase rows are raw pass and do not change classification"
+  },
+  "boundary": "Source, compiler, protocol and syntax profiles retain separate identities. Remaining object-dependent and broader control behavior is not claimed."
+}
