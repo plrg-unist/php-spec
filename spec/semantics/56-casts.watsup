@@ -4,6 +4,7 @@ dec $cast_value(pstate, pcast, pvalue, int) : pstate
 dec $cast_truth_kind(pvalue) : bool
 dec $cast_truth_int(pstate, pvalue) : int
 dec $cast_object_value(pvalue) : bool
+dec $cast_empty_object_value(pstate, pvalue) : bool
 
 ;; Explicit casts over the six current value kinds; object conversion needs the
 ;; object model. The compiler owns constant-cast eligibility and source timing.
@@ -60,3 +61,4 @@ def $cast_value(S, CASTFLOAT, POBJECT n, z) = $diagnostic(S, "Warning", $ptascii
 def $cast_value(S, CASTOBJECT, POBJECT n, z) = S[.RESULT = KNOWN (POBJECT n)]
 def $cast_value(S, CASTOBJECT, pvalue, z) = S[.COMPLETION = UNSUPPORTED "non-object cast to object"]
   -- if $type_bytes(pvalue) =/= [111,98,106,101,99,116]
+  -- if ~$cast_empty_object_value(S, pvalue)

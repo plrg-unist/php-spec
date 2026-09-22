@@ -1363,7 +1363,9 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/115-closure-compiler.watsup",
-        "spec/semantics/116-closures.watsup"
+        "spec/semantics/116-closures.watsup",
+        "spec/semantics/56-casts.watsup",
+        "spec/semantics/130-stdclass-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1371,9 +1373,11 @@
         "tests/semantics/closures.py",
         "tests/semantics/closures_protocol.py",
         "tests/semantics/closures_state.py",
-        "tests/semantics/closure_compiler.py"
+        "tests/semantics/closure_compiler.py",
+        "tests/semantics/stdclass.py",
+        "tests/semantics/stdclass_protocol.py"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
+      "review": "The closure and arrow cast prerequisites remain covered by closures-review.json and arrows-review.json. Internal stdClass130 now preserves an existing object's identity and allocates distinct owned empty stdClass objects for null and empty-array casts; stdclass-review.json binds exact source and ownership checks. Nonempty array/scalar casts require properties, and broader object behavior remains open."
     },
     {
       "node": "Expr_Cast_String",
@@ -1674,18 +1678,22 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/126-class-compiler.watsup",
-        "spec/semantics/127-class-runtime.watsup"
+        "spec/semantics/127-class-runtime.watsup",
+        "spec/semantics/130-stdclass-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/object_classes.py",
         "tests/semantics/object_classes_protocol.py",
-        "tests/semantics/object_classes_catalogue.py"
+        "tests/semantics/object_classes_catalogue.py",
+        "tests/semantics/stdclass.py",
+        "tests/semantics/stdclass_protocol.py"
       ],
-      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 now execute literal named-class and Closure instanceof with source/task guards. Dynamic RHS, inheritance/interface traversal and autoload remain open (object-classes-review.json).",
+      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 execute literal named-class and Closure instanceof with source/task guards (object-classes-review.json). Internal stdClass130 adds exact literal instanceof identity (stdclass-review.json). Dynamic RHS, inheritance/interface traversal and autoload remain open.",
       "evidence": [
-        "coverage/semantics/object-classes-review.json"
+        "coverage/semantics/object-classes-review.json",
+        "coverage/semantics/stdclass-review.json"
       ]
     },
     {
@@ -1784,18 +1792,22 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/126-class-compiler.watsup",
-        "spec/semantics/127-class-runtime.watsup"
+        "spec/semantics/127-class-runtime.watsup",
+        "spec/semantics/130-stdclass-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/object_classes.py",
         "tests/semantics/object_classes_protocol.py",
-        "tests/semantics/object_classes_catalogue.py"
+        "tests/semantics/object_classes_catalogue.py",
+        "tests/semantics/stdclass.py",
+        "tests/semantics/stdclass_protocol.py"
       ],
-      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 now allocate owned, zero-argument instances of named concrete user classes. Constructor arguments, internal construction, dynamic names, inheritance and members remain open (object-classes-review.json).",
+      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 allocate owned, zero-argument instances of named concrete user classes (object-classes-review.json). Internal stdClass130 now allocates an owned, source-free empty instance with exact identity (stdclass-review.json). Constructor arguments, other internal bodies, dynamic names, inheritance and members remain open.",
       "evidence": [
-        "coverage/semantics/object-classes-review.json"
+        "coverage/semantics/object-classes-review.json",
+        "coverage/semantics/stdclass-review.json"
       ]
     },
     {
@@ -8192,15 +8204,23 @@
     {
       "id": "protocols.stdClass",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/127-class-runtime.watsup",
+        "spec/semantics/130-stdclass-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/stdclass.py",
+        "tests/semantics/stdclass_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "coverage/semantics/stdclass-review.json"
+      ],
+      "review": "Owned empty stdClass identity and known consumers execute in130; zero-argument new and empty null/array object casts have source and paused checks. Constructor arguments, members and nonempty casts remain open."
     },
     {
       "id": "protocols.Closure",

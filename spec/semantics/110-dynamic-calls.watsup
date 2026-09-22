@@ -88,7 +88,7 @@ def $dynamic_value(S, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "ar
 def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Object of type ") ++ $object_name(S, n) ++ $ptascii(" is not callable"), z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
-  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_plain_instance(S, n)
 def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Value of type ") ++ $type_bytes(pvalue) ++ $ptascii(" is not callable"), z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue

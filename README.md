@@ -176,8 +176,11 @@ binds 18 source outcomes and separate compiler and paused-state checks.
 [Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
 conditional activation, allocate owned objects, and support identity, exact class
 types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)
-binds source and paused-state checks. Members, inheritance, internal-class
-construction and method callbacks remain open.
+binds source and paused-state checks. [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
+now allocates an owned empty object with exact nominal typing and ordinary
+empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
+binds source and ownership checks. Constructor arguments, members, inheritance,
+other internal-class bodies and method callbacks remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)

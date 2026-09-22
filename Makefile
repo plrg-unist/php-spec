@@ -176,6 +176,8 @@ test-semantics: build
 	python3 tests/semantics/goto_compiler.py
 	python3 tests/semantics/goto.py --match runtime-
 	python3 tests/semantics/goto_protocol.py
+	python3 tests/semantics/stdclass.py
+	python3 tests/semantics/stdclass_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

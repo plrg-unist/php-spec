@@ -74,10 +74,18 @@ The [goto review](coverage/semantics/goto-review.json) binds retained static
 observations, source outcomes, descriptor projections and paused ownership/task
 guards. `try`/`finally` interaction remains open.
 
+Authored internal `stdClass` identity 130 now allocates a source-free owned
+empty object and supports exact nominal typing, `instanceof`, identity,
+empty null/array object casts and known empty-object consumers. Its
+[review](coverage/semantics/stdclass-review.json)
+binds source and paused ownership checks. Constructor argument effects and
+object members are the next adjacent steps.
+
 ## Next work
 
-Authored internal `stdClass` identity is the next adjacent object step;
-inheritance, properties, methods and Throwable follow. Match,
+No-constructor allocation arguments for admitted empty classes and `stdClass`
+are the next adjacent object step; inheritance, properties, methods and
+Throwable follow. Match,
 exceptions/finally, remaining
 core intrinsics, traversal, dynamic lifetime and collection obligations remain
 open. Full current-source closure and a fresh offline network-isolated rebuild

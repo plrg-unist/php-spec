@@ -1,0 +1,19 @@
+{
+  "namespace-shadow": "<?php\nnamespace N {class stdClass{}; $a=new stdClass; $b=new \\STDCLASS; echo $a instanceof stdClass?'L':'x';echo $b instanceof \\stdClass?'I':'x';echo $a == $b?'equal':'distinct';}\n",
+  "nominal-typed-copy": "<?php\nuse stdClass as S; function keep(S $x): S {return $x;} $a=new \\STDCLASS; $b=new S; $copy=[$a]; $c=keep($copy[0]);unset($a,$copy);echo $c===$b?'same':'distinct';echo $c==$b?'equal':'different';echo (array)$c===[]?'empty':'full';\n",
+  "stdclass-collision": "<?php\necho 'before';class STDCLASS{} echo 'after';\n",
+  "stdclass-basic": "<?php\n$a = new stdClass; $b = new STDCLASS;\necho $a instanceof stdClass ? 'Y' : 'N';\necho $a === $b ? 'I' : 'D';\necho $a == $b ? 'E' : 'N';\necho (array)$a === [] ? 'A' : 'X';\n",
+  "stdclass-vs-user-empty": "<?php\nclass A {} $a=new A; $s=new stdClass; echo $a==$s?'E':'N'; echo $a===$s?'I':'D';\n",
+  "stdclass-call": "<?php\n$s=new stdClass; echo 'before'; $s();\n",
+  "stdclass-firstclass-call": "<?php\n$s=new stdClass; echo 'before'; $s(...);\n",
+  "stdclass-pipe-call": "<?php\n$s=new stdClass; echo 'before'; 1 |> $s;\n",
+  "stdclass-callable-type": "<?php\nfunction f(callable $x) {} f(new stdClass);\n",
+  "stdclass-callable-array-type": "<?php\nfunction f(callable $x) {} f([new stdClass,'m']);\n",
+  "stdclass-array-key": "<?php\n$a=[]; $a[new stdClass]=1;\n",
+  "stdclass-string-offset": "<?php\n$s='abc'; echo $s[new stdClass];\n",
+  "stdclass-object-cast-identity": "<?php\n$a=new stdClass; $b=(object)$a; echo $a===$b?'same':'different';\n",
+  "stdclass-inactive-shadow": "<?php\nif(false){class stdClass{}} $x=new stdClass; echo $x instanceof stdClass?'internal':'wrong';\n",
+  "stdclass-empty-casts": "<?php\n$a=(object)[]; $b=(object)[]; $c=(object)null; echo $a instanceof stdClass?'S':'x'; echo $a===$b?'same':'distinct'; echo $a==$b?'equal':'different'; echo $c instanceof stdClass?'N':'x'; echo (array)$c===[]?'E':'x';\n",
+  "stdclass-null-empty-object-original": "<?php\n$a=(object)null;$b=(object)null;echo $a===$b?'same':'different';echo $a==$b?'equal':'unequal';echo $a instanceof stdClass?'std':'x';\n",
+  "stdclass-array-empty-object-original": "<?php\n$a=(object)[];$b=(object)$a;echo $a===$b?'same':'different';$c=(object)[];echo $a===$c?'same':'different';echo $a==$c?'equal':'unequal';\n"
+}

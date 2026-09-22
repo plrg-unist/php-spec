@@ -54,6 +54,7 @@ rule PhpStep/class-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tai
 dec $new_class(pstate, preqbytes, int) : pstate
 def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "internal class construction"]
   -- if $class_internal(preqbytes)
+  -- if $ptlc(preqbytes) =/= $ptascii("stdclass")
 def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ preqbytes ++ $ptascii("\" not found"), z)
   -- if ~$class_internal(preqbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = eps

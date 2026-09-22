@@ -1,0 +1,35 @@
+;; The pinned internal stdClass has no source declaration origin.
+def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [STDINSTANCE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ptlc(preqbytes) = $ptascii("stdclass")
+  -- if n = |S.OBJECTS|
+
+def $object_name(S, n) = $ptascii("stdClass")
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $class_plain_instance(S, n) = true
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $node_children(S, HOBJECT n) = eps
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $closure_live_object_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+
+def $empty_instance_same(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = STDINSTANCE
+  -- if S.OBJECTS[n_right] = STDINSTANCE
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $ptlc(preqbytes) = $ptascii("stdclass")
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("stdClass"))
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $typed_given(S, POBJECT n) = $ptascii("stdClass")
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, $array_empty())
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $cast_empty_object_value(S, PNULL) = true
+def $cast_empty_object_value(S, PARRAY n) = true
+  -- if S.ARRAYS[n].ITEMS = eps
+def $cast_empty_object_value(S, pvalue) = false -- otherwise
+def $cast_value(S, CASTOBJECT, PNULL, z) = $new_class(S, $ptascii("stdClass"), z)
+def $cast_value(S, CASTOBJECT, PARRAY n, z) = $new_class(S, $ptascii("stdClass"), z)
+  -- if S.ARRAYS[n].ITEMS = eps

@@ -32,7 +32,7 @@ handlers in `Zend/zend_vm_def.h`.
 
 The rules are in `126-class-compiler.watsup` and `127-class-runtime.watsup`.
 [The review](../../coverage/semantics/object-classes-review.json) records the
-source and paused-state checks. Internal-class construction, constructor
+source and paused-state checks. Other internal-class construction, constructor
 arguments, inheritance, properties, methods, dynamic class names, late-bound
 `self`/`parent`/`static`, array and class-method callback invocation, and
 lifecycle protocols remain separate obligations.

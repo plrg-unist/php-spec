@@ -54,7 +54,7 @@ syntax pcallcontext = { INSTANCE nat?, FUNCTION porigin, NAME preqbytes, CALLSIT
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext? }
 syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
-syntax pobject = REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin
+syntax pobject = REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
 syntax pstate = { OBJECTS pobject*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $install_classes(pstate, pclassdesc*) : pstate
