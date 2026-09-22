@@ -2,7 +2,7 @@
 syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
 syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
-syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PROPERTY pvalue ptbytes
+syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PROPERTY pvalue ptbytes | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_SHORT
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | NOWHERE
 syntax pvstage = PVFOLD | PVEXEC
@@ -50,6 +50,7 @@ syntax ptask = CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_IN
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
   | ARRAY_REF_KEY nat expression phpType13* | ARRAY_REF_VALUE nat poperand? phpType13* int
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
+  | NULLSAFE_DIM_PREP expression bool | NULLSAFE_DIM_INDEX expression int bool | NULLSAFE_PROP_PREP phpType20 int bool | NULLSAFE_CHECK phpType20 int bool | NULLSAFE_PROPERTY_NAME pvalue int
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
@@ -97,6 +98,7 @@ dec $property_next(ppropertyslot*, nat, nat) : (ptbytes, pitem, nat)?
 dec $property_slots_valid(pstate, ppropertydesc*, ppropertyslot*) : bool
 dec $property_state_valid(pstate) : bool
 dec $proprefs_valid(pstate) : bool
+dec $nullsafe_base_phase_valid(pstate) : bool
 dec $propref_slots_covered(pstate, pobjectprops*) : bool
 dec $write_cell_checked(pstate, nat, pvalue, int) : pstate
 dec $propref_detach_slot(pstate, nat, ppropertyslot) : pstate

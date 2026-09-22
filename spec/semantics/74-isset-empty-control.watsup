@@ -96,6 +96,7 @@ rule PhpStep/isset-prepare: S ~> S[.TODO = [$at_task(S.ORIGIN, DIM_PREP expressi
   -- if S.TODO = (ISSET_PREP expression b) :: ptask_tail*
   -- if ~($ppglobals_base(expression))
   -- if $isset_this(expression) = false
+  -- if ~$ppnullsafe(expression)
 rule PhpStep/isset-global: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (~b))]
   -- if S.TODO = (ISSET_PREP expression b) :: ptask_tail*
   -- if $ppglobals_base(expression)

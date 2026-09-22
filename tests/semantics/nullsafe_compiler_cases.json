@@ -1,0 +1,133 @@
+[
+  {
+    "id": "read",
+    "source": "<?php echo $o?->x;",
+    "source_sha256": "ca93a0f5bea827d7e7468a22d71357fb49e236c8ad88fe3d4b27f46328595397",
+    "mode": "PPR",
+    "code_line": 1,
+    "computed_name": false,
+    "path": "[PCINDEX 0, PCFIELD 0, PCINDEX 0]"
+  },
+  {
+    "id": "computed-read",
+    "source": "<?php echo $o?->{$name};",
+    "source_sha256": "09eb94a863d6093f10f60d48036c120cc457547f3a116d54952fb92db2236b74",
+    "mode": "PPR",
+    "code_line": 1,
+    "computed_name": true,
+    "path": "[PCINDEX 0, PCFIELD 0, PCINDEX 0]"
+  },
+  {
+    "id": "quiet-isset",
+    "source": "<?php echo isset($o?->x);",
+    "source_sha256": "d3c77b5baa3cf277bb7e287526b15a4a3c232fa2f4693b8881221635f9c65741",
+    "mode": "PPIS",
+    "code_line": 1,
+    "computed_name": false,
+    "path": "[PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0, PCINDEX 0]"
+  },
+  {
+    "id": "quiet-empty",
+    "source": "<?php echo empty($o?->x);",
+    "source_sha256": "92f4cc63f6aa7f7ec7595be6d13f2babef11cba2ff4e110bb0d563d416069c93",
+    "mode": "PPIS",
+    "code_line": 1,
+    "computed_name": false,
+    "path": "[PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0]"
+  },
+  {
+    "id": "quiet-coalesce",
+    "source": "<?php echo $o?->x ?? 1;",
+    "source_sha256": "8d6d402e74188ee3782d580e2ecf96cea97d35fcafc9a7cf709a0c14f605aae3",
+    "mode": "PPIS",
+    "code_line": 1,
+    "computed_name": false,
+    "path": "[PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0]"
+  },
+  {
+    "id": "deferred-ref-send",
+    "source": "<?php function f(&$v){} $o=null; $f=\"f\"; $f($o?->{$name});",
+    "source_sha256": "9e040730e829f3f2ae7e9faeb0f9ca8605c283f7fca5bbf9d62138e4e440844c",
+    "mode": "PPR",
+    "code_line": 1,
+    "computed_name": true,
+    "path": "[PCINDEX 3, PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]"
+  },
+  {
+    "id": "known-ref-send",
+    "source": "<?php class C{public $x=1;} $o=new C; function f(&$v){} f($o?->x); echo \"Z\";\n",
+    "source_sha256": "278bd1c5e8e3af55547c46df3a12e40784b294bbc770b33a1059be4f3010451d",
+    "mode": "PPR",
+    "code_line": 1,
+    "computed_name": false,
+    "path": "[PCINDEX 3, PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]"
+  },
+  {
+    "id": "multiline-prefix",
+    "source": "<?php\nclass C{}\n$o=new C;\necho ($o?->missing\n    ->x)===null?\"Z\":\"X\";\n",
+    "source_sha256": "ebffcfb6623ddc1b7012e45ba2ddacd5c953bd3c856309b0ecc8aa197f5bec13",
+    "line_checks": [
+      {
+        "path": "[PCINDEX 2, PCFIELD 0, PCINDEX 0, PCFIELD 0, PCFIELD 0]",
+        "line": 5
+      },
+      {
+        "path": "[PCINDEX 2, PCFIELD 0, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 0]",
+        "line": 4
+      }
+    ]
+  },
+  {
+    "id": "multiline-nullsafe",
+    "source": "<?php\nclass C{}\n$o=new C;\necho $o?->\n    missing;\n",
+    "source_sha256": "a77e88d186cbff967316cb1ae794c9731c6a0f6c877f909d4f0b7d9047a536e1",
+    "line_checks": [
+      {
+        "path": "[PCINDEX 2, PCFIELD 0, PCINDEX 0]",
+        "line": 5
+      }
+    ]
+  },
+  {
+    "id": "write-direct",
+    "source": "<?php $o=null; $o?->x=1; echo \"Z\";",
+    "source_sha256": "1610cc50e04aab62d729b8b16f331518fb179b3b4827c78fa7579c57bf5fedda",
+    "static_error": "Can't use nullsafe operator in write context",
+    "static_line": 1
+  },
+  {
+    "id": "write-nested-dim",
+    "source": "<?php $o=null; $o?->x[0]=1; echo \"Z\";",
+    "source_sha256": "df62fa62ab5485628fdb3b45f6b93dbcdd25743dfb33cde4f18954ea0492af12",
+    "static_error": "Can't use nullsafe operator in write context",
+    "static_line": 1
+  },
+  {
+    "id": "write-nested-property",
+    "source": "<?php $o=null; $o?->x->y=1; echo \"Z\";",
+    "source_sha256": "f533a3562c3e484f5276fbcb77c0b98ea8d5e7c4179d835a3d5be9002e2da95f",
+    "static_error": "Can't use nullsafe operator in write context",
+    "static_line": 1
+  },
+  {
+    "id": "unset-direct",
+    "source": "<?php $o=null; unset($o?->x); echo \"Z\";",
+    "source_sha256": "7707f4f9ad3ee7adb64a79585da5fb8d34e20550a911d4248220c57f1cf7ec7a",
+    "static_error": "Can't use nullsafe operator in write context",
+    "static_line": 1
+  },
+  {
+    "id": "assign-ref-target",
+    "source": "<?php class C{public $x=1;} $o=new C; $v=2; $o?->x =& $v; echo \"Z\";\n",
+    "source_sha256": "7977d0572b5f5f8aacdf77a1d61266581667310c31be8e19dd3fa6989a5002d2",
+    "static_error": "Can't use nullsafe operator in write context",
+    "static_line": 1
+  },
+  {
+    "id": "return-reference",
+    "source": "<?php function &f(){ $o=null; return $o?->x; } echo \"Z\";",
+    "source_sha256": "211dde598ddb35d66c8296a8692162a9cb07cf53866ec6ed92d82addd84c37bb",
+    "static_error": "Cannot take reference of a nullsafe chain",
+    "static_line": 1
+  }
+]

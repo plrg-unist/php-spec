@@ -475,8 +475,10 @@ rule PhpStep/property-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGI
 
 rule PhpStep/property-read: S ~> S[.TODO = [DIM_PREP (NExprPropertyFetch expression phpType20 metadata), DIM_FETCH $runtime_line(S, eps, NExprPropertyFetch expression phpType20 metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
+  -- if ~$ppnullsafe(NExprPropertyFetch expression phpType20 metadata)
 rule PhpStep/property-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), PROPERTY_PREP phpType20 $runtime_line(S, eps, NExprPropertyFetch expression phpType20 metadata)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
+  -- if ~$ppnullsafe(NExprPropertyFetch expression phpType20 metadata)
 rule PhpStep/property-base-static: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_PROPERTY pvalue $base64(text)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)

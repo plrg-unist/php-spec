@@ -1,0 +1,355 @@
+;; BASE_SHORT records a taken nullsafe jump until the current property/dimension
+;; chain reaches its expression or quiet-access boundary. An ordinary null
+;; property result is BASE_VALUE (KNOWN PNULL), and must not skip its suffix.
+var bshort : bool
+var bquiet : bool
+def $base_read(S, BASE_SHORT, z) = S[.RESULT = KNOWN PNULL]
+def $quiet_base(S, BASE_SHORT, z) = S[.RESULT = KNOWN PNULL]
+def $isset_base(S, BASE_SHORT, b, z) = S[.RESULT = KNOWN (PBOOL b)]
+def $base_read(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, z) = $property_read(S, pvalue, ptbytes, z_access)
+def $quiet_base(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, z) = $property_quiet(S, pvalue, ptbytes, z_access)
+def $isset_base(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, b, z) = $isset_simple(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, b, z)
+
+dec $nullsafe_propdim_node(expression) : bool
+def $nullsafe_propdim_node(NExprArrayDimFetch expression phpType5 metadata) = true
+def $nullsafe_propdim_node(NExprPropertyFetch expression phpType20 metadata) = true
+def $nullsafe_propdim_node(NExprNullsafePropertyFetch expression phpType20 metadata) = true
+def $nullsafe_propdim_node(expression) = false -- otherwise
+
+dec $nullsafe_access_line(pstate, expression) : int
+def $nullsafe_access_line(S, NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata) = $constant_runtime_line(S, $source_line(metadata_name))
+def $nullsafe_access_line(S, NExprNullsafePropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata) = $constant_runtime_line(S, $source_line(metadata_name))
+def $nullsafe_access_line(S, NExprPropertyFetch expression expression_name metadata) = $runtime_line(S, [PCFIELD 1], expression_name)
+  -- if $property_computed_name(expression_name)
+def $nullsafe_access_line(S, NExprNullsafePropertyFetch expression expression_name metadata) = $runtime_line(S, [PCFIELD 1], expression_name)
+  -- if $property_computed_name(expression_name)
+def $nullsafe_access_line(S, NExprArrayDimFetch expression expression_key metadata) = $runtime_line(S, [PCFIELD 1], expression_key)
+def $nullsafe_access_line(S, expression) = $runtime_line(S, eps, expression) -- otherwise
+
+;; A normal value access consumes the marker at DIM_FETCH. Quiet access keeps
+;; the receiver fetch quiet all the way to the nullsafe checkpoint.
+rule PhpStep/nullsafe-read: S ~> S[.TODO = [NULLSAFE_DIM_PREP expression false, DIM_FETCH $nullsafe_access_line(S, expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if $ppnullsafe(expression)
+  -- if $nullsafe_propdim_node(expression)
+rule PhpStep/nullsafe-dimension-prep: S ~> S[.TODO = (NULLSAFE_DIM_PREP expression false) :: ptask_tail*]
+  -- if S.TODO = (DIM_PREP expression) :: ptask_tail*
+  -- if $ppnullsafe(expression)
+  -- if $nullsafe_propdim_node(expression)
+
+rule PhpStep/nullsafe-chain-dimension: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), NULLSAFE_DIM_PREP expression b), NULLSAFE_DIM_INDEX expression_key $runtime_line(S, [PCFIELD 1], expression_key) b] ++ ptask_tail*]
+  -- if S.TODO = (NULLSAFE_DIM_PREP (NExprArrayDimFetch expression expression_key metadata) b) :: ptask_tail*
+rule PhpStep/nullsafe-chain-property: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), NULLSAFE_DIM_PREP expression b), NULLSAFE_PROP_PREP phpType20 $nullsafe_access_line(S, NExprPropertyFetch expression phpType20 metadata) b] ++ ptask_tail*]
+  -- if S.TODO = (NULLSAFE_DIM_PREP (NExprPropertyFetch expression phpType20 metadata) b) :: ptask_tail*
+rule PhpStep/nullsafe-chain-checkpoint: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), NULLSAFE_DIM_PREP expression b), NULLSAFE_CHECK phpType20 $nullsafe_access_line(S, NExprNullsafePropertyFetch expression phpType20 metadata) b] ++ ptask_tail*]
+  -- if S.TODO = (NULLSAFE_DIM_PREP (NExprNullsafePropertyFetch expression phpType20 metadata) b) :: ptask_tail*
+rule PhpStep/nullsafe-chain-leaf: S ~> S[.TODO = (DIM_PREP expression) :: ptask_tail*]
+  -- if S.TODO = (NULLSAFE_DIM_PREP expression b) :: ptask_tail*
+  -- if ~$nullsafe_propdim_node(expression)
+
+rule PhpStep/nullsafe-index-skip: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (NULLSAFE_DIM_INDEX expression z b) :: ptask_tail*
+  -- if S.BASE = BASE_SHORT
+rule PhpStep/nullsafe-index: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), DIM_PATH S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NULLSAFE_DIM_INDEX expression z b) :: ptask_tail*
+  -- if S.BASE =/= BASE_SHORT
+
+dec $nullsafe_receiver(pstate, bool, int) : pstate
+def $nullsafe_receiver(S, false, z) = $base_read(S, S.BASE, z)
+def $nullsafe_receiver(S, true, z) = $quiet_base(S, S.BASE, z)
+
+dec $nullsafe_property_continue(pstate, phpType20, int) : pstate
+def $nullsafe_property_continue(S, NIdentifier (BYTES text) metadata_name, z) = S[.TODO = ptask_tail*][.BASE = BASE_CHAIN_PROPERTY pvalue $base64(text) z][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+def $nullsafe_property_continue(S, expression_name, z) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), NULLSAFE_PROPERTY_NAME pvalue z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $property_computed_name(expression_name)
+
+dec $nullsafe_property_apply(pstate, bool, phpType20, int, bool) : pstate
+def $nullsafe_property_apply(S, bshort, phpType20, z, bquiet) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.BASE = BASE_SHORT
+def $nullsafe_property_apply(S, bshort, phpType20, z, bquiet) = S_read[.TODO = eps]
+  -- if S.BASE =/= BASE_SHORT
+  -- if S_read = $nullsafe_receiver(S, bquiet, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $nullsafe_property_apply(S, true, phpType20, z, bquiet) = S_read[.TODO = ptask_tail*][.BASE = BASE_SHORT][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.BASE =/= BASE_SHORT
+  -- if S_read = $nullsafe_receiver(S, bquiet, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN PNULL
+def $nullsafe_property_apply(S, true, phpType20, z, bquiet) = $nullsafe_property_continue(S_read, phpType20, z)
+  -- if S.BASE =/= BASE_SHORT
+  -- if S_read = $nullsafe_receiver(S, bquiet, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if pvalue =/= PNULL
+def $nullsafe_property_apply(S, false, phpType20, z, bquiet) = $nullsafe_property_continue(S_read, phpType20, z)
+  -- if S.BASE =/= BASE_SHORT
+  -- if S_read = $nullsafe_receiver(S, bquiet, z)
+  -- if S_read.COMPLETION = NORMAL
+
+rule PhpStep/nullsafe-property-suffix: S ~> $nullsafe_property_apply(S, false, phpType20, z, b)
+  -- if S.TODO = (NULLSAFE_PROP_PREP phpType20 z b) :: ptask_tail*
+rule PhpStep/nullsafe-property-checkpoint: S ~> $nullsafe_property_apply(S, true, phpType20, z, b)
+  -- if S.TODO = (NULLSAFE_CHECK phpType20 z b) :: ptask_tail*
+
+rule PhpStep/nullsafe-property-name: S ~> S_name[.TODO = ptask_tail*][.BASE = BASE_CHAIN_PROPERTY pvalue n_name* z][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (NULLSAFE_PROPERTY_NAME pvalue z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+rule PhpStep/nullsafe-property-name-abrupt: S ~> S_name[.TODO = eps]
+  -- if S.TODO = (NULLSAFE_PROPERTY_NAME pvalue z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
+  -- if S_name.COMPLETION =/= NORMAL
+
+;; Existing quiet operators only change their preparation for a source chain.
+rule PhpStep/nullsafe-quiet-isset: S ~> S[.TODO = [$at_task(S.ORIGIN, NULLSAFE_DIM_PREP expression true), ISSET_RESULT b $runtime_line(S, eps, expression)] ++ ptask_tail*]
+  -- if S.TODO = (ISSET_PREP expression b) :: ptask_tail*
+  -- if $ppnullsafe(expression)
+  -- if $nullsafe_propdim_node(expression)
+rule PhpStep/nullsafe-quiet-coalesce: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), NULLSAFE_DIM_PREP expression_left true), COALESCE_QUIET expression_right $runtime_line(S, [PCFIELD 0], expression_left) $runtime_line(S, [PCFIELD 1], expression_right)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprBinaryOpCoalesce expression_left expression_right metadata)) :: ptask_tail*
+  -- if $ppnullsafe(expression_left)
+  -- if $nullsafe_propdim_node(expression_left)
+
+;; The quiet bit is determined by the nearest chain boundary in the checked
+;; source. A computed name is a separate expression, so its PCFIELD 1 path
+;; deliberately does not inherit the receiver chain's quiet mode.
+dec $nullsafe_quiet_origin(pstate, porigin) : bool
+dec $nullsafe_chain_origin(pstate, porigin) : bool
+def $nullsafe_chain_origin(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $ppnullsafe(expression)
+  -- if $nullsafe_propdim_node(expression)
+def $nullsafe_chain_origin(S, porigin) = $nullsafe_chain_origin(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_current)
+  -- if ~$ppnullsafe(expression_current)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprArrayDimFetch expression phpType5 metadata)
+def $nullsafe_chain_origin(S, porigin) = $nullsafe_chain_origin(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_current)
+  -- if ~$ppnullsafe(expression_current)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprPropertyFetch expression phpType20 metadata)
+def $nullsafe_chain_origin(S, porigin) = $nullsafe_chain_origin(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_current)
+  -- if ~$ppnullsafe(expression_current)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+def $nullsafe_chain_origin(S, porigin) = false -- otherwise
+def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprArrayDimFetch expression phpType5 metadata)
+def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprPropertyFetch expression phpType20 metadata)
+def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+def $nullsafe_quiet_origin(S, porigin) = true
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprEmpty expression metadata)
+def $nullsafe_quiet_origin(S, porigin) = true
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+def $nullsafe_quiet_origin(S, porigin) = true
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_parent, [PCFIELD 0, PCINDEX n]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprIsset (SEQUENCE expression*) metadata)
+  -- if $(n < |expression*|)
+def $nullsafe_quiet_origin(S, porigin) = false -- otherwise
+
+dec $nullsafe_task_source(pstate, expression, bool) : bool
+def $nullsafe_task_source(S, expression, b) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b_constant))
+  -- if $nullsafe_chain_origin(S, PORIGIN n pcpath)
+  -- if b = $nullsafe_quiet_origin(S, PORIGIN n pcpath)
+def $nullsafe_task_source(S, expression, b) = false -- otherwise
+
+dec $nullsafe_index_task(pstate, expression, int, bool) : bool
+def $nullsafe_index_task(S, expression_key, z, b) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprArrayDimFetch expression expression_key metadata)
+  -- if $nullsafe_task_source(S, NExprArrayDimFetch expression expression_key metadata, b)
+  -- if z = $runtime_line(S, [PCFIELD 1], expression_key)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_key, b_constant))
+def $nullsafe_index_task(S, expression, z, b) = false -- otherwise
+
+dec $nullsafe_property_task(pstate, phpType20, int, bool, bool) : bool
+def $nullsafe_property_task(S, phpType20, z, b, false) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression phpType20 metadata)
+  -- if $nullsafe_task_source(S, NExprPropertyFetch expression phpType20 metadata, b)
+  -- if z = $nullsafe_access_line(S, NExprPropertyFetch expression phpType20 metadata)
+def $nullsafe_property_task(S, phpType20, z, b, true) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+  -- if $nullsafe_task_source(S, NExprNullsafePropertyFetch expression phpType20 metadata, b)
+  -- if z = $nullsafe_access_line(S, NExprNullsafePropertyFetch expression phpType20 metadata)
+def $nullsafe_property_task(S, phpType20, z, b, bshort) = false -- otherwise
+
+dec $nullsafe_name_task(pstate, int) : bool
+def $nullsafe_name_task(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver expression_name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_name, b_constant))
+  -- if $nullsafe_chain_origin(S, PORIGIN n pcpath)
+  -- if z = $nullsafe_access_line(S, NExprPropertyFetch expression_receiver expression_name metadata)
+  -- if $property_computed_name(expression_name)
+def $nullsafe_name_task(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNullsafePropertyFetch expression_receiver expression_name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_name, b_constant))
+  -- if z = $nullsafe_access_line(S, NExprNullsafePropertyFetch expression_receiver expression_name metadata)
+  -- if $property_computed_name(expression_name)
+def $nullsafe_name_task(S, z) = false -- otherwise
+
+def $call_task_valid(S, NULLSAFE_DIM_PREP expression b) = $nullsafe_task_source(S, expression, b)
+def $call_task_valid(S, NULLSAFE_DIM_INDEX expression z b) = $nullsafe_index_task(S, expression, z, b)
+def $call_task_valid(S, NULLSAFE_PROP_PREP phpType20 z b) = $nullsafe_property_task(S, phpType20, z, b, false)
+def $call_task_valid(S, NULLSAFE_CHECK phpType20 z b) = $nullsafe_property_task(S, phpType20, z, b, true)
+def $call_task_valid(S, NULLSAFE_PROPERTY_NAME pvalue z) = $nullsafe_name_task(S, z)
+def $call_task_valid(S, EVAL (NExprNullsafePropertyFetch expression phpType20 metadata)) = $property_source_task(S, NExprNullsafePropertyFetch expression phpType20 metadata)
+def $call_task_valid(S, DIM_PREP (NExprNullsafePropertyFetch expression phpType20 metadata)) = $property_source_task(S, NExprNullsafePropertyFetch expression phpType20 metadata)
+def $call_task_valid(S, EVAL (NExprArrayDimFetch expression phpType5 metadata)) = $property_source_task(S, NExprArrayDimFetch expression phpType5 metadata)
+  -- if $ppnullsafe(NExprArrayDimFetch expression phpType5 metadata)
+def $call_task_valid(S, DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) = $property_source_task(S, NExprArrayDimFetch expression phpType5 metadata)
+  -- if $ppnullsafe(NExprArrayDimFetch expression phpType5 metadata)
+
+dec $nullsafe_base_source(pstate, porigin, ptbytes, int) : bool
+def $nullsafe_base_source(S, porigin, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if ptbytes = $base64(text)
+  -- if z = $nullsafe_access_line(S[.ORIGIN = (porigin)], NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if $nullsafe_chain_origin(S, porigin)
+def $nullsafe_base_source(S, porigin, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if ptbytes = $base64(text)
+  -- if z = $nullsafe_access_line(S[.ORIGIN = (porigin)], NExprNullsafePropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata)
+def $nullsafe_base_source(S, porigin, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression expression_name metadata)
+  -- if $property_computed_name(expression_name)
+  -- if z = $nullsafe_access_line(S[.ORIGIN = (porigin)], NExprPropertyFetch expression expression_name metadata)
+  -- if $nullsafe_chain_origin(S, porigin)
+def $nullsafe_base_source(S, porigin, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression expression_name metadata)
+  -- if $property_computed_name(expression_name)
+  -- if z = $nullsafe_access_line(S[.ORIGIN = (porigin)], NExprNullsafePropertyFetch expression expression_name metadata)
+def $nullsafe_base_source(S, porigin, ptbytes, z) = false -- otherwise
+
+dec $nullsafe_dim_path_task(pstate, ptbytes, int, int) : bool
+def $nullsafe_dim_path_task(S, ptbytes, z_access, z_key) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression expression_key metadata)
+  -- if $ppnullsafe(NExprArrayDimFetch expression expression_key metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $nullsafe_base_source(S, porigin_child, ptbytes, z_access)
+  -- if z_key = $runtime_line(S, [PCFIELD 1], expression_key)
+def $nullsafe_dim_path_task(S, ptbytes, z_access, z_key) = false -- otherwise
+def $call_task_valid(S, DIM_PATH (BASE_CHAIN_PROPERTY pvalue ptbytes z_access) z_key) = $nullsafe_dim_path_task(S, ptbytes, z_access, z_key)
+
+;; A taken short circuit is valid only while its checked chain still has a
+;; suffix (or a terminal quiet/value fetch). ORIGIN_RETURN is the normal
+;; wrapper left by a nested source occurrence; it restores the caller origin.
+dec $nullsafe_base_chain_phase(pstate, ptbytes, int) : bool
+dec $nullsafe_chain_base(pbase) : bool
+def $nullsafe_chain_base(BASE_CHAIN_PROPERTY pvalue ptbytes z) = true
+def $nullsafe_chain_base(pbase) = false -- otherwise
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE =/= BASE_SHORT
+  -- if ~$nullsafe_chain_base(S.BASE)
+def $nullsafe_base_phase_valid(S) = $nullsafe_base_chain_phase(S, ptbytes, z_access)
+  -- if S.BASE = BASE_CHAIN_PROPERTY pvalue ptbytes z_access
+def $nullsafe_base_phase_valid(S) = $nullsafe_base_phase_valid(S[.TODO = ptask_tail*][.ORIGIN = porigin?])
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (NULLSAFE_DIM_INDEX expression_key z b) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression expression_key metadata)
+  -- if $ppnullsafe(expression)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (NULLSAFE_PROP_PREP phpType20 z b) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+  -- if $ppnullsafe(expression)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (NULLSAFE_CHECK phpType20 z b) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+  -- if $ppnullsafe(expression)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $ppnullsafe(expression)
+  -- if z = $nullsafe_access_line(S, expression)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $ppnullsafe(expression)
+  -- if z = $runtime_line(S, eps, expression)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $ppnullsafe(expression_left)
+def $nullsafe_base_phase_valid(S) = false -- otherwise
+
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (ORIGIN_RETURN (porigin_return)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $nullsafe_base_source(S, porigin, ptbytes, z_access)
+  -- if $origin_node(S.SOURCES, porigin_return) = (pcnode)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (NULLSAFE_DIM_INDEX expression_key z b) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression expression_key metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $nullsafe_base_source(S, porigin_child, ptbytes, z_access)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (NULLSAFE_PROP_PREP phpType20 z b) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $nullsafe_base_source(S, porigin_child, ptbytes, z_access)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (NULLSAFE_CHECK phpType20 z b) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $nullsafe_base_source(S, porigin_child, ptbytes, z_access)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $nullsafe_base_source(S, porigin, ptbytes, z_access)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if z = $nullsafe_access_line(S, expression)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $nullsafe_base_source(S, porigin, ptbytes, z_access)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = true
+  -- if S.TODO = (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $nullsafe_base_source(S, porigin_child, ptbytes, z_access)
+def $nullsafe_base_chain_phase(S, ptbytes, z_access) = false -- otherwise

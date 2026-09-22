@@ -1860,13 +1860,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/137-property-reference-compiler.watsup",
+        "spec/semantics/139-nullsafe-property-compiler.watsup",
+        "spec/semantics/140-nullsafe-property-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/nullsafe_compiler.py",
+        "tests/semantics/nullsafe_properties.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Nullsafe public property fetches now execute with checked receiver/name order, chain-local short-circuiting and quiet isset/empty/coalesce behavior. Bounded source, compiler and paused-state evidence is in nullsafe-properties-review.json. Nullsafe methods, nonpublic properties, magic access and full family closure remain open; the earlier array-omission-review.json covers only the historical constant prepass."
     },
     {
       "node": "Expr_PostDec",
@@ -5042,7 +5047,7 @@
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/property-references-review.json"
       ],
-      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Nullsafe reference sends, nonpublic/static/readonly properties, hooks and magic remain open; see property-references-review.json."
+      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Selected nullsafe property by-reference sends are now bounded in nullsafe-properties-review.json; nonpublic/static/readonly properties, hooks and magic remain open. Historical reference-cell evidence: property-references-review.json."
     },
     {
       "id": "storage.static-bindings",
@@ -5940,15 +5945,24 @@
     {
       "id": "expression.nullsafe",
       "milestone": "2b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "implementation": [
+        "spec/semantics/139-nullsafe-property-compiler.watsup",
+        "spec/semantics/140-nullsafe-property-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/nullsafe_compiler.py",
+        "tests/semantics/nullsafe_properties_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/nullsafe_properties.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/nullsafe-properties-review.json"
+      ],
+      "review": "Admitted nullsafe property and active property/dimension chains preserve source-ordered receiver/name/key evaluation, chain-local short-circuiting, quiet probes, reference-send priority and static write restrictions. Method chains, magic/nonpublic properties and broader nullsafe forms remain open; see nullsafe-properties-review.json."
     },
     {
       "id": "expression.isset",
@@ -8127,7 +8141,7 @@
         "vendor/php-src/Zend/zend_object_handlers.c",
         "coverage/semantics/property-references-review.json"
       ],
-      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Nullsafe reference sends, nonpublic/static/readonly properties, hooks and magic remain open; see property-references-review.json."
+      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Selected nullsafe property by-reference sends are now bounded in nullsafe-properties-review.json; nonpublic/static/readonly properties, hooks and magic remain open. Historical reference-cell evidence: property-references-review.json."
     },
     {
       "id": "declarations.constants",

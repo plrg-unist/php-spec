@@ -1,0 +1,147 @@
+{
+  "status": "reviewed paired gates with exact canonical semantic/input bridge",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, pinned vendor/php-src",
+  "scope": "Public nullsafe property fetch and property/dimension suffix chains, quiet isset/empty/coalesce, source-ordered names/keys, by-reference send priority, static write/reference restrictions. Nullsafe methods, visibility, magic and full nullsafe closure remain open.",
+  "maintained": {
+    "source": {
+      "raw": ".tools/runtime10-nullsafe-candidate/.tools/nullsafe-properties-wnpvmd3p/report.json",
+      "sha256": "689ba13d6cd2be24c24f49ce1f33818de403b9e6a60e33a7ec322034163a3097",
+      "selected": 21,
+      "outcomes": {
+        "normal": 12,
+        "php_error": 4,
+        "static_rejection": 5
+      },
+      "direct_input_paths": 141,
+      "fingerprint": {
+        "sha256": "90134c78534493f5e1e6f5bdc212ba42d590fc2bac566abb5573ba70e09d5fb2",
+        "files": 1097
+      }
+    },
+    "compiler": {
+      "raw": ".tools/compiler10-nullsafe-candidate/.tools/nullsafe-compiler-rl6pr91m/report.json",
+      "sha256": "22ca94edb579135c104f7937a870c0f3fa729e00ee05ae8470479434834d6f45",
+      "sources": 15,
+      "assertions": 63,
+      "separate_fingerprint": {
+        "sha256": "4d10adf08410bfa870be2cb9b1fc960a1767359ab494af8a48a90e2fd59d9a79",
+        "files": 1097
+      }
+    },
+    "adjacent_property_compiler": {
+      "raw": ".tools/compiler10-nullsafe-candidate/.tools/property-compiler-cyxdb819",
+      "assertions": 147,
+      "result": "pass"
+    },
+    "paused_protocol": {
+      "raw": ".tools/runtime10-nullsafe-candidate/.tools/nullsafe-properties-protocol-53xqggee/report.json",
+      "sha256": "75b196b2e8c2d85a10501d6afcec072a5743da92ee6da31c09d34b9760409f96",
+      "cases": 3,
+      "assertions": 48,
+      "same_fingerprint_as_source": true
+    }
+  },
+  "native_groups": [
+    {
+      "scope": "reviewer runtime9",
+      "raw": ".tools/review15-nullsafe/native.json",
+      "sha256": "cd6f65102cfdd3d14670457edf8a2694e1b9b5c2194fe56846c88a8b234a3c89"
+    },
+    {
+      "scope": "reviewer prefix2",
+      "raw": ".tools/review15-nullsafe/native-prefix.json",
+      "sha256": "5e9e62d88e9678999b830e31c5aee9976a4d5b2718b656bdec445152c0097bb9"
+    },
+    {
+      "scope": "author compiler8",
+      "raw": ".tools/compiler10-nullsafe-candidate/.tools/nullsafe-compiler-native/native.json",
+      "sha256": "27f4c153d191d60ae3c8d6995fdc4174bad810dbc625f81bee54fc31fb545c14"
+    },
+    {
+      "scope": "author direct multiline1, ordinary profile",
+      "raw": ".tools/compiler10-nullsafe-candidate/.tools/nullsafe-multiline-direct-native-ordinary.json",
+      "sha256": "323e4c379001d46c27fe70a3311313a1a8388147716725872439be6e09922754"
+    },
+    {
+      "scope": "retained prior property-reference known nonnull byref1",
+      "raw": ".tools/compiler10-property-ref-candidate/.tools/ref-compiler-native/native.json",
+      "sha256": "e7561e94f7eba098034bd75e83a03e5d3c295c68c0b9497bdf95789d53c4367c",
+      "source_sha256": "278bd1c5e8e3af55547c46df3a12e40784b294bbc770b33a1059be4f3010451d"
+    }
+  ],
+  "independent": {
+    "source11": {
+      "raw": ".tools/review15-nullsafe/replay11-43k7b2n9/report.json",
+      "sha256": "8895f06eeeefc3d52a045bb88229bc594525abbfc028c358895343f0732a717c",
+      "scope": "earlier private semantic fingerprint; no final-state identity claim"
+    },
+    "known_ref_nonnull": {
+      "raw": ".tools/review15-nullsafe/known-ref-replay.json",
+      "sha256": "352bc66b6b0d171f005779ae9bfa44a9bacdb00c4e3020bbe92ff17e2ad1855a",
+      "scope": "retained prior native original, model-only replay on separate private semantic snapshot"
+    },
+    "queued_source_guard12": {
+      "raw": ".tools/review15-nullsafe/chain-base-rejection-6zfu1sq0/report.json",
+      "sha256": "e01addb0dd8020e45fb231bc6bc8ec3a59727476e4845e695974497d3d3a1194",
+      "assertions": 12,
+      "fingerprint": {
+        "sha256": "81b2514e2151d58bbfa5f0e807d7cc82e46444541dab303247e0b95743afe3a8",
+        "files": 1096
+      }
+    },
+    "saved_owner20": {
+      "raw": ".tools/review15-nullsafe/nullsafe-owner-q3vzxz9_/report.json",
+      "sha256": "d3eb9354bf8bf587de9530a34aeadaeea0384b482b86f4e241cd04a4a62706ea",
+      "assertions": 20,
+      "same_fingerprint_as_queued_guard": true
+    },
+    "short_resume16": {
+      "raw": ".tools/review15-nullsafe/short-phase-71yzhc78/report.json",
+      "sha256": "4ca5159bc781c19dbc08db98a748d5f58c28560734d815cf9020acba9c25c459",
+      "assertions": 16,
+      "fingerprint": {
+        "sha256": "c537d5d626c6984ca153fdb257516687f74050680ab627d8e4aa2f70b9796702",
+        "files": 1096
+      },
+      "scope": "final140 guard bytes with earlier test inputs; exact six guard-premise bridge reviewed"
+    }
+  },
+  "native_profile": "All 21 maintained originals use recorded ordinary -n settings with display_errors=stderr, pinned PHP binary and exact argv/cwd/environment/source/oracle hashes. The earlier authored direct multiline default-warning-channel raw is retained separately and not counted as an exact maintained outcome.",
+  "syntax_scope": "No parser, frontend, grammar or checked AST schema edit in this milestone; current syntax inputs are unchanged.",
+  "canonical_bridge": {
+    "raw": ".tools/nullsafe-canonical-bridge.json",
+    "sha256": "fe5768a2811ef12d6be5ce867cc5622e53f2a6b4de76063d9acd1b8443708620",
+    "base_commit": "46e007cf56ce546a06de2315db4df34dac356c95",
+    "exact_modules": 136,
+    "other_exact_inputs": 9,
+    "total_exact_paths": 145,
+    "focused_fingerprint": {
+      "sha256": "428fc619fd373ca79e92834d9673726808565457a3832e0029d2599d9a9cb9ee",
+      "files": 1100
+    },
+    "focused_gates": {
+      "compiler15_63": {
+        "raw": ".tools/nullsafe-compiler-2nozer59/report.json",
+        "sha256": "0764a4a41662a6dd9b8a0da4189af242de12cef0587431c39b7b262bff82580f"
+      },
+      "paused3_48": {
+        "raw": ".tools/nullsafe-properties-protocol-7z50_ds_/report.json",
+        "sha256": "ba731f6429850793cc28d4d08a73cd2dd2688c246ed0aeeb7b25ed1f0e9bbe7b"
+      },
+      "representative_exact_source": {
+        "known_ref_nonnull": {
+          "raw": ".tools/nullsafe-properties-mevy2qa1/report.json",
+          "sha256": "df9e353b1f7a27fe3505b7364fc71b0b70bfd25de54cdfa0dd34d6ead0ef1825"
+        },
+        "multiline_prefix": {
+          "raw": ".tools/nullsafe-properties-cdxu0y3w/report.json",
+          "sha256": "21e73392325d44599de6fac215450fb6fdf790e56934b748fdaaf6a61a779be3"
+        },
+        "quiet_null": {
+          "raw": ".tools/nullsafe-properties-2fyoy19c/report.json",
+          "sha256": "769be1cf738dfdbad5ecdf6dec86c0f3c4b61e2a5ef01b64f6550594412d2871"
+        }
+      }
+    }
+  }
+}

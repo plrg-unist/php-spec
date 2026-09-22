@@ -1,0 +1,7 @@
+;; A nullsafe value fetch compiles both source children even though execution may
+;; skip the name after a null receiver. PPF is a value-send designation: a
+;; by-reference call decides at SEND, after evaluating this expression.
+def $ppdispatch(P, pcpath, NExprNullsafePropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata, ppmode) = $pplocate($ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)), pcpath, $source_line(metadata_name))
+  -- if ppmode = PPR \/ ppmode = PPIS \/ ppmode = PPF
+def $ppdispatch(P, pcpath, NExprNullsafePropertyFetch expression_base expression_name metadata, ppmode) = $ppclearvalue($ppexpr($ppexpr(P, pcpath ++ [PCFIELD 0], expression_base, PPR), pcpath ++ [PCFIELD 1], expression_name, PPR))
+  -- if ppmode = PPR \/ ppmode = PPIS \/ ppmode = PPF
