@@ -1,0 +1,20 @@
+{
+  "args-abstract": "<?php\nfunction side($x){echo $x;return 1;} abstract class A{};new A(side('A'));\n",
+  "args-missing": "<?php\nfunction side($x){echo $x;return 1;} new Missing(side('A'));\n",
+  "args-named": "<?php\nfunction side($x){echo $x;return 1;} new stdClass(foo:side('A'),bar:side('B'));echo 'D';\n",
+  "args-positional": "<?php\nfunction side($x){echo $x;return 1;} class A{};new A(side('A'),side('B'));new stdClass(side('C'));echo 'D';\n",
+  "args-unpack-int": "<?php\nfunction side($x){echo $x;return 1;} new stdClass(...side('A'));echo 'D';\n",
+  "args-unpack-name": "<?php\nfunction side($x){echo $x;return 1;} class A{};new A(...['foo'=>side('A'),'bar'=>side('B')]);echo 'D';\n",
+  "new-multiline-missing": "<?php\nnew\nMissing;\n",
+  "new-multiline-named": "<?php\nfunction side(){echo 'A';return 1;}\nnew stdClass(\n foo:\n side()\n);\n",
+  "new-byref-argument": "<?php\nclass A{} function take(&$x){echo 'T';} take(new A); echo 'Z';\n",
+  "object-unpack-type": "<?php\nclass A{}; echo 'B'; new A(...new stdClass);\n",
+  "nested-sent-array": "<?php\nclass A{} function side($x){echo $x;return [new stdClass];} new A(side('A'), side('B')); echo 'C';\n",
+  "nested-abrupt": "<?php\nclass A{} function side(){echo 'A';return [new stdClass];} new A(side(), missing()); echo 'Z';\n",
+  "byref-variable-argument": "<?php\nclass A{} function bump(&$x){$x++;return $x;} $v=1; new A(bump($v)); echo $v;\n",
+  "nested-pipe-new": "<?php\nclass A{} function id($x){echo 'I';return $x;} new A(1 |> 'id'); echo 'D';\n",
+  "unpack-positional": "<?php\nclass A{} function side($x){echo $x;return [new stdClass];} new A(...[side('A'),side('B')]);echo 'C';\n",
+  "positional-then-named": "<?php\nclass A{} function side($x){echo $x;return [new stdClass];} new A(side('A'),foo:side('B'));echo 'C';\n",
+  "named-undefined-cv": "<?php\nnew stdClass(foo:$missing);\n",
+  "named-dim-undefined": "<?php\nnew stdClass(foo:$a['x']);\n"
+}

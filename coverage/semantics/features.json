@@ -1793,7 +1793,9 @@
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/126-class-compiler.watsup",
         "spec/semantics/127-class-runtime.watsup",
-        "spec/semantics/130-stdclass-runtime.watsup"
+        "spec/semantics/130-stdclass-runtime.watsup",
+        "spec/semantics/131-noctor-compiler.watsup",
+        "spec/semantics/132-noctor-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1802,12 +1804,17 @@
         "tests/semantics/object_classes_protocol.py",
         "tests/semantics/object_classes_catalogue.py",
         "tests/semantics/stdclass.py",
-        "tests/semantics/stdclass_protocol.py"
+        "tests/semantics/stdclass_protocol.py",
+        "tests/semantics/noctor_compiler.py",
+        "tests/semantics/noctor_args.py",
+        "tests/semantics/noctor_args_protocol.py",
+        "tests/semantics/noctor_unpack_protocol.py"
       ],
-      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 allocate owned, zero-argument instances of named concrete user classes (object-classes-review.json). Internal stdClass130 now allocates an owned, source-free empty instance with exact identity (stdclass-review.json). Constructor arguments, other internal bodies, dynamic names, inheritance and members remain open.",
+      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 allocate owned named-class instances (object-classes-review.json); stdClass130 adds pinned internal empty identity (stdclass-review.json). No-constructor arguments131/132 evaluate ordered sends after class lookup, authenticate compiled facts and retain owned operands through completion (noctor-args-review.json). Constructors, other internal bodies, dynamic names, inheritance and members remain open.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
-        "coverage/semantics/stdclass-review.json"
+        "coverage/semantics/stdclass-review.json",
+        "coverage/semantics/noctor-args-review.json"
       ]
     },
     {

@@ -179,7 +179,10 @@ types and literal `instanceof`; their [review](coverage/semantics/object-classes
 binds source and paused-state checks. [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
-binds source and ownership checks. Constructor arguments, members, inheritance,
+binds source and ownership checks. [No-constructor allocation arguments](docs/semantics/SOURCE-NOCTOR-ARGS.md)
+evaluate positional, named and unpacked values after class lookup while retaining
+sent values through the dummy call; their [review](coverage/semantics/noctor-args-review.json)
+binds source, compiler and paused-state checks. Constructors, members, inheritance,
 other internal-class bodies and method callbacks remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release

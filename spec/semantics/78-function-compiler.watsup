@@ -220,6 +220,7 @@ def $ppcall_done(P, pcpath, z) = P
 dec $ppsend_var(expression) : bool
 def $ppsend_var(NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = true
   -- if ~$ppfirstclass(phpType7*)
+def $ppsend_var(NExprNew phpType28 phpType6 metadata) = true
 def $ppsend_var(NExprAssignRef expression_1 expression_2 metadata) = true
 def $ppsend_var(NExprAssign expression_pattern expression_rhs metadata) = ($list_references(phpType13*) \/ $ppsend_var(expression_rhs))
   -- if $list_pattern(expression_pattern) = (phpType13*)
@@ -237,4 +238,6 @@ def $ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata, PP
 def $ppcall_expression(P, pcpath, z) = $ppdone($ppcall_done(P, pcpath, z), pcpath, PPR)[.LOCATION = P.LOCATION]
 
 def $ppcall_read(NExprFuncCall phpType19 phpType6 metadata, PPR) = true
+def $ppcall_read(NExprNew name (SEQUENCE phpType7*) metadata, PPR) = true
+  -- if phpType7* =/= eps
 def $ppcall_read(expression, ppmode) = false -- otherwise

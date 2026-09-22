@@ -1,0 +1,20 @@
+{
+  "scope": "No-constructor allocation arguments for admitted empty user classes and stdClass; ordered positional/named/unpacked effects, exact NEW and SEND lines, deferred variable fetch, and owned sent operands",
+  "profile": "PHP 8.5.10 CLI NTS 64-bit. Maintained source uses -n ordinary flags plus variables_order=EGPCS and explicit request environment/cwd; retained native originals have their recorded profile. Dynamic class targets and classes with constructors remain open.",
+  "implementation_fingerprint_sha256": "fbbfb7f271850dfe7cbad7cafb151df52b0de3396ec541a494ae632aec388382",
+  "implementation_fingerprint_files": 1071,
+  "maintained": {
+    "compiler": "59 source-fact and projection assertions, .tools/noctor-compiler-3ivl77jo/compiler.watsup SHA-256 82b8e4929063a17eec29e422ceb029a920c9d0e980d7f13cac1d5ad028b71fd0; stdout true",
+    "source": "18/18 exact outcomes: 6 normal, 12 PHP errors; .tools/noctor-args-s_kosbph/report.json SHA-256 bbcddfbe5940708dec3792e862e1164bba1eecd7f6921dc31d862dcd9911d3e5; 138 direct semantic input hashes recorded",
+    "paused": "54 authored saved-frame, sent-owner and malformed-task assertions in .tools/noctor-protocol-d69tyry2/report.json SHA-256 af4858530c9a44fc17a6a8a45ce81d0d522f0bedf3ecb7e801fe840d6dcca6e1; 23 unpack cursor/ownership assertions in .tools/noctor-unpack-protocol-4pdv1dcf/report.json SHA-256 da649ff6988a319ad8a5abb8f98cd15967b0a0528a0db85557439063eb74eb51",
+    "regressions": "Adjacent stdClass17/17 exact, .tools/stdclass-mcl10nj_/report.json SHA-256 255a5ea08c7303fd6641bb702a1bbf9b7c534d9e8b461d7c193a2048ac2fd8d2; user classes31/31 exact, .tools/object-classes-s1by528r/report.json SHA-256 d5557e1453e0f0ad4e4764b5c8fd0921894aad88ef4fe61dad07c74868b1dec0"
+  },
+  "independent_review": {
+    "root": ".tools/review15-noctor",
+    "native": "Retained no-constructor args6 in .tools/review15-stdclass/native-args.json SHA-256 deeac0ab5f96ee512bfb9a669aa6d380f09162f01e8aa5e57b5838e161d0554a; line cases2 in native-lines.json SHA-256 b626d057caebdc761963d22c34d0195136f80b88a59736ac7631e6cc899e687d; named-send contrasts2 in .tools/review15-noctor/native-named.json SHA-256 074a5ae1d28dbec7b3cde7206e623395f312f05e6174ddefdd502530f7ee1a7d",
+    "source": "10/10 model-only retained replay on an earlier private implementation fingerprint, .tools/review15-noctor/paired-replay10-euoqdie4/report.json SHA-256 a7b299f8dacced4b1006617b5c619713ea782188f14a08fdadc404e6fdaddcc9; final canonical source18 includes these cases",
+    "state": "Four private staged paused probes, 98 assertions total, covered nested saved frames, abrupt cleanup, unpack cursor bounds and direct named-prefix cardinality; exact 132 semantic bridge and canonical module hashes independently reviewed",
+    "new_result_kind": "NEW produces a VAR send result. Retained native by-reference argument observation .tools/review15-noctor/native.json SHA-256 89ca610f16cf36070c34784be7b25b6d8fdea857c27dc5d7a481d30fec467750; corrected model-only Notice, TZ and exit 0 in new-byref-corrected.json SHA-256 7b9cadbfd42c1ba5081033e1a4b5514710f4dc4461afa6e7ef11e04e54db6115"
+  },
+  "boundary": "No constructor functions, members, inheritance, dynamic class targets or unmodeled internal class bodies are admitted by this increment."
+}

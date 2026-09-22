@@ -1,0 +1,192 @@
+;; A no-constructor NEW still has an owned dummy send frame while arguments run.
+def $task_nodes(NOCTOR_ARGS pnoctorcall) = [HOBJECT pnoctorcall.OBJECT] ++ $operands_roots(pnoctorcall.SENT)
+def $task_nodes(NOCTOR_SEND pnoctorcall) = [HOBJECT pnoctorcall.OBJECT] ++ $operands_roots(pnoctorcall.SENT)
+def $task_nodes(NOCTOR_UNPACK_PREP pnoctorcall) = [HOBJECT pnoctorcall.OBJECT] ++ $operands_roots(pnoctorcall.SENT)
+def $task_nodes(NOCTOR_UNPACK_NEXT pnoctorcall poperand n) = [HOBJECT pnoctorcall.OBJECT] ++ $operands_roots(pnoctorcall.SENT) ++ $operand_nodes(poperand)
+
+dec $noctor_object_valid(pstate, pnoctorcall) : bool
+def $noctor_object_valid(S, pnoctorcall) = true
+  -- if $(pnoctorcall.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT pnoctorcall.OBJECT) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pnoctorcall.OBJECT] = STDINSTANCE
+  -- if $ptlc(pnoctorcall.CLASS) = $ptascii("stdclass")
+def $noctor_object_valid(S, pnoctorcall) = true
+  -- if $(pnoctorcall.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT pnoctorcall.OBJECT) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pnoctorcall.OBJECT] = INSTANCE porigin
+  -- if $class_named(S.CLASSNAMES, $ptlc(pnoctorcall.CLASS)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+def $noctor_object_valid(S, pnoctorcall) = false -- otherwise
+
+dec $noctor_sent_valid(poperand*) : bool
+def $noctor_sent_valid(eps) = true
+def $noctor_sent_valid((KNOWN pvalue) :: poperand*) = $noctor_sent_valid(poperand*)
+def $noctor_sent_valid(poperand*) = false -- otherwise
+
+dec $noctor_prefix_unnamed(phpType7*) : bool
+def $noctor_prefix_unnamed(eps) = true
+def $noctor_prefix_unnamed((NArg ABSENT expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = $noctor_prefix_unnamed(phpType7*)
+def $noctor_prefix_unnamed(phpType7*) = false -- otherwise
+
+dec $noctor_direct_count(phpType7*) : nat
+def $noctor_direct_count(eps) = 0
+def $noctor_direct_count((NArg ABSENT expression phpType4_ref (BOOLEAN false) metadata) :: phpType7*) = $(1 + $noctor_direct_count(phpType7*))
+def $noctor_direct_count((NArg ABSENT expression phpType4_ref (BOOLEAN true) metadata) :: phpType7*) = $noctor_direct_count(phpType7*)
+def $noctor_direct_count((NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = $noctor_direct_count(phpType7*)
+  -- if phpType3 =/= ABSENT
+
+dec $noctor_sent_shape(pstate, pnoctorcall, nat) : bool
+def $noctor_sent_shape(S, pnoctorcall, n_current) = true
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $(pnoctorcall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pnoctorcall.INDEX]
+  -- if ~$call_unpack_present(phpType7_prefix*)
+  -- if |pnoctorcall.SENT| = $($noctor_direct_count(phpType7_prefix*) + n_current)
+def $noctor_sent_shape(S, pnoctorcall, n_current) = true
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $(pnoctorcall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pnoctorcall.INDEX]
+  -- if $call_unpack_present(phpType7_prefix*)
+  -- if n_min = $($noctor_direct_count(phpType7_prefix*) + n_current)
+  -- if $(|pnoctorcall.SENT| >= n_min)
+def $noctor_sent_shape(S, pnoctorcall, n_current) = false -- otherwise
+
+dec $noctor_task_valid(pstate, pnoctorcall, nat) : bool
+def $noctor_task_valid(S, pnoctorcall, n_pending) = true
+  -- if S.ORIGIN = (pnoctorcall.SITE)
+  -- if pnoctorcall.SITE = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((pnoctorcall.CLASS, eps))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pnoctorcall.LINE, b))
+  -- if n_offset = $(pnoctorcall.INDEX + n_pending)
+  -- if $(n_offset <= |phpType7*|)
+  -- if $noctor_prefix_unnamed(phpType7*[0:pnoctorcall.INDEX])
+  -- if n_remaining = $(|phpType7*| - n_offset)
+  -- if pnoctorcall.ARGUMENTS = phpType7*[n_offset:n_remaining]
+  -- if $noctor_object_valid(S, pnoctorcall)
+  -- if $noctor_sent_valid(pnoctorcall.SENT)
+def $noctor_task_valid(S, pnoctorcall, n_pending) = false -- otherwise
+
+dec $noctor_argument_valid(pstate, pnoctorcall, bool) : bool
+def $noctor_argument_valid(S, pnoctorcall, b_unpack) = true
+  -- if pnoctorcall.SITE = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $(pnoctorcall.INDEX < |phpType7*|)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata_arg
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if pcpath_arg = pcpath ++ [PCFIELD 1, PCINDEX pnoctorcall.INDEX, PCFIELD 1]
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_arg) = ((z, b))
+def $noctor_argument_valid(S, pnoctorcall, b_unpack) = false -- otherwise
+
+dec $noctor_prefix_integer(pentry*) : bool
+def $noctor_prefix_integer(eps) = true
+def $noctor_prefix_integer((ENTRY (KINT i) pitem) :: pentry*) = $noctor_prefix_integer(pentry*)
+def $noctor_prefix_integer(pentry*) = false -- otherwise
+
+def $call_task_valid(S, NOCTOR_ARGS pnoctorcall) = ($noctor_task_valid(S, pnoctorcall, 0) /\ $noctor_sent_shape(S, pnoctorcall, 0))
+def $call_task_valid(S, NOCTOR_SEND pnoctorcall) = ($noctor_task_valid(S, pnoctorcall, 1) /\ $noctor_argument_valid(S, pnoctorcall, false) /\ $noctor_sent_shape(S, pnoctorcall, 0))
+def $call_task_valid(S, NOCTOR_UNPACK_PREP pnoctorcall) = ($noctor_task_valid(S, pnoctorcall, 1) /\ $noctor_argument_valid(S, pnoctorcall, true) /\ $noctor_sent_shape(S, pnoctorcall, 0))
+dec $noctor_unpack_next_valid(pstate, pnoctorcall, poperand, nat) : bool
+def $noctor_unpack_next_valid(S, pnoctorcall, KNOWN (PARRAY n), n_cursor) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
+  -- if $noctor_prefix_integer(S.ARRAYS[n].ITEMS[0:n_cursor])
+  -- if $noctor_task_valid(S, pnoctorcall, 1)
+  -- if $noctor_argument_valid(S, pnoctorcall, true)
+  -- if $noctor_sent_shape(S, pnoctorcall, n_cursor)
+def $noctor_unpack_next_valid(S, pnoctorcall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, NOCTOR_UNPACK_NEXT pnoctorcall poperand n_cursor) = $noctor_unpack_next_valid(S, pnoctorcall, poperand, n_cursor)
+
+dec $noctor_advance(pnoctorcall, poperand*) : pnoctorcall
+def $noctor_advance(pnoctorcall, poperand*) = pnoctorcall[.INDEX = $(pnoctorcall.INDEX + 1)][.SENT = poperand*]
+
+dec $noctor_arg_origin(pnoctorcall) : porigin?
+def $noctor_arg_origin(pnoctorcall) = $origin_child((pnoctorcall.SITE), [PCFIELD 1, PCINDEX pnoctorcall.INDEX, PCFIELD 1])
+dec $noctor_arg_line(pstate, pnoctorcall) : int
+def $noctor_arg_line(S, pnoctorcall) = $runtime_line(S, [PCFIELD 1, PCINDEX pnoctorcall.INDEX, PCFIELD 1], expression)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg phpType3 expression phpType4_ref phpType4_unpack metadata_arg
+
+dec $noctor_start(pstate, preqbytes, phpType7*, int) : pstate
+def $noctor_start(S, preqbytes, phpType7*, z) = S_new[.TODO = (NOCTOR_ARGS {SITE porigin, CLASS preqbytes, OBJECT n, ARGUMENTS phpType7*, INDEX 0, SENT eps, LINE z}) :: S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION = NORMAL
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+def $noctor_start(S, preqbytes, phpType7*, z) = S_new
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION =/= NORMAL
+
+rule PhpStep/new-class-arguments: S ~> $noctor_start(S[.TODO = ptask_tail*], preqbytes, phpType7*, $runtime_line(S, eps, NExprNew name (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if phpType7* =/= eps
+  -- if ~$ppfirstclass(phpType7*)
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+
+rule PhpStep/noctor-positional: S ~> S[.TODO = [$at_task($noctor_arg_origin(pnoctorcall), EVAL expression), NOCTOR_SEND pnoctorcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_ARGS pnoctorcall) :: ptask_tail*
+  -- if pnoctorcall.ARGUMENTS = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
+rule PhpStep/noctor-named: S ~> S[.TODO = [$at_task($noctor_arg_origin(pnoctorcall), EVAL expression), NOCTOR_SEND pnoctorcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_ARGS pnoctorcall) :: ptask_tail*
+  -- if pnoctorcall.ARGUMENTS = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
+rule PhpStep/noctor-send-positional: S ~> S_value[.TODO = (NOCTOR_ARGS $noctor_advance(pnoctorcall, pnoctorcall.SENT ++ [S_value.RESULT])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/noctor-send-named: S ~> $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $base64(text), $noctor_arg_line(S, pnoctorcall))
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+rule PhpStep/noctor-send-abrupt: S ~> S_value
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/noctor-unpack: S ~> S[.TODO = [$at_task($noctor_arg_origin(pnoctorcall), EVAL expression), NOCTOR_UNPACK_PREP pnoctorcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_ARGS pnoctorcall) :: ptask_tail*
+  -- if pnoctorcall.ARGUMENTS = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*
+rule PhpStep/noctor-unpack-array: S ~> S_value[.TODO = (NOCTOR_UNPACK_NEXT pnoctorcall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_UNPACK_PREP pnoctorcall) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n)
+dec $noctor_unpack_type_bytes(pstate, pvalue) : ptbytes
+def $noctor_unpack_type_bytes(S, POBJECT n) = $object_name(S, n)
+def $noctor_unpack_type_bytes(S, pvalue) = $unpack_type_bytes(pvalue) -- otherwise
+rule PhpStep/noctor-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), $noctor_arg_line(S, pnoctorcall))
+  -- if S.TODO = (NOCTOR_UNPACK_PREP pnoctorcall) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/noctor-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (NOCTOR_UNPACK_PREP pnoctorcall) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/noctor-unpack-position: S ~> S[.TODO = (NOCTOR_UNPACK_NEXT pnoctorcall[.SENT = pnoctorcall.SENT ++ [KNOWN $entry_value(S, pitem)]] poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_UNPACK_NEXT pnoctorcall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY (KINT i) pitem
+rule PhpStep/noctor-unpack-named: S ~> $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ preqbytes, $noctor_arg_line(S, pnoctorcall))
+  -- if S.TODO = (NOCTOR_UNPACK_NEXT pnoctorcall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY (KSTRING preqbytes) pitem
+rule PhpStep/noctor-unpack-done: S ~> S[.TODO = (NOCTOR_ARGS $noctor_advance(pnoctorcall, pnoctorcall.SENT)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (NOCTOR_UNPACK_NEXT pnoctorcall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n].ITEMS|
+
+rule PhpStep/noctor-dummy-complete: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT pnoctorcall.OBJECT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NOCTOR_ARGS pnoctorcall) :: ptask_tail*
+  -- if pnoctorcall.ARGUMENTS = eps

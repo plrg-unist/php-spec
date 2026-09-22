@@ -226,6 +226,9 @@ def $ppclass_name(P, pcpath, PNUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppclass_name(P, pcpath, PNRESOLVED pnreference) = P[.NAMES = P.NAMES ++ [(pcpath, pnreference)]][.FOLD = P.FOLD[.VALUE = eps]]
 
 def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE eps) metadata, PPR) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
-def $ppdispatch(P, pcpath, NExprNew phpType28 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "class constructor arguments or dynamic class target")
-  -- if phpType7* =/= eps
+dec $ppnew_named(phpType28) : bool
+def $ppnew_named(name) = true
+def $ppnew_named(phpType28) = false -- otherwise
+def $ppdispatch(P, pcpath, NExprNew phpType28 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "dynamic class target")
+  -- if phpType7* =/= eps /\ ~$ppnew_named(phpType28)
 def $ppdispatch(P, pcpath, NExprInstanceof expression name metadata, PPR) = $ppclass_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, $pnclassresolve(P.ENV, name))

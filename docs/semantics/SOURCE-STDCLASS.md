@@ -18,7 +18,7 @@ The paused ownership check validates the live object graph without requiring
 creation history for this intrinsic object.
 
 The rules are in `130-stdclass-runtime.watsup`. [The review](../../coverage/semantics/stdclass-review.json)
-binds source and ownership checks. This increment admits zero-argument
-construction. Constructor argument effects, casts from nonempty arrays or
+binds source and ownership checks. [No-constructor allocation arguments](SOURCE-NOCTOR-ARGS.md)
+now cover argument effects for this class. Casts from nonempty arrays or
 scalars to objects, properties, methods, dynamic class names and other
 internal-class bodies remain separate obligations.

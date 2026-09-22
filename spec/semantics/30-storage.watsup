@@ -19,6 +19,7 @@ syntax pdefaultkind = PDSTORED | PDDEFERRED
 syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
 syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
+syntax pnoctorcall = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpType7*, INDEX nat, SENT poperand*, LINE int }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pupdate = INCREMENT | DECREMENT
 syntax psilence = SILENCE porigin int
@@ -26,6 +27,7 @@ syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
 syntax ptask = CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin
+  | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
   | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand
   | INSTANCEOF_RESULT int

@@ -1,0 +1,11 @@
+;; NEW compiles arguments as an unknown call target after the class reference.
+;; Its root instruction retains the NEW line; SEND operands retain their lines.
+def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR) = $ppcheck($ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name)), $context_error("Cannot create Closure for new expression", $source_line(metadata)))
+  -- if $ppfirstclass(phpType7*)
+def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name)), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes")
+  -- if phpType7* =/= eps
+  -- if ~$ppfirstclass(phpType7*)
+
+def $ppexpr(P, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR), pcpath, $source_line(metadata))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if phpType7* =/= eps

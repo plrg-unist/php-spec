@@ -503,6 +503,12 @@ def $named_send_root(pcoccurrence*, pcpath) = true
   -- if pcpath[n_parent:3] = [PCFIELD 1, PCINDEX n, PCFIELD 1]
   -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if $(n < |phpType7*|)
+def $named_send_root(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| >= 3)
+  -- if n_parent = $(|pcpath| - 3)
+  -- if pcpath[n_parent:3] = [PCFIELD 1, PCINDEX n, PCFIELD 1]
+  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $(n < |phpType7*|)
 def $named_send_root(pcoccurrence*, pcpath) = false -- otherwise
 
 dec $named_send_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
