@@ -57,7 +57,7 @@ the review ledger. Existing match/print/exit cross cases have explicit bridges;
 a prior broad campaign is not relabeled as a current full-core run.
 
 Nonpublic/static methods, first-class method callables, interfaces/traits,
-nonpublic/static/readonly properties, hooks, user magic methods, destructors,
+private/static/readonly properties, hooks, user magic methods, destructors,
 closure rebinding services and remaining internal protocols are still open.
 Unsupported declarations/consumers remain explicit; no native evaluation fallback
 is used. Throwable/catch/finally and dynamic lifecycle work follow separately.

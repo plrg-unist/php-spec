@@ -162,11 +162,10 @@ def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, pprop
   -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ $ppproperty_explicit(ppropdefault)
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Static property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" cannot be readonly"), $nabs(z))) ppropertydesc*
   -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ ~$ppproperty_explicit(ppropdefault) /\ $ppproperty_flag(flags, 8)
-def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
-  -- if flags <- [0, 1] /\ ~pchheader.READONLY
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, KEY $ppproperty_key(flags, ptbytes), VISIBILITY $ppproperty_visibility(flags), TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
+  -- if flags <- [0, 1, 2] /\ ~pchheader.READONLY
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "property visibility, static, readonly, or final")) ppropertydesc* -- otherwise
 
-dec $ppproperty_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
 def $ppproperty_desc_at(eps, ptbytes) = eps
 def $ppproperty_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (ppropertydesc)
   -- if ppropertydesc.NAME = ptbytes
@@ -191,10 +190,10 @@ def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_
   -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = eps
 def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = P
   -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
-  -- if $ppproperty_override_message(pchheader.NAME, ppropertydesc_child.NAME, ptbytes_parent, ppropertydesc_parent.TYPE, ppropertydesc_child.TYPE) = eps
+  -- if $ppproperty_inherit_message(pchheader.NAME, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = eps
 def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = $ppconstant_error(P, ptbytes_error, P.LOCATION.LINE)
   -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
-  -- if $ppproperty_override_message(pchheader.NAME, ppropertydesc_child.NAME, ptbytes_parent, ppropertydesc_parent.TYPE, ppropertydesc_child.TYPE) = (ptbytes_error)
+  -- if $ppproperty_inherit_message(pchheader.NAME, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = (ptbytes_error)
 dec $ppproperty_early_items(ppstate, pchheader, ppropertyinherited*, ppropertydesc*) : ppstate
 def $ppproperty_early_items(P, pchheader, eps, ppropertydesc*) = P
   -- if P.COMPLETION = PPCNORMAL

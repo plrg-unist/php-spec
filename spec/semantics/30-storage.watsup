@@ -20,7 +20,8 @@ syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
 syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, FINAL bool, ABSTRACT bool }
 syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin
-syntax ppropertydesc = { ORIGIN porigin, NAME ptbytes, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
+syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED
+syntax ppropertydesc = { ORIGIN porigin, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
 syntax ppropertyslot = { DECL porigin?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
@@ -116,7 +117,7 @@ dec $objectprops_materialized(pobjectprops*, nat) : bool
 dec $property_slot_nodes(ppropertyslot*) : pnode*
 dec $property_cast_array(ppropertyslot*) : parray
 dec $property_entries(ppropertyslot*) : pentry*
-dec $property_next(ppropertyslot*, nat, nat) : (ptbytes, pitem, nat)?
+dec $property_next(pstate, nat, ppropertyslot*, nat, nat) : (ptbytes, pitem, nat)?
 dec $property_slots_valid(pstate, ppropertydesc*, ppropertyslot*) : bool
 dec $property_state_valid(pstate) : bool
 dec $proprefs_valid(pstate) : bool
@@ -345,3 +346,20 @@ dec $wrapper_after_enter(pstate, pnamedargs) : pstate
 dec $exit_method_site(pstate, porigin) : bool
 dec $wrapper_arguments(pstate, pcallcontext) : phpType7*
 dec $wrapper_passed_suffix(pstate, pcallcontext) : preqbytes
+
+;; Property source names are resolved once; captured locations store physical keys.
+syntax ppropertyaccess = PROPERTY_ACCESS ptbytes | PROPERTY_DENIED ppropertydesc | PROPERTY_BADNAME
+dec $property_resolve(pstate, nat, ptbytes) : ppropertyaccess
+dec $property_visible_name(pstate, nat, ptbytes) : ptbytes
+dec $property_visible_key(pstate, nat, ptbytes) : bool
+dec $property_access_error(pstate, nat, ptbytes, int) : pstate
+dec $property_store_key(pstate, nat, ptbytes, pvalue, int) : pstate
+dec $ppproperty_visibility(int) : ppropertyvisibility
+dec $ppproperty_key(int, ptbytes) : ptbytes
+dec $ppproperty_inherit_message(ptbytes, ptbytes, ppropertydesc, ppropertydesc) : ptbytes?
+dec $ppproperty_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
+dec $property_accessible(pstate, nat, ptbytes) : bool
+dec $property_read(pstate, pvalue, ptbytes, int) : pstate
+dec $property_quiet(pstate, pvalue, ptbytes, int) : pstate
+dec $property_unset(pstate, pvalue, ptbytes, int) : pstate
+dec $property_store_value(pstate, nat, ptbytes, pvalue, int) : pstate

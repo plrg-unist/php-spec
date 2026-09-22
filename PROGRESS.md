@@ -44,9 +44,10 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 145/146 | Print constant-result effects, conversion lines, reference demand and paused ownership. [Review](coverage/semantics/print-review.json) |
 | 147/148 | Exit/die intrinsic calls, ordered binding, conversion, internal traces and explicit terminal cleanup; 87 source tuples, 25 compiler sources/133 projections and paused ownership guards. [Review](coverage/semantics/exit-review.json) |
 | 149/150 | Object and closure cloning: shallow slots/live aliases, receiver/static ownership and positional/named/array-unpacked property updates. [Review](coverage/semantics/clone-review.json) |
+| 153/154 protected | Protected instance properties: lexical prototype access, mangled keys across existing consumers, typed binding correction and memoized property coalescing. Private identity remains the next increment. [Review](coverage/semantics/property-visibility-review.json) |
 
-The current checkpoint combines public methods and constructors with object
-cloning, nullsafe chains, match selection, print expressions and exit/die. Print preserves output effects while returning constant
+The current checkpoint combines protected instance properties, public methods
+and constructors with object cloning, nullsafe chains, match selection, print expressions and exit/die. Print preserves output effects while returning constant
 integer 1 through folding and reference-result demand. Its
 [review](coverage/semantics/print-review.json) records 20 author and 15 independent
 source comparisons, ten compiler/lint sources with 51 projections, four paused
@@ -72,9 +73,9 @@ internal-object, Traversable unpack and lifecycle dependencies.
 
 ## Next work
 
-Nonpublic and static methods, property visibility, static and readonly members, hooks,
-magic methods, remaining
-internal parents and Throwable follow. `try`/`finally` goto
+Private property identity/shadowing is the next153/154 increment. Nonpublic and
+static methods, static/readonly members, hooks, magic methods, remaining internal
+parents and Throwable remain required. `try`/`finally` goto
 interaction, remaining intrinsics, traversal, dynamic lifetime and
 collection obligations remain open. Match uses the existing uncaught-error
 completion; Throwable objects, catch/finally and destructor integration remain

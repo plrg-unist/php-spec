@@ -391,15 +391,21 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/71-coalesce-assignment-compiler.watsup",
-        "spec/semantics/72-coalesce-assignment-control.watsup"
+        "spec/semantics/72-coalesce-assignment-control.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/coalesce_assignment.py",
         "tests/semantics/coalesce_assignment_compiler.py",
         "coverage/semantics/coalesce-assignment-source.json",
-        "coverage/semantics/coalesce-assignment-review.json"
+        "coverage/semantics/coalesce-assignment-review.json",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
-      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending."
+      "review": "Variable/dimension coalescing assignment uses memoized operands and explicit write occurrence lines (coalesce-assignment-review.json); GLOBALS/environment paths retain their explicit-request evidence in request-environment-review.json. Public/protected property targets now reuse evaluated receiver/name operands, preserve quiet denial and RHS/write-error ordering, and cover nested targets and multiline descriptors (property-visibility-review.json). Private/static/readonly/hooks/magic dependencies remain open."
     },
     {
       "node": "Expr_AssignOp_Concat",
@@ -606,15 +612,21 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/42-array-write-control.watsup",
         "spec/semantics/75-request-environment.watsup",
-        "spec/semantics/76-globals.watsup"
+        "spec/semantics/76-globals.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/conformance/reference-assignment-result.php",
-        "tests/semantics/request_environment.py"
+        "tests/semantics/request_environment.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. Public property targets and typed-source rebindings are now bounded in property-references-review.json; string offsets, callbacks, remaining frames/property forms and source GC remain open. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. Public property targets and typed-source rebindings are now bounded in property-references-review.json; string offsets, callbacks, remaining frames/property forms and source GC remain open. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; private identity and remaining magic/static/readonly dependencies stay open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -1478,13 +1490,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/149-clone-compiler.watsup",
-        "spec/semantics/150-clone-runtime.watsup"
+        "spec/semantics/150-clone-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/clone_expressions.py",
-        "tests/semantics/clone_cases.json"
+        "tests/semantics/clone_cases.json",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure.",
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, private visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; private identity and remaining magic/static/readonly dependencies stay open.",
       "helper_tests": [
         "tests/semantics/clone_compiler.py",
         "tests/semantics/clone_protocol.py",
@@ -2026,16 +2044,22 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/135-property-compiler.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/property_compiler.py",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
-      "review": "Public and dynamic property reads, writes, quiet probes and source-authenticated reference fetches now execute through checked source. Bounded source/state: properties-review.json and property-references-review.json. Nullsafe reference sends, visibility, hooks, magic and methods remain open; historical constant prepass: array-omission-review.json."
+      "review": "Public/protected backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; private/static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence."
     },
     {
       "node": "Expr_ShellExec",
@@ -2451,10 +2475,18 @@
         "properties.typed",
         "properties.backing-slots"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
+      ],
+      "review": "Public/protected backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; private/static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence."
     },
     {
       "node": "Scalar_Float",
@@ -3110,7 +3142,9 @@
         "spec/semantics/67-foreach-compiler.watsup",
         "spec/semantics/68-array-cursors.watsup",
         "spec/semantics/69-foreach-control.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/foreach_compiler.py",
@@ -3118,9 +3152,13 @@
         "tests/semantics/foreach.py",
         "coverage/semantics/foreach-runtime-review.json",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
-      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open."
+      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; private identity and remaining magic/static/readonly dependencies stay open."
     },
     {
       "node": "Stmt_Function",
@@ -3343,14 +3381,20 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/135-property-compiler.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/property_compiler.py",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
-      "review": "Public instance declarations compile ordered typed/default descriptors and invariant inherited overrides (properties-review.json). Public reference cells now enforce ordered typed sources across writes and alias cleanup (property-references-review.json). Nonpublic, static, readonly, hooks and magic remain open."
+      "review": "Public/protected backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; private/static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence."
     },
     {
       "node": "Stmt_Return",
@@ -7819,15 +7863,25 @@
     {
       "id": "classes.visibility",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
+        "coverage/semantics/property-visibility-review.json"
+      ],
+      "review": "Protected instance properties resolve lexical caller scope against the original nonprivate prototype, with public widening and early/deferred narrowing errors. Physical mangled keys are distinct from raw names across existing consumers. Private identity/shadowing, nonpublic/static methods and other visibility forms remain open; property-visibility-review.json records the bounded foundation."
     },
     {
       "id": "classes.private-identities",
@@ -7961,7 +8015,7 @@
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/clone-review.json"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure."
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, private visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected update access and mangled slot/type-source copies are covered by property-visibility-review.json."
     },
     {
       "id": "classes.clone-with-properties",
@@ -7988,7 +8042,7 @@
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/clone-review.json"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure."
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, private visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected update access and mangled slot/type-source copies are covered by property-visibility-review.json."
     },
     {
       "id": "classes.static-lookup",
@@ -8101,18 +8155,26 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/135-property-compiler.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/properties-review.json"
+        "coverage/semantics/properties-review.json",
+        "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
+        "coverage/semantics/property-visibility-review.json"
       ],
-      "review": "Public instance typed defaults and direct writes enforce admitted types; inherited public overrides preserve invariant type and parent diagnostic order (properties-review.json). Alias/reference constraints, hooks and broader type forms remain open."
+      "review": "Public/protected backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/static/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence."
     },
     {
       "id": "properties.uninitialized",
@@ -8121,18 +8183,26 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/135-property-compiler.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/properties-review.json"
+        "coverage/semantics/properties-review.json",
+        "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
+        "coverage/semantics/property-visibility-review.json"
       ],
-      "review": "Typed no-default slots begin uninitialized, distinct from untyped null and later unset; direct read/quiet probes follow source outcomes (properties-review.json). Magic and reference paths remain open."
+      "review": "Typed no-default public/protected slots are distinct from null and unset. Reads, quiet probes and reference initialization obey lexical visibility and source type constraints. Magic and private-property paths remain open; properties-review.json, property-references-review.json and property-visibility-review.json record their respective scopes."
     },
     {
       "id": "properties.readonly",
@@ -8153,18 +8223,26 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/properties-review.json"
+        "coverage/semantics/properties-review.json",
+        "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
+        "coverage/semantics/property-visibility-review.json"
       ],
-      "review": "Dynamic public names create owned slots with source-class deprecation and stdClass exemption; computed read/write/unset/quiet paths are tested (properties-review.json). Magic and visibility remain open."
+      "review": "Dynamic names use the shared slot store and source-class deprecation. Raw leading-NUL access cannot address mangled protected keys; embedded NUL keeps full-byte identity while diagnostic display truncates. Inherited-private dynamic fallback and magic access remain open. See properties-review.json and property-visibility-review.json."
     },
     {
       "id": "properties.promotion",
@@ -8289,17 +8367,25 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
-        "tests/semantics/properties.py"
+        "tests/semantics/properties.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/properties-review.json"
+        "coverage/semantics/properties-review.json",
+        "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
+        "coverage/semantics/property-visibility-review.json"
       ],
-      "review": "Public property array value writes preserve COW through the slot (source31 array-default-cow); references, magic and other fetch modes remain open (properties-review.json)."
+      "review": "Public/protected property dimensions, compound writes and aliases preserve COW and typed constraints through captured physical keys. Protected resolution and scalar-error display are reviewed in property-visibility-review.json; private, readonly, hooks and magic remain open."
     },
     {
       "id": "properties.reference-constraints",
@@ -8312,7 +8398,9 @@
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/99-reference-returns.watsup",
         "spec/semantics/136-property-runtime.watsup",
-        "spec/semantics/138-property-references.watsup"
+        "spec/semantics/138-property-references.watsup",
+        "spec/semantics/153-property-visibility-compiler.watsup",
+        "spec/semantics/154-property-visibility-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/property_reference_compiler.py",
@@ -8320,13 +8408,19 @@
         "tests/semantics/property_reference_incdec_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/property_references.py"
+        "tests/semantics/property_references.py",
+        "tests/semantics/property_visibility.py",
+        "tests/semantics/property_visibility_compiler.py",
+        "tests/semantics/property_visibility_protocol.py",
+        "tests/semantics/property_visibility_scope_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
-        "coverage/semantics/property-references-review.json"
+        "coverage/semantics/property-references-review.json",
+        "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
+        "coverage/semantics/property-visibility-review.json"
       ],
-      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Selected nullsafe property by-reference sends are now bounded in nullsafe-properties-review.json; nonpublic/static/readonly properties, hooks and magic remain open. Historical reference-cell evidence: property-references-review.json."
+      "review": "Public/protected reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; private/static/readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence."
     },
     {
       "id": "declarations.constants",

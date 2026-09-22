@@ -193,6 +193,10 @@ test-semantics: build
 	python3 tests/semantics/property_references.py
 	python3 tests/semantics/property_reference_protocol.py
 	python3 tests/semantics/property_reference_incdec_protocol.py
+	python3 tests/semantics/property_visibility.py
+	python3 tests/semantics/property_visibility_compiler.py
+	python3 tests/semantics/property_visibility_protocol.py
+	python3 tests/semantics/property_visibility_scope_protocol.py
 	python3 tests/semantics/nullsafe_compiler.py
 	python3 tests/semantics/nullsafe_properties.py
 	python3 tests/semantics/nullsafe_properties_protocol.py

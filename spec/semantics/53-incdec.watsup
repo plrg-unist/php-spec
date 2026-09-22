@@ -65,13 +65,13 @@ dec $update_limit_word(pupdate) : ptbytes
 def $update_limit_word(INCREMENT) = $ptascii("maximal")
 def $update_limit_word(DECREMENT) = $ptascii("minimal")
 dec $update_overflow_message(pstate, pupdate, plocation) : ptbytes?
-def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, pproptypesource.DECL) ++ $ptascii("::$") ++ pproptypesource.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, pproptypesource.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $update_alias_cell(S, plocation) = (n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $update_first_nodouble(S, ppropref.SOURCES) = (pproptypesource)
   -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
-def $update_overflow_message(S, pupdate, PROPERTY n_object ptbytes) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+def $update_overflow_message(S, pupdate, PROPERTY n_object ptbytes) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
@@ -178,17 +178,19 @@ def $rw_base(S, BASE_NAME poperand z_name, pstringfetch, z) = $rw_name(S_name, n
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
-def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read[.LOCATION = PROPERTY n_object ptbytes]
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read
   -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
   -- if S_read.COMPLETION =/= NORMAL
-def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read[.LOCATION = PROPERTY n_object ptbytes]
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read[.LOCATION = PROPERTY n_object ptbytes_key]
   -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if $location_slot(S_read, PROPERTY n_object ptbytes) = DEFINED pvalue
-def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = $location_write(S_read[.LOCATION = PROPERTY n_object ptbytes], PROPERTY n_object ptbytes, PNULL)
+  -- if $property_resolve(S_read, n_object, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $location_slot(S_read, PROPERTY n_object ptbytes_key) = DEFINED pvalue
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = $location_write(S_read[.LOCATION = PROPERTY n_object ptbytes_key], PROPERTY n_object ptbytes_key, PNULL)
   -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if $location_slot(S_read, PROPERTY n_object ptbytes) = UNDEFINED
+  -- if $property_resolve(S_read, n_object, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $location_slot(S_read, PROPERTY n_object ptbytes_key) = UNDEFINED
 def $rw_base(S, BASE_PROPERTY pvalue ptbytes, pstringfetch, z) = S[.COMPLETION = UNSUPPORTED "property update on non-object"]
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $rw_base(S, BASE_DIM pbase poperand z_key, pstringfetch, z) = $rw_dimension($rw_base(S, pbase, STRINGNESTED, z_key), (poperand), pstringfetch, z_key)

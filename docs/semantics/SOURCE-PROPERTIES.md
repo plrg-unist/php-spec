@@ -1,9 +1,9 @@
-# Public object properties
+# Object property storage
 
-Class descriptors record ordered public instance declarations, types and
+Class descriptors record ordered public/protected instance declarations, types and
 source-backed defaults. Each allocation creates owned slots: a typed property
 without a default starts uninitialized, while an untyped one starts as null.
-An overriding public declaration must preserve the inherited type and then
+An overriding nonprivate declaration must preserve the inherited type and then
 reuses its slot; early and deferred links enforce the same condition. Reads, writes,
 `unset`, `isset`, `empty` and computed names use the same slots; writes apply
 the declared type and report the declaring class. Dynamic properties use the
@@ -24,6 +24,7 @@ The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
 binds source, compiler and paused-state checks. Public property references
 and by-reference object traversal are documented separately in
-[SOURCE-PROPERTY-REFERENCES.md](SOURCE-PROPERTY-REFERENCES.md). Private/protected
-and static members, hooks, magic methods, constructors and scalar-to-object
-property population remain open obligations.
+[SOURCE-PROPERTY-REFERENCES.md](SOURCE-PROPERTY-REFERENCES.md). Protected access and
+mangled storage keys are described in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
+Private/static/readonly members, hooks, magic access and scalar-to-object property
+population remain open obligations. Public constructors are implemented separately.

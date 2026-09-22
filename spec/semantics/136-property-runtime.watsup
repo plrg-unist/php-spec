@@ -41,7 +41,7 @@ def $property_default_state(S, ppropertydesc) = eps
   -- if ppropertydesc.DEFAULT = PROP_STORED porigin
   -- if $pool_value(S.POOLS, porigin) = eps
 def $property_initial_slots(S, eps) = (eps)
-def $property_initial_slots(S, ppropertydesc :: ppropertydesc_tail*) = ({ DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.NAME, STATE ppropstate } :: ppropertyslot_tail*)
+def $property_initial_slots(S, ppropertydesc :: ppropertydesc_tail*) = ({ DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE ppropstate } :: ppropertyslot_tail*)
   -- if $property_default_state(S, ppropertydesc) = (ppropstate)
   -- if $property_initial_slots(S, ppropertydesc_tail*) = (ppropertyslot_tail*)
 def $property_initial_slots(S, ppropertydesc*) = eps -- otherwise
@@ -85,9 +85,9 @@ def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property
   -- if ppropertyslot.NAME =/= ptbytes
 def $property_desc_at(eps, ptbytes) = eps
 def $property_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (ppropertydesc)
-  -- if ppropertydesc.NAME = ptbytes
+  -- if ppropertydesc.KEY = ptbytes
 def $property_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = $property_desc_at(ppropertydesc_tail*, ptbytes)
-  -- if ppropertydesc.NAME =/= ptbytes
+  -- if ppropertydesc.KEY =/= ptbytes
 dec $property_declared_at(ppropertydesc*, porigin) : bool
 def $property_declared_at(eps, porigin) = false
 def $property_declared_at(ppropertydesc :: ppropertydesc_tail*, porigin) = true
@@ -152,32 +152,36 @@ def $property_cast_array(ppropertyslot*) = {ITEMS pentry*, NEXT $(-9223372036854
   -- if n_serial = |pentry*|
 
 ;; The cursor addresses the live table, so later writes become visible.
-def $property_next(eps, n, n_absolute) = eps
-def $property_next(ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = (ppropertyslot.NAME, pitem, $(n_absolute + 1))
+def $property_next(S, n_object, eps, n, n_absolute) = eps
+def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = (ppropertyslot.NAME, pitem, $(n_absolute + 1))
   -- if ppropertyslot.STATE = PROP_VALUE pitem
-def $property_next(ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = $property_next(ppropertyslot_tail*, 0, $(n_absolute + 1))
+  -- if $property_visible_key(S, n_object, ppropertyslot.NAME)
+def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = $property_next(S, n_object, ppropertyslot_tail*, 0, $(n_absolute + 1))
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
-def $property_next(ppropertyslot :: ppropertyslot_tail*, n, n_absolute) = $property_next(ppropertyslot_tail*, $nabs($(n - 1)), $(n_absolute + 1))
+def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, 0, n_absolute) = $property_next(S, n_object, ppropertyslot_tail*, 0, $(n_absolute + 1))
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$property_visible_key(S, n_object, ppropertyslot.NAME)
+def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, n, n_absolute) = $property_next(S, n_object, ppropertyslot_tail*, $nabs($(n - 1)), $(n_absolute + 1))
   -- if $(n > 0)
 
 dec $property_slot_valid(pstate, ppropertydesc, ppropertyslot) : bool
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.NAME = ppropertydesc.NAME
+  -- if ppropertyslot.NAME = ppropertydesc.KEY
   -- if ppropertyslot.STATE = PROP_INITIAL
   -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.NAME = ppropertydesc.NAME
+  -- if ppropertyslot.NAME = ppropertydesc.KEY
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.NAME = ppropertydesc.NAME
+  -- if ppropertyslot.NAME = ppropertydesc.KEY
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if ppropertydesc.TYPE = eps \/ $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue)
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.NAME = ppropertydesc.NAME
+  -- if ppropertyslot.NAME = ppropertydesc.KEY
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if n_cell <- S.REFCELLS
@@ -230,7 +234,7 @@ dec $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot*) : bool
 def $property_dynamic_no_shadow(ppropertydesc*, eps) = true
 def $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot :: ppropertyslot_tail*) = $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot_tail*)
   -- if ppropertyslot.DECL = (porigin)
-def $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot :: ppropertyslot_tail*) = ($property_desc_at(ppropertydesc*, ppropertyslot.NAME) = eps /\ $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot_tail*))
+def $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot :: ppropertyslot_tail*) = ($ppproperty_desc_at(ppropertydesc*, ppropertyslot.NAME) = eps /\ $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot_tail*))
   -- if ppropertyslot.DECL = eps
 dec $property_has_dynamic(ppropertyslot*) : bool
 def $property_has_dynamic(eps) = false
@@ -278,61 +282,48 @@ def $property_strict(S) = pcode.STRICT
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
 def $property_strict(S) = false -- otherwise
-dec $property_read(pstate, pvalue, ptbytes, int) : pstate
-def $property_read(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access property starting with \"\\0\""), z)
-  -- if $class_plain_instance(S, n)
-  -- if $property_bad_name(ptbytes)
-def $property_read(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
-  -- if ~$property_bad_name(ptbytes)
+dec $property_read_key(pstate, pvalue, ptbytes, int) : pstate
+def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
-def $property_read(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" must not be accessed before initialization"), z)
-  -- if ~$property_bad_name(ptbytes)
+def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps
-def $property_read(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ ptbytes, z)[.RESULT = KNOWN PNULL]
-  -- if ~$property_bad_name(ptbytes)
+def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
-def $property_read(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ ptbytes, z)[.RESULT = KNOWN PNULL]
-  -- if ~$property_bad_name(ptbytes)
+def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_UNSET
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE = eps
-def $property_read(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property read"]
-  -- if ~$property_bad_name(ptbytes)
+def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property read"]
   -- if ~$class_plain_instance(S, n)
-def $property_read(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Attempt to read property \"") ++ ptbytes ++ $ptascii("\" on ") ++ $unpack_type_bytes(pvalue), z)[.RESULT = KNOWN PNULL]
+def $property_read_key(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Attempt to read property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $unpack_type_bytes(pvalue), z)[.RESULT = KNOWN PNULL]
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 
-dec $property_quiet(pstate, pvalue, ptbytes, int) : pstate
-def $property_quiet(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
+dec $property_quiet_key(pstate, pvalue, ptbytes, int) : pstate
+def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
-def $property_quiet(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
+def $property_quiet_key(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 
-dec $property_store_value(pstate, nat, ptbytes, pvalue, int) : pstate
 dec $property_alias(ppropstate) : bool
 def $property_alias(PROP_VALUE (ALIAS n)) = true
 def $property_alias(ppropstate) = false -- otherwise
-def $property_store_value(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot access property starting with \"\\0\""), z)
-  -- if $property_bad_name(ptbytes)
-def $property_store_value(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
-def $property_store_value(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue)))][.RESULT = KNOWN pvalue]
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue)))][.RESULT = KNOWN pvalue]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (porigin)
@@ -340,8 +331,7 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $objectpr
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE = eps
-def $property_store_value(S, n, ptbytes, pvalue, z) = S_converted[.OBJECTPROPS = $objectprops_set(S_converted.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue_new)))][.RESULT = KNOWN pvalue_new]
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S_converted[.OBJECTPROPS = $objectprops_set(S_converted.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue_new)))][.RESULT = KNOWN pvalue_new]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ~$property_alias(ppropertyslot.STATE)
@@ -353,8 +343,7 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S_converted[.OBJECTPROPS =
   -- if S_converted = $typed_apply(S, ptypeconversion, z)
   -- if S_converted.COMPLETION = NORMAL
   -- if S_converted.RESULT = KNOWN pvalue_new
-def $property_store_value(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
@@ -362,20 +351,17 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "TypeErro
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S)) = TYPEREJECT
 
-def $property_store_value(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue)))][.RESULT = KNOWN pvalue]
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue)))][.RESULT = KNOWN pvalue]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = eps
   -- if ~$property_alias(ppropertyslot.STATE)
-def $property_store_value(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot create dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ ptbytes, z)
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot create dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.READONLY
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
-def $property_store_value(S, n, ptbytes, pvalue, z) = S_warned[.OBJECTPROPS = $objectprops_set(S_warned.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S_warned[.OBJECTPROPS = $objectprops_set(S_warned.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -383,10 +369,9 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S_warned[.OBJECTPROPS = $o
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
-  -- if S_warned = $diagnostic($objectprops_mark(S, n), "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" is deprecated"), z)
+  -- if S_warned = $diagnostic($objectprops_mark(S, n), "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is deprecated"), z)
   -- if S_warned.COMPLETION = NORMAL
-def $property_store_value(S, n, ptbytes, pvalue, z) = S_warned
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S_warned
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -394,10 +379,9 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S_warned
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
-  -- if S_warned = $diagnostic($objectprops_mark(S, n), "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" is deprecated"), z)
+  -- if S_warned = $diagnostic($objectprops_mark(S, n), "Deprecated", $ptascii("Creation of dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is deprecated"), z)
   -- if S_warned.COMPLETION =/= NORMAL
-def $property_store_value(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $objectprops_set(S_marked.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $objectprops_set(S_marked.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
@@ -406,8 +390,7 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $o
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
   -- if S_marked = $objectprops_mark(S, n)
-def $property_store_value(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $objectprops_set(S_marked.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
-  -- if ~$property_bad_name(ptbytes)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $objectprops_set(S_marked.OBJECTPROPS, n, pobjectprops.SLOTS ++ [{DECL eps, NAME ptbytes, STATE PROP_VALUE (DIRECT pvalue)}])][.RESULT = KNOWN pvalue]
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
@@ -416,16 +399,24 @@ def $property_store_value(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPROPS = $o
 def $base_read(S, BASE_PROPERTY pvalue ptbytes, z) = $property_read(S, pvalue, ptbytes, z)
 def $quiet_base(S, BASE_PROPERTY pvalue ptbytes, z) = $property_quiet(S, pvalue, ptbytes, z)
 def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = $isset_simple(S, BASE_PROPERTY pvalue ptbytes, b, z)
-def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.LOCATION = PROPERTY n ptbytes]
+def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.LOCATION = PROPERTY n ptbytes_key]
   -- if $class_plain_instance(S, n)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_access_error(S, n, ptbytes, z)
+  -- if $class_plain_instance(S, n)
+  -- if ~$property_accessible(S, n, ptbytes)
 def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property write"]
   -- if ~$class_plain_instance(S, n)
-def $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Attempt to modify property \"") ++ ptbytes ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
+def $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Attempt to modify property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
-def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_store_value(S, n, ptbytes, pvalue, $property_current_line(S))
+def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_store_key(S, n, ptbytes, pvalue, $property_current_line(S))
 def $location_reference(S, PROPERTY n ptbytes) = false
-def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_quiet(S[.LOCATION = PROPERTY n ptbytes], POBJECT n, ptbytes, z)
+def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_quiet_key(S[.LOCATION = PROPERTY n ptbytes_key], POBJECT n, ptbytes_key, z)
   -- if $class_plain_instance(S, n)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
+  -- if $class_plain_instance(S, n)
+  -- if ~$property_accessible(S, n, ptbytes)
 def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.RESULT = KNOWN PNULL]
   -- if ~$class_plain_instance(S, n)
 def $base_find(S, BASE_PROPERTY pvalue ptbytes, z) = S[.RESULT = KNOWN PNULL]
@@ -441,26 +432,23 @@ def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = S_read
   -- if S_read.COMPLETION =/= NORMAL
 def $assign_array(S, BASE_PROPERTY (POBJECT n) ptbytes, poperand, z) = S[.COMPLETION = UNSUPPORTED "Closure property write"]
   -- if ~$class_plain_instance(S, n)
-def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(S_read, "Error", $ptascii("Attempt to assign property \"") ++ ptbytes ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
+def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(S_read, "Error", $ptascii("Attempt to assign property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
 
-dec $property_unset(pstate, pvalue, ptbytes, int) : pstate
-def $property_unset(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access property starting with \"\\0\""), z)
-  -- if $class_plain_instance(S, n)
-  -- if $property_bad_name(ptbytes)
-def $property_unset(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
+dec $property_unset_key(pstate, pvalue, ptbytes, int) : pstate
+def $property_unset_key(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (porigin)
   -- if S_detached = $propref_detach_slot(S, n, ppropertyslot)
-def $property_unset(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
+def $property_unset_key(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = eps
   -- if S_detached = $propref_detach_slot(S, n, ppropertyslot)
-def $property_unset(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
+def $property_unset_key(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 def $property_current_line(S) = z
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)

@@ -10,9 +10,9 @@ def $class_link_at((CLASSLINK porigin_other pclassparent) :: pclasslink_tail*, p
 dec $property_info_append(ppropertydesc*, ppropertydesc*) : ppropertydesc*
 def $property_info_append(ppropertydesc_own*, eps) = ppropertydesc_own*
 def $property_info_append(ppropertydesc_own*, ppropertydesc_parent :: ppropertydesc_tail*) = $property_info_append(ppropertydesc_own*, ppropertydesc_tail*)
-  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
 def $property_info_append(ppropertydesc_own*, ppropertydesc_parent :: ppropertydesc_tail*) = $property_info_append(ppropertydesc_own* ++ [ppropertydesc_parent], ppropertydesc_tail*)
-  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
 dec $property_info_layout(pstate, porigin, nat) : ppropertydesc*
 def $property_info_layout(S, porigin, 0) = eps
 def $property_info_layout(S, porigin, n) = pclassdesc.PROPERTIES
@@ -32,13 +32,13 @@ def $property_info_layout(S, porigin, n) = eps -- otherwise
 dec $class_property_override_issue(pstate, pclassdesc, ppropertydesc*, ppropertydesc*) : ptbytes?
 def $class_property_override_issue(S, pclassdesc_child, eps, ppropertydesc_own*) = eps
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
-  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = (ptbytes_message)
-  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
-  -- if $ppproperty_override_message(pclassdesc_child.NAME, ppropertydesc_parent.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent.TYPE, ppropertydesc_found.TYPE) = (ptbytes_message)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
+  -- if $ppproperty_inherit_message(pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = (ptbytes_message)
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
-  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
-  -- if $ppproperty_override_message(pclassdesc_child.NAME, ppropertydesc_parent.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent.TYPE, ppropertydesc_found.TYPE) = eps
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
+  -- if $ppproperty_inherit_message(pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = eps
 
 dec $method_link_state(pstate, pclassdesc, porigin) : pstate
 def $method_link_state(S, pclassdesc, porigin_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
