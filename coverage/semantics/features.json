@@ -3040,10 +3040,15 @@
         "control.goto",
         "static.control-targets"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/128-goto-compiler.watsup",
+        "spec/semantics/129-goto-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/goto.py"
+      ],
+      "review": "Per-callable source/static goto and label rules are active; try/finally jump behavior remains open (goto-review.json)."
     },
     {
       "node": "Stmt_GroupUse",
@@ -3134,10 +3139,15 @@
       "obligations": [
         "control.labels"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/128-goto-compiler.watsup",
+        "spec/semantics/129-goto-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/goto.py"
+      ],
+      "review": "Per-callable source/static goto and label rules are active; try/finally jump behavior remains open (goto-review.json)."
     },
     {
       "node": "Stmt_Namespace",
@@ -6078,28 +6088,50 @@
     {
       "id": "control.labels",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/128-goto-compiler.watsup",
+        "spec/semantics/129-goto-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/goto_compiler.py",
+        "tests/semantics/goto_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/goto.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/goto-review.json",
+        "docs/semantics/SOURCE-GOTO.md"
+      ],
+      "review": "Per-callable label scope, source-authenticated target paths, branch entry and active-owner continuation are checked. try/finally and exception interaction remain open."
     },
     {
       "id": "control.goto",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/128-goto-compiler.watsup",
+        "spec/semantics/129-goto-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/goto_compiler.py",
+        "tests/semantics/goto_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/goto.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/goto-review.json",
+        "docs/semantics/SOURCE-GOTO.md"
+      ],
+      "review": "Per-callable label scope, source-authenticated target paths, branch entry and active-owner continuation are checked. try/finally and exception interaction remain open."
     },
     {
       "id": "control.break-level",
@@ -7008,21 +7040,25 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/47-control-compiler.watsup",
-        "spec/semantics/50-control-flow.watsup"
+        "spec/semantics/50-control-flow.watsup",
+        "spec/semantics/128-goto-compiler.watsup"
       ],
       "helper_tests": [
         "tests/semantics/control_compiler.py",
-        "tests/semantics/control_flow.py"
+        "tests/semantics/control_flow.py",
+        "tests/semantics/goto_compiler.py"
       ],
       "source_tests": [
         "tests/semantics/control_flow.py",
         "tests/semantics/validate.py",
-        "coverage/semantics/control-review.json"
+        "coverage/semantics/control-review.json",
+        "tests/semantics/goto.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/goto-review.json"
       ],
-      "review": "Independent source/compiler/control review accepted current if/elseif/else and while/do/for with literal-depth break/continue. Exact source observations, compile order/depth/metadata checks, nested origins, pooled literal reuse, reference ownership and dense budget replay passed. Whole obligations remain partial: pending expressions, frames/callbacks, switch/goto and remaining object/frame foreach paths and exception/finally interactions require further rules and evidence."
+      "review": "Current if/elseif/else, while/do/for, switch and per-callable goto target checks have source/compiler review. try/finally legality, remaining object/frame foreach paths and broader control contexts remain open."
     },
     {
       "id": "static.declarations",

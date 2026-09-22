@@ -3,7 +3,9 @@ syntax ppmode = PPF | PPR | PPW | PPRW | PPUNSET | PPIS
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
 syntax ppexprdone = PPCIMPLICIT pcpath ptbytes nat | PPCARROW pcpath nat | PPCLEXICAL pcpath ptbytes bool nat | PPCSTATIC pcpath ptbytes nat nat bool | PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath | PPCCALL_INIT pcpath nat | PPCPIPE_SEND pcpath int | PPCSWITCH_COMPARE pcpath int | PPCSWITCH_BOOL pcpath bool
-syntax ppstate = { CLASSES pclassdesc*, CLOSURETEMPLATES pfunction*, CLOSURE bool, RETURNREF bool, RETURNS ptbranch*, FUNCTIONS pfunction*, GLOBALS pcpath*, EARLY pcpath?, LOOPS nat, SWITCHES nat*, HEADERASSIGNED bool, CVS ptbytes*, AUTOGLOBALS ptbytes*, FOLD pfstate, ENV plenv, LOCATION pllocation,
+syntax ppgotolabel = PPGOTOLABEL ptbytes pcpath int pcpath*
+syntax ppgotoref = PPGOTOREF ptbytes pcpath int pcpath*
+syntax ppstate = { CLASSES pclassdesc*, CLOSURETEMPLATES pfunction*, CLOSURE bool, RETURNREF bool, RETURNS ptbranch*, FUNCTIONS pfunction*, GLOBALS pcpath*, EARLY pcpath?, LOOPS nat, SWITCHES nat*, GOTOROOT pcpath, LABELS ppgotolabel*, GOTOS ppgotoref*, HEADERASSIGNED bool, CVS ptbytes*, AUTOGLOBALS ptbytes*, FOLD pfstate, ENV plenv, LOCATION pllocation,
   COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, WRITES (pcpath, nat)*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate
 
@@ -45,6 +47,7 @@ dec $ppterminator(metadata) : int
 def $ppterminator(metadata) = $ppterminator_range($ppterminator_token(metadata), $source_line(metadata), $source_end_line(metadata))
 
 dec $ppstart(nat, program, ptbytes) : ppstate
+dec $ppgoto_finish(ppstate) : ppstate
 dec $pplexical(ppstate, plresult) : ppstate
 dec $ppresume(ppstate, plstate, pcpath, statement, plenv) : ppstate
 dec $pplocate(ppstate, pcpath, int) : ppstate
@@ -66,10 +69,10 @@ dec $ppupdatecheck(ppstate, expression) : ppstate
 dec $ppassignrefcheck(ppstate, expression, bool) : ppstate
 dec $ppstart_cwd(nat, program, ptbytes, ptbytes?) : ppstate
 def $ppstart(n, program, ptbytes) = $ppstart_cwd(n, program, ptbytes, eps)
-def $ppstart_cwd(n, program, ptbytes, ptbytes_cwd?) = $pplexical({ CLASSES eps, CLOSURETEMPLATES eps, CLOSURE false, RETURNREF false, RETURNS eps, FUNCTIONS eps, GLOBALS eps, EARLY eps, LOOPS 0, SWITCHES eps, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.FILE = (ptbytes)][.CWD = ptbytes_cwd?]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
+def $ppstart_cwd(n, program, ptbytes, ptbytes_cwd?) = $pplexical({ CLASSES eps, CLOSURETEMPLATES eps, CLOSURE false, RETURNREF false, RETURNS eps, FUNCTIONS eps, GLOBALS eps, EARLY eps, LOOPS 0, SWITCHES eps, GOTOROOT eps, LABELS eps, GOTOS eps, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.FILE = (ptbytes)][.CWD = ptbytes_cwd?]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $pplexical(P, PLDONE plstate pldiagnostic*) = P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*]
+def $pplexical(P, PLDONE plstate pldiagnostic*) = $ppgoto_finish(P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*])
   -- if P.COMPLETION = PPCNORMAL
 def $pplexical(P, PLERROR pldiagnostic*) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*][.COMPLETION = PPCNAMESPACE]
   -- if P.COMPLETION = PPCNORMAL

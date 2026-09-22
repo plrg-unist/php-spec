@@ -178,6 +178,11 @@ conditional activation, allocate owned objects, and support identity, exact clas
 types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)
 binds source and paused-state checks. Members, inheritance, internal-class
 construction and method callbacks remain open.
+[Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
+enter nested branches without evaluating skipped guards, and preserve or release
+active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)
+binds static, source and paused-state checks. Jumps involving `try`/`finally`
+remain open.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

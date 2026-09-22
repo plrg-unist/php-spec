@@ -205,6 +205,7 @@ def $enter_compiled_task(S, porigin, ptask, ptask_tail*) = S[.TODO = [ptask, ORI
   -- otherwise
 
 dec $compiled_operands(ppstate, ppexprdone*) : pcodeexpr*
+dec $compiled_gotos(ppgotoref*, ppgotolabel*) : pcodeexpr*
 def $compiled_operands(P, eps) = eps
 def $compiled_operands(P, (PPCEFFECT pcpath) :: ppexprdone*) = (CODEEFFECT pcpath) :: $compiled_operands(P, ppexprdone*)
 def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = $compiled_argument(P, pcpath) ++ [(CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps))] ++ $compiled_operands(P, ppexprdone*)
@@ -244,7 +245,7 @@ def $compile_source_ready(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGN
   -- if P.COMPLETION = PPCNORMAL
 
 def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_classes($install_functions(S_installed, P.FUNCTIONS), P.CLASSES)[.CLOSURETEMPLATES = S.CLOSURETEMPLATES ++ P.CLOSURETEMPLATES][.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
+def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_classes($install_functions(S_installed, P.FUNCTIONS), P.CLASSES)[.CLOSURETEMPLATES = S.CLOSURETEMPLATES ++ P.CLOSURETEMPLATES][.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_gotos(P.GOTOS, P.LABELS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
   -- if P.FOLD.MEMORY.ENV = eps
   -- if P.FOLD.MEMORY.STORE = eps
   -- if P.FOLD.MEMORY.REFCELLS = eps

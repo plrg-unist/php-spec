@@ -1,0 +1,25 @@
+{
+  "scope": "Per-callable label resolution and goto continuation reconstruction through ordinary branches, active loops, foreach and switch; try/finally remains open",
+  "profile": "Maintained source uses PHP 8.5.10 CLI -n ordinary flags plus variables_order=EGPCS and explicit request environment/cwd; retained independent originals keep their separately recorded ordinary profile. Source10 fingerprint 366c0c8ae4caa48062abd03f7383fe8233e765c5ad2e7bcb83e03c30ab54e004; task-auth1 and paused9 fingerprint 033240642c8e91b5ccb3e592a9647983b181402d445aa7245146e78b880fdde7. Both maintained source reports' 135 direct semantic input hashes match the merged canonical files.",
+  "implementation": {
+    "compiler_sha256": "815cdf30d432dbea141c293eba7b055edc1d3a8d6a4fc32bca0b78946ece392f",
+    "runtime_sha256": "46e12132514220c0c67f4443dc26d461ff6c37826ae00ad31f7418d14040f930"
+  },
+  "retained_native": {
+    "original_nine": ".tools/review15-goto/native.json SHA-256 12ee01a600b5f763683ad423512d32461f49c94c0c68f0eda795206fb381f911",
+    "multiline_two": ".tools/review15-goto/native-lines.json SHA-256 7b293db94b8207dd042d7365f8f3e8026c88dec43c585914430be9b9b3bbc8aa",
+    "model_replay": "11/11 static/source-compile outcomes on the merged object+goto implementation; .tools/goto-review-replay-jsi2vc5d/review-replay.watsup SHA-256 c2308de0f70302d27d757e378512888d49a880fed18c1bb1ef46bb2de0cccd2f; native was not rerun"
+  },
+  "maintained": {
+    "source": "10/10 exact normal outcomes in .tools/goto-jxs7evk1/report.json SHA-256 6c992c3ba0ddc341fc0d6d8dbc3bf2979c2c33dada35693db71d1ffcfc4c5060; queued-task source control separately exact in .tools/goto-6izyh2wa/report.json SHA-256 ce3d764a7ce6f90b0c2d802187accc7e6ac0718b3b60676f7a764c4ebb1a1691",
+    "compiler": "25 source, projection, callable scope and label-only recompile assertions pass in tests/semantics/goto_compiler.py",
+    "paused": "9 source-backed stages, 232 assertions including queued task, foreach owner, switch temporary retention/release and callable scope; .tools/goto-protocol-hw0ppzmy/report.json SHA-256 e99c3b2101fe75df6b63761bea3f33c7214e0973ff1c7d58c08e1a35e15b81d7"
+  },
+  "independent_controls": {
+    "queued_task": "Initial forged identifier was accepted; corrected 11 assertions in .tools/review15-goto/task-auth-corrected/report.json SHA-256 a68bc3c0395d2568d25604f1a1e447c7cc2cf4d0d1e804fe178fd2975f683432",
+    "foreach_owner": "Initial alternate live HARRAY marker was accepted; corrected 19 assertions in .tools/review15-goto/owner-auth-corrected/report.json SHA-256 31560ef506315e6b5b8ed7af7b34241d41e993b9a6a5227f49dda0cc1c7149fd",
+    "switch_temporary": "Fresh array subject remains owned across same-switch goto and releases on outward goto; .tools/review15-goto/switch-same-owner-v3/report.json SHA-256 cf93af54b920cafeb60ea4a2361c043ea49aab8c40ecaf06ac0e6844da854885 and switch-out-owner-v3/report.json SHA-256 06e31f515a72536e2818d40fdabef5a3ec2a22267bfd48c5d568ea25ed997e44"
+  },
+  "combined_regressions": "Switch compiler 10 sources + 1 missing fact + 5 edits and paused 6/85 pass; object paused 39 and selected class-typed identity, conditional function publication, and pipe-call source outcomes pass on merged inputs.",
+  "boundary": "No parser schema changed, so the prior classified syntax audit remains separate; jumps involving try/finally and wider exception control are not claimed."
+}

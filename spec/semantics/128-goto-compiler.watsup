@@ -1,0 +1,117 @@
+;; Labels are local to one op_array. Zend emits gotos during statement
+;; compilation, then resolves them in pass two after that callable's body.
+dec $ppgoto_owner(pcoccurrence*, pcpath) : pcpath*
+def $ppgoto_owner(pcoccurrence*, pcpath) = [pcpath]
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtWhile expression phpType23 metadata)
+def $ppgoto_owner(pcoccurrence*, pcpath) = [pcpath]
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtDo phpType23 expression metadata)
+def $ppgoto_owner(pcoccurrence*, pcpath) = [pcpath]
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtFor phpType25_1 phpType25_2 phpType25_3 phpType23 metadata)
+def $ppgoto_owner(pcoccurrence*, pcpath) = [pcpath]
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtForeach expression phpType5 phpType4 expression_key phpType23 phpType4_else metadata)
+def $ppgoto_owner(pcoccurrence*, pcpath) = [pcpath]
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtSwitch expression phpType60 metadata)
+def $ppgoto_owner(pcoccurrence*, pcpath) = eps -- otherwise
+
+dec $ppgoto_owners(pcoccurrence*, pcpath, pcpath, nat) : pcpath*
+def $ppgoto_owners(pcoccurrence*, pcpath_root, pcpath, n) = eps
+  -- if $(n >= |pcpath|)
+def $ppgoto_owners(pcoccurrence*, pcpath_root, pcpath, n) = $ppgoto_owner(pcoccurrence*, pcpath[0:n]) ++ $ppgoto_owners(pcoccurrence*, pcpath_root, pcpath, $(n + 1))
+  -- if $(n < |pcpath|)
+  -- if pcpath[0:|pcpath_root|] = pcpath_root
+
+dec $ppgoto_label(ppgotolabel*, ptbytes) : ppgotolabel?
+dec $ppgoto_record_label(ppstate, pcpath, ptbytes) : ppstate
+dec $ppgoto_record_ref(ppstate, pcpath, ptbytes) : ppstate
+def $ppgoto_label(eps, ptbytes) = eps
+def $ppgoto_label((PPGOTOLABEL ptbytes pcpath z pcpath_owner*) :: ppgotolabel*, ptbytes) = (PPGOTOLABEL ptbytes pcpath z pcpath_owner*)
+def $ppgoto_label((PPGOTOLABEL ptbytes_other pcpath z pcpath_owner*) :: ppgotolabel*, ptbytes) = $ppgoto_label(ppgotolabel*, ptbytes)
+  -- if ptbytes_other =/= ptbytes
+
+def $ppstatement(P, pcpath, NStmtLabel (NIdentifier (BYTES text) metadata_name) metadata) = $ppgoto_record_label($pplocate(P, pcpath, $source_line(metadata)), pcpath, $base64(text))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtGoto (NIdentifier (BYTES text) metadata_name) metadata) = $ppgoto_record_ref($pplocate(P, pcpath ++ [PCFIELD 0], $source_line(metadata_name)), pcpath, $base64(text))
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppgoto_record_label(P, pcpath, ptbytes) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppgoto_record_label(P, pcpath, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Label '") ++ ptbytes ++ $ptascii("' already defined")) P.LOCATION.LINE)]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppgoto_label(P.LABELS, ptbytes) = (ppgotolabel)
+def $ppgoto_record_label(P, pcpath, ptbytes) = P[.LABELS = P.LABELS ++ [PPGOTOLABEL ptbytes pcpath P.LOCATION.LINE pcpath_owner*]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppgoto_label(P.LABELS, ptbytes) = eps
+  -- if pcpath_owner* = $ppgoto_owners(P.FOLD.SOURCE.OCCURRENCES, P.GOTOROOT, pcpath, |P.GOTOROOT|)
+
+def $ppgoto_record_ref(P, pcpath, ptbytes) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppgoto_record_ref(P, pcpath, ptbytes) = P[.GOTOS = P.GOTOS ++ [PPGOTOREF ptbytes pcpath P.LOCATION.LINE pcpath_owner*]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_owner* = $ppgoto_owners(P.FOLD.SOURCE.OCCURRENCES, P.GOTOROOT, pcpath, |P.GOTOROOT|)
+
+;; Entering a distinct sibling loop/switch at equal depth is also illegal.
+dec $ppgoto_legal(pcpath*, pcpath*) : bool
+def $ppgoto_legal(eps, pcpath_source*) = true
+def $ppgoto_legal(pcpath_target :: pcpath_target_tail*, eps) = false
+def $ppgoto_legal(pcpath_target :: pcpath_target_tail*, pcpath_source :: pcpath_source_tail*) = $ppgoto_legal(pcpath_target_tail*, pcpath_source_tail*)
+  -- if pcpath_target = pcpath_source
+def $ppgoto_legal(pcpath_target :: pcpath_target_tail*, pcpath_source :: pcpath_source_tail*) = false
+  -- if pcpath_target =/= pcpath_source
+
+dec $ppgoto_resolve(ppstate, ppgotoref*) : ppstate
+def $ppgoto_finish(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppgoto_finish(P) = $ppgoto_resolve(P, P.GOTOS)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppgoto_resolve(P, eps) = P
+def $ppgoto_resolve(P, ppgotoref*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppgoto_resolve(P, (PPGOTOREF ptbytes pcpath z pcpath_source*) :: ppgotoref*) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("'goto' to undefined label '") ++ ptbytes ++ $ptascii("'")) z)]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppgoto_label(P.LABELS, ptbytes) = eps
+def $ppgoto_resolve(P, (PPGOTOREF ptbytes pcpath z pcpath_source*) :: ppgotoref*) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("'goto' into loop or switch statement is disallowed")) z)]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppgoto_label(P.LABELS, ptbytes) = (PPGOTOLABEL ptbytes pcpath_dest z_target pcpath_target_owner*)
+  -- if ~$ppgoto_legal(pcpath_target_owner*, pcpath_source*)
+def $ppgoto_resolve(P, (PPGOTOREF ptbytes pcpath z pcpath_source*) :: ppgotoref*) = $ppgoto_resolve(P, ppgotoref*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppgoto_label(P.LABELS, ptbytes) = (PPGOTOLABEL ptbytes pcpath_dest z_target pcpath_target_owner*)
+  -- if $ppgoto_legal(pcpath_target_owner*, pcpath_source*)
+
+;; A resolved target is a compiler fact, checked against source on every
+;; public drive/resume. The runtime never chooses a label by scanning mutable
+;; statement tasks or trusting a caller-supplied target path.
+def $compiled_gotos(eps, ppgotolabel*) = eps
+def $compiled_gotos((PPGOTOREF ptbytes pcpath_source z pcpath_source_owner*) :: ppgotoref*, ppgotolabel*) = (CODEGOTO pcpath_source pcpath_dest) :: $compiled_gotos(ppgotoref*, ppgotolabel*)
+  -- if $ppgoto_label(ppgotolabel*, ptbytes) = (PPGOTOLABEL ptbytes pcpath_dest z_dest pcpath_dest_owner*)
+
+def $ppcodepath(CODEGOTO pcpath_source pcpath_dest) = pcpath_source
+def $constant_codepath(CODEGOTO pcpath_source pcpath_dest) = pcpath_source
+def $code_expression((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_call_init((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_write((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $typed_return_entry(pcoccurrence*, CODEGOTO pcpath_source pcpath_dest) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEGOTO pcpath_source pcpath_dest) = eps
+def $named_send_entry(pcoccurrence*, CODEGOTO pcpath_source pcpath_dest) = eps
+def $code_pipe_send((CODEGOTO pcpath_source pcpath_dest) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+
+dec $goto_code_entry(pcodeexpr) : pcodeexpr*
+def $goto_code_entry(CODEGOTO pcpath_source pcpath_dest) = [CODEGOTO pcpath_source pcpath_dest]
+def $goto_code_entry(pcodeexpr) = eps -- otherwise
+dec $goto_code(pcodeexpr*) : pcodeexpr*
+def $goto_code(eps) = eps
+def $goto_code(pcodeexpr :: pcodeexpr_tail*) = $goto_code_entry(pcodeexpr) ++ $goto_code(pcodeexpr_tail*)
+def $goto_unit_code_valid(P, pcode) = ($goto_code(pcode.EXPRESSIONS) = $compiled_gotos(P.GOTOS, P.LABELS))
+
+dec $code_goto_target(pcodeexpr*, pcpath) : pcpath?
+def $code_goto_target(eps, pcpath) = eps
+def $code_goto_target((CODEGOTO pcpath pcpath_dest) :: pcodeexpr*, pcpath) = (pcpath_dest)
+def $code_goto_target((CODEGOTO pcpath_other pcpath_dest) :: pcodeexpr*, pcpath) = $code_goto_target(pcodeexpr*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $code_goto_target(pcodeexpr :: pcodeexpr_tail*, pcpath) = $code_goto_target(pcodeexpr_tail*, pcpath)
+  -- if $goto_code_entry(pcodeexpr) = eps

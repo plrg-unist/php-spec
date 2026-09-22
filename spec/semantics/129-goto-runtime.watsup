@@ -1,0 +1,254 @@
+;; Goto resumes at the compiler-authenticated label occurrence. A fresh
+;; continuation is assembled from source statements; saved loop/foreach/switch
+;; owners are reused only when the target stays inside that exact owner.
+syntax pgototasks = GOTOTASKS ptask* | GOTOMISSING
+
+dec $goto_base(pstate, porigin) : pgototasks
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
+  -- if S.CURRENT = eps
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if P = $ppstart_cwd(n, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN n pcpath), $call_request_cwd(S.REQUEST))
+  -- if P.COMPLETION = PPCNORMAL
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_function
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $closure_body(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_function
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
+def $goto_base(S, porigin) = GOTOMISSING -- otherwise
+
+dec $goto_task_site(ptask, porigin) : bool
+def $goto_task_site(AT porigin (STMT statement), porigin) = true
+def $goto_task_site(ptask, porigin) = false -- otherwise
+
+;; Search a source-derived task list for the label. A containing statement is
+;; opened only along the target occurrence, so skipped branch guards and loop
+;; initializers are never evaluated again.
+dec $goto_find(pstate, porigin, ptask*, ptask*) : pgototasks
+dec $goto_open(pstate, porigin, statement, porigin, ptask*, ptask*) : pgototasks
+dec $goto_task_contains(ptask, porigin) : bool
+dec $goto_saved(ptask*, porigin) : pgototasks
+dec $goto_saved_match(ptask, porigin) : bool
+dec $goto_if(pstate, porigin, statement*, phpType54*, phpType55, porigin, ptask*, ptask*) : pgototasks
+dec $goto_if_tail(pstate, porigin, phpType54*, phpType55, porigin, ptask*, ptask*, nat) : pgototasks
+dec $goto_loop_statement(statement) : bool
+dec $goto_owned_body(pstate, porigin, statement*, porigin?, porigin, ptask*) : pgototasks
+dec $goto_loop(pstate, porigin, statement, porigin, ptask*) : pgototasks
+dec $goto_switch(pstate, porigin, phpType61*, porigin, ptask*, nat) : pgototasks
+dec $goto_drop_iterators(piterator*, ptask*, porigin) : piterator*
+dec $goto_foreach_keep(porigin?, porigin) : bool
+dec $goto_foreach_task(ptask) : bool
+dec $goto_marker_valid(pstate, ptask) : bool
+dec $goto_markers_valid(pstate, ptask*) : bool
+dec $goto_foreach_owner_valid(pstate, piterator?, pnode) : bool
+dec $goto_foreach_line_valid(pstate, statement, porigin, int) : bool
+dec $goto_foreach_mode_valid(pstate, statement, nat) : bool
+dec $goto_iterator_mode(piterator?) : bool
+dec $goto_marker_origin(ptask) : porigin?
+dec $goto_first_origin(ptask*) : porigin?
+dec $goto_callable_origin(pstate) : porigin?
+dec $goto_continuation_origin(pstate, ptask*) : porigin?
+def $goto_find(S, porigin, eps, ptask_old*) = GOTOMISSING
+def $goto_find(S, PORIGIN n pcpath, (AT (PORIGIN n pcpath) (STMT statement)) :: ptask_tail*, ptask_old*) = GOTOTASKS ((AT (PORIGIN n pcpath) (STMT statement)) :: ptask_tail*)
+def $goto_find(S, PORIGIN n pcpath_target, (AT (PORIGIN n pcpath_parent) (STMT statement)) :: ptask_tail*, ptask_old*) = $goto_open(S, PORIGIN n pcpath_target, statement, PORIGIN n pcpath_parent, ptask_tail*, ptask_old*)
+  -- if pcpath_target =/= pcpath_parent
+  -- if $effect_below(pcpath_parent, pcpath_target)
+def $goto_find(S, porigin, ptask :: ptask_tail*, ptask_old*) = $goto_find(S, porigin, ptask_tail*, ptask_old*)
+  -- if ~$goto_task_site(ptask, porigin)
+  -- if ~$goto_task_contains(ptask, porigin)
+def $goto_task_contains(AT (PORIGIN n pcpath_parent) (STMT statement), PORIGIN n pcpath_target) = $effect_below(pcpath_parent, pcpath_target)
+def $goto_task_contains(ptask, porigin) = false -- otherwise
+
+def $goto_saved(eps, porigin) = GOTOMISSING
+def $goto_saved((LOOP_NEXT statement (porigin)) :: ptask_tail*, porigin) = GOTOTASKS ((LOOP_NEXT statement (porigin)) :: ptask_tail*)
+def $goto_saved((FOREACH_NEXT n pnode statement (porigin) z) :: ptask_tail*, porigin) = GOTOTASKS ((FOREACH_NEXT n pnode statement (porigin) z) :: ptask_tail*)
+def $goto_saved((SWITCH_NEXT statement porigin poperand) :: ptask_tail*, porigin) = GOTOTASKS ((SWITCH_NEXT statement porigin poperand) :: ptask_tail*)
+def $goto_saved(ptask :: ptask_tail*, porigin) = $goto_saved(ptask_tail*, porigin)
+  -- if ~$goto_saved_match(ptask, porigin)
+def $goto_saved_match(LOOP_NEXT statement (porigin_marker), porigin) = (porigin_marker = porigin)
+def $goto_saved_match(FOREACH_NEXT n pnode statement (porigin_marker) z, porigin) = (porigin_marker = porigin)
+def $goto_saved_match(SWITCH_NEXT statement porigin_marker poperand, porigin) = (porigin_marker = porigin)
+def $goto_saved_match(ptask, porigin) = false -- otherwise
+
+def $goto_open(S, porigin_target, NStmtBlock (SEQUENCE statement*) metadata, porigin, ptask_tail*, ptask_old*) = $goto_find(S, porigin_target, $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0) ++ ptask_tail*, ptask_old*)
+def $goto_open(S, porigin_target, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata, porigin, ptask_tail*, ptask_old*) = $goto_if(S, porigin_target, statement*, phpType54*, phpType55, porigin, ptask_tail*, ptask_old*)
+def $goto_open(S, porigin_target, statement, porigin, ptask_tail*, ptask_old*) = $goto_loop(S, porigin_target, statement, porigin, ptask_old*)
+  -- if $goto_loop_statement(statement)
+def $goto_open(S, porigin_target, NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value (SEQUENCE statement*) (BOOLEAN false) metadata, porigin, ptask_tail*, ptask_old*) = $goto_owned_body(S, porigin_target, statement*, $origin_child((porigin), [PCFIELD 4]), porigin, ptask_old*)
+def $goto_open(S, porigin_target, NStmtSwitch expression (SEQUENCE phpType61*) metadata, porigin, ptask_tail*, ptask_old*) = $goto_switch(S, porigin_target, phpType61*, porigin, ptask_old*, 0)
+def $goto_open(S, porigin_target, statement, porigin, ptask_tail*, ptask_old*) = GOTOMISSING -- otherwise
+
+def $goto_if(S, PORIGIN n pcpath_target, statement*, phpType54*, phpType55, PORIGIN n pcpath_if, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_if ++ [PCFIELD 1])), 0) ++ ptask_tail*, ptask_old*)
+  -- if $effect_below(pcpath_if ++ [PCFIELD 1], pcpath_target)
+def $goto_if(S, PORIGIN n pcpath_target, statement*, phpType54*, phpType55, PORIGIN n pcpath_if, ptask_tail*, ptask_old*) = $goto_if_tail(S, PORIGIN n pcpath_target, phpType54*, phpType55, PORIGIN n pcpath_if, ptask_tail*, ptask_old*, 0)
+  -- if ~$effect_below(pcpath_if ++ [PCFIELD 1], pcpath_target)
+def $goto_if_tail(S, PORIGIN n pcpath_target, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType54_tail*, phpType55, PORIGIN n pcpath_if, ptask_tail*, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_if ++ [PCFIELD 2, PCINDEX n_index, PCFIELD 1])), 0) ++ ptask_tail*, ptask_old*)
+  -- if $effect_below(pcpath_if ++ [PCFIELD 2, PCINDEX n_index, PCFIELD 1], pcpath_target)
+def $goto_if_tail(S, PORIGIN n pcpath_target, phpType54 :: phpType54_tail*, phpType55, PORIGIN n pcpath_if, ptask_tail*, ptask_old*, n_index) = $goto_if_tail(S, PORIGIN n pcpath_target, phpType54_tail*, phpType55, PORIGIN n pcpath_if, ptask_tail*, ptask_old*, $(n_index + 1))
+  -- if ~$effect_below(pcpath_if ++ [PCFIELD 2, PCINDEX n_index, PCFIELD 1], pcpath_target)
+def $goto_if_tail(S, PORIGIN n pcpath_target, eps, NStmtElse (SEQUENCE statement*) metadata, PORIGIN n pcpath_if, ptask_tail*, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_if ++ [PCFIELD 3, PCFIELD 0])), 0) ++ ptask_tail*, ptask_old*)
+  -- if $effect_below(pcpath_if ++ [PCFIELD 3, PCFIELD 0], pcpath_target)
+def $goto_if_tail(S, porigin_target, eps, ABSENT, porigin, ptask_tail*, ptask_old*, n_index) = GOTOMISSING
+def $goto_if_tail(S, PORIGIN n pcpath_target, eps, NStmtElse phpType23 metadata, PORIGIN n pcpath_if, ptask_tail*, ptask_old*, n_index) = GOTOMISSING
+  -- if ~$effect_below(pcpath_if ++ [PCFIELD 3, PCFIELD 0], pcpath_target)
+
+def $goto_loop_statement(NStmtWhile expression phpType23 metadata) = true
+def $goto_loop_statement(NStmtDo phpType23 expression metadata) = true
+def $goto_loop_statement(NStmtFor phpType25_1 phpType25_2 phpType25_3 phpType23 metadata) = true
+def $goto_loop_statement(statement) = false -- otherwise
+def $goto_owned_body(S, porigin_target, statement*, porigin_body?, porigin_owner, ptask_old*) = $goto_find(S, porigin_target, $statement_tasks(statement*, porigin_body?, 0) ++ ptask_saved*, ptask_old*)
+  -- if $goto_saved(ptask_old*, porigin_owner) = GOTOTASKS ptask_saved*
+def $goto_owned_body(S, porigin_target, statement*, porigin_body?, porigin_owner, ptask_old*) = GOTOMISSING
+  -- if $goto_saved(ptask_old*, porigin_owner) = GOTOMISSING
+def $goto_loop(S, porigin_target, statement, porigin_owner, ptask_old*) = $goto_owned_body(S, porigin_target, $loop_body(statement), $origin_child((porigin_owner), [PCFIELD $loop_body_field(statement)]), porigin_owner, ptask_old*)
+def $goto_switch(S, porigin_target, eps, porigin_owner, ptask_old*, n_index) = GOTOMISSING
+def $goto_switch(S, PORIGIN n pcpath_target, (NStmtCase phpType5 (SEQUENCE statement*) metadata) :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $switch_body_from((NStmtCase phpType5 (SEQUENCE statement*) metadata) :: phpType61_tail*, PORIGIN n pcpath_switch, 0, n_index) ++ ptask_saved*, ptask_old*)
+  -- if $effect_below(pcpath_switch ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 1], pcpath_target)
+  -- if $goto_saved(ptask_old*, PORIGIN n pcpath_switch) = GOTOTASKS ptask_saved*
+def $goto_switch(S, PORIGIN n pcpath_target, phpType61 :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index) = $goto_switch(S, PORIGIN n pcpath_target, phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, $(n_index + 1))
+  -- if ~$effect_below(pcpath_switch ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 1], pcpath_target)
+def $goto_switch(S, PORIGIN n pcpath_target, phpType61 :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index) = GOTOMISSING
+  -- if $effect_below(pcpath_switch ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 1], pcpath_target)
+  -- if $goto_saved(ptask_old*, PORIGIN n pcpath_switch) = GOTOMISSING
+
+def $goto_drop_iterators(piterator*, eps, porigin_target) = piterator*
+def $goto_foreach_keep((PORIGIN n pcpath_owner), PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
+def $goto_foreach_keep(porigin_owner?, porigin_target) = false -- otherwise
+def $goto_drop_iterators(piterator*, (FOREACH_NEXT n pnode statement porigin_owner? z) :: ptask_tail*, porigin_target) = $goto_drop_iterators(piterator*, ptask_tail*, porigin_target)
+  -- if $goto_foreach_keep(porigin_owner?, porigin_target)
+def $goto_drop_iterators(piterator*, (FOREACH_NEXT n pnode statement porigin_owner? z) :: ptask_tail*, porigin_target) = $goto_drop_iterators($iterator_remove(piterator*, n), ptask_tail*, porigin_target)
+  -- if ~$goto_foreach_keep(porigin_owner?, porigin_target)
+def $goto_drop_iterators(piterator*, ptask :: ptask_tail*, porigin_target) = $goto_drop_iterators(piterator*, ptask_tail*, porigin_target)
+  -- if ~$goto_foreach_task(ptask)
+def $goto_foreach_task(FOREACH_NEXT n pnode statement porigin_owner? z) = true
+def $goto_foreach_task(ptask) = false -- otherwise
+def $goto_marker_valid(S, LOOP_NEXT statement (porigin)) = ($origin_node(S.SOURCES, porigin) = (statement) /\ $goto_loop_statement(statement))
+def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HARRAY n_owner) = (~b /\ n_array = n_owner)
+def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HCELL n_cell) = (b /\ (HCELL n_cell <- S.ALLOCATIONS))
+def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HOBJECT n_object) = false
+def $goto_foreach_owner_valid(S, eps, pnode) = false
+def $goto_foreach_line_valid(S, NStmtForeach expression_iterable phpType5 phpType4 expression_value phpType23 phpType4_else metadata, porigin, z) = ($runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression_iterable) = z)
+def $goto_foreach_line_valid(S, statement, porigin, z) = false -- otherwise
+def $goto_iterator_mode((ITERATOR n n_array b pcursor*)) = b
+def $goto_iterator_mode(eps) = false
+def $goto_foreach_mode_valid(S, NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata, n) = ($goto_iterator_mode($iterator_lookup(S.ITERATORS, n)) = $ppforeach_references(expression_value, b_ref))
+def $goto_foreach_mode_valid(S, statement, n) = false -- otherwise
+def $goto_marker_valid(S, FOREACH_NEXT n pnode statement (porigin) z) = ($origin_node(S.SOURCES, porigin) = (statement) /\ $goto_foreach_owner_valid(S, $iterator_lookup(S.ITERATORS, n), pnode) /\ $goto_foreach_line_valid(S, statement, porigin, z) /\ $goto_foreach_mode_valid(S, statement, n))
+def $goto_marker_valid(S, FOREACH_NEXT n pnode statement eps z) = false
+def $goto_marker_valid(S, SWITCH_NEXT statement porigin poperand) = ($switch_site(S, statement, porigin) /\ $switch_subject_valid(S, porigin, poperand))
+def $goto_marker_valid(S, LOOP_NEXT statement eps) = false
+def $goto_marker_valid(S, ptask) = true -- otherwise
+def $call_task_valid(S, LOOP_NEXT statement (porigin)) = $goto_marker_valid(S, LOOP_NEXT statement (porigin))
+def $call_task_valid(S, LOOP_NEXT statement eps) = false
+def $call_task_valid(S, FOREACH_NEXT n pnode statement (porigin) z) = $goto_marker_valid(S, FOREACH_NEXT n pnode statement (porigin) z)
+def $call_task_valid(S, FOREACH_NEXT n pnode statement eps z) = false
+def $goto_markers_valid(S, eps) = true
+def $goto_markers_valid(S, ptask :: ptask_tail*) = ($goto_marker_valid(S, ptask) /\ $goto_markers_valid(S, ptask_tail*))
+def $goto_marker_origin(LOOP_NEXT statement porigin?) = porigin?
+def $goto_marker_origin(FOREACH_NEXT n pnode statement porigin? z) = porigin?
+def $goto_marker_origin(SWITCH_NEXT statement porigin poperand) = (porigin)
+def $goto_marker_origin(ptask) = eps -- otherwise
+def $goto_first_origin(eps) = eps
+def $goto_first_origin(ptask :: ptask_tail*) = (porigin)
+  -- if $goto_marker_origin(ptask) = (porigin)
+def $goto_first_origin(ptask :: ptask_tail*) = $goto_first_origin(ptask_tail*)
+  -- if $goto_marker_origin(ptask) = eps
+def $goto_callable_origin(S) = eps
+  -- if S.CURRENT = eps
+def $goto_callable_origin(S) = (pcallcontext.FUNCTION)
+  -- if S.CURRENT = (pcallcontext)
+def $goto_continuation_origin(S, ptask*) = (porigin)
+  -- if $goto_first_origin(ptask*) = (porigin)
+def $goto_continuation_origin(S, ptask*) = $goto_callable_origin(S)
+  -- if $goto_first_origin(ptask*) = eps
+
+dec $goto_site(pstate, porigin, pcpath) : bool
+dec $goto_active_code(pstate, nat) : pcode?
+def $goto_active_code(S, n) = $code_at(S.CODE, n)
+  -- if S.CURRENT = eps
+def $goto_active_code(S, n) = (pfunction.CODE)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_function
+def $goto_active_code(S, n) = eps -- otherwise
+def $goto_site(S, PORIGIN n pcpath_source, pcpath_target) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_source) = (NStmtGoto (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_target) = (NStmtLabel (NIdentifier (BYTES text) metadata_target) metadata_label)
+  -- if $goto_active_code(S, n) = (pcode)
+  -- if $code_goto_target(pcode.EXPRESSIONS, pcpath_source) = (pcpath_target)
+def $goto_site(S, porigin, pcpath) = false -- otherwise
+
+dec $goto_target(pstate, porigin) : pcpath?
+def $goto_target(S, PORIGIN n pcpath_source) = $code_goto_target(pcode.EXPRESSIONS, pcpath_source)
+  -- if $goto_active_code(S, n) = (pcode)
+def $goto_target(S, porigin) = eps -- otherwise
+
+dec $goto_source_match(pstate, statement, porigin?) : bool
+def $goto_source_match(S, statement, (porigin)) = ($origin_node(S.SOURCES, porigin) = (statement))
+def $goto_source_match(S, statement, eps) = false
+dec $goto_resolved_site(pstate, porigin, pcpath?) : bool
+def $goto_resolved_site(S, porigin, (pcpath)) = $goto_site(S, porigin, pcpath)
+def $goto_resolved_site(S, porigin, eps) = false
+dec $goto_task_valid(pstate, statement, porigin?) : bool
+dec $goto_code_present(pcode?) : bool
+dec $goto_source_owner(pfunction*, nat, pcpath) : pfunction?
+dec $goto_owner_at(pfunction, nat, pcpath) : pfunction?
+dec $goto_owner_if(bool, pfunction) : pfunction?
+dec $goto_choose_owner(pfunction?, pfunction?) : pfunction?
+dec $goto_owner_scope(pcallcontext?, pfunction?) : bool
+dec $goto_scope_valid(pstate, porigin) : bool
+def $goto_owner_if(true, pfunction) = (pfunction)
+def $goto_owner_if(false, pfunction) = eps
+def $goto_owner_at(pfunction, n, pcpath) = $goto_owner_if(pfunction.CODE.UNIT = n /\ $effect_below(pfunction.BODY, pcpath), pfunction)
+def $goto_choose_owner(eps, pfunction?) = pfunction?
+def $goto_choose_owner((pfunction), eps) = (pfunction)
+def $goto_choose_owner((pfunction_left), (pfunction_right)) = (pfunction_left)
+  -- if $(|pfunction_left.BODY| >= |pfunction_right.BODY|)
+def $goto_choose_owner((pfunction_left), (pfunction_right)) = (pfunction_right)
+  -- if $(|pfunction_left.BODY| < |pfunction_right.BODY|)
+def $goto_source_owner(eps, n, pcpath) = eps
+def $goto_source_owner(pfunction :: pfunction_tail*, n, pcpath) = $goto_choose_owner($goto_owner_at(pfunction, n, pcpath), $goto_source_owner(pfunction_tail*, n, pcpath))
+def $goto_owner_scope(eps, eps) = true
+def $goto_owner_scope((pcallcontext), (pfunction)) = (pcallcontext.FUNCTION = pfunction.ORIGIN)
+def $goto_owner_scope(eps, (pfunction)) = false
+def $goto_owner_scope((pcallcontext), eps) = false
+def $goto_scope_valid(S, PORIGIN n pcpath) = $goto_owner_scope(S.CURRENT, $goto_source_owner($all_functions(S), n, pcpath))
+def $goto_task_valid(S, statement, (porigin)) = ($goto_source_match(S, statement, (porigin)) /\ $goto_scope_valid(S, porigin) /\ $goto_resolved_site(S, porigin, $goto_target(S, porigin)))
+def $goto_task_valid(S, statement, eps) = false
+dec $goto_label_valid(pstate, statement, porigin?) : bool
+def $goto_label_valid(S, statement, (PORIGIN n pcpath)) = ($goto_source_match(S, statement, (PORIGIN n pcpath)) /\ $goto_scope_valid(S, PORIGIN n pcpath) /\ $goto_code_present($goto_active_code(S, n)))
+def $goto_label_valid(S, statement, eps) = false
+def $goto_code_present((pcode)) = true
+def $goto_code_present(eps) = false
+def $call_task_valid(S, STMT (NStmtGoto phpType11 metadata)) = $goto_task_valid(S, NStmtGoto phpType11 metadata, S.ORIGIN)
+def $call_task_valid(S, STMT (NStmtLabel phpType11 metadata)) = $goto_label_valid(S, NStmtLabel phpType11 metadata, S.ORIGIN)
+
+rule PhpStep/label: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtLabel phpType11 metadata)) :: ptask_tail*
+  -- if $goto_label_valid(S, NStmtLabel phpType11 metadata, S.ORIGIN)
+rule PhpStep/label-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid goto label source occurrence"]
+  -- if S.TODO = (STMT (NStmtLabel phpType11 metadata)) :: ptask_tail*
+  -- if ~$goto_label_valid(S, NStmtLabel phpType11 metadata, S.ORIGIN)
+
+dec $goto_jump(pstate, porigin, pcpath) : pstate
+def $goto_jump(S, porigin_source, pcpath_target) = S[.TODO = ptask_new*][.ORIGIN = $goto_continuation_origin(S, ptask_new*)][.ITERATORS = $goto_drop_iterators(S.ITERATORS, S.TODO, PORIGIN n pcpath_target)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if porigin_source = PORIGIN n pcpath_source
+  -- if $goto_site(S, porigin_source, pcpath_target)
+  -- if $goto_base(S, porigin_source) = GOTOTASKS ptask_base*
+  -- if $goto_find(S, PORIGIN n pcpath_target, ptask_base*, S.TODO) = GOTOTASKS ptask_new*
+  -- if $goto_markers_valid(S, ptask_new*)
+def $goto_jump(S, porigin_source, pcpath_target) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid goto continuation"] -- otherwise
+rule PhpStep/goto: S ~> $goto_jump(S[.TODO = ptask_tail*], porigin, pcpath_target)
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if statement = NStmtGoto phpType11 metadata
+  -- if S.ORIGIN = (porigin)
+  -- if $goto_task_valid(S, statement, (porigin))
+  -- if $goto_target(S, porigin) = (pcpath_target)
+rule PhpStep/goto-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid goto descriptor"]
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if statement = NStmtGoto phpType11 metadata
+  -- if ~$goto_task_valid(S, statement, S.ORIGIN)

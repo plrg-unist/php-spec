@@ -10,7 +10,7 @@ dec $ppdefault_prepare(ppstate, pcpath, expression) : ppstate
 dec $ppdefault_kind(pvalue?) : text
 dec $ppdefault_descriptor(ppstate, pcpath) : pdefaultkind
 
-def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b }), pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
+def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.GOTOROOT = pcpath], pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
 
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, psprogress) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -21,7 +21,7 @@ def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE 
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent function type or variadic activation")
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppsupported_signature(pssignature)
-def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppfunction_finish(P_outer, P_body, pcpath, ptbytes, pssignature, metadata)
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppfunction_finish(P_outer, $ppgoto_finish(P_body), pcpath, ptbytes, pssignature, metadata)
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppsupported_signature(pssignature)
   -- if psparam* = pssignature.PARAMETERS

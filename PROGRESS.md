@@ -67,11 +67,18 @@ The [object review](coverage/semantics/object-classes-review.json) binds 31
 maintained source outcomes and paused class/task/ownership guards; this is a
 partial object increment.
 
+Labels and goto 128/129 now compile per callable with exact label spelling and
+source-derived target and owner paths. Runtime jumps can enter ordinary branches,
+reuse the active loop/foreach/switch continuation or release exited owners.
+The [goto review](coverage/semantics/goto-review.json) binds retained static
+observations, source outcomes, descriptor projections and paused ownership/task
+guards. `try`/`finally` interaction remains open.
+
 ## Next work
 
 Authored internal `stdClass` identity is the next adjacent object step;
-inheritance, properties, methods and Throwable follow. Labels/goto are the
-separate compiler lane. Match, exceptions/finally, remaining
+inheritance, properties, methods and Throwable follow. Match,
+exceptions/finally, remaining
 core intrinsics, traversal, dynamic lifetime and collection obligations remain
 open. Full current-source closure and a fresh offline network-isolated rebuild
 are required before complete-core acceptance. The early research goal of Rocq
