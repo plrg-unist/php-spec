@@ -173,6 +173,11 @@ and separate paused-state controls.
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
 binds 18 source outcomes and separate compiler and paused-state checks.
+[Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
+conditional activation, allocate owned objects, and support identity, exact class
+types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)
+binds source and paused-state checks. Members, inheritance, internal-class
+construction and method callbacks remain open.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

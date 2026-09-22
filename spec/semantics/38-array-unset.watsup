@@ -86,7 +86,7 @@ def $base_find(S, BASE_DIM pbase poperand z_key, z) = $unset_intermediate(S_foun
 
 dec $unset_key_value(pstate, pvalue, int) : pstate
 def $unset_key_value(S, PARRAY n, z) = $throw_scalar(S, "TypeError", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,111,102,32,116,121,112,101,32,97,114,114,97,121,32,111,110,32,97,114,114,97,121]), z)
-def $unset_key_value(S, POBJECT n, z) = $throw_scalar(S, "TypeError", [67, 97, 110, 110, 111, 116, 32, 117, 110, 115, 101, 116, 32, 111, 102, 102, 115, 101, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 111, 110, 32, 97, 114, 114, 97, 121], z)
+def $unset_key_value(S, POBJECT n, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot unset offset of type ") ++ $object_name(S, n) ++ $ptascii(" on array"), z)
 def $unset_key_value(S, pvalue, z) = $key_value(S, pvalue, true, z)
   -- otherwise
 
@@ -103,7 +103,7 @@ dec $unset_nonarray(pstate, pvalue, int) : pstate
 def $unset_nonarray(S, PNULL, z) = S
 def $unset_nonarray(S, PBOOL false, z) = $unset_false(S, z)
 def $unset_nonarray(S, PSTRING n*, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]), z)
-def $unset_nonarray(S, POBJECT n, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
+def $unset_nonarray(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), z)
 def $unset_nonarray(S, pvalue, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
   -- otherwise
 

@@ -1669,13 +1669,24 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/127-class-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/object_classes.py",
+        "tests/semantics/object_classes_protocol.py",
+        "tests/semantics/object_classes_catalogue.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 now execute literal named-class and Closure instanceof with source/task guards. Dynamic RHS, inheritance/interface traversal and autoload remain open (object-classes-review.json).",
+      "evidence": [
+        "coverage/semantics/object-classes-review.json"
+      ]
     },
     {
       "node": "Expr_Isset",
@@ -1768,13 +1779,24 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/127-class-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/object_classes.py",
+        "tests/semantics/object_classes_protocol.py",
+        "tests/semantics/object_classes_catalogue.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 now allocate owned, zero-argument instances of named concrete user classes. Constructor arguments, internal construction, dynamic names, inheritance and members remain open (object-classes-review.json).",
+      "evidence": [
+        "coverage/semantics/object-classes-review.json"
+      ]
     },
     {
       "node": "Expr_NullsafeMethodCall",
@@ -2657,13 +2679,25 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/18-class-headers.watsup"
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/127-class-runtime.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent reviewer: named class/interface/trait header helper187b01f2;195 checked header/lint comparisons,9 descriptors,10 Unsupported and57 separate frontend compile restrictions with57 equivalent edited checked-header assertions. Expanded reviewer matrix235 comparisons/13 descriptors passed on unchanged DSL. Body compilation, source activation, class linking and correction of frontend phase gaps remain pending.",
+      "source_tests": [
+        "tests/semantics/object_classes.py",
+        "tests/semantics/object_classes_protocol.py",
+        "tests/semantics/object_classes_catalogue.py"
+      ],
+      "review": "The reviewed class-header helper remains covered by class-headers.json. Source-active 126/127 now publish named empty classes early or at reached conditional/function declarations, detect occupied intrinsic names and authenticate source descriptors; inheritance, members, dynamic/anonymous classes and internal bodies remain open (object-classes-review.json).",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json"
+      ],
+      "evidence": [
+        "coverage/semantics/object-classes-review.json"
       ]
     },
     {

@@ -128,11 +128,17 @@ def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $closure_callable(S_read, n)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $throw_scalar(S_read, "Error", $ptascii("Object of type ") ++ $object_name(S_read, n) ++ $ptascii(" is not callable"), z_lookup)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $class_plain_instance(S_read, n)
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "object pipe callable"]
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if ~$closure_callable(S_read, n)
+  -- if ~$class_plain_instance(S_read, n)
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "array pipe callable"]
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL

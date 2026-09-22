@@ -1,0 +1,175 @@
+;; Compiled source descriptors and live class names are separate tables.
+def $class_at(eps, porigin) = eps
+def $class_at(pclassdesc :: pclassdesc_tail*, porigin) = (pclassdesc)
+  -- if pclassdesc.ORIGIN = porigin
+def $class_at(pclassdesc :: pclassdesc_tail*, porigin) = $class_at(pclassdesc_tail*, porigin)
+  -- if pclassdesc.ORIGIN =/= porigin
+def $object_name(S, n) = pclassdesc.NAME
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $object_name(S, n) = $ptascii("Closure") -- otherwise
+def $class_plain_instance(S, n) = true -- if S.OBJECTS[n] = INSTANCE porigin
+def $class_plain_instance(S, n) = false -- otherwise
+dec $class_named((preqbytes, porigin)*, preqbytes) : porigin?
+def $class_named(eps, preqbytes) = eps
+def $class_named((preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = (porigin)
+def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = $class_named((preqbytes_tail, porigin_tail)*, preqbytes)
+  -- if preqbytes_other =/= preqbytes
+
+dec $activate_class(pstate, pclassdesc) : pstate
+def $activate_class(S, pclassdesc) = S -- if S.COMPLETION =/= NORMAL
+def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display) pclassdesc.LINE]
+  -- if S.COMPLETION = NORMAL
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(pclassdesc.NAME)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
+def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare class ") ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_old)
+dec $activate_early_classes(pstate, pclassdesc*) : pstate
+def $activate_early_classes(S, eps) = S
+def $activate_early_classes(S, pclassdesc :: pclassdesc_tail*) = $activate_early_classes($activate_class(S, pclassdesc), pclassdesc_tail*)
+  -- if pclassdesc.EARLY
+def $activate_early_classes(S, pclassdesc :: pclassdesc_tail*) = $activate_early_classes(S, pclassdesc_tail*)
+  -- if ~pclassdesc.EARLY
+def $install_classes(S, pclassdesc*) = $activate_early_classes(S[.CLASSES = S.CLASSES ++ pclassdesc*], pclassdesc*)
+
+rule PhpStep/class-declaration-early: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.EARLY
+rule PhpStep/class-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
+  -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.EARLY
+
+dec $new_class(pstate, preqbytes, int) : pstate
+def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "internal class construction"]
+  -- if $class_internal(preqbytes)
+def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ preqbytes ++ $ptascii("\" not found"), z)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = eps
+def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate abstract class ") ++ pclassdesc.NAME, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.ABSTRACT
+def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [INSTANCE porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+  -- if n = |S.OBJECTS|
+rule PhpStep/new-class: S ~> $new_class(S[.TODO = ptask_tail*], preqbytes, $runtime_line(S, eps, NExprNew name (SEQUENCE eps) metadata))
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE eps) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+
+dec $class_instanceof(pstate, pvalue, preqbytes) : bool
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(preqbytes)
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+def $class_instanceof(S, pvalue, preqbytes) = false -- otherwise
+rule PhpStep/instanceof-class: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), INSTANCEOF_RESULT $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if S.TODO = (EVAL (NExprInstanceof expression name metadata)) :: ptask_tail*
+rule PhpStep/instanceof-class-result: S ~> S_value[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $class_instanceof(S_value, pvalue, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (INSTANCEOF_RESULT z) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/instanceof-class-abrupt: S ~> S_value[.TODO = eps]
+  -- if S.TODO = (INSTANCEOF_RESULT z) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+def $node_children(S, HOBJECT n) = eps
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $closure_live_object_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+
+dec $class_registry_valid(pclassdesc*, (preqbytes, porigin)*) : bool
+def $class_registry_valid(pclassdesc_registry*, eps) = true
+def $class_registry_valid(pclassdesc_registry*, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = true
+  -- if $class_at(pclassdesc_registry*, porigin) = (pclassdesc)
+  -- if preqbytes = $ptlc(pclassdesc.NAME)
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named((preqbytes_tail, porigin_tail)*, preqbytes) = eps
+  -- if $class_registry_valid(pclassdesc_registry*, (preqbytes_tail, porigin_tail)*)
+def $class_registry_valid(pclassdesc_registry*, (preqbytes, porigin)*) = false -- otherwise
+dec $class_early_bindings((preqbytes, porigin)*, pclassdesc*) : bool
+def $class_early_bindings((preqbytes, porigin)*, eps) = true
+def $class_early_bindings((preqbytes, porigin)*, pclassdesc :: pclassdesc_tail*) = (~pclassdesc.EARLY \/ $class_named((preqbytes, porigin)*, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)) /\ $class_early_bindings((preqbytes, porigin)*, pclassdesc_tail*)
+
+syntax pclasscheck = CLASSCHECK pclassdesc* | CLASSINVALID
+dec $class_projection(pstate, pcunit*) : pclasscheck
+def $class_projection(S, eps) = CLASSCHECK eps
+def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (P.CLASSES ++ pclassdesc*)
+  -- if P = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $class_projection(S, pcunit_tail*) = CLASSCHECK pclassdesc*
+def $class_projection(S, pcunit*) = CLASSINVALID -- otherwise
+def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES))
+  -- if $class_projection(S, S.SOURCES) = CLASSCHECK S.CLASSES
+def $class_state_valid(S) = false -- otherwise
+
+dec $instanceof_task_valid(pstate, int) : bool
+def $instanceof_task_valid(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+def $instanceof_task_valid(S, z) = false -- otherwise
+def $call_task_valid(S, INSTANCEOF_RESULT z) = $instanceof_task_valid(S, z)
+
+dec $class_stmt_task_valid(pstate, statement) : bool
+def $class_stmt_task_valid(S, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $class_stmt_task_valid(S, statement) = false -- otherwise
+def $call_task_valid(S, STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = $class_stmt_task_valid(S, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+
+dec $class_expr_task_valid(pstate, expression) : bool
+def $class_expr_task_valid(S, NExprNew name (SEQUENCE eps) metadata) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+def $class_expr_task_valid(S, NExprInstanceof expression name metadata) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+def $class_expr_task_valid(S, expression) = false -- otherwise
+def $call_task_valid(S, EVAL (NExprNew name (SEQUENCE eps) metadata)) = $class_expr_task_valid(S, NExprNew name (SEQUENCE eps) metadata)
+def $call_task_valid(S, EVAL (NExprInstanceof expression name metadata)) = $class_expr_task_valid(S, NExprInstanceof expression name metadata)

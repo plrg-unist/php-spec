@@ -29,6 +29,9 @@ def $type_bytes(PARRAY n) = [97,114,114,97,121]
 dec $value_type_bytes(pvalue) : nat*
 def $value_type_bytes(POBJECT n) = [67, 108, 111, 115, 117, 114, 101]
 def $value_type_bytes(pvalue) = $type_bytes(pvalue) -- otherwise
+dec $value_type_bytes_at(pstate, pvalue) : nat*
+def $value_type_bytes_at(S, POBJECT n) = $object_name(S, n)
+def $value_type_bytes_at(S, pvalue) = $value_type_bytes(pvalue) -- otherwise
 
 dec $operator_bytes(pbin) : nat*
 def $operator_bytes(ADD) = [43]
@@ -43,7 +46,7 @@ def $throw_scalar(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing
   -- if $(z <= 0)
 
 dec $type_failure(pstate, pbin, pvalue, pvalue, int) : pstate
-def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError", ([85,110,115,117,112,112,111,114,116,101,100,32,111,112,101,114,97,110,100,32,116,121,112,101,115,58,32] ++ $value_type_bytes(pvalue_1) ++ [32] ++ $operator_bytes(pbin) ++ [32] ++ $value_type_bytes(pvalue_2)), z)
+def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError", ([85,110,115,117,112,112,111,114,116,101,100,32,111,112,101,114,97,110,100,32,116,121,112,101,115,58,32] ++ $value_type_bytes_at(S, pvalue_1) ++ [32] ++ $operator_bytes(pbin) ++ [32] ++ $value_type_bytes_at(S, pvalue_2)), z)
 
 dec $leading_warning(pstate, bool, int) : pstate
 def $leading_warning(S, false, z) = S
@@ -148,4 +151,4 @@ def $bind_reference_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110
 def $bind_reference_at(S, n_name*, z) = $bind_reference(S, n_name*) -- if ~$this_name(n_name*)
 
 def $coerce_number(POBJECT n) = BADNUMBER
-def $stringify(S, POBJECT n, z) = $throw_scalar(S, "Error", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 115, 116, 114, 105, 110, 103], z)
+def $stringify(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Object of class ") ++ $object_name(S, n) ++ $ptascii(" could not be converted to string"), z)

@@ -331,13 +331,13 @@ def $named_values(S, eps) = eps
 def $named_values(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = $variadic_operand_value(S, poperand) :: $named_values(S, (preqbytes_tail, poperand_tail)*)
 dec $named_trace_text(pstate, (preqbytes, poperand)*) : preqbytes
 def $named_trace_text(S, eps) = eps
-def $named_trace_text(S, [(preqbytes, poperand)]) = preqbytes ++ [58,32] ++ $trace_value_text($variadic_operand_value(S, poperand))
-def $named_trace_text(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = preqbytes ++ [58,32] ++ $trace_value_text($variadic_operand_value(S, poperand)) ++ [44,32] ++ $named_trace_text(S, (preqbytes_tail, poperand_tail)*)
+def $named_trace_text(S, [(preqbytes, poperand)]) = preqbytes ++ [58,32] ++ $trace_value_text(S, $variadic_operand_value(S, poperand))
+def $named_trace_text(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = preqbytes ++ [58,32] ++ $trace_value_text(S, $variadic_operand_value(S, poperand)) ++ [44,32] ++ $named_trace_text(S, (preqbytes_tail, poperand_tail)*)
   -- if (preqbytes_tail, poperand_tail)* =/= eps
-def $named_trace_arguments(S, pvalue*, eps) = $trace_arguments_text(pvalue*)
+def $named_trace_arguments(S, pvalue*, eps) = $trace_arguments_text(S, pvalue*)
 def $named_trace_arguments(S, eps, (preqbytes, poperand)*) = $named_trace_text(S, (preqbytes, poperand)*)
   -- if (preqbytes, poperand)* =/= eps
-def $named_trace_arguments(S, pvalue*, (preqbytes, poperand)*) = $trace_arguments_text(pvalue*) ++ [44,32] ++ $named_trace_text(S, (preqbytes, poperand)*)
+def $named_trace_arguments(S, pvalue*, (preqbytes, poperand)*) = $trace_arguments_text(S, pvalue*) ++ [44,32] ++ $named_trace_text(S, (preqbytes, poperand)*)
   -- if pvalue* =/= eps /\ (preqbytes, poperand)* =/= eps
 
 ;; A source prefix determines only slot/key metadata, never prior runtime values.

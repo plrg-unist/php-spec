@@ -3,6 +3,7 @@ dec $cast_apply(pstate, pcast, pvalue, int) : pstate
 dec $cast_value(pstate, pcast, pvalue, int) : pstate
 dec $cast_truth_kind(pvalue) : bool
 dec $cast_truth_int(pstate, pvalue) : int
+dec $cast_object_value(pvalue) : bool
 
 ;; Explicit casts over the six current value kinds; object conversion needs the
 ;; object model. The compiler owns constant-cast eligibility and source timing.
@@ -26,8 +27,17 @@ def $cast_value(S, CASTFLOAT, pvalue, z) = S[.RESULT = KNOWN (PFLOAT $float_of_i
   -- if $cast_truth_kind(pvalue)
 def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
 def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_array(S, $array_empty())
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, $array_empty())
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
 def $cast_value(S, CASTARRAY, pvalue, z) = $allocate_array($cast_array_notice(S, pvalue, z), {ITEMS ([ENTRY (KINT 0) (DIRECT pvalue)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
-  -- if ~($is_array_value(pvalue) \/ pvalue = PNULL)
+  -- if ~($is_array_value(pvalue) \/ pvalue = PNULL \/ $cast_object_value(pvalue))
+
+def $cast_object_value(POBJECT n) = true
+def $cast_object_value(pvalue) = false -- otherwise
 
 def $cast_truth_kind(PNULL) = true
 def $cast_truth_kind(PBOOL b) = true
@@ -45,8 +55,8 @@ def $cast_array_notice(S, PFLOAT n, z) = $diagnostic(S, "Warning", [117, 110, 10
 def $cast_array_notice(S, pvalue, z) = S
   -- otherwise
 
-def $cast_value(S, CASTINT, POBJECT n, z) = $diagnostic(S, "Warning", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 105, 110, 116], z)[.RESULT = KNOWN (PINT 1)]
-def $cast_value(S, CASTFLOAT, POBJECT n, z) = $diagnostic(S, "Warning", [79, 98, 106, 101, 99, 116, 32, 111, 102, 32, 99, 108, 97, 115, 115, 32, 67, 108, 111, 115, 117, 114, 101, 32, 99, 111, 117, 108, 100, 32, 110, 111, 116, 32, 98, 101, 32, 99, 111, 110, 118, 101, 114, 116, 101, 100, 32, 116, 111, 32, 102, 108, 111, 97, 116], z)[.RESULT = KNOWN (PFLOAT $float_of_int(1))]
+def $cast_value(S, CASTINT, POBJECT n, z) = $diagnostic(S, "Warning", $ptascii("Object of class ") ++ $object_name(S, n) ++ $ptascii(" could not be converted to int"), z)[.RESULT = KNOWN (PINT 1)]
+def $cast_value(S, CASTFLOAT, POBJECT n, z) = $diagnostic(S, "Warning", $ptascii("Object of class ") ++ $object_name(S, n) ++ $ptascii(" could not be converted to float"), z)[.RESULT = KNOWN (PFLOAT $float_of_int(1))]
 def $cast_value(S, CASTOBJECT, POBJECT n, z) = S[.RESULT = KNOWN (POBJECT n)]
 def $cast_value(S, CASTOBJECT, pvalue, z) = S[.COMPLETION = UNSUPPORTED "non-object cast to object"]
   -- if $type_bytes(pvalue) =/= [111,98,106,101,99,116]

@@ -28,6 +28,9 @@ dec $call_declaration_node(pcnode) : bool
 def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
 def $call_declaration_node(NExprBinaryOpPipe expression_left expression_right metadata) = true
 def $call_declaration_node(NStmtSwitch expression phpType60 metadata) = true
+def $call_declaration_node(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
+def $call_declaration_node(NExprNew phpType28 phpType6 metadata) = true
+def $call_declaration_node(NExprInstanceof expression phpType19 metadata) = true
 def $call_declaration_node(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
 def $call_declaration_node(NConst phpType11 expression metadata) = true
 def $call_declaration_node(NStmtReturn phpType5 metadata) = true
@@ -47,6 +50,10 @@ def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
 def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 phpType6 metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression phpType19 metadata)
 def $call_source_node(S, n, pcpath) = false -- otherwise
 dec $call_name_count(pcodename*, pcpath) : nat
 def $call_name_count(eps, pcpath) = 0
@@ -244,8 +251,10 @@ dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $call_descriptors_valid(pstate) : bool
+dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
+  -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_early_bindings(S.CALLABLES, S.FUNCTIONS)
   -- if $call_tasks_valid(S, S.TODO)

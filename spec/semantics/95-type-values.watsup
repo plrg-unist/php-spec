@@ -95,6 +95,12 @@ def $typed_closure_branch(ptbranch) = false -- otherwise
 dec $typed_closure_type(ptbranch*) : bool
 def $typed_closure_type(eps) = false
 def $typed_closure_type(ptbranch :: ptbranch_tail*) = ($typed_closure_branch(ptbranch) \/ $typed_closure_type(ptbranch_tail*))
+dec $typed_class_type(ptbranch*, ptbytes) : bool
+dec $typed_class_branch(ptbranch, ptbytes) : bool
+def $typed_class_branch(PTBRANCH ([(PTCLASS ptbytes_name)]), ptbytes) = ($ptlc(ptbytes_name) = $ptlc(ptbytes))
+def $typed_class_branch(ptbranch, ptbytes) = false -- otherwise
+def $typed_class_type(eps, ptbytes) = false
+def $typed_class_type(ptbranch :: ptbranch_tail*, ptbytes) = ($typed_class_branch(ptbranch, ptbytes) \/ $typed_class_type(ptbranch_tail*, ptbytes))
 
 dec $typed_callable_name(ptbytes) : ptbytes
 def $typed_callable_name(92 :: n*) = n*
@@ -117,6 +123,9 @@ dec $typed_callback_receiver(pvalue) : bool
 def $typed_callback_receiver(PSTRING ptbytes) = true
 def $typed_callback_receiver(POBJECT n) = true
 def $typed_callback_receiver(pvalue) = false -- otherwise
+dec $typed_plain_receiver(pstate, pvalue) : bool
+def $typed_plain_receiver(S, POBJECT n) = $class_plain_instance(S, n)
+def $typed_plain_receiver(S, pvalue) = false -- otherwise
 dec $typed_callback_array(pstate, nat) : bool
 def $typed_callback_array(S, n) = true
   -- if S.ARRAYS[n] = parray
@@ -124,12 +133,14 @@ def $typed_callback_array(S, n) = true
   -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
   -- if $typed_callback_receiver($entry_value(S, pitem_receiver))
+  -- if ~$typed_plain_receiver(S, $entry_value(S, pitem_receiver))
   -- if $entry_value(S, pitem_method) = PSTRING ptbytes
 def $typed_callback_array(S, n) = false -- otherwise
 
 dec $typed_callable(pstate, pvalue) : bool?
 def $typed_callable(S, POBJECT n) = (true) -- if $typed_closure(S, n)
-def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n)
+def $typed_callable(S, POBJECT n) = (false) -- if $class_plain_instance(S, n)
+def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n) /\ ~$class_plain_instance(S, n)
 def $typed_callable(S, PSTRING ptbytes) = (true) -- if $typed_registered(S, ptbytes)
 def $typed_callable(S, PSTRING ptbytes) = eps
   -- if ~$typed_registered(S, ptbytes)
@@ -143,6 +154,10 @@ def $typed_callable(S, pvalue) = (false) -- otherwise
 
 dec $typed_object_exact(pstate, ptbranch*, pvalue) : bool
 def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_closure_type(ptbranch*) /\ $typed_closure(S, n))
+  -- if $typed_closure(S, n)
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, pclassdesc.NAME)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $typed_object_exact(S, ptbranch*, pvalue) = false -- otherwise
 
 dec $typed_conversion_at(pstate, ptbranch*, pvalue, bool) : ptypeconversion
@@ -162,5 +177,8 @@ def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*,
 
 dec $typed_given(pstate, pvalue) : ptbytes
 def $typed_given(S, POBJECT n) = $ptascii("Closure") -- if $typed_closure(S, n)
+def $typed_given(S, POBJECT n) = pclassdesc.NAME
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $typed_given(S, pvalue) = $ptascii($typed_tag(pvalue)) -- otherwise
 def $typed_apply(S, TYPEDEPENDENT text, z) = S[.COMPLETION = UNSUPPORTED text]

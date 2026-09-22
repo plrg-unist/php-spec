@@ -59,12 +59,19 @@ compiler fact, preserving its NaN warning without changing dynamic equality.
 The full 30,980-entry classified syntax gate is recorded separately in the
 review. Object-dependent comparisons and remaining control forms are open.
 
+Named empty user classes 126/127 now have source-authenticated early and
+conditional publication, nominal allocation and identity, literal `instanceof`,
+exact class types, and known empty-object consumers. The pinned `-n` catalogue
+reserves 166 internal class/interface/enum names for redeclaration diagnostics.
+The [object review](coverage/semantics/object-classes-review.json) binds 31
+maintained source outcomes and paused class/task/ownership guards; this is a
+partial object increment.
+
 ## Next work
 
-Class activation, allocation and identity are the next runtime foundation;
-labels/goto are the separate compiler lane. Continue the object work through
-inheritance, properties, methods and Throwable rather than treating empty
-classes as complete objects. Match, exceptions/finally, remaining
+Authored internal `stdClass` identity is the next adjacent object step;
+inheritance, properties, methods and Throwable follow. Labels/goto are the
+separate compiler lane. Match, exceptions/finally, remaining
 core intrinsics, traversal, dynamic lifetime and collection obligations remain
 open. Full current-source closure and a fresh offline network-isolated rebuild
 are required before complete-core acceptance. The early research goal of Rocq

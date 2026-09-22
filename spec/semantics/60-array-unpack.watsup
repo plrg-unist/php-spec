@@ -25,8 +25,7 @@ def $array_unpack(S, n_target, pvalue, z) = S
   -- if S.COMPLETION =/= NORMAL
 def $array_unpack(S, n_target, PARRAY n_source, z) = $array_unpack_entries(S[.HELD = S.HELD ++ [HARRAY n_target, HARRAY n_source]], n_target, S.ARRAYS[n_source].ITEMS, z)[.HELD = S.HELD]
   -- if S.COMPLETION = NORMAL
-def $array_unpack(S, n_target, POBJECT n, z) = $throw_scalar(S, "TypeError", $unpack_error_bytes(POBJECT n), z)
+def $array_unpack(S, n_target, POBJECT n, z) = $throw_scalar(S, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $object_name(S, n) ++ $ptascii(" given"), z)
   -- if S.COMPLETION = NORMAL
 def $array_unpack(S, n_target, pvalue, z) = $throw_scalar(S, "Error", $unpack_error_bytes(pvalue), z)
   -- otherwise
-

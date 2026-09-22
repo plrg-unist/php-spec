@@ -1,0 +1,231 @@
+;; Named source classes retain compiler identity; publication is a runtime event.
+;; Occupied internal class/interface/trait names in the pinned PHP -n profile.
+syntax pinternal = INTERNAL ptbytes ptbytes text
+dec $class_internal_catalogue() : pinternal*
+def $class_internal_catalogue() = [
+  INTERNAL ($ptascii("__php_incomplete_class")) ($ptascii("__PHP_Incomplete_Class")) "class",
+  INTERNAL ($ptascii("allowdynamicproperties")) ($ptascii("AllowDynamicProperties")) "class",
+  INTERNAL ($ptascii("appenditerator")) ($ptascii("AppendIterator")) "class",
+  INTERNAL ($ptascii("argumentcounterror")) ($ptascii("ArgumentCountError")) "class",
+  INTERNAL ($ptascii("arithmeticerror")) ($ptascii("ArithmeticError")) "class",
+  INTERNAL ($ptascii("arrayaccess")) ($ptascii("ArrayAccess")) "interface",
+  INTERNAL ($ptascii("arrayiterator")) ($ptascii("ArrayIterator")) "class",
+  INTERNAL ($ptascii("arrayobject")) ($ptascii("ArrayObject")) "class",
+  INTERNAL ($ptascii("assertionerror")) ($ptascii("AssertionError")) "class",
+  INTERNAL ($ptascii("attribute")) ($ptascii("Attribute")) "class",
+  INTERNAL ($ptascii("backedenum")) ($ptascii("BackedEnum")) "interface",
+  INTERNAL ($ptascii("badfunctioncallexception")) ($ptascii("BadFunctionCallException")) "class",
+  INTERNAL ($ptascii("badmethodcallexception")) ($ptascii("BadMethodCallException")) "class",
+  INTERNAL ($ptascii("cachingiterator")) ($ptascii("CachingIterator")) "class",
+  INTERNAL ($ptascii("callbackfilteriterator")) ($ptascii("CallbackFilterIterator")) "class",
+  INTERNAL ($ptascii("closedgeneratorexception")) ($ptascii("ClosedGeneratorException")) "class",
+  INTERNAL ($ptascii("closure")) ($ptascii("Closure")) "class",
+  INTERNAL ($ptascii("compileerror")) ($ptascii("CompileError")) "class",
+  INTERNAL ($ptascii("countable")) ($ptascii("Countable")) "interface",
+  INTERNAL ($ptascii("dateerror")) ($ptascii("DateError")) "class",
+  INTERNAL ($ptascii("dateexception")) ($ptascii("DateException")) "class",
+  INTERNAL ($ptascii("dateinterval")) ($ptascii("DateInterval")) "class",
+  INTERNAL ($ptascii("dateinvalidoperationexception")) ($ptascii("DateInvalidOperationException")) "class",
+  INTERNAL ($ptascii("dateinvalidtimezoneexception")) ($ptascii("DateInvalidTimeZoneException")) "class",
+  INTERNAL ($ptascii("datemalformedintervalstringexception")) ($ptascii("DateMalformedIntervalStringException")) "class",
+  INTERNAL ($ptascii("datemalformedperiodstringexception")) ($ptascii("DateMalformedPeriodStringException")) "class",
+  INTERNAL ($ptascii("datemalformedstringexception")) ($ptascii("DateMalformedStringException")) "class",
+  INTERNAL ($ptascii("dateobjecterror")) ($ptascii("DateObjectError")) "class",
+  INTERNAL ($ptascii("dateperiod")) ($ptascii("DatePeriod")) "class",
+  INTERNAL ($ptascii("daterangeerror")) ($ptascii("DateRangeError")) "class",
+  INTERNAL ($ptascii("datetime")) ($ptascii("DateTime")) "class",
+  INTERNAL ($ptascii("datetimeimmutable")) ($ptascii("DateTimeImmutable")) "class",
+  INTERNAL ($ptascii("datetimeinterface")) ($ptascii("DateTimeInterface")) "interface",
+  INTERNAL ($ptascii("datetimezone")) ($ptascii("DateTimeZone")) "class",
+  INTERNAL ($ptascii("delayedtargetvalidation")) ($ptascii("DelayedTargetValidation")) "class",
+  INTERNAL ($ptascii("deprecated")) ($ptascii("Deprecated")) "class",
+  INTERNAL ($ptascii("directory")) ($ptascii("Directory")) "class",
+  INTERNAL ($ptascii("directoryiterator")) ($ptascii("DirectoryIterator")) "class",
+  INTERNAL ($ptascii("divisionbyzeroerror")) ($ptascii("DivisionByZeroError")) "class",
+  INTERNAL ($ptascii("domainexception")) ($ptascii("DomainException")) "class",
+  INTERNAL ($ptascii("emptyiterator")) ($ptascii("EmptyIterator")) "class",
+  INTERNAL ($ptascii("error")) ($ptascii("Error")) "class",
+  INTERNAL ($ptascii("errorexception")) ($ptascii("ErrorException")) "class",
+  INTERNAL ($ptascii("exception")) ($ptascii("Exception")) "class",
+  INTERNAL ($ptascii("fiber")) ($ptascii("Fiber")) "class",
+  INTERNAL ($ptascii("fibererror")) ($ptascii("FiberError")) "class",
+  INTERNAL ($ptascii("filesystemiterator")) ($ptascii("FilesystemIterator")) "class",
+  INTERNAL ($ptascii("filteriterator")) ($ptascii("FilterIterator")) "class",
+  INTERNAL ($ptascii("generator")) ($ptascii("Generator")) "class",
+  INTERNAL ($ptascii("globiterator")) ($ptascii("GlobIterator")) "class",
+  INTERNAL ($ptascii("hashcontext")) ($ptascii("HashContext")) "class",
+  INTERNAL ($ptascii("infiniteiterator")) ($ptascii("InfiniteIterator")) "class",
+  INTERNAL ($ptascii("internaliterator")) ($ptascii("InternalIterator")) "class",
+  INTERNAL ($ptascii("invalidargumentexception")) ($ptascii("InvalidArgumentException")) "class",
+  INTERNAL ($ptascii("iterator")) ($ptascii("Iterator")) "interface",
+  INTERNAL ($ptascii("iteratoraggregate")) ($ptascii("IteratorAggregate")) "interface",
+  INTERNAL ($ptascii("iteratoriterator")) ($ptascii("IteratorIterator")) "class",
+  INTERNAL ($ptascii("jsonexception")) ($ptascii("JsonException")) "class",
+  INTERNAL ($ptascii("jsonserializable")) ($ptascii("JsonSerializable")) "interface",
+  INTERNAL ($ptascii("lengthexception")) ($ptascii("LengthException")) "class",
+  INTERNAL ($ptascii("limititerator")) ($ptascii("LimitIterator")) "class",
+  INTERNAL ($ptascii("logicexception")) ($ptascii("LogicException")) "class",
+  INTERNAL ($ptascii("multipleiterator")) ($ptascii("MultipleIterator")) "class",
+  INTERNAL ($ptascii("nodiscard")) ($ptascii("NoDiscard")) "class",
+  INTERNAL ($ptascii("norewinditerator")) ($ptascii("NoRewindIterator")) "class",
+  INTERNAL ($ptascii("outeriterator")) ($ptascii("OuterIterator")) "interface",
+  INTERNAL ($ptascii("outofboundsexception")) ($ptascii("OutOfBoundsException")) "class",
+  INTERNAL ($ptascii("outofrangeexception")) ($ptascii("OutOfRangeException")) "class",
+  INTERNAL ($ptascii("overflowexception")) ($ptascii("OverflowException")) "class",
+  INTERNAL ($ptascii("override")) ($ptascii("Override")) "class",
+  INTERNAL ($ptascii("parentiterator")) ($ptascii("ParentIterator")) "class",
+  INTERNAL ($ptascii("parseerror")) ($ptascii("ParseError")) "class",
+  INTERNAL ($ptascii("php_user_filter")) ($ptascii("php_user_filter")) "class",
+  INTERNAL ($ptascii("phptoken")) ($ptascii("PhpToken")) "class",
+  INTERNAL ($ptascii("propertyhooktype")) ($ptascii("PropertyHookType")) "enum",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("brokenrandomengineerror")) ($ptascii("Random") ++ [92] ++ $ptascii("BrokenRandomEngineError")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("cryptosafeengine")) ($ptascii("Random") ++ [92] ++ $ptascii("CryptoSafeEngine")) "interface",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("engine")) ($ptascii("Random") ++ [92] ++ $ptascii("Engine")) "interface",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("mt19937")) ($ptascii("Random") ++ [92] ++ $ptascii("Engine") ++ [92] ++ $ptascii("Mt19937")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("pcgoneseq128xslrr64")) ($ptascii("Random") ++ [92] ++ $ptascii("Engine") ++ [92] ++ $ptascii("PcgOneseq128XslRr64")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("secure")) ($ptascii("Random") ++ [92] ++ $ptascii("Engine") ++ [92] ++ $ptascii("Secure")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("xoshiro256starstar")) ($ptascii("Random") ++ [92] ++ $ptascii("Engine") ++ [92] ++ $ptascii("Xoshiro256StarStar")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("intervalboundary")) ($ptascii("Random") ++ [92] ++ $ptascii("IntervalBoundary")) "enum",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("randomerror")) ($ptascii("Random") ++ [92] ++ $ptascii("RandomError")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("randomexception")) ($ptascii("Random") ++ [92] ++ $ptascii("RandomException")) "class",
+  INTERNAL ($ptascii("random") ++ [92] ++ $ptascii("randomizer")) ($ptascii("Random") ++ [92] ++ $ptascii("Randomizer")) "class",
+  INTERNAL ($ptascii("rangeexception")) ($ptascii("RangeException")) "class",
+  INTERNAL ($ptascii("recursivearrayiterator")) ($ptascii("RecursiveArrayIterator")) "class",
+  INTERNAL ($ptascii("recursivecachingiterator")) ($ptascii("RecursiveCachingIterator")) "class",
+  INTERNAL ($ptascii("recursivecallbackfilteriterator")) ($ptascii("RecursiveCallbackFilterIterator")) "class",
+  INTERNAL ($ptascii("recursivedirectoryiterator")) ($ptascii("RecursiveDirectoryIterator")) "class",
+  INTERNAL ($ptascii("recursivefilteriterator")) ($ptascii("RecursiveFilterIterator")) "class",
+  INTERNAL ($ptascii("recursiveiterator")) ($ptascii("RecursiveIterator")) "interface",
+  INTERNAL ($ptascii("recursiveiteratoriterator")) ($ptascii("RecursiveIteratorIterator")) "class",
+  INTERNAL ($ptascii("recursiveregexiterator")) ($ptascii("RecursiveRegexIterator")) "class",
+  INTERNAL ($ptascii("recursivetreeiterator")) ($ptascii("RecursiveTreeIterator")) "class",
+  INTERNAL ($ptascii("reflection")) ($ptascii("Reflection")) "class",
+  INTERNAL ($ptascii("reflectionattribute")) ($ptascii("ReflectionAttribute")) "class",
+  INTERNAL ($ptascii("reflectionclass")) ($ptascii("ReflectionClass")) "class",
+  INTERNAL ($ptascii("reflectionclassconstant")) ($ptascii("ReflectionClassConstant")) "class",
+  INTERNAL ($ptascii("reflectionconstant")) ($ptascii("ReflectionConstant")) "class",
+  INTERNAL ($ptascii("reflectionenum")) ($ptascii("ReflectionEnum")) "class",
+  INTERNAL ($ptascii("reflectionenumbackedcase")) ($ptascii("ReflectionEnumBackedCase")) "class",
+  INTERNAL ($ptascii("reflectionenumunitcase")) ($ptascii("ReflectionEnumUnitCase")) "class",
+  INTERNAL ($ptascii("reflectionexception")) ($ptascii("ReflectionException")) "class",
+  INTERNAL ($ptascii("reflectionextension")) ($ptascii("ReflectionExtension")) "class",
+  INTERNAL ($ptascii("reflectionfiber")) ($ptascii("ReflectionFiber")) "class",
+  INTERNAL ($ptascii("reflectionfunction")) ($ptascii("ReflectionFunction")) "class",
+  INTERNAL ($ptascii("reflectionfunctionabstract")) ($ptascii("ReflectionFunctionAbstract")) "class",
+  INTERNAL ($ptascii("reflectiongenerator")) ($ptascii("ReflectionGenerator")) "class",
+  INTERNAL ($ptascii("reflectionintersectiontype")) ($ptascii("ReflectionIntersectionType")) "class",
+  INTERNAL ($ptascii("reflectionmethod")) ($ptascii("ReflectionMethod")) "class",
+  INTERNAL ($ptascii("reflectionnamedtype")) ($ptascii("ReflectionNamedType")) "class",
+  INTERNAL ($ptascii("reflectionobject")) ($ptascii("ReflectionObject")) "class",
+  INTERNAL ($ptascii("reflectionparameter")) ($ptascii("ReflectionParameter")) "class",
+  INTERNAL ($ptascii("reflectionproperty")) ($ptascii("ReflectionProperty")) "class",
+  INTERNAL ($ptascii("reflectionreference")) ($ptascii("ReflectionReference")) "class",
+  INTERNAL ($ptascii("reflectiontype")) ($ptascii("ReflectionType")) "class",
+  INTERNAL ($ptascii("reflectionuniontype")) ($ptascii("ReflectionUnionType")) "class",
+  INTERNAL ($ptascii("reflectionzendextension")) ($ptascii("ReflectionZendExtension")) "class",
+  INTERNAL ($ptascii("reflector")) ($ptascii("Reflector")) "interface",
+  INTERNAL ($ptascii("regexiterator")) ($ptascii("RegexIterator")) "class",
+  INTERNAL ($ptascii("requestparsebodyexception")) ($ptascii("RequestParseBodyException")) "class",
+  INTERNAL ($ptascii("returntypewillchange")) ($ptascii("ReturnTypeWillChange")) "class",
+  INTERNAL ($ptascii("roundingmode")) ($ptascii("RoundingMode")) "enum",
+  INTERNAL ($ptascii("runtimeexception")) ($ptascii("RuntimeException")) "class",
+  INTERNAL ($ptascii("seekableiterator")) ($ptascii("SeekableIterator")) "interface",
+  INTERNAL ($ptascii("sensitiveparameter")) ($ptascii("SensitiveParameter")) "class",
+  INTERNAL ($ptascii("sensitiveparametervalue")) ($ptascii("SensitiveParameterValue")) "class",
+  INTERNAL ($ptascii("serializable")) ($ptascii("Serializable")) "interface",
+  INTERNAL ($ptascii("spldoublylinkedlist")) ($ptascii("SplDoublyLinkedList")) "class",
+  INTERNAL ($ptascii("splfileinfo")) ($ptascii("SplFileInfo")) "class",
+  INTERNAL ($ptascii("splfileobject")) ($ptascii("SplFileObject")) "class",
+  INTERNAL ($ptascii("splfixedarray")) ($ptascii("SplFixedArray")) "class",
+  INTERNAL ($ptascii("splheap")) ($ptascii("SplHeap")) "class",
+  INTERNAL ($ptascii("splmaxheap")) ($ptascii("SplMaxHeap")) "class",
+  INTERNAL ($ptascii("splminheap")) ($ptascii("SplMinHeap")) "class",
+  INTERNAL ($ptascii("splobjectstorage")) ($ptascii("SplObjectStorage")) "class",
+  INTERNAL ($ptascii("splobserver")) ($ptascii("SplObserver")) "interface",
+  INTERNAL ($ptascii("splpriorityqueue")) ($ptascii("SplPriorityQueue")) "class",
+  INTERNAL ($ptascii("splqueue")) ($ptascii("SplQueue")) "class",
+  INTERNAL ($ptascii("splstack")) ($ptascii("SplStack")) "class",
+  INTERNAL ($ptascii("splsubject")) ($ptascii("SplSubject")) "interface",
+  INTERNAL ($ptascii("spltempfileobject")) ($ptascii("SplTempFileObject")) "class",
+  INTERNAL ($ptascii("stdclass")) ($ptascii("stdClass")) "class",
+  INTERNAL ($ptascii("streambucket")) ($ptascii("StreamBucket")) "class",
+  INTERNAL ($ptascii("stringable")) ($ptascii("Stringable")) "interface",
+  INTERNAL ($ptascii("throwable")) ($ptascii("Throwable")) "interface",
+  INTERNAL ($ptascii("traversable")) ($ptascii("Traversable")) "interface",
+  INTERNAL ($ptascii("typeerror")) ($ptascii("TypeError")) "class",
+  INTERNAL ($ptascii("underflowexception")) ($ptascii("UnderflowException")) "class",
+  INTERNAL ($ptascii("unexpectedvalueexception")) ($ptascii("UnexpectedValueException")) "class",
+  INTERNAL ($ptascii("unhandledmatcherror")) ($ptascii("UnhandledMatchError")) "class",
+  INTERNAL ($ptascii("unitenum")) ($ptascii("UnitEnum")) "interface",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("invaliduriexception")) ($ptascii("Uri") ++ [92] ++ $ptascii("InvalidUriException")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("rfc3986") ++ [92] ++ $ptascii("uri")) ($ptascii("Uri") ++ [92] ++ $ptascii("Rfc3986") ++ [92] ++ $ptascii("Uri")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("uricomparisonmode")) ($ptascii("Uri") ++ [92] ++ $ptascii("UriComparisonMode")) "enum",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("urierror")) ($ptascii("Uri") ++ [92] ++ $ptascii("UriError")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("uriexception")) ($ptascii("Uri") ++ [92] ++ $ptascii("UriException")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("whatwg") ++ [92] ++ $ptascii("invalidurlexception")) ($ptascii("Uri") ++ [92] ++ $ptascii("WhatWg") ++ [92] ++ $ptascii("InvalidUrlException")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("whatwg") ++ [92] ++ $ptascii("url")) ($ptascii("Uri") ++ [92] ++ $ptascii("WhatWg") ++ [92] ++ $ptascii("Url")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("whatwg") ++ [92] ++ $ptascii("urlvalidationerror")) ($ptascii("Uri") ++ [92] ++ $ptascii("WhatWg") ++ [92] ++ $ptascii("UrlValidationError")) "class",
+  INTERNAL ($ptascii("uri") ++ [92] ++ $ptascii("whatwg") ++ [92] ++ $ptascii("urlvalidationerrortype")) ($ptascii("Uri") ++ [92] ++ $ptascii("WhatWg") ++ [92] ++ $ptascii("UrlValidationErrorType")) "enum",
+  INTERNAL ($ptascii("valueerror")) ($ptascii("ValueError")) "class",
+  INTERNAL ($ptascii("weakmap")) ($ptascii("WeakMap")) "class",
+  INTERNAL ($ptascii("weakreference")) ($ptascii("WeakReference")) "class"
+]
+dec $class_internal_at(pinternal*, ptbytes) : pinternal?
+def $class_internal_at(eps, ptbytes) = eps
+def $class_internal_at((INTERNAL ptbytes ptbytes_display text_kind) :: pinternal_tail*, ptbytes) = (INTERNAL ptbytes ptbytes_display text_kind)
+def $class_internal_at((INTERNAL ptbytes_other ptbytes_display text_kind) :: pinternal_tail*, ptbytes) = $class_internal_at(pinternal_tail*, ptbytes)
+  -- if ptbytes_other =/= ptbytes
+dec $class_internal(ptbytes) : bool
+def $class_internal(ptbytes) = ($class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) =/= eps)
+
+dec $ppclass_context(ppstate) : ptcontext
+def $ppclass_context(P) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTGLOBAL, POSITION PTCONSTANT, OWNER eps, MEMBER eps, FILE P.LOCATION.FILE, LINE P.LOCATION.LINE }
+
+dec $ppclass_diagnostics(ppstate, pchdiagnostic*) : ppstate
+dec $ppclass_diagnostic(ppstate, pchdiagnostic) : ppstate
+def $ppclass_diagnostics(P, eps) = P
+def $ppclass_diagnostics(P, pchdiagnostic :: pchdiagnostic_tail*) = $ppclass_diagnostics($ppclass_diagnostic(P, pchdiagnostic), pchdiagnostic_tail*)
+def $ppclass_diagnostic(P, PCHDIAGNOSTIC "fatal" text_code ptbytes* ptcontext) = P[.COMPLETION = PPCABRUPT (STATICBYTES $pchmessage(PCHDIAGNOSTIC "fatal" text_code ptbytes* ptcontext) ptcontext.LINE)]
+def $ppclass_diagnostic(P, PCHDIAGNOSTIC text_level text_code ptbytes* ptcontext) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text_level "class-message" ([$pchmessage(PCHDIAGNOSTIC text_level text_code ptbytes* ptcontext)]) (P.LOCATION[.LINE = ptcontext.LINE])]]
+  -- if text_level =/= "fatal"
+def $plmessage(PLDIAGNOSTIC text "class-message" ([ptbytes]) pllocation) = ptbytes
+
+dec $ppclass_early(pclassdesc*, ptbytes) : bool
+def $ppclass_early(eps, ptbytes) = false
+def $ppclass_early(pclassdesc :: pclassdesc_tail*, ptbytes) = true
+  -- if pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+def $ppclass_early(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_early(pclassdesc_tail*, ptbytes)
+  -- if ~(pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes))
+
+dec $ppclass_result(ppstate, pcpath, pchresult) : ppstate
+def $ppclass_result(P, pcpath, PCHUNSUPPORTED text) = $ppunsupported(P, text)
+def $ppclass_result(P, pcpath, PCHERROR pchdiagnostic*) = $ppclass_diagnostics(P, pchdiagnostic*)
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "class inheritance, interfaces, attributes, or members")
+  -- if pchheader.PARENT =/= eps \/ pchheader.INTERFACES =/= eps \/ pchheader.BODY =/= SEQUENCE eps
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
+  -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
+
+def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata, false, $ppclass_context(P_line)))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P_line = $pplocate(P, pcpath, $source_line(metadata))
+
+dec $ppclass_name(ppstate, pcpath, pnresult) : ppstate
+dec $pnclassresolve(plenv, name) : pnresult
+dec $pnclassclear(pnresult) : pnresult
+def $pnclassresolve(plenv, name) = $pnclassclear($pnqualify(plenv, PLCLASS, name, ptqual, ptbytes))
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if $ptvalidname(ptbytes, true)
+  -- if ~($ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+def $pnclassresolve(plenv, name) = PNUNSUPPORTED "self, parent, and static class binding"
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $pnclassresolve(plenv, name) = PNUNSUPPORTED "invalid class name" -- otherwise
+def $pnclassclear(PNRESOLVED pnreference) = PNRESOLVED pnreference[.FALLBACK = eps]
+def $pnclassclear(PNUNSUPPORTED text) = PNUNSUPPORTED text
+def $ppclass_name(P, pcpath, PNUNSUPPORTED text) = $ppunsupported(P, text)
+def $ppclass_name(P, pcpath, PNRESOLVED pnreference) = P[.NAMES = P.NAMES ++ [(pcpath, pnreference)]][.FOLD = P.FOLD[.VALUE = eps]]
+
+def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE eps) metadata, PPR) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
+def $ppdispatch(P, pcpath, NExprNew phpType28 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "class constructor arguments or dynamic class target")
+  -- if phpType7* =/= eps
+def $ppdispatch(P, pcpath, NExprInstanceof expression name metadata, PPR) = $ppclass_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, $pnclassresolve(P.ENV, name))

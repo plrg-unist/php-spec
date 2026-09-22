@@ -26,19 +26,19 @@ def $trace_float(n) = n_out* ++ [46,48]
   -- if $float_decode(n) = FINITE n_sign n_exp n_mant
   -- if ~(46 <- n_out*)
 def $trace_float(n) = $echo_value(PFLOAT n) -- otherwise
-dec $trace_value_text(pvalue) : preqbytes
-def $trace_value_text(PNULL) = $ptascii("NULL")
-def $trace_value_text(PBOOL true) = $ptascii("true")
-def $trace_value_text(PBOOL false) = $ptascii("false")
-def $trace_value_text(PINT z) = $decimal_integer(z)
-def $trace_value_text(PFLOAT n) = $trace_float(n)
-def $trace_value_text(PSTRING n*) = $trace_string(n*)
-def $trace_value_text(PARRAY n) = $ptascii("Array")
-def $trace_value_text(POBJECT n) = $ptascii("Object(Closure)")
-dec $trace_arguments_text(pvalue*) : preqbytes
-def $trace_arguments_text(eps) = eps
-def $trace_arguments_text([pvalue]) = $trace_value_text(pvalue)
-def $trace_arguments_text(pvalue :: pvalue_tail*) = $trace_value_text(pvalue) ++ [44,32] ++ $trace_arguments_text(pvalue_tail*)
+dec $trace_value_text(pstate, pvalue) : preqbytes
+def $trace_value_text(S, PNULL) = $ptascii("NULL")
+def $trace_value_text(S, PBOOL true) = $ptascii("true")
+def $trace_value_text(S, PBOOL false) = $ptascii("false")
+def $trace_value_text(S, PINT z) = $decimal_integer(z)
+def $trace_value_text(S, PFLOAT n) = $trace_float(n)
+def $trace_value_text(S, PSTRING n*) = $trace_string(n*)
+def $trace_value_text(S, PARRAY n) = $ptascii("Array")
+def $trace_value_text(S, POBJECT n) = $ptascii("Object(") ++ $object_name(S, n) ++ [41]
+dec $trace_arguments_text(pstate, pvalue*) : preqbytes
+def $trace_arguments_text(S, eps) = eps
+def $trace_arguments_text(S, [pvalue]) = $trace_value_text(S, pvalue)
+def $trace_arguments_text(S, pvalue :: pvalue_tail*) = $trace_value_text(S, pvalue) ++ [44,32] ++ $trace_arguments_text(S, pvalue_tail*)
   -- if pvalue_tail* =/= eps
 
 dec $trace_slot(pstate, pbinding*, preqbytes) : pvalue

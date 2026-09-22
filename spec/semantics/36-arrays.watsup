@@ -240,4 +240,4 @@ def $dimension_key_value(S, pvalue, z) = $key_value(S, pvalue, false, z)
   -- otherwise
 
 def $key_value(S, POBJECT n, b, z) = $dimension_key_value(S, POBJECT n, z)
-def $dimension_key_value(S, POBJECT n, z) = $throw_scalar(S, "TypeError", [67, 97, 110, 110, 111, 116, 32, 97, 99, 99, 101, 115, 115, 32, 111, 102, 102, 115, 101, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 111, 110, 32, 97, 114, 114, 97, 121], z)
+def $dimension_key_value(S, POBJECT n, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot access offset of type ") ++ $object_name(S, n) ++ $ptascii(" on array"), z)

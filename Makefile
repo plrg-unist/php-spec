@@ -170,6 +170,9 @@ test-semantics: build
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
 	python3 tests/semantics/switch_protocol.py
+	python3 tests/semantics/object_classes_catalogue.py
+	python3 tests/semantics/object_classes.py
+	python3 tests/semantics/object_classes_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

@@ -136,5 +136,5 @@ rule PhpStep/update-PreDec: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PC
 rule PhpStep/update-PostDec: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP DECREMENT true $runtime_line(S, eps, NExprPostDec expression metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprPostDec expression metadata)) :: ptask_tail*
 
-def $update_value(S, INCREMENT, POBJECT n, z) = $throw_scalar(S, "TypeError", [67, 97, 110, 110, 111, 116, 32, 105, 110, 99, 114, 101, 109, 101, 110, 116, 32, 67, 108, 111, 115, 117, 114, 101], z)
-def $update_value(S, DECREMENT, POBJECT n, z) = $throw_scalar(S, "TypeError", [67, 97, 110, 110, 111, 116, 32, 100, 101, 99, 114, 101, 109, 101, 110, 116, 32, 67, 108, 111, 115, 117, 114, 101], z)
+def $update_value(S, INCREMENT, POBJECT n, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot increment ") ++ $object_name(S, n), z)
+def $update_value(S, DECREMENT, POBJECT n, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot decrement ") ++ $object_name(S, n), z)
