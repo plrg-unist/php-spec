@@ -1,0 +1,10 @@
+;; zend_compile_print emits ECHO after compiling its child, then returns IS_CONST 1.
+;; Retain the output effect even when enclosing ordinary compilation folds that value.
+dec $ppprint_done(ppstate, pcpath) : ppstate
+def $ppdispatch(P, pcpath, NExprPrint expression metadata, PPR) = $ppprint_done($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
+def $ppprint_done(P, pcpath) = P[.FOLD = P.FOLD[.VALUE = (PINT 1)]][.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEFFECT pcpath]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppprint_done(P, pcpath) = P -- otherwise
+
+;; The constant result is neither writable nor a VAR/reference-return operand.
+def $pptemporary(NExprPrint expression metadata) = true

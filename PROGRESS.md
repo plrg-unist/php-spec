@@ -40,14 +40,16 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 137/138 | Public property references: ordered typed sources, atomic constrained writes, by-reference calls/returns and object traversal, typed overflow; 52 admitted source outcomes and paused ownership guards. Three originals were excluded then; 139/140 closes the nullsafe send dependency. [Review](coverage/semantics/property-references-review.json) |
 | 139/140 | Nullsafe property and active property/dimension chains: 21 exact source outcomes, 15 compiler sources/63 assertions, and paused source/owner guards. [Review](coverage/semantics/nullsafe-properties-review.json) |
 | 143/144 | Match expressions: strict lazy selection, delayed CV subjects, compiler priority, owned results and unhandled diagnostics; 88 source outcomes, 13 compiler sources/67 assertions and paused ownership checks. [Review](coverage/semantics/match-review.json) |
+| 145/146 | Print constant-result effects, conversion lines, reference demand and paused ownership. [Review](coverage/semantics/print-review.json) |
 
-The current nullsafe checkpoint preserves a short-circuit marker only within
-the active property/dimension chain. Source-authenticated saved tasks retain
-each access line and owner; ordinary `null` property values do not skip later
-accesses. Nullsafe property arguments evaluate before the by-reference send
-error, while forbidden writes and reference returns fail statically. The 139/140
-review binds distinct source, compiler and paused-state profiles. Method calls,
-property visibility, static and readonly members, hooks and magic remain open.
+The current checkpoint combines nullsafe property chains, match selection and
+print expressions. Print preserves output effects while returning constant
+integer 1 through folding and reference-result demand. Its
+[review](coverage/semantics/print-review.json) records 20 author and 15 independent
+source comparisons, ten compiler/lint sources with 51 projections, four paused
+stages with 61 assertions, six existing consumers and two separate Unsupported
+controls. Two retained official match originals agree on the combined tree.
+Conversion callbacks and output-handler protocols remain open.
 
 ## Next work
 

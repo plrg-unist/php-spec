@@ -1,0 +1,36 @@
+;; print shares ECHO conversion/output but its expression result is constant 1.
+;; Save the print occurrence independently of a suspended operand's origin.
+rule PhpStep/print-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), PRINT_EMIT porigin $runtime_line(S, eps, NExprPrint expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprPrint expression metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+
+rule PhpStep/print-emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN (PINT 1)]
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_text = $stringify(S_read, pvalue, z)
+  -- if S_text.COMPLETION = NORMAL
+  -- if S_text.RESULT = KNOWN (PSTRING n_text*)
+rule PhpStep/print-stringify-abrupt: S ~> S_text[.TODO = eps]
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_text = $stringify(S_read, pvalue, z)
+  -- if S_text.COMPLETION =/= NORMAL
+rule PhpStep/print-read-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION =/= NORMAL
+
+dec $print_task_valid(pstate, porigin, int) : bool
+def $print_task_valid(S, porigin, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPrint expression metadata)
+  -- if $property_source_task(S[.ORIGIN = (porigin)], NExprPrint expression metadata)
+  -- if $compiled_read(S, porigin) = (PINT 1)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, NExprPrint expression metadata)
+def $print_task_valid(S, porigin, z) = false -- otherwise
+def $call_task_valid(S, PRINT_EMIT porigin z) = $print_task_valid(S, porigin, z)
+def $call_task_valid(S, EVAL (NExprPrint expression metadata)) = $property_source_task(S, NExprPrint expression metadata)

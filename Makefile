@@ -199,6 +199,10 @@ test-semantics: build
 	python3 tests/semantics/match_compiler.py
 	python3 tests/semantics/match_expressions.py
 	python3 tests/semantics/match_protocol.py
+	python3 tests/semantics/print_expressions.py
+	python3 tests/semantics/print_compiler.py
+	python3 tests/semantics/print_protocol.py
+	python3 tests/semantics/print_controls.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

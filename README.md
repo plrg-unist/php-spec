@@ -204,6 +204,10 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
 compiler and paused-state controls. Nullsafe methods, visibility beyond public,
 static and readonly members, hooks and magic methods remain open.
+[Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
+returning constant integer 1, including folded expressions and reference demand.
+Source, compiler and paused ownership checks cover admitted conversions;
+`__toString` and output callbacks remain dependencies.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)

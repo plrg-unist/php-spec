@@ -1960,14 +1960,16 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/145-print-compiler.watsup",
+        "spec/semantics/146-print-runtime.watsup"
       ],
       "source_tests": [
-        "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/print_expressions.py",
+        "tests/semantics/print_compiler.py",
+        "tests/semantics/print_protocol.py",
+        "tests/semantics/print_controls.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded ordinary print execution: constant integer1 retains ordered output effects through folding, nesting and reference-result demand; source-authenticated conversion lines and paused ownership guards. See print-review.json and SOURCE-PRINT.md. User-defined __toString, conversion callbacks and output-handler/lifecycle protocols remain core dependencies; no family closure."
     },
     {
       "node": "Expr_PropertyFetch",
@@ -4310,18 +4312,24 @@
         "spec/semantics/35-scalar-operations.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/145-print-compiler.watsup",
+        "spec/semantics/146-print-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/phase0.json",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/print_expressions.py",
+        "tests/semantics/print_compiler.py",
+        "tests/semantics/print_protocol.py",
+        "tests/semantics/print_controls.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c"
       ],
-      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending."
+      "review": "Independent reviewer: phase0 commit 8b856a27; repeated 8 source comparisons and 7 outcome/context negatives passed; broader family branches remain pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending. Print145/146 adds effectful constant-result execution and paused guards; print-review.json records bounded validation. User-defined conversion and output callbacks remain open."
     },
     {
       "id": "coercion.arithmetic",
