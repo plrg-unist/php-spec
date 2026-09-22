@@ -29,6 +29,7 @@ test: build
 	python3 tests/callable_line_metadata.py
 	python3 tests/pipe_parentheses.py
 	python3 tests/switch_case_separator.py
+	python3 tests/class_keyword_metadata.py
 	python3 tests/array_omission_metadata.py
 	python3 tests/concat_line_metadata.py
 	python3 tests/nullary_line_metadata.py
@@ -182,6 +183,9 @@ test-semantics: build
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py
 	python3 tests/semantics/noctor_unpack_protocol.py
+	python3 tests/semantics/inheritance_compiler.py
+	python3 tests/semantics/inheritance.py
+	python3 tests/semantics/inheritance_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

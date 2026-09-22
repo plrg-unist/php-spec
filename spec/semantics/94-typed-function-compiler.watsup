@@ -7,7 +7,16 @@ dec $ppreturn_finish(ppstate, pcpath, text?) : ppstate
 
 def $ppsupported_types(eps) = true
 def $ppsupported_types((PTBRANCH ([(PTBUILTIN text)])) :: ptbranch*) = (text <- ["null", "true", "false", "bool", "int", "float", "string", "array", "mixed", "void", "never", "object", "callable"] /\ $ppsupported_types(ptbranch*))
-def $ppsupported_types((PTBRANCH ([(PTCLASS ptbytes)])) :: ptbranch*) = $ppsupported_types(ptbranch*)
+dec $ppsupported_class_atoms(ptatom*) : bool
+def $ppsupported_class_atoms(eps) = true
+def $ppsupported_class_atoms((PTCLASS ptbytes) :: ptatom*) = $ppsupported_class_atoms(ptatom*)
+def $ppsupported_class_atoms(ptatom*) = false -- otherwise
+dec $ppsupported_class_branch(ptatom*) : bool
+def $ppsupported_class_branch(eps) = false
+def $ppsupported_class_branch((PTCLASS ptbytes) :: ptatom*) = $ppsupported_class_atoms(ptatom*)
+def $ppsupported_class_branch(ptatom*) = false -- otherwise
+def $ppsupported_types((PTBRANCH ptatom*) :: ptbranch*) = $ppsupported_types(ptbranch*)
+  -- if $ppsupported_class_branch(ptatom*)
 def $ppsupported_types(ptbranch*) = false -- otherwise
 
 ;; Compile the expression first, then preserve Zend's emitted return/check line.

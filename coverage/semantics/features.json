@@ -1679,7 +1679,9 @@
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/126-class-compiler.watsup",
         "spec/semantics/127-class-runtime.watsup",
-        "spec/semantics/130-stdclass-runtime.watsup"
+        "spec/semantics/130-stdclass-runtime.watsup",
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1688,12 +1690,16 @@
         "tests/semantics/object_classes_protocol.py",
         "tests/semantics/object_classes_catalogue.py",
         "tests/semantics/stdclass.py",
-        "tests/semantics/stdclass_protocol.py"
+        "tests/semantics/stdclass_protocol.py",
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
       ],
-      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 execute literal named-class and Closure instanceof with source/task guards (object-classes-review.json). Internal stdClass130 adds exact literal instanceof identity (stdclass-review.json). Dynamic RHS, inheritance/interface traversal and autoload remain open.",
+      "review": "Literal named-class, Closure and stdClass identity were reviewed in object-classes-review.json and stdclass-review.json. Source-active133/134 traverse active parent links for inherited nominal membership (inheritance-review.json). Dynamic RHS, interfaces and autoload remain open.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
-        "coverage/semantics/stdclass-review.json"
+        "coverage/semantics/stdclass-review.json",
+        "coverage/semantics/inheritance-review.json"
       ]
     },
     {
@@ -1795,7 +1801,9 @@
         "spec/semantics/127-class-runtime.watsup",
         "spec/semantics/130-stdclass-runtime.watsup",
         "spec/semantics/131-noctor-compiler.watsup",
-        "spec/semantics/132-noctor-runtime.watsup"
+        "spec/semantics/132-noctor-runtime.watsup",
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1808,13 +1816,17 @@
         "tests/semantics/noctor_compiler.py",
         "tests/semantics/noctor_args.py",
         "tests/semantics/noctor_args_protocol.py",
-        "tests/semantics/noctor_unpack_protocol.py"
+        "tests/semantics/noctor_unpack_protocol.py",
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
       ],
-      "review": "The earlier constant-array prepass remains covered by array-omission-review.json. Source-active 126/127 allocate owned named-class instances (object-classes-review.json); stdClass130 adds pinned internal empty identity (stdclass-review.json). No-constructor arguments131/132 evaluate ordered sends after class lookup, authenticate compiled facts and retain owned operands through completion (noctor-args-review.json). Constructors, other internal bodies, dynamic names, inheritance and members remain open.",
+      "review": "Named empty instances, stdClass identity and no-constructor arguments are reviewed in object-classes-review.json, stdclass-review.json and noctor-args-review.json. Inherited and abstract empty classes now follow active parent links (inheritance-review.json). Constructors, members, dynamic names and other internal bodies remain open.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
-        "coverage/semantics/noctor-args-review.json"
+        "coverage/semantics/noctor-args-review.json",
+        "coverage/semantics/inheritance-review.json"
       ]
     },
     {
@@ -2205,13 +2217,26 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/16-static-types.watsup"
+        "spec/semantics/16-static-types.watsup",
+        "spec/semantics/94-typed-function-compiler.watsup",
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. Source declaration activation and broader family rules remain pending.",
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "review": "Static intersection normalization has 686 checked-type/lint comparisons, 9 descriptors and 7 Unsupported controls at helper checkpoint531a8b40 (static-types.json). Source-active class-only intersection parameter/return membership through inherited links is reviewed in inheritance-review.json; nonclass, interface and late-bound cases remain open.",
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
+      ],
+      "evidence": [
+        "coverage/semantics/inheritance-review.json"
       ]
     },
     {
@@ -2703,20 +2728,26 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/126-class-compiler.watsup",
-        "spec/semantics/127-class-runtime.watsup"
+        "spec/semantics/127-class-runtime.watsup",
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/object_classes.py",
         "tests/semantics/object_classes_protocol.py",
-        "tests/semantics/object_classes_catalogue.py"
+        "tests/semantics/object_classes_catalogue.py",
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
       ],
-      "review": "The reviewed class-header helper remains covered by class-headers.json. Source-active 126/127 now publish named empty classes early or at reached conditional/function declarations, detect occupied intrinsic names and authenticate source descriptors; inheritance, members, dynamic/anonymous classes and internal bodies remain open (object-classes-review.json).",
+      "review": "Source-active 126/127 empty classes (object-classes-review.json) now gain checked class-keyword lines, early/deferred parent linking, atomic publication and transitive nominal identity through133/134 (inheritance-review.json). Members, interfaces/traits, dynamic and anonymous classes, late-bound names and other internal bodies remain open.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json"
       ],
       "evidence": [
-        "coverage/semantics/object-classes-review.json"
+        "coverage/semantics/object-classes-review.json",
+        "coverage/semantics/inheritance-review.json"
       ]
     },
     {
@@ -3425,7 +3456,9 @@
         "spec/semantics/94-typed-function-compiler.watsup",
         "spec/semantics/95-type-values.watsup",
         "spec/semantics/95-typed-calls.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/typed_functions.py",
@@ -3433,12 +3466,18 @@
         "tests/semantics/typed_function_compiler.py",
         "tests/semantics/typed_function_protocol.py",
         "tests/semantics/typed_function_state.py",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
       ],
-      "review": "Independent reviewer: local type helper commit 531a8b40; repeated 686 exact checked-type/lint comparisons (one separate frontend compile restriction), 9 descriptors, 7 Unsupported negatives and 24 intended relative-static interpretations; 34 parser rejects recorded separately. At that helper checkpoint, source declaration activation and broader family rules remained pending. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
+      "review": "Static union/DNF normalization is reviewed in static-types.json. Builtin scalar/container positional and return checks are reviewed in typed-function-review.json. Source-active class-only DNF membership through inherited links is reviewed in inheritance-review.json; other type forms, references and full declaration closure remain open.",
       "helper_tests": [
         "tests/semantics/static_types.py",
         "coverage/semantics/static-types.json"
+      ],
+      "evidence": [
+        "coverage/semantics/inheritance-review.json"
       ]
     },
     {
@@ -7455,41 +7494,65 @@
     {
       "id": "classes.linking",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Early/deferred source-parent and stdClass linking, atomic publication/rollback and active graph validity are partial; methods, properties, interfaces and other internal parents remain open. See inheritance-review.json."
     },
     {
       "id": "classes.availability",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Authored prior/forward/conditional parent availability and declaration-time resolution are partial; autoload and dynamic names remain open. See inheritance-review.json."
     },
     {
       "id": "classes.inheritance",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null,
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Transitive empty-class instance and class-type membership follows active links; inherited members, interfaces, traits and variance remain open. See inheritance-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-parent-without-parent.php"
       ]
@@ -7593,41 +7656,65 @@
     {
       "id": "classes.abstract",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Abstract empty parent/child allocation and compatibility are partial; abstract members remain open. See inheritance-review.json."
     },
     {
       "id": "classes.final",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Known user/internal final-parent inheritance errors are partial; final members and broader internal behavior remain open. See inheritance-review.json."
     },
     {
       "id": "classes.creation",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Inherited and abstract empty-class allocation is partial; constructors, members and dynamic names remain open. See inheritance-review.json."
     },
     {
       "id": "classes.object-identity",
@@ -7714,15 +7801,23 @@
     {
       "id": "classes.instanceof",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/133-inheritance-compiler.watsup",
+        "spec/semantics/134-inheritance-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/inheritance.py",
+        "tests/semantics/inheritance_protocol.py",
+        "tests/semantics/inheritance_compiler.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/inheritance-review.json"
+      ],
+      "review": "Literal inherited named-class and stdClass ancestry are partial; dynamic RHS, interfaces and autoload remain open. See inheritance-review.json."
     },
     {
       "id": "classes.magic-call",

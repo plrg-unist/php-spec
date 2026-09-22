@@ -18,7 +18,9 @@ syntax pcode = { STRICT bool, GLOBALS pcpath*, UNIT nat, EXPRESSIONS pcodeexpr*,
 syntax pdefaultkind = PDSTORED | PDDEFERRED
 syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
-syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
+syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, PARENT ptbytes?, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
+syntax pclassparent = SOURCE_PARENT porigin | STDCLASS_PARENT
+syntax pclasslink = CLASSLINK porigin pclassparent
 syntax pnoctorcall = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpType7*, INDEX nat, SENT poperand*, LINE int }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pupdate = INCREMENT | DECREMENT
@@ -57,12 +59,16 @@ syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN 
 syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pobject = REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
-syntax pstate = { OBJECTS pobject*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax pstate = { OBJECTS pobject*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $install_classes(pstate, pclassdesc*) : pstate
 dec $class_at(pclassdesc*, porigin) : pclassdesc?
 dec $object_name(pstate, nat) : preqbytes
 dec $class_plain_instance(pstate, nat) : bool
+dec $activate_parented_class(pstate, pclassdesc, ptbytes) : pstate
+dec $class_origin_matches(pstate, porigin, ptbytes, nat) : bool
+dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool
+dec $class_links_valid(pstate) : bool
 dec $cv_name(phpType32) : (nat*)?
 dec $direct_this(phpType32) : bool
 dec $global_this_error(pstate, int) : pstate

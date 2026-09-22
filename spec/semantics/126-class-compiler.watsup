@@ -201,13 +201,19 @@ dec $ppclass_result(ppstate, pcpath, pchresult) : ppstate
 def $ppclass_result(P, pcpath, PCHUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppclass_result(P, pcpath, PCHERROR pchdiagnostic*) = $ppclass_diagnostics(P, pchdiagnostic*)
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "class inheritance, interfaces, attributes, or members")
-  -- if pchheader.PARENT =/= eps \/ pchheader.INTERFACES =/= eps \/ pchheader.BODY =/= SEQUENCE eps
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
+  -- if pchheader.INTERFACES =/= eps \/ pchheader.BODY =/= SEQUENCE eps
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
   -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
 
+dec $class_keyword_line(metadata, phpType3) : int
+def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = $ppunsupported(P, "missing ordinary compiler line")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $class_keyword_line(metadata, phpType3) = 0
 def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata, false, $ppclass_context(P_line)))
   -- if P.COMPLETION = PPCNORMAL
-  -- if P_line = $pplocate(P, pcpath, $source_line(metadata))
+  -- if $class_keyword_line(metadata, phpType3) = z
+  -- if $(z > 0)
+  -- if P_line = $pplocate(P, pcpath, z)
 
 dec $ppclass_name(ppstate, pcpath, pnresult) : ppstate
 dec $pnclassresolve(plenv, name) : pnresult

@@ -1,0 +1,138 @@
+;; Sparse final flags from pinned PHP 8.5.10 -n ReflectionClass over the exact 166-name catalogue.
+dec $class_internal_final(ptbytes) : bool
+def $class_internal_final(ptbytes) = ($ptlc(ptbytes) <- [
+  $ptascii("__php_incomplete_class"),
+  $ptascii("allowdynamicproperties"),
+  $ptascii("attribute"),
+  $ptascii("closure"),
+  $ptascii("delayedtargetvalidation"),
+  $ptascii("deprecated"),
+  $ptascii("directory"),
+  $ptascii("fiber"),
+  $ptascii("fibererror"),
+  $ptascii("generator"),
+  $ptascii("hashcontext"),
+  $ptascii("internaliterator"),
+  $ptascii("nodiscard"),
+  $ptascii("override"),
+  ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("mt19937")),
+  ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("pcgoneseq128xslrr64")),
+  ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("secure")),
+  ($ptascii("random") ++ [92] ++ $ptascii("engine") ++ [92] ++ $ptascii("xoshiro256starstar")),
+  ($ptascii("random") ++ [92] ++ $ptascii("randomizer")),
+  $ptascii("reflectionfiber"),
+  $ptascii("reflectiongenerator"),
+  $ptascii("reflectionreference"),
+  $ptascii("returntypewillchange"),
+  $ptascii("sensitiveparameter"),
+  $ptascii("sensitiveparametervalue"),
+  $ptascii("streambucket"),
+  ($ptascii("uri") ++ [92] ++ $ptascii("rfc3986") ++ [92] ++ $ptascii("uri")),
+  ($ptascii("uri") ++ [92] ++ $ptascii("whatwg") ++ [92] ++ $ptascii("url")),
+  ($ptascii("uri") ++ [92] ++ $ptascii("whatwg") ++ [92] ++ $ptascii("urlvalidationerror")),
+  $ptascii("weakmap"),
+  $ptascii("weakreference")
+])
+
+;; The checked frontend records the class keyword separately from modifiers
+;; and the class name. Missing, duplicate or out-of-range facts reject source.
+dec $class_keyword_lines(metadata) : int*
+dec $class_keyword_item(metadataEntry) : int*
+def $class_keyword_item(MclassKeywordLine z) = [z]
+def $class_keyword_item(metadataEntry) = eps -- otherwise
+def $class_keyword_lines(eps) = eps
+def $class_keyword_lines(metadataEntry :: metadataEntry_tail*) = $class_keyword_item(metadataEntry) ++ $class_keyword_lines(metadataEntry_tail*)
+
+def $class_keyword_line(metadata, NIdentifier (BYTES text) metadata_name) = z
+  -- if $class_keyword_lines(metadata) = [z]
+  -- if $(z > 0)
+  -- if $(z >= $source_line(metadata))
+  -- if $(z <= $source_line(metadata_name))
+  -- if $(z <= $source_end_line(metadata))
+def $class_keyword_line(metadata, phpType3) = 0 -- otherwise
+
+;; Zend links a top-level child during compilation only when its parent is
+;; already in the compiler class table. Forward and conditional parents defer.
+dec $ppclass_prior_early(pclassdesc*, ptbytes) : pclassdesc?
+def $ppclass_prior_early(eps, ptbytes) = eps
+def $ppclass_prior_early(pclassdesc :: pclassdesc_tail*, ptbytes) = (pclassdesc)
+  -- if pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+def $ppclass_prior_early(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_prior_early(pclassdesc_tail*, ptbytes)
+  -- if ~(pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes))
+
+dec $ppclass_parent_known(pclassdesc*, ptbytes?) : bool
+def $ppclass_parent_known(pclassdesc*, eps) = true
+def $ppclass_parent_known(pclassdesc*, (ptbytes)) = ($class_internal(ptbytes) \/ $ppclass_prior_early(pclassdesc*, ptbytes) =/= eps)
+
+dec $ppclass_inherited_early(ppstate, pcpath, pchheader) : bool
+def $ppclass_inherited_early(P, pcpath, pchheader) = (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME) /\ $ppclass_parent_known(P.CLASSES, pchheader.PARENT))
+
+dec $ppclass_static_link_error(ppstate, ptbytes) : ppstate
+def $ppclass_static_link_error(P, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes P.LOCATION.LINE)]
+
+dec $ppclass_readonly_error(pchheader, ptbytes, bool) : ptbytes
+def $ppclass_readonly_error(pchheader, ptbytes, false) = $ptascii("Readonly class ") ++ pchheader.NAME ++ $ptascii(" cannot extend non-readonly class ") ++ ptbytes
+  -- if pchheader.READONLY
+def $ppclass_readonly_error(pchheader, ptbytes, true) = $ptascii("Non-readonly class ") ++ pchheader.NAME ++ $ptascii(" cannot extend readonly class ") ++ ptbytes
+  -- if ~pchheader.READONLY
+
+dec $ppclass_early_link_check(ppstate, pchheader) : ppstate
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend enum ") ++ ptbytes_display)
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "enum")
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend final class ") ++ ptbytes_display)
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
+  -- if text_kind =/= "enum"
+  -- if $class_internal_final(ptbytes_parent)
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display)
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
+  -- if text_kind <- ["interface", "trait"]
+  -- if ~$class_internal_final(ptbytes_parent)
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ppclass_readonly_error(pchheader, ptbytes_display, false))
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "class")
+  -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
+  -- if pchheader.READONLY
+def $ppclass_early_link_check(P, pchheader) = P
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
+  -- if ~pchheader.READONLY
+def $ppclass_early_link_check(P, pchheader) = $ppunsupported(P, "internal class inheritance")
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "class")
+  -- if ~$class_internal_final(ptbytes_parent)
+  -- if $ptlc(ptbytes_parent) =/= $ptascii("stdclass")
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME)
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.FINAL
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ppclass_readonly_error(pchheader, pclassdesc_parent.NAME, pclassdesc_parent.READONLY))
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if ~pclassdesc_parent.FINAL
+  -- if pchheader.READONLY =/= pclassdesc_parent.READONLY
+def $ppclass_early_link_check(P, pchheader) = P
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if ~pclassdesc_parent.FINAL
+  -- if pchheader.READONLY = pclassdesc_parent.READONLY
+
+dec $ppclass_inherited_add(ppstate, pcpath, pchheader, bool) : ppstate
+def $ppclass_inherited_add(P, pcpath, pchheader, b) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT pchheader.PARENT, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppclass_inherited_add(P, pcpath, pchheader, b) = P -- otherwise
+
+dec $ppclass_inherited(ppstate, pcpath, pchheader) : ppstate
+def $ppclass_inherited(P, pcpath, pchheader) = $ppclass_inherited_add($ppclass_early_link_check(P, pchheader), pcpath, pchheader, true)
+  -- if $ppclass_inherited_early(P, pcpath, pchheader)
+def $ppclass_inherited(P, pcpath, pchheader) = $ppclass_inherited_add(P, pcpath, pchheader, false)
+  -- if ~$ppclass_inherited_early(P, pcpath, pchheader)
+
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader)
+  -- if pchheader.PARENT =/= eps
+  -- if pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps

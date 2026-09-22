@@ -25,6 +25,12 @@ def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pcl
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if pclassdesc.PARENT = eps
+def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+  -- if S.COMPLETION = NORMAL
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if pclassdesc.PARENT = (ptbytes_parent)
 def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare class ") ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE]
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
@@ -79,8 +85,7 @@ rule PhpStep/new-class: S ~> $new_class(S[.TODO = ptask_tail*], preqbytes, $runt
 dec $class_instanceof(pstate, pvalue, preqbytes) : bool
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if $ptlc(pclassdesc.NAME) = $ptlc(preqbytes)
+  -- if $class_origin_matches(S, porigin, preqbytes, |S.CLASSES|)
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
@@ -138,7 +143,7 @@ def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (P.CLASSES ++ pcla
   -- if P.COMPLETION = PPCNORMAL
   -- if $class_projection(S, pcunit_tail*) = CLASSCHECK pclassdesc*
 def $class_projection(S, pcunit*) = CLASSINVALID -- otherwise
-def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES))
+def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES) /\ $class_links_valid(S))
   -- if $class_projection(S, S.SOURCES) = CLASSCHECK S.CLASSES
 def $class_state_valid(S) = false -- otherwise
 

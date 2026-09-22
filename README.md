@@ -4,15 +4,13 @@ Compressed historical evidence is stored outside Git; see the
 [artifact locations and commit map](docs/ARTIFACTS.md) for lookup and recovery.
 
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
-PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory contains 169 constructors. The historical
-[frontend repair audit](coverage/frontend-syntax-repair.json) classified all
-30,980 corpus records with no unresolved failures and recorded exact syntax-input
-equality with its isolated validation snapshot. The later
-[switch syntax audit](coverage/semantics/switch-review.json) independently
-classified all 30,980 entries on a private snapshot whose changed syntax files
-match this checkout. The earlier [portability evidence](coverage/portability.json)
-records a fresh offline rebuild before this frontend repair; the new audit uses
-copied executables and makes no new rebuild or portability claim.
+PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory
+contains 169 constructors. The current [inheritance syntax audit](coverage/semantics/inheritance-review.json)
+classified all 30,980 corpus entries and independently bridged 306 exact syntax
+inputs to this checkout. Earlier [frontend repair](coverage/frontend-syntax-repair.json)
+and [switch syntax](coverage/semantics/switch-review.json) audits remain historical.
+The [portability evidence](coverage/portability.json) records an offline rebuild
+before these audits; the current syntax gate used copied executables.
 Executable core semantics are now being implemented; see the
 [plan](PLAN.md), [progress](PROGRESS.md) and [core contract](docs/semantics/CORE.md).
 The syntax reports above do not establish semantic coverage. BOLA verification
@@ -182,7 +180,10 @@ empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
 binds source and ownership checks. [No-constructor allocation arguments](docs/semantics/SOURCE-NOCTOR-ARGS.md)
 evaluate positional, named and unpacked values after class lookup while retaining
 sent values through the dummy call; their [review](coverage/semantics/noctor-args-review.json)
-binds source, compiler and paused-state checks. Constructors, members, inheritance,
+binds source, compiler and paused-state checks. [Empty-class inheritance](docs/semantics/SOURCE-INHERITANCE.md)
+links eligible source and `stdClass` parents at their required publication time;
+`instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
+binds source, compiler, syntax and paused-state checks. Constructors, members,
 other internal-class bodies and method callbacks remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release

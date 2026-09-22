@@ -155,9 +155,8 @@ def $typed_callable(S, pvalue) = (false) -- otherwise
 dec $typed_object_exact(pstate, ptbranch*, pvalue) : bool
 def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_closure_type(ptbranch*) /\ $typed_closure(S, n))
   -- if $typed_closure(S, n)
-def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, pclassdesc.NAME)
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_chain(S, ptbranch*, porigin, |S.CLASSES|)
   -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $typed_object_exact(S, ptbranch*, pvalue) = false -- otherwise
 
 dec $typed_conversion_at(pstate, ptbranch*, pvalue, bool) : ptypeconversion
