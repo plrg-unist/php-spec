@@ -28,15 +28,18 @@ def $foreach_start(S, statement, plocation, b, z) = $foreach_warning(S, pvalue, 
   -- if S.RESULT = KNOWN pvalue
   -- if ~$is_array_value(pvalue)
   -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
-def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0 false]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
   -- if S_marked = $objectprops_mark(S, n_object)
-def $foreach_start(S, statement, plocation, true, z) = S[.COMPLETION = UNSUPPORTED "object property reference foreach"]
+def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0 true]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
+  -- if n_iterator = S.NEXTITER
+  -- if S_marked = $objectprops_mark(S, n_object)
 def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
@@ -73,6 +76,10 @@ rule PhpStep/foreach-prep-dim: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, 
   -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
   -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
   -- if expression_iterable = NExprArrayDimFetch expression phpType5_index metadata_dim
+rule PhpStep/foreach-prep-property: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_iterable), FOREACH_DIM statement z] ++ ptask_tail*]
+  -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if expression_iterable = NExprPropertyFetch expression_receiver phpType20 metadata_property
 rule PhpStep/foreach-prep-temporary: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_iterable), FOREACH_RESET statement NOWHERE true z] ++ ptask_tail*]
   -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
   -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
@@ -226,12 +233,28 @@ def $task_nodes(FOREACH_NEXT n pnode statement porigin? z) = [pnode]
 
 rule PhpStep/foreach-fetch-object-end: S ~> $foreach_finish(S[.ORIGIN = porigin?], n)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position b_ref)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
   -- if $property_next(ppropertyslot*, n_position, 0) = eps
 rule PhpStep/foreach-fetch-object-value: S ~> $foreach_body(S_next, n, HOBJECT n_object, statement, z, KSTRING ptbytes, KNOWN $entry_value(S, pitem), false)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position false)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
   -- if $property_next(ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
-  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next)]
+  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next false)]
+rule PhpStep/foreach-fetch-object-reference: S ~> $foreach_body(S_ref, n, HOBJECT n_object, statement, z, KSTRING ptbytes, REFERENCE S_ref.CELL, true)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position true)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $property_next(ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
+  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)]
+  -- if S_ref = $property_reference_fetch(S_next, n_object, ptbytes, z)
+  -- if S_ref.COMPLETION = NORMAL
+rule PhpStep/foreach-fetch-object-reference-abrupt: S ~> S_ref[.TODO = eps]
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position true)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $property_next(ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
+  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)]
+  -- if S_ref = $property_reference_fetch(S_next, n_object, ptbytes, z)
+  -- if S_ref.COMPLETION =/= NORMAL

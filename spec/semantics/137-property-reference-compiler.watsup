@@ -1,0 +1,5 @@
+;; Reference fetches share authored receiver/name order with value fetches.
+;; $ppexpr records the mode in transient P.ACCESS; runtime derives reference
+;; demand from checked source and selected context, not from CODEEXPR.
+def $ppdispatch(P, pcpath, NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata, ppmode) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $ppdispatch(P, pcpath, NExprPropertyFetch expression_base expression_name metadata, ppmode) = $ppclearvalue($ppexpr($ppexpr(P, pcpath ++ [PCFIELD 0], expression_base, PPR), pcpath ++ [PCFIELD 1], expression_name, PPR))

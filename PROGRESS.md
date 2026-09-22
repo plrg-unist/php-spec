@@ -37,20 +37,20 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 131/132 | No-constructor arguments for admitted empty classes and `stdClass`: 18 source outcomes, 59 compiler assertions and 77 maintained paused assertions. [Review](coverage/semantics/noctor-args-review.json) |
 | 133/134 | Empty-class inheritance, early/deferred links and transitive nominal types: 33 source outcomes, 81 compiler assertions, 32 graph assertions and one classified syntax gate. [Review](coverage/semantics/inheritance-review.json) |
 | 135/136 | Public instance properties: typed/default/uninitialized slots, invariant inherited overrides, dynamic and computed names, live foreach, casts and comparison; 31 source outcomes, 146 compiler and 58 paused-task assertions. [Review](coverage/semantics/properties-review.json) |
+| 137/138 | Public property references: ordered typed sources, atomic constrained writes, by-reference calls/returns and object traversal, typed overflow; 52 admitted source outcomes and paused ownership guards. Three retained originals remain explicit dependencies. [Review](coverage/semantics/property-references-review.json) |
 
-For `new C(args)`, class lookup and allocation precede argument effects;
-static argument-shape rejection precedes runtime lookup. Named sends reject an
-unknown name before resolving a deferred variable fetch, and unpacking checks
-ordered entries after evaluating its operand. The saved call task retains the
-allocated object and sent operands until completion or abrupt cleanup. NEW is
-a VAR send result, including when passed to a by-reference parameter. The
-131/132 [review](coverage/semantics/noctor-args-review.json) records the exact
-canonical fingerprint and independent native/state checks.
+The current property-reference checkpoint keeps source-authenticated access
+separate from mutable cell contents. A failed type check or integer overflow
+preserves the prior value and owner graph; resumed tasks revalidate source and
+captured operands. The 137/138 review binds the exact source and paused-state
+profiles. It does not close nullsafe reference sends or property visibility,
+static and readonly members, hooks, magic access and methods.
 
 ## Next work
 
-Property references and constraints, visibility, static and readonly members,
-hooks, methods, constructors, remaining internal parents and Throwable follow. `try`/`finally` goto
+Nullsafe property evaluation and reference-send priorities, property
+visibility, static and readonly members, hooks, methods, constructors, remaining
+internal parents and Throwable follow. `try`/`finally` goto
 interaction, match, remaining intrinsics, traversal, dynamic lifetime and
 collection obligations remain open. Full current-source closure and a fresh
 offline network-isolated rebuild are required before complete-core acceptance.

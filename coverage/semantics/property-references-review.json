@@ -1,0 +1,109 @@
+{
+  "status": "reviewed private paired gates with exact canonical semantic/input bridge",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, pinned vendor/php-src",
+  "scope": "Public property reference cells with ordered typed sources; atomic bind/write/detach and alias lifetime, by-reference parameter/return no-coercion, live by-reference object foreach, direct and referenced typed overflow, array auto-initialization and nonobject write diagnostics. Other property and nullsafe forms remain open.",
+  "paired_implementation_fingerprint": {
+    "sha256": "f63f1df5d79850d481a966f788f8a2987307c75974b114e7d721e99d15492613",
+    "files": 1092
+  },
+  "maintained": {
+    "source": {
+      "raw": ".tools/compiler10-ref-type-candidate/.tools/property-references-xbtfxfug/report.json",
+      "sha256": "dabb1ed5a3cbbc5ae7e388b0ac483e39abfb415210ddea4464e56277e013c92f",
+      "selected": 52,
+      "catalogue": 55,
+      "outcomes": {
+        "normal": 21,
+        "php_error": 29,
+        "static_rejection": 2
+      }
+    },
+    "compiler": {
+      "command": "python3 tests/semantics/property_reference_compiler.py",
+      "sources": 11,
+      "assertions": 42,
+      "raw": ".tools/runtime10-property-ref-candidate/.tools/property-reference-compiler-eii62wrf"
+    },
+    "binding_protocol": {
+      "raw": ".tools/property-reference-protocol-2x8_weo4/report.json",
+      "sha256": "32eb610b3cc06069f6fbd6a41598b4b80e5151a2d067f47dbd7abfeae69c6e13",
+      "assertions": 19,
+      "separate_fingerprint": {
+        "sha256": "dc580c6d980445a39f1981b82b5b74c3a14c95079224db66558f8959a86840df",
+        "files": 1093
+      }
+    },
+    "overflow_protocol": {
+      "raw": ".tools/compiler10-ref-type-candidate/.tools/property-reference-incdec-ujkj4n9e/report.json",
+      "sha256": "f0ea278a632287038ed25f1ecd575ffa6b9655647537514a33b05bb424766cb7",
+      "cases": 2,
+      "assertions": 44,
+      "budgets": [
+        0,
+        11,
+        37
+      ],
+      "same_fingerprint_as_source": true
+    }
+  },
+  "independent": {
+    "retained_source14": {
+      "raw": ".tools/review15-property-refs/replay14-ggryfxrj/report.json",
+      "sha256": "74306d157efb73797b5d77bea4158d335921757d3db733c2505462b2b1330da4"
+    },
+    "nonobject_source9": {
+      "raw": ".tools/review15-property-refs/nonobject-replay9-nqf_ft7e/report.json",
+      "sha256": "bad5c1fc5f9eee30ce80ce8c2473dd55065457a661f51550505dbcc70e65c408"
+    },
+    "typed_source_state32": {
+      "raw": ".tools/review15-property-refs/type-source-state-8oa1r4kp/report.json",
+      "sha256": "abb76d7cf07b583b3b92ab703f941c7e64b49c26ec694b24e943f2507b4d5930"
+    },
+    "array_rollback12": {
+      "raw": ".tools/review15-property-refs/auto-array-rollback-nvaho7yq/report.json",
+      "sha256": "c466bc9a2761e342ad5bec1120576d1a2d1d4c3ea9fcc542bbb93519c31f2f1c"
+    },
+    "actual_fetch_head_guard6": {
+      "raw": ".tools/review15-property-refs/fetch-name-rejection-osv2m6m4/report.json",
+      "sha256": "193566e059b573fd3362b8dabf86b95f96f86e2cc342f1d7c2f69b86983ff35a"
+    },
+    "overflow_open_types4": {
+      "raw": ".tools/review15-property-refs/overflow-open4-uhdbh9rw/report.json",
+      "sha256": "f09432d9514185b11b6d603be3a1db86ed388a6c36ff9f57ed780e724332920b"
+    }
+  },
+  "native_profiles": "Each retained native report contains source bytes/hash, pinned oracle hash, exact CLI argv/cwd/environment, stdout/stderr/status. The three auto-initialization originals were rerun once under the maintained display_errors=stderr profile; earlier distinct-profile raw is retained. Independent reports span distinct scoped fingerprints and are not aggregated as one snapshot.",
+  "explicit_exclusions": [
+    {
+      "id": "compiler-ordinary-ref-send-coerce",
+      "dependency": "gettype() builtin observation; a helper-free ordinary-CV control is admitted"
+    },
+    {
+      "id": "compiler-known-ref-nullsafe",
+      "dependency": "nullsafe property fetch/reference send semantics"
+    },
+    {
+      "id": "incdec-reference-float-union-runtime",
+      "dependency": "is_float() builtin observation; int/float type admission is independently checked"
+    }
+  ],
+  "canonical_bridge": {
+    "raw": ".tools/property-reference-canonical-bridge.json",
+    "sha256": "10f79c193d42cb4a0d4d4b5fdd1c7f82f070aed25e8abf725b6cd7197688c368",
+    "base_commit": "5c17b0ece6c9c47245b22b3d8866f52e1030388d",
+    "exact_modules": 134,
+    "exact_test_and_doc_files": 8,
+    "total_exact_paths": 142,
+    "focused_compiler": {
+      "raw": ".tools/property-reference-compiler-_p5sdb7_",
+      "sources": 11,
+      "assertions": 42,
+      "result": "pass"
+    },
+    "adjacent_property_compiler": {
+      "raw": ".tools/property-compiler-inrbi0tw",
+      "assertions": 147,
+      "result": "pass"
+    }
+  }
+}

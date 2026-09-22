@@ -273,7 +273,7 @@ def $named_replace((preqbytes, poperand_old) :: (preqbytes_tail, poperand_tail)*
 dec $named_coerced(pstate, nat, poperand, pvalue) : pstate
 def $named_coerced(S, n, KNOWN pvalue_old, pvalue) = S[.CURRENT = (pcallcontext[.NAMED = $named_replace(pcallcontext.NAMED, n, KNOWN pvalue)])]
   -- if S.CURRENT = (pcallcontext)
-def $named_coerced(S, n_index, REFERENCE n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
+def $named_coerced(S, n_index, REFERENCE n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
 dec $named_tail_index(nat, nat) : nat
 def $named_tail_index(n_fixed, n_args) = n_fixed -- if $(n_fixed >= n_args)
 def $named_tail_index(n_fixed, n_args) = n_args -- if $(n_fixed < n_args)
@@ -282,13 +282,13 @@ def $named_receive(S, pfunction, n) = S_value
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
   -- if (preqbytes, poperand) = pcallcontext.NAMED[n]
-  -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), $variadic_operand_value(S, poperand))
+  -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), poperand)
   -- if S_value.COMPLETION =/= NORMAL
 def $named_receive(S, pfunction, n) = $literal_item_insert(S_array, n_array, (KSTRING preqbytes), $variadic_item(poperand, pvalue), z)[.TODO = [NAMED_VARIADIC_RECEIVE pfunction.ORIGIN $(n + 1)]][.RESULT = KNOWN PNULL]
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
   -- if (preqbytes, poperand) = pcallcontext.NAMED[n]
-  -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), $variadic_operand_value(S, poperand))
+  -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), poperand)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
   -- if S_coerced = $named_coerced(S_value, n, poperand, pvalue)

@@ -25,17 +25,20 @@ rule PhpStep/variadic-begin: S ~> $write_name(S_array, psparam.NAME, pvalue)[.TO
   -- if S_array = $allocate_array(S, $array_empty())
   -- if S_array.RESULT = KNOWN pvalue
 
-dec $variadic_value(pstate, pfunction, nat, nat, pvalue) : pstate
-def $variadic_value(S, pfunction, n_fixed, n_arg, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
-  -- if ptypeconversion = $typed_conversion_at(S, pfunction.SIGNATURE.PARAMETERS[n_fixed].TYPE, pvalue, $typed_caller_strict(S))
-  -- if ptypeconversion =/= TYPEREJECT
-def $variadic_value(S, pfunction, n_fixed, n_arg, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n_arg + 1)) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
+dec $variadic_operand_value(pstate, poperand) : pvalue
+dec $variadic_value(pstate, pfunction, nat, nat, poperand) : pstate
+def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
-  -- if $typed_conversion_at(S, psparam.TYPE, pvalue, $typed_caller_strict(S)) = TYPEREJECT
+  -- if pvalue = $variadic_operand_value(S, poperand)
+  -- if ptypeconversion = $typed_reference_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand)))
+  -- if ptypeconversion =/= TYPEREJECT
+def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n_arg + 1)) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
+  -- if pvalue = $variadic_operand_value(S, poperand)
+  -- if $typed_reference_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand))) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 
-dec $variadic_operand_value(pstate, poperand) : pvalue
 def $variadic_operand_value(S, KNOWN pvalue) = pvalue
 def $variadic_operand_value(S, REFERENCE n) = pvalue -- if S.STORE[n] = DEFINED pvalue
 
@@ -47,7 +50,7 @@ def $variadic_replace(poperand_old :: poperand_tail*, n, poperand) = poperand_ol
 dec $variadic_coerced(pstate, nat, poperand, pvalue) : pstate
 def $variadic_coerced(S, n_extra, KNOWN pvalue_old, pvalue) = S[.CURRENT = (pcallcontext[.EXTRA = $variadic_replace(pcallcontext.EXTRA, n_extra, KNOWN pvalue)])]
   -- if S.CURRENT = (pcallcontext)
-def $variadic_coerced(S, n_extra, REFERENCE n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
+def $variadic_coerced(S, n_extra, REFERENCE n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
 
 dec $variadic_item(poperand, pvalue) : pitem
 def $variadic_item(KNOWN pvalue_old, pvalue) = DIRECT pvalue
@@ -59,14 +62,14 @@ def $variadic_receive(S, pfunction, n_arg) = S_value
   -- if S.CURRENT = (pcallcontext)
   -- if n_extra = $(n_arg - n_fixed)
   -- if poperand = pcallcontext.EXTRA[n_extra]
-  -- if S_value = $variadic_value(S, pfunction, n_fixed, n_arg, $variadic_operand_value(S, poperand))
+  -- if S_value = $variadic_value(S, pfunction, n_fixed, n_arg, poperand)
   -- if S_value.COMPLETION =/= NORMAL
 def $variadic_receive(S, pfunction, n_arg) = $literal_item_insert(S_array, n_array, eps, $variadic_item(poperand, pvalue), z)[.TODO = [VARIADIC_RECEIVE pfunction.ORIGIN $(n_arg + 1)]][.RESULT = KNOWN PNULL]
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
   -- if n_extra = $(n_arg - n_fixed)
   -- if poperand = pcallcontext.EXTRA[n_extra]
-  -- if S_value = $variadic_value(S, pfunction, n_fixed, n_arg, $variadic_operand_value(S, poperand))
+  -- if S_value = $variadic_value(S, pfunction, n_fixed, n_arg, poperand)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
   -- if S_coerced = $variadic_coerced(S_value, n_extra, poperand, pvalue)

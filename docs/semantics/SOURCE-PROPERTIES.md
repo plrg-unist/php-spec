@@ -22,6 +22,8 @@ line without reconstructing captured receiver values.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
-binds source, compiler and paused-state checks. Property references, by-reference
-object traversal, private/protected and static members, hooks, magic methods,
-constructors and scalar-to-object property population remain open obligations.
+binds source, compiler and paused-state checks. Public property references
+and by-reference object traversal are documented separately in
+[SOURCE-PROPERTY-REFERENCES.md](SOURCE-PROPERTY-REFERENCES.md). Private/protected
+and static members, hooks, magic methods, constructors and scalar-to-object
+property population remain open obligations.

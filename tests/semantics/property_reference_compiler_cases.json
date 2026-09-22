@@ -1,0 +1,68 @@
+[
+  {
+    "name": "assign-computed-order",
+    "source": "<?php class C{public $x=1;} $o=new C; $v=2; function name(){echo \"N\";return \"x\";} function &rhs(){global $v;echo \"R\";return $v;} $o->{name()} =& rhs(); $v=3; echo $o->x;\n",
+    "access_path": "[PCINDEX 5, PCFIELD 0, PCFIELD 0]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "assign-uninitialized-target",
+    "source": "<?php class C{public int $x;} $o=new C; $v=2; $o->x =& $v; $v=3; echo $o->x;\n",
+    "access_path": "[PCINDEX 3, PCFIELD 0, PCFIELD 0]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "assign-target-name-before-incompatible-rhs",
+    "source": "<?php class C{public int $x;} $o=new C; $v=\"bad\"; function name(){echo \"N\";return \"x\";} function &rhs(){global $v;echo \"R\";return $v;} $o->{name()} =& rhs(); echo \"Z\";\n",
+    "access_path": "[PCINDEX 5, PCFIELD 0, PCFIELD 0]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "known-ref-send",
+    "source": "<?php class C{public int $x=1;} $o=new C; function name(){echo \"N\";return \"x\";} function set(&$v){echo \"F\";$v=3;} set($o->{name()}); echo $o->x;\n",
+    "access_path": "[PCINDEX 4, PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "deferred-ref-send",
+    "source": "<?php class C{public int $x=1;} $o=new C; function name(){echo \"N\";return \"x\";} function set(&$v){echo \"F\";$v=3;} $f=\"set\"; $f($o->{name()}); echo $o->x;\n",
+    "access_path": "[PCINDEX 5, PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]",
+    "access_mode": "PPF"
+  },
+  {
+    "name": "deferred-ref-literal",
+    "source": "<?php class C{public int $x=1;} $o=new C; function set(&$v){$v=3;} $f=\"set\"; $f($o->x); echo $o->x;\n",
+    "access_path": "[PCINDEX 4, PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]",
+    "access_mode": "PPF"
+  },
+  {
+    "name": "return-ref-property",
+    "source": "<?php class C{public int $x=1;} $o=new C; function name(){echo \"N\";return \"x\";} function &get(){global $o;return $o->{name()};} $r =& get(); $r=3; echo $o->x;\n",
+    "access_path": "[PCINDEX 3, PCFIELD 5, PCINDEX 1, PCFIELD 0]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "array-ref-property",
+    "source": "<?php class C{public int $x=1;} $o=new C; function name(){echo \"N\";return \"x\";} $a=[&$o->{name()}]; $a[0]=3; echo $o->x;\n",
+    "access_path": "[PCINDEX 3, PCFIELD 0, PCFIELD 1, PCFIELD 0, PCINDEX 0, PCFIELD 1]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "foreach-ref-property-iterable",
+    "source": "<?php class C{public int $x=1;} class H{public C $c;} $h=new H; $h->c=new C; foreach($h->c as &$v){$v=4;} echo $h->c->x;\n",
+    "access_path": "[PCINDEX 4, PCFIELD 0]",
+    "access_mode": "PPW"
+  },
+  {
+    "name": "nullsafe-ref-target",
+    "source": "<?php class C{public $x=1;} $o=new C; $v=2; $o?->x =& $v; echo \"Z\";\n",
+    "static_message": "Can't use nullsafe operator in write context",
+    "static_line": 1
+  },
+  {
+    "name": "return-ref-nullsafe",
+    "source": "<?php class C{public $x=1;} $o=new C; function &f(){global $o;return $o?->x;} echo \"Z\";\n",
+    "static_message": "Cannot take reference of a nullsafe chain",
+    "static_line": 1
+  }
+]

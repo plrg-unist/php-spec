@@ -76,9 +76,14 @@ def $unpack_needs_reference(psparam*, (ENTRY pkey pitem) :: pentry*, z) = ($unpa
   -- if z_arg = $unpack_scan_index(psparam*, pkey, z)
 
 dec $unpack_write_container(pstate, poperand, pvalue) : pstate
-def $unpack_write_container(S, VARIABLE preqbytes z, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)][.RESULT = KNOWN pvalue]
+def $unpack_write_container(S, VARIABLE preqbytes z, pvalue) = $write_cell_checked(S, n, pvalue, z)
   -- if $lookup(S.ENV, preqbytes) = (n)
-def $unpack_write_container(S, REFERENCE n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)][.RESULT = REFERENCE n]
+def $unpack_write_container(S, REFERENCE n, pvalue) = S_written[.RESULT = REFERENCE n]
+  -- if S_written = $write_cell_checked(S, n, pvalue, $property_current_line(S))
+  -- if S_written.COMPLETION = NORMAL
+def $unpack_write_container(S, REFERENCE n, pvalue) = S_written
+  -- if S_written = $write_cell_checked(S, n, pvalue, $property_current_line(S))
+  -- if S_written.COMPLETION =/= NORMAL
 def $unpack_write_container(S, KNOWN pvalue_old, pvalue) = S[.RESULT = KNOWN pvalue]
 
 dec $unpack_separate(pstate, poperand, bool, bool) : pstate

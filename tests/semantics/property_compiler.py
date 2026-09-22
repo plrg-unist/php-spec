@@ -94,7 +94,8 @@ def run():
             '$ppproperty_type_equal([PTBRANCH ([PTBUILTIN "int"]), PTBRANCH ([PTBUILTIN "null"])], [PTBRANCH ([PTBUILTIN "null"]), PTBRANCH ([PTBUILTIN "int"])]) = true',
             '$ppproperty_type_equal([PTBRANCH ([PTBUILTIN "int"])], [PTBRANCH ([PTBUILTIN "string"])]) = false',
         ])
-        assertions['reference'][1][:] = ['P.COMPLETION = PPCABRUPT (UNSUPPORTED "property reference assignment")']
+        assertions['reference'][1][:] = ['P.COMPLETION = PPCNORMAL',
+                                         '([PCINDEX 2, PCFIELD 0, PCFIELD 0], PPW) <- P.ACCESS']
         modules = [str(ROOT / p) for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
         count = 0
         for name, (begin, tests) in assertions.items():

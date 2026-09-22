@@ -609,7 +609,7 @@
         "tests/semantics/conformance/reference-assignment-result.php",
         "tests/semantics/request_environment.py"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. String offsets, callbacks, frames/properties and source GC remain pending. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. Public property targets and typed-source rebindings are now bounded in property-references-review.json; string offsets, callbacks, remaining frames/property forms and source GC remain open. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -1885,7 +1885,7 @@
         "tests/semantics/incdec_compiler.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Public direct-property and typed-reference overflow paths now have bounded source/state checks in property-references-review.json. Other object handlers and frames remain open; no family closure."
     },
     {
       "node": "Expr_PostInc",
@@ -1904,7 +1904,7 @@
         "tests/semantics/incdec_compiler.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Public direct-property and typed-reference overflow paths now have bounded source/state checks in property-references-review.json. Other object handlers and frames remain open; no family closure."
     },
     {
       "node": "Expr_PreDec",
@@ -1923,7 +1923,7 @@
         "tests/semantics/incdec_compiler.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Public direct-property and typed-reference overflow paths now have bounded source/state checks in property-references-review.json. Other object handlers and frames remain open; no family closure."
     },
     {
       "node": "Expr_PreInc",
@@ -1942,7 +1942,7 @@
         "tests/semantics/incdec_compiler.py",
         "tests/semantics/validate.py"
       ],
-      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Objects/properties, typed references and frames remain pending; no family closure."
+      "review": "Independent source activation 7d5718fb, coverage/semantics/incdec-review.json: 1,484 exact sources +25 negatives, 339 independent source observations, 71 context replays/994 assertions and eight dense replays/4,152 assertions. Current six values and variable/dimension/append lvalues preserve copied pre/post results, wrappers, access timing and diagnostics. Public direct-property and typed-reference overflow paths now have bounded source/state checks in property-references-review.json. Other object handlers and frames remain open; no family closure."
     },
     {
       "node": "Expr_Print",
@@ -1983,7 +1983,7 @@
         "tests/semantics/properties.py",
         "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Source execution now compiles authenticated receiver/name access and evaluates public instance and dynamic property reads, writes and quiet probes; references, visibility, hooks and magic remain open. Historical constant-prepass scope: array-omission-review.json; current source/state: properties-review.json."
+      "review": "Public and dynamic property reads, writes, quiet probes and source-authenticated reference fetches now execute through checked source. Bounded source/state: properties-review.json and property-references-review.json. Nullsafe reference sends, visibility, hooks, magic and methods remain open; historical constant prepass: array-omission-review.json."
     },
     {
       "node": "Expr_ShellExec",
@@ -3038,7 +3038,7 @@
         "tests/semantics/properties.py",
         "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Array by-value/reference history is retained in foreach-runtime-review.json. Public-object foreach by value now uses live property slots with deletion/reinsertion and owner cleanup (properties-review.json); object by-reference traversal and Traversable callbacks remain open."
+      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open."
     },
     {
       "node": "Stmt_Function",
@@ -3268,7 +3268,7 @@
         "tests/semantics/properties.py",
         "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Public instance declarations now compile ordered typed/default descriptors, including array constants and early/deferred override checks; slots execute direct access in properties-review.json. Visibility beyond public, static, readonly, hooks and references remain open."
+      "review": "Public instance declarations compile ordered typed/default descriptors and invariant inherited overrides (properties-review.json). Public reference cells now enforce ordered typed sources across writes and alias cleanup (property-references-review.json). Nonpublic, static, readonly, hooks and magic remain open."
     },
     {
       "node": "Stmt_Return",
@@ -4986,7 +4986,7 @@
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/call-reference-review.json"
       ],
-      "review": "Wrapper history 3585707a and ordinary writable-fetch correction 84d70299 are independently reviewed in coverage/semantics/wrapper-dynamic-write-review.json and refreshed by incdec-review.json on 1,484 exact sources +25 negatives. True acquisition marks; ordinary initialized fetching does not; singleton history and COW/union unwrapping remain distinct. Objects/typed references/frames, callbacks and source GC remain pending. Call-result reference-assignment prerequisite accepted36224bc3 on933/7391ccdf: ordinary value-call writes preserve existing target aliases and exact source Notice timing; source reference returns remain pending. See call-reference-review.json for original failures, source/state/protocol and complete926 bridges.",
+      "review": "Wrapper history 3585707a and ordinary writable-fetch correction 84d70299 are independently reviewed in coverage/semantics/wrapper-dynamic-write-review.json and refreshed by incdec-review.json on 1,484 exact sources +25 negatives. True acquisition marks; ordinary initialized fetching does not; singleton history and COW/union unwrapping remain distinct. Public property and typed-reference paths are now bounded in property-references-review.json; frames, callbacks and source GC remain open. Call-result reference-assignment prerequisite accepted36224bc3 on933/7391ccdf: ordinary value-call writes preserve existing target aliases and exact source Notice timing; source reference returns and typed-property source checks are now bounded by their later reviews. See call-reference-review.json for original failures, source/state/protocol and complete926 bridges.",
       "planned_source_tests": [
         "tests/semantics/conformance/reference-rebind.php",
         "tests/semantics/conformance/parameter-rebind.php",
@@ -5020,15 +5020,29 @@
     {
       "id": "storage.typed-reference-sources",
       "milestone": "2a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/53-incdec.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/99-reference-returns.watsup",
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/138-property-references.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/property_reference_compiler.py",
+        "tests/semantics/property_reference_protocol.py",
+        "tests/semantics/property_reference_incdec_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/property_references.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/property-references-review.json"
+      ],
+      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Nullsafe reference sends, nonpublic/static/readonly properties, hooks and magic remain open; see property-references-review.json."
     },
     {
       "id": "storage.static-bindings",
@@ -5622,7 +5636,7 @@
         "vendor/php-src/Zend/zend_hash.c",
         "coverage/semantics/foreach-runtime-review.json"
       ],
-      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; public-object by-reference traversal is now bounded in property-references-review.json; Traversable callbacks, remaining frame/return and header/nullsafe contexts remain required. See foreach-runtime-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-reference-mutation.php"
       ]
@@ -8091,15 +8105,29 @@
     {
       "id": "properties.reference-constraints",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/53-incdec.watsup",
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/99-reference-returns.watsup",
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/138-property-references.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/property_reference_compiler.py",
+        "tests/semantics/property_reference_protocol.py",
+        "tests/semantics/property_reference_incdec_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/property_references.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/property-references-review.json"
+      ],
+      "review": "Public property reference cells carry ordered non-owning typed sources. Binding, writes, by-reference calls/returns, object traversal, array promotion and typed overflow have bounded exact source and paused-state review. Nullsafe reference sends, nonpublic/static/readonly properties, hooks and magic remain open; see property-references-review.json."
     },
     {
       "id": "declarations.constants",

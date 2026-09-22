@@ -35,21 +35,82 @@ def $update_value(S, INCREMENT, PARRAY n, z) = $throw_scalar(S, "TypeError", [67
 def $update_value(S, DECREMENT, PARRAY n, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,100,101,99,114,101,109,101,110,116,32,97,114,114,97,121], z)
 
 ;; The pre/post expression owns a copied scalar value, never the updated cell.
+dec $update_accepts_double(ptbranch*) : bool
+def $update_accepts_double(ptbranch*) = (ptbranch* = eps \/ "mixed" <- $ptmasks(ptbranch*) \/ "float" <- $ptmasks(ptbranch*))
+
+dec $update_alias_cell(pstate, plocation) : nat?
+def $update_alias_cell(S, ROOT n_cell) = (n_cell)
+def $update_alias_cell(S, ELEMENT n_array pkey) = (n_cell)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (ALIAS n_cell)
+def $update_alias_cell(S, PROPERTY n_object ptbytes) = (n_cell)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $update_alias_cell(S, plocation) = eps -- otherwise
+
+dec $update_first_nodouble(pstate, pproptypesource*) : pproptypesource?
+def $update_first_nodouble(S, eps) = eps
+def $update_first_nodouble(S, pproptypesource :: pproptypesource_tail*) = (pproptypesource)
+  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pproptypesource.DECL
+  -- if ~$update_accepts_double(ppropertydesc.TYPE)
+def $update_first_nodouble(S, pproptypesource :: pproptypesource_tail*) = $update_first_nodouble(S, pproptypesource_tail*)
+  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pproptypesource.DECL
+  -- if $update_accepts_double(ppropertydesc.TYPE)
+
+dec $update_limit_word(pupdate) : ptbytes
+def $update_limit_word(INCREMENT) = $ptascii("maximal")
+def $update_limit_word(DECREMENT) = $ptascii("minimal")
+dec $update_overflow_message(pstate, pupdate, plocation) : ptbytes?
+def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, pproptypesource.DECL) ++ $ptascii("::$") ++ pproptypesource.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+  -- if $update_alias_cell(S, plocation) = (n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $update_first_nodouble(S, ppropref.SOURCES) = (pproptypesource)
+  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
+def $update_overflow_message(S, pupdate, PROPERTY n_object ptbytes) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ~$update_accepts_double(ppropertydesc.TYPE)
+def $update_overflow_message(S, pupdate, plocation) = eps -- otherwise
+
+dec $update_write(pstate, pstate, pupdate, pvalue, pvalue, int) : pstate
+def $update_write(S_changed, S_original, INCREMENT, PINT 9223372036854775807, PFLOAT n, z) = $throw_scalar(S_changed, "TypeError", ptbytes_message, z)
+  -- if $update_overflow_message(S_original, INCREMENT, S_original.LOCATION) = (ptbytes_message)
+def $update_write(S_changed, S_original, DECREMENT, PINT $(-9223372036854775808), PFLOAT n, z) = $throw_scalar(S_changed, "TypeError", ptbytes_message, z)
+  -- if $update_overflow_message(S_original, DECREMENT, S_original.LOCATION) = (ptbytes_message)
+def $update_write(S_changed, S_original, pupdate, pvalue_old, pvalue_new, z) = $location_write(S_changed, S_original.LOCATION, pvalue_new) -- otherwise
+
 dec $update_location(pstate, pupdate, bool, int) : pstate
 def $update_location(S, pupdate, b_post, z) = S_changed
   -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
   -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
   -- if S_changed.COMPLETION =/= NORMAL
-def $update_location(S, pupdate, false, z) = $location_write(S_changed, S.LOCATION, pvalue)
+def $update_location(S, pupdate, false, z) = $update_write(S_changed, S, pupdate, pvalue_old, pvalue, z)
   -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
   -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
   -- if S_changed.COMPLETION = NORMAL
   -- if S_changed.RESULT = KNOWN pvalue
-def $update_location(S, pupdate, true, z) = $location_write(S_changed, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue_old]
+def $update_location(S, pupdate, true, z) = S_written
   -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
   -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
   -- if S_changed.COMPLETION = NORMAL
   -- if S_changed.RESULT = KNOWN pvalue
+  -- if S_written = $update_write(S_changed, S, pupdate, pvalue_old, pvalue, z)
+  -- if S_written.COMPLETION =/= NORMAL
+def $update_location(S, pupdate, true, z) = S_written[.RESULT = KNOWN pvalue_old]
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
+  -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
+  -- if S_changed.COMPLETION = NORMAL
+  -- if S_changed.RESULT = KNOWN pvalue
+  -- if S_written = $update_write(S_changed, S, pupdate, pvalue_old, pvalue, z)
+  -- if S_written.COMPLETION = NORMAL
 
 ;; RW acquisition warns and initializes missing names and explicit keys. Appends
 ;; allocate a null slot without an undefined-key diagnostic.
@@ -117,6 +178,19 @@ def $rw_base(S, BASE_NAME poperand z_name, pstringfetch, z) = $rw_name(S_name, n
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read[.LOCATION = PROPERTY n_object ptbytes]
+  -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read[.LOCATION = PROPERTY n_object ptbytes]
+  -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, PROPERTY n_object ptbytes) = DEFINED pvalue
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = $location_write(S_read[.LOCATION = PROPERTY n_object ptbytes], PROPERTY n_object ptbytes, PNULL)
+  -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, PROPERTY n_object ptbytes) = UNDEFINED
+def $rw_base(S, BASE_PROPERTY pvalue ptbytes, pstringfetch, z) = S[.COMPLETION = UNSUPPORTED "property update on non-object"]
+  -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $rw_base(S, BASE_DIM pbase poperand z_key, pstringfetch, z) = $rw_dimension($rw_base(S, pbase, STRINGNESTED, z_key), (poperand), pstringfetch, z_key)
 def $rw_base(S, BASE_APPEND pbase z_key, pstringfetch, z) = $rw_dimension($rw_base(S, pbase, STRINGNESTED, z_key), eps, pstringfetch, z_key)
 

@@ -23,6 +23,9 @@ syntax ppropertydesc = { ORIGIN porigin, NAME ptbytes, TYPE ptbranch*, DEFAULT p
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
 syntax ppropertyslot = { DECL porigin?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
+syntax pproptypesource = { OBJECT nat, NAME ptbytes, DECL porigin }
+syntax ppropref = { CELL nat, SOURCES pproptypesource* }
+dec $propref_at(ppropref*, nat) : ppropref?
 syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, PARENT ptbytes?, PROPERTIES ppropertydesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
 syntax pclassparent = SOURCE_PARENT porigin | STDCLASS_PARENT
 syntax pclasslink = CLASSLINK porigin pclassparent
@@ -39,6 +42,7 @@ syntax ptask = CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_IN
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand
   | INSTANCEOF_RESULT int
   | PROPERTY_PREP phpType20 int | PROPERTY_NAME pvalue int
+  | PROPERTY_REF_PREP expression int | PROPERTY_REF_CAPTURE pbase int | PROPERTY_REF_BIND pbase nat int | PROPERTY_REF_BIND_CV pbase nat* int | PROPERTY_REF_FETCH int
   | LIST_TEMP_CAPTURE expression int | CALL_REF_PREP pcalltarget nat porigin? | CALL_REF_FETCH pcalltarget nat porigin? | ERROR_UNWIND pcompletion | GLOBAL_BIND expression int | GLOBAL_BIND_NAME int | CALL_DYNAMIC porigin int int | FIRSTCLASS_CONVERT porigin int int | CALL_ARGS pcalltarget phpType7* nat poperand* porigin? int | CALL_SEND pcalltarget phpType7* nat poperand* porigin? int | RETURN_REF_FETCH int | RETURN_REF_VALUE int | RETURN_REF_NULL int | RETURN_VALUE int | RETURN_NULL | RETURN_UNWIND poperand | GLOBAL_NAME int | ISSET_PREP expression bool | ISSET_RESULT bool int | ISSET_NEXT expression* nat | COALESCE_ASSIGN_PREP expression expression int | COALESCE_ASSIGN_WRITE pbase bool int | COALESCE_QUIET expression int int | FOREACH_PREP statement int | FOREACH_CV statement nat* int | FOREACH_NAME statement int | FOREACH_DIM statement int | FOREACH_RESET statement plocation bool int | FOREACH_NEXT nat pnode statement porigin? int | COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
   | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
@@ -51,7 +55,7 @@ syntax ptask = CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_IN
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
 syntax pcursor = CURSOR nat nat
-syntax piterator = ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat
+syntax piterator = ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool
 syntax preqbytes = nat*
 syntax prequest = { ENV (preqbytes, preqbytes)*, ARGV preqbytes*, FILE preqbytes, SECONDS int, MICROSECONDS nat, VARIABLES preqbytes, JIT bool, CWD preqbytes? }
 var Q : prequest
@@ -65,7 +69,7 @@ syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN 
 syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pobject = REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
-syntax pstate = { OBJECTS pobject*, OBJECTPROPS pobjectprops*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax pstate = { OBJECTS pobject*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $install_classes(pstate, pclassdesc*) : pstate
 dec $class_at(pclassdesc*, porigin) : pclassdesc?
@@ -92,6 +96,14 @@ dec $property_entries(ppropertyslot*) : pentry*
 dec $property_next(ppropertyslot*, nat, nat) : (ptbytes, pitem, nat)?
 dec $property_slots_valid(pstate, ppropertydesc*, ppropertyslot*) : bool
 dec $property_state_valid(pstate) : bool
+dec $proprefs_valid(pstate) : bool
+dec $propref_slots_covered(pstate, pobjectprops*) : bool
+dec $write_cell_checked(pstate, nat, pvalue, int) : pstate
+dec $propref_detach_slot(pstate, nat, ppropertyslot) : pstate
+dec $property_reference_fetch(pstate, nat, ptbytes, int) : pstate
+dec $property_current_line(pstate) : int
+dec $objectprops_prune(pobjectprops*, pnode*) : pobjectprops*
+dec $proprefs_prune(ppropref*, pobjectprops*, pnode*) : ppropref*
 dec $cv_name(phpType32) : (nat*)?
 dec $direct_this(phpType32) : bool
 dec $global_this_error(pstate, int) : pstate
@@ -225,7 +237,7 @@ def $resolve_at(S, REFERENCE n, z) = $resolve(S, REFERENCE n)
 dec $write_name(pstate, nat*, pvalue) : pstate
 def $write_name(S, n_name*, pvalue) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_blocked(S, n_name*)
-def $write_name(S, n_name*, pvalue) = S_found[.STORE = $set_cell(S_found.STORE, S_found.CELL, DEFINED pvalue)][.RESULT = KNOWN pvalue]
+def $write_name(S, n_name*, pvalue) = $write_cell_checked(S_found, S_found.CELL, pvalue, $property_current_line(S))
   -- if ~$environment_blocked(S, n_name*)
   -- if S_found = $ensure(S, n_name*)
 

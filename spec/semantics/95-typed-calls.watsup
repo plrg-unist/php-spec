@@ -15,12 +15,57 @@ def $typed_caller_strict(S) = pcode.STRICT
   -- if $code_at(S.CODE, n) = (pcode)
 
 dec $typed_parameter_value(pstate, pfunction, nat, pvalue) : pstate
+;; A cell constrained by a typed property cannot be converted while binding a
+;; by-reference parameter. Value parameters and ordinary reference cells retain
+;; the caller's usual scalar conversion rules.
+dec $typed_reference_cell_source(pstate, nat) : bool
+def $typed_reference_cell_source(S, n_cell) = true
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+def $typed_reference_cell_source(S, n_cell) = false -- otherwise
+dec $typed_reference_operand_source(pstate, poperand) : bool
+def $typed_reference_operand_source(S, REFERENCE n_cell) = $typed_reference_cell_source(S, n_cell)
+def $typed_reference_operand_source(S, poperand) = false -- otherwise
+dec $typed_reference_name_source(pstate, nat*) : bool
+def $typed_reference_name_source(S, n_name*) = $typed_reference_cell_source(S, n_cell)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+def $typed_reference_name_source(S, n_name*) = false -- otherwise
+dec $typed_reference_location_source(pstate, plocation) : bool
+def $typed_reference_location_source(S, ROOT n_cell) = $typed_reference_cell_source(S, n_cell)
+def $typed_reference_location_source(S, ELEMENT n_array pkey) = $typed_reference_cell_source(S, n_cell)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (ALIAS n_cell)
+def $typed_reference_location_source(S, PROPERTY n_object ptbytes) = $typed_reference_cell_source(S, n_cell)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $typed_reference_location_source(S, PROPERTY n_object ptbytes) = true
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+def $typed_reference_location_source(S, plocation) = false -- otherwise
+dec $typed_reference_conversion(pstate, ptbranch*, pvalue, bool, bool) : ptypeconversion
+dec $typed_reference_allowed(ptypeconversion, pvalue) : bool
+def $typed_reference_allowed(TYPEVALUE pvalue, pvalue) = true
+def $typed_reference_allowed(TYPEDEPENDENT text, pvalue) = true
+def $typed_reference_allowed(ptypeconversion, pvalue) = false -- otherwise
+def $typed_reference_conversion(S, ptbranch*, pvalue, b_strict, true) = ptypeconversion
+  -- if ptypeconversion = $typed_conversion_at(S, ptbranch*, pvalue, b_strict)
+  -- if $typed_reference_allowed(ptypeconversion, pvalue)
+def $typed_reference_conversion(S, ptbranch*, pvalue, b_strict, true) = TYPEREJECT
+  -- if ptypeconversion = $typed_conversion_at(S, ptbranch*, pvalue, b_strict)
+  -- if ~$typed_reference_allowed(ptypeconversion, pvalue)
+def $typed_reference_conversion(S, ptbranch*, pvalue, b_strict, false) = $typed_conversion_at(S, ptbranch*, pvalue, b_strict)
+dec $typed_parameter_source(pstate, psparam) : bool
+def $typed_parameter_source(S, psparam) = $typed_reference_name_source(S, psparam.NAME)
+  -- if psparam.BYREF
+def $typed_parameter_source(S, psparam) = false -- otherwise
+dec $typed_parameter_conversion(pstate, psparam, pvalue) : ptypeconversion
+def $typed_parameter_conversion(S, psparam, pvalue) = $typed_reference_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S), $typed_parameter_source(S, psparam))
 def $typed_parameter_value(S, pfunction, n, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n))
-  -- if ptypeconversion = $typed_conversion_at(S, pfunction.SIGNATURE.PARAMETERS[n].TYPE, pvalue, $typed_caller_strict(S))
+  -- if ptypeconversion = $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue)
   -- if ptypeconversion =/= TYPEREJECT
 def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
-  -- if $typed_conversion_at(S, psparam.TYPE, pvalue, $typed_caller_strict(S)) = TYPEREJECT
+  -- if $typed_parameter_conversion(S, psparam, pvalue) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 
@@ -65,22 +110,24 @@ def $typed_return_line(S, z) = z_return
 def $typed_return_line(S, z) = z -- otherwise
 
 dec $typed_return_check(pstate, int) : pstate
+dec $typed_return_checked(pstate, int, bool) : pstate
 def $typed_return_value(S, z) = $typed_return_check($resolve_at(S, S.RESULT, z), z)
-def $typed_return_check(S, z) = S -- if S.COMPLETION =/= NORMAL
-def $typed_return_check(S, z) = S -- if S.COMPLETION = NORMAL /\ S.CURRENT = eps
-def $typed_return_check(S, z) = $typed_apply(S, ptypeconversion, z)
+def $typed_return_check(S, z) = $typed_return_checked(S, z, false)
+def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION =/= NORMAL
+def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION = NORMAL /\ S.CURRENT = eps
+def $typed_return_checked(S, z, b_source) = $typed_apply(S, ptypeconversion, z)
   -- if S.COMPLETION = NORMAL
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.RESULT = KNOWN pvalue
-  -- if ptypeconversion = $typed_conversion_at(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT)
+  -- if ptypeconversion = $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, b_source)
   -- if ptypeconversion =/= TYPEREJECT
-def $typed_return_check(S, z) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
+def $typed_return_checked(S, z, b_source) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
   -- if S.COMPLETION = NORMAL
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.RESULT = KNOWN pvalue
-  -- if $typed_conversion_at(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT) = TYPEREJECT
+  -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, b_source) = TYPEREJECT
 rule PhpStep/type-fallthrough-void: S ~> S[.TODO = $reference_empty_task(S, pfunction.ENDLINE) :: ptask*]
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)

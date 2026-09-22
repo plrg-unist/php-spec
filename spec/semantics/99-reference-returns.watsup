@@ -60,11 +60,11 @@ def $reference_verifies(S) = (pfunction.SIGNATURE.RETURNS =/= eps /\ ~("mixed" <
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = S_read
   -- if $reference_verifies(S)
-  -- if S_read = $typed_return_check($read_name(S, n_name*, z), z)
+  -- if S_read = $typed_return_checked($read_name(S, n_name*, z), z, $typed_reference_name_source(S, n_name*))
   -- if S_read.COMPLETION =/= NORMAL
 def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $reference_return_store($base_acquire(S_read, BASE_VALUE (VARIABLE n_name* z_name), z), pvalue)
   -- if $reference_verifies(S)
-  -- if S_read = $typed_return_check($read_name(S, n_name*, z), z)
+  -- if S_read = $typed_return_checked($read_name(S, n_name*, z), z, $typed_reference_name_source(S, n_name*))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 def $reference_return_fetch(S, pbase, z) = $reference_return_location($call_reference_base(S, pbase, z), z)
@@ -72,16 +72,23 @@ def $reference_return_fetch(S, pbase, z) = $reference_return_location($call_refe
 def $reference_cv_base(BASE_VALUE (VARIABLE n_name* z)) = true
 def $reference_cv_base(pbase) = false -- otherwise
 
+dec $reference_return_location_defined(pstate, int) : pstate
 def $reference_return_location(S, z) = S -- if S.COMPLETION =/= NORMAL
-def $reference_return_location(S, z) = S_checked
+def $reference_return_location(S, z) = $reference_return_location_defined($call_location_reference(S), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = PROPERTY n_object ptbytes
+  -- if $location_slot(S, S.LOCATION) = UNDEFINED
+def $reference_return_location(S, z) = $reference_return_location_defined(S, z) -- otherwise
+def $reference_return_location_defined(S, z) = S -- if S.COMPLETION =/= NORMAL
+def $reference_return_location_defined(S, z) = S_checked
   -- if S.COMPLETION = NORMAL
   -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
-  -- if S_checked = $typed_return_check($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z)
+  -- if S_checked = $typed_return_checked($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z, $typed_reference_location_source(S, S.LOCATION))
   -- if S_checked.COMPLETION =/= NORMAL
-def $reference_return_location(S, z) = $reference_return_store(S_checked, pvalue_new)
+def $reference_return_location_defined(S, z) = $reference_return_store(S_checked, pvalue_new)
   -- if S.COMPLETION = NORMAL
   -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
-  -- if S_checked = $typed_return_check($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z)
+  -- if S_checked = $typed_return_checked($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z, $typed_reference_location_source(S, S.LOCATION))
   -- if S_checked.COMPLETION = NORMAL
   -- if S_checked.RESULT = KNOWN pvalue_new
 
@@ -105,14 +112,14 @@ def $reference_return_notice(S, REFERENCE n) = false
 def $reference_return_notice(S, poperand) = true -- otherwise
 
 def $reference_return_value(S, poperand, z) = S_checked
-  -- if S_checked = $typed_return_check($resolve_at(S, poperand, z), z)
+  -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION =/= NORMAL
 def $reference_return_value(S, poperand, z) = $reference_return_materialize($reference_return_diagnostic(S_written, poperand, z), poperand, pvalue)
-  -- if S_checked = $typed_return_check($resolve_at(S, poperand, z), z)
+  -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION = NORMAL
   -- if S_checked.RESULT = KNOWN pvalue
   -- if S_written = $reference_return_write_operand(S_checked, poperand, pvalue)
-def $reference_return_write_operand(S, REFERENCE n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
+def $reference_return_write_operand(S, REFERENCE n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
 def $reference_return_write_operand(S, poperand, pvalue) = S -- otherwise
 
 def $reference_return_diagnostic(S, poperand, z) = $diagnostic(S, "Notice", $ptascii("Only variable references should be returned by reference"), z)

@@ -1,0 +1,478 @@
+;; A property alias owns its cell. Type-source records are ordered metadata on
+;; that cell and carry no heap edge of their own.
+def $propref_at(eps, n) = eps
+def $propref_at(ppropref :: ppropref_tail*, n) = (ppropref)
+  -- if ppropref.CELL = n
+def $propref_at(ppropref :: ppropref_tail*, n) = $propref_at(ppropref_tail*, n)
+  -- if ppropref.CELL =/= n
+
+dec $propref_has(pproptypesource*, pproptypesource) : bool
+def $propref_has(eps, pproptypesource) = false
+def $propref_has(pproptypesource_head :: pproptypesource_tail*, pproptypesource) = true
+  -- if pproptypesource_head = pproptypesource
+def $propref_has(pproptypesource_head :: pproptypesource_tail*, pproptypesource) = $propref_has(pproptypesource_tail*, pproptypesource)
+  -- if pproptypesource_head =/= pproptypesource
+dec $propref_source_present(ppropref*, nat, pproptypesource) : bool
+
+dec $propref_attach(ppropref*, nat, pproptypesource) : ppropref*
+def $propref_attach(eps, n, pproptypesource) = [{CELL n, SOURCES ([pproptypesource])}]
+def $propref_attach(ppropref :: ppropref_tail*, n, pproptypesource) = ppropref[.SOURCES = ppropref.SOURCES ++ [pproptypesource]] :: ppropref_tail*
+  -- if ppropref.CELL = n
+  -- if ~$propref_has(ppropref.SOURCES, pproptypesource)
+def $propref_attach(ppropref :: ppropref_tail*, n, pproptypesource) = ppropref :: $propref_attach(ppropref_tail*, n, pproptypesource)
+  -- if ppropref.CELL =/= n
+
+;; Zend removes a source by replacing its position with the last source of
+;; this reference. Later diagnostics therefore observe swap-last order.
+dec $propref_last(pproptypesource*) : pproptypesource
+def $propref_last([pproptypesource]) = pproptypesource
+def $propref_last(pproptypesource_head :: pproptypesource_tail*) = $propref_last(pproptypesource_tail*)
+  -- if pproptypesource_tail* =/= eps
+dec $propref_drop_last(pproptypesource*) : pproptypesource*
+def $propref_drop_last([pproptypesource]) = eps
+def $propref_drop_last(pproptypesource_head :: pproptypesource_tail*) = pproptypesource_head :: $propref_drop_last(pproptypesource_tail*)
+  -- if pproptypesource_tail* =/= eps
+dec $propref_replace(pproptypesource*, pproptypesource, pproptypesource) : pproptypesource*
+def $propref_replace(eps, pproptypesource, pproptypesource_new) = eps
+def $propref_replace(pproptypesource_head :: pproptypesource_tail*, pproptypesource, pproptypesource_new) = pproptypesource_new :: pproptypesource_tail*
+  -- if pproptypesource_head = pproptypesource
+def $propref_replace(pproptypesource_head :: pproptypesource_tail*, pproptypesource, pproptypesource_new) = pproptypesource_head :: $propref_replace(pproptypesource_tail*, pproptypesource, pproptypesource_new)
+  -- if pproptypesource_head =/= pproptypesource
+dec $propref_remove_sources(pproptypesource*, pproptypesource) : pproptypesource*
+def $propref_remove_sources(pproptypesource_list*, pproptypesource_target) = $propref_replace(pproptypesource_headless*, pproptypesource_target, pproptypesource_last)
+  -- if $propref_has(pproptypesource_list*, pproptypesource_target)
+  -- if pproptypesource_headless* = $propref_drop_last(pproptypesource_list*)
+  -- if pproptypesource_last = $propref_last(pproptypesource_list*)
+def $propref_remove_sources(pproptypesource_list*, pproptypesource_target) = pproptypesource_list* -- otherwise
+dec $propref_detach(ppropref*, nat, pproptypesource) : ppropref*
+def $propref_detach(eps, n, pproptypesource) = eps
+def $propref_detach(ppropref :: ppropref_tail*, n, pproptypesource) = ppropref_tail*
+  -- if ppropref.CELL = n
+  -- if $propref_remove_sources(ppropref.SOURCES, pproptypesource) = eps
+def $propref_detach(ppropref :: ppropref_tail*, n, pproptypesource) = ppropref[.SOURCES = pproptypesource_rest*] :: ppropref_tail*
+  -- if ppropref.CELL = n
+  -- if $propref_remove_sources(ppropref.SOURCES, pproptypesource) = pproptypesource_rest*
+  -- if pproptypesource_rest* =/= eps
+def $propref_detach(ppropref :: ppropref_tail*, n, pproptypesource) = ppropref :: $propref_detach(ppropref_tail*, n, pproptypesource)
+  -- if ppropref.CELL =/= n
+def $propref_detach_slot(S, n_object, ppropertyslot) = S[.PROPREFS = $propref_detach(S.PROPREFS, n_cell, {OBJECT n_object, NAME ppropertyslot.NAME, DECL porigin_decl})]
+  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if $propref_source_present(S.PROPREFS, n_cell, {OBJECT n_object, NAME ppropertyslot.NAME, DECL porigin_decl})
+def $propref_detach_slot(S, n_object, ppropertyslot) = S -- otherwise
+
+def $objectprops_prune(eps, pnode*) = eps
+def $objectprops_prune(pobjectprops :: pobjectprops_tail*, pnode*) = pobjectprops :: $objectprops_prune(pobjectprops_tail*, pnode*)
+  -- if (HOBJECT pobjectprops.OBJECT) <- pnode*
+def $objectprops_prune(pobjectprops :: pobjectprops_tail*, pnode*) = $objectprops_prune(pobjectprops_tail*, pnode*)
+  -- if ~((HOBJECT pobjectprops.OBJECT) <- pnode*)
+
+;; Object destruction walks the property table in slot order, independently
+;; of when aliases were attached to a cell. Each removal still swaps the
+;; last source within that cell's type-source vector.
+dec $proprefs_prune_slots(ppropref*, nat, ppropertyslot*) : ppropref*
+dec $propref_detachable_slot(ppropertyslot) : bool
+def $propref_detachable_slot({DECL (porigin), NAME ptbytes, STATE PROP_VALUE (ALIAS n_cell)}) = true
+def $propref_detachable_slot(ppropertyslot) = false -- otherwise
+def $proprefs_prune_slots(ppropref_list*, n_object, eps) = ppropref_list*
+def $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots($propref_detach(ppropref_list*, n_cell, {OBJECT n_object, NAME ppropertyslot.NAME, DECL porigin_decl}), n_object, ppropertyslot_tail*)
+  -- if $propref_detachable_slot(ppropertyslot)
+  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot_tail*)
+  -- if ~$propref_detachable_slot(ppropertyslot)
+def $proprefs_prune(ppropref_list*, eps, pnode*) = ppropref_list*
+def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(ppropref_list*, pobjectprops_tail*, pnode*)
+  -- if (HOBJECT pobjectprops.OBJECT) <- pnode*
+def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune($proprefs_prune_slots(ppropref_list*, pobjectprops.OBJECT, pobjectprops.SLOTS), pobjectprops_tail*, pnode*)
+  -- if ~((HOBJECT pobjectprops.OBJECT) <- pnode*)
+
+dec $propref_unique_sources(pproptypesource*) : bool
+def $propref_unique_sources(eps) = true
+def $propref_unique_sources(pproptypesource_head :: pproptypesource_tail*) = (~$propref_has(pproptypesource_tail*, pproptypesource_head) /\ $propref_unique_sources(pproptypesource_tail*))
+dec $propref_source_valid(pstate, nat, pproptypesource) : bool
+def $propref_source_valid(S, n_cell, pproptypesource) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if n_cell <- S.REFCELLS
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if (HOBJECT pproptypesource.OBJECT) <- S.ALLOCATIONS
+  -- if $(pproptypesource.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
+  -- if $objectprops_record_at(S.OBJECTPROPS, pproptypesource.OBJECT) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, pproptypesource.NAME) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (pproptypesource.DECL)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pproptypesource.DECL
+  -- if ppropertydesc.TYPE =/= eps
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue)
+def $propref_source_valid(S, n_cell, pproptypesource) = false -- otherwise
+dec $propref_sources_valid(pstate, nat, pproptypesource*) : bool
+def $propref_sources_valid(S, n_cell, eps) = true
+def $propref_sources_valid(S, n_cell, pproptypesource :: pproptypesource_tail*) = ($propref_source_valid(S, n_cell, pproptypesource) /\ $propref_sources_valid(S, n_cell, pproptypesource_tail*))
+dec $propref_entries_valid(pstate, ppropref*) : bool
+def $propref_entries_valid(S, eps) = true
+def $propref_entries_valid(S, ppropref :: ppropref_tail*) = ($propref_unique_sources(ppropref.SOURCES) /\ $propref_sources_valid(S, ppropref.CELL, ppropref.SOURCES) /\ $propref_entries_valid(S, ppropref_tail*))
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_at(ppropref_tail*, ppropref.CELL) = eps
+def $propref_entries_valid(S, ppropref*) = false -- otherwise
+def $proprefs_valid(S) = $propref_entries_valid(S, S.PROPREFS)
+
+def $propref_source_present(ppropref_list*, n_cell, pproptypesource) = $propref_has(ppropref_found.SOURCES, pproptypesource)
+  -- if $propref_at(ppropref_list*, n_cell) = (ppropref_found)
+def $propref_source_present(ppropref_list*, n_cell, pproptypesource) = false -- otherwise
+dec $propref_slot_covered(pstate, nat, ppropertyslot) : bool
+def $propref_slot_covered(S, n_object, ppropertyslot) = $propref_source_present(S.PROPREFS, n_cell, {OBJECT n_object, NAME ppropertyslot.NAME, DECL ppropertydesc.ORIGIN})
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ppropertydesc.TYPE =/= eps
+def $propref_slot_covered(S, n_object, ppropertyslot) = true -- otherwise
+dec $propref_slots_in_object(pstate, nat, ppropertyslot*) : bool
+def $propref_slots_in_object(S, n_object, eps) = true
+def $propref_slots_in_object(S, n_object, ppropertyslot :: ppropertyslot_tail*) = ($propref_slot_covered(S, n_object, ppropertyslot) /\ $propref_slots_in_object(S, n_object, ppropertyslot_tail*))
+def $propref_slots_covered(S, eps) = true
+def $propref_slots_covered(S, pobjectprops :: pobjectprops_tail*) = ($propref_slots_in_object(S, pobjectprops.OBJECT, pobjectprops.SLOTS) /\ $propref_slots_covered(S, pobjectprops_tail*))
+  -- if (HOBJECT pobjectprops.OBJECT) <- S.ALLOCATIONS
+def $propref_slots_covered(S, pobjectprops :: pobjectprops_tail*) = $propref_slots_covered(S, pobjectprops_tail*)
+  -- if ~((HOBJECT pobjectprops.OBJECT) <- S.ALLOCATIONS)
+
+;; A cell write checks the original value against every current type source.
+;; Coercions must agree on one identical result; only then is STORE changed.
+syntax ppropcheck = PROP_ACCEPT pstate pvalue | PROP_REJECT pstate
+syntax ppropclass = PROP_EXACT | PROP_POSSIBLE | PROP_IMPOSSIBLE
+dec $propref_strict_float_candidate(ptbranch*, pvalue) : bool
+def $propref_strict_float_candidate(ptbranch*, PINT i) = ("float" <- $ptmasks(ptbranch*))
+def $propref_strict_float_candidate(ptbranch*, pvalue) = false -- otherwise
+dec $propref_class(pstate, ptbranch*, pvalue, bool) : ppropclass
+def $propref_class(S, ptbranch*, pvalue, b_strict) = PROP_EXACT
+  -- if $typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue)
+def $propref_class(S, ptbranch*, PINT i, true) = PROP_POSSIBLE
+  -- if ~($typed_exact(ptbranch*, PINT i) \/ $typed_object_exact(S, ptbranch*, PINT i))
+  -- if "float" <- $ptmasks(ptbranch*)
+def $propref_class(S, ptbranch*, pvalue, true) = PROP_IMPOSSIBLE
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if ~$propref_strict_float_candidate(ptbranch*, pvalue)
+def $propref_class(S, ptbranch*, PNULL, false) = PROP_IMPOSSIBLE
+  -- if ~($typed_exact(ptbranch*, PNULL) \/ $typed_object_exact(S, ptbranch*, PNULL))
+def $propref_class(S, ptbranch*, pvalue, false) = PROP_POSSIBLE
+  -- if pvalue =/= PNULL
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if "int" <- $ptmasks(ptbranch*) \/ "float" <- $ptmasks(ptbranch*) \/ "string" <- $ptmasks(ptbranch*) \/ ("true" <- $ptmasks(ptbranch*) /\ "false" <- $ptmasks(ptbranch*))
+def $propref_class(S, ptbranch*, pvalue, false) = PROP_IMPOSSIBLE
+  -- if pvalue =/= PNULL
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if ~("int" <- $ptmasks(ptbranch*) \/ "float" <- $ptmasks(ptbranch*) \/ "string" <- $ptmasks(ptbranch*) \/ ("true" <- $ptmasks(ptbranch*) /\ "false" <- $ptmasks(ptbranch*)))
+dec $propref_descriptor(pstate, pproptypesource) : ppropertydesc?
+def $propref_descriptor(S, pproptypesource) = (ppropertydesc)
+  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pproptypesource.DECL
+def $propref_descriptor(S, pproptypesource) = eps -- otherwise
+dec $propref_label(pstate, pproptypesource) : ptbytes
+def $propref_label(S, pproptypesource) = $ptascii("property ") ++ $property_declaring_name(S.CLASSES, pproptypesource.DECL) ++ $ptascii("::$") ++ pproptypesource.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE)
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
+dec $propref_nonarray_source(pstate, pproptypesource*) : pproptypesource?
+def $propref_nonarray_source(S, eps) = eps
+def $propref_nonarray_source(S, pproptypesource :: pproptypesource_tail*) = (pproptypesource)
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
+  -- if ~$typed_exact(ppropertydesc.TYPE, PARRAY 0)
+def $propref_nonarray_source(S, pproptypesource :: pproptypesource_tail*) = $propref_nonarray_source(S, pproptypesource_tail*)
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
+  -- if $typed_exact(ppropertydesc.TYPE, PARRAY 0)
+def $propref_nonarray_source(S, pproptypesource*) = eps -- otherwise
+
+def $array_auto_init_check(S, ROOT n_cell, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside a reference held by ") ++ $propref_label(S, pproptypesource), z)
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $propref_nonarray_source(S, ppropref.SOURCES) = (pproptypesource)
+def $array_auto_init_check(S, ELEMENT n_array pkey, z) = $array_auto_init_check(S, ROOT n_cell, z)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (ALIAS n_cell)
+def $array_auto_init_check(S, PROPERTY n_object ptbytes, z) = $array_auto_init_check(S, ROOT n_cell, z)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $array_auto_init_check(S, PROPERTY n_object ptbytes, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ~$typed_exact(ppropertydesc.TYPE, PARRAY 0)
+def $array_auto_init_check(S, plocation, z) = S -- otherwise
+dec $propref_error(pstate, pproptypesource, pvalue, int) : pstate
+def $propref_error(S, pproptypesource, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to reference held by ") ++ $propref_label(S, pproptypesource), z)
+dec $propref_conflict(pstate, pproptypesource, pproptypesource, pvalue, int) : pstate
+def $propref_conflict(S, pproptypesource_first, pproptypesource_second, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to reference held by ") ++ $propref_label(S, pproptypesource_first) ++ $ptascii(" and ") ++ $propref_label(S, pproptypesource_second) ++ $ptascii(", as this would result in an inconsistent type conversion"), z)
+
+dec $propref_check(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource*, int) : ppropcheck
+dec $propref_step(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, ppropertydesc, pproptypesource*, int, ppropclass) : ppropcheck
+dec $propref_exact_step(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, pproptypesource*, int) : ppropcheck
+dec $propref_possible_step(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, ppropertydesc, pproptypesource*, int) : ppropcheck
+dec $propref_possible_convert(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, pproptypesource*, int, ptypeconversion) : ppropcheck
+dec $propref_coerced_agreement(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, pvalue, pproptypesource*, int) : ppropcheck
+
+def $propref_check(S, pvalue_original, pproptypesource_first?, eps, eps, z) = PROP_ACCEPT S pvalue_original
+def $propref_check(S, pvalue_original, pproptypesource_first?, (pvalue_coerced), eps, z) = PROP_ACCEPT S pvalue_coerced
+def $propref_check(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current :: pproptypesource_tail*, z) = $propref_step(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z, $propref_class(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
+  -- if $propref_descriptor(S, pproptypesource_current) = (ppropertydesc)
+
+def $propref_step(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z, PROP_IMPOSSIBLE) = PROP_REJECT ($propref_error(S, pproptypesource_current, pvalue_original, z))
+def $propref_step(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z, PROP_EXACT) = $propref_exact_step(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pproptypesource_tail*, z)
+def $propref_step(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z, PROP_POSSIBLE) = $propref_possible_step(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z)
+
+def $propref_exact_step(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
+def $propref_exact_step(S, pvalue_original, eps, eps, pproptypesource_current, pproptypesource_tail*, z) = $propref_check(S, pvalue_original, (pproptypesource_current), eps, pproptypesource_tail*, z)
+def $propref_exact_step(S, pvalue_original, (pproptypesource_first), eps, pproptypesource_current, pproptypesource_tail*, z) = $propref_check(S, pvalue_original, (pproptypesource_first), eps, pproptypesource_tail*, z)
+
+def $propref_possible_step(S, pvalue_original, (pproptypesource_first), eps, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
+def $propref_possible_step(S, pvalue_original, eps, eps, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = $propref_possible_convert(S, pvalue_original, eps, eps, pproptypesource_current, pproptypesource_tail*, z, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
+def $propref_possible_step(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = $propref_possible_convert(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pproptypesource_tail*, z, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
+
+def $propref_possible_convert(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pproptypesource_tail*, z, TYPEREJECT) = PROP_REJECT ($propref_error(S, pproptypesource_current, pvalue_original, z))
+def $propref_possible_convert(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pproptypesource_tail*, z, ptypeconversion) = $propref_coerced_agreement(S_converted, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pvalue_new, pproptypesource_tail*, z)
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_converted = $typed_apply(S, ptypeconversion, z)
+  -- if S_converted.COMPLETION = NORMAL
+  -- if S_converted.RESULT = KNOWN pvalue_new
+def $propref_possible_convert(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pproptypesource_tail*, z, ptypeconversion) = PROP_REJECT S_converted
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_converted = $typed_apply(S, ptypeconversion, z)
+  -- if S_converted.COMPLETION =/= NORMAL
+
+def $propref_coerced_agreement(S, pvalue_original, eps, eps, pproptypesource_current, pvalue_new, pproptypesource_tail*, z) = $propref_check(S, pvalue_original, (pproptypesource_current), (pvalue_new), pproptypesource_tail*, z)
+def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pvalue_new, pproptypesource_tail*, z) = $propref_check(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_tail*, z)
+  -- if $strict_identical(pvalue_coerced, pvalue_new)
+def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pvalue_new, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
+  -- if ~$strict_identical(pvalue_coerced, pvalue_new)
+
+def $write_cell_checked(S, n_cell, pvalue, z) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue)][.RESULT = KNOWN pvalue]
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+def $write_cell_checked(S, n_cell, pvalue, z) = S_checked[.STORE = $set_cell(S_checked.STORE, n_cell, DEFINED pvalue_new)][.RESULT = KNOWN pvalue_new]
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $propref_check(S, pvalue, eps, eps, ppropref.SOURCES, z) = PROP_ACCEPT S_checked pvalue_new
+def $write_cell_checked(S, n_cell, pvalue, z) = S_checked
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $propref_check(S, pvalue, eps, eps, ppropref.SOURCES, z) = PROP_REJECT S_checked
+
+dec $propref_attach_slot(pstate, nat, ppropertyslot, nat) : pstate
+def $propref_attach_slot(S, n_object, ppropertyslot, n_cell) = S[.PROPREFS = $propref_attach(S.PROPREFS, n_cell, {OBJECT n_object, NAME ppropertyslot.NAME, DECL ppropertydesc.ORIGIN})]
+  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ppropertydesc.TYPE =/= eps
+def $propref_attach_slot(S, n_object, ppropertyslot, n_cell) = S -- otherwise
+
+;; Validate the proposed source cell before removing the target's old type
+;; source.  Reference binding never coerces an already constrained cell.
+dec $property_bind_prepare(pstate, nat, ptbytes, pvalue, int) : pstate
+def $property_bind_prepare(S, n_object, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if ~($typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue))
+def $property_bind_prepare(S, n_object, ptbytes, pvalue, z) = S
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_old)
+def $property_bind_prepare(S, n_object, ptbytes, pvalue, z) = $property_store_value(S, n_object, ptbytes, pvalue, z) -- otherwise
+
+dec $property_bind_commit(pstate, nat, ptbytes, nat) : pstate
+def $property_bind_commit(S, n_object, ptbytes, n_cell) = $reference_cell(S, n_cell)[.RESULT = REFERENCE n_cell]
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $property_bind_commit(S, n_object, ptbytes, n_cell) = S_attached[.OBJECTPROPS = $objectprops_set(S_attached.OBJECTPROPS, n_object, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell)))][.RESULT = REFERENCE n_cell]
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if S_attached = $propref_attach_slot($propref_detach_slot($reference_cell(S, n_cell), n_object, ppropertyslot), n_object, ppropertyslot, n_cell)
+
+dec $assign_property_reference(pstate, nat, ptbytes, nat, int) : pstate
+def $assign_property_reference(S, n_object, ptbytes, n_cell, z) = $property_bind_commit(S_prepared, n_object, ptbytes, n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if S_prepared = $property_bind_prepare(S, n_object, ptbytes, pvalue, z)
+  -- if S_prepared.COMPLETION = NORMAL
+def $assign_property_reference(S, n_object, ptbytes, n_cell, z) = S_prepared
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if S_prepared = $property_bind_prepare(S, n_object, ptbytes, pvalue, z)
+  -- if S_prepared.COMPLETION =/= NORMAL
+
+def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+def $assign_array_reference(S, BASE_PROPERTY pvalue ptbytes, n_cell, z) = $assign_property_reference(S_target, n_object, ptbytes, n_cell, z)
+  -- if S_target = $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.LOCATION = PROPERTY n_object ptbytes
+def $assign_array_reference_cv(S, BASE_PROPERTY pvalue ptbytes, n_name*, z) = S_cell
+  -- if S_target = $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_target, n_name*)
+  -- if S_cell.COMPLETION =/= NORMAL
+def $assign_array_reference_cv(S, BASE_PROPERTY pvalue ptbytes, n_name*, z) = $assign_property_reference(S_cell, n_object, ptbytes, S_cell.CELL, z)
+  -- if S_target = $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.LOCATION = PROPERTY n_object ptbytes
+  -- if S_cell = $acquire_name(S_target, n_name*)
+  -- if S_cell.COMPLETION = NORMAL
+
+rule PhpStep/property-reference-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP (NExprPropertyFetch expression_receiver phpType20 metadata_property)), PROPERTY_REF_PREP expression $runtime_line(S, [PCFIELD 0], NExprPropertyFetch expression_receiver phpType20 metadata_property)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression metadata)) :: ptask_tail*
+rule PhpStep/property-reference-source: S ~> S_target[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), PROPERTY_REF_CAPTURE S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
+  -- if $reference_cv(expression) = eps
+  -- if S_target = $reference_acquire(S, S.BASE, z)
+  -- if S_target.COMPLETION = NORMAL
+rule PhpStep/property-reference-source-cv: S ~> S_target[.TODO = (PROPERTY_REF_BIND_CV S.BASE n_name* z) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
+  -- if $reference_cv(expression) = (n_name*)
+  -- if S_target = $reference_acquire(S, S.BASE, z)
+  -- if S_target.COMPLETION = NORMAL
+rule PhpStep/property-reference-target-abrupt: S ~> S_target[.TODO = eps]
+  -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
+  -- if S_target = $reference_acquire(S, S.BASE, z)
+  -- if S_target.COMPLETION =/= NORMAL
+rule PhpStep/property-reference-capture: S ~> S[.TODO = (PROPERTY_REF_BIND pbase S.CELL z) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_REF_CAPTURE pbase z) :: ptask_tail*
+  -- if ~$reference_value_call(S)
+rule PhpStep/property-reference-bind: S ~> S_bound[.HELD = S.HELD]
+  -- if S.TODO = (PROPERTY_REF_BIND pbase n_cell z) :: ptask_tail*
+  -- if S_bound = $assign_array_reference($hold_task_inputs(S), pbase, n_cell, z)
+rule PhpStep/property-reference-bind-cv: S ~> S_bound[.HELD = S.HELD]
+  -- if S.TODO = (PROPERTY_REF_BIND_CV pbase n_name* z) :: ptask_tail*
+  -- if S_bound = $assign_array_reference_cv($hold_task_inputs(S), pbase, n_name*, z)
+rule PhpStep/property-reference-acquire: S ~> S[.TODO = [DIM_PREP (NExprPropertyFetch expression phpType20 metadata), PROPERTY_REF_FETCH $runtime_line(S, eps, NExprPropertyFetch expression phpType20 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (ACQUIRE (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
+rule PhpStep/property-reference-fetch: S ~> S_cell[.TODO = ptask_tail*][.HELD = S.HELD][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*
+  -- if S_cell = $call_location_reference($call_reference_base($hold_task_inputs(S), S.BASE, z))
+
+dec $property_ref_assignment_task(pstate, expression, int) : bool
+def $property_ref_assignment_task(S, expression_rhs, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_code, b))
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprPropertyFetch expression_receiver phpType20 metadata_property)
+def $property_ref_assignment_task(S, expression_rhs, z) = false -- otherwise
+dec $property_ref_base_task(pstate, pbase, int) : bool
+dec $property_ref_name_matches(phpType20, ptbytes) : bool
+def $property_ref_name_matches(NIdentifier (BYTES text) metadata_name, ptbytes) = (ptbytes = $base64(text))
+def $property_ref_name_matches(phpType20, ptbytes) = true
+  -- if $property_computed_name(phpType20)
+def $property_ref_base_task(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_code, b))
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprPropertyFetch expression_receiver phpType20 metadata_property)
+  -- if $property_ref_name_matches(phpType20, ptbytes)
+  -- if $class_plain_instance(S, n_object)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+def $property_ref_base_task(S, pbase, z) = false -- otherwise
+dec $property_ref_rhs_cv(pstate, nat*) : bool
+def $property_ref_rhs_cv(S, n_name*) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef expression_target expression_rhs metadata)
+  -- if $reference_cv(expression_rhs) = (n_name*)
+def $property_ref_rhs_cv(S, n_name*) = false -- otherwise
+dec $property_ref_rhs_noncv(pstate) : bool
+def $property_ref_rhs_noncv(S) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef expression_target expression_rhs metadata)
+  -- if $reference_cv(expression_rhs) = eps
+def $property_ref_rhs_noncv(S) = false -- otherwise
+dec $property_ref_fetch_task(pstate, int) : bool
+dec $property_ref_demand(pstate) : bool
+dec $property_ref_property_base(pbase) : bool
+def $property_ref_property_base(BASE_PROPERTY pvalue ptbytes) = true
+def $property_ref_property_base(pbase) = false -- otherwise
+dec $property_ref_fetch_result_valid(pstate, phpType20) : bool
+def $property_ref_demand(S) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:n_parent]) = (NExprAssignRef expression_target expression_rhs metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_rhs)
+def $property_ref_demand(S) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:n_parent]) = (NArrayItem phpType5 expression_rhs (BOOLEAN true) (BOOLEAN false) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_rhs)
+def $property_ref_demand(S) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:n_parent]) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if $list_references(phpType13*)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_rhs)
+def $property_ref_demand(S) = false -- otherwise
+def $property_ref_fetch_result_valid(S, phpType20) = $property_ref_name_matches(phpType20, ptbytes)
+  -- if S.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY pvalue ptbytes
+def $property_ref_fetch_result_valid(S, phpType20) = false
+  -- if S.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*
+  -- if ~$property_ref_property_base(S.BASE)
+def $property_ref_fetch_result_valid(S, phpType20) = true -- otherwise
+def $property_ref_fetch_task(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver phpType20 metadata_property)
+  -- if $property_ref_fetch_result_valid(S, phpType20)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_code, b))
+  -- if z = $runtime_line(S, eps, NExprPropertyFetch expression_receiver phpType20 metadata_property)
+  -- if $property_ref_demand(S)
+def $property_ref_fetch_task(S, z) = false -- otherwise
+def $call_task_valid(S, EVAL (NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression_rhs metadata)) = $property_source_task(S, NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression_rhs metadata)
+def $call_task_valid(S, ACQUIRE (NExprPropertyFetch expression_receiver phpType20 metadata_property)) = ($property_source_task(S, NExprPropertyFetch expression_receiver phpType20 metadata_property) /\ $property_ref_demand(S))
+def $call_task_valid(S, PROPERTY_REF_PREP expression_rhs z) = $property_ref_assignment_task(S, expression_rhs, z)
+def $call_task_valid(S, PROPERTY_REF_CAPTURE pbase z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_noncv(S))
+def $call_task_valid(S, PROPERTY_REF_BIND pbase n_cell z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_noncv(S) /\ (HCELL n_cell) <- S.ALLOCATIONS /\ n_cell <- S.REFCELLS)
+def $call_task_valid(S, PROPERTY_REF_BIND_CV pbase n_name* z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_cv(S, n_name*))
+def $call_task_valid(S, PROPERTY_REF_FETCH z) = $property_ref_fetch_task(S, z)
+
+def $property_reference_fetch(S, n_object, ptbytes, z) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $property_reference_fetch(S, n_object, ptbytes, z) = S_attached[.OBJECTPROPS = $objectprops_set(S_attached.OBJECTPROPS, n_object, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell)))][.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if n_cell = |S.STORE|
+  -- if S_attached = $propref_attach_slot($reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell), n_object, ppropertyslot, n_cell)
+def $property_reference_fetch(S, n_object, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access uninitialized non-nullable property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" by reference"), z)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, PNULL, false) = TYPEREJECT
+def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_fetch(S_null, n_object, ptbytes, z)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps \/ $typed_conversion_at(S, ppropertydesc.TYPE, PNULL, false) =/= TYPEREJECT
+  -- if S_null = $property_store_value(S, n_object, ptbytes, PNULL, z)
+  -- if S_null.COMPLETION = NORMAL
+def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_fetch(S_null, n_object, ptbytes, z)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
+  -- if S_null = $property_store_value(S, n_object, ptbytes, PNULL, z)
+  -- if S_null.COMPLETION = NORMAL
+def $property_reference_fetch(S, n_object, ptbytes, z) = S_null
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
+  -- if S_null = $property_store_value(S, n_object, ptbytes, PNULL, z)
+  -- if S_null.COMPLETION =/= NORMAL
+def $property_reference_fetch(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "property reference fetch"] -- otherwise

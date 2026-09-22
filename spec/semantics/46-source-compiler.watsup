@@ -342,7 +342,6 @@ def $ppvaluemode(false) = PPR
 def $ppvaluemode(true) = PPW
 def $ppassign(P, pcpath, NExprVariable phpType32 metadata, expression_2, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
   -- if $cv_name(phpType32) = ([116,104,105,115])
-def $ppassign(P, pcpath, NExprPropertyFetch expression phpType20 metadata, expression_2, true) = $ppunsupported(P, "property reference assignment")
 def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr($ppassignrefcheck($ppupdatecheck(P, expression_1), expression_2, b), pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
   -- otherwise
 ;; Reference assignment checks the original source before delayed target compilation.

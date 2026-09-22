@@ -20,11 +20,18 @@ def $alias_item(pitem?) = false
   -- otherwise
 
 dec $location_write(pstate, plocation, pvalue) : pstate
-def $location_write(S, ROOT n, pvalue) = S[.STORE = $set_cell(S.STORE, n, DEFINED pvalue)]
-def $location_write(S, ELEMENT n pkey, pvalue) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue)]
+def $location_write(S, ROOT n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
+def $location_write(S, ELEMENT n pkey, pvalue) = $write_cell_checked(S, n_cell, pvalue, $property_current_line(S))
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
 def $location_write(S, ELEMENT n pkey, pvalue) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, DIRECT pvalue))]
   -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
+dec $location_write_result(pstate, plocation, pvalue, poperand) : pstate
+def $location_write_result(S, plocation, pvalue, poperand) = S_written[.RESULT = poperand]
+  -- if S_written = $location_write(S, plocation, pvalue)
+  -- if S_written.COMPLETION = NORMAL
+def $location_write_result(S, plocation, pvalue, poperand) = S_written
+  -- if S_written = $location_write(S, plocation, pvalue)
+  -- if S_written.COMPLETION =/= NORMAL
 
 dec $location_name(pstate, nat*) : pstate
 def $location_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
@@ -36,24 +43,33 @@ def $location_name(S, n_name*) = S_cell[.LOCATION = ROOT S_cell.CELL]
 ;; A location borrows RESULT. The mutation caller holds live inputs explicitly
 ;; before separation counts surviving owners; container graphs stay shallow.
 dec $location_array(pstate, plocation, int) : pstate
+dec $array_auto_init_check(pstate, plocation, int) : pstate
+dec $location_array_new(pstate, plocation, int) : pstate
+def $location_array_new(S, plocation, z) = S_checked
+  -- if S_checked = $array_auto_init_check(S, plocation, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+def $location_array_new(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+  -- if S_checked = $array_auto_init_check(S, plocation, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_new = $allocate_array(S_checked, $array_empty())
+  -- if S_new.RESULT = KNOWN pvalue
 def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
   -- if $location_slot(S, plocation) = DEFINED (PARRAY n)
   -- if S_new = $separate_location_array(S, n)
   -- if S_new.RESULT = KNOWN pvalue
 
-def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+def $location_array(S, plocation, z) = $location_array_new(S, plocation, z)
   -- if $location_slot(S, plocation) = UNDEFINED
-  -- if S_new = $allocate_array(S, $array_empty())
-  -- if S_new.RESULT = KNOWN pvalue
-def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+def $location_array(S, plocation, z) = $location_array_new(S, plocation, z)
   -- if $location_slot(S, plocation) = DEFINED PNULL
-  -- if S_new = $allocate_array(S, $array_empty())
-  -- if S_new.RESULT = KNOWN pvalue
+def $location_array(S, plocation, z) = S_written
+  -- if $location_slot(S, plocation) = DEFINED (PBOOL false)
+  -- if S_written = $location_array_new(S, plocation, z)
+  -- if S_written.COMPLETION =/= NORMAL
 def $location_array(S, plocation, z) = $diagnostic(S_written, "Deprecated", ([65,117,116,111,109,97,116,105,99,32,99,111,110,118,101,114,115,105,111,110,32,111,102,32,102,97,108,115,101,32,116,111,32,97,114,114,97,121,32,105,115,32,100,101,112,114,101,99,97,116,101,100]), z)
   -- if $location_slot(S, plocation) = DEFINED (PBOOL false)
-  -- if S_new = $allocate_array(S, $array_empty())
-  -- if S_new.RESULT = KNOWN pvalue
-  -- if S_written = $location_write(S_new, plocation, pvalue)
+  -- if S_written = $location_array_new(S, plocation, z)
+  -- if S_written.COMPLETION = NORMAL
 def $location_array(S, plocation, z) = S[.COMPLETION = UNSUPPORTED "string offset write"]
   -- if $location_slot(S, plocation) = DEFINED (PSTRING n*)
 def $location_array(S, plocation, z) = $throw_scalar(S, "Error", [67, 97, 110, 110, 111, 116, 32, 117, 115, 101, 32, 111, 98, 106, 101, 99, 116, 32, 111, 102, 32, 116, 121, 112, 101, 32, 67, 108, 111, 115, 117, 114, 101, 32, 97, 115, 32, 97, 114, 114, 97, 121], z)
@@ -69,11 +85,9 @@ def $location_reference(S, NOWHERE) = false
 ;; Generic dimension FETCH through a reference skips the false conversion
 ;; deprecation. Final ASSIGN_DIM uses location_array and retains its warning.
 dec $fetch_location_array(pstate, plocation, int) : pstate
-def $fetch_location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+def $fetch_location_array(S, plocation, z) = $location_array_new(S, plocation, z)
   -- if $location_reference(S, plocation)
   -- if $location_slot(S, plocation) = DEFINED (PBOOL false)
-  -- if S_new = $allocate_array(S, $array_empty())
-  -- if S_new.RESULT = KNOWN pvalue
 def $fetch_location_array(S, plocation, z) = $location_array(S, plocation, z) -- otherwise
 
 dec $element_location(pstate, nat, pkey) : pstate
@@ -170,7 +184,7 @@ def $assign_dimension(S, poperand_key?, poperand, z_key, z) = S_written
   -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n_bytes*)
   -- if (S_written, n_new*) = $string_dimension_write(S, n_bytes*, poperand_key?, poperand, z_key)
   -- if S_written.COMPLETION =/= NORMAL
-def $assign_dimension(S, poperand_key?, poperand, z_key, z) = $location_write(S_written, S.LOCATION, PSTRING n_new*)
+def $assign_dimension(S, poperand_key?, poperand, z_key, z) = $location_write_result(S_written, S.LOCATION, PSTRING n_new*, S_written.RESULT)
   -- if S.COMPLETION = NORMAL
   -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n_bytes*)
   -- if (S_written, n_new*) = $string_dimension_write(S, n_bytes*, poperand_key?, poperand, z_key)

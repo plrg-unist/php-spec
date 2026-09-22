@@ -189,6 +189,10 @@ test-semantics: build
 	python3 tests/semantics/property_compiler.py
 	python3 tests/semantics/properties.py
 	python3 tests/semantics/properties_task_protocol.py
+	python3 tests/semantics/property_reference_compiler.py
+	python3 tests/semantics/property_references.py
+	python3 tests/semantics/property_reference_protocol.py
+	python3 tests/semantics/property_reference_incdec_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

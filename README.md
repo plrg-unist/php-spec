@@ -189,8 +189,12 @@ other internal-class bodies and method callbacks remain open.
 and uninitialized slots, source-backed defaults, inherited public overrides,
 dynamic names, direct access, live foreach, casts and comparison. The
 [property review](coverage/semantics/properties-review.json) binds source,
-compiler and paused-task checks. Property references, visibility beyond public,
-static and readonly members, hooks and magic methods remain open.
+compiler and paused-task checks. [Public property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md)
+now attach ordered typed sources to shared cells, check writes atomically, and
+preserve aliases across unset and object traversal. Their
+[review](coverage/semantics/property-references-review.json) records exact source,
+compiler and paused-state gates. Nullsafe reference sends, visibility beyond
+public, static and readonly members, hooks and magic methods remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)
