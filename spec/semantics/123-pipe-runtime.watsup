@@ -110,6 +110,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
   -- if $call_builtin(preqbytes_lookup, preqbytes_fallback?)
+  -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = eps
 def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ $c_string(preqbytes_original) ++ $ptascii("()"), z_lookup)
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps

@@ -81,6 +81,7 @@ def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = $throw_scal
 def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "registered builtin call"]
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $call_builtin(preqbytes, preqbytes_fallback?)
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = eps
 rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes, preqbytes_fallback?, phpType7*, $runtime_line(S, eps, NExprFuncCall name (SEQUENCE phpType7*) metadata))
   -- if S.TODO = (EVAL (NExprFuncCall name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if ~$ppfirstclass(phpType7*)

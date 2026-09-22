@@ -41,6 +41,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 139/140 | Nullsafe property and active property/dimension chains: 21 exact source outcomes, 15 compiler sources/63 assertions, and paused source/owner guards. [Review](coverage/semantics/nullsafe-properties-review.json) |
 | 143/144 | Match expressions: strict lazy selection, delayed CV subjects, compiler priority, owned results and unhandled diagnostics; 88 source outcomes, 13 compiler sources/67 assertions and paused ownership checks. [Review](coverage/semantics/match-review.json) |
 | 145/146 | Print constant-result effects, conversion lines, reference demand and paused ownership. [Review](coverage/semantics/print-review.json) |
+| 147/148 | Exit/die intrinsic calls, ordered binding, conversion, internal traces and explicit terminal cleanup; 87 source tuples, 25 compiler sources/133 projections and paused ownership guards. [Review](coverage/semantics/exit-review.json) |
 
 The current checkpoint combines nullsafe property chains, match selection and
 print expressions. Print preserves output effects while returning constant
@@ -50,6 +51,14 @@ source comparisons, ten compiler/lint sources with 51 projections, four paused
 stages with 61 assertions, six existing consumers and two separate Unsupported
 controls. Two retained official match originals agree on the combined tree.
 Conversion callbacks and output-handler protocols remain open.
+
+Exit/die now has genuine finite intrinsic callable identities and a distinct
+`EXITED` completion. Native exit evidence compares exact bytes/status only;
+source-derived model tags and paused-state checks remain separate. Six author
+paused stages/126 assertions, four independent stages/84 assertions, 17 existing
+first-class regressions and three separate Unsupported controls cover the new
+call and cleanup boundary. Shutdown/destructor and callback integration remain
+required.
 
 ## Next work
 

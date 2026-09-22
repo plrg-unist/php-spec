@@ -1,0 +1,142 @@
+{
+  "result": "accepted-installed-and-index-reviewed",
+  "base": "a8225783dee7dbc2a64d3e1bd45ad9154bb281e3",
+  "scope": "Bounded PHP8.5.10 exit/die language intrinsic compiler, source-free callable identity, binding, conversion and terminal cleanup; lifecycle inventory remains partial.",
+  "authority": [
+    "vendor/php-src/Zend/zend_builtin_functions.c:118",
+    "vendor/php-src/Zend/zend_builtin_functions.stub.php",
+    "vendor/php-src/Zend/zend_API.c:806",
+    "vendor/php-src/Zend/zend_language_parser.y",
+    "vendor/php-src/Zend/zend_closures.c:446",
+    "vendor/php-src/Zend/zend_exceptions.c",
+    "vendor/php-src/Zend/zend_vm_def.h"
+  ],
+  "native_claim": "Exact original-source stdout/stderr/process-status tuple only. No native completion category is inferred. Model explicit_exit is asserted separately from source semantics and paused-state completion.",
+  "native_provenance": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "reviewer_originals": 52,
+    "maintained_originals": 87,
+    "audit": "All51 retained reviewer catalogue rows exactly preserved; all36 author/compiler raw-record hashes, source bytes and output/path templates independently verified."
+  },
+  "review_findings": [
+    "Author caught and repaired native C-string truncation in Unknown-named NUL-key diagnostics; full-byte destination matching remains unchanged and new87th original verifies it.",
+    "Source-free INTRINSICCLOSURE covers callable/Closure typing, instanceof, strict/loose comparison, casts, conversion errors, first-class reconversion, array traversal, heap roots and pipe dispatch without fake source functions.",
+    "Receiver errors retain authentic internal exit/die frame and argument roots; SEND errors omit it. Lexical die uses exit identity, qualified/dynamic die retains alias.",
+    "Successful exit uses signed32 EXITED completion and CLI low8 status; dedicated internal unwind releases frame/temporary owners without Throwable traces and retains request global/static roots.",
+    "Found forged NAMED=true accepted after consuming first integer unpack key; exact source-prefix namedness guard added and independently rejected by final paused test. Author additionally guards active SEND/PREP source CV result without demanding results from queued or saved continuations."
+  ],
+  "evidence": [
+    {
+      "report": ".tools/exit-review-independent/production-dpteq9ou/report.json",
+      "sha256": "0a5c2fcbbefa8b8db09db268ba67cf56db312cd7124177bc085ca93e6035c5d2",
+      "claim": "Independent52 originals:51 exact observable tuples; one existing Closure-property Unsupported control, never counted as agreement."
+    },
+    {
+      "report": ".tools/exit-review-independent/protocol-hpdkouc8/report.json",
+      "sha256": "0c2a2d1458d34162d130f186d896b067425b0cd2f62a5167ac4662be13130c66",
+      "claim": "Independent4 legitimate paused stages/84 assertions; owner retention, kind/line/source forgeries, unpack NAMED forgery, terminal cleanup and builtin trace roots."
+    },
+    {
+      "report": ".tools/exit-impl-candidate/.tools/exit-expressions-63f7c27r/report.json",
+      "sha256": "c41eb72045bfdec05c29b30702dbeae822d1a2933b004b4bf2f8b92a87acc7bf",
+      "claim": "Maintained87 exact tuples plus separate source-derived model statuses:45 explicit_exit,37 php_error,5 normal."
+    },
+    {
+      "report": ".tools/exit-impl-candidate/.tools/exit-compiler-8dlqutk0/report-full.json",
+      "sha256": "cd8b754256ad6f940c38d8cecc77c775eb8ed5c5557e71e6402cf2e41e7ce287",
+      "claim": "25 pinned-native compiler originals/133 projections and source metadata forgeries."
+    },
+    {
+      "report": ".tools/exit-impl-candidate/.tools/exit-protocol-2jq9w1nb/report.json",
+      "sha256": "f4ce8daeabb75b5225b3c580f5e7a62a78320db25cf6f58da4ad6e4e362dce0c",
+      "claim": "Author6 paused stages/126 assertions, including active result provenance and preserved global/static roots."
+    },
+    {
+      "report": ".tools/exit-impl-candidate/.tools/first-class-pszof4pc/report.json",
+      "sha256": "147baad390099a5b1508f57ea438f4562a93c06d2980cbfc162a769d3befae78",
+      "claim": "17 existing first-class callable regressions."
+    },
+    {
+      "report": ".tools/exit-impl-candidate/.tools/exit-controls-8sohfvxz/report.json",
+      "sha256": "b06cbfb25b1e1eb0ffdaceeef86657f578920f71c14812453e4cbd157ee7d48e",
+      "claim": "3 explicit Unsupported controls: ordinary library, Traversable linking, Closure property write; no agreement claim."
+    }
+  ],
+  "frozen_bridge": {
+    "semantic_modules": 142,
+    "manifest_sha256": "794a7e8b5ba9fe30dad0939572dea2dfc8d5cf73e0976a5016e34cba538d8805",
+    "manifest_external": ".tools/exit-review-independent/final-modules.json",
+    "source_state_fingerprint": "903fea985cfba12a1a39d69cfdf9556262a0929b9bda351248d2da5b1eb81dbb",
+    "controls_fingerprint": "44e511db813d7810998ed94ef525381e5638c4dc9f15c7e928b143f7bc305101",
+    "difference": "Final87 source and both final paused suites bind current semantic modules. Earlier compiler25/133, first-class17 and Unsupported3 gates differ only in148 Unknown-named diagnostic using c_string(preqbytes); no compiler or tested non-NUL expression changed. Exact module hash bridge retained externally in nul-fix-module-bridge.json; final87 includes retained native NUL-key repair. Test-only controls.py addition and Makefile/docs/inventory changes are separately reviewed. No syntax/frontend/schema change; no full syntax gate claimed."
+  },
+  "limits": [
+    "Shutdown functions, destructors, output callbacks, user error handlers and Stringable callbacks remain pending.",
+    "General Throwable objects/catch/finally and Traversable protocol integration remain pending.",
+    "Closure dynamic property writes remain explicit Unsupported; retained native Error is not an agreement.",
+    "Installation and exact index reviewed; root-authorized commit may proceed. Shutdown/callback obligations remain partial."
+  ],
+  "reviewed_patch_inputs": {
+    "Makefile": "a7b3a3e70f024a8a2882092f12d7367594bb6a797762d8a454d49465164ddb98",
+    "PROGRESS.md": "8588d29b64eca5480f6958a2337eb1693d9b2339ae2bca6d904ded854dbac659",
+    "README.md": "1e8073869619b47bc8b6062cea19bc771e50fd14e296bc5b3c02f2e3e36ec62c",
+    "bin/php-semantics": "3d48813ba3b6777817b6ee779d89ad02fa21ab9fad3fc8c0d53c481ba91ec0dc",
+    "coverage/semantics/features.json": "fcbb9f7615c2aa097b2703c1c2d85efb06dcf175a9839856b9fb1f4bfb667c3c",
+    "docs/semantics/CORE.md": "af806e618c0a64416c591a3103bbd1919f258fdf768a6d8ae431cb331630f592",
+    "docs/semantics/EXIT.md": "7db38d7b041d23e7a81b1676924ff0ad6c69f61b8e44f607caeb25f8406b8444",
+    "spec/semantics/107-call-unpack-compiler.watsup": "b6421c71fa0303d6949e9054c497add9e90dcfbd02fe3d1f637deebe98b98cca",
+    "spec/semantics/109-dynamic-call-compiler.watsup": "b201d9722288d876a7de39948674535bcacfc8af55c2a90dfc0d24a16a4ea461",
+    "spec/semantics/110-dynamic-calls.watsup": "4e47debaba00eab772f858d77363d001d61df80b0a6f9ac182835d8ecc25e8b1",
+    "spec/semantics/119-first-class-compiler.watsup": "818aa57e072772a4200d047f9a12215b7750d5d57def510cdfba8e6744e67745",
+    "spec/semantics/120-first-class-callables.watsup": "0c781bfe65bb751bf793ce8f1ce7eb45b5e846850085126eb21b7a288539b7f7",
+    "spec/semantics/123-pipe-runtime.watsup": "e6da9cb58ef859586bef2b628a79a84bf8b03774d15b47f0c6f670943cc5db4a",
+    "spec/semantics/147-exit-compiler.watsup": "0a431bcef96f565213cec86b5aaed62583ac30a7d79ef15639bebe21ff9ac72d",
+    "spec/semantics/148-core-intrinsics.watsup": "89edd862949a511a8e42f3caacf0a73fc0d273e4dd4a493ec3fed5bd5a07295e",
+    "spec/semantics/20-machine.watsup": "261a0f48310449f026c85ef128c47981aa91230207a3787ce64f9ef0b69797eb",
+    "spec/semantics/30-storage.watsup": "cb9a7b93f6c08242a289772444a9fed6520cf8503ea8302769572677d6f62b7a",
+    "spec/semantics/40-control.watsup": "d0fce19c1bf56d1144a26b61612a471c28e7f37526607da14bfe3a9ab81a65a8",
+    "spec/semantics/78-function-compiler.watsup": "1d5dac1e0a8b604d03660c2278f018456c2e24b178e486c750531015d5a0eaf2",
+    "spec/semantics/80-call-control.watsup": "97b6a4b496314e715e5e5c74eff406c16392f8fa5eab695b47ae493ac09f9879",
+    "spec/semantics/84-call-integrity.watsup": "7dc3fdd1df178dee8ce52fdef84b16cc731ff9e0bc941c6fc93eb20629e69ce5",
+    "spec/semantics/modules.json": "3738377d424e71fc202646f2372f48769cff8cc5131c107d6b1eea95b6741bbb",
+    "tests/semantics/exit_cases.json": "1f4fa85571d0a44dc67738d1a7d3ea2d403b1f3df490595d2afc551e2164ebc8",
+    "tests/semantics/exit_compiler.py": "ab49269bc1a94ccf43b7e37331710800e0ce38aae63990ff13d59a74e6838509",
+    "tests/semantics/exit_controls.py": "d63e8414aa364a333dc14ad84da6e214d85968b1ee110b2ed1ed57079a3f4d32",
+    "tests/semantics/exit_expressions.py": "2c147b4bf1a89ea33097c890bb47b77692ec85a6316a9f048ed24153d9e7bf7a",
+    "tests/semantics/exit_protocol.py": "25bdac3fc2ffd16f5b5c30a419a2c933f21b845a9b0fb3c58f4def90e85dad7d"
+  },
+  "installation": {
+    "base": "a8225783dee7dbc2a64d3e1bd45ad9154bb281e3",
+    "staged_files": 28,
+    "loaded_modules": 142,
+    "exact_scope": "Every staged path matched approved private candidate and worktree;142 loaded modules and bridge executable/profile inputs identical. Only this reviewer ledger installation appendix was subsequently added. No generated raw reports staged.",
+    "bridge": ".tools/exit-installed-bridge.json",
+    "bridge_sha256": "0aa6fa4a9eeb87b7911508c61ff2ba124eeceabc6a4ff4d6dd71b02e8abd51b6",
+    "focused_evidence": [
+      {
+        "report": ".tools/exit-expressions-ihvyyn69/report.json",
+        "sha256": "2e786439f722e4a589780f7a2068b3f01f5a0339055811d7a290194108bcec96"
+      },
+      {
+        "report": ".tools/exit-controls-5gpo2adf/report.json",
+        "sha256": "6430ec020718610fe2a632b73b11c97d7bb871244fe13ab25e95f62dfb4abb38"
+      },
+      {
+        "report": ".tools/exit-compiler-1l7aeo1a/report-full.json",
+        "sha256": "dc5a05cea3961275a8633d2fb6a3c97295ecc593178d61fb99f0660cf214ee53"
+      }
+    ],
+    "focused_sources": [
+      "author-bare",
+      "author-qualified-die",
+      "review-closure-casts-owner",
+      "author-nul-named"
+    ],
+    "checks": "4 source tuples,3 distinct Unsupported controls,compiler25/133,inventory validation and staged whitespace pass. Exact installed source modules and frontend/adapter/oracle/profile inputs match private final suites."
+  }
+}

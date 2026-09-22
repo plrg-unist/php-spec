@@ -53,7 +53,10 @@ def $ppunpack_class(pcode, pcunit, pcpath) = eps -- otherwise
 def $ppunpack_node(pcode, pcunit, pcpath, NExprVariable phpType32 metadata) = (UNPACK_CV)
   -- if $ppforeach_cv(phpType32)
 def $ppunpack_node(pcode, pcunit, pcpath, NExprAssignRef expression_1 expression_2 metadata) = (UNPACK_VAR)
-def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 phpType6 metadata) = $ppunpack_function_class(pcode, pcpath, phpType19)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $ppunpack_function_class(pcode, pcpath, phpType19)
+  -- if ~$ppfirstclass(phpType7*)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = (UNPACK_VALUE)
+  -- if $ppfirstclass(phpType7*)
 def $ppunpack_node(pcode, pcunit, pcpath, NExprAssign expression_pattern expression_rhs metadata) = (UNPACK_VAR)
   -- if $list_pattern(expression_pattern) = (phpType13*)
   -- if $list_references(phpType13*)
@@ -68,5 +71,5 @@ def $ppunpack_list_class(punpackclass?) = punpackclass? -- if punpackclass? =/= 
 
 def $ppunpack_call_class(pcodename*, pcpath) = (UNPACK_VAR)
   -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))
-  -- if ptbytes_fallback? =/= eps \/ ~$pfunction_builtin(ptbytes)
+  -- if ptbytes_fallback? =/= eps \/ ~$pfunction_builtin(ptbytes) \/ $ppexit_builtin(ptbytes)
 def $ppunpack_call_class(pcodename*, pcpath) = eps -- otherwise

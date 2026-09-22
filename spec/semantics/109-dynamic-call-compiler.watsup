@@ -27,9 +27,9 @@ def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadat
   -- if $ppcall_dynamic(expression)
 
 def $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata) = $ppunsupported(P, "initial literal builtin call lowering")
-  -- if $pfunction_builtin($ppcall_literal_name(ptbytes))
+  -- if $pfunction_builtin($ppcall_literal_name(ptbytes)) /\ ~$ppexit_builtin($ppcall_literal_name(ptbytes))
 def $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata) = $ppcall_args($ppcall_init($ppcall_name(P, pcpath, pnresult), pcpath), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
-  -- if ~$pfunction_builtin($ppcall_literal_name(ptbytes))
+  -- if ~$pfunction_builtin($ppcall_literal_name(ptbytes)) \/ $ppexit_builtin($ppcall_literal_name(ptbytes))
   -- if pnresult = $ppcall_literal_reference(ptbytes, metadata)
 
 def $ppcall_init(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCCALL_INIT pcpath P.LOCATION.LINE]]

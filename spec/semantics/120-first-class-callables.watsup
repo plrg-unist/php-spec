@@ -44,6 +44,7 @@ def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
   -- if $call_builtin(preqbytes_lookup, preqbytes_fallback?)
+  -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = eps
 def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ $c_string(preqbytes_original) ++ $ptascii("()"), z_init)
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps

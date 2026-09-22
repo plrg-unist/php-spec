@@ -283,6 +283,7 @@ rule PhpStep/unset-dynamic-abrupt: S ~> S_name[.TODO = eps]
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 
+dec $exit_completion(pcompletion) : bool
 dec $silence_unwind(pstate) : pstate
 dec $drive_steps(pstate, nat) : pstate
 dec $drive_checked(pstate, nat) : pstate
@@ -301,6 +302,7 @@ def $drive_steps(S, n) = $prune_allocations($release_temporaries($silence_unwind
   -- if S.FRAMES = eps
 def $drive_steps(S, n) = $drive_steps($start_error_unwind(S), n)
   -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
+  -- if ~$exit_completion(S.COMPLETION)
   -- if S.FRAMES =/= eps
 def $drive_steps(S, 0) = S[.COMPLETION = BUDGET]
   -- if S.TODO = ptask :: ptask_tail*

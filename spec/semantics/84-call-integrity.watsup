@@ -86,6 +86,7 @@ dec $constant_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $static_unit_code_valid(ppstate, pcode) : bool
 dec $pipe_unit_code_valid(ppstate, pcode) : bool
 dec $match_unit_code_valid(ppstate, pcode) : bool
+dec $exit_unit_code_valid(ppstate, pcode) : bool
 dec $switch_unit_code_valid(ppstate, pcode) : bool
 dec $goto_unit_code_valid(ppstate, pcode) : bool
 dec $call_unit_names_valid(pstate, ppstate) : bool
@@ -104,6 +105,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $pipe_unit_code_valid(P, pcode)
   -- if $switch_unit_code_valid(P, pcode)
   -- if $match_unit_code_valid(P, pcode)
+  -- if $exit_unit_code_valid(P, pcode)
   -- if $goto_unit_code_valid(P, pcode)
   -- if $static_unit_code_valid(P, pcode)
   -- if $closure_unit_code_valid(S, P, pcode)
@@ -256,6 +258,7 @@ dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
+dec $exit_result_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
@@ -272,6 +275,7 @@ def $call_descriptors_valid(S) = true
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $acquire_call_result_valid(S)
   -- if $unpack_result_valid(S)
+  -- if $exit_result_valid(S)
   -- if $dynamic_result_valid(S)
   -- if $static_result_valid(S)
   -- if $silences_valid(S)

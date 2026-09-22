@@ -60,10 +60,12 @@ def observe(state, filename):
                 location = bytes(map(int, sourcefile['args'][1]))
                 break
     diagnostic = None
-    status = {'NORMAL': 'normal', 'FATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection',
+    status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
     exit_status = 0 if tag == 'NORMAL' else None
-    if tag == 'PHPERROR':
+    if tag == 'EXITED':
+        exit_status = int(fields[0]) % 256
+    elif tag == 'PHPERROR':
         name, line = bytes(map(int, fields[0])), int(fields[1])
         message = b'Undefined constant "' + name + b'"'
         diagnostic = {'class': 'Error', 'message': b64(message), 'line': line}
@@ -132,4 +134,4 @@ if __name__ == '__main__':
     except (OSError, RuntimeError, ValueError, KeyError) as error:
         result = {'status': 'runner_failure', 'message': str(error)}
     print(json.dumps(result))
-    sys.exit(0 if result['status'] in {'normal', 'php_error', 'static_rejection'} else 1)
+    sys.exit(0 if result['status'] in {'normal', 'explicit_exit', 'php_error', 'static_rejection'} else 1)

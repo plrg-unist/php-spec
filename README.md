@@ -176,6 +176,10 @@ selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
 and paused-state checks. Unhandled cases use the existing error/trace contract; Throwable objects,
 catch/finally and lifecycle integration remain pending.
+[Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
+pipe invocation, ordered argument binding, internal error traces and a distinct
+explicit-exit completion. Shutdown/destructor callbacks remain pending; native
+checks compare observable bytes and process status without inferring an exit category.
 [Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
 conditional activation, allocate owned objects, and support identity, exact class
 types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)

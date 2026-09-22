@@ -1,3 +1,5 @@
+dec $ppexit_builtin(ptbytes) : bool
+dec $ppexit_resolve(plenv, name) : pnresult
 dec $ppreturn_compile(ppstate, pcpath, bool) : ppstate
 dec $ppreturn_expression(ppstate, pcpath, expression) : ppstate
 dec $ppsupported_types(ptbranch*) : bool
@@ -153,7 +155,7 @@ def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, 
   -- otherwise
 def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
   -- if ~$ppfirstclass(phpType7*)
-  -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
+  -- if pnresult = $ppexit_resolve(P.ENV, name)
 
 def $ppglobal_variables(P, pcpath, n, eps) = P
 def $ppglobal_variables(P, pcpath, n, (NExprVariable phpType32 metadata) :: expression*) = $ppglobal_variables($ppglobal_variable(P, pcpath ++ [PCINDEX n], phpType32, metadata), pcpath, $(n + 1), expression*)

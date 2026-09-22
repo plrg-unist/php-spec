@@ -36,7 +36,9 @@ syntax psilence = SILENCE porigin int
 syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
-syntax ptask = MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin
+syntax pintrinsic = INTRINSIC_EXIT | INTRINSIC_DIE
+syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
+syntax ptask = EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin
   | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
   | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand
@@ -69,7 +71,7 @@ syntax pcallcontext = { INSTANCE nat?, FUNCTION porigin, NAME preqbytes, CALLSIT
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext? }
 syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
-syntax pobject = REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
+syntax pobject = INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
 syntax pstate = { OBJECTS pobject*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $install_classes(pstate, pclassdesc*) : pstate
@@ -308,3 +310,10 @@ dec $target_after_enter(pstate, pcalltarget) : pstate
 
 dec $state_static_at(pstate, porigin) : nat?
 dec $state_static_add(pstate, pstaticcell) : pstate
+
+;; Finite implemented core intrinsics; each retains its own language contract.
+dec $intrinsic_lookup(preqbytes, preqbytes?) : pintrinsic?
+dec $intrinsic_prepare(pstate, pintrinsic, int, nat?) : pstate
+dec $intrinsic_firstclass(pstate, pintrinsic) : pstate
+dec $intrinsic_pipe(pstate, pintrinsic, pvalue, porigin, int, nat?) : pstate
+dec $exit_start_unwind(pstate, int) : pstate

@@ -1598,14 +1598,14 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/147-exit-compiler.watsup",
+        "spec/semantics/148-core-intrinsics.watsup"
       ],
       "source_tests": [
-        "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/exit_expressions.py",
+        "tests/semantics/exit_cases.json"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Shutdown/destructors, output/error/Stringable callbacks and general Throwable/catch/finally remain open; no full request-lifecycle claim. See exit-review.json and EXIT.md."
     },
     {
       "node": "Expr_FuncCall",
@@ -6438,15 +6438,28 @@
     {
       "id": "control.exit",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/147-exit-compiler.watsup",
+        "spec/semantics/148-core-intrinsics.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/exit_compiler.py",
+        "tests/semantics/exit_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/exit_expressions.py",
+        "tests/semantics/exit_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/EXIT.md",
+        "coverage/semantics/exit-review.json"
+      ],
+      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Shutdown/destructors, output/error/Stringable callbacks and general Throwable/catch/finally remain open; no full request-lifecycle claim. See exit-review.json and EXIT.md."
     },
     {
       "id": "control.cleanup",
@@ -9343,15 +9356,28 @@
     {
       "id": "lifecycle.exit-unwind",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/147-exit-compiler.watsup",
+        "spec/semantics/148-core-intrinsics.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/exit_compiler.py",
+        "tests/semantics/exit_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/exit_expressions.py",
+        "tests/semantics/exit_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/EXIT.md",
+        "coverage/semantics/exit-review.json"
+      ],
+      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Shutdown/destructors, output/error/Stringable callbacks and general Throwable/catch/finally remain open; no full request-lifecycle claim. See exit-review.json and EXIT.md."
     },
     {
       "id": "lifecycle.cycles",

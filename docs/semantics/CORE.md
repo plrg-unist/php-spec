@@ -58,6 +58,9 @@ responses), final completion kind and structured throwable/fatal information.
 These outcomes stay separate: normal, explicit exit, throw, runtime fatal, static
 rejection, suspension, Unsupported, frontend rejection, malformed input,
 interpreter failure/stuck state, process crash, timeout and step-budget exhaustion.
+Native output and process status alone do not distinguish an explicit zero exit
+from normal finish, or every nonzero exit from a suppressed fatal error. Keep
+source-derived model completion assertions separate from native tuple agreement.
 A bounded timeout does not establish PHP nontermination. Unsupported and tool
 failures never count as semantic passes. PHP exceptions are not runner failures.
 

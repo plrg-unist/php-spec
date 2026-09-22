@@ -73,6 +73,7 @@ def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_ca
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps
   -- if $call_builtin(preqbytes_lookup, eps)
+  -- if $intrinsic_lookup(preqbytes_lookup, eps) = eps
 def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ $c_string(preqbytes_original) ++ $ptascii("()"), z_init)
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps

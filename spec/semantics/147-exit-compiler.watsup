@@ -1,0 +1,81 @@
+;; PHP 8.5 T_EXIT lowers to a fully qualified call to exit, including lexical
+;; die. Qualified names, imported aliases and string callees retain their name.
+def $ppexit_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("exit"), $ptascii("die")])
+def $ppexit_resolve(plenv, NName (BYTES text) metadata) = PNRESOLVED { ORIGINAL NName (BYTES text) metadata, KIND PLFUNCTION, RESOLVED $ptascii("exit"), FULL true, FALLBACK eps }
+  -- if $ppexit_builtin($base64(text))
+def $ppexit_resolve(plenv, name) = $pnresolve(plenv, PLFUNCTION, name) -- otherwise
+
+;; T_EXIT creates its call AST after ctor_arguments, whereas ordinary named
+;; calls retain the opening name line. The parser's compact/function split must
+;; not erase that native instruction line, including CALLABLE_CONVERT.
+def $ppcall_instruction_line(NName (BYTES text) metadata_name, metadata) = $source_end_line(metadata)
+  -- if $ppexit_builtin($base64(text))
+def $ppeffective_line(pffact*, pcpath, NExprFuncCall (NName (BYTES text) metadata_name) phpType6 metadata, PPR) = $source_end_line(metadata)
+  -- if $ppexit_builtin($base64(text))
+  -- if $pffactline(pffact*, pcpath) = eps
+
+;; PHP-Parser retains the compact node for zero/one positional arguments. Its
+;; source child is FIELD 0; no synthetic source function or argument is needed.
+dec $ppexit_argument(ppstate, pcpath, phpType5) : ppstate
+def $ppexit_argument(P, pcpath, ABSENT) = $ppclearvalue(P)
+def $ppexit_argument(P, pcpath, expression) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $ppdispatch(P, pcpath, NExprExit phpType5 metadata, PPR) = $ppexit_argument($ppcall_name(P, pcpath, $ppcall_literal_reference($ptascii("exit"), metadata)), pcpath, phpType5)
+def $ppcall_read(NExprExit phpType5 metadata, PPR) = true
+def $ppexpr(P, pcpath, NExprExit phpType5 metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $expression_line(NExprExit phpType5 metadata)), pcpath, NExprExit phpType5 metadata, PPR), pcpath, $expression_line(NExprExit phpType5 metadata))
+  -- if P.COMPLETION = PPCNORMAL
+
+;; The compact AST denotes a call (IS_VAR), not a temporary language operator.
+def $ppsend_var(NExprExit phpType5 metadata) = true
+def $ppreturn_call(NExprExit phpType5 metadata) = true
+def $ppunpack_node(pcode, pcunit, pcpath, NExprExit phpType5 metadata) = (UNPACK_VAR)
+def $ppbasemode(NExprExit phpType5 metadata, PPW) = PPR
+def $ppassignsource(P, pcpath, NExprExit phpType5 metadata, true) = $ppexpr(P, pcpath, NExprExit phpType5 metadata, PPR)
+def $ppupdatecheck(P, NExprExit phpType5 metadata) = $ppcheck(P, $context_error("Can't use function return value in write context", P.LOCATION.LINE))
+def $pparrayrefcheck(P, NExprExit phpType5 metadata, true) = $ppupdatecheck(P, NExprExit phpType5 metadata)
+
+;; Authenticate call identity and emitted lines against recompilation. Source
+;; occurrences select compact exits; finalized names select named/literal aliases.
+dec $exit_root(pcoccurrence*, pcodename*, pcpath) : bool
+def $exit_root(pcoccurrence*, pcodename*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprExit phpType5 metadata)
+def $exit_root(pcoccurrence*, pcodename*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+  -- if $code_name(pcodename*, pcpath) = ((ptbytes, eps))
+  -- if $ppexit_builtin(ptbytes)
+def $exit_root(pcoccurrence*, pcodename*, pcpath) = false -- otherwise
+
+dec $exit_child(pcoccurrence*, pcodename*, pcpath) : bool
+def $exit_child(pcoccurrence*, pcodename*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $exit_root(pcoccurrence*, pcodename*, pcpath[0:n_parent])
+def $exit_child(pcoccurrence*, pcodename*, pcpath) = false -- otherwise
+
+dec $exit_code_entry(pcoccurrence*, pcodename*, pcodeexpr) : pcodeexpr*
+def $exit_code_entry(pcoccurrence*, pcodename*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $exit_root(pcoccurrence*, pcodename*, pcpath) \/ $exit_child(pcoccurrence*, pcodename*, pcpath)
+def $exit_code_entry(pcoccurrence*, pcodename*, CODECALL_INIT pcpath z) = [CODECALL_INIT pcpath z]
+  -- if $exit_root(pcoccurrence*, pcodename*, pcpath)
+def $exit_code_entry(pcoccurrence*, pcodename*, pcodeexpr) = eps -- otherwise
+
+dec $exit_code(pcoccurrence*, pcodename*, pcodeexpr*) : pcodeexpr*
+def $exit_code(pcoccurrence*, pcodename*, eps) = eps
+def $exit_code(pcoccurrence*, pcodename*, pcodeexpr :: pcodeexpr_tail*) = $exit_code_entry(pcoccurrence*, pcodename*, pcodeexpr) ++ $exit_code(pcoccurrence*, pcodename*, pcodeexpr_tail*)
+
+dec $exit_names(pcoccurrence*, pcodename*, pcodename*) : pcodename*
+def $exit_names(pcoccurrence*, pcodename_expected*, eps) = eps
+def $exit_names(pcoccurrence*, pcodename_expected*, (CODENAME pcpath ptbytes ptbytes_fallback?) :: pcodename*) = (CODENAME pcpath ptbytes ptbytes_fallback?) :: $exit_names(pcoccurrence*, pcodename_expected*, pcodename*)
+  -- if $exit_root(pcoccurrence*, pcodename_expected*, pcpath)
+def $exit_names(pcoccurrence*, pcodename_expected*, (CODENAME pcpath ptbytes ptbytes_fallback?) :: pcodename*) = $exit_names(pcoccurrence*, pcodename_expected*, pcodename*)
+  -- if ~$exit_root(pcoccurrence*, pcodename_expected*, pcpath)
+
+def $exit_unit_code_valid(P, pcode) = true
+  -- if pcodename_expected* = $compiled_names(P.NAMES)
+  -- if $exit_code(P.FOLD.SOURCE.OCCURRENCES, pcodename_expected*, pcode.EXPRESSIONS) = $exit_code(P.FOLD.SOURCE.OCCURRENCES, pcodename_expected*, $compiled_operands(P, P.EXPRESSIONS))
+  -- if $exit_names(P.FOLD.SOURCE.OCCURRENCES, pcodename_expected*, pcode.NAMES) = $exit_names(P.FOLD.SOURCE.OCCURRENCES, pcodename_expected*, pcodename_expected*)
+def $exit_unit_code_valid(P, pcode) = false -- otherwise
+
+def $call_declaration_node(NExprExit phpType5 metadata) = true
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprExit phpType5 metadata)

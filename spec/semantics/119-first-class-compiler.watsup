@@ -11,7 +11,7 @@ def $ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder
   -- if P.COMPLETION = PPCNORMAL
 
 def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppcall_init($ppcall_name(P, pcpath, pnresult), pcpath)
-  -- if pnresult = $pnresolve(P.ENV, PLFUNCTION, name)
+  -- if pnresult = $ppexit_resolve(P.ENV, name)
 
 def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppcall_init($ppcall_name(P, pcpath, $ppcall_literal_reference(ptbytes, metadata)), pcpath)
   -- if $ppcall_literal(expression) = (ptbytes)
