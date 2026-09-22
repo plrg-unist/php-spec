@@ -1,0 +1,648 @@
+;; Class-owned methods are callable targets only through an active receiver.
+dec $method_functions(pmethoddesc*) : pfunction*
+def $method_functions(eps) = eps
+def $method_functions(pmethoddesc :: pmethoddesc_tail*) = pmethoddesc.FUNCTION :: $method_functions(pmethoddesc_tail*)
+def $class_method_functions(eps) = eps
+def $class_method_functions(pclassdesc :: pclassdesc_tail*) = $method_functions(pclassdesc.METHODS) ++ $class_method_functions(pclassdesc_tail*)
+
+dec $method_named(pmethoddesc*, ptbytes) : pmethoddesc?
+def $method_named(eps, ptbytes) = eps
+def $method_named(pmethoddesc :: pmethoddesc_tail*, ptbytes) = (pmethoddesc)
+  -- if $ptlc(pmethoddesc.NAME) = $ptlc(ptbytes)
+def $method_named(pmethoddesc :: pmethoddesc_tail*, ptbytes) = $method_named(pmethoddesc_tail*, ptbytes)
+  -- if $ptlc(pmethoddesc.NAME) =/= $ptlc(ptbytes)
+
+dec $method_origin(pmethoddesc*, porigin) : pmethoddesc?
+def $method_origin(eps, porigin) = eps
+def $method_origin(pmethoddesc :: pmethoddesc_tail*, porigin) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin
+def $method_origin(pmethoddesc :: pmethoddesc_tail*, porigin) = $method_origin(pmethoddesc_tail*, porigin)
+  -- if pmethoddesc.FUNCTION.ORIGIN =/= porigin
+def $class_method_origin(eps, porigin) = eps
+def $class_method_origin(pclassdesc :: pclassdesc_tail*, porigin) = (pmethoddesc)
+  -- if $method_origin(pclassdesc.METHODS, porigin) = (pmethoddesc)
+def $class_method_origin(pclassdesc :: pclassdesc_tail*, porigin) = $class_method_origin(pclassdesc_tail*, porigin)
+  -- if $method_origin(pclassdesc.METHODS, porigin) = eps
+
+dec $effective_method(pstate, porigin, ptbytes, nat) : pmethoddesc?
+def $effective_method(S, porigin, ptbytes, 0) = eps
+def $effective_method(S, porigin, ptbytes, n) = (pmethoddesc)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, ptbytes) = (pmethoddesc)
+def $effective_method(S, porigin, ptbytes, n) = $effective_method(S, porigin_parent, ptbytes, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, ptbytes) = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $effective_method(S, porigin, ptbytes, n) = eps -- otherwise
+
+def $new_has_ctor(S, preqbytes) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+def $new_has_ctor(S, preqbytes) = false -- otherwise
+
+def $target_nodes(METHOD_TARGET n porigin) = [HOBJECT n]
+def $target_instance(METHOD_TARGET n porigin) = eps
+def $target_receiver(S, METHOD_TARGET n porigin) = (n)
+def $target_lexical_class(S, METHOD_TARGET n porigin) = (pmethoddesc.OWNER)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+def $target_lexical_class(S, pcalltarget) = eps -- otherwise
+def $target_called_class(S, METHOD_TARGET n porigin) = (porigin_class)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+def $target_called_class(S, pcalltarget) = eps -- otherwise
+def $target_function(S, METHOD_TARGET n porigin) = (pmethoddesc.FUNCTION)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_links_valid(S)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if $effective_method(S, porigin_class, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+def $target_function(S, pcalltarget) = eps -- otherwise
+
+dec $method_source_name(phpType20, ptbytes) : bool
+def $method_source_name(NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $method_source_name(expression_name, ptbytes) = true
+  -- if $property_computed_name(expression_name)
+def $method_source_name(phpType20, ptbytes) = false -- otherwise
+
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if $closure_callable(S, n)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
+  -- if $closure_callable(S, n)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if $closure_callable(S, n)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
+  -- if $closure_callable(S, n)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+
+def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcpath)) = true
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+def $method_call_selected(S, pcalltarget, porigin?) = false -- otherwise
+
+;; A receiver operand retains its expression result kind across a computed
+;; method name: a CV can be reread, while a fetched property is already a value.
+dec $method_capture(pstate, bool, int) : (pstate, poperand)
+dec $method_base_value(pbase) : bool
+def $method_base_value(BASE_VALUE poperand) = true
+def $method_base_value(pbase) = false -- otherwise
+def $method_capture(S, false, z) = (S, S.RESULT)
+def $method_capture(S, true, z) = (S, poperand)
+  -- if S.BASE = BASE_VALUE poperand
+def $method_capture(S, true, z) = (S_read, S_read.RESULT)
+  -- if S.BASE =/= BASE_SHORT
+  -- if ~$method_base_value(S.BASE)
+  -- if S_read = $base_read(S, S.BASE, z)
+
+dec $method_args_task(pcalltarget, phpType7*, porigin?, int) : ptask
+def $method_args_task(pcalltarget, phpType7*, porigin?, z) = UNPACK_ARGS {FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX 0, SENT {SLOTS eps, NAMED eps}, CALLSITE porigin?, LINE z}
+  -- if $call_unpack_present(phpType7*)
+def $method_args_task(pcalltarget, phpType7*, porigin?, z) = NAMED_ARGS pcalltarget phpType7* 0 {SLOTS eps, NAMED eps} porigin? z
+  -- if ~$call_unpack_present(phpType7*)
+  -- if $named_present(phpType7*)
+def $method_args_task(pcalltarget, phpType7*, porigin?, z) = CALL_ARGS pcalltarget phpType7* 0 eps porigin? z
+  -- if ~$named_present(phpType7*)
+
+dec $method_select(pstate, poperand, ptbytes, phpType7*, int) : pstate
+dec $method_object(pvalue) : bool
+def $method_object(POBJECT n) = true
+def $method_object(pvalue) = false -- otherwise
+dec $closure_known_other_method(ptbytes) : bool
+def $closure_known_other_method(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("bind"), $ptascii("bindto"), $ptascii("call"), $ptascii("fromcallable"), $ptascii("getcurrent")])
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S_read, porigin_class, ptbytes, |S_read.CLASSES|) = (pmethoddesc)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S_read, porigin_class, ptbytes, |S_read.CLASSES|) = eps
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = STDINSTANCE
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(CLOSURE_TARGET n, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $closure_callable(S_read, n)
+  -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(CLOSURE_TARGET n, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $closure_callable(S_read, n)
+  -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $intrinsic_prepare(S_read[.TODO = ptask_tail*], pintrinsic, z, (n))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $closure_callable(S_read, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_known_other_method(ptbytes)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $closure_known_other_method(ptbytes)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if $closure_known_other_method(ptbytes)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
+  -- if ~$closure_known_other_method(ptbytes)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
+  -- if ~$closure_known_other_method(ptbytes)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
+  -- if ~$closure_known_other_method(ptbytes)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to a member function ") ++ $c_string(ptbytes) ++ $ptascii("() on ") ++ $value_type_bytes_at(S_read, pvalue), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$method_object(pvalue)
+
+dec $method_string(pvalue) : bool
+def $method_string(PSTRING n*) = true
+def $method_string(pvalue) = false -- otherwise
+
+dec $method_continue(pstate, poperand, phpType20, phpType7*, int) : pstate
+def $method_continue(S, poperand, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $method_select(S, poperand, $base64(text), phpType7*, z)
+def $method_continue(S, poperand, expression_name, phpType7*, z) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), METHOD_NAME poperand phpType7* z] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_computed_name(expression_name)
+
+dec $method_prepare(pstate, phpType20, phpType7*, bool, bool, int) : pstate
+def $method_prepare(S, phpType20, phpType7*, b_nullsafe, true, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.BASE = BASE_SHORT
+def $method_prepare(S, phpType20, phpType7*, b_nullsafe, b_base, z) = S_capture[.TODO = eps]
+  -- if $method_capture(S, b_base, z) = (S_capture, poperand)
+  -- if S_capture.COMPLETION =/= NORMAL
+def $method_prepare(S, phpType20, phpType7*, true, b_base, z) = S_check[.TODO = ptask_tail*][.BASE = BASE_SHORT][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $method_capture(S, b_base, z) = (S_capture, poperand)
+  -- if S_capture.COMPLETION = NORMAL
+  -- if S_check = $resolve_at(S_capture, poperand, z)
+  -- if S_check.COMPLETION = NORMAL
+  -- if S_check.RESULT = KNOWN PNULL
+def $method_prepare(S, phpType20, phpType7*, true, b_base, z) = $method_continue(S_check, poperand, phpType20, phpType7*, z)
+  -- if $method_capture(S, b_base, z) = (S_capture, poperand)
+  -- if S_capture.COMPLETION = NORMAL
+  -- if S_check = $resolve_at(S_capture, poperand, z)
+  -- if S_check.COMPLETION = NORMAL
+  -- if S_check.RESULT = KNOWN pvalue
+  -- if pvalue =/= PNULL
+def $method_prepare(S, phpType20, phpType7*, true, b_base, z) = S_check[.TODO = eps]
+  -- if $method_capture(S, b_base, z) = (S_capture, poperand)
+  -- if S_capture.COMPLETION = NORMAL
+  -- if S_check = $resolve_at(S_capture, poperand, z)
+  -- if S_check.COMPLETION =/= NORMAL
+def $method_prepare(S, phpType20, phpType7*, false, b_base, z) = $method_continue(S_capture, poperand, phpType20, phpType7*, z)
+  -- if $method_capture(S, b_base, z) = (S_capture, poperand)
+  -- if S_capture.COMPLETION = NORMAL
+
+rule PhpStep/method-read: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), METHOD_PREP phpType20 phpType7* false false $runtime_line(S, eps, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if ~$ppnullsafe(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+rule PhpStep/method-chain-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), NULLSAFE_DIM_PREP expression b), METHOD_PREP phpType20 phpType7* false true $runtime_line(S, eps, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
+  -- if S.TODO = (NULLSAFE_DIM_PREP (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) b) :: ptask_tail*
+rule PhpStep/method-checkpoint-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), NULLSAFE_DIM_PREP expression b), METHOD_PREP phpType20 phpType7* true true $runtime_line(S, eps, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
+  -- if S.TODO = (NULLSAFE_DIM_PREP (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) b) :: ptask_tail*
+rule PhpStep/method-prepare: S ~> $method_prepare(S, phpType20, phpType7*, b_nullsafe, b_base, z)
+  -- if S.TODO = (METHOD_PREP phpType20 phpType7* b_nullsafe b_base z) :: ptask_tail*
+rule PhpStep/method-name: S ~> $method_select(S_name, poperand, n_name*, phpType7*, z)
+  -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
+  -- if S_name = $resolve_at(S, S.RESULT, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+rule PhpStep/method-name-abrupt: S ~> S_name[.TODO = eps]
+  -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
+  -- if S_name = $resolve_at(S, S.RESULT, z)
+  -- if S_name.COMPLETION =/= NORMAL
+rule PhpStep/method-name-type: S ~> $throw_scalar(S_name, "Error", $ptascii("Method name must be a string"), z)[.TODO = eps]
+  -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
+  -- if S_name = $resolve_at(S, S.RESULT, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue
+  -- if ~$method_string(pvalue)
+rule PhpStep/method-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = METHOD_RESULT :: ptask_tail*
+
+rule PhpStep/method-called-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
+  -- if S.TODO = (EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLED_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+
+dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
+def $constructor_start(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION = NORMAL
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+  -- if S_new.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
+def $constructor_start(S, preqbytes, phpType7*, z) = S_new
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION =/= NORMAL
+
+rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*], preqbytes, phpType7*, $runtime_line(S, eps, NExprNew name (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if ~$ppfirstclass(phpType7*)
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_has_ctor(S, preqbytes)
+rule PhpStep/constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_RESULT n) :: ptask_tail*
+
+dec $method_source_task(pstate, expression) : bool
+def $method_source_task(S, expression) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $method_source_task(S, expression) = false -- otherwise
+
+def $method_prep_task(S, phpType20, phpType7*, false, b_base, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if b_base = $ppnullsafe(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_task(S, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if z = $runtime_line(S, eps, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+def $method_prep_task(S, phpType20, phpType7*, true, b_base, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if b_base
+  -- if $method_source_task(S, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if z = $runtime_line(S, eps, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+def $method_prep_task(S, phpType20, phpType7*, b_nullsafe, b_base, z) = false -- otherwise
+
+dec $method_receiver_is_variable(expression) : bool
+def $method_receiver_is_variable(NExprVariable phpType32 metadata) = true
+def $method_receiver_is_variable(expression) = false -- otherwise
+dec $method_receiver_operand_valid(pstate, expression, poperand) : bool
+def $method_receiver_operand_valid(S, NExprVariable phpType32 metadata, VARIABLE n_name* z) = true
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if ~$direct_this(phpType32)
+  -- if z = $variable_line(phpType32, metadata)
+def $method_receiver_operand_valid(S, NExprVariable phpType32 metadata, KNOWN (POBJECT n)) = true
+  -- if $direct_this(phpType32)
+  -- if $this_receiver(S) = (n)
+def $method_receiver_operand_valid(S, NExprVariable phpType32 metadata, poperand) = true
+  -- if $cv_name(phpType32) = eps
+def $method_receiver_operand_valid(S, expression, poperand) = true
+  -- if ~$method_receiver_is_variable(expression)
+def $method_receiver_operand_valid(S, expression, poperand) = false -- otherwise
+dec $method_name_task(pstate, poperand, phpType7*, int) : bool
+def $method_name_task(S, poperand, phpType7*, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression expression_name (SEQUENCE phpType7*) metadata)
+  -- if $method_receiver_operand_valid(S, expression, poperand)
+  -- if $property_computed_name(expression_name)
+  -- if $method_prep_task(S, expression_name, phpType7*, false, $ppnullsafe(NExprMethodCall expression expression_name (SEQUENCE phpType7*) metadata), z)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
+def $method_name_task(S, poperand, phpType7*, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression expression_name (SEQUENCE phpType7*) metadata)
+  -- if $method_receiver_operand_valid(S, expression, poperand)
+  -- if $property_computed_name(expression_name)
+  -- if $method_prep_task(S, expression_name, phpType7*, true, true, z)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
+def $method_name_task(S, poperand, phpType7*, z) = false -- otherwise
+
+def $call_task_valid(S, EVAL (NExprMethodCall expression phpType20 phpType6 metadata)) = $method_source_task(S, NExprMethodCall expression phpType20 phpType6 metadata)
+def $call_task_valid(S, EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) = true
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLED_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $call_task_valid(S, EVAL (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)) = $method_source_task(S, NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $call_task_valid(S, NULLSAFE_DIM_PREP (NExprMethodCall expression phpType20 phpType6 metadata) b) = $method_source_task(S, NExprMethodCall expression phpType20 phpType6 metadata)
+def $call_task_valid(S, NULLSAFE_DIM_PREP (NExprNullsafeMethodCall expression phpType20 phpType6 metadata) b) = $method_source_task(S, NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $call_task_valid(S, METHOD_PREP phpType20 phpType7* b_nullsafe b_base z) = $method_prep_task(S, phpType20, phpType7*, b_nullsafe, b_base, z)
+def $call_task_valid(S, METHOD_NAME poperand phpType7* z) = $method_name_task(S, poperand, phpType7*, z)
+dec $method_result_valid(pstate) : bool
+def $method_result_valid(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_task(S, NExprMethodCall expression phpType20 phpType6 metadata)
+def $method_result_valid(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_task(S, NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $method_result_valid(S) = false -- otherwise
+def $call_task_valid(S, METHOD_RESULT) = $method_result_valid(S)
+dec $ctor_result_valid(pstate, nat) : bool
+def $ctor_result_valid(S, n) = true
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+def $ctor_result_valid(S, n) = false -- otherwise
+def $call_task_valid(S, CTOR_RESULT n) = $ctor_result_valid(S, n)
+
+dec $ctor_pair_target(pstate, ptask) : nat?
+dec $ctor_target_id(pcalltarget) : nat?
+def $ctor_target_id(METHOD_TARGET n porigin) = (n)
+def $ctor_target_id(pcalltarget) = eps -- otherwise
+def $ctor_pair_target(S, CALL_ARGS pcalltarget phpType7* n_arg poperand* porigin? z) = $ctor_target_id(pcalltarget)
+  -- if $call_task_valid(S, CALL_ARGS pcalltarget phpType7* n_arg poperand* porigin? z)
+def $ctor_pair_target(S, CALL_SEND pcalltarget phpType7* n_arg poperand* porigin? z) = $ctor_target_id(pcalltarget)
+  -- if $call_task_valid(S, CALL_SEND pcalltarget phpType7* n_arg poperand* porigin? z)
+def $ctor_pair_target(S, NAMED_ARGS pcalltarget phpType7* n_arg pnamedargs porigin? z) = $ctor_target_id(pcalltarget)
+  -- if $call_task_valid(S, NAMED_ARGS pcalltarget phpType7* n_arg pnamedargs porigin? z)
+def $ctor_pair_target(S, NAMED_SEND pcalltarget phpType7* n_arg pnamedargs porigin? z) = $ctor_target_id(pcalltarget)
+  -- if $call_task_valid(S, NAMED_SEND pcalltarget phpType7* n_arg pnamedargs porigin? z)
+def $ctor_pair_target(S, UNPACK_ARGS punpackcall) = $ctor_target_id(punpackcall.FUNCTION)
+def $ctor_pair_target(S, UNPACK_SEND punpackcall) = $ctor_target_id(punpackcall.FUNCTION)
+def $ctor_pair_target(S, UNPACK_PREP punpackcall) = $ctor_target_id(punpackcall.FUNCTION)
+def $ctor_pair_target(S, UNPACK_NEXT punpackcall poperand n_index b) = $ctor_target_id(punpackcall.FUNCTION)
+def $ctor_pair_target(S, ptask) = eps -- otherwise
+dec $ctor_pair_valid(pstate, ptask, ptask) : bool
+def $ctor_pair_valid(S, ptask, CTOR_RESULT n) = (n_target = n)
+  -- if $ctor_pair_target(S, ptask) = (n_target)
+def $ctor_pair_valid(S, ptask, CTOR_RESULT n) = true
+  -- if $ctor_pair_target(S, ptask) = eps
+def $ctor_pair_valid(S, ptask, ptask_other) = true -- otherwise
+def $ctor_pairs_valid(S, eps) = true
+def $ctor_pairs_valid(S, [ptask]) = true
+def $ctor_pairs_valid(S, ptask :: ptask_next :: ptask_tail*) = ($ctor_pair_valid(S, ptask, ptask_next) /\ $ctor_pairs_valid(S, ptask_next :: ptask_tail*))
+def $ctor_frames_pairs_valid(S, eps) = true
+def $ctor_frames_pairs_valid(S, pframe :: pframe_tail*) = ($ctor_pairs_valid(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT], pframe.TODO) /\ $ctor_frames_pairs_valid(S, pframe_tail*))
+
+;; Linking scans the parent's effective insertion order. Method resolution and
+;; type variance both use the active parent graph, including conditional classes.
+dec $method_info_layout(pstate, porigin, nat) : ppmethodinherited*
+def $method_info_layout(S, porigin, 0) = eps
+def $method_info_layout(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $ppmethod_extra($method_info_layout(S, porigin_parent, $nabs($(n - 1))), pclassdesc.METHODS)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $method_info_layout(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps
+def $method_info_layout(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $method_info_layout(S, porigin, n) = eps -- otherwise
+
+dec $method_ancestor_names(pstate, porigin, nat) : ptbytes*
+def $method_ancestor_names(S, porigin, 0) = eps
+def $method_ancestor_names(S, porigin, n) = [pclassdesc_parent.NAME] ++ $method_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+def $method_ancestor_names(S, porigin, n) = [$ptascii("stdClass")]
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $method_ancestor_names(S, porigin, n) = eps -- otherwise
+dec $method_active_registry(pstate, (preqbytes, porigin)*) : pvclasses
+def $method_active_registry(S, eps) = [($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false})]
+def $method_active_registry(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = [($ptlc(pclassdesc.NAME), $pmethod_scope(pclassdesc, $method_ancestor_names(S, porigin, |S.CLASSES|)))] ++ $method_active_registry(S, (preqbytes_tail, porigin_tail)*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+
+dec $method_ctor_proto(pstate, porigin, nat) : ppmethodinherited?
+dec $method_ctor_parent_proto(pstate, porigin, nat) : ppmethodinherited?
+def $method_ctor_proto(S, porigin, 0) = eps
+def $method_ctor_proto(S, porigin, n) = (ppmethodinherited)
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+  -- if $method_ctor_proto(S, porigin_parent, $nabs($(n - 1))) = (ppmethodinherited)
+def $method_ctor_proto(S, porigin, n) = (PPMINHERITED pmethoddesc pclassdesc)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__construct")) = (pmethoddesc)
+  -- if pmethoddesc.ABSTRACT
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps \/ $method_ctor_parent_proto(S, porigin, n) = eps
+def $method_ctor_proto(S, porigin, n) = eps -- otherwise
+def $method_ctor_parent_proto(S, porigin, n) = $method_ctor_proto(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $method_ctor_parent_proto(S, porigin, n) = eps -- otherwise
+
+dec $method_signature_issue(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pmethodissue
+def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_OK
+  -- if $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES)) = PMCHECK PVYES ptbytes*
+def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_ISSUE pmdiagnostic.MESSAGE pmethoddesc_child.FUNCTION.LINE
+  -- if $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES)) = PMCHECK PVNO ptbytes*
+  -- if $pmmismatch($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), 14) = PMDIAGNOSTIC pmdiagnostic
+def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_UNSUPPORTED "method signature comparison" -- otherwise
+
+dec $method_override_one(pstate, pclassdesc, ppmethodinherited) : pmethodissue
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = eps
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot override final method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("()")) pmethoddesc_child.FUNCTION.LINE
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if pmethoddesc_parent.FINAL
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot make non abstract method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc_child.NAME) pmethoddesc_child.FUNCTION.LINE
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~pmethoddesc_parent.FINAL /\ pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
+  -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = eps
+  -- if ~pmethoddesc_parent.ABSTRACT
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto)
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
+  -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = (PPMINHERITED pmethoddesc_proto pclassdesc_proto)
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent)
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct")
+
+dec $method_override_items(pstate, pclassdesc, ppmethodinherited*) : pmethodissue
+def $method_override_items(S, pclassdesc, eps) = METHOD_OK
+def $method_override_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*) = $method_override_items(S, pclassdesc, ppmethodinherited_tail*)
+  -- if $method_override_one(S, pclassdesc, ppmethodinherited) = METHOD_OK
+def $method_override_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*) = pmethodissue
+  -- if $method_override_one(S, pclassdesc, ppmethodinherited) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $method_link_issue(S, pclassdesc_child, porigin_parent) = pmethodissue
+  -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_ISSUE ptbytes_message pclassdesc_child.LINE
+  -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
+  -- if $ppmethod_abstract_message(pclassdesc_child, $method_info_layout(S, pclassdesc_child.ORIGIN, |S.CLASSES|)) = (ptbytes_message)
+def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_OK
+  -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
+  -- if $ppmethod_abstract_message(pclassdesc_child, $method_info_layout(S, pclassdesc_child.ORIGIN, |S.CLASSES|)) = eps
+
+;; Closure::__invoke is an internal trampoline. Its original sent operands
+;; remain owned separately from the weakly received callee parameters.
+dec $wrapper_site(pstate, pcalltarget, porigin?) : bool
+def $wrapper_site(S, CLOSURE_TARGET n, (porigin)) = $exit_method_site(S, porigin)
+def $wrapper_site(S, pcalltarget, porigin?) = false -- otherwise
+def $wrapper_after_enter(S, pnamedargs) = S[.CURRENT = (pcallcontext[.WRAPPER = (pnamedargs)])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+def $wrapper_after_enter(S, pnamedargs) = S -- otherwise
+def $wrapper_send_name(S, pcalltarget, porigin?, preqbytes) = $ptascii("Closure::__invoke")
+  -- if $wrapper_site(S, pcalltarget, porigin?)
+def $wrapper_send_name(S, pcalltarget, porigin?, preqbytes) = preqbytes -- otherwise
+def $wrapper_called_suffix(S, pcallcontext) = eps -- if pcallcontext.WRAPPER =/= eps
+def $wrapper_called_suffix(S, pcallcontext) = $ptascii(", called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
+  -- if pcallcontext.WRAPPER = eps
+  -- if pcallcontext.CALLSITE = (porigin)
+dec $wrapper_values(pstate, pnamedslot*) : pvalue*
+def $wrapper_values(S, eps) = eps
+def $wrapper_values(S, NAMED_HOLE :: pnamedslot*) = PNULL :: $wrapper_values(S, pnamedslot*)
+def $wrapper_values(S, (NAMED_SENT poperand) :: pnamedslot*) = $variadic_operand_value(S, poperand) :: $wrapper_values(S, pnamedslot*)
+def $wrapper_trace(S, pcallcontext) = eps -- if pcallcontext.WRAPPER = eps
+def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME $ptascii("Closure->__invoke"), VALUES (pvalue* ++ $named_values(S, pnamedargs.NAMED)), ARGTEXT $named_trace_arguments(S, pvalue*, pnamedargs.NAMED)}]
+  -- if pcallcontext.WRAPPER = (pnamedargs)
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pvalue* = $wrapper_values(S, pnamedargs.SLOTS)
+def $wrapper_context_valid(S, pcallcontext) = true
+  -- if ~$wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if pcallcontext.WRAPPER = eps
+def $wrapper_context_valid(S, pcallcontext) = true
+  -- if $wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if pcallcontext.WRAPPER = (pnamedargs)
+  -- if |pnamedargs.SLOTS| = pcallcontext.ARGC
+  -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
+  -- if $unpack_static_prefix(S, $context_target(pcallcontext), $wrapper_arguments(S, pcallcontext), pnamedargs)
+def $wrapper_context_valid(S, pcallcontext) = true
+  -- if $wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if pcallcontext.WRAPPER = (pnamedargs)
+  -- if |pnamedargs.SLOTS| = pcallcontext.ARGC
+  -- if $call_unpack_site(S, pcallcontext.CALLSITE)
+  -- if $unpack_slots_valid(S, $context_target(pcallcontext), 0, pnamedargs.SLOTS)
+  -- if $unpack_names_valid(S, $context_target(pcallcontext), pnamedargs.NAMED)
+def $wrapper_context_valid(S, pcallcontext) = false -- otherwise
+def $wrapper_arguments(S, pcallcontext) = phpType7*
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
+def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if pcallcontext.WRAPPER =/= eps
+def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
+  -- if pcallcontext.WRAPPER = eps
+  -- if pcallcontext.CALLSITE = (porigin)
+
+def $acquire_call_valid(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression_receiver phpType20 phpType6 metadata_call)
+  -- if $acquire_call_parent(S) = (NExprAssignRef expression (NExprMethodCall expression_receiver phpType20 phpType6 metadata_call) metadata)
+rule PhpStep/acquire-method-call: S ~> S[.TODO = [EVAL (NExprMethodCall expression phpType20 phpType6 metadata), ACQUIRE_CALL] ++ ptask_tail*]
+  -- if S.TODO = (ACQUIRE (NExprMethodCall expression phpType20 phpType6 metadata)) :: ptask_tail*
+  -- if $acquire_call_valid(S)
+def $reference_value_call(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target (NExprMethodCall expression phpType20 phpType6 metadata_call) metadata)
+  -- if S.RESULT = KNOWN pvalue
+def $reference_assignment_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprAssignRef expression_target (NExprMethodCall expression phpType20 phpType6 metadata_call) metadata)

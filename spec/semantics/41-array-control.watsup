@@ -63,6 +63,11 @@ rule PhpStep/dimension: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expression 
 rule PhpStep/global-this-dimension: S ~> $global_this_error(S, $runtime_line(S, eps, NExprVariable phpType32 metadata))[.TODO = eps]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $direct_this(phpType32)
+  -- if $this_receiver(S) = eps
+rule PhpStep/this-dimension: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN (POBJECT n))][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (DIM_PREP (NExprVariable phpType32 metadata)) :: ptask_tail*
+  -- if $direct_this(phpType32)
+  -- if $this_receiver(S) = (n)
 rule PhpStep/dimension-prepare-cv: S ~> S[.TODO = ptask_tail*][.BASE = $scope_base(S, eps, KNOWN (PSTRING n_name*), $variable_line(phpType32, metadata), true)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_PREP (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_name(phpType32) = (n_name*)

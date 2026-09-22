@@ -3,11 +3,18 @@
 def $typed_parameters(eps) = false
 def $typed_parameters(psparam :: psparam_tail*) = (psparam.TYPE =/= eps \/ $typed_parameters(psparam_tail*))
 dec $typed_caller_strict(pstate) : bool
+def $typed_caller_strict(S) = false
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.WRAPPER =/= eps
 def $typed_caller_strict(S) = pfunction.CODE.STRICT
+  -- if S.CURRENT = (pcallcontext_current)
+  -- if pcallcontext_current.WRAPPER = eps
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONTEXT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $typed_caller_strict(S) = pcode.STRICT
+  -- if S.CURRENT = (pcallcontext_current)
+  -- if pcallcontext_current.WRAPPER = eps
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONTEXT = eps
   -- if S.CURRENT = (pcallcontext)
@@ -63,7 +70,7 @@ def $typed_parameter_conversion(S, psparam, pvalue) = $typed_reference_conversio
 def $typed_parameter_value(S, pfunction, n, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if ptypeconversion = $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue)
   -- if ptypeconversion =/= TYPEREJECT
-def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n))
+def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if $typed_parameter_conversion(S, psparam, pvalue) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)

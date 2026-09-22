@@ -8,7 +8,7 @@ syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | NOWHERE
 syntax pvstage = PVFOLD | PVEXEC
 syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)*
 syntax porigin = PORIGIN nat pcpath
-syntax pcalltarget = porigin | CLOSURE_TARGET nat
+syntax pcalltarget = porigin | CLOSURE_TARGET nat | METHOD_TARGET nat porigin
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
 syntax pcodeexpr = CODEMATCH_LINE pcpath int | CODEMATCH_TABLE pcpath bool | CODEIMPLICIT pcpath ptbytes int | CODEARROW pcpath int | CODELEXICAL pcpath ptbytes bool int | CODESTATIC pcpath ptbytes int int bool | CODECALL_INIT pcpath int | CODEPIPE_SEND pcpath int | CODESWITCH_COMPARE pcpath int | CODESWITCH_BOOL pcpath bool | CODEGOTO pcpath pcpath | CODEARG pcpath | CODEWRITE pcpath int | CODEEXPR pcpath int bool | CODEEFFECT pcpath
@@ -18,6 +18,7 @@ syntax pcode = { STRICT bool, GLOBALS pcpath*, UNIT nat, EXPRESSIONS pcodeexpr*,
 syntax pdefaultkind = PDSTORED | PDDEFERRED
 syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
+syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, FINAL bool, ABSTRACT bool }
 syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin
 syntax ppropertydesc = { ORIGIN porigin, NAME ptbytes, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
@@ -26,9 +27,10 @@ syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
 syntax pproptypesource = { OBJECT nat, NAME ptbytes, DECL porigin }
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 dec $propref_at(ppropref*, nat) : ppropref?
-syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, PARENT ptbytes?, PROPERTIES ppropertydesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
+syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, PARENT ptbytes?, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
 syntax pclassparent = SOURCE_PARENT porigin | STDCLASS_PARENT
 syntax pclasslink = CLASSLINK porigin pclassparent
+syntax pmethodissue = METHOD_OK | METHOD_ISSUE ptbytes int | METHOD_UNSUPPORTED text
 syntax pnoctorcall = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpType7*, INDEX nat, SENT poperand*, LINE int }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pupdate = INCREMENT | DECREMENT
@@ -53,6 +55,7 @@ syntax ptask = EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexi
   | ARRAY_REF_KEY nat expression phpType13* | ARRAY_REF_VALUE nat poperand? phpType13* int
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
   | NULLSAFE_DIM_PREP expression bool | NULLSAFE_DIM_INDEX expression int bool | NULLSAFE_PROP_PREP phpType20 int bool | NULLSAFE_CHECK phpType20 int bool | NULLSAFE_PROPERTY_NAME pvalue int
+  | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | PRINT_EMIT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
@@ -67,15 +70,31 @@ syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
 syntax pdefaultcache = { ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
-syntax pcallcontext = { INSTANCE nat?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, EXTRA poperand*, NAMED (preqbytes, poperand)* }
+syntax pcallcontext = { WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, EXTRA poperand*, NAMED (preqbytes, poperand)* }
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext? }
 syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
+syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat? }
 syntax pobject = INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
-syntax pstate = { OBJECTS pobject*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $install_classes(pstate, pclassdesc*) : pstate
+dec $method_link_issue(pstate, pclassdesc, porigin) : pmethodissue
+dec $ctor_pairs_valid(pstate, ptask*) : bool
+dec $ctor_frames_pairs_valid(pstate, pframe*) : bool
 dec $class_at(pclassdesc*, porigin) : pclassdesc?
+dec $class_named((preqbytes, porigin)*, preqbytes) : porigin?
+dec $class_method_functions(pclassdesc*) : pfunction*
+dec $class_method_origin(pclassdesc*, porigin) : pmethoddesc?
+dec $closure_scope_at(pclosurescope*, nat) : pclosurescope?
+dec $method_prep_task(pstate, phpType20, phpType7*, bool, bool, int) : bool
+dec $method_call_selected(pstate, pcalltarget, porigin?) : bool
+dec $new_has_ctor(pstate, preqbytes) : bool
+dec $target_receiver(pstate, pcalltarget) : nat?
+dec $target_lexical_class(pstate, pcalltarget) : porigin?
+dec $target_called_class(pstate, pcalltarget) : porigin?
+dec $call_argument_origin(pstate, porigin?, nat) : porigin?
+dec $ppnullsafe(expression) : bool
 dec $object_name(pstate, nat) : preqbytes
 dec $class_plain_instance(pstate, nat) : bool
 dec $activate_parented_class(pstate, pclassdesc, ptbytes) : pstate
@@ -317,3 +336,11 @@ dec $intrinsic_prepare(pstate, pintrinsic, int, nat?) : pstate
 dec $intrinsic_firstclass(pstate, pintrinsic) : pstate
 dec $intrinsic_pipe(pstate, pintrinsic, pvalue, porigin, int, nat?) : pstate
 dec $exit_start_unwind(pstate, int) : pstate
+dec $wrapper_trace(pstate, pcallcontext) : ptraceframe*
+dec $wrapper_called_suffix(pstate, pcallcontext) : preqbytes
+dec $wrapper_send_name(pstate, pcalltarget, porigin?, preqbytes) : preqbytes
+dec $wrapper_context_valid(pstate, pcallcontext) : bool
+dec $wrapper_after_enter(pstate, pnamedargs) : pstate
+dec $exit_method_site(pstate, porigin) : bool
+dec $wrapper_arguments(pstate, pcallcontext) : phpType7*
+dec $wrapper_passed_suffix(pstate, pcallcontext) : preqbytes

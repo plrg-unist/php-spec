@@ -84,7 +84,7 @@ def main():
                     if stage == 'bind': vs += [('without-context','S[.CONSTCONTEXT = eps]',True,0)]
                     groups.append((stage,TASK_PREFIX,setup,vs))
             else:
-                setup = ['S_initial = '+initial, 'S = $drive(S_initial[.COMPLETION = NORMAL], 1000)', 'S.FUNCTIONS = [pfunction]', '$default_parameter_origin(pfunction.ORIGIN, 0) = PORIGIN n_unit pcpath', 'porigin = PORIGIN n_unit (pcpath ++ [PCFIELD 6])']
+                setup = ['S_initial = '+initial, 'S = $drive(S_initial[.COMPLETION = NORMAL], 1000)', 'S.FUNCTIONS = [pfunction]', '$default_parameter_origin(S, pfunction.ORIGIN, 0) = PORIGIN n_unit pcpath', 'porigin = PORIGIN n_unit (pcpath ++ [PCFIELD 6])']
                 groups.append(('cache-kind','',setup,[('control','S',False,0),('stored-or-dropped-origin','S[.DEFAULTCACHE = [{ORIGIN porigin, VALUE PINT 99, CLASS PVSCALAR}]]',True,0)]))
             for group,prefix,setup,vs in groups:
                 for name,term,invalid,budget in vs:

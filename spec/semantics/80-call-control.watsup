@@ -89,7 +89,7 @@ rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
 
-rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]), $call_argument_task(S, pcalltarget_function, n, expression, porigin?)), CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
+rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($call_argument_origin(S, porigin?, n), $call_argument_task(S, pcalltarget_function, n, expression, porigin?)), CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
   -- if S.TODO = (CALL_ARGS pcalltarget_function ((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) n poperand* porigin? z) :: ptask_tail*
 rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS pcalltarget_function phpType7* $(n + 1) (poperand* ++ [S_value.RESULT]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) :: ptask_tail*
@@ -111,6 +111,9 @@ dec $function_tasks(pstate, pfunction) : ptask*
 def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
 dec $call_received(nat, nat) : nat
 def $call_received(n_args, n_params) = n_args -- if $(n_args < n_params)
 def $call_received(n_args, n_params) = n_params -- if $(n_args >= n_params)
@@ -125,7 +128,7 @@ def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = [TYPE_RECEIVE pfunction.ORIGIN 0]]
   -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
-def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CURRENT = ({INSTANCE eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction, n_args, porigin?, z)
+def $call_enter(S, pfunction, poperand*, porigin?, z) = S_bound[.CURRENT = ({WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |poperand*|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)
@@ -137,7 +140,7 @@ def $call_enter(S, pfunction, poperand*, porigin?, z) = $call_arity(S_bound[.CUR
   -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, poperand*)
 def $call_enter(S, pfunction, poperand*, porigin?, z) = S[.COMPLETION = UNSUPPORTED "unconnected function signature"]
   -- otherwise
-rule PhpStep/call-enter: S ~> $target_after_enter($call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z), pcalltarget_function)
+rule PhpStep/call-enter: S ~> $call_arity($wrapper_after_enter($target_after_enter($call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z), pcalltarget_function), {SLOTS (NAMED_SENT poperand)*, NAMED eps}), pfunction, |poperand*|, porigin?, z)
   -- if S.TODO = (CALL_ARGS pcalltarget_function eps n poperand* porigin? z) :: ptask_tail*
   -- if $target_function(S, pcalltarget_function) = (pfunction)
 

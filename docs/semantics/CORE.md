@@ -196,3 +196,9 @@ adding heap roots. Ordinary writable-name fetch initializes storage without
 creating that marker; actual reference acquisition marks it. [Independent resolution](../../coverage/semantics/reference-wrapper-review.json)
 preserves the original differences and confirms intermediate FETCH/UNSET versus
 final mutation warnings. This introduces no new intrinsic or environment boundary.
+
+Public instance methods and constructors now have the bounded compiler, linking,
+call and ownership contract in [SOURCE-METHODS](SOURCE-METHODS.md). `Closure`
+ordinary/nullsafe `__invoke` uses its internal trampoline: weak receiving,
+unchanged body/return strictness, and a distinct original-argument trace frame.
+Other Closure methods and user magic-method consumers remain explicit dependencies.

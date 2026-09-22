@@ -32,7 +32,7 @@ def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $typed_apply(S, pt
   -- if pvalue = $variadic_operand_value(S, poperand)
   -- if ptypeconversion = $typed_reference_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand)))
   -- if ptypeconversion =/= TYPEREJECT
-def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n_arg + 1)) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given, called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE), $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
+def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n_arg + 1)) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]
   -- if pvalue = $variadic_operand_value(S, poperand)
   -- if $typed_reference_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand))) = TYPEREJECT

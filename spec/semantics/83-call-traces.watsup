@@ -58,9 +58,24 @@ def $trace_extra(S, (REFERENCE n) :: poperand*) = pvalue :: $trace_extra(S, pope
   -- if S.STORE[n] = DEFINED pvalue
 dec $named_values(pstate, (preqbytes, poperand)*) : pvalue*
 dec $named_trace_arguments(pstate, pvalue*, (preqbytes, poperand)*) : preqbytes
+dec $trace_context_name(pstate, pcallcontext) : preqbytes
+def $trace_context_name(S, pcallcontext) = $object_name(S, n) ++ $ptascii("->") ++ pmethoddesc.NAME
+  -- if pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = (n)
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+def $trace_context_name(S, pcallcontext) = $object_name(S, n_receiver) ++ $ptascii("->") ++ pcallcontext.NAME
+  -- if pcallcontext.INSTANCE = (n_closure)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
+  -- if pclosurescope.RECEIVER = (n_receiver)
+def $trace_context_name(S, pcallcontext) = pclassdesc.NAME ++ $ptascii("::") ++ pcallcontext.NAME
+  -- if pcallcontext.INSTANCE = (n_closure)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
+  -- if pclosurescope.RECEIVER = eps
+  -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc)
+def $trace_context_name(S, pcallcontext) = pcallcontext.NAME -- otherwise
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 def $trace_context(S, pbinding*, eps) = eps
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME pcallcontext.NAME, VALUES pvalue_all*, ARGTEXT $named_trace_arguments(S, pvalue*, pcallcontext.NAMED)}]
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME $trace_context_name(S, pcallcontext), VALUES pvalue_all*, ARGTEXT $named_trace_arguments(S, pvalue*, pcallcontext.NAMED)}] ++ $wrapper_trace(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)

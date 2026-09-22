@@ -14,6 +14,8 @@ dec $nullsafe_propdim_node(expression) : bool
 def $nullsafe_propdim_node(NExprArrayDimFetch expression phpType5 metadata) = true
 def $nullsafe_propdim_node(NExprPropertyFetch expression phpType20 metadata) = true
 def $nullsafe_propdim_node(NExprNullsafePropertyFetch expression phpType20 metadata) = true
+def $nullsafe_propdim_node(NExprMethodCall expression phpType20 phpType6 metadata) = true
+def $nullsafe_propdim_node(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
 def $nullsafe_propdim_node(expression) = false -- otherwise
 
 dec $nullsafe_access_line(pstate, expression) : int
@@ -141,6 +143,16 @@ def $nullsafe_chain_origin(S, porigin) = $nullsafe_chain_origin(S, porigin_paren
   -- if ~$ppnullsafe(expression_current)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+def $nullsafe_chain_origin(S, porigin) = $nullsafe_chain_origin(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_current)
+  -- if ~$ppnullsafe(expression_current)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprMethodCall expression phpType20 phpType6 metadata)
+def $nullsafe_chain_origin(S, porigin) = $nullsafe_chain_origin(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_current)
+  -- if ~$ppnullsafe(expression_current)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
 def $nullsafe_chain_origin(S, porigin) = false -- otherwise
 def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
@@ -151,6 +163,12 @@ def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_paren
 def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprMethodCall expression phpType20 phpType6 metadata)
+def $nullsafe_quiet_origin(S, porigin) = $nullsafe_quiet_origin(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
 def $nullsafe_quiet_origin(S, porigin) = true
   -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprEmpty expression metadata)
@@ -291,6 +309,17 @@ def $nullsafe_base_phase_valid(S) = true
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression phpType20 metadata)
   -- if $ppnullsafe(expression)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (METHOD_PREP phpType20 phpType7* false true z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppnullsafe(expression)
+  -- if $method_prep_task(S, phpType20, phpType7*, false, true, z)
+def $nullsafe_base_phase_valid(S) = true
+  -- if S.BASE = BASE_SHORT
+  -- if S.TODO = (METHOD_PREP phpType20 phpType7* true true z) :: ptask_tail*
+  -- if $method_prep_task(S, phpType20, phpType7*, true, true, z)
 def $nullsafe_base_phase_valid(S) = true
   -- if S.BASE = BASE_SHORT
   -- if S.TODO = (DIM_FETCH z) :: ptask_tail*

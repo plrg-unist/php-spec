@@ -44,7 +44,7 @@ def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = $ppstatic_cvrecord(P, pt
 
 def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppclosure_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true][.GOTOROOT = pcpath], pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
+def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppclosure_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true][.FOLD.CLOSURE = true][.GOTOROOT = pcpath], pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
   -- if P.COMPLETION = PPCNORMAL
   -- if ptbytes = $ppclosure_name(P, metadata)
 
@@ -92,7 +92,7 @@ def $ppclosure_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_bod
 def $ppclosure_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_restored[.CLOSURETEMPLATES = P_body.CLOSURETEMPLATES ++ [pfunction]]
   -- if P_body.COMPLETION = PPCNORMAL
   -- if pfunction = { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $psline(metadata), ENDLINE $psendline(metadata) }
-  -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.SWITCHES = P.SWITCHES][.GOTOROOT = P.GOTOROOT][.LABELS = P.LABELS][.GOTOS = P.GOTOS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
+  -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.SWITCHES = P.SWITCHES][.GOTOROOT = P.GOTOROOT][.LABELS = P.LABELS][.GOTOS = P.GOTOS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.CLASSCONTEXT = P.FOLD.CLASSCONTEXT][.CLOSURE = P.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
 
 def $ppstatic_seen_entry(pfunction*, PPCLEXICAL pcpath ptbytes_name b n_line, ptbytes) = (ptbytes_name = ptbytes /\ ~$ppinner(pfunction*, pcpath))
 def $compiled_operands(P, (PPCLEXICAL pcpath ptbytes b n_line) :: ppexprdone*) = (CODELEXICAL pcpath ptbytes b n_line) :: $compiled_operands(P, ppexprdone*)

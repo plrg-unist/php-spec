@@ -80,12 +80,34 @@ def $task_nodes(EXIT_INVOKE pexitcall) = $exit_call_nodes(pexitcall)
 
 ;; Builtin RECEIVE errors have an internal trace frame. SEND errors do not.
 dec $exit_error(pstate, pexitcall, text, preqbytes) : pstate
+def $exit_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $exit_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $exit_method_site(S, porigin) = false -- otherwise
+dec $exit_method_receiver(pstate, pexitcall) : bool
+def $exit_method_receiver(S, pexitcall) = true
+  -- if pexitcall.OWNER = (n)
+  -- if $exit_method_site(S, pexitcall.SITE)
+def $exit_method_receiver(S, pexitcall) = false -- otherwise
+def $exit_error(S, pexitcall, text, preqbytes) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = [ptraceframe, ptraceframe_invoke] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = (pexitcall.SITE)][.TODO = [ERROR_UNWIND (THROWN text preqbytes pexitcall.LINE)]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if $exit_method_receiver(S, pexitcall)
+  -- if pvalue* = $trace_extra(S, pexitcall.SENT)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $intrinsic_name(pexitcall.KIND), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
 def $exit_error(S, pexitcall, text, preqbytes) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = [ptraceframe] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = (pexitcall.SITE)][.TODO = [ERROR_UNWIND (THROWN text preqbytes pexitcall.LINE)]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if ~$exit_method_receiver(S, pexitcall)
   -- if pvalue* = $trace_extra(S, pexitcall.SENT)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $intrinsic_name(pexitcall.KIND), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
 dec $exit_strict(pstate, porigin) : bool
 def $exit_strict(S, PORIGIN n pcpath) = pcode.STRICT
   -- if $code_at(S.CODE, n) = (pcode)
+dec $exit_receive_strict(pstate, pexitcall) : bool
+def $exit_receive_strict(S, pexitcall) = false
+  -- if $exit_method_receiver(S, pexitcall)
+def $exit_receive_strict(S, pexitcall) = $exit_strict(S, pexitcall.SITE) -- otherwise
 dec $exit_conversion(pvalue, bool) : ptypeconversion
 def $exit_conversion(PINT z, b) = TYPEVALUE (PINT z)
 def $exit_conversion(PSTRING n*, b) = TYPEVALUE (PSTRING n*)
@@ -113,15 +135,15 @@ def $exit_receive(S, pexitcall) = $exit_finish(S[.RESULT = KNOWN (PINT 0)])
   -- if pexitcall.SENT = eps
 def $exit_receive(S, pexitcall) = $exit_finish($diagnostic(S, "Deprecated", $intrinsic_name(pexitcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($status) of type string|int is deprecated"), pexitcall.LINE)[.RESULT = KNOWN (PINT 0)])
   -- if pexitcall.SENT = [KNOWN PNULL]
-  -- if ~$exit_strict(S, pexitcall.SITE)
+  -- if ~$exit_receive_strict(S, pexitcall)
 def $exit_receive(S, pexitcall) = $exit_finish($typed_apply(S, ptypeconversion, pexitcall.LINE))
   -- if pexitcall.SENT = [KNOWN pvalue]
-  -- if ptypeconversion = $exit_conversion(pvalue, $exit_strict(S, pexitcall.SITE))
+  -- if ptypeconversion = $exit_conversion(pvalue, $exit_receive_strict(S, pexitcall))
   -- if ptypeconversion =/= TYPEREJECT
 def $exit_receive(S, pexitcall) = $exit_error(S, pexitcall, "TypeError", $intrinsic_name(pexitcall.KIND) ++ $ptascii("(): Argument #1 ($status) must be of type string|int, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if pexitcall.SENT = [KNOWN pvalue]
-  -- if ~(pvalue = PNULL /\ ~$exit_strict(S, pexitcall.SITE))
-  -- if $exit_conversion(pvalue, $exit_strict(S, pexitcall.SITE)) = TYPEREJECT
+  -- if ~(pvalue = PNULL /\ ~$exit_receive_strict(S, pexitcall))
+  -- if $exit_conversion(pvalue, $exit_receive_strict(S, pexitcall)) = TYPEREJECT
 dec $exit_invoke_valid(pstate, pexitcall) : bool
 rule PhpStep/exit-invoke: S ~> $exit_receive(S[.TODO = ptask_tail*], pexitcall)
   -- if S.TODO = (EXIT_INVOKE pexitcall) :: ptask_tail*
@@ -174,6 +196,12 @@ def $exit_selected_valid(S, pexitcall) = true
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pexitcall.KIND
   -- if $exit_fixed(S, pexitcall.SITE) = eps
   -- if $exit_dynamic_site(S, pexitcall.SITE)
+def $exit_selected_valid(S, pexitcall) = true
+  -- if pexitcall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pexitcall.KIND
+  -- if $exit_method_site(S, pexitcall.SITE)
 def $exit_selected_valid(S, pexitcall) = false -- otherwise
 
 dec $exit_unwind_valid(pstate, int) : bool
@@ -191,7 +219,20 @@ def $call_task_valid(S, EXIT_UNWIND z) = $exit_unwind_valid(S, z)
 dec $exit_count(pstate, porigin) : nat?
 dec $exit_argument(pstate, pexitcall) : (expression, bool, preqbytes?, porigin, int)?
 dec $exit_argument_name(phpType3) : preqbytes?
-dec $exit_send_path(pcpath, nat, bool) : pcpath
+dec $exit_send_path(pcpath, nat, nat, bool) : pcpath
+dec $exit_callable_arguments(pstate, porigin) : pcallarguments
+def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $exit_callable_arguments(S, porigin) = PCALLNOARGUMENTS -- otherwise
 dec $exit_call_valid(pstate, pexitcall) : bool
 dec $exit_prefix_valid(phpType7*, nat, bool) : bool
 dec $exit_prefix_count(phpType7*) : nat
@@ -210,8 +251,7 @@ def $exit_count(S, porigin) = (0)
 def $exit_count(S, porigin) = (1)
   -- if $origin_node(S.SOURCES, porigin) = (NExprExit expression metadata)
 def $exit_count(S, porigin) = (|phpType7*|)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
-  -- if ~$ppfirstclass(phpType7*)
+  -- if $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
 def $exit_count(S, porigin) = (1)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
 def $exit_count(S, porigin) = eps -- otherwise
@@ -224,20 +264,20 @@ def $exit_argument(S, pexitcall) = ((expression, false, eps, PORIGIN n (pcpath +
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b))
 def $exit_argument(S, pexitcall) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath_arg, z))
   -- if pexitcall.SITE = PORIGIN n pcpath
-  -- if $origin_node(S.SOURCES, pexitcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $exit_callable_arguments(S, pexitcall.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $(pexitcall.INDEX < |phpType7*|)
   -- if phpType7*[pexitcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata_arg
   -- if preqbytes? = $exit_argument_name(phpType3)
-  -- if pcpath_arg = pcpath ++ [PCFIELD 1, PCINDEX pexitcall.INDEX, PCFIELD 1]
+  -- if pcpath_arg = pcpath ++ [PCFIELD n_field, PCINDEX pexitcall.INDEX, PCFIELD 1]
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if pcpath_line = $exit_send_path(pcpath, pexitcall.INDEX, b_unpack)
+  -- if pcpath_line = $exit_send_path(pcpath, n_field, pexitcall.INDEX, b_unpack)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_line) = ((z, b))
 def $exit_argument(S, pexitcall) = eps -- otherwise
 
 def $exit_argument_name(ABSENT) = eps
 def $exit_argument_name(NIdentifier (BYTES text) metadata) = ($base64(text))
-def $exit_send_path(pcpath, n, false) = pcpath ++ [PCFIELD 1, PCINDEX n, PCFIELD 1]
-def $exit_send_path(pcpath, n, true) = pcpath ++ [PCFIELD 1, PCINDEX n]
+def $exit_send_path(pcpath, n_field, n, false) = pcpath ++ [PCFIELD n_field, PCINDEX n, PCFIELD 1]
+def $exit_send_path(pcpath, n_field, n, true) = pcpath ++ [PCFIELD n_field, PCINDEX n]
 
 ;; A resumed prefix cannot claim to have passed an invalid explicit binding.
 def $exit_prefix_valid(eps, n, b) = true
@@ -272,7 +312,7 @@ def $exit_sent_shape(S, pexitcall, n_current) = true
   -- if |pexitcall.SENT| = $(pexitcall.INDEX + n_current)
   -- if ~pexitcall.NAMED
 def $exit_sent_shape(S, pexitcall, n_current) = true
-  -- if $origin_node(S.SOURCES, pexitcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $exit_callable_arguments(S, pexitcall.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $(pexitcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pexitcall.INDEX]
   -- if $exit_prefix_valid(phpType7_prefix*, 0, false)
@@ -280,7 +320,7 @@ def $exit_sent_shape(S, pexitcall, n_current) = true
   -- if |pexitcall.SENT| = $($exit_prefix_count(phpType7_prefix*) + n_current)
   -- if pexitcall.NAMED = ($exit_prefix_named(phpType7_prefix*) \/ (n_current = 1 /\ pexitcall.NAMED))
 def $exit_sent_shape(S, pexitcall, n_current) = true
-  -- if $origin_node(S.SOURCES, pexitcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $exit_callable_arguments(S, pexitcall.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $(pexitcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pexitcall.INDEX]
   -- if $exit_prefix_valid(phpType7_prefix*, 0, false)
@@ -403,12 +443,12 @@ def $exit_unpack_prefix(pentry*, b, n) = false -- otherwise
 
 dec $exit_unpack_named_shape(pstate, pexitcall, pentry*) : bool
 def $exit_unpack_named_shape(S, pexitcall, pentry*) = (pexitcall.NAMED = ($exit_prefix_named(phpType7_prefix*) \/ $unpack_prefix_named(pentry*)))
-  -- if $origin_node(S.SOURCES, pexitcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $exit_callable_arguments(S, pexitcall.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $(pexitcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pexitcall.INDEX]
   -- if ~$call_unpack_present(phpType7_prefix*)
 def $exit_unpack_named_shape(S, pexitcall, pentry*) = (~$unpack_prefix_named(pentry*) \/ pexitcall.NAMED)
-  -- if $origin_node(S.SOURCES, pexitcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $exit_callable_arguments(S, pexitcall.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $(pexitcall.INDEX <= |phpType7*|)
   -- if $call_unpack_present(phpType7*[0:pexitcall.INDEX])
 def $exit_unpack_named_shape(S, pexitcall, pentry*) = false -- otherwise

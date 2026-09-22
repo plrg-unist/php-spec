@@ -1,0 +1,283 @@
+[
+  {
+    "id": "duplicate-before-invalid-signature",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass C {function f() {} function F(int $x=\"bad\") {}}\n",
+    "source_sha256": "764f48ca882c8ca1632680d4b5d4a898f351bb2d4e1bb4ddb9b4adc02e06d639",
+    "static_message": "Cannot redeclare C::F()",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "duplicate-before-invalid-body",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass C {function f() {} function F() {break;}}\n",
+    "source_sha256": "4a29cd403018c09d1dc241136956ad0ecd6e74452c00ebeca53626c0bec1bd2d",
+    "static_message": "Cannot redeclare C::F()",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "bodyless-before-duplicate",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass C {function f() {} function F();}\n",
+    "source_sha256": "186e095b60b8133e0fbda0a85f7ffcc7fd9315612c56a169bba85b1ba6de99f6",
+    "static_message": "Non-abstract method C::F() must contain body",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "method-body-before-property",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass C {function f() {break;} public int $p=\"bad\";}\n",
+    "source_sha256": "37dddca9d086a77d3c77af9df4f3098d08a05a68a6a033935aa905996ff22b35",
+    "static_message": "'break' not in the 'loop' or 'switch' context",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "property-before-method-body",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass C {public int $p=\"bad\"; function f() {break;}}\n",
+    "source_sha256": "6ce95277f74b6169b43b6bdf24925d6ab3814e62971fc259a92825268b1ad427",
+    "static_message": "Cannot use string as default value for property C::$p of type int",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "ctor-body-before-return-type",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass C {function __construct(): int {break;}}\n",
+    "source_sha256": "a35a3ba5cf66a46507581841b26e641130aed42470d403ed2deb2d7d99043817",
+    "static_message": "'break' not in the 'loop' or 'switch' context",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "ctor-signature-exempt",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {function __construct(int $x) {}} class B extends A {function __construct(string $x, $y) {}} echo \"T\";\n",
+    "source_sha256": "ddabcc7bebfde5484cf1238e09c39317590abdde671eed2cb2db5b70d3ce80b0",
+    "compiler": "normal"
+  },
+  {
+    "id": "parent-method-table-order",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {function a(int $x) {} function b(int $x) {}} class B extends A {function b(string $x) {} function a(string $x) {}} echo \"T\";\n",
+    "source_sha256": "0930472125936cf59ef86e2aab160d158008f131c90502a75acec8a3832f9f57",
+    "static_message": "Declaration of B::a(string $x) must be compatible with A::a(int $x)",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "inherited-method-table-order",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {function a(int $x) {}} class B extends A {function b(int $x) {}} class C extends B {function a(string $x) {} function b(string $x) {}} echo \"T\";\n",
+    "source_sha256": "c1bd5b605f898ee41de7f2cce61712d8eecd4e4a9d4944508a8d6ce04e76d289",
+    "static_message": "Declaration of C::b(string $x) must be compatible with B::b(int $x)",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "deferred-override-phase",
+    "group": "reviewer-static15",
+    "source": "<?php\necho \"S\"; if (true) {class A {function f(int $x) {}}} class B extends A {function f(string $x) {}} echo \"T\";\n",
+    "source_sha256": "b3cdc25aed809a7440949cb213d82e5681dc6d8d6e4c96cab711a18e7b6a897c",
+    "static_message": "Declaration of B::f(string $x) must be compatible with A::f(int $x)",
+    "static_line": 2,
+    "compiler": "normal"
+  },
+  {
+    "id": "forward-parent-override-phase",
+    "group": "reviewer-static15",
+    "source": "<?php\necho \"S\"; class B extends A {function f(string $x) {}} class A {function f(int $x) {}} echo \"T\";\n",
+    "source_sha256": "2b51e589393cffee4383797e40c95021b444fde7b6d67f179832b6fa91d18235",
+    "static_message": "Declaration of B::f(string $x) must be compatible with A::f(int $x)",
+    "static_line": 2,
+    "compiler": "normal"
+  },
+  {
+    "id": "body-before-override",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {function f(int $x) {}} class B extends A {function f(string $x) {} function g() {break;}}\n",
+    "source_sha256": "a537bd8c504aeee1229e7ac390781fe222dd41a349c118b3230332bfe58927fc",
+    "static_message": "'break' not in the 'loop' or 'switch' context",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "renamed-override-parameter",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {function f(int $x=1) {}} class B extends A {function f(int $renamed=2) {}} echo \"T\";\n",
+    "source_sha256": "6d445eb49aea731210aaa4312a139528d41f29ae2c75d81c515f929b7d5b2ab8",
+    "compiler": "normal"
+  },
+  {
+    "id": "ctor-casefold-exempt",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {function __construct(int $x) {}} class B extends A {function __CONSTRUCT(string $x, $y) {}} echo \"T\";\n",
+    "source_sha256": "387113ab2f687b9c268527c39b0dfa34ed9e80e5d406302927c7c669bc44543b",
+    "compiler": "normal"
+  },
+  {
+    "id": "final-before-ctor-exemption",
+    "group": "reviewer-static15",
+    "source": "<?php\nclass A {final function __construct(int $x) {}} class B extends A {function __construct(string $x, $y) {}}\n",
+    "source_sha256": "19a4b02c2a9f24bfce44bfe0fc63ca41d8be0acf56d3f692135b9f416d384d5f",
+    "static_message": "Cannot override final method A::__construct()",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
+    "id": "abstract-missing-one",
+    "group": "reviewer-abstract2",
+    "source": "<?php\nabstract class A { abstract function f(); }\necho \"S\";\nclass B extends A {}\n",
+    "source_sha256": "f8b9eae1bfcd4b936c988194ec37a79b8d9b307396c4e52ad81a52f72458fd44",
+    "static_message": "Class B contains 1 abstract method and must therefore be declared abstract or implement the remaining method (A::f)",
+    "static_line": 4,
+    "compiler": "static"
+  },
+  {
+    "id": "abstract-missing-many",
+    "group": "reviewer-abstract2",
+    "source": "<?php\nabstract class A { abstract function a(); abstract function b(); abstract function c(); abstract function d(); }\nabstract class B extends A { abstract function z(); }\necho \"S\";\nclass C extends B {}\n",
+    "source_sha256": "0002309614a353e83e5d8b6c3b3dca21adbda2f6fa78a43847b2cb3d348051f7",
+    "static_message": "Class C contains 5 abstract methods and must therefore be declared abstract or implement the remaining methods (B::z, A::a, A::b, ...)",
+    "static_line": 5,
+    "compiler": "static"
+  },
+  {
+    "id": "transitive-covariance",
+    "group": "author-focused",
+    "source": "<?php class A { function f(): B { return new B; } } class B extends A {} class C extends B { function f(): C { return new C; } } echo 'T';\n",
+    "source_sha256": "79aba065ac0a429f80f8c133aa79f6ce5845e37c29a62df0056f527bed8fb5b1",
+    "compiler": "normal"
+  },
+  {
+    "id": "abstract-ctor-prototype",
+    "group": "author-focused",
+    "source": "<?php abstract class A { abstract function __construct(int $x); } class B extends A { function __construct($x) {} } class C extends B { function __construct(string $x) {} } echo 'S';\n",
+    "source_sha256": "1c7a8d158e3c10b46a96d8e3b842ec96bba7668bd9f21542a9e075593947c028",
+    "compiler": "static",
+    "static_message": "Declaration of C::__construct(string $x) must be compatible with A::__construct(int $x)",
+    "static_line": 1
+  },
+  {
+    "id": "scope-self",
+    "group": "compiler-lexical",
+    "source": "<?php class A { function m(){ echo self::class; } }",
+    "source_sha256": "a9ff1ffffdb5814988bb76f072c13a28dc5984f2c94f9433bcbed7a43540f572",
+    "compiler": "normal",
+    "constant": "A",
+    "code_line": 1
+  },
+  {
+    "id": "scope-static",
+    "group": "compiler-lexical",
+    "source": "<?php class A { function m(){ echo static::class; } }",
+    "source_sha256": "c6608a1bdaf155f68ff336a1d8e538df38c76616220fc6c0f4e4414b6dff76b5",
+    "compiler": "normal",
+    "constant": null,
+    "code_line": 1
+  },
+  {
+    "id": "scope-class",
+    "group": "compiler-lexical",
+    "source": "<?php class A { function m(){ echo __CLASS__; } }",
+    "source_sha256": "c2c0593dcaaaa7235054a78e6db4c27af145d001410abc5a73c8a8738caca20f",
+    "compiler": "normal",
+    "constant": "A",
+    "code_line": 1
+  },
+  {
+    "id": "scope-function",
+    "group": "compiler-lexical",
+    "source": "<?php class A { function m(){ echo __FUNCTION__; } }",
+    "source_sha256": "dfffd1aa5a3db76cc1ca38758e8f2d3b6d16bc38ce96d946ad070382c2729371",
+    "compiler": "normal",
+    "constant": "m",
+    "code_line": 1
+  },
+  {
+    "id": "scope-method",
+    "group": "compiler-lexical",
+    "source": "<?php class A { function m(){ echo __METHOD__; } }",
+    "source_sha256": "880f3afc03c36aaf6fad879b21988e8defb890c20c82b88a78f0b60aeb70f2e6",
+    "compiler": "normal",
+    "constant": "A::m",
+    "code_line": 1
+  },
+  {
+    "id": "scope-default-class",
+    "group": "compiler-fold",
+    "source": "<?php class A {function m($x=__CLASS__){return $x;}}",
+    "source_sha256": "d61fd3e0c4bb701bbf20b94e072b51d947606a6abe01be57794136b8fe41a407",
+    "compiler": "normal",
+    "constants": [
+      "A"
+    ],
+    "constant_paths": [
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 4, PCINDEX 0, PCFIELD 6]"
+    ]
+  },
+  {
+    "id": "scope-array",
+    "group": "compiler-fold",
+    "source": "<?php class A {function m(){return [__CLASS__,__FUNCTION__,__METHOD__];}}",
+    "source_sha256": "4657b084ac1d0c4c9538a690cdcb29d051050ac9df9fbd150152b2ccfd003366",
+    "compiler": "normal",
+    "constants": [
+      "A",
+      "m",
+      "A::m"
+    ],
+    "constant_paths": [
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCINDEX 0, PCFIELD 1]",
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCINDEX 1, PCFIELD 1]",
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCINDEX 2, PCFIELD 1]"
+    ]
+  },
+  {
+    "id": "scope-closure",
+    "group": "compiler-fold",
+    "source": "<?php class A {function m(){return (function(){return [__CLASS__,__FUNCTION__,__METHOD__];})();}}",
+    "source_sha256": "540d226d2fc260554f4dc43ac809413f449e314887e729efbdafc58cd471f2b2",
+    "compiler": "normal",
+    "constants": [
+      "A",
+      "{closure:A::m():1}",
+      "A::{closure:A::m():1}"
+    ],
+    "constant_paths": [
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCINDEX 0, PCFIELD 1]",
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCINDEX 1, PCFIELD 1]",
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCINDEX 2, PCFIELD 1]"
+    ]
+  },
+  {
+    "id": "scope-arrow",
+    "group": "compiler-fold",
+    "source": "<?php class A {function m(){return (fn()=>[__CLASS__,__FUNCTION__,__METHOD__])();}}",
+    "source_sha256": "3112e68a164a360f5ab5690f67d3f950e0ee6e8bed7580cb3570152e987e278f",
+    "compiler": "normal",
+    "constants": [
+      "A",
+      "{closure:A::m():1}",
+      "A::{closure:A::m():1}"
+    ],
+    "constant_paths": [
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 5, PCFIELD 0, PCINDEX 0, PCFIELD 1]",
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 5, PCFIELD 0, PCINDEX 1, PCFIELD 1]",
+      "[PCINDEX 0, PCFIELD 5, PCINDEX 0, PCFIELD 6, PCINDEX 0, PCFIELD 0, PCFIELD 0, PCFIELD 5, PCFIELD 0, PCINDEX 2, PCFIELD 1]"
+    ]
+  },
+  {
+    "id": "nested-class-in-method",
+    "group": "compiler-static",
+    "source": "<?php class A { function f(){ class B{} } } echo \"S\";",
+    "source_sha256": "1cbc550a45d8bffc711c46e04f3dae9fe99bb726de776624a651ae5f289a6f1e",
+    "compiler": "static",
+    "static_message": "Class declarations may not be nested",
+    "static_line": 1
+  }
+]

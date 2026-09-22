@@ -155,8 +155,8 @@ selected callee owners and per-instance statics through invocation and cleanup.
 operation, ownership and compatibility evidence. [Arrow functions](docs/semantics/SOURCE-ARROWS.md)
 add implicit undefined snapshots and source-authenticated expression returns; their
 [review](coverage/semantics/arrows-review.json) also records the shared suppression
-guard correction. Ordinary objects, method/Closure services, cycle collection and
-dynamic-source lifetime remain required.
+guard correction. Closure rebinding services, cycle collection and dynamic-source
+lifetime remain required.
 [First-class named function callables](docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md)
 preserve named static roots and existing closure identity through conversion;
 [their review](coverage/semantics/first-class-review.json) binds 17 source outcomes
@@ -192,8 +192,8 @@ sent values through the dummy call; their [review](coverage/semantics/noctor-arg
 binds source, compiler and paused-state checks. [Empty-class inheritance](docs/semantics/SOURCE-INHERITANCE.md)
 links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
-binds source, compiler, syntax and paused-state checks. Constructors,
-other internal-class bodies and method callbacks remain open.
+binds source, compiler, syntax and paused-state checks. Other internal-class
+bodies and method callbacks remain open.
 [Public object properties](docs/semantics/SOURCE-PROPERTIES.md) now have typed
 and uninitialized slots, source-backed defaults, inherited public overrides,
 dynamic names, direct access, live foreach, casts and comparison. The
@@ -206,8 +206,10 @@ compiler and paused-state gates. [Nullsafe property access](docs/semantics/SOURC
 short-circuits only the active property/dimension chain, skips later names and
 keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
-compiler and paused-state controls. Nullsafe methods, visibility beyond public,
-static and readonly members, hooks and magic methods remain open.
+compiler and paused-state controls. [Public instance methods and constructors](docs/semantics/SOURCE-METHODS.md)
+now execute ordinary/nullsafe calls, inherited dispatch, bound closures and
+`Closure->__invoke` trampolines. Visibility beyond public, static and readonly
+members, hooks and user magic methods remain open.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;

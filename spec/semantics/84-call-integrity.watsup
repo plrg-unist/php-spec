@@ -15,6 +15,18 @@ def $call_argument_paths((CODEEFFECT pcpath) :: pcodeexpr*) = $call_argument_pat
 ;; Public drive/resume validates immutable compiler descriptors once. Internal
 ;; steps preserve them; no duplicate trusted registry or host evaluation exists.
 syntax pfunctioncheck = FUNCTIONCHECK pfunction* | FUNCTIONINVALID
+syntax pcallarguments = PCALLARGUMENTS phpType7* nat | PCALLNOARGUMENTS
+dec $call_node_arguments(pcnode) : pcallarguments
+dec $call_argument_source(pstate, porigin) : pcallarguments
+def $call_node_arguments(NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 1
+def $call_node_arguments(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 2
+def $call_node_arguments(NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 2
+def $call_node_arguments(NExprNew phpType28 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 1
+def $call_node_arguments(pcnode) = PCALLNOARGUMENTS -- otherwise
+def $call_argument_source(S, porigin) = $call_node_arguments(pcnode)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+def $call_argument_source(S, porigin) = PCALLNOARGUMENTS
+  -- if $origin_node(S.SOURCES, porigin) = eps
 
 dec $send_unit_code_valid(ppstate, pcode) : bool
 dec $silence_unit_code_valid(ppstate, pcode) : bool
@@ -26,6 +38,8 @@ dec $reference_call_frames_valid(pcallcontext?, pframe*) : bool
 dec $reference_return_result_valid(pstate) : bool
 dec $call_declaration_node(pcnode) : bool
 def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
+def $call_declaration_node(NExprMethodCall expression phpType20 phpType6 metadata) = true
+def $call_declaration_node(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
 def $call_declaration_node(NExprBinaryOpPipe expression_left expression_right metadata) = true
 def $call_declaration_node(NStmtSwitch expression phpType60 metadata) = true
 def $call_declaration_node(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
@@ -48,6 +62,10 @@ def $call_request_cwd((Q)) = Q.CWD
 dec $call_source_node(pstate, nat, pcpath) : bool
 def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprMethodCall expression phpType20 phpType6 metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
 def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
 def $call_source_node(S, n, pcpath) = true
@@ -156,6 +174,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = $method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
@@ -164,7 +183,7 @@ def $call_line_valid(S, (PORIGIN n pcpath), z) = true
 def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
   -- if n_index = |poperand*|
   -- if n_offset = $(n_index + n_sent)
@@ -176,15 +195,16 @@ dec $call_sent_operands_valid(pstate, pcalltarget, nat, poperand*) : bool
 dec $call_arity_valid(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
-  -- if $named_call_valid(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE)
+  -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
+  -- if $named_call_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $call_extent_valid(S, pcallcontext)
   -- if $named_context_valid(S, pcallcontext)
-  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pfunction.ORIGIN = pcallcontext.FUNCTION
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if n_received = $call_received(pcallcontext.ARGC, n_fixed)
   -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
-  -- if $call_sent_operands_valid(S, pcallcontext.FUNCTION, n_received, pcallcontext.EXTRA)
+  -- if $call_sent_operands_valid(S, $context_target(pcallcontext), n_received, pcallcontext.EXTRA)
 def $call_arity_valid(S, pcallcontext) = false -- otherwise
 dec $call_reference_operand_valid(pstate, poperand) : bool
 def $call_reference_operand_valid(S, REFERENCE n) = true
@@ -207,11 +227,11 @@ dec $call_reference_task_valid(pstate, pcalltarget, nat, porigin?) : bool
 def $call_reference_task_valid(S, pcalltarget_function, n, (porigin)) = true
   -- if $call_selected_valid(S, pcalltarget_function, (porigin))
   -- if $call_parameter_reference(S, pcalltarget_function, n)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $call_reference_variable(expression)
-  -- if S.ORIGIN = $origin_child((porigin), [PCFIELD 1, PCINDEX n, PCFIELD 1])
+  -- if S.ORIGIN = $origin_child((porigin), [PCFIELD n_field, PCINDEX n, PCFIELD 1])
 def $call_reference_task_valid(S, pcalltarget_function, n, porigin?) = false -- otherwise
 dec $call_task_valid(pstate, ptask) : bool
 def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S[.ORIGIN = (porigin)], ptask)
@@ -231,12 +251,16 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.RECEIVER = $target_receiver(S, $context_target(pcallcontext))
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, $context_target(pcallcontext))
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, $context_target(pcallcontext))
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE)
   -- if $call_arity_valid(S, pcallcontext)
+  -- if $wrapper_context_valid(S, pcallcontext)
 def $call_context_valid(S, pcallcontext, preqbytes*) = false -- otherwise
 dec $call_current_valid(pstate) : bool
 def $call_current_valid(S) = true -- if S.CURRENT = eps /\ S.FRAMES = eps
@@ -257,8 +281,8 @@ dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
-dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $exit_result_valid(pstate) : bool
+dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
@@ -267,8 +291,10 @@ def $call_descriptors_valid(S) = true
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_early_bindings(S.CALLABLES, S.FUNCTIONS)
   -- if $call_tasks_valid(S, S.TODO)
+  -- if $ctor_pairs_valid(S, S.TODO)
   -- if $nullsafe_base_phase_valid(S)
   -- if $call_frames_valid(S, S.FRAMES)
+  -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)
   -- if $reference_call_frames_valid(S.CURRENT, S.FRAMES)
   -- if $reference_return_result_valid(S)

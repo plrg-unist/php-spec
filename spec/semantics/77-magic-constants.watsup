@@ -7,6 +7,7 @@ dec $pmagic_value(pmagic, ptbytes?, ptbytes?, plenv, int) : peval
 dec $pfmagic(pfstate, pcpath, peval, int) : pfstate
 dec $ppmagic(ppstate, peval) : ppstate
 dec $pmagic_body(pmagic, ptbytes?, ptbytes?, plenv, ptbytes, int) : peval
+dec $pmagic_scoped(pmagic, ptcontext?, bool, ptbytes?, ptbytes?, plenv, ptbytes, int) : peval
 
 ;; Magic constants use the compiled source identity and lexical namespace.
 ;; The admitted statement compiler runs at top level; declaration bodies remain
@@ -61,11 +62,11 @@ def $pmagic_value(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, z) = ABRUPT (UNSUP
 
 def $pfmagic(F, pcpath, VALUE pvalue, z) = $pfremember(F, pcpath, (pvalue), z)
 def $pfmagic(F, pcpath, ABRUPT pcompletion, z) = F[.MEMORY = F.MEMORY[.COMPLETION = pcompletion]][.VALUE = eps]
-def $pfdispatch(F, pcpath, PFMAGIC pmagic z_leaf, z) = $pfmagic(F, pcpath, $pmagic_body(pmagic, F.FILE, F.CWD, F.ENV, F.FUNCTION, z_leaf), z_leaf)
+def $pfdispatch(F, pcpath, PFMAGIC pmagic z_leaf, z) = $pfmagic(F, pcpath, $pmagic_scoped(pmagic, F.CLASSCONTEXT, F.CLOSURE, F.FILE, F.CWD, F.ENV, F.FUNCTION, z_leaf), z_leaf)
 
 def $ppmagic(P, VALUE pvalue) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
 def $ppmagic(P, ABRUPT pcompletion) = $ppcheck(P, REJECT pcompletion)
-def $ppdispatch(P, pcpath, expression, PPR) = $ppmagic(P, $pmagic_body(pmagic, P.FOLD.FILE, P.FOLD.CWD, P.ENV, P.FOLD.FUNCTION, z))
+def $ppdispatch(P, pcpath, expression, PPR) = $ppmagic(P, $pmagic_scoped(pmagic, P.CLASSCONTEXT, P.CLOSURE, P.FOLD.FILE, P.FOLD.CWD, P.ENV, P.FOLD.FUNCTION, z))
   -- if $pfshape(expression) = PFMAGIC pmagic z
 
 def $expression_line(NScalarMagicConstFile metadata) = $source_line(metadata)
@@ -100,3 +101,20 @@ def $pmagic_body(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z
   -- if pmagic <- [MAGICFUNCTION, MAGICMETHOD]
 def $pmagic_body(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = $pmagic_value(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, z)
   -- otherwise
+
+;; The fold path and direct expression path use the same lexical scope.
+def $pmagic_scoped(MAGICCLASS, (ptcontext), b, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING ptcontext.OWNER)
+  -- if $(z > 0)
+def $pmagic_scoped(MAGICFUNCTION, ptcontext?, true, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING ptbytes_function)
+  -- if $(z > 0)
+def $pmagic_scoped(MAGICMETHOD, (ptcontext), true, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING (ptcontext.OWNER ++ $ptascii("::") ++ ptbytes_function))
+  -- if $(z > 0)
+def $pmagic_scoped(MAGICMETHOD, eps, true, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING ptbytes_function)
+  -- if $(z > 0)
+def $pmagic_scoped(MAGICFUNCTION, (ptcontext), false, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING ptcontext.MEMBER)
+  -- if $(z > 0)
+  -- if ptbytes_function = ptcontext.OWNER ++ $ptascii("::") ++ ptcontext.MEMBER
+def $pmagic_scoped(MAGICMETHOD, (ptcontext), false, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING ptbytes_function)
+  -- if $(z > 0)
+  -- if ptbytes_function = ptcontext.OWNER ++ $ptascii("::") ++ ptcontext.MEMBER
+def $pmagic_scoped(pmagic, ptcontext?, b, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = $pmagic_body(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) -- otherwise

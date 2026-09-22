@@ -268,7 +268,9 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/117-arrow-compiler.watsup",
-        "spec/semantics/118-arrows.watsup"
+        "spec/semantics/118-arrows.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -276,9 +278,12 @@
         "tests/semantics/arrows.py",
         "tests/semantics/arrows_protocol.py",
         "tests/semantics/arrows_state.py",
-        "tests/semantics/arrow_compiler.py"
+        "tests/semantics/arrow_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim."
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Rebinding services, clone, dynamic lifetime and collection remain open."
     },
     {
       "node": "Expr_Assign",
@@ -1450,13 +1455,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Named ::class plus lexical self::class/parent::class and runtime called-scope static::class execute for admitted class and closure contexts (methods-review.json). Earlier constant prepass remains in array-omission-review.json. General class constants, dynamic class names and static-member lookup remain open."
     },
     {
       "node": "Expr_Clone",
@@ -1489,7 +1499,9 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/115-closure-compiler.watsup",
-        "spec/semantics/116-closures.watsup"
+        "spec/semantics/116-closures.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1497,9 +1509,12 @@
         "tests/semantics/closures.py",
         "tests/semantics/closures_protocol.py",
         "tests/semantics/closures_state.py",
-        "tests/semantics/closure_compiler.py"
+        "tests/semantics/closure_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json."
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Rebinding services, clone, dynamic lifetime and collection remain open."
     },
     {
       "node": "Expr_ConstFetch",
@@ -1781,13 +1796,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded public instance methods and constructors now compile/link/execute with inherited signatures, source-owned descriptors, lexical/called scope, bound closures, and ordinary/nullsafe argument protocols. Closure->__invoke preserves weak receives and original wrapper trace operands. See methods-review.json and SOURCE-METHODS.md. Nonpublic/static methods, first-class method callables, user magic protocols and broader class integration remain open."
     },
     {
       "node": "Expr_New",
@@ -1809,7 +1829,9 @@
         "spec/semantics/131-noctor-compiler.watsup",
         "spec/semantics/132-noctor-runtime.watsup",
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1825,9 +1847,12 @@
         "tests/semantics/noctor_unpack_protocol.py",
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Named empty instances, stdClass identity and no-constructor arguments are reviewed in object-classes-review.json, stdclass-review.json and noctor-args-review.json. Inherited and abstract empty classes now follow active parent links (inheritance-review.json). Constructors, members, dynamic names and other internal bodies remain open.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -1845,13 +1870,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded public instance methods and constructors now compile/link/execute with inherited signatures, source-owned descriptors, lexical/called scope, bound closures, and ordinary/nullsafe argument protocols. Closure->__invoke preserves weak receives and original wrapper trace operands. See methods-review.json and SOURCE-METHODS.md. Nonpublic/static methods, first-class method callables, user magic protocols and broader class integration remain open."
     },
     {
       "node": "Expr_NullsafePropertyFetch",
@@ -2475,14 +2505,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/77-magic-constants.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/magic_constants.py",
         "tests/semantics/magic_constants_compiler.py",
-        "tests/semantics/request_environment.py"
+        "tests/semantics/request_environment.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
+      "review": "Top-level source and request magic values retain the request-environment-review.json contract. Method and class-bound closure __CLASS__/__METHOD__ use authenticated declaring scope; named nested functions clear class scope (methods-review.json). Trait/dynamic-source contexts remain open."
     },
     {
       "node": "Scalar_MagicConst_Dir",
@@ -2570,14 +2605,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/77-magic-constants.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/magic_constants.py",
         "tests/semantics/magic_constants_compiler.py",
-        "tests/semantics/request_environment.py"
+        "tests/semantics/request_environment.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
+      "review": "Top-level source and request magic values retain the request-environment-review.json contract. Method and class-bound closure __CLASS__/__METHOD__ use authenticated declaring scope; named nested functions clear class scope (methods-review.json). Trait/dynamic-source contexts remain open."
     },
     {
       "node": "Scalar_MagicConst_Namespace",
@@ -2759,7 +2799,9 @@
         "spec/semantics/133-inheritance-compiler.watsup",
         "spec/semantics/134-inheritance-runtime.watsup",
         "spec/semantics/135-property-compiler.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/object_classes.py",
@@ -2770,9 +2812,12 @@
         "tests/semantics/inheritance_compiler.py",
         "tests/semantics/property_compiler.py",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
-      "review": "Reviewed empty class publication and inheritance remain in object-classes-review.json and inheritance-review.json. Public instance declarations/defaults and invariant inherited overrides now execute (properties-review.json); methods, nonpublic/static/readonly members, hooks, interfaces and other internal bodies remain open.",
+      "review": "Source class publication and ancestry are reviewed in object-classes-review.json and inheritance-review.json. Public instance properties and public instance methods/constructors now compile and link with ordered declarations, inherited properties/signatures and abstract/final constraints (properties-review.json, methods-review.json). Nonpublic/static/readonly members, hooks, interfaces/traits and other internal bodies remain open.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json"
@@ -2804,10 +2849,16 @@
       "implementation": [
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/19-variance.watsup",
-        "spec/semantics/19-method-signatures.watsup"
+        "spec/semantics/19-method-signatures.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent user-method helper a7d79477: 926 source-oracle/helper comparisons, 4 ordered pending descriptors, 12 Unsupported checks and 1 explicit source-phase pending witness repeated; expanded 1444 passed before the narrow NaN guard. Covariance fixture correction 05745733 repeated 1028 comparisons, 9 descriptors, 2 graph-shape checks and 4 Unsupported. Exact user declaration diagnostics are modeled only for supplied selected prototypes/scopes and supported compiled defaults. Applicability, internal/tentative metadata, full defaults and warning context, compiler traversal, linking/autoload/activation and calls remain pending; see STATIC and LINKING-HANDOFF.",
+      "source_tests": [
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
+      ],
+      "review": "Bounded public instance methods and constructors now compile/link/execute with inherited signatures, source-owned descriptors, lexical/called scope, bound closures, and ordinary/nullsafe argument protocols. Closure->__invoke preserves weak receives and original wrapper trace operands. See methods-review.json and SOURCE-METHODS.md. Nonpublic/static methods, first-class method callables, user magic protocols and broader class integration remain open.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "tests/semantics/variance.py",
@@ -5969,20 +6020,25 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/139-nullsafe-property-compiler.watsup",
-        "spec/semantics/140-nullsafe-property-runtime.watsup"
+        "spec/semantics/140-nullsafe-property-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/nullsafe_compiler.py",
         "tests/semantics/nullsafe_properties_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/nullsafe_properties.py"
+        "tests/semantics/nullsafe_properties.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/nullsafe-properties-review.json"
       ],
-      "review": "Admitted nullsafe property and active property/dimension chains preserve source-ordered receiver/name/key evaluation, chain-local short-circuiting, quiet probes, reference-send priority and static write restrictions. Method chains, magic/nonpublic properties and broader nullsafe forms remain open; see nullsafe-properties-review.json."
+      "review": "Active public property/dimension and instance-method chains preserve receiver/name/key order, chain-local short-circuiting, quiet probes and reference restrictions (nullsafe-properties-review.json, methods-review.json). Nonpublic/magic properties, user magic methods and other protocols remain open."
     },
     {
       "id": "expression.isset",
@@ -6931,14 +6987,19 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/115-closure-compiler.watsup",
-        "spec/semantics/116-closures.watsup"
+        "spec/semantics/116-closures.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/closures.py",
         "tests/semantics/closures_protocol.py",
         "tests/semantics/closures_state.py",
-        "tests/semantics/closure_compiler.py"
+        "tests/semantics/closure_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -6946,7 +7007,7 @@
         "coverage/semantics/closures-review.json",
         "coverage/semantics/arrows-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json.",
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Rebinding services, clone, dynamic lifetime and collection remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -7550,7 +7611,9 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/19-variance.watsup",
-        "spec/semantics/19-method-signatures.watsup"
+        "spec/semantics/19-method-signatures.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/variance.py",
@@ -7558,12 +7621,16 @@
         "tests/semantics/method_signatures.py",
         "coverage/semantics/method-signatures.json"
       ],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Independent user-method helper a7d79477: 926 source-oracle/helper comparisons, 4 ordered pending descriptors, 12 Unsupported checks and 1 explicit source-phase pending witness repeated; expanded 1444 passed before the narrow NaN guard. Covariance fixture correction 05745733 repeated 1028 comparisons, 9 descriptors, 2 graph-shape checks and 4 Unsupported. Exact user declaration diagnostics are modeled only for supplied selected prototypes/scopes and supported compiled defaults. Applicability, internal/tentative metadata, full defaults and warning context, compiler traversal, linking/autoload/activation and calls remain pending; see STATIC and LINKING-HANDOFF.",
+      "review": "Historical normalized method-signature helpers remain in method-signatures.json. Public source method overrides now apply parameter/return variance, reference/variadic/arity rules, final restrictions and abstract obligations at class linking; constructor compatibility preserves the abstract-prototype exception (methods-review.json). Nonpublic/static/internal methods, traits/interfaces and autoload-dependent checks remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",
@@ -7611,19 +7678,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/inheritance-review.json"
       ],
-      "review": "Early/deferred source-parent and stdClass linking, atomic publication/rollback and active graph validity are partial; methods, properties, interfaces and other internal parents remain open. See inheritance-review.json."
+      "review": "Early/deferred source-parent and stdClass linking preserves atomic publication and active graph validity (inheritance-review.json). Public property layouts and public instance method/constructor compatibility are integrated (properties-review.json, methods-review.json). Interfaces, traits, nonpublic/static members and other internal parents remain open."
     },
     {
       "id": "classes.availability",
@@ -7653,19 +7725,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/inheritance-review.json"
       ],
-      "review": "Transitive empty-class instance and class-type membership follows active links; inherited members, interfaces, traits and variance remain open. See inheritance-review.json.",
+      "review": "Active ancestry governs nominal membership, public property inheritance and public instance method dispatch/override compatibility; inherited constructors and declaring-origin method statics are preserved (inheritance-review.json, properties-review.json, methods-review.json). Interfaces, traits and nonpublic/static member protocols remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-parent-without-parent.php"
       ]
@@ -7815,19 +7892,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/inheritance-review.json"
       ],
-      "review": "Inherited and abstract empty-class allocation is partial; constructors, members and dynamic names remain open. See inheritance-review.json."
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open."
     },
     {
       "id": "classes.object-identity",
@@ -7884,28 +7966,42 @@
     {
       "id": "classes.instance-lookup",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": "Public instance method lookup is case-insensitive and follows active parent links. Ordinary/nullsafe calls retain selected receivers and reuse named/unpacked/reference arguments; ordinary method results support reference assignment (methods-review.json). Nonpublic/static methods, first-class method callables and user magic dispatch remain open."
     },
     {
       "id": "classes.late-static-binding",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/method_wrapper_protocol.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null,
+      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Static calls, forwarding calls and broader late-static-binding behavior remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/variance-static-intersection-first.php",
         "tests/semantics/conformance/variance-static-intersection-second.php"

@@ -15,7 +15,22 @@ def $closure_items_empty(plexical :: plexical_tail*) = UNINITIALIZED :: $closure
 dec $closure_items_nodes(pitem*) : pnode*
 def $closure_items_nodes(eps) = eps
 def $closure_items_nodes(pitem :: pitem_tail*) = $item_nodes(pitem) ++ $closure_items_nodes(pitem_tail*)
-def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*)
+def $closure_scope_at(eps, n) = eps
+def $closure_scope_at(pclosurescope :: pclosurescope_tail*, n) = (pclosurescope)
+  -- if pclosurescope.OBJECT = n
+def $closure_scope_at(pclosurescope :: pclosurescope_tail*, n) = $closure_scope_at(pclosurescope_tail*, n)
+  -- if pclosurescope.OBJECT =/= n
+dec $closure_scope_roots(pclosurescope*, nat) : pnode*
+def $closure_scope_roots(eps, n) = eps
+def $closure_scope_roots(pclosurescope :: pclosurescope_tail*, n) = [HOBJECT n_receiver]
+  -- if pclosurescope.OBJECT = n
+  -- if pclosurescope.RECEIVER = (n_receiver)
+def $closure_scope_roots(pclosurescope :: pclosurescope_tail*, n) = eps
+  -- if pclosurescope.OBJECT = n
+  -- if pclosurescope.RECEIVER = eps
+def $closure_scope_roots(pclosurescope :: pclosurescope_tail*, n) = $closure_scope_roots(pclosurescope_tail*, n)
+  -- if pclosurescope.OBJECT =/= n
+def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $closure_scope_roots(S.CLOSURESCOPES, n)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
 def $node_children(S, HOBJECT n) = eps
   -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
@@ -32,7 +47,24 @@ def $closure_item_set(pitem_old :: pitem_tail*, n, pitem) = pitem_old :: $closur
   -- if n_next = $(n - 1)
 
 dec $closure_create(pstate, pfunction) : pstate
-def $closure_create(S, pfunction) = S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE pfunction.ORIGIN $closure_items_empty($closure_lexicals(pfunction.CODE.EXPRESSIONS)) eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN PNULL][.TODO = (CLOSURE_CAPTURE n 0) :: S.TODO]
+dec $closure_static(pstate, pfunction) : bool
+def $closure_static(S, pfunction) = b
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 (BOOLEAN b) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
+def $closure_static(S, pfunction) = b
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprArrowFunction phpType14 (BOOLEAN b) phpType4_ref phpType16 phpType18 expression metadata)
+dec $closure_bound_receiver(pstate, pfunction) : nat?
+def $closure_bound_receiver(S, pfunction) = eps -- if $closure_static(S, pfunction)
+def $closure_bound_receiver(S, pfunction) = pcallcontext.RECEIVER
+  -- if ~$closure_static(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+def $closure_bound_receiver(S, pfunction) = eps -- otherwise
+dec $closure_scope_append(pstate, pfunction, nat) : pstate
+def $closure_scope_append(S, pfunction, n) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER $closure_bound_receiver(S, pfunction)}]]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+def $closure_scope_append(S, pfunction, n) = S -- otherwise
+def $closure_create(S, pfunction) = $closure_scope_append(S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE pfunction.ORIGIN $closure_items_empty($closure_lexicals(pfunction.CODE.EXPRESSIONS)) eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN PNULL][.TODO = (CLOSURE_CAPTURE n 0) :: S.TODO], pfunction, n)
   -- if n = |S.OBJECTS|
 rule PhpStep/closure-create: S ~> $closure_create(S[.TODO = ptask_tail*], pfunction)
   -- if S.TODO = (EVAL (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)) :: ptask_tail*
@@ -71,15 +103,29 @@ def $task_nodes(CLOSURE_CAPTURE n_object n_slot) = [HOBJECT n_object]
 ;; existing representation for ordinary named targets and diagnostic metadata.
 def $target_nodes(PORIGIN n pcpath) = eps
 def $target_nodes(CLOSURE_TARGET n) = [HOBJECT n]
-def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES
-def $target_function(S, PORIGIN n pcpath) = $function_at($all_functions(S), PORIGIN n pcpath)
+def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES ++ $class_method_functions(S.CLASSES)
+def $target_function(S, PORIGIN n pcpath) = $function_at(S.FUNCTIONS ++ S.CLOSURETEMPLATES, PORIGIN n pcpath)
 def $target_function(S, CLOSURE_TARGET n) = $function_at(S.CLOSURETEMPLATES, porigin)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
 def $target_function(S, CLOSURE_TARGET n) = $function_at(S.FUNCTIONS, porigin)
   -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
-def $target_function(S, pcalltarget) = eps -- otherwise
 def $target_instance(PORIGIN n pcpath) = eps
 def $target_instance(CLOSURE_TARGET n) = (n)
+def $target_receiver(S, PORIGIN n pcpath) = eps
+def $target_lexical_class(S, PORIGIN n pcpath) = eps
+def $target_called_class(S, PORIGIN n pcpath) = eps
+def $target_receiver(S, CLOSURE_TARGET n) = pclosurescope.RECEIVER
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $target_receiver(S, CLOSURE_TARGET n) = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $target_lexical_class(S, CLOSURE_TARGET n) = (pclosurescope.LEXICAL)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $target_lexical_class(S, CLOSURE_TARGET n) = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $target_called_class(S, CLOSURE_TARGET n) = (pclosurescope.CALLED)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $target_called_class(S, CLOSURE_TARGET n) = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
 
 dec $closure_body(pstate, pfunction) : ptask*
 def $closure_body(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
@@ -105,9 +151,14 @@ rule PhpStep/closure-receive-complete: S ~> S[.TODO = $closure_body(S, pfunction
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if n_slot = |$closure_lexicals(pfunction.CODE.EXPRESSIONS)|
 
-def $context_target(pcallcontext) = pcallcontext.FUNCTION -- if pcallcontext.INSTANCE = eps
+def $context_target(pcallcontext) = pcallcontext.FUNCTION
+  -- if pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = eps
+def $context_target(pcallcontext) = METHOD_TARGET n pcallcontext.FUNCTION
+  -- if pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = (n)
 def $context_target(pcallcontext) = CLOSURE_TARGET n -- if pcallcontext.INSTANCE = (n)
-def $target_after_enter(S, pcalltarget) = S[.CURRENT = (pcallcontext[.INSTANCE = $target_instance(pcalltarget)])]
+def $target_after_enter(S, pcalltarget) = S[.CURRENT = (pcallcontext[.INSTANCE = $target_instance(pcalltarget)][.RECEIVER = $target_receiver(S, pcalltarget)][.LEXICAL_CLASS = $target_lexical_class(S, pcalltarget)][.CALLED_CLASS = $target_called_class(S, pcalltarget)])]
   -- if S.CURRENT = (pcallcontext)
 def $target_after_enter(S, pcalltarget) = S -- otherwise
 
@@ -289,6 +340,100 @@ def $closure_creation_owners(pfunction :: pfunction_tail*, PORIGIN n pcpath) = [
 def $closure_creation_owners(pfunction :: pfunction_tail*, PORIGIN n pcpath) = $closure_creation_owners(pfunction_tail*, PORIGIN n pcpath)
   -- if pfunction.CODE.UNIT =/= n \/ ~$effect_below(pfunction.BODY, pcpath)
 
+dec $closure_nearest_owner(pstate, porigin*, porigin?) : porigin?
+def $closure_nearest_owner(S, eps, porigin?) = porigin?
+def $closure_nearest_owner(S, porigin :: porigin_tail*, eps) = $closure_nearest_owner(S, porigin_tail*, (porigin))
+def $closure_nearest_owner(S, porigin :: porigin_tail*, (porigin_best)) = $closure_nearest_owner(S, porigin_tail*, (porigin))
+  -- if $function_at($all_functions(S), porigin_best) = (pfunction_best)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $effect_below(pfunction_best.BODY, pfunction.BODY)
+def $closure_nearest_owner(S, porigin :: porigin_tail*, (porigin_best)) = $closure_nearest_owner(S, porigin_tail*, (porigin_best))
+  -- if $function_at($all_functions(S), porigin_best) = (pfunction_best)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if ~$effect_below(pfunction_best.BODY, pfunction.BODY)
+dec $closure_source_class(pstate, porigin) : porigin?
+def $closure_source_class(S, porigin) = (pmethoddesc.OWNER)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (porigin_owner)
+  -- if $class_method_origin(S.CLASSES, porigin_owner) = (pmethoddesc)
+def $closure_source_class(S, porigin) = $closure_source_class(S, porigin_owner)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (porigin_owner)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_owner) = (pfunction)
+def $closure_source_class(S, porigin) = eps -- otherwise
+dec $closure_receiver_forbidden(pstate, porigin) : bool
+def $closure_receiver_forbidden(S, porigin) = true
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $closure_static(S, pfunction)
+def $closure_receiver_forbidden(S, porigin) = $closure_receiver_forbidden(S, porigin_owner)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (porigin_owner)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_owner) = (pfunction_owner)
+def $closure_receiver_forbidden(S, porigin) = false -- otherwise
+
+dec $closure_scope_row_valid(pstate, pclosurescope) : bool
+def $closure_scope_row_valid(S, pclosurescope) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_source_class(S, porigin) = (pclosurescope.LEXICAL)
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_lexical)
+  -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc_called)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
+  -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_lexical.NAME, |S.CLASSES|)
+  -- if pclosurescope.RECEIVER = eps
+  -- if $closure_receiver_forbidden(S, porigin)
+def $closure_scope_row_valid(S, pclosurescope) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_source_class(S, porigin) = (pclosurescope.LEXICAL)
+  -- if ~$closure_receiver_forbidden(S, porigin)
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_lexical)
+  -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc_called)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
+  -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_lexical.NAME, |S.CLASSES|)
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+  -- if porigin_called = pclosurescope.CALLED
+def $closure_scope_row_valid(S, pclosurescope) = false -- otherwise
+dec $closure_scope_rows_valid(pstate, pclosurescope*) : bool
+def $closure_scope_rows_valid(S, eps) = true
+def $closure_scope_rows_valid(S, pclosurescope :: pclosurescope_tail*) = ($closure_scope_row_valid(S, pclosurescope) /\ $closure_scope_rows_valid(S, pclosurescope_tail*))
+  -- if $closure_scope_at(pclosurescope_tail*, pclosurescope.OBJECT) = eps
+def $closure_scope_rows_valid(S, pclosurescope*) = false -- otherwise
+dec $closure_scope_complete(pstate, pnode*) : bool
+def $closure_scope_complete(S, eps) = true
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_source_class(S, porigin) = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_source_class(S, porigin) = (porigin_class)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $closure_scope_complete(S, (HCELL n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+def $closure_scope_complete(S, (HARRAY n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $closure_scope_complete(S, pnode*) = false -- otherwise
+
 dec $closure_scope_owners_valid(pstate, pcpath, porigin*) : bool
 def $closure_scope_owners_valid(S, pcpath, eps) = true
 def $closure_scope_owners_valid(S, pcpath, porigin :: porigin_tail*) = true
@@ -349,5 +494,7 @@ def $closure_live_static_roots(S, pnode :: pnode_tail*) = $closure_node_static_r
 def $closure_state_valid(S) = true
   -- if $closure_template_origins_valid(S, S.CLOSURETEMPLATES)
   -- if $closure_live_nodes_valid(S, S.ALLOCATIONS)
+  -- if $closure_scope_rows_valid(S, S.CLOSURESCOPES)
+  -- if $closure_scope_complete(S, S.ALLOCATIONS)
   -- if $heap_unique($static_roots(S.STATICS) ++ $closure_live_static_roots(S, S.ALLOCATIONS))
 def $closure_state_valid(S) = false -- otherwise

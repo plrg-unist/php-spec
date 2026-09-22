@@ -25,8 +25,8 @@ def $pmrequired(psparam :: psparam_rest*) = $pmrequired(psparam_rest*)
   -- if ~psparam.REQUIRED
 def $pmargument(eps, nat) = eps
 def $pmargument(psparam :: psparam_rest*, 0) = psparam
-def $pmargument([psparam], nat) = psparam
-  -- if $(nat > 0) /\ psparam.VARIADIC
+def $pmargument(psparam :: psparam_rest*, nat) = psparam
+  -- if $(nat > 0) /\ psparam_rest* = eps /\ psparam.VARIADIC
 def $pmargument(psparam :: psparam_rest*, nat) = $pmargument(psparam_rest*, $nabs($(nat - 1)))
   -- if $(nat > 0) /\ ~(psparam_rest* = eps /\ psparam.VARIADIC)
 def $pmmax(nat, nat_other) = nat

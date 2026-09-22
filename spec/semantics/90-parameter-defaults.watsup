@@ -10,7 +10,7 @@ dec $ppdefault_prepare(ppstate, pcpath, expression) : ppstate
 dec $ppdefault_kind(pvalue?) : text
 dec $ppdefault_descriptor(ppstate, pcpath) : pdefaultkind
 
-def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.GOTOROOT = pcpath], pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
+def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P[.CLASSCONTEXT = eps], ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.GOTOROOT = pcpath], pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P[.CLASSCONTEXT = eps], ptbytes)))
 
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, psprogress) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -72,7 +72,7 @@ def $ppdefault_descriptor(P, pcpath) = PDDEFERRED
 ;; A function owns compiled parameter roots even when normalization removes an
 ;; optional receive. Nested functions must not leak those roots into their parent.
 def $ppdefault_path(pcpath, n) = pcpath ++ [PCFIELD 3, PCINDEX n, PCFIELD 6]
-def $ppfunction_contains(pfunction, pcpath) = ($effect_below(pfunction.BODY, pcpath) \/ $effect_below(pcpath_decl ++ [PCFIELD 3], pcpath) \/ ($ppclosure_template(pfunction) /\ $effect_below(pcpath_decl ++ [PCFIELD 4], pcpath)))
+def $ppfunction_contains(pfunction, pcpath) = ($effect_below(pfunction.BODY, pcpath) \/ $effect_below(pcpath_decl ++ [PCFIELD 3], pcpath) \/ ((pfunction.BODY = pcpath_decl ++ [PCFIELD 6] \/ $ppclosure_template(pfunction)) /\ $effect_below(pcpath_decl ++ [PCFIELD 4], pcpath)))
   -- if pfunction.ORIGIN = PORIGIN n pcpath_decl
 
 def $ppdefault_parameter(P, pcpath, n) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR (pcpath ++ [PCFIELD 3, PCINDEX n]) P.LOCATION.LINE eps]]

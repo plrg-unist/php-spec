@@ -64,22 +64,36 @@ rule PhpStep/call-reference-fetch: S ~> S_cell[.TODO = ptask_tail*][.HELD = S.HE
   -- if S_cell = $call_location_reference($call_reference_base($hold_task_inputs(S), S.BASE, $runtime_line(S, eps, expression)))
 
 dec $call_argument_expression(pstate, porigin?, nat) : expression
+def $call_argument_origin(S, (porigin), n) = $origin_child((porigin), [PCFIELD 2, PCINDEX n, PCFIELD 1])
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+def $call_argument_origin(S, (porigin), n) = $origin_child((porigin), [PCFIELD 2, PCINDEX n, PCFIELD 1])
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+def $call_argument_origin(S, porigin?, n) = $origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1]) -- otherwise
 def $call_argument_expression(S, (porigin), n) = expression
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+def $call_argument_expression(S, (porigin), n) = expression
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression_receiver phpType20 (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+def $call_argument_expression(S, (porigin), n) = expression
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression_receiver phpType20 (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+def $call_argument_expression(S, (porigin), n) = expression
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
 
 dec $call_send_line(pstate, porigin?, nat) : int
-def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $origin_child(porigin?, [PCFIELD 1, PCINDEX n, PCFIELD 1])], eps, $call_argument_expression(S, porigin?, n))
+def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $call_argument_origin(S, porigin?, n)], eps, $call_argument_expression(S, porigin?, n))
 
-dec $call_send_parameter(pstate, pcalltarget, nat, expression, int) : pstate
-def $call_send_operand(S, pcalltarget_function, n, porigin?, z) = $call_send_parameter(S, pcalltarget_function, n, $call_argument_expression(S, porigin?, n), $call_send_line(S, porigin?, n))
-def $call_send_parameter(S, pcalltarget_function, n, expression, z) = $resolve_at(S, S.RESULT, z)
+dec $call_send_parameter(pstate, pcalltarget, nat, expression, porigin?, int) : pstate
+def $call_send_operand(S, pcalltarget_function, n, porigin?, z) = $call_send_parameter(S, pcalltarget_function, n, $call_argument_expression(S, porigin?, n), porigin?, $call_send_line(S, porigin?, n))
+def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, z) = $resolve_at(S, S.RESULT, z)
   -- if ~$call_parameter_reference(S, pcalltarget_function, n)
-def $call_send_parameter(S, pcalltarget_function, n, expression, z) = S
+def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, z) = S
   -- if $call_parameter_reference(S, pcalltarget_function, n)
   -- if S.RESULT = REFERENCE n_cell
   -- if $call_reference_variable(expression) \/ $ppsend_var(expression)
-def $call_send_parameter(S, pcalltarget_function, n, expression, z) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z)
+def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, z) = $throw_scalar(S, "Error", $wrapper_send_name(S, pcalltarget_function, porigin?, pfunction.NAME) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z)
   -- if $call_parameter_reference(S, pcalltarget_function, n)
   -- if ~$call_reference_variable(expression)
   -- if ~$ppsend_var(expression)
@@ -87,7 +101,7 @@ def $call_send_parameter(S, pcalltarget_function, n, expression, z) = $throw_sca
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
 
 
-def $call_send_parameter(S, pcalltarget_function, n, expression, z) = $diagnostic($call_fresh_reference(S, pvalue), "Notice", $ptascii("Only variables should be passed by reference"), z)
+def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, z) = $diagnostic($call_fresh_reference(S, pvalue), "Notice", $ptascii("Only variables should be passed by reference"), z)
   -- if $call_parameter_reference(S, pcalltarget_function, n)
   -- if S.RESULT = KNOWN pvalue
   -- if $ppsend_var(expression)

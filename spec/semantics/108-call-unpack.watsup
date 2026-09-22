@@ -4,7 +4,7 @@ dec $unpack_writable(pstate, punpackcall) : bool
 def $call_unpack_present(eps) = false
 def $call_unpack_present((NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = (phpType4_unpack = BOOLEAN true \/ $call_unpack_present(phpType7*))
 def $call_unpack_site(S, (porigin)) = $call_unpack_present(phpType7*)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
 def $call_unpack_site(S, porigin?) = false -- otherwise
 def $unpack_current_site(S) = pcallcontext.CALLSITE -- if S.CURRENT = (pcallcontext)
 def $unpack_current_site(S) = eps -- if S.CURRENT = eps
@@ -12,26 +12,27 @@ def $unpack_start(pfunction, phpType7*, porigin?, z) = UNPACK_ARGS {FUNCTION pfu
 
 dec $unpack_advance(punpackcall, pnamedargs) : punpackcall
 def $unpack_advance(punpackcall, pnamedargs) = punpackcall[.INDEX = $(punpackcall.INDEX + 1)][.SENT = pnamedargs]
-dec $unpack_origin(punpackcall) : porigin?
-def $unpack_origin(punpackcall) = $origin_child(punpackcall.CALLSITE, [PCFIELD 1, PCINDEX punpackcall.INDEX, PCFIELD 1])
+dec $unpack_origin(pstate, punpackcall) : porigin?
+def $unpack_origin(S, punpackcall) = $named_origin(S, punpackcall.CALLSITE, punpackcall.INDEX)
 dec $unpack_line(pstate, punpackcall) : int
 def $unpack_line(S, punpackcall) = z
   -- if punpackcall.CALLSITE = (PORIGIN n pcpath)
+  -- if $call_argument_source(S, PORIGIN n pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1, PCINDEX punpackcall.INDEX]) = ((z, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD n_field, PCINDEX punpackcall.INDEX]) = ((z, false))
 
 def $unpack_class(S, punpackcall) = $ppunpack_class(pcode, pcunit, pcpath)
-  -- if $unpack_origin(punpackcall) = (PORIGIN n pcpath)
+  -- if $unpack_origin(S, punpackcall) = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
 def $unpack_class(S, punpackcall) = eps -- otherwise
 def $unpack_writable(S, punpackcall) = ($unpack_class(S, punpackcall) = (UNPACK_CV) \/ $unpack_class(S, punpackcall) = (UNPACK_VAR))
 
-rule PhpStep/unpack-next-source: S ~> S[.TODO = [$at_task($unpack_origin(punpackcall), EVAL expression), UNPACK_PREP punpackcall_next] ++ ptask_tail*]
+rule PhpStep/unpack-next-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punpackcall), EVAL expression), UNPACK_PREP punpackcall_next] ++ ptask_tail*]
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*
   -- if punpackcall_next = punpackcall[.ARGUMENTS = phpType7*]
-rule PhpStep/unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(punpackcall), $named_argument_task(pfunction, pnamedtarget, expression)), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
+rule PhpStep/unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punpackcall), $named_argument_task(pfunction, pnamedtarget, expression)), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
@@ -40,14 +41,14 @@ rule PhpStep/unpack-explicit-send: S ~> S_value[.TODO = (UNPACK_ARGS $unpack_adv
   -- if S.TODO = (UNPACK_SEND punpackcall) :: ptask_tail*
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, punpackcall.CALLSITE, punpackcall.INDEX), |punpackcall.SENT.SLOTS|)
-  -- if S_value = $named_send_value(S, pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
+  -- if S_value = $named_send_value(S, punpackcall.FUNCTION, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/unpack-explicit-abrupt: S ~> S_value[.HELD = S.HELD]
   -- if S.TODO = (UNPACK_SEND punpackcall) :: ptask_tail*
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
-  -- if S_value = $named_send_value(S, pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
+  -- if S_value = $named_send_value(S, punpackcall.FUNCTION, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
   -- if S_value.COMPLETION =/= NORMAL
-rule PhpStep/unpack-enter: S ~> $target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.LINE), punpackcall.FUNCTION)
+rule PhpStep/unpack-enter: S ~> $wrapper_after_enter($target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.LINE), punpackcall.FUNCTION), punpackcall.SENT)
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = eps
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
@@ -142,8 +143,8 @@ def $unpack_key_named(KINT z) = false
 
 dec $unpack_check(pstate, pnamedargs, pnamedtarget, pkey, bool, int) : pstate
 def $unpack_check(S, pnamedargs, pnamedtarget, KINT z_key, true, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
-def $unpack_check(S, pnamedargs, NAMED_UNKNOWN preqbytes, KSTRING preqbytes, b, z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ preqbytes, z)
-def $unpack_check(S, pnamedargs, pnamedtarget, KSTRING preqbytes, b, z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ preqbytes ++ $ptascii(" overwrites previous argument"), z)
+def $unpack_check(S, pnamedargs, NAMED_UNKNOWN preqbytes, KSTRING preqbytes, b, z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
+def $unpack_check(S, pnamedargs, pnamedtarget, KSTRING preqbytes, b, z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ $c_string(preqbytes) ++ $ptascii(" overwrites previous argument"), z)
   -- if pnamedtarget =/= NAMED_UNKNOWN preqbytes
   -- if ~$named_can_store(pnamedargs, pnamedtarget)
 def $unpack_check(S, pnamedargs, pnamedtarget, pkey, b, z) = S -- otherwise
@@ -206,19 +207,20 @@ def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $unpack_call_roots(punpa
 ;; Expanded contexts retain runtime slots, not a replay of old source containers.
 def $named_call_valid(S, pcalltarget_function, porigin?) = true -- if $call_unpack_site(S, porigin?)
 def $call_extent_valid(S, pcallcontext) = true -- if $call_unpack_site(S, pcallcontext.CALLSITE)
-def $call_extent_valid(S, pcallcontext) = (pcallcontext.ARGC = $named_call_extent(S, pcallcontext.FUNCTION, pcallcontext.CALLSITE))
+def $call_extent_valid(S, pcallcontext) = (pcallcontext.ARGC = $named_call_extent(S, $context_target(pcallcontext), pcallcontext.CALLSITE))
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
-dec $unpack_names_valid(pstate, pfunction, (preqbytes, poperand)*) : bool
-def $unpack_names_valid(S, pfunction, eps) = true
-def $unpack_names_valid(S, pfunction, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = true
+dec $unpack_names_valid(pstate, pcalltarget, (preqbytes, poperand)*) : bool
+def $unpack_names_valid(S, pcalltarget_function, eps) = true
+def $unpack_names_valid(S, pcalltarget_function, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = true
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
   -- if $fixed_parameter_index(pfunction.SIGNATURE.PARAMETERS, preqbytes) = eps
   -- if ~$named_has((preqbytes_tail, poperand_tail)*, preqbytes)
-  -- if $call_sent_operand_valid(S, pfunction.ORIGIN, n_fixed, poperand)
-  -- if $unpack_names_valid(S, pfunction, (preqbytes_tail, poperand_tail)*)
-def $unpack_names_valid(S, pfunction, (preqbytes, poperand)*) = false -- otherwise
-def $named_context_valid(S, pcallcontext) = $unpack_names_valid(S, pfunction, pcallcontext.NAMED)
+  -- if $call_sent_operand_valid(S, pcalltarget_function, n_fixed, poperand)
+  -- if $unpack_names_valid(S, pcalltarget_function, (preqbytes_tail, poperand_tail)*)
+def $unpack_names_valid(S, pcalltarget_function, (preqbytes, poperand)*) = false -- otherwise
+def $named_context_valid(S, pcallcontext) = $unpack_names_valid(S, $context_target(pcallcontext), pcallcontext.NAMED)
   -- if $call_unpack_site(S, pcallcontext.CALLSITE)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 
@@ -258,18 +260,20 @@ def $named_bind_valid(S, porigin, n) = true
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
-  -- if S.ORIGIN = ($default_parameter_origin(porigin, n))
+  -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
 
 ;; Validate only metadata consumed by actual unpack instructions and classifiers.
 dec $unpack_root(pcoccurrence*, pcpath) : bool
 def $unpack_root(pcoccurrence*, pcpath) = true
   -- if $(|pcpath| >= 2)
   -- if n_parent = $(|pcpath| - 2)
-  -- if pcpath[n_parent:2] = [PCFIELD 1, PCINDEX n]
-  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if pcpath[n_parent:2] = [PCFIELD n_field, PCINDEX n]
+  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (pcnode)
+  -- if $call_node_arguments(pcnode) = PCALLARGUMENTS phpType7* n_field
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata_arg
 def $unpack_root(pcoccurrence*, pcpath) = false -- otherwise
+
 dec $unpack_code_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
 def $unpack_code_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
   -- if $unpack_root(pcoccurrence*, pcpath)
@@ -295,13 +299,14 @@ def $unpack_unit_code_valid(P, pcode) = true
 def $unpack_unit_code_valid(P, pcode) = false -- otherwise
 
 ;; Pending modes and owners are runtime facts; earlier values are not replayed.
-dec $unpack_slots_valid(pstate, pfunction, nat, pnamedslot*) : bool
-def $unpack_slots_valid(S, pfunction, n, eps) = true
-def $unpack_slots_valid(S, pfunction, n, NAMED_HOLE :: pnamedslot*) = $unpack_slots_valid(S, pfunction, $(n + 1), pnamedslot*)
+dec $unpack_slots_valid(pstate, pcalltarget, nat, pnamedslot*) : bool
+def $unpack_slots_valid(S, pcalltarget_function, n, eps) = true
+def $unpack_slots_valid(S, pcalltarget_function, n, NAMED_HOLE :: pnamedslot*) = $unpack_slots_valid(S, pcalltarget_function, $(n + 1), pnamedslot*)
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
-def $unpack_slots_valid(S, pfunction, n, (NAMED_SENT poperand) :: pnamedslot*) = ($call_sent_operand_valid(S, pfunction.ORIGIN, n, poperand) /\ $unpack_slots_valid(S, pfunction, $(n + 1), pnamedslot*))
-def $unpack_slots_valid(S, pfunction, n, pnamedslot*) = false -- otherwise
-dec $unpack_static_prefix(pstate, pfunction, phpType7*, pnamedargs) : bool
+def $unpack_slots_valid(S, pcalltarget_function, n, (NAMED_SENT poperand) :: pnamedslot*) = ($call_sent_operand_valid(S, pcalltarget_function, n, poperand) /\ $unpack_slots_valid(S, pcalltarget_function, $(n + 1), pnamedslot*))
+def $unpack_slots_valid(S, pcalltarget_function, n, pnamedslot*) = false -- otherwise
+dec $unpack_static_prefix(pstate, pcalltarget, phpType7*, pnamedargs) : bool
 dec $unpack_pending_valid(pstate, punpackcall, nat) : bool
 def $unpack_pending_valid(S, punpackcall, n_sent) = true
   -- if punpackcall.CALLSITE = (porigin)
@@ -309,29 +314,30 @@ def $unpack_pending_valid(S, punpackcall, n_sent) = true
   -- if $call_unpack_site(S, (porigin))
   -- if $call_selected_valid(S, punpackcall.FUNCTION, (porigin))
   -- if $call_line_valid(S, (porigin), punpackcall.LINE)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if n_offset = $(punpackcall.INDEX + n_sent)
   -- if $(n_offset <= |phpType7*|)
   -- if n_remaining = $(|phpType7*| - n_offset)
   -- if punpackcall.ARGUMENTS = phpType7*[n_offset:n_remaining]
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
-  -- if $unpack_slots_valid(S, pfunction, 0, punpackcall.SENT.SLOTS)
-  -- if $unpack_names_valid(S, pfunction, punpackcall.SENT.NAMED)
+  -- if $unpack_slots_valid(S, punpackcall.FUNCTION, 0, punpackcall.SENT.SLOTS)
+  -- if $unpack_names_valid(S, punpackcall.FUNCTION, punpackcall.SENT.NAMED)
 def $unpack_pending_valid(S, punpackcall, n_sent) = false -- otherwise
-def $unpack_static_prefix(S, pfunction, phpType7*, pnamedargs) = true
+def $unpack_static_prefix(S, pcalltarget_function, phpType7*, pnamedargs) = true
+  -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if pnamedargs_expected = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, {SLOTS eps, NAMED eps})
-  -- if $named_slots_valid(S, pfunction.ORIGIN, 0, pnamedargs.SLOTS, pnamedargs_expected.SLOTS)
-  -- if $named_entries_valid(S, pfunction.ORIGIN, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pnamedargs.NAMED, pnamedargs_expected.NAMED)
-def $unpack_static_prefix(S, pfunction, phpType7*, pnamedargs) = false -- otherwise
+  -- if $named_slots_valid(S, pcalltarget_function, 0, pnamedargs.SLOTS, pnamedargs_expected.SLOTS)
+  -- if $named_entries_valid(S, pcalltarget_function, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pnamedargs.NAMED, pnamedargs_expected.NAMED)
+def $unpack_static_prefix(S, pcalltarget_function, phpType7*, pnamedargs) = false -- otherwise
 
 dec $unpack_before_valid(pstate, punpackcall, nat) : bool
 def $unpack_before_valid(S, punpackcall, n) = true
   -- if $unpack_pending_valid(S, punpackcall, n)
   -- if punpackcall.CALLSITE = (porigin)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if phpType7_prefix* = phpType7*[0:punpackcall.INDEX]
-  -- if $call_unpack_present(phpType7_prefix*) \/ $unpack_static_prefix(S, pfunction, phpType7_prefix*, punpackcall.SENT)
+  -- if $call_unpack_present(phpType7_prefix*) \/ $unpack_static_prefix(S, punpackcall.FUNCTION, phpType7_prefix*, punpackcall.SENT)
 def $unpack_before_valid(S, punpackcall, n) = false -- otherwise
 
 dec $unpack_source_kind(pstate, punpackcall, bool) : bool
@@ -398,7 +404,7 @@ def $unpack_owned(S, poperand) = false -- otherwise
 dec $unpack_prep_result_valid(pstate, punpackcall) : bool
 def $unpack_prep_result_valid(S, punpackcall) = true
   -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
-  -- if $unpack_origin(punpackcall) = (PORIGIN n pcpath)
+  -- if $unpack_origin(S, punpackcall) = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if S.RESULT = VARIABLE ptbytes z

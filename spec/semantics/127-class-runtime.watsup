@@ -10,7 +10,6 @@ def $object_name(S, n) = pclassdesc.NAME
 def $object_name(S, n) = $ptascii("Closure") -- otherwise
 def $class_plain_instance(S, n) = true -- if S.OBJECTS[n] = INSTANCE porigin
 def $class_plain_instance(S, n) = false -- otherwise
-dec $class_named((preqbytes, porigin)*, preqbytes) : porigin?
 def $class_named(eps, preqbytes) = eps
 def $class_named((preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = (porigin)
 def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = $class_named((preqbytes_tail, porigin_tail)*, preqbytes)
@@ -88,6 +87,7 @@ rule PhpStep/new-class: S ~> $new_class(S[.TODO = ptask_tail*], preqbytes, $runt
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if ~$new_has_ctor(S, preqbytes)
 
 dec $class_instanceof(pstate, pvalue, preqbytes) : bool
 def $class_instanceof(S, POBJECT n, preqbytes) = true

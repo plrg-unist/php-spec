@@ -1,0 +1,228 @@
+{
+  "result": "approved-bounded-methods-private-candidate",
+  "base": "abf74c81208366f86864f0fbec8e6c2fc4da9dd4",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; ordinary profile except explicitly identified default-request regression",
+  "scope": "Public source instance methods/constructors, inherited signatures and dispatch, lexical/called scope and bound closures, ordinary/nullsafe call arguments, method reference-result assignment and Closure->__invoke trampolines. Full core remains incomplete.",
+  "review": {
+    "compiler": "Independent static/linking review retained. Final141 adds only source reference-assignment admission/static guards after the exact reviewed prefix;142 preserves the reviewed prefix after undoing exactly six diagnostic-only c_string calls; linking rules are unchanged.",
+    "runtime": "Selected method targets root receivers before arguments; constructors retain allocated identity; method descriptors never publish global functions. Closure identity remains distinct from receiver/lexical/called scopes. Wrapper operands preserve original named holes, by-value values and live reference identities across current/saved frames.",
+    "wrapper": "SEND uses underlying reference/name/variadic flags with Closure::__invoke diagnostics. RECEIVE is weak through an internal caller; body/return strictness is unchanged. Callee trace precedes wrapper trace, with original arguments; SEND errors have no entered wrapper frame.",
+    "references": "Ordinary method reference assignment now uses checked source acquisition and existing returned-cell/Notice behavior. Nullsafe chains and first-class placeholders remain compile-invalid in reference assignment. Returned alias identity survives resume.",
+    "docs": "README, PROGRESS, CORE, SOURCE-METHODS, Makefile and affected constructor/runtime inventory entries reviewed; statuses remain partial and stale pending-method claims were replaced.",
+    "diagnostic_names": "Six method-error rendering expressions apply c_string, matching Zend%s. Full-byte method selection and argument identities are unchanged; __invoke with an embedded-NUL suffix remains a missing method. Three discovered mismatches were retained and corrected."
+  },
+  "evidence": {
+    "prior_static": {
+      "original_sources": 17,
+      "descriptor_assertions": 25,
+      "conditional_link_assertions": 20,
+      "report": {
+        "path": ".tools/method-compile-review/REVIEW.json",
+        "sha256": "1de66b920f6d91d26469ed57f3c085efd819fbb3ca1a7f56eddd30e30cc43ad9"
+      }
+    },
+    "static_integration_bridge": {
+      "scope": "Compiler/linking compatibility on accepted exit baseline; current reference-admission suffix separately reviewed.",
+      "report": {
+        "path": ".tools/method-compile-review/BRIDGE-abf74.json",
+        "sha256": "19e309059778680844b622a1bd1085158db0a2659ff6cb5e22835d0dcd5f98ac"
+      }
+    },
+    "maintained_compiler": {
+      "sources": 29,
+      "assertions": 95,
+      "identity": "Pre-wrapper candidate; unchanged original member/linking compiler prefix.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/method-compiler-u4779dv1/report.json",
+        "sha256": "f0c5d10edc94b242058c2b3e57d68652bb860b5db20064de44ec4de387704500"
+      }
+    },
+    "prior_runtime_source": {
+      "sources": 35,
+      "identity": "Pre-wrapper maintained profile; all35 are included in current58, not additional unique programs.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/method-runtime-2260plmp/report.json",
+        "sha256": "1ac9964a947191c25dc2d8be3f6c432ca97fef8dc4e44c854756d996d9d0fbf2"
+      }
+    },
+    "prior_runtime_paused": {
+      "assertions": 99,
+      "stages": 6,
+      "reports": [
+        {
+          "path": ".tools/review15-methods/name-cfy8eqop/report.json",
+          "sha256": "c90c08312506e3e8ca0178db0e236f87d7fe30216ff649388b1109bafb740f82"
+        },
+        {
+          "path": ".tools/review15-methods/ctor-036dy07v/report.json",
+          "sha256": "44b4ceb454de5a40763a4bd0d50209b3dc57daf08afc8619e1a506d8215141a3"
+        },
+        {
+          "path": ".tools/review15-methods/closure-0ss_nqor/report.json",
+          "sha256": "31c858408e2f508f1a5a2a8afd555b0486824c6e971894983bf24bd6f7a495a3"
+        },
+        {
+          "path": ".tools/review15-methods/saved-_kqt_i3w/report.json",
+          "sha256": "3ac6172c13dad1ca75e7e3ddc1d528c3ae3ad8a5c0c2ff8fd6994a5ea733f721"
+        },
+        {
+          "path": ".tools/review15-methods/nested-static-1jhju00u/report.json",
+          "sha256": "3e5028c83aa8b3dbaa0e0adbfcaa959a2c2e05b1ecdaa514093f5de520858883"
+        },
+        {
+          "path": ".tools/review15-methods/saved-ctor-c7ew6c5a/report.json",
+          "sha256": "d22052304a41d3c4ba25bc5584842eb178035493ccb3f772505136d4c0fd8198"
+        }
+      ],
+      "compatibility": "Receiver, constructor, closure-scope and saved-context cases predate WRAPPER. Their behavior is retained with WRAPPER absent for ordinary method/direct closure calls; current wrapper/saved/reference tests cover the added context field."
+    },
+    "named_nul": {
+      "exact_sources": 14,
+      "paused_assertions": 18,
+      "compatibility": "All five c_string diagnostic-only changes preserved; lookup, duplicate detection and stored names keep full bytes.",
+      "report": {
+        "path": ".tools/named-nul-candidate/.tools/final-report.json",
+        "sha256": "871ad4cd4daade0043a13ad1bcc607455cfc90462660d032124c394a93255286"
+      }
+    },
+    "intrinsic_seam_prior": {
+      "exact_method_sources": 11,
+      "prior_exit_exact": 51,
+      "prior_exit_unsupported_controls": 1,
+      "paused_assertions": 89,
+      "compatibility": "Restored phpType19 union already validated named exit(status:7). Current148 differs only by moving exit_method_site declaration to30; executable rules unchanged.",
+      "report": {
+        "path": ".tools/method-exit-review/REVIEW.json",
+        "sha256": "d009d38a3ac746a494caac401ed2657a3b067e3fa751dd09064a4d74b4042fa5"
+      }
+    },
+    "intrinsic_seam_current_paused": {
+      "stages": 4,
+      "assertions": 89,
+      "report": {
+        "path": ".tools/method-exit-review/protocol-b7qx_xbv/report.json",
+        "sha256": "f41adbdf54a30554aafbfd525525a5b97e11ca92d7baba9d830af6154dd3be88"
+      }
+    },
+    "wrapper_author_originals": {
+      "exact_sources": 12,
+      "compatibility": "Pre-reference-admission snapshot; only subsequent141/142 reference-assignment suffixes differ semantically.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/wrapper-author/wrapper-replay-x2vphj2e/report.json",
+        "sha256": "00b25626bc0e9fdf83134774b408f108194511d334034696d11b940fc058a549"
+      }
+    },
+    "wrapper_independent_originals": {
+      "exact_sources": 7,
+      "report": {
+        "path": ".tools/review15-methods/wrapper-seven-6ao3xfvk/report.json",
+        "sha256": "11a82951472ed7e16fe077e47aa211ac007155ba3b0907b19746b98c9f87d7d9"
+      }
+    },
+    "owner_and_multiline_originals": {
+      "exact_sources": 4,
+      "scope": "Current/saved wrapper owner programs plus multiline nullsafe/first-class reference static errors.",
+      "report": {
+        "path": ".tools/review15-methods/wrapper-lines-owner-orm2kkjv/report.json",
+        "sha256": "076e65de259d337843cd76b5b1df78b1ac13dd7c09db4039de43a1db452c628f"
+      }
+    },
+    "wrapper_current_paused": {
+      "stages": 3,
+      "assertions": 75,
+      "scope": "Source-shape/reference/key forgery, current/saved roots, release, fatal trace roots and exact resumed/uninterrupted states. Literal array pools remain owners.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/method-wrapper-protocol-oh46qb3_/report.json",
+        "sha256": "b70655eed2fd82b729b19aaa7858f796343ac36516380be3b0249af47c85bfc8"
+      }
+    },
+    "reference_author_originals": {
+      "exact_sources": 4,
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/method-ref/wrapper-replay-0wsbsee1/report.json",
+        "sha256": "66939434c4512e4641a9336b2b1f40af47a8fdffe8ae3e58a8649b3c40945670"
+      }
+    },
+    "reference_current_paused": {
+      "stages": 1,
+      "assertions": 19,
+      "report": {
+        "path": ".tools/review15-methods/method-reference-paused-br1xzmzt/report.json",
+        "sha256": "dc5f473902277a02dc65156bb16a1afeecf0156baff4d4605b6dc8b41313f14b"
+      }
+    },
+    "maintained_runtime_current": {
+      "sources": 58,
+      "normal": 31,
+      "php_error": 24,
+      "static_rejection": 3,
+      "runner_stderr": "empty",
+      "scope": "35 prior method rows +19 wrapper rows +4 reference rows, all exact source bytes under maintained path templates; original-context replays above remain separate.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/method-runtime-hp9gfmw4/report.json",
+        "sha256": "167691caac40d623ceda3ee680e7b0c64ee96cca9b0e0d5ebafa761f7c614993"
+      },
+      "compatibility_after_gate": "After this58-row run, six142 diagnostic-only c_string calls, three NUL catalogue rows, the one-line default protocol helper invocation and docs changed. Reversing six c_string calls recovers the exact tested142 hash; no full58 rerun is claimed. Final61-row catalogue is covered by58 plus the new3 in the separately reported8-row gate."
+    },
+    "match_print_exit_cross": {
+      "sources": 3,
+      "compatibility": "Preserved semantic paths; ordinary contexts have WRAPPER absent, intrinsic148 rule body unchanged. No duplicate cross campaign claimed.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/method-cross/combined-final-report.json",
+        "sha256": "39efd2b2d993ceb4a937ff9d2a83d47d5afa39470dc8f8ec7cb4d4c94ed29e63"
+      }
+    },
+    "default_request_regression": {
+      "source_outcomes": 4,
+      "paused_assertions": 33,
+      "profile": "Explicit request/environment facts; separate from ordinary58. One maintained helper invocation now passes state after default_parameter_origin signature extension.",
+      "report": {
+        "path": ".tools/compiler10-method-exit-combined/.tools/default-parameter-protocol-suai_mda/report.json",
+        "sha256": "316602f2ee5cfe9e680067c3e01c490099053edff1974864d0a86133c2a2e93c"
+      }
+    },
+    "method_nul_originals": {
+      "exact_sources": 3,
+      "report": {
+        "path": ".tools/review15-methods/method-nul-_9duyuy8/report.json",
+        "sha256": "fb6fa4897ba969c37d4bc03f773beb306002faa3962cfe92b52bb97d0fbba757"
+      },
+      "prior_mismatches": {
+        "path": ".tools/review15-methods/method-nul-kmym04sy/report.json",
+        "sha256": "b498082c7f28dc336c5e1a597e9e7c3a95506fd6b23d31ce07f20f90d6e04a3f"
+      }
+    },
+    "method_nul_maintained": {
+      "sources": 8,
+      "scope": "New3 NUL method-name controls plus5 existing nullsafe rows; catalogue61=prior58+new3, no duplicate full campaign.",
+      "report": {
+        "path": ".tools/method-runtime-xb6e364i/report.json",
+        "sha256": "b5c5e397d6f19de06281dfaffc71d738dad898187901775ce2cd53f2df65ff93"
+      }
+    },
+    "post_pause_rendering_bridge": {
+      "scope": "All accepted current paused/current original reports preceded only the six rendering calls; their source method names contain no NUL, so all rendered bytes and source/state/ownership rules are unchanged.",
+      "before_inputs": {
+        "path": ".tools/review15-methods/pre-method-nul-inputs.json",
+        "sha256": "54a87f09dc9840eaa5a14cb678d03896b16170808495d66d1c0dec897c6b1c43"
+      }
+    }
+  },
+  "compatibility_hashes": {
+    "141_prefix_before_reference_assignment": "f2f5bcefb3d39c71616ba95a869e28ec0c4163c6eb997592bf825b9b91cb74a3",
+    "148_with_relocated_declaration_restored": "086c9587bccb66ceb09d8ddab73368b37666fec2274ab9b285ab3bb9c633bcc9",
+    "142_prefix_before_wrapper_with_six_display_fixes_reverted": "9b471ee8b237d0b7189daf8a5db9ea50d0d518828f2740b5e8e0ae2a58a3e927"
+  },
+  "limits": [
+    "Counts retain distinct selections/profiles and overlap; they are observations, not a sum of unique programs or a proof of equivalence.",
+    "Nonpublic/static/first-class methods, traits/interfaces, user magic protocols, closure binding, remaining internal protocols, catch/finally and lifecycle remain open.",
+    "No new intentional engine divergence; interrupted/failing probes and existing Unsupported control are not agreements.",
+    "Raw captures/fixtures remain ignored under the reported .tools paths; maintained tests use only project-local inputs. No fresh full-core or offline rebuild claim."
+  ],
+  "inputs": {
+    "path": ".tools/review15-methods/final-inputs.json",
+    "sha256": "53c5a35b51d3c074efa9c5dfbad200e716efdf94d32cebfd5ee1a4e14da874e6",
+    "candidate_files_excluding_this_ledger": 51,
+    "source_binary_changes": "Authored semantics and tests only; checked syntax/frontend/adapter/native binaries retained from accepted base."
+  }
+}

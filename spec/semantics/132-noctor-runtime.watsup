@@ -129,6 +129,7 @@ rule PhpStep/new-class-arguments: S ~> $noctor_start(S[.TODO = ptask_tail*], pre
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if ~$new_has_ctor(S, preqbytes)
 
 rule PhpStep/noctor-positional: S ~> S[.TODO = [$at_task($noctor_arg_origin(pnoctorcall), EVAL expression), NOCTOR_SEND pnoctorcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (NOCTOR_ARGS pnoctorcall) :: ptask_tail*

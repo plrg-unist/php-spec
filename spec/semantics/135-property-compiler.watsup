@@ -210,19 +210,19 @@ def $ppproperty_early_check(P, pchheader, ppropertydesc*) = $ppproperty_early_it
   -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
 def $ppproperty_early_check(P, pchheader, ppropertydesc*) = P -- otherwise
 
-dec $ppclass_properties_root(ppstate, pcpath, pchheader, ppropertydesc*) : ppstate
-def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*) = P
+dec $ppclass_properties_root(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
+def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, PROPERTIES ppropertydesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]]
+def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
 
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*)
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, eps)
   -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps
   -- if $ppproperty_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPROPERTIES P_props ppropertydesc* = $ppproperty_groups(P_header, pcpath, 0, statement*, eps, pchheader)
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*)
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, eps)
   -- if pchheader.PARENT =/= eps /\ pchheader.INTERFACES = eps
   -- if $ppproperty_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)

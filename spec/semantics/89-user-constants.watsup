@@ -125,19 +125,19 @@ def $constant_bind_valid(S, porigin) = true
 def $constant_bind_valid(S, porigin) = false -- otherwise
 def $call_task_valid(S, CONSTANT_BIND porigin) = $constant_bind_valid(S, porigin)
 
-dec $constant_binding(ptask) : porigin*
-def $constant_binding(CONSTANT_BIND porigin) = [porigin]
-def $constant_binding(AT porigin ptask) = $constant_binding(ptask)
-def $constant_binding(ptask) = eps -- otherwise
-dec $constant_bindings(ptask*) : porigin*
-def $constant_bindings(eps) = eps
-def $constant_bindings(ptask :: ptask_tail*) = $constant_binding(ptask) ++ $constant_bindings(ptask_tail*)
-def $constant_context_valid(S) = ($constant_bindings(S.TODO) = eps)
+dec $constant_binding(pstate, ptask) : porigin*
+def $constant_binding(S, CONSTANT_BIND porigin) = [porigin]
+def $constant_binding(S, AT porigin ptask) = $constant_binding(S, ptask)
+def $constant_binding(S, ptask) = eps -- otherwise
+dec $constant_bindings(pstate, ptask*) : porigin*
+def $constant_bindings(S, eps) = eps
+def $constant_bindings(S, ptask :: ptask_tail*) = $constant_binding(S, ptask) ++ $constant_bindings(S, ptask_tail*)
+def $constant_context_valid(S) = ($constant_bindings(S, S.TODO) = eps)
   -- if S.CONSTCONTEXT = eps
 def $constant_context_valid(S) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $constant_declaration(S, pconstantcontext.ORIGIN) = ((preqbytes, pconstantcontext.LINE))
-  -- if $constant_bindings(S.TODO) = [pconstantcontext.ORIGIN]
+  -- if $constant_bindings(S, S.TODO) = [pconstantcontext.ORIGIN]
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
 def $constant_context_valid(S) = $default_context_valid(S, pconstantcontext)

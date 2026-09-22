@@ -1,7 +1,11 @@
+dec $named_roots((preqbytes, poperand)*) : pnode*
+dec $named_slots_roots(pnamedslot*) : pnode*
 dec $instance_roots(nat?) : pnode*
 def $instance_roots(eps) = eps
 def $instance_roots((n)) = [HOBJECT n]
-dec $named_roots((preqbytes, poperand)*) : pnode*
+dec $wrapper_roots(pnamedargs?) : pnode*
+def $wrapper_roots(eps) = eps
+def $wrapper_roots((pnamedargs)) = $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
 ;; An active symbol table is moved, never copied, across the main/function edge.
 dec $active_table(pstate) : psymboltable
 def $active_table(S) = {ENV S.ENV, CVS S.CVS, SYMBOLS S.SYMBOLS}
@@ -16,7 +20,7 @@ def $operands_roots(poperand :: poperand_tail*) = $operand_nodes(poperand) ++ $o
 def $table_roots(eps) = eps
 def $table_roots((psymboltable)) = $environment_nodes(psymboltable.ENV)
 def $call_context_roots(eps) = eps
-def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED)
+def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $instance_roots(pcallcontext.RECEIVER) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)
 def $frames_roots(eps) = eps
 def $frames_roots(pframe :: pframe_tail*) = $table_roots(pframe.LOCALS) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD ++ $call_context_roots(pframe.CONTEXT) ++ $frames_roots(pframe_tail*)
 

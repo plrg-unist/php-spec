@@ -196,6 +196,9 @@ test-semantics: build
 	python3 tests/semantics/nullsafe_compiler.py
 	python3 tests/semantics/nullsafe_properties.py
 	python3 tests/semantics/nullsafe_properties_protocol.py
+	python3 tests/semantics/method_compiler.py
+	python3 tests/semantics/method_runtime.py
+	python3 tests/semantics/method_wrapper_protocol.py
 	python3 tests/semantics/match_compiler.py
 	python3 tests/semantics/match_expressions.py
 	python3 tests/semantics/match_protocol.py

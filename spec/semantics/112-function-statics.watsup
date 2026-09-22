@@ -136,7 +136,14 @@ def $static_cell_present(pstaticcell :: pstaticcell_tail*, n) = (pstaticcell.CEL
 
 dec $main_static_origin(pstate, porigin) : bool
 dec $static_origin_valid(pstate, porigin) : bool
-def $static_origin_valid(S, porigin) = ($static_function_at(S.FUNCTIONS, porigin) =/= eps \/ $main_static_origin(S, porigin))
+dec $method_static_origin(pstate, porigin) : bool
+def $method_static_origin(S, porigin) = true
+  -- if $static_function_at($class_method_functions(S.CLASSES), porigin) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
+def $method_static_origin(S, porigin) = false -- otherwise
+def $static_origin_valid(S, porigin) = ($static_function_at(S.FUNCTIONS, porigin) =/= eps \/ $main_static_origin(S, porigin) \/ $method_static_origin(S, porigin))
 
 def $static_cells_valid(S, eps) = true
 def $static_cells_valid(S, pstaticcell :: pstaticcell_tail*) = true

@@ -217,6 +217,8 @@ def $delayed_base(NExprVariable phpType32 metadata) = true
 def $delayed_base(NExprArrayDimFetch expression phpType5 metadata) = true
 def $delayed_base(NExprPropertyFetch expression phpType20 metadata) = true
 def $delayed_base(NExprNullsafePropertyFetch expression phpType20 metadata) = true
+def $delayed_base(NExprMethodCall expression phpType20 phpType6 metadata) = $ppnullsafe(expression)
+def $delayed_base(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
 def $delayed_base(expression) = false
   -- otherwise
 
