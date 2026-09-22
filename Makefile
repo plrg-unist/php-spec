@@ -196,6 +196,9 @@ test-semantics: build
 	python3 tests/semantics/nullsafe_compiler.py
 	python3 tests/semantics/nullsafe_properties.py
 	python3 tests/semantics/nullsafe_properties_protocol.py
+	python3 tests/semantics/match_compiler.py
+	python3 tests/semantics/match_expressions.py
+	python3 tests/semantics/match_protocol.py
 	python3 tests/semantics/arrows_regression.py
 	python3 tests/semantics/arrows_protocol.py
 	python3 tests/semantics/arrows_state.py

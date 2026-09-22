@@ -85,6 +85,7 @@ def $call_name_entries_valid(S, P, pcode, (CODENAME pcpath preqbytes preqbytes_f
 dec $constant_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $static_unit_code_valid(ppstate, pcode) : bool
 dec $pipe_unit_code_valid(ppstate, pcode) : bool
+dec $match_unit_code_valid(ppstate, pcode) : bool
 dec $switch_unit_code_valid(ppstate, pcode) : bool
 dec $goto_unit_code_valid(ppstate, pcode) : bool
 dec $call_unit_names_valid(pstate, ppstate) : bool
@@ -102,6 +103,7 @@ def $call_unit_names_valid(S, P) = true
   -- if $dynamic_unit_code_valid(P, pcode)
   -- if $pipe_unit_code_valid(P, pcode)
   -- if $switch_unit_code_valid(P, pcode)
+  -- if $match_unit_code_valid(P, pcode)
   -- if $goto_unit_code_valid(P, pcode)
   -- if $static_unit_code_valid(P, pcode)
   -- if $closure_unit_code_valid(S, P, pcode)

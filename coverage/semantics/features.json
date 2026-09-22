@@ -1758,14 +1758,17 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/143-match-compiler.watsup",
+        "spec/semantics/144-match-runtime.watsup"
       ],
       "source_tests": [
-        "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/match_expressions.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Ordered compiler and strict lazy runtime match semantics, value demand and owned continuations are reviewed in match-review.json. Unhandled cases use the existing error completion; Throwable/catch/finally/lifecycle integration remains pending.",
+      "evidence": [
+        "coverage/semantics/match-review.json",
+        "docs/semantics/SOURCE-MATCH.md"
+      ]
     },
     {
       "node": "Expr_MethodCall",
@@ -2258,10 +2261,19 @@
       "obligations": [
         "control.match"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/143-match-compiler.watsup",
+        "spec/semantics/144-match-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/match_expressions.py"
+      ],
+      "review": "Ordered compiler and strict lazy runtime match semantics, value demand and owned continuations are reviewed in match-review.json. Unhandled cases use the existing error completion; Throwable/catch/finally/lifecycle integration remains pending.",
+      "evidence": [
+        "coverage/semantics/match-review.json",
+        "docs/semantics/SOURCE-MATCH.md"
+      ]
     },
     {
       "node": "Name",
@@ -6194,15 +6206,31 @@
     {
       "id": "control.match",
       "milestone": "3a",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "status": "partial",
+      "dependencies": [
+        "protocols.Throwable",
+        "control.catch",
+        "control.finally-replacement"
       ],
-      "review": null,
+      "implementation": [
+        "spec/semantics/143-match-compiler.watsup",
+        "spec/semantics/144-match-runtime.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/match_compiler.py",
+        "tests/semantics/match_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/match_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_execute.c",
+        "docs/semantics/SOURCE-MATCH.md",
+        "coverage/semantics/match-review.json"
+      ],
+      "review": "Modules143/144 implement strict lazy selection, delayed CV versus retained temporary subjects, multiple conditions/default ordering, compiler priority, result value demand, source lines and raw-wrapper UnhandledMatchError diagnostics. Maintained88 production outcomes,13 compiler source lints/67 assertions and8 paused stages/118 assertions pass. Independent62 ordinary originals and3 paused states/57 assertions, plus1 separate explicit-request original, bind the reviewed semantics. General Throwable objects, catch/finally and lifecycle integration remain pending; match-review.json records the exact scope and separate Unsupported controls.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]

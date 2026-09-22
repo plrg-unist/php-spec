@@ -39,6 +39,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 135/136 | Public instance properties: typed/default/uninitialized slots, invariant inherited overrides, dynamic and computed names, live foreach, casts and comparison; 31 source outcomes, 146 compiler and 58 paused-task assertions. [Review](coverage/semantics/properties-review.json) |
 | 137/138 | Public property references: ordered typed sources, atomic constrained writes, by-reference calls/returns and object traversal, typed overflow; 52 admitted source outcomes and paused ownership guards. Three originals were excluded then; 139/140 closes the nullsafe send dependency. [Review](coverage/semantics/property-references-review.json) |
 | 139/140 | Nullsafe property and active property/dimension chains: 21 exact source outcomes, 15 compiler sources/63 assertions, and paused source/owner guards. [Review](coverage/semantics/nullsafe-properties-review.json) |
+| 143/144 | Match expressions: strict lazy selection, delayed CV subjects, compiler priority, owned results and unhandled diagnostics; 88 source outcomes, 13 compiler sources/67 assertions and paused ownership checks. [Review](coverage/semantics/match-review.json) |
 
 The current nullsafe checkpoint preserves a short-circuit marker only within
 the active property/dimension chain. Source-authenticated saved tasks retain
@@ -53,7 +54,9 @@ property visibility, static and readonly members, hooks and magic remain open.
 Nullsafe and ordinary methods, property visibility, static and readonly members, hooks,
 constructors, remaining
 internal parents and Throwable follow. `try`/`finally` goto
-interaction, match, remaining intrinsics, traversal, dynamic lifetime and
-collection obligations remain open. Full current-source closure and a fresh
+interaction, remaining intrinsics, traversal, dynamic lifetime and
+collection obligations remain open. Match uses the existing uncaught-error
+completion; Throwable objects, catch/finally and destructor integration remain
+required. Full current-source closure and a fresh
 offline network-isolated rebuild are required before complete-core acceptance.
 Rocq interaction-tree semantics and BOLA proofs remain downstream.

@@ -1,0 +1,226 @@
+;; Match keeps direct CV operands delayed; temporary subjects remain owned until
+;; the selected result is materialized. Table dispatch reads its subject once.
+dec $match_site(pstate, porigin) : bool
+def $match_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMatch expression phpType26 metadata)
+def $match_site(S, porigin) = false -- otherwise
+dec $match_arms(pstate, porigin) : phpType27*
+def $match_arms(S, porigin) = phpType27*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMatch expression (SEQUENCE phpType27*) metadata)
+dec $match_line(pstate, porigin, pcpath) : int?
+def $match_line(S, PORIGIN n pcpath, pcpath_child) = $code_match_line(pcode.EXPRESSIONS, pcpath ++ pcpath_child)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $match_line(S, porigin, pcpath) = eps -- otherwise
+dec $match_table(pstate, porigin) : bool?
+def $match_table(S, PORIGIN n pcpath) = $code_match_table(pcode.EXPRESSIONS, pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $match_table(S, porigin) = eps -- otherwise
+dec $match_conditions(phpType27) : expression*
+def $match_conditions(NMatchArm ABSENT expression metadata) = eps
+def $match_conditions(NMatchArm (SEQUENCE expression*) expression_body metadata) = expression*
+dec $match_default(phpType27*, nat) : nat?
+def $match_default(eps, n) = eps
+def $match_default((NMatchArm ABSENT expression metadata) :: phpType27*, n) = (n)
+def $match_default((NMatchArm (SEQUENCE expression*) expression_body metadata) :: phpType27*, n) = $match_default(phpType27*, $(n + 1))
+dec $match_scan_valid(pstate, porigin, nat, nat) : bool
+def $match_scan_valid(S, porigin, n_arm, n_cond) = true
+  -- if $match_site(S, porigin)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if $(n_arm < |phpType27*|)
+  -- if $(n_cond <= |$match_conditions(phpType27*[n_arm])|)
+def $match_scan_valid(S, porigin, n_arm, 0) = true
+  -- if $match_site(S, porigin)
+  -- if n_arm = |$match_arms(S, porigin)|
+def $match_scan_valid(S, porigin, n_arm, n_cond) = false -- otherwise
+dec $match_compare_valid(pstate, porigin, nat, nat) : bool
+def $match_compare_valid(S, porigin, n_arm, n_cond) = true
+  -- if $match_scan_valid(S, porigin, n_arm, n_cond)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if $(n_arm < |phpType27*|)
+  -- if $(n_cond < |$match_conditions(phpType27*[n_arm])|)
+  -- if $match_line(S, porigin, [PCFIELD 1, PCINDEX n_arm, PCFIELD 0, PCINDEX n_cond]) = (z)
+def $match_compare_valid(S, porigin, n_arm, n_cond) = false -- otherwise
+dec $match_result_valid(pstate, porigin, nat) : bool
+def $match_result_valid(S, porigin, n_arm) = true
+  -- if $match_site(S, porigin)
+  -- if $(n_arm < |$match_arms(S, porigin)|)
+  -- if $match_line(S, porigin, [PCFIELD 1, PCINDEX n_arm, PCFIELD 1]) = (z)
+def $match_result_valid(S, porigin, n_arm) = false -- otherwise
+
+;; Authenticate source-determined operands without reconstructing mutable history.
+dec $match_cv(pstate, porigin) : poperand?
+def $match_cv(S, porigin) = (VARIABLE n_name* $variable_line(phpType32, metadata_subject))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMatch (NExprVariable phpType32 metadata_subject) phpType26 metadata)
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if ~$scope_global(S[.ORIGIN = (porigin)], [PCFIELD 0])
+  -- if ~$ppglobals_base(NExprVariable phpType32 metadata_subject)
+  -- if ~$direct_this(phpType32)
+def $match_cv(S, porigin) = eps -- otherwise
+dec $match_scalar(pstate, porigin) : pvalue?
+def $match_scalar(S, porigin) = (pvalue)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_subject)
+  -- if $pool_value(S.POOLS, porigin_subject) = (pvalue)
+  -- if $type_bytes(pvalue) =/= $ptascii("array")
+  -- if $type_bytes(pvalue) =/= $ptascii("object")
+def $match_scalar(S, porigin) = eps -- otherwise
+dec $match_operand_valid(pstate, porigin, poperand) : bool
+def $match_operand_valid(S, porigin, KNOWN pvalue) = true
+  -- if $match_scalar(S, porigin) = (pvalue)
+def $match_operand_valid(S, porigin, poperand) = true
+  -- if $match_scalar(S, porigin) = eps
+  -- if $match_cv(S, porigin) = (poperand)
+def $match_operand_valid(S, porigin, poperand) = $call_reference_operand_valid(S, poperand)
+  -- if $match_scalar(S, porigin) = eps
+  -- if $match_cv(S, porigin) = eps
+def $match_operand_valid(S, porigin, poperand) = false -- otherwise
+
+def $task_nodes(MATCH_SCAN porigin poperand n_arm n_cond) = $operand_nodes(poperand)
+def $task_nodes(MATCH_COMPARE porigin poperand n_arm n_cond) = $operand_nodes(poperand)
+def $task_nodes(MATCH_RESULT porigin poperand n_arm) = $operand_nodes(poperand)
+def $call_task_valid(S, EVAL (NExprMatch expression phpType26 metadata)) = $property_source_task(S, NExprMatch expression phpType26 metadata)
+def $call_task_valid(S, MATCH_START porigin) = ($match_site(S, porigin) /\ S.ORIGIN = (porigin))
+def $call_task_valid(S, MATCH_SCAN porigin poperand n_arm n_cond) = ($match_scan_valid(S, porigin, n_arm, n_cond) /\ S.ORIGIN = (porigin) /\ $match_operand_valid(S, porigin, poperand))
+def $call_task_valid(S, MATCH_COMPARE porigin poperand n_arm n_cond) = ($match_compare_valid(S, porigin, n_arm, n_cond) /\ S.ORIGIN = (porigin) /\ $match_operand_valid(S, porigin, poperand))
+def $call_task_valid(S, MATCH_RESULT porigin poperand n_arm) = ($match_result_valid(S, porigin, n_arm) /\ S.ORIGIN = (porigin) /\ $match_operand_valid(S, porigin, poperand))
+
+rule PhpStep/match-start: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), MATCH_START porigin] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprMatch expression phpType26 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/match-start-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "missing match source"]
+  -- if S.TODO = (EVAL (NExprMatch expression phpType26 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = eps
+
+dec $match_start(pstate, porigin, poperand) : pstate
+def $match_start(S, porigin, poperand) = S[.TODO = (MATCH_SCAN porigin poperand 0 0) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $match_table(S, porigin) = (false)
+def $match_start(S, porigin, poperand) = S_read[.TODO = (MATCH_SCAN porigin poperand 0 0) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $match_table(S, porigin) = (true)
+  -- if $match_line(S, porigin, eps) = (z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+def $match_start(S, porigin, poperand) = S_read[.TODO = eps]
+  -- if $match_table(S, porigin) = (true)
+  -- if $match_line(S, porigin, eps) = (z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $match_start(S, porigin, poperand) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "missing match compiler facts"] -- otherwise
+rule PhpStep/match-capture: S ~> $match_start(S[.TODO = ptask_tail*], porigin, S.RESULT)
+  -- if S.TODO = (MATCH_START porigin) :: ptask_tail*
+  -- if $match_site(S, porigin)
+rule PhpStep/match-capture-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid match source"]
+  -- if S.TODO = (MATCH_START porigin) :: ptask_tail*
+  -- if ~$match_site(S, porigin)
+
+rule PhpStep/match-next-arm: S ~> S[.TODO = (MATCH_SCAN porigin poperand $(n_arm + 1) 0) :: ptask_tail*]
+  -- if S.TODO = (MATCH_SCAN porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if $match_scan_valid(S, porigin, n_arm, n_cond)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if $(n_arm < |phpType27*|)
+  -- if n_cond = |$match_conditions(phpType27*[n_arm])|
+rule PhpStep/match-condition: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1, PCINDEX n_arm, PCFIELD 0, PCINDEX n_cond]), EVAL expression), MATCH_COMPARE porigin poperand n_arm n_cond] ++ ptask_tail*]
+  -- if S.TODO = (MATCH_SCAN porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if $match_compare_valid(S, porigin, n_arm, n_cond)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if expression_conditions* = $match_conditions(phpType27*[n_arm])
+  -- if expression = expression_conditions*[n_cond]
+
+dec $match_body(pstate, porigin, poperand, nat) : pstate
+def $match_body(S, porigin, poperand, n_arm) = S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1, PCINDEX n_arm, PCFIELD 1]), EVAL expression), MATCH_RESULT porigin poperand n_arm] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if phpType27*[n_arm] = NMatchArm phpType36 expression metadata
+rule PhpStep/match-default: S ~> $match_body(S[.TODO = ptask_tail*], porigin, poperand, n_default)
+  -- if S.TODO = (MATCH_SCAN porigin poperand n_arm 0) :: ptask_tail*
+  -- if $match_site(S, porigin)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if n_arm = |phpType27*|
+  -- if $match_default(phpType27*, 0) = (n_default)
+rule PhpStep/match-scan-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid match scan"]
+  -- if S.TODO = (MATCH_SCAN porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if ~$match_scan_valid(S, porigin, n_arm, n_cond)
+
+dec $match_subject(pstate, porigin, poperand, int) : pstate
+def $match_subject(S, porigin, poperand, z) = $quiet_operand(S, poperand)
+  -- if $match_table(S, porigin) = (true)
+def $match_subject(S, porigin, poperand, z) = $resolve_at(S, poperand, z)
+  -- if $match_table(S, porigin) = (false)
+dec $match_compared(pstate, pstate, porigin, poperand, nat, nat) : pstate
+def $match_compared(S_before, S, porigin, poperand, n_arm, n_cond) = $match_body(S[.HELD = S_before.HELD], porigin, poperand, n_arm)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PBOOL true)
+def $match_compared(S_before, S, porigin, poperand, n_arm, n_cond) = S[.HELD = S_before.HELD][.TODO = (MATCH_SCAN porigin poperand n_arm $(n_cond + 1)) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PBOOL false)
+def $match_compared(S_before, S, porigin, poperand, n_arm, n_cond) = S[.HELD = S_before.HELD][.TODO = eps]
+  -- if S.COMPLETION =/= NORMAL
+rule PhpStep/match-compare: S ~> $match_compared(S, $binary_apply(S_case, IDENTICAL, pvalue_subject, pvalue_case, z), porigin, poperand, n_arm, n_cond)
+  -- if S.TODO = (MATCH_COMPARE porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if $match_compare_valid(S, porigin, n_arm, n_cond)
+  -- if $match_line(S, porigin, [PCFIELD 1, PCINDEX n_arm, PCFIELD 0, PCINDEX n_cond]) = (z)
+  -- if S_subject = $match_subject($hold_task_inputs(S), porigin, poperand, z)
+  -- if S_subject.COMPLETION = NORMAL
+  -- if S_subject.RESULT = KNOWN pvalue_subject
+  -- if S_case = $resolve_at(S_subject, S.RESULT, z)
+  -- if S_case.COMPLETION = NORMAL
+  -- if S_case.RESULT = KNOWN pvalue_case
+rule PhpStep/match-compare-subject-abrupt: S ~> S_subject[.TODO = eps][.HELD = S.HELD]
+  -- if S.TODO = (MATCH_COMPARE porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if $match_compare_valid(S, porigin, n_arm, n_cond)
+  -- if $match_line(S, porigin, [PCFIELD 1, PCINDEX n_arm, PCFIELD 0, PCINDEX n_cond]) = (z)
+  -- if S_subject = $match_subject($hold_task_inputs(S), porigin, poperand, z)
+  -- if S_subject.COMPLETION =/= NORMAL
+rule PhpStep/match-compare-case-abrupt: S ~> S_case[.TODO = eps][.HELD = S.HELD]
+  -- if S.TODO = (MATCH_COMPARE porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if $match_compare_valid(S, porigin, n_arm, n_cond)
+  -- if $match_line(S, porigin, [PCFIELD 1, PCINDEX n_arm, PCFIELD 0, PCINDEX n_cond]) = (z)
+  -- if S_subject = $match_subject($hold_task_inputs(S), porigin, poperand, z)
+  -- if S_subject.COMPLETION = NORMAL
+  -- if S_case = $resolve_at(S_subject, S.RESULT, z)
+  -- if S_case.COMPLETION =/= NORMAL
+rule PhpStep/match-compare-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid match comparison"]
+  -- if S.TODO = (MATCH_COMPARE porigin poperand n_arm n_cond) :: ptask_tail*
+  -- if ~$match_compare_valid(S, porigin, n_arm, n_cond)
+rule PhpStep/match-result: S ~> $resolve_at(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], S.RESULT, z)
+  -- if S.TODO = (MATCH_RESULT porigin poperand n_arm) :: ptask_tail*
+  -- if $match_result_valid(S, porigin, n_arm)
+  -- if $match_line(S, porigin, [PCFIELD 1, PCINDEX n_arm, PCFIELD 1]) = (z)
+rule PhpStep/match-result-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid match result"]
+  -- if S.TODO = (MATCH_RESULT porigin poperand n_arm) :: ptask_tail*
+  -- if ~$match_result_valid(S, porigin, n_arm)
+
+;; MATCH_ERROR observes the raw zval: reference wrappers use a type diagnostic;
+;; an undefined CV is reported as NULL without an additional undefined warning.
+dec $match_reference(pstate, poperand) : bool
+def $match_reference(S, REFERENCE n) = true
+def $match_reference(S, VARIABLE n_name* z) = true
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if n <- S.REFCELLS
+def $match_reference(S, poperand) = false -- otherwise
+dec $match_error_text(pstate, poperand, pvalue) : ptbytes
+def $match_error_text(S, poperand, pvalue) = $ptascii("of type ") ++ $type_bytes(pvalue)
+  -- if $match_reference(S, poperand)
+  -- if $type_bytes(pvalue) =/= $ptascii("object")
+def $match_error_text(S, poperand, POBJECT n) = $ptascii("of type ") ++ $object_name(S, n)
+def $match_error_text(S, poperand, PARRAY n) = $ptascii("of type array")
+  -- if ~$match_reference(S, poperand)
+def $match_error_text(S, poperand, pvalue) = $trace_value_text(S, pvalue)
+  -- if ~$match_reference(S, poperand)
+  -- if $type_bytes(pvalue) =/= $ptascii("object")
+  -- if $type_bytes(pvalue) =/= $ptascii("array")
+rule PhpStep/match-unhandled: S ~> $throw_scalar(S_read[.TODO = eps][.BASE = BASE_VALUE (KNOWN PNULL)], "UnhandledMatchError", $ptascii("Unhandled match case ") ++ $match_error_text(S, poperand, pvalue), z)
+  -- if S.TODO = (MATCH_SCAN porigin poperand n_arm 0) :: ptask_tail*
+  -- if $match_site(S, porigin)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if n_arm = |phpType27*|
+  -- if $match_default(phpType27*, 0) = eps
+  -- if $match_line(S, porigin, eps) = (z)
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+rule PhpStep/match-unhandled-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (MATCH_SCAN porigin poperand n_arm 0) :: ptask_tail*
+  -- if $match_site(S, porigin)
+  -- if phpType27* = $match_arms(S, porigin)
+  -- if n_arm = |phpType27*|
+  -- if $match_default(phpType27*, 0) = eps
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.COMPLETION =/= NORMAL

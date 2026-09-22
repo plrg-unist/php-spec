@@ -1,0 +1,181 @@
+{
+  "status": "independently approved private and exact installed/staged match143/144 increment",
+  "base": "0365e8605",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned vendor/php-src and sole project-local oracle",
+  "scope": "Strict lazy match selection, multiple conditions/defaults, delayed CV and retained temporary/reference subjects, source-ordered compiler diagnostics, owned value results and existing uncaught UnhandledMatchError/trace cleanup contract. Partial family: Throwable objects, catch/finally and destructor integration remain pending.",
+  "source_anchors": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_match, can_match_use_jumptable",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_MATCH, ZEND_CASE_STRICT, ZEND_IS_IDENTICAL, ZEND_MATCH_ERROR",
+    "vendor/php-src/Zend/zend_execute.c: zend_match_unhandled_error",
+    "vendor/php-src/Zend/zend_smart_str.c: smart_str_append_scalar, smart_str_append_zval"
+  ],
+  "profiles": {
+    "ordinary": {
+      "raw": ".tools/match-impl-candidate/tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "pinned_defaults": {
+      "raw": ".tools/match-review-independent/oracle-profile.json",
+      "sha256": "0fa2784d3c5e8ae9e35cefa2729fc2a28f74393162dc8b54168bb580217d0fa9"
+    },
+    "ordinary_environment": "LC_ALL=C,TZ=UTC; inherited process environment. No explicit request facts.",
+    "explicit_request": "Separate function_scope/request-clock protocol, fixed seconds/microseconds/environment/argv/file/cwd; not combined with ordinary profile."
+  },
+  "maintained": {
+    "production_source": {
+      "raw": ".tools/match-impl-candidate/.tools/match-expressions-pm7uypha/report.json",
+      "sha256": "40d57e8506345ada31a7c64faff93fc855de735d365b72ebe14c5ae46d8166b1",
+      "selected_rows": 88,
+      "outcomes": {
+        "normal": 36,
+        "php_error": 37,
+        "static_rejection": 15
+      },
+      "native_catalog": "26 author originals plus62 independent originals; source bytes/profile/raw-output hashes and file-only diagnostic templates independently verified for all88 rows."
+    },
+    "compiler": {
+      "raw": ".tools/match-impl-candidate/.tools/match-compiler-84t5apgc/result.json",
+      "sha256": "e4668d9105beb079c2a0a73310a15d34de7f67c85c3d59bf0e22eeb042600a6e",
+      "sources": 13,
+      "assertions": 67,
+      "forged_descriptor_variants": 14
+    },
+    "paused": {
+      "raw": ".tools/match-impl-candidate/.tools/match-protocol-o506b5be/report.json",
+      "sha256": "41a96b6b72da5c73ecff5be36b15569cdea2dfa01c43025c6fca574eaa377730",
+      "stages": 8,
+      "assertions": 118
+    },
+    "adjacent_nullsafe_compiler": {
+      "raw": ".tools/match-impl-candidate/.tools/nullsafe-compiler-fupgz_r6/report.json",
+      "sha256": "ce0c59487e475d8912eb03aa996f82192fa2d35e9d5ce9c17bfa004ad33ed26c",
+      "sources": 15,
+      "assertions": 63
+    }
+  },
+  "independent": {
+    "ordinary_source": {
+      "raw": ".tools/match-review-independent/production-ac5gr33r/report.json",
+      "sha256": "ca26c941a645a9424c72966f299086db8d22cab0c05053e7a6070df6378b2765",
+      "selected_rows": 65,
+      "exact_agreements": 62,
+      "outcomes": {
+        "normal": 18,
+        "php_error": 32,
+        "static_rejection": 12
+      },
+      "raw_harness_result": "fail because three Unsupported controls are not agreements; no semantic discrepancy among admitted62",
+      "excluded": {
+        "raw": ".tools/match-review-independent/review-exclusions.json",
+        "sha256": "17421e0de19981d8d9f735b55ca1d21f4ca66c9a828c73bb990ca976f81b22ce"
+      },
+      "phpt_provenance": {
+        "raw": ".tools/match-review-independent/phpt-provenance.json",
+        "sha256": "32a0ffefb55154f4c86c40a19fa12dc0264b392c8ce1740fef4a12e18b0e6d13"
+      }
+    },
+    "explicit_request": {
+      "raw": ".tools/match-impl-candidate/.tools/match-independent-request-4whj31i7/report.json",
+      "sha256": "f25776029b08ceb8a04c4645c54873f4cdfe34cbb22859d2985d14571eb8b4d6",
+      "sources": 1,
+      "result": "pass; closes ordinary-profile GLOBALS witness dependency with exact request facts"
+    },
+    "paused": {
+      "raw": ".tools/match-review-independent/protocol-ymtm_voc/report.json",
+      "sha256": "1c824f585be97ddaf56bda9a3654751e6fe38babd6a18ebfff713e5955702818",
+      "sources": 3,
+      "assertions": 57,
+      "scope": [
+        "sole captured reference cell survives original-variable rebind",
+        "selected reference-return array becomes owning value",
+        "UnhandledMatchError temp-object/frame cleanup and trace"
+      ],
+      "superseded_fixture_typo": ".tools/match-review-independent/protocol-id_leed_; first fixture syntax error was corrected, not counted as a semantic result"
+    },
+    "unsupported_control": {
+      "raw": ".tools/match-review-independent/controls/environment-control.json",
+      "sha256": "5cfe125fbada0551ec2cd70153cc413d8d7fa61db0dc3b793c6c304e00d430ce",
+      "scope": "match($_ENV) without explicit request retains Unsupported instead of replacing it with UnhandledMatchError"
+    }
+  },
+  "compatibility_bridge": {
+    "scope": "Private semantic hashes only; not an installed canonical acceptance.",
+    "identity": "All138 loaded semantic/schema files in independent production and paused input manifests equal the current candidate. Candidate source/compiler final gates share fingerprint d63a7d16c011ab63fb1410a728402f6f010de8374b518a0f29961414d031ea54. Earlier author8-state gate fingerprint c26af53c3f5f6079d98b2e0bb0fde31d81a374cc47cbaac5d1f1708ed9bf554a predates source-catalog growth, compiler-test fingerprint instrumentation and Makefile registration; semantic modules and match_protocol.py were held frozen. Independent3-state gate records exact current module/runner hashes.",
+    "semantic_files": {
+      "spec/semantics/30-storage.watsup": "0074cefa74c8213c1ade9c83793cdcad6b156ed7112a2579e62d1dfac8ec4852",
+      "spec/semantics/46-source-compiler.watsup": "8d3fd3d4c41f497e04f2cb8446c1a0a9cafd208cffaa601a4ef41d0096358cca",
+      "spec/semantics/84-call-integrity.watsup": "1c7e5f85a7ff8ddc637375e4ba1913d9286b5172ee90e3478d4f991d2f8b1b13",
+      "spec/semantics/143-match-compiler.watsup": "d6ac3bb05196189181d02d69aaa6b9a8cbf67022dd16459c141bec57cfd4b1ad",
+      "spec/semantics/144-match-runtime.watsup": "1e895c30ee107cd9e10a16526653576e0760c8af0076cfede0550bbb634edb32",
+      "spec/semantics/modules.json": "ae6faf57163586a1b15e78c2e2c556c1c8c717fa2c01edcb17ee950a0d536762"
+    },
+    "reviewed_file_hashes": {
+      "spec/semantics/30-storage.watsup": "0074cefa74c8213c1ade9c83793cdcad6b156ed7112a2579e62d1dfac8ec4852",
+      "spec/semantics/46-source-compiler.watsup": "8d3fd3d4c41f497e04f2cb8446c1a0a9cafd208cffaa601a4ef41d0096358cca",
+      "spec/semantics/84-call-integrity.watsup": "1c7e5f85a7ff8ddc637375e4ba1913d9286b5172ee90e3478d4f991d2f8b1b13",
+      "spec/semantics/143-match-compiler.watsup": "d6ac3bb05196189181d02d69aaa6b9a8cbf67022dd16459c141bec57cfd4b1ad",
+      "spec/semantics/144-match-runtime.watsup": "1e895c30ee107cd9e10a16526653576e0760c8af0076cfede0550bbb634edb32",
+      "spec/semantics/modules.json": "ae6faf57163586a1b15e78c2e2c556c1c8c717fa2c01edcb17ee950a0d536762",
+      "Makefile": "3ea0e4ba8a8489e7ca4e234c530788304285723e8a92a2c1a4108df29ba3e7dc",
+      "README.md": "34f5e6eeeb87aa0d0ede4c36f5f53b4e8d7a4f8f518aa03df042ec75307f4a73",
+      "PROGRESS.md": "3ce80abf9ca310df0e2376869c058a738ee984587f58666473f8ce51273eb92a",
+      "docs/semantics/SOURCE-MATCH.md": "c186f394ea88119c34399d44632da634af38f733489c4021f13fae802f6e2257",
+      "coverage/semantics/features.json": "d1c03489cd438c982e347f83cd47167b918734ec9197a65d962d4f4df3a14b7a",
+      "tests/semantics/match_expressions.py": "8eac11dd1ddfd59c74ad2224d0159b10d1730d67f1048720c10f01383e8a0fa3",
+      "tests/semantics/match_cases.json": "73ec9014d41a3e4e890b51846e461c25735245e8a109a779496156cf310c0db7",
+      "tests/semantics/match_compiler.py": "5c3ff6cd8ef6d8c50fe51b35c5d747a2e908f73a1ffe838269f6cc1982b9ebdd",
+      "tests/semantics/match_compiler_cases.json": "f8669f62766a6971e300b430a52271be6ac4305ba21f41c0e4b29a0686d33d69",
+      "tests/semantics/match_protocol.py": "8ceb2c93db5e65221a1f245bb9d4b8b9e5963126e7944709968f06a9cd2f2b14"
+    }
+  },
+  "findings": [
+    "CV read timing, jump-table warning multiplicity, raw reference-wrapper error formatting and ordered compile lines follow pinned Zend; no intended engine divergence.",
+    "Missing abrupt check in quiet unhandled read was corrected before final gates.",
+    "Print-dependent upstream match001/005 are separate pending core dependency controls, not semantic agreements.",
+    "Source syntax/frontend/adapter unchanged, so no new full syntax gate required. Production SL and helper AL checks remain distinct; no global determinism/equivalence claim."
+  ],
+  "validation": "Semantic inventory consistent:169 constructors and306 runtime obligations. Diff whitespace checks clean. No new native/adapter build required or claimed.",
+  "recovery": "Raw evidence and scripts remain at the listed ignored .tools paths relative to php-spec. Keep these directories with workspace transfers; recover originals from maintained source catalogs and PHPT FILE provenance. Review hashes bind exact retained reports; no bulky raw archive is tracked.",
+  "canonical_installation": {
+    "bridge": {
+      "raw": ".tools/match-installed-bridge.json",
+      "sha256": "a429897b1a43fc7acca10db00cb34ca5f1c3ab7448ca03581bf5aec21b1f0541"
+    },
+    "verified": "All17 initial staged files equal reviewed private worktree; all138 loaded module/schema files, oracle, native parser helper, adapter, AL runner, profile, CLI and module-list bytes equal. Reviewer then appended only this installed ledger section.",
+    "source_fingerprint": "d63a7d16c011ab63fb1410a728402f6f010de8374b518a0f29961414d031ea54",
+    "fingerprint_files": 1107,
+    "focused_source": [
+      {
+        "raw": ".tools/match-expressions-xik43xbq/report.json",
+        "sha256": "3535722d526274d1d3778a4dbc2edf0439d1bd185c2b8fb202a831c43bb15988"
+      },
+      {
+        "raw": ".tools/match-expressions-8zi0s3_b/report.json",
+        "sha256": "91f972a008385ac05a175c2d636f5ddb200670c0c2c7656b8a50103e1ba8c54b"
+      },
+      {
+        "raw": ".tools/match-expressions-u81aqu2m/report.json",
+        "sha256": "5b722d08d4910a83696b744536f8a5239a17d57f8152fef35fe3dceb3429b979"
+      },
+      {
+        "raw": ".tools/match-expressions-wajdm83m/report.json",
+        "sha256": "134b25a3a0b066707a2bd04b13726f5c61cb004e60ff44fc2cb4018f080af2a0"
+      }
+    ],
+    "focused_scope": "4 rows: nested match/call normal; subject line and reference-return UnhandledMatchError; duplicate-default static priority. Each1-row gate passes and has exact private final88 fingerprint.",
+    "compiler": {
+      "raw": ".tools/match-compiler-cnyt8su9/result.json",
+      "sha256": "10b6d7d11b1c511939987440c18b8ac4c26ee8e4416239a781f70ea8cad0f968",
+      "sources": 13,
+      "assertions": 67,
+      "result": "pass"
+    },
+    "approval": "Exact installed/staged increment approved for local commit; no push. Inventory and staged whitespace checks pass."
+  },
+  "combined_private_print_bridge": {
+    "raw": ".tools/match-review-independent/combined-report.json",
+    "sha256": "1f44f3ba6c74f31007fcbd2d85da76af45a41cc7073486718e2b3f8646d81250",
+    "scope": "Disposable match+print candidate, not canonical print acceptance: existing native PHPT001/005 originals both exact normal production outcomes. All140 loaded module hashes frozen; print145/146 unchanged from print reviewer candidate; only shared union insertion PRINT_EMIT and appended module entries. No new oracle runs.",
+    "result": "pass"
+  }
+}

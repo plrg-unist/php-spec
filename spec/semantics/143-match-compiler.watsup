@@ -1,0 +1,173 @@
+;; zend_compile_match: subject, leading eligible folds, duplicate-default scan,
+;; all conditions, then all bodies. Table lowering retains the subject line.
+dec $ppmatch_eligible(pvalue?) : bool
+def $ppmatch_eligible((PINT i)) = true
+def $ppmatch_eligible((PSTRING n*)) = true
+def $ppmatch_eligible(pvalue?) = false -- otherwise
+
+dec $ppmatch_prearms(ppstate, pcpath, nat, phpType27*, bool) : (ppstate, bool)
+dec $ppmatch_preconditions(ppstate, pcpath, nat, expression*, bool) : (ppstate, bool)
+def $ppmatch_prearms(P, pcpath, n, phpType27*, b) = (P, false)
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppmatch_prearms(P, pcpath, n, phpType27*, false) = (P, false)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_prearms(P, pcpath, n, eps, true) = (P, true)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_prearms(P, pcpath, n, (NMatchArm ABSENT expression metadata) :: phpType27*, true) = $ppmatch_prearms(P, pcpath, $(n + 1), phpType27*, true)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_prearms(P, pcpath, n, (NMatchArm (SEQUENCE expression*) expression_body metadata) :: phpType27*, true) = $ppmatch_prearms(P_next, pcpath, $(n + 1), phpType27*, b)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if (P_next, b) = $ppmatch_preconditions(P, pcpath ++ [PCINDEX n, PCFIELD 0], 0, expression*, true)
+def $ppmatch_preconditions(P, pcpath, n, expression*, b) = (P, false)
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppmatch_preconditions(P, pcpath, n, expression*, false) = (P, false)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_preconditions(P, pcpath, n, eps, true) = (P, true)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_preconditions(P, pcpath, n, expression :: expression_tail*, true) = $ppmatch_preconditions($ppfoldresult(P, F), pcpath, $(n + 1), expression_tail*, $ppmatch_eligible(F.VALUE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if F = $pfprepare(P.FOLD[.VALUE = eps], pcpath ++ [PCINDEX n], expression, P.ENV, P.LOCATION.LINE)
+
+dec $ppmatch_count(phpType27*) : nat
+def $ppmatch_count(eps) = 0
+def $ppmatch_count((NMatchArm ABSENT expression metadata) :: phpType27*) = $ppmatch_count(phpType27*)
+def $ppmatch_count((NMatchArm (SEQUENCE expression*) expression_body metadata) :: phpType27*) = $(|expression*| + $ppmatch_count(phpType27*))
+
+dec $ppmatch_defaults(ppstate, pcpath, nat, phpType27*, bool) : ppstate
+def $ppmatch_defaults(P, pcpath, n, phpType27*, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppmatch_defaults(P, pcpath, n, eps, b) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_defaults(P, pcpath, n, (NMatchArm ABSENT expression metadata) :: phpType27*, false) = $ppmatch_defaults(P, pcpath, $(n + 1), phpType27*, true)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_defaults(P, pcpath, n, (NMatchArm ABSENT expression metadata) :: phpType27*, true) = $ppcheck($pplocate(P, pcpath ++ [PCINDEX n], $source_line(metadata)), $context_error("Match expressions may only contain one default arm", $source_line(metadata)))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_defaults(P, pcpath, n, (NMatchArm (SEQUENCE expression*) expression_body metadata) :: phpType27*, b) = $ppmatch_defaults(P, pcpath, $(n + 1), phpType27*, b)
+  -- if P.COMPLETION = PPCNORMAL
+
+dec $ppmatch_line(ppstate, pcpath) : ppstate
+def $ppmatch_line(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCMATCH_LINE pcpath P.LOCATION.LINE]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_line(P, pcpath) = P -- otherwise
+dec $ppmatch_table(ppstate, pcpath, bool) : ppstate
+def $ppmatch_table(P, pcpath, b) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCMATCH_TABLE pcpath b]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_table(P, pcpath, b) = P -- otherwise
+
+dec $ppmatch_condition(ppstate, pcpath, expression, bool) : ppstate
+def $ppmatch_condition(P, pcpath, expression, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppmatch_condition(P, pcpath, expression, false) = $ppmatch_line($ppexpr(P, pcpath, expression, PPR), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmatch_condition(P, pcpath, expression, true) = $ppmatch_line($ppdone(P[.FOLD = P.FOLD[.VALUE = (pvalue)]], pcpath, PPR), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pffact(P.FOLD.FACTS, pcpath) = (pvalue)
+dec $ppmatch_conditions(ppstate, pcpath, nat, expression*, bool) : ppstate
+def $ppmatch_conditions(P, pcpath, n, eps, b) = P
+def $ppmatch_conditions(P, pcpath, n, expression :: expression_tail*, b) = $ppmatch_conditions($ppmatch_condition(P, pcpath ++ [PCINDEX n], expression, b), pcpath, $(n + 1), expression_tail*, b)
+dec $ppmatch_arms(ppstate, pcpath, nat, phpType27*, bool) : ppstate
+def $ppmatch_arms(P, pcpath, n, eps, b) = P
+def $ppmatch_arms(P, pcpath, n, (NMatchArm ABSENT expression metadata) :: phpType27*, b) = $ppmatch_arms(P, pcpath, $(n + 1), phpType27*, b)
+def $ppmatch_arms(P, pcpath, n, (NMatchArm (SEQUENCE expression*) expression_body metadata) :: phpType27*, b) = $ppmatch_arms($ppmatch_conditions(P, pcpath ++ [PCINDEX n, PCFIELD 0], 0, expression*, b), pcpath, $(n + 1), phpType27*, b)
+dec $ppmatch_bodies(ppstate, pcpath, nat, phpType27*) : ppstate
+def $ppmatch_bodies(P, pcpath, n, eps) = P
+def $ppmatch_bodies(P, pcpath, n, (NMatchArm phpType36 expression metadata) :: phpType27*) = $ppmatch_bodies($ppmatch_line($ppexpr(P, pcpath_body, expression, PPR), pcpath_body), pcpath, $(n + 1), phpType27*)
+  -- if pcpath_body = pcpath ++ [PCINDEX n, PCFIELD 1]
+
+def $pptemporary(NExprMatch expression phpType26 metadata) = true
+def $ppdispatch(P, pcpath, NExprMatch expression (SEQUENCE phpType27*) metadata, PPR) = $ppclearvalue($ppmatch_bodies($ppmatch_line(P_conditions, pcpath), pcpath ++ [PCFIELD 1], 0, phpType27*))
+  -- if P_subject = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
+  -- if (P_prepass, b_eligible) = $ppmatch_prearms(P_subject, pcpath ++ [PCFIELD 1], 0, phpType27*, true)
+  -- if b_table = (b_eligible /\ $($ppmatch_count(phpType27*) >= 2))
+  -- if P_defaults = $ppmatch_defaults(P_prepass, pcpath ++ [PCFIELD 1], 0, phpType27*, false)
+  -- if P_conditions = $ppmatch_arms($ppmatch_table(P_defaults, pcpath, b_table), pcpath ++ [PCFIELD 1], 0, phpType27*, b_table)
+
+def $call_declaration_node(NExprMatch expression phpType26 metadata) = true
+
+def $compiled_operands(P, (PPCMATCH_LINE pcpath z) :: ppexprdone*) = (CODEMATCH_LINE pcpath z) :: $compiled_operands(P, ppexprdone*)
+def $compiled_operands(P, (PPCMATCH_TABLE pcpath b) :: ppexprdone*) = (CODEMATCH_TABLE pcpath b) :: $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCMATCH_LINE pcpath z) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCMATCH_TABLE pcpath b) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCMATCH_LINE pcpath z) :: ppexprdone*, pcpath_query) = $ppmemo_at(ppexprdone*, pcpath_query)
+def $ppmemo_at((PPCMATCH_TABLE pcpath b) :: ppexprdone*, pcpath_query) = $ppmemo_at(ppexprdone*, pcpath_query)
+def $ppbuiltin_operand((PPCMATCH_LINE pcpath z) :: ppexprdone*, pcpath_query) = $ppbuiltin_operand(ppexprdone*, pcpath_query)
+def $ppbuiltin_operand((PPCMATCH_TABLE pcpath b) :: ppexprdone*, pcpath_query) = $ppbuiltin_operand(ppexprdone*, pcpath_query)
+def $ppcodepath(CODEMATCH_LINE pcpath z) = pcpath
+def $ppcodepath(CODEMATCH_TABLE pcpath b) = pcpath
+
+def $code_expression((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_expression((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcpath) = $code_expression(pcodeexpr*, pcpath)
+def $code_call_init((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_call_init((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcpath) = $code_call_init(pcodeexpr*, pcpath)
+def $code_write((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $code_write((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcpath) = $code_write(pcodeexpr*, pcpath)
+def $effect_ancestor((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_ancestor((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcpath_parent, pcpath_child) = $effect_ancestor(pcodeexpr*, pcpath_parent, pcpath_child)
+def $effect_select((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $effect_select((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcodeexpr_all*, pcpath_parent) = $effect_select(pcodeexpr*, pcodeexpr_all*, pcpath_parent)
+def $code_write_lines((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $code_write_lines((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
+def $scope_expressions_valid(S, pcode, (CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $scope_expressions_valid(S, pcode, (CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
+def $call_argument_paths((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $call_argument_paths((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*) = $call_argument_paths(pcodeexpr*)
+def $constant_codepath(CODEMATCH_LINE pcpath z) = pcpath
+def $constant_codepath(CODEMATCH_TABLE pcpath b) = pcpath
+def $typed_return_entry(pcoccurrence*, CODEMATCH_LINE pcpath z) = eps
+def $typed_return_entry(pcoccurrence*, CODEMATCH_TABLE pcpath b) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEMATCH_LINE pcpath z) = eps
+def $reference_assignment_entry(pcoccurrence*, CODEMATCH_TABLE pcpath b) = eps
+def $named_send_entry(pcoccurrence*, CODEMATCH_LINE pcpath z) = eps
+def $named_send_entry(pcoccurrence*, CODEMATCH_TABLE pcpath b) = eps
+def $code_pipe_send((CODEMATCH_LINE pcpath_marker z) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+def $code_pipe_send((CODEMATCH_TABLE pcpath_marker b) :: pcodeexpr*, pcpath) = $code_pipe_send(pcodeexpr*, pcpath)
+
+dec $code_match_line(pcodeexpr*, pcpath) : int?
+dec $match_line_at(pcodeexpr, pcpath) : bool
+def $match_line_at(CODEMATCH_LINE pcpath z, pcpath) = true
+def $match_line_at(pcodeexpr, pcpath) = false -- otherwise
+def $code_match_line(eps, pcpath) = eps
+def $code_match_line((CODEMATCH_LINE pcpath z) :: pcodeexpr*, pcpath) = (z)
+def $code_match_line(pcodeexpr :: pcodeexpr_tail*, pcpath) = $code_match_line(pcodeexpr_tail*, pcpath)
+  -- if ~$match_line_at(pcodeexpr, pcpath)
+
+dec $code_match_table(pcodeexpr*, pcpath) : bool?
+dec $match_table_at(pcodeexpr, pcpath) : bool
+def $match_table_at(CODEMATCH_TABLE pcpath b, pcpath) = true
+def $match_table_at(pcodeexpr, pcpath) = false -- otherwise
+def $code_match_table(eps, pcpath) = eps
+def $code_match_table((CODEMATCH_TABLE pcpath b) :: pcodeexpr*, pcpath) = (b)
+def $code_match_table(pcodeexpr :: pcodeexpr_tail*, pcpath) = $code_match_table(pcodeexpr_tail*, pcpath)
+  -- if ~$match_table_at(pcodeexpr, pcpath)
+
+
+;; The projection includes every match marker and each directly consumed operand.
+dec $match_operand(pcoccurrence*, pcpath) : bool
+def $match_operand(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NExprMatch expression phpType26 metadata)
+def $match_operand(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NMatchArm phpType36 expression metadata)
+def $match_operand(pcoccurrence*, pcpath) = true
+  -- if $(|pcpath| >= 2)
+  -- if n_parent = $(|pcpath| - 2)
+  -- if pcpath[n_parent:2] = [PCFIELD 0, PCINDEX n]
+  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NMatchArm phpType36 expression metadata)
+def $match_operand(pcoccurrence*, pcpath) = false -- otherwise
+dec $match_code_entry(pcoccurrence*, pcodeexpr) : pcodeexpr*
+def $match_code_entry(pcoccurrence*, CODEMATCH_LINE pcpath z) = [CODEMATCH_LINE pcpath z]
+def $match_code_entry(pcoccurrence*, CODEMATCH_TABLE pcpath b) = [CODEMATCH_TABLE pcpath b]
+def $match_code_entry(pcoccurrence*, CODEEXPR pcpath z b) = [CODEEXPR pcpath z b]
+  -- if $match_operand(pcoccurrence*, pcpath)
+def $match_code_entry(pcoccurrence*, pcodeexpr) = eps -- otherwise
+dec $match_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $match_code(pcoccurrence*, eps) = eps
+def $match_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $match_code_entry(pcoccurrence*, pcodeexpr) ++ $match_code(pcoccurrence*, pcodeexpr_tail*)
+def $match_unit_code_valid(P, pcode) = true
+  -- if $match_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $match_code(P.FOLD.SOURCE.OCCURRENCES, $compiled_operands(P, P.EXPRESSIONS))
+def $match_unit_code_valid(P, pcode) = false -- otherwise

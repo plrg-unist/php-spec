@@ -1,0 +1,15 @@
+{
+  "dup_nan_fold": "<?php\nmatch(0){\n default=>1,\n default=>2,\n (NAN ? 1 : 2)=>3\n};\n",
+  "dup_nan_fold_stop": "<?php\nmatch(0){\n true=>0,\n default=>1,\n default=>2,\n (NAN ? 1 : 2)=>3\n};\n",
+  "dup_cond_static": "<?php\nmatch(1){default=>1, default=>2, (fn():void=>1)=>3};\n",
+  "line_dynamic": "<?php\nmatch(9) {\n 1 => 0,\n $x +\n 1 => 2,\n};\n",
+  "line_subject": "<?php\nmatch(1+\n 8) {\n 1 => 0,\n 2 => 2,\n};\n",
+  "line_nojump": "<?php\nmatch(9) {\n 1 => 0,\n true => 2,\n};\n",
+  "line_jump": "<?php\nmatch(9) {\n 1 => 0,\n 2 => 2,\n};\n",
+  "line_dynamic_before_literal": "<?php\nmatch(9) {\n $a => 0,\n 2 => 2,\n};\n",
+  "temporary_write": "<?php (match(1){1=>$a})[0]=2;\n",
+  "temporary_unset": "<?php unset((match(1){1=>$a})[0]);\n",
+  "reference_return": "<?php function &f(){return match(1){1=>$a};}\n",
+  "reference_argument": "<?php function f(&$x){} f(match(1){1=>$a});\n",
+  "dup_subject_static": "<?php\nmatch((fn():void => 1)){default=>1,default=>2};\n"
+}
