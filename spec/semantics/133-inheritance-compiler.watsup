@@ -122,17 +122,18 @@ def $ppclass_early_link_check(P, pchheader) = P
   -- if ~pclassdesc_parent.FINAL
   -- if pchheader.READONLY = pclassdesc_parent.READONLY
 
-dec $ppclass_inherited_add(ppstate, pcpath, pchheader, bool) : ppstate
-def $ppclass_inherited_add(P, pcpath, pchheader, b) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT pchheader.PARENT, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
+dec $ppclass_inherited_add(ppstate, pcpath, pchheader, bool, ppropertydesc*) : ppstate
+def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT pchheader.PARENT, PROPERTIES ppropertydesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
-def $ppclass_inherited_add(P, pcpath, pchheader, b) = P -- otherwise
+def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*) = P -- otherwise
 
-dec $ppclass_inherited(ppstate, pcpath, pchheader) : ppstate
-def $ppclass_inherited(P, pcpath, pchheader) = $ppclass_inherited_add($ppclass_early_link_check(P, pchheader), pcpath, pchheader, true)
+dec $ppclass_inherited(ppstate, pcpath, pchheader, ppropertydesc*) : ppstate
+dec $ppproperty_early_check(ppstate, pchheader, ppropertydesc*) : ppstate
+def $ppclass_inherited(P, pcpath, pchheader, ppropertydesc*) = $ppclass_inherited_add($ppproperty_early_check($ppclass_early_link_check(P, pchheader), pchheader, ppropertydesc*), pcpath, pchheader, true, ppropertydesc*)
   -- if $ppclass_inherited_early(P, pcpath, pchheader)
-def $ppclass_inherited(P, pcpath, pchheader) = $ppclass_inherited_add(P, pcpath, pchheader, false)
+def $ppclass_inherited(P, pcpath, pchheader, ppropertydesc*) = $ppclass_inherited_add(P, pcpath, pchheader, false, ppropertydesc*)
   -- if ~$ppclass_inherited_early(P, pcpath, pchheader)
 
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader)
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader, eps)
   -- if pchheader.PARENT =/= eps
   -- if pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps

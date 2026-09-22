@@ -1,0 +1,238 @@
+;; Public declared instance properties are immutable source descriptors. Values
+;; live in per-object slots; the compiler records defaults in the unit pool.
+syntax ppropertywork = PPROPERTIES ppstate ppropertydesc*
+syntax ppropertyinherited = PPIHERITED ppropertydesc ptbytes | PPINONE
+var flags : int
+var bit : int
+
+;; Public backed properties are invariant. Normalized unions and intersections
+;; denote sets even when their source order or class-name case differs.
+dec $ppproperty_atom_equal(ptatom, ptatom) : bool
+def $ppproperty_atom_equal(PTCLASS ptbytes_a, PTCLASS ptbytes_b) = ($ptlc(ptbytes_a) = $ptlc(ptbytes_b))
+def $ppproperty_atom_equal(ptatom_a, ptatom_b) = (ptatom_a = ptatom_b) -- otherwise
+dec $ppproperty_atom_in(ptatom, ptatom*) : bool
+def $ppproperty_atom_in(ptatom, eps) = false
+def $ppproperty_atom_in(ptatom, ptatom_head :: ptatom_tail*) = ($ppproperty_atom_equal(ptatom, ptatom_head) \/ $ppproperty_atom_in(ptatom, ptatom_tail*))
+dec $ppproperty_atoms_subset(ptatom*, ptatom*) : bool
+def $ppproperty_atoms_subset(eps, ptatom*) = true
+def $ppproperty_atoms_subset(ptatom :: ptatom_tail*, ptatom_right*) = ($ppproperty_atom_in(ptatom, ptatom_right*) /\ $ppproperty_atoms_subset(ptatom_tail*, ptatom_right*))
+dec $ppproperty_branch_equal(ptbranch, ptbranch) : bool
+def $ppproperty_branch_equal(PTBRANCH ptatom_a*, PTBRANCH ptatom_b*) = ($ppproperty_atoms_subset(ptatom_a*, ptatom_b*) /\ $ppproperty_atoms_subset(ptatom_b*, ptatom_a*))
+dec $ppproperty_branch_in(ptbranch, ptbranch*) : bool
+def $ppproperty_branch_in(ptbranch, eps) = false
+def $ppproperty_branch_in(ptbranch, ptbranch_head :: ptbranch_tail*) = ($ppproperty_branch_equal(ptbranch, ptbranch_head) \/ $ppproperty_branch_in(ptbranch, ptbranch_tail*))
+dec $ppproperty_branches_subset(ptbranch*, ptbranch*) : bool
+def $ppproperty_branches_subset(eps, ptbranch*) = true
+def $ppproperty_branches_subset(ptbranch :: ptbranch_tail*, ptbranch_right*) = ($ppproperty_branch_in(ptbranch, ptbranch_right*) /\ $ppproperty_branches_subset(ptbranch_tail*, ptbranch_right*))
+dec $ppproperty_type_equal(ptbranch*, ptbranch*) : bool
+def $ppproperty_type_equal(ptbranch_a*, ptbranch_b*) = ($ppproperty_branches_subset(ptbranch_a*, ptbranch_b*) /\ $ppproperty_branches_subset(ptbranch_b*, ptbranch_a*))
+def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, ptbranch_parent*, ptbranch_child*) = eps
+  -- if $ppproperty_type_equal(ptbranch_parent*, ptbranch_child*)
+def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, eps, ptbranch_child*) = ($ptascii("Type of ") ++ ptbytes_child ++ $ptascii("::$") ++ ptbytes_property ++ $ptascii(" must be omitted to match the parent definition in class ") ++ ptbytes_parent)
+  -- if ptbranch_child* =/= eps
+def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, ptbranch_parent*, ptbranch_child*) = ($ptascii("Type of ") ++ ptbytes_child ++ $ptascii("::$") ++ ptbytes_property ++ $ptascii(" must be ") ++ $pttypename(ptbranch_parent*) ++ $ptascii(" (as in class ") ++ ptbytes_parent ++ [41])
+  -- if ptbranch_parent* =/= eps /\ ~$ppproperty_type_equal(ptbranch_parent*, ptbranch_child*)
+
+dec $property_default_node_below(pcnode, pcpath, pcpath) : bool
+def $property_default_node_below(NPropertyItem phpType40 expression metadata, pcpath_item, pcpath) = $effect_below(pcpath_item ++ [PCFIELD 1], pcpath)
+def $property_default_node_below(pcnode, pcpath_item, pcpath) = false -- otherwise
+def $property_default_below(eps, pcpath) = false
+def $property_default_below((PCOCCURRENCE pcpath_item pcnode) :: pcoccurrence*, pcpath) = ($property_default_node_below(pcnode, pcpath_item, pcpath) \/ $property_default_below(pcoccurrence*, pcpath))
+
+dec $ppproperty_statements(statement*) : bool
+def $ppproperty_body(SEQUENCE (statement :: statement_tail*)) = $ppproperty_statements(statement :: statement_tail*)
+def $ppproperty_body(phpType23) = false -- otherwise
+def $ppproperty_statements(eps) = true
+def $ppproperty_statements((NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement_tail*) = $ppproperty_statements(statement_tail*)
+def $ppproperty_statements(statement*) = false -- otherwise
+
+dec $ppproperty_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pchheader) : ppropertywork
+dec $ppproperty_group(ppstate, pcpath, int, phpType18, phpType57*, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_items(ppstate, pcpath, nat, int, phpType18, phpType57*, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_one(ppstate, pcpath, int, phpType18, phpType57, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_typed(ppstate, pcpath, int, phpType5, ptbytes, ptresult, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_default(ppstate, pcpath, int, phpType5, ptbytes, ptbranch*, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_finish(ppstate, pcpath, int, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_at(ppropertydesc*, ptbytes) : bool
+dec $ppproperty_diagnostics(ppstate, ptdiagnostic*) : ppstate
+dec $ppproperty_diagnostic(ppstate, ptdiagnostic) : ppstate
+dec $ppproperty_context(ppstate, pchheader, ptbytes, int) : ptcontext
+dec $ppproperty_value_valid(ptbranch*, pvalue) : bool
+dec $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) : ptbytes
+dec $ppproperty_plain_intersection(ptbranch*) : bool
+dec $ppproperty_flag(int, int) : bool
+dec $ppproperty_explicit(ppropdefault) : bool
+dec $ppproperty_group_line_valid(ppstate, metadata) : bool
+def $ppproperty_flag(flags, bit) = $((flags / bit) \ 2 = 1)
+def $ppproperty_explicit(PROP_STORED porigin) = true
+def $ppproperty_explicit(ppropdefault) = false -- otherwise
+def $ppproperty_group_line_valid(P, metadata) = true
+  -- if $source_line(metadata) = z
+  -- if $(z > 0)
+  -- if $(z >= P.LOCATION.LINE)
+  -- if $(z <= $source_end_line(metadata))
+def $ppproperty_group_line_valid(P, metadata) = false -- otherwise
+
+def $ppproperty_groups(P, pcpath, n, eps, ppropertydesc*, pchheader) = PPROPERTIES P ppropertydesc*
+  -- if P.COMPLETION = PPCNORMAL
+def $ppproperty_groups(P, pcpath, n, statement*, ppropertydesc*, pchheader) = PPROPERTIES P ppropertydesc*
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = $ppproperty_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath ++ [PCFIELD 5, PCINDEX n], $source_line(metadata)), pcpath ++ [PCFIELD 5, PCINDEX n], flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
+def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "missing property compiler line")) ppropertydesc*
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~$ppproperty_group_line_valid(P, metadata)
+def $ppproperty_groups(P, pcpath, n, statement*, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "property attributes, hooks, or members")) ppropertydesc*
+  -- otherwise
+
+def $ppproperty_group(P, pcpath, flags, phpType18, phpType57*, ppropertydesc*, pchheader, z) = $ppproperty_items(P, pcpath ++ [PCFIELD 3], 0, flags, phpType18, phpType57*, ppropertydesc*, pchheader, z)
+def $ppproperty_items(P, pcpath, n, flags, phpType18, eps, ppropertydesc*, pchheader, z) = PPROPERTIES P ppropertydesc*
+  -- if P.COMPLETION = PPCNORMAL
+def $ppproperty_items(P, pcpath, n, flags, phpType18, phpType57*, ppropertydesc*, pchheader, z) = PPROPERTIES P ppropertydesc*
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppproperty_items(P, pcpath, n, flags, phpType18, phpType57 :: phpType57_tail*, ppropertydesc*, pchheader, z) = $ppproperty_items(P_next, pcpath, $(n + 1), flags, phpType18, phpType57_tail*, ppropertydesc_next*, pchheader, z)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_one(P, pcpath ++ [PCINDEX n], flags, phpType18, phpType57, ppropertydesc*, pchheader, z)
+
+def $ppproperty_one(P, pcpath, flags, phpType18, NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata, ppropertydesc*, pchheader, z) = $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, $ptype_normalize(phpType18, $ppproperty_context(P, pchheader, ptbytes, z)), ppropertydesc*, pchheader, z)
+  -- if ptbytes = $base64(text)
+def $ppproperty_one(P, pcpath, flags, phpType18, phpType57, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "edited property name")) ppropertydesc* -- otherwise
+
+def $ppproperty_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTKNOWN pchheader.NAME pchheader.PARENT, POSITION PTPROPERTY, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppproperty_diagnostics(P, eps) = P
+def $ppproperty_diagnostics(P, ptdiagnostic :: ptdiagnostic_tail*) = $ppproperty_diagnostics($ppproperty_diagnostic(P, ptdiagnostic), ptdiagnostic_tail*)
+def $ppproperty_diagnostic(P, PTDIAGNOSTIC "fatal" text ptbranch* ptcontext) = $ppconstant_error(P, $ptmessage(PTDIAGNOSTIC "fatal" text ptbranch* ptcontext), ptcontext.LINE)
+def $ppproperty_diagnostic(P, PTDIAGNOSTIC text_level text ptbranch* ptcontext) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text_level "property-message" ([$ptmessage(PTDIAGNOSTIC text_level text ptbranch* ptcontext)]) (P.LOCATION[.LINE = ptcontext.LINE])]]
+  -- if text_level =/= "fatal"
+def $plmessage(PLDIAGNOSTIC text "property-message" ([ptbytes]) pllocation) = ptbytes
+
+def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTUNSUPPORTED text, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, text)) ppropertydesc*
+def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTERROR ptdiagnostic*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppproperty_diagnostics(P, ptdiagnostic*)) ppropertydesc*
+def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTOK ptbranch* ptdiagnostic*, ppropertydesc*, pchheader, z) = $ppproperty_default($ppproperty_diagnostics(P, ptdiagnostic*), pcpath, flags, phpType5, ptbytes, ptbranch*, ppropertydesc*, pchheader, z)
+  -- if ~$ppproperty_at(ppropertydesc*, ptbytes)
+def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTOK ptbranch* ptdiagnostic*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error($ppproperty_diagnostics(P, ptdiagnostic*), $ptascii("Cannot redeclare ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes, $nabs(z))) ppropertydesc*
+  -- if $ppproperty_at(ppropertydesc*, ptbytes)
+def $ppproperty_at(eps, ptbytes) = false
+def $ppproperty_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = true -- if ppropertydesc.NAME = ptbytes
+def $ppproperty_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = $ppproperty_at(ppropertydesc_tail*, ptbytes) -- if ppropertydesc.NAME =/= ptbytes
+
+def $ppproperty_default(P, pcpath, flags, ABSENT, ptbytes, eps, ppropertydesc*, pchheader, z) = $ppproperty_finish(P, pcpath, flags, ptbytes, eps, PROP_NULL, ppropertydesc*, pchheader, z)
+def $ppproperty_default(P, pcpath, flags, ABSENT, ptbytes, ptbranch :: ptbranch_tail*, ppropertydesc*, pchheader, z) = $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch :: ptbranch_tail*, PROP_UNINITIALIZED, ppropertydesc*, pchheader, z)
+def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES P_default ppropertydesc*
+  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default.COMPLETION =/= PPCNORMAL
+def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = $ppproperty_finish(P_default[.FOLD = P_default.FOLD[.DEFAULT = false][.CONSTANT = false]], pcpath, flags, ptbytes, ptbranch*, PROP_STORED (PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 1])), ppropertydesc*, pchheader, z)
+  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default.COMPLETION = PPCNORMAL
+  -- if P_default.FOLD.VALUE = (pvalue)
+  -- if $ppproperty_value_valid(ptbranch*, pvalue)
+  -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDSTORED
+def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P_default, $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue), $nabs(z))) ppropertydesc*
+  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default.COMPLETION = PPCNORMAL
+  -- if P_default.FOLD.VALUE = (pvalue)
+  -- if ~$ppproperty_value_valid(ptbranch*, pvalue)
+def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P_default, "deferred property default")) ppropertydesc*
+  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default.COMPLETION = PPCNORMAL
+  -- if P_default.FOLD.VALUE = eps
+def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P_default, "deferred property default")) ppropertydesc*
+  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default.COMPLETION = PPCNORMAL
+  -- if P_default.FOLD.VALUE = (pvalue)
+  -- if $ppproperty_value_valid(ptbranch*, pvalue)
+  -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDDEFERRED
+
+def $ppproperty_value_valid(eps, pvalue) = true
+def $ppproperty_value_valid(ptbranch*, pvalue) = true -- if ptbranch* =/= eps /\ $typed_exact(ptbranch*, pvalue)
+def $ppproperty_value_valid(ptbranch*, PINT i) = true -- if ptbranch* =/= eps /\ ~$typed_exact(ptbranch*, PINT i) /\ "float" <- $ptmasks(ptbranch*)
+def $ppproperty_value_valid(ptbranch*, pvalue) = false -- otherwise
+def $ppproperty_plain_intersection([PTBRANCH (ptatom_a :: ptatom_b :: ptatom_tail*)]) = true
+def $ppproperty_plain_intersection(ptbranch*) = false -- otherwise
+def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, PNULL) = $ptascii("Default value for property of type ") ++ $pttypename(ptbranch*) ++ $ptascii(" may not be null. Use the nullable type ") ++ $pttypename(ptbranch* ++ [(PTBRANCH ([PTBUILTIN "null"]))]) ++ $ptascii(" to allow null default value")
+  -- if ~("null" <- $ptmasks(ptbranch*)) /\ ~$ppproperty_plain_intersection(ptbranch*)
+def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) = $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as default value for property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*)
+  -- if pvalue =/= PNULL \/ $ppproperty_plain_intersection(ptbranch*)
+
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Readonly property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" must have type"), $nabs(z))) ppropertydesc*
+  -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* = eps
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Readonly property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" cannot have default value"), $nabs(z))) ppropertydesc*
+  -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ $ppproperty_explicit(ppropdefault)
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Static property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" cannot be readonly"), $nabs(z))) ppropertydesc*
+  -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ ~$ppproperty_explicit(ppropdefault) /\ $ppproperty_flag(flags, 8)
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
+  -- if flags <- [0, 1] /\ ~pchheader.READONLY
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "property visibility, static, readonly, or final")) ppropertydesc* -- otherwise
+
+dec $ppproperty_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
+def $ppproperty_desc_at(eps, ptbytes) = eps
+def $ppproperty_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.NAME = ptbytes
+def $ppproperty_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = $ppproperty_desc_at(ppropertydesc_tail*, ptbytes)
+  -- if ppropertydesc.NAME =/= ptbytes
+dec $ppproperty_info_own(ppropertydesc*, ptbytes) : ppropertyinherited*
+def $ppproperty_info_own(eps, ptbytes) = eps
+def $ppproperty_info_own(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (PPIHERITED ppropertydesc ptbytes) :: $ppproperty_info_own(ppropertydesc_tail*, ptbytes)
+dec $ppproperty_info_extra(ppropertyinherited*, ppropertydesc*) : ppropertyinherited*
+def $ppproperty_info_extra(eps, ppropertydesc*) = eps
+def $ppproperty_info_extra((PPIHERITED ppropertydesc ptbytes) :: ppropertyinherited_tail*, ppropertydesc_own*) = $ppproperty_info_extra(ppropertyinherited_tail*, ppropertydesc_own*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc.NAME) = (ppropertydesc_existing)
+def $ppproperty_info_extra((PPIHERITED ppropertydesc ptbytes) :: ppropertyinherited_tail*, ppropertydesc_own*) = (PPIHERITED ppropertydesc ptbytes) :: $ppproperty_info_extra(ppropertyinherited_tail*, ppropertydesc_own*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc.NAME) = eps
+dec $ppproperty_early_info(pclassdesc*, pclassdesc) : ppropertyinherited*
+def $ppproperty_early_info(pclassdesc_all*, pclassdesc) = $ppproperty_info_own(pclassdesc.PROPERTIES, pclassdesc.NAME) ++ $ppproperty_info_extra($ppproperty_early_info(pclassdesc_all*, pclassdesc_parent), pclassdesc.PROPERTIES)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $ppclass_prior_early(pclassdesc_all*, ptbytes_parent) = (pclassdesc_parent)
+def $ppproperty_early_info(pclassdesc_all*, pclassdesc) = $ppproperty_info_own(pclassdesc.PROPERTIES, pclassdesc.NAME) -- otherwise
+dec $ppproperty_early_one(ppstate, pchheader, ppropertyinherited, ppropertydesc*) : ppstate
+def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = P
+  -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = eps
+def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = P
+  -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if $ppproperty_override_message(pchheader.NAME, ppropertydesc_child.NAME, ptbytes_parent, ppropertydesc_parent.TYPE, ppropertydesc_child.TYPE) = eps
+def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = $ppconstant_error(P, ptbytes_error, P.LOCATION.LINE)
+  -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if $ppproperty_override_message(pchheader.NAME, ppropertydesc_child.NAME, ptbytes_parent, ppropertydesc_parent.TYPE, ppropertydesc_child.TYPE) = (ptbytes_error)
+dec $ppproperty_early_items(ppstate, pchheader, ppropertyinherited*, ppropertydesc*) : ppstate
+def $ppproperty_early_items(P, pchheader, eps, ppropertydesc*) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppproperty_early_items(P, pchheader, ppropertyinherited*, ppropertydesc*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppproperty_early_items(P, pchheader, ppropertyinherited :: ppropertyinherited_tail*, ppropertydesc*) = $ppproperty_early_items($ppproperty_early_one(P, pchheader, ppropertyinherited, ppropertydesc*), pchheader, ppropertyinherited_tail*, ppropertydesc*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppproperty_early_check(P, pchheader, ppropertydesc*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppproperty_early_check(P, pchheader, ppropertydesc*) = $ppproperty_early_items(P, pchheader, $ppproperty_early_info(P.CLASSES, pclassdesc_parent), ppropertydesc*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+def $ppproperty_early_check(P, pchheader, ppropertydesc*) = P -- otherwise
+
+dec $ppclass_properties_root(ppstate, pcpath, pchheader, ppropertydesc*) : ppstate
+def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, PROPERTIES ppropertydesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]]
+  -- if P.COMPLETION = PPCNORMAL
+
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*)
+  -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps
+  -- if $ppproperty_body(pchheader.BODY)
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if PPROPERTIES P_props ppropertydesc* = $ppproperty_groups(P_header, pcpath, 0, statement*, eps, pchheader)
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*)
+  -- if pchheader.PARENT =/= eps /\ pchheader.INTERFACES = eps
+  -- if $ppproperty_body(pchheader.BODY)
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if PPROPERTIES P_props ppropertydesc* = $ppproperty_groups(P_header, pcpath, 0, statement*, eps, pchheader)
+
+;; Fetch compilation preserves the receiver/name order. The checked source
+;; supplies literal names; computed names have an ordinary child read fact.
+def $ppdispatch(P, pcpath, NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata, ppmode) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+  -- if ppmode =/= PPF
+def $ppdispatch(P, pcpath, NExprPropertyFetch expression_base expression_name metadata, ppmode) = $ppclearvalue($ppexpr($ppexpr(P, pcpath ++ [PCFIELD 0], expression_base, PPR), pcpath ++ [PCFIELD 1], expression_name, PPR))
+  -- if ppmode =/= PPF
+def $ppdispatch(P, pcpath, NExprPropertyFetch expression phpType20 metadata, PPF) = $ppunsupported(P, "property reference fetch")

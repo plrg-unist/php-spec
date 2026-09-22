@@ -28,8 +28,9 @@ def $cast_value(S, CASTFLOAT, pvalue, z) = S[.RESULT = KNOWN (PFLOAT $float_of_i
   -- if $cast_truth_kind(pvalue)
 def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
 def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_array(S, $array_empty())
-def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, $array_empty())
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(S, n), $property_cast_array(ppropertyslot*))
   -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})

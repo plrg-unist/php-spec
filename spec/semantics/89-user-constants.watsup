@@ -146,7 +146,8 @@ def $constant_context_valid(S) = $default_context_valid(S, pconstantcontext)
 def $constant_context_valid(S) = false -- otherwise
 
 dec $static_below(pcoccurrence*, pcpath) : bool
-def $constant_class_origin_allowed(pcunit, pcpath) = ($constant_below(pcunit.OCCURRENCES, pcpath) \/ $default_below(pcunit.OCCURRENCES, pcpath) \/ $static_below(pcunit.OCCURRENCES, pcpath))
+dec $property_default_below(pcoccurrence*, pcpath) : bool
+def $constant_class_origin_allowed(pcunit, pcpath) = ($constant_below(pcunit.OCCURRENCES, pcpath) \/ $default_below(pcunit.OCCURRENCES, pcpath) \/ $static_below(pcunit.OCCURRENCES, pcpath) \/ $property_default_below(pcunit.OCCURRENCES, pcpath))
 
 ;; Validation scans the remaining continuation in the same declaration order.
 def $call_after_origin(S, CONSTANT_BIND porigin) = S[.CONSTCONTEXT = eps]

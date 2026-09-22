@@ -1,0 +1,108 @@
+{
+  "status": "reviewed private paired gates with exact canonical semantic/input bridge",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, pinned vendor/php-src",
+  "scope": "Public instance declarations/defaults and ordered invariant overrides; per-object direct slots, computed/dynamic access, quiet probes, object cast/comparison and live by-value foreach. References, nonpublic/static/readonly/hooks/magic/methods remain open.",
+  "implementation_fingerprint": {
+    "sha256": "64f4db42287d0f130c55d11d1c24acc14efd0efe7b66fc6f0333029b1dbe5b1c",
+    "files": 1085
+  },
+  "maintained": {
+    "source": {
+      "raw": ".tools/runtime10-property-candidate/.tools/properties-mcw4k74s/report.json",
+      "sha256": "a88e16850e320f49118b724b69cd70cd4ee65c583396967a95ee01987c1d23b9",
+      "cases": 31,
+      "outcomes": {
+        "normal": 16,
+        "php_error": 9,
+        "static_rejection": 6
+      },
+      "direct_inputs": 142
+    },
+    "compiler": {
+      "command": "python3 tests/semantics/property_compiler.py",
+      "assertions": 146,
+      "raw": ".tools/runtime10-property-candidate/.tools/property-compiler-0q8p70uo"
+    },
+    "paused": {
+      "raw": ".tools/runtime10-property-candidate/.tools/properties-task-protocol-jccs2ozg/report.json",
+      "sha256": "47104c2b6482e14f48ec2b9c1fb1d098c198768102274f9e737bf158c8103963",
+      "assertions": 58,
+      "stages": 3
+    }
+  },
+  "independent": {
+    "source_prior_snapshot": {
+      "raw": ".tools/review15-properties/paired-replay10-t407tqeo/report.json",
+      "sha256": "4c5f0d18e8ca1dea17de2d91752c930a4ebabf2a9aa30b2c71f7c3ee889ad288",
+      "cases": 10
+    },
+    "paused_prior_snapshot": [
+      {
+        "raw": ".tools/review15-properties/property-owner-d53nx1cu/report.json",
+        "sha256": "4f4439143efd92616293b07b46a2bca8007355f2381db76e86cb0772d54de6fa",
+        "assertions": 24
+      },
+      {
+        "raw": ".tools/review15-properties/property-dynamic-q1u1xy1i/report.json",
+        "sha256": "89051ef8010a836e6e904291bb0d9c7226596cd7cccd4dca97acfce39919c83d",
+        "assertions": 14
+      },
+      {
+        "raw": ".tools/review15-properties/properties-task-protocol-iqihcf63/report.json",
+        "sha256": "eafd45cab6d4e022a81d8a8fc3b08c79c50c1f6109eb5c7a4bd933234acc40b1",
+        "assertions": 19
+      }
+    ],
+    "override_source": {
+      "raw": ".tools/review15-properties/override-replay6-24jqqdb_/report.json",
+      "sha256": "24d2895e72ce184d1029e74ffc823542c92515659e82b343a4661d0f5d9b3ca0",
+      "cases": 6
+    },
+    "override_state": {
+      "raw": ".tools/review15-properties/property-override-state-3ohdll3r/report.json",
+      "sha256": "b70fee375b5d84e562b7e46bede1944c5dab2f8f0eb7ce7926544b5123309a52",
+      "assertions": 15
+    },
+    "counts_across_distinct_snapshots": {
+      "source": 16,
+      "paused_assertions": 72
+    }
+  },
+  "provenance": "Private raw retains source bytes, exact native argv/cwd/environment profile, oracle binary hash, outcomes and independent fingerprints. Earlier independent snapshots have distinct fingerprints; final source/state and override6/15 share only their recorded final fingerprint.",
+  "profiles": {
+    "maintained_source": "Pinned local PHP 8.5.10 CLI -n with tests/semantics/profile.json overrides plus variables_order=EGPCS; request includes explicit file, cwd, argv, environment and clock facts.",
+    "independent_originals": "Each retained original report records its own native command, cwd, environment overlay and source/oracle hashes; prior snapshots have separate semantic fingerprints."
+  },
+  "author_supplementary": {
+    "type_equivalence": {
+      "raw": ".tools/compiler10-property-candidate/.tools/property-override-types/compare.json",
+      "sha256": "da3d780b8c6531c5b59141d9008f92f236ad190ade8460b424efc8ad1b011934",
+      "cases": 4
+    },
+    "parent_property_priority": {
+      "raw": ".tools/compiler10-property-candidate/.tools/property-override-order/native.json",
+      "sha256": "e65c04797d8cdb08da102a5181d077869949cd4e156a40c92f5df35fa7116298",
+      "cases": 2
+    }
+  },
+  "canonical_bridge": {
+    "raw": ".tools/property-canonical-bridge.json",
+    "sha256": "debfa8c493647c3157039ff8b9650337ab49453b11d9e58fbe8a99879bf25ecc",
+    "exact_implementation_and_test_files": 27,
+    "direct_inputs": 142,
+    "focused_compiler": ".tools/property-compiler-eqag0ovv",
+    "representative_source_reports": [
+      {
+        "raw": ".tools/properties-_emr8ti3/report.json",
+        "sha256": "5b9d07e9628f75697b02652d2d1cb043a09ae168932cabc8121c74f9cb5efd26",
+        "case": "override-parent-order"
+      },
+      {
+        "raw": ".tools/properties-n3dk65kr/report.json",
+        "sha256": "8d70c10768529f96768313548ae712cf96b15abd980be37e5235ddca43544a43",
+        "case": "live-foreach"
+      }
+    ],
+    "base_commit": "e3ef2801f19a56dd480050a1781f264da48ff401"
+  }
+}

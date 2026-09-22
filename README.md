@@ -183,8 +183,14 @@ sent values through the dummy call; their [review](coverage/semantics/noctor-arg
 binds source, compiler and paused-state checks. [Empty-class inheritance](docs/semantics/SOURCE-INHERITANCE.md)
 links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
-binds source, compiler, syntax and paused-state checks. Constructors, members,
+binds source, compiler, syntax and paused-state checks. Constructors,
 other internal-class bodies and method callbacks remain open.
+[Public object properties](docs/semantics/SOURCE-PROPERTIES.md) now have typed
+and uninitialized slots, source-backed defaults, inherited public overrides,
+dynamic names, direct access, live foreach, casts and comparison. The
+[property review](coverage/semantics/properties-review.json) binds source,
+compiler and paused-task checks. Property references, visibility beyond public,
+static and readonly members, hooks and magic methods remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)

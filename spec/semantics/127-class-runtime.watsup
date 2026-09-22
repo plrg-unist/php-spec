@@ -69,12 +69,19 @@ def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot ins
   -- if ~$class_internal(preqbytes)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.ABSTRACT
-def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [INSTANCE porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [INSTANCE porigin]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS ppropertyslot*, MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
   -- if ~$class_internal(preqbytes)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.ABSTRACT
   -- if n = |S.OBJECTS|
+  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot*)
+def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled property default"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
 rule PhpStep/new-class: S ~> $new_class(S[.TODO = ptask_tail*], preqbytes, $runtime_line(S, eps, NExprNew name (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew name (SEQUENCE eps) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (PORIGIN n pcpath)
@@ -113,14 +120,20 @@ rule PhpStep/instanceof-class-abrupt: S ~> S_value[.TODO = eps]
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION =/= NORMAL
 
+def $node_children(S, HOBJECT n) = $property_slot_nodes(ppropertyslot*)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $node_children(S, HOBJECT n) = eps
   -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $objectprops_at(S.OBJECTPROPS, n) = eps
 def $closure_live_object_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), ppropertyslot*)
 
 dec $class_registry_valid(pclassdesc*, (preqbytes, porigin)*) : bool
 def $class_registry_valid(pclassdesc_registry*, eps) = true
@@ -143,7 +156,7 @@ def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (P.CLASSES ++ pcla
   -- if P.COMPLETION = PPCNORMAL
   -- if $class_projection(S, pcunit_tail*) = CLASSCHECK pclassdesc*
 def $class_projection(S, pcunit*) = CLASSINVALID -- otherwise
-def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES) /\ $class_links_valid(S))
+def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES) /\ $class_links_valid(S) /\ $property_state_valid(S))
   -- if $class_projection(S, S.SOURCES) = CLASSCHECK S.CLASSES
 def $class_state_valid(S) = false -- otherwise
 

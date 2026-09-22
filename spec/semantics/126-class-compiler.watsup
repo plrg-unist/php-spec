@@ -198,11 +198,12 @@ def $ppclass_early(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_early(pcl
   -- if ~(pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes))
 
 dec $ppclass_result(ppstate, pcpath, pchresult) : ppstate
+dec $ppproperty_body(phpType23) : bool
 def $ppclass_result(P, pcpath, PCHUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppclass_result(P, pcpath, PCHERROR pchdiagnostic*) = $ppclass_diagnostics(P, pchdiagnostic*)
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "class inheritance, interfaces, attributes, or members")
-  -- if pchheader.INTERFACES =/= eps \/ pchheader.BODY =/= SEQUENCE eps
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
+  -- if pchheader.INTERFACES =/= eps \/ (pchheader.BODY =/= SEQUENCE eps /\ ~$ppproperty_body(pchheader.BODY))
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, PROPERTIES eps, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
   -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
 
 dec $class_keyword_line(metadata, phpType3) : int

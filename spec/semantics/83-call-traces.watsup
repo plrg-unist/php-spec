@@ -96,6 +96,10 @@ def $error_keep_iterators((ITERATOR n n_array b pcursor*) :: piterator*, n_keep*
   -- if n <- n_keep*
 def $error_keep_iterators((ITERATOR n n_array b pcursor*) :: piterator*, n_keep*) = $error_keep_iterators(piterator*, n_keep*)
   -- if ~(n <- n_keep*)
+def $error_keep_iterators((OBJECTITER n n_object n_position) :: piterator*, n_keep*) = (OBJECTITER n n_object n_position) :: $error_keep_iterators(piterator*, n_keep*)
+  -- if n <- n_keep*
+def $error_keep_iterators((OBJECTITER n n_object n_position) :: piterator*, n_keep*) = $error_keep_iterators(piterator*, n_keep*)
+  -- if ~(n <- n_keep*)
 dec $error_release_iterators(pstate) : pstate
 def $error_release_iterators(S) = S[.ITERATORS = $error_keep_iterators(S.ITERATORS, $error_saved_iterators(S.FRAMES))]
 

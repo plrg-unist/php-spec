@@ -36,6 +36,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 130 | Internal `stdClass` identity, empty casts and nominal consumers: 17 source outcomes and paused ownership guards. [Review](coverage/semantics/stdclass-review.json) |
 | 131/132 | No-constructor arguments for admitted empty classes and `stdClass`: 18 source outcomes, 59 compiler assertions and 77 maintained paused assertions. [Review](coverage/semantics/noctor-args-review.json) |
 | 133/134 | Empty-class inheritance, early/deferred links and transitive nominal types: 33 source outcomes, 81 compiler assertions, 32 graph assertions and one classified syntax gate. [Review](coverage/semantics/inheritance-review.json) |
+| 135/136 | Public instance properties: typed/default/uninitialized slots, invariant inherited overrides, dynamic and computed names, live foreach, casts and comparison; 31 source outcomes, 146 compiler and 58 paused-task assertions. [Review](coverage/semantics/properties-review.json) |
 
 For `new C(args)`, class lookup and allocation precede argument effects;
 static argument-shape rejection precedes runtime lookup. Named sends reject an
@@ -48,8 +49,8 @@ canonical fingerprint and independent native/state checks.
 
 ## Next work
 
-Declared property storage and access is the next object step; methods,
-constructors, remaining internal parents and Throwable follow. `try`/`finally` goto
+Property references and constraints, visibility, static and readonly members,
+hooks, methods, constructors, remaining internal parents and Throwable follow. `try`/`finally` goto
 interaction, match, remaining intrinsics, traversal, dynamic lifetime and
 collection obligations remain open. Full current-source closure and a fresh
 offline network-isolated rebuild are required before complete-core acceptance.

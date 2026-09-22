@@ -37,17 +37,30 @@ def $iterator_lookup(eps, n) = eps
 def $iterator_lookup((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = (ITERATOR n n_array b (CURSOR n_table n_saved)*)
 def $iterator_lookup((ITERATOR n_other n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = $iterator_lookup(piterator*, n)
   -- if n_other =/= n
+def $iterator_lookup((OBJECTITER n n_object n_position) :: piterator*, n) = (OBJECTITER n n_object n_position)
+def $iterator_lookup((OBJECTITER n_other n_object n_position) :: piterator*, n) = $iterator_lookup(piterator*, n)
+  -- if n_other =/= n
 
 dec $iterator_set(piterator*, piterator) : piterator*
 def $iterator_set(eps, piterator) = [piterator]
 def $iterator_set((ITERATOR n n_old b_old (CURSOR n_table_old n_position_old)*) :: piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*) = (ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*
 def $iterator_set((ITERATOR n_other n_old b_old (CURSOR n_table_old n_position_old)*) :: piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*) = (ITERATOR n_other n_old b_old (CURSOR n_table_old n_position_old)*) :: $iterator_set(piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*)
   -- if n_other =/= n
+def $iterator_set((OBJECTITER n n_old n_old_position) :: piterator*, OBJECTITER n n_object n_position) = (OBJECTITER n n_object n_position) :: piterator*
+def $iterator_set((OBJECTITER n_other n_old n_old_position) :: piterator*, OBJECTITER n n_object n_position) = (OBJECTITER n_other n_old n_old_position) :: $iterator_set(piterator*, OBJECTITER n n_object n_position)
+  -- if n_other =/= n
+def $iterator_set((ITERATOR n_other n_old b_old pcursor*) :: piterator*, OBJECTITER n n_object n_position) = (ITERATOR n_other n_old b_old pcursor*) :: $iterator_set(piterator*, OBJECTITER n n_object n_position)
+  -- if n_other =/= n
+def $iterator_set((OBJECTITER n_other n_old n_old_position) :: piterator*, ITERATOR n n_array b pcursor*) = (OBJECTITER n_other n_old n_old_position) :: $iterator_set(piterator*, ITERATOR n n_array b pcursor*)
+  -- if n_other =/= n
 
 dec $iterator_remove(piterator*, nat) : piterator*
 def $iterator_remove(eps, n) = eps
 def $iterator_remove((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = piterator*
 def $iterator_remove((ITERATOR n_other n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = (ITERATOR n_other n_array b (CURSOR n_table n_saved)*) :: $iterator_remove(piterator*, n)
+  -- if n_other =/= n
+def $iterator_remove((OBJECTITER n n_object n_position) :: piterator*, n) = piterator*
+def $iterator_remove((OBJECTITER n_other n_object n_position) :: piterator*, n) = (OBJECTITER n_other n_object n_position) :: $iterator_remove(piterator*, n)
   -- if n_other =/= n
 
 dec $iterator_copy(piterator, nat, nat) : piterator
@@ -76,3 +89,7 @@ def $cursor_prune((CURSOR n_table n_saved) :: (CURSOR n_tail n_position)*, pnode
   -- if ~$heap_member(HARRAY n_table, pnode*)
 def $iterators_prune(eps, pnode*) = eps
 def $iterators_prune((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, pnode*) = (ITERATOR n n_array b ($cursor_prune((CURSOR n_table n_saved)*, pnode*))) :: $iterators_prune(piterator*, pnode*)
+def $iterators_prune((OBJECTITER n n_object n_position) :: piterator*, pnode*) = (OBJECTITER n n_object n_position) :: $iterators_prune(piterator*, pnode*)
+  -- if $heap_member(HOBJECT n_object, pnode*)
+def $iterators_prune((OBJECTITER n n_object n_position) :: piterator*, pnode*) = $iterators_prune(piterator*, pnode*)
+  -- if ~$heap_member(HOBJECT n_object, pnode*)

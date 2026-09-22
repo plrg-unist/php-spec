@@ -1,5 +1,5 @@
 ;; The pinned internal stdClass has no source declaration origin.
-def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [STDINSTANCE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [STDINSTANCE]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $ptlc(preqbytes) = $ptascii("stdclass")
   -- if n = |S.OBJECTS|
 
@@ -7,12 +7,18 @@ def $object_name(S, n) = $ptascii("stdClass")
   -- if S.OBJECTS[n] = STDINSTANCE
 def $class_plain_instance(S, n) = true
   -- if S.OBJECTS[n] = STDINSTANCE
+def $node_children(S, HOBJECT n) = $property_slot_nodes(ppropertyslot*)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $node_children(S, HOBJECT n) = eps
   -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = eps
 def $closure_live_object_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slots_valid(S, eps, ppropertyslot*)
 
 def $empty_instance_same(S, n_left, n_right) = true
   -- if S.OBJECTS[n_left] = STDINSTANCE
@@ -24,8 +30,9 @@ def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, 
   -- if S.OBJECTS[n] = STDINSTANCE
 def $typed_given(S, POBJECT n) = $ptascii("stdClass")
   -- if S.OBJECTS[n] = STDINSTANCE
-def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, $array_empty())
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(S, n), $property_cast_array(ppropertyslot*))
   -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $cast_empty_object_value(S, PNULL) = true
 def $cast_empty_object_value(S, PARRAY n) = true
   -- if S.ARRAYS[n].ITEMS = eps

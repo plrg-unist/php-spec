@@ -5,6 +5,41 @@ def $class_link_at((CLASSLINK porigin pclassparent) :: pclasslink_tail*, porigin
 def $class_link_at((CLASSLINK porigin_other pclassparent) :: pclasslink_tail*, porigin) = $class_link_at(pclasslink_tail*, porigin)
   -- if porigin_other =/= porigin
 
+;; Zend scans the parent's properties_info table in hash order. A class adds
+;; its own declarations first, then appends only absent inherited names.
+dec $property_info_append(ppropertydesc*, ppropertydesc*) : ppropertydesc*
+def $property_info_append(ppropertydesc_own*, eps) = ppropertydesc_own*
+def $property_info_append(ppropertydesc_own*, ppropertydesc_parent :: ppropertydesc_tail*) = $property_info_append(ppropertydesc_own*, ppropertydesc_tail*)
+  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
+def $property_info_append(ppropertydesc_own*, ppropertydesc_parent :: ppropertydesc_tail*) = $property_info_append(ppropertydesc_own* ++ [ppropertydesc_parent], ppropertydesc_tail*)
+  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
+dec $property_info_layout(pstate, porigin, nat) : ppropertydesc*
+def $property_info_layout(S, porigin, 0) = eps
+def $property_info_layout(S, porigin, n) = pclassdesc.PROPERTIES
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps
+def $property_info_layout(S, porigin, n) = pclassdesc.PROPERTIES
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $property_info_layout(S, porigin, n) = $property_info_append(pclassdesc.PROPERTIES, $property_info_layout(S, porigin_parent, $nabs($(n - 1))))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $property_info_layout(S, porigin, n) = eps -- otherwise
+
+dec $class_property_override_issue(pstate, pclassdesc, ppropertydesc*, ppropertydesc*) : ptbytes?
+def $class_property_override_issue(S, pclassdesc_child, eps, ppropertydesc_own*) = eps
+def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
+  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
+def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = (ptbytes_message)
+  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
+  -- if $ppproperty_override_message(pclassdesc_child.NAME, ppropertydesc_parent.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent.TYPE, ppropertydesc_found.TYPE) = (ptbytes_message)
+def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
+  -- if $property_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
+  -- if $ppproperty_override_message(pclassdesc_child.NAME, ppropertydesc_parent.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent.TYPE, ppropertydesc_found.TYPE) = eps
+
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
@@ -19,11 +54,18 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FA
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if ~pclassdesc_parent.FINAL
   -- if ~pclassdesc.READONLY /\ pclassdesc_parent.READONLY
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message pclassdesc.LINE]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if ~pclassdesc_parent.FINAL
+  -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
+  -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = (ptbytes_message)
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
+  -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class stdClass")) pclassdesc.LINE]
   -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
   -- if pclassdesc.READONLY
@@ -93,6 +135,7 @@ def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child (SOUR
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc_child.READONLY = pclassdesc_parent.READONLY
   -- if $class_link_parent_precedes(pclasslink_prefix*, pclassdesc_parent)
+  -- if $class_property_override_issue(S, pclassdesc_child, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc_child.PROPERTIES) = eps
 def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child STDCLASS_PARENT) = true
   -- if $class_link_at(pclasslink_prefix*, porigin_child) = eps
   -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)

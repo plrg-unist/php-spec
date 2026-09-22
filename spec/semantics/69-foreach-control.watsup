@@ -28,6 +28,19 @@ def $foreach_start(S, statement, plocation, b, z) = $foreach_warning(S, pvalue, 
   -- if S.RESULT = KNOWN pvalue
   -- if ~$is_array_value(pvalue)
   -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
+def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $class_plain_instance(S, n_object)
+  -- if n_iterator = S.NEXTITER
+  -- if S_marked = $objectprops_mark(S, n_object)
+def $foreach_start(S, statement, plocation, true, z) = S[.COMPLETION = UNSUPPORTED "object property reference foreach"]
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $class_plain_instance(S, n_object)
+def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if ~$class_plain_instance(S, n_object)
 
 rule PhpStep/foreach-value: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_iterable), FOREACH_RESET (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) NOWHERE false z] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)) :: ptask_tail*
@@ -122,6 +135,7 @@ rule PhpStep/foreach-reset-abrupt: S ~> S_read
 dec $foreach_owner_value(pstate, pnode) : pvalue
 def $foreach_owner_value(S, HARRAY n) = PARRAY n
 def $foreach_owner_value(S, HCELL n) = pvalue -- if S.STORE[n] = DEFINED pvalue
+def $foreach_owner_value(S, HOBJECT n) = POBJECT n
 
 dec $foreach_select(pstate, nat, pnode, int) : pstate
 def $foreach_select(S, n, HARRAY n_array, z) = S
@@ -210,10 +224,14 @@ def $jump_loop(S, n_depth, b) = $jump_loop($foreach_finish(S, n), $nabs($(n_dept
 
 def $task_nodes(FOREACH_NEXT n pnode statement porigin? z) = [pnode]
 
-def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if S.RESULT = KNOWN (POBJECT n)
-
-rule PhpStep/foreach-fetch-object: S ~> $foreach_finish(S[.ORIGIN = porigin?], n)
-  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
-  -- if $foreach_owner_value(S, pnode) = POBJECT n_object
+rule PhpStep/foreach-fetch-object-end: S ~> $foreach_finish(S[.ORIGIN = porigin?], n)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $property_next(ppropertyslot*, n_position, 0) = eps
+rule PhpStep/foreach-fetch-object-value: S ~> $foreach_body(S_next, n, HOBJECT n_object, statement, z, KSTRING ptbytes, KNOWN $entry_value(S, pitem), false)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $property_next(ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
+  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next)]

@@ -1,0 +1,159 @@
+[
+  {
+    "name": "typed-uninitialized",
+    "source": "<?php class C { public int $x; } echo \"B\";\n"
+  },
+  {
+    "name": "untyped-null",
+    "source": "<?php class C { public $x; } echo \"B\";\n"
+  },
+  {
+    "name": "array-default",
+    "source": "<?php class C { public array $x = [1, 2]; } echo \"B\";\n"
+  },
+  {
+    "name": "duplicate-vs-default",
+    "source": "<?php echo \"B\"; class C { public int $x=1, $x=\"bad\"; }\n",
+    "static_message": "Cannot redeclare C::$x",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "forbidden-type-vs-duplicate",
+    "source": "<?php echo \"B\"; class C { public int $x; public void $x; }\n",
+    "static_message": "Property C::$x cannot have type void",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "invalid-default",
+    "source": "<?php echo \"B\"; class C { public int $x=\"bad\"; }\n",
+    "static_message": "Cannot use string as default value for property C::$x of type int",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "null-default",
+    "source": "<?php echo \"B\"; class C { public int $x=null; }\n",
+    "static_message": "Default value for property of type int may not be null. Use the nullable type ?int to allow null default value",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "invalid-expression",
+    "source": "<?php echo \"B\"; class C { public $x=strlen(\"a\"); }\n",
+    "static_message": "Constant expression contains invalid operations",
+    "static_line": 1,
+    "static_kind": "STATICERROR"
+  },
+  {
+    "name": "group-second-item",
+    "source": "<?php class C { public int $a=1, $b=\"bad\"; } echo \"B\";\n",
+    "static_message": "Cannot use string as default value for property C::$b of type int",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "override-compatible-early",
+    "source": "<?php class A { public int $x=1; } class B extends A { public int $x=2; } echo \"B\";\n"
+  },
+  {
+    "name": "override-incompatible-early",
+    "source": "<?php class A { public int $x=1; } class B extends A { public string $x=\"s\"; } echo \"B\";\n",
+    "static_message": "Type of B::$x must be int (as in class A)",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "override-incompatible-forward",
+    "source": "<?php echo \"B\"; class B extends A { public string $x=\"s\"; } class A { public int $x=1; }\n"
+  },
+  {
+    "name": "override-untyped-to-typed",
+    "source": "<?php class A { public $x; } class B extends A { public int $x; } echo \"B\";\n",
+    "static_message": "Type of B::$x must be omitted to match the parent definition in class A",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "override-grandparent-incompatible",
+    "source": "<?php class A{public int $x;} class B extends A{} class C extends B{public string $x;} echo \"Q\";\n",
+    "static_message": "Type of C::$x must be int (as in class A)",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "override-parent-order",
+    "source": "<?php class A { public int $x; public int $y; } class B extends A { public string $y; public string $x; } echo \"B\";\n",
+    "static_message": "Type of B::$x must be int (as in class A)",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "override-transitive-own-first",
+    "source": "<?php class A { public int $x; public int $y; } class B extends A { public int $y; } class C extends B { public string $x; public string $y; } echo \"B\";\n",
+    "static_message": "Type of C::$y must be int (as in class B)",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "readonly-no-type",
+    "source": "<?php class C { public readonly $x; } echo \"B\";\n",
+    "static_message": "Readonly property C::$x must have type",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "static-readonly",
+    "source": "<?php class C { public static readonly int $x; } echo \"B\";\n",
+    "static_message": "Static property C::$x cannot be readonly",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "multiline-item",
+    "source": "<?php\nclass C {\n public int $a=1,\n $b=\"bad\";\n}\n",
+    "static_message": "Cannot use string as default value for property C::$b of type int",
+    "static_line": 3,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "float-int-default",
+    "source": "<?php class C { public float $x=1; } echo ((new C)->x === 1.0) ? \"F\" : \"I\";\n"
+  },
+  {
+    "name": "union-null",
+    "source": "<?php class C { public int|string $x=null; } echo \"B\";\n",
+    "static_message": "Default value for property of type string|int may not be null. Use the nullable type string|int|null to allow null default value",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "intersection-null",
+    "source": "<?php class A{} class B{} class C { public A&B $x=null; } echo \"B\";\n",
+    "static_message": "Cannot use null as default value for property C::$x of type A&B",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "readonly-no-type-default",
+    "source": "<?php class C { public readonly $x=1; } echo \"B\";\n",
+    "static_message": "Readonly property C::$x must have type",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "readonly-static-default",
+    "source": "<?php class C { public static readonly int $x=1; } echo \"B\";\n",
+    "static_message": "Readonly property C::$x cannot have default value",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  },
+  {
+    "name": "dnf-null",
+    "source": "<?php class A{} class B{} class C{} class D { public (A&B)|C $x=null; }\n",
+    "static_message": "Default value for property of type (A&B)|C may not be null. Use the nullable type (A&B)|C|null to allow null default value",
+    "static_line": 1,
+    "static_kind": "STATICBYTES"
+  }
+]

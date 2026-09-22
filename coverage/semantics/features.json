@@ -1278,14 +1278,17 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/56-casts.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/58-ordinary-expressions.watsup"
+        "spec/semantics/58-ordinary-expressions.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
-        "tests/semantics/ordinary.py"
+        "tests/semantics/ordinary.py",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
+      "review": "Populated public instance properties cast to array in source execution; typed-uninitialized slots are omitted. Scalar/array cast history remains in ordinary-review.json; object behavior is partial (properties-review.json)."
     },
     {
       "node": "Expr_Cast_Bool",
@@ -1969,13 +1972,18 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/135-property-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/property_compiler.py",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Source execution now compiles authenticated receiver/name access and evaluates public instance and dynamic property reads, writes and quiet probes; references, visibility, hooks and magic remain open. Historical constant-prepass scope: array-omission-review.json; current source/state: properties-review.json."
     },
     {
       "node": "Expr_ShellExec",
@@ -2730,7 +2738,9 @@
         "spec/semantics/126-class-compiler.watsup",
         "spec/semantics/127-class-runtime.watsup",
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/135-property-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/object_classes.py",
@@ -2738,9 +2748,12 @@
         "tests/semantics/object_classes_catalogue.py",
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/property_compiler.py",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Source-active 126/127 empty classes (object-classes-review.json) now gain checked class-keyword lines, early/deferred parent linking, atomic publication and transitive nominal identity through133/134 (inheritance-review.json). Members, interfaces/traits, dynamic and anonymous classes, late-bound names and other internal bodies remain open.",
+      "review": "Reviewed empty class publication and inheritance remain in object-classes-review.json and inheritance-review.json. Public instance declarations/defaults and invariant inherited overrides now execute (properties-review.json); methods, nonpublic/static/readonly members, hooks, interfaces and other internal bodies remain open.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json"
@@ -3014,15 +3027,18 @@
       "implementation": [
         "spec/semantics/67-foreach-compiler.watsup",
         "spec/semantics/68-array-cursors.watsup",
-        "spec/semantics/69-foreach-control.watsup"
+        "spec/semantics/69-foreach-control.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/foreach_compiler.py",
         "coverage/semantics/foreach-publication-review.json",
         "tests/semantics/foreach.py",
-        "coverage/semantics/foreach-runtime-review.json"
+        "coverage/semantics/foreach-runtime-review.json",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
-      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json."
+      "review": "Array by-value/reference history is retained in foreach-runtime-review.json. Public-object foreach by value now uses live property slots with deletion/reinsertion and owner cleanup (properties-review.json); object by-reference traversal and Traversable callbacks remain open."
     },
     {
       "node": "Stmt_Function",
@@ -3242,10 +3258,17 @@
         "properties.readonly",
         "properties.asymmetric-instance"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/135-property-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/property_compiler.py",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
+      ],
+      "review": "Public instance declarations now compile ordered typed/default descriptors, including array constants and early/deferred override checks; slots execute direct access in properties-review.json. Visibility beyond public, static, readonly, hooks and references remain open."
     },
     {
       "node": "Stmt_Return",
@@ -5378,17 +5401,22 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/36-arrays.watsup",
-        "spec/semantics/41-array-control.watsup"
+        "spec/semantics/41-array-control.watsup",
+        "spec/semantics/52-comparison.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_hash.c"
+        "vendor/php-src/Zend/zend_hash.c",
+        "coverage/semantics/properties-review.json"
       ],
-      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending.",
+      "review": "Array comparison history remains under the existing container evidence. Populated public object comparison now observes declared slots, dynamic entries and materialized property-table order (properties-review.json); general object handlers remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/array-dynamic-self-cycle.php",
         "tests/semantics/conformance/array-alias-self-cycle.php",
@@ -5552,19 +5580,23 @@
       "implementation": [
         "spec/semantics/67-foreach-compiler.watsup",
         "spec/semantics/68-array-cursors.watsup",
-        "spec/semantics/69-foreach-control.watsup"
+        "spec/semantics/69-foreach-control.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/foreach.py"
       ],
       "source_tests": [
-        "tests/semantics/foreach.py"
+        "tests/semantics/foreach.py",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
-        "coverage/semantics/foreach-runtime-review.json"
+        "coverage/semantics/foreach-runtime-review.json",
+        "coverage/semantics/properties-review.json"
       ],
-      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
+      "review": "Array foreach history remains in foreach-runtime-review.json. Public-object by-value iteration reads live property slots and preserves cursor ownership across mutation (properties-review.json); by-reference object traversal and Traversable remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-value-mutation.php",
         "tests/semantics/conformance/foreach-residual-alias.php"
@@ -5603,19 +5635,23 @@
       "implementation": [
         "spec/semantics/67-foreach-compiler.watsup",
         "spec/semantics/68-array-cursors.watsup",
-        "spec/semantics/69-foreach-control.watsup"
+        "spec/semantics/69-foreach-control.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/foreach.py"
       ],
       "source_tests": [
-        "tests/semantics/foreach.py"
+        "tests/semantics/foreach.py",
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
-        "coverage/semantics/foreach-runtime-review.json"
+        "coverage/semantics/foreach-runtime-review.json",
+        "coverage/semantics/properties-review.json"
       ],
-      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; objects/Traversable, frames/return and header/nullsafe compiler contexts remain required. See foreach-runtime-review.json.",
+      "review": "Array mutation cases remain in foreach-runtime-review.json. Public-object by-value cursor now observes later value updates and deletion/reinsertion order (properties-review.json); by-reference object traversal remains open.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-value-mutation.php",
         "tests/semantics/conformance/foreach-reference-mutation.php"
@@ -7848,28 +7884,42 @@
     {
       "id": "properties.typed",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/135-property-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/properties-review.json"
+      ],
+      "review": "Public instance typed defaults and direct writes enforce admitted types; inherited public overrides preserve invariant type and parent diagnostic order (properties-review.json). Alias/reference constraints, hooks and broader type forms remain open."
     },
     {
       "id": "properties.uninitialized",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/135-property-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/properties-review.json"
+      ],
+      "review": "Typed no-default slots begin uninitialized, distinct from untyped null and later unset; direct read/quiet probes follow source outcomes (properties-review.json). Magic and reference paths remain open."
     },
     {
       "id": "properties.readonly",
@@ -7887,15 +7937,21 @@
     {
       "id": "properties.dynamic",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/136-property-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/properties.py",
+        "tests/semantics/properties_task_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/properties-review.json"
+      ],
+      "review": "Dynamic public names create owned slots with source-class deprecation and stdClass exemption; computed read/write/unset/quiet paths are tested (properties-review.json). Magic and visibility remain open."
     },
     {
       "id": "properties.promotion",
@@ -8017,15 +8073,20 @@
     {
       "id": "properties.indirect-write",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/136-property-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/properties.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/properties-review.json"
+      ],
+      "review": "Public property array value writes preserve COW through the slot (source31 array-default-cow); references, magic and other fetch modes remain open (properties-review.json)."
     },
     {
       "id": "properties.reference-constraints",

@@ -7,6 +7,10 @@ def $location_slot(S, ELEMENT n pkey) = DEFINED pvalue
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (DIRECT pvalue)
 def $location_slot(S, ELEMENT n pkey) = S.STORE[n_cell]
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $location_slot(S, PROPERTY n ptbytes) = DEFINED $entry_value(S, pitem)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $location_slot(S, plocation) = UNDEFINED
   -- otherwise
 
