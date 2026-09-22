@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Clone paused ownership, typed references and closure static copies."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import base64
 import hashlib
 import json
@@ -112,7 +113,7 @@ CASES += [('weak-update',
    'S_next.STORE[n_cell] = DEFINED (PINT 2)',
    '$clone_update_valid(S_next,pclonecall,n_object,n_array,1)',
    'S_done = $drive(S_next,1000)',
-   'S_done.COMPLETION = THROWN text_error preqbytes z',
+   *uncaught_assertions('S_done', 'text_error', 'preqbytes', 'z'),
    '~((HOBJECT n_object) <- S_done.ALLOCATIONS)',
    '$propref_at(S_done.PROPREFS,n_cell) = (ppropref_done)',
    '|ppropref_done.SOURCES| = 1',
@@ -213,11 +214,13 @@ CASES += [('wrapper-missing-object',
    '(HOBJECT n_owner) <- $task_nodes(CLONE_INVOKE pclonecall)',
    '$clone_invoke_valid(S,pclonecall)',
    'S_next = $drive_steps(S,1)[.COMPLETION = NORMAL]',
-   'S_next.TRACE = [ptraceframe]',
+   'S_next.TODO = (THROW_SEARCH n_pending) :: ptask_tail*',
+   'S_next.OBJECTS[n_pending] = THROWABLE pthrowable_pending',
+   'pthrowable_pending.TRACE = [ptraceframe]',
    'ptraceframe.NAME = $ptascii("Closure->__invoke")',
    'S_done = $drive(S_next,1000)',
-   'S_done.COMPLETION = THROWN "ArgumentCountError" '
-   '$ptascii("Closure::__invoke(): Argument #1 ($object) not passed") 1',
+   *uncaught_assertions('S_done', '"ArgumentCountError"',
+                        '$ptascii("Closure::__invoke(): Argument #1 ($object) not passed")', '1'),
    '~((HOBJECT n_owner) <- S_done.ALLOCATIONS)',
    '$heap_valid($heap_graph(S_done))',
    'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)']),
@@ -229,11 +232,13 @@ CASES += [('wrapper-missing-object',
    '(HOBJECT n_owner) <- $task_nodes(CLONE_INVOKE pclonecall)',
    '$clone_invoke_valid(S,pclonecall)',
    'S_next = $drive_steps(S,1)[.COMPLETION = NORMAL]',
-   'S_next.TRACE = [ptraceframe,ptraceframe_wrapper]',
+   'S_next.TODO = (THROW_SEARCH n_pending) :: ptask_tail*',
+   'S_next.OBJECTS[n_pending] = THROWABLE pthrowable_pending',
+   'pthrowable_pending.TRACE = [ptraceframe,ptraceframe_wrapper]',
    'ptraceframe.NAME = $ptascii("clone")',
    'ptraceframe_wrapper.NAME = $ptascii("Closure->__invoke")',
    'S_done = $drive(S_next,1000)',
-   'S_done.COMPLETION = THROWN "TypeError" preqbytes 1',
+   *uncaught_assertions('S_done', '"TypeError"', 'preqbytes', '1'),
    '~((HOBJECT n_owner) <- S_done.ALLOCATIONS)',
    '$heap_valid($heap_graph(S_done))',
    'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)'])]

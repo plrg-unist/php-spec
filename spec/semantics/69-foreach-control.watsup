@@ -44,6 +44,7 @@ def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESU
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if ~$class_plain_instance(S, n_object)
+  -- if ~$throwable_object(S, n_object)
 
 rule PhpStep/foreach-value: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_iterable), FOREACH_RESET (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) NOWHERE false z] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)) :: ptask_tail*

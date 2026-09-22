@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Suspended source calls preserve owning values, frames and error cleanup."""
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64
 import hashlib
 import json
@@ -76,7 +77,7 @@ def main():
             if name == 'line-name-before-division':
                 completion = 'THROWN "DivisionByZeroError" ([68,105,118,105,115,105,111,110,32,98,121,32,122,101,114,111]) 3'
             checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET', 'S = S_initial[.COMPLETION = NORMAL]',
-                      'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,
+                      'S_out = $drive(S, 10000)', *completion_assertions('S_out', completion),
                       '$outputs(S_out.EVENTS) = ' + d.byte_sequence(base64.b64decode(native['stdout'])),
                       'S_out.FRAMES = eps', 'S_out.CURRENT = eps', 'S_out.GLOBALTABLE = eps',
                       'S_out.ITERATORS = eps', 'S_out.HELD = eps', 'S_out.TODO = eps',
@@ -84,7 +85,7 @@ def main():
             if name == 'ordered-declarations':
                 checks += ['$user_constant_at(S_out.USERCONSTANTS, [65]) = (puserconstant_a)', 'puserconstant_a.VALUE = PINT 1', '$user_constant_at(S_out.USERCONSTANTS, [66]) = (puserconstant_b)', 'puserconstant_b.VALUE = PINT 2', '|S_out.USERCONSTANTS| = 2']
             if name == 'line-name-before-division':
-                checks += ['$user_constant_at(S_out.USERCONSTANTS, [65]) = (puserconstant_a)', 'puserconstant_a.VALUE = PINT 1', '|S_out.USERCONSTANTS| = 1', 'S_out.ALLOCATIONS = S.ALLOCATIONS']
+                checks += ['$user_constant_at(S_out.USERCONSTANTS, [65]) = (puserconstant_a)', 'puserconstant_a.VALUE = PINT 1', '|S_out.USERCONSTANTS| = 1', 'S_out.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_uncaught_s_out]']
             if name == 'deferred-key-nested-array':
                 checks += ['$user_constant_at(S_out.USERCONSTANTS, [67]) = (puserconstant_c)', 'puserconstant_c.VALUE = PARRAY n_c', '$entry_lookup(S_out.ARRAYS[n_c].ITEMS, KSTRING ([120])) = (DIRECT (PARRAY n_x))', '$entry_lookup(S_out.ARRAYS[n_x].ITEMS, KINT 0) = (DIRECT (PINT 1))', '$entry_lookup(S_out.ARRAYS[n_c].ITEMS, KSTRING ([121])) = (DIRECT (PARRAY n_y))', '$entry_lookup(S_out.ARRAYS[n_y].ITEMS, KINT 0) = (DIRECT (PINT 2))', '|S_out.USERCONSTANTS| = 2', 'puserconstant_c.CLASS = PVARRAY false ([(KSTRING ([120]), PVARRAY false ([(KINT 0, PVSCALAR)])), (KSTRING ([121]), PVARRAY false ([(KINT 0, PVSCALAR)]))])']
             for budget in [*range(33), 64, 128]:

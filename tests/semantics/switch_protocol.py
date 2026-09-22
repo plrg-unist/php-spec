@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Paused switch source, ownership, comparison, and boolean-branch guards."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import hashlib
 import json
 import subprocess
@@ -153,7 +154,7 @@ def main():
         initial, source_hash = checked_source(name, output)
         for stage, extra in stages:
             checks = [line.replace('__INITIAL__', initial).replace('__STAGE__', str(stage)) for line in COMMON]
-            checks += ['S_done.COMPLETION = NORMAL' if name != 'abrupt' else 'S_done.COMPLETION = THROWN text n_message* z_error',
+            checks += [*(['S_done.COMPLETION = NORMAL'] if name != 'abrupt' else uncaught_assertions('S_done', 'text', 'n_message*', 'z_error')),
                        '$outputs(S_done.EVENTS) = ' + ('[65, 55]' if name == 'normal' else '[65]')]
             checks += extra
             fixture = output / (name + '-' + str(stage) + '.watsup')
@@ -170,9 +171,9 @@ def main():
             print(row, flush=True)
             assert passed, result.stderr
     assert before == request.t.syntax_validation.implementation_fingerprint()
-    assert [sum(row['assertions'] for row in rows if row['source'] == name) for name in SOURCES] == [53, 17, 15]
+    assert [sum(row['assertions'] for row in rows if row['source'] == name) for name in SOURCES] == [53, 25, 15]
     (output / 'report.json').write_text(json.dumps({'result': 'pass', 'fingerprint': before, 'stages': rows}, indent=2) + '\n')
-    print('PASS switch protocol: 6 stages, 85 assertions', output)
+    print('PASS switch protocol: 6 stages, 93 assertions', output)
 
 
 if __name__ == '__main__':

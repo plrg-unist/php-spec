@@ -2,6 +2,7 @@
 """Ordered source bridge invariants using checked original-source occurrences."""
 import base64, json, subprocess, sys, tempfile
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tests/semantics'))
 import static_types as types, source_occurrences as occurrences
@@ -32,15 +33,15 @@ def main():
             cases.append(prefix+[f'S_budget = $drive(S, {budget})','S_budget.COMPLETION = BUDGET','$drive(S_budget[.COMPLETION = NORMAL], 1000) = $drive(S, 1000)','S_budget.POOLS = S.POOLS'])
         c=checked(b'<?php $u=7;$a=[$u,"abc"["1x"]];$a[0]=1;unset($a[0]);')
         root=path([I(1),F(0),F(1)]);dim=path([I(1),F(0),F(1),F(0),I(1),F(1)]);write=path([I(2),F(0),F(0)]);unset=path([I(3),F(0),I(0)])
-        cases.append([f'P = $ppstart(71, {c["fixture"]}, ([47,112]))','S = $compile_source($initial_state(NORMAL), P)','S.COMPLETION = NORMAL',f'$compiled_read(S, PORIGIN 71 {root}) = eps',f'$compiled_read(S, PORIGIN 71 {dim}) = (PSTRING ([98]))',f'$compiled_read(S, PORIGIN 71 {write}) = eps',f'$compiled_read(S, PORIGIN 71 {unset}) = eps',f'$ppaccess(P, {write}) = (PPW)',f'$ppaccess(P, {unset}) = (PPUNSET)','$drive(S, 1000).COMPLETION = NORMAL'])
+        cases.append([f'P = $ppstart(71, {c["fixture"]}, ([47,112]))','S = $compile_source($initial_state(NORMAL)[.FILES = [SOURCEFILE 71 P.LOCATION.FILE]], P)','S.COMPLETION = NORMAL',f'$compiled_read(S, PORIGIN 71 {root}) = eps',f'$compiled_read(S, PORIGIN 71 {dim}) = (PSTRING ([98]))',f'$compiled_read(S, PORIGIN 71 {write}) = eps',f'$compiled_read(S, PORIGIN 71 {unset}) = eps',f'$ppaccess(P, {write}) = (PPW)',f'$ppaccess(P, {unset}) = (PPUNSET)','$drive(S, 1000).COMPLETION = NORMAL'])
         c=checked(b'<?php [[NAN],[NAN]];')
         child=path([I(0),F(0),F(0),I(0),F(1)])
-        cases.append([f'P = $ppstart(71, {c["fixture"]}, ([47,112]))','S = $compile_source($initial_state(NORMAL), P)',f'$pool_value(S.POOLS, PORIGIN 71 {child}) = (PARRAY n)',f'$ppaccess(P, {child}) = eps',f'$compiled_read(S, PORIGIN 71 {child}) = eps','S_clean = $prune_allocations($release_temporaries(S))','(HARRAY n) <- S_clean.ALLOCATIONS'])
+        cases.append([f'P = $ppstart(71, {c["fixture"]}, ([47,112]))','S = $compile_source($initial_state(NORMAL)[.FILES = [SOURCEFILE 71 P.LOCATION.FILE]], P)',f'$pool_value(S.POOLS, PORIGIN 71 {child}) = (PARRAY n)',f'$ppaccess(P, {child}) = eps',f'$compiled_read(S, PORIGIN 71 {child}) = eps','S_clean = $prune_allocations($release_temporaries(S))','(HARRAY n) <- S_clean.ALLOCATIONS'])
         c=checked(b'<?php namespace N;\nNAN;\nMissing;')
         names=[(steps,node) for j,statement in enumerate(c['ast']['program']) for steps,node in occurrences.expected(statement,[I(j)]) if node['node']=='Expr_ConstFetch']
         nan_path=path(names[0][0]); missing_path=path(names[1][0]); nan_expr=occurrences.node_term(names[0][1])
-        prefix=[f'P = $ppstart(71, {c["fixture"]}, ([47,110]))','S = $compile_source($initial_state(NORMAL), P)','S.COMPLETION = NORMAL',f'$compiled_read(S, PORIGIN 71 {nan_path}) = eps',f'$compiled_name(S, PORIGIN 71 {nan_path}) = (VALUE (PFLOAT 9221120237041090560))',f'$compiled_name(S, PORIGIN 71 {missing_path}) = (ABRUPT (PHPERROR ([78,92,77,105,115,115,105,110,103]) 3))']
-        cases.append(prefix+['$drive(S, 1000).COMPLETION = PHPERROR ([78,92,77,105,115,115,105,110,103]) 3',f'S_again = $drive(S[.TODO = [AT (PORIGIN 71 {nan_path}) (EVAL {nan_expr})]], 1000)','S_again.COMPLETION = NORMAL','S_again.ORIGIN = eps','S_again.RESULT = KNOWN (PFLOAT 9221120237041090560)','S_again.CODE = S.CODE','S_again.POOLS = S.POOLS'])
+        prefix=[f'P = $ppstart(71, {c["fixture"]}, ([47,110]))','S = $compile_source($initial_state(NORMAL)[.FILES = [SOURCEFILE 71 P.LOCATION.FILE]], P)','S.COMPLETION = NORMAL',f'$compiled_read(S, PORIGIN 71 {nan_path}) = eps',f'$compiled_name(S, PORIGIN 71 {nan_path}) = (VALUE (PFLOAT 9221120237041090560))',f'$compiled_name(S, PORIGIN 71 {missing_path}) = (ABRUPT (PHPERROR ([78,92,77,105,115,115,105,110,103]) 3))']
+        cases.append(prefix+['S_error = $drive(S, 1000)',*uncaught_assertions('S_error', '"Error"', '($ptascii("Undefined constant ") ++ [34,78,92,77,105,115,115,105,110,103,34])', '3'),f'S_again = $drive(S[.TODO = [AT (PORIGIN 71 {nan_path}) (EVAL {nan_expr})]], 1000)','S_again.COMPLETION = NORMAL','S_again.ORIGIN = eps','S_again.RESULT = KNOWN (PFLOAT 9221120237041090560)','S_again.CODE = S.CODE','S_again.POOLS = S.POOLS'])
         for budget in (1,3,5):
             cases.append(prefix+[f'S_budget = $drive(S, {budget})','S_budget.COMPLETION = BUDGET','$drive(S_budget[.COMPLETION = NORMAL], 1000) = $drive(S, 1000)','S_budget.CODE = S.CODE'])
         c=checked(b'<?php [NAN];')

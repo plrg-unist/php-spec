@@ -1,4 +1,5 @@
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import json,os,subprocess,sys,tempfile
 R=Path(__file__).resolve().parents[2];K=R;sys.path.insert(0,str(K/'tests/semantics'))
 import request_environment as q
@@ -39,7 +40,7 @@ modules=[K/p for p in json.loads((K/'spec/semantics/modules.json').read_text())]
 for prefix,common,variants in groups:
  for name,change,valid in variants:
   expected=valid;checks=common+['S_changed = '+change,'$heap_valid($heap_graph(S_changed))','$call_descriptors_valid(S_changed) = '+str(expected).lower(),'S_zero = $drive(S_changed, 0)','S_zero.COMPLETION = '+('BUDGET' if expected else 'UNSUPPORTED "invalid compiled function descriptor"')]
-  checks+=['S_full = $drive(S_changed, 10000)','S_full.COMPLETION = '+('THROWN "TypeError" n_message* 2' if valid else 'UNSUPPORTED "invalid compiled function descriptor"')]
+  checks+=['S_full = $drive(S_changed, 10000)',*(uncaught_assertions('S_full', '"TypeError"', 'n_message*', '2') if valid else ['S_full.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"'])]
   if valid:checks+=['S_full.REPORTING = 30719','S_full.FRAMES = eps','S_full.CURRENT = eps','S_full.HELD = eps','S_full.SILENCES = eps','$heap_valid($heap_graph(S_full))']
   fixture=D/(name+'.watsup');fixture.write_text(prefix+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+c+'\n' for c in checks));cmd=[str(runner),*map(str,modules),str(fixture)];(D/(name+'.command.json')).write_text(json.dumps(cmd));z=subprocess.run(cmd,capture_output=True,timeout=60);(D/(name+'.stdout')).write_bytes(z.stdout);(D/(name+'.stderr')).write_bytes(z.stderr);(D/(name+'.status.json')).write_text(json.dumps({'status':'exit','exit_status':z.returncode}));item={'id':name,'valid':valid,'assertions':len(checks),'pass':z.returncode==0 and z.stdout.strip()==b'true' and not z.stderr};records.append(item);(D/'results.json').write_text(json.dumps(records,indent=2));print(item,flush=True)
 assert before==q.t.syntax_validation.implementation_fingerprint();report={'result':'pass' if all(r['pass'] for r in records) else 'fail','fingerprint':before,'raw':str(D),'controls':len(records),'assertions':sum(r['assertions'] for r in records),'fresh_native_contexts':1,'records':records};(D/'report.json').write_text(json.dumps(report,indent=2));assert report['result']=='pass';(R/'coverage/semantics/variadic-protocol.json').write_text(json.dumps(report,indent=2));print(D,report['controls'],report['assertions'])

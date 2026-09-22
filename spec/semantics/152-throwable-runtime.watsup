@@ -1,0 +1,351 @@
+;; Error requests are materialized before pruning or crossing a continuation.
+;; The finite builtin family has one backing payload; later internal properties
+;; and accessors must use these fields rather than independent mutable copies.
+dec $throwable_kind(text) : bool
+def $throwable_kind("Exception") = true
+def $throwable_kind("ErrorException") = true
+def $throwable_kind("Error") = true
+def $throwable_kind("CompileError") = true
+def $throwable_kind("ParseError") = true
+def $throwable_kind("TypeError") = true
+def $throwable_kind("ArgumentCountError") = true
+def $throwable_kind("ValueError") = true
+def $throwable_kind("ArithmeticError") = true
+def $throwable_kind("DivisionByZeroError") = true
+def $throwable_kind("UnhandledMatchError") = true
+def $throwable_kind("AssertionError") = true
+def $throwable_kind("FiberError") = true
+def $throwable_kind("ClosedGeneratorException") = true
+def $throwable_kind(text) = false -- otherwise
+dec $throwable_parent(text) : text?
+def $throwable_parent("ErrorException") = ("Exception")
+def $throwable_parent("CompileError") = ("Error")
+def $throwable_parent("ParseError") = ("CompileError")
+def $throwable_parent("TypeError") = ("Error")
+def $throwable_parent("ArgumentCountError") = ("TypeError")
+def $throwable_parent("ValueError") = ("Error")
+def $throwable_parent("ArithmeticError") = ("Error")
+def $throwable_parent("DivisionByZeroError") = ("ArithmeticError")
+def $throwable_parent("UnhandledMatchError") = ("Error")
+def $throwable_parent("AssertionError") = ("Error")
+def $throwable_parent("FiberError") = ("Error")
+def $throwable_parent("ClosedGeneratorException") = ("Exception")
+def $throwable_parent(text) = eps -- otherwise
+dec $throwable_nominal(text, preqbytes, nat) : bool
+def $throwable_nominal(text, preqbytes, n) = true
+  -- if $throwable_kind(text)
+  -- if $ptlc(preqbytes) = $ptlc($ptascii(text)) \/ $ptlc(preqbytes) = $ptascii("throwable") \/ $ptlc(preqbytes) = $ptascii("stringable")
+def $throwable_nominal(text, preqbytes, n) = $throwable_nominal(text_parent, preqbytes, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $ptlc(preqbytes) =/= $ptlc($ptascii(text))
+  -- if $ptlc(preqbytes) =/= $ptascii("throwable")
+  -- if $ptlc(preqbytes) =/= $ptascii("stringable")
+  -- if $throwable_parent(text) = (text_parent)
+def $throwable_nominal(text, preqbytes, n) = false -- otherwise
+def $throwable_object(S, n) = true -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $throwable_object(S, n) = false -- otherwise
+def $object_name(S, n) = $ptascii(pthrowable.KIND) -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $class_instanceof(S, POBJECT n, preqbytes) = $throwable_nominal(pthrowable.KIND, preqbytes, 4)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $typed_given(S, POBJECT n) = $ptascii(pthrowable.KIND) -- if S.OBJECTS[n] = THROWABLE pthrowable
+dec $throwable_atoms(text, ptatom*) : bool
+def $throwable_atoms(text, eps) = true
+def $throwable_atoms(text, (PTCLASS ptbytes) :: ptatom*) = ($throwable_nominal(text, ptbytes, 4) /\ $throwable_atoms(text, ptatom*))
+def $throwable_atoms(text, ptatom*) = false -- otherwise
+dec $throwable_types(text, ptbranch*) : bool
+def $throwable_types(text, eps) = false
+def $throwable_types(text, (PTBRANCH ptatom*) :: ptbranch*) = ($throwable_atoms(text, ptatom*) \/ $throwable_types(text, ptbranch*))
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $throwable_types(pthrowable.KIND, ptbranch*)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+
+def $node_children(S, HOBJECT n) = $operand_nodes(KNOWN pthrowable.MESSAGE) ++ $operand_nodes(KNOWN pthrowable.CODE) ++ $trace_roots(pthrowable.TRACE) ++ $instance_roots(pthrowable.PREVIOUS)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $completion_roots(THROWING n) = [HOBJECT n]
+def $completion_roots(UNCAUGHT n) = [HOBJECT n]
+def $completion_roots(pcompletion) = eps -- otherwise
+def $task_nodes(THROW_SEARCH n) = [HOBJECT n]
+def $task_nodes(CATCH_BIND porigin n_index n) = [HOBJECT n]
+def $closure_live_object_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_kind(pthrowable.KIND)
+  -- if pthrowable.MESSAGE = PSTRING n_message*
+  -- if pthrowable.CODE = PINT 0
+  -- if pthrowable.PREVIOUS = eps
+  -- if $(pthrowable.LINE > 0)
+  -- if pthrowable.ORIGIN = (porigin)
+  -- if pthrowable.FILE = $call_sourcefile(S.FILES, porigin)
+  -- if $origin_node(S.SOURCES, porigin) =/= eps
+  -- if $heap_valid($heap_graph(S))
+
+;; Allocation snapshots the failing frame before any owner is discarded.
+def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.OBJECTS = S.OBJECTS ++ [THROWABLE pthrowable]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.COMPLETION = THROWING n][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if $throwable_kind(text)
+  -- if S.ORIGIN = (porigin)
+  -- if n = |S.OBJECTS|
+  -- if pthrowable = {KIND text, MESSAGE PSTRING preqbytes, CODE PINT 0, FILE $call_sourcefile(S.FILES, porigin), LINE z, TRACE ptraceframe*, PREVIOUS eps, ORIGIN S.ORIGIN}
+def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.COMPLETION = UNSUPPORTED "invalid Throwable allocation context"] -- otherwise
+
+def $throwable_pending(THROWN text preqbytes z) = true
+def $throwable_pending(PHPERROR preqbytes z) = true
+def $throwable_pending(THROWING n) = true
+def $throwable_pending(pcompletion) = false -- otherwise
+dec $throwable_materialize(pstate) : pstate
+def $throwable_materialize(S) = $throwable_allocate(S, text, preqbytes, z, $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+  -- if S.COMPLETION = THROWN text preqbytes z
+def $throwable_materialize(S) = $throwable_allocate(S, "Error", $ptascii("Undefined constant \"") ++ preqbytes ++ [34], z, $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+  -- if S.COMPLETION = PHPERROR preqbytes z
+def $throwable_materialize(S) = S -- otherwise
+
+;; Producers historically clear TODO. Authenticate the two supported transitions
+;; against the predecessor; never infer identity from stack length.
+dec $throwable_continuation(pstate, pstate) : pstate
+def $throwable_continuation(S, S_next) = S_next[.TODO = ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_next.FRAMES = S.FRAMES
+  -- if S_next.CURRENT = S.CURRENT
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_next.FRAMES = pframe :: S.FRAMES
+  -- if pframe.CONTEXT = S.CURRENT
+  -- if pframe.TODO = ptask_tail*
+  -- if pframe.ORIGIN = S.ORIGIN
+  -- if pframe.SILENCES = S.SILENCES
+def $throwable_continuation(S, S_next) = S_next[.TODO = eps][.COMPLETION = UNSUPPORTED "unaudited Throwable frame transition"] -- otherwise
+def $throwable_transition(S, S_next) = $throwable_materialize($throwable_continuation(S, S_next))
+  -- if $throwable_pending(S_next.COMPLETION)
+def $throwable_transition(S, S_next) = S_next -- otherwise
+
+def $throwable_begin(S) = S_next[.TODO = (THROW_SEARCH n) :: S_next.TODO][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
+  -- if S_next = $throwable_materialize(S)
+  -- if S_next.COMPLETION = THROWING n
+def $throwable_begin(S) = $throwable_materialize(S) -- otherwise
+
+rule PhpStep/try-enter: S ~> S[.TODO = $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0) ++ [TRY_END porigin] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) ABSENT metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/try-end: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (TRY_END porigin) :: ptask_tail*
+rule PhpStep/throw-expression: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), THROW_VALUE porigin $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprThrow expression metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+dec $throwable_throw_value(pstate, pvalue, int) : pstate
+def $throwable_throw_value(S, POBJECT n, z) = S[.COMPLETION = THROWING n]
+  -- if $throwable_object(S, n)
+def $throwable_throw_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Cannot throw objects that do not implement Throwable"), z)
+  -- if ~$throwable_object(S, n)
+def $throwable_throw_value(S, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Can only throw objects"), z) -- otherwise
+rule PhpStep/throw-value: S ~> $throwable_throw_value(S_read, pvalue, z)
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+rule PhpStep/throw-value-abrupt: S ~> S_read
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+
+dec $throwable_catch_types(pstate, nat, porigin, name*, nat) : bool
+def $throwable_catch_types(S, n_object, porigin, eps, n_index) = false
+def $throwable_catch_types(S, n_object, PORIGIN n_unit pcpath, name :: name_tail*, n_index) = ($class_instanceof(S, POBJECT n_object, preqbytes) \/ $throwable_catch_types(S, n_object, PORIGIN n_unit pcpath, name_tail*, $(n_index + 1)))
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0, PCINDEX n_index]) = ((preqbytes, eps))
+dec $throwable_find_catch(pstate, nat, porigin, phpType66*, nat) : nat?
+def $throwable_find_catch(S, n_object, porigin, eps, n_index) = eps
+def $throwable_find_catch(S, n_object, porigin, (NStmtCatch (SEQUENCE name*) phpType43 phpType23 metadata) :: phpType66*, n_index) = (n_index)
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n_index]) = (porigin_catch)
+  -- if $throwable_catch_types(S, n_object, porigin_catch, name*, 0)
+def $throwable_find_catch(S, n_object, porigin, (NStmtCatch (SEQUENCE name*) phpType43 phpType23 metadata) :: phpType66*, n_index) = $throwable_find_catch(S, n_object, porigin, phpType66*, $(n_index + 1))
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n_index]) = (porigin_catch)
+  -- if ~$throwable_catch_types(S, n_object, porigin_catch, name*, 0)
+dec $throwable_handler(pstate, nat, porigin) : nat?
+def $throwable_handler(S, n, porigin) = $throwable_find_catch(S, n, porigin, phpType66*, 0)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata)
+rule PhpStep/throw-search-catch: S ~> S[.TODO = (CATCH_BIND porigin n_index n) :: ptask_tail*][.ORIGIN = (porigin)]
+  -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
+  -- if $throwable_handler(S, n, porigin) = (n_index)
+rule PhpStep/throw-search-miss: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
+  -- if $throwable_handler(S, n, porigin) = eps
+dec $throwable_marker(ptask) : bool
+def $throwable_marker(TRY_END porigin) = true
+def $throwable_marker(ptask) = false -- otherwise
+rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH n) :: ptask_tail*], ptask)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
+  -- if ~$throwable_marker(ptask)
+rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_restored.TODO][.RESULT = KNOWN PNULL][.HELD = eps]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.FRAMES =/= eps
+  -- if S_restored = $restore_frame(S)
+rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = pthrowable.TRACE][.ERRORORIGIN = pthrowable.ORIGIN]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.FRAMES = eps
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+
+;; ZEND_CATCH clears exception eligibility before strict assignment through a
+;; possible reference. A binding error therefore searches only outer markers.
+dec $throwable_strict_sources(pstate, pvalue, pproptypesource*, int) : pstate
+def $throwable_strict_sources(S, pvalue, eps, z) = S
+def $throwable_strict_sources(S, pvalue, pproptypesource :: pproptypesource_tail*, z) = $throwable_strict_sources(S, pvalue, pproptypesource_tail*, z)
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue)
+def $throwable_strict_sources(S, pvalue, pproptypesource :: pproptypesource_tail*, z) = $propref_error(S, pproptypesource, pvalue, z)
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
+  -- if ~($typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue))
+dec $throwable_bind_cell(pstate, nat, nat, int) : pstate
+def $throwable_bind_cell(S, n_cell, n_object, z) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (POBJECT n_object))]
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+def $throwable_bind_cell(S, n_cell, n_object, z) = S_checked[.STORE = $set_cell(S_checked.STORE, n_cell, DEFINED (POBJECT n_object))]
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if S_checked = $throwable_strict_sources(S, POBJECT n_object, ppropref.SOURCES, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $throwable_bind_cell(S, n_cell, n_object, z) = S_checked
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if S_checked = $throwable_strict_sources(S, POBJECT n_object, ppropref.SOURCES, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+dec $throwable_bind(pstate, phpType43, nat, int) : pstate
+def $throwable_bind(S, ABSENT, n, z) = S
+def $throwable_bind(S, NExprVariable (BYTES text) metadata, n, z) = $throwable_bind_cell(S_cell, S_cell.CELL, n, z)
+  -- if S_cell = $ensure(S, $base64(text))
+rule PhpStep/catch-bind: S ~> S_bound[.TODO = $statement_tasks(statement*, $origin_child((porigin_catch), [PCFIELD 2]), 0) ++ ptask_tail*][.ORIGIN = (porigin_catch)]
+  -- if S.TODO = (CATCH_BIND porigin n_index n) :: ptask_tail*
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n_index]) = (porigin_catch)
+  -- if $origin_node(S.SOURCES, porigin_catch) = (NStmtCatch (SEQUENCE name*) phpType43 (SEQUENCE statement*) metadata)
+  -- if S_bound = $throwable_bind(S, phpType43, n, $ppcatch_line(name*))
+  -- if S_bound.COMPLETION = NORMAL
+rule PhpStep/catch-bind-abrupt: S ~> S_bound
+  -- if S.TODO = (CATCH_BIND porigin n_index n) :: ptask_tail*
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX n_index]) = (porigin_catch)
+  -- if $origin_node(S.SOURCES, porigin_catch) = (NStmtCatch (SEQUENCE name*) phpType43 phpType23 metadata)
+  -- if S_bound = $throwable_bind(S, phpType43, n, $ppcatch_line(name*))
+  -- if S_bound.COMPLETION =/= NORMAL
+
+;; Required method/property payload protocols are explicitly staged next.
+def $stringify(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "Throwable string conversion"]
+  -- if $throwable_object(S, n)
+def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "Throwable property cast"]
+  -- if $throwable_object(S, n)
+def $property_read(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $property_quiet(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $property_unset(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $assign_array(S, BASE_PROPERTY (POBJECT n) ptbytes, poperand, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $property_store_value(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
+  -- if $throwable_object(S, n)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
+  -- if n_left =/= n_right
+  -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
+
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Object of type ") ++ $object_name(S, n) ++ $ptascii(" is not callable"), z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $throwable_object(S, n)
+
+;; Resume checks authenticate source regions and live exception owners.
+dec $throwable_try_valid(pstate, porigin) : bool
+def $throwable_try_valid(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata)
+  -- if phpType66* =/= eps
+  -- if $goto_scope_valid(S, porigin)
+def $throwable_try_valid(S, porigin) = false -- otherwise
+dec $throwable_live(pstate, nat) : bool
+def $throwable_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $throwable_object(S, n)
+  -- if $closure_live_object_valid(S, n)
+def $throwable_live(S, n) = false -- otherwise
+dec $throwable_value_task_valid(pstate, porigin, int) : bool
+def $throwable_value_task_valid(S, porigin, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprThrow expression metadata)
+  -- if $property_source_task(S, NExprThrow expression metadata)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+def $throwable_value_task_valid(S, porigin, z) = false -- otherwise
+dec $throwable_binding_valid(pstate, porigin, nat, nat) : bool
+def $throwable_binding_valid(S, porigin, n_index, n_object) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $throwable_try_valid(S, porigin)
+  -- if $throwable_live(S, n_object)
+  -- if $throwable_handler(S, n_object, porigin) = (n_index)
+  -- if ~((TRY_END porigin) <- S.TODO)
+def $throwable_binding_valid(S, porigin, n_index, n_object) = false -- otherwise
+def $call_task_valid(S, TRY_END porigin) = (S.ORIGIN = (porigin) /\ $throwable_try_valid(S, porigin))
+def $call_task_valid(S, THROW_SEARCH n) = $throwable_live(S, n)
+def $call_task_valid(S, CATCH_BIND porigin n_index n) = $throwable_binding_valid(S, porigin, n_index, n)
+def $call_task_valid(S, THROW_VALUE porigin z) = $throwable_value_task_valid(S, porigin, z)
+def $call_task_valid(S, EVAL (NExprThrow expression metadata)) = $property_source_task(S, NExprThrow expression metadata)
+dec $throwable_statement_valid(pstate, statement) : bool
+def $throwable_statement_valid(S, NStmtTryCatch phpType23 phpType65 phpType67 metadata) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 phpType65 phpType67 metadata)
+  -- if $throwable_try_valid(S, porigin)
+def $throwable_statement_valid(S, statement) = false -- otherwise
+def $call_task_valid(S, STMT (NStmtTryCatch phpType23 phpType65 phpType67 metadata)) = $throwable_statement_valid(S, NStmtTryCatch phpType23 phpType65 phpType67 metadata)
+
+;; Weak scalar string conversion invokes the internal __toString protocol.
+def $throwable_string_coercion(S, ptbranch*, POBJECT n, false) = true
+  -- if $throwable_object(S, n)
+  -- if "string" <- $ptmasks(ptbranch*)
+  -- if ~($typed_exact(ptbranch*, POBJECT n) \/ $typed_object_exact(S, ptbranch*, POBJECT n))
+def $throwable_string_coercion(S, ptbranch*, pvalue, b) = false -- otherwise
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "Throwable string conversion"
+  -- if $throwable_string_coercion(S, ptbranch*, pvalue, b)
+def $value_order_effect(S, POBJECT n, PSTRING n_bytes*, pnode_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable string comparison"], ORDER 0)
+  -- if $throwable_object(S, n)
+def $value_order_effect(S, PSTRING n_bytes*, POBJECT n, pnode_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable string comparison"], ORDER 0)
+  -- if $throwable_object(S, n)
+def $foreach_start(S, statement, plocation, b, z) = S[.COMPLETION = UNSUPPORTED "Throwable property traversal"]
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $throwable_object(S, n)
+
+def $typed_callable(S, POBJECT n) = (false) -- if $throwable_object(S, n)
+
+def $firstclass_value(S, porigin, z_init) = $throw_scalar(S, "Error", $ptascii("Object of type ") ++ $object_name(S, n) ++ $ptascii(" is not callable"), z_init)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $throwable_object(S, n)
+
+;; Source-derived CV identity is checked without reconstructing mutable values.
+dec $throwable_operand_valid(pstate, porigin) : bool
+def $throwable_operand_valid(S, PORIGIN n pcpath) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath ++ [PCFIELD 0]) = (UNPACK_CV)
+  -- if $exit_cv_operand(pcode, pcunit, pcpath ++ [PCFIELD 0]) = (S.RESULT)
+def $throwable_operand_valid(S, PORIGIN n pcpath) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath ++ [PCFIELD 0]) = (punpackclass)
+  -- if punpackclass =/= UNPACK_CV
+  -- if $unpack_owned(S, S.RESULT)
+def $throwable_operand_valid(S, porigin) = false -- otherwise
+def $throwable_result_valid(S) = $throwable_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $throwable_result_valid(S) = $throwable_result_valid(S[.ORIGIN = porigin?][.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $throwable_result_valid(S) = $throwable_operand_valid(S, porigin)
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
+def $throwable_result_valid(S) = (S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $throwable_result_valid(S) = (S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if S.TODO = (CATCH_BIND porigin n_index n) :: ptask_tail*
+def $throwable_result_valid(S) = true -- otherwise
+
+;; Throwable instances never own a Closure lexical scope row.
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps

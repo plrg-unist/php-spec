@@ -1,0 +1,327 @@
+[
+  {
+    "id": "initial-ancestry",
+    "source": "<?php try{1/0;}catch(Throwable $e){echo $e instanceof DivisionByZeroError,$e instanceof ArithmeticError,$e instanceof Error,$e instanceof Throwable,$e instanceof Stringable,\":\";echo $e instanceof Exception,$e instanceof stdClass;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-catch-reference-alias",
+    "source": "<?php $alias=1;$e=&$alias;try{1/0;}catch(Error $e){echo $alias===$e;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-catch-rethrow-outer",
+    "source": "<?php try{try{1/0;}catch(Error $e){echo \"I\";throw $e;}catch(Throwable $bad){echo \"BAD\";}}catch(ArithmeticError $outer){echo \"O\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-catch-return",
+    "source": "<?php function f(){try{return 3;}catch(Error $e){return 4;}}echo f();",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-catch-strict-binding-outer",
+    "source": "<?php class Box{public string $s=\"old\";}$o=new Box;$e=&$o->s;try{try{1/0;}catch(Error $e){echo \"BADBODY\";}catch(TypeError $bad){echo \"BADSIBLING\";}}catch(TypeError $outer){echo \"OUT:\",$o->s;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-distinct-generated",
+    "source": "<?php try{1/0;}catch(Error $a){}try{1/0;}catch(Error $b){}echo $a===$b?\"S\":\"D\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-namespace-alias",
+    "source": "<?php namespace N;use \\ArithmeticError as A;try{1/0;}catch(\\TypeError|A $e){echo \"A\";}catch(\\Throwable $e){echo \"T\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-nominal-type-consumers",
+    "source": "<?php class Box{public ?Throwable $e=null;}function f(Throwable $x){echo $x instanceof Stringable;}try{1/0;}catch(Error $e){$o=new Box;$o->e=$e;f($o->e);}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-optional",
+    "source": "<?php $e=7;try{1/0;}catch(Throwable){echo $e;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-ordered",
+    "source": "<?php try{1/0;}catch(ArithmeticError $e){echo \"A\";}catch(DivisionByZeroError $e){echo \"D\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-plain-object-throw",
+    "source": "<?php throw new stdClass;",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-rethrow-identity",
+    "source": "<?php try{1/0;}catch(Error $e){$saved=$e;try{throw $e;}catch(Throwable $f){echo $saved===$f;}}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-scalar-throw",
+    "source": "<?php throw 3;",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-undefined-throw",
+    "source": "<?php\ntry{\nthrow $missing;\n}catch(Error $e){echo \"E\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "initial-unknown-nonthrowable-union",
+    "source": "<?php try{1/0;}catch(Missing|stdClass $e){echo \"BAD\";}catch(dIvIsIoNbYzErOeRrOr $e){echo \"D\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-boolean-throw-fold",
+    "source": "<?php try{(throw 1)||$a[];}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-break-try-loop",
+    "source": "<?php for($i=0;$i<2;$i++){try{break;}catch(Error $e){echo \"bad\";}}try{1/0;}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-call-receive-error",
+    "source": "<?php function f(int $x){echo \"bad\";}try{f([]);}catch(TypeError $e){echo \"T\";}echo \"done\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-call-return-error",
+    "source": "<?php function f():int{return [];}try{f();}catch(TypeError $e){echo \"T\";}echo \"done\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-catch-dynamic-rebind",
+    "source": "<?php try{1/0;}catch(Error $e){$a=[$e];unset($e);try{throw $a[0];}catch(Throwable $f){echo $f===$a[0];}}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-consumer-controls",
+    "source": "<?php\nfunction receive(string $s){echo \"S\";}\ntry{1/0;}catch(Error $e){\n receive($e);\n echo $e > \"z\" ? \"bad\" : \"C\";\n try{$e();}catch(Error $call){echo \"E\";}\n}\n",
+    "kind": "unsupported"
+  },
+  {
+    "id": "crossing-continue-catch-loop",
+    "source": "<?php for($i=0;$i<2;$i++){try{1/0;}catch(Error $e){echo $i;continue;}}echo \"done\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-goto-catch-entry-outer",
+    "source": "<?php try{goto L;try{echo \"bad\";}catch(Error $e){L:1/0;}catch(Throwable $bad){echo \"bad\";}}catch(Error $outer){echo \"O\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-goto-out-try",
+    "source": "<?php try{goto L;}catch(Error $e){echo \"bad\";}L:try{1/0;}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-goto-try-entry-catch",
+    "source": "<?php goto L;try{L:1/0;}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-nested-frame-suppression-crossed",
+    "source": "<?php function f(){@(1/0);}try{@f();}catch(Error $e){echo $visible;}echo \"done\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-nested-throw-operand",
+    "source": "<?php try{throw (throw 1);}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-ref-foreach-catch-inner",
+    "source": "<?php $a=[1,2];foreach($a as &$v){try{1/0;}catch(Error $e){$v+=2;}}unset($v);echo $a[0],$a[1];",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-ref-foreach-catch-outer",
+    "source": "<?php $a=[1,2];try{foreach($a as &$v){1/0;}}catch(Error $e){$v=9;}echo $a[0],$a[1];",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-same-frame-suppression",
+    "source": "<?php try{@(1/0);}catch(Error $e){echo $missing;}echo \"done\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-saved-frame-suppression",
+    "source": "<?php function f(){try{1/0;}catch(Error $e){echo $inner;}}@f();echo $outer;echo \"done\";",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-uncaught-argument-root",
+    "source": "<?php function f($x){1/0;}f(new stdClass);",
+    "kind": "agreement"
+  },
+  {
+    "id": "crossing-uncaught-rethrow-trace",
+    "source": "<?php function f(){1/0;}try{f();}catch(Error $e){throw $e;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "dynamic-noncallable",
+    "source": "<?php try{1/0;}catch(Error $e){try{$e(print \"BAD\");}catch(Error $c){echo \"E\";}}",
+    "kind": "agreement"
+  },
+  {
+    "id": "exit-receive-caught",
+    "source": "<?php try{exit([]);}catch(TypeError $e){echo \"E\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "exit-bypasses-catch",
+    "source": "<?php try{exit(\"X\");}catch(Throwable $e){echo \"BAD\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "undefined-constant",
+    "source": "<?php try{UNDEFINED;}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "unhandled-match",
+    "source": "<?php try{match(1){2=>0};}catch(UnhandledMatchError $e){echo \"M\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "firstclass-noncallable",
+    "source": "<?php try{1/0;}catch(Error $e){try{$e(...);}catch(Error $c){echo \"E\";}}",
+    "kind": "agreement"
+  },
+  {
+    "id": "throw-line",
+    "source": "<?php try{throw\n 1;}catch(Error $e){throw $e;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "weak-string",
+    "source": "<?php function f(string $x){}try{1/0;}catch(Error $e){f($e);}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "string-comparison",
+    "source": "<?php try{1/0;}catch(Error $e){echo $e==\"x\";}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "array-cast",
+    "source": "<?php try{1/0;}catch(Error $e){$a=(array)$e;}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "property-quiet",
+    "source": "<?php try{1/0;}catch(Error $e){echo isset($e->message);}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "property-read",
+    "source": "<?php try{1/0;}catch(Error $e){echo $e->message;}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "property-traverse",
+    "source": "<?php try{1/0;}catch(Error $e){foreach($e as $x){echo $x;}}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "constructor",
+    "source": "<?php throw new Exception(\"E\");",
+    "kind": "unsupported"
+  },
+  {
+    "id": "finally",
+    "source": "<?php try{1/0;}finally{echo \"F\";}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "method-body-catch",
+    "source": "<?php class C{function fail(){1/0;}}try{(new C)->fail();}catch(Error $e){echo \"M\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "constructor-body-catch",
+    "source": "<?php class C{function __construct(){1/0;}}try{$x=new C;}catch(Error $e){echo \"C\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "wrapper-uncaught-original-argument",
+    "source": "<?php $f=function($x){1/0;};try{$f->__invoke(new stdClass);}catch(Error $e){throw $e;}",
+    "kind": "agreement"
+  },
+  {
+    "id": "wrapper-receive-catch",
+    "source": "<?php $f=fn(int $x)=>$x;try{$f->__invoke([]);}catch(TypeError $e){echo \"T\";}",
+    "kind": "agreement"
+  },
+  {
+    "id": "clone-closure-throwable-capture",
+    "source": "<?php try{1/0;}catch(Error $e){$f=function()use($e){throw $e;};$g=clone $f;try{$g();}catch(Throwable $x){echo $x===$e;}}",
+    "kind": "agreement"
+  },
+  {
+    "id": "clone-throwable-rejected",
+    "source": "<?php try{1/0;}catch(Error $e){try{$x=clone $e;}catch(Error $z){echo \"C\";}}",
+    "kind": "agreement"
+  },
+  {
+    "id": "method-getter-staged",
+    "source": "<?php try{1/0;}catch(Error $e){echo $e->getMessage();}",
+    "kind": "unsupported"
+  },
+  {
+    "id": "clone-updates-throwable-reject",
+    "kind": "agreement",
+    "source": "<?php try{1/0;}catch(Error $e){try{clone($e,[\"x\"=>1]);}catch(Error $z){echo \"C\";}}"
+  },
+  {
+    "id": "clone-receive-type-catch",
+    "kind": "agreement",
+    "source": "<?php try{clone(1);}catch(TypeError $e){echo \"C\";}"
+  },
+  {
+    "id": "clone-wrapper-missing-object-catch",
+    "kind": "agreement",
+    "source": "<?php $f=clone(...);try{$f->__invoke(withProperties:[]);}catch(ArgumentCountError $e){throw $e;}"
+  },
+  {
+    "id": "exit-wrapper-type-catch",
+    "kind": "agreement",
+    "source": "<?php $f=exit(...);try{$f->__invoke([]);}catch(TypeError $e){throw $e;}"
+  },
+  {
+    "id": "protected-method-catch-field",
+    "kind": "agreement",
+    "source": "<?php class C{protected int $x=1;function f(){try{1/0;}catch(Error $e){echo $this->x;}}}(new C)->f();"
+  },
+  {
+    "id": "protected-catch-typed-reference",
+    "kind": "agreement",
+    "source": "<?php class C{protected int $x=1;function f(){$r=&$this->x;try{1/0;}catch(Error $r){echo \"bad\";}}}try{(new C)->f();}catch(TypeError $e){echo \"T\";}"
+  },
+  {
+    "id": "throwable-leading-nul-read",
+    "kind": "unsupported",
+    "source": "<?php try{1/0;}catch(Error $e){echo $e->{\"\\0bad\"};}"
+  },
+  {
+    "id": "throwable-leading-nul-quiet",
+    "kind": "unsupported",
+    "source": "<?php try{1/0;}catch(Error $e){echo isset($e->{\"\\0bad\"});}"
+  },
+  {
+    "id": "throwable-leading-nul-unset",
+    "kind": "unsupported",
+    "source": "<?php try{1/0;}catch(Error $e){unset($e->{\"\\0bad\"});}"
+  },
+  {
+    "id": "throwable-leading-nul-write",
+    "kind": "unsupported",
+    "source": "<?php try{1/0;}catch(Error $e){$e->{\"\\0bad\"}=1;}"
+  }
+]

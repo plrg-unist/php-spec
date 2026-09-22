@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Memoized coalescing assignment: source outcomes, ownership and resumption."""
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64,hashlib,json,re,subprocess,sys,tempfile
 ROOT=Path(__file__).resolve().parents[2];D=ROOT;R=ROOT
 sys.path.insert(0,str(R/'tests/semantics'));import static_types as t;import destructuring as d;import foreach as f
@@ -230,7 +231,7 @@ def main():
       events=[]
       for severity,message,line in re.findall(rb'(Warning|Deprecated): (.*) in .* on line (\d+)',native.stderr):
        events.append('WARNING '+d.byte_sequence(message.removeprefix(b'Undefined variable $'))+' '+line.decode() if message.startswith(b'Undefined variable $') else 'DIAGNOSTIC "'+severity.decode()+'" '+d.byte_sequence(message)+' '+line.decode())
-      checks=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(str(p).encode()).decode())+')','S_initial.COMPLETION = BUDGET','S = S_initial[.COMPLETION = NORMAL]','S_out = $drive(S, 10000)','$outputs(S_out.EVENTS) = '+d.byte_sequence(native.stdout),'$messages(S_out.EVENTS) = ['+', '.join(events)+']','S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps','S_out.ITERATORS = eps','S_out.TODO = eps','S_out.POOLS = S.POOLS','S_out.CODE = S.CODE','$heap_valid($heap_graph(S_out))','$foreach_valid(S_out)']
+      checks=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(str(p).encode()).decode())+')','S_initial.COMPLETION = BUDGET','S = S_initial[.COMPLETION = NORMAL]','S_out = $drive(S, 10000)','$outputs(S_out.EVENTS) = '+d.byte_sequence(native.stdout),'$messages(S_out.EVENTS) = ['+', '.join(events)+']',*completion_assertions('S_out', completion),'S_out.ORIGIN = eps','S_out.HELD = eps','S_out.ITERATORS = eps','S_out.TODO = eps','S_out.POOLS = S.POOLS','S_out.CODE = S.CODE','$heap_valid($heap_graph(S_out))','$foreach_valid(S_out)']
       for b in range(65):
        checks += [f'S_b{b} = $drive(S, {b})',f'$resume_foreach(S_b{b}, 10000) = S_out',f'S_b{b}.POOLS = S.POOLS',f'S_b{b}.CODE = S.CODE',f'S_b{b}.HELD = eps',f'$heap_valid($heap_graph(S_b{b}))',f'$foreach_valid(S_b{b})']
       q=out/f'case{i}.watsup';q.write_text(d.PREFIX+PREFIX+'dec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+x+'\n' for x in checks))

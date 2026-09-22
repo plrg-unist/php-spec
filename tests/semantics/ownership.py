@@ -149,9 +149,18 @@ def main():
         # Abrupt handlers may already have emptied TODO; cleanup still applies.
         abrupt = (live+f'[.COMPLETION = {completion}][.ENV = eps]'
                   '[.RESULT = KNOWN (PARRAY 0)][.HELD = [HCELL 0]]')
-        cases.append([f'S_next = $drive({abrupt}, 1)',
-                      'S_next.ALLOCATIONS = eps', 'S_next.HELD = eps',
-                      'S_next.RESULT = KNOWN PNULL', '$heap_valid($heap_graph(S_next))'])
+        if completion.startswith('THROWN'):
+            cases.append([f'S_abrupt = {abrupt}',
+                          '$drive(S_abrupt, 100).COMPLETION = UNSUPPORTED "invalid Throwable allocation context"',
+                          'S_next = $prune_allocations($release_temporaries(S_abrupt))',
+                          'S_next.COMPLETION = S_abrupt.COMPLETION',
+                          'S_next.ALLOCATIONS = eps', 'S_next.HELD = eps',
+                          'S_next.RESULT = KNOWN PNULL', '$heap_valid($heap_graph(S_next))'])
+        else:
+            cases.append([f'S_next = $drive({abrupt}, 1)',
+                          'S_next.ALLOCATIONS = eps', 'S_next.HELD = eps',
+                          'S_next.RESULT = KNOWN PNULL', '$heap_valid($heap_graph(S_next))'])
+
     for value, line in (('PINT 1', 1), ('PBOOL false', 0)):
         abrupt_write = (live+f'[.STORE = [DEFINED ({value})]][.RESULT = KNOWN (PARRAY 0)]'
                         f'[.HELD = [HCELL 0]][.TODO = [ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE ([97]) 1)) (KNOWN (PINT 0)) {line}) {line} false]]')

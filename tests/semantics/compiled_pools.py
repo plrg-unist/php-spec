@@ -5,6 +5,7 @@ from collections import deque
 import hashlib
 import json
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import random
 import subprocess
 import sys
@@ -69,15 +70,17 @@ def main():
         '$identity_apply(S_done, false, PARRAY 3, PARRAY 4, 1).RESULT = KNOWN (PBOOL false)',
         '$allocate_array(S_done, $array_empty()).RESULT = KNOWN (PARRAY 8)']]
     cases += [prefix + [
-        'S_done = $drive(S_pool, 100)', 'S_done.COMPLETION = NORMAL', 'S_done.HELD = S_pool.HELD',
+        '$drive(S_pool, 100).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"',
+        'S_done = $drive_steps(S_pool, 100)', 'S_done.COMPLETION = NORMAL', 'S_done.HELD = S_pool.HELD',
         'S_done.POOLS = S_pool.POOLS', '$heap_valid($heap_graph(S_done))',
-        'S_more = $drive(S_done[.TODO = [DISCARD]][.RESULT = KNOWN (PARRAY 3)], 100)',
+        'S_more = $drive_steps(S_done[.TODO = [DISCARD]][.RESULT = KNOWN (PARRAY 3)], 100)',
         'S_more.POOLS = S_pool.POOLS','S_more.ALLOCATIONS = S_done.ALLOCATIONS'],
-        prefix + ['S_done = $drive(S_pool, 0)', 'S_done.COMPLETION = BUDGET', 'S_done.POOLS = S_pool.POOLS',
-            'S_done.HELD = S_pool.HELD', '$drive(S_done[.COMPLETION = NORMAL],100) = $drive(S_pool,100)'],
-        prefix + ['S_done = $drive(S_pool[.COMPLETION = THROWN "Error" eps 1], 100)',
+        prefix + ['S_done = $drive_steps(S_pool, 0)', 'S_done.COMPLETION = BUDGET', 'S_done.POOLS = S_pool.POOLS',
+            'S_done.HELD = S_pool.HELD', '$drive_steps(S_done[.COMPLETION = NORMAL],100) = $drive_steps(S_pool,100)'],
+        prefix + ['S_done = $drive_steps(S_pool[.ORIGIN = (PORIGIN 71 ([PCINDEX 0]))][.COMPLETION = THROWN "Error" eps 1], 100)',
+            *uncaught_assertions('S_done', '"Error"', 'eps', '1'),
             'S_done.POOLS = S_pool.POOLS','S_done.HELD = eps', '$heap_valid($heap_graph(S_done))'],
-        prefix + ['S_done = $drive(S_pool[.COMPLETION = UNSUPPORTED "boundary"], 100)',
+        prefix + ['S_done = $drive_steps(S_pool[.COMPLETION = UNSUPPORTED "boundary"], 100)',
             'S_done.POOLS = S_pool.POOLS','S_done.HELD = eps', '$heap_valid($heap_graph(S_done))'],
         prefix + ['S_done = $write_name($release_temporaries(S_pool), [98], PARRAY 4)',
             'S_copy = $location_array(S_done, ROOT 1, 1)',

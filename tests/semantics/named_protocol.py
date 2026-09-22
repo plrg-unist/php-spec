@@ -1,4 +1,5 @@
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64,json,os,subprocess,tempfile
 import request_environment as q
 import request_environment_state as rs
@@ -304,7 +305,8 @@ for kind,prefix,common,variants in GROUPS:
  for name,change,valid in variants:
   checks=[c.replace('__INITIAL__',initials[kind])for c in common]+['S_changed = '+change,'$heap_valid($heap_graph(S_changed))','$call_descriptors_valid(S_changed) = '+str(valid).lower(),'S_zero = $drive(S_changed, 0)','S_zero.COMPLETION = '+('BUDGET'if valid else 'UNSUPPORTED "invalid compiled function descriptor"')]
   completion='THROWN "Error" n_message* 4'if kind=='line'else 'NORMAL'if name=='preflight-arbitrary-provided-value'else 'THROWN "TypeError" n_message* '+('1'if kind=='tail'else '2')
-  checks+=['S_full = $drive(S_changed, 10000)','S_full.COMPLETION = '+(completion if valid else 'UNSUPPORTED "invalid compiled function descriptor"')]
+  checks+=['S_full = $drive(S_changed, 10000)']
+  checks+=(completion_assertions('S_full', completion) if valid else ['S_full.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"'])
   if valid:
    cache='eps'if kind in ['tail','line']else '[{ORIGIN porigin_default, VALUE PINT '+('99'if name=='bind-arbitrary-result'else '3')+', CLASS PVSCALAR}]'
    checks+=['S_full.DEFAULTCACHE = '+cache,'S_full.REPORTING = 30719','S_full.FRAMES = eps','S_full.CURRENT = eps','S_full.HELD = eps','S_full.SILENCES = eps','$heap_valid($heap_graph(S_full))']

@@ -2,6 +2,7 @@
 """Increment/decrement value snapshots, RW acquisition, diagnostics and resumption."""
 import base64, json, re, subprocess, sys, tempfile
 from pathlib import Path
+from throwable_test_support import completion_assertions
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tests/semantics'))
 import static_types as types
@@ -337,7 +338,7 @@ def main():
                         'S.SOURCES = [U]','S_out = $drive(S, 10000)',
                         '$outputs(S_out.EVENTS) = '+byte_sequence(native.stdout),
                         '$messages(S_out.EVENTS) = ['+', '.join(events)+']',
-                        'S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps',
+                        *completion_assertions('S_out', completion),'S_out.ORIGIN = eps','S_out.HELD = eps',
                         'S_out.POOLS = S.POOLS','S_out.CODE = S.CODE',
                         '$heap_valid($heap_graph(S_out))']
                 if name.startswith('loop-'):

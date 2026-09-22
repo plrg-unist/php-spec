@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Source return stages, caller demand, and owning result substitutions."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import hashlib,json,os,subprocess,sys,tempfile
 R=Path(__file__).resolve().parents[2];sys.path.insert(0,str(R/'tests/semantics'))
 import function_scope as fs
@@ -75,7 +76,7 @@ for case,(stage,source) in CASES.items():
  for name,changed,valid,output in variants:
   checks=common+['S_changed = '+changed,'$heap_valid($heap_graph(S_changed))','$call_descriptors_valid(S_changed) = '+str(valid).lower(),'S_zero = $drive(S_changed, 0)','S_full = $drive(S_changed, 10000)']
   if valid:
-   checks+=['S_zero.COMPLETION = BUDGET','S_full.COMPLETION = '+('THROWN "TypeError" n_message* 2' if case=='fetch' else 'NORMAL'),'$review_outputs(S_full.EVENTS) = '+(output or str(list(q.t.base64.b64decode(row['native']['stdout'])))),'$heap_valid($heap_graph(S_full))','$call_descriptors_valid(S_full)']
+   checks+=['S_zero.COMPLETION = BUDGET',*(uncaught_assertions('S_full', '"TypeError"', 'n_message*', '2') if case=='fetch' else ['S_full.COMPLETION = NORMAL']),'$review_outputs(S_full.EVENTS) = '+(output or str(list(q.t.base64.b64decode(row['native']['stdout'])))),'$heap_valid($heap_graph(S_full))','$call_descriptors_valid(S_full)']
    if case=='value':checks+=['$review_diagnostics(S_full.EVENTS) = [DIAGNOSTIC "Notice" $ptascii("Only variable references should be returned by reference") 1]']
   else:checks+=['S_zero.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"','S_full.COMPLETION = S_zero.COMPLETION']
   fixture=d/(name+'.watsup');fixture.write_text(PREFIX.replace('STAGE',stage)+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+c+'\n' for c in checks));cmd=[str(runner),*map(str,modules),str(fixture)];(d/(name+'.command.json')).write_text(json.dumps(cmd))

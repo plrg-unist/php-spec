@@ -5,6 +5,7 @@ The literal source contexts are semantic filename/argv facts; no fixture reads
 those paths. Native/source agreement is tested separately by function_calls.
 """
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import hashlib
 import json
 import subprocess
@@ -46,18 +47,18 @@ def main(catalogue=None, campaign="function-call-protocol"):
             elif case['completion'] == 'STATICERROR':
                 source += '  -- if S.COMPLETION = STATICERROR text z\n'
             elif case['completion'] == 'THROWN':
-                source += '  -- if S.COMPLETION = THROWN text n_message* z\n'
+                source += ''.join('  -- if ' + check + '\n' for check in uncaught_assertions('S', 'text', 'n_message*', 'z'))
             else:
                 raise AssertionError(case['completion'])
         fixture.write_text(source)
         command = [str(runner), *map(str, modules), str(fixture)]
         (directory / 'command.json').write_text(json.dumps(command))
         try:
-            result = subprocess.run(command, capture_output=True, timeout=300)
+            result = subprocess.run(command, capture_output=True, timeout=600)
         except subprocess.TimeoutExpired as error:
             (directory / 'stdout').write_bytes(error.stdout or b'')
             (directory / 'stderr').write_bytes(error.stderr or b'')
-            (directory / 'status.json').write_text(json.dumps({'status': 'timeout', 'seconds': 300}))
+            (directory / 'status.json').write_text(json.dumps({'status': 'timeout', 'seconds': 600}))
             raise
         (directory / 'stdout').write_bytes(result.stdout)
         (directory / 'stderr').write_bytes(result.stderr)

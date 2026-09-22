@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Named-function static source, persistent-cell and active operand invariants."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import base64,json,os,subprocess,tempfile
 import request_environment as q
 import request_environment_state as rs
@@ -681,7 +682,7 @@ CASES = [{'id': 'control-bind',
              'S_typed.STATICS = [pstaticcell]',
              'S_typed.STORE[pstaticcell.CELL] = DEFINED (PINT 1)',
              'S_out = $drive(S, 10000)',
-             'S_out.COMPLETION = THROWN "TypeError" n_message* 2',
+             *uncaught_assertions('S_out', '"TypeError"', 'n_message*', '2'),
              'S_out.STATICS = [pstaticcell]',
              'S_out.REPORTING = 30719',
              'S_out.SILENCES = eps',

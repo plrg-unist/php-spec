@@ -36,6 +36,9 @@ def observe(state, filename):
     stdout = b''.join(bytes(map(int, event['args'][0])) for event in events if event['tag'] == 'OUTPUT')
     completion = state['COMPLETION']
     tag, fields = completion['tag'], completion['args']
+    if tag == 'UNCAUGHT':
+        payload = state['OBJECTS'][int(fields[0])]['args'][0]
+        tag, fields = 'THROWN', [payload['KIND'], payload['MESSAGE']['args'][0], payload['LINE']]
     stderr = b''
     for event in events:
         if event['tag'] == 'WARNING':

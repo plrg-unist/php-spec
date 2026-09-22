@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Paused typed-property increment/decrement restores the owned cell on errors."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import base64
 import hashlib
 import json
@@ -53,8 +54,7 @@ def run():
             checks = [f'S_initial = $php_run({checked["fixture"]}, 0, {json.dumps(filename)})',
                       'S_initial.COMPLETION = BUDGET', 'S = S_initial[.COMPLETION = NORMAL]',
                       'S_final = $drive(S, 10000)',
-                      'S_final.COMPLETION = THROWN "TypeError" '
-                      + bytes_fixture(match[1].encode()) + ' ' + match[2],
+                      *uncaught_assertions('S_final', '"TypeError"', bytes_fixture(match[1].encode()), match[2]),
                       'S_final.TODO = eps', 'S_final.HELD = eps',
                       '$heap_valid($heap_graph(S_final))']
             if 'reference' in name:

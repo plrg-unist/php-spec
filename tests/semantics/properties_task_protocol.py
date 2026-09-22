@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Paused property-name tasks and temporary receiver ownership."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import base64
 import hashlib
 import json
@@ -109,7 +110,7 @@ def main():
             else:
                 checks += [
                     'S_done = $drive(S_prep, 1024)',
-                    'S_done.COMPLETION = THROWN text_error nat_error* z_error',
+                    *uncaught_assertions('S_done', 'text_error', 'nat_error*', 'z_error'),
                     '$heap_valid($heap_graph(S_done))',
                     '$heap_owners($heap_graph(S_done), HOBJECT n_object) = 0',
                 ]

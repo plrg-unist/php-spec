@@ -140,7 +140,7 @@ def $typed_callback_array(S, n) = false -- otherwise
 dec $typed_callable(pstate, pvalue) : bool?
 def $typed_callable(S, POBJECT n) = (true) -- if $typed_closure(S, n)
 def $typed_callable(S, POBJECT n) = (false) -- if $class_plain_instance(S, n)
-def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n) /\ ~$class_plain_instance(S, n)
+def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n) /\ ~$class_plain_instance(S, n) /\ ~$throwable_object(S, n)
 def $typed_callable(S, PSTRING ptbytes) = (true) -- if $typed_registered(S, ptbytes)
 def $typed_callable(S, PSTRING ptbytes) = eps
   -- if ~$typed_registered(S, ptbytes)
@@ -173,6 +173,7 @@ def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "class or meth
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*, pvalue, b)
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
   -- if ~("callable" <- $ptmasks(ptbranch*)) \/ $typed_callable(S, pvalue) = (false)
+  -- if ~$throwable_string_coercion(S, ptbranch*, pvalue, b)
 
 dec $typed_given(pstate, pvalue) : ptbytes
 def $typed_given(S, POBJECT n) = $ptascii("Closure") -- if $typed_closure(S, n)

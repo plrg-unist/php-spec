@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Source-bound dynamic/fixed-name call stages with arbitrary consistent values."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import base64,json,os,subprocess,tempfile
 import request_environment as q
 import request_environment_state as rs
@@ -260,7 +261,7 @@ CASES = [{'id': 'control',
              'S_zero = $drive(S_changed, 0)',
              'S_zero.COMPLETION = BUDGET',
              'S_full = $drive(S_changed, 10000)',
-             'S_full.COMPLETION = THROWN "Error" n_message* z_error'],
+             *uncaught_assertions('S_full', '"Error"', 'n_message*', 'z_error')],
   'original_fixture_sha256': '525f7e899542044942ad8d5a68a7d83817ece8aa16ad978c3ab6799eda8161f2'},
  {'id': 'reference-result-control',
   'source': 'dynamic-reference-callee-owner-before-argument',
@@ -374,7 +375,7 @@ CASES = [{'id': 'control',
              'S_zero = $drive(S_changed, 0)',
              'S_zero.COMPLETION = BUDGET',
              'S_full = $drive(S_changed, 10000)',
-             'S_full.COMPLETION = THROWN "Error" n_message* z_error'],
+             *uncaught_assertions('S_full', '"Error"', 'n_message*', 'z_error')],
   'original_fixture_sha256': '7dded99fd65b411e3d9c33ecbfd9bc1c40d333e6d42e78363eb793c116af285b'},
  {'id': 'selected-control',
   'source': 'dynamic-reference-callee-owner-before-argument',

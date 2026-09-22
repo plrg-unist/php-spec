@@ -208,6 +208,9 @@ test-semantics: build
 	python3 tests/semantics/match_protocol.py
 	python3 tests/semantics/exit_compiler.py
 	python3 tests/semantics/exit_expressions.py
+	python3 tests/semantics/throwable_expressions.py
+	python3 tests/semantics/throwable_compiler.py
+	python3 tests/semantics/throwable_protocol.py
 	python3 tests/semantics/exit_protocol.py
 	python3 tests/semantics/exit_controls.py
 	python3 tests/semantics/clone_compiler.py

@@ -153,6 +153,11 @@ def $method_object(POBJECT n) = true
 def $method_object(pvalue) = false -- otherwise
 dec $closure_known_other_method(ptbytes) : bool
 def $closure_known_other_method(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("bind"), $ptascii("bindto"), $ptascii("call"), $ptascii("fromcallable"), $ptascii("getcurrent")])
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable method consumer"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $throwable_object(S_read, n)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION =/= NORMAL

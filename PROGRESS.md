@@ -44,41 +44,24 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 145/146 | Print constant-result effects, conversion lines, reference demand and paused ownership. [Review](coverage/semantics/print-review.json) |
 | 147/148 | Exit/die intrinsic calls, ordered binding, conversion, internal traces and explicit terminal cleanup; 87 source tuples, 25 compiler sources/133 projections and paused ownership guards. [Review](coverage/semantics/exit-review.json) |
 | 149/150 | Object and closure cloning: shallow slots/live aliases, receiver/static ownership and positional/named/array-unpacked property updates. [Review](coverage/semantics/clone-review.json) |
+| 151/152 | Generated builtin Throwable identities, ordered no-finally try/catch, strict catch references, throw/rethrow, source-authenticated search and owned traces. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-review.json) |
 | 153/154 protected | Protected instance properties: lexical prototype access, mangled keys across existing consumers, typed binding correction and memoized property coalescing. Private identity remains the next increment. [Review](coverage/semantics/property-visibility-review.json) |
 
-The current checkpoint combines protected instance properties, public methods
-and constructors with object cloning, nullsafe chains, match selection, print expressions and exit/die. Print preserves output effects while returning constant
-integer 1 through folding and reference-result demand. Its
-[review](coverage/semantics/print-review.json) records 20 author and 15 independent
-source comparisons, ten compiler/lint sources with 51 projections, four paused
-stages with 61 assertions, six existing consumers and two separate Unsupported
-controls. Two retained official match originals agree on the combined tree.
-Conversion callbacks and output-handler protocols remain open.
-
-Exit/die now has genuine finite intrinsic callable identities and a distinct
-`EXITED` completion. Native exit evidence compares exact bytes/status only;
-source-derived model tags and paused-state checks remain separate. Six author
-paused stages/126 assertions, four independent stages/84 assertions, 17 existing
-first-class regressions and three separate Unsupported controls cover the new
-call and cleanup boundary. Shutdown/destructor and callback integration remain
-required.
-
-Clone evidence keeps the initial 62-source campaign separate from the final
-methods bridge of 14 sources (seven overlap), covering 69 maintained originals.
-Initial 11-stage/172-assertion and final four-stage/64-assertion protocol scopes
-cover 13 stages with two repeated; compiler and Unsupported checks remain
-separate. [The ledger](coverage/semantics/clone-author.json) records identities
-and the [contract](docs/semantics/SOURCE-CLONE.md) lists callback, readonly, hook,
-internal-object, Traversable unpack and lifecycle dependencies.
+The current integration combines protected properties, public methods and
+constructors, cloning, nullsafe chains, match, print and exit/die with generated
+Throwable control. Source, paused-state and terminal migration evidence have
+bounded review. The [migration ledger](coverage/semantics/throwable-migration-review.json)
+keeps deferred broader pause sweeps and baseline fixture failures explicit;
+these results do not establish complete-core regression closure.
 
 ## Next work
 
-Private property identity/shadowing is the next153/154 increment. Nonpublic and
-static methods, static/readonly members, hooks, magic methods, remaining internal
-parents and Throwable remain required. `try`/`finally` goto
-interaction, remaining intrinsics, traversal, dynamic lifetime and
-collection obligations remain open. Match uses the existing uncaught-error
-completion; Throwable objects, catch/finally and destructor integration remain
-required. Full current-source closure and a fresh
-offline network-isolated rebuild are required before complete-core acceptance.
-Rocq interaction-tree semantics and BOLA proofs remain downstream.
+Private property identity/shadowing and finally control are active increments.
+Throwable constructors, accessors, canonical internal property backing, structured
+trace/previous payloads and user subclasses follow. Nonpublic/static methods,
+static/readonly members, hooks, magic methods, remaining internal parents,
+conversion callbacks, output handlers, traversal and lifecycle integration remain
+open. Exit bypasses catch/finally; shutdown/destructor callbacks remain required.
+Full current-source closure and a fresh offline network-isolated rebuild are
+required before complete-core acceptance. Rocq interaction-tree semantics and
+BOLA proofs remain downstream.

@@ -306,6 +306,7 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $pt
   -- if ppropertydesc.TYPE = eps
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property read"]
   -- if ~$class_plain_instance(S, n)
+  -- if ~$throwable_object(S, n)
 def $property_read_key(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Attempt to read property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $unpack_type_bytes(pvalue), z)[.RESULT = KNOWN PNULL]
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 
@@ -407,6 +408,7 @@ def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_access_er
   -- if ~$property_accessible(S, n, ptbytes)
 def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property write"]
   -- if ~$class_plain_instance(S, n)
+  -- if ~$throwable_object(S, n)
 def $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Attempt to modify property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_store_key(S, n, ptbytes, pvalue, $property_current_line(S))
@@ -419,6 +421,7 @@ def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.LOCATION = NOWHERE]
   -- if ~$property_accessible(S, n, ptbytes)
 def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.RESULT = KNOWN PNULL]
   -- if ~$class_plain_instance(S, n)
+  -- if ~$throwable_object(S, n)
 def $base_find(S, BASE_PROPERTY pvalue ptbytes, z) = S[.RESULT = KNOWN PNULL]
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $coalesce_assign(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z)
@@ -432,6 +435,7 @@ def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = S_read
   -- if S_read.COMPLETION =/= NORMAL
 def $assign_array(S, BASE_PROPERTY (POBJECT n) ptbytes, poperand, z) = S[.COMPLETION = UNSUPPORTED "Closure property write"]
   -- if ~$class_plain_instance(S, n)
+  -- if ~$throwable_object(S, n)
 def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(S_read, "Error", $ptascii("Attempt to assign property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
   -- if S_read = $resolve_at(S, poperand, z)

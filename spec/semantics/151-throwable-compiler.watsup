@@ -1,0 +1,132 @@
+;; zend_compile_throw compiles its operand, emits THROW, and returns IS_CONST true.
+;; Retain that effect when an enclosing boolean expression folds its result.
+dec $ppthrow_done(ppstate, pcpath) : ppstate
+def $ppdispatch(P, pcpath, NExprThrow expression metadata, PPR) = $ppthrow_done($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
+def $ppthrow_done(P, pcpath) = P[.FOLD = P.FOLD[.VALUE = (PBOOL true)]][.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEFFECT pcpath]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppthrow_done(P, pcpath) = P -- otherwise
+def $pptemporary(NExprThrow expression metadata) = true
+
+;; zend_compile_try visits the try body, then each catch header/body in order.
+;; Within a union header it resolves one class and binds the CV before checking
+;; the next class. In particular, $this can fail before a later bad class name.
+dec $ppcatch_class(ppstate, pcpath, name) : ppstate
+def $ppcatch_class(P, pcpath, name) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcatch_class(P, pcpath, name) = $ppcheck(P, $context_error("Bad class name in the catch statement", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ptqual =/= PTFULL
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppcatch_class(P, pcpath, name) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name")) P.LOCATION.LINE)]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ptast(name) = PTNAME PTFULL ptbytes
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppcatch_class(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ~($ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+
+;; Catch calls lookup_cv directly: it does not mark http_response_header assigned,
+;; request an autoglobal, or turn a superglobal spelling into FETCH_GLOBAL.
+dec $ppcatch_cv(ppstate, pcpath, phpType43) : ppstate
+dec $ppcatch_cv_record(ppstate, ptbytes) : ppstate
+def $ppcatch_cv(P, pcpath, phpType43) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcatch_cv(P, pcpath, ABSENT) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcatch_cv(P, pcpath, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $cv_name(phpType32) = ($ptascii("this"))
+def $ppcatch_cv(P, pcpath, NExprVariable phpType32 metadata) = $ppdone($ppclearvalue($ppcatch_cv_record(P, ptbytes)), pcpath, PPW)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ptbytes =/= $ptascii("this")
+def $ppcatch_cv_record(P, ptbytes) = P
+  -- if ptbytes <- P.CVS
+def $ppcatch_cv_record(P, ptbytes) = P[.CVS = P.CVS ++ [ptbytes]]
+  -- if ~(ptbytes <- P.CVS)
+
+dec $ppcatch_types(ppstate, pcpath, nat, name*, phpType43) : ppstate
+def $ppcatch_types(P, pcpath, n, name*, phpType43) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcatch_types(P, pcpath, n, eps, phpType43) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcatch_types(P, pcpath, n, name :: name_tail*, phpType43) = $ppcatch_types($ppcatch_cv($ppcatch_class(P, pcpath ++ [PCFIELD 0, PCINDEX n], name), pcpath ++ [PCFIELD 1], phpType43), pcpath, $(n + 1), name_tail*, phpType43)
+  -- if P.COMPLETION = PPCNORMAL
+
+dec $ppcatch_line(name*) : int
+def $ppcatch_line(name :: name_tail*) = $name_expression_line(name)
+def $ppcatch_line(eps) = 0
+
+dec $ppcatches(ppstate, pcpath, nat, phpType66*) : ppstate
+def $ppcatches(P, pcpath, n, phpType66*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppcatches(P, pcpath, n, eps) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppcatches(P, pcpath, n, (NStmtCatch (SEQUENCE name*) phpType43 (SEQUENCE statement*) metadata) :: phpType66*) = $ppcatches(P_body, pcpath, $(n + 1), phpType66*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_catch = pcpath ++ [PCINDEX n]
+  -- if P_header = $ppcatch_types($pplocate(P, pcpath_catch, $ppcatch_line(name*)), pcpath_catch, 0, name*, phpType43)
+  -- if P_body = $ppstatements(P_header, pcpath_catch ++ [PCFIELD 2], 0, statement*)
+
+dec $pptry_finally(ppstate, phpType67) : ppstate
+def $pptry_finally(P, phpType67) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pptry_finally(P, ABSENT) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $pptry_finally(P, NStmtFinally phpType23 metadata) = $ppunsupported(P, "finally unwinding")
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtTryCatch phpType23 (SEQUENCE eps) ABSENT metadata) = $ppcheck($pplocate(P, pcpath, $source_line(metadata)), $context_error("Cannot use try without catch or finally", $source_line(metadata)))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) phpType67 metadata) = $pptry_finally($ppcatches($ppstatements(P, pcpath ++ [PCFIELD 0], 0, statement*), pcpath ++ [PCFIELD 1], 0, phpType66*), phpType67)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if phpType66* =/= eps \/ phpType67 =/= ABSENT
+
+;; Authenticate all compiled names/effects/lines beneath the admitted source
+;; regions. This includes catch class order and optional binding instructions.
+dec $throwable_code_parent(pcoccurrence*, pcpath) : bool
+dec $throwable_code_path(pcoccurrence*, pcpath) : bool
+def $throwable_code_path(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprThrow expression metadata)
+def $throwable_code_path(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtTryCatch phpType23 phpType65 ABSENT metadata)
+def $throwable_code_path(pcoccurrence*, pcpath) = $throwable_code_parent(pcoccurrence*, pcpath) -- otherwise
+def $throwable_code_parent(pcoccurrence*, pcpath) = $throwable_code_path(pcoccurrence*, pcpath[0:n_parent])
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+def $throwable_code_parent(pcoccurrence*, eps) = false
+
+dec $throwable_code(pcoccurrence*, pcodeexpr*) : pcodeexpr*
+def $throwable_code(pcoccurrence*, eps) = eps
+def $throwable_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = pcodeexpr :: $throwable_code(pcoccurrence*, pcodeexpr_tail*)
+  -- if $throwable_code_path(pcoccurrence*, $ppcodepath(pcodeexpr))
+def $throwable_code(pcoccurrence*, pcodeexpr :: pcodeexpr_tail*) = $throwable_code(pcoccurrence*, pcodeexpr_tail*)
+  -- if ~$throwable_code_path(pcoccurrence*, $ppcodepath(pcodeexpr))
+
+dec $throwable_names(pcoccurrence*, pcodename*) : pcodename*
+def $throwable_names(pcoccurrence*, eps) = eps
+def $throwable_names(pcoccurrence*, (CODENAME pcpath ptbytes ptbytes_fallback?) :: pcodename*) = (CODENAME pcpath ptbytes ptbytes_fallback?) :: $throwable_names(pcoccurrence*, pcodename*)
+  -- if $throwable_code_path(pcoccurrence*, pcpath)
+def $throwable_names(pcoccurrence*, (CODENAME pcpath ptbytes ptbytes_fallback?) :: pcodename*) = $throwable_names(pcoccurrence*, pcodename*)
+  -- if ~$throwable_code_path(pcoccurrence*, pcpath)
+
+def $throwable_unit_code_valid(P, pcode) = true
+  -- if pcodeexpr_expected* = $compiled_operands(P, P.EXPRESSIONS) ++ $compiled_gotos(P.GOTOS, P.LABELS) ++ $compiled_writes(P.WRITES)
+  -- if $throwable_code(P.FOLD.SOURCE.OCCURRENCES, pcode.EXPRESSIONS) = $throwable_code(P.FOLD.SOURCE.OCCURRENCES, pcodeexpr_expected*)
+  -- if $throwable_names(P.FOLD.SOURCE.OCCURRENCES, pcode.NAMES) = $throwable_names(P.FOLD.SOURCE.OCCURRENCES, $compiled_names(P.NAMES))
+def $throwable_unit_code_valid(P, pcode) = false -- otherwise
+
+dec $goto_catch(pstate, porigin, phpType66*, porigin, ptask*, ptask*, nat) : pgototasks
+
+;; Zend permits goto into a try or catch. Entering a catch skips matching and
+;; binding, and cannot activate that try's sibling handlers.
+def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) phpType65 ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ [TRY_END (PORIGIN n pcpath_try)] ++ ptask_tail*, ptask_old*)
+  -- if $effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
+def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_catch(S, PORIGIN n pcpath_target, phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, 0)
+  -- if ~$effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
+def $goto_catch(S, porigin_target, eps, porigin, ptask_tail*, ptask_old*, n_index) = GOTOMISSING
+def $goto_catch(S, PORIGIN n pcpath_target, (NStmtCatch phpType42 phpType43 (SEQUENCE statement*) metadata) :: phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2])), 0) ++ ptask_tail*, ptask_old*)
+  -- if $effect_below(pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_target)
+def $goto_catch(S, PORIGIN n pcpath_target, phpType66 :: phpType66_tail*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, n_index) = $goto_catch(S, PORIGIN n pcpath_target, phpType66_tail*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, $(n_index + 1))
+  -- if ~$effect_below(pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_target)

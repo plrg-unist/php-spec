@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Match source continuations, ownership, malformed tasks and budget resumption."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import base64
 import hashlib
 import json
@@ -118,7 +119,7 @@ CASES = [('subject',
   ['$call_descriptors_valid(S)',
    '$heap_valid($heap_graph(S))',
    'S_done = $drive(S,1000)',
-   'S_done.COMPLETION = PHPERROR $ptascii("MISSING") 1',
+   *uncaught_assertions('S_done', '"Error"', '($ptascii("Undefined constant ") ++ [34] ++ $ptascii("MISSING") ++ [34])', '1'),
    '$heap_valid($heap_graph(S_done))',
    'S_done.HELD = eps',
    'S_done.FRAMES = eps',

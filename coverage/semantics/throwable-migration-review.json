@@ -1,0 +1,780 @@
+{
+  "scope": "Necessary terminal representation migration, not acceptance of all legacy regression sweeps",
+  "base": "f3a84acda7674002e227226cc88ed610dd3c80b5",
+  "invariants": "Original class/message/line retained; owned object payload, trace and error-origin projection, valid heap and positive object owner added. Pure helper THROWN/PHPERROR request expectations remain unchanged.",
+  "mapping": [
+    {
+      "file": "tests/semantics/switch_protocol.py",
+      "original_assertions": [
+        "checks += ['S_done.COMPLETION = NORMAL' if name != 'abrupt' else 'S_done.COMPLETION = THROWN text n_message* z_error',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "5e4420d476488d13b9c81c53cc85ba77070dcd92436b7d9f5d7625d560f2d909",
+      "original_sha256": "ab641e3100afcf048cbd3be9a18b7d6a742f8252b795a882510a1883e6d4ebf7"
+    },
+    {
+      "file": "tests/semantics/runtime_compiler.py",
+      "original_assertions": [
+        "cases.append(prefix+['$drive(S, 1000).COMPLETION = PHPERROR ([78,92,77,105,115,115,105,110,103]) 3',f'S_again = $drive(S[.TODO = [AT (PORIGIN 71 {nan_path}) (EVAL {nan_expr})]], 1000)','S_again.COMPLETION = NORMAL','S_again.ORIGIN = eps','S_again.RESULT = KNOWN (PFLOAT 9221120237041090560)','S_again.CODE = S.CODE','S_again.POOLS = S.POOLS'])"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "ea75dbdfcd9e49cbb91720c511866bf089ad8410990448cc975761b912d4d3a6",
+      "original_sha256": "2c61c1d3456fb705e0027162864b85744bc56e6b346d03ec13d04db4f8c4d572"
+    },
+    {
+      "file": "tests/semantics/compiled_pools.py",
+      "original_assertions": [
+        "prefix + ['S_done = $drive(S_pool[.COMPLETION = THROWN \"Error\" eps 1], 100)',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "12dcccb17d99803c9d06ed8237027607dbf2a8356b058bb75d8ed8a28ec05fef",
+      "original_sha256": "ad7db313e8a305dce57a94bfe013c0a03b6c3b4428c79322b3ad343c47f7006a"
+    },
+    {
+      "file": "tests/semantics/properties_task_protocol.py",
+      "original_assertions": [
+        "'S_done.COMPLETION = THROWN text_error nat_error* z_error',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "5ac8d304ac3491dd5445f82acb0e333e613e694a2ae5ebf6846dff3550573ad3",
+      "original_sha256": "f2f3c06f5ca0078de22ca555d21861e7b9f8a9dc6e2efac63a2965b117ec0fae"
+    },
+    {
+      "file": "tests/semantics/match_protocol.py",
+      "original_assertions": [
+        "'S_done.COMPLETION = PHPERROR $ptascii(\"MISSING\") 1',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "3dca48fd13275b71c3df66399528f1e9e503623c4282a6dcb023283506889be0",
+      "original_sha256": "8ceb2c93db5e65221a1f245bb9d4b8b9e5963126e7944709968f06a9cd2f2b14"
+    },
+    {
+      "file": "tests/semantics/noctor_unpack_protocol.py",
+      "original_assertions": [
+        "'S_done.COMPLETION = THROWN \"Error\" n_message* 2',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "d38acc866cd4425769bb4a451701bd1ce50dffbeadf5dccf9e8e005d4624e6eb",
+      "original_sha256": "4444649aca413aeccd985f50484d0a421fe24f0b93c93e9460dec21758a7367c"
+    },
+    {
+      "file": "tests/semantics/noctor_args_protocol.py",
+      "original_assertions": [
+        "'S_abrupt.COMPLETION = THROWN \"Error\" n_message* 2',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "50e56537b6dd737f2a388cddcf10b45b307a34d32d3a553833cb9bab2ed5b654",
+      "original_sha256": "439bbf1baeedf62f446a729453887c435cd101330ab4477ed1272cd49a2a77ff"
+    },
+    {
+      "file": "tests/semantics/function_statics_protocol.py",
+      "original_assertions": [
+        "'S_out.COMPLETION = THROWN \"TypeError\" n_message* 2',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "f827121c606c4190ccd11f5a68ae4840a22edf8919b80f22c8320fbaf9bf3bab",
+      "original_sha256": "c01e325e1ae11b637b6fd38d05640ef9fa654b3fb85903219c5914f23f8ca638"
+    },
+    {
+      "file": "tests/semantics/property_reference_incdec_protocol.py",
+      "original_assertions": [
+        "'S_final.COMPLETION = THROWN \"TypeError\" '"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "7847e7169f33cf3505afcb94a6f282f49d919b5fea557bcd59841630e202573a",
+      "original_sha256": "32310a4b9e5d0e72d6797590592a9ba082d1d4169b00c4930790f811dd4f9f8b"
+    },
+    {
+      "file": "tests/semantics/dynamic_call_protocol.py",
+      "original_assertions": [
+        "'S_full.COMPLETION = THROWN \"Error\" n_message* z_error'],",
+        "'S_full.COMPLETION = THROWN \"Error\" n_message* z_error'],"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "1faf602fd5095001cc7894f41417885c26c856928f801400c0f1fa8fbc821905",
+      "original_sha256": "484e86015e9b709a79ccd60b7410ca8fa498ff2387c6daad16e359226da6cc84"
+    },
+    {
+      "file": "tests/semantics/call_unpack_protocol.py",
+      "original_assertions": [
+        "'S_full.COMPLETION = THROWN \"TypeError\" n_message* 2',",
+        "'S_full.COMPLETION = THROWN \"TypeError\" n_message* 2',",
+        "'S_full.COMPLETION = THROWN \"TypeError\" n_message* 2',",
+        "'S_full.COMPLETION = THROWN \"TypeError\" n_message* 5',",
+        "'S_full.COMPLETION = THROWN \"TypeError\" n_message* 2',",
+        "'S_full.COMPLETION = THROWN \"TypeError\" n_message* 5',"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "d4bb103dd771c4a9e38e5711fdba84a0d9cdba133c8b9d192a7e7652816576ba",
+      "original_sha256": "02926ccf6a0c350939b75a502d4bbee8908b7adb30a64ff81117ace0807e1982"
+    },
+    {
+      "file": "tests/semantics/function_call_protocol.py",
+      "original_assertions": [
+        "source += '  -- if S.COMPLETION = THROWN text n_message* z\\n'"
+      ],
+      "replacement": "Preserve kind/message/line via uncaught_assertions, assert payload trace/origin projection and heap owner; request-producing helper assertions unchanged.",
+      "final_sha256": "f2b8ebd91aaa3606227821f3532eb3f7603e7ab2923cf09f545836ac4145a73b",
+      "original_sha256": "eff8d2bd81071f6c466630e3b3b47abf7a02bf8d59338826d196c205391b68b9"
+    },
+    {
+      "file": "tests/semantics/reference_return_protocol.py",
+      "original_assertions": [
+        "checks+=['S_zero.COMPLETION = BUDGET','S_full.COMPLETION = '+('THROWN \"TypeError\" n_message* 2' if case=='fetch' else 'NORMAL'),'$review_outputs(S_full.EVENTS) = '+(output or str(list(q.t.base64.b64decode(row['native']['stdout'])))),'$heap_valid($heap_graph(S_full))','$call_descriptors_valid(S_full)']"
+      ],
+      "replacement": "Conditional NORMAL remains exact; selected error class/message/line preserved by uncaught_assertions and strengthens payload/ownership invariants.",
+      "final_sha256": "1cb93e0cd9de2c74468bef772da109d572e93bd3907b8e03053bdbe1eda5ef69",
+      "original_sha256": "2d0409ab19dedd7acacef2e6b27c6f8f90cfa43f700f5b677c9e451ab62bf951"
+    },
+    {
+      "file": "tests/semantics/variadic_protocol.py",
+      "original_assertions": [
+        "checks+=['S_full = $drive(S_changed, 10000)','S_full.COMPLETION = '+('THROWN \"TypeError\" n_message* 2' if valid else 'UNSUPPORTED \"invalid compiled function descriptor\"')]"
+      ],
+      "replacement": "Valid error retains TypeError/message/line through owned uncaught payload; invalid state remains Unsupported.",
+      "final_sha256": "f273fff1f1ffaa814556bac957f53159ab69b9d8599bc8d35b11a0cb0ced767e",
+      "original_sha256": "5bf0e2f92c912bbdc31845a6dd7ff5412d575245629ce4776002e0190b96740d"
+    },
+    {
+      "file": "tests/semantics/reference_return_state.py",
+      "original_consumers": [
+        {
+          "line": 91,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "db3160366f5fff95315763604132db04c137c0c2cc7a90b1a02adaf30a1000ef",
+      "original_sha256": "c8fffda1a38944958911fc40c433d4527683fb724ff09307c1eaab77dcc601aa"
+    },
+    {
+      "file": "tests/semantics/main_statics_state.py",
+      "original_consumers": [
+        {
+          "line": 98,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "e07d0d68671b62300c474f9d2d38b434fc0535940afe4c381705987ebfce2db1",
+      "original_sha256": "bada828aa62f8df61b9733058a196b37dd95bbf36f46a56397274d6dae7bbbc1"
+    },
+    {
+      "file": "tests/semantics/ordinary.py",
+      "original_consumers": [
+        {
+          "line": 1596,
+          "text": "'S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps',"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "829e2bab65e763c8293a37670ab5fd14a6ed28e09afd598a3368fded4c7aa57b",
+      "original_sha256": "d0233c17e3855fff7dc7514c76cc8988bf2bb1ca9489b04128ae15175f92f9ea"
+    },
+    {
+      "file": "tests/semantics/user_constant_state.py",
+      "original_consumers": [
+        {
+          "line": 79,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "d3a64b0cd32f77014a269b29e2a5b80713a28a958908788ce1e1f3a4bcccb041",
+      "original_sha256": "b6a69ce9eb4fbd6fcda8ca41f3fc43298973b075edbdea0d760ac2abf52c6895"
+    },
+    {
+      "file": "tests/semantics/foreach.py",
+      "original_consumers": [
+        {
+          "line": 187,
+          "text": "checks=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(str(p).encode()).decode())+')','S_initial.COMPLETION = BUDGET','S = S_initial[.COMPLETION = NORMAL]','S_out = $drive(S, 10000)','$outputs(S_out.EVENTS) = '+d.byte_sequence(native.stdout),'$messages(S_out.EVENTS) = ['+', '.join(events)+']','S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps','S_out.ITERATORS = eps','S_out.TODO = eps','S_out.POOLS = S.POOLS','S_out.CODE = S.CODE','$heap_valid($heap_graph(S_out))','$foreach_valid(S_out)']"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "71e4262569c8ac6ebf09a83b63e19c4c6b68b2341b7ff714bb5312f1ec3d8642",
+      "original_sha256": "2e587bac0205ac99dc6216a125c22bf76df77814f7ce8261a6f6227bb3818728"
+    },
+    {
+      "file": "tests/semantics/named_protocol.py",
+      "original_consumers": [
+        {
+          "line": 307,
+          "text": "checks+=['S_full = $drive(S_changed, 10000)','S_full.COMPLETION = '+(completion if valid else 'UNSUPPORTED \"invalid compiled function descriptor\"')]"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "dd4cc9a54172a1f9dcc2e15ea0baf4692d255b08ac9b6cfd771f38e76bf2ebed",
+      "original_sha256": "84a80db84c4d7e5f8c0c71dd173cb74ee03a2dcc762ce6743ab892cc6c75d0fa"
+    },
+    {
+      "file": "tests/semantics/arrows_state.py",
+      "original_consumers": [
+        {
+          "line": 104,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "56721541410dc8c1383946affb4f7dd27459219764aa705353494f8a67cd8c38",
+      "original_sha256": "ce4e1c3a0c573b392732df97e939c9b8b0844a31c6cf08122f8333145a26c547"
+    },
+    {
+      "file": "tests/semantics/typed_function_state.py",
+      "original_consumers": [
+        {
+          "line": 80,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "8e3b208b615b1e7828346026c14593bf1e475b02a067d83d4f30c3a0e6e80237",
+      "original_sha256": "d72d9e281e72c0f783c96e5c0535d5f76511e7d17361ca976de380a40c9564d7"
+    },
+    {
+      "file": "tests/semantics/call_unpack_state.py",
+      "original_consumers": [
+        {
+          "line": 96,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "e520a1739823d7958e4857c014ead04b224cdb6ae382389352fc5b0f9f1c6d8a",
+      "original_sha256": "31c50b0ac3d0e17e1bd5cd185a81de2a6d088bf464aea403ad040e3f41978630"
+    },
+    {
+      "file": "tests/semantics/suppression_state.py",
+      "original_consumers": [
+        {
+          "line": 91,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "4422c8e3ffeaa87f0ff87884ae5a076c603f08caa496bf75128f02ca83a092a5",
+      "original_sha256": "bc608c859f34a378c53fc92186e9e6163ac248ad62f3fd67f5fb7216c720659c"
+    },
+    {
+      "file": "tests/semantics/compound.py",
+      "original_consumers": [
+        {
+          "line": 1224,
+          "text": "'S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps',"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "0bb53cea172bebc55b0d54dc8f67d3832d9b0cfed9dbf20e1675b50a1adf5e70",
+      "original_sha256": "82ec34f528ce83a9ab99f9c7178dd2f63b5056e10103d99748b53419f1793f4a"
+    },
+    {
+      "file": "tests/semantics/function_call_state.py",
+      "original_consumers": [
+        {
+          "line": 88,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "92b240702ed237def98bd737fb8046ae0121e3201b2b2c1c2bd625e6d8c2fd1c",
+      "original_sha256": "64e9e37d085b446529148cf29ed73d3383d357f5cb593ea988aec936db061ec0"
+    },
+    {
+      "file": "tests/semantics/dynamic_call_state.py",
+      "original_consumers": [
+        {
+          "line": 97,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "2b85049b7d67bbec79789ae32d510a0b011da90a913b567bea9938878bab30cd",
+      "original_sha256": "0b4b28277dd80e59031b1abd1d3a9146f4521da9b4cad4443bf31b364774c27e"
+    },
+    {
+      "file": "tests/semantics/isset_empty.py",
+      "original_consumers": [
+        {
+          "line": 279,
+          "text": "checks=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(str(p).encode()).decode())+')','S_initial.COMPLETION = BUDGET','S = S_initial[.COMPLETION = NORMAL]','S_out = $drive(S, 10000)','$outputs(S_out.EVENTS) = '+d.byte_sequence(native.stdout),'$messages(S_out.EVENTS) = ['+', '.join(events)+']','S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps','S_out.ITERATORS = eps','S_out.TODO = eps','S_out.POOLS = S.POOLS','S_out.CODE = S.CODE','$heap_valid($heap_graph(S_out))','$foreach_valid(S_out)']"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "8cbdef4f5dfcd2a2e06ce0a6315fbe7c550a7ce5d387a21f9a8a316d713bbf93",
+      "original_sha256": "dcb0f351bffaf14b775d5fd7fb03530b574cec7a80387bf64c94ea12e31d7762"
+    },
+    {
+      "file": "tests/semantics/default_parameter_state.py",
+      "original_consumers": [
+        {
+          "line": 79,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "3ddc5a679ea8471e2b610219e97c8dc5f58a81691263f2246b5682ab16dd2aee",
+      "original_sha256": "fa4f09e5e12833c3403947a777f4ad76c69436e461187b5c19ac4a3542fbeecf"
+    },
+    {
+      "file": "tests/semantics/coalesce_assignment.py",
+      "original_consumers": [
+        {
+          "line": 233,
+          "text": "checks=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(str(p).encode()).decode())+')','S_initial.COMPLETION = BUDGET','S = S_initial[.COMPLETION = NORMAL]','S_out = $drive(S, 10000)','$outputs(S_out.EVENTS) = '+d.byte_sequence(native.stdout),'$messages(S_out.EVENTS) = ['+', '.join(events)+']','S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps','S_out.ITERATORS = eps','S_out.TODO = eps','S_out.POOLS = S.POOLS','S_out.CODE = S.CODE','$heap_valid($heap_graph(S_out))','$foreach_valid(S_out)']"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "c8f1dffc13f8271ff69857a7bca7f462bc2114c9d468388e87cbbb019f77e0c9",
+      "original_sha256": "350d7f0458c88c6d7cfbd769b1413efc4316f6dc47973e9ba5cbd2d4fcab4ec0"
+    },
+    {
+      "file": "tests/semantics/function_statics_state.py",
+      "original_consumers": [
+        {
+          "line": 98,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "a5ba2ca15772978170810f63e7bc76fcbd2bb9679203a80f150e080297230f98",
+      "original_sha256": "796f07eaaaa9f21138188e23ff204db3b2dec60276c49cbe77c04d1f6ef72de8"
+    },
+    {
+      "file": "tests/semantics/named_state.py",
+      "original_consumers": [
+        {
+          "line": 92,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "ef5407f2e5d5a033c1d63a8d1242ca8cf3ffec77db7baa8f8339419ab7417209",
+      "original_sha256": "dba3e07fc74cfcdb84c4cff176f12deeea09957411fc9ca6d826e6e135f11daa"
+    },
+    {
+      "file": "tests/semantics/destructuring.py",
+      "original_consumers": [
+        {
+          "line": 339,
+          "text": "'S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps',"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "ccc31c10b768b1bb05db8304679f6505673f4a8e91bf5b6c7f7a5afc51dc8cbd",
+      "original_sha256": "3f01a83216a150f0fdf706495c6dba63c42966bbacbd329ed0cdae149459a3be"
+    },
+    {
+      "file": "tests/semantics/closures_state.py",
+      "original_consumers": [
+        {
+          "line": 108,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "91c46d1083039c9bdba1602480cc259c2a5f426488a178f05f0fe219f90ec41b",
+      "original_sha256": "cfe451fb633cd218bca1f5774aecc372754b84a7e46c29df0834b15a8e992f20"
+    },
+    {
+      "file": "tests/semantics/function_reference_state.py",
+      "original_consumers": [
+        {
+          "line": 86,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "139fe7e45fa4a5f98d5dda23c1df43cf13402f0b7a4319b1a2c33d65c9157a12",
+      "original_sha256": "cbb7db8286b665833c1dd9f4fa07ee07f301f6f6e39f5dfd45c03a054dd2add6"
+    },
+    {
+      "file": "tests/semantics/array_unpack.py",
+      "original_consumers": [
+        {
+          "line": 254,
+          "text": "'S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps',"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "6b97d26d2cd4152374d95f570c089c62d4391335c033dd3a92c7fc522db3e8b7",
+      "original_sha256": "a708d27d4fe1f444ad49b42823fb815bd0ffcf4bbc36cef3b1ee2f92d504c778"
+    },
+    {
+      "file": "tests/semantics/quiet_access.py",
+      "original_consumers": [
+        {
+          "line": 31,
+          "text": "checks=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(str(p).encode()).decode())+')','S_initial.COMPLETION = BUDGET','S = S_initial[.COMPLETION = NORMAL]','S_out = $drive(S, 10000)','$outputs(S_out.EVENTS) = '+d.byte_sequence(native.stdout),'$messages(S_out.EVENTS) = ['+', '.join(events)+']','S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps','S_out.ITERATORS = eps','S_out.TODO = eps','S_out.POOLS = S.POOLS','S_out.CODE = S.CODE','$heap_valid($heap_graph(S_out))','$foreach_valid(S_out)']"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "b3b6b08cb7ba771f715acf8f9a7404442e69eec3c24e955243f0957b4b81d883",
+      "original_sha256": "c0b16f9b5b9da51ca85d4462e339919ae3defb527c7ddf6aea8599b9e3b07654"
+    },
+    {
+      "file": "tests/semantics/call_reference_acquisition_state.py",
+      "original_consumers": [
+        {
+          "line": 80,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "429aba10a5a36d3cc4087b5275a4081791c6efd0ca851f50e6c33286051e7abb",
+      "original_sha256": "ddbdefb11a57aeb595f8c6d15706e1969a4bc84447d36282c76dbae524b83b25"
+    },
+    {
+      "file": "tests/semantics/variadic_state.py",
+      "original_consumers": [
+        {
+          "line": 90,
+          "text": "'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "ca0f82b359b4ea52a319a73dfc283503aedd8cff4da2bbc2fa198e5ddc1e2816",
+      "original_sha256": "b24c395c47f080b49267d911e320e00d902a974089516e2b6913ce6837e913f5"
+    },
+    {
+      "file": "tests/semantics/incdec.py",
+      "original_consumers": [
+        {
+          "line": 340,
+          "text": "'S_out.COMPLETION = '+completion,'S_out.ORIGIN = eps','S_out.HELD = eps',"
+        }
+      ],
+      "replacement": "completion_assertions: same NORMAL or exact class/message/line plus owned UNCAUGHT payload, trace/errororigin projection, valid heap and positive object owner.",
+      "final_sha256": "d078d3011fdefcbf050cf48640b5f3512174eec554e9a2857891aee4e6ea6bf2",
+      "original_sha256": "03fc7effc74ea1b4466d27aec9c346d9ea730d69bf7655bb9734f31b16a15ee0"
+    }
+  ],
+  "focused_state": {
+    "suites": 16,
+    "fixtures": 26,
+    "top_level_assertions": 907,
+    "deferred_repeated_budget_assertions": 5692,
+    "reports": [
+      {
+        "suite": "arrows_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-arrows_state-21s68s2k/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 10,
+        "main_assertions": 65,
+        "premise_lines_including_helpers": 80
+      },
+      {
+        "suite": "call_reference_acquisition_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-call_reference_acquisition_state-dlzo6x7j/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 27,
+        "premise_lines_including_helpers": 28
+      },
+      {
+        "suite": "call_unpack_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-call_unpack_state-muvm22ib/report.json",
+        "pass": true,
+        "errors": 1,
+        "normals": 1,
+        "deferred_fixtures": 0,
+        "main_assertions": 119,
+        "premise_lines_including_helpers": 131
+      },
+      {
+        "suite": "closures_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-closures_state-jdakj13h/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 55,
+        "premise_lines_including_helpers": 74
+      },
+      {
+        "suite": "default_parameter_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-default_parameter_state-sre1u7bv/report.json",
+        "pass": true,
+        "errors": 1,
+        "normals": 1,
+        "deferred_fixtures": 2,
+        "main_assertions": 43,
+        "premise_lines_including_helpers": 45
+      },
+      {
+        "suite": "dynamic_call_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-dynamic_call_state-8vz37t4j/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 47,
+        "premise_lines_including_helpers": 55
+      },
+      {
+        "suite": "function_call_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-function_call_state-kkfzvas_/report.json",
+        "pass": true,
+        "errors": 2,
+        "normals": 1,
+        "deferred_fixtures": 6,
+        "main_assertions": 58,
+        "premise_lines_including_helpers": 61
+      },
+      {
+        "suite": "function_reference_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-function_reference_state-2lopw5xo/report.json",
+        "pass": true,
+        "errors": 2,
+        "normals": 1,
+        "deferred_fixtures": 3,
+        "main_assertions": 63,
+        "premise_lines_including_helpers": 66
+      },
+      {
+        "suite": "function_statics_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-function_statics_state-1kr_bwa3/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 57,
+        "premise_lines_including_helpers": 67
+      },
+      {
+        "suite": "main_statics_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-main_statics_state-3rk1dey9/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 53,
+        "premise_lines_including_helpers": 63
+      },
+      {
+        "suite": "named_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-named_state-16xvh7tw/report.json",
+        "pass": true,
+        "errors": 1,
+        "normals": 1,
+        "deferred_fixtures": 0,
+        "main_assertions": 93,
+        "premise_lines_including_helpers": 101
+      },
+      {
+        "suite": "reference_return_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-reference_return_state-ec_gqj0s/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 24,
+        "premise_lines_including_helpers": 28
+      },
+      {
+        "suite": "suppression_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-suppression_state-ni6fsruj/report.json",
+        "pass": true,
+        "errors": 1,
+        "normals": 1,
+        "deferred_fixtures": 0,
+        "main_assertions": 61,
+        "premise_lines_including_helpers": 69
+      },
+      {
+        "suite": "typed_function_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-typed_function_state-_aux8kaz/report.json",
+        "pass": true,
+        "errors": 1,
+        "normals": 1,
+        "deferred_fixtures": 2,
+        "main_assertions": 49,
+        "premise_lines_including_helpers": 51
+      },
+      {
+        "suite": "user_constant_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-user_constant_state-0nna4cvh/report.json",
+        "pass": true,
+        "errors": 1,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 52,
+        "premise_lines_including_helpers": 54
+      },
+      {
+        "suite": "variadic_state",
+        "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-variadic_state-zfh3y3dk/report.json",
+        "pass": true,
+        "errors": 0,
+        "normals": 1,
+        "deferred_fixtures": 1,
+        "main_assertions": 41,
+        "premise_lines_including_helpers": 45
+      }
+    ]
+  },
+  "separate_fixture_repairs": [
+    {
+      "file": "runtime_compiler.py",
+      "reason": "Synthetic compile fixture lacked SOURCEFILE provenance; baseline abf74 also rejected old normal case. Added FILES seed without changing assertions.",
+      "pass": "15 cases / 157 assertions",
+      "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/runtime-compiler-isolated-final.log",
+      "inputs": [
+        {
+          "path": "tests/semantics/runtime_compiler.py",
+          "original_sha256": "2c61c1d3456fb705e0027162864b85744bc56e6b346d03ec13d04db4f8c4d572",
+          "final_sha256": "ea75dbdfcd9e49cbb91720c511866bf089ad8410990448cc975761b912d4d3a6"
+        }
+      ]
+    },
+    {
+      "file": "compiled_pools.py",
+      "reason": "Helper-only pool installation does not produce publicly resumable state; drive_steps executes intended lifetime checks; new public drive rejection assertion retains integrity boundary.",
+      "pass": "24 boundary cases / 100 constructed graphs / 1633 assertions",
+      "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/compiled-pools-isolated-final.log",
+      "inputs": [
+        {
+          "path": "tests/semantics/compiled_pools.py",
+          "original_sha256": "ad7db313e8a305dce57a94bfe013c0a03b6c3b4428c79322b3ad343c47f7006a",
+          "final_sha256": "12dcccb17d99803c9d06ed8237027607dbf2a8356b058bb75d8ed8a28ec05fef"
+        }
+      ]
+    },
+    {
+      "file": "ownership.py",
+      "reason": "Origin-less synthetic THROWN cannot allocate a source-backed Throwable. Original release/prune invariants tested directly, request preserved, public rejection explicit; existing Unsupported cleanup unchanged. Direct ownership_step request unchanged.",
+      "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/ownership-focused/report.json",
+      "baseline_failure": "Unchanged synthetic public resume case647 fails identically on canonical f3a84; not accepted as full ownership-suite pass.",
+      "inputs": [
+        {
+          "path": "tests/semantics/ownership.py",
+          "original_sha256": "0565921a9c599fa5e7debd7c0526775b9e8575917300a1861dedfa68b33ead14",
+          "final_sha256": "6459d3bb47dc41361ad80f67c7d2726eeb90a7159511806d301f137f08f9826b"
+        }
+      ]
+    },
+    {
+      "file": "function_call_protocol.py",
+      "reason": "Original saved-context fixture takes369.72s and passes unchanged; per-fixture bound raised300\u2192600s, original300s timeout retained.",
+      "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/saved-context-isolated.log",
+      "inputs": [
+        {
+          "path": "tests/semantics/function_call_protocol.py",
+          "original_sha256": "eff8d2bd81071f6c466630e3b3b47abf7a02bf8d59338826d196c205391b68b9",
+          "final_sha256": "f2b8ebd91aaa3606227821f3532eb3f7603e7ab2923cf09f545836ac4145a73b"
+        }
+      ]
+    },
+    {
+      "file": "user_constant_state.py and default_parameter_state.py",
+      "reason": "Original allocation sequence equality now appends exactly the one owned uncaught object, preserving every prior owner and excluding extra allocations.",
+      "inputs": [
+        {
+          "path": "tests/semantics/user_constant_state.py",
+          "original_sha256": "b6a69ce9eb4fbd6fcda8ca41f3fc43298973b075edbdea0d760ac2abf52c6895",
+          "final_sha256": "d3a64b0cd32f77014a269b29e2a5b80713a28a958908788ce1e1f3a4bcccb041"
+        },
+        {
+          "path": "tests/semantics/default_parameter_state.py",
+          "original_sha256": "fa4f09e5e12833c3403947a777f4ad76c69436e461187b5c19ac4a3542fbeecf",
+          "final_sha256": "3ddc5a679ea8471e2b610219e97c8dc5f58a81691263f2246b5682ab16dd2aee"
+        }
+      ]
+    },
+    {
+      "file": "function_call_protocol_cases.json",
+      "inputs": [
+        {
+          "path": "tests/semantics/function_call_protocol_cases.json",
+          "original_sha256": "2238d540f326441edaf8fa9242ac27810e5543c17ff4851047d9d598c54d4b62",
+          "final_sha256": "57fd5e2480fcb42249dcbbd49ae5f0a415dbf96001a5dcf710824c7912f60351"
+        }
+      ],
+      "changed_cases": [
+        {
+          "id": "guards-77316qkg/terminal-thrown",
+          "original_fixture_sha256": "c36ddbb6a5a525cde0f6b731981e7d64a49304698751f986f5a5314cc887f520",
+          "final_fixture_sha256": "ae6b2ecbb66514d9384d7d3f6cbec3caff1a75a21307f7e5e0672ad44a1fd2d9",
+          "invariant": "Create genuinely owned uncaught Error before descriptor corruption; terminal resume still bypasses validation."
+        },
+        {
+          "id": "argument-markers",
+          "original_fixture_sha256": "199c273edd7c6ace37ac295c98ec35042d47a932e2295bc273f9635f089e96a3",
+          "final_fixture_sha256": "00f3705e3fafce343bc2d679b2ed300cc3b26dd223cc9483344c4c323609abb7",
+          "invariant": "Preserve exact Error/message bytes/line and add genuine owned object payload/trace projection assertions."
+        }
+      ]
+    }
+  ],
+  "new_canonical_consumers": [
+    {
+      "file": "clone_protocol.py",
+      "migration": "Three terminal payload checks and two pending internal trace checks preserve exact names/order and owner release.",
+      "pass": "13 stages / 250 assertions",
+      "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/clone-protocol-octvjwhm/report.json",
+      "inputs": [
+        {
+          "path": "tests/semantics/clone_protocol.py",
+          "original_sha256": "874bff9dda27d8d0bc093010c329e1f9a8beece7dd2fa8320cdd3a2357c1ce38",
+          "final_sha256": "7723862252afee0b43c9330b714e44d14f387f522e4a8b549aeaab3543ceb9c8"
+        }
+      ]
+    },
+    {
+      "file": "method_wrapper_protocol.py",
+      "migration": "Pending THROW_SEARCH object owns original wrapper argument trace; original pending owner3 preserved, final owner3 is pool + payload trace + projected state trace.",
+      "pass": "3 stages / 77 assertions",
+      "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/method-wrapper-protocol-rsqu__gf/report.json",
+      "inputs": [
+        {
+          "path": "tests/semantics/method_wrapper_protocol.py",
+          "original_sha256": "276ee2cd125239ddf1181dea45de644306d26d5c895237522ab43700871342cf",
+          "final_sha256": "4bddf5392f42a373f5044a31b33903f85b08a49f44219f885edc07c32d507ebd"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "The focused migration gate preserves full tracked suites; repeated budget sweeps require broader pause regression before complete-core acceptance.",
+    "Timeouts/interrupted and failed runs are not agreements. Baseline typed-default-ref-fresh-cache also times out320s at abf74; relative completed timing remains unknown.",
+    "Existing ownership647 synthetic public-boundary failure is separate from changed Throwable cleanup assertions."
+  ],
+  "broad_attempts": {
+    "first14": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-migration-final-wsxtfwno/report.json",
+    "dynamic_partial": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/dynamic-state-controlled-stop.json",
+    "control": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-control-state-_7l04nwv/report.json",
+    "baseline_timing": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/typed-default-baseline-timing/report.json"
+  },
+  "focused_foreach": {
+    "report": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-integration-candidate/.tools/terminal-focused-foreach-1zqsrggk/report.json",
+    "pass": true,
+    "fixtures": 2,
+    "top_level_assertions": 38,
+    "deferred_repeated_budget_assertions": 1414
+  },
+  "broader_control_suites": {
+    "profile": "reviewed standalone151/152 inputs",
+    "completed": [
+      "isset_empty",
+      "quiet_access",
+      "coalesce_assignment"
+    ],
+    "raw": "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/throwable-control-state-_7l04nwv/report.json",
+    "foreach": "Full sweep timeout is separate from focused two-fixture pass."
+  },
+  "focused_scalar_controls": {
+    "profile": "reviewed standalone151/152 inputs",
+    "scope": "Retained originals: ordinary one normal; compound,incdec,destructuring,array_unpack each one normal and one error. Not complete scalar campaigns.",
+    "source_cases": 9,
+    "top_level_assertions": 158,
+    "raw_logs": [
+      "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/scalar-migration-pairs-final.log",
+      "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/scalar-migration-remaining.log",
+      "/home/user/workspace/php-spec/.tools/throwable-impl-candidate/.tools/destructuring-pair-final.log"
+    ],
+    "classification": "Original failed selection attempts remain failed; count only explicit passing selected cases."
+  }
+}

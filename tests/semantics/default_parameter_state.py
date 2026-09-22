@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Suspended source calls preserve owning values, frames and error cleanup."""
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64
 import hashlib
 import json
@@ -76,7 +77,7 @@ def main():
             if name == 'body-error-after-default':
                 completion = 'THROWN "DivisionByZeroError" ([68,105,118,105,115,105,111,110,32,98,121,32,122,101,114,111]) 1'
             checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET', 'S = S_initial[.COMPLETION = NORMAL]',
-                      'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,
+                      'S_out = $drive(S, 10000)', *completion_assertions('S_out', completion),
                       '$outputs(S_out.EVENTS) = ' + d.byte_sequence(base64.b64decode(native['stdout'])),
                       'S_out.FRAMES = eps', 'S_out.CURRENT = eps', 'S_out.GLOBALTABLE = eps',
                       'S_out.ITERATORS = eps', 'S_out.HELD = eps', 'S_out.TODO = eps',
@@ -84,7 +85,7 @@ def main():
             if name in ('literal-two-defaults', 'body-error-after-default'):
                 checks += ['S_out.DEFAULTCACHE = eps']
             if name == 'body-error-after-default':
-                checks += ['S_out.ALLOCATIONS = S.ALLOCATIONS']
+                checks += ['S_out.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_uncaught_s_out]']
             if name == 'numeric-warning-repeated':
                 checks += ['S_out.DEFAULTCACHE = [pdefaultcache]', 'pdefaultcache.VALUE = PINT 3', 'pdefaultcache.CLASS = PVSCALAR']
             if name == 'warning-empty-array-result':

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Closure instance static cells, recursive initialization, capture cycles and pending call owners."""
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64
 import hashlib
 import json
@@ -105,7 +106,7 @@ def main():
                 diagnostic = actual['diagnostic']
                 completion = 'THROWN ' + json.dumps(diagnostic['class']) + ' ' + d.byte_sequence(base64.b64decode(diagnostic['message'])) + ' ' + str(diagnostic['line'])
             checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET', 'S = S_initial[.COMPLETION = NORMAL]',
-                      'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,
+                      'S_out = $drive(S, 10000)', *completion_assertions('S_out', completion),
                       '$outputs(S_out.EVENTS) = ' + d.byte_sequence(base64.b64decode(native['stdout'])),
                       'S_out.FRAMES = eps', 'S_out.CURRENT = eps', 'S_out.GLOBALTABLE = eps',
                       'S_out.ITERATORS = eps', 'S_out.HELD = eps', 'S_out.TODO = eps',

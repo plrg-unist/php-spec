@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Owned no-constructor dummy sends and authenticated paused tasks."""
 from pathlib import Path
+from throwable_test_support import uncaught_assertions
 import hashlib, json, subprocess, sys, tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -65,7 +66,7 @@ checks = [
  '$( $heap_owners($heap_graph(S), HARRAY n_array) > 0)',
  '$( $heap_owners($heap_graph(S), HOBJECT n_sent) > 0)',
  'S_done = $drive(S,1000)',
- 'S_done.COMPLETION = THROWN "Error" n_message* 2',
+ *uncaught_assertions('S_done', '"Error"', 'n_message*', '2'),
  '$heap_valid($heap_graph(S_done))',
  '$heap_owners($heap_graph(S_done), HOBJECT pnoctorcall.OBJECT) = 0',
  '$heap_owners($heap_graph(S_done), HARRAY n_array) = 0',

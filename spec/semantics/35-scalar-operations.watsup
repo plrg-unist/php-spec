@@ -152,3 +152,4 @@ def $bind_reference_at(S, n_name*, z) = $bind_reference(S, n_name*) -- if ~$this
 
 def $coerce_number(POBJECT n) = BADNUMBER
 def $stringify(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Object of class ") ++ $object_name(S, n) ++ $ptascii(" could not be converted to string"), z)
+  -- if ~$throwable_object(S, n)

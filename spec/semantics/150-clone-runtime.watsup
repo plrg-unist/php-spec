@@ -72,6 +72,9 @@ def $clone_is_object(POBJECT n) = true
 def $clone_is_object(pvalue) = false -- otherwise
 dec $clone_value(pstate, pvalue, int) : pstate
 def $clone_value(S, POBJECT n, z) = $clone_object(S, n)
+  -- if ~$throwable_object(S, n)
+def $clone_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n), z)
+  -- if $throwable_object(S, n)
 def $clone_value(S, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("clone(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"), z)
   -- if ~$clone_is_object(pvalue)
 
@@ -146,7 +149,7 @@ def $clone_wrapper_trace(S, pclonecall, pvalue*) = [{FILE $call_sourcefile(S.FIL
   -- if $clone_method_receiver(S, pclonecall)
 def $clone_wrapper_trace(S, pclonecall, pvalue*) = eps -- otherwise
 dec $clone_error(pstate, pclonecall, text, preqbytes) : pstate
-def $clone_error(S, pclonecall, text, preqbytes) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = [ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = (pclonecall.SITE)][.TODO = [ERROR_UNWIND (THROWN text preqbytes pclonecall.LINE)]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $clone_error(S, pclonecall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], text, preqbytes, pclonecall.LINE, [ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, NAME $ptascii("clone"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
 dec $clone_destination(preqbytes?, nat) : nat?
@@ -246,7 +249,7 @@ def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountEr
   -- if pclonecall.SENT = eps
 def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("clone() expects at most 2 arguments, ") ++ $decimal_integer(|pclonecall.SENT|) ++ $ptascii(" given"))
   -- if $(|pclonecall.SENT| > 2)
-def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("Closure::__invoke(): Argument #1 ($object) not passed"))[.TRACE = $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)]
+def $clone_receive(S, pclonecall) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], "ArgumentCountError", $ptascii("Closure::__invoke(): Argument #1 ($object) not passed"), pclonecall.LINE, $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
   -- if pclonecall.SENT = [NAMED_HOLE, NAMED_SENT poperand]
   -- if $clone_method_receiver(S, pclonecall)
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
@@ -262,12 +265,20 @@ def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "TypeError", $pt
   -- if ~$is_array_value(pvalue)
 def $clone_receive(S, pclonecall) = $clone_object($hold_task_inputs(S), n)[.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if ~$throwable_object(S, n)
   -- if S.TODO = ptask :: ptask_tail*
 def $clone_receive(S, pclonecall) = S_cloned[.TODO = (CLONE_UPDATE pclonecall n_object n_array 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
   -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$throwable_object(S, n)
   -- if S_cloned = $clone_object(S, n)
   -- if S_cloned.RESULT = KNOWN (POBJECT n_object)
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n))
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if $throwable_object(S, n)
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n))
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $throwable_object(S, n)
 rule PhpStep/clone-invoke: S ~> $clone_receive(S, pclonecall)
   -- if S.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*
 

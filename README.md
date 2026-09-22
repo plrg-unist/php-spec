@@ -174,8 +174,10 @@ binds 18 source outcomes and separate compiler and paused-state checks.
 [Match expressions](docs/semantics/SOURCE-MATCH.md) preserve strict, lazy arm
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
-and paused-state checks. Unhandled cases use the existing error/trace contract; Throwable objects,
-catch/finally and lifecycle integration remain pending.
+and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES.md)
+now support ordered no-finally try/catch and throw/rethrow, including unhandled
+match errors. Constructors, accessors, subclasses, finally and lifecycle
+integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
 explicit-exit completion. Shutdown/destructor callbacks remain pending; native
@@ -224,8 +226,8 @@ Clone callbacks, readonly/hook semantics and lifecycle integration remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)
-binds static, source and paused-state checks. Jumps involving `try`/`finally`
-remain open.
+binds static, source and paused-state checks. Legal entry into no-finally
+try/catch is supported; jumps requiring finally execution remain open.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Suspended source calls preserve owning values, frames and error cleanup."""
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64
 import hashlib
 import json
@@ -85,7 +86,7 @@ def main():
             if name == 'argument-deferred-inner-key-call':
                 completion = 'THROWN "Error" ([67,97,110,110,111,116,32,117,115,101,32,91,93,32,102,111,114,32,114,101,97,100,105,110,103]) 1'
             checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET', 'S = S_initial[.COMPLETION = NORMAL]',
-                      'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,
+                      'S_out = $drive(S, 10000)', *completion_assertions('S_out', completion),
                       '$outputs(S_out.EVENTS) = ' + d.byte_sequence(base64.b64decode(native['stdout'])),
                       'S_out.FRAMES = eps', 'S_out.CURRENT = eps', 'S_out.GLOBALTABLE = eps',
                       'S_out.ITERATORS = eps', 'S_out.HELD = eps', 'S_out.TODO = eps',

@@ -6500,15 +6500,24 @@
     {
       "id": "control.throw",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/throwable_compiler.py",
+        "tests/semantics/throwable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/throwable_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/THROWABLES.md"
+      ],
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-throw.php"
       ]
@@ -6516,15 +6525,24 @@
     {
       "id": "control.catch",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_vm_def.h"
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/throwable_compiler.py",
+        "tests/semantics/throwable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/throwable_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/THROWABLES.md"
+      ],
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php",
         "tests/semantics/conformance/finally-throw.php"
@@ -8735,15 +8753,24 @@
     {
       "id": "protocols.Throwable",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/throwable_compiler.py",
+        "tests/semantics/throwable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/throwable_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "docs/semantics/THROWABLES.md"
+      ],
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending."
     },
     {
       "id": "protocols.Exception",
@@ -8761,15 +8788,24 @@
     {
       "id": "protocols.Error",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/throwable_compiler.py",
+        "tests/semantics/throwable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/throwable_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "docs/semantics/THROWABLES.md"
+      ],
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending."
     },
     {
       "id": "protocols.error-subclasses",
@@ -9066,15 +9102,24 @@
     {
       "id": "diagnostics.uncaught-throwable",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/throwable_compiler.py",
+        "tests/semantics/throwable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/throwable_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c",
+        "docs/semantics/THROWABLES.md"
+      ],
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending."
     },
     {
       "id": "diagnostics.runtime-fatal",
@@ -10020,15 +10065,24 @@
     {
       "id": "validation.exception-observation",
       "milestone": "0b-6",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/run-tests.php"
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/throwable_compiler.py",
+        "tests/semantics/throwable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/throwable_expressions.py"
+      ],
+      "evidence": [
+        "vendor/php-src/run-tests.php",
+        "docs/semantics/THROWABLES.md"
+      ],
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending."
     },
     {
       "id": "validation.fingerprints",

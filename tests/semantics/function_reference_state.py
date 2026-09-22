@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Reference calls, temporary cells and list results preserve roots at suspension cuts."""
 from pathlib import Path
+from throwable_test_support import completion_assertions
 import base64
 import hashlib
 import json
@@ -76,14 +77,13 @@ def main():
             (out / 'originals.json').write_text(json.dumps(records, indent=2))
             assert actual['status'] in ('normal', 'php_error') and all(actual[k] == native[k] for k in ('stdout', 'stderr', 'exit_status')), row
             initial = '$php_request_run(' + checked['fixture'] + ', 0, ' + json.dumps(q.b64(bytes(path))) + ', ' + rs.request_fixture(request) + ')'
-            ended = result['state']['COMPLETION']
-            completion = ended['tag']
-            if completion == 'THROWN':
-                kind, message, line = ended['args']
-                completion += ' ' + json.dumps(kind) + ' ' + d.byte_sequence(bytes(map(int, message))) + ' ' + line
+            completion = 'NORMAL'
+            if actual['status'] == 'php_error':
+                diagnostic = actual['diagnostic']
+                completion = 'THROWN ' + json.dumps(diagnostic['class']) + ' ' + d.byte_sequence(base64.b64decode(diagnostic['message'])) + ' ' + str(diagnostic['line'])
             output = b''.join(bytes(map(int, event['args'][0])) for event in result['state']['EVENTS'] if event['tag'] == 'OUTPUT')
             checks = ['S_initial = ' + initial, 'S_initial.COMPLETION = BUDGET', 'S = S_initial[.COMPLETION = NORMAL]',
-                      'S_out = $drive(S, 10000)', 'S_out.COMPLETION = ' + completion,
+                      'S_out = $drive(S, 10000)', *completion_assertions('S_out', completion),
                       '$outputs(S_out.EVENTS) = ' + d.byte_sequence(output),
                       'S_out.FRAMES = eps', 'S_out.CURRENT = eps', 'S_out.GLOBALTABLE = eps',
                       'S_out.ITERATORS = eps', 'S_out.HELD = eps', 'S_out.TODO = eps',
