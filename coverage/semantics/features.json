@@ -1477,14 +1477,26 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/149-clone-compiler.watsup",
+        "spec/semantics/150-clone-runtime.watsup"
       ],
       "source_tests": [
-        "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/clone_expressions.py",
+        "tests/semantics/clone_cases.json"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure.",
+      "helper_tests": [
+        "tests/semantics/clone_compiler.py",
+        "tests/semantics/clone_protocol.py",
+        "tests/semantics/clone_controls.py"
+      ],
+      "evidence": [
+        "docs/semantics/SOURCE-CLONE.md",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "coverage/semantics/clone-review.json"
+      ]
     },
     {
       "node": "Expr_Closure",
@@ -7927,28 +7939,56 @@
     {
       "id": "classes.clone",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/149-clone-compiler.watsup",
+        "spec/semantics/150-clone-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/clone_compiler.py",
+        "tests/semantics/clone_protocol.py",
+        "tests/semantics/clone_controls.py"
+      ],
+      "source_tests": [
+        "tests/semantics/clone_expressions.py",
+        "tests/semantics/clone_cases.json"
+      ],
+      "evidence": [
+        "docs/semantics/SOURCE-CLONE.md",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "coverage/semantics/clone-review.json"
+      ],
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure."
     },
     {
       "id": "classes.clone-with-properties",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/149-clone-compiler.watsup",
+        "spec/semantics/150-clone-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/clone_compiler.py",
+        "tests/semantics/clone_protocol.py",
+        "tests/semantics/clone_controls.py"
+      ],
+      "source_tests": [
+        "tests/semantics/clone_expressions.py",
+        "tests/semantics/clone_cases.json"
+      ],
+      "evidence": [
+        "docs/semantics/SOURCE-CLONE.md",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "coverage/semantics/clone-review.json"
+      ],
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, visibility/hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure."
     },
     {
       "id": "classes.static-lookup",

@@ -1,0 +1,16 @@
+;; One unnamed clone argument lowers to ZEND_CLONE and produces a TMP result.
+;; Its opcode line is the final operand compilation line; parser cloneExprLine
+;; remains the authenticated initial location used before compiling the child.
+def $ppdispatch(P, pcpath, NExprClone expression metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $ppbasemode(NExprClone expression metadata, PPW) = PPR
+def $ppwrite_call(P, pcpath, NExprClone expression metadata, PPW) = $ppcheck(P, $context_error("Cannot use result of built-in function in write context", P.LOCATION.LINE))
+
+;; T_CLONE creates its call AST after ctor_arguments. Only the keyword form
+;; uses the closing line and forced global identity; qualified names stay calls.
+def $ppexit_resolve(plenv, NName (BYTES text) metadata) = PNRESOLVED { ORIGINAL NName (BYTES text) metadata, KIND PLFUNCTION, RESOLVED $ptascii("clone"), FULL true, FALLBACK eps }
+  -- if $ptlc($base64(text)) = $ptascii("clone")
+def $ppcall_instruction_line(NName (BYTES text) metadata_name, metadata) = $source_end_line(metadata)
+  -- if $ptlc($base64(text)) = $ptascii("clone")
+def $ppeffective_line(pffact*, pcpath, NExprFuncCall (NName (BYTES text) metadata_name) phpType6 metadata, PPR) = $source_end_line(metadata)
+  -- if $ptlc($base64(text)) = $ptascii("clone")
+  -- if $pffactline(pffact*, pcpath) = eps

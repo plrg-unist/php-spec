@@ -206,6 +206,10 @@ test-semantics: build
 	python3 tests/semantics/exit_expressions.py
 	python3 tests/semantics/exit_protocol.py
 	python3 tests/semantics/exit_controls.py
+	python3 tests/semantics/clone_compiler.py
+	python3 tests/semantics/clone_expressions.py
+	python3 tests/semantics/clone_protocol.py
+	python3 tests/semantics/clone_controls.py
 	python3 tests/semantics/print_expressions.py
 	python3 tests/semantics/print_compiler.py
 	python3 tests/semantics/print_protocol.py

@@ -481,20 +481,15 @@ def $closure_receive_valid(S, porigin, n_slot) = true
 def $closure_receive_valid(S, porigin, n_slot) = false -- otherwise
 def $call_task_valid(S, CLOSURE_RECEIVE porigin n_slot) = $closure_receive_valid(S, porigin, n_slot)
 
-;; Distinct persistent declarations/instances have distinct reference wrappers.
-;; Capture and ordinary environment aliases are deliberately not in this list.
-dec $closure_live_static_roots(pstate, pnode*) : pnode*
-dec $closure_node_static_roots(pstate, pnode) : pnode*
-def $closure_node_static_roots(S, HOBJECT n) = $static_roots(pstaticcell*)
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
-def $closure_node_static_roots(S, pnode) = eps -- otherwise
-def $closure_live_static_roots(S, eps) = eps
-def $closure_live_static_roots(S, pnode :: pnode_tail*) = $closure_node_static_roots(S, pnode) ++ $closure_live_static_roots(S, pnode_tail*)
+;; Clone may share an active or escaped static wrapper across instances of
+;; the same declaration. Distinct static declarations remain disjoint.
+dec $clone_static_sources(pstate, pnode*) : pstaticcell*
+dec $clone_statics_compatible(pstaticcell*) : bool
 
 def $closure_state_valid(S) = true
   -- if $closure_template_origins_valid(S, S.CLOSURETEMPLATES)
   -- if $closure_live_nodes_valid(S, S.ALLOCATIONS)
   -- if $closure_scope_rows_valid(S, S.CLOSURESCOPES)
   -- if $closure_scope_complete(S, S.ALLOCATIONS)
-  -- if $heap_unique($static_roots(S.STATICS) ++ $closure_live_static_roots(S, S.ALLOCATIONS))
+  -- if $clone_statics_compatible(S.STATICS ++ $clone_static_sources(S, S.ALLOCATIONS))
 def $closure_state_valid(S) = false -- otherwise

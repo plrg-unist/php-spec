@@ -1,0 +1,495 @@
+dec $clone_unpack_prefix(pstate, pclonecall, pentry*) : pclonecall?
+dec $clone_update_valid(pstate, pclonecall, nat, nat, nat) : bool
+dec $clone_update_base_valid(pstate, pclonecall, nat, nat, nat) : bool
+dec $clone_update_prefix_valid(pstate, nat, pentry*, int) : bool
+dec $clone_same_kind(pobject, pobject) : bool
+dec $clone_thrown(pcompletion) : bool
+;; Clone property storage before running any update or callback. The copy
+;; constructor unwraps singleton references and retains surviving aliases.
+dec $clone_slot(pstate, ppropertyslot) : ppropertyslot
+def $clone_slot(S, ppropertyslot) = ppropertyslot[.STATE = PROP_VALUE $merge_item(S, pitem)]
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $clone_slot(S, ppropertyslot) = ppropertyslot -- otherwise
+dec $clone_attach_slot(pstate, nat, ppropertyslot) : pstate
+def $clone_attach_slot(S, n, ppropertyslot) = $propref_attach_slot(S, n, ppropertyslot, n_cell)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $clone_attach_slot(S, n, ppropertyslot) = S -- otherwise
+dec $clone_slots(pstate, nat, ppropertyslot*) : pstate
+def $clone_slots(S, n, eps) = S
+def $clone_slots(S, n, ppropertyslot :: ppropertyslot_tail*) = $clone_slots($clone_attach_slot(S_copied, n, ppropertyslot_new), n, ppropertyslot_tail*)
+  -- if ppropertyslot_new = $clone_slot(S, ppropertyslot)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if S_copied = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, pobjectprops.SLOTS ++ [ppropertyslot_new])]
+
+dec $clone_plain(pstate, nat) : pstate
+def $clone_plain(S, n_source) = $clone_slots(S_new, n, pobjectprops.SLOTS)
+  -- if n = |S.OBJECTS|
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if S_new = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED pobjectprops.MATERIALIZED}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+
+;; Real closure hash duplication copies singleton static/capture wrappers, but
+;; retains wrappers also owned by active invocation locals or escaped aliases.
+dec $clone_cell(pstate, nat) : pstate
+def $clone_cell(S, n_cell) = S[.CELL = n_cell]
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) > 1)
+def $clone_cell(S, n_cell) = $reference_cell(S[.STORE = S.STORE ++ [S.STORE[n_cell]]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]], n)[.CELL = n]
+  -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) = 1
+  -- if n = |S.STORE|
+dec $clone_capture(pstate, nat, pitem) : pstate
+def $clone_capture(S, n, DIRECT pvalue) = S[.OBJECTS = $object_set(S.OBJECTS, n, REALCLOSURE porigin (pitem* ++ [DIRECT pvalue]) pstaticcell*)]
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $clone_capture(S, n, ALIAS n_cell) = S_copy[.OBJECTS = $object_set(S_copy.OBJECTS, n, REALCLOSURE porigin (pitem* ++ [ALIAS S_copy.CELL]) pstaticcell*)]
+  -- if S_copy = $clone_cell(S, n_cell)
+  -- if S_copy.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+dec $clone_captures(pstate, nat, pitem*) : pstate
+def $clone_captures(S, n, eps) = S
+def $clone_captures(S, n, pitem :: pitem_tail*) = $clone_captures($clone_capture(S, n, pitem), n, pitem_tail*)
+dec $clone_statics(pstate, nat, pstaticcell*) : pstate
+def $clone_statics(S, n, eps) = S
+def $clone_statics(S, n, pstaticcell :: pstaticcell_tail*) = $clone_statics(S_copy[.OBJECTS = $object_set(S_copy.OBJECTS, n, REALCLOSURE porigin pitem* (pstaticcell_done* ++ [pstaticcell[.CELL = S_copy.CELL]]))], n, pstaticcell_tail*)
+  -- if S_copy = $clone_cell(S, pstaticcell.CELL)
+  -- if S_copy.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell_done*
+
+dec $clone_scope(pstate, nat, nat) : pstate
+def $clone_scope(S, n_source, n_new) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [pclosurescope[.OBJECT = n_new]]]
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_source) = (pclosurescope)
+def $clone_scope(S, n_source, n_new) = S
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_source) = eps
+
+dec $clone_object(pstate, nat) : pstate
+def $clone_object(S, n_source) = $clone_plain(S, n_source)
+  -- if $class_plain_instance(S, n_source)
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = NAMEDCLOSURE porigin
+  -- if n = |S.OBJECTS|
+def $clone_object(S, n_source) = $clone_statics($clone_captures($clone_scope(S_new, n_source, n), n, pitem*), n, pstaticcell*)
+  -- if S.OBJECTS[n_source] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if n = |S.OBJECTS|
+  -- if S_new = S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE porigin eps eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+
+dec $clone_is_object(pvalue) : bool
+def $clone_is_object(POBJECT n) = true
+def $clone_is_object(pvalue) = false -- otherwise
+dec $clone_value(pstate, pvalue, int) : pstate
+def $clone_value(S, POBJECT n, z) = $clone_object(S, n)
+def $clone_value(S, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("clone(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"), z)
+  -- if ~$clone_is_object(pvalue)
+
+rule PhpStep/clone-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), CLONE_RESULT porigin $runtime_line(S, eps, NExprClone expression metadata)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprClone expression metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/clone-result: S ~> S_out[.HELD = S.HELD]
+  -- if S.TODO = (CLONE_RESULT porigin z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_out = $clone_value($hold_task_inputs(S_read), pvalue, z)
+rule PhpStep/clone-read-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (CLONE_RESULT porigin z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION =/= NORMAL
+
+dec $clone_task_valid(pstate, porigin, int) : bool
+def $clone_task_valid(S, porigin, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClone expression metadata)
+  -- if $property_source_task(S, NExprClone expression metadata)
+  -- if z = $runtime_line(S, eps, NExprClone expression metadata)
+def $clone_task_valid(S, porigin, z) = false -- otherwise
+def $call_task_valid(S, CLONE_RESULT porigin z) = $clone_task_valid(S, porigin, z)
+def $call_task_valid(S, EVAL (NExprClone expression metadata)) = $property_source_task(S, NExprClone expression metadata)
+
+;; Per-object static validity still rejects duplicate slots/cells. Cross-object
+;; sharing is possible only for the same declaration after closure cloning.
+def $clone_static_sources(S, eps) = eps
+dec $clone_object_statics(pstate, pnode) : pstaticcell*
+def $clone_object_statics(S, HOBJECT n) = pstaticcell*
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $clone_object_statics(S, pnode) = eps -- otherwise
+def $clone_static_sources(S, pnode :: pnode_tail*) = $clone_object_statics(S, pnode) ++ $clone_static_sources(S, pnode_tail*)
+dec $clone_static_peer(pstaticcell, pstaticcell*) : bool
+def $clone_static_peer(pstaticcell, eps) = true
+def $clone_static_peer(pstaticcell, pstaticcell_head :: pstaticcell_tail*) = ((pstaticcell.CELL =/= pstaticcell_head.CELL \/ pstaticcell.ORIGIN = pstaticcell_head.ORIGIN) /\ $clone_static_peer(pstaticcell, pstaticcell_tail*))
+def $clone_statics_compatible(eps) = true
+def $clone_statics_compatible(pstaticcell :: pstaticcell_tail*) = ($clone_static_peer(pstaticcell, pstaticcell_tail*) /\ $clone_statics_compatible(pstaticcell_tail*))
+
+;; Two-parameter language intrinsic. Source sends use ordinary named slots; no
+;; user pfunction descriptor or Zend evaluation is manufactured.
+def $intrinsic_name(INTRINSIC_CLONE) = $ptascii("clone")
+def $intrinsic_named(preqbytes) = (INTRINSIC_CLONE) -- if $ptlc(preqbytes) = $ptascii("clone")
+def $intrinsic_prepare(S, INTRINSIC_CLONE, z, n_owner?) = S[.TODO = (CLONE_ARGS {SITE porigin, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+def $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z, n_owner?) = S[.TODO = (CLONE_INVOKE {SITE porigin, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $clone_object(S, n_source) = $intrinsic_firstclass(S, pintrinsic)
+  -- if S.OBJECTS[n_source] = INTRINSICCLOSURE pintrinsic
+
+dec $clone_call_nodes(pclonecall) : pnode*
+def $clone_call_nodes(pclonecall) = $exit_owner_nodes(pclonecall.OWNER) ++ $named_slots_roots(pclonecall.SENT)
+def $task_nodes(CLONE_ARGS pclonecall) = $clone_call_nodes(pclonecall)
+def $task_nodes(CLONE_SEND pclonecall) = $clone_call_nodes(pclonecall)
+def $task_nodes(CLONE_UNPACK_PREP pclonecall) = $clone_call_nodes(pclonecall)
+def $task_nodes(CLONE_UNPACK_NEXT pclonecall poperand n) = $clone_call_nodes(pclonecall) ++ $operand_nodes(poperand)
+def $task_nodes(CLONE_INVOKE pclonecall) = $clone_call_nodes(pclonecall)
+def $task_nodes(CLONE_UPDATE pclonecall n_object n_array n_cursor) = $clone_call_nodes(pclonecall) ++ [HOBJECT n_object]
+
+dec $clone_trace_operands(pnamedslot*) : poperand*
+def $clone_trace_operands(eps) = eps
+def $clone_trace_operands(NAMED_HOLE :: pnamedslot*) = (KNOWN PNULL) :: $clone_trace_operands(pnamedslot*)
+def $clone_trace_operands((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $clone_trace_operands(pnamedslot*)
+dec $clone_method_receiver(pstate, pclonecall) : bool
+def $clone_method_receiver(S, pclonecall) = true
+  -- if pclonecall.OWNER = (n)
+  -- if $exit_method_site(S, pclonecall.SITE)
+def $clone_method_receiver(S, pclonecall) = false -- otherwise
+dec $clone_wrapper_trace(pstate, pclonecall, pvalue*) : ptraceframe*
+def $clone_wrapper_trace(S, pclonecall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}]
+  -- if $clone_method_receiver(S, pclonecall)
+def $clone_wrapper_trace(S, pclonecall, pvalue*) = eps -- otherwise
+dec $clone_error(pstate, pclonecall, text, preqbytes) : pstate
+def $clone_error(S, pclonecall, text, preqbytes) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = [ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)][.ERRORORIGIN = (pclonecall.SITE)][.TODO = [ERROR_UNWIND (THROWN text preqbytes pclonecall.LINE)]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, NAME $ptascii("clone"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+dec $clone_destination(preqbytes?, nat) : nat?
+def $clone_destination(eps, n) = (n)
+def $clone_destination((preqbytes), n) = (0) -- if preqbytes = $ptascii("object")
+def $clone_destination((preqbytes), n) = (1) -- if preqbytes = $ptascii("withProperties")
+def $clone_destination(preqbytes?, n) = eps -- otherwise
+dec $clone_send_check(pstate, pclonecall, preqbytes?, int) : pstate
+def $clone_send_check(S, pclonecall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
+  -- if $clone_destination((preqbytes), |pclonecall.SENT|) = eps
+def $clone_send_check(S, pclonecall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ preqbytes ++ $ptascii(" overwrites previous argument"), z)
+  -- if $clone_destination((preqbytes), |pclonecall.SENT|) = (n)
+  -- if $named_slot_at(pclonecall.SENT, n) = NAMED_SENT poperand
+def $clone_send_check(S, pclonecall, eps, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
+  -- if pclonecall.NAMED
+def $clone_send_check(S, pclonecall, preqbytes?, z) = S -- otherwise
+dec $clone_sent(pclonecall, poperand, preqbytes?) : pclonecall
+def $clone_sent(pclonecall, poperand, preqbytes?) = pclonecall[.SENT = $named_slot_set(pclonecall.SENT, n, poperand)][.NAMED = (pclonecall.NAMED \/ preqbytes? =/= eps)]
+  -- if $clone_destination(preqbytes?, |pclonecall.SENT|) = (n)
+
+rule PhpStep/clone-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), CLONE_SEND pclonecall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_ARGS pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+rule PhpStep/clone-send: S ~> S_value[.TODO = (CLONE_ARGS ($clone_sent(pclonecall, S_value.RESULT, preqbytes?)[.INDEX = $(pclonecall.INDEX + 1)])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_SEND pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $clone_send_check(S, pclonecall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/clone-send-error: S ~> S_checked
+  -- if S.TODO = (CLONE_SEND pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $clone_send_check(S, pclonecall, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/clone-send-abrupt: S ~> S_value
+  -- if S.TODO = (CLONE_SEND pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $clone_send_check(S, pclonecall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+rule PhpStep/clone-arguments-done: S ~> S[.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_ARGS pclonecall) :: ptask_tail*
+  -- if $intrinsic_count(S, pclonecall.SITE) = (pclonecall.INDEX)
+
+rule PhpStep/clone-unpack-start: S ~> S[.TODO = [$at_task((porigin), EVAL expression), CLONE_UNPACK_PREP pclonecall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_ARGS pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+rule PhpStep/clone-unpack-array: S ~> S_value[.TODO = (CLONE_UNPACK_NEXT pclonecall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_UNPACK_PREP pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n)
+rule PhpStep/clone-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
+  -- if S.TODO = (CLONE_UNPACK_PREP pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/clone-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (CLONE_UNPACK_PREP pclonecall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/clone-unpack-item: S ~> S_checked[.TODO = (CLONE_UNPACK_NEXT pclonecall poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_UNPACK_NEXT pclonecall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $clone_unpack_prefix(S, pclonecall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pclonecall_prefix)
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $clone_send_check(S, pclonecall_prefix, preqbytes_key?, z)
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/clone-unpack-item-error: S ~> S_checked
+  -- if S.TODO = (CLONE_UNPACK_NEXT pclonecall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $clone_unpack_prefix(S, pclonecall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pclonecall_prefix)
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $clone_send_check(S, pclonecall_prefix, preqbytes_key?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/clone-unpack-done: S ~> S[.TODO = (CLONE_ARGS pclonecall_prefix[.INDEX = $(pclonecall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_UNPACK_NEXT pclonecall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n].ITEMS|
+  -- if $clone_unpack_prefix(S, pclonecall, S.ARRAYS[n].ITEMS) = (pclonecall_prefix)
+
+;; Receive checks arity, required holes, then parameter types in slot order.
+dec $clone_receive(pstate, pclonecall) : pstate
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("clone() expects at least 1 argument, 0 given"))
+  -- if pclonecall.SENT = eps
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("clone() expects at most 2 arguments, ") ++ $decimal_integer(|pclonecall.SENT|) ++ $ptascii(" given"))
+  -- if $(|pclonecall.SENT| > 2)
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("Closure::__invoke(): Argument #1 ($object) not passed"))[.TRACE = $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)]
+  -- if pclonecall.SENT = [NAMED_HOLE, NAMED_SENT poperand]
+  -- if $clone_method_receiver(S, pclonecall)
+  -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("clone(): Argument #1 ($object) not passed"))
+  -- if pclonecall.SENT = [NAMED_HOLE, NAMED_SENT poperand]
+  -- if ~$clone_method_receiver(S, pclonecall)
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "TypeError", $ptascii("clone(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if $named_slot_at(pclonecall.SENT, 0) = NAMED_SENT (KNOWN pvalue)
+  -- if $(|pclonecall.SENT| <= 2)
+  -- if ~$clone_is_object(pvalue)
+def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "TypeError", $ptascii("clone(): Argument #2 ($withProperties) must be of type array, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$is_array_value(pvalue)
+def $clone_receive(S, pclonecall) = $clone_object($hold_task_inputs(S), n)[.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if S.TODO = ptask :: ptask_tail*
+def $clone_receive(S, pclonecall) = S_cloned[.TODO = (CLONE_UPDATE pclonecall n_object n_array 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_cloned = $clone_object(S, n)
+  -- if S_cloned.RESULT = KNOWN (POBJECT n_object)
+rule PhpStep/clone-invoke: S ~> $clone_receive(S, pclonecall)
+  -- if S.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*
+
+;; Only the active synchronous property write is weak. Queued writes do not
+;; change the strict context of their suspended child/caller.
+def $internal_property_write(S) = true
+  -- if S.TODO = (CLONE_UPDATE pclonecall n_object n_array n_cursor) :: ptask_tail*
+  -- if $clone_update_base_valid(S, pclonecall, n_object, n_array, n_cursor)
+def $internal_property_write(S) = false -- otherwise
+dec $clone_update_key(pkey) : preqbytes
+def $clone_update_key(KINT z) = $decimal_integer(z)
+def $clone_update_key(KSTRING preqbytes) = preqbytes
+dec $clone_update_ref(pstate, pitem) : bool
+def $clone_update_ref(S, ALIAS n) = $($heap_owners($heap_prune($heap_graph(S)), HCELL n) > 1)
+def $clone_update_ref(S, DIRECT pvalue) = false
+dec $clone_update_write(pstate, nat, preqbytes, pvalue, int) : pstate
+def $clone_update_write(S, n, preqbytes, pvalue, z) = $property_store_value(S, n, preqbytes, pvalue, z)
+  -- if $class_plain_instance(S, n)
+def $clone_update_write(S, n, preqbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot create dynamic property Closure::$") ++ preqbytes, z)
+  -- if $closure_callable(S, n)
+  -- if ~$property_bad_name(preqbytes)
+def $clone_update_write(S, n, preqbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot access property starting with \"\\0\""), z)
+  -- if $closure_callable(S, n)
+  -- if $property_bad_name(preqbytes)
+dec $clone_update_step(pstate, pclonecall, nat, pentry) : pstate
+def $clone_update_step(S, pclonecall, n_object, ENTRY pkey pitem) = $clone_error(S, pclonecall, "Error", $ptascii("Cannot assign by reference when cloning with updated properties"))
+  -- if $clone_update_ref(S, pitem)
+def $clone_update_step(S, pclonecall, n_object, ENTRY pkey pitem) = S_written
+  -- if ~$clone_update_ref(S, pitem)
+  -- if S_written = $clone_update_write(S, n_object, $clone_update_key(pkey), $entry_value(S, pitem), pclonecall.LINE)
+  -- if S_written.COMPLETION = NORMAL
+def $clone_update_step(S, pclonecall, n_object, ENTRY pkey pitem) = $clone_error(S_written, pclonecall, text, preqbytes)
+  -- if ~$clone_update_ref(S, pitem)
+  -- if S_written = $clone_update_write(S, n_object, $clone_update_key(pkey), $entry_value(S, pitem), pclonecall.LINE)
+  -- if S_written.COMPLETION = THROWN text preqbytes z
+def $clone_update_step(S, pclonecall, n_object, ENTRY pkey pitem) = S_written
+  -- if ~$clone_update_ref(S, pitem)
+  -- if S_written = $clone_update_write(S, n_object, $clone_update_key(pkey), $entry_value(S, pitem), pclonecall.LINE)
+  -- if S_written.COMPLETION =/= NORMAL
+  -- if ~$clone_thrown(S_written.COMPLETION)
+rule PhpStep/clone-update: S ~> S_written[.TODO = (CLONE_UPDATE pclonecall n_object n_array $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_UPDATE pclonecall n_object n_array n_cursor) :: ptask_tail*
+  -- if $(n_cursor < |S.ARRAYS[n_array].ITEMS|)
+  -- if S_written = $clone_update_step(S, pclonecall, n_object, S.ARRAYS[n_array].ITEMS[n_cursor])
+  -- if S_written.COMPLETION = NORMAL
+  -- if S_written.TODO = S.TODO
+rule PhpStep/clone-update-error: S ~> S_written
+  -- if S.TODO = (CLONE_UPDATE pclonecall n_object n_array n_cursor) :: ptask_tail*
+  -- if $(n_cursor < |S.ARRAYS[n_array].ITEMS|)
+  -- if S_written = $clone_update_step(S, pclonecall, n_object, S.ARRAYS[n_array].ITEMS[n_cursor])
+  -- if S_written.COMPLETION =/= NORMAL \/ S_written.TODO =/= S.TODO
+rule PhpStep/clone-updates-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_object)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_UPDATE pclonecall n_object n_array n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n_array].ITEMS|
+
+
+;; Captured receiver state is checked separately from the current head result.
+;; Origin-return simulation authenticates queued continuations after child eval.
+dec $clone_selected_valid(pstate, pclonecall) : bool
+def $clone_selected_valid(S, pclonecall) = true
+  -- if pclonecall.OWNER = eps
+  -- if $exit_fixed(S, pclonecall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_CLONE)
+def $clone_selected_valid(S, pclonecall) = true
+  -- if pclonecall.OWNER = eps
+  -- if $exit_fixed(S, pclonecall.SITE) = eps
+  -- if $exit_dynamic_site(S, pclonecall.SITE)
+def $clone_selected_valid(S, pclonecall) = true
+  -- if pclonecall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLONE
+  -- if $exit_fixed(S, pclonecall.SITE) = eps
+  -- if $exit_dynamic_site(S, pclonecall.SITE)
+def $clone_selected_valid(S, pclonecall) = true
+  -- if pclonecall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLONE
+  -- if $exit_method_site(S, pclonecall.SITE)
+def $clone_selected_valid(S, pclonecall) = false -- otherwise
+dec $clone_slots_valid(pnamedslot*, nat, nat, bool) : bool
+def $clone_slots_valid(eps, n, n_total, b) = true
+def $clone_slots_valid((NAMED_SENT (KNOWN pvalue)) :: pnamedslot*, n, n_total, b) = $clone_slots_valid(pnamedslot*, $(n + 1), n_total, b)
+def $clone_slots_valid(NAMED_HOLE :: pnamedslot*, 0, 2, true) = $clone_slots_valid(pnamedslot*, 1, 2, true)
+def $clone_slots_valid(pnamedslot*, n, n_total, b) = false -- otherwise
+dec $clone_slot_shape(pnamedslot*) : bool*
+def $clone_slot_shape(eps) = eps
+def $clone_slot_shape(NAMED_HOLE :: pnamedslot*) = false :: $clone_slot_shape(pnamedslot*)
+def $clone_slot_shape((NAMED_SENT poperand) :: pnamedslot*) = true :: $clone_slot_shape(pnamedslot*)
+dec $clone_source_prefix(phpType7*, pnamedslot*, bool) : (pnamedslot*, bool)?
+def $clone_source_prefix(eps, pnamedslot*, b) = ((pnamedslot*, b))
+def $clone_source_prefix((NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnamedslot*, b) = $clone_source_prefix(phpType7*, $named_slot_set(pnamedslot*, n, KNOWN PNULL), (b \/ preqbytes? =/= eps))
+  -- if preqbytes? = $exit_argument_name(phpType3)
+  -- if $clone_destination(preqbytes?, |pnamedslot*|) = (n)
+  -- if $named_slot_at(pnamedslot*, n) = NAMED_HOLE
+  -- if ~(b /\ preqbytes? = eps)
+def $clone_source_prefix(phpType7*, pnamedslot*, b) = eps -- otherwise
+dec $clone_sent_shape(pstate, pclonecall) : bool
+def $clone_sent_shape(S, pclonecall) = true
+  -- if $exit_callable_arguments(S, pclonecall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pclonecall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pclonecall.INDEX]
+  -- if ~$call_unpack_present(phpType7_prefix*)
+  -- if $clone_source_prefix(phpType7_prefix*, eps, false) = ((pnamedslot*, pclonecall.NAMED))
+  -- if $clone_slot_shape(pclonecall.SENT) = $clone_slot_shape(pnamedslot*)
+def $clone_sent_shape(S, pclonecall) = true
+  -- if $exit_callable_arguments(S, pclonecall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pclonecall.INDEX <= |phpType7*|)
+  -- if $call_unpack_present(phpType7*[0:pclonecall.INDEX])
+  -- if (~$exit_prefix_named(phpType7*[0:pclonecall.INDEX]) \/ pclonecall.NAMED)
+def $clone_sent_shape(S, pclonecall) = true
+  -- if $pipe_site(S, pclonecall.SITE)
+  -- if pclonecall.INDEX = 1
+  -- if |pclonecall.SENT| = 1
+  -- if ~pclonecall.NAMED
+def $clone_sent_shape(S, pclonecall) = false -- otherwise
+dec $clone_call_valid(pstate, pclonecall) : bool
+def $clone_call_valid(S, pclonecall) = true
+  -- if S.ORIGIN = (pclonecall.SITE)
+  -- if $clone_selected_valid(S, pclonecall)
+  -- if pclonecall.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pclonecall.LINE, false))
+  -- if $intrinsic_count(S, pclonecall.SITE) = (n_count)
+  -- if $(pclonecall.INDEX <= n_count)
+  -- if $clone_slots_valid(pclonecall.SENT, 0, |pclonecall.SENT|, pclonecall.NAMED)
+def $clone_call_valid(S, pclonecall) = false -- otherwise
+dec $clone_pending_valid(pstate, pclonecall, bool) : bool
+def $clone_pending_valid(S, pclonecall, b) = true
+  -- if $clone_call_valid(S, pclonecall)
+  -- if $clone_sent_shape(S, pclonecall)
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, b, preqbytes?, porigin, z))
+def $clone_pending_valid(S, pclonecall, b) = false -- otherwise
+def $call_task_valid(S, CLONE_ARGS pclonecall) = ($clone_call_valid(S, pclonecall) /\ $clone_sent_shape(S, pclonecall))
+def $call_task_valid(S, CLONE_SEND pclonecall) = $clone_pending_valid(S, pclonecall, false)
+def $call_task_valid(S, CLONE_UNPACK_PREP pclonecall) = $clone_pending_valid(S, pclonecall, true)
+dec $clone_invoke_valid(pstate, pclonecall) : bool
+def $clone_invoke_valid(S, pclonecall) = true
+  -- if $clone_call_valid(S, pclonecall)
+  -- if $clone_sent_shape(S, pclonecall)
+  -- if $intrinsic_count(S, pclonecall.SITE) = (pclonecall.INDEX)
+def $clone_invoke_valid(S, pclonecall) = false -- otherwise
+def $call_task_valid(S, CLONE_INVOKE pclonecall) = $clone_invoke_valid(S, pclonecall)
+dec $clone_unpack_valid(pstate, pclonecall, poperand, nat) : bool
+def $clone_unpack_valid(S, pclonecall, KNOWN (PARRAY n), n_cursor) = true
+  -- if $clone_call_valid(S, pclonecall)
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
+  -- if $clone_sent_shape(S, pclonecall)
+  -- if $clone_unpack_prefix(S, pclonecall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pclonecall_prefix)
+def $clone_unpack_valid(S, pclonecall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, CLONE_UNPACK_NEXT pclonecall poperand n_cursor) = $clone_unpack_valid(S, pclonecall, poperand, n_cursor)
+def $clone_update_base_valid(S, pclonecall, n_object, n_array, n_cursor) = true
+  -- if $clone_invoke_valid(S, pclonecall)
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n_source)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $(n_object < |S.OBJECTS|)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if $(n_object > n_source)
+  -- if (HOBJECT n_source) <- S.ALLOCATIONS
+  -- if $clone_same_kind(S.OBJECTS[n_source], S.OBJECTS[n_object])
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n_array].ITEMS|)
+def $clone_update_base_valid(S, pclonecall, n_object, n_array, n_cursor) = false -- otherwise
+def $clone_update_valid(S, pclonecall, n_object, n_array, n_cursor) = true
+  -- if $clone_update_base_valid(S, pclonecall, n_object, n_array, n_cursor)
+  -- if $clone_update_prefix_valid(S, n_object, S.ARRAYS[n_array].ITEMS[0:n_cursor], pclonecall.LINE)
+def $clone_update_valid(S, pclonecall, n_object, n_array, n_cursor) = false -- otherwise
+def $call_task_valid(S, CLONE_UPDATE pclonecall n_object n_array n_cursor) = $clone_update_valid(S, pclonecall, n_object, n_array, n_cursor)
+
+dec $clone_pending_result_valid(pstate, pclonecall, bool) : bool
+def $clone_pending_result_valid(S, pclonecall, b_unpack) = true
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_CV)
+  -- if $exit_cv_operand(pcode, pcunit, pcpath) = (S.RESULT)
+def $clone_pending_result_valid(S, pclonecall, b_unpack) = true
+  -- if $intrinsic_argument(S, pclonecall.SITE, pclonecall.INDEX) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
+  -- if punpackclass =/= UNPACK_CV
+  -- if $unpack_owned(S, S.RESULT)
+def $clone_pending_result_valid(S, pclonecall, b_unpack) = false -- otherwise
+def $clone_result_valid(S) = $clone_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $clone_result_valid(S) = $clone_result_valid(S[.ORIGIN = porigin?][.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $clone_result_valid(S) = $clone_pending_result_valid(S, pclonecall, false)
+  -- if S.TODO = (CLONE_SEND pclonecall) :: ptask_tail*
+def $clone_result_valid(S) = $clone_pending_result_valid(S, pclonecall, true)
+  -- if S.TODO = (CLONE_UNPACK_PREP pclonecall) :: ptask_tail*
+def $clone_result_valid(S) = true -- otherwise
+
+def $clone_thrown(THROWN text preqbytes z) = true
+def $clone_thrown(pcompletion) = false -- otherwise
+
+;; Replaying the consumed prefix only validates that no mandatory failure was
+;; skipped. Its state and diagnostics are discarded, never emitted a second time.
+def $clone_update_prefix_valid(S, n, eps, z) = true
+def $clone_update_prefix_valid(S, n, (ENTRY pkey pitem) :: pentry*, z) = $clone_update_prefix_valid(S_written, n, pentry*, z)
+  -- if ~$clone_update_ref(S, pitem)
+  -- if S_written = $clone_update_write(S, n, $clone_update_key(pkey), $entry_value(S, pitem), z)
+  -- if S_written.COMPLETION = NORMAL
+def $clone_update_prefix_valid(S, n, pentry*, z) = false -- otherwise
+def $clone_same_kind(STDINSTANCE, STDINSTANCE) = true
+def $clone_same_kind(INSTANCE porigin, INSTANCE porigin) = true
+def $clone_same_kind(NAMEDCLOSURE porigin, NAMEDCLOSURE porigin) = true
+def $clone_same_kind(REALCLOSURE porigin pitem_left* pstaticcell_left*, REALCLOSURE porigin pitem_right* pstaticcell_right*) = true
+def $clone_same_kind(INTRINSICCLOSURE pintrinsic, INTRINSICCLOSURE pintrinsic) = true
+def $clone_same_kind(pobject_left, pobject_right) = false -- otherwise
+
+;; No callbacks or source evaluation occur between unpack steps. Retain the
+;; array and initial receiver, and recompute the completed prefix without effects.
+def $clone_unpack_prefix(S, pclonecall, eps) = (pclonecall)
+def $clone_unpack_prefix(S, pclonecall, (ENTRY pkey pitem) :: pentry*) = $clone_unpack_prefix(S, $clone_sent(pclonecall, KNOWN $entry_value(S, pitem), preqbytes?), pentry*)
+  -- if preqbytes? = $exit_key_name(pkey)
+  -- if S_checked = $clone_send_check(S, pclonecall, preqbytes?, pclonecall.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+def $clone_unpack_prefix(S, pclonecall, pentry*) = eps -- otherwise

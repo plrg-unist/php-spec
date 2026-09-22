@@ -214,6 +214,10 @@ members, hooks and user magic methods remain open.
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
 `__toString` and output callbacks remain dependencies.
+[Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
+copying, live aliases and closure receiver/static ownership. Callable cloning
+binds named/unpacked arguments and applies weak property updates in order.
+Clone callbacks, readonly/hook semantics and lifecycle integration remain open.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)

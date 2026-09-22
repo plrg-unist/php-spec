@@ -271,8 +271,10 @@ def $property_live_complete(S, (HARRAY n) :: pnode_tail*) = $property_live_compl
 def $property_live_complete(S, pnode*) = false -- otherwise
 def $property_state_valid(S) = ($objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
 
+dec $internal_property_write(pstate) : bool
 dec $property_strict(pstate) : bool
 def $property_strict(S) = pcode.STRICT
+  -- if ~$internal_property_write(S)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
 def $property_strict(S) = false -- otherwise

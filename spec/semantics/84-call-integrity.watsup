@@ -281,6 +281,7 @@ dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
+dec $clone_result_valid(pstate) : bool
 dec $exit_result_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $call_descriptors_valid(pstate) : bool
@@ -302,6 +303,7 @@ def $call_descriptors_valid(S) = true
   -- if $acquire_call_result_valid(S)
   -- if $unpack_result_valid(S)
   -- if $exit_result_valid(S)
+  -- if $clone_result_valid(S)
   -- if $dynamic_result_valid(S)
   -- if $static_result_valid(S)
   -- if $silences_valid(S)

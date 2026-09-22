@@ -1,0 +1,128 @@
+{
+  "result": "approved-bounded-clone-implementation",
+  "methods_base_commit": "73a00b1fde841ff53964360f47e0727a9c59e6c9",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; maintained ordinary profile",
+  "scope": "Unary and callable clone for admitted ordinary objects/closures; positional, named and array-unpacked binding, ordered weak property updates, shared references, copied closure storage and bound receiver ownership. Full core remains incomplete.",
+  "review": {
+    "copy": "Incremental slot copying unwraps singleton references and preserves live aliases, attaching/removing typed property sources. Arrays use existing COW; nested objects retain identity. Real closure static sharing is allowed only for the same declaration origin.",
+    "scope": "Real clones copy lexical/called class and receiver records. Receiver and selected intrinsic-owner edges survive argument side effects and original-owner release; abrupt completion removes temporary owners.",
+    "updates": "Active authenticated CLONE_UPDATE supplies weak internal property writes without changing suspended child strictness. Surviving reference values fail before invalid property names; partial earlier updates and abrupt cleanup are preserved.",
+    "intrinsics": "EXIT/DIE binders positively reject INTRINSIC_CLONE. Clone has a separate two-parameter binder and authentic source/line/prefix/update guards.",
+    "wrapper": "Missing required object in explicit Closure->__invoke fails before clone body, with wrapper-only trace. Ordinary arity/type/update errors include clone and wrapper frames. Named/unpacked argument side effects and owner overwrite were independently checked.",
+    "installation": "All148 ordered semantic modules match the approved private tree. Against committed methods:141 exact inputs, five reviewed clone deltas and two new modules; all five execution binary/CLI hashes match. Methods PROGRESS row and documentation are preserved."
+  },
+  "evidence": {
+    "author_ledger": "coverage/semantics/clone-author.json",
+    "initial_source": {
+      "cases": 62,
+      "report": {
+        "path": ".tools/clone-impl-candidate/.tools/clone-source-mg4ax9pi/report.json",
+        "sha256": "2a9932b55ca0bc80d23924a4becc0fe5a8fe1ff5ffa5cb940a3176cfed7d4f84"
+      }
+    },
+    "initial_protocol": {
+      "stages": 11,
+      "assertions": 172,
+      "report": {
+        "path": ".tools/clone-impl-candidate/.tools/clone-protocol-lngq803_/report.json",
+        "sha256": "58c616a6c9baee0da31ac747c514b0b24393554383515a5d9695e46de7a4a98a"
+      }
+    },
+    "compiler": {
+      "sources": 8,
+      "projections": 15,
+      "report": {
+        "path": ".tools/clone-impl-candidate/.tools/clone-compiler-fw6vxqi0/report-full.json",
+        "sha256": "db5877f2f09b1a0ed43c7fac5e0eb323a5c6d07b90086c16e7673cef2d4902a7"
+      }
+    },
+    "unsupported": {
+      "controls": 4,
+      "claim": "Separate Unsupported assertions, never native agreement.",
+      "report": {
+        "path": ".tools/clone-impl-candidate/.tools/clone-controls-9r2haz5t/report.json",
+        "sha256": "d3ff6dfc498c68cefeca6000da362f152a3dbecc61cad0ecd50dc837a5588551"
+      }
+    },
+    "private_final_bridge": {
+      "source_cases": 14,
+      "paused_stages": 4,
+      "paused_assertions": 64,
+      "source_report": {
+        "path": ".tools/clone-impl-candidate/.tools/clone-source-fi5xrur8/report.json",
+        "sha256": "c1561d631b7686c37fd84e3bcdeb6f455e80ae4ea0627c84d530a466c4d38c90"
+      },
+      "protocol_report": {
+        "path": ".tools/clone-impl-candidate/.tools/clone-protocol-uiaxnftd/report.json",
+        "sha256": "c32bc71448b16e1bfc384aab5e7b40e0997d48eb4283f3c5b7d7cc4e605933de"
+      }
+    },
+    "installed_bridge": {
+      "source_cases": 14,
+      "paused_stages": 4,
+      "paused_assertions": 64,
+      "fingerprint": "9a48b36e4c5b10e6473d1d7aae606d9be27c3f1e1418656fea7c62e23def648a",
+      "source_report": {
+        "path": ".tools/clone-source-a357ye0e/report.json",
+        "sha256": "951e25b86c4ceb133c4b51018beba6753ffaddcdb42c630945bc36a7975a9c1c"
+      },
+      "protocol_report": {
+        "path": ".tools/clone-protocol-9j6v9uhz/report.json",
+        "sha256": "9db0253ef35c5d2445523bc0b1da7f02a163e90be354c15e8c31ae34ab002b95"
+      }
+    },
+    "independent_sources": {
+      "original_scope": {
+        "cases": 18,
+        "report": {
+          "path": ".tools/clone-review-independent/replay-jx9n24k9/report.json",
+          "sha256": "6a7c7230d1040dcdcac0df47a3567bc4a0449c60e6a06d929f3c8e6fbcd0d808"
+        },
+        "identity": "Earlier private snapshot; all18 exact originals are in initial62."
+      },
+      "bound_closures": {
+        "cases": 4,
+        "report": {
+          "path": ".tools/clone-review-independent/resumed-bound/replay-fxcx_86m/report.json",
+          "sha256": "da06b02463334b7cafb1be3524bb30a2741fc505cbfd0c89e55d33136afaaa40"
+        }
+      },
+      "wrapper_hole_owner_priority": {
+        "cases": 2,
+        "report": {
+          "path": ".tools/clone-review-independent/wrapper-hole-owner/replay-nuipy859/report.json",
+          "sha256": "96490595b0be608a56857f1c5dee99fefde7715aed3c51b45ac2897cdb98a675"
+        }
+      },
+      "claim": "Original bytes compared to pinned native stdout/stderr/status; separate snapshot identities, not a current24-source campaign."
+    },
+    "independent_paused_replay": {
+      "stages": 2,
+      "assertions": 34,
+      "report": {
+        "path": ".tools/clone-review-independent/resumed-protocol-7xxr_ke_/report.json",
+        "sha256": "0d77446df3abb4a6edba0eb4cef7759eca95e13401170754e7393743275c6a76"
+      },
+      "scope": "Forged EXIT binder kind rejection and copied bound receiver/scope ownership."
+    }
+  },
+  "compatibility": {
+    "maintained_source_union": "69 = initial62 + final14 - seven repeated; installed14 repeats the final bridge. No single69-source campaign.",
+    "maintained_protocol_union": "13stages/202assertions = initial11/172 + final4/64 - two stages/34 assertions repeated; installed4/64 repeats the final bridge.",
+    "method_wrapper": "Final method delta changes wrapper frames, weak receive/trace and reference acquisition. All seven earlier method-dependent clone originals replay in final14, alongside three new ordinary-cloned-wrapper and four intrinsic binding cases. Remaining original55 have no methods.",
+    "nul142": "Final142 changes only six method-name error renderings. Full-byte lookup remains unchanged. Separate method independent3/maintained8 cover the delta; clone final14 omit NUL method names, and installed14/64 use final142.",
+    "complete_loaded_map": {
+      "path": ".tools/clone-impl-candidate/.tools/clone-integration/loaded-inputs.json",
+      "sha256": "c88078d4ab3dabfef270a7524c692d91ea878960c462e3cb63903e49ac41faa5"
+    },
+    "nul142_bridge": {
+      "path": ".tools/clone-impl-candidate/.tools/clone-integration/nul142-bridge.json",
+      "sha256": "1e4ce8a35ba95177f45a83c46f553e427c5141d4083385395b04388bdcae4138"
+    }
+  },
+  "limitations": [
+    "__clone callbacks/access checks, visibility, readonly reinitialization, hooks, lazy objects and uncloneable internal object protocols remain open.",
+    "Traversable argument unpack, destructor/shutdown and general lifecycle integration remain open.",
+    "Source agreement and checked paused states are not semantic equivalence, full-core acceptance, a portability rebuild or BOLA verification."
+  ]
+}

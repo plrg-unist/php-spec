@@ -1,3 +1,7 @@
+dec $exit_kind(pintrinsic) : bool
+def $exit_kind(INTRINSIC_EXIT) = true
+def $exit_kind(INTRINSIC_DIE) = true
+def $exit_kind(pintrinsic) = false -- otherwise
 ;; Finite language intrinsics have real internal identities, not source functions.
 dec $intrinsic_name(pintrinsic) : preqbytes
 def $intrinsic_name(INTRINSIC_EXIT) = $ptascii("exit")
@@ -37,7 +41,9 @@ def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY 
 
 def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (EXIT_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin)
+  -- if $exit_kind(pintrinsic)
 def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (EXIT_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([KNOWN pvalue]), NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $exit_kind(pintrinsic)
 def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = $intrinsic_prepare(S, pintrinsic, z, eps)
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pintrinsic)
@@ -217,7 +223,11 @@ def $exit_unwind_valid(S, z) = true
 def $exit_unwind_valid(S, z) = false -- otherwise
 def $call_task_valid(S, EXIT_UNWIND z) = $exit_unwind_valid(S, z)
 dec $exit_count(pstate, porigin) : nat?
+dec $intrinsic_count(pstate, porigin) : nat?
+def $exit_count(S, porigin) = $intrinsic_count(S, porigin)
 dec $exit_argument(pstate, pexitcall) : (expression, bool, preqbytes?, porigin, int)?
+dec $intrinsic_argument(pstate, porigin, nat) : (expression, bool, preqbytes?, porigin, int)?
+def $exit_argument(S, pexitcall) = $intrinsic_argument(S, pexitcall.SITE, pexitcall.INDEX)
 dec $exit_argument_name(phpType3) : preqbytes?
 dec $exit_send_path(pcpath, nat, nat, bool) : pcpath
 dec $exit_callable_arguments(pstate, porigin) : pcallarguments
@@ -246,33 +256,33 @@ dec $exit_unpack_prefix(pentry*, bool, nat) : bool
 dec $exit_unpack_valid(pstate, pexitcall, poperand, nat) : bool
 
 ;; Source arguments retain their checked occurrence; compact exits have FIELD 0.
-def $exit_count(S, porigin) = (0)
+def $intrinsic_count(S, porigin) = (0)
   -- if $origin_node(S.SOURCES, porigin) = (NExprExit ABSENT metadata)
-def $exit_count(S, porigin) = (1)
+def $intrinsic_count(S, porigin) = (1)
   -- if $origin_node(S.SOURCES, porigin) = (NExprExit expression metadata)
-def $exit_count(S, porigin) = (|phpType7*|)
+def $intrinsic_count(S, porigin) = (|phpType7*|)
   -- if $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
-def $exit_count(S, porigin) = (1)
+def $intrinsic_count(S, porigin) = (1)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
-def $exit_count(S, porigin) = eps -- otherwise
+def $intrinsic_count(S, porigin) = eps -- otherwise
 
-def $exit_argument(S, pexitcall) = ((expression, false, eps, PORIGIN n (pcpath ++ [PCFIELD 0]), z))
-  -- if pexitcall.INDEX = 0
-  -- if pexitcall.SITE = PORIGIN n pcpath
-  -- if $origin_node(S.SOURCES, pexitcall.SITE) = (NExprExit expression metadata)
+def $intrinsic_argument(S, porigin_site, n_index) = ((expression, false, eps, PORIGIN n (pcpath ++ [PCFIELD 0]), z))
+  -- if n_index = 0
+  -- if porigin_site = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprExit expression metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b))
-def $exit_argument(S, pexitcall) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath_arg, z))
-  -- if pexitcall.SITE = PORIGIN n pcpath
-  -- if $exit_callable_arguments(S, pexitcall.SITE) = PCALLARGUMENTS phpType7* n_field
-  -- if $(pexitcall.INDEX < |phpType7*|)
-  -- if phpType7*[pexitcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata_arg
+def $intrinsic_argument(S, porigin_site, n_index) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath_arg, z))
+  -- if porigin_site = PORIGIN n pcpath
+  -- if $exit_callable_arguments(S, porigin_site) = PCALLARGUMENTS phpType7* n_field
+  -- if $(n_index < |phpType7*|)
+  -- if phpType7*[n_index] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata_arg
   -- if preqbytes? = $exit_argument_name(phpType3)
-  -- if pcpath_arg = pcpath ++ [PCFIELD n_field, PCINDEX pexitcall.INDEX, PCFIELD 1]
+  -- if pcpath_arg = pcpath ++ [PCFIELD n_field, PCINDEX n_index, PCFIELD 1]
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if pcpath_line = $exit_send_path(pcpath, n_field, pexitcall.INDEX, b_unpack)
+  -- if pcpath_line = $exit_send_path(pcpath, n_field, n_index, b_unpack)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_line) = ((z, b))
-def $exit_argument(S, pexitcall) = eps -- otherwise
+def $intrinsic_argument(S, porigin_site, n_index) = eps -- otherwise
 
 def $exit_argument_name(ABSENT) = eps
 def $exit_argument_name(NIdentifier (BYTES text) metadata) = ($base64(text))
@@ -289,6 +299,7 @@ def $exit_prefix_valid(phpType7*, n, b) = false -- otherwise
 
 ;; SENT owns by-value operands; NAMED means the sole fixed slot was named.
 def $exit_call_valid(S, pexitcall) = true
+  -- if $exit_kind(pexitcall.KIND)
   -- if S.ORIGIN = (pexitcall.SITE)
   -- if $exit_selected_valid(S, pexitcall)
   -- if pexitcall.SITE = PORIGIN n pcpath

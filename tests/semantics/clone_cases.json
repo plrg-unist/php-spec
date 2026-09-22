@@ -1,0 +1,2003 @@
+[
+  {
+    "id": "author-identity-public",
+    "source": "<?php class C{public int $i=1;public $a=[2];public $o;} $x=new C;$x->o=new stdClass;$y=clone $x;$y->i=3;$y->a[0]=4;echo $x===$y?\"same\":\"different\",$x->i,$y->i,$x->a[0],$y->a[0],$x->o===$y->o?\"shared\":\"copy\";",
+    "source_sha256": "4f2b841af6f8c04521f29ee31a05bea8162bc9269be014c11b91fdf14a54f80e",
+    "stdout_base64": "ZGlmZmVyZW50MTMyNHNoYXJlZA==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "0ba2d084c324c24e450c22fcbca5e6208a74bc253d498c22ae6198ec4f0df56d",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-stdclass-cow",
+    "source": "<?php $x=new stdClass;$x->a=[1];$r=&$x->a[0];$y=clone $x;$y->a[1]=2;$r=3;echo $x->a[0],$y->a[0],isset($x->a[1])?\"bad\":\"ok\";",
+    "source_sha256": "3d3f4ce49c1fb0d30c55f3ffcec6848ea23c3625ff66cd1c0ecbd141759c6c5c",
+    "stdout_base64": "MzNvaw==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "83a69e2513259ccd6b8fec9bbba0ea59aa92459b961de043f335e14476e0e444",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-property-uninit",
+    "source": "<?php class C{public int $i;} $x=new C;$y=clone $x;echo isset($y->i)?\"bad\":\"ok\";echo $y->i;",
+    "source_sha256": "1532b41b229c3ea1f498c74ddf78495840e4a48e86f5bb3d1b9f12180024d197",
+    "stdout_base64": "b2s=",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBUeXBlZCBwcm9wZXJ0eSBDOjokaSBtdXN0IG5vdCBiZSBhY2Nlc3NlZCBiZWZvcmUgaW5pdGlhbGl6YXRpb24gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "native.stderr": "c1ea91f58c0a6de7e79e4aae81172b12d8df10c5f090c34bf974aa687c19b57a"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-property-unset",
+    "source": "<?php class C{public $i=1;} $x=new C;unset($x->i);$y=clone $x;echo $y->i;",
+    "source_sha256": "3f53b436caec802492dae2a76e7d6db9bd8d6ef513204185e221523fed486dc4",
+    "stdout_base64": "",
+    "stderr_template_base64": "V2FybmluZzogVW5kZWZpbmVkIHByb3BlcnR5OiBDOjokaSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "8e582eb9528baaae1401ce7cdc4a6b9a6488f71773b07e55341b75b3550515b8"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-reference-single",
+    "source": "<?php class C{public $i=1;} $x=new C;$r=&$x->i;unset($r);$y=clone $x;$y->i=2;echo $x->i,$y->i;",
+    "source_sha256": "0bd5150b87b7c0763b9e873d32c2cbee39b62586b80e6d03c9fc36a4b778139a",
+    "stdout_base64": "MTI=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-values",
+    "source": "<?php class C{public int $x=1;public $a=[2];} $a=new C;$b=clone($a,[\"x\"=>\"3\",\"a\"=>[4]]);echo $a->x,$b->x,$a->a[0],$b->a[0];",
+    "source_sha256": "5e64adbfb7a58e08b6f075ffb69106276464c3a2a23e5f23b78a81a251fc1b5a",
+    "stdout_base64": "MTMyNA==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "dd49477b0b970dde26d58606384cfedd0dc5740b719bffc06442e7d949849deb",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-strict",
+    "source": "<?php declare(strict_types=1);class C{public int $x=1;} $a=new C;$b=clone($a,[\"x\"=>\"3\"]);",
+    "source_sha256": "ebbf6860a999ccd8e36de70e4b8688f076f89ad3aef179e72afd6c99877b4560",
+    "stdout_base64": "",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-key-bytes",
+    "source": "<?php $a=new stdClass;$b=clone($a,[2=>3,\"02\"=>4]);echo $b->{\"2\"},$b->{\"02\"};",
+    "source_sha256": "d114ae496cad1da98cafaf08c04b6459c5deae43d1dc627529aa0d3f19b5791a",
+    "stdout_base64": "MzQ=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "86e50149658661312a9e0b35558d84f6c6d3da797f552a9657fe0558ca40cdef",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-dynamic-order",
+    "source": "<?php class C{public int $x=1;} $a=new C;$b=clone($a,[\"first\"=>2,\"x\"=>\"bad\",\"last\"=>3]);",
+    "source_sha256": "a25cfe60d09f213e3507afb843ad1af40767db050a9f9547819e32892320aa74",
+    "stdout_base64": "",
+    "stderr_template_base64": "RGVwcmVjYXRlZDogQ3JlYXRpb24gb2YgZHluYW1pYyBwcm9wZXJ0eSBDOjokZmlyc3QgaXMgZGVwcmVjYXRlZCBpbiB7RklMRX0gb24gbGluZSAxCkZhdGFsIGVycm9yOiBVbmNhdWdodCBUeXBlRXJyb3I6IENhbm5vdCBhc3NpZ24gc3RyaW5nIHRvIHByb3BlcnR5IEM6OiR4IG9mIHR5cGUgaW50IGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCB7RklMRX0oMSk6IGNsb25lKE9iamVjdChDKSwgQXJyYXkpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "2aefc4e257651876abd6cebbefa7eaa33d378c09f7c20023bf1496ee9803b602"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-ref-live",
+    "source": "<?php $a=new stdClass;$v=2;$with=[\"x\"=>&$v];$b=clone($a,$with);",
+    "source_sha256": "d19372918aa0608f41a3d7c60c417e931b5000dfd461641b093d33cf8daa1dd4",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYXNzaWduIGJ5IHJlZmVyZW5jZSB3aGVuIGNsb25pbmcgd2l0aCB1cGRhdGVkIHByb3BlcnRpZXMgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoT2JqZWN0KHN0ZENsYXNzKSwgQXJyYXkpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "f85fca068e2a0f3c9ec0e0d853cd959dd68afc6861c02f2c842fb5cd2ffe65a1"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-ref-single",
+    "source": "<?php $a=new stdClass;$v=2;$with=[\"x\"=>&$v];unset($v);$b=clone($a,$with);echo $b->x;",
+    "source_sha256": "3db6a04791db47fed2bd4a5d74be271d29cccc2e32a3c48d085f2b4293c2fbd4",
+    "stdout_base64": "Mg==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-existing-ref",
+    "source": "<?php class C{public int $x=1;} $a=new C;$r=&$a->x;$b=clone($a,[\"x\"=>2]);echo $a->x,$b->x,$r;",
+    "source_sha256": "366abdcf7a7e8836fae47cfcd364484d67eb58b3a332ac1d38b7441699d4d5e7",
+    "stdout_base64": "MjIy",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "9b871512327c09ce91dd649b3f96a63b7408ef267c8cc5710114e629730cb61f",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-second-type",
+    "source": "<?php function side(){echo \"S\";return new stdClass;}clone(side(),2);",
+    "source_sha256": "6bc99090c3463e4d2449ef89cece0039c10b5ddc24dea3a8a46756a09bee5a9b",
+    "stdout_base64": "Uw==",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzIgKCR3aXRoUHJvcGVydGllcykgbXVzdCBiZSBvZiB0eXBlIGFycmF5LCBpbnQgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoT2JqZWN0KHN0ZENsYXNzKSwgMikKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "8de0b3c47f112c59745f717a626932264c422a7563954872e237b223af4ad643",
+      "native.stderr": "18a73305806cfac6df20f96b98ffe94955dc6bd095afdf17638d7ee99b45baa5"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-with-arg-order",
+    "source": "<?php function x(){echo \"X\";return new stdClass;}function p(){echo \"P\";return [\"a\"=>1];}$b=clone(withProperties:p(),object:x());echo $b->a;",
+    "source_sha256": "fa82fceb3e2c0f458739de693aaa7241dee749338cb37c5cc2349ee763991e63",
+    "stdout_base64": "UFgx",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "a267c9ceee71de60faab3ddaee39e61c0f0829b871fa362d3d27a4c0ed898407",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-clone-write-static",
+    "source": "<?php $a=new stdClass;(clone $a)[0]=1;",
+    "source_sha256": "c2cc3d5914612e1f9e5345071139cbed28480c35fdf6ca0af5191531af743a11",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgcmVzdWx0IG9mIGJ1aWx0LWluIGZ1bmN0aW9uIGluIHdyaXRlIGNvbnRleHQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+    "status": "static_rejection",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "c6a163877573f24e015224d86d5714e36d0314fbf4e7b8200d44879ece133eb6"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-clone-ref-send",
+    "source": "<?php function f(&$x){echo \"bad\";}$a=new stdClass;f(clone $a);",
+    "source_sha256": "d5e44f184555ba1639c73d96e8acaeabe84b0061e028fc6b941c2820afaf46cb",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBmKCk6IEFyZ3VtZW50ICMxICgkeCkgY291bGQgbm90IGJlIHBhc3NlZCBieSByZWZlcmVuY2UgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "766d7ca1099c077cc407e0ddcb2eea65884fc2b69eca9a3057be98948b155985"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "author-clone-return-ref",
+    "source": "<?php function &f(){$a=new stdClass;return clone $a;}$b=&f();echo $b instanceof stdClass;",
+    "source_sha256": "5657ea5a074572fef603836025252851f6e9c09376a14d69d77ff3fa10b05ad5",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlIHJlZmVyZW5jZXMgc2hvdWxkIGJlIHJldHVybmVkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "native.stderr": "31f546f5d4ec78dd54b87d852f4c673cf606a79545375237a7b39149fc075293"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-call-two-refsend",
+    "source": "<?php function f(&$x){echo \"F\";}$a=new stdClass;f(clone($a,[]));",
+    "source_sha256": "4f422a1bd6992c7f9b99413071fa400e8147e9016bce9b8c86e204b4f7223cb6",
+    "stdout_base64": "Rg==",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "f67ab10ad4e4c53121b6a5fe4da9c10ddee905b978d3788d2723d7bfacbe28a9",
+      "native.stderr": "4e6ca35809dba85b75551402284b661f076459192a2c29a2c66f2ac9d26e7763"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-call-named-refsend",
+    "source": "<?php function f(&$x){echo \"F\";}$a=new stdClass;f(clone(object:$a));",
+    "source_sha256": "8ab08692a5392a7177140f28a8869eeefa0ef0c4657afb0e68da0a00e9483775",
+    "stdout_base64": "Rg==",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "f67ab10ad4e4c53121b6a5fe4da9c10ddee905b978d3788d2723d7bfacbe28a9",
+      "native.stderr": "9842d8149c8b3386cb06fa19f7b7db89ed3a131e8e647ebbfcfc78504a4ba01e"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-call-dynamic-refsend",
+    "source": "<?php function f(&$x){echo \"F\";}$a=new stdClass;$c=\"clone\";f($c($a));",
+    "source_sha256": "dd36d107c85b2d12606db9af468aa53e7e0847886df722f5148902689e8f9225",
+    "stdout_base64": "Rg==",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "f67ab10ad4e4c53121b6a5fe4da9c10ddee905b978d3788d2723d7bfacbe28a9",
+      "native.stderr": "e7454e37cb3d583e9341837c72d5c252c37f92ac22bc056c63c8c1ab981ff962"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-call-firstclass-refsend",
+    "source": "<?php function f(&$x){echo \"F\";}$a=new stdClass;$c=clone(...);f($c($a));",
+    "source_sha256": "99b5ad65a1d9c15eed512ba89502ef79a14012be1c88b5bf7f06d13430dec35f",
+    "stdout_base64": "Rg==",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "f67ab10ad4e4c53121b6a5fe4da9c10ddee905b978d3788d2723d7bfacbe28a9",
+      "native.stderr": "2fdf763ec70e805223fc965a4d961880416f5200d09a8e49cf8cb2cce1c2c200"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-call-multiline-one",
+    "source": "<?php\nclone(\n42\n);",
+    "source_sha256": "af6a93d27212cd7e9ce59e5c9d615d6bdb51d336843aa42b98b88146f6cf19bc",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIGludCBnaXZlbiBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "194c22cbe93cad84da8d657b03b64c992367f06c279b121fe4c71e858d907eea"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-call-multiline-two",
+    "source": "<?php\nclone(\n42,\n[]\n);",
+    "source_sha256": "9dcaaaa46cdf0af5087937274f351409ea7816b14acbade0698590004be9522e",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIGludCBnaXZlbiBpbiB7RklMRX06NQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBjbG9uZSg0MiwgQXJyYXkpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "6398894e7273b3879c65fa0537a31e92a2372dbb1e572905171541aef3b51d6e"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "demand-with-strict-typed-alias",
+    "source": "<?php declare(strict_types=1);class C{public int $x=1;}$a=new C;$r=&$a->x;$b=clone($a,[\"x\"=>\"3\"]);echo $r;",
+    "source_sha256": "584d27514bd813df054b5b48c295f85e409634a41996324f0f3e394165aaf06d",
+    "stdout_base64": "Mw==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/demand/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-closure_static_copy",
+    "source": "<?php $f=function(){static $x=0;return ++$x;}; echo $f();$g=clone $f;echo $f(),$g(),$f(),$g();",
+    "source_sha256": "981b1cd0ff617ce70606f37d8243da9385c065cea49b09cce5a5465087527c55",
+    "stdout_base64": "MTIyMzM=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "02d9e4ba248dd34257cecda7032b7ef1cc4ebcf28d8fc4ec7402032bb2475cde",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-closure_static_live",
+    "source": "<?php $g=null;$f=function()use(&$f,&$g){static $x=0;if(!$g){$g=clone $f;}return ++$x;}; echo $f(),$g(),$f(),$g();",
+    "source_sha256": "e5678c42298a83504a8ede8808ff8eb4bb6aa7ce73cae6114d3a2c5873b6f90d",
+    "stdout_base64": "MTIzNA==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-closure_static_escaped",
+    "source": "<?php $f=function &(){static $x=0;return $x;}; $r=&$f();$g=clone $f;$r=7;echo $g();$s=&$g();$s=9;echo $f();",
+    "source_sha256": "789bf0921f8b8009530a33f7ca51200495a35e74ceb0e245abf6c08cae904fb8",
+    "stdout_base64": "Nzk=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "98a3ab7c340e8a033e7b37b6ef9428751581760af67bbab2b9e05d4964a8874a",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-closure_capture_copy",
+    "source": "<?php $x=1;$r=2;$f=function()use($x,&$r){return ++$x . ++$r;};$g=clone $f;echo $f(),$g(),$f();",
+    "source_sha256": "7765ca73dfcb6a269a8811becab2e347eb11dc0ff23b718add17b15333c55d55",
+    "stdout_base64": "MjMyNDI1",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "9021fd2ea9861636c2c8b07355674a195c497149bb4278049f4d89ad24569027",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-fake_closure_statics",
+    "source": "<?php function f(){static $x=0;return ++$x;} $f=f(...);$g=clone $f;echo $f(),$g(),f(),($f===$g?\"same\":\"different\");",
+    "source_sha256": "41d694fd6a2fa037e85bb240d4e573102cc3e5ab165ce02a0b492e3387c6c9bf",
+    "stdout_base64": "MTIzZGlmZmVyZW50",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "8e6aeeba05b50c8f5f2cbee9a986a65cf7ed54ed95f83290ca3c49362e99c8f8",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-typed_clone_remove_original",
+    "source": "<?php class C{public int $x=1;} $a=new C;$r=&$a->x;$b=clone $a;unset($a);$r=\"bad\";",
+    "source_sha256": "ee5e3bf00bdbef8919f3cb7fec64a56fc9e3057328ff6a667c89ca99497db2f0",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gcmVmZXJlbmNlIGhlbGQgYnkgcHJvcGVydHkgQzo6JHggb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "dd30dacedc01e45cfe15cf6e9fbf6c7392407adc9ae4113dfef15e119be622ed"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-typed_clone_remove_slot",
+    "source": "<?php class C{public int $x=1;} $a=new C;$r=&$a->x;$b=clone $a;unset($a->x);$r=\"bad\";",
+    "source_sha256": "4c132f440317b70730b16c30d8fd32bab94b2b65927f396849b72105f86cf87f",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gcmVmZXJlbmNlIGhlbGQgYnkgcHJvcGVydHkgQzo6JHggb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "608b32656225c36656903223615bfb23d18e2f82ace65df11921611aedc7f88c"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-clone_missing_line",
+    "source": "<?php\nclone\n$missing\n;\n",
+    "source_sha256": "6ddd80ec34f2a3dfb8e97cb2b5ca0623f7be3a9cdc7b9eb397da0ecfecfb5f5b",
+    "stdout_base64": "",
+    "stderr_template_base64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRtaXNzaW5nIGluIHtGSUxFfSBvbiBsaW5lIDMKRmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIG51bGwgZ2l2ZW4gaW4ge0ZJTEV9OjMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "809188e08efe2e69e28e7c85f10c134d66658abf5a70076af78c980513e56baf"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-clone_call_type_priority",
+    "source": "<?php function side(){echo \"side\";return 1;} clone(null, side());",
+    "source_sha256": "6c417d2b9463a157258d30ab6934deff4df9ff430a0da9f575988fa5d2befc47",
+    "stdout_base64": "c2lkZQ==",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIG51bGwgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoTlVMTCwgMSkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "ea7bf4bb723041e7d63fe6c74dc46c048c617eb49a454a1cd6edbf34d05a418e",
+      "native.stderr": "26b26fd50adceed4a617d5ca19ca706d2ffaf3112394a475e584a95a607770cf"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-clone_call_named_priority",
+    "source": "<?php function side(){echo \"side\";return 1;} clone(with:side(), object:null);",
+    "source_sha256": "8498a733fd955124369cb93800eaf59bc13a458a2a09be6f925e22156d883d12",
+    "stdout_base64": "c2lkZQ==",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmtub3duIG5hbWVkIHBhcmFtZXRlciAkd2l0aCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "ea7bf4bb723041e7d63fe6c74dc46c048c617eb49a454a1cd6edbf34d05a418e",
+      "native.stderr": "6f7db6ed82c788ed9208f632b44554fbbb4cf42cd972af318170d4294f576015"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-closure_with_empty",
+    "source": "<?php $f=fn()=>1;$g=clone($f,[]);echo $g();",
+    "source_sha256": "6c18675554f071e941b299150bd405ed756b26c15ef15a163514a4228ab1258f",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "review-closure_with_nonempty",
+    "source": "<?php $f=fn()=>1;$g=clone($f,[\"x\"=>1]);echo \"bad\";",
+    "source_sha256": "9f7e4c527ca6f79837a271146d8b2f39d578d41756d030f02304c597a2cf63ef",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIGR5bmFtaWMgcHJvcGVydHkgQ2xvc3VyZTo6JHggaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoT2JqZWN0KENsb3N1cmUpLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "1bd923a0b4678b7731ee7de176031d158c742b58c5f703914ca9322bffb2b8ba"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "singleton-std_singleton",
+    "source": "<?php $a=new stdClass;$a->x=1; $r=&$a->x;unset($r);$b=clone $a;$b->x=9;echo $a->x,$b->x;",
+    "source_sha256": "62448a20e0251faf173ea82fab9b0d28d48777a1a21e13b1d1598c486f81f3aa",
+    "stdout_base64": "MTk=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/singleton-native.json",
+    "native_raw_sha256": {
+      "native.stdout": "9400f1b21cb527d7fa3d3eabba93557a18ebe7a2ca4e471cfe5e4c5b4ca7f767",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "singleton-dynamic_singleton",
+    "source": "<?php class C{} $a=new C;$a->x=1; $r=&$a->x;unset($r);$b=clone $a;$b->x=9;echo $a->x,$b->x;",
+    "source_sha256": "8a34e9299bb775d548ae6566afceb9fe924b581c5c4b5b47fbd7e67186381b50",
+    "stdout_base64": "MTk=",
+    "stderr_template_base64": "RGVwcmVjYXRlZDogQ3JlYXRpb24gb2YgZHluYW1pYyBwcm9wZXJ0eSBDOjokeCBpcyBkZXByZWNhdGVkIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/singleton-native.json",
+    "native_raw_sha256": {
+      "native.stdout": "9400f1b21cb527d7fa3d3eabba93557a18ebe7a2ca4e471cfe5e4c5b4ca7f767",
+      "native.stderr": "120a6bd36c676b37727776af9bc089b3490b953debb974697d5679175aeeccc2"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-count-zero",
+    "source": "<?php $f=\"clone\";$f();",
+    "source_sha256": "f867ce2eaad2c576b9e757088602a645fb34e3fba005c8415c408fcf31156d79",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogY2xvbmUoKSBleHBlY3RzIGF0IGxlYXN0IDEgYXJndW1lbnQsIDAgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "365915892d1894b3b9cc6e14b9e13dbda644643cb982409c4470cbccb8b929b6"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-count-many",
+    "source": "<?php function a($x){echo $x;return $x;}clone(a(1),a(2),a(3));",
+    "source_sha256": "143fdc086de156c6d9a3a3e980010b75a7a96328e2619898931d4827aed0b240",
+    "stdout_base64": "MTIz",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogY2xvbmUoKSBleHBlY3RzIGF0IG1vc3QgMiBhcmd1bWVudHMsIDMgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoMSwgMiwgMykKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "native.stderr": "c33f2549b424cbde725ef20aebda72171f763570a8c29d03f5c9446ba260f602"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-named-reversed",
+    "source": "<?php function a($x){echo $x;return $x;}clone(withProperties:a(2),object:a(1));",
+    "source_sha256": "5ff0153647baa97241e8010fec9a697a22d8270ae9dadd35b5c876b319e1b9e5",
+    "stdout_base64": "MjE=",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIGludCBnaXZlbiBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBjbG9uZSgxLCAyKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6f4b6612125fb3a0daecd2799dfd6c9c299424fd920f9b308110a2c1fbd8f443",
+      "native.stderr": "a78a9e70365d9461d307faeb90b0e1067d77494fc87556b9dd6ececaa0cb8c45"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-named-hole",
+    "source": "<?php clone(withProperties:[]);",
+    "source_sha256": "4911beca03981f740c1f983d93c24828d6e148b56e31345080b4c62c65553bfc",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG5vdCBwYXNzZWQgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoTlVMTCwgQXJyYXkpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "70d3c63c6e446186b095189a3217756c956a45ad726bc6de1b7804de30c6bc73"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-named-duplicate",
+    "source": "<?php $a=new stdClass;clone($a,object:$missing);",
+    "source_sha256": "d408f9521f9e8ea3df2eb4c01c152fcef84ad8ef461ff246d4f560f460453f6f",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBOYW1lZCBwYXJhbWV0ZXIgJG9iamVjdCBvdmVyd3JpdGVzIHByZXZpb3VzIGFyZ3VtZW50IGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "76f506365612cf99fa7a1cce1a3464128b36f9d0fac9187da437196e1c678677"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-unknown-deferred",
+    "source": "<?php clone(other:$missing);",
+    "source_sha256": "cfd534c9c281ac51adbbd378973bca9b989728fc10b1945369a16a7fae10fdba",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmtub3duIG5hbWVkIHBhcmFtZXRlciAkb3RoZXIgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "94a03eada815262ecaa2b9672ec50fcb23e17bf166040c3e850775b8eec58bb5"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-unpack-positional",
+    "source": "<?php $a=new stdClass;$a->x=1;$b=clone(...[$a,[\"x\"=>2]]);echo $a->x,$b->x;",
+    "source_sha256": "9b60887dddc3d1fe19c0f1236e458b68207c0d3bcbb2dadff4d09eb5a036d43c",
+    "stdout_base64": "MTI=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-unpack-named",
+    "source": "<?php $a=new stdClass;$a->x=1;$b=clone(...[\"withProperties\"=>[\"x\"=>2],\"object\"=>$a]);echo $a->x,$b->x;",
+    "source_sha256": "d61c013c669888b5d3fb15ebd5c6696e663465e6268a52044cfba1c58687da7c",
+    "stdout_base64": "MTI=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-unpack-duplicate",
+    "source": "<?php $a=new stdClass;clone($a,...[\"object\"=>$a]);",
+    "source_sha256": "a9785c19921b58b0382249e31d7a24e83b66d055c390fe88fc604cf316352a29",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBOYW1lZCBwYXJhbWV0ZXIgJG9iamVjdCBvdmVyd3JpdGVzIHByZXZpb3VzIGFyZ3VtZW50IGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "53d637dd6f6896f4323fa8e59507206004769ac67c10733d0b112133aca48ae7"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-unpack-pos-after-name",
+    "source": "<?php $a=new stdClass;clone(...[\"object\"=>$a,[]]);",
+    "source_sha256": "28e4b9c7255090494e8651770cff10a4c61e55d1ca25f94d2389b53d41306947",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgdXNlIHBvc2l0aW9uYWwgYXJndW1lbnQgYWZ0ZXIgbmFtZWQgYXJndW1lbnQgZHVyaW5nIHVucGFja2luZyBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "6488d7e39a5557222c527e0a62a419b48b23960b1b162d4a1ab16361d8352501"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-firstclass-copy",
+    "source": "<?php $f=clone(...);$g=clone $f;$a=new stdClass;$b=$g($a);echo $f==$g,$f===$g,$a===$b;",
+    "source_sha256": "542c95561286fa564a76ac0c8a30d304cefa0f6338f826c80a00e2fd6e85484d",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-pipe-clone",
+    "source": "<?php $a=new stdClass;$b=$a |> clone(...);echo $a==$b,$a===$b;",
+    "source_sha256": "45fc17d0f43721187b272a00917e746c235b073fc48414648f0da71eed0961db",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "binder-second-type",
+    "source": "<?php $a=new stdClass;clone($a,42);",
+    "source_sha256": "73357fd1087bd455beba087ef7f3a8819d1cb5e574b9d4267c7f99c8740c063f",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzIgKCR3aXRoUHJvcGVydGllcykgbXVzdCBiZSBvZiB0eXBlIGFycmF5LCBpbnQgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoT2JqZWN0KHN0ZENsYXNzKSwgNDIpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-contract/binder/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "f9e4e8659cd87c9d084a91058704a2a16a82c149e5b917646eda7c66250416c6"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "names-closure_nul",
+    "source": "<?php $f=fn()=>1;clone($f,[\"\\0x\"=>1]);",
+    "source_sha256": "62bdaf305912cd9308aea534457d9a88b55f2fa3327c5df30f0b4fecb6337d51",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWNjZXNzIHByb3BlcnR5IHN0YXJ0aW5nIHdpdGggIlwwIiBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBjbG9uZShPYmplY3QoQ2xvc3VyZSksIEFycmF5KQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/names-native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "ccde4464bc91b58ee16426aa4f1b09ede78ffd31d6fad7dd80a4f724ceb72ce9"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "names-std_nul",
+    "source": "<?php clone(new stdClass,[\"\\0x\"=>1]);",
+    "source_sha256": "4730ab97abf6266d5cf6d554bf36a601c299204bbd5e3e849147e3effb599815",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWNjZXNzIHByb3BlcnR5IHN0YXJ0aW5nIHdpdGggIlwwIiBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBjbG9uZShPYmplY3Qoc3RkQ2xhc3MpLCBBcnJheSkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/names-native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "93c8e59aaef09fa0f6a97ad8617d4bf666948cfc34d6c4d6912c23da9516c727"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "names-closure_empty",
+    "source": "<?php $f=fn()=>1;clone($f,[\"\"=>1]);",
+    "source_sha256": "8a1a427286cbdb6ba6f5dbbcad0e3a95128f1585c1b9fe79592a6d9178d362b9",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIGR5bmFtaWMgcHJvcGVydHkgQ2xvc3VyZTo6JCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBjbG9uZShPYmplY3QoQ2xvc3VyZSksIEFycmF5KQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/names-native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "fd915476f65428a75a234c41c506e4824479448c07305d5cfba9bcdbaef9ed2a"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "names-std_empty",
+    "source": "<?php $x=clone(new stdClass,[\"\"=>1]);echo $x->{\"\"};",
+    "source_sha256": "85c2794a51c76a2c259870f57b12441c632f6ba1f0b6af4dcd6bfbe52764af9c",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-review-independent/names-native.json",
+    "native_raw_sha256": {
+      "native.stdout": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-bound",
+    "source": "<?php class C{public int $x=1;function make(){return function(){return ++$this->x;};}} $o=new C;$f=$o->make();$g=clone $f;unset($o,$f);echo $g(),$g();",
+    "source_sha256": "dfb6779d062142bf7f7a5a89de68be123f382b0ed79334929618e6dfc420aaba",
+    "stdout_base64": "MjM=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-arrow",
+    "source": "<?php class C{public int $x=4;function make(){return fn()=>$this->x;}} $o=new C;$f=$o->make();$g=clone $f;$o->x=7;unset($o,$f);echo $g();",
+    "source_sha256": "5d9c7df8ea0703a01d3c9df1b3b0d22fc933e7389323e95d2a63fd36bcb4dcd9",
+    "stdout_base64": "Nw==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-scope",
+    "source": "<?php class A{function make(){return function():self{echo __CLASS__;return $this;};}}class B extends A{}$o=new B;$f=$o->make();$g=clone $f;echo $g()===$o;",
+    "source_sha256": "e98b2abd377a467a42d3767ac2a5e3c6dd60b524b04228f895a230c8d6992e47",
+    "stdout_base64": "QTE=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "16a36e86f6fed5d465ff332511a0ce1a863b55d364b25a7cdaa25db19abf9648",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-static",
+    "source": "<?php class A{function make(){return static function(){echo __CLASS__;static $x=0;return ++$x;};}}class B extends A{}$o=new B;$f=$o->make();echo $f();$g=clone $f;unset($o);echo $f(),$g();",
+    "source_sha256": "79ac205752ae90158ec89c4c31469a543b4219857b4b09e0ccc5a6356491f41b",
+    "stdout_base64": "QTFBMkEy",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "26d9c02fdad454f3afdd66d974b540d7099d4be7d97bed9c6a657b5c1ffe597f",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-intrinsic-invoke",
+    "source": "<?php $f=clone(...);$g=clone $f;$a=new stdClass;$b=$g->__invoke($a,[\"x\"=>4]);echo $b->x;",
+    "source_sha256": "822194f578e0f5cd930d0c2f8a1a2e5373e1b75b83f0168cb9d33ba751a182f5",
+    "stdout_base64": "NA==",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-intrinsic-invoke-error",
+    "source": "<?php $f=clone(...);$g=clone $f;$g->__invoke(1);",
+    "source_sha256": "020e07a8728f7dc069afe2edb1d52547ec667f6b6044f2c103c2626ee2695a7f",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xvbmUoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIGludCBnaXZlbiBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBjbG9uZSgxKQojMSB7RklMRX0oMSk6IENsb3N1cmUtPl9faW52b2tlKDEpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "03177d5dc36f01b4587b37e04abb569a8f9fdf381029a6beb241bf31ca01378a"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-intrinsic-invoke-update-error",
+    "source": "<?php $f=clone(...);$g=clone $f;$g->__invoke(fn()=>1,[\"x\"=>2]);",
+    "source_sha256": "b9e3246f252167d213b4038487239f246cf4f3c624dd0dc947c27590330bc05d",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY3JlYXRlIGR5bmFtaWMgcHJvcGVydHkgQ2xvc3VyZTo6JHggaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoT2JqZWN0KENsb3N1cmUpLCBBcnJheSkKIzEge0ZJTEV9KDEpOiBDbG9zdXJlLT5fX2ludm9rZShPYmplY3QoQ2xvc3VyZSksIEFycmF5KQojMiB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-methods-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "fa3e191b8b21157da00ff88519fabccc4fa121e2edd73beaa710064b0b2ad7db"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-wrapper-coercion-trace",
+    "source": "<?php declare(strict_types=1);class C{function make(){return function(int $x){missing();};}}$c=new C;$f=$c->make();$g=clone $f;unset($c,$f);$g->__invoke(\"2\");",
+    "source_sha256": "7b5c9b70b4c29962aa00e0c2634f221a33ea12fbfbafc0a09f6c7bbe888ed903",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYWxsIHRvIHVuZGVmaW5lZCBmdW5jdGlvbiBtaXNzaW5nKCkgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogQy0+e2Nsb3N1cmU6Qzo6bWFrZSgpOjF9KDIpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+X19pbnZva2UoJzInKQojMiB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-wrapper-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "d267bb1e1ddc26799e138e5aa639bddb24ccb44330d375a6760316050e173f22"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-wrapper-type-error",
+    "source": "<?php $f=function(array $x){};$g=clone $f;$g->__invoke(\"2\");",
+    "source_sha256": "1deb3e5fd5620e779c86b2b36dc65b28580f3b0aabf95a53ec31839f0fdb98a5",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjoge2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMxICgkeCkgbXVzdCBiZSBvZiB0eXBlIGFycmF5LCBzdHJpbmcgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKToge2Nsb3N1cmU6e0ZJTEV9OjF9KCcyJykKIzEge0ZJTEV9KDEpOiBDbG9zdXJlLT5fX2ludm9rZSgnMicpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-wrapper-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "f4dc91a57449396b425844a0b0b9e6dd4e47f654a906117d5a79462e483fdc94"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-wrapper-reference",
+    "source": "<?php class C{public int $x=1;function make(){return function &(){return $this->x;};}}$c=new C;$f=$c->make();$g=clone $f;$r=&$g->__invoke();$r=7;echo $c->x;unset($c,$f,$g);echo $r;",
+    "source_sha256": "7b34528c17a866e32af27dc06516e5e47e63cdab6026077a90398079a4ccd6ed",
+    "stdout_base64": "Nzc=",
+    "stderr_template_base64": "",
+    "status": "normal",
+    "exit_status": 0,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-wrapper-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "a88a7902cb4ef697ba0b6759c50e8c10297ff58f942243de19b984841bfe1f73",
+      "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-invoke-hole",
+    "source": "<?php $f=clone(...);$f->__invoke(withProperties:[]);",
+    "source_sha256": "3c093b81f8895ffe54a52240007de1941642ef60edabb1531455f2777db4dd9f",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogQ2xvc3VyZTo6X19pbnZva2UoKTogQXJndW1lbnQgIzEgKCRvYmplY3QpIG5vdCBwYXNzZWQgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogQ2xvc3VyZS0+X19pbnZva2UoTlVMTCwgQXJyYXkpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-invoke-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "2cb3095638c37939e04a90d7ec04a93f000e5988b2957fa2e430377490b752ac"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-invoke-unknown",
+    "source": "<?php $f=clone(...);$f->__invoke(other:1);",
+    "source_sha256": "c3417b95fabe90101835ed685ad3b7716c0aa0077a10c7a45577d4ea8b8ae131",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmtub3duIG5hbWVkIHBhcmFtZXRlciAkb3RoZXIgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-invoke-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "45c9dbf02b53e75749f23da9a404388e47a75cf580c97d7e3008855892467900"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-invoke-zero",
+    "source": "<?php $f=clone(...);$f->__invoke();",
+    "source_sha256": "0d14d2f091d6c961b5667fd0491bad910dd4e5aa86e0895bdb7b448dbf2a6963",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogY2xvbmUoKSBleHBlY3RzIGF0IGxlYXN0IDEgYXJndW1lbnQsIDAgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoKQojMSB7RklMRX0oMSk6IENsb3N1cmUtPl9faW52b2tlKCkKIzIge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-invoke-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "299d112cedfbc268ee9227903c6e5fd71dddbffe484d54a06d08ef6b2472cd34"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "methods-invoke-many",
+    "source": "<?php $f=clone(...);$f->__invoke(new stdClass,[],3);",
+    "source_sha256": "3602563286e4a02574c5f4378b80c301f777c8b5c7875ed34d003dc89bd8823a",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogY2xvbmUoKSBleHBlY3RzIGF0IG1vc3QgMiBhcmd1bWVudHMsIDMgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogY2xvbmUoT2JqZWN0KHN0ZENsYXNzKSwgQXJyYXksIDMpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+X19pbnZva2UoT2JqZWN0KHN0ZENsYXNzKSwgQXJyYXksIDMpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "status": "php_error",
+    "exit_status": 255,
+    "native_group": "/home/user/workspace/php-spec/.tools/clone-impl-candidate/.tools/clone-invoke-native/native.json",
+    "native_raw_sha256": {
+      "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native.stderr": "d4c8758ef4b216d2655abb105fdd6300d7a6315218f89a1f2919d549952e47d8"
+    },
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  }
+]

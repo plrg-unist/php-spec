@@ -43,9 +43,10 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 143/144 | Match expressions: strict lazy selection, delayed CV subjects, compiler priority, owned results and unhandled diagnostics; 88 source outcomes, 13 compiler sources/67 assertions and paused ownership checks. [Review](coverage/semantics/match-review.json) |
 | 145/146 | Print constant-result effects, conversion lines, reference demand and paused ownership. [Review](coverage/semantics/print-review.json) |
 | 147/148 | Exit/die intrinsic calls, ordered binding, conversion, internal traces and explicit terminal cleanup; 87 source tuples, 25 compiler sources/133 projections and paused ownership guards. [Review](coverage/semantics/exit-review.json) |
+| 149/150 | Object and closure cloning: shallow slots/live aliases, receiver/static ownership and positional/named/array-unpacked property updates. [Review](coverage/semantics/clone-review.json) |
 
-The current checkpoint combines public methods and constructors with nullsafe
-chains, match selection, print expressions and exit/die. Print preserves output effects while returning constant
+The current checkpoint combines public methods and constructors with object
+cloning, nullsafe chains, match selection, print expressions and exit/die. Print preserves output effects while returning constant
 integer 1 through folding and reference-result demand. Its
 [review](coverage/semantics/print-review.json) records 20 author and 15 independent
 source comparisons, ten compiler/lint sources with 51 projections, four paused
@@ -60,6 +61,14 @@ paused stages/126 assertions, four independent stages/84 assertions, 17 existing
 first-class regressions and three separate Unsupported controls cover the new
 call and cleanup boundary. Shutdown/destructor and callback integration remain
 required.
+
+Clone evidence keeps the initial 62-source campaign separate from the final
+methods bridge of 14 sources (seven overlap), covering 69 maintained originals.
+Initial 11-stage/172-assertion and final four-stage/64-assertion protocol scopes
+cover 13 stages with two repeated; compiler and Unsupported checks remain
+separate. [The ledger](coverage/semantics/clone-author.json) records identities
+and the [contract](docs/semantics/SOURCE-CLONE.md) lists callback, readonly, hook,
+internal-object, Traversable unpack and lifecycle dependencies.
 
 ## Next work
 
