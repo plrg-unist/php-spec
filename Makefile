@@ -197,6 +197,10 @@ test-semantics: build
 	python3 tests/semantics/property_visibility_compiler.py
 	python3 tests/semantics/property_visibility_protocol.py
 	python3 tests/semantics/property_visibility_scope_protocol.py
+	python3 tests/semantics/property_private.py
+	python3 tests/semantics/property_private_compiler.py
+	python3 tests/semantics/property_private_protocol.py
+	python3 tests/semantics/private_property_scope_protocol.py
 	python3 tests/semantics/nullsafe_compiler.py
 	python3 tests/semantics/nullsafe_properties.py
 	python3 tests/semantics/nullsafe_properties_protocol.py

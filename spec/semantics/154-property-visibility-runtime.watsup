@@ -12,7 +12,8 @@ dec $property_prototype(pstate, porigin, ptbytes, nat) : porigin
 def $property_prototype(S, porigin, ptbytes, n) = $property_prototype(S, porigin_parent, ptbytes, $nabs($(n - 1)))
   -- if $(n > 0)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
-  -- if $ppproperty_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if $ppproperty_desc_at($property_info_layout(S, porigin_parent, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY =/= PROPERTY_PRIVATE
 def $property_prototype(S, porigin, ptbytes, n) = porigin -- otherwise
 
 dec $property_protected_allowed(pstate, ppropertydesc) : bool
@@ -25,20 +26,59 @@ def $property_protected_allowed(S, ppropertydesc) = ($class_origin_matches(S, po
   -- if $class_at(S.CLASSES, porigin_prototype) = (pclassdesc_prototype)
 def $property_protected_allowed(S, ppropertydesc) = false -- otherwise
 
+dec $property_lexical_private(pstate, nat, ptbytes) : ppropertydesc?
+def $property_lexical_private(S, n, ptbytes) = (ppropertydesc)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $ppproperty_desc_at(pclassdesc_scope.PROPERTIES, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_origin_matches(S, porigin, pclassdesc_scope.NAME, |S.CLASSES|)
+def $property_lexical_private(S, n, ptbytes) = eps -- otherwise
+
+dec $property_effective_desc(pstate, nat, ptbytes) : ppropertydesc?
+def $property_effective_desc(S, n, ptbytes) = $ppproperty_desc_at($property_info_layout(S, porigin, |S.CLASSES|), ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $property_effective_desc(S, n, ptbytes) = eps -- otherwise
+
+def $property_dynamic_name_allowed(S, porigin, ptbytes) = true
+  -- if $ppproperty_desc_at($property_info_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
+def $property_dynamic_name_allowed(S, porigin, ptbytes) = true
+  -- if $ppproperty_desc_at($property_info_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_declaring)
+  -- if porigin_declaring =/= porigin
+def $property_dynamic_name_allowed(S, porigin, ptbytes) = false -- otherwise
+
+dec $property_resolve_desc(pstate, nat, ptbytes, ppropertydesc?) : ppropertyaccess
+def $property_resolve_desc(S, n, ptbytes, eps) = PROPERTY_ACCESS ptbytes
+def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_ACCESS ppropertydesc.KEY
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_ACCESS ppropertydesc.KEY
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
+  -- if $property_protected_allowed(S, ppropertydesc)
+def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_ACCESS ptbytes
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_declaring)
+  -- if porigin_declaring =/= porigin
+def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_DENIED ppropertydesc
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
+  -- if ~$property_protected_allowed(S, ppropertydesc)
+def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_DENIED ppropertydesc
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin)
+
 def $property_resolve(S, n, ptbytes) = PROPERTY_BADNAME
   -- if $property_bad_name(ptbytes)
 def $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ppropertydesc.KEY
   -- if ~$property_bad_name(ptbytes)
-  -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if $ppproperty_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $property_protected_allowed(S, ppropertydesc)
-def $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
+  -- if $property_lexical_private(S, n, ptbytes) = (ppropertydesc)
+def $property_resolve(S, n, ptbytes) = $property_resolve_desc(S, n, ptbytes, $property_effective_desc(S, n, ptbytes))
   -- if ~$property_bad_name(ptbytes)
-  -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if $ppproperty_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
-  -- if ~$property_protected_allowed(S, ppropertydesc)
-def $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes -- otherwise
+  -- if $property_lexical_private(S, n, ptbytes) = eps
 
 def $property_accessible(S, n, ptbytes) = true
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
@@ -50,9 +90,14 @@ def $property_visible_name(S, n, ptbytes) = ppropertydesc.NAME
 def $property_visible_name(S, n, ptbytes) = ptbytes -- otherwise
 def $property_visible_key(S, n, ptbytes) = ($property_resolve(S, n, $property_visible_name(S, n, ptbytes)) = PROPERTY_ACCESS ptbytes)
 
+dec $property_visibility_name(ppropertyvisibility) : ptbytes
+def $property_visibility_name(PROPERTY_PUBLIC) = $ptascii("public")
+def $property_visibility_name(PROPERTY_PROTECTED) = $ptascii("protected")
+def $property_visibility_name(PROPERTY_PRIVATE) = $ptascii("private")
+
 def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access property starting with \"\\0\""), z)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_BADNAME
-def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access protected property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string(ppropertydesc.NAME), z)
+def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(ppropertydesc.VISIBILITY) ++ $ptascii(" property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string(ppropertydesc.NAME), z)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
 
 def $property_read(S, POBJECT n, ptbytes, z) = $property_read_key(S, POBJECT n, ptbytes_key, z)

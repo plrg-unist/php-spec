@@ -45,6 +45,9 @@ def $typed_reference_location_source(S, PROPERTY n_object ptbytes) = $typed_refe
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
 def $typed_reference_location_source(S, PROPERTY n_object ptbytes) = true
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ~$property_alias(ppropertyslot.STATE)
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps

@@ -3,8 +3,9 @@ dec $property_replace(ppropertydesc*, ppropertydesc) : ppropertydesc*
 def $property_replace(eps, ppropertydesc) = [ppropertydesc]
 def $property_replace(ppropertydesc_old :: ppropertydesc_tail*, ppropertydesc) = ppropertydesc :: ppropertydesc_tail*
   -- if ppropertydesc_old.NAME = ppropertydesc.NAME
+  -- if ppropertydesc_old.VISIBILITY =/= PROPERTY_PRIVATE
 def $property_replace(ppropertydesc_old :: ppropertydesc_tail*, ppropertydesc) = ppropertydesc_old :: $property_replace(ppropertydesc_tail*, ppropertydesc)
-  -- if ppropertydesc_old.NAME =/= ppropertydesc.NAME
+  -- if ppropertydesc_old.NAME =/= ppropertydesc.NAME \/ ppropertydesc_old.VISIBILITY = PROPERTY_PRIVATE
 dec $property_merge(ppropertydesc*, ppropertydesc*) : ppropertydesc*
 def $property_merge(ppropertydesc_base*, eps) = ppropertydesc_base*
 def $property_merge(ppropertydesc_base*, ppropertydesc :: ppropertydesc_tail*) = $property_merge($property_replace(ppropertydesc_base*, ppropertydesc), ppropertydesc_tail*)
@@ -230,11 +231,12 @@ def $property_unique_names(ppropertyslot :: ppropertyslot_tail*) = $property_uni
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_unique_names(ppropertyslot :: ppropertyslot_tail*) = (~$property_slot_named(ppropertyslot_tail*, ppropertyslot.NAME) /\ $property_unique_names(ppropertyslot_tail*))
-dec $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot*) : bool
-def $property_dynamic_no_shadow(ppropertydesc*, eps) = true
-def $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot :: ppropertyslot_tail*) = $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot_tail*)
-  -- if ppropertyslot.DECL = (porigin)
-def $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot :: ppropertyslot_tail*) = ($ppproperty_desc_at(ppropertydesc*, ppropertyslot.NAME) = eps /\ $property_dynamic_no_shadow(ppropertydesc*, ppropertyslot_tail*))
+dec $property_dynamic_name_allowed(pstate, porigin, ptbytes) : bool
+dec $property_dynamic_no_shadow(pstate, porigin, ppropertyslot*) : bool
+def $property_dynamic_no_shadow(S, porigin, eps) = true
+def $property_dynamic_no_shadow(S, porigin, ppropertyslot :: ppropertyslot_tail*) = $property_dynamic_no_shadow(S, porigin, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = (porigin_decl)
+def $property_dynamic_no_shadow(S, porigin, ppropertyslot :: ppropertyslot_tail*) = ($property_dynamic_name_allowed(S, porigin, ppropertyslot.NAME) /\ $property_dynamic_no_shadow(S, porigin, ppropertyslot_tail*))
   -- if ppropertyslot.DECL = eps
 dec $property_has_dynamic(ppropertyslot*) : bool
 def $property_has_dynamic(eps) = false
@@ -244,7 +246,7 @@ def $property_has_dynamic(ppropertyslot :: ppropertyslot_tail*) = $property_has_
   -- if ppropertyslot.DECL = (porigin)
 dec $objectprops_valid(pstate, pobjectprops*) : bool
 def $objectprops_valid(S, eps) = true
-def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ $property_dynamic_no_shadow($property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $objectprops_valid(S, pobjectprops_tail*))
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $objectprops_valid(S, pobjectprops_tail*))
   -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
   -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
   -- if S.OBJECTS[pobjectprops.OBJECT] = INSTANCE porigin
@@ -317,7 +319,6 @@ def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_val
   -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $property_quiet_key(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 
-dec $property_alias(ppropstate) : bool
 def $property_alias(PROP_VALUE (ALIAS n)) = true
 def $property_alias(ppropstate) = false -- otherwise
 def $property_store_key(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)

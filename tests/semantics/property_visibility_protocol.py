@@ -62,7 +62,7 @@ def main():
         'ppropertyslot.NAME = ppropertydesc.KEY',
         '$property_slots_valid(S_bind, [ppropertydesc], [ppropertyslot])',
         '~$property_slots_valid(S_bind, [ppropertydesc], [ppropertyslot[.NAME = [120]]])',
-        '~$property_dynamic_no_shadow([ppropertydesc], (pobjectprops.SLOTS ++ [{DECL eps, NAME ([120]), STATE PROP_VALUE (DIRECT (PINT 7))}]))',
+        '~$property_dynamic_no_shadow(S_bind, pclassdesc.ORIGIN, (pobjectprops.SLOTS ++ [{DECL eps, NAME ([120]), STATE PROP_VALUE (DIRECT (PINT 7))}]))',
         '~$property_state_valid(S_bind[.OBJECTPROPS = [pobjectprops[.MATERIALIZED = true][.SLOTS = pobjectprops.SLOTS ++ [{DECL eps, NAME ([120]), STATE PROP_VALUE (DIRECT (PINT 7))}]]]])',
         '$property_resolve(S_bind, n_object, [120]) = PROPERTY_ACCESS ppropertydesc.KEY',
         '$property_resolve(S_bind[.CURRENT = eps], n_object, [120]) = PROPERTY_DENIED ppropertydesc',

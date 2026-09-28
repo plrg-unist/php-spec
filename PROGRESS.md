@@ -45,7 +45,8 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 147/148 | Exit/die intrinsic calls, ordered binding, conversion, internal traces and explicit terminal cleanup; 87 source tuples, 25 compiler sources/133 projections and paused ownership guards. [Review](coverage/semantics/exit-review.json) |
 | 149/150 | Object and closure cloning: shallow slots/live aliases, receiver/static ownership and positional/named/array-unpacked property updates. [Review](coverage/semantics/clone-review.json) |
 | 151/152 | Generated builtin Throwable identities, ordered no-finally try/catch, strict catch references, throw/rethrow, source-authenticated search and owned traces. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-review.json) |
-| 153/154 protected | Protected instance properties: lexical prototype access, mangled keys across existing consumers, typed binding correction and memoized property coalescing. Private identity remains the next increment. [Review](coverage/semantics/property-visibility-review.json) |
+| 153/154 protected | Protected instance properties: lexical prototype access, mangled keys across existing consumers, typed binding correction and memoized property coalescing. The protected foundation is retained as a separate reviewed increment. [Review](coverage/semantics/property-visibility-review.json) |
+| 153/154 private | Independent declaring-class slots, lexical ancestor selection and inherited-private dynamic fallback across existing consumers; typed-reference location rules now distinguish aliased slots. [Review](coverage/semantics/property-private-review.json) |
 | 155/156 A | Normal/throw finally, previous chains, suppression and exit: 19 source tuples, 11 compiler sources, six paused stages/103 assertions and six separate temporary admission controls. [Contract](docs/semantics/SOURCE-FINALLY.md) · [ledger](coverage/semantics/finally-author.json) |
 
 The current integration combines protected properties, public methods and
@@ -57,7 +58,7 @@ these results do not establish complete-core regression closure.
 
 ## Next work
 
-Private property identity/shadowing and finally stage B are active increments.
+Finally stage B is an active increment.
 Stage B closes value/reference return and loop/goto transfers; stage A rejects
 pending transfers during source admission, while preserving real static errors.
 Throwable constructors, accessors, canonical internal property backing, structured

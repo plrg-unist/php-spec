@@ -35,11 +35,11 @@ Paused tasks authenticate source, compiled line/category, argument prefix,
 selected intrinsic owner and update progress. Their heap roots retain the
 original, copied arguments and new object until success or abrupt cleanup.
 The exit binder positively admits only EXIT/DIE identities after the enum grows.
-Protected properties reuse the lexical resolver and mangled slot keys described
+Protected/private properties reuse the lexical resolver and mangled slot keys described
 in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
 
 This is a bounded implementation for admitted ordinary objects and closures.
-`__clone` callbacks/access checks, readonly reinitialization, private visibility and hooks,
+`__clone` callbacks/access checks, readonly reinitialization, property hooks,
 lazy objects, destructors, uncloneable internal objects, Traversable argument
 unpacking and general lifecycle integration remain required. Unsupported class declarations are rejected before
 execution; their callbacks are never silently skipped. Four dedicated controls

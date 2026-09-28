@@ -20,7 +20,7 @@ syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
 syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, FINAL bool, ABSTRACT bool }
 syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin
-syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED
+syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED | PROPERTY_PRIVATE
 syntax ppropertydesc = { ORIGIN porigin, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
 syntax ppropertyslot = { DECL porigin?, NAME ptbytes, STATE ppropstate }
@@ -114,6 +114,7 @@ dec $property_initial_slots(pstate, ppropertydesc*) : ppropertyslot*?
 dec $objectprops_at(pobjectprops*, nat) : ppropertyslot*?
 dec $objectprops_record_at(pobjectprops*, nat) : pobjectprops?
 dec $property_slot_at(ppropertyslot*, ptbytes) : ppropertyslot?
+dec $property_alias(ppropstate) : bool
 dec $property_hash_count(ppropertyslot*) : nat
 dec $objectprops_mark(pstate, nat) : pstate
 dec $objectprops_materialized(pobjectprops*, nat) : bool
@@ -358,7 +359,7 @@ dec $property_visible_key(pstate, nat, ptbytes) : bool
 dec $property_access_error(pstate, nat, ptbytes, int) : pstate
 dec $property_store_key(pstate, nat, ptbytes, pvalue, int) : pstate
 dec $ppproperty_visibility(int) : ppropertyvisibility
-dec $ppproperty_key(int, ptbytes) : ptbytes
+dec $ppproperty_key(int, ptbytes, ptbytes) : ptbytes
 dec $ppproperty_inherit_message(ptbytes, ptbytes, ppropertydesc, ppropertydesc) : ptbytes?
 dec $ppproperty_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
 dec $property_accessible(pstate, nat, ptbytes) : bool

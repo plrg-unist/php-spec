@@ -1,14 +1,21 @@
 ;; zend_inheritance.c:do_inherit_property checks access before type invariance.
-;; Private, asymmetric, readonly, static and hooked declarations remain explicit
-;; compiler dependencies; this increment admits public/protected backed slots.
+;; Asymmetric, readonly, static and hooked declarations remain explicit
+;; compiler dependencies. Private declarations retain independent slot identities.
+def $ppproperty_visibility(4) = PROPERTY_PRIVATE
 def $ppproperty_visibility(2) = PROPERTY_PROTECTED
 def $ppproperty_visibility(flags) = PROPERTY_PUBLIC -- otherwise
-def $ppproperty_key(2, ptbytes) = [0, 42, 0] ++ ptbytes
-def $ppproperty_key(flags, ptbytes) = ptbytes -- otherwise
+def $ppproperty_key(4, ptbytes, ptbytes_owner) = [0] ++ ptbytes_owner ++ [0] ++ ptbytes
+def $ppproperty_key(2, ptbytes, ptbytes_owner) = [0, 42, 0] ++ ptbytes
+def $ppproperty_key(flags, ptbytes, ptbytes_owner) = ptbytes -- otherwise
 
 def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Access level to ") ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME ++ $ptascii(" must be public (as in class ") ++ ptbytes_parent ++ [41])
   -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC
-  -- if ppropertydesc_child.VISIBILITY = PROPERTY_PROTECTED
+  -- if ppropertydesc_child.VISIBILITY = PROPERTY_PROTECTED \/ ppropertydesc_child.VISIBILITY = PROPERTY_PRIVATE
+def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Access level to ") ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME ++ $ptascii(" must be protected (as in class ") ++ ptbytes_parent ++ $ptascii(") or weaker"))
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PROTECTED
+  -- if ppropertydesc_child.VISIBILITY = PROPERTY_PRIVATE
+def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = eps
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PRIVATE
 def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_override_message(ptbytes_child, ppropertydesc_child.NAME, ptbytes_parent, ppropertydesc_parent.TYPE, ppropertydesc_child.TYPE) -- otherwise
 
 dec $ppproperty_computed(phpType20) : bool

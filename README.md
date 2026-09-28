@@ -206,16 +206,17 @@ compiler and paused-task checks. [Public property references](docs/semantics/SOU
 now attach ordered typed sources to shared cells, check writes atomically, and
 preserve aliases across unset and object traversal. Their
 [review](coverage/semantics/property-references-review.json) records exact source,
-compiler and paused-state gates. [Protected property access](docs/semantics/SOURCE-PROPERTY-VISIBILITY.md) adds lexical
+compiler and paused-state gates. [Instance property visibility](docs/semantics/SOURCE-PROPERTY-VISIBILITY.md) adds lexical
 visibility, mangled storage keys and consistent access across aliases, traversal,
-casts and clone updates. Private identity/shadowing remains the next property milestone.
+casts and clone updates. Private declaring slots preserve ancestor lexical selection,
+same-name shadows and inherited-private dynamic fallback.
 [Nullsafe property access](docs/semantics/SOURCE-NULLSAFE-PROPERTIES.md)
 short-circuits only the active property/dimension chain, skips later names and
 keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
 compiler and paused-state controls. [Public instance methods and constructors](docs/semantics/SOURCE-METHODS.md)
 now execute ordinary/nullsafe calls, inherited dispatch, bound closures and
-`Closure->__invoke` trampolines. Nonpublic methods, private properties, static and readonly
+`Closure->__invoke` trampolines. Nonpublic methods, static and readonly
 members, hooks and user magic methods remain open.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.

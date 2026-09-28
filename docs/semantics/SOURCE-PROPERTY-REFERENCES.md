@@ -1,6 +1,6 @@
 # Property references
 
-Public/protected property slots may point to shared reference cells. A cell carries an
+Public/protected/private property slots may point to shared reference cells. A cell carries an
 ordered list of typed-property sources, identified by the owning object and
 declaring property. Binding checks the prospective value before replacing the
 old slot source; a failed bind leaves both bindings intact. Unconstrained incoming
@@ -25,6 +25,7 @@ Nonobject property writes use the pinned PHP modify or assign error and keep
 the operation's evaluation order; null and false do not create an object. The
 compiler and runtime changes are in modules 137 and 138, with central writer
 and cursor changes in earlier modules. Nullsafe property reference sends and public method dispatch are implemented in
-their respective modules. [Protected visibility](SOURCE-PROPERTY-VISIBILITY.md)
-uses physical slot keys for constraints and raw names for diagnostics. Private,
-static, readonly, hooked and magic property access remain dependencies.
+their respective modules. [Property visibility](SOURCE-PROPERTY-VISIBILITY.md)
+uses physical slot keys for constraints and raw names for diagnostics, including
+independent same-name private slots. Static, readonly, hooked and magic property
+access remain dependencies.

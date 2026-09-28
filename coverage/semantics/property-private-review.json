@@ -1,0 +1,47 @@
+{
+  "status": "independent review passed for the bounded private-property candidate on finally stage A",
+  "candidate": "Private implementation 49a0a5148 plus protected terminal test repair 586982989",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle",
+  "scope": "Private backed instance properties: declaring-class keys and independent inherited slots, lexical ancestor selection, own-private denial and inherited-private dynamic fallback, reference sources, casts, foreach, closures and cloning. Existing public/protected property behavior and generated Throwable control remain separate boundaries.",
+  "design": [
+    "Descriptors keep raw NAME and canonical KEY. A private physical key is NUL + declaring class source spelling + NUL + raw name. Source origins remain source-only.",
+    "An eligible lexical class selects its own private descriptor before runtime-class lookup. Inaccessible inherited private names select a raw dynamic property; the runtime class's own inaccessible private declaration is denied.",
+    "The instance layout retains each private declaration and a same-name nonprivate descendant independently. Type sources, captured locations, clone updates and foreach use exact physical keys.",
+    "A typed-reference location with an aliased slot uses the cell's attached sources; a nonalias slot uses its own typed descriptor. The two branches are disjoint.",
+    "The private visibility raw property entrypoints are disjoint from current Throwable-object rules; current Throwable field access remains explicit Unsupported pending internal-property work."
+  ],
+  "independent_source": {
+    "path": ".tools/private-property-review/protected-replay-fdsn5ty3/report.json",
+    "sha256": "ff2f9b8e51d0fa7a7b50952510cac966770e3ddd7159ec6e3d95c1bce53c8caf",
+    "selection": "22 exact original PHP source files: 18 independently authored private cases and 4 paused-protocol source originals",
+    "outcomes": {"normal": 15, "php_error": 5, "static_rejection": 2},
+    "profile": "ordinary project-local PHP and model CLI, inherited environment with LC_ALL=C/TZ=UTC; report records each original byte hash and native command",
+    "result": "22/22 exact stdout, stderr, exit and status; report stable across 164 recorded final integration inputs"
+  },
+  "author_source": {
+    "path": ".tools/private-property-final/.tools/property-private-qme941tz/report.json",
+    "sha256": "94e4c519f7622aa7920f3caa2b7616bbe561069a3c98ae4e0582cbded55b291c",
+    "selection": "35 named original cases in property_private_cases.json, each with its own exact source hash and pinned oracle output",
+    "outcomes": {"normal": 23, "php_error": 10, "static_rejection": 2},
+    "result": "35/35 pass with stable 1161-file campaign fingerprint; selection overlaps independent cases and is not added to the independent count"
+  },
+  "compiler": {
+    "path": ".tools/private-property-final/.tools/property-private-compiler-1k33nmz5/report.json",
+    "sha256": "040aec4f784e93f3ffa7d930a83826e58c0d1febe133bbfd68451e3ef5037f54",
+    "result": "5 source fixtures, 38 compiled descriptor assertions; report input hashes stable"
+  },
+  "paused": [
+    {
+      "path": ".tools/private-property-final/.tools/private-property-protocol-e44lgc4q/report.json",
+      "sha256": "abb7f1947f86306189184d3c9e4e792574856fcd0b8fefc9a28913d2b3e319c4",
+      "result": "93 assertions in alias and dynamic slot cases"
+    },
+    {
+      "path": ".tools/private-property-final/.tools/private-property-scope-evleflo7/report.json",
+      "sha256": "a4fc057b87b21231dec30e744bca20d298cdca1fd2f84d9eeede7132649e0a79",
+      "result": "4 source-authenticated stages, 127 assertions: clone alias 46, own-private shadow 25, saved foreach 32, static closure 24. Stable; 165 recorded inputs match candidate."
+    }
+  ],
+  "integration": "The final review uses candidate 49a0a5148 after merging 67f4d618f finally stage A and the exact protected terminal test repair from 586982989. Current 152/154 property dispatch is disjoint for Throwable objects. Later 157/158 internal backing must authenticate finite internal owners and keep source descriptor projection limited to genuine source origins; it requires its own review.",
+  "limits": "These selections establish bounded agreement for implemented private backed instance properties, not static/readonly/asymmetric/hooked properties, magic methods, Throwable fields, all property interactions or full PHP core. Historical protected/public and Throwable reports retain their own identities. Full current-source regression and final offline rebuild remain separate gates."
+}
