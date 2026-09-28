@@ -157,6 +157,12 @@
     "source": "<?php echo eval('namespace N; echo 1;')===null?'N':'X';"
   },
   {
+    "id": "invalid-namespace-header-helper-gap",
+    "kind": "static_rejection",
+    "expected_model": "unsupported",
+    "source": "<?php eval('echo 1; namespace N;');"
+  },
+  {
     "id": "typed-caller",
     "kind": "normal",
     "source": "<?php function f():int {$v=eval('return \"x\";'); echo $v; return 1;} echo f();"
