@@ -7,7 +7,7 @@ dec $goto_base(pstate, porigin) : pgototasks
 def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
   -- if S.CURRENT = eps
   -- if $source_unit(S.SOURCES, n) = (pcunit)
-  -- if P = $ppstart_cwd(n, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN n pcpath), $call_request_cwd(S.REQUEST))
+  -- if P = $eval_source_ppstate(S, pcunit)
   -- if P.COMPLETION = PPCNORMAL
 def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
   -- if S.CURRENT = (pcallcontext)

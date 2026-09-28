@@ -154,7 +154,7 @@ syntax pclasscheck = CLASSCHECK pclassdesc* | CLASSINVALID
 dec $class_projection(pstate, pcunit*) : pclasscheck
 def $class_projection(S, eps) = CLASSCHECK eps
 def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (P.CLASSES ++ pclassdesc*)
-  -- if P = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+  -- if P = $eval_source_ppstate(S, pcunit)
   -- if P.COMPLETION = PPCNORMAL
   -- if $class_projection(S, pcunit_tail*) = CLASSCHECK pclassdesc*
 def $class_projection(S, pcunit*) = CLASSINVALID -- otherwise

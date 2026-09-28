@@ -139,7 +139,7 @@ def $call_unit_projection(S, pcunit) = FUNCTIONCHECK eps
   -- if $call_argument_paths(pcode.EXPRESSIONS) = eps
 def $call_unit_projection(S, pcunit) = FUNCTIONCHECK P.FUNCTIONS
   -- if $call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)
-  -- if P = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+  -- if P = $eval_source_ppstate(S, pcunit)
   -- if P.COMPLETION = PPCNORMAL
   -- if $call_unit_names_valid(S, P)
 def $call_unit_projection(S, pcunit) = FUNCTIONINVALID -- otherwise
@@ -295,6 +295,7 @@ dec $eval_state_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
+  -- if $eval_state_valid(S)
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
   -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
@@ -304,7 +305,6 @@ def $call_descriptors_valid(S) = true
   -- if $nullsafe_base_phase_valid(S)
   -- if $call_frames_valid(S, S.FRAMES)
   -- if $finally_state_valid(S)
-  -- if $eval_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)
   -- if $reference_call_frames_valid(S.CURRENT, S.FRAMES)

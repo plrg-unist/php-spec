@@ -95,10 +95,10 @@ def $throwable_pending(PHPERROR preqbytes z) = true
 def $throwable_pending(THROWING n) = true
 def $throwable_pending(pcompletion) = false -- otherwise
 dec $throwable_materialize(pstate) : pstate
-dec $eval_runtime_trace(pstate) : ptraceframe*
-def $throwable_materialize(S) = $throwable_allocate(S, text, preqbytes, z, $eval_runtime_trace(S) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+dec $eval_exception_trace(pstate) : ptraceframe*
+def $throwable_materialize(S) = $throwable_allocate(S, text, preqbytes, z, $eval_exception_trace(S))
   -- if S.COMPLETION = THROWN text preqbytes z
-def $throwable_materialize(S) = $throwable_allocate(S, "Error", $ptascii("Undefined constant \"") ++ preqbytes ++ [34], z, $eval_runtime_trace(S) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $throwable_materialize(S) = $throwable_allocate(S, "Error", $ptascii("Undefined constant \"") ++ preqbytes ++ [34], z, $eval_exception_trace(S))
   -- if S.COMPLETION = PHPERROR preqbytes z
 def $throwable_materialize(S) = S -- otherwise
 

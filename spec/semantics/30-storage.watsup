@@ -73,7 +73,8 @@ syntax ptask = EVAL_REQUEST porigin int | EVAL_AWAIT nat | EVAL_END nat | GETCLA
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
-syntax pevalcontext = { UNIT nat, SITE porigin, BYTES nat*, FILE nat*, OWNER nat, PHASE pevalphase, TAIL ptask* }
+syntax pevalcontext = { UNIT nat, SITE porigin, BYTES nat*, FILE nat*, LEXICAL_CLASS porigin?, OWNER nat, PHASE pevalphase, TAIL ptask* }
+syntax pevalbinding = { UNIT nat, SITE porigin, CLASS porigin? }
 syntax pcursor = CURSOR nat nat
 syntax piterator = ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool
 syntax preqbytes = nat*
@@ -91,7 +92,7 @@ syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pthrowable = { KIND text, TRACE ptraceframe*, ORIGIN porigin? }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat? }
 syntax pobject = THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
-syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, EVALCONTEXTS pevalcontext*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 dec $install_classes(pstate, pclassdesc*) : pstate
 dec $method_link_issue(pstate, pclassdesc, porigin) : pmethodissue

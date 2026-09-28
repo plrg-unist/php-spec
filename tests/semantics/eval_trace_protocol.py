@@ -13,10 +13,13 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES = [
     ('parse-in-function',
      b"<?php function f(){try{eval('echo ;');}catch(ParseError $e){echo 'C';}} f();",
-     b'echo ;', 'ParseError', 'f'),
+     b'echo ;', 'ParseError', ('f',)),
     ('class-link',
      b"<?php try{eval('class C extends Missing {}');}catch(Error $e){echo 'C';}",
-     b'class C extends Missing {}', 'Error', 'eval'),
+     b'class C extends Missing {}', 'Error', ('eval',)),
+    ('function-defined-by-eval',
+     b"<?php try{eval('function f(){1/0;} f();');}catch(DivisionByZeroError $e){echo 'C';}",
+     b'function f(){1/0;} f();', 'DivisionByZeroError', ('f', 'eval')),
 ]
 
 
@@ -34,7 +37,7 @@ def main():
               ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so', Path(__file__)]
     before = {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     records = []
-    for name, source, eval_bytes, kind, frame_name in CASES:
+    for name, source, eval_bytes, kind, frame_names in CASES:
         directory = out / name
         directory.mkdir()
         source_path = directory / 'source.php'
@@ -74,11 +77,15 @@ def main():
             'n_object = $(|S_done.OBJECTS| - 1)',
             'S_done.OBJECTS[n_object] = THROWABLE pthrowable',
             'pthrowable.KIND = ' + json.dumps(kind),
-            'pthrowable.TRACE = [ptraceframe]',
-            'ptraceframe.NAME = $ptascii(' + json.dumps(frame_name) + ')',
-            'ptraceframe.FILE = $call_sourcefile(S.FILES, pevalcontext.SITE)',
-            'ptraceframe.LINE = 1',
+            'pthrowable.TRACE = [' + ','.join('ptraceframe_' + str(i) for i in range(len(frame_names))) + ']',
         ]
+        for index, frame_name in enumerate(frame_names):
+            frame = 'ptraceframe_' + str(index)
+            expected_file = ('pevalcontext.FILE' if name == 'function-defined-by-eval' and index == 0
+                             else '$call_sourcefile(S.FILES, pevalcontext.SITE)')
+            conditions.extend([frame + '.NAME = $ptascii(' + json.dumps(frame_name) + ')',
+                               frame + '.FILE = ' + expected_file,
+                               frame + '.LINE = 1'])
         fixture = directory / 'protocol.watsup'
         fixture.write_text('dec $main() : bool\ndef $main() = true\n' + ''.join(
                                '  -- if ' + condition + '\n' for condition in conditions))
