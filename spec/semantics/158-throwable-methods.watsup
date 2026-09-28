@@ -14,9 +14,18 @@ def $getter_name(GET_CODE) = $ptascii("getCode")
 def $getter_name(GET_FILE) = $ptascii("getFile")
 def $getter_name(GET_LINE) = $ptascii("getLine")
 def $getter_name(GET_PREVIOUS) = $ptascii("getPrevious")
+dec $ctor_method_start(pstate, nat, int) : pstate
+dec $ctor_selected_name(text, ptbytes) : bool
+def $ctor_selected_name(text_kind, ptbytes) = true
+  -- if $ptlc(ptbytes) = $ptascii("__construct")
+  -- if $throwable_constructor_kind($ptascii(text_kind)) = (text_kind)
+def $ctor_selected_name(text_kind, ptbytes) = false -- otherwise
 dec $getter_other(text, ptbytes) : bool
 def $getter_other(text, ptbytes) = true
-  -- if $ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__tostring"), $ptascii("gettrace"), $ptascii("gettraceasstring"), $ptascii("__wakeup"), $ptascii("__clone")]
+  -- if $ptlc(ptbytes) <- [$ptascii("__tostring"), $ptascii("gettrace"), $ptascii("gettraceasstring"), $ptascii("__wakeup"), $ptascii("__clone")]
+def $getter_other(text, ptbytes) = true
+  -- if $ptlc(ptbytes) = $ptascii("__construct")
+  -- if $throwable_constructor_kind($ptascii(text)) = eps
 def $getter_other("ErrorException", ptbytes) = true -- if $ptlc(ptbytes) = $ptascii("getseverity")
 def $getter_other(text, ptbytes) = false -- otherwise
 
@@ -25,12 +34,17 @@ def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE p
   -- if S.ORIGIN = (porigin)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $getter_named(ptbytes) = (pgettermethod)
+def $getter_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $ctor_selected_name(pthrowable.KIND, ptbytes)
 def $getter_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "Throwable internal method body"][.TODO = eps]
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if ~$ctor_selected_name(pthrowable.KIND, ptbytes)
   -- if $getter_named(ptbytes) = eps
   -- if $getter_other(pthrowable.KIND, ptbytes)
 def $getter_select(S, n, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ $object_name(S, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if ~$ctor_selected_name(pthrowable.KIND, ptbytes)
   -- if $getter_named(ptbytes) = eps
   -- if ~$getter_other(pthrowable.KIND, ptbytes)
 

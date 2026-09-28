@@ -1,0 +1,150 @@
+;; Paused internal calls retain the genuine source site and selected receiver.
+;; The finite owner is derived from the live Throwable, never from a made-up
+;; source method descriptor.
+dec $ctor_selected(pstate, pctorcall) : bool
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = THROWABLE pthrowable
+  -- if pctorcall.BASE = $throwable_base(pthrowable.KIND)
+  -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
+  -- if pctorcall.MODE = CTOR_NEW
+  -- if pthrowable.ORIGIN = (pctorcall.SITE)
+  -- if pctorcall.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $throwable_constructor_kind(preqbytes) = (pthrowable.KIND)
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = THROWABLE pthrowable
+  -- if pctorcall.BASE = $throwable_base(pthrowable.KIND)
+  -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
+  -- if pctorcall.MODE = CTOR_METHOD
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = THROWABLE pthrowable
+  -- if pctorcall.BASE = $throwable_base(pthrowable.KIND)
+  -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
+  -- if pctorcall.MODE = CTOR_METHOD
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+def $ctor_selected(S, pctorcall) = false -- otherwise
+
+dec $ctor_slots_known(pnamedslot*) : bool
+def $ctor_slots_known(eps) = true
+def $ctor_slots_known(NAMED_HOLE :: pnamedslot*) = $ctor_slots_known(pnamedslot*)
+def $ctor_slots_known((NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = $ctor_slots_known(pnamedslot*)
+def $ctor_slots_known(pnamedslot*) = false -- otherwise
+dec $ctor_slots_without_holes(pnamedslot*) : bool
+def $ctor_slots_without_holes(eps) = true
+def $ctor_slots_without_holes((NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = $ctor_slots_without_holes(pnamedslot*)
+def $ctor_slots_without_holes(pnamedslot*) = false -- otherwise
+dec $ctor_slots_end_sent(pnamedslot*) : bool
+def $ctor_slots_end_sent(eps) = false
+def $ctor_slots_end_sent([(NAMED_SENT (KNOWN pvalue))]) = true
+def $ctor_slots_end_sent(pnamedslot :: pnamedslot_next :: pnamedslot_tail*) = $ctor_slots_end_sent(pnamedslot_next :: pnamedslot_tail*)
+def $ctor_slots_end_sent(pnamedslot*) = false -- otherwise
+dec $ctor_slots_mode(pnamedslot*, bool) : bool
+def $ctor_slots_mode(pnamedslot*, false) = $ctor_slots_without_holes(pnamedslot*)
+def $ctor_slots_mode(pnamedslot*, true) = ($ctor_slots_known(pnamedslot*) /\ $ctor_slots_end_sent(pnamedslot*))
+dec $ctor_source_slots(phpType7*, pnamedslot*) : pnamedslot*
+def $ctor_source_slots(eps, pnamedslot*) = pnamedslot*
+def $ctor_source_slots((NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnamedslot*) = $ctor_source_slots(phpType7*, $named_slot_set(pnamedslot*, n, KNOWN PNULL))
+  -- if $ctor_destination($exit_argument_name(phpType3), |pnamedslot*|) = (n)
+dec $ctor_source_named(phpType7*) : bool
+def $ctor_source_named(eps) = false
+def $ctor_source_named((NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = ($exit_argument_name(phpType3) =/= eps \/ $ctor_source_named(phpType7*))
+
+dec $ctor_sent_shape(pstate, pctorcall, nat) : bool
+def $ctor_sent_shape(S, pctorcall, n_current) = true
+  -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pctorcall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pctorcall.INDEX]
+  -- if ~$call_unpack_present(phpType7_prefix*)
+  -- if n_current = 0
+  -- if $ctor_slots_mode(pctorcall.SENT, pctorcall.NAMED)
+  -- if $clone_slot_shape(pctorcall.SENT) = $clone_slot_shape($ctor_source_slots(phpType7_prefix*, eps))
+  -- if pctorcall.NAMED = $ctor_source_named(phpType7_prefix*)
+def $ctor_sent_shape(S, pctorcall, n_current) = true
+  -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pctorcall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pctorcall.INDEX]
+  -- if $call_unpack_present(phpType7_prefix*) \/ $(n_current > 0)
+  -- if $ctor_slots_mode(pctorcall.SENT, pctorcall.NAMED)
+  -- if ~$ctor_source_named(phpType7_prefix*) \/ pctorcall.NAMED
+  -- if $($unpack_sent_count(pctorcall.SENT) >= $exit_prefix_count(phpType7_prefix*) + n_current)
+def $ctor_sent_shape(S, pctorcall, n_current) = false -- otherwise
+
+dec $ctor_call_valid(pstate, pctorcall) : bool
+def $ctor_call_valid(S, pctorcall) = true
+  -- if S.ORIGIN = (pctorcall.SITE)
+  -- if $ctor_selected(S, pctorcall)
+  -- if pctorcall.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pctorcall.LINE, false))
+  -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pctorcall.INDEX <= |phpType7*|)
+  -- if $noctor_sent_valid($clone_trace_operands(pctorcall.SENT))
+def $ctor_call_valid(S, pctorcall) = false -- otherwise
+
+dec $ctor_pending_valid(pstate, pctorcall, bool) : bool
+def $ctor_pending_valid(S, pctorcall, b_unpack) = true
+  -- if $ctor_call_valid(S, pctorcall)
+  -- if $ctor_argument(S, pctorcall) = ((expression, b_unpack, preqbytes?, porigin, z))
+  -- if $ctor_sent_shape(S, pctorcall, 0)
+def $ctor_pending_valid(S, pctorcall, b_unpack) = false -- otherwise
+def $call_task_valid(S, CTOR_ARGS pctorcall) = ($ctor_call_valid(S, pctorcall) /\ $ctor_sent_shape(S, pctorcall, 0))
+def $call_task_valid(S, CTOR_SEND pctorcall) = $ctor_pending_valid(S, pctorcall, false)
+def $call_task_valid(S, CTOR_UNPACK_PREP pctorcall) = $ctor_pending_valid(S, pctorcall, true)
+dec $ctor_arguments_done(pstate, pctorcall) : bool
+def $call_task_valid(S, CTOR_INVOKE pctorcall) = ($ctor_call_valid(S, pctorcall) /\ $ctor_sent_shape(S, pctorcall, 0) /\ $ctor_arguments_done(S, pctorcall))
+def $ctor_arguments_done(S, pctorcall) = (pctorcall.INDEX = |phpType7*|)
+  -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
+
+dec $ctor_unpack_valid(pstate, pctorcall, poperand, nat) : bool
+dec $ctor_unpack_prefix_named(pentry*) : bool
+def $ctor_unpack_prefix_named(eps) = false
+def $ctor_unpack_prefix_named((ENTRY (KINT z) pitem) :: pentry*) = $ctor_unpack_prefix_named(pentry*)
+def $ctor_unpack_prefix_named((ENTRY (KSTRING preqbytes) pitem) :: pentry*) = true
+def $ctor_unpack_valid(S, pctorcall, KNOWN (PARRAY n), n_cursor) = true
+  -- if $ctor_call_valid(S, pctorcall)
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
+  -- if ~$ctor_unpack_prefix_named(S.ARRAYS[n].ITEMS[0:n_cursor]) \/ pctorcall.NAMED
+  -- if $ctor_sent_shape(S, pctorcall, n_cursor)
+def $ctor_unpack_valid(S, pctorcall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, CTOR_UNPACK_NEXT pctorcall poperand n_cursor) = $ctor_unpack_valid(S, pctorcall, poperand, n_cursor)
+
+;; A deferred CV belongs only to the active child result. Copied sent values
+;; and the selected receiver remain task roots across nested calls.
+dec $ctor_pending_result_valid(pstate, pctorcall, bool) : bool
+def $ctor_pending_result_valid(S, pctorcall, b_unpack) = true
+  -- if $ctor_argument(S, pctorcall) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_CV)
+  -- if $exit_cv_operand(pcode, pcunit, pcpath) = (S.RESULT)
+def $ctor_pending_result_valid(S, pctorcall, b_unpack) = true
+  -- if $ctor_argument(S, pctorcall) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
+  -- if punpackclass =/= UNPACK_CV
+  -- if $unpack_owned(S, S.RESULT)
+def $ctor_pending_result_valid(S, pctorcall, b_unpack) = false -- otherwise
+def $ctor_native_result_valid(S) = $ctor_native_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $ctor_native_result_valid(S) = $ctor_native_result_valid(S[.ORIGIN = porigin?][.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $ctor_native_result_valid(S) = $ctor_pending_result_valid(S, pctorcall, false)
+  -- if S.TODO = (CTOR_SEND pctorcall) :: ptask_tail*
+def $ctor_native_result_valid(S) = $ctor_pending_result_valid(S, pctorcall, true)
+  -- if S.TODO = (CTOR_UNPACK_PREP pctorcall) :: ptask_tail*
+def $ctor_native_result_valid(S) = true -- otherwise

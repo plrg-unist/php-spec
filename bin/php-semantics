@@ -56,7 +56,9 @@ def observe(state, filename):
 
         root_id = int(fields[0])
         object_id = root_id
-        while object_id is not None:
+        seen = set()
+        while object_id is not None and object_id not in seen:
+            seen.add(object_id)
             uncaught_chain.append(object_id)
             previous = field(object_id, 'previous')
             object_id = int(previous['args'][0]) if previous['tag'] == 'POBJECT' else None
@@ -109,14 +111,18 @@ def observe(state, filename):
         display_message = message
         if classname in ('TypeError', 'ArgumentCountError') and b', called in ' in message.split(b'\0', 1)[0]:
             display_message += b' and defined'
-        if uncaught_chain:
+        if classname in {'ParseError', 'CompileError'}:
+            prefix = b'Parse error: ' if classname == 'ParseError' else b'Fatal error: '
+            stderr += prefix + message + b' in ' + location + b' on line ' + str(line).encode() + b'\n'
+        elif uncaught_chain:
             for index, chain_id in enumerate(reversed(uncaught_chain)):
                 payload = state['OBJECTS'][chain_id]['args'][0]
                 message_bytes = bytes(map(int, field(chain_id, 'message')['args'][0]))
                 if payload['KIND'] in ('TypeError', 'ArgumentCountError') and b', called in ' in message_bytes.split(b'\0', 1)[0]:
                     message_bytes += b' and defined'
                 prefix = b'Fatal error: Uncaught ' if index == 0 else b'\nNext '
-                stderr += (prefix + payload['KIND'].encode() + b': ' + message_bytes + b' in '
+                message_part = b': ' + message_bytes if message_bytes else b''
+                stderr += (prefix + payload['KIND'].encode() + message_part + b' in '
                            + bytes(map(int, field(chain_id, 'file')['args'][0])) + b':' + str(field(chain_id, 'line')['args'][0]).encode()
                            + b'\nStack trace:\n')
                 for frame_index, frame in enumerate(payload['TRACE']):
@@ -126,7 +132,8 @@ def observe(state, filename):
                 stderr += b'#' + str(len(payload['TRACE'])).encode() + b' {main}\n'
             stderr += b'  thrown in ' + location + b' on line ' + str(line).encode() + b'\n'
         else:
-            stderr += (b'Fatal error: Uncaught ' + classname.encode() + b': ' + display_message + b' in ' + location
+            message_part = b': ' + display_message if display_message else b''
+            stderr += (b'Fatal error: Uncaught ' + classname.encode() + message_part + b' in ' + location
                        + b':' + str(line).encode() + b'\nStack trace:\n' + stack + b'  thrown in ' + location
                        + b' on line ' + str(line).encode() + b'\n')
         exit_status = 255

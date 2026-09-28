@@ -1,0 +1,64 @@
+{
+  "status": "independent final-base review accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle",
+  "foundation": "ee3abd6476b13fb38858b04dbfb6bd808a33a3f5",
+  "semantic_head_before_ledger": "c28b764d6a8931f84fed5852d0510f5d694c8263",
+  "scope": "Finite direct Exception/Error constructors and identical inherited internal variants; direct __construct reentry, atomic validation, legal previous cycles, and bounded uncaught rendering. ErrorException's distinct override and structured trace methods remain Unsupported.",
+  "design": [
+    "Allocation captures location and opaque trace before ordered argument sends. Constructor reentry retains allocation file, line and trace; all supplied arguments are validated before message, code and previous writes.",
+    "Omitted message preserves its slot; supplied empty message clears it. Zero code and null previous preserve their slots. Explicit self and two-object previous cycles are legal; structural slot validity does not infer allocation history.",
+    "Authenticated constructor tasks retain the selected receiver, copied sent values and active unpack operand. Named diagnostics arise at SEND, positional arity and types at RECEIVE. Generated finally previous linking remains transition-local and conservative.",
+    "Uncaught ParseError and CompileError use builtin parse/fatal no-stack diagnostics. Ordinary Exception uses the uncaught stack form. The observer branch is the minimal source-backed hunk borrowed from the private eval author; eval execution is a separate milestone."
+  ],
+  "native_contract": {
+    "path": ".tools/throwable-ctor-probes/CONTRACT.md",
+    "sha256": "bd17de4b503d5fd8e475ded87295e59ddd57bf5fe4490d195912783007fb3d63",
+    "originals_sha256": "67ffb9a096f04b0d73af4d4d2c6af0b627509774083665c3cc1bfa15721be65d",
+    "supplement_sha256": "1a4bd692f57ee4296c7c399005582f272b32d1585682a1aefaa2ecb3015a17b0"
+  },
+  "final_base_reports": {
+    "constructor_source": {
+      "path": ".tools/throwable-ctor-candidate/.tools/ctor-probes-fi7gcotw/report.json",
+      "sha256": "35adff297d04063b63b9cb35fe01a487bc21db4d8a8a9557beea151655f4f6ae",
+      "result": "35/35 exact native tuples and 3/3 separate Unsupported controls pass, including uncaught constructed ParseError, CompileError and Exception; 168/168 watched inputs stable"
+    },
+    "constructor_paused": {
+      "path": ".tools/throwable-ctor-candidate/.tools/throwable-ctor-protocol-ayif288b/report.json",
+      "sha256": "7b65d9e50ebad0c965214e26c0c41956722bf675c8be68a23201bf6f63178c2d",
+      "result": "7/7 source-authenticated stages and 95 assertions pass; 168/168 watched inputs stable"
+    },
+    "retained_accessor_source": {
+      "path": ".tools/throwable-ctor-candidate/.tools/getter-probes-ni4pt5sm/report.json",
+      "sha256": "e9271425b6806fc4145813202650ae3c45a9a14d95fdcfbc1710bb70c7df24f4",
+      "result": "33/33 retained originals pass (27 exact native, 6 Unsupported); the unchanged direct __construct original is promoted to agreement; 168/168 watched inputs stable"
+    },
+    "retained_throwable_source": {
+      "path": ".tools/throwable-ctor-candidate/.tools/throwable-expressions-lp019eva/report.json",
+      "sha256": "fb6996a723649816189126e97345c7c3589bd49339e334a190739bfa5e01acc7",
+      "result": "65/65 retained originals pass (54 exact native, 11 Unsupported), including promoted throw-new-Exception and both repaired goto cases; 166/166 watched inputs stable"
+    },
+    "source_method_constructor_bridge": {
+      "path": ".tools/throwable-ctor-candidate/.tools/method-runtime-avb8rtos/report.json",
+      "sha256": "f9e13f6b1ba8954818cb5b1be7b311e7f6307c1d97ab0b52bc99c45fe1d5be15",
+      "result": "Exact pinned private-constructor-outside source case passes; direct inputs stable"
+    },
+    "paused_method_selection_bridge": {
+      "path": ".tools/throwable-ctor-candidate/.tools/method-visibility-protocol-6uw5yw8a/report.json",
+      "sha256": "867f8a9aba47440d5ce7bba7987d1518f90d36666d4ccd9b9d78b6803e7da556",
+      "result": "Focused ancestor-private source-method selection stage passes; 172/172 watched inputs stable"
+    }
+  },
+  "earlier_evidence": {
+    "foundation": "c2cff15fa005ce0f40a9ac83b818b779771c7ae7",
+    "independent_five": ".tools/throwable-ctor-candidate/.tools/ctor-independent-nst1fplt/report.json (sha256 377a1462f3977bd5c3cecaa33471b9abe250712acf0a2e0caaf13e28703ef3aa)",
+    "scope": "The five independent exact native replay cases and pre-method retained bridges passed before ee3 integration. The final-base reports above cover the changed constructor, method seam, terminal and retained routes."
+  },
+  "recovery": [
+    "python3 tests/semantics/throwable_constructors.py",
+    "python3 tests/semantics/throwable_constructor_protocol.py",
+    "python3 tests/semantics/throwable_accessors.py",
+    "python3 tests/semantics/throwable_expressions.py",
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/method_visibility_cases.json --match visibility-private-constructor-outside"
+  ],
+  "limits": "GetTrace/getTraceAsString/__toString, structured trace arrays, ErrorException's distinct constructor, user subclasses and source internal-property mutation remain separate required work. No complete-core closure is claimed."
+}

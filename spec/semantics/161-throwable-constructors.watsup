@@ -1,0 +1,252 @@
+;; These finite internal classes inherit Exception::__construct or
+;; Error::__construct. ErrorException has a distinct constructor; FiberError
+;; cannot be directly instantiated in the pinned engine.
+def $throwable_constructor_kind(preqbytes) = ("Exception") -- if $ptlc(preqbytes) = $ptascii("exception")
+def $throwable_constructor_kind(preqbytes) = ("ClosedGeneratorException") -- if $ptlc(preqbytes) = $ptascii("closedgeneratorexception")
+def $throwable_constructor_kind(preqbytes) = ("Error") -- if $ptlc(preqbytes) = $ptascii("error")
+def $throwable_constructor_kind(preqbytes) = ("CompileError") -- if $ptlc(preqbytes) = $ptascii("compileerror")
+def $throwable_constructor_kind(preqbytes) = ("ParseError") -- if $ptlc(preqbytes) = $ptascii("parseerror")
+def $throwable_constructor_kind(preqbytes) = ("TypeError") -- if $ptlc(preqbytes) = $ptascii("typeerror")
+def $throwable_constructor_kind(preqbytes) = ("ArgumentCountError") -- if $ptlc(preqbytes) = $ptascii("argumentcounterror")
+def $throwable_constructor_kind(preqbytes) = ("ValueError") -- if $ptlc(preqbytes) = $ptascii("valueerror")
+def $throwable_constructor_kind(preqbytes) = ("ArithmeticError") -- if $ptlc(preqbytes) = $ptascii("arithmeticerror")
+def $throwable_constructor_kind(preqbytes) = ("DivisionByZeroError") -- if $ptlc(preqbytes) = $ptascii("divisionbyzeroerror")
+def $throwable_constructor_kind(preqbytes) = ("UnhandledMatchError") -- if $ptlc(preqbytes) = $ptascii("unhandledmatcherror")
+def $throwable_constructor_kind(preqbytes) = ("AssertionError") -- if $ptlc(preqbytes) = $ptascii("assertionerror")
+def $throwable_constructor_kind(preqbytes) = eps -- otherwise
+
+;; New allocation captures origin, location and trace before argument sends.
+;; The generated-error allocator is a separate throwing transition.
+def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text_kind, eps, $call_sourcefile(S.FILES, porigin), z, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $throwable_constructor_kind(preqbytes) = (text_kind)
+  -- if S.ORIGIN = (porigin)
+  -- if n = |S.OBJECTS|
+  -- if pthrowable = {KIND text_kind, TRACE ($trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES)), ORIGIN S.ORIGIN}
+
+dec $ctor_start(pstate, nat, pctorcallmode, int) : pstate
+def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RECEIVER n, BASE $throwable_base(pthrowable.KIND), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $ctor_method_start(S, n, z) = $ctor_start(S[.TODO = ptask_tail*], n, CTOR_METHOD, z)
+  -- if S.TODO = ptask :: ptask_tail*
+def $constructor_start(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
+  -- if $throwable_constructor_kind(preqbytes) = (text_kind)
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION = NORMAL
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+  -- if S_new.OBJECTS[n] = THROWABLE pthrowable
+  -- if pthrowable.KIND = text_kind
+
+dec $ctor_arguments(pstate, porigin) : pcallarguments
+def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_arguments(S, porigin) = PCALLNOARGUMENTS -- otherwise
+
+dec $ctor_argument(pstate, pctorcall) : (expression, bool, preqbytes?, porigin, int)?
+def $ctor_argument(S, pctorcall) = ((expression, b_unpack, $exit_argument_name(phpType3), PORIGIN n pcpath_arg, z))
+  -- if pctorcall.SITE = PORIGIN n pcpath
+  -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pctorcall.INDEX < |phpType7*|)
+  -- if phpType7*[pctorcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata
+  -- if pcpath_arg = pcpath ++ [PCFIELD n_field, PCINDEX pctorcall.INDEX, PCFIELD 1]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, $exit_send_path(pcpath, n_field, pctorcall.INDEX, b_unpack)) = ((z, b))
+def $ctor_argument(S, pctorcall) = eps -- otherwise
+
+dec $ctor_nodes(pctorcall) : pnode*
+def $ctor_nodes(pctorcall) = [HOBJECT pctorcall.RECEIVER] ++ $named_slots_roots(pctorcall.SENT)
+def $task_nodes(CTOR_ARGS pctorcall) = $ctor_nodes(pctorcall)
+def $task_nodes(CTOR_SEND pctorcall) = $ctor_nodes(pctorcall)
+def $task_nodes(CTOR_UNPACK_PREP pctorcall) = $ctor_nodes(pctorcall)
+def $task_nodes(CTOR_UNPACK_NEXT pctorcall poperand n) = $ctor_nodes(pctorcall) ++ $operand_nodes(poperand)
+def $task_nodes(CTOR_INVOKE pctorcall) = $ctor_nodes(pctorcall)
+
+dec $ctor_destination(preqbytes?, nat) : nat?
+def $ctor_destination(eps, n) = (n)
+def $ctor_destination((preqbytes), n) = (0) -- if preqbytes = $ptascii("message")
+def $ctor_destination((preqbytes), n) = (1) -- if preqbytes = $ptascii("code")
+def $ctor_destination((preqbytes), n) = (2) -- if preqbytes = $ptascii("previous")
+def $ctor_destination(preqbytes?, n) = eps -- otherwise
+dec $ctor_send_check(pstate, pctorcall, preqbytes?, int) : pstate
+def $ctor_send_check(S, pctorcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
+  -- if $ctor_destination((preqbytes), |pctorcall.SENT|) = eps
+def $ctor_send_check(S, pctorcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ $c_string(preqbytes) ++ $ptascii(" overwrites previous argument"), z)
+  -- if $ctor_destination((preqbytes), |pctorcall.SENT|) = (n)
+  -- if $named_slot_at(pctorcall.SENT, n) = NAMED_SENT poperand
+def $ctor_send_check(S, pctorcall, eps, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
+  -- if pctorcall.NAMED
+def $ctor_send_check(S, pctorcall, preqbytes?, z) = S -- otherwise
+dec $ctor_sent(pctorcall, poperand, preqbytes?) : pctorcall
+def $ctor_sent(pctorcall, poperand, preqbytes?) = pctorcall[.SENT = $named_slot_set(pctorcall.SENT, n, poperand)][.NAMED = (pctorcall.NAMED \/ preqbytes? =/= eps)]
+  -- if $ctor_destination(preqbytes?, |pctorcall.SENT|) = (n)
+
+rule PhpStep/ctor-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), CTOR_SEND pctorcall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_ARGS pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, false, preqbytes?, porigin, z))
+rule PhpStep/ctor-send: S ~> S_value[.TODO = (CTOR_ARGS ($ctor_sent(pctorcall, S_value.RESULT, preqbytes?)[.INDEX = $(pctorcall.INDEX + 1)])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_SEND pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $ctor_send_check(S, pctorcall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/ctor-send-error: S ~> S_checked
+  -- if S.TODO = (CTOR_SEND pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $ctor_send_check(S, pctorcall, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/ctor-send-abrupt: S ~> S_value
+  -- if S.TODO = (CTOR_SEND pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $ctor_send_check(S, pctorcall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+rule PhpStep/ctor-arguments-done: S ~> S[.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_ARGS pctorcall) :: ptask_tail*
+  -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if pctorcall.INDEX = |phpType7*|
+
+rule PhpStep/ctor-unpack-start: S ~> S[.TODO = [$at_task((porigin), EVAL expression), CTOR_UNPACK_PREP pctorcall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_ARGS pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+rule PhpStep/ctor-unpack-array: S ~> S_value[.TODO = (CTOR_UNPACK_NEXT pctorcall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_UNPACK_PREP pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n)
+rule PhpStep/ctor-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
+  -- if S.TODO = (CTOR_UNPACK_PREP pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/ctor-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (CTOR_UNPACK_PREP pctorcall) :: ptask_tail*
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/ctor-unpack-item: S ~> S_checked[.TODO = (CTOR_UNPACK_NEXT ($ctor_sent(pctorcall, KNOWN $entry_value(S, pitem), preqbytes_key?)) poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_UNPACK_NEXT pctorcall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $ctor_send_check(S, pctorcall, preqbytes_key?, z)
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/ctor-unpack-item-error: S ~> S_checked
+  -- if S.TODO = (CTOR_UNPACK_NEXT pctorcall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $ctor_argument(S, pctorcall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $ctor_send_check(S, pctorcall, preqbytes_key?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/ctor-unpack-done: S ~> S[.TODO = (CTOR_ARGS pctorcall[.INDEX = $(pctorcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (CTOR_UNPACK_NEXT pctorcall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n].ITEMS|
+
+;; Validation completes before any field changes. Error frames retain sent
+;; values, including holes introduced by named arguments.
+dec $ctor_error(pstate, pctorcall, text, ptbytes) : pstate
+def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate(S[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, [ptraceframe] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+  -- if pvalue* = $trace_extra(S, $clone_trace_operands(pctorcall.SENT))
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, NAME ($ptascii(pctorcall.BASE) ++ $ptascii("->__construct")), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+dec $ctor_type_error(pstate, pctorcall, nat, ptbytes, ptbytes, pvalue) : pstate
+def $ctor_type_error(S, pctorcall, n_parameter, preqbytes_name, preqbytes_type, pvalue) = $ctor_error(S, pctorcall, "TypeError", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct(): Argument #") ++ $ntunsigned(n_parameter) ++ $ptascii(" ($") ++ preqbytes_name ++ $ptascii(") must be of type ") ++ preqbytes_type ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+
+dec $ctor_message_value(pstate, pctorcall, pnamedslot) : pstate
+def $ctor_message_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN (PSTRING eps)]
+def $ctor_message_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = $diagnostic(S, "Deprecated", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct(): Passing null to parameter #1 ($message) of type string is deprecated"), pctorcall.LINE)[.RESULT = KNOWN (PSTRING eps)]
+def $ctor_message_value(S, pctorcall, NAMED_SENT (KNOWN (POBJECT n))) = S[.COMPLETION = UNSUPPORTED "Throwable constructor Stringable message conversion"]
+  -- if $class_instanceof(S, POBJECT n, $ptascii("Stringable"))
+def $ctor_message_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $typed_apply(S, ptypeconversion, pctorcall.LINE)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "string"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+def $ctor_message_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 1, $ptascii("message"), $ptascii("string"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "string"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = TYPEREJECT
+
+dec $ctor_code_value(pstate, pctorcall, pnamedslot) : pstate
+def $ctor_code_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN (PINT 0)]
+def $ctor_code_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = $diagnostic(S, "Deprecated", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct(): Passing null to parameter #2 ($code) of type int is deprecated"), pctorcall.LINE)[.RESULT = KNOWN (PINT 0)]
+def $ctor_code_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $typed_apply(S, ptypeconversion, pctorcall.LINE)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+def $ctor_code_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 2, $ptascii("code"), $ptascii("int"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = TYPEREJECT
+
+dec $ctor_previous_value(pstate, pctorcall, pnamedslot) : pstate
+dec $ctor_previous_acceptable(pstate, pvalue) : bool
+def $ctor_previous_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN PNULL]
+def $ctor_previous_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = S[.RESULT = KNOWN PNULL]
+def $ctor_previous_value(S, pctorcall, NAMED_SENT (KNOWN (POBJECT n))) = S[.RESULT = KNOWN (POBJECT n)]
+  -- if $throwable_object(S, n)
+def $ctor_previous_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 3, $ptascii("previous"), $ptascii("?Throwable"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if ~$ctor_previous_acceptable(S, pvalue)
+def $ctor_previous_acceptable(S, POBJECT n) = $throwable_object(S, n)
+def $ctor_previous_acceptable(S, pvalue) = false -- otherwise
+
+dec $ctor_commit_field(pstate, pctorcall, text, pvalue, bool) : pstate
+dec $ctor_result(pctorcallmode, nat) : pvalue
+def $ctor_commit_field(S, pctorcall, text_field, pvalue, true) = $throwable_constructor_field(S, pctorcall.RECEIVER, text_field, pvalue)
+def $ctor_commit_field(S, pctorcall, text_field, pvalue, false) = S
+dec $ctor_commit(pstate, pctorcall, pvalue, pvalue, pvalue) : pstate
+def $ctor_commit(S, pctorcall, PSTRING preqbytes_message, PINT z_code, pvalue_previous) = S_previous[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_message = $ctor_commit_field(S, pctorcall, "message", PSTRING preqbytes_message, $(|pctorcall.SENT| > 0))
+  -- if S_code = $ctor_commit_field(S_message, pctorcall, "code", PINT z_code, $(z_code =/= 0))
+  -- if S_previous = $ctor_commit_field(S_code, pctorcall, "previous", pvalue_previous, pvalue_previous =/= PNULL)
+  -- if pvalue_result = $ctor_result(pctorcall.MODE, pctorcall.RECEIVER)
+def $ctor_result(CTOR_NEW, n) = POBJECT n
+def $ctor_result(CTOR_METHOD, n) = PNULL
+
+dec $ctor_receive(pstate, pctorcall) : pstate
+def $ctor_receive(S, pctorcall) = $ctor_error(S, pctorcall, "ArgumentCountError", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct() expects at most 3 arguments, ") ++ $decimal_integer(|pctorcall.SENT|) ++ $ptascii(" given"))
+  -- if $(|pctorcall.SENT| > 3)
+def $ctor_receive(S, pctorcall) = $ctor_commit(S_previous, pctorcall, pvalue_message, pvalue_code, pvalue_previous)
+  -- if $(|pctorcall.SENT| <= 3)
+  -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
+  -- if S_message.COMPLETION = NORMAL
+  -- if S_message.RESULT = KNOWN pvalue_message
+  -- if S_code = $ctor_code_value(S_message, pctorcall, $named_slot_at(pctorcall.SENT, 1))
+  -- if S_code.COMPLETION = NORMAL
+  -- if S_code.RESULT = KNOWN pvalue_code
+  -- if S_previous = $ctor_previous_value(S_code, pctorcall, $named_slot_at(pctorcall.SENT, 2))
+  -- if S_previous.COMPLETION = NORMAL
+  -- if S_previous.RESULT = KNOWN pvalue_previous
+def $ctor_receive(S, pctorcall) = S_message
+  -- if $(|pctorcall.SENT| <= 3)
+  -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
+  -- if S_message.COMPLETION =/= NORMAL
+def $ctor_receive(S, pctorcall) = S_code
+  -- if $(|pctorcall.SENT| <= 3)
+  -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
+  -- if S_message.COMPLETION = NORMAL
+  -- if S_code = $ctor_code_value(S_message, pctorcall, $named_slot_at(pctorcall.SENT, 1))
+  -- if S_code.COMPLETION =/= NORMAL
+def $ctor_receive(S, pctorcall) = S_previous
+  -- if $(|pctorcall.SENT| <= 3)
+  -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
+  -- if S_message.COMPLETION = NORMAL
+  -- if S_code = $ctor_code_value(S_message, pctorcall, $named_slot_at(pctorcall.SENT, 1))
+  -- if S_code.COMPLETION = NORMAL
+  -- if S_previous = $ctor_previous_value(S_code, pctorcall, $named_slot_at(pctorcall.SENT, 2))
+  -- if S_previous.COMPLETION =/= NORMAL
+rule PhpStep/ctor-invoke: S ~> $ctor_receive(S[.TODO = ptask_tail*], pctorcall)
+  -- if S.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*

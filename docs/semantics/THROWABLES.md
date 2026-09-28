@@ -34,8 +34,17 @@ Unsupported. Trace remains opaque allocation metadata on the object, not a
 `getTrace()` array. Pending/uncaught completion and search/binding tasks root
 the object and trace values. Rethrow retains identity and allocation trace.
 The terminal observer reads the slots and renders TRACE at the terminal boundary.
-Finally replacement may link generated errors through `previous`; constructor
-reentry and user-written previous cycles require a later bounded traversal.
+Uncaught `ParseError` and `CompileError` use PHP's class-specific parse/fatal
+diagnostics without a stack; ordinary `Exception` keeps the uncaught stack form.
+Finite `Exception`/`Error` constructors, including identical inherited
+constructors of their built-in descendants, allocate with file/line/TRACE
+before argument evaluation. Direct `__construct` reentry retains those fields.
+Arguments are sent in source order; named errors arise at SEND, and positional
+arity and types are validated before any field write. An omitted message leaves
+it unchanged, a supplied empty message clears it, zero code and null previous
+leave their fields unchanged. Explicit self and two-object previous cycles are
+legal; terminal rendering stops at a repeated object. Finally replacement
+keeps its transition-local generated-chain guard.
 
 Compiler rules preserve throw effects even where its result folds to true,
 compile try body before ordered catch headers/bodies, and retain first-type
@@ -44,9 +53,9 @@ entry into catch skips binding and does not activate sibling catches. Stage A
 finally runs on normal and exceptional exits and chains replaced generated
 errors. Stage B handles value/reference returns and jumps across finally.
 
-Still required: constructors, remaining accessors, full structured trace and argument
-capture, source access to internal properties and mutation, user subclasses,
-remaining finally transfers and constructor-created previous cycles, __toString dispatch,
+Still required: the distinct `ErrorException` constructor, remaining accessors,
+full structured trace and argument capture, source access to internal properties
+and mutation, user subclasses, remaining finally transfers, __toString dispatch,
 handlers, lifecycle callbacks, eval/include errors, generator/Fiber closing
 and serialization. Throwable string conversions, property access/casts,
 property traversal and comparison dependencies are explicit Unsupported where
@@ -58,5 +67,6 @@ nominal hierarchy); Zend/zend_vm_def.h (ZEND_THROW, ZEND_CATCH and exception
 unwinding); Zend/zend_compile.c (zend_compile_throw, zend_compile_try and goto).
 Compiler checks, exact original-source tuples and paused ownership tests are
 maintained in `throwable_compiler.py`, `throwable_expressions.py`,
-`throwable_protocol.py`, `throwable_accessors.py` and
-`throwable_getter_protocol.py`. Unsupported controls are counted separately.
+`throwable_protocol.py`, `throwable_accessors.py`,
+`throwable_getter_protocol.py`, `throwable_constructors.py` and
+`throwable_constructor_protocol.py`. Unsupported controls are counted separately.

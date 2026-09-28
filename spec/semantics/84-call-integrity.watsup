@@ -286,6 +286,7 @@ dec $static_result_valid(pstate) : bool
 dec $clone_result_valid(pstate) : bool
 dec $throwable_result_valid(pstate) : bool
 dec $getter_result_valid(pstate) : bool
+dec $ctor_native_result_valid(pstate) : bool
 dec $exit_result_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $finally_state_valid(pstate) : bool
@@ -309,6 +310,7 @@ def $call_descriptors_valid(S) = true
   -- if $acquire_call_result_valid(S)
   -- if $unpack_result_valid(S)
   -- if $getter_result_valid(S)
+  -- if $ctor_native_result_valid(S)
   -- if $exit_result_valid(S)
   -- if $clone_result_valid(S)
   -- if $throwable_result_valid(S)

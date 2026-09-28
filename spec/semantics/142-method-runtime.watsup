@@ -93,6 +93,8 @@ def $method_denied(S, pmethoddesc, ptbytes, porigin?, true, z) = $throw_scalar(S
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 
 def $new_has_ctor(S, preqbytes) = true
+  -- if $throwable_constructor_kind(preqbytes) = (text_kind)
+def $new_has_ctor(S, preqbytes) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
   -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
 def $new_has_ctor(S, preqbytes) = false -- otherwise

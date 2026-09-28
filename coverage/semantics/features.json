@@ -6570,22 +6570,26 @@
         "spec/semantics/151-throwable-compiler.watsup",
         "spec/semantics/152-throwable-runtime.watsup",
         "spec/semantics/157-throwable-properties.watsup",
-        "spec/semantics/158-throwable-methods.watsup"
+        "spec/semantics/158-throwable-methods.watsup",
+        "spec/semantics/161-throwable-constructors.watsup",
+        "spec/semantics/162-throwable-constructor-integrity.watsup"
       ],
       "helper_tests": [
         "tests/semantics/throwable_compiler.py",
         "tests/semantics/throwable_protocol.py",
-        "tests/semantics/throwable_getter_protocol.py"
+        "tests/semantics/throwable_getter_protocol.py",
+        "tests/semantics/throwable_constructor_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/throwable_expressions.py",
-        "tests/semantics/throwable_accessors.py"
+        "tests/semantics/throwable_accessors.py",
+        "tests/semantics/throwable_constructors.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/THROWABLES.md"
       ],
-      "review": "Generated builtin Throwable identity, catch/throw and Stage B finally transfers remain bounded. Generated message/code/file/line/previous have sole authenticated internal OBJECTPROPS backing and five direct getters with ordered argument and ownership tasks. Source property access, constructors, remaining methods, subclasses, structured traces, constructor-created cycles and lifecycle callbacks remain open; see throwable-getters-review.json.",
+      "review": "Generated builtin Throwable identity, catch/throw and Stage B finally transfers remain bounded. Authenticated internal OBJECTPROPS back five getters and finite base/inherited constructors; direct reentry validates arguments before field writes, and legal previous cycles have bounded terminal rendering. Source property access, ErrorException's distinct constructor, remaining methods, user subclasses, structured traces and lifecycle callbacks remain open; see throwable-constructors-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-throw.php"
       ]
@@ -6610,7 +6614,7 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/THROWABLES.md"
       ],
-      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending.",
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered catches have independent review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Finite base constructors and five getters are covered; ErrorException's override, structured traces, source internal-property access, user subclasses and lifecycle integration remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php",
         "tests/semantics/conformance/finally-throw.php"
