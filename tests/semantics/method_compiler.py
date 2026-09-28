@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Checked public method declarations, inheritance and lexical scope."""
+"""Checked instance method declarations, inheritance and lexical scope."""
 from pathlib import Path
+import argparse
 import base64
 import hashlib
 import json
@@ -14,7 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES = json.loads((ROOT / 'tests/semantics/method_compiler_cases.json').read_text())
 
 
-def run():
+def run(match=''):
+    selected = [row for row in CASES if match in row['id']]
+    assert selected, 'no method compiler sources selected'
     before = types.syntax_validation.implementation_fingerprint()
     out = Path(tempfile.mkdtemp(prefix='method-compiler-', dir=ROOT / '.tools'))
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
@@ -26,11 +29,15 @@ def run():
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
     records = []
     try:
-        for row in CASES:
+        for row in selected:
             source = row['source'].encode()
             assert hashlib.sha256(source).hexdigest() == row['source_sha256'], row['id']
             parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source).decode()})
             assert parsed['accepted'], row['id']
+            if 'ast_method_flags' in row:
+                flags = parsed['ast']['program'][0]['fields'][5][0]['fields'][1]
+                assert flags == {'int': row['parsed_method_flags']}, row['id']
+                flags['int'] = row['ast_method_flags']
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
             assert checked['ok'], row['id']
             path = out / (row['id'] + '.php')
@@ -38,7 +45,8 @@ def run():
             filename = '[' + ','.join(map(str, str(path).encode())) + ']'
             premises = [f'P = $ppstart(141, {checked["fixture"]}, {filename})']
             if row['compiler'] == 'static':
-                premises.append('P.COMPLETION = PPCABRUPT (STATICBYTES '
+                completion = row.get('static_completion', 'STATICBYTES')
+                premises.append('P.COMPLETION = PPCABRUPT (' + completion + ' '
                                 + '$ptascii(' + json.dumps(row['static_message']) + ') '
                                 + str(row['static_line']) + ')')
             else:
@@ -55,6 +63,11 @@ def run():
                                      '$ppconstant_at((pcpath_constant, pvalue_constant)*, '
                                      + operand + ') = (PSTRING $ptascii('
                                      + json.dumps(row['constant']) + '))'])
+            if row['group'] == 'compiler-visibility':
+                premises.extend(['P.CLASSES = [pclassdesc]',
+                                 'pclassdesc.METHODS = [pmethoddesc]',
+                                 'pmethoddesc.OWNER = pclassdesc.ORIGIN',
+                                 'pmethoddesc.VISIBILITY = ' + row['visibility']])
             if row['group'] == 'compiler-fold':
                 premises.append('$ppconstants(P) = PPCCONSTANTS (pcpath_constant, pvalue_constant)*')
                 for path_constant, value in zip(row['constant_paths'], row['constants']):
@@ -88,4 +101,6 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--match', default='')
+    run(parser.parse_args().match)

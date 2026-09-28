@@ -59,10 +59,10 @@ def $trace_extra(S, (REFERENCE n) :: poperand*) = pvalue :: $trace_extra(S, pope
 dec $named_values(pstate, (preqbytes, poperand)*) : pvalue*
 dec $named_trace_arguments(pstate, pvalue*, (preqbytes, poperand)*) : preqbytes
 dec $trace_context_name(pstate, pcallcontext) : preqbytes
-def $trace_context_name(S, pcallcontext) = $object_name(S, n) ++ $ptascii("->") ++ pmethoddesc.NAME
+def $trace_context_name(S, pcallcontext) = pclassdesc.NAME ++ $ptascii("->") ++ pmethoddesc.NAME
   -- if pcallcontext.INSTANCE = eps
-  -- if pcallcontext.RECEIVER = (n)
   -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 def $trace_context_name(S, pcallcontext) = $object_name(S, n_receiver) ++ $ptascii("->") ++ pcallcontext.NAME
   -- if pcallcontext.INSTANCE = (n_closure)
   -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)

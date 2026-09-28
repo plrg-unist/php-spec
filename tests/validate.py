@@ -223,17 +223,28 @@ def validate(record, frontend, adapter, elaborate=False, observations=None):
 
 
 def classify_phase_difference(record, result):
-    if result['status'] != 'unreviewed_phase_difference' or result.get('lint', {}).get('accepted') is not False:
+    if result['status'] not in {'unreviewed_phase_difference', 'acceptance_mismatch'} or result.get('lint', {}).get('accepted') is not False:
         return result
     entries = json.loads((ROOT / 'tests/phase-discrepancies.json').read_text())
     entry = next((entry for entry in entries if entry['id'] == record['id']), None)
     if entry is None or entry['sha256'] != record['sha256'] or entry['ini'] != record.get('ini', {}):
         return result
     diagnostic = base64.b64decode(result['lint']['diagnostic_b64']).decode('utf-8', 'replace')
-    frontend_message = base64.b64decode(result['frontend_detail'].get('message', '')).decode('utf-8', 'replace')
-    if frontend_message != entry['frontend_message'] or entry['lint_contains'] not in diagnostic:
-        return result
+    if entry.get('direction') == 'frontend_accepts_static_rejection':
+        oracle = result.get('oracle_detail', {})
+        oracle_message = base64.b64decode(oracle.get('message', '')).decode('utf-8', 'replace')
+        if (result['status'] != 'acceptance_mismatch' or result.get('oracle') is not False
+            or result.get('frontend') is not True or oracle.get('category') != entry['oracle_category']
+            or oracle_message != entry['oracle_message'] or entry['lint_contains'] not in diagnostic):
+            return result
+    else:
+        if result['status'] != 'unreviewed_phase_difference':
+            return result
+        frontend_message = base64.b64decode(result['frontend_detail'].get('message', '')).decode('utf-8', 'replace')
+        if frontend_message != entry['frontend_message'] or entry['lint_contains'] not in diagnostic:
+            return result
     return {**result, 'raw_status': result['status'], 'status': 'compile_phase_difference',
+            'direction': entry.get('direction', 'frontend_rejects_oracle_accepted'),
             'disposition': entry['reason'], 'restriction': entry['restriction'], 'evidence': entry['evidence']}
 
 

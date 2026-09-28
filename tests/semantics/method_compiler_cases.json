@@ -279,5 +279,34 @@
     "compiler": "static",
     "static_message": "Class declarations may not be nested",
     "static_line": 1
+  },
+  {
+    "id": "method-protected-descriptor",
+    "group": "compiler-visibility",
+    "source": "<?php class A{protected function f(){}}\n",
+    "source_sha256": "ce4ce57de4687850655c2e16d910b48c87df969707818378e15cc64baa538dc5",
+    "compiler": "normal",
+    "visibility": "PROPERTY_PROTECTED"
+  },
+  {
+    "id": "method-private-descriptor",
+    "group": "compiler-visibility",
+    "source": "<?php class A{private function f(){}}\n",
+    "source_sha256": "db53a6eb21c81f8ac8140c85cbc526e52be8894d4b87d401f19d496cd663e2c0",
+    "compiler": "normal",
+    "visibility": "PROPERTY_PRIVATE"
+  },
+  {
+    "id": "method-final-abstract-direct-ast",
+    "group": "compiler-visibility-ast",
+    "source": "<?php class A{protected function f(){}}",
+    "source_sha256": "f728c8c909729d4e1e96c318181cbf294aa2bb0599f93b283bf8df0e6ab5a7f8",
+    "parsed_method_flags": "2",
+    "ast_method_flags": "52",
+    "static_message": "Cannot use the final modifier on an abstract method",
+    "static_line": 1,
+    "compiler": "static",
+    "note": "Synthetic flags 2 to 52 in a concrete class test compiler priority; the original PHP source is also in the exact source catalogue and frontend control.",
+    "static_completion": "COMPILETHROWN"
   }
 ]

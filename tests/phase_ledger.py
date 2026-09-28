@@ -24,6 +24,27 @@ assert classify_phase_difference(record, {**result, 'status': 'acceptance_mismat
 changed = copy.deepcopy(result)
 changed['lint']['accepted'] = True
 assert classify_phase_difference(record, changed)['status'] == 'unreviewed_phase_difference'
+# The reverse phase bridge is limited to four exact final/abstract method sources.
+reverse = next(item for item in json.loads((ROOT / 'tests/phase-discrepancies.json').read_text())
+               if item.get('direction') == 'frontend_accepts_static_rejection')
+reverse_record = phpt(ROOT / reverse['id'])
+reverse_result = {
+    'status': 'acceptance_mismatch', 'oracle': False, 'frontend': True,
+    'oracle_detail': {'category': reverse['oracle_category'],
+                      'message': base64.b64encode(reverse['oracle_message'].encode()).decode()},
+    'lint': {'accepted': False, 'diagnostic_b64': base64.b64encode(reverse['lint_contains'].encode()).decode()},
+}
+assert classify_phase_difference(reverse_record, reverse_result)['status'] == 'compile_phase_difference'
+for key, value in [('id', 'unreviewed.php'), ('sha256', '0' * 64), ('ini', {'short_open_tag': '1'})]:
+    assert classify_phase_difference({**reverse_record, key: value}, reverse_result)['status'] == 'acceptance_mismatch'
+for branch, key, value in [('oracle_detail', 'category', 'parser_rejection'),
+                           ('oracle_detail', 'message', base64.b64encode(b'other').decode()),
+                           ('lint', 'diagnostic_b64', base64.b64encode(b'other').decode())]:
+    changed = copy.deepcopy(reverse_result)
+    changed[branch][key] = value
+    assert classify_phase_difference(reverse_record, changed)['status'] == 'acceptance_mismatch'
+for key, value in [('status', 'unreviewed_phase_difference'), ('oracle', True), ('frontend', False)]:
+    assert classify_phase_difference(reverse_record, {**reverse_result, key: value})['status'] != 'compile_phase_difference'
 # Retired array-hole exemptions are literal regressions, not active allowlist entries.
 RETIRED_ARRAY_HOLES = [('vendor/php-src/Zend/tests/bug75426.phpt',
   '144cc5b3d4a7d343ec580e455ca766b3b2854c3685ab6dfbe6dba65fde90711c',
@@ -68,4 +89,4 @@ for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLE
         'lint': {'accepted': False, 'diagnostic_b64': base64.b64encode(lint_message.encode()).decode()},
     }
     assert classify_phase_difference(retired_record, retired_result)['status'] == 'unreviewed_phase_difference'
-print('phase ledger: known case accepted; seven unrelated and eight retired observations remain failures')
+print('phase ledger: both pinned directions accepted; unrelated and retired observations remain failures')

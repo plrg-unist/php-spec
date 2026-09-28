@@ -52,7 +52,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 157/158 | Generated Throwable fields use authenticated internal property IDs and sole `OBJECTPROPS` slots; five direct getters retain ordered argument/receiver ownership. Final-base evidence: 26 exact source tuples, seven Unsupported controls, four paused stages/60 assertions, and private 22-source/127-assertion bridge. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-getters-review.json) |
 | 159/160 foundation | Fresh dynamic source-unit registration, preservation of a live caller during compiler append, and per-unit observer filenames. This is compiler/registry groundwork; reached eval and include execution remain open. [Contract](docs/semantics/DYNAMIC-SOURCE.md) · [ledger](coverage/semantics/dynamic-source-foundation.json) |
 
-The current integration combines protected properties, public methods and
+The current integration combines protected and private properties, public methods and
 constructors, cloning, nullsafe chains, match, print and exit/die with generated
 Throwable control and reviewed Stage B finally transfers. Source, paused-state and terminal migration evidence have
 bounded review. The [migration ledger](coverage/semantics/throwable-migration-review.json)

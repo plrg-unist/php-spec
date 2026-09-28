@@ -5,6 +5,8 @@ dec $ppmember_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pmethodde
 dec $ppmethod_at(pmethoddesc*, ptbytes) : bool
 dec $ppmethod_find(pmethoddesc*, ptbytes) : pmethoddesc?
 dec $ppmethod_magic(ptbytes) : bool
+dec $ppmethod_visibility(int) : ppropertyvisibility
+dec $ppmethod_warning(ppstate, int, ptbytes) : ppstate
 dec $ppmethod_context(ppstate, pchheader, ptbytes, int) : ptcontext
 dec $ppmethod_prechecked(int, phpType47, pchheader) : bool
 dec $ppmethod_one(ppstate, pcpath, statement, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
@@ -19,6 +21,8 @@ dec $ppmethod_ready(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata,
 dec $ppmethod_finish(ppstate, ppstate, pcpath, int, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
 
 dec $pmethod_user(pmethoddesc, pclassdesc, ptbytes) : pmmethod
+dec $pmethod_independent_private(pmethoddesc) : bool
+dec $pmethod_visibility_issue(pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : ptbytes?
 dec $pmethod_scope(pclassdesc, ptbytes*) : pvclass
 dec $ppmethod_functions(pmethoddesc*) : pfunction*
 def $ppmethod_functions(eps) = eps
@@ -30,6 +34,12 @@ def $pmethod_parent_name(eps) = eps
 def $pmethod_parent_name((ptbytes)) = ptbytes
 def $pmethod_user(pmethoddesc, pclassdesc, ptbytes_file) = { OWNER pclassdesc.NAME, NAME pmethoddesc.NAME, SIGNATURE pmethoddesc.FUNCTION.SIGNATURE, CONTEXT { NAMESPACE pmethoddesc.FUNCTION.ENV.NAMESPACE, IMPORTS pmethoddesc.FUNCTION.ENV.CLASSES, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTRETURN, OWNER pclassdesc.NAME, MEMBER pmethoddesc.NAME, FILE ptbytes_file, LINE pmethoddesc.FUNCTION.LINE } }
 def $pmethod_scope(pclassdesc, ptbytes_ancestors*) = { NAME pclassdesc.NAME, PARENT $pmethod_parent_name(pclassdesc.PARENT), ANCESTORS ptbytes_ancestors*, FINAL pclassdesc.FINAL }
+def $pmethod_independent_private(pmethoddesc) = (pmethoddesc.VISIBILITY = PROPERTY_PRIVATE /\ ~pmethoddesc.ABSTRACT /\ $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct"))
+def $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = ($ptascii("Access level to ") ++ pclassdesc_child.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() must be public (as in class ") ++ pclassdesc_parent.NAME ++ [41])
+  -- if pmethoddesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc_child.VISIBILITY =/= PROPERTY_PUBLIC
+def $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = ($ptascii("Access level to ") ++ pclassdesc_child.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() must be protected (as in class ") ++ pclassdesc_parent.NAME ++ $ptascii(") or weaker"))
+  -- if pmethoddesc_parent.VISIBILITY = PROPERTY_PROTECTED /\ pmethoddesc_child.VISIBILITY = PROPERTY_PRIVATE
+def $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps -- otherwise
 
 def $ppmethod_body(SEQUENCE statement*) = $ppmethod_members(statement*, false)
 def $ppmethod_body(phpType23) = false -- otherwise
@@ -57,6 +67,13 @@ def $ppmethod_at(pmethoddesc :: pmethoddesc_tail*, ptbytes) = true
 def $ppmethod_at(pmethoddesc :: pmethoddesc_tail*, ptbytes) = $ppmethod_at(pmethoddesc_tail*, ptbytes)
   -- if $ptlc(pmethoddesc.NAME) =/= $ptlc(ptbytes)
 def $ppmethod_magic(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("__destruct"), $ptascii("__invoke"), $ptascii("__tostring"), $ptascii("__get"), $ptascii("__set"), $ptascii("__isset"), $ptascii("__unset"), $ptascii("__call"), $ptascii("__callstatic"), $ptascii("__sleep"), $ptascii("__wakeup"), $ptascii("__serialize"), $ptascii("__unserialize"), $ptascii("__clone"), $ptascii("__debuginfo"), $ptascii("__set_state")])
+def $ppmethod_visibility(flags) = PROPERTY_PRIVATE -- if $ppproperty_flag(flags, 4)
+def $ppmethod_visibility(flags) = PROPERTY_PROTECTED -- if $ppproperty_flag(flags, 2)
+def $ppmethod_visibility(flags) = PROPERTY_PUBLIC -- otherwise
+def $ppmethod_warning(P, flags, ptbytes) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "private-final-method" eps P.LOCATION]]
+  -- if $ppproperty_flag(flags, 4) /\ $ppproperty_flag(flags, 32) /\ $ptlc(ptbytes) =/= $ptascii("__construct")
+def $ppmethod_warning(P, flags, ptbytes) = P -- otherwise
+def $plmessage(PLDIAGNOSTIC "warning" "private-final-method" eps pllocation) = $ptascii("Private methods cannot be final as they are never overridden by other classes")
 
 def $ppmethod_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTKNOWN pchheader.NAME pchheader.PARENT, POSITION PTRETURN, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
 def $ppmethod_prechecked(flags, phpType47, pchheader) = (~$ppproperty_flag(flags, 64) /\ (($ppproperty_flag(flags, 16) /\ pchheader.ABSTRACT /\ phpType47 = ABSENT) \/ (~$ppproperty_flag(flags, 16) /\ phpType47 =/= ABSENT)))
@@ -68,8 +85,12 @@ def $ppmethod_one(P, pcpath, statement, ppropertydesc*, pmethoddesc*, pchheader)
 
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Cannot use the readonly modifier on a method"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
   -- if $ppproperty_flag(flags, 64)
+def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P[.COMPLETION = PPCABRUPT (COMPILETHROWN $ptascii("Cannot use the final modifier on an abstract method") P.LOCATION.LINE)] ppropertydesc* pmethoddesc*
+  -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" declares abstract method ") ++ ptbytes ++ $ptascii("() and must therefore be declared abstract"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
-  -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ ~pchheader.ABSTRACT
+  -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ ~$ppproperty_flag(flags, 32) /\ ~pchheader.ABSTRACT
+def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Abstract function ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot be declared private"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ ~$ppproperty_flag(flags, 32) /\ $ppproperty_flag(flags, 4) /\ pchheader.ABSTRACT
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Abstract function ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot contain body"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
   -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ pchheader.ABSTRACT /\ phpType47 =/= ABSENT
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Non-abstract method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() must contain body"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
@@ -79,13 +100,14 @@ def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpTyp
   -- if $ppmethod_at(pmethoddesc*, ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method visibility, static, or magic consumer")) ppropertydesc* pmethoddesc*
   -- if $ppmethod_prechecked(flags, phpType47, pchheader) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
-  -- if flags <- [0,1,16,17,32,33] /\ $ppmethod_magic(ptbytes)
+  -- if flags <- [0,1,2,4,16,17,18,32,33,34,36] /\ $ppmethod_magic(ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_begin(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
-  -- if $ppmethod_prechecked(flags, phpType47, pchheader) /\ flags <- [0,1,16,17,32,33] /\ ~$ppmethod_magic(ptbytes) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
+  -- if $ppmethod_prechecked(flags, phpType47, pchheader) /\ flags <- [0,1,2,4,16,17,18,32,33,34,36] /\ ~$ppmethod_magic(ptbytes) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method visibility, static, or modifiers")) ppropertydesc* pmethoddesc* -- otherwise
 
-def $ppmethod_begin(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_step(P, P_method, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, $psstep_start(phpType16, phpType18, b, $ppmethod_context(P, pchheader, ptbytes, P.LOCATION.LINE)))
-  -- if P_method = $ppfunction_start(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, ptbytes, P.LOCATION.LINE))], pchheader.NAME ++ $ptascii("::") ++ ptbytes, {PARAMETERS eps, RETURNS eps, BYREF b})[.GOTOROOT = pcpath]
+def $ppmethod_begin(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_step(P_warn, P_method, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, $psstep_start(phpType16, phpType18, b, $ppmethod_context(P, pchheader, ptbytes, P.LOCATION.LINE)))
+  -- if P_warn = $ppmethod_warning(P, flags, ptbytes)
+  -- if P_method = $ppfunction_start(P_warn[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, ptbytes, P.LOCATION.LINE))], pchheader.NAME ++ $ptascii("::") ++ ptbytes, {PARAMETERS eps, RETURNS eps, BYREF b})[.GOTOROOT = pcpath]
 
 def $ppmethod_default_path(pcpath, n) = pcpath ++ [PCFIELD 4, PCINDEX n, PCFIELD 6]
 def $ppmethod_default_parameter(P, pcpath, n) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR (pcpath ++ [PCFIELD 4, PCINDEX n]) P.LOCATION.LINE eps]]
@@ -129,7 +151,7 @@ def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metad
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot declare a return type"), $psline(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ptlc(ptbytes) = $ptascii("__construct") /\ pssignature.RETURNS =/= eps
-def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P_restored ppropertydesc* (pmethoddesc* ++ [{ NAME ptbytes, FUNCTION { DEFAULTS $ppmethod_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME (pchheader.NAME ++ $ptascii("::") ++ ptbytes), SIGNATURE pssignature, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $psline(metadata), ENDLINE $psendline(metadata) }, OWNER PORIGIN P_outer.FOLD.SOURCE.ID pcpath[0:$nabs($( |pcpath| - 2))], FINAL $ppproperty_flag(flags, 32), ABSTRACT $ppproperty_flag(flags, 16) }])
+def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P_restored ppropertydesc* (pmethoddesc* ++ [{ NAME ptbytes, FUNCTION { DEFAULTS $ppmethod_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME (pchheader.NAME ++ $ptascii("::") ++ ptbytes), SIGNATURE pssignature, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $psline(metadata), ENDLINE $psendline(metadata) }, OWNER PORIGIN P_outer.FOLD.SOURCE.ID pcpath[0:$nabs($( |pcpath| - 2))], VISIBILITY $ppmethod_visibility(flags), FINAL $ppproperty_flag(flags, 32), ABSTRACT $ppproperty_flag(flags, 16) }])
   -- if P_body.COMPLETION = PPCNORMAL
   -- if ~($ptlc(ptbytes) = $ptascii("__construct") /\ pssignature.RETURNS =/= eps)
   -- if P_restored = P_body[.CLOSURE = P_outer.CLOSURE][.CLASSCONTEXT = P_outer.CLASSCONTEXT][.RETURNREF = P_outer.RETURNREF][.RETURNS = P_outer.RETURNS][.CVS = P_outer.CVS][.HEADERASSIGNED = P_outer.HEADERASSIGNED][.LOOPS = P_outer.LOOPS][.SWITCHES = P_outer.SWITCHES][.GOTOROOT = P_outer.GOTOROOT][.LABELS = P_outer.LABELS][.GOTOS = P_outer.GOTOS][.EARLY = P_outer.EARLY][.FOLD = P_body.FOLD[.FUNCTION = P_outer.FOLD.FUNCTION][.CLASSCONTEXT = P_outer.FOLD.CLASSCONTEXT][.CLOSURE = P_outer.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P_outer.LOCATION][.EXPRESSIONS = P_outer.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P_outer.ACCESS ++ P_body.ACCESS][.NAMES = P_outer.NAMES ++ P_body.NAMES][.REDIRECTS = P_outer.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P_outer.WRITES ++ P_body.WRITES][.GLOBALS = P_outer.GLOBALS ++ P_body.GLOBALS]
@@ -195,27 +217,45 @@ def $ppmethod_ctor_parent_proto(pclassdesc_all*, pclassdesc) = eps -- otherwise
 
 def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = P
   -- if $ppmethod_at(pmethoddesc_children*, pmethoddesc_parent.NAME) = false
+def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = P
+  -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if $pmethod_independent_private(pmethoddesc_parent)
 def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = $ppconstant_error(P, $ptascii("Cannot override final method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("()"), pmethoddesc_child.FUNCTION.LINE)
   -- if $ppmethod_at(pmethoddesc_children*, pmethoddesc_parent.NAME)
   -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if pmethoddesc_parent.FINAL
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
 def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = $ppconstant_error(P, $ptascii("Cannot make non abstract method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc_child.NAME, pmethoddesc_child.FUNCTION.LINE)
   -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~pmethoddesc_parent.FINAL /\ pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
 def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = P
   -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $ppmethod_ctor_parent_proto(P.CLASSES, pclassdesc_child) = eps
   -- if ~pmethoddesc_parent.ABSTRACT
+def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = $ppconstant_error(P, ptbytes_message, pmethoddesc_child.FUNCTION.LINE)
+  -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $ppmethod_ctor_parent_proto(P.CLASSES, pclassdesc_child) =/= eps \/ pmethoddesc_parent.ABSTRACT
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = (ptbytes_message)
 def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = $ppmethod_early_result(P, pmethoddesc_child, pclassdesc_child, pmethoddesc_proto, pclassdesc_proto, pvclasses, $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, P.LOCATION.FILE), $pmethod_scope(pclassdesc_child, $ppmethod_early_ancestors(P.CLASSES, pclassdesc_child)), PMUSER $pmethod_user(pmethoddesc_proto, pclassdesc_proto, P.LOCATION.FILE), $pmethod_scope(pclassdesc_proto, $ppmethod_early_ancestors(P.CLASSES, pclassdesc_proto)), pvclasses))
   -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $ppmethod_ctor_parent_proto(P.CLASSES, pclassdesc_child) =/= eps \/ pmethoddesc_parent.ABSTRACT
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $ppmethod_ctor_parent_proto(P.CLASSES, pclassdesc_child) = (PPMINHERITED pmethoddesc_proto pclassdesc_proto)
 def $ppmethod_early_one(P, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent, pmethoddesc_children*, pvclasses) = $ppmethod_early_result(P, pmethoddesc_child, pclassdesc_child, pmethoddesc_parent, pclassdesc_parent, pvclasses, $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, P.LOCATION.FILE), $pmethod_scope(pclassdesc_child, $ppmethod_early_ancestors(P.CLASSES, pclassdesc_child)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, P.LOCATION.FILE), $pmethod_scope(pclassdesc_parent, $ppmethod_early_ancestors(P.CLASSES, pclassdesc_parent)), pvclasses))
   -- if $ppmethod_find(pmethoddesc_children*, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $ppmethod_ctor_parent_proto(P.CLASSES, pclassdesc_child) =/= eps \/ pmethoddesc_parent.ABSTRACT
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct")
 
 def $ppmethod_find(eps, ptbytes) = eps

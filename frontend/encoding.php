@@ -52,9 +52,46 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source): ?array {
     $lexer = new FileLexer();
     $lexer->encodingEvents = $events;
     $parser = new PhpParser\Parser\Php8($lexer, PhpParser\PhpVersion::fromComponents(8, 5));
-    $ast = $parser->parse($source, new PhpParser\ErrorHandler\Throwing());
+    try {
+        $ast = $parser->parse($source, new PhpParser\ErrorHandler\Throwing());
+    } catch (PhpParser\Error $error) {
+        if ($error->getRawMessage() !== 'Cannot use the final modifier on an abstract class member') throw $error;
+        $lexer = new FileLexer();
+        $lexer->encodingEvents = $events;
+        $parser = new PhpParser\Parser\Php8($lexer, PhpParser\PhpVersion::fromComponents(8, 5));
+        $errors = new PhpParser\ErrorHandler\Collecting();
+        $ast = $parser->parse($source, $errors);
+        foreach ($errors->getErrors() as $retryError) {
+            if (!isFinalAbstractMethodError($retryError, $ast)) throw $retryError;
+        }
+    }
     $phpSyntaxFileInfo = $lexer->info;
     return $ast;
+}
+
+// Zend raises a static CompileError for this modifier pair during parse-only
+// validation. Admit its AST so the checked compiler can model that diagnostic.
+function isFinalAbstractMethodError(PhpParser\Error $error, ?array $ast): bool {
+    if ($error->getRawMessage() !== 'Cannot use the final modifier on an abstract class member'
+        || $ast === null) return false;
+    $position = $error->getAttributes()['startTokenPos'] ?? null;
+    if ($position === null) return false;
+    $pending = $ast;
+    while ($pending !== []) {
+        $node = array_pop($pending);
+        if (!$node instanceof PhpParser\Node) continue;
+        if ($node instanceof PhpParser\Node\Stmt\ClassMethod
+            && ($node->flags & (PhpParser\Modifiers::FINAL | PhpParser\Modifiers::ABSTRACT))
+                === (PhpParser\Modifiers::FINAL | PhpParser\Modifiers::ABSTRACT)
+            && $node->getStartTokenPos() <= $position
+            && $position < $node->name->getStartTokenPos()) return true;
+        foreach ($node->getSubNodeNames() as $name) {
+            $child = $node->$name;
+            if ($child instanceof PhpParser\Node) $pending[] = $child;
+            elseif (is_array($child)) foreach ($child as $item) if ($item instanceof PhpParser\Node) $pending[] = $item;
+        }
+    }
+    return false;
 }
 
 function withLexerEncoding(string $encoding, callable $action) {

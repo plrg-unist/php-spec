@@ -231,6 +231,8 @@ dec $compiler_diagnostics(pstate, pldiagnostic*) : pstate
 dec $compiled_error_origin(porigin?, pcompletion, nat) : porigin?
 def $compiled_error_origin(porigin?, STATICBYTES n_message* z, n) = (PORIGIN n eps)
   -- if $(n > 0)
+def $compiled_error_origin(porigin?, COMPILETHROWN n_message* z, n) = (PORIGIN n eps)
+  -- if $(n > 0)
 def $compiled_error_origin(porigin?, STATICERROR text z, n) = (PORIGIN n eps)
   -- if $(n > 0)
 def $compiled_error_origin(porigin?, FATAL n_message* z, n) = (PORIGIN n eps)

@@ -37,6 +37,61 @@ def $effective_method(S, porigin, ptbytes, n) = $effective_method(S, porigin_par
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
 def $effective_method(S, porigin, ptbytes, n) = eps -- otherwise
 
+;; A private method has its own declaring-class identity even when a child
+;; installs the same name in the effective table.
+dec $method_lexical_private(pstate, nat, ptbytes, porigin?) : pmethoddesc?
+def $method_lexical_private(S, n, ptbytes, (porigin_scope)) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $method_named(pclassdesc_scope.METHODS, ptbytes) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_origin_matches(S, porigin_class, pclassdesc_scope.NAME, |S.CLASSES|)
+def $method_lexical_private(S, n, ptbytes, porigin?) = eps -- otherwise
+dec $method_selected_scope(pstate, nat, ptbytes, porigin?) : pmethoddesc?
+def $method_selected_scope(S, n, ptbytes, porigin?) = (pmethoddesc)
+  -- if $method_lexical_private(S, n, ptbytes, porigin?) = (pmethoddesc)
+def $method_selected_scope(S, n, ptbytes, porigin?) = $effective_method(S, porigin_class, ptbytes, |S.CLASSES|)
+  -- if $method_lexical_private(S, n, ptbytes, porigin?) = eps
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+def $method_selected_scope(S, n, ptbytes, porigin?) = eps -- otherwise
+dec $method_current_scope(pstate) : porigin?
+def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext)
+def $method_current_scope(S) = eps -- otherwise
+
+dec $method_prototype(pstate, porigin, ptbytes, nat) : porigin
+def $method_prototype(S, porigin, ptbytes, n) = $method_prototype(S, porigin_parent, ptbytes, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+  -- if $effective_method(S, porigin_parent, ptbytes, |S.CLASSES|) = (pmethoddesc_parent)
+  -- if pmethoddesc_parent.VISIBILITY =/= PROPERTY_PRIVATE
+def $method_prototype(S, porigin, ptbytes, n) = porigin -- otherwise
+dec $method_accessible(pstate, pmethoddesc, porigin?) : bool
+def $method_accessible(S, pmethoddesc, porigin?) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $method_accessible(S, pmethoddesc, (porigin_scope)) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if pmethoddesc.OWNER = porigin_scope
+def $method_accessible(S, pmethoddesc, (porigin_scope)) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PROTECTED
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if porigin_prototype = $method_prototype(S, pmethoddesc.OWNER, pmethoddesc.NAME, |S.CLASSES|)
+  -- if $class_at(S.CLASSES, porigin_prototype) = (pclassdesc_prototype)
+  -- if $class_origin_matches(S, porigin_scope, pclassdesc_prototype.NAME, |S.CLASSES|) \/ $class_origin_matches(S, porigin_prototype, pclassdesc_scope.NAME, |S.CLASSES|)
+def $method_accessible(S, pmethoddesc, porigin?) = false -- otherwise
+dec $method_scope_suffix(pstate, porigin?) : ptbytes
+def $method_scope_suffix(S, (porigin_scope)) = $ptascii(" from scope ") ++ pclassdesc_scope.NAME
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+def $method_scope_suffix(S, porigin?) = $ptascii(" from global scope") -- otherwise
+dec $method_visibility_name(ppropertyvisibility) : ptbytes
+def $method_visibility_name(PROPERTY_PRIVATE) = $ptascii("private")
+def $method_visibility_name(PROPERTY_PROTECTED) = $ptascii("protected")
+def $method_visibility_name(PROPERTY_PUBLIC) = $ptascii("public")
+dec $method_denied(pstate, pmethoddesc, ptbytes, porigin?, bool, int) : pstate
+def $method_denied(S, pmethoddesc, ptbytes, porigin?, false, z) = $throw_scalar(S, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()") ++ $method_scope_suffix(S, porigin?), z)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $method_denied(S, pmethoddesc, ptbytes, porigin?, true, z) = $throw_scalar(S, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" ") ++ pclassdesc.NAME ++ $ptascii("::__construct()") ++ $method_scope_suffix(S, porigin?), z)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+
 def $new_has_ctor(S, preqbytes) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
   -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
@@ -52,6 +107,7 @@ def $target_called_class(S, METHOD_TARGET n porigin) = (porigin_class)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
 def $target_called_class(S, pcalltarget) = eps -- otherwise
+dec $method_target_eligible(pstate, porigin, pmethoddesc) : bool
 def $target_function(S, METHOD_TARGET n porigin) = (pmethoddesc.FUNCTION)
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -60,8 +116,17 @@ def $target_function(S, METHOD_TARGET n porigin) = (pmethoddesc.FUNCTION)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
   -- if $class_links_valid(S)
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
-  -- if $effective_method(S, porigin_class, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $method_target_eligible(S, porigin_class, pmethoddesc)
 def $target_function(S, pcalltarget) = eps -- otherwise
+def $method_target_eligible(S, porigin_class, pmethoddesc) = true
+  -- if $effective_method(S, porigin_class, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+def $method_target_eligible(S, porigin_class, pmethoddesc) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if $effective_method(S, porigin_class, pmethoddesc.NAME, |S.CLASSES|) =/= (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if $method_named(pclassdesc_owner.METHODS, pmethoddesc.NAME) = (pmethoddesc)
+  -- if $class_origin_matches(S, porigin_class, pclassdesc_owner.NAME, |S.CLASSES|)
+def $method_target_eligible(S, porigin_class, pmethoddesc) = false -- otherwise
 
 dec $method_source_name(phpType20, ptbytes) : bool
 def $method_source_name(NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
@@ -69,6 +134,50 @@ def $method_source_name(expression_name, ptbytes) = true
   -- if $property_computed_name(expression_name)
 def $method_source_name(phpType20, ptbytes) = false -- otherwise
 
+;; A selected call can be paused in its caller, or already entered with the
+;; caller saved immediately below it. Recover the executed scope from that
+;; call chain rather than the selected method's declaring class.
+dec $method_context_scope(pcallcontext?) : porigin?
+def $method_context_scope((pcallcontext)) = pcallcontext.LEXICAL_CLASS
+def $method_context_scope(eps) = eps
+dec $method_target_caller(pcallcontext?, pframe*, porigin, porigin) : porigin?
+def $method_target_caller((pcallcontext), pframe :: pframe_tail*, porigin_method, porigin_site) = $method_context_scope(pframe.CONTEXT)
+  -- if pcallcontext.FUNCTION = porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pframe.ORIGIN = (porigin_site)
+def $method_target_caller((pcallcontext), pframe :: pframe_tail*, porigin_method, porigin_site) = $method_target_caller(pframe.CONTEXT, pframe_tail*, porigin_method, porigin_site)
+  -- if ~(pcallcontext.FUNCTION = porigin_method /\ pcallcontext.CALLSITE = (porigin_site) /\ pframe.ORIGIN = (porigin_site))
+def $method_target_caller(eps, pframe :: pframe_tail*, porigin_method, porigin_site) = $method_target_caller(pframe.CONTEXT, pframe_tail*, porigin_method, porigin_site)
+def $method_target_caller(pcallcontext?, eps, porigin_method, porigin_site) = eps
+dec $method_frame_site_scope(pstate, pframe*, pfunction?) : porigin?
+def $method_frame_site_scope(S, pframe :: pframe_tail*, pfunction?) = $method_context_scope(pframe.CONTEXT)
+  -- if $goto_owner_scope(pframe.CONTEXT, pfunction?)
+def $method_frame_site_scope(S, pframe :: pframe_tail*, pfunction?) = $method_frame_site_scope(S, pframe_tail*, pfunction?)
+  -- if ~$goto_owner_scope(pframe.CONTEXT, pfunction?)
+def $method_frame_site_scope(S, eps, pfunction?) = eps
+dec $method_site_scope(pstate, porigin, porigin) : porigin?
+dec $method_entered_here(pstate, porigin, porigin) : bool
+def $method_entered_here(S, porigin_method, porigin_site) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+def $method_entered_here(S, porigin_method, porigin_site) = false -- otherwise
+def $method_site_scope(S, porigin_method, porigin_site) = $method_target_caller(S.CURRENT, S.FRAMES, porigin_method, porigin_site)
+  -- if $method_entered_here(S, porigin_method, porigin_site)
+def $method_site_scope(S, porigin_method, PORIGIN n_unit pcpath) = $method_context_scope(S.CURRENT)
+  -- if ~$method_entered_here(S, porigin_method, PORIGIN n_unit pcpath)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = pfunction?
+  -- if $goto_owner_scope(S.CURRENT, pfunction?)
+def $method_site_scope(S, porigin_method, PORIGIN n_unit pcpath) = $method_frame_site_scope(S, S.FRAMES, $goto_source_owner($all_functions(S), n_unit, pcpath))
+  -- if ~$method_entered_here(S, porigin_method, PORIGIN n_unit pcpath)
+  -- if ~$goto_owner_scope(S.CURRENT, $goto_source_owner($all_functions(S), n_unit, pcpath))
+dec $method_call_origin_valid(pstate, nat, pmethoddesc, porigin) : bool
+def $method_call_origin_valid(S, n, pmethoddesc, porigin_site) = true
+  -- if porigin_scope? = $method_site_scope(S, pmethoddesc.FUNCTION.ORIGIN, porigin_site)
+  -- if $method_selected_scope(S, n, pmethoddesc.NAME, porigin_scope?) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, porigin_scope?)
+def $method_call_origin_valid(S, n, pmethoddesc, porigin_site) = false -- otherwise
+
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
@@ -107,11 +216,13 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = t
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
+  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
+  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcpath)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
@@ -122,6 +233,8 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcp
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $method_site_scope(S, pmethoddesc.FUNCTION.ORIGIN, PORIGIN n_unit pcpath))
 def $method_call_selected(S, pcalltarget, porigin?) = false -- otherwise
 
 ;; A receiver operand retains its expression result kind across a computed
@@ -169,14 +282,23 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
-  -- if $effective_method(S_read, porigin_class, ptbytes, |S_read.CLASSES|) = (pmethoddesc)
+  -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = (pmethoddesc)
+  -- if $method_accessible(S_read, pmethoddesc, $method_current_scope(S_read))
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $method_denied(S_read, pmethoddesc, ptbytes, $method_current_scope(S_read), false, z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INSTANCE porigin_class
+  -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = (pmethoddesc)
+  -- if ~$method_accessible(S_read, pmethoddesc, $method_current_scope(S_read))
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
-  -- if $effective_method(S_read, porigin_class, ptbytes, |S_read.CLASSES|) = eps
+  -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = eps
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -346,6 +468,14 @@ def $constructor_start(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
+  -- if $method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
+def $constructor_start(S, preqbytes, phpType7*, z) = $method_denied(S_new, pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, z)[.TODO = eps]
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION = NORMAL
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+  -- if S_new.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
+  -- if ~$method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
 def $constructor_start(S, preqbytes, phpType7*, z) = S_new
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION =/= NORMAL
@@ -550,26 +680,44 @@ def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_p
 dec $method_override_one(pstate, pclassdesc, ppmethodinherited) : pmethodissue
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = eps
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if $pmethod_independent_private(pmethoddesc_parent)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot override final method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("()")) pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if pmethoddesc_parent.FINAL
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot make non abstract method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc_child.NAME) pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~pmethoddesc_parent.FINAL /\ pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = eps
   -- if ~pmethoddesc_parent.ABSTRACT
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ptbytes_message pmethoddesc_child.FUNCTION.LINE
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = (ptbytes_message)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto)
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = (PPMINHERITED pmethoddesc_proto pclassdesc_proto)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent)
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct")
 
 dec $method_override_items(pstate, pclassdesc, ppmethodinherited*) : pmethodissue

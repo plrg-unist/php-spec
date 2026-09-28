@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay retained public method/constructor sources against the checked CLI."""
+"""Replay retained instance method/constructor sources against the checked CLI."""
 from pathlib import Path
 import argparse
 import base64
@@ -12,20 +12,22 @@ import tempfile
 import static_types as types
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = json.loads((ROOT / 'tests/semantics/method_runtime_cases.json').read_text())
+DEFAULT_CASES = ROOT / 'tests/semantics/method_runtime_cases.json'
 
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def run(match):
-    selected = [row for row in CASES if match in row['id']]
+def run(match, catalogue=DEFAULT_CASES):
+    catalogue = Path(catalogue).resolve()
+    cases = json.loads(catalogue.read_text())
+    selected = [row for row in cases if match in row['id']]
     assert selected, 'no method source controls selected'
     before = types.syntax_validation.implementation_fingerprint()
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = [*modules, ROOT / 'spec/semantics/modules.json', Path(__file__),
-               ROOT / 'tests/semantics/method_runtime_cases.json',
+               catalogue,
                ROOT / 'bin/php-semantics', ROOT / 'tests/semantics/profile.json']
     direct = {str(path.relative_to(ROOT)): sha(path) for path in watched}
     out = Path(tempfile.mkdtemp(prefix='method-runtime-', dir=ROOT / '.tools'))
@@ -67,7 +69,7 @@ def run(match):
     assert all(sha(ROOT / name) == digest for name, digest in direct.items()), 'direct input changed during run'
     report = {'result': 'pass' if all(row['pass'] for row in records) else 'fail',
               'selection': match, 'selected_cases': len(selected),
-              'catalogue_cases': len(CASES),
+              'catalogue_cases': len(cases),
               'fingerprint': before, 'direct_inputs': direct, 'raw': str(out), 'records': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(out, report['result'])
@@ -77,5 +79,6 @@ def run(match):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')
+    parser.add_argument('--catalogue', type=Path, default=DEFAULT_CASES)
     args = parser.parse_args()
-    raise SystemExit(0 if run(args.match) else 1)
+    raise SystemExit(0 if run(args.match, args.catalogue) else 1)

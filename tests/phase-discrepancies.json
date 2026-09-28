@@ -365,5 +365,69 @@
       "vendor/php-parser/lib/PhpParser/ParserAbstract.php:1093"
     ],
     "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/access_modifiers/access_modifiers_007.phpt",
+    "sha256": "066c596ce780b17bcac9600142d9fe08506b620e8937a85945462605738dc187",
+    "direction": "frontend_accepts_static_rejection",
+    "oracle_category": "parser_static_rejection",
+    "oracle_message": "Cannot use the final modifier on an abstract method",
+    "lint_contains": "Fatal error: Cannot use the final modifier on an abstract method",
+    "restriction": "final_abstract_method_modifier",
+    "reason": "Zend raises a parse-time static CompileError for a final abstract method; the independent frontend retains its AST so the checked method compiler emits the same no-trace fatal.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1022-1034",
+      "spec/semantics/141-method-compiler.watsup",
+      "frontend/encoding.php"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/tests/classes/interface_method_final.phpt",
+    "sha256": "9b610f828a7997ed8c2e1e78efb0f5fc1d21be61a0d1a66403736c76f0eaf664",
+    "direction": "frontend_accepts_static_rejection",
+    "oracle_category": "parser_static_rejection",
+    "oracle_message": "Cannot use the final modifier on an abstract method",
+    "lint_contains": "Fatal error: Cannot use the final modifier on an abstract method",
+    "restriction": "final_abstract_method_modifier",
+    "reason": "Zend raises a parse-time static CompileError for a final abstract method; the independent frontend retains its AST so the checked method compiler emits the same no-trace fatal.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1022-1034",
+      "spec/semantics/141-method-compiler.watsup",
+      "frontend/encoding.php"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/tests/classes/abstract_final.phpt",
+    "sha256": "14de7e8221ed31c461ec032a19204fcc200e5353c248747e18e0b7c48cb318f5",
+    "direction": "frontend_accepts_static_rejection",
+    "oracle_category": "parser_static_rejection",
+    "oracle_message": "Cannot use the final modifier on an abstract method",
+    "lint_contains": "Fatal error: Cannot use the final modifier on an abstract method",
+    "restriction": "final_abstract_method_modifier",
+    "reason": "Zend raises a parse-time static CompileError for a final abstract method; the independent frontend retains its AST so the checked method compiler emits the same no-trace fatal.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1022-1034",
+      "spec/semantics/141-method-compiler.watsup",
+      "frontend/encoding.php"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "vendor/php-src/tests/classes/final_abstract.phpt",
+    "sha256": "006c53d6511370f7ec1ee7b0c2f4f6724d30adfb741809c6e0b9bfdd727e0e6a",
+    "direction": "frontend_accepts_static_rejection",
+    "oracle_category": "parser_static_rejection",
+    "oracle_message": "Cannot use the final modifier on an abstract method",
+    "lint_contains": "Fatal error: Cannot use the final modifier on an abstract method",
+    "restriction": "final_abstract_method_modifier",
+    "reason": "Zend raises a parse-time static CompileError for a final abstract method; the independent frontend retains its AST so the checked method compiler emits the same no-trace fatal.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:1022-1034",
+      "spec/semantics/141-method-compiler.watsup",
+      "frontend/encoding.php"
+    ],
+    "ini": {}
   }
 ]
