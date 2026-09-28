@@ -20,6 +20,7 @@ dec $call_node_arguments(pcnode) : pcallarguments
 dec $call_argument_source(pstate, porigin) : pcallarguments
 def $call_node_arguments(NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 1
 def $call_node_arguments(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 2
+def $call_node_arguments(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 2
 def $call_node_arguments(NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 2
 def $call_node_arguments(NExprNew phpType28 (SEQUENCE phpType7*) metadata) = PCALLARGUMENTS phpType7* 1
 def $call_node_arguments(pcnode) = PCALLNOARGUMENTS -- otherwise
@@ -39,6 +40,7 @@ dec $reference_return_result_valid(pstate) : bool
 dec $call_declaration_node(pcnode) : bool
 def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
 def $call_declaration_node(NExprMethodCall expression phpType20 phpType6 metadata) = true
+def $call_declaration_node(NExprStaticCall phpType19 phpType20 phpType6 metadata) = true
 def $call_declaration_node(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
 def $call_declaration_node(NExprBinaryOpPipe expression_left expression_right metadata) = true
 def $call_declaration_node(NStmtSwitch expression phpType60 metadata) = true
@@ -64,6 +66,8 @@ def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
 def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprMethodCall expression phpType20 phpType6 metadata)
+def $call_source_node(S, n, pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
 def $call_source_node(S, n, pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
 def $call_source_node(S, n, pcpath) = true
@@ -177,6 +181,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
 def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = $method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call)
+def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true

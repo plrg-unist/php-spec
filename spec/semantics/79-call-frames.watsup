@@ -19,8 +19,13 @@ def $operands_roots(eps) = eps
 def $operands_roots(poperand :: poperand_tail*) = $operand_nodes(poperand) ++ $operands_roots(poperand_tail*)
 def $table_roots(eps) = eps
 def $table_roots((psymboltable)) = $environment_nodes(psymboltable.ENV)
+dec $call_target_extra_roots(pcallcontext) : pnode*
+def $call_target_extra_roots(pcallcontext) = [HOBJECT n]
+  -- if pcallcontext.TARGET = METHOD_TARGET n porigin
+  -- if pcallcontext.RECEIVER = eps
+def $call_target_extra_roots(pcallcontext) = eps -- otherwise
 def $call_context_roots(eps) = eps
-def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $instance_roots(pcallcontext.RECEIVER) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)
+def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $instance_roots(pcallcontext.RECEIVER) ++ $call_target_extra_roots(pcallcontext) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)
 def $frames_roots(eps) = eps
 def $frames_roots(pframe :: pframe_tail*) = $table_roots(pframe.LOCALS) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD ++ $call_context_roots(pframe.CONTEXT) ++ $frames_roots(pframe_tail*)
 

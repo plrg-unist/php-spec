@@ -72,14 +72,20 @@ def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
 def $trace_context_class(S, pcallcontext) = eps -- otherwise
 dec $trace_context_type(pstate, pcallcontext) : preqbytes?
+def $trace_context_type(S, pcallcontext) = ($ptascii("::"))
+  -- if pcallcontext.INSTANCE = eps
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
 def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
   -- if pcallcontext.INSTANCE = eps
   -- if pcallcontext.RECEIVER = (n)
   -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
 def $trace_context_type(S, pcallcontext) = ($ptascii("::"))
   -- if pcallcontext.INSTANCE = eps
   -- if pcallcontext.RECEIVER = eps
   -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
 def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
   -- if pcallcontext.INSTANCE = (n_closure)
   -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
