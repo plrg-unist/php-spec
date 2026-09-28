@@ -103,9 +103,20 @@ def main():
                                     'response': parser_response(parsed)})
             assert checked['ok'] and checked['accepted'] is False
 
-        static = frontend.call({'op': 'parse-eval', **pending('13', b'class A{final abstract private function f();}')})
-        assert static['ok'] is False and static['category'] == 'helper_unsupported'
-        recovered = frontend.call({'op': 'parse-eval', **pending('14', b'echo 4;')})
+        static_sources = ((b'class A { final abstract private function f(); }', 1),
+                          (b'class A {\nfinal abstract private function f(); }', 2))
+        for number, (source, line) in enumerate(static_sources, 13):
+            identity = pending(str(number), source)
+            static = frontend.call({'op': 'parse-eval', **identity})
+            assert static['ok'] and static['accepted'] is False
+            assert static['category'] == 'parser_static_rejection' and static['line'] == line
+            assert base64.b64decode(static['message']) == b'Cannot use the final modifier on an abstract method'
+            checked = adapter.call({'op': 'check_source_service', 'pending': identity,
+                                    'response': parser_response(static)})
+            assert checked['ok'] and checked['accepted'] is False
+            assert checked['category'] == static['category'] and checked['line'] == line
+            assert checked['message'] == static['message'] and checked['source'] == identity['source']
+        recovered = frontend.call({'op': 'parse-eval', **pending('15', b'echo 4;')})
         assert recovered['ok'] and recovered['accepted'] is True
 
         native_only = subprocess.run([php, '-n', '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
@@ -141,6 +152,14 @@ def main():
         assert not adapter.call({'op': 'check_source_service', 'pending': pending('3', cases[3]),
                                  'response': bad})['ok']
 
+        static_response = parser_response(static)
+        for field, value in [('category', 'compile_error'), ('line', 0),
+                             ('source', encoded(b'echo 1;')), ('message', '!!!'), ('extra', True)]:
+            bad = copy.deepcopy(static_response)
+            bad[field] = value
+            assert not adapter.call({'op': 'check_source_service', 'pending': pending('14', static_sources[1][0]),
+                                     'response': bad})['ok']
+
         for field, value in [('id', '00'), ('source', 'ZWNobyAxOw=')]:
             bad_pending = pending('0', cases[0])
             bad_pending[field] = value
@@ -161,7 +180,7 @@ def main():
             finally:
                 unsupported.close()
         print(json.dumps({'result': 'pass', 'eval_cases': len(cases), 'native_rejections': 2,
-                          'static_unsupported': 1, 'protocol_negatives': 11,
+                          'native_static_rejections': 2, 'protocol_negatives': 16,
                           'native_declarations': 'not installed',
                           'file_parse_after_eval': 'unchanged', 'unsupported_profile': 'distinct'}))
     finally:

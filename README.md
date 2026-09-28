@@ -18,11 +18,13 @@ remains later research.
 
 The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
 accepts raw eval-source bytes, uses a native parse-only scanner for rejection
-facts, and validates the PHP-Parser AST as a formal program. Its
+facts including catchable parse-time `CompileError` provenance, and validates
+the PHP-Parser AST as a formal program. Its
 [transport evidence ledger](coverage/dynamic-eval-helper-review.json)
 separates 11 focused eval-source cases from the 30,980-entry existing file-syntax
 regression. The [native diagnostic ledger](coverage/dynamic-eval-native-diagnostics-review.json)
-records the separate parse-only bridge. Eval/include execution and machine
+records the separate parse-only bridge; the [exception-kind extension](coverage/dynamic-eval-parser-exceptions-review.json)
+records the later CompileError classification. Eval/include execution and machine
 pause/resume remain unsupported.
 
 All required non-system inputs are local and pinned. See

@@ -1,0 +1,40 @@
+{
+  "increment": "checked eval parser exception-kind evidence",
+  "base_commit": "36fcce48a160d89729ff6c7104d947c19d92a3cf",
+  "contract": "Native parse-only ParseError remains parser_rejection; exact base CompileError thrown by php_spec_parse_eval becomes parser_static_rejection. Both rejected variants retain exact pending id/mode/profile/original bytes, canonical base64 message, positive source line and no AST. Other native Throwable and parser disagreement remain helper_unsupported.",
+  "native_boundary": {
+    "php_file_c_sha256": "5a4528c97a3978a2eab0eae85f5c7258bf9e30924bbf0707d04238cdd617c7f1",
+    "helper_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "c_source_and_helper_unchanged_from_base": true,
+    "compile_or_eval_call_added": false
+  },
+  "private_focused": {
+    "command": "python3 tests/eval_source_service.py",
+    "result": "pass",
+    "eval_cases": 11,
+    "parseerror_message_line_controls": 2,
+    "compileerror_message_line_controls": 2,
+    "pinned_caught_eval_control_sha256": "cb2c4a4d1e87259467086e66cca130eb49ce7f84b2cb4eca09654d6a9cbbbb9a",
+    "focused_test_sha256": "f4c31ecd5a7c9e07545bd1541c1a22ed7bd46ea09d108f6084aa6dd7409b41f4",
+    "protocol_negatives": 16,
+    "raw_sha256": "7be779c549a5919b945132fd7002de596737b421a13ae9b7a0929e62c948b468",
+    "wire_command": "python3 tests/wire_negative.py",
+    "wire_passed": 33,
+    "wire_sha256": "d0c7fcae4306d78ac7dda782978baba850d3ebc86a59716439ad6a7243ddfdfe",
+    "worker_lint": "pass",
+    "adapter_sha256": "8506c1ede5da1225489e71f7f3843610c8713d09c4d4f9483ce996011104ee5c"
+  },
+  "private_file_syntax": {
+    "command": "python3 tests/validate.py --elaborate --lint-all --output .tools/eval-native-gates/exception-targeted.jsonl",
+    "tested": 97,
+    "counts": {"pass": 83, "parser_rejection": 14},
+    "stable_implementation": true,
+    "implementation_sha256": "d6809877f3ee93f519af01ebc0eb063a3a3d31385c6eab155030c2d7f0aecf53",
+    "raw_sha256": "98129e648efdf6e489bc2268621bae39f9a2d20008ce1a523859b0109f1e15d5",
+    "summary_sha256": "4eb14b0df5c5a75bbe5542e5badaa8ab54ff0df650ae275e9fe1d9baa2bd22bd"
+  },
+  "full_file_syntax": "The older 30,980-file classified report in dynamic-eval-native-diagnostics-review.json belongs to frozen native-bridge commit 90f913f09. This extension requires the separately reviewed merged frontend full gate; no full-gate result is claimed here.",
+  "transport_limit": "check_source_service validates one pending/response shape and identity. It cannot authenticate a type-correct edited AST against source bytes or remember consumed request IDs; the trusted worker and later stateful runtime must preserve those guarantees.",
+  "evidence_recovery": "Ignored focused, wire and targeted reports are under .tools/eval-native-diagnostics/.tools/eval-native-gates; run the listed commands in the private extension tree with its isolated adapter build."
+}

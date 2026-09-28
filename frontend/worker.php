@@ -147,9 +147,18 @@ while (($line = fgets(STDIN)) !== false) {
                         $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
                             'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
                         break;
+                    } catch (CompileError $error) {
+                        if (get_class($error) !== CompileError::class || $error->getLine() < 1) {
+                            echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                                'message' => 'Native eval parser gave an unsupported compile exception'], JSON_THROW_ON_ERROR), "\n";
+                            continue 2;
+                        }
+                        $result = $identity + ['accepted' => false, 'category' => 'parser_static_rejection',
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                        break;
                     } catch (Throwable $error) {
                         echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
-                            'message' => 'Native eval parser produced a non-ParseError'], JSON_THROW_ON_ERROR), "\n";
+                            'message' => 'Native eval parser produced an unsupported exception'], JSON_THROW_ON_ERROR), "\n";
                         continue 2;
                     }
                     if (!$nativeAccepted) {

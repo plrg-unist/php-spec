@@ -296,11 +296,13 @@ let check_source_service request =
     check (typ "program") value;
     `Assoc (["ok", `Bool true; "accepted", `Bool true; "ast", export_program value] @ identity))
   else (
-    if string (field "category" response) <> "parser_rejection" then fail "invalid parser rejection category";
+    let category = string (field "category" response) in
+    if category <> "parser_rejection" && category <> "parser_static_rejection" then
+      fail "invalid parser rejection category";
     let line = field "line" response |> J.to_int in
     if line < 1 then fail "invalid parser rejection line";
     let message = source_bytes (field "message" response) in
-    `Assoc (["ok", `Bool true; "accepted", `Bool false; "category", `String "parser_rejection";
+    `Assoc (["ok", `Bool true; "accepted", `Bool false; "category", `String category;
              "message", `String message; "line", `Int line] @ identity))
 let () =
   try while true do
