@@ -51,8 +51,9 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 155/156 B | Value/reference return, loop/switch/foreach jumps and goto across finally: 20 additional source tuples, six transfer controls and ten transfer paused stages. A focused repair disambiguates goto entry into try/catch with and without finally and authenticates the rebuilt region across saved calls. [Contract](docs/semantics/SOURCE-FINALLY.md) · [Stage B ledger](coverage/semantics/finally-stage-b-author.json) · [repair ledger](coverage/semantics/finally-goto-repair.json) |
 | 157/158 | Generated Throwable fields use authenticated internal property IDs and sole `OBJECTPROPS` slots; five direct getters retain ordered argument/receiver ownership. Final-base evidence: 26 exact source tuples, seven Unsupported controls, four paused stages/60 assertions, and private 22-source/127-assertion bridge. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-getters-review.json) |
 | 159/160 foundation | Fresh dynamic source-unit registration, preservation of a live caller during compiler append, and per-unit observer filenames. This is compiler/registry groundwork; reached eval and include execution remain open. [Contract](docs/semantics/DYNAMIC-SOURCE.md) · [ledger](coverage/semantics/dynamic-source-foundation.json) |
+| Nonpublic instance methods | Protected/private source descriptors, lexical ancestor-private dispatch, protected root-prototype access, constructors and selected-call provenance. Bounded evidence: 47 exact native sources, 32 compiler fixtures/109 assertions, four paused stages/27 assertions and 12 independent exact replays; the merged frontend has a separately classified 30,980-entry syntax gate. [Contract](docs/semantics/SOURCE-METHODS.md) · [review](coverage/semantics/method-visibility-review.json) |
 
-The current integration combines protected and private properties, public methods and
+The current integration combines protected and private properties, public and nonpublic instance methods and
 constructors, cloning, nullsafe chains, match, print and exit/die with generated
 Throwable control and reviewed Stage B finally transfers. Source, paused-state and terminal migration evidence have
 bounded review. The [migration ledger](coverage/semantics/throwable-migration-review.json)
@@ -78,7 +79,8 @@ authored catchable exceptions and stateful source continuation are the next step
 
 Throwable constructors, remaining accessors, structured
 trace payloads and user subclasses follow. Constructor-created previous cycles
-need separate handling beyond stage A generated-only acyclicity. Nonpublic/static methods,
+need separate handling beyond stage A generated-only acyclicity. Static methods,
+first-class method callables,
 static/readonly members, hooks, magic methods, remaining internal parents,
 conversion callbacks, output handlers, traversal and lifecycle integration remain
 open. Exit bypasses catch/finally; shutdown/destructor callbacks remain required.

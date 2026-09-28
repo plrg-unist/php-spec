@@ -3,9 +3,10 @@
 Modules 141/142 extend named source classes with instance methods and
 constructors. The nonpublic-method milestone adds protected/private instance
 access and declaring-class private identity. The target remains PHP 8.5.10 CLI NTS 64-bit
-under the ordinary profile. [The review](../../coverage/semantics/methods-review.json) binds retained
-native sources, compiler projections, paused ownership checks and compatibility
-bridges; these are bounded observations, not complete class semantics.
+under the ordinary profile. The [public-method review](../../coverage/semantics/methods-review.json)
+and [nonpublic-method review](../../coverage/semantics/method-visibility-review.json)
+bind separate native sources, compiler projections and paused ownership checks;
+these are bounded observations, not complete class semantics.
 
 ## Descriptors and dispatch
 
@@ -69,13 +70,16 @@ use native C-string display while lookup and argument identities retain full byt
 ## Validation and remaining scope
 
 Maintained commands are `method_compiler.py`, `method_runtime.py`,
-`method_visibility_protocol.py` and `method_wrapper_protocol.py` under
+`method_visibility_protocol.py`, `method_modifier_phase.py` and
+`method_wrapper_protocol.py` under
 `tests/semantics`. The visibility source catalogue is
 `method_visibility_cases.json`. Native parse-only validation raises a static
 `CompileError` for `final abstract` methods. The frontend retains those method
 ASTs so the checked compiler can emit the same no-trace fatal;
 `method_visibility_frontend.py` checks the original source and nearby parser
-rejections. A direct checked-AST fixture tests modifier priority in a
+rejections. Four pinned PHPT sources also bridge native parse-only static
+rejection to frontend method flags and the checked no-trace fatal. A direct
+checked-AST fixture tests modifier priority in a
 concrete class. Retained compiler, runtime, NUL argument,
 intrinsic invocation and paused reports keep separate identities in
 the review ledger. Existing match/print/exit cross cases have explicit bridges;
@@ -89,7 +93,7 @@ language and require a separate cache/scope provenance increment.
 Unsupported declarations/consumers remain explicit; no native evaluation fallback
 is used. Generated Throwable errors and ordered catches use owned objects;
 finally transfers have a separate contract. Dynamic lifecycle
-work follow separately.
+work follows separately.
 
 Primary engine routes: `Zend/zend_compile.c` method and call compilation;
 `Zend/zend_inheritance.c` method compatibility and constructor inheritance;

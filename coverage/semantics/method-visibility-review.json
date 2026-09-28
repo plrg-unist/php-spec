@@ -1,0 +1,173 @@
+{
+  "result": "bounded-method-milestone-pass",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, ordinary pinned profile",
+  "candidate": {
+    "canonical_base": "36fcce48a160d89729ff6c7104d947c19d92a3cf",
+    "eval_helper_commits": [
+      "0c0fef0b5",
+      "b5900bad8"
+    ],
+    "method_checkpoint": "675433d99",
+    "checkpoint_tree": "09970ee08b4c06ff3be5478a7ab0c21beafcc781",
+    "implementation_fingerprint": "40189aef73d617456a888600ef06c511d9fa4ce13f2dd3bb412022b9ddfeeda3",
+    "fingerprint_files": 1175
+  },
+  "scope": "Protected/private source instance methods and constructors: descriptor visibility, inherited private identity, lexical lookup, protected root-prototype access, override/final/abstract checks, ordinary/nullsafe calls, bound closure scope and authenticated selected tasks/current/saved frames. Prior public-method review remains separate.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/141-method-compiler.watsup",
+    "spec/semantics/142-method-runtime.watsup",
+    "spec/semantics/83-call-traces.watsup",
+    "spec/semantics/20-machine.watsup",
+    "spec/semantics/33-runtime-compiler.watsup",
+    "bin/php-semantics",
+    "frontend/encoding.php"
+  ],
+  "evidence": {
+    "native_catalogue": {
+      "sources": 47,
+      "normal": 22,
+      "php_error": 16,
+      "static_rejection": 9,
+      "catalogue": "tests/semantics/method_visibility_cases.json",
+      "catalogue_sha256": "f99f948456f687c3e00c646094c834312dad21c6517537da24b9a0585bca04a4",
+      "raw_path": ".tools/nonpublic-method-candidate/.tools/nonpublic-native/native.json",
+      "raw_sha256": "2cf7d7fe00980c8c075518da883913bc76e8acf314148ecacb65dfc9220e340d",
+      "review": "Independent review verified each exact source SHA, native stdout/stderr/exit and original raw provenance."
+    },
+    "author_source": {
+      "result": "pass",
+      "exact_sources": 47,
+      "normal": 22,
+      "php_error": 16,
+      "static_rejection": 9,
+      "report": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-runtime-t9rx3yru/report.json",
+        "sha256": "e72e79607613e0f61d15f09b3be85192d86f1abe1e093bd6ac4ad35d2ea62852"
+      }
+    },
+    "compiler": {
+      "result": "pass",
+      "fixtures": 32,
+      "assertions": 109,
+      "report": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-compiler-3a1e4h3c/report.json",
+        "sha256": "f7b5512514b92af650facecac00f1cb9cfd8146541eb13b44b7d25f8be8fac45"
+      }
+    },
+    "paused": {
+      "result": "pass",
+      "stages": 4,
+      "assertions": 27,
+      "scope": "Global protected/private forgery, wrong-scope ancestor-private redirect and saved caller lexical-scope forgery.",
+      "report": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-visibility-protocol-scjp2ohr/report.json",
+        "sha256": "ebc2d7ad3bbfbec797378399f33f95157cd52472347a4c174adb02f3e640d00b"
+      }
+    },
+    "independent_source": {
+      "result": "pass",
+      "exact_sources": 12,
+      "stable": true,
+      "report": {
+        "path": ".tools/nonpublic-method-review/nonpublic-method-review-e8eiuahk/report.json",
+        "sha256": "feb8ba8ddf3288e29c55903dc3b82c6c8cb7c642d540c0b5976f524b87962d0d"
+      }
+    },
+    "frontend_control": {
+      "result": "pass",
+      "original_sources": 1,
+      "nearby_negative_parser_controls": 4,
+      "report": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-visibility-frontend-jjbkv9kc/report.json",
+        "sha256": "40f763adfb439e86e99fba429cf18a398c9cfcd16a158a256d9a77bcfdf45500"
+      }
+    },
+    "modifier_phase_bridge": {
+      "result": "pass",
+      "exact_phpt_sources": 4,
+      "scope": "Each exact PHPT FILE SHA has native parser_static_rejection, admitted frontend FINAL|ABSTRACT method flags, and checked static_rejection with exact native no-trace stderr and exit. The direct-AST compiler fixture separately asserts COMPILETHROWN completion.",
+      "report": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-modifier-phase-up6u8fqx/report.json",
+        "sha256": "f24dc6c88d19f174645a80d22b2c338272f02a94f131c263e4adc62231cdfaca"
+      }
+    },
+    "syntax": {
+      "result": "pass",
+      "classified_sources": 30980,
+      "pass": 30684,
+      "parser_rejection": 250,
+      "compile_phase_difference": 32,
+      "redirect_container": 6,
+      "non_source": 8,
+      "stable": true,
+      "phase_direction": {
+        "prior_frontend_rejects_oracle_accepted": 28,
+        "method_frontend_accepts_static_rejection": 4
+      },
+      "phase_ledger": "tests/phase-discrepancies.json",
+      "phase_ledger_sha256": "d0a37e183532846957c1269e3d31f5899e524ce12daecba7db236580f2de09dd",
+      "report": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-merged-syntax-authoritative/results-corpus.jsonl",
+        "sha256": "313a747c715cfb68b7eacb0b6152be5907268060644f8ff64659ad70d57e056c"
+      },
+      "summary": {
+        "path": ".tools/nonpublic-method-candidate/.tools/method-merged-syntax-authoritative/results-corpus.summary.json",
+        "sha256": "3b836dea521390d520d81bebaa01395a0bbd14c71a70c94ea31593d3e3836c2b"
+      }
+    },
+    "make_test": {
+      "result": "pass",
+      "command": "make -o build test",
+      "reason_for_existing_build": "Candidate-owned PHP helper, adapter and runner binaries were verified before the gate; skip only the build prerequisite to preserve their exact bytes.",
+      "targeted": 97,
+      "generated": 4103,
+      "deep": 1,
+      "stable": true,
+      "log": {
+        "path": ".tools/nonpublic-method-candidate/.tools/nonpublic-method-make-test.log",
+        "sha256": "1c696c3ad31a40a14ecb0a1c83caa24efa2ea12f8235304e098d1917397781de"
+      }
+    },
+    "inventory": {
+      "result": "pass",
+      "command": "make -o build inventory",
+      "reason_for_existing_build": "The optional instrumented PHP build was created from a verified candidate-local configured PHP build copy; ordinary oracle PHP/helper binaries remained unchanged.",
+      "grammar": {
+        "seen": 97,
+        "accepted": 83,
+        "rejected": 14,
+        "covered": 631,
+        "uncovered": [
+          0,
+          71,
+          149,
+          200
+        ],
+        "crashes": []
+      },
+      "mapping": {
+        "productions": 635,
+        "constructors": 169,
+        "scanner_actions": 191,
+        "token_character_alternatives": 264
+      },
+      "encoding": {
+        "spellings": 214,
+        "lookup_checks": 685
+      },
+      "log": {
+        "path": ".tools/nonpublic-method-candidate/.tools/nonpublic-method-inventory.log",
+        "sha256": "b9bcc3ccf2bf588606dfe08975973cbf5fe5cff31095f859104dd7ff803030e2"
+      }
+    }
+  },
+  "phase_disposition": "The four method-header cases are native parse-only static CompileErrors deliberately admitted as ASTs so checked 141 can emit the same top-level no-stack diagnostic; the classified direction remains explicit. Three malformed sources that the broad Collecting parser initially broke are bilateral parser rejections after Throwing-first exact retry. Neither is counted as an exact syntax pass.",
+  "limits": [
+    "Static methods, first-class method callables, user magic dispatch, interfaces/traits and broader method identity remain open.",
+    "Deferred new-expression parameter defaults are outside the admitted initializer language.",
+    "COMPILETHROWN is validated here for top-level method modifier errors. Catchable eval CompileError handling belongs to the separate dynamic-source milestone.",
+    "The 47/12 source selections and 30,980 syntax classifications are bounded observations, not complete PHP class semantics or a full-core regression closure.",
+    "Raw archives and reports remain ignored under .tools; no push or external publication."
+  ]
+}

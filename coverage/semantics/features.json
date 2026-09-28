@@ -7778,13 +7778,16 @@
       "source_tests": [
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
-        "vendor/php-src/Zend/zend_inheritance.c"
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Historical normalized method-signature helpers remain in method-signatures.json. Public source method overrides now apply parameter/return variance, reference/variadic/arity rules, final restrictions and abstract obligations at class linking; constructor compatibility preserves the abstract-prototype exception (methods-review.json). Nonpublic/static/internal methods, traits/interfaces and autoload-dependent checks remain open.",
+      "review": "Historical normalized method-signature helpers remain in method-signatures.json. Source method linking covers public/protected variance, visibility narrowing, final and abstract obligations; nonabstract private ordinary methods retain independent signatures and concrete parent constructors allow child signature changes while abstract constructor prototypes still constrain them (methods-review.json, method-visibility-review.json). Static/internal methods, traits/interfaces and autoload-dependent checks remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",
@@ -7843,13 +7846,16 @@
         "tests/semantics/inheritance_compiler.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
-        "coverage/semantics/inheritance-review.json"
+        "coverage/semantics/inheritance-review.json",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Early/deferred source-parent and stdClass linking preserves atomic publication and active graph validity (inheritance-review.json). Public property layouts and public instance method/constructor compatibility are integrated (properties-review.json, methods-review.json). Interfaces, traits, nonpublic/static members and other internal parents remain open."
+      "review": "Early/deferred source-parent and stdClass linking preserves atomic publication and active graph validity (inheritance-review.json). Property layouts and source instance method/constructor compatibility now include bounded public/protected/private rules (properties-review.json, methods-review.json, method-visibility-review.json). Interfaces, traits, static members and other internal parents remain open."
     },
     {
       "id": "classes.availability",
@@ -7890,13 +7896,16 @@
         "tests/semantics/inheritance_compiler.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
-        "coverage/semantics/inheritance-review.json"
+        "coverage/semantics/inheritance-review.json",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Active ancestry governs nominal membership, public property inheritance and public instance method dispatch/override compatibility; inherited constructors and declaring-origin method statics are preserved (inheritance-review.json, properties-review.json, methods-review.json). Interfaces, traits and nonpublic/static member protocols remain open.",
+      "review": "Active ancestry governs nominal membership, property inheritance and source instance method dispatch/override compatibility. Inherited constructors, declaring-origin method statics, protected root prototypes and independent ancestor-private methods are retained (inheritance-review.json, properties-review.json, methods-review.json, method-visibility-review.json). Interfaces, traits and static member protocols remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/type-parent-without-parent.php"
       ]
@@ -7965,7 +7974,10 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -7977,15 +7989,22 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_frontend.py",
+        "tests/semantics/method_modifier_phase.py",
+        "tests/semantics/method_visibility_protocol.py",
+        "tests/semantics/method_compiler.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
         "coverage/semantics/property-visibility-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "docs/semantics/SOURCE-METHODS.md",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Protected instance properties resolve lexical caller scope against the original nonprivate prototype, with public widening and early/deferred narrowing errors. Physical mangled keys are distinct from raw names across existing consumers. Nonpublic/static methods and other visibility forms remain open; property-visibility-review.json records the bounded foundation. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Protected and private instance properties retain mangled physical identities and lexical access (property-visibility-review.json, property-private-review.json). Bounded source instance methods now resolve protected access through the root nonprivate prototype and private access through the executed lexical scope, with selected-task and saved-frame authentication (method-visibility-review.json). Static methods, first-class method callables, user magic dispatch and broader visibility forms remain open."
     },
     {
       "id": "classes.private-identities",
@@ -7996,7 +8015,10 @@
         "spec/semantics/135-property-compiler.watsup",
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -8004,14 +8026,17 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Backed instance properties retain independent declaring-class private slots, typed reference sources and lexical access across inheritance (property-private-review.json). Private methods, static members and broader class identity protocols remain open."
+      "review": "Backed instance properties retain independent declaring-class private slots, typed reference sources and lexical access across inheritance (property-private-review.json). Source private instance methods have independent declaring origins and ancestor lexical redirect despite a child same-name method (method-visibility-review.json). Static members and broader class identity protocols remain open."
     },
     {
       "id": "classes.anonymous",
@@ -8033,19 +8058,25 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_modifier_phase.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
-        "coverage/semantics/inheritance-review.json"
+        "coverage/semantics/inheritance-review.json",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Abstract empty parent/child allocation and compatibility are partial; abstract members remain open. See inheritance-review.json."
+      "review": "Abstract allocation and bounded source instance method obligations/visibility are partial; abstract protected constructors constrain child visibility and signatures, while final+abstract method modifiers receive the pinned no-trace CompileError (inheritance-review.json, methods-review.json, method-visibility-review.json). Interfaces, traits and remaining abstract forms remain open."
     },
     {
       "id": "classes.final",
@@ -8054,19 +8085,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/133-inheritance-compiler.watsup",
-        "spec/semantics/134-inheritance-runtime.watsup"
+        "spec/semantics/134-inheritance-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
-        "tests/semantics/inheritance_compiler.py"
+        "tests/semantics/inheritance_compiler.py",
+        "tests/semantics/method_compiler.py",
+        "tests/semantics/method_visibility_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
-        "coverage/semantics/inheritance-review.json"
+        "coverage/semantics/inheritance-review.json",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Known user/internal final-parent inheritance errors are partial; final members and broader internal behavior remain open. See inheritance-review.json."
+      "review": "Known user/internal final-parent inheritance errors are partial. Source instance method finality is checked on nonprivate overrides; a final private ordinary method warns without blocking a child declaration, while a final private constructor still blocks an override (inheritance-review.json, methods-review.json, method-visibility-review.json). Static/internal method families remain open."
     },
     {
       "id": "classes.creation",
@@ -8086,13 +8122,16 @@
         "tests/semantics/inheritance_compiler.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
-        "coverage/semantics/inheritance-review.json"
+        "coverage/semantics/inheritance-review.json",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open."
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Source public/protected/private effective constructors initialize owned instances; lexical visibility denial precedes arguments and constructor results cannot replace the allocated object (properties-review.json, methods-review.json, method-visibility-review.json). Dynamic class names and remaining internal constructor bodies remain open."
     },
     {
       "id": "classes.object-identity",
@@ -8197,18 +8236,23 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/83-call-traces.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/method_visibility_cases.json",
+        "tests/semantics/method_visibility_protocol.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/method-visibility-review.json"
       ],
-      "review": "Public instance method lookup is case-insensitive and follows active parent links. Ordinary/nullsafe calls retain selected receivers and reuse named/unpacked/reference arguments; ordinary method results support reference assignment (methods-review.json). Nonpublic/static methods, first-class method callables and user magic dispatch remain open."
+      "review": "Source instance method lookup is case-insensitive and follows active parent links. Ordinary/nullsafe calls retain selected receivers and reuse named/unpacked/reference arguments; protected root prototypes, ancestor-private lexical redirect, bound closure scope and selected-task provenance have bounded source/paused evidence (methods-review.json, method-visibility-review.json). Static methods, first-class method callables and user magic dispatch remain open."
     },
     {
       "id": "classes.late-static-binding",
