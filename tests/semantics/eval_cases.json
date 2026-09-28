@@ -91,6 +91,41 @@
     "source": "<?php echo 'A'; eval('goto missing;'); echo 'B';"
   },
   {
+    "id": "dynamic-function-redeclaration",
+    "kind": "php_error",
+    "source": "<?php function f(){} eval('function f(){}');"
+  },
+  {
+    "id": "dynamic-class-redeclaration",
+    "kind": "php_error",
+    "source": "<?php class C{} eval('class C{}');"
+  },
+  {
+    "id": "dynamic-internal-class-redeclaration",
+    "kind": "php_error",
+    "source": "<?php eval('class stdClass {}');"
+  },
+  {
+    "id": "mixed-function-first-redeclaration",
+    "kind": "php_error",
+    "source": "<?php function f(){} eval('class X{} function f(){}');"
+  },
+  {
+    "id": "mixed-function-reverse-redeclaration",
+    "kind": "php_error",
+    "source": "<?php function f(){} eval('function f(){} class X{}');"
+  },
+  {
+    "id": "mixed-class-redeclaration",
+    "kind": "php_error",
+    "source": "<?php class C{} eval('class X{} class C{}');"
+  },
+  {
+    "id": "dynamic-final-parent-fatal",
+    "kind": "php_error",
+    "source": "<?php final class F{} eval('class D extends F{}');"
+  },
+  {
     "id": "nested-static-stack",
     "kind": "static_rejection",
     "source": "<?php eval('eval(\"break;\");');"

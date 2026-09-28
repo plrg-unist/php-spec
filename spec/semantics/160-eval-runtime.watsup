@@ -310,6 +310,23 @@ def $eval_compile_throw(S, pevalcontext, pevalcontext_tail*, text, n_message*, z
   -- if $eval_compile_throw_source(S, pevalcontext, text, n_message*, z)
   -- if S_object = $throwable_allocate(S, text, n_message*, z, [$eval_trace_frame(S, pevalcontext)] ++ $eval_exception_trace(S))
   -- if ~$eval_allocated_throw(S_object.COMPLETION)
+dec $eval_redeclare_class_one(pstate, pevalcontext, pclassdesc, nat*, int) : bool
+def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = true
+  -- if pclassdesc.ORIGIN = PORIGIN pevalcontext.UNIT pcpath
+  -- if z = pclassdesc.LINE
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(pclassdesc.NAME)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
+  -- if n_message* = $ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display
+def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = true
+  -- if pclassdesc.ORIGIN = PORIGIN pevalcontext.UNIT pcpath
+  -- if z = pclassdesc.LINE
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_old)
+  -- if $class_at(S.CLASSES, porigin_old) = (pclassdesc_old)
+  -- if n_message* = $ptascii("Cannot redeclare class ") ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]
+def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = false -- otherwise
+dec $eval_redeclare_class(pstate, pevalcontext, pclassdesc*, nat*, int) : bool
+def $eval_redeclare_class(S, pevalcontext, eps, n_message*, z) = false
+def $eval_redeclare_class(S, pevalcontext, pclassdesc :: pclassdesc_tail*, n_message*, z) = ($eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) \/ $eval_redeclare_class(S, pevalcontext, pclassdesc_tail*, n_message*, z))
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN] :: pevalcontext_tail*][.TODO = $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT] ++ pevalcontext.TAIL][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_compiled.COMPLETION = NORMAL
   -- if P.COMPLETION = PPCNORMAL
@@ -318,8 +335,12 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_co
   -- if S_compiled.COMPLETION = STATICBYTES n_message* z
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = $eval_exception_trace(S_compiled)]
   -- if S_compiled.COMPLETION = STATICERROR text z
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = [$eval_trace_frame(S_compiled, pevalcontext)] ++ $eval_exception_trace(S_compiled)]
+  -- if S_compiled.COMPLETION = FATAL n_message* z
+  -- if $eval_redeclare_class(S_compiled, pevalcontext, P.CLASSES, n_message*, z)
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = $eval_exception_trace(S_compiled)]
   -- if S_compiled.COMPLETION = FATAL n_message* z
+  -- if ~$eval_redeclare_class(S_compiled, pevalcontext, P.CLASSES, n_message*, z)
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = $eval_compile_throw(S_compiled, pevalcontext, pevalcontext_tail*, text, n_message*, z)
   -- if S_compiled.COMPLETION = THROWN text n_message* z
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source transition"]

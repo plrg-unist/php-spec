@@ -17,24 +17,28 @@ def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, 
 
 dec $activate_class(pstate, pclassdesc) : pstate
 def $activate_class(S, pclassdesc) = S -- if S.COMPLETION =/= NORMAL
-def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display) pclassdesc.LINE]
+def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(pclassdesc.NAME)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
 def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = eps
-def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+def $activate_class(S, pclassdesc) = S_parent[.ERRORORIGIN = $compiled_error_origin(S_parent.ERRORORIGIN, S_parent.COMPLETION, n)]
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
-def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare class ") ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE]
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare class ") ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_old)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
 dec $activate_early_classes(pstate, pclassdesc*) : pstate
 def $activate_early_classes(S, eps) = S
 def $activate_early_classes(S, pclassdesc :: pclassdesc_tail*) = $activate_early_classes($activate_class(S, pclassdesc), pclassdesc_tail*)

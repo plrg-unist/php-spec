@@ -35,6 +35,9 @@ static failures stop globally before caller/finally work; a missing-parent
 class-link error materializes at the dynamic class origin and searches the
 caller's catches. Warnings and terminal diagnostics render the dynamic file.
 Eval frames are interleaved with ordinary call frames by saved-frame owner.
+Redeclared classes have an eval frame in their fatal stack; function
+redeclaration and a final-parent link fatal do not. Each retains the dynamic
+source filename.
 
 Current source controls cover nested eval, eval return in typed and by-reference
 callers, parser and static errors, namespaces, class scope, inline HTML,
