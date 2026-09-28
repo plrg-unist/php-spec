@@ -200,6 +200,16 @@
     "source": "<?php function f(){try{throw new Error('A');}finally{eval('echo \"F\";');}}try{f();}catch(Error $e){echo $e->getMessage();}"
   },
   {
+    "id": "eval-parse-replaces-finally-return",
+    "kind": "normal",
+    "source": "<?php function f(){try{return 1;}finally{eval('echo ;');}}try{f();}catch(ParseError $e){echo 'P';}"
+  },
+  {
+    "id": "eval-static-stops-pending-return",
+    "kind": "static_rejection",
+    "source": "<?php function f(){try{return 1;}finally{echo 'F';eval('break;');}}f();echo 'E';"
+  },
+  {
     "id": "object-stringification",
     "kind": "normal",
     "expected_model": "unsupported",
