@@ -24,9 +24,7 @@ The [foundation ledger](../../coverage/semantics/dynamic-source-foundation.json)
 binds the checked-unit fixture, unchanged main-source traces and pinned native
 duplicate-declaration probes.
 
-Reached eval still needs a stateful parser request/response, fresh lexical
-namespace/import/strict context with the caller's runtime variables and class
-scope, an eval return barrier, source-backed ParseError identity, and catchable
-class-link failures. Its continuation must preserve pending finally transfers
-through pause, compile and execution. Include/require and once identity follow
-as separate increments. None of these behaviors is claimed by this foundation.
+The separate [reached eval increment](DYNAMIC-EVAL.md) builds on this
+compiler/registry foundation. Include/require and once identity still require
+separate source-provider increments; this foundation alone does not execute a
+dynamic source.
