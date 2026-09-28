@@ -149,7 +149,7 @@ def $clone_wrapper_trace(S, pclonecall, pvalue*) = [{FILE $call_sourcefile(S.FIL
   -- if $clone_method_receiver(S, pclonecall)
 def $clone_wrapper_trace(S, pclonecall, pvalue*) = eps -- otherwise
 dec $clone_error(pstate, pclonecall, text, preqbytes) : pstate
-def $clone_error(S, pclonecall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], text, preqbytes, pclonecall.LINE, [ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $clone_error(S, pclonecall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], text, preqbytes, pclonecall.LINE, [ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $eval_exception_trace(S))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, NAME $ptascii("clone"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
 dec $clone_destination(preqbytes?, nat) : nat?
@@ -249,7 +249,7 @@ def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountEr
   -- if pclonecall.SENT = eps
 def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "ArgumentCountError", $ptascii("clone() expects at most 2 arguments, ") ++ $decimal_integer(|pclonecall.SENT|) ++ $ptascii(" given"))
   -- if $(|pclonecall.SENT| > 2)
-def $clone_receive(S, pclonecall) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], "ArgumentCountError", $ptascii("Closure::__invoke(): Argument #1 ($object) not passed"), pclonecall.LINE, $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $clone_receive(S, pclonecall) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], "ArgumentCountError", $ptascii("Closure::__invoke(): Argument #1 ($object) not passed"), pclonecall.LINE, $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $eval_exception_trace(S))
   -- if pclonecall.SENT = [NAMED_HOLE, NAMED_SENT poperand]
   -- if $clone_method_receiver(S, pclonecall)
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))

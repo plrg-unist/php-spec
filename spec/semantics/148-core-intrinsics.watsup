@@ -99,12 +99,12 @@ def $exit_method_receiver(S, pexitcall) = true
   -- if pexitcall.OWNER = (n)
   -- if $exit_method_site(S, pexitcall.SITE)
 def $exit_method_receiver(S, pexitcall) = false -- otherwise
-def $exit_error(S, pexitcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pexitcall.SITE)], text, preqbytes, pexitcall.LINE, [ptraceframe, ptraceframe_invoke] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $exit_error(S, pexitcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pexitcall.SITE)], text, preqbytes, pexitcall.LINE, [ptraceframe, ptraceframe_invoke] ++ $eval_exception_trace(S))
   -- if $exit_method_receiver(S, pexitcall)
   -- if pvalue* = $trace_extra(S, pexitcall.SENT)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $intrinsic_name(pexitcall.KIND), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
-def $exit_error(S, pexitcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pexitcall.SITE)], text, preqbytes, pexitcall.LINE, [ptraceframe] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $exit_error(S, pexitcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pexitcall.SITE)], text, preqbytes, pexitcall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
   -- if ~$exit_method_receiver(S, pexitcall)
   -- if pvalue* = $trace_extra(S, pexitcall.SENT)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $intrinsic_name(pexitcall.KIND), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}

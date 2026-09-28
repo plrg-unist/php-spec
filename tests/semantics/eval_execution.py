@@ -56,17 +56,23 @@ def run(match):
             actual = json.loads(model.stdout)
         except json.JSONDecodeError:
             actual = {'status': 'runner_failure'}
-        if row['kind'] == 'unsupported':
-            passed = (model.returncode == 1 and not model.stderr
+        native_shape = ((native.returncode == 0 and not native.stderr) if row['kind'] == 'normal'
+                        else ((native.returncode == 0 and bool(native.stderr)) if row['kind'] == 'normal_warning'
+                              else (native.returncode != 0 and bool(native.stderr))))
+        if row.get('expected_model') == 'unsupported':
+            passed = (native_shape and model.returncode == 1 and not model.stderr
                       and actual.get('status') == 'unsupported')
         else:
-            passed = (model.returncode == 0 and not model.stderr
-                      and actual.get('status') == row['kind']
+            passed = (native_shape and model.returncode == 0 and not model.stderr
+                      and actual.get('status') == ('normal' if row['kind'] == 'normal_warning' else row['kind'])
                       and actual.get('exit_status') == native.returncode
                       and actual.get('stdout') == base64.b64encode(native.stdout).decode()
                       and actual.get('stderr') == base64.b64encode(native.stderr).decode())
-        records.append({'id': row['id'], 'kind': row['kind'], 'pass': passed,
+        records.append({'id': row['id'], 'native_kind': row['kind'],
+                        'expected_model': row.get('expected_model', 'native_agreement'), 'pass': passed,
                         'actual': actual, 'source_sha256': digest(source),
+                        'native_stdout': base64.b64encode(native.stdout).decode(),
+                        'native_stderr': base64.b64encode(native.stderr).decode(),
                         'native_exit_status': native.returncode,
                         'model_exit_status': model.returncode})
         (out / 'records.json').write_text(json.dumps(records, indent=2) + '\n')
@@ -74,6 +80,11 @@ def run(match):
     assert before == {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     report = {'result': 'pass' if all(row['pass'] for row in records) else 'fail',
               'selection': match, 'inputs': before, 'records': records,
+              'native_agreements': sum(row['pass'] and row['expected_model'] == 'native_agreement'
+                                       for row in records),
+              'unsupported_controls': sum(row['pass'] and row['expected_model'] == 'unsupported'
+                                          for row in records),
+              'failures': sum(not row['pass'] for row in records),
               'profile': types.PROFILE, 'env_overrides': {'LC_ALL': 'C', 'TZ': 'UTC'},
               'scope': 'Exact original-source tuples; Unsupported controls are separate.'}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

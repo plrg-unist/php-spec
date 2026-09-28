@@ -15,6 +15,11 @@
     "source": "<?php $x=eval('echo \"E\";'); echo ($x===null?'N':'X');"
   },
   {
+    "id": "eval-inline-html",
+    "kind": "normal",
+    "source": "<?php echo eval('?>X<?php echo \"Y\";')===null?'N':'X';"
+  },
+  {
     "id": "shared-variable",
     "kind": "normal",
     "source": "<?php $x=3; $y=eval('$x=5; return $x;'); echo $x,'|',$y;"
@@ -25,6 +30,16 @@
     "source": "<?php echo eval('return eval(\"return 7;\");'),'|done';"
   },
   {
+    "id": "nested-runtime-throw",
+    "kind": "normal",
+    "source": "<?php try{eval('eval(\"1/0;\");');}catch(DivisionByZeroError $e){echo 'C';}"
+  },
+  {
+    "id": "nested-parser-reject",
+    "kind": "normal",
+    "source": "<?php try{eval('eval(\"echo ;\");');}catch(ParseError $e){echo 'C';}"
+  },
+  {
     "id": "parse-caught",
     "kind": "normal",
     "source": "<?php try { eval('echo ;'); } catch (ParseError $e) { echo $e->getMessage(),'|',$e->getFile(),'|',$e->getLine(); }"
@@ -32,12 +47,28 @@
   {
     "id": "parse-trace-in-function",
     "kind": "normal",
+    "expected_model": "unsupported",
     "source": "<?php function f(){try{eval('echo ;');}catch(ParseError $e){foreach($e->getTrace() as $t){echo $t['function'],'|',$t['file'],'|',$t['line'];}}} f();"
   },
   {
     "id": "parse-after-output",
     "kind": "normal",
     "source": "<?php echo 'A'; try{eval('echo ;');}catch(ParseError $e){echo '|P';}"
+  },
+  {
+    "id": "parse-line-two",
+    "kind": "normal",
+    "source": "<?php try{eval(\"echo 1;\\necho ;\");}catch(ParseError $e){echo $e->getLine();}"
+  },
+  {
+    "id": "warning-in-eval",
+    "kind": "normal_warning",
+    "source": "<?php eval('echo $missing;'); echo 'after';"
+  },
+  {
+    "id": "parse-constructor-reentry",
+    "kind": "normal",
+    "source": "<?php try{eval('echo ;');}catch(ParseError $e){$file=$e->getFile();$line=$e->getLine();$e->__construct('changed');echo $e->getMessage(),'|',($e->getFile()===$file?'same':'diff'),'|',($e->getLine()===$line?'same':'diff');}"
   },
   {
     "id": "parse-uncaught",
@@ -60,6 +91,11 @@
     "source": "<?php echo 'A'; eval('goto missing;'); echo 'B';"
   },
   {
+    "id": "nested-static-stack",
+    "kind": "static_rejection",
+    "source": "<?php eval('eval(\"break;\");');"
+  },
+  {
     "id": "strict-reset",
     "kind": "normal",
     "source": "<?php declare(strict_types=1); function f(int $x){return $x;} echo eval('return f(\"2\");');"
@@ -68,6 +104,12 @@
     "id": "global-function",
     "kind": "normal",
     "source": "<?php namespace N; eval('function f(){return 2;}'); echo \\f();"
+  },
+  {
+    "id": "import-reset",
+    "kind": "normal",
+    "expected_model": "unsupported",
+    "source": "<?php namespace N; use Foo\\Bar as B; echo eval('return B::class;');"
   },
   {
     "id": "eval-namespace",
@@ -92,6 +134,7 @@
   {
     "id": "missing-parent-trace",
     "kind": "normal",
+    "expected_model": "unsupported",
     "source": "<?php try{eval('class C extends Missing {}');}catch(Error $e){foreach($e->getTrace() as $t){echo $t['function'],'|',$t['file'],'|',$t['line'];}}"
   },
   {
@@ -105,6 +148,33 @@
     "source": "<?php class C {private function p(){return 7;} function f(){echo eval('return self::class;'),'|',eval('return static::class;'),'|',eval('return __CLASS__;'),'|',eval('return $this->p();');}} (new C)->f();"
   },
   {
+    "id": "self-static-subclass",
+    "kind": "normal",
+    "source": "<?php class C {function f(){echo eval('return self::class;'),'|',eval('return static::class;');}} class D extends C{} (new D)->f();"
+  },
+  {
+    "id": "parent-class-in-method",
+    "kind": "normal",
+    "expected_model": "unsupported",
+    "source": "<?php class A{} class B extends A {function f(){return eval('return parent::class;');}} echo (new B)->f();"
+  },
+  {
+    "id": "eval-defined-function-self",
+    "kind": "static_rejection",
+    "source": "<?php class C {function f(){eval('function g(){return self::class;}');echo g();}} (new C)->f();"
+  },
+  {
+    "id": "eval-defined-function-static",
+    "kind": "static_rejection",
+    "source": "<?php class C {function f(){eval('function g(){return static::class;}');echo g();}} (new C)->f();"
+  },
+  {
+    "id": "eval-created-closure-self",
+    "kind": "normal",
+    "expected_model": "unsupported",
+    "source": "<?php class C {function f(){return eval('return function(){return __CLASS__.\"|\".self::class;};');}} $f=(new C)->f(); echo $f();"
+  },
+  {
     "id": "operand-side-effect",
     "kind": "normal",
     "source": "<?php $x=''; eval(($x='return 3;')); echo $x;"
@@ -115,13 +185,20 @@
     "source": "<?php function f(){try{return eval('return 7;');}finally{echo 'F';}} echo f();"
   },
   {
+    "id": "finally-inside-eval",
+    "kind": "normal",
+    "source": "<?php echo eval('try{return 7;}finally{echo \"F\";}');"
+  },
+  {
     "id": "object-stringification",
-    "kind": "unsupported",
+    "kind": "normal",
+    "expected_model": "unsupported",
     "source": "<?php class O {function __toString(){return 'echo 1;';}} eval(new O);"
   },
   {
     "id": "array-stringification",
-    "kind": "unsupported",
+    "kind": "php_error",
+    "expected_model": "unsupported",
     "source": "<?php eval(['echo 1;']);"
   },
   {

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inspect source-derived eval exception frames while getTrace is unsupported."""
+"""Source-derived nested eval trace order across accepted and rejected units."""
 import base64
 import hashlib
 import json
@@ -11,18 +11,12 @@ from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = [
-    ('parse-in-function',
-     b"<?php function f(){try{eval('echo ;');}catch(ParseError $e){echo 'C';}} f();",
-     b'echo ;', 'ParseError', ('f',)),
-    ('class-link',
-     b"<?php try{eval('class C extends Missing {}');}catch(Error $e){echo 'C';}",
-     b'class C extends Missing {}', 'Error', ('eval',)),
-    ('function-defined-by-eval',
-     b"<?php try{eval('function f(){1/0;} f();');}catch(DivisionByZeroError $e){echo 'C';}",
-     b'function f(){1/0;} f();', 'DivisionByZeroError', ('f', 'eval')),
-    ('direct-new-error',
-     b"<?php try{eval('throw new Error(\"x\");');}catch(Error $e){echo 'C';}",
-     b'throw new Error("x");', 'Error', ('eval',)),
+    ('nested-runtime',
+     b'''<?php try{eval('eval("1/0;");');}catch(DivisionByZeroError $e){echo 'C';}''',
+     b'eval("1/0;");', b'1/0;', 'DivisionByZeroError', 2),
+    ('nested-parser',
+     b'''<?php try{eval('eval("echo ;");');}catch(ParseError $e){echo 'C';}''',
+     b'eval("echo ;");', b'echo ;', 'ParseError', 1),
 ]
 
 
@@ -31,7 +25,7 @@ def digest(path):
 
 
 def main():
-    out = Path(tempfile.mkdtemp(prefix='eval-trace-protocol-', dir=ROOT / '.tools'))
+    out = Path(tempfile.mkdtemp(prefix='eval-nested-trace-', dir=ROOT / '.tools'))
     print(out, flush=True)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
@@ -40,7 +34,7 @@ def main():
               ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so', Path(__file__)]
     before = {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     records = []
-    for name, source, eval_bytes, kind, frame_names in CASES:
+    for name, source, outer_bytes, inner_bytes, kind, frames in CASES:
         directory = out / name
         directory.mkdir()
         source_path = directory / 'source.php'
@@ -52,45 +46,56 @@ def main():
         try:
             parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source).decode()})
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
-            eval_parsed = frontend.request({'op': 'parse-eval', 'id': '1', 'mode': 'eval',
-                                            'profile': 'cli-raw-85',
-                                            'source': base64.b64encode(eval_bytes).decode()})
-            if eval_parsed['accepted']:
-                eval_checked = adapter.request({'op': 'check', 'ast': eval_parsed['ast'], 'fixture': True})
+            eval_results = []
+            for index, eval_bytes in enumerate((outer_bytes, inner_bytes), 1):
+                parsed_eval = frontend.request({'op': 'parse-eval', 'id': str(index), 'mode': 'eval',
+                                                'profile': 'cli-raw-85',
+                                                'source': base64.b64encode(eval_bytes).decode()})
+                checked_eval = (adapter.request({'op': 'check', 'ast': parsed_eval['ast'], 'fixture': True})
+                                if parsed_eval['accepted'] else None)
+                eval_results.append((parsed_eval, checked_eval))
         finally:
             frontend.close()
             adapter.close()
-        initial = '$php_run(' + checked['fixture'] + ', 300, ' + json.dumps(
-            base64.b64encode(str(source_path).encode()).decode()) + ')'
-        if eval_parsed['accepted']:
-            response = '(SOURCE_ACCEPT n pevalcontext.BYTES ' + eval_checked['fixture'] + ')'
+        outer_response = '(SOURCE_ACCEPT n_outer pevalcontext_outer.BYTES ' + eval_results[0][1]['fixture'] + ')'
+        inner_parsed, inner_checked = eval_results[1]
+        if inner_parsed['accepted']:
+            inner_response = '(SOURCE_ACCEPT n_inner pevalcontext_inner.BYTES ' + inner_checked['fixture'] + ')'
         else:
-            assert eval_parsed['category'] == 'parser_rejection'
-            message = list(base64.b64decode(eval_parsed['message']))
-            response = '(SOURCE_PARSE_REJECT n pevalcontext.BYTES (' + str(message) + ') ' + str(eval_parsed['line']) + ')'
+            assert inner_parsed['category'] == 'parser_rejection'
+            message = list(base64.b64decode(inner_parsed['message']))
+            inner_response = '(SOURCE_PARSE_REJECT n_inner pevalcontext_inner.BYTES (' + str(message) + ') ' + str(inner_parsed['line']) + ')'
+        initial = '$php_run(' + checked['fixture'] + ', 500, ' + json.dumps(
+            base64.b64encode(str(source_path).encode()).decode()) + ')'
         conditions = [
             'S = ' + initial,
             'S.COMPLETION = SOURCE_PENDING',
-            'S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*',
-            'n = pevalcontext.UNIT',
+            'S.EVALCONTEXTS = pevalcontext_outer :: pevalcontext_tail*',
+            'n_outer = pevalcontext_outer.UNIT',
             '$call_descriptors_valid(S)',
-            'S_done = $eval_continue(S, ' + response + ')',
+            'S1 = $eval_continue(S, ' + outer_response + ')',
+            'S1.COMPLETION = SOURCE_PENDING',
+            'S1.EVALCONTEXTS = pevalcontext_inner :: pevalcontext_other*',
+            'n_inner = pevalcontext_inner.UNIT',
+            '$(n_inner > n_outer)',
+            '$call_descriptors_valid(S1)',
+            'S_done = $eval_continue(S1, ' + inner_response + ')',
             'S_done.COMPLETION = NORMAL',
             '$call_descriptors_valid(S_done)',
             'n_object = $(|S_done.OBJECTS| - 1)',
             'S_done.OBJECTS[n_object] = THROWABLE pthrowable',
             'pthrowable.KIND = ' + json.dumps(kind),
-            'pthrowable.TRACE = [' + ','.join('ptraceframe_' + str(i) for i in range(len(frame_names))) + ']',
+            'pthrowable.TRACE = [' + ','.join('ptraceframe_' + str(i) for i in range(frames)) + ']',
         ]
-        for index, frame_name in enumerate(frame_names):
+        for index in range(frames):
             frame = 'ptraceframe_' + str(index)
-            expected_file = ('pevalcontext.FILE' if name == 'function-defined-by-eval' and index == 0
-                             else '$call_sourcefile(S.FILES, pevalcontext.SITE)')
-            conditions.extend([frame + '.NAME = $ptascii(' + json.dumps(frame_name) + ')',
-                               frame + '.FILE = ' + expected_file,
+            site = 'pevalcontext_inner.SITE' if frames == 2 and index == 0 else 'pevalcontext_outer.SITE'
+            conditions.extend([frame + '.NAME = $ptascii("eval")',
+                               frame + '.FILE = $call_sourcefile(S.FILES, ' + site + ')',
                                frame + '.LINE = 1'])
         fixture = directory / 'protocol.watsup'
-        fixture.write_text('dec $main() : bool\ndef $main() = true\n' + ''.join(
+        fixture.write_text('var S1 : pstate\n'
+                           'dec $main() : bool\ndef $main() = true\n' + ''.join(
                                '  -- if ' + condition + '\n' for condition in conditions))
         command = [str(runner), *map(str, modules), str(fixture)]
         result = subprocess.run(command, capture_output=True, timeout=300)
@@ -105,7 +110,7 @@ def main():
     assert before == {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     report = {'result': 'pass' if all(row['pass'] for row in records) else 'fail',
               'inputs': before, 'records': records,
-              'scope': 'Internal generated TRACE fields; getTrace source calls remain Unsupported.'}
+              'scope': 'Internal generated TRACE frames; getTrace source calls remain Unsupported.'}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return report['result'] == 'pass'
 

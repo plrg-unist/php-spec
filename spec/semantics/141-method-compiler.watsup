@@ -358,6 +358,20 @@ def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadat
   -- if P.FOLD.FUNCTION = eps
   -- if $ptlc($base64(text_name)) = $ptascii("static")
   -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"self\" when no class scope is active"), $nabs($source_line(metadata)))
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = (ptbytes_class)
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if ~P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("self")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"static\" when no class scope is active"), $nabs($source_line(metadata)))
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = (ptbytes_class)
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if ~P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
 
 ;; Property-only and empty class paths remain in 135/133; mixed bodies are ordered here.
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)

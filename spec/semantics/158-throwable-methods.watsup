@@ -91,7 +91,7 @@ def $getter_body(S, pgettercall) = S[.RESULT = KNOWN $throwable_field(S, pgetter
   -- if pgettercall.METHOD = GET_PREVIOUS
 
 dec $getter_error(pstate, pgettercall) : pstate
-def $getter_error(S, pgettercall) = $throwable_allocate(S[.ORIGIN = (pgettercall.SITE)], "ArgumentCountError", ptbytes ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pgettercall.SENT|) ++ $ptascii(" given"), pgettercall.LINE, [ptraceframe] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $getter_error(S, pgettercall) = $throwable_allocate(S[.ORIGIN = (pgettercall.SITE)], "ArgumentCountError", ptbytes ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pgettercall.SENT|) ++ $ptascii(" given"), pgettercall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
   -- if ptbytes = $ptascii(pgettercall.BASE) ++ $ptascii("::") ++ $getter_name(pgettercall.METHOD)
   -- if pvalue* = $trace_extra(S, pgettercall.SENT)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgettercall.SITE), LINE pgettercall.LINE, NAME ($ptascii(pgettercall.BASE) ++ $ptascii("->") ++ $getter_name(pgettercall.METHOD)), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}

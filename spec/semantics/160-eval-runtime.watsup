@@ -141,7 +141,7 @@ def $failed_source_record_valid(S, pfailedsource) = ($eval_site_valid(S, pfailed
   -- if z = $eval_site_line(S, pfailedsource.SITE)
 dec $failed_sources_valid(pstate, pfailedsource*) : bool
 def $failed_sources_valid(S, eps) = true
-def $failed_sources_valid(S, pfailedsource :: pfailedsource_tail*) = ($failed_source_at(pfailedsource_tail*, pfailedsource.UNIT) = eps /\ $failed_source_record_valid(S, pfailedsource) /\ $failed_sources_valid(S, pfailedsource_tail*))
+def $failed_sources_valid(S, pfailedsource :: pfailedsource_tail*) = ($failed_source_at(pfailedsource_tail*, pfailedsource.UNIT) = eps /\ $eval_context_at(S.EVALCONTEXTS, pfailedsource.UNIT) = eps /\ $failed_source_record_valid(S, pfailedsource) /\ $failed_sources_valid(S, pfailedsource_tail*))
 dec $eval_marker_id(ptask) : nat?
 def $eval_marker_id(EVAL_AWAIT n) = (n)
 def $eval_marker_id(EVAL_END n) = (n)
@@ -212,7 +212,7 @@ def $eval_await_head(ptask*, n) = false -- otherwise
 def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ (pevalcontext.PHASE = UNIT_RUN /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
 def $eval_site_line(S, porigin) = $eval_node_line($origin_node(S.SOURCES, porigin))
 dec $eval_context_valid(pstate, pevalcontext) : bool
-def $eval_context_valid(S, pevalcontext) = ($eval_site_valid(S, pevalcontext.SITE, z) /\ pevalcontext.BYTES =/= eps /\ $(pevalcontext.UNIT > 0) /\ $eval_binding_class_valid(S, pevalcontext.LEXICAL_CLASS) /\ $sourcefile_count(S.FILES, pevalcontext.UNIT) = 1 /\ $call_sourcefile(S.FILES, PORIGIN pevalcontext.UNIT eps) = pevalcontext.FILE /\ pevalcontext.FILE = $eval_filename(S, pevalcontext.SITE, z) /\ $($eval_marker_count(S.TODO, pevalcontext.UNIT) + $eval_frame_marker_count(S.FRAMES, pevalcontext.UNIT)) = 1 /\ $eval_owner_marker_count(S, pevalcontext) = 1 /\ $eval_marker_suffix_valid($eval_owner_tasks(S, pevalcontext), pevalcontext.UNIT, pevalcontext.TAIL) /\ $eval_context_phase_valid(S, pevalcontext))
+def $eval_context_valid(S, pevalcontext) = ($eval_site_valid(S, pevalcontext.SITE, z) /\ pevalcontext.BYTES =/= eps /\ $(pevalcontext.UNIT > 0) /\ $failed_source_at(S.FAILEDSOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_class_valid(S, pevalcontext.LEXICAL_CLASS) /\ $sourcefile_count(S.FILES, pevalcontext.UNIT) = 1 /\ $call_sourcefile(S.FILES, PORIGIN pevalcontext.UNIT eps) = pevalcontext.FILE /\ pevalcontext.FILE = $eval_filename(S, pevalcontext.SITE, z) /\ $($eval_marker_count(S.TODO, pevalcontext.UNIT) + $eval_frame_marker_count(S.FRAMES, pevalcontext.UNIT)) = 1 /\ $eval_owner_marker_count(S, pevalcontext) = 1 /\ $eval_marker_suffix_valid($eval_owner_tasks(S, pevalcontext), pevalcontext.UNIT, pevalcontext.TAIL) /\ $eval_context_phase_valid(S, pevalcontext))
   -- if z = $eval_site_line(S, pevalcontext.SITE)
 dec $eval_contexts_valid(pstate, pevalcontext*) : bool
 def $eval_contexts_valid(S, eps) = true
