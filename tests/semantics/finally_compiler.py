@@ -81,7 +81,7 @@ def main():
         finally:
             adapter.close()
     assert before == {str(p.relative_to(ROOT)): digest(p) for p in files}
-    report = {'scope': 'Finally complete source compilation and native lint diagnostics; temporary admission controls and runtime outcomes are checked separately.',
+    report = {'scope': 'Finally complete source compilation and native lint diagnostics; transfer controls and runtime outcomes are checked separately.',
               'result': 'pass', 'compared': len(CASES), 'context_assertions':sum(map(len,CONTEXTS.values())), 'cases': records, 'inputs': before, 'raw': str(out.relative_to(ROOT)),
               'fixture_sha256': digest(fixture)}
     (out / 'report-full.json').write_text(json.dumps(report, indent=2) + '\n')

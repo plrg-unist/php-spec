@@ -47,20 +47,18 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 151/152 | Generated builtin Throwable identities, ordered no-finally try/catch, strict catch references, throw/rethrow, source-authenticated search and owned traces. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-review.json) |
 | 153/154 protected | Protected instance properties: lexical prototype access, mangled keys across existing consumers, typed binding correction and memoized property coalescing. The protected foundation is retained as a separate reviewed increment. [Review](coverage/semantics/property-visibility-review.json) |
 | 153/154 private | Independent declaring-class slots, lexical ancestor selection and inherited-private dynamic fallback across existing consumers; typed-reference location rules now distinguish aliased slots. [Review](coverage/semantics/property-private-review.json) |
-| 155/156 A | Normal/throw finally, previous chains, suppression and exit: 19 source tuples, 11 compiler sources, six paused stages/103 assertions and six separate temporary admission controls. [Contract](docs/semantics/SOURCE-FINALLY.md) · [ledger](coverage/semantics/finally-author.json) |
+| 155/156 A | Normal/throw finally, previous chains, suppression and exit: 19 source tuples, 11 compiler sources and six paused stages/103 assertions. [Stage A ledger](coverage/semantics/finally-author.json) |
+| 155/156 B | Value/reference return, loop/switch/foreach jumps and goto across finally: 20 additional source tuples, six transfer controls and ten transfer paused stages. [Contract](docs/semantics/SOURCE-FINALLY.md) · [Stage B ledger](coverage/semantics/finally-stage-b-author.json) |
 
 The current integration combines protected properties, public methods and
 constructors, cloning, nullsafe chains, match, print and exit/die with generated
-Throwable control and normal/throw finally. Source, paused-state and terminal migration evidence have
+Throwable control and reviewed Stage B finally transfers. Source, paused-state and terminal migration evidence have
 bounded review. The [migration ledger](coverage/semantics/throwable-migration-review.json)
 keeps deferred broader pause sweeps and baseline fixture failures explicit;
 these results do not establish complete-core regression closure.
 
 ## Next work
 
-Finally stage B is an active increment.
-Stage B closes value/reference return and loop/goto transfers; stage A rejects
-pending transfers during source admission, while preserving real static errors.
 Throwable constructors, accessors, canonical internal property backing, structured
 trace payloads and user subclasses follow. Constructor-created previous cycles
 need separate handling beyond stage A generated-only acyclicity. Nonpublic/static methods,

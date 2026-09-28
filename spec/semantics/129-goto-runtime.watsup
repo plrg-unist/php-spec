@@ -206,7 +206,6 @@ dec $goto_owner_at(pfunction, nat, pcpath) : pfunction?
 dec $goto_owner_if(bool, pfunction) : pfunction?
 dec $goto_choose_owner(pfunction?, pfunction?) : pfunction?
 dec $goto_owner_scope(pcallcontext?, pfunction?) : bool
-dec $goto_scope_valid(pstate, porigin) : bool
 def $goto_owner_if(true, pfunction) = (pfunction)
 def $goto_owner_if(false, pfunction) = eps
 def $goto_owner_at(pfunction, n, pcpath) = $goto_owner_if(pfunction.CODE.UNIT = n /\ $effect_below(pfunction.BODY, pcpath), pfunction)
@@ -222,6 +221,7 @@ def $goto_owner_scope(eps, eps) = true
 def $goto_owner_scope((pcallcontext), (pfunction)) = (pcallcontext.FUNCTION = pfunction.ORIGIN)
 def $goto_owner_scope(eps, (pfunction)) = false
 def $goto_owner_scope((pcallcontext), eps) = false
+dec $goto_scope_valid(pstate, porigin) : bool
 def $goto_scope_valid(S, PORIGIN n pcpath) = $goto_owner_scope(S.CURRENT, $goto_source_owner($all_functions(S), n, pcpath))
 def $goto_task_valid(S, statement, (porigin)) = ($goto_source_match(S, statement, (porigin)) /\ $goto_scope_valid(S, porigin) /\ $goto_resolved_site(S, porigin, $goto_target(S, porigin)))
 def $goto_task_valid(S, statement, eps) = false
@@ -241,14 +241,16 @@ rule PhpStep/label-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "inval
   -- if ~$goto_label_valid(S, NStmtLabel phpType11 metadata, S.ORIGIN)
 
 dec $goto_jump(pstate, porigin, pcpath) : pstate
-def $goto_jump(S, porigin_source, pcpath_target) = S[.TODO = ptask_new*][.ORIGIN = $goto_continuation_origin(S, ptask_new*)][.ITERATORS = $goto_drop_iterators(S.ITERATORS, S.TODO, PORIGIN n pcpath_target)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $goto_target_origin(pstate, porigin, ptask*) : porigin?
+def $goto_jump(S, porigin_source, pcpath_target) = S[.TODO = ptask_new*][.ORIGIN = $goto_target_origin(S, PORIGIN n pcpath_target, ptask_new*)][.ITERATORS = $goto_drop_iterators(S.ITERATORS, S.TODO, PORIGIN n pcpath_target)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if porigin_source = PORIGIN n pcpath_source
   -- if $goto_site(S, porigin_source, pcpath_target)
   -- if $goto_base(S, porigin_source) = GOTOTASKS ptask_base*
   -- if $goto_find(S, PORIGIN n pcpath_target, ptask_base*, S.TODO) = GOTOTASKS ptask_new*
   -- if $goto_markers_valid(S, ptask_new*)
 def $goto_jump(S, porigin_source, pcpath_target) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid goto continuation"] -- otherwise
-rule PhpStep/goto: S ~> $goto_jump(S[.TODO = ptask_tail*], porigin, pcpath_target)
+dec $goto_transfer(pstate, porigin, pcpath) : pstate
+rule PhpStep/goto: S ~> $goto_transfer(S[.TODO = ptask_tail*], porigin, pcpath_target)
   -- if S.TODO = (STMT statement) :: ptask_tail*
   -- if statement = NStmtGoto phpType11 metadata
   -- if S.ORIGIN = (porigin)

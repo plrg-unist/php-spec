@@ -1,0 +1,52 @@
+{
+  "status": "approved bounded Stage B content on the frozen input map",
+  "reviewed_commit": "0ea2cb391c5311268cc4955243e99b7ea893caba",
+  "foundation": "b0bc9d84571e5093653b7b1a87ef50c2a1eb363c",
+  "scope": "Value/reference returns, loop/switch/foreach transfers and goto across finally, including owned current and saved continuations.",
+  "loaded_inputs": {
+    "path": ".tools/finally-b-implementation/.tools/finally-b-loaded-map.json",
+    "sha256": "c052df12d15a6a8f34fe32b92ca97734d5bc2d94bc4c71a93cbbfa8573b41139",
+    "modules": 154,
+    "inputs": 175,
+    "mismatches": 0
+  },
+  "author_evidence": {
+    "source": "39/39 exact tuples: 25 normal, 9 PHP errors, 4 static rejections, 1 explicit exit",
+    "paused": "16 stages / 206 assertions, including 10 Stage B stages / 103 assertions",
+    "compiler": "11 complete sources with native lint priority",
+    "transfer_controls": "6 formerly unsupported Stage A cases now exact native agreements; counted separately from source39",
+    "focused_regressions": "31 reference-return, 22 goto and 13 arrow source rows",
+    "report_hashes": {
+      "source39": "bc5097a705bc57ff6fdd90190113652305b35ef8835649843be33044e525a71b",
+      "paused16": "55e58a028f2dc940af2fad6da40e2a97cd0625e3e7c804eeb8072c516944b724",
+      "compiler11": "d5a348b7e29da0a2057e9be761260a4f7bb619975b0c4ec7471859577a34f942",
+      "controls6": "5f9c627378b55f7a641e0772b59be3f0e079e4ab620fcc9c218d214a5ae1fbeb",
+      "reference31": "f64e747f7b386c94a63a735f2a9fb0a1294a24c54b2be3a33ec5dad9463e0118",
+      "goto22": "8336e3965afb0c06aa2052627c8573de120618fba12e4149a38f5cd041afeb59",
+      "arrow13": "a675296b75b1ef1f5caf5235d866941692d302434780b2e6794985b43d41be25"
+    }
+  },
+  "independent_evidence": [
+    {
+      "path": ".tools/finally-review/stageb-frozen-replay.json",
+      "sha256": "85b36d5c58f313f4488e321139180ef19cadccd7a4e103c9716a89cadfc51df0",
+      "scope": "Five source-derived paused fixtures on unchanged frozen inputs: current and saved phase substitution rejected; nested normal, throw and return validate and resume equal uninterrupted runs."
+    },
+    {
+      "path": ".tools/finally-review/stageb-controls-replay.json",
+      "sha256": "a77de8e553a9760e7078ee32c349d10f8cabf4768667b0b6b7ec74eb93389e9f",
+      "scope": "Six former admission controls independently re-executed against the pinned native oracle with exact stdout, stderr and exit status."
+    }
+  ],
+  "findings": [
+    "The Stage A temporary admission gate and its source-compiler call are removed; no finally transfer remains gated by that reason.",
+    "Source-bound transfer markers, paired phase tasks and current/saved-frame checks reject deleted, substituted and orphan continuations in the focused evidence.",
+    "The source suite retains native compilation errors; two constructor-based probes are excluded as a separate dependency."
+  ],
+  "limits": [
+    "Two original probes constructing Error/Exception remain outside this increment pending public Throwable constructors; generated engine throws cover return replacement.",
+    "A paused effectful reference lvalue cannot be re-evaluated to reconstruct which live cell was selected; validation checks source/line and live ownership.",
+    "The broad arrow-state numeric fixture was interrupted; 13 exact arrow source regressions pass, with no broad sweep claim.",
+    "Full core and fresh portable rebuild acceptance remain open."
+  ]
+}

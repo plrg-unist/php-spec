@@ -96,25 +96,28 @@ def $jump_depth(ABSENT) = 1
 def $jump_depth(NScalarInt (INTEGER i) metadata) = $nabs(i)
   -- if $(i > 0)
 dec $loop_marker(ptask) : bool
-dec $jump_loop(pstate, nat, bool) : pstate
-def $jump_loop(S, 1, false) = S[.TODO = ptask_tail*][.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $jump_loop(pstate, porigin, nat, nat, bool) : pstate
+def $jump_loop(S, porigin_source, 1, n_original, false) = S[.TODO = ptask_tail*][.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
-def $jump_loop(S, 1, true) = S[.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $jump_loop(S, porigin_source, 1, n_original, true) = S[.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
-def $jump_loop(S, n, b) = $jump_loop(S[.TODO = ptask_tail*], $nabs($(n - 1)), b)
+def $jump_loop(S, porigin_source, n, n_original, b) = $jump_loop(S[.TODO = ptask_tail*], porigin_source, $nabs($(n - 1)), n_original, b)
   -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
   -- if $(n > 1)
-def $jump_loop(S, n, b) = $jump_loop(S[.TODO = ptask_tail*], n, b)
+def $jump_loop(S, porigin_source, n, n_original, b) = $jump_loop(S[.TODO = ptask_tail*], porigin_source, n, n_original, b)
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$loop_marker(ptask)
-def $jump_loop(S, n, b) = S[.COMPLETION = UNSUPPORTED "invalid loop continuation"]
+  -- if ~$finally_transfer_marker(S, ptask)
+def $jump_loop(S, porigin_source, n, n_original, b) = S[.COMPLETION = UNSUPPORTED "invalid loop continuation"]
   -- if S.TODO = eps
 def $loop_marker(LOOP_NEXT statement porigin?) = true
 def $loop_marker(ptask) = false -- otherwise
-rule PhpStep/break: S ~> $jump_loop(S[.TODO = ptask_tail*], $jump_depth(phpType5), false)
+rule PhpStep/break: S ~> $jump_loop(S[.TODO = ptask_tail*], porigin, $jump_depth(phpType5), $jump_depth(phpType5), false)
   -- if S.TODO = (STMT (NStmtBreak phpType5 metadata)) :: ptask_tail*
-rule PhpStep/continue: S ~> $jump_loop(S[.TODO = ptask_tail*], $jump_depth(phpType5), true)
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/continue: S ~> $jump_loop(S[.TODO = ptask_tail*], porigin, $jump_depth(phpType5), $jump_depth(phpType5), true)
   -- if S.TODO = (STMT (NStmtContinue phpType5 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
 
 ;; Nested continuation lists can carry live operands in constructed machine states.
 def $task_nodes(CHOOSE ptask_true* ptask_false* z) = $tasks_nodes(ptask_true*) ++ $tasks_nodes(ptask_false*)

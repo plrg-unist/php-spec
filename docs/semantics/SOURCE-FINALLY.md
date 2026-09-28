@@ -1,17 +1,21 @@
 # Finally continuations
 
 Target: pinned PHP 8.5.10 CLI NTS64. Modules155/156 extend Throwable151/152.
-This first stage covers normal and exceptional completion, selected catch
-binding/body failures, nested calls/finalizers, suppression and exit. Return,
-reference-return and crossing loop transfers, plus gotos involving a finalized
-region, remain explicit source-admission `Unsupported` until the next stage.
-Ordinary called-function returns and local loop jumps inside finally are admitted.
+Stage A covers normal and exceptional completion, selected catch
+binding/body failures, nested calls/finalizers, suppression and exit. Stage B
+adds value and reference returns, break/continue across loop, switch and
+foreach owners, and goto into, within and out of protected try/catch regions.
+The pending transfer keeps its evaluated value or live reference while finally
+runs. A later return, throw or exit replaces that transfer. Value returns
+snapshot their operand before finally; reference returns retain the cell and
+repeat the declared return-type check after finalization.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.
 Jump into or out of finally is a compile error, including break/continue leaving
-the finalizer. Ordinary static errors and pass-two checks precede temporary
-admission gates, including errors later in a source containing a pending return.
+the finalizer. Ordinary static errors and pass-two checks retain native priority.
+Legal goto within finally runs locally; entry into try/catch rebuilds its
+finalizer marker without executing the skipped header.
 
 `TRY_END` retains catch eligibility. Selecting a catch replaces it with binding
 and `FINALLY_ONLY`, so strict binding failure still finalizes without trying a
@@ -24,7 +28,12 @@ not change the suspended exception.
 Pending objects are task roots, including in saved call frames. Source ancestry
 requires the correct marker for every active try/catch/finally region, stopping
 at callable boundaries. Checks cover missing, duplicate and wrong-phase markers,
-saved-frame origins and the trailing origin return. Leaving a finalizer consumes
+saved-frame origins and the trailing origin return. Stage B records the
+transfer source and compiled destination/depth, with a separate phase guard
+in the continuation. Current and saved frames reject marker deletion, phase
+substitution, wrong source/line/depth/target and orphan phase guards. A
+reference operand must be a live owned cell; a paused state cannot generally
+reconstruct which cell an effectful lvalue evaluation selected. Leaving a finalizer consumes
 that return before continuing outside the region. This prevents deleting a
 pending marker from silently discarding an exception. Recursive frames validate
 their own marker inventories. Exit bypasses finalizers and releases pending
@@ -40,7 +49,7 @@ the old chain at the new chain's tail only when their identity sets are disjoint
 self-rethrow or overlapping chains are unchanged. Uncaught output renders each
 object's stored message, source and trace, oldest previous first, then the latest
 exception and final throw location. Generated builtin errors suffice; public
-Throwable constructors/getters and property visibility are separate dependencies.
+Throwable constructors/getters and user subclasses are separate dependencies.
 
 Primary source routes in the vendored engine are `zend_compile_try`,
 `zend_handle_loops_and_finally_ex`, `zend_compile_return`,
@@ -48,9 +57,12 @@ Primary source routes in the vendored engine are `zend_compile_try`,
 `ZEND_FAST_CALL`, `ZEND_FAST_RET`, `ZEND_DISCARD_EXCEPTION`, and
 `zend_exception_set_previous`.
 
-The [author ledger](../../coverage/semantics/finally-author.json) separates exact
-source tuples, compiler/lint checks, temporary Unsupported controls and paused
-ownership assertions. The next required stage closes return/reference-return,
-break/continue and goto integration, including value snapshots and repeated
-typed reference-return checks. Generators/Fibers, destructor/shutdown callbacks,
+The [Stage A author ledger](../../coverage/semantics/finally-author.json) and
+[Stage B author ledger](../../coverage/semantics/finally-stage-b-author.json)
+separate exact source tuples, ordered compiler checks, paused-state ownership
+assertions and independent review. The Stage B exact source suite includes 20
+additional original-source tuples plus six transfer controls. Public Throwable
+construction is a separate dependency, so two native probes using `new Error`
+or `new Exception` are not Stage B agreements; generated engine throws cover
+return replacement. Generators/Fibers, destructor/shutdown callbacks,
 dynamic-source lifetime and remaining Throwable protocols remain later obligations.

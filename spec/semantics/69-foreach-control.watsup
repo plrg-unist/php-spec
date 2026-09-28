@@ -228,11 +228,11 @@ rule PhpStep/foreach-fetch-reference: S ~> $foreach_body(S_ref, n, HCELL n_cell,
 
 ;; Unwinding drops this iterator's saved copies, not the surviving value alias.
 def $loop_marker(FOREACH_NEXT n pnode statement porigin? z) = true
-def $jump_loop(S, 1, false) = $foreach_finish(S[.ORIGIN = porigin?], n)
+def $jump_loop(S, porigin_source, 1, n_original, false) = $foreach_finish(S[.ORIGIN = porigin?], n)
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
-def $jump_loop(S, 1, true) = S[.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $jump_loop(S, porigin_source, 1, n_original, true) = S[.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
-def $jump_loop(S, n_depth, b) = $jump_loop($foreach_finish(S, n), $nabs($(n_depth - 1)), b)
+def $jump_loop(S, porigin_source, n_depth, n_original, b) = $jump_loop($foreach_finish(S, n), porigin_source, $nabs($(n_depth - 1)), n_original, b)
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
   -- if $(n_depth > 1)
 

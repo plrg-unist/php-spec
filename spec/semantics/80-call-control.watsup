@@ -149,9 +149,9 @@ rule PhpStep/return-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN,
   -- if ~$reference_returning(S)
 rule PhpStep/return-empty: S ~> S[.TODO = $reference_empty_task(S, $typed_return_line(S, $source_line(metadata))) :: ptask_tail*]
   -- if S.TODO = (STMT (NStmtReturn ABSENT metadata)) :: ptask_tail*
-rule PhpStep/return-null: S ~> S[.TODO = (RETURN_UNWIND (KNOWN PNULL)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/return-null: S ~> S[.TODO = (RETURN_UNWIND (KNOWN PNULL) S.ORIGIN) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = RETURN_NULL :: ptask_tail*
-rule PhpStep/return-value: S ~> S_value[.TODO = (RETURN_UNWIND (KNOWN pvalue)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/return-value: S ~> S_value[.TODO = (RETURN_UNWIND (KNOWN pvalue) S.ORIGIN) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
   -- if S_value = $typed_return_value(S, z)
   -- if S_value.COMPLETION = NORMAL
@@ -164,15 +164,16 @@ dec $return_discard(pstate, ptask) : pstate
 def $return_discard(S, ORIGIN_RETURN porigin?) = S[.ORIGIN = porigin?]
 def $return_discard(S, FOREACH_NEXT n pnode statement porigin? z) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = porigin?]
 def $return_discard(S, ptask) = S -- otherwise
-dec $return_step(pstate, poperand, ptask*) : pstate
-def $return_step(S, poperand, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_UNWIND poperand) :: ptask_tail*], ptask)
-def $return_step(S, poperand, eps) = $restore_frame(S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
+dec $return_step(pstate, poperand, porigin?, ptask*) : pstate
+def $return_step(S, poperand, porigin_source?, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_UNWIND poperand porigin_source?) :: ptask_tail*], ptask)
+  -- if ~$finally_transfer_marker(S, ptask)
+def $return_step(S, poperand, porigin_source?, eps) = $restore_frame(S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if S.FRAMES =/= eps
-def $return_step(S, poperand, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
+def $return_step(S, poperand, porigin_source?, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
   -- if S.FRAMES = eps
-rule PhpStep/return-unwind: S ~> $return_step(S, poperand, ptask_tail*)
-  -- if S.TODO = (RETURN_UNWIND poperand) :: ptask_tail*
+rule PhpStep/return-unwind: S ~> $return_step(S, poperand, porigin_source?, ptask_tail*)
+  -- if S.TODO = (RETURN_UNWIND poperand porigin_source?) :: ptask_tail*
 
 def $task_nodes(CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = $target_nodes(pcalltarget_function) ++ $operands_roots(poperand*)
 def $task_nodes(CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) = $target_nodes(pcalltarget_function) ++ $operands_roots(poperand*)
-def $task_nodes(RETURN_UNWIND poperand) = $operand_nodes(poperand)
+def $task_nodes(RETURN_UNWIND poperand porigin_source?) = $operand_nodes(poperand)

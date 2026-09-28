@@ -1,0 +1,65 @@
+{
+  "scope": "Reviewed Stage B increment on the canonical private-property foundation; exact installed-index acceptance is a separate check.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "foundation": "b0bc9d84571e5093653b7b1a87ef50c2a1eb363c",
+  "counts": {
+    "source_total": 39,
+    "source_stage_b_additional": 20,
+    "compiler_sources": 11,
+    "paused_total": 16,
+    "paused_assertions_total": 206,
+    "paused_stage_b": 10,
+    "paused_stage_b_assertions": 103,
+    "exact_transfer_controls": 6
+  },
+  "loaded_input_map": {
+    "path": ".tools/finally-b-implementation/.tools/finally-b-loaded-map.json",
+    "sha256": "c052df12d15a6a8f34fe32b92ca97734d5bc2d94bc4c71a93cbbfa8573b41139",
+    "modules": 154,
+    "inputs": 175
+  },
+  "reports": {
+    "source39": {
+      "path": ".tools/finally-b-implementation/.tools/finally-source-zre4r3xt/report.json",
+      "sha256": "bc5097a705bc57ff6fdd90190113652305b35ef8835649843be33044e525a71b"
+    },
+    "paused16_206": {
+      "path": ".tools/finally-b-implementation/.tools/finally-protocol-x76mu8pa/report.json",
+      "sha256": "55e58a028f2dc940af2fad6da40e2a97cd0625e3e7c804eeb8072c516944b724"
+    },
+    "compiler11": {
+      "path": ".tools/finally-b-implementation/.tools/finally-compiler-xjs4ck2y/report-full.json",
+      "sha256": "d5a348b7e29da0a2057e9be761260a4f7bb619975b0c4ec7471859577a34f942"
+    },
+    "transfer_controls6": {
+      "path": ".tools/finally-b-implementation/.tools/finally-controls-p3u1kw8r/report.json",
+      "sha256": "5f9c627378b55f7a641e0772b59be3f0e079e4ab620fcc9c218d214a5ae1fbeb"
+    },
+    "reference_returns31": {
+      "path": ".tools/finally-b-implementation/.tools/reference-returns-o_mjsx2c/report.json",
+      "sha256": "f64e747f7b386c94a63a735f2a9fb0a1294a24c54b2be3a33ec5dad9463e0118"
+    },
+    "goto22": {
+      "path": ".tools/finally-b-implementation/.tools/goto-d03a32ej/report.json",
+      "sha256": "8336e3965afb0c06aa2052627c8573de120618fba12e4149a38f5cd041afeb59"
+    },
+    "arrows13": {
+      "path": ".tools/finally-b-implementation/.tools/arrows-regression-pys_59ab/report.json",
+      "sha256": "a675296b75b1ef1f5caf5235d866941692d302434780b2e6794985b43d41be25"
+    }
+  },
+  "limits": [
+    "Two native probes using new Error/Exception remain outside this increment until public Throwable constructors are admitted; generated engine throws exercise return replacement and catch-to-try goto.",
+    "Paused reference validation checks source/line and live owned operand; arbitrary computed lvalues are not re-evaluated to reconstruct their selected cell.",
+    "Arrow state numeric fixture was aborted after exceeding two minutes; 13 exact arrow source regressions pass."
+  ],
+  "recovery": [
+    "python3 tests/semantics/finally.py",
+    "python3 tests/semantics/finally_compiler.py",
+    "python3 tests/semantics/finally_protocol.py",
+    "python3 tests/semantics/finally_controls.py",
+    "python3 tests/semantics/reference_returns.py",
+    "python3 tests/semantics/goto.py",
+    "python3 tests/semantics/arrows_regression.py"
+  ]
+}

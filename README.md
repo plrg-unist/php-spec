@@ -177,8 +177,8 @@ results; their [review](coverage/semantics/match-review.json) binds source, comp
 and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES.md)
 now support ordered no-finally try/catch and throw/rethrow, including unhandled
 match errors. [Finally continuations](docs/semantics/SOURCE-FINALLY.md) now preserve
-normal and thrown outcomes, previous chains, suppression and exit cleanup. Return
-and crossing jump finalization are the next stage; constructors, accessors,
+normal, thrown and transferring outcomes, including value/reference returns,
+loop jumps and goto across protected regions. Constructors, accessors,
 subclasses and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
@@ -230,7 +230,7 @@ Clone callbacks, readonly/hook semantics and lifecycle integration remain open.
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)
 binds static, source and paused-state checks. Legal entry into no-finally
-try/catch is supported; jumps requiring finally execution remain open.
+try/catch and source-authenticated jumps requiring finally execution are supported.
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;

@@ -26,7 +26,8 @@ def main(match):
     files = [*modules, runner, ROOT / 'spec/semantics/modules.json',
              ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
              ROOT / '_build/default/adapter/main.exe', ROOT / 'frontend/worker.php',
-             ROOT / 'tests/semantics/finally_protocol_cases.py', Path(__file__)]
+             ROOT / 'tests/semantics/finally_protocol_cases.py',
+             ROOT / 'tests/semantics/finally_transfer_protocol_cases.py', Path(__file__)]
     before = {str(path.relative_to(ROOT)): digest(path) for path in files}
     results = []
     selected = [case for case in CASES if match in case[0]]

@@ -3137,11 +3137,12 @@
         "tests/semantics/finally.py",
         "tests/semantics/finally_cases.json"
       ],
-      "review": "Bounded finally155/156 stage A covers normal/throw, catch-binding failure, previous-chain ownership/rendering, suppression and exit. finally-author.json separates source19, compiler11, paused6/103 and6 temporary Unsupported controls. Return/reference-return, crossing loop transfers and goto involving finalized regions remain immediate stage B; generators/Fibers and lifecycle callbacks remain required. Generated-only acyclicity does not cover constructor-created previous cycles. Canonical integration review remains separate.",
+      "review": "Finally155/156 Stage A covers normal/throw, catch binding, previous chains, suppression and exit. Stage B adds value/reference returns, loop/switch/foreach jumps and goto across protected regions, with 20 additional source tuples, six exact transfer controls and ten current/saved paused stages. Independent Stage B review is approved; exact installed index and source maps are recorded separately. Generators/Fibers, lifecycle callbacks and constructor-created previous cycles remain open.",
       "helper_tests": [
         "tests/semantics/finally_compiler.py",
         "tests/semantics/finally_protocol.py",
         "tests/semantics/finally_protocol_cases.py",
+        "tests/semantics/finally_transfer_protocol_cases.py",
         "tests/semantics/finally_controls.py"
       ]
     },
@@ -3586,11 +3587,12 @@
         "tests/semantics/finally.py",
         "tests/semantics/finally_cases.json"
       ],
-      "review": "Bounded finally155/156 stage A covers normal/throw, catch-binding failure, previous-chain ownership/rendering, suppression and exit. finally-author.json separates source19, compiler11, paused6/103 and6 temporary Unsupported controls. Return/reference-return, crossing loop transfers and goto involving finalized regions remain immediate stage B; generators/Fibers and lifecycle callbacks remain required. Generated-only acyclicity does not cover constructor-created previous cycles. Canonical integration review remains separate.",
+      "review": "Finally155/156 Stage A covers normal/throw, catch binding, previous chains, suppression and exit. Stage B adds value/reference returns, loop/switch/foreach jumps and goto across protected regions, with 20 additional source tuples, six exact transfer controls and ten current/saved paused stages. Independent Stage B review is approved; exact installed index and source maps are recorded separately. Generators/Fibers, lifecycle callbacks and constructor-created previous cycles remain open.",
       "helper_tests": [
         "tests/semantics/finally_compiler.py",
         "tests/semantics/finally_protocol.py",
         "tests/semantics/finally_protocol_cases.py",
+        "tests/semantics/finally_transfer_protocol_cases.py",
         "tests/semantics/finally_controls.py"
       ]
     },
@@ -6623,6 +6625,7 @@
         "tests/semantics/finally_compiler.py",
         "tests/semantics/finally_protocol.py",
         "tests/semantics/finally_protocol_cases.py",
+        "tests/semantics/finally_transfer_protocol_cases.py",
         "tests/semantics/finally_controls.py"
       ],
       "source_tests": [
@@ -6632,7 +6635,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Bounded finally155/156 stage A covers normal/throw, catch-binding failure, previous-chain ownership/rendering, suppression and exit. finally-author.json separates source19, compiler11, paused6/103 and6 temporary Unsupported controls. Return/reference-return, crossing loop transfers and goto involving finalized regions remain immediate stage B; generators/Fibers and lifecycle callbacks remain required. Generated-only acyclicity does not cover constructor-created previous cycles. Canonical integration review remains separate.",
+      "review": "Finally155/156 Stage A covers normal/throw, catch binding, previous chains, suppression and exit. Stage B adds value/reference returns, loop/switch/foreach jumps and goto across protected regions, with 20 additional source tuples, six exact transfer controls and ten current/saved paused stages. Independent Stage B review is approved; exact installed index and source maps are recorded separately. Generators/Fibers, lifecycle callbacks and constructor-created previous cycles remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-return.php",
         "tests/semantics/conformance/finally-throw.php"

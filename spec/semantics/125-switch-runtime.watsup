@@ -157,13 +157,13 @@ rule PhpStep/switch-end-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "
   -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
   -- if ~$switch_site(S, statement, porigin)
 def $loop_marker(SWITCH_NEXT statement porigin poperand) = true
-def $jump_loop(S, 1, b) = S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $jump_loop(S, porigin_source, 1, n_original, b) = S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
   -- if $switch_site(S, statement, porigin)
-def $jump_loop(S, n_depth, b) = $jump_loop(S[.TODO = ptask_tail*], $nabs($(n_depth - 1)), b)
+def $jump_loop(S, porigin_source, n_depth, n_original, b) = $jump_loop(S[.TODO = ptask_tail*], porigin_source, $nabs($(n_depth - 1)), n_original, b)
   -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
   -- if $(n_depth > 1)
   -- if $switch_site(S, statement, porigin)
-def $jump_loop(S, n_depth, b) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch continuation"]
+def $jump_loop(S, porigin_source, n_depth, n_original, b) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch continuation"]
   -- if S.TODO = (SWITCH_NEXT statement porigin poperand) :: ptask_tail*
   -- if ~$switch_site(S, statement, porigin)

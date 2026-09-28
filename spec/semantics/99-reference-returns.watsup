@@ -12,7 +12,7 @@ dec $reference_return_write_operand(pstate, poperand, pvalue) : pstate
 dec $reference_return_diagnostic(pstate, poperand, int) : pstate
 dec $reference_return_materialize(pstate, poperand, pvalue) : pstate
 dec $reference_operand(poperand) : bool
-dec $reference_return_unwind(pstate, pnode*) : pstate
+dec $reference_return_unwind(pstate, pnode*, int) : pstate
 
 ;; Caller result demand follows original source consumers, including folded ones.
 def $reference_origin_parent(PORIGIN n pcpath, n_count) = ((PORIGIN n pcpath[0:n_parent], pcpath[n_parent:n_count]))
@@ -126,12 +126,17 @@ def $reference_return_diagnostic(S, poperand, z) = $diagnostic(S, "Notice", $pta
   -- if $reference_return_notice(S, poperand)
 def $reference_return_diagnostic(S, poperand, z) = S -- if ~$reference_return_notice(S, poperand)
 def $reference_return_materialize(S, poperand, pvalue) = S -- if S.COMPLETION =/= NORMAL
+def $reference_return_materialize(S, REFERENCE n, pvalue) = S[.RESULT = REFERENCE n]
+  -- if S.COMPLETION = NORMAL
+  -- if $finally_return_pending(S)
 def $reference_return_materialize(S, poperand, pvalue) = S[.RESULT = KNOWN PNULL]
   -- if S.COMPLETION = NORMAL
   -- if ~$reference_return_used(S)
+  -- if ~$finally_return_pending(S) \/ ~$reference_operand(poperand)
 def $reference_return_materialize(S, REFERENCE n, pvalue) = S[.RESULT = REFERENCE n]
   -- if S.COMPLETION = NORMAL
   -- if $reference_return_used(S)
+  -- if ~$finally_return_pending(S)
 def $reference_return_materialize(S, poperand, pvalue) = $call_fresh_reference(S, pvalue)
   -- if S.COMPLETION = NORMAL
   -- if $reference_return_used(S)
@@ -139,14 +144,15 @@ def $reference_return_materialize(S, poperand, pvalue) = $call_fresh_reference(S
 def $reference_operand(REFERENCE n) = true
 def $reference_operand(poperand) = false -- otherwise
 
-def $reference_return_unwind(S, pnode*) = S[.HELD = pnode*][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION =/= NORMAL
-def $reference_return_unwind(S, pnode*) = S[.TODO = (RETURN_UNWIND S.RESULT) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode*]
+def $reference_return_unwind(S, pnode*, z) = S[.HELD = pnode*][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION =/= NORMAL
+def $reference_return_unwind(S, pnode*, z) = S[.TODO = (RETURN_REF_UNWIND S.RESULT z false porigin_source) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode*]
   -- if S.COMPLETION = NORMAL
-rule PhpStep/return-reference-fetch: S ~> $reference_return_unwind($reference_return_fetch($hold_task_inputs(S), S.BASE, z), S.HELD)
+  -- if S.ORIGIN = (porigin_source)
+rule PhpStep/return-reference-fetch: S ~> $reference_return_unwind($reference_return_fetch($hold_task_inputs(S), S.BASE, z), S.HELD, z)
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
-rule PhpStep/return-reference-value: S ~> $reference_return_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD)
+rule PhpStep/return-reference-value: S ~> $reference_return_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD, z)
   -- if S.TODO = (RETURN_REF_VALUE z) :: ptask_tail*
-rule PhpStep/return-reference-null: S ~> $reference_return_unwind($reference_return_materialize($diagnostic($hold_task_inputs(S), "Notice", $ptascii("Only variable references should be returned by reference"), z), KNOWN PNULL, PNULL), S.HELD)
+rule PhpStep/return-reference-null: S ~> $reference_return_unwind($reference_return_materialize($diagnostic($hold_task_inputs(S), "Notice", $ptascii("Only variable references should be returned by reference"), z), KNOWN PNULL, PNULL), S.HELD, z)
   -- if S.TODO = (RETURN_REF_NULL z) :: ptask_tail*
 
 ;; Return stages bind source designation and emission metadata, not value history.

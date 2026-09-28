@@ -30,7 +30,7 @@ def $arrow_dense_stage(S, 2) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.INSTANCE = (n_object)
 def $arrow_dense_stage(S, 3) = true
-  -- if S.TODO = (RETURN_UNWIND (REFERENCE n_cell)) :: ptask*
+  -- if S.TODO = (RETURN_UNWIND (REFERENCE n_cell) porigin_source?) :: ptask*
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.INSTANCE = (n_object)
 def $arrow_dense_stage(S, 4) = true
@@ -131,7 +131,7 @@ def main():
                            '$heap_owners($heap_graph(S_out), HOBJECT n_object) = 1',
                            '$lookup(S_receive_bound.ENV, [120]) = (n_local)', 'n_local =/= n_outer',
                            'S_receive_bound.STORE[n_local] = DEFINED (PINT 2)',
-                           'S_unwind.TODO = (RETURN_UNWIND (REFERENCE n_local)) :: ptask_unwind*',
+                           'S_unwind.TODO = (RETURN_UNWIND (REFERENCE n_local) porigin_source?) :: ptask_unwind*',
                            'n_local = n_a', 'n_local <- S_unwind.REFCELLS',
                            '$heap_owners($heap_graph(S_unwind), HCELL n_local) = 2',
                            'S_unwind.OBJECTS[n_object] = S_out.OBJECTS[n_object]']

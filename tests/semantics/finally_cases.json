@@ -93,5 +93,105 @@
     "id": "catch-binding-failure-finalizer",
     "source": "<?php class C{public string $x=\"old\";}$c=new C;$e=&$c->x;try{try{missing();}catch(Throwable $e){echo \"BAD\";}finally{echo \"F\";}}catch(TypeError $outer){echo $c->x;}",
     "status": "normal"
+  },
+  {
+    "id": "transfer-value-snapshot",
+    "source": "<?php function f(){ $x=1; try { return $x; } finally { $x=2; } } echo f();",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-array-snapshot",
+    "source": "<?php function f(){ $x=[1]; try { return $x; } finally { $x[0]=2; } } echo f()[0];",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-ref-cell",
+    "source": "<?php function &f(){ $x=1; try { return $x; } finally { $x=2; } } $r=&f(); echo $r;",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-ref-type-recheck",
+    "source": "<?php function &f(): int { $x=1; try { return $x; } finally { $x=\"bad\"; } } $r=&f(); echo $r;",
+    "status": "php_error"
+  },
+  {
+    "id": "transfer-return-over-return",
+    "source": "<?php function f(){ try { return 1; } finally { return 2; } } echo f();",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-nested-return-order",
+    "source": "<?php function f(){ try { try { return 1; } finally { echo \"A\"; } } finally { echo \"B\"; } } echo f();",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-break-outer",
+    "source": "<?php while (true) { try { echo \"T\"; break; } finally { echo \"F\"; } } echo \"E\";",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-continue-outer",
+    "source": "<?php for($i=0;$i<2;$i++){ try { echo $i; continue; } finally { echo \"F\"; } } echo \"E\";",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-out",
+    "source": "<?php try { echo \"T\"; goto out; } finally { echo \"F\"; } out: echo \"E\";",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-within",
+    "source": "<?php try { goto inside; echo \"X\"; inside: echo \"I\"; } finally { echo \"F\"; }",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-into-try",
+    "source": "<?php goto inside; try { inside: echo \"I\"; } finally { echo \"F\"; }",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-into-catch",
+    "source": "<?php goto inside; try { throw new Error(\"E\"); } catch (Error $e) { inside: echo \"I\"; } finally { echo \"F\"; }",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-foreach-break",
+    "source": "<?php foreach ([1,2] as $v) { try { break; } finally { echo $v; } } echo \"E\";",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-inside-finalizer-pending-return",
+    "source": "<?php function f(){ try{return 1;} finally {echo \"A\";goto l;echo \"X\";l:echo \"B\";} } echo f();",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-continue-two-switch",
+    "source": "<?php for($i=0;$i<2;$i++){switch($i){case 0:try{echo \"T\";continue 2;}finally{echo \"F\";}} echo \"E\";}echo \"D\";",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-into-nested-try",
+    "source": "<?php goto inner; try { echo \"X\"; try { inner: echo \"I\"; } finally { echo \"A\"; } } finally { echo \"B\"; }",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-goto-into-finalizer-invalid",
+    "source": "<?php goto inner; try { echo \"T\"; } finally { inner: echo \"F\"; }",
+    "status": "static_rejection"
+  },
+  {
+    "id": "transfer-goto-out-finalizer-invalid",
+    "source": "<?php try { echo \"T\"; } finally { goto out; } out: echo \"E\";",
+    "status": "static_rejection"
+  },
+  {
+    "id": "transfer-generated-return-over-throw",
+    "source": "<?php function f(){try{1/0;}finally{return 7;}}echo f();",
+    "status": "normal"
+  },
+  {
+    "id": "transfer-generated-catch-to-try",
+    "source": "<?php $i=0;try{T:echo \"T\";if($i++===0){1/0;}else{echo \"F\";}}catch(DivisionByZeroError){echo \"C\";goto T;}finally{echo \"Z\";}",
+    "status": "normal"
   }
 ]
