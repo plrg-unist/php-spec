@@ -315,30 +315,40 @@ def $drive(S, n) = $drive_steps(S, n) -- if S.COMPLETION =/= NORMAL
 def $drive_steps(S, n) = S
   -- if S.TODO = eps
   -- if S.COMPLETION = NORMAL
+  -- if ~S.COMPILESTOP
 def $drive_steps(S, n) = S
   -- if S.COMPLETION = BUDGET
+def $drive_steps(S, n) = S[.SERVICELEFT = (n)]
+  -- if S.COMPLETION = SOURCE_PENDING
+def $drive_steps(S, n) = S
+  -- if S.COMPILESTOP
 def $drive_steps(S, n) = $drive_steps($throwable_begin(S), n)
   -- if $throwable_pending(S.COMPLETION)
+  -- if ~S.COMPILESTOP
 def $drive_steps(S, n) = $prune_allocations($release_temporaries($silence_unwind(S)))
-  -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
+  -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ S.COMPLETION =/= SOURCE_PENDING)
+  -- if ~S.COMPILESTOP
   -- if ~$throwable_pending(S.COMPLETION)
   -- if S.FRAMES = eps
 def $drive_steps(S, n) = $drive_steps($start_error_unwind(S), n)
-  -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
+  -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ S.COMPLETION =/= SOURCE_PENDING)
+  -- if ~S.COMPILESTOP
   -- if ~$throwable_pending(S.COMPLETION)
   -- if ~$exit_completion(S.COMPLETION)
   -- if S.FRAMES =/= eps
 def $drive_steps(S, 0) = S[.COMPLETION = BUDGET]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
+  -- if ~S.COMPILESTOP
 def $drive_steps(S, n) = $drive_steps($prune_allocations($throwable_transition(S, S_next)), n_next)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
+  -- if ~S.COMPILESTOP
   -- if $(n > 0)
   -- if $(n - 1) = n_next
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {OBJECTS eps, CLOSURESCOPES eps, OBJECTPROPS eps, PROPREFS eps, CLASSES eps, CLASSNAMES eps, LINKEDPARENTS eps, CLOSURETEMPLATES eps, STATICS eps, REPORTING 30719, SILENCES eps, DEFAULTCACHE eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORORIGIN eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, FRAMES eps, CURRENT eps, REQUEST eps, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
+def $initial_state(pcompletion) = {OBJECTS eps, CLOSURESCOPES eps, OBJECTPROPS eps, PROPREFS eps, CLASSES eps, CLASSNAMES eps, LINKEDPARENTS eps, CLOSURETEMPLATES eps, STATICS eps, REPORTING 30719, SILENCES eps, DEFAULTCACHE eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORORIGIN eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, FRAMES eps, CURRENT eps, REQUEST eps, EVALCONTEXTS eps, FAILEDSOURCES eps, SERVICELEFT eps, COMPILESTOP false, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
 dec $source_filename(nat*) : bool
 def $source_filename(n*) = (n* =/= eps /\ ~(0 <- n*))
 dec $php_run(program, nat, text) : pstate

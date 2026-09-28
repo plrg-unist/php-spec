@@ -222,6 +222,38 @@ let rec semantic_json (value : V.t) =
   | StructV fields -> `Assoc (List.map (fun (key,v) -> Domain.Atom.string_of_atom key.it, semantic_json v) fields)
   | CaseV _ -> let tag,args = split value in `Assoc ["tag", `String tag; "args", `List (List.map semantic_json args)]
   | _ -> fail "unexpected semantic result shape"
+let base64_octets bytes =
+  let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" in
+  let result = Buffer.create ((List.length bytes + 2) / 3 * 4) in
+  let emit n = Buffer.add_char result alphabet.[n] in
+  let rec write = function
+    | a :: b :: c :: tail ->
+        emit (a lsr 2); emit (((a land 3) lsl 4) lor (b lsr 4));
+        emit (((b land 15) lsl 2) lor (c lsr 6)); emit (c land 63); write tail
+    | [a; b] ->
+        emit (a lsr 2); emit (((a land 3) lsl 4) lor (b lsr 4));
+        emit ((b land 15) lsl 2); Buffer.add_char result '='
+    | [a] ->
+        emit (a lsr 2); emit ((a land 3) lsl 4);
+        Buffer.add_string result "=="
+    | [] -> () in
+  write bytes;
+  Buffer.contents result
+let pending_from_state state =
+  let json = semantic_json state in
+  if string (field "tag" (field "COMPLETION" json)) <> "SOURCE_PENDING" then None
+  else (
+    if field "SERVICELEFT" json = `Null then fail "pending source has no remaining budget";
+    let context = match list (field "EVALCONTEXTS" json) with
+      | context :: _ -> context
+      | [] -> fail "pending source has no context" in
+    if string (field "tag" (field "PHASE" context)) <> "PARSER_WAIT" then fail "pending source phase mismatch";
+    let octets = list (field "BYTES" context) |> List.map (fun value ->
+      let n = int_of_string (string value) in
+      if n < 0 || n > 255 then fail "invalid pending source byte" else n) in
+    Some (`Assoc ["id", field "UNIT" context; "mode", `String "eval";
+                  "profile", `String "cli-raw-85"; "source", `String (base64_octets octets)]))
+let active_eval = ref None
 let import_request (module Runner : Run.RUNNER) json =
   let keys = ["env"; "argv"; "file"; "seconds"; "microseconds"; "variables"; "jit"] in
   exact (if List.mem_assoc "cwd" (assoc json) then keys @ ["cwd"] else keys) json;
@@ -249,6 +281,7 @@ let import_request (module Runner : Run.RUNNER) json =
   check (typ "prequest") value;
   value
 let execute value request =
+  if !active_eval <> None then fail "eval parser response still pending";
   let budget = field "steps" request |> J.to_int in
   if budget < 0 then fail "negative transition budget";
   let filename = bytes_value (field "filename" request) in
@@ -260,7 +293,10 @@ let execute value request =
     | _ -> fail "duplicate request field" in
   match Runner.Interp.eval_func name [] arguments with
   | Run.Pass state -> check (typ "pstate") state;
-      `Assoc ["ok", `Bool true; "state", semantic_json state]
+      let pending = pending_from_state state in
+      (match pending with Some request -> active_eval := Some (state, request) | None -> ());
+      `Assoc (["ok", `Bool true; "state", semantic_json state] @
+              match pending with Some request -> ["pending", request] | None -> [])
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
               "message", `String (Util.Error.string_of_error at msg)]
@@ -304,6 +340,40 @@ let check_source_service request =
     let message = source_bytes (field "message" response) in
     `Assoc (["ok", `Bool true; "accepted", `Bool false; "category", `String category;
              "message", `String message; "line", `Int line] @ identity))
+let resume_eval request =
+  exact ["op"; "response"] request;
+  let state, pending = match !active_eval with
+    | Some active -> active
+    | None -> fail "no pending eval parser request" in
+  let checked = check_source_service (`Assoc ["op", `String "check_source_service";
+                                               "pending", pending; "response", field "response" request]) in
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let decode_bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let id = V.Make.nat (Bigint.of_string (string (field "id" pending))) in
+  let source = decode_bytes (field "source" pending) in
+  let response = if J.to_bool (field "accepted" checked) then
+      mk "psourceresponse" "SOURCE_ACCEPT" [id; source; import_program (field "ast" checked)]
+    else (
+      let constructor = match string (field "category" checked) with
+        | "parser_rejection" -> "SOURCE_PARSE_REJECT"
+        | "parser_static_rejection" -> "SOURCE_COMPILE_REJECT"
+        | _ -> fail "invalid checked parser rejection" in
+      mk "psourceresponse" constructor
+        [id; source; decode_bytes (field "message" checked);
+         V.Make.int (Bigint.of_int (J.to_int (field "line" checked)))]) in
+  check (typ "psourceresponse") response;
+  match Runner.Interp.eval_func "eval_continue" [] [state; response] with
+  | Run.Pass next -> check (typ "pstate") next;
+      let following = pending_from_state next in
+      active_eval := Option.map (fun request -> (next, request)) following;
+      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+              match following with Some request -> ["pending", request] | None -> [])
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
 let () =
   try while true do
     let line = read_line () in
@@ -314,6 +384,7 @@ let () =
         ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ string (field "fixture" request) ^ "\n"));
         `Assoc ["ok", `Bool true])
       else if op = "check_source_service" then check_source_service request
+      else if op = "resume_eval" then resume_eval request
       else (
         if op <> "check" && op <> "elaborate" && op <> "execute" then fail "unknown operation";
         let value = import_program (field "ast" request) in

@@ -291,6 +291,7 @@ dec $ctor_native_result_valid(pstate) : bool
 dec $exit_result_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $finally_state_valid(pstate) : bool
+dec $eval_state_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
@@ -303,6 +304,7 @@ def $call_descriptors_valid(S) = true
   -- if $nullsafe_base_phase_valid(S)
   -- if $call_frames_valid(S, S.FRAMES)
   -- if $finally_state_valid(S)
+  -- if $eval_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)
   -- if $reference_call_frames_valid(S.CURRENT, S.FRAMES)

@@ -8,6 +8,8 @@ dec $call_fixed_parameters(psparam*) : psparam*
 dec $call_parameter_at(psparam*, nat) : psparam?
 dec $call_receive_body(pstate, pfunction) : ptask*
 dec $reference_returning(pstate) : bool
+dec $eval_top_level(pstate) : bool
+dec $eval_end_marker(ptask) : bool
 dec $reference_empty_task(pstate, int) : ptask
 dec $typed_parameters(psparam*) : bool
 dec $typed_fallthrough(pfunction) : ptask
@@ -167,6 +169,7 @@ def $return_discard(S, ptask) = S -- otherwise
 dec $return_step(pstate, poperand, porigin?, ptask*) : pstate
 def $return_step(S, poperand, porigin_source?, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_UNWIND poperand porigin_source?) :: ptask_tail*], ptask)
   -- if ~$finally_transfer_marker(S, ptask)
+  -- if ~$eval_end_marker(ptask)
 def $return_step(S, poperand, porigin_source?, eps) = $restore_frame(S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if S.FRAMES =/= eps
 def $return_step(S, poperand, porigin_source?, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]

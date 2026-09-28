@@ -3,6 +3,7 @@ dec $finally_binding_marker(pstate, porigin) : bool
 dec $finally_present(pstate, porigin) : bool
 dec $finally_catch_tail(pstate, porigin, ptask*) : ptask*
 dec $throwable_chain_valid(pstate, nat) : bool
+dec $throwable_source_origin_valid(pstate, nat, pthrowable) : bool
 ;; Error requests are materialized before pruning or crossing a continuation.
 ;; Scalar fields use shared property slots; trace metadata stays on the object.
 dec $throwable_kind(text) : bool
@@ -78,7 +79,7 @@ def $closure_live_object_valid(S, n) = true
   -- if $throwable_slots_valid(S, n, pthrowable)
   -- if pthrowable.ORIGIN = (porigin)
   -- if $throwable_field(S, n, "file") = PSTRING $call_sourcefile(S.FILES, porigin)
-  -- if $origin_node(S.SOURCES, porigin) =/= eps
+  -- if $throwable_source_origin_valid(S, n, pthrowable)
   -- if $heap_valid($heap_graph(S))
 
 ;; Allocation snapshots the failing frame before any owner is discarded.
@@ -94,9 +95,10 @@ def $throwable_pending(PHPERROR preqbytes z) = true
 def $throwable_pending(THROWING n) = true
 def $throwable_pending(pcompletion) = false -- otherwise
 dec $throwable_materialize(pstate) : pstate
-def $throwable_materialize(S) = $throwable_allocate(S, text, preqbytes, z, $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+dec $eval_runtime_trace(pstate) : ptraceframe*
+def $throwable_materialize(S) = $throwable_allocate(S, text, preqbytes, z, $eval_runtime_trace(S) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
   -- if S.COMPLETION = THROWN text preqbytes z
-def $throwable_materialize(S) = $throwable_allocate(S, "Error", $ptascii("Undefined constant \"") ++ preqbytes ++ [34], z, $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $throwable_materialize(S) = $throwable_allocate(S, "Error", $ptascii("Undefined constant \"") ++ preqbytes ++ [34], z, $eval_runtime_trace(S) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
   -- if S.COMPLETION = PHPERROR preqbytes z
 def $throwable_materialize(S) = S -- otherwise
 
@@ -178,6 +180,7 @@ def $throwable_marker(ptask) = false -- otherwise
 rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH n) :: ptask_tail*], ptask)
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if ~$throwable_marker(ptask)
+  -- if ~$eval_end_marker(ptask)
 rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_restored.TODO][.RESULT = KNOWN PNULL][.HELD = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if ptask_tail* = eps

@@ -112,6 +112,7 @@ def $typed_fallthrough(pfunction) = RETURN_REF_NULL pfunction.ENDLINE -- if pfun
 def $typed_fallthrough(pfunction) = TYPE_FALLTHROUGH pfunction.ORIGIN -- if pfunction.SIGNATURE.RETURNS =/= eps
 def $typed_return_line(S, z) = z_return
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$eval_top_level(S)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS =/= eps \/ pfunction.SIGNATURE.BYREF
   -- if S.ORIGIN = (PORIGIN n pcpath)
@@ -125,9 +126,14 @@ def $typed_return_value(S, z) = $typed_return_check($resolve_at(S, S.RESULT, z),
 def $typed_return_check(S, z) = $typed_return_checked(S, z, false)
 def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION =/= NORMAL
 def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION = NORMAL /\ S.CURRENT = eps
+def $typed_return_checked(S, z, b_source) = S
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if $eval_top_level(S)
 def $typed_return_checked(S, z, b_source) = $typed_apply(S, ptypeconversion, z)
   -- if S.COMPLETION = NORMAL
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$eval_top_level(S)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.RESULT = KNOWN pvalue
   -- if ptypeconversion = $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, b_source)
@@ -135,6 +141,7 @@ def $typed_return_checked(S, z, b_source) = $typed_apply(S, ptypeconversion, z)
 def $typed_return_checked(S, z, b_source) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
   -- if S.COMPLETION = NORMAL
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$eval_top_level(S)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.RESULT = KNOWN pvalue
   -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, b_source) = TYPEREJECT

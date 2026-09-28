@@ -1,0 +1,132 @@
+[
+  {
+    "id": "return-value",
+    "kind": "normal",
+    "source": "<?php $x=eval('return 4;'); echo $x,'|after';"
+  },
+  {
+    "id": "zero-and-blank",
+    "kind": "normal",
+    "source": "<?php echo (eval('') === false ? 'F':'X'),'|',(eval(' ') === null ? 'N':'X');"
+  },
+  {
+    "id": "fallthrough",
+    "kind": "normal",
+    "source": "<?php $x=eval('echo \"E\";'); echo ($x===null?'N':'X');"
+  },
+  {
+    "id": "shared-variable",
+    "kind": "normal",
+    "source": "<?php $x=3; $y=eval('$x=5; return $x;'); echo $x,'|',$y;"
+  },
+  {
+    "id": "nested-return",
+    "kind": "normal",
+    "source": "<?php echo eval('return eval(\"return 7;\");'),'|done';"
+  },
+  {
+    "id": "parse-caught",
+    "kind": "normal",
+    "source": "<?php try { eval('echo ;'); } catch (ParseError $e) { echo $e->getMessage(),'|',$e->getFile(),'|',$e->getLine(); }"
+  },
+  {
+    "id": "parse-trace-in-function",
+    "kind": "normal",
+    "source": "<?php function f(){try{eval('echo ;');}catch(ParseError $e){foreach($e->getTrace() as $t){echo $t['function'],'|',$t['file'],'|',$t['line'];}}} f();"
+  },
+  {
+    "id": "parse-after-output",
+    "kind": "normal",
+    "source": "<?php echo 'A'; try{eval('echo ;');}catch(ParseError $e){echo '|P';}"
+  },
+  {
+    "id": "parse-uncaught",
+    "kind": "php_error",
+    "source": "<?php eval('echo ;');"
+  },
+  {
+    "id": "parse-uncaught-in-function",
+    "kind": "php_error",
+    "source": "<?php function f(){eval('echo ;');} f();"
+  },
+  {
+    "id": "static-stops-finally",
+    "kind": "static_rejection",
+    "source": "<?php function f(){try{echo 'A';eval('break;');echo 'B';}finally{echo 'F';}}f();echo 'E';"
+  },
+  {
+    "id": "static-undefined-label",
+    "kind": "static_rejection",
+    "source": "<?php echo 'A'; eval('goto missing;'); echo 'B';"
+  },
+  {
+    "id": "strict-reset",
+    "kind": "normal",
+    "source": "<?php declare(strict_types=1); function f(int $x){return $x;} echo eval('return f(\"2\");');"
+  },
+  {
+    "id": "global-function",
+    "kind": "normal",
+    "source": "<?php namespace N; eval('function f(){return 2;}'); echo \\f();"
+  },
+  {
+    "id": "eval-namespace",
+    "kind": "normal",
+    "source": "<?php echo eval('namespace N; echo 1;')===null?'N':'X';"
+  },
+  {
+    "id": "typed-caller",
+    "kind": "normal",
+    "source": "<?php function f():int {$v=eval('return \"x\";'); echo $v; return 1;} echo f();"
+  },
+  {
+    "id": "reference-caller",
+    "kind": "normal",
+    "source": "<?php function &f(){eval('return 4;'); $x=5; return $x;} echo f();"
+  },
+  {
+    "id": "missing-parent-caught",
+    "kind": "normal",
+    "source": "<?php try{eval('class C extends Missing {}');}catch(Error $e){echo $e->getFile(),'|',$e->getLine(),'|',$e->getMessage();}"
+  },
+  {
+    "id": "missing-parent-trace",
+    "kind": "normal",
+    "source": "<?php try{eval('class C extends Missing {}');}catch(Error $e){foreach($e->getTrace() as $t){echo $t['function'],'|',$t['file'],'|',$t['line'];}}"
+  },
+  {
+    "id": "nested-file-line",
+    "kind": "normal",
+    "source": "<?php echo eval('return __FILE__;'),'|',eval('return __LINE__;'),'|',eval('return eval(\"return __FILE__;\");');"
+  },
+  {
+    "id": "method-scope",
+    "kind": "normal",
+    "source": "<?php class C {private function p(){return 7;} function f(){echo eval('return self::class;'),'|',eval('return static::class;'),'|',eval('return __CLASS__;'),'|',eval('return $this->p();');}} (new C)->f();"
+  },
+  {
+    "id": "operand-side-effect",
+    "kind": "normal",
+    "source": "<?php $x=''; eval(($x='return 3;')); echo $x;"
+  },
+  {
+    "id": "finally-pending-return",
+    "kind": "normal",
+    "source": "<?php function f(){try{return eval('return 7;');}finally{echo 'F';}} echo f();"
+  },
+  {
+    "id": "object-stringification",
+    "kind": "unsupported",
+    "source": "<?php class O {function __toString(){return 'echo 1;';}} eval(new O);"
+  },
+  {
+    "id": "array-stringification",
+    "kind": "unsupported",
+    "source": "<?php eval(['echo 1;']);"
+  },
+  {
+    "id": "parse-time-compileerror",
+    "kind": "normal",
+    "source": "<?php try{eval('class A { final abstract private function f(); }');}catch(CompileError $e){echo $e->getMessage();}"
+  }
+]

@@ -103,7 +103,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UN
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "class")
   -- if $ptlc(ptbytes_parent) =/= $ptascii("stdclass")
   -- if ~$class_internal_final(ptbytes_parent)
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_parent ++ $ptascii("\" not found"), pclassdesc.LINE)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $throw_scalar(S[.ORIGIN = (pclassdesc.ORIGIN)], "Error", $ptascii("Class \"") ++ ptbytes_parent ++ $ptascii("\" not found"), pclassdesc.LINE)
   -- if ~$class_internal(ptbytes_parent)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
 

@@ -5,8 +5,10 @@ import base64
 import json
 import os
 from pathlib import Path
+import select
 import subprocess
 import sys
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'frontend'))
@@ -29,6 +31,43 @@ def request(command, value, timeout):
     if len(lines) != 1:
         raise RuntimeError('worker did not return exactly one response: ' + result.stdout)
     return wire.loads(lines[0])
+
+
+class AdapterSession:
+    def __init__(self, command):
+        environment = os.environ.copy()
+        environment.pop('PHP_SPEC_SCRIPT_ENCODING', None)
+        environment.update(LC_ALL='C', TZ='UTC')
+        self.process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE, env=environment)
+        self.buffer = bytearray()
+
+    def request(self, value, timeout):
+        self.process.stdin.write((wire.dumps(value) + '\n').encode())
+        self.process.stdin.flush()
+        deadline = time.monotonic() + timeout
+        while b'\n' not in self.buffer:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0 or not select.select([self.process.stdout], [], [], remaining)[0]:
+                raise subprocess.TimeoutExpired(self.process.args, timeout)
+            chunk = os.read(self.process.stdout.fileno(), 65536)
+            if not chunk:
+                raise RuntimeError('adapter closed before its response')
+            self.buffer.extend(chunk)
+        line, _, rest = self.buffer.partition(b'\n')
+        self.buffer = bytearray(rest)
+        return wire.loads(line.decode())
+
+    def close(self):
+        if self.process.poll() is None:
+            self.process.stdin.close()
+            try:
+                self.process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait()
+        self.process.stdout.close()
+        self.process.stderr.close()
 
 
 def observe(state, filename):
@@ -177,8 +216,24 @@ def main():
                  'filename': b64(os.fsencode(filename))}
     if args.request_context is not None:
         execution['request'] = json.loads(args.request_context.read_text())
-    result = request([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)],
-                     execution, args.timeout)
+    adapter = AdapterSession([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)])
+    try:
+        result = adapter.request(execution, args.timeout)
+        while result.get('ok') and 'pending' in result:
+            pending = result['pending']
+            parsed_eval = request([php, '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
+                                   str(ROOT / 'frontend/worker.php')],
+                                  {'op': 'parse-eval', **pending}, args.timeout)
+            if not parsed_eval.get('ok'):
+                if parsed_eval.get('category') == 'helper_unsupported':
+                    return {'status': 'unsupported', 'reason': 'eval source service: ' + parsed_eval.get('message', '')}
+                return {'status': 'frontend_failure', 'frontend': parsed_eval}
+            if parsed_eval.get('diagnostics'):
+                return {'status': 'unsupported', 'reason': 'eval parser service diagnostics'}
+            response = {key: value for key, value in parsed_eval.items() if key not in {'ok', 'diagnostics'}}
+            result = adapter.request({'op': 'resume_eval', 'response': response}, args.timeout)
+    finally:
+        adapter.close()
     if not result.get('ok'):
         return {'status': result.get('category', 'runner_failure'), 'detail': result}
     outcome = observe(result['state'], filename)
