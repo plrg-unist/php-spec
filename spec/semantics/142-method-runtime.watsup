@@ -746,14 +746,21 @@ def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pc
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if pmethoddesc_parent.FINAL
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
+def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ptbytes_message pmethoddesc_child.FUNCTION.LINE
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if ~pmethoddesc_parent.FINAL
+  -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = (ptbytes_message)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot make non abstract method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc_child.NAME) pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~pmethoddesc_parent.FINAL /\ pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = eps
   -- if ~pmethoddesc_parent.ABSTRACT
@@ -761,12 +768,14 @@ def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pc
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
   -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = (ptbytes_message)
 def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto)
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
   -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
@@ -775,6 +784,7 @@ def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pc
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
   -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct")

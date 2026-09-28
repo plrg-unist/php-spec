@@ -159,7 +159,7 @@ dec $named_operands(pnamedslot*) : poperand*
 def $named_operands(eps) = eps
 def $named_operands((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $named_operands(pnamedslot*)
 dec $named_enter(pstate, pfunction, pnamedargs, porigin?, int) : pstate
-def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA $named_operands(pnamedargs.SLOTS[n_received:n_extra]), NAMED pnamedargs.NAMED})][.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN 0]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({TARGET pfunction.ORIGIN, WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA $named_operands(pnamedargs.SLOTS[n_received:n_extra]), NAMED pnamedargs.NAMED})][.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN 0]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |pnamedargs.SLOTS|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)
