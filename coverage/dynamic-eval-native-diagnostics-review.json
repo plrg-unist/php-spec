@@ -1,0 +1,137 @@
+{
+  "increment": "parse-only native eval diagnostics for checked parser service",
+  "source_commit": "90f913f09fc93827fe14abb7b01dfe6ecef93d46",
+  "base_commit": "4c539db3d093ab5e77b65c161a3a3f3f162a3743",
+  "contract": "php_spec_parse_eval uses pinned Zend string scanner after opening tag and zendparse only; native ParseError bytes/line are parser evidence, joint native/PHP-Parser acceptance yields the checked version-1 AST, other native failures and disagreement are helper_unsupported",
+  "profile": "PHP 8.5.10 CLI -n raw cli-raw-85; zend.multibyte=0, precision=14, short_open_tag=1",
+  "native_boundary": {
+    "compile_or_eval_symbol_dependency": false,
+    "no_declaration_installation_test": "pass",
+    "state_recovery_after_rejection_and_file_parse": "pass",
+    "parser_scanner_symbol_dependencies": [
+      "zend_prepare_string_for_scanning",
+      "zend_save_lexical_state",
+      "zend_restore_lexical_state",
+      "zendparse"
+    ]
+  },
+  "focused_eval": {
+    "command": "python3 tests/eval_source_service.py",
+    "raw_source_cases": 11,
+    "exact_native_rejection_message_line_cases": 2,
+    "native_non_parseerror_unsupported_cases": 1,
+    "protocol_negatives": 11,
+    "result": "pass"
+  },
+  "test_recipes": {
+    "command": "make -o build test (after explicit private C helper, adapter and numeric runner builds; same test recipes as make test)",
+    "result": "pass",
+    "targeted": {
+      "tested": 97,
+      "counts": {
+        "pass": 83,
+        "parser_rejection": 14
+      },
+      "stable_implementation": true,
+      "implementation_sha256": "8a3e694673a252555869f7df554fa51c899ad4543dd928eac22f3df31d5a38ab"
+    },
+    "generated": {
+      "tested": 4103,
+      "counts": {
+        "pass": 3781,
+        "parser_rejection": 320,
+        "invalid_program_roundtrip_difference": 2
+      },
+      "stable_implementation": true,
+      "implementation_sha256": "8a3e694673a252555869f7df554fa51c899ad4543dd928eac22f3df31d5a38ab"
+    },
+    "deep": {
+      "tested": 1,
+      "counts": {
+        "pass": 1
+      },
+      "stable_implementation": true,
+      "implementation_sha256": "8a3e694673a252555869f7df554fa51c899ad4543dd928eac22f3df31d5a38ab"
+    },
+    "setup": "First attempt lacked a private numeric runner; built it explicitly and reran all recipes successfully."
+  },
+  "inventory": {
+    "command": "make -o build inventory after isolated configured PHP build copy and explicit private helper/adapter builds",
+    "targeted_seen": 97,
+    "accepted": 83,
+    "rejected": 14,
+    "grammar_witnessed": 631,
+    "documented_dispositions": [
+      0,
+      71,
+      149,
+      200
+    ],
+    "crashes": 0,
+    "mapped_productions": 635,
+    "witnessed_constructors": 169,
+    "scanner_actions": 191,
+    "scanner_alternatives": 264,
+    "encoding_spellings": 214,
+    "encoding_lookups": 685,
+    "tracked_artifacts_unchanged": true
+  },
+  "file_syntax_regression": {
+    "command": "python3 tests/parallel_validate.py --jobs 2 --corpus --lint-all --output .tools/eval-native-gates/results-corpus.jsonl",
+    "tested": 30980,
+    "counts": {
+      "pass": 30684,
+      "parser_rejection": 254,
+      "compile_phase_difference": 28,
+      "redirect_container": 6,
+      "non_source": 8
+    },
+    "shards": 2,
+    "stable_implementation": true,
+    "implementation_sha256": "8a3e694673a252555869f7df554fa51c899ad4543dd928eac22f3df31d5a38ab",
+    "implementation_files": 1164,
+    "raw_sha256": "ba42ca7a12f2b4067b8f909de9510d9a81718806e63822c870983701099d46d1",
+    "summary_sha256": "733d2ba1a852d256bd6800c9a5ffb1474e6c6905b4c978b9a03d5893607a47f1",
+    "scope": "existing file-mode corpus; not 30,980 eval source cases"
+  },
+  "isolation": {
+    "private_adapter_sha256": "b24fc995cf71befc21f312ef0d314e2300f687ed8b70a056d05d753ad325afeb",
+    "private_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "private_native_helper_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "binary_hashes_unchanged": true,
+    "tracked_tree_clean_at_gate": true
+  },
+  "getter_base_compatibility": {
+    "base_commit": "c2cff15fa005ce0f40a9ac83b818b779771c7ae7",
+    "rebased_code_commit": "2cd98d8758b6b731e7ebc1f9217e28e48d2f4afe",
+    "frozen_code_commit": "90f913f09fc93827fe14abb7b01dfe6ecef93d46",
+    "syntax_protocol_path_diff": "empty across frontend, adapter, native, PHP syntax/schema, vendor parser, validation scripts, eval service test and native helper build script",
+    "makefile_difference": "two added Throwable semantic test recipes; file-syntax validation recipe unchanged",
+    "focused_command": "python3 tests/eval_source_service.py && python3 tests/wire_negative.py",
+    "focused_result": "11 eval cases, 2 native rejection controls, 1 native static Unsupported control, 11 protocol negatives and 33 wire negatives pass",
+    "file_syntax_command": "python3 tests/validate.py --elaborate --lint-all --output .tools/eval-native-gates/getter-base-targeted.jsonl",
+    "file_syntax_tested": 97,
+    "file_syntax_counts": {"pass": 83, "parser_rejection": 14},
+    "current_implementation_sha256": "efa89e189c50137b32fcc3bff8fecd68404a6183cc151a1e19773e34d2f12c73",
+    "raw_sha256": "784c0b3126f85f2ed62d05bd261e07dc1c7c8f96ce28c50efa337a6f9aae6655",
+    "summary_sha256": "5652bffd7f0bb03bb8550631da3c41f7f91824ad1c6a7a3a25ac551798a48bb8",
+    "full_gate_scope": "The 30,980-file classified report above belongs to frozen commit 90f913f09; this latest-base check is a scoped compatibility bridge, not a relabeled full report."
+  },
+  "registry_base_compatibility": {
+    "base_commit": "10ba8218c483104160ab83f96975824d2596267e",
+    "rebased_code_commit": "eba695e1e5093f39f4fdd7a782426e326916e7f8",
+    "syntax_protocol_path_diff": "empty from frozen 90f913f09 across frontend, adapter, native, PHP syntax/schema, vendor parser, validation scripts, eval service test and native helper build script; only the getter-base Makefile semantic test recipes differ",
+    "focused_command": "python3 tests/eval_source_service.py && python3 tests/wire_negative.py && .tools/php/bin/php -l frontend/worker.php",
+    "focused_result": "11 eval cases, 2 native rejection controls, 1 native static Unsupported control, 11 protocol negatives, 33 wire negatives and worker PHP lint pass",
+    "file_syntax_command": "python3 tests/validate.py --elaborate --lint-all --output .tools/eval-native-gates/registry-base-targeted.jsonl",
+    "file_syntax_tested": 97,
+    "file_syntax_counts": {"pass": 83, "parser_rejection": 14},
+    "current_implementation_sha256": "052fbe2a64a66cbf7d88c5e50faebce2bfed26bc8c262706ef776c97ae45e6ec",
+    "raw_sha256": "3cc3b1cbe92d83045e9d86dce4c689f1d0b087792fc891fdfb14caeea251344c",
+    "summary_sha256": "9fd9db826df873a92575c06ddcbe4a1f946e9eb20c2b65a62e73a8caea608983",
+    "full_gate_scope": "The 30,980-file classified report above remains the frozen 90f913f09 file-mode gate; this registry-base check is a scoped compatibility bridge only."
+  },
+  "evidence_recovery": "Ignored raw reports, summaries, shard logs, inventory output, and full command ledger are under .tools/eval-native-diagnostics/.tools/eval-native-gates; run the listed commands in source_commit with private build outputs.",
+  "limits": "Parser facts only: no Zend compilation/evaluation or PHP runtime result; native non-ParseError failures and parser disagreement remain Unsupported; authored ParseError handling, source registry/continuation and eval/include execution remain separate obligations.",
+  "portable_rebuild": "Fresh network-isolated portable-check deferred to consolidated checkpoint; this increment built its native helper and adapter from local pinned inputs in a private worktree."
+}

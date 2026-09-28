@@ -91,6 +91,29 @@ def main():
         assert meta(results[6]['ast']['program'][1], 'startLine') == 2
         assert results[7]['accepted'] and all(not result['accepted'] for result in results[8:])
 
+        # Zend's after-open-tag parser supplies rejection evidence. Its message
+        # and line are kept distinct from PHP-Parser diagnostics and execution.
+        for number, (source, line) in enumerate(((b'echo ;', 1), (b'echo 1;\necho ;', 2)), 11):
+            identity = pending(str(number), source)
+            parsed = frontend.call({'op': 'parse-eval', **identity})
+            assert parsed['ok'] and parsed['accepted'] is False
+            assert parsed['category'] == 'parser_rejection' and parsed['line'] == line
+            assert base64.b64decode(parsed['message']) == b'syntax error, unexpected token ";"'
+            checked = adapter.call({'op': 'check_source_service', 'pending': identity,
+                                    'response': parser_response(parsed)})
+            assert checked['ok'] and checked['accepted'] is False
+
+        static = frontend.call({'op': 'parse-eval', **pending('13', b'class A{final abstract private function f();}')})
+        assert static['ok'] is False and static['category'] == 'helper_unsupported'
+        recovered = frontend.call({'op': 'parse-eval', **pending('14', b'echo 4;')})
+        assert recovered['ok'] and recovered['accepted'] is True
+
+        native_only = subprocess.run([php, '-n', '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
+                                      '-r', 'if (!php_spec_parse_eval("function php_spec_probe() {} class PhpSpecProbe {}")) exit(1); '
+                                            'if (function_exists("php_spec_probe") || class_exists("PhpSpecProbe", false)) exit(2); '
+                                            'echo "parse-only";'], capture_output=True)
+        assert native_only.returncode == 0 and native_only.stdout == b'parse-only', native_only.stderr
+
         file_source = encoded(b'<?php echo 3;')
         after_eval = frontend.call({'op': 'parse', 'source': file_source})
         fresh = Worker([php, '-n', '-d', 'precision=14', '-d', 'extension=' +
@@ -137,7 +160,9 @@ def main():
                 assert result['ok'] is False and result['category'] == 'helper_unsupported'
             finally:
                 unsupported.close()
-        print(json.dumps({'result': 'pass', 'eval_cases': len(cases), 'protocol_negatives': 11,
+        print(json.dumps({'result': 'pass', 'eval_cases': len(cases), 'native_rejections': 2,
+                          'static_unsupported': 1, 'protocol_negatives': 11,
+                          'native_declarations': 'not installed',
                           'file_parse_after_eval': 'unchanged', 'unsupported_profile': 'distinct'}))
     finally:
         frontend.close()

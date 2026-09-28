@@ -65,9 +65,13 @@ protocol negatives pass; the separate 30,980-entry classified gate checks
 existing file syntax on the same frontend/adapter commit. Its
 [provenance ledger](coverage/dynamic-eval-helper-review.json) records the frozen
 inputs, inventory results and the separately synchronized grammar mapping.
-Reached eval/include still returns `Unsupported`; native parse-only diagnostics,
-authored `ParseError` handling and stateful source continuation are the next
-steps.
+Reached eval/include still returns `Unsupported`. Native parse-only diagnostics
+now provide exact eval parser rejection evidence while PHP-Parser still supplies
+the checked AST; the [bridge ledger](coverage/dynamic-eval-native-diagnostics-review.json)
+keeps its full file-syntax regression separate from focused eval cases.
+Non-ParseError native failures and parser disagreement remain
+`helper_unsupported`; authored `ParseError` handling and stateful source
+continuation are the next steps.
 
 ## Next work
 

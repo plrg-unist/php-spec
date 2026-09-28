@@ -12,7 +12,7 @@ ini_set('display_errors', 'stderr');
 ini_set('log_errors', '0');
 ini_set('memory_limit', '-1');
 if (PHP_VERSION !== '8.5.10' || PHP_INT_SIZE !== 8) throw new RuntimeException('PHP 8.5.10, 64-bit required');
-if (!function_exists('php_spec_parse_file')) throw new RuntimeException('Load the local .tools/php-file.so syntax helper');
+if (!function_exists('php_spec_parse_file') || !function_exists('php_spec_parse_eval')) throw new RuntimeException('Load the local .tools/php-file.so syntax helper');
 $schema = json_decode(file_get_contents(__DIR__ . '/../spec/schema.json'), true, 512, JSON_THROW_ON_ERROR);
 $version = PhpParser\PhpVersion::fromComponents(8, 5);
 $parser = (new PhpParser\ParserFactory())->createForVersion($version);
@@ -136,6 +136,27 @@ while (($line = fgets(STDIN)) !== false) {
                     $source = bytes($request->source);
                     $identity = ['id' => $request->id, 'mode' => 'eval', 'profile' => 'cli-raw-85',
                         'source' => $request->source];
+                    try {
+                        $nativeAccepted = php_spec_parse_eval($source);
+                    } catch (ParseError $error) {
+                        if ($error->getLine() < 1) {
+                            echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                                'message' => 'Native eval parser gave no source line'], JSON_THROW_ON_ERROR), "\n";
+                            continue 2;
+                        }
+                        $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                        break;
+                    } catch (Throwable $error) {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'Native eval parser produced a non-ParseError'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
+                    if (!$nativeAccepted) {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'Native eval parser failed without a ParseError'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
                 } else {
                     $source = bytes($request->source);
                     $identity = [];
@@ -146,6 +167,11 @@ while (($line = fgets(STDIN)) !== false) {
                     $tokens = $evalMode ? $evalParser->getTokens() : $parser->getTokens();
                     checkTargetSyntax($ast, $tokens);
                 } catch (PhpParser\Error $error) {
+                    if ($evalMode) {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'Checked eval parser disagrees with native parser'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
                     $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
                         'message' => base64_encode($error->getMessage())];
                     if ($evalMode) $result['line'] = $error->getStartLine();

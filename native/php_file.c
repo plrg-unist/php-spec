@@ -221,6 +221,47 @@ static void scan_file(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
 PHP_FUNCTION(php_spec_parse_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
 PHP_FUNCTION(php_spec_lex_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
+/* Parse eval bytes after an opening tag, without compiling or executing them. */
+PHP_FUNCTION(php_spec_parse_eval) {
+    zend_string *source;
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_STR(source)
+    ZEND_PARSE_PARAMETERS_END();
+
+    if (CG(multibyte)) {
+        zend_value_error("Eval parser requires the raw source profile");
+        RETURN_THROWS();
+    }
+    /* compile_string() returns before scanning empty eval source. */
+    if (ZSTR_LEN(source) == 0) RETURN_TRUE;
+
+    bool compiling = CG(in_compilation), shebang = CG(skip_shebang);
+    bool encoding_declared = CG(encoding_declared);
+    bool increment_lineno = CG(increment_lineno);
+    zend_lex_state saved;
+    zval code;
+    ZVAL_STR_COPY(&code, source);
+    zend_save_lexical_state(&saved);
+    zend_string *filename = zend_string_init("eval()'d code", sizeof("eval()'d code") - 1, 0);
+    zend_prepare_string_for_scanning(&code, filename);
+    zend_string_release(filename);
+    CG(in_compilation) = 1;
+    CG(ast) = NULL;
+    CG(ast_arena) = zend_arena_create(1024 * 32);
+    LANG_SCNG(yy_state) = yycST_IN_SCRIPTING;
+    bool accepted = zendparse() == SUCCESS;
+    zend_ast_destroy(CG(ast));
+    zend_arena_destroy(CG(ast_arena));
+    zend_restore_lexical_state(&saved);
+    CG(in_compilation) = compiling;
+    CG(skip_shebang) = shebang;
+    CG(encoding_declared) = encoding_declared;
+    CG(increment_lineno) = increment_lineno;
+    zval_ptr_dtor(&code);
+    if (EG(exception)) RETURN_THROWS();
+    RETURN_BOOL(accepted);
+}
+
 /* Use the exact pinned registry (canonical, MIME, then aliases), including
  * its C-string declaration semantics. This reads metadata, never source code. */
 PHP_FUNCTION(php_spec_encoding_name) {
@@ -243,9 +284,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_lex_file, 0, 1, IS_ARRAY, 0)
     ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
     ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, events, IS_ARRAY, 0, "[]")
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_parse_eval, 0, 1, _IS_BOOL, 0)
+    ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 static const zend_function_entry functions[] = {
     PHP_FE(php_spec_parse_file, arginfo_parse_file)
     PHP_FE(php_spec_lex_file, arginfo_lex_file)
+    PHP_FE(php_spec_parse_eval, arginfo_parse_eval)
     PHP_FE(php_spec_encoding_name, arginfo_encoding_name)
     PHP_FE_END
 };

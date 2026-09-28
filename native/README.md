@@ -1,4 +1,4 @@
-# PHP 8.5.10 file scanner bridge
+# PHP 8.5.10 source scanner bridge
 
 `scripts/build-file-helper.sh` builds `.tools/php-file.so` against the local
 PHP headers. Load it with `php -n -d extension=/project/.tools/php-file.so`.
@@ -10,6 +10,13 @@ and original attribution are retained in the C header and adjacent `LICENSE`
 - `php_spec_parse_file(path)` calls the native file scanner and `zendparse`.
   It returns true or propagates parser/static parser exceptions. It never calls
   compilation or evaluation. Compile-only errors can therefore remain accepted.
+- `php_spec_parse_eval(bytes)` prepares Zend's string scanner in the
+  after-opening-tag state and calls `zendparse` only. Empty bytes are accepted
+  directly. The helper restores scanner/compiler state after each call, never
+  installs declarations, and never compiles or evaluates the bytes. Its
+  `ParseError` message and line are parser evidence; non-ParseError failures
+  remain unsupported. The checked eval AST still comes from PHP-Parser, and
+  disagreement with native acceptance is explicit `helper_unsupported`.
 - `php_spec_lex_file(path, events = [])` returns raw tokens, their stitched bytes,
   initial/final buffers, original filter input, initial/final encodings and skipped
   shebang preamble.
