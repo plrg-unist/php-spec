@@ -127,6 +127,16 @@
     "source": "<?php function &f(){eval('return 4;'); $x=5; return $x;} echo f();"
   },
   {
+    "id": "eval-defined-typed-function",
+    "kind": "normal",
+    "source": "<?php eval('function f():int{return \"x\";}'); try{f();}catch(TypeError $e){echo 'T';}"
+  },
+  {
+    "id": "eval-defined-reference-function",
+    "kind": "normal",
+    "source": "<?php $x=5; eval('function &g(){global $x;return $x;}'); $y=&g();$y=6;echo $x;"
+  },
+  {
     "id": "missing-parent-caught",
     "kind": "normal",
     "source": "<?php try{eval('class C extends Missing {}');}catch(Error $e){echo $e->getFile(),'|',$e->getLine(),'|',$e->getMessage();}"
