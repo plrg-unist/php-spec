@@ -190,6 +190,16 @@
     "source": "<?php echo eval('try{return 7;}finally{echo \"F\";}');"
   },
   {
+    "id": "eval-in-finally-pending-return",
+    "kind": "normal",
+    "source": "<?php function f(){try{return 1;}finally{echo eval('return 2;');}} echo '|',f();"
+  },
+  {
+    "id": "eval-in-finally-pending-throw",
+    "kind": "normal",
+    "source": "<?php function f(){try{throw new Error('A');}finally{eval('echo \"F\";');}}try{f();}catch(Error $e){echo $e->getMessage();}"
+  },
+  {
     "id": "object-stringification",
     "kind": "normal",
     "expected_model": "unsupported",
