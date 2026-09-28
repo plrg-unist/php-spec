@@ -1,0 +1,76 @@
+{
+  "milestone": "165/166 get_class finite testing support",
+  "base_commit": "1d8afcf080b0c95cdf17a737ac23b8324d967e53",
+  "scope": "authored get_class runtime only; no parser acceptance or general builtin closure",
+  "target": "pinned PHP 8.5.10 CLI NTS 64-bit",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_builtin_functions.c:get_class",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_func_get_class",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_GET_CLASS",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_get_executed_scope"
+  ],
+  "source_gate": {
+    "command": "python3 tests/semantics/get_class_intrinsic.py",
+    "report": ".tools/get-class-source-933kqnsu/report.json",
+    "report_sha256": "e8da03fe85d1c071f699c6aa45b93564ae86ff931f644ac21e2a49651da2dca8",
+    "cases": 27,
+    "exact_native_model": 27,
+    "normal": 10,
+    "php_error": 17,
+    "fingerprint": {
+      "sha256": "eb63605b0e2c771587eebf7c2adabd9936632ae143efb5fe1eafb9e0dd404e56",
+      "files": 1183,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json"
+  },
+  "paused_gate": {
+    "command": "python3 tests/semantics/get_class_protocol.py",
+    "report": ".tools/get-class-protocol-w2uj3h7j/report.json",
+    "report_sha256": "df83cdbf7034338a5aa9e6fed6bccf80b0b4fe04930f96f8b51f5dfbf28c1f45",
+    "stages": 4,
+    "assertions": 48,
+    "fingerprint": {
+      "sha256": "eb63605b0e2c771587eebf7c2adabd9936632ae143efb5fe1eafb9e0dd404e56",
+      "files": 1183,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    }
+  },
+  "private_root": ".tools/get-class-candidate",
+  "unsupported_controls": {
+    "closure_scope_rebinding": "Closure::bind/bindTo source runtime is not admitted",
+    "throwing_error_handler": "diagnostic handler callbacks remain a separate core obligation",
+    "mixed_inherited_static_method": "static method runtime milestone is independently active"
+  },
+  "limits": "Reports bind the private base and frozen 1,183-file implementation fingerprint; later canonical integration needs exact shared-file rebase and installed focused bridge. They do not claim a classified file-syntax gate or complete object-identity coverage.",
+  "recovery": "From the private_root on the recorded base, use its private built adapter and numeric runner, then run the two commands above. Raw stdout/stderr and fixtures remain under the ignored report directories."
+}

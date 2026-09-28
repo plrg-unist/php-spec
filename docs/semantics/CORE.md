@@ -159,7 +159,7 @@ frame-local environments and later-unit execution remain core obligations.
 | `Serializable`, `Countable`, `InternalIterator` | Declaration identities/signature obligations must be retained when admitted core types depend on them (notably WeakMap). Serialization/count library execution and foreign internal iterators are excluded; user-defined protocol methods remain ordinary methods. |
 | Stream wrappers and `spl_autoload` default filesystem search | Excluded ordinary-library registration/search. Include and autoload services expose explicit source lookup; missing required service is Unsupported, not fabricated success. |
 | Resources and arbitrary extension objects | No resource-producing APIs or foreign object handlers are admitted initially. Initial-state validation rejects them explicitly; resource/extension-specific effects are outside this environment. |
-| Memory/GC statistics, generic reflection/introspection APIs | Excluded implementation/library observers except the explicitly cataloged call/exception/handler observers. This does not excuse destructor, identity, alias or ordering differences visible through core execution. |
+| Memory/GC statistics, generic reflection/introspection APIs | Excluded implementation/library observers except the explicitly cataloged call/exception/handler observers and the bounded `get_class` testing support in [GET-CLASS](GET-CLASS.md). This does not excuse destructor, identity, alias or ordering differences visible through core execution. |
 
 Boundary decisions constrain the eventual claim, not the implementation schedule.
 All supported environment cases of each core construct require rules, independent

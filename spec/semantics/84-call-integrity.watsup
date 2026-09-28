@@ -284,6 +284,7 @@ dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $clone_result_valid(pstate) : bool
+dec $getclass_result_valid(pstate) : bool
 dec $throwable_result_valid(pstate) : bool
 dec $getter_result_valid(pstate) : bool
 dec $ctor_native_result_valid(pstate) : bool
@@ -313,6 +314,7 @@ def $call_descriptors_valid(S) = true
   -- if $ctor_native_result_valid(S)
   -- if $exit_result_valid(S)
   -- if $clone_result_valid(S)
+  -- if $getclass_result_valid(S)
   -- if $throwable_result_valid(S)
   -- if $dynamic_result_valid(S)
   -- if $static_result_valid(S)

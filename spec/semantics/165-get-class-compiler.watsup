@@ -1,0 +1,13 @@
+;; Zend emits GET_CLASS only for a resolved direct internal call with at most
+;; one ordinary positional argument. Named, unpacked, dynamic and first-class
+;; calls take the generic builtin route, including its error trace frame.
+dec $getclass_special(pstate, porigin) : bool
+def $getclass_special(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $ptlc(preqbytes) = $ptascii("get_class")
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $(|expression*| <= 1)
+def $getclass_special(S, porigin) = false -- otherwise

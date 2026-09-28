@@ -1,0 +1,327 @@
+;; get_class is a finite authored intrinsic; ordinary call machinery supplies source arguments.
+def $intrinsic_name(INTRINSIC_GET_CLASS) = $ptascii("get_class")
+def $intrinsic_named(preqbytes) = (INTRINSIC_GET_CLASS) -- if $ptlc(preqbytes) = $ptascii("get_class")
+def $intrinsic_prepare(S, INTRINSIC_GET_CLASS, z, n_owner?) = S[.TODO = (GETCLASS_ARGS {SITE porigin, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+def $intrinsic_pipe(S, INTRINSIC_GET_CLASS, pvalue, porigin, z, n_owner?) = S[.TODO = (GETCLASS_INVOKE {SITE porigin, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $getclass_unpack_prefix(pstate, pgetclasscall, pentry*) : pgetclasscall?
+dec $getclass_is_object(pvalue) : bool
+
+dec $getclass_call_nodes(pgetclasscall) : pnode*
+def $getclass_call_nodes(pgetclasscall) = $exit_owner_nodes(pgetclasscall.OWNER) ++ $named_slots_roots(pgetclasscall.SENT)
+def $task_nodes(GETCLASS_ARGS pgetclasscall) = $getclass_call_nodes(pgetclasscall)
+def $task_nodes(GETCLASS_SEND pgetclasscall) = $getclass_call_nodes(pgetclasscall)
+def $task_nodes(GETCLASS_UNPACK_PREP pgetclasscall) = $getclass_call_nodes(pgetclasscall)
+def $task_nodes(GETCLASS_UNPACK_NEXT pgetclasscall poperand n) = $getclass_call_nodes(pgetclasscall) ++ $operand_nodes(poperand)
+def $task_nodes(GETCLASS_INVOKE pgetclasscall) = $getclass_call_nodes(pgetclasscall)
+
+dec $getclass_trace_operands(pnamedslot*) : poperand*
+def $getclass_trace_operands(eps) = eps
+def $getclass_trace_operands(NAMED_HOLE :: pnamedslot*) = (KNOWN PNULL) :: $getclass_trace_operands(pnamedslot*)
+def $getclass_trace_operands((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $getclass_trace_operands(pnamedslot*)
+dec $getclass_method_receiver(pstate, pgetclasscall) : bool
+def $getclass_method_receiver(S, pgetclasscall) = true
+  -- if pgetclasscall.OWNER = (n)
+  -- if $exit_method_site(S, pgetclasscall.SITE)
+def $getclass_method_receiver(S, pgetclasscall) = false -- otherwise
+dec $getclass_wrapper_trace(pstate, pgetclasscall, pvalue*) : ptraceframe*
+def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}]
+  -- if $getclass_method_receiver(S, pgetclasscall)
+def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = eps -- otherwise
+dec $getclass_error(pstate, pgetclasscall, text, preqbytes) : pstate
+def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+  -- if $getclass_special(S, pgetclasscall.SITE)
+def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, [ptraceframe] ++ $getclass_wrapper_trace(S, pgetclasscall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+  -- if ~$getclass_special(S, pgetclasscall.SITE)
+  -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pgetclasscall.SENT))
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, NAME $ptascii("get_class"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+dec $getclass_destination(preqbytes?, nat) : nat?
+def $getclass_destination(eps, n) = (n)
+def $getclass_destination((preqbytes), n) = (0) -- if preqbytes = $ptascii("object")
+def $getclass_destination(preqbytes?, n) = eps -- otherwise
+dec $getclass_send_check(pstate, pgetclasscall, preqbytes?, int) : pstate
+def $getclass_send_check(S, pgetclasscall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
+  -- if $getclass_destination((preqbytes), |pgetclasscall.SENT|) = eps
+def $getclass_send_check(S, pgetclasscall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ preqbytes ++ $ptascii(" overwrites previous argument"), z)
+  -- if $getclass_destination((preqbytes), |pgetclasscall.SENT|) = (n)
+  -- if $named_slot_at(pgetclasscall.SENT, n) = NAMED_SENT poperand
+def $getclass_send_check(S, pgetclasscall, eps, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
+  -- if pgetclasscall.NAMED
+def $getclass_send_check(S, pgetclasscall, preqbytes?, z) = S -- otherwise
+dec $getclass_sent(pgetclasscall, poperand, preqbytes?) : pgetclasscall
+def $getclass_sent(pgetclasscall, poperand, preqbytes?) = pgetclasscall[.SENT = $named_slot_set(pgetclasscall.SENT, n, poperand)][.NAMED = (pgetclasscall.NAMED \/ preqbytes? =/= eps)]
+  -- if $getclass_destination(preqbytes?, |pgetclasscall.SENT|) = (n)
+
+rule PhpStep/getclass-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), GETCLASS_SEND pgetclasscall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_ARGS pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+rule PhpStep/getclass-send: S ~> S_value[.TODO = (GETCLASS_ARGS ($getclass_sent(pgetclasscall, S_value.RESULT, preqbytes?)[.INDEX = $(pgetclasscall.INDEX + 1)])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_SEND pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $getclass_send_check(S, pgetclasscall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/getclass-send-error: S ~> S_checked
+  -- if S.TODO = (GETCLASS_SEND pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $getclass_send_check(S, pgetclasscall, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/getclass-send-abrupt: S ~> S_value
+  -- if S.TODO = (GETCLASS_SEND pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $getclass_send_check(S, pgetclasscall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+rule PhpStep/getclass-arguments-done: S ~> S[.TODO = (GETCLASS_INVOKE pgetclasscall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_ARGS pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_count(S, pgetclasscall.SITE) = (pgetclasscall.INDEX)
+
+rule PhpStep/getclass-unpack-start: S ~> S[.TODO = [$at_task((porigin), EVAL expression), GETCLASS_UNPACK_PREP pgetclasscall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_ARGS pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+rule PhpStep/getclass-unpack-array: S ~> S_value[.TODO = (GETCLASS_UNPACK_NEXT pgetclasscall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_UNPACK_PREP pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n)
+rule PhpStep/getclass-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
+  -- if S.TODO = (GETCLASS_UNPACK_PREP pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/getclass-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (GETCLASS_UNPACK_PREP pgetclasscall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/getclass-unpack-item: S ~> S_checked[.TODO = (GETCLASS_UNPACK_NEXT pgetclasscall poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_UNPACK_NEXT pgetclasscall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $getclass_unpack_prefix(S, pgetclasscall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pgetclasscall_prefix)
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $getclass_send_check(S, pgetclasscall_prefix, preqbytes_key?, z)
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/getclass-unpack-item-error: S ~> S_checked
+  -- if S.TODO = (GETCLASS_UNPACK_NEXT pgetclasscall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $getclass_unpack_prefix(S, pgetclasscall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pgetclasscall_prefix)
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $getclass_send_check(S, pgetclasscall_prefix, preqbytes_key?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/getclass-unpack-done: S ~> S[.TODO = (GETCLASS_ARGS pgetclasscall_prefix[.INDEX = $(pgetclasscall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETCLASS_UNPACK_NEXT pgetclasscall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n].ITEMS|
+  -- if $getclass_unpack_prefix(S, pgetclasscall, S.ARRAYS[n].ITEMS) = (pgetclasscall_prefix)
+
+dec $getclass_live_object(pstate, nat) : bool
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+def $getclass_live_object(S, n) = false -- otherwise
+
+dec $getclass_receive(pstate, pgetclasscall) : pstate
+def $getclass_receive(S, pgetclasscall) = $getclass_error(S, pgetclasscall, "ArgumentCountError", $ptascii("get_class() expects at most 1 argument, ") ++ $decimal_integer(|pgetclasscall.SENT|) ++ $ptascii(" given"))
+  -- if $(|pgetclasscall.SENT| > 1)
+def $getclass_receive(S, pgetclasscall) = $getclass_error(S, pgetclasscall, "Error", $ptascii("get_class() without arguments must be called from within a class"))
+  -- if pgetclasscall.SENT = eps
+  -- if $method_current_scope(S) = eps
+def $getclass_receive(S, pgetclasscall) = S_report[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc.NAME)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pgetclasscall.SENT = eps
+  -- if $method_current_scope(S) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if S_report = $diagnostic(S, "Deprecated", $ptascii("Calling get_class() without arguments is deprecated"), pgetclasscall.LINE)
+  -- if S_report.COMPLETION = NORMAL
+  -- if S.TODO = ptask :: ptask_tail*
+def $getclass_receive(S, pgetclasscall) = S_report
+  -- if pgetclasscall.SENT = eps
+  -- if $method_current_scope(S) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if S_report = $diagnostic(S, "Deprecated", $ptascii("Calling get_class() without arguments is deprecated"), pgetclasscall.LINE)
+  -- if S_report.COMPLETION =/= NORMAL
+def $getclass_receive(S, pgetclasscall) = $getclass_error(S, pgetclasscall, "TypeError", $ptascii("get_class(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pgetclasscall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if ~$getclass_is_object(pvalue)
+def $getclass_receive(S, pgetclasscall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING $object_name(S, n))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pgetclasscall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if $getclass_live_object(S, n)
+  -- if S.TODO = ptask :: ptask_tail*
+rule PhpStep/getclass-invoke: S ~> $getclass_receive(S, pgetclasscall)
+  -- if S.TODO = (GETCLASS_INVOKE pgetclasscall) :: ptask_tail*
+
+def $getclass_is_object(POBJECT n) = true
+def $getclass_is_object(pvalue) = false -- otherwise
+
+
+;; Captured receiver state is checked separately from the current head result.
+;; Origin-return simulation authenticates queued continuations after child eval.
+dec $getclass_selected_valid(pstate, pgetclasscall) : bool
+def $getclass_selected_valid(S, pgetclasscall) = true
+  -- if pgetclasscall.OWNER = eps
+  -- if $exit_fixed(S, pgetclasscall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_GET_CLASS)
+def $getclass_selected_valid(S, pgetclasscall) = true
+  -- if pgetclasscall.OWNER = eps
+  -- if $exit_fixed(S, pgetclasscall.SITE) = eps
+  -- if $exit_dynamic_site(S, pgetclasscall.SITE)
+def $getclass_selected_valid(S, pgetclasscall) = true
+  -- if pgetclasscall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_GET_CLASS
+  -- if $exit_fixed(S, pgetclasscall.SITE) = eps
+  -- if $exit_dynamic_site(S, pgetclasscall.SITE)
+def $getclass_selected_valid(S, pgetclasscall) = true
+  -- if pgetclasscall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_GET_CLASS
+  -- if $exit_method_site(S, pgetclasscall.SITE)
+def $getclass_selected_valid(S, pgetclasscall) = false -- otherwise
+dec $getclass_slots_valid(pnamedslot*, nat, nat, bool) : bool
+def $getclass_slots_valid(eps, n, n_total, b) = true
+def $getclass_slots_valid((NAMED_SENT (KNOWN pvalue)) :: pnamedslot*, n, n_total, b) = $getclass_slots_valid(pnamedslot*, $(n + 1), n_total, b)
+def $getclass_slots_valid(pnamedslot*, n, n_total, b) = false -- otherwise
+dec $getclass_slots_live(pstate, pnamedslot*) : bool
+def $getclass_slots_live(S, eps) = true
+def $getclass_slots_live(S, (NAMED_SENT (KNOWN (POBJECT n))) :: pnamedslot*) = ($getclass_live_object(S, n) /\ $getclass_slots_live(S, pnamedslot*))
+def $getclass_slots_live(S, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = $getclass_slots_live(S, pnamedslot*)
+  -- if ~$getclass_is_object(pvalue)
+def $getclass_slots_live(S, pnamedslot*) = false -- otherwise
+dec $getclass_slot_shape(pnamedslot*) : bool*
+def $getclass_slot_shape(eps) = eps
+def $getclass_slot_shape(NAMED_HOLE :: pnamedslot*) = false :: $getclass_slot_shape(pnamedslot*)
+def $getclass_slot_shape((NAMED_SENT poperand) :: pnamedslot*) = true :: $getclass_slot_shape(pnamedslot*)
+dec $getclass_source_prefix(phpType7*, pnamedslot*, bool) : (pnamedslot*, bool)?
+def $getclass_source_prefix(eps, pnamedslot*, b) = ((pnamedslot*, b))
+def $getclass_source_prefix((NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnamedslot*, b) = $getclass_source_prefix(phpType7*, $named_slot_set(pnamedslot*, n, KNOWN PNULL), (b \/ preqbytes? =/= eps))
+  -- if preqbytes? = $exit_argument_name(phpType3)
+  -- if $getclass_destination(preqbytes?, |pnamedslot*|) = (n)
+  -- if $named_slot_at(pnamedslot*, n) = NAMED_HOLE
+  -- if ~(b /\ preqbytes? = eps)
+def $getclass_source_prefix(phpType7*, pnamedslot*, b) = eps -- otherwise
+dec $getclass_sent_shape(pstate, pgetclasscall) : bool
+def $getclass_sent_shape(S, pgetclasscall) = true
+  -- if $exit_callable_arguments(S, pgetclasscall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pgetclasscall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pgetclasscall.INDEX]
+  -- if ~$call_unpack_present(phpType7_prefix*)
+  -- if $getclass_source_prefix(phpType7_prefix*, eps, false) = ((pnamedslot*, pgetclasscall.NAMED))
+  -- if $getclass_slot_shape(pgetclasscall.SENT) = $getclass_slot_shape(pnamedslot*)
+def $getclass_sent_shape(S, pgetclasscall) = true
+  -- if $exit_callable_arguments(S, pgetclasscall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pgetclasscall.INDEX <= |phpType7*|)
+  -- if $call_unpack_present(phpType7*[0:pgetclasscall.INDEX])
+  -- if (~$exit_prefix_named(phpType7*[0:pgetclasscall.INDEX]) \/ pgetclasscall.NAMED)
+def $getclass_sent_shape(S, pgetclasscall) = true
+  -- if $pipe_site(S, pgetclasscall.SITE)
+  -- if pgetclasscall.INDEX = 1
+  -- if |pgetclasscall.SENT| = 1
+  -- if ~pgetclasscall.NAMED
+def $getclass_sent_shape(S, pgetclasscall) = false -- otherwise
+dec $getclass_call_valid(pstate, pgetclasscall) : bool
+def $getclass_call_valid(S, pgetclasscall) = true
+  -- if S.ORIGIN = (pgetclasscall.SITE)
+  -- if $getclass_selected_valid(S, pgetclasscall)
+  -- if pgetclasscall.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pgetclasscall.LINE, false))
+  -- if $intrinsic_count(S, pgetclasscall.SITE) = (n_count)
+  -- if $(pgetclasscall.INDEX <= n_count)
+  -- if $getclass_slots_valid(pgetclasscall.SENT, 0, |pgetclasscall.SENT|, pgetclasscall.NAMED)
+  -- if $getclass_slots_live(S, pgetclasscall.SENT)
+def $getclass_call_valid(S, pgetclasscall) = false -- otherwise
+dec $getclass_pending_valid(pstate, pgetclasscall, bool) : bool
+def $getclass_pending_valid(S, pgetclasscall, b) = true
+  -- if $getclass_call_valid(S, pgetclasscall)
+  -- if $getclass_sent_shape(S, pgetclasscall)
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, b, preqbytes?, porigin, z))
+def $getclass_pending_valid(S, pgetclasscall, b) = false -- otherwise
+def $call_task_valid(S, GETCLASS_ARGS pgetclasscall) = ($getclass_call_valid(S, pgetclasscall) /\ $getclass_sent_shape(S, pgetclasscall))
+def $call_task_valid(S, GETCLASS_SEND pgetclasscall) = $getclass_pending_valid(S, pgetclasscall, false)
+def $call_task_valid(S, GETCLASS_UNPACK_PREP pgetclasscall) = $getclass_pending_valid(S, pgetclasscall, true)
+dec $getclass_invoke_valid(pstate, pgetclasscall) : bool
+def $getclass_invoke_valid(S, pgetclasscall) = true
+  -- if $getclass_call_valid(S, pgetclasscall)
+  -- if $getclass_sent_shape(S, pgetclasscall)
+  -- if $intrinsic_count(S, pgetclasscall.SITE) = (pgetclasscall.INDEX)
+def $getclass_invoke_valid(S, pgetclasscall) = false -- otherwise
+def $call_task_valid(S, GETCLASS_INVOKE pgetclasscall) = $getclass_invoke_valid(S, pgetclasscall)
+dec $getclass_unpack_valid(pstate, pgetclasscall, poperand, nat) : bool
+def $getclass_unpack_valid(S, pgetclasscall, KNOWN (PARRAY n), n_cursor) = true
+  -- if $getclass_call_valid(S, pgetclasscall)
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
+  -- if $getclass_sent_shape(S, pgetclasscall)
+  -- if $getclass_unpack_prefix(S, pgetclasscall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pgetclasscall_prefix)
+def $getclass_unpack_valid(S, pgetclasscall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, GETCLASS_UNPACK_NEXT pgetclasscall poperand n_cursor) = $getclass_unpack_valid(S, pgetclasscall, poperand, n_cursor)
+
+dec $getclass_pending_result_valid(pstate, pgetclasscall, bool) : bool
+def $getclass_pending_result_valid(S, pgetclasscall, b_unpack) = true
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_CV)
+  -- if $exit_cv_operand(pcode, pcunit, pcpath) = (S.RESULT)
+def $getclass_pending_result_valid(S, pgetclasscall, b_unpack) = true
+  -- if $intrinsic_argument(S, pgetclasscall.SITE, pgetclasscall.INDEX) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
+  -- if punpackclass =/= UNPACK_CV
+  -- if $unpack_owned(S, S.RESULT)
+def $getclass_pending_result_valid(S, pgetclasscall, b_unpack) = false -- otherwise
+def $getclass_result_valid(S) = $getclass_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $getclass_result_valid(S) = $getclass_result_valid(S[.ORIGIN = porigin?][.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $getclass_result_valid(S) = $getclass_pending_result_valid(S, pgetclasscall, false)
+  -- if S.TODO = (GETCLASS_SEND pgetclasscall) :: ptask_tail*
+def $getclass_result_valid(S) = $getclass_pending_result_valid(S, pgetclasscall, true)
+  -- if S.TODO = (GETCLASS_UNPACK_PREP pgetclasscall) :: ptask_tail*
+def $getclass_result_valid(S) = true -- otherwise
+
+;; Recheck an unpacked prefix without repeating observable effects.
+def $getclass_unpack_prefix(S, pgetclasscall, eps) = (pgetclasscall)
+def $getclass_unpack_prefix(S, pgetclasscall, (ENTRY pkey pitem) :: pentry*) = $getclass_unpack_prefix(S, $getclass_sent(pgetclasscall, KNOWN $entry_value(S, pitem), preqbytes?), pentry*)
+  -- if preqbytes? = $exit_key_name(pkey)
+  -- if S_checked = $getclass_send_check(S, pgetclasscall, preqbytes?, pgetclasscall.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+def $getclass_unpack_prefix(S, pgetclasscall, pentry*) = eps -- otherwise

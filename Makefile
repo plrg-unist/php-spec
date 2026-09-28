@@ -229,6 +229,8 @@ test-semantics: build
 	python3 tests/semantics/clone_expressions.py
 	python3 tests/semantics/clone_protocol.py
 	python3 tests/semantics/clone_controls.py
+	python3 tests/semantics/get_class_intrinsic.py
+	python3 tests/semantics/get_class_protocol.py
 	python3 tests/semantics/print_expressions.py
 	python3 tests/semantics/print_compiler.py
 	python3 tests/semantics/print_protocol.py

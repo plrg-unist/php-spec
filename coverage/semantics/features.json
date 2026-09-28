@@ -8140,15 +8140,26 @@
     {
       "id": "classes.object-identity",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/165-get-class-compiler.watsup",
+        "spec/semantics/166-get-class-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/get_class_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/get_class_intrinsic.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/get-class-review.json"
+      ],
+      "review": "Testing support only: get_class observes actual finite modeled object classes and lexical zero-argument scope with deprecation, using ordered direct/dynamic/first-class/pipe argument routes. The source-authenticated direct GET_CLASS trace mode and paused live-object guards are reviewed separately in get-class-review.json. Identity operators, closure binding, autoload, get_parent_class, general introspection and callbacks remain open; this is not object-identity or builtin-family closure."
     },
     {
       "id": "classes.clone",
