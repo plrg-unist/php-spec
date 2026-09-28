@@ -1,7 +1,8 @@
 ;; zend_object_handlers.c:zend_get_property_offset and zend_check_property_access.
 ;; Lookup uses raw names; storage/casts/captured locations use canonical keys.
 ;; The protected compatibility class is the original nonprivate prototype.
-dec $property_declaring_class(pclassdesc*, porigin) : porigin?
+dec $property_declaring_class(pclassdesc*, ppropertyid) : porigin?
+def $property_declaring_class(pclassdesc*, INTERNAL_PROPERTY text ptbytes) = eps
 def $property_declaring_class(eps, porigin) = eps
 def $property_declaring_class(pclassdesc :: pclassdesc_tail*, porigin) = (pclassdesc.ORIGIN)
   -- if $property_declared_at(pclassdesc.PROPERTIES, porigin)

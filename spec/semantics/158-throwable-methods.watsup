@@ -1,0 +1,279 @@
+;; Genuine finite internal methods: no source function, body or origin is made up.
+;; Zend/zend_exceptions.c and zend_exceptions_arginfo.h define the zero-argument
+;; public final getters. Error owns its aliases even when their C body is Exception's.
+dec $getter_named(ptbytes) : pgettermethod?
+def $getter_named(ptbytes) = (GET_MESSAGE) -- if $ptlc(ptbytes) = $ptascii("getmessage")
+def $getter_named(ptbytes) = (GET_CODE) -- if $ptlc(ptbytes) = $ptascii("getcode")
+def $getter_named(ptbytes) = (GET_FILE) -- if $ptlc(ptbytes) = $ptascii("getfile")
+def $getter_named(ptbytes) = (GET_LINE) -- if $ptlc(ptbytes) = $ptascii("getline")
+def $getter_named(ptbytes) = (GET_PREVIOUS) -- if $ptlc(ptbytes) = $ptascii("getprevious")
+def $getter_named(ptbytes) = eps -- otherwise
+dec $getter_name(pgettermethod) : ptbytes
+def $getter_name(GET_MESSAGE) = $ptascii("getMessage")
+def $getter_name(GET_CODE) = $ptascii("getCode")
+def $getter_name(GET_FILE) = $ptascii("getFile")
+def $getter_name(GET_LINE) = $ptascii("getLine")
+def $getter_name(GET_PREVIOUS) = $ptascii("getPrevious")
+dec $getter_other(text, ptbytes) : bool
+def $getter_other(text, ptbytes) = true
+  -- if $ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__tostring"), $ptascii("gettrace"), $ptascii("gettraceasstring"), $ptascii("__wakeup"), $ptascii("__clone")]
+def $getter_other("ErrorException", ptbytes) = true -- if $ptlc(ptbytes) = $ptascii("getseverity")
+def $getter_other(text, ptbytes) = false -- otherwise
+
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n, BASE $throwable_base(pthrowable.KIND), METHOD pgettermethod, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $getter_named(ptbytes) = (pgettermethod)
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "Throwable internal method body"][.TODO = eps]
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $getter_named(ptbytes) = eps
+  -- if $getter_other(pthrowable.KIND, ptbytes)
+def $getter_select(S, n, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ $object_name(S, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $getter_named(ptbytes) = eps
+  -- if ~$getter_other(pthrowable.KIND, ptbytes)
+
+dec $getter_arguments(pstate, porigin) : pcallarguments
+def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $getter_arguments(S, porigin) = PCALLNOARGUMENTS -- otherwise
+
+dec $getter_argument(pstate, pgettercall) : (expression, bool, preqbytes?, porigin, int)?
+def $getter_argument(S, pgettercall) = ((expression, b_unpack, $exit_argument_name(phpType3), PORIGIN n pcpath_arg, z))
+  -- if pgettercall.SITE = PORIGIN n pcpath
+  -- if $getter_arguments(S, pgettercall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pgettercall.INDEX < |phpType7*|)
+  -- if phpType7*[pgettercall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata
+  -- if pcpath_arg = pcpath ++ [PCFIELD n_field, PCINDEX pgettercall.INDEX, PCFIELD 1]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, $exit_send_path(pcpath, n_field, pgettercall.INDEX, b_unpack)) = ((z, b))
+def $getter_argument(S, pgettercall) = eps -- otherwise
+
+dec $getter_nodes(pgettercall) : pnode*
+def $getter_nodes(pgettercall) = [HOBJECT pgettercall.RECEIVER] ++ $operands_roots(pgettercall.SENT)
+def $task_nodes(GETTER_ARGS pgettercall) = $getter_nodes(pgettercall)
+def $task_nodes(GETTER_SEND pgettercall) = $getter_nodes(pgettercall)
+def $task_nodes(GETTER_UNPACK_PREP pgettercall) = $getter_nodes(pgettercall)
+def $task_nodes(GETTER_UNPACK_NEXT pgettercall poperand n) = $getter_nodes(pgettercall) ++ $operand_nodes(poperand)
+def $task_nodes(GETTER_INVOKE pgettercall) = $getter_nodes(pgettercall)
+
+;; Field reads dereference backed storage. GetCode intentionally has no declared
+;; return type; returning its current value must not coerce it to an integer.
+dec $getter_body(pstate, pgettercall) : pstate
+def $getter_body(S, pgettercall) = $stringify(S, $throwable_field(S, pgettercall.RECEIVER, "message"), pgettercall.LINE)
+  -- if pgettercall.METHOD = GET_MESSAGE
+def $getter_body(S, pgettercall) = S[.RESULT = KNOWN $throwable_field(S, pgettercall.RECEIVER, "code")]
+  -- if pgettercall.METHOD = GET_CODE
+def $getter_body(S, pgettercall) = $stringify(S, $throwable_field(S, pgettercall.RECEIVER, "file"), pgettercall.LINE)
+  -- if pgettercall.METHOD = GET_FILE
+def $getter_body(S, pgettercall) = $cast_value(S, CASTINT, $throwable_field(S, pgettercall.RECEIVER, "line"), pgettercall.LINE)
+  -- if pgettercall.METHOD = GET_LINE
+def $getter_body(S, pgettercall) = S[.RESULT = KNOWN $throwable_field(S, pgettercall.RECEIVER, "previous")]
+  -- if pgettercall.METHOD = GET_PREVIOUS
+
+dec $getter_error(pstate, pgettercall) : pstate
+def $getter_error(S, pgettercall) = $throwable_allocate(S[.ORIGIN = (pgettercall.SITE)], "ArgumentCountError", ptbytes ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pgettercall.SENT|) ++ $ptascii(" given"), pgettercall.LINE, [ptraceframe] ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+  -- if ptbytes = $ptascii(pgettercall.BASE) ++ $ptascii("::") ++ $getter_name(pgettercall.METHOD)
+  -- if pvalue* = $trace_extra(S, pgettercall.SENT)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgettercall.SITE), LINE pgettercall.LINE, NAME ($ptascii(pgettercall.BASE) ++ $ptascii("->") ++ $getter_name(pgettercall.METHOD)), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+rule PhpStep/getter-invoke: S ~> $getter_body(S[.TODO = ptask_tail*], pgettercall)
+  -- if S.TODO = (GETTER_INVOKE pgettercall) :: ptask_tail*
+  -- if pgettercall.SENT = eps
+rule PhpStep/getter-arity: S ~> $getter_error(S[.TODO = ptask_tail*], pgettercall)
+  -- if S.TODO = (GETTER_INVOKE pgettercall) :: ptask_tail*
+  -- if pgettercall.SENT =/= eps
+
+dec $getter_send_check(pstate, preqbytes?, int) : pstate
+def $getter_send_check(S, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
+def $getter_send_check(S, eps, z) = S
+
+rule PhpStep/getter-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), GETTER_SEND pgettercall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_ARGS pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, false, preqbytes?, porigin, z))
+rule PhpStep/getter-send: S ~> S_value[.TODO = (GETTER_ARGS (pgettercall[.SENT = pgettercall.SENT ++ [S_value.RESULT]][.INDEX = $(pgettercall.INDEX + 1)])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_SEND pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $getter_send_check(S, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/getter-send-error: S ~> S_checked
+  -- if S.TODO = (GETTER_SEND pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $getter_send_check(S, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/getter-send-abrupt: S ~> S_value
+  -- if S.TODO = (GETTER_SEND pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $getter_send_check(S, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+rule PhpStep/getter-arguments-done: S ~> S[.TODO = (GETTER_INVOKE pgettercall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_ARGS pgettercall) :: ptask_tail*
+  -- if $getter_arguments(S, pgettercall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if pgettercall.INDEX = |phpType7*|
+
+rule PhpStep/getter-unpack-start: S ~> S[.TODO = [$at_task((porigin), EVAL expression), GETTER_UNPACK_PREP pgettercall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_ARGS pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+rule PhpStep/getter-unpack-array: S ~> S_value[.TODO = (GETTER_UNPACK_NEXT pgettercall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_UNPACK_PREP pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n)
+rule PhpStep/getter-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
+  -- if S.TODO = (GETTER_UNPACK_PREP pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/getter-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (GETTER_UNPACK_PREP pgettercall) :: ptask_tail*
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/getter-unpack-item: S ~> S_checked[.TODO = (GETTER_UNPACK_NEXT pgettercall[.SENT = pgettercall.SENT ++ [KNOWN $entry_value(S, pitem)]] poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_UNPACK_NEXT pgettercall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $getter_send_check(S, preqbytes_key?, z)
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/getter-unpack-item-error: S ~> S_checked
+  -- if S.TODO = (GETTER_UNPACK_NEXT pgettercall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $getter_send_check(S, preqbytes_key?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/getter-unpack-done: S ~> S[.TODO = (GETTER_ARGS pgettercall[.INDEX = $(pgettercall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GETTER_UNPACK_NEXT pgettercall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n].ITEMS|
+
+;; Resume validates selected native owner, receiver liveness, source method,
+;; instruction line and source-order prefix before allowing any body execution.
+dec $getter_selected(pstate, pgettercall) : bool
+def $getter_selected(S, pgettercall) = true
+  -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgettercall.RECEIVER] = THROWABLE pthrowable
+  -- if pgettercall.BASE = $throwable_base(pthrowable.KIND)
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
+def $getter_selected(S, pgettercall) = true
+  -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgettercall.RECEIVER] = THROWABLE pthrowable
+  -- if pgettercall.BASE = $throwable_base(pthrowable.KIND)
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
+def $getter_selected(S, pgettercall) = false -- otherwise
+
+dec $getter_prefix(phpType7*) : bool
+def $getter_prefix(eps) = true
+def $getter_prefix((NArg ABSENT expression (BOOLEAN false) (BOOLEAN b_unpack) metadata) :: phpType7*) = $getter_prefix(phpType7*)
+def $getter_prefix(phpType7*) = false -- otherwise
+
+dec $getter_call_valid(pstate, pgettercall) : bool
+def $getter_call_valid(S, pgettercall) = true
+  -- if S.ORIGIN = (pgettercall.SITE)
+  -- if $getter_selected(S, pgettercall)
+  -- if pgettercall.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pgettercall.LINE, false))
+  -- if $getter_arguments(S, pgettercall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pgettercall.INDEX <= |phpType7*|)
+  -- if $getter_prefix(phpType7*[0:pgettercall.INDEX])
+  -- if $noctor_sent_valid(pgettercall.SENT)
+def $getter_call_valid(S, pgettercall) = false -- otherwise
+
+dec $getter_sent_shape(pstate, pgettercall, nat) : bool
+def $getter_sent_shape(S, pgettercall, n_current) = true
+  -- if $getter_arguments(S, pgettercall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pgettercall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pgettercall.INDEX]
+  -- if ~$call_unpack_present(phpType7_prefix*)
+  -- if |pgettercall.SENT| = $($exit_prefix_count(phpType7_prefix*) + n_current)
+def $getter_sent_shape(S, pgettercall, n_current) = true
+  -- if $getter_arguments(S, pgettercall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pgettercall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pgettercall.INDEX]
+  -- if $call_unpack_present(phpType7_prefix*)
+  -- if $(|pgettercall.SENT| >= $exit_prefix_count(phpType7_prefix*) + n_current)
+def $getter_sent_shape(S, pgettercall, n_current) = false -- otherwise
+
+dec $getter_pending_valid(pstate, pgettercall, bool) : bool
+def $getter_pending_valid(S, pgettercall, b_unpack) = true
+  -- if $getter_call_valid(S, pgettercall)
+  -- if $getter_argument(S, pgettercall) = ((expression, b_unpack, preqbytes?, porigin, z))
+  -- if $getter_sent_shape(S, pgettercall, 0)
+def $getter_pending_valid(S, pgettercall, b_unpack) = false -- otherwise
+
+def $call_task_valid(S, GETTER_ARGS pgettercall) = ($getter_call_valid(S, pgettercall) /\ $getter_sent_shape(S, pgettercall, 0))
+def $call_task_valid(S, GETTER_SEND pgettercall) = $getter_pending_valid(S, pgettercall, false)
+def $call_task_valid(S, GETTER_UNPACK_PREP pgettercall) = $getter_pending_valid(S, pgettercall, true)
+dec $getter_invoke_valid(pstate, pgettercall) : bool
+def $getter_invoke_valid(S, pgettercall) = true
+  -- if $getter_call_valid(S, pgettercall)
+  -- if $getter_arguments(S, pgettercall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if pgettercall.INDEX = |phpType7*|
+  -- if $getter_sent_shape(S, pgettercall, 0)
+def $getter_invoke_valid(S, pgettercall) = false -- otherwise
+def $call_task_valid(S, GETTER_INVOKE pgettercall) = $getter_invoke_valid(S, pgettercall)
+
+dec $getter_unpack_prefix(pentry*) : bool
+def $getter_unpack_prefix(eps) = true
+def $getter_unpack_prefix((ENTRY (KINT z) pitem) :: pentry*) = $getter_unpack_prefix(pentry*)
+def $getter_unpack_prefix(pentry*) = false -- otherwise
+dec $getter_unpack_valid(pstate, pgettercall, poperand, nat) : bool
+def $getter_unpack_valid(S, pgettercall, KNOWN (PARRAY n), n_cursor) = true
+  -- if $getter_call_valid(S, pgettercall)
+  -- if $getter_argument(S, pgettercall) = ((expression, true, preqbytes?, porigin, z))
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
+  -- if $getter_unpack_prefix(S.ARRAYS[n].ITEMS[0:n_cursor])
+  -- if $getter_sent_shape(S, pgettercall, n_cursor)
+def $getter_unpack_valid(S, pgettercall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, GETTER_UNPACK_NEXT pgettercall poperand n_cursor) = $getter_unpack_valid(S, pgettercall, poperand, n_cursor)
+
+;; Deferred CV identity belongs only to the active result. Suspended callers
+;; carry their own rooted selected target and wait for the nested result.
+dec $getter_pending_result_valid(pstate, pgettercall, bool) : bool
+def $getter_pending_result_valid(S, pgettercall, b_unpack) = true
+  -- if $getter_argument(S, pgettercall) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_CV)
+  -- if $exit_cv_operand(pcode, pcunit, pcpath) = (S.RESULT)
+def $getter_pending_result_valid(S, pgettercall, b_unpack) = true
+  -- if $getter_argument(S, pgettercall) = ((expression, b_unpack, preqbytes?, PORIGIN n pcpath, z))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
+  -- if punpackclass =/= UNPACK_CV
+  -- if $unpack_owned(S, S.RESULT)
+def $getter_pending_result_valid(S, pgettercall, b_unpack) = false -- otherwise
+
+def $getter_result_valid(S) = $getter_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $getter_result_valid(S) = $getter_result_valid(S[.ORIGIN = porigin?][.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $getter_result_valid(S) = $getter_pending_result_valid(S, pgettercall, false)
+  -- if S.TODO = (GETTER_SEND pgettercall) :: ptask_tail*
+def $getter_result_valid(S) = $getter_pending_result_valid(S, pgettercall, true)
+  -- if S.TODO = (GETTER_UNPACK_PREP pgettercall) :: ptask_tail*
+def $getter_result_valid(S) = true -- otherwise

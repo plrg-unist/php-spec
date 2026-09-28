@@ -1,0 +1,87 @@
+;; Internal declaration identities are not fabricated source occurrences.
+;; Scalar and previous fields have exactly one backing in OBJECTPROPS. TRACE
+;; remains opaque allocation metadata until structured trace arrays are modeled.
+def $throwable_base("Exception") = "Exception"
+def $throwable_base("ErrorException") = "Exception"
+def $throwable_base("ClosedGeneratorException") = "Exception"
+def $throwable_base(text) = "Error" -- otherwise
+
+dec $throwable_key(text, text) : ptbytes
+def $throwable_key(text_base, "previous") = [0] ++ $ptascii(text_base) ++ [0] ++ $ptascii("previous")
+def $throwable_key(text_base, text_field) = [0, 42, 0] ++ $ptascii(text_field) -- otherwise
+
+dec $throwable_descriptor(text, text, ppropertyvisibility, ptbranch*, ppropdefault) : ppropertydesc
+def $throwable_descriptor(text_base, text_field, ppropertyvisibility, ptbranch*, ppropdefault) = {ORIGIN INTERNAL_PROPERTY text_base $ptascii(text_field), NAME $ptascii(text_field), KEY $throwable_key(text_base, text_field), VISIBILITY ppropertyvisibility, TYPE ptbranch*, DEFAULT ppropdefault, LINE 0}
+dec $throwable_line_default(text) : ppropdefault
+def $throwable_line_default("Error") = PROP_UNINITIALIZED
+def $throwable_line_default("Exception") = PROP_LITERAL (PINT 0)
+dec $throwable_layout(text) : ppropertydesc*
+def $throwable_layout(text) = [
+  $throwable_descriptor(text_base, "message", PROPERTY_PROTECTED, eps, PROP_LITERAL (PSTRING eps)),
+  $throwable_descriptor(text_base, "code", PROPERTY_PROTECTED, eps, PROP_LITERAL (PINT 0)),
+  $throwable_descriptor(text_base, "file", PROPERTY_PROTECTED, [(PTBRANCH ([PTBUILTIN "string"]))], PROP_LITERAL (PSTRING eps)),
+  $throwable_descriptor(text_base, "line", PROPERTY_PROTECTED, [(PTBRANCH ([PTBUILTIN "int"]))], $throwable_line_default(text_base)),
+  $throwable_descriptor(text_base, "previous", PROPERTY_PRIVATE, [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTCLASS $ptascii("Throwable")]))], PROP_NULL)
+]
+  -- if $throwable_kind(text)
+  -- if text_base = $throwable_base(text)
+
+def $property_declaring_name(pclassdesc*, INTERNAL_PROPERTY text ptbytes) = $ptascii(text)
+  -- if text = "Exception" \/ text = "Error"
+  -- if ptbytes <- [$ptascii("message"), $ptascii("code"), $ptascii("file"), $ptascii("line"), $ptascii("previous")]
+
+dec $throwable_slot(text, text, pvalue) : ppropertyslot
+def $throwable_slot(text, text_field, pvalue) = {DECL (INTERNAL_PROPERTY $throwable_base(text) $ptascii(text_field)), NAME $throwable_key($throwable_base(text), text_field), STATE PROP_VALUE (DIRECT pvalue)}
+def $throwable_slots(text, preqbytes_message, preqbytes_file, z, pvalue_previous) = [
+  $throwable_slot(text, "message", PSTRING preqbytes_message),
+  $throwable_slot(text, "code", PINT 0),
+  $throwable_slot(text, "file", PSTRING preqbytes_file),
+  $throwable_slot(text, "line", PINT z),
+  $throwable_slot(text, "previous", pvalue_previous)
+]
+
+def $throwable_field(S, n, text_field) = pvalue
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
+  -- if $property_slot_at(ppropertyslot_list*, $throwable_key($throwable_base(pthrowable.KIND), text_field)) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+def $throwable_field(S, n, text_field) = pvalue
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
+  -- if $property_slot_at(ppropertyslot_list*, $throwable_key($throwable_base(pthrowable.KIND), text_field)) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+
+def $throwable_previous_id(S, n) = eps -- if $throwable_field(S, n, "previous") = PNULL
+def $throwable_previous_id(S, n) = (n_previous) -- if $throwable_field(S, n, "previous") = POBJECT n_previous
+dec $throwable_previous_value(nat?) : pvalue
+def $throwable_previous_value(eps) = PNULL
+def $throwable_previous_value((n)) = POBJECT n
+dec $throwable_previous_slot_valid(pstate, pvalue) : bool
+def $throwable_previous_slot_valid(S, PNULL) = true
+def $throwable_previous_slot_valid(S, POBJECT n) = $throwable_object(S, n)
+def $throwable_previous_slot_valid(S, pvalue) = false -- otherwise
+def $throwable_set_previous_id(S, n, n_previous?) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(ppropertyslot_list*, $throwable_key($throwable_base(pthrowable.KIND), "previous"), PROP_VALUE (DIRECT $throwable_previous_value(n_previous?))))]
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
+
+;; The current generated-only objects cannot expose or alias their fields yet.
+;; Exact slot shape prevents forged internal declarations or hidden extra values.
+def $throwable_slots_valid(S, n, pthrowable) = true
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if ~pobjectprops.MATERIALIZED
+  -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
+  -- if $throwable_field(S, n, "code") = PINT 0
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if $(z > 0)
+  -- if pvalue_previous = $throwable_field(S, n, "previous")
+  -- if $throwable_previous_slot_valid(S, pvalue_previous)
+  -- if pobjectprops.SLOTS = $throwable_slots(pthrowable.KIND, preqbytes_message, preqbytes_file, z, pvalue_previous)
+  -- if $property_slots_valid(S, $throwable_layout(pthrowable.KIND), pobjectprops.SLOTS)
+def $throwable_slots_valid(S, n, pthrowable) = false -- otherwise
+
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($throwable_slots_valid(S, pobjectprops.OBJECT, pthrowable) /\ $objectprops_valid(S, pobjectprops_tail*))
+  -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
+  -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
+  -- if S.OBJECTS[pobjectprops.OBJECT] = THROWABLE pthrowable

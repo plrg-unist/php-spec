@@ -49,6 +49,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 153/154 private | Independent declaring-class slots, lexical ancestor selection and inherited-private dynamic fallback across existing consumers; typed-reference location rules now distinguish aliased slots. [Review](coverage/semantics/property-private-review.json) |
 | 155/156 A | Normal/throw finally, previous chains, suppression and exit: 19 source tuples, 11 compiler sources and six paused stages/103 assertions. [Stage A ledger](coverage/semantics/finally-author.json) |
 | 155/156 B | Value/reference return, loop/switch/foreach jumps and goto across finally: 20 additional source tuples, six transfer controls and ten transfer paused stages. A focused repair disambiguates goto entry into try/catch with and without finally and authenticates the rebuilt region across saved calls. [Contract](docs/semantics/SOURCE-FINALLY.md) · [Stage B ledger](coverage/semantics/finally-stage-b-author.json) · [repair ledger](coverage/semantics/finally-goto-repair.json) |
+| 157/158 | Generated Throwable fields use authenticated internal property IDs and sole `OBJECTPROPS` slots; five direct getters retain ordered argument/receiver ownership. Final-base evidence: 26 exact source tuples, seven Unsupported controls, four paused stages/60 assertions, and private 22-source/127-assertion bridge. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-getters-review.json) |
 
 The current integration combines protected properties, public methods and
 constructors, cloning, nullsafe chains, match, print and exit/die with generated
@@ -69,7 +70,7 @@ steps.
 
 ## Next work
 
-Throwable constructors, accessors, canonical internal property backing, structured
+Throwable constructors, remaining accessors, structured
 trace payloads and user subclasses follow. Constructor-created previous cycles
 need separate handling beyond stage A generated-only acyclicity. Nonpublic/static methods,
 static/readonly members, hooks, magic methods, remaining internal parents,

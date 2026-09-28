@@ -19,13 +19,14 @@ syntax pdefaultkind = PDSTORED | PDDEFERRED
 syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
 syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, FINAL bool, ABSTRACT bool }
-syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin
+syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
+syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin | PROP_LITERAL pvalue
 syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED | PROPERTY_PRIVATE
-syntax ppropertydesc = { ORIGIN porigin, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
+syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
-syntax ppropertyslot = { DECL porigin?, NAME ptbytes, STATE ppropstate }
+syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
-syntax pproptypesource = { OBJECT nat, NAME ptbytes, DECL porigin }
+syntax pproptypesource = { OBJECT nat, NAME ptbytes, DECL ppropertyid }
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 dec $propref_at(ppropref*, nat) : ppropref?
 syntax pclassdesc = { ORIGIN porigin, NAME ptbytes, PARENT ptbytes?, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
@@ -42,7 +43,9 @@ syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SEN
 syntax pintrinsic = INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
 syntax pclonecall = { SITE porigin, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, LINE int }
-syntax ptask = FINALLY_ONLY porigin | FINALLY_RESUME porigin nat? | FINALLY_RETURN porigin porigin poperand | FINALLY_REF_RETURN porigin porigin poperand int | FINALLY_JUMP porigin porigin nat nat bool | FINALLY_GOTO porigin porigin pcpath pcpath | FINALLY_PHASE porigin nat | GOTO_UNWIND porigin pcpath pcpath | TRY_END porigin | THROW_VALUE porigin int | THROW_SEARCH nat | CATCH_BIND porigin nat nat | CLONE_ARGS pclonecall | CLONE_SEND pclonecall | CLONE_UNPACK_PREP pclonecall | CLONE_UNPACK_NEXT pclonecall poperand nat | CLONE_INVOKE pclonecall | CLONE_UPDATE pclonecall nat nat nat | EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin
+syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS
+syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, INDEX nat, SENT poperand*, LINE int}
+syntax ptask = GETTER_ARGS pgettercall | GETTER_SEND pgettercall | GETTER_UNPACK_PREP pgettercall | GETTER_UNPACK_NEXT pgettercall poperand nat | GETTER_INVOKE pgettercall | FINALLY_ONLY porigin | FINALLY_RESUME porigin nat? | FINALLY_RETURN porigin porigin poperand | FINALLY_REF_RETURN porigin porigin poperand int | FINALLY_JUMP porigin porigin nat nat bool | FINALLY_GOTO porigin porigin pcpath pcpath | FINALLY_PHASE porigin nat | GOTO_UNWIND porigin pcpath pcpath | TRY_END porigin | THROW_VALUE porigin int | THROW_SEARCH nat | CATCH_BIND porigin nat nat | CLONE_ARGS pclonecall | CLONE_SEND pclonecall | CLONE_UNPACK_PREP pclonecall | CLONE_UNPACK_NEXT pclonecall poperand nat | CLONE_INVOKE pclonecall | CLONE_UPDATE pclonecall nat nat nat | EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin
   | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
   | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand
@@ -76,7 +79,7 @@ syntax pcallcontext = { WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXIC
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext? }
 syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
-syntax pthrowable = { KIND text, MESSAGE pvalue, CODE pvalue, FILE preqbytes, LINE int, TRACE ptraceframe*, PREVIOUS nat?, ORIGIN porigin? }
+syntax pthrowable = { KIND text, TRACE ptraceframe*, ORIGIN porigin? }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat? }
 syntax pobject = THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
 syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
@@ -107,7 +110,7 @@ dec $class_origin_matches(pstate, porigin, ptbytes, nat) : bool
 dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool
 dec $class_links_valid(pstate) : bool
 dec $property_layout(pstate, porigin, nat) : ppropertydesc*
-dec $property_declaring_name(pclassdesc*, porigin) : ptbytes
+dec $property_declaring_name(pclassdesc*, ppropertyid) : ptbytes
 dec $property_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
 dec $ppproperty_override_message(ptbytes, ptbytes, ptbytes, ptbranch*, ptbranch*) : ptbytes?
 dec $property_initial_slots(pstate, ppropertydesc*) : ppropertyslot*?
@@ -370,3 +373,10 @@ dec $property_store_value(pstate, nat, ptbytes, pvalue, int) : pstate
 
 dec $finally_transfer_marker(pstate, ptask) : bool
 dec $finally_return_pending(pstate) : bool
+;; Finite native Throwable backing and invocation interfaces.
+dec $throwable_base(text) : text
+dec $throwable_slots(text, preqbytes, preqbytes, int, pvalue) : ppropertyslot*
+dec $throwable_slots_valid(pstate, nat, pthrowable) : bool
+dec $throwable_field(pstate, nat, text) : pvalue
+dec $throwable_previous_id(pstate, nat) : nat?
+dec $throwable_set_previous_id(pstate, nat, nat?) : pstate

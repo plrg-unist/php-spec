@@ -38,14 +38,24 @@ def observe(state, filename):
     tag, fields = completion['tag'], completion['args']
     uncaught_chain = []
     if tag == 'UNCAUGHT':
-        object_id = int(fields[0])
+        def field(object_id, name):
+            payload = state['OBJECTS'][object_id]['args'][0]
+            owner = 'Exception' if payload['KIND'] in ('Exception', 'ErrorException', 'ClosedGeneratorException') else 'Error'
+            key = (b'\0' + owner.encode() + b'\0' if name == 'previous' else b'\0*\0') + name.encode()
+            properties = next(row['SLOTS'] for row in state['OBJECTPROPS'] if int(row['OBJECT']) == object_id)
+            slot = next(slot for slot in properties if list(map(int, slot['NAME'])) == list(key))
+            item = slot['STATE']['args'][0]
+            return (item['args'][0] if item['tag'] == 'DIRECT'
+                    else state['STORE'][int(item['args'][0])]['args'][0])
+
+        root_id = int(fields[0])
+        object_id = root_id
         while object_id is not None:
-            current = state['OBJECTS'][object_id]['args'][0]
-            uncaught_chain.append(current)
-            previous = current['PREVIOUS']
-            object_id = int(previous) if previous is not None else None
-        payload = state['OBJECTS'][int(fields[0])]['args'][0]
-        tag, fields = 'THROWN', [payload['KIND'], payload['MESSAGE']['args'][0], payload['LINE']]
+            uncaught_chain.append(object_id)
+            previous = field(object_id, 'previous')
+            object_id = int(previous['args'][0]) if previous['tag'] == 'POBJECT' else None
+        payload = state['OBJECTS'][root_id]['args'][0]
+        tag, fields = 'THROWN', [payload['KIND'], field(root_id, 'message')['args'][0], field(root_id, 'line')['args'][0]]
     stderr = b''
     for event in events:
         if event['tag'] == 'WARNING':
@@ -89,13 +99,14 @@ def observe(state, filename):
         if classname in ('TypeError', 'ArgumentCountError') and b', called in ' in message.split(b'\0', 1)[0]:
             display_message += b' and defined'
         if uncaught_chain:
-            for index, payload in enumerate(reversed(uncaught_chain)):
-                message_bytes = bytes(map(int, payload['MESSAGE']['args'][0]))
+            for index, chain_id in enumerate(reversed(uncaught_chain)):
+                payload = state['OBJECTS'][chain_id]['args'][0]
+                message_bytes = bytes(map(int, field(chain_id, 'message')['args'][0]))
                 if payload['KIND'] in ('TypeError', 'ArgumentCountError') and b', called in ' in message_bytes.split(b'\0', 1)[0]:
                     message_bytes += b' and defined'
                 prefix = b'Fatal error: Uncaught ' if index == 0 else b'\nNext '
                 stderr += (prefix + payload['KIND'].encode() + b': ' + message_bytes + b' in '
-                           + bytes(map(int, payload['FILE'])) + b':' + str(payload['LINE']).encode()
+                           + bytes(map(int, field(chain_id, 'file')['args'][0])) + b':' + str(field(chain_id, 'line')['args'][0]).encode()
                            + b'\nStack trace:\n')
                 for frame_index, frame in enumerate(payload['TRACE']):
                     stderr += (b'#' + str(frame_index).encode() + b' ' + bytes(map(int, frame['FILE']))

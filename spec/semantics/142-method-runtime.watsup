@@ -147,13 +147,14 @@ def $method_args_task(pcalltarget, phpType7*, porigin?, z) = NAMED_ARGS pcalltar
 def $method_args_task(pcalltarget, phpType7*, porigin?, z) = CALL_ARGS pcalltarget phpType7* 0 eps porigin? z
   -- if ~$named_present(phpType7*)
 
+dec $getter_select(pstate, nat, ptbytes, phpType7*, int) : pstate
 dec $method_select(pstate, poperand, ptbytes, phpType7*, int) : pstate
 dec $method_object(pvalue) : bool
 def $method_object(POBJECT n) = true
 def $method_object(pvalue) = false -- otherwise
 dec $closure_known_other_method(ptbytes) : bool
 def $closure_known_other_method(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("bind"), $ptascii("bindto"), $ptascii("call"), $ptascii("fromcallable"), $ptascii("getcurrent")])
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable method consumer"]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $getter_select(S_read, n, ptbytes, phpType7*, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)

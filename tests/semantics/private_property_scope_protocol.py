@@ -50,9 +50,9 @@ CASES = {'external-clone-alias': ('S.CURRENT = eps -- if $lookup(S.ENV,$ptascii(
                            'S_done.COMPLETION = UNCAUGHT n_uncaught_s_done',
                            'S_done.OBJECTS[n_uncaught_s_done] = THROWABLE pthrowable_s_done',
                            'pthrowable_s_done.KIND = "TypeError"',
-                           'pthrowable_s_done.MESSAGE = PSTRING $ptascii("Cannot assign string to reference '
+                           '$throwable_field(S_done,n_uncaught_s_done,"message") = PSTRING $ptascii("Cannot assign string to reference '
                            'held by property A::$x of type int")',
-                           'pthrowable_s_done.LINE = 1',
+                           '$throwable_field(S_done,n_uncaught_s_done,"line") = PINT 1',
                            'S_done.TRACE = pthrowable_s_done.TRACE',
                            'S_done.ERRORORIGIN = pthrowable_s_done.ORIGIN',
                            '$heap_valid($heap_graph(S_done))',

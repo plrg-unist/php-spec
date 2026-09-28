@@ -1,4 +1,5 @@
-;; Previous links form an acyclic chain independently of other heap edges.
+;; Generated-only Stage A previous links form an acyclic chain. Direct
+;; constructor writes may create cycles and require a later bounded traversal.
 syntax pthrowchain = THROWCHAIN nat* | BADTHROWCHAIN
 dec $throwable_chain(pstate, nat, nat*) : pthrowchain
 dec $throwable_chain_next(pstate, nat?, nat*) : pthrowchain

@@ -1,17 +1,10 @@
-dec $throwable_previous_id(pstate, nat) : nat?
-def $throwable_previous_id(S, n) = pthrowable.PREVIOUS
-  -- if S.OBJECTS[n] = THROWABLE pthrowable
-dec $throwable_set_previous_id(pstate, nat, nat?) : pstate
-def $throwable_set_previous_id(S, n, n_previous?) = S[.OBJECTS[n] = THROWABLE (pthrowable[.PREVIOUS = n_previous?])]
-  -- if S.OBJECTS[n] = THROWABLE pthrowable
 dec $finally_try_unique(pstate, porigin) : bool
 dec $finally_binding_marker(pstate, porigin) : bool
 dec $finally_present(pstate, porigin) : bool
 dec $finally_catch_tail(pstate, porigin, ptask*) : ptask*
 dec $throwable_chain_valid(pstate, nat) : bool
 ;; Error requests are materialized before pruning or crossing a continuation.
-;; The finite builtin family has one backing payload; later internal properties
-;; and accessors must use these fields rather than independent mutable copies.
+;; Scalar fields use shared property slots; trace metadata stays on the object.
 dec $throwable_kind(text) : bool
 def $throwable_kind("Exception") = true
 def $throwable_kind("ErrorException") = true
@@ -69,8 +62,9 @@ def $throwable_types(text, (PTBRANCH ptatom*) :: ptbranch*) = ($throwable_atoms(
 def $typed_object_exact(S, ptbranch*, POBJECT n) = $throwable_types(pthrowable.KIND, ptbranch*)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
 
-def $node_children(S, HOBJECT n) = $operand_nodes(KNOWN pthrowable.MESSAGE) ++ $operand_nodes(KNOWN pthrowable.CODE) ++ $trace_roots(pthrowable.TRACE) ++ $instance_roots(pthrowable.PREVIOUS)
+def $node_children(S, HOBJECT n) = $property_slot_nodes(ppropertyslot*) ++ $trace_roots(pthrowable.TRACE)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $completion_roots(THROWING n) = [HOBJECT n]
 def $completion_roots(UNCAUGHT n) = [HOBJECT n]
 def $completion_roots(pcompletion) = eps -- otherwise
@@ -81,21 +75,19 @@ def $closure_live_object_valid(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_kind(pthrowable.KIND)
-  -- if pthrowable.MESSAGE = PSTRING n_message*
-  -- if pthrowable.CODE = PINT 0
+  -- if $throwable_slots_valid(S, n, pthrowable)
   -- if $throwable_chain_valid(S, n)
-  -- if $(pthrowable.LINE > 0)
   -- if pthrowable.ORIGIN = (porigin)
-  -- if pthrowable.FILE = $call_sourcefile(S.FILES, porigin)
+  -- if $throwable_field(S, n, "file") = PSTRING $call_sourcefile(S.FILES, porigin)
   -- if $origin_node(S.SOURCES, porigin) =/= eps
   -- if $heap_valid($heap_graph(S))
 
 ;; Allocation snapshots the failing frame before any owner is discarded.
-def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.OBJECTS = S.OBJECTS ++ [THROWABLE pthrowable]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.COMPLETION = THROWING n][.TRACE = eps][.ERRORORIGIN = eps]
+def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.OBJECTS = S.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text, preqbytes, $call_sourcefile(S.FILES, porigin), z, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.COMPLETION = THROWING n][.TRACE = eps][.ERRORORIGIN = eps]
   -- if $throwable_kind(text)
   -- if S.ORIGIN = (porigin)
   -- if n = |S.OBJECTS|
-  -- if pthrowable = {KIND text, MESSAGE PSTRING preqbytes, CODE PINT 0, FILE $call_sourcefile(S.FILES, porigin), LINE z, TRACE ptraceframe*, PREVIOUS eps, ORIGIN S.ORIGIN}
+  -- if pthrowable = {KIND text, TRACE ptraceframe*, ORIGIN S.ORIGIN}
 def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.COMPLETION = UNSUPPORTED "invalid Throwable allocation context"] -- otherwise
 
 def $throwable_pending(THROWN text preqbytes z) = true
@@ -262,6 +254,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Object of type ") ++ $object_name(S, n) ++ $ptascii(" is not callable"), z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)

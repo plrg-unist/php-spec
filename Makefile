@@ -216,6 +216,8 @@ test-semantics: build
 	python3 tests/semantics/throwable_expressions.py
 	python3 tests/semantics/throwable_compiler.py
 	python3 tests/semantics/throwable_protocol.py
+	python3 tests/semantics/throwable_accessors.py
+	python3 tests/semantics/throwable_getter_protocol.py
 	python3 tests/semantics/exit_protocol.py
 	python3 tests/semantics/exit_controls.py
 	python3 tests/semantics/clone_compiler.py

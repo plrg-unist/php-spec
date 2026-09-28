@@ -31,6 +31,8 @@ def $property_default_value(ptbranch*, PINT i) = PFLOAT $float_of_int(i)
   -- if ~("int" <- $ptmasks(ptbranch*))
 def $property_default_value(ptbranch*, pvalue) = pvalue -- otherwise
 dec $property_default_state(pstate, ppropertydesc) : ppropstate?
+def $property_default_state(S, ppropertydesc) = (PROP_VALUE (DIRECT pvalue))
+  -- if ppropertydesc.DEFAULT = PROP_LITERAL pvalue
 def $property_default_state(S, ppropertydesc) = (PROP_INITIAL)
   -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
 def $property_default_state(S, ppropertydesc) = (PROP_VALUE (DIRECT PNULL))
@@ -77,7 +79,7 @@ def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property
   -- if ppropertyslot.NAME = ptbytes
 def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.NAME = ptbytes
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
 def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.NAME = ptbytes
   -- if ppropertyslot.DECL = eps
@@ -89,12 +91,12 @@ def $property_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (ppropert
   -- if ppropertydesc.KEY = ptbytes
 def $property_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = $property_desc_at(ppropertydesc_tail*, ptbytes)
   -- if ppropertydesc.KEY =/= ptbytes
-dec $property_declared_at(ppropertydesc*, porigin) : bool
-def $property_declared_at(eps, porigin) = false
-def $property_declared_at(ppropertydesc :: ppropertydesc_tail*, porigin) = true
-  -- if ppropertydesc.ORIGIN = porigin
-def $property_declared_at(ppropertydesc :: ppropertydesc_tail*, porigin) = $property_declared_at(ppropertydesc_tail*, porigin)
-  -- if ppropertydesc.ORIGIN =/= porigin
+dec $property_declared_at(ppropertydesc*, ppropertyid) : bool
+def $property_declared_at(eps, ppropertyid) = false
+def $property_declared_at(ppropertydesc :: ppropertydesc_tail*, ppropertyid) = true
+  -- if ppropertydesc.ORIGIN = ppropertyid
+def $property_declared_at(ppropertydesc :: ppropertydesc_tail*, ppropertyid) = $property_declared_at(ppropertydesc_tail*, ppropertyid)
+  -- if ppropertydesc.ORIGIN =/= ppropertyid
 def $property_declaring_name(pclassdesc :: pclassdesc_tail*, porigin) = pclassdesc.NAME
   -- if $property_declared_at(pclassdesc.PROPERTIES, porigin)
 def $property_declaring_name(pclassdesc :: pclassdesc_tail*, porigin) = $property_declaring_name(pclassdesc_tail*, porigin)
@@ -108,7 +110,7 @@ def $property_slot_set(ppropertyslot :: ppropertyslot_tail*, ptbytes, ppropstate
   -- if ppropertyslot.NAME = ptbytes
 def $property_slot_set(ppropertyslot :: ppropertyslot_tail*, ptbytes, ppropstate) = ppropertyslot[.STATE = ppropstate] :: ppropertyslot_tail*
   -- if ppropertyslot.NAME = ptbytes
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
 def $property_slot_set(ppropertyslot :: ppropertyslot_tail*, ptbytes, ppropstate) = ppropertyslot[.STATE = ppropstate] :: ppropertyslot_tail*
   -- if ppropertyslot.NAME = ptbytes
   -- if ppropertyslot.DECL = eps
@@ -138,7 +140,7 @@ def $property_hash_count(ppropertyslot :: ppropertyslot_tail*) = $property_hash_
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_hash_count(ppropertyslot :: ppropertyslot_tail*) = $(1 + $property_hash_count(ppropertyslot_tail*))
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
 def $property_hash_count(ppropertyslot :: ppropertyslot_tail*) = $(1 + $property_hash_count(ppropertyslot_tail*))
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
@@ -218,7 +220,7 @@ def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $prope
   -- if ppropertyslot.NAME = ptbytes
 def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = true
   -- if ppropertyslot.NAME = ptbytes
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
 def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = true
   -- if ppropertyslot.NAME = ptbytes
   -- if ppropertyslot.DECL = eps
@@ -235,7 +237,7 @@ dec $property_dynamic_name_allowed(pstate, porigin, ptbytes) : bool
 dec $property_dynamic_no_shadow(pstate, porigin, ppropertyslot*) : bool
 def $property_dynamic_no_shadow(S, porigin, eps) = true
 def $property_dynamic_no_shadow(S, porigin, ppropertyslot :: ppropertyslot_tail*) = $property_dynamic_no_shadow(S, porigin, ppropertyslot_tail*)
-  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if ppropertyslot.DECL = (ppropertyid)
 def $property_dynamic_no_shadow(S, porigin, ppropertyslot :: ppropertyslot_tail*) = ($property_dynamic_name_allowed(S, porigin, ppropertyslot.NAME) /\ $property_dynamic_no_shadow(S, porigin, ppropertyslot_tail*))
   -- if ppropertyslot.DECL = eps
 dec $property_has_dynamic(ppropertyslot*) : bool
@@ -243,7 +245,7 @@ def $property_has_dynamic(eps) = false
 def $property_has_dynamic(ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
 def $property_has_dynamic(ppropertyslot :: ppropertyslot_tail*) = $property_has_dynamic(ppropertyslot_tail*)
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
 dec $objectprops_valid(pstate, pobjectprops*) : bool
 def $objectprops_valid(S, eps) = true
 def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $objectprops_valid(S, pobjectprops_tail*))
@@ -328,7 +330,7 @@ def $property_store_key(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cel
 def $property_store_key(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue)))][.RESULT = KNOWN pvalue]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
   -- if ~$property_alias(ppropertyslot.STATE)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
@@ -446,7 +448,7 @@ dec $property_unset_key(pstate, pvalue, ptbytes, int) : pstate
 def $property_unset_key(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
-  -- if ppropertyslot.DECL = (porigin)
+  -- if ppropertyslot.DECL = (ppropertyid)
   -- if S_detached = $propref_detach_slot(S, n, ppropertyslot)
 def $property_unset_key(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)

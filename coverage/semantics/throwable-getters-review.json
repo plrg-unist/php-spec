@@ -1,0 +1,72 @@
+{
+  "status": "independent review passed for bounded 157/158 on final base",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle",
+  "foundation": "4c539db3d093ab5e77b65c161a3a3f3f162a3743",
+  "semantic_head_before_ledger": "f651897c25a2bfeaa53aed4d4c398d9336a2089b",
+  "scope": "Generated builtin Throwable message/code/file/line/previous have sole authenticated internal OBJECTPROPS slots. Five direct getters retain selected receiver, ordered sent values and arity trace ownership. Stage B finally previous links and getter value/reference returns are covered.",
+  "design": [
+    "Internal property IDs are finite owner/name pairs; source declarations remain genuine PORIGIN values. Exception-family and Error-family slots use their declaring owner and physical private key.",
+    "Generated allocation creates exactly five scalar slots. TRACE remains opaque allocation metadata; constructors, mutation, subclasses and structured trace methods remain separate work.",
+    "Getter tasks distinguish SEND from RECEIVE, own sent values and unpack roots, and authenticate selected receiver, method and result. Generated previous-chain acyclicity applies only before direct constructors can create cycles."
+  ],
+  "repair_provenance": "Canonical 4ce3ef23c repaired two retained goto interpreter failures from 24e776f6a; reviewed source and paused evidence is in finally-goto-repair.json. The failed pre-repair report is preserved in .tools/throwable-accessors-candidate/.tools/throwable-expressions-9n2ukg3v/report.json and is not counted as passing evidence.",
+  "recovery": [
+    "python3 tests/semantics/throwable_expressions.py",
+    "python3 tests/semantics/throwable_accessors.py",
+    "python3 tests/semantics/throwable_getter_protocol.py",
+    "python3 tests/semantics/finally_protocol.py --match replacement",
+    "python3 tests/semantics/finally_protocol.py --match transfer-ref",
+    "python3 tests/semantics/private_property_scope_protocol.py",
+    "python3 /home/user/workspace/php-spec/.tools/private-property-review/replay.py /home/user/workspace/php-spec/.tools/throwable-accessors-candidate native-private.json native-protocol.json"
+  ],
+  "limits": "Source property access, constructors and reentry, getTrace/getTraceAsString/__toString, mutable previous cycles, subclasses and lifecycle integration remain open. These reports do not claim complete-core regression closure.",
+  "goto_repair": "4ce3ef23cb716774224ae9a24452e772934e4d12",
+  "final_base_reports": {
+    "retained_throwable_source": {
+      "path": ".tools/throwable-accessors-candidate/.tools/throwable-expressions-iub90ilf/report.json",
+      "sha256": "e4a106a117941a4f9af04d84b2422f128aed0cd23e8847311396ef1d2ccb8e5a",
+      "result": "53 exact native tuples and 12 separate Unsupported controls pass; both previously failing goto originals pass"
+    },
+    "getter_source": {
+      "path": ".tools/throwable-accessors-candidate/.tools/getter-probes-t6n1h3ao/report.json",
+      "sha256": "d2dd6eddb6ae1476ae1a50ac1a9ee2600c945ddd8c9c1a2dadaea3a0af2c4831",
+      "result": "26 exact native tuples, including previous chain and value/reference return through finally; 7 separate Unsupported controls pass"
+    },
+    "getter_paused": {
+      "path": ".tools/throwable-accessors-candidate/.tools/throwable-getter-protocol-trpqdam3/report.json",
+      "sha256": "824e29e81a745b06460b5ea646d085d888d66ac9b8306adc8d41215140c2eee0",
+      "result": "4 source-authenticated stages, 60 assertions: selection/forgery, deferred SEND, unpack root and sent-object ownership"
+    },
+    "private_source_22": {
+      "path": ".tools/private-property-review/protected-replay-z67t8vun/report.json",
+      "sha256": "266786e97553e84723541c3a668d783ccc7477dbb691c49d5fca05fa51bbf4b5",
+      "result": "22/22 exact native tuples, stable semantic hashes matching final checkout"
+    },
+    "private_scope_127": {
+      "path": ".tools/throwable-accessors-candidate/.tools/private-property-scope-1tiwh5pf/report.json",
+      "sha256": "962b765e6293f1b632b36d0922c06cd5e112e81b6014f9e1670945ab091576bf",
+      "result": "4/4 paused stages and 127 assertions pass; 167/167 recorded input hashes match final checkout"
+    },
+    "function_call_argument_markers": {
+      "path": ".tools/throwable-accessors-candidate/.tools/function-call-throwable-bridge-21b43cff/report.json",
+      "sha256": "0352b0713b503252093557c96dc997e80a4daec2a3010572f9f09a55a1a6468d",
+      "result": "Targeted retained argument-markers paused fixture passes after scalar slot migration; 159/159 direct inputs match"
+    }
+  },
+  "earlier_bridge": {
+    "protected_projection_56": ".tools/throwable-accessors-candidate/.tools/property-visibility-protocol-v9bntf1c/report.json (sha256 c4827e8f2bcc93987897ddfa25e97ea69713b1551bf8dbf6b36895b8ab4a3ebb)",
+    "throwable_paused_108": ".tools/throwable-accessors-candidate/.tools/throwable-protocol-a8sxlzx0/report.json (sha256 4f415f57a78253b4fbf400eb738b0f9319834b8bbda3afa5fdb7d18f4e6ce961)",
+    "finally_source_39": ".tools/throwable-accessors-candidate/.tools/finally-source-zk9ib1zz/report.json (sha256 a22d5d8c4109889a8ae810bda28d185209e265cbbf5510b0ded53a3d136f2ef7)",
+    "finally_replacement_paused": {
+      "path": ".tools/throwable-accessors-candidate/.tools/finally-protocol-6_c0suie/report.json",
+      "sha256": "2db9d5388d72036c473fc0eeb072592ce28e56e93490644fadbc210a96455667",
+      "result": "1 stage, 17 assertions pass"
+    },
+    "finally_ref_transfer_paused": {
+      "path": ".tools/throwable-accessors-candidate/.tools/finally-protocol-hpkzj1wf/report.json",
+      "sha256": "2c290e0a8c9fbe4fe1cd2572d8b1367c7121772803ce77fe1db67bec11bcfec7",
+      "result": "3 stages, 28 assertions pass"
+    },
+    "scope": "Protected 56, Throwable paused 108 and finally source 39 passed on Stage B before the goto repair and eval helper. Focused replacement 17 and reference-transfer 28 paused assertions passed after the goto repair but before the eval helper. They support unchanged routes only and are not counted as final-base runs; final-base source/getter/private reports above cover changed routes."
+  }
+}

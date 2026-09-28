@@ -25,24 +25,28 @@ in the catch body therefore searches outward past its sibling catches.
 Catch variable binding uses Zend's direct CV operation, including its distinct
 autoglobal behavior, and checks every typed reference source without coercion.
 
-The builtin object has one current backing payload for message/code/file/line,
-trace and previous link. These fields must become the backing source for later
-observable internal properties and methods, not duplicated mutable storage.
-Pending/uncaught completion and search/binding tasks root the object; payload
-trace values are child edges. Rethrow retains identity and allocation trace.
-The terminal observer renders the uncaught object's fields, with TRACE populated
-only at that terminal boundary. The payload is not a full getTrace result yet.
+Generated builtin objects store message/code/file/line/previous in one
+`OBJECTPROPS` row with finite `Exception` or `Error` internal declaration IDs.
+Those slots are the backing for five direct internal getters: `getMessage`,
+`getCode`, `getFile`, `getLine`, and `getPrevious`. Ordered argument tasks retain
+the selected receiver and sent values; source property access is still
+Unsupported. Trace remains opaque allocation metadata on the object, not a
+`getTrace()` array. Pending/uncaught completion and search/binding tasks root
+the object and trace values. Rethrow retains identity and allocation trace.
+The terminal observer reads the slots and renders TRACE at the terminal boundary.
+Finally replacement may link generated errors through `previous`; constructor
+reentry and user-written previous cycles require a later bounded traversal.
 
 Compiler rules preserve throw effects even where its result folds to true,
 compile try body before ordered catch headers/bodies, and retain first-type
 catch diagnostic lines. Legal goto entry into try reconstructs its marker;
-entry into catch skips binding and does not activate sibling catches. Finally
-is explicitly Unsupported, including otherwise accepted return/jump paths
-requiring finalization.
+entry into catch skips binding and does not activate sibling catches. Stage A
+finally runs on normal and exceptional exits and chains replaced generated
+errors. Stage B handles value/reference returns and jumps across finally.
 
-Still required: constructors, accessors, full structured trace and argument
-capture, internal property visibility and mutation, user subclasses, protected
-and private members, finally and previous chaining, __toString dispatch,
+Still required: constructors, remaining accessors, full structured trace and argument
+capture, source access to internal properties and mutation, user subclasses,
+remaining finally transfers and constructor-created previous cycles, __toString dispatch,
 handlers, lifecycle callbacks, eval/include errors, generator/Fiber closing
 and serialization. Throwable string conversions, property access/casts,
 property traversal and comparison dependencies are explicit Unsupported where
@@ -53,5 +57,6 @@ Source routes: Zend/zend_exceptions.c (default allocation, throw object and
 nominal hierarchy); Zend/zend_vm_def.h (ZEND_THROW, ZEND_CATCH and exception
 unwinding); Zend/zend_compile.c (zend_compile_throw, zend_compile_try and goto).
 Compiler checks, exact original-source tuples and paused ownership tests are
-maintained in `throwable_compiler.py`, `throwable_expressions.py` and
-`throwable_protocol.py`. Unsupported controls are counted separately.
+maintained in `throwable_compiler.py`, `throwable_expressions.py`,
+`throwable_protocol.py`, `throwable_accessors.py` and
+`throwable_getter_protocol.py`. Unsupported controls are counted separately.
