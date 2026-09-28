@@ -7,6 +7,7 @@ import json
 import subprocess
 import tempfile
 from recorded_worker import Worker
+from throwable_test_support import uncaught_assertions
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCES = {
@@ -46,7 +47,7 @@ CASES = {
             'S_written = $location_write(S,PROPERTY n_object ([0,42,0,120]),PINT 9)',
             'S_written.COMPLETION = NORMAL', 'S_written.STORE[n_cell] = DEFINED (PINT 9)',
             '$proprefs_valid(S_written)', 'S_done.STORE[n_cell] = DEFINED (PINT 1)',
-            'S_done.COMPLETION = THROWN "TypeError" ptbytes_error z_error',
+            *uncaught_assertions('S_done', '"TypeError"', 'ptbytes_error', 'z_error'),
         ]),
     'static-closure': (
         'S.CURRENT = (pcallcontext) -- if pcallcontext.LEXICAL_CLASS =/= eps -- if pcallcontext.RECEIVER = eps',
@@ -90,7 +91,7 @@ CASES = {
             'S_attempt.COMPLETION = THROWN "TypeError" ptbytes_error z_error',
             'S_attempt.STORE = S.STORE', 'S_attempt.OBJECTPROPS = S.OBJECTPROPS',
             'S_attempt.PROPREFS = S.PROPREFS', '$proprefs_valid(S_attempt)',
-            'S_done.COMPLETION = S_attempt.COMPLETION',
+            *uncaught_assertions('S_done', '"TypeError"', 'ptbytes_error', 'z_error'),
             'S_done.STORE[n_cell] = DEFINED (PSTRING ([51]))',
             'S_done.STORE[n_old] = DEFINED (PINT 1)',
             'S_done.PROPREFS = S.PROPREFS',
