@@ -15,7 +15,10 @@ continue join the ordered goto pass-two stream without generating goto targets.
 Jump into or out of finally is a compile error, including break/continue leaving
 the finalizer. Ordinary static errors and pass-two checks retain native priority.
 Legal goto within finally runs locally; entry into try/catch rebuilds its
-finalizer marker without executing the skipped header.
+finalizer marker without executing the skipped header. Goto entry selects the
+no-finally or finally rule from the actual try node. The rebuilt `TRY_END` or
+`FINALLY_ONLY` marker and its source node establish the active try or catch
+origin, including when a call suspends execution at the destination.
 
 `TRY_END` retains catch eligibility. Selecting a catch replaces it with binding
 and `FINALLY_ONLY`, so strict binding failure still finalizes without trying a
@@ -60,7 +63,8 @@ Primary source routes in the vendored engine are `zend_compile_try`,
 The [Stage A author ledger](../../coverage/semantics/finally-author.json) and
 [Stage B author ledger](../../coverage/semantics/finally-stage-b-author.json)
 separate exact source tuples, ordered compiler checks, paused-state ownership
-assertions and independent review. The Stage B exact source suite includes 20
+assertions and independent review. The [goto repair ledger](../../coverage/semantics/finally-goto-repair.json)
+binds the later cross-family entry regression and paused-frame checks. The Stage B exact source suite includes 20
 additional original-source tuples plus six transfer controls. Public Throwable
 construction is a separate dependency, so two native probes using `new Error`
 or `new Exception` are not Stage B agreements; generated engine throws cover

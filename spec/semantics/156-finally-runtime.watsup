@@ -450,9 +450,9 @@ def $goto_try_catch(S, PORIGIN n pcpath_target, (NStmtCatch phpType42 phpType43 
   -- if $effect_below(pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_target)
 def $goto_try_catch(S, PORIGIN n pcpath_target, phpType66 :: phpType66_tail*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, n_index) = $goto_try_catch(S, PORIGIN n pcpath_target, phpType66_tail*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, $(n_index + 1))
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_target)
-def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) phpType67 metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ $goto_try_tail(S, PORIGIN n pcpath_try, false, ptask_tail*, ptask_old*), ptask_old*)
+def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) (NStmtFinally phpType23_final metadata_final) metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ $goto_try_tail(S, PORIGIN n pcpath_try, false, ptask_tail*, ptask_old*), ptask_old*)
   -- if $effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
-def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch phpType23 (SEQUENCE phpType66*) phpType67 metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_try_catch(S, PORIGIN n pcpath_target, phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, 0)
+def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch phpType23 (SEQUENCE phpType66*) (NStmtFinally phpType23_final metadata_final) metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_try_catch(S, PORIGIN n pcpath_target, phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, 0)
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 2], pcpath_target)
 def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch phpType23 phpType65 (NStmtFinally (SEQUENCE statement*) metadata_final) metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 2, PCFIELD 0])), 0) ++ ptask_saved*, ptask_old*)
@@ -470,10 +470,34 @@ def $goto_finally_context(S, porigin_target, ptask :: ptask_tail*) = $goto_final
 def $goto_finally_context(S, PORIGIN n pcpath_target, ptask :: ptask_tail*) = $goto_finally_context(S, PORIGIN n pcpath_target, ptask_tail*)
   -- if $finally_marker_origin(ptask) = (PORIGIN n pcpath_try)
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 2], pcpath_target)
+dec $goto_region_marker(pstate, porigin, ptask) : porigin?
+def $goto_region_marker(S, PORIGIN n pcpath_target, TRY_END (PORIGIN n pcpath_try)) = (PORIGIN n pcpath_try)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_try) = (NStmtTryCatch phpType23 phpType65 phpType67 metadata)
+  -- if $effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
+def $goto_region_marker(S, PORIGIN n pcpath_target, FINALLY_ONLY (PORIGIN n pcpath_try)) = (PORIGIN n pcpath_catch)
+  -- if $finally_present(S, PORIGIN n pcpath_try)
+  -- if n_index_pos = $(|pcpath_try| + 1)
+  -- if $(|pcpath_target| > n_index_pos)
+  -- if pcpath_target[|pcpath_try|] = PCFIELD 1
+  -- if pcpath_target[n_index_pos] = PCINDEX n_index
+  -- if pcpath_catch = pcpath_try ++ [PCFIELD 1, PCINDEX n_index]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_catch) = (NStmtCatch phpType42 phpType43 phpType23 metadata)
+  -- if $effect_below(pcpath_catch ++ [PCFIELD 2], pcpath_target)
+def $goto_region_marker(S, porigin_target, ptask) = eps -- otherwise
+dec $goto_region_origin(pstate, porigin, ptask*) : porigin?
+def $goto_region_origin(S, porigin_target, eps) = eps
+def $goto_region_origin(S, porigin_target, ptask :: ptask_tail*) = (porigin_region)
+  -- if $goto_region_marker(S, porigin_target, ptask) = (porigin_region)
+def $goto_region_origin(S, porigin_target, ptask :: ptask_tail*) = $goto_region_origin(S, porigin_target, ptask_tail*)
+  -- if $goto_region_marker(S, porigin_target, ptask) = eps
 def $goto_target_origin(S, porigin_target, ptask*) = (porigin_final)
   -- if $goto_finally_context(S, porigin_target, ptask*) = (porigin_final)
+def $goto_target_origin(S, porigin_target, ptask*) = (porigin_region)
+  -- if $goto_finally_context(S, porigin_target, ptask*) = eps
+  -- if $goto_region_origin(S, porigin_target, ptask*) = (porigin_region)
 def $goto_target_origin(S, porigin_target, ptask*) = $goto_continuation_origin(S, ptask*)
   -- if $goto_finally_context(S, porigin_target, ptask*) = eps
+  -- if $goto_region_origin(S, porigin_target, ptask*) = eps
 def $finally_resume_at(ptask, porigin) = false -- otherwise
 dec $finally_has_resume(ptask*, porigin) : bool
 def $finally_has_resume(eps, porigin) = false

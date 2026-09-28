@@ -1,0 +1,53 @@
+{
+  "scope": "Stage B goto-entry regression repair on canonical 24e776f6; two overlapping no-finally rules and saved destination origins.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "foundation": "24e776f6a73f07a8d407002d6088d6ff24cf5b14",
+  "semantic_commit": "b456f61a14b007ec3268b5104f64aa694e662742",
+  "source_hashes": {
+    "spec/semantics/156-finally-runtime.watsup": "a3350e7acc3a1133bfd92cb8fda12af719bdd5c2ae767e4eb1b2f7b7761a9702",
+    "tests/semantics/finally_transfer_protocol_cases.py": "91c4969454b6104767d5877a6ec9374744dcb996af6ac1b8e2815bda9c25617c"
+  },
+  "author_reports": {
+    "source_39": {
+      "path": ".tools/finally-goto-fix/.tools/finally-source-wbhu9pgj/report.json",
+      "sha256": "18e7facaa1a3284587df14f05069ad79c5c782707c63876961fb351103172e20"
+    },
+    "goto_22": {
+      "path": ".tools/finally-goto-fix/.tools/goto-g4e28304/report.json",
+      "sha256": "a0a308f2901692e0cf565695ab43f729cf42bc8f6824141106f67fc5719d28f8"
+    },
+    "transfer_goto_paused_3": {
+      "path": ".tools/finally-goto-fix/.tools/finally-protocol-0w4roehu/report.json",
+      "sha256": "7610aed462f8a5b70a01376f9b453d772d0c31e263cdfc7c58f3bc13669f6fd9"
+    },
+    "entry_paused_8_67_assertions": {
+      "path": ".tools/finally-goto-fix/.tools/finally-protocol-wb8bvn33/report.json",
+      "sha256": "2229d9a38241f4cd090e5eada35703f78bacabdb3ce7425d2785b6332a93631e"
+    }
+  },
+  "independent_source_replay": {
+    "path": ".tools/finally-goto-fix/.tools/finally-review-goto-fix/review-source.json",
+    "sha256": "9822de26fb6746c42899c2040a1c8066ede0baa5958c97150d92dca06b1dde05",
+    "scope": "No-finally C/O, with-finally IF/CF and nested IAB exact pinned-native/model tuples."
+  },
+  "independent_paused_replay": {
+    "saved_catch_finally_12": {
+      "path": ".tools/finally-goto-fix/.tools/finally-protocol-1x6cmkcp/report.json",
+      "sha256": "1213f84983d01ae55200a030350f05940137985c8b247ba4d06d6028cd0f6a84"
+    },
+    "saved_try_no_finally_10": {
+      "path": ".tools/finally-goto-fix/.tools/finally-protocol-woiblf7k/report.json",
+      "sha256": "a914bd716853b87e3ef6661b125f730c2e89208d2b895780a5e2ff87fdbbb324"
+    },
+    "nested_finally_6": {
+      "path": ".tools/finally-goto-fix/.tools/finally-protocol-zkrv4ivt/report.json",
+      "sha256": "fcd962857bdc3365aad9e8ee51dbf2caf34ff1dd2cdbf7aa7dd629ed9f2aefd3"
+    }
+  },
+  "recovery": [
+    "python3 tests/semantics/finally.py",
+    "python3 tests/semantics/goto.py",
+    "python3 tests/semantics/finally_protocol.py --match transfer-goto",
+    "python3 tests/semantics/finally_protocol.py --match goto-entry"
+  ]
+}

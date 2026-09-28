@@ -34,6 +34,22 @@ def $other_goto(S, (PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence_tail*, n, 
   -- if $other_goto_at(S, PCOCCURRENCE pcpath_other pcnode, n, pcpath_source, pcpath_target)
 def $other_goto(S, pcoccurrence :: pcoccurrence_tail*, n, pcpath_source, pcpath_target) = $other_goto(S, pcoccurrence_tail*, n, pcpath_source, pcpath_target)
   -- if ~$other_goto_at(S, pcoccurrence, n, pcpath_source, pcpath_target)
+dec $is_finally_only(ptask) : bool
+def $is_finally_only(FINALLY_ONLY porigin) = true
+def $is_finally_only(ptask) = false -- otherwise
+dec $saved_finally_only(ptask*) : porigin?
+def $saved_finally_only(eps) = eps
+def $saved_finally_only((FINALLY_ONLY porigin) :: ptask*) = (porigin)
+def $saved_finally_only(ptask :: ptask_tail*) = $saved_finally_only(ptask_tail*)
+  -- if ~$is_finally_only(ptask)
+dec $is_try_end(ptask) : bool
+def $is_try_end(TRY_END porigin) = true
+def $is_try_end(ptask) = false -- otherwise
+dec $saved_try_end(ptask*) : porigin?
+def $saved_try_end(eps) = eps
+def $saved_try_end((TRY_END porigin) :: ptask*) = (porigin)
+def $saved_try_end(ptask :: ptask_tail*) = $saved_try_end(ptask_tail*)
+  -- if ~$is_try_end(ptask)
 '''
 
 CASES = [
@@ -140,4 +156,71 @@ CASES = [
    '~$call_task_valid(S,GOTO_UNWIND (PORIGIN n pcpath_source) pcpath_source pcpath_source)',
    '$call_descriptors_valid(S)',
    '$drive(S,1000).COMPLETION = NORMAL']),
+ ('goto-entry-try-no-finally', b'<?php goto L;try{L:1/0;}catch(Error $e){echo "C";}',
+  'S.TODO = (STMT (NStmtGoto phpType11 metadata)) :: ptask*',
+  ['S.ORIGIN = (porigin)',
+   '$goto_target(S,porigin) = (pcpath_target)',
+   '$goto_site(S,porigin,pcpath_target)',
+   '$call_descriptors_valid(S)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("C")']),
+ ('goto-entry-catch-no-finally', b'<?php try{goto L;try{echo "bad";}catch(Error $e){L:1/0;}catch(Throwable $bad){echo "bad";}}catch(Error $outer){echo "O";}',
+  'S.TODO = (STMT (NStmtGoto phpType11 metadata)) :: ptask*',
+  ['S.ORIGIN = (porigin)',
+   '$goto_target(S,porigin) = (pcpath_target)',
+   '$goto_site(S,porigin,pcpath_target)',
+   '$call_descriptors_valid(S)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("O")']),
+ ('goto-entry-try-finally', b'<?php goto L;try{L:echo "I";}finally{echo "F";}',
+  'S.TODO = (STMT (NStmtGoto phpType11 metadata)) :: ptask*',
+  ['$call_descriptors_valid(S)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("IF")']),
+ ('goto-entry-try-no-finally-current', b'<?php goto L;try{L:echo "T";}catch(Error $e){echo "bad";}',
+  'S.TODO = (TRY_END porigin) :: ptask*',
+  ['S.TODO = (TRY_END porigin) :: ptask*',
+   '$call_task_valid(S,TRY_END porigin)',
+   '~$call_task_valid(S,TRY_END (PORIGIN 999 eps))',
+   '$call_descriptors_valid(S)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("T")']),
+ ('goto-entry-try-no-finally-saved', b'<?php function step(){echo "X";}goto L;try{L:step();echo "T";}catch(Error $e){echo "bad";}',
+  'S.FRAMES = pframe :: pframe_tail*\n  -- if $saved_try_end(pframe.TODO) = (porigin)',
+  ['S.FRAMES = pframe :: pframe_tail*',
+   '$saved_try_end(pframe.TODO) = (porigin)',
+   '$call_frames_valid(S,S.FRAMES)',
+   'S_bad = S[.FRAMES = pframe[.TODO = $replace_transfer(pframe.TODO, TRY_END porigin, TRY_END (PORIGIN 999 eps))] :: pframe_tail*]',
+   '~$call_descriptors_valid(S_bad)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("XT")']),
+ ('goto-entry-nested-finally', b'<?php goto L;try{try{L:echo "I";}finally{echo "A";}}finally{echo "B";}',
+  'S.TODO = (STMT (NStmtGoto phpType11 metadata)) :: ptask*',
+  ['$call_descriptors_valid(S)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("IAB")']),
+ ('goto-entry-within-finally-try', b'<?php try{goto L;echo "bad";L:echo "I";}finally{echo "F";}',
+  'S.TODO = (STMT (NStmtGoto phpType11 metadata)) :: ptask*',
+  ['$call_descriptors_valid(S)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("IF")']),
+ ('goto-entry-catch-finally-saved', b'<?php function step(){echo "X";}goto L;try{throw new Error("E");}catch(Error $e){L:step();echo "I";}finally{echo "F";}',
+  'S.FRAMES = pframe :: pframe_tail*\n  -- if $saved_finally_only(pframe.TODO) = (porigin)',
+  ['S.FRAMES = pframe :: pframe_tail*',
+   '$saved_finally_only(pframe.TODO) = (porigin)',
+   '$call_frames_valid(S,S.FRAMES)',
+   'S_bad = S[.FRAMES = pframe[.TODO = $drop_transfer(pframe.TODO, FINALLY_ONLY porigin)] :: pframe_tail*]',
+   '~$call_descriptors_valid(S_bad)',
+   'S_wrong = S[.FRAMES = pframe[.TODO = $replace_transfer(pframe.TODO, FINALLY_ONLY porigin, FINALLY_ONLY (PORIGIN 999 eps))] :: pframe_tail*]',
+   '~$call_descriptors_valid(S_wrong)',
+   'S_done = $drive(S,1000)',
+   'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+   '$outputs(S_done.EVENTS) = $ptascii("XIF")']),
 ]
