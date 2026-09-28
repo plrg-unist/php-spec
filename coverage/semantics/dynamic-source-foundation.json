@@ -1,0 +1,35 @@
+{
+  "scope": "Compiler/registry and observer foundation only; no reached eval, parser pause or include execution.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "foundation": "c2cff15fa005ce0f40a9ac83b818b779771c7ae7",
+  "counts": {
+    "ordered_modules": 157,
+    "registry_inputs": 165,
+    "registry_assertions": 151,
+    "main_exact_source_tuples": 3,
+    "native_duplicate_probes": 2
+  },
+  "reports": {
+    "registry": {
+      "path": ".tools/dynamic-eval-implementation/.tools/dynamic-source-registry-f1o5igq8/report.json",
+      "sha256": "3f6eb3fa5b7e8d1d6e2394ce798ee8b4e3098b6aaf7baf94169ea11b3bed9939"
+    },
+    "main_source": {
+      "path": ".tools/dynamic-eval-implementation/.tools/dynamic-main-regression-qa7bsmh4/report.json",
+      "sha256": "fbffcf4d919564f2789cac8da346cbfcbba2e3f4812519a3dff72787fa8d8d4d"
+    },
+    "native_duplicate_declarations": {
+      "path": ".tools/dynamic-eval-implementation/.tools/dynamic-native-duplicates-_y7qsd_y/report.json",
+      "sha256": "96cb8ed480dc3d9c11498ce258a280415ccc8cc314b003297390b7c5331812de"
+    }
+  },
+  "limits": [
+    "One PPCNAMESPACE assertion composes two separately parsed nodes into a type-checked AST; its combined original bytes are rejected by the current helper. It is an internal compiler-branch test, not a checked source agreement.",
+    "The registry fixture does not enter eval or pause while finally transfers are pending.",
+    "Eval ParseError failed-source identity, untyped by-value return barrier and catchable missing-parent class error still require reached execution."
+  ],
+  "recovery": [
+    "python3 tests/semantics/dynamic_source_registry.py",
+    "Replay the three original sources listed in the ignored main_source report with bin/php-semantics and the pinned CLI profile."
+  ]
+}

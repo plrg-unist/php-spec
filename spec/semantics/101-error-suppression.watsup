@@ -3,7 +3,15 @@ def $diagnostic_level("Warning") = 2
 def $diagnostic_level("Notice") = 8
 def $diagnostic_level("Deprecated") = 8192
 def $diagnostic_level(text) = 1 -- otherwise
-def $report_event(S, pevent, i_level) = S[.EVENTS = S.EVENTS ++ [pevent]]
+dec $event_source(pstate, pevent) : pevent
+def $event_source(S, WARNING n_name* z) = WARNING_SOURCE n n_name* z
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(n > 0)
+def $event_source(S, DIAGNOSTIC text n_message* z) = DIAGNOSTIC_SOURCE n text n_message* z
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(n > 0)
+def $event_source(S, pevent) = pevent -- otherwise
+def $report_event(S, pevent, i_level) = S[.EVENTS = S.EVENTS ++ [$event_source(S, pevent)]]
   -- if $long_and(S.REPORTING, i_level) =/= 0
 def $report_event(S, pevent, i_level) = S
   -- if $long_and(S.REPORTING, i_level) = 0

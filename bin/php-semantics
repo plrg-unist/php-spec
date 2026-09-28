@@ -32,6 +32,12 @@ def request(command, value, timeout):
 
 
 def observe(state, filename):
+    def source_filename(unit):
+        for sourcefile in state['FILES']:
+            if int(sourcefile['args'][0]) == int(unit):
+                return bytes(map(int, sourcefile['args'][1]))
+        raise ValueError(f'unknown source unit {unit}')
+
     events = state['EVENTS']
     stdout = b''.join(bytes(map(int, event['args'][0])) for event in events if event['tag'] == 'OUTPUT')
     completion = state['COMPLETION']
@@ -62,10 +68,18 @@ def observe(state, filename):
             name, line = bytes(map(int, event['args'][0])), int(event['args'][1])
             stderr += (b'Warning: Undefined variable $' + name + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
+        elif event['tag'] == 'WARNING_SOURCE':
+            unit, name, line = event['args']
+            stderr += (b'Warning: Undefined variable $' + bytes(map(int, name)) + b' in '
+                       + source_filename(unit) + b' on line ' + str(line).encode() + b'\n')
         elif event['tag'] == 'DIAGNOSTIC':
             severity, message, line = event['args']
             stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
+        elif event['tag'] == 'DIAGNOSTIC_SOURCE':
+            unit, severity, message, line = event['args']
+            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
+                       + source_filename(unit) + b' on line ' + str(line).encode() + b'\n')
     stack = b''
     for i, frame in enumerate(state.get('TRACE', [])):
         stack += (b'#' + str(i).encode() + b' ' + bytes(map(int, frame['FILE']))
@@ -75,10 +89,7 @@ def observe(state, filename):
     location = os.fsencode(filename)
     origin = state.get('ERRORORIGIN')
     if origin is not None:
-        for sourcefile in state['FILES']:
-            if sourcefile['args'][0] == origin['args'][0]:
-                location = bytes(map(int, sourcefile['args'][1]))
-                break
+        location = source_filename(origin['args'][0])
     diagnostic = None
     status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
@@ -123,7 +134,7 @@ def observe(state, filename):
         message = fields[0].encode() if tag == 'STATICERROR' else bytes(map(int, fields[0]))
         line = int(fields[1])
         diagnostic = {'class': 'Error' if tag == 'FATAL' else 'CompileError', 'message': b64(message), 'line': line}
-        stderr += (b'Fatal error: ' + message + b' in ' + os.fsencode(filename)
+        stderr += (b'Fatal error: ' + message + b' in ' + location
                   + b' on line ' + str(line).encode() + b'\nStack trace:\n' + stack)
         exit_status = 255
     return {'status': status, 'stdout': b64(stdout), 'stderr': b64(stderr),
