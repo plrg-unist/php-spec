@@ -22,7 +22,6 @@ dec $eval_filename(pstate, porigin, int) : preqbytes
 def $eval_filename(S, porigin, z) = $call_sourcefile(S.FILES, porigin) ++ [40] ++ $decimal_integer(z) ++ $ptascii(") : eval()'d code")
 
 dec $eval_stringable(pvalue) : bool
-def $eval_stringable(PARRAY n) = false
 def $eval_stringable(POBJECT n) = false
 def $eval_stringable(pvalue) = true -- otherwise
 dec $eval_string_result(pvalue) : bool
