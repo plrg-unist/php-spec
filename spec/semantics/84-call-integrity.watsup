@@ -278,7 +278,7 @@ def $call_saved_context_valid(S, pframe) = $call_context_valid(S, pcallcontext, 
 def $call_saved_context_valid(S, pframe) = false -- otherwise
 dec $call_frames_valid(pstate, pframe*) : bool
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT], pframe.TODO) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT][.TODO = pframe.TODO], pframe.TODO) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
@@ -287,6 +287,7 @@ dec $clone_result_valid(pstate) : bool
 dec $throwable_result_valid(pstate) : bool
 dec $exit_result_valid(pstate) : bool
 dec $static_cells_valid(pstate, pstaticcell*) : bool
+dec $finally_state_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
@@ -298,6 +299,7 @@ def $call_descriptors_valid(S) = true
   -- if $ctor_pairs_valid(S, S.TODO)
   -- if $nullsafe_base_phase_valid(S)
   -- if $call_frames_valid(S, S.FRAMES)
+  -- if $finally_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)
   -- if $reference_call_frames_valid(S.CURRENT, S.FRAMES)

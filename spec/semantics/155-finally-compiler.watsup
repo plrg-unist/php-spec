@@ -1,0 +1,130 @@
+dec $ppfinally_protected_node(pcoccurrence*, pcpath) : bool
+dec $ppfinally_scope_node(pcoccurrence*, pcpath) : bool
+;; Zend pass two checks BRK/CONT and GOTO in emitted instruction order.
+;; Keep jump references in that same stream; they produce no CODEGOTO entry.
+def $ppfinally_record_jump(P, pcpath, ppdepth) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppfinally_record_jump(P, pcpath, PPDEPTH n_depth) = P[.GOTOS = P.GOTOS ++ [PPJUMPREF pcpath P.LOCATION.LINE n_depth pcpath_owner*]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_owner* = $ppgoto_owners(P.FOLD.SOURCE.OCCURRENCES, P.GOTOROOT, pcpath, |P.GOTOROOT|)
+
+;; A try table entry precedes nested entries. Source occurrence order preserves
+;; that order, unlike enumerating only the finally nodes after their try bodies.
+dec $ppfinally_region(pcnode, pcpath) : pcpath?
+def $ppfinally_region(NStmtTryCatch phpType23 phpType65 (NStmtFinally phpType23_final metadata_final) metadata, pcpath) = (pcpath ++ [PCFIELD 2])
+def $ppfinally_region(pcnode, pcpath) = eps -- otherwise
+
+dec $ppfinally_crossing(pcpath?, pcpath, pcpath) : text?
+def $ppfinally_crossing(eps, pcpath_source, pcpath_dest) = eps
+def $ppfinally_crossing((pcpath_final), pcpath_source, pcpath_dest) = ("jump into a finally block is disallowed")
+  -- if ~$effect_below(pcpath_final, pcpath_source)
+  -- if $effect_below(pcpath_final, pcpath_dest)
+def $ppfinally_crossing((pcpath_final), pcpath_source, pcpath_dest) = ("jump out of a finally block is disallowed")
+  -- if $effect_below(pcpath_final, pcpath_source)
+  -- if ~$effect_below(pcpath_final, pcpath_dest)
+def $ppfinally_crossing((pcpath_final), pcpath_source, pcpath_dest) = eps
+  -- if $effect_below(pcpath_final, pcpath_source) = $effect_below(pcpath_final, pcpath_dest)
+
+dec $ppfinally_jump_error(pcoccurrence*, pcpath, pcpath) : text?
+def $ppfinally_jump_error(eps, pcpath_source, pcpath_dest) = eps
+def $ppfinally_jump_error((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, pcpath_source, pcpath_dest) = (text)
+  -- if $ppfinally_crossing($ppfinally_region(pcnode, pcpath), pcpath_source, pcpath_dest) = (text)
+def $ppfinally_jump_error((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, pcpath_source, pcpath_dest) = $ppfinally_jump_error(pcoccurrence*, pcpath_source, pcpath_dest)
+  -- if $ppfinally_crossing($ppfinally_region(pcnode, pcpath), pcpath_source, pcpath_dest) = eps
+
+def $ppfinally_resolve(P, pcpath_source, pcpath_dest, z, ppgotoref*) = $ppgoto_resolve(P, ppgotoref*)
+  -- if $ppfinally_jump_error(P.FOLD.SOURCE.OCCURRENCES, pcpath_source, pcpath_dest) = eps
+def $ppfinally_resolve(P, pcpath_source, pcpath_dest, z, ppgotoref*) = P[.COMPLETION = PPCABRUPT (STATICBYTES $ptascii(text) z)]
+  -- if $ppfinally_jump_error(P.FOLD.SOURCE.OCCURRENCES, pcpath_source, pcpath_dest) = (text)
+
+def $ppgoto_resolve(P, (PPJUMPREF pcpath z n_depth pcpath_owner*) :: ppgotoref*) = $ppfinally_resolve(P, pcpath, pcpath_dest, z, ppgotoref*)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $(n_depth > 0 /\ n_depth <= |pcpath_owner*|)
+  -- if n_index = $(|pcpath_owner*| - n_depth)
+  -- if pcpath_dest = (pcpath_owner*)[n_index]
+def $compiled_gotos((PPJUMPREF pcpath z n_depth pcpath_owner*) :: ppgotoref*, ppgotolabel*) = $compiled_gotos(ppgotoref*, ppgotolabel*)
+
+;; The finalizer is compiled after every catch header and body.
+def $pptry_finally(P, pcpath, NStmtFinally (SEQUENCE statement*) metadata) = $ppstatements(P, pcpath ++ [PCFIELD 0], 0, statement*)
+  -- if P.COMPLETION = PPCNORMAL
+
+;; Stage A admission runs only after the complete source's ordinary compilation
+;; and each callable's pass two. It cannot mask a later genuine static error.
+dec $ppfinally_callable(pcnode) : bool
+def $ppfinally_callable(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+def $ppfinally_callable(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) = true
+def $ppfinally_callable(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $ppfinally_callable(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = true
+def $ppfinally_callable(pcnode) = false -- otherwise
+dec $ppfinally_scope(pcoccurrence*, pcpath) : pcpath
+def $ppfinally_scope(pcoccurrence*, pcpath) = pcpath
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (pcnode)
+  -- if $ppfinally_callable(pcnode)
+def $ppfinally_scope(pcoccurrence*, eps) = eps
+def $ppfinally_scope(pcoccurrence*, pcpath) = $ppfinally_scope(pcoccurrence*, pcpath[0:n])
+  -- if $(|pcpath| > 0)
+  -- if n = $(|pcpath| - 1)
+  -- if $occurrence_node(pcoccurrence*, pcpath) = eps \/ ~$ppfinally_scope_node(pcoccurrence*, pcpath)
+def $ppfinally_scope_node(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (pcnode)
+  -- if $ppfinally_callable(pcnode)
+def $ppfinally_scope_node(pcoccurrence*, pcpath) = false -- otherwise
+
+dec $ppfinally_protected(pcoccurrence*, pcpath) : pcpath*
+def $ppfinally_protected(pcoccurrence*, pcpath) = eps
+  -- if $ppfinally_scope_node(pcoccurrence*, pcpath)
+def $ppfinally_protected(pcoccurrence*, eps) = eps
+def $ppfinally_protected(pcoccurrence*, pcpath) = $ppfinally_protected(pcoccurrence*, pcpath[0:n]) ++ [pcpath]
+  -- if $(|pcpath| > 0)
+  -- if n = $(|pcpath| - 1)
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (pcnode)
+  -- if $ppfinally_region(pcnode, pcpath) = (pcpath_final)
+def $ppfinally_protected(pcoccurrence*, pcpath) = $ppfinally_protected(pcoccurrence*, pcpath[0:n])
+  -- if $(|pcpath| > 0)
+  -- if n = $(|pcpath| - 1)
+  -- if ~$ppfinally_scope_node(pcoccurrence*, pcpath)
+  -- if ~$ppfinally_protected_node(pcoccurrence*, pcpath)
+def $ppfinally_protected_node(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (pcnode)
+  -- if $ppfinally_region(pcnode, pcpath) = (pcpath_final)
+def $ppfinally_protected_node(pcoccurrence*, pcpath) = false -- otherwise
+
+dec $ppfinally_label_at(pcoccurrence, pcoccurrence*, pcpath, ptbytes) : pcpath?
+def $ppfinally_label_at(PCOCCURRENCE pcpath (NStmtLabel (NIdentifier (BYTES text) metadata_name) metadata), pcoccurrence_all*, pcpath_scope, ptbytes) = (pcpath)
+  -- if $base64(text) = ptbytes
+  -- if $ppfinally_scope(pcoccurrence_all*, pcpath) = pcpath_scope
+def $ppfinally_label_at(pcoccurrence, pcoccurrence_all*, pcpath_scope, ptbytes) = eps -- otherwise
+dec $ppfinally_label(pcoccurrence*, pcoccurrence*, pcpath, ptbytes) : pcpath?
+def $ppfinally_label(eps, pcoccurrence_all*, pcpath_scope, ptbytes) = eps
+def $ppfinally_label(pcoccurrence :: pcoccurrence_tail*, pcoccurrence_all*, pcpath_scope, ptbytes) = (pcpath)
+  -- if $ppfinally_label_at(pcoccurrence, pcoccurrence_all*, pcpath_scope, ptbytes) = (pcpath)
+def $ppfinally_label(pcoccurrence :: pcoccurrence_tail*, pcoccurrence_all*, pcpath_scope, ptbytes) = $ppfinally_label(pcoccurrence_tail*, pcoccurrence_all*, pcpath_scope, ptbytes)
+  -- if $ppfinally_label_at(pcoccurrence, pcoccurrence_all*, pcpath_scope, ptbytes) = eps
+
+dec $ppfinally_jump_pending(pcoccurrence*, pcpath, phpType5) : bool
+def $ppfinally_jump_pending(pcoccurrence*, pcpath, phpType5) = true
+  -- if $ppdepth(phpType5) = PPDEPTH n_depth
+  -- if pcpath_root = $ppfinally_scope(pcoccurrence*, pcpath)
+  -- if pcpath_owner* = $ppgoto_owners(pcoccurrence*, pcpath_root, pcpath, |pcpath_root|)
+  -- if $(n_depth > 0 /\ n_depth <= |pcpath_owner*|)
+  -- if n_index = $(|pcpath_owner*| - n_depth)
+  -- if pcpath_dest = (pcpath_owner*)[n_index]
+  -- if $ppfinally_protected(pcoccurrence*, pcpath) =/= $ppfinally_protected(pcoccurrence*, pcpath_dest)
+def $ppfinally_jump_pending(pcoccurrence*, pcpath, phpType5) = false -- otherwise
+dec $ppfinally_transfer_pending(pcoccurrence*, pcpath, pcnode) : bool
+def $ppfinally_transfer_pending(pcoccurrence*, pcpath, NStmtReturn phpType5 metadata) = ($ppfinally_protected(pcoccurrence*, pcpath) =/= eps)
+def $ppfinally_transfer_pending(pcoccurrence*, pcpath, NStmtBreak phpType5 metadata) = $ppfinally_jump_pending(pcoccurrence*, pcpath, phpType5)
+def $ppfinally_transfer_pending(pcoccurrence*, pcpath, NStmtContinue phpType5 metadata) = $ppfinally_jump_pending(pcoccurrence*, pcpath, phpType5)
+def $ppfinally_transfer_pending(pcoccurrence*, pcpath, NStmtGoto (NIdentifier (BYTES text) metadata_name) metadata) = true
+  -- if $ppfinally_label(pcoccurrence*, pcoccurrence*, $ppfinally_scope(pcoccurrence*, pcpath), $base64(text)) = (pcpath_dest)
+  -- if $ppfinally_protected(pcoccurrence*, pcpath) =/= eps \/ $ppfinally_protected(pcoccurrence*, pcpath_dest) =/= eps
+def $ppfinally_transfer_pending(pcoccurrence*, pcpath, pcnode) = false -- otherwise
+dec $ppfinally_admit_nodes(ppstate, pcoccurrence*) : ppstate
+def $ppfinally_admit_nodes(P, eps) = P
+def $ppfinally_admit_nodes(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $ppunsupported(P, "finally return and jump unwinding")
+  -- if $ppfinally_transfer_pending(P.FOLD.SOURCE.OCCURRENCES, pcpath, pcnode)
+def $ppfinally_admit_nodes(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $ppfinally_admit_nodes(P, pcoccurrence*)
+  -- if ~$ppfinally_transfer_pending(P.FOLD.SOURCE.OCCURRENCES, pcpath, pcnode)
+def $ppfinally_admit(P) = $ppfinally_admit_nodes(P, P.FOLD.SOURCE.OCCURRENCES)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppfinally_admit(P) = P -- otherwise

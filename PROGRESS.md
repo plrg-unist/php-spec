@@ -46,19 +46,23 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 149/150 | Object and closure cloning: shallow slots/live aliases, receiver/static ownership and positional/named/array-unpacked property updates. [Review](coverage/semantics/clone-review.json) |
 | 151/152 | Generated builtin Throwable identities, ordered no-finally try/catch, strict catch references, throw/rethrow, source-authenticated search and owned traces. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-review.json) |
 | 153/154 protected | Protected instance properties: lexical prototype access, mangled keys across existing consumers, typed binding correction and memoized property coalescing. Private identity remains the next increment. [Review](coverage/semantics/property-visibility-review.json) |
+| 155/156 A | Normal/throw finally, previous chains, suppression and exit: 19 source tuples, 11 compiler sources, six paused stages/103 assertions and six separate temporary admission controls. [Contract](docs/semantics/SOURCE-FINALLY.md) · [ledger](coverage/semantics/finally-author.json) |
 
 The current integration combines protected properties, public methods and
 constructors, cloning, nullsafe chains, match, print and exit/die with generated
-Throwable control. Source, paused-state and terminal migration evidence have
+Throwable control and normal/throw finally. Source, paused-state and terminal migration evidence have
 bounded review. The [migration ledger](coverage/semantics/throwable-migration-review.json)
 keeps deferred broader pause sweeps and baseline fixture failures explicit;
 these results do not establish complete-core regression closure.
 
 ## Next work
 
-Private property identity/shadowing and finally control are active increments.
+Private property identity/shadowing and finally stage B are active increments.
+Stage B closes value/reference return and loop/goto transfers; stage A rejects
+pending transfers during source admission, while preserving real static errors.
 Throwable constructors, accessors, canonical internal property backing, structured
-trace/previous payloads and user subclasses follow. Nonpublic/static methods,
+trace payloads and user subclasses follow. Constructor-created previous cycles
+need separate handling beyond stage A generated-only acyclicity. Nonpublic/static methods,
 static/readonly members, hooks, magic methods, remaining internal parents,
 conversion callbacks, output handlers, traversal and lifecycle integration remain
 open. Exit bypasses catch/finally; shutdown/destructor callbacks remain required.

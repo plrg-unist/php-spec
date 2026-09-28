@@ -176,8 +176,10 @@ selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
 and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES.md)
 now support ordered no-finally try/catch and throw/rethrow, including unhandled
-match errors. Constructors, accessors, subclasses, finally and lifecycle
-integration remain pending.
+match errors. [Finally continuations](docs/semantics/SOURCE-FINALLY.md) now preserve
+normal and thrown outcomes, previous chains, suppression and exit cleanup. Return
+and crossing jump finalization are the next stage; constructors, accessors,
+subclasses and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
 explicit-exit completion. Shutdown/destructor callbacks remain pending; native

@@ -1,0 +1,97 @@
+[
+  {
+    "id": "normal-order",
+    "source": "<?php try{echo \"T\";}finally{echo \"F\";}echo \"D\";",
+    "status": "normal"
+  },
+  {
+    "id": "catch-normal",
+    "source": "<?php try{1/0;}catch(DivisionByZeroError $e){echo \"C\";}finally{echo \"F\";}echo \"D\";",
+    "status": "normal"
+  },
+  {
+    "id": "catch-miss-outer",
+    "source": "<?php try{try{1/0;}catch(TypeError){echo \"BAD\";}finally{echo \"F\";}}catch(DivisionByZeroError){echo \"C\";}",
+    "status": "normal"
+  },
+  {
+    "id": "normal-finally-throws",
+    "source": "<?php try{try{echo \"T\";}finally{1/0;}}catch(DivisionByZeroError){echo \"C\";}",
+    "status": "normal"
+  },
+  {
+    "id": "nested-unmatched",
+    "source": "<?php try{try{1/0;}finally{echo \"I\";}}finally{echo \"O\";}",
+    "status": "php_error"
+  },
+  {
+    "id": "call-pending-trace-owner",
+    "source": "<?php function boom($x){1/0;}function step(){echo \"S\";}try{boom(new stdClass);}finally{step();echo \"F\";}",
+    "status": "php_error"
+  },
+  {
+    "id": "suppression-crossed",
+    "source": "<?php function fail(){1/0;}try{@fail();}finally{echo $missing;}",
+    "status": "php_error"
+  },
+  {
+    "id": "suppression-call-owned",
+    "source": "<?php function fail(){try{1/0;}finally{echo $missing;}}try{@fail();}catch(Throwable){echo \"C\";}echo $after;",
+    "status": "normal"
+  },
+  {
+    "id": "exit-status-discards",
+    "source": "<?php try{1/0;}finally{die(7);}",
+    "status": "explicit_exit"
+  },
+  {
+    "id": "catch-bind-error-uncaught",
+    "source": "<?php class C{public int $x=0;}$c=new C;$e=&$c->x;try{1/0;}catch(Throwable $e){}finally{echo \"F\";}",
+    "status": "php_error"
+  },
+  {
+    "id": "local-callable-return",
+    "source": "<?php try{echo \"T\";}finally{$f=function(){return 3;};echo $f();}",
+    "status": "normal"
+  },
+  {
+    "id": "normal-function-fallthrough",
+    "source": "<?php function f(){try{echo \"T\";}finally{echo \"F\";}}echo f()===null;",
+    "status": "normal"
+  },
+  {
+    "id": "finally-static-priority",
+    "source": "<?php try{return 1;}finally{continue 0;}",
+    "status": "static_rejection"
+  },
+  {
+    "id": "finally-breakout-priority",
+    "source": "<?php while(true){try{return 1;}finally{break;}}",
+    "status": "static_rejection"
+  },
+  {
+    "id": "previous-tail-generated",
+    "source": "<?php try{try{first();}finally{second();}}catch(Throwable $p){} try{third();}finally{throw $p;}",
+    "status": "php_error"
+  },
+  {
+    "id": "previous-self-rethrow",
+    "source": "<?php try{first();}catch(Throwable $e){} try{throw $e;}finally{throw $e;}",
+    "status": "php_error"
+  },
+  {
+    "id": "previous-cycle-avoidance",
+    "source": "<?php try{first();}catch(Throwable $old){} try{try{throw $old;}finally{second();}}catch(Throwable $new){} try{throw $new;}finally{throw $old;}",
+    "status": "php_error"
+  },
+  {
+    "id": "finally-inner-catch-restores-old",
+    "source": "<?php try{first();}finally{try{second();}catch(Throwable $e){echo \"C\";}}",
+    "status": "php_error"
+  },
+  {
+    "id": "catch-binding-failure-finalizer",
+    "source": "<?php class C{public string $x=\"old\";}$c=new C;$e=&$c->x;try{try{missing();}catch(Throwable $e){echo \"BAD\";}finally{echo \"F\";}}catch(TypeError $outer){echo $c->x;}",
+    "status": "normal"
+  }
+]

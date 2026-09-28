@@ -70,16 +70,14 @@ def $ppcatches(P, pcpath, n, (NStmtCatch (SEQUENCE name*) phpType43 (SEQUENCE st
   -- if P_header = $ppcatch_types($pplocate(P, pcpath_catch, $ppcatch_line(name*)), pcpath_catch, 0, name*, phpType43)
   -- if P_body = $ppstatements(P_header, pcpath_catch ++ [PCFIELD 2], 0, statement*)
 
-dec $pptry_finally(ppstate, phpType67) : ppstate
-def $pptry_finally(P, phpType67) = P
+dec $pptry_finally(ppstate, pcpath, phpType67) : ppstate
+def $pptry_finally(P, pcpath, phpType67) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $pptry_finally(P, ABSENT) = P
-  -- if P.COMPLETION = PPCNORMAL
-def $pptry_finally(P, NStmtFinally phpType23 metadata) = $ppunsupported(P, "finally unwinding")
+def $pptry_finally(P, pcpath, ABSENT) = P
   -- if P.COMPLETION = PPCNORMAL
 def $ppstatement(P, pcpath, NStmtTryCatch phpType23 (SEQUENCE eps) ABSENT metadata) = $ppcheck($pplocate(P, pcpath, $source_line(metadata)), $context_error("Cannot use try without catch or finally", $source_line(metadata)))
   -- if P.COMPLETION = PPCNORMAL
-def $ppstatement(P, pcpath, NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) phpType67 metadata) = $pptry_finally($ppcatches($ppstatements(P, pcpath ++ [PCFIELD 0], 0, statement*), pcpath ++ [PCFIELD 1], 0, phpType66*), phpType67)
+def $ppstatement(P, pcpath, NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) phpType67 metadata) = $pptry_finally($ppcatches($ppstatements(P, pcpath ++ [PCFIELD 0], 0, statement*), pcpath ++ [PCFIELD 1], 0, phpType66*), pcpath ++ [PCFIELD 2], phpType67)
   -- if P.COMPLETION = PPCNORMAL
   -- if phpType66* =/= eps \/ phpType67 =/= ABSENT
 
@@ -90,7 +88,7 @@ dec $throwable_code_path(pcoccurrence*, pcpath) : bool
 def $throwable_code_path(pcoccurrence*, pcpath) = true
   -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprThrow expression metadata)
 def $throwable_code_path(pcoccurrence*, pcpath) = true
-  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtTryCatch phpType23 phpType65 ABSENT metadata)
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtTryCatch phpType23 phpType65 phpType67 metadata)
 def $throwable_code_path(pcoccurrence*, pcpath) = $throwable_code_parent(pcoccurrence*, pcpath) -- otherwise
 def $throwable_code_parent(pcoccurrence*, pcpath) = $throwable_code_path(pcoccurrence*, pcpath[0:n_parent])
   -- if $(|pcpath| > 0)

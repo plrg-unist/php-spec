@@ -3102,10 +3102,22 @@
       "obligations": [
         "control.finally-replacement"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/155-finally-compiler.watsup",
+        "spec/semantics/156-finally-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/finally.py",
+        "tests/semantics/finally_cases.json"
+      ],
+      "review": "Bounded finally155/156 stage A covers normal/throw, catch-binding failure, previous-chain ownership/rendering, suppression and exit. finally-author.json separates source19, compiler11, paused6/103 and6 temporary Unsupported controls. Return/reference-return, crossing loop transfers and goto involving finalized regions remain immediate stage B; generators/Fibers and lifecycle callbacks remain required. Generated-only acyclicity does not cover constructor-created previous cycles. Canonical integration review remains separate.",
+      "helper_tests": [
+        "tests/semantics/finally_compiler.py",
+        "tests/semantics/finally_protocol.py",
+        "tests/semantics/finally_protocol_cases.py",
+        "tests/semantics/finally_controls.py"
+      ]
     },
     {
       "node": "Stmt_For",
@@ -3527,10 +3539,24 @@
         "control.catch",
         "control.finally-replacement"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/151-throwable-compiler.watsup",
+        "spec/semantics/152-throwable-runtime.watsup",
+        "spec/semantics/155-finally-compiler.watsup",
+        "spec/semantics/156-finally-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/finally.py",
+        "tests/semantics/finally_cases.json"
+      ],
+      "review": "Bounded finally155/156 stage A covers normal/throw, catch-binding failure, previous-chain ownership/rendering, suppression and exit. finally-author.json separates source19, compiler11, paused6/103 and6 temporary Unsupported controls. Return/reference-return, crossing loop transfers and goto involving finalized regions remain immediate stage B; generators/Fibers and lifecycle callbacks remain required. Generated-only acyclicity does not cover constructor-created previous cycles. Canonical integration review remains separate.",
+      "helper_tests": [
+        "tests/semantics/finally_compiler.py",
+        "tests/semantics/finally_protocol.py",
+        "tests/semantics/finally_protocol_cases.py",
+        "tests/semantics/finally_controls.py"
+      ]
     },
     {
       "node": "Stmt_Unset",
@@ -6551,15 +6577,26 @@
     {
       "id": "control.finally-replacement",
       "milestone": "3a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/155-finally-compiler.watsup",
+        "spec/semantics/156-finally-runtime.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/finally_compiler.py",
+        "tests/semantics/finally_protocol.py",
+        "tests/semantics/finally_protocol_cases.py",
+        "tests/semantics/finally_controls.py"
+      ],
+      "source_tests": [
+        "tests/semantics/finally.py",
+        "tests/semantics/finally_cases.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": null,
+      "review": "Bounded finally155/156 stage A covers normal/throw, catch-binding failure, previous-chain ownership/rendering, suppression and exit. finally-author.json separates source19, compiler11, paused6/103 and6 temporary Unsupported controls. Return/reference-return, crossing loop transfers and goto involving finalized regions remain immediate stage B; generators/Fibers and lifecycle callbacks remain required. Generated-only acyclicity does not cover constructor-created previous cycles. Canonical integration review remains separate.",
       "planned_source_tests": [
         "tests/semantics/conformance/finally-return.php",
         "tests/semantics/conformance/finally-throw.php"

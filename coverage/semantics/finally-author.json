@@ -1,0 +1,123 @@
+{
+  "scope": "Private reviewed finally155/156 stage A on reviewed Throwable integration freeze2; canonical rebase/index acceptance remains separate.",
+  "status": "private bounded acceptance",
+  "target": "PHP8.5.10 CLI NTS64",
+  "foundation": {
+    "canonical_base": "f3a84acda7674002e227226cc88ed610dd3c80b5",
+    "freeze2_sha256": "7b2b73e33058082301287e8657423306f66626a86b7c959ee4735048d603f903",
+    "complete_map_sha256": "a43d58ca1be9aced77596abf05369ffd77a8a3320b0a637c113b0c7137b0ab3f"
+  },
+  "counts": {
+    "source_outcomes": {
+      "normal": 8,
+      "php_error": 8,
+      "explicit_exit": 1,
+      "static_rejection": 2
+    },
+    "compiler_sources": 11,
+    "paused_stages": 6,
+    "paused_assertions": 103,
+    "separate_unsupported_controls": 6
+  },
+  "scope_accounting": "Independent source9/controls3 and recursion1 retain their own scopes; overlapping sources and paused checks are not added to a unique-program total. Initial pre-completeness source19 evidence remains historical.",
+  "reports": {
+    "source19": {
+      "path": ".tools/finally-impl-candidate/.tools/finally-source-v_n1bcx2/report.json",
+      "sha256": "7e2f0822ef8434a3d1f7b40604f00729a1e3dfe61b85aa34afbf78d833979f40"
+    },
+    "paused6_103": {
+      "path": ".tools/finally-impl-candidate/.tools/finally-protocol-20cw0bzf/report.json",
+      "sha256": "860472012e0cf8b8d2a4ae5225f0c04ab0ad0714cf7e44960bd677debc87916b"
+    },
+    "compiler11": {
+      "path": ".tools/finally-impl-candidate/.tools/finally-compiler-v9yzj3lm/report-full.json",
+      "sha256": "74e92816a04a921f2efc72b643143fab763fc3d8c5606b9917bfe34f57071038"
+    },
+    "controls6": {
+      "path": ".tools/finally-impl-candidate/.tools/finally-controls-tasthhx0/report.json",
+      "sha256": "aeae0bc0ee2a075a3da9dabb21672858f94bc2ec9916d379f52f51671b768585"
+    },
+    "independent_review": {
+      "path": ".tools/finally-review/runtime-review.json",
+      "sha256": "218b6774559103a20a706b023173839f864eb7dee0d7793edf25e633b301d1c7"
+    },
+    "independent_completeness4_49": {
+      "path": ".tools/finally-review/completeness-cwiiq2gc/report.json",
+      "sha256": "aa397433acdabbf1754cff97b3d2b72830ec5f41fa22764349776fa448d972eb"
+    },
+    "independent_source9_controls3": {
+      "path": ".tools/finally-review/source-replay-f7ccf3yt/report.json",
+      "sha256": "57d3ad2ae8f89b9696bd1e7ffd21ed23c56bc9feaebc4d4ddab057282d201bf2"
+    },
+    "independent_recursive": {
+      "path": ".tools/finally-review/recursive-bridge-74bmrb3w/report.json",
+      "sha256": "fd02a84fa22104c2e34dcf3a01c42cf1833ba7b6c727a812edadbf542aa9d025"
+    }
+  },
+  "loaded_modules": 152,
+  "semantic_delta": {
+    "path": ".tools/finally-impl-candidate/.tools/finally-a-semantic.patch",
+    "sha256": "9ba5bd0752e81cf3de0d9ca0fde89689e52ad52aba48931c748a87fc9cccba78"
+  },
+  "recovery": [
+    "python3 tests/semantics/finally.py",
+    "python3 tests/semantics/finally_compiler.py",
+    "python3 tests/semantics/finally_protocol.py",
+    "python3 tests/semantics/finally_controls.py"
+  ],
+  "required_next": [
+    "Stage B closes value/reference returns, typed reference return recheck, loop/switch/foreach transfers and goto.",
+    "Temporary Stage A gates remain explicit; no complete-finally or complete-core claim.",
+    "Generators/Fibers, lifecycle callbacks, dynamic-source lifetime and remaining Throwable public protocols follow.",
+    "Generated-only previous acyclicity must be revised for explicit constructor-created cycles when constructors are admitted."
+  ],
+  "complete_loaded_map": {
+    "path": ".tools/finally-impl-candidate/.tools/finally-a-loaded-map.json",
+    "sha256": "553d312c2f557f785edf95d800401704c4115f0c8e3a2a6cbcba4527729c0bdc",
+    "exact_foundation_inputs": 143,
+    "finally_delta_inputs": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/46-source-compiler.watsup",
+      "spec/semantics/47-control-compiler.watsup",
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/128-goto-compiler.watsup",
+      "spec/semantics/151-throwable-compiler.watsup",
+      "spec/semantics/152-throwable-runtime.watsup",
+      "spec/semantics/155-finally-compiler.watsup",
+      "spec/semantics/156-finally-runtime.watsup",
+      "spec/semantics/modules.json",
+      "bin/php-semantics"
+    ]
+  },
+  "canonical_foundation_bridge": {
+    "base_commit": "a0c54fb31687701aa334df60436d2ed4f84263ee",
+    "scope": "Protected properties and canonical Throwable foundation;19-source/6-stage bridge retained before exact152/156 accessor relocation, followed by previous3 and replacement17 checks. These overlapping scopes are not added to counts.",
+    "loaded_modules": 154,
+    "reports": {
+      "complete_loaded_map": {
+        "path": ".tools/finally-a-integration/.tools/complete-loaded-map.json",
+        "sha256": "27b1db3615bd1fa54e14de3545644be9234da201250424ab8b34dfa5cfe786e3"
+      },
+      "source19": {
+        "path": ".tools/finally-a-integration/.tools/finally-source-sc7ybrwh/report.json",
+        "sha256": "7c9bf4352051ee827647c287ec4c38326c046c7e1e9eb53745e12b7f5cffa8b2"
+      },
+      "paused6_103": {
+        "path": ".tools/finally-a-integration/.tools/finally-protocol-i4cj7qae/report.json",
+        "sha256": "2d0bc7c72c8dec202b9c874f9c70bace945fa4411cd5a5c3bbff9034f396cffc"
+      },
+      "accessor_relocation": {
+        "path": ".tools/finally-a-integration/.tools/previous-accessor-relocation.json",
+        "sha256": "312601a66ff5fe346a999501942e213eaa2ee79c1bee66d9cdfcbdc220a37fe0"
+      },
+      "relocated_source3": {
+        "path": ".tools/finally-a-integration/.tools/finally-source-kla8sumr/report.json",
+        "sha256": "147575ebcc637a1ddd6c446bb759bf5fb211aaf13060ca6a45074da050d06e5b"
+      },
+      "relocated_paused1_17": {
+        "path": ".tools/finally-a-integration/.tools/finally-protocol-h4pz93zw/report.json",
+        "sha256": "a14e650651cd5c95490eedf522c37e526ffc2b1136cff66d0b42ed06c1acb27a"
+      }
+    }
+  }
+}

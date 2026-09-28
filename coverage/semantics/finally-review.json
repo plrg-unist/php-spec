@@ -1,0 +1,55 @@
+{
+  "status": "approved bounded finally Stage A private rebase; installed and staged-index review separate",
+  "base_commit": "a0c54fb31687701aa334df60436d2ed4f84263ee",
+  "scope": "Normal/throw finally, strict catch binding failures, previous chaining, suppression, exit bypass and saved-frame ownership. Return/reference/jump finalization remains required Stage B.",
+  "review_findings": [
+    "Fixed deleted FINALLY_RESUME silently losing pending exception: source-derived current/saved-frame completeness and authenticated trailing origin return now reject missing or wrong phase markers.",
+    "Rebased independent four paused stages /49 assertions pass, including deletion of try/catch/resume/saved markers and malformed trailing continuation; intact resumes equal uninterrupted states.",
+    "Pending saved-frame marker exclusively roots Throwable and trace-only argument; exit releases both. Recursive same-source try scopes remain valid across distinct frames.",
+    "Previous chaining uses abstract accessors; exact block relocation156-to152 verified by reconstructing both pre-relocation campaign hashes. Generated-only chain acyclicity is explicitly temporary: constructors can create cycles and require bounded observation."
+  ],
+  "input_map": {
+    "ordered_loaded_modules": 154,
+    "total_rows_including_list_and_observer": 156,
+    "canonical_exact": 145,
+    "approved_A_exact": 7,
+    "reviewed_bridge_delta": 4,
+    "binaries": "Four execution binary hashes equal canonical and candidate; all map rows/order independently verified."
+  },
+  "evidence_accounting": "Rebase19 source tuples and6 paused stages/103 assertions precede pure accessor relocation; relocated previous3 source and replacement17 paused bridge follows. These overlap and are not added. Initial9 source/3 Unsupported controls, independent recursion1 and initial compiler11/controls6 retain their separate identities.",
+  "docs": "SOURCE-FINALLY, README, PROGRESS and three inventory rows accurately retain Stage A gates and required Stage B; canonical Throwable/protected rows preserved.",
+  "reports": [
+    {
+      "path": ".tools/finally-review/runtime-review.json",
+      "sha256": "218b6774559103a20a706b023173839f864eb7dee0d7793edf25e633b301d1c7"
+    },
+    {
+      "path": ".tools/finally-review/completeness-xi8r8lym/report.json",
+      "sha256": "6a34854ea1d8f4449d0050f326a29052a03a35b8aef0904745cbca88830f1c2a"
+    },
+    {
+      "path": ".tools/finally-a-integration/.tools/complete-loaded-map.json",
+      "sha256": "27b1db3615bd1fa54e14de3545644be9234da201250424ab8b34dfa5cfe786e3"
+    },
+    {
+      "path": ".tools/finally-a-integration/.tools/previous-accessor-relocation.json",
+      "sha256": "312601a66ff5fe346a999501942e213eaa2ee79c1bee66d9cdfcbdc220a37fe0"
+    },
+    {
+      "path": ".tools/finally-a-integration/.tools/finally-source-sc7ybrwh/report.json",
+      "sha256": "7c9bf4352051ee827647c287ec4c38326c046c7e1e9eb53745e12b7f5cffa8b2"
+    },
+    {
+      "path": ".tools/finally-a-integration/.tools/finally-protocol-i4cj7qae/report.json",
+      "sha256": "2d0bc7c72c8dec202b9c874f9c70bace945fa4411cd5a5c3bbff9034f396cffc"
+    },
+    {
+      "path": ".tools/finally-a-integration/.tools/finally-source-kla8sumr/report.json",
+      "sha256": "147575ebcc637a1ddd6c446bb759bf5fb211aaf13060ca6a45074da050d06e5b"
+    },
+    {
+      "path": ".tools/finally-a-integration/.tools/finally-protocol-h4pz93zw/report.json",
+      "sha256": "a14e650651cd5c95490eedf522c37e526ffc2b1136cff66d0b42ed06c1acb27a"
+    }
+  ]
+}

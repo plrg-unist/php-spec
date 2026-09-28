@@ -1,3 +1,14 @@
+dec $throwable_previous_id(pstate, nat) : nat?
+def $throwable_previous_id(S, n) = pthrowable.PREVIOUS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+dec $throwable_set_previous_id(pstate, nat, nat?) : pstate
+def $throwable_set_previous_id(S, n, n_previous?) = S[.OBJECTS[n] = THROWABLE (pthrowable[.PREVIOUS = n_previous?])]
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+dec $finally_try_unique(pstate, porigin) : bool
+dec $finally_binding_marker(pstate, porigin) : bool
+dec $finally_present(pstate, porigin) : bool
+dec $finally_catch_tail(pstate, porigin, ptask*) : ptask*
+dec $throwable_chain_valid(pstate, nat) : bool
 ;; Error requests are materialized before pruning or crossing a continuation.
 ;; The finite builtin family has one backing payload; later internal properties
 ;; and accessors must use these fields rather than independent mutable copies.
@@ -72,7 +83,7 @@ def $closure_live_object_valid(S, n) = true
   -- if $throwable_kind(pthrowable.KIND)
   -- if pthrowable.MESSAGE = PSTRING n_message*
   -- if pthrowable.CODE = PINT 0
-  -- if pthrowable.PREVIOUS = eps
+  -- if $throwable_chain_valid(S, n)
   -- if $(pthrowable.LINE > 0)
   -- if pthrowable.ORIGIN = (porigin)
   -- if pthrowable.FILE = $call_sourcefile(S.FILES, porigin)
@@ -127,6 +138,7 @@ rule PhpStep/try-enter: S ~> S[.TODO = $statement_tasks(statement*, $origin_chil
   -- if S.ORIGIN = (porigin)
 rule PhpStep/try-end: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (TRY_END porigin) :: ptask_tail*
+  -- if ~$finally_present(S, porigin)
 rule PhpStep/throw-expression: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), THROW_VALUE porigin $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprThrow expression metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
@@ -161,13 +173,14 @@ def $throwable_find_catch(S, n_object, porigin, (NStmtCatch (SEQUENCE name*) php
   -- if ~$throwable_catch_types(S, n_object, porigin_catch, name*, 0)
 dec $throwable_handler(pstate, nat, porigin) : nat?
 def $throwable_handler(S, n, porigin) = $throwable_find_catch(S, n, porigin, phpType66*, 0)
-  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata)
-rule PhpStep/throw-search-catch: S ~> S[.TODO = (CATCH_BIND porigin n_index n) :: ptask_tail*][.ORIGIN = (porigin)]
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) phpType67 metadata)
+rule PhpStep/throw-search-catch: S ~> S[.TODO = (CATCH_BIND porigin n_index n) :: $finally_catch_tail(S, porigin, ptask_tail*)][.ORIGIN = (porigin)]
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
   -- if $throwable_handler(S, n, porigin) = (n_index)
 rule PhpStep/throw-search-miss: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
   -- if $throwable_handler(S, n, porigin) = eps
+  -- if ~$finally_present(S, porigin)
 dec $throwable_marker(ptask) : bool
 def $throwable_marker(TRY_END porigin) = true
 def $throwable_marker(ptask) = false -- otherwise
@@ -257,8 +270,8 @@ def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptas
 ;; Resume checks authenticate source regions and live exception owners.
 dec $throwable_try_valid(pstate, porigin) : bool
 def $throwable_try_valid(S, porigin) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata)
-  -- if phpType66* =/= eps
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) phpType67 metadata)
+  -- if phpType66* =/= eps \/ phpType67 =/= ABSENT
   -- if $goto_scope_valid(S, porigin)
 def $throwable_try_valid(S, porigin) = false -- otherwise
 dec $throwable_live(pstate, nat) : bool
@@ -281,8 +294,9 @@ def $throwable_binding_valid(S, porigin, n_index, n_object) = true
   -- if $throwable_live(S, n_object)
   -- if $throwable_handler(S, n_object, porigin) = (n_index)
   -- if ~((TRY_END porigin) <- S.TODO)
+  -- if $finally_binding_marker(S, porigin)
 def $throwable_binding_valid(S, porigin, n_index, n_object) = false -- otherwise
-def $call_task_valid(S, TRY_END porigin) = (S.ORIGIN = (porigin) /\ $throwable_try_valid(S, porigin))
+def $call_task_valid(S, TRY_END porigin) = (S.ORIGIN = (porigin) /\ $throwable_try_valid(S, porigin) /\ $finally_try_unique(S, porigin))
 def $call_task_valid(S, THROW_SEARCH n) = $throwable_live(S, n)
 def $call_task_valid(S, CATCH_BIND porigin n_index n) = $throwable_binding_valid(S, porigin, n_index, n)
 def $call_task_valid(S, THROW_VALUE porigin z) = $throwable_value_task_valid(S, porigin, z)

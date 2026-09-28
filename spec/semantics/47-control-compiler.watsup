@@ -27,10 +27,11 @@ def $ppjumpcheck(n, PPDEPTH n_depth, ptbytes) = eps
 dec $ppjumpresult(ppstate, ptbytes?) : ppstate
 def $ppjumpresult(P, eps) = P
 def $ppjumpresult(P, (ptbytes)) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes P.LOCATION.LINE)]
+dec $ppfinally_record_jump(ppstate, pcpath, ppdepth) : ppstate
 dec $ppjump(ppstate, pcpath, phpType5, metadata, ptbytes) : ppstate
 def $ppjump(P, pcpath, phpType5, metadata, ptbytes) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppjump(P, pcpath, phpType5, metadata, ptbytes) = $ppjumpresult(P_line, $ppjumpcheck(P.LOOPS, $ppdepth(phpType5), ptbytes))
+def $ppjump(P, pcpath, phpType5, metadata, ptbytes) = $ppfinally_record_jump($ppjumpresult(P_line, $ppjumpcheck(P.LOOPS, $ppdepth(phpType5), ptbytes)), pcpath, $ppdepth(phpType5))
   -- if P.COMPLETION = PPCNORMAL
   -- if P_line = $pplocate(P, pcpath, $ppjumpline(phpType5, metadata))
   -- if P_line.COMPLETION = PPCNORMAL

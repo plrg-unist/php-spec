@@ -1,0 +1,185 @@
+;; Previous links form an acyclic chain independently of other heap edges.
+syntax pthrowchain = THROWCHAIN nat* | BADTHROWCHAIN
+dec $throwable_chain(pstate, nat, nat*) : pthrowchain
+dec $throwable_chain_next(pstate, nat?, nat*) : pthrowchain
+def $throwable_chain(S, n, n_seen*) = $throwable_chain_next(S, $throwable_previous_id(S, n), n_seen* ++ [n])
+  -- if ~(n <- n_seen*)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $throwable_chain(S, n, n_seen*) = BADTHROWCHAIN -- otherwise
+def $throwable_chain_next(S, eps, n_seen*) = THROWCHAIN n_seen*
+def $throwable_chain_next(S, (n), n_seen*) = $throwable_chain(S, n, n_seen*)
+def $throwable_chain_valid(S, n) = true
+  -- if $throwable_chain(S, n, eps) = THROWCHAIN n_chain*
+def $throwable_chain_valid(S, n) = false -- otherwise
+
+dec $throwable_disjoint(nat*, nat*) : bool
+def $throwable_disjoint(eps, n_old*) = true
+def $throwable_disjoint(n :: n_tail*, n_old*) = (~(n <- n_old*) /\ $throwable_disjoint(n_tail*, n_old*))
+dec $throwable_previous(pstate, nat, nat) : pstate
+def $throwable_previous(S, n_new, n_old) = $throwable_set_previous_id(S, n_last, (n_old))
+  -- if $throwable_chain(S, n_new, eps) = THROWCHAIN n_new_chain*
+  -- if $(|n_new_chain*| > 0)
+  -- if n_index = $(|n_new_chain*| - 1)
+  -- if n_last = (n_new_chain*)[n_index]
+  -- if $throwable_chain(S, n_old, eps) = THROWCHAIN n_old_chain*
+  -- if $throwable_disjoint(n_new_chain*, n_old_chain*)
+def $throwable_previous(S, n_new, n_old) = S
+  -- if $throwable_chain(S, n_new, eps) = THROWCHAIN n_new_chain*
+  -- if $throwable_chain(S, n_old, eps) = THROWCHAIN n_old_chain*
+  -- if ~$throwable_disjoint(n_new_chain*, n_old_chain*)
+def $throwable_previous(S, n_new, n_old) = S[.COMPLETION = UNSUPPORTED "invalid Throwable previous chain"] -- otherwise
+
+def $finally_present(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 phpType65 (NStmtFinally phpType23_final metadata_final) metadata)
+def $finally_present(S, porigin) = false -- otherwise
+def $finally_catch_tail(S, porigin, ptask*) = (FINALLY_ONLY porigin) :: ptask*
+  -- if $finally_present(S, porigin)
+def $finally_catch_tail(S, porigin, ptask*) = ptask*
+  -- if ~$finally_present(S, porigin)
+
+dec $finally_enter(pstate, porigin, nat?, ptask*) : pstate
+def $finally_enter(S, porigin, n_old?, ptask_tail*) = S[.TODO = $statement_tasks(statement*, $origin_child((porigin_final), [PCFIELD 0]), 0) ++ [FINALLY_RESUME porigin n_old?] ++ ptask_tail*][.ORIGIN = (porigin_final)]
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_final)
+  -- if $origin_node(S.SOURCES, porigin_final) = (NStmtFinally (SEQUENCE statement*) metadata)
+
+dec $finally_leave(pstate, porigin, ptask*) : pstate
+def $finally_leave(S, porigin, (ORIGIN_RETURN porigin_outer?) :: ptask_tail*) = $return_discard(S[.TODO = ptask_tail*][.ORIGIN = (porigin)], ORIGIN_RETURN porigin_outer?)
+def $finally_leave(S, porigin, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid finally continuation"] -- otherwise
+dec $finally_leave_throw(pstate, porigin, nat, ptask*) : pstate
+def $finally_leave_throw(S, porigin, n, ptask_tail*) = S_left[.TODO = (THROW_SEARCH n) :: S_left.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_left = $finally_leave(S, porigin, ptask_tail*)
+
+rule PhpStep/finally-try-enter: S ~> S[.TODO = $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0) ++ [TRY_END porigin] ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtTryCatch (SEQUENCE statement*) phpType65 (NStmtFinally phpType23 metadata_final) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/finally-try-normal: S ~> $finally_enter(S, porigin, eps, ptask_tail*)
+  -- if S.TODO = (TRY_END porigin) :: ptask_tail*
+  -- if $finally_present(S, porigin)
+rule PhpStep/finally-catch-normal: S ~> $finally_enter(S, porigin, eps, ptask_tail*)
+  -- if S.TODO = (FINALLY_ONLY porigin) :: ptask_tail*
+rule PhpStep/finally-try-throw: S ~> $finally_enter(S, porigin, (n), ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
+  -- if $throwable_handler(S, n, porigin) = eps
+  -- if $finally_present(S, porigin)
+rule PhpStep/finally-catch-throw: S ~> $finally_enter(S, porigin, (n), ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_ONLY porigin) :: ptask_tail*
+rule PhpStep/finally-resume-normal: S ~> $finally_leave(S, porigin, ptask_tail*)
+  -- if S.TODO = (FINALLY_RESUME porigin eps) :: ptask_tail*
+rule PhpStep/finally-resume-throw: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
+  -- if S.TODO = (FINALLY_RESUME porigin (n)) :: ptask_tail*
+rule PhpStep/finally-replace-normal: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_RESUME porigin eps) :: ptask_tail*
+rule PhpStep/finally-replace-throw: S ~> $finally_leave_throw(S_chained, porigin, n, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_RESUME porigin (n_old)) :: ptask_tail*
+  -- if S_chained = $throwable_previous(S, n, n_old)
+
+def $throwable_marker(FINALLY_ONLY porigin) = true
+def $throwable_marker(FINALLY_RESUME porigin n?) = true
+def $task_nodes(FINALLY_RESUME porigin n?) = $instance_roots(n?)
+
+;; The current source origin distinguishes catch/try continuation from an
+;; executing finalizer. Each frame may hold at most one marker for a source try.
+dec $finally_marker_origin(ptask) : porigin?
+def $finally_marker_origin(TRY_END porigin) = (porigin)
+def $finally_marker_origin(FINALLY_ONLY porigin) = (porigin)
+def $finally_marker_origin(FINALLY_RESUME porigin n?) = (porigin)
+def $finally_marker_origin(AT porigin ptask) = $finally_marker_origin(ptask)
+def $finally_marker_origin(ptask) = eps -- otherwise
+dec $finally_marker_count(ptask*, porigin) : nat
+def $finally_marker_count(eps, porigin) = 0
+def $finally_marker_count(ptask :: ptask_tail*, porigin) = $(1 + $finally_marker_count(ptask_tail*, porigin))
+  -- if $finally_marker_origin(ptask) = (porigin)
+def $finally_marker_count(ptask :: ptask_tail*, porigin) = $finally_marker_count(ptask_tail*, porigin)
+  -- if $finally_marker_origin(ptask) =/= (porigin)
+dec $finally_catch_origin(pstate, porigin, porigin?) : bool
+def $finally_catch_origin(S, porigin, (porigin)) = true
+def $finally_catch_origin(S, PORIGIN n pcpath, (PORIGIN n pcpath_active)) = true
+  -- if $(|pcpath_active| = |pcpath| + 2)
+  -- if n_field = |pcpath|
+  -- if n_last = $(n_field + 1)
+  -- if pcpath_active[0:n_field] = pcpath
+  -- if pcpath_active[n_field] = PCFIELD 1
+  -- if pcpath_active[n_last] = PCINDEX n_index
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_active) = (NStmtCatch phpType42 phpType43 phpType23 metadata)
+def $finally_catch_origin(S, porigin, porigin_active?) = false -- otherwise
+dec $finally_only_valid(pstate, porigin) : bool
+def $finally_only_valid(S, porigin) = ($throwable_try_valid(S, porigin) /\ $finally_present(S, porigin) /\ $finally_catch_origin(S, porigin, S.ORIGIN) /\ $finally_marker_count(S.TODO, porigin) = 1)
+dec $finally_saved_valid(pstate, nat?) : bool
+def $finally_saved_valid(S, eps) = true
+def $finally_saved_valid(S, (n)) = $throwable_live(S, n)
+dec $finally_resume_valid(pstate, porigin, nat?) : bool
+def $finally_resume_valid(S, porigin, n?) = ($throwable_try_valid(S, porigin) /\ $finally_present(S, porigin) /\ S.ORIGIN = $origin_child((porigin), [PCFIELD 2]) /\ $finally_saved_valid(S, n?) /\ $finally_marker_count(S.TODO, porigin) = 1)
+def $call_task_valid(S, FINALLY_ONLY porigin) = $finally_only_valid(S, porigin)
+def $call_task_valid(S, FINALLY_RESUME porigin n?) = $finally_resume_valid(S, porigin, n?)
+
+def $finally_try_unique(S, porigin) = true
+  -- if ~$finally_present(S, porigin)
+def $finally_try_unique(S, porigin) = ($finally_marker_count(S.TODO, porigin) = 1)
+  -- if $finally_present(S, porigin)
+def $finally_binding_marker(S, porigin) = true
+  -- if ~$finally_present(S, porigin)
+def $finally_binding_marker(S, porigin) = ((FINALLY_ONLY porigin) <- S.TODO /\ $finally_marker_count(S.TODO, porigin) = 1)
+  -- if $finally_present(S, porigin)
+
+;; Marker presence is checked from the active source region as well as from
+;; existing tasks, so deleting the only pending-outcome root cannot skip cleanup.
+dec $finally_before_entry(pstate, porigin) : bool
+def $finally_before_entry(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (STMT (NStmtTryCatch phpType23 phpType65 phpType67 metadata)) :: ptask*
+def $finally_before_entry(S, porigin) = false -- otherwise
+dec $finally_resume_at(ptask, porigin) : bool
+def $finally_resume_at(FINALLY_RESUME porigin n?, porigin) = true
+def $finally_resume_at(ptask, porigin) = false -- otherwise
+dec $finally_has_resume(ptask*, porigin) : bool
+def $finally_has_resume(eps, porigin) = false
+def $finally_has_resume(ptask :: ptask_tail*, porigin) = ($finally_resume_at(ptask, porigin) \/ $finally_has_resume(ptask_tail*, porigin))
+dec $finally_region_complete(pstate, porigin, pcpath) : bool
+def $finally_region_complete(S, PORIGIN n pcpath, pcpath) = ($finally_marker_count(S.TODO, PORIGIN n pcpath) = 0)
+  -- if $finally_before_entry(S, PORIGIN n pcpath)
+def $finally_region_complete(S, PORIGIN n pcpath, pcpath) = ($finally_marker_count(S.TODO, PORIGIN n pcpath) = 1)
+  -- if ~$finally_before_entry(S, PORIGIN n pcpath)
+def $finally_region_complete(S, PORIGIN n pcpath, pcpath_current) = ((TRY_END (PORIGIN n pcpath)) <- S.TODO)
+  -- if $(|pcpath_current| > |pcpath|)
+  -- if pcpath_current[|pcpath|] = PCFIELD 0
+def $finally_region_complete(S, PORIGIN n pcpath, pcpath_current) = ((FINALLY_ONLY (PORIGIN n pcpath)) <- S.TODO)
+  -- if $(|pcpath_current| > |pcpath|)
+  -- if pcpath_current[|pcpath|] = PCFIELD 1
+def $finally_region_complete(S, PORIGIN n pcpath, pcpath_current) = $finally_has_resume(S.TODO, PORIGIN n pcpath)
+  -- if $(|pcpath_current| > |pcpath|)
+  -- if pcpath_current[|pcpath|] = PCFIELD 2
+def $finally_region_complete(S, porigin, pcpath_current) = false -- otherwise
+dec $finally_regions_complete(pstate, nat, pcpath, pcpath*) : bool
+def $finally_regions_complete(S, n, pcpath_current, eps) = true
+def $finally_regions_complete(S, n, pcpath_current, pcpath :: pcpath_tail*) = ($finally_region_complete(S, PORIGIN n pcpath, pcpath_current) /\ $finally_regions_complete(S, n, pcpath_current, pcpath_tail*))
+
+dec $finally_outer_origin_valid(pstate, porigin, porigin?) : bool
+def $finally_outer_origin_valid(S, porigin, eps) = (S.CURRENT = eps)
+def $finally_outer_origin_valid(S, PORIGIN n pcpath, (PORIGIN n pcpath_outer)) = ($effect_below(pcpath_outer, pcpath) /\ $(|pcpath_outer| < |pcpath|))
+def $finally_outer_origin_valid(S, porigin, porigin_outer?) = false -- otherwise
+dec $finally_continuation_valid(pstate, porigin, ptask*) : bool
+def $finally_continuation_valid(S, porigin, (ORIGIN_RETURN porigin_outer?) :: ptask*) = $finally_outer_origin_valid(S, porigin, porigin_outer?)
+def $finally_continuation_valid(S, porigin, ptask*) = false -- otherwise
+dec $finally_continuations_valid(pstate, ptask*) : bool
+def $finally_continuations_valid(S, eps) = true
+def $finally_continuations_valid(S, ptask :: ptask_tail*) = ($finally_continuation_valid(S, porigin, ptask_tail*) /\ $finally_continuations_valid(S, ptask_tail*))
+  -- if $finally_marker_origin(ptask) = (porigin)
+  -- if $finally_present(S, porigin)
+def $finally_continuations_valid(S, ptask :: ptask_tail*) = $finally_continuations_valid(S, ptask_tail*)
+  -- if $finally_marker_origin(ptask) = eps
+def $finally_continuations_valid(S, ptask :: ptask_tail*) = $finally_continuations_valid(S, ptask_tail*)
+  -- if $finally_marker_origin(ptask) = (porigin)
+  -- if ~$finally_present(S, porigin)
+dec $finally_current_complete(pstate) : bool
+def $finally_current_complete(S) = $finally_continuations_valid(S, S.TODO)
+  -- if S.ORIGIN = eps
+def $finally_current_complete(S) = ($finally_regions_complete(S, n, pcpath, $ppfinally_protected(pcunit.OCCURRENCES, pcpath)) /\ $finally_continuations_valid(S, S.TODO))
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+def $finally_current_complete(S) = false -- otherwise
+dec $finally_frames_complete(pstate, pframe*) : bool
+def $finally_frames_complete(S, eps) = true
+def $finally_frames_complete(S, pframe :: pframe_tail*) = ($finally_current_complete(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT]) /\ $finally_frames_complete(S, pframe_tail*))
+def $finally_state_valid(S) = ($finally_current_complete(S) /\ $finally_frames_complete(S, S.FRAMES))

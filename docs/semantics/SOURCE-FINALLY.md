@@ -1,0 +1,56 @@
+# Finally continuations
+
+Target: pinned PHP 8.5.10 CLI NTS64. Modules155/156 extend Throwable151/152.
+This first stage covers normal and exceptional completion, selected catch
+binding/body failures, nested calls/finalizers, suppression and exit. Return,
+reference-return and crossing loop transfers, plus gotos involving a finalized
+region, remain explicit source-admission `Unsupported` until the next stage.
+Ordinary called-function returns and local loop jumps inside finally are admitted.
+
+Compilation visits the try body, each catch header/body, then finally. Break and
+continue join the ordered goto pass-two stream without generating goto targets.
+Jump into or out of finally is a compile error, including break/continue leaving
+the finalizer. Ordinary static errors and pass-two checks precede temporary
+admission gates, including errors later in a source containing a pending return.
+
+`TRY_END` retains catch eligibility. Selecting a catch replaces it with binding
+and `FINALLY_ONLY`, so strict binding failure still finalizes without trying a
+sibling catch. Finalizer entry saves normal completion or a Throwable identity
+in `FINALLY_RESUME` and changes the current origin to the actual finally node.
+Normal completion restores the saved outcome. A new exception chains the saved
+one only when it crosses that resume marker; a locally caught exception does
+not change the suspended exception.
+
+Pending objects are task roots, including in saved call frames. Source ancestry
+requires the correct marker for every active try/catch/finally region, stopping
+at callable boundaries. Checks cover missing, duplicate and wrong-phase markers,
+saved-frame origins and the trailing origin return. Leaving a finalizer consumes
+that return before continuing outside the region. This prevents deleting a
+pending marker from silently discarding an exception. Recursive frames validate
+their own marker inventories. Exit bypasses finalizers and releases pending
+exceptions and their otherwise unowned trace arguments.
+
+The existing Throwable `PREVIOUS` payload remains the only backing store.
+Previous-ID read/update helpers isolate the later internal-property migration. In this
+generated-only stage its chain is acyclic independently of general heap cycles.
+This is not a universal Throwable invariant: admitting constructors must account
+for constructor-created previous cycles and terminate observation accordingly.
+Automatic finally replacement appends
+the old chain at the new chain's tail only when their identity sets are disjoint;
+self-rethrow or overlapping chains are unchanged. Uncaught output renders each
+object's stored message, source and trace, oldest previous first, then the latest
+exception and final throw location. Generated builtin errors suffice; public
+Throwable constructors/getters and property visibility are separate dependencies.
+
+Primary source routes in the vendored engine are `zend_compile_try`,
+`zend_handle_loops_and_finally_ex`, `zend_compile_return`,
+`zend_check_finally_breakout`, `zend_dispatch_try_catch_finally_helper`,
+`ZEND_FAST_CALL`, `ZEND_FAST_RET`, `ZEND_DISCARD_EXCEPTION`, and
+`zend_exception_set_previous`.
+
+The [author ledger](../../coverage/semantics/finally-author.json) separates exact
+source tuples, compiler/lint checks, temporary Unsupported controls and paused
+ownership assertions. The next required stage closes return/reference-return,
+break/continue and goto integration, including value snapshots and repeated
+typed reference-return checks. Generators/Fibers, destructor/shutdown callbacks,
+dynamic-source lifetime and remaining Throwable protocols remain later obligations.

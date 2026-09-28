@@ -58,6 +58,7 @@ def $ppgoto_legal(pcpath_target :: pcpath_target_tail*, pcpath_source :: pcpath_
 def $ppgoto_legal(pcpath_target :: pcpath_target_tail*, pcpath_source :: pcpath_source_tail*) = false
   -- if pcpath_target =/= pcpath_source
 
+dec $ppfinally_resolve(ppstate, pcpath, pcpath, int, ppgotoref*) : ppstate
 dec $ppgoto_resolve(ppstate, ppgotoref*) : ppstate
 def $ppgoto_finish(P) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -73,7 +74,7 @@ def $ppgoto_resolve(P, (PPGOTOREF ptbytes pcpath z pcpath_source*) :: ppgotoref*
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppgoto_label(P.LABELS, ptbytes) = (PPGOTOLABEL ptbytes pcpath_dest z_target pcpath_target_owner*)
   -- if ~$ppgoto_legal(pcpath_target_owner*, pcpath_source*)
-def $ppgoto_resolve(P, (PPGOTOREF ptbytes pcpath z pcpath_source*) :: ppgotoref*) = $ppgoto_resolve(P, ppgotoref*)
+def $ppgoto_resolve(P, (PPGOTOREF ptbytes pcpath z pcpath_source*) :: ppgotoref*) = $ppfinally_resolve(P, pcpath, pcpath_dest, z, ppgotoref*)
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppgoto_label(P.LABELS, ptbytes) = (PPGOTOLABEL ptbytes pcpath_dest z_target pcpath_target_owner*)
   -- if $ppgoto_legal(pcpath_target_owner*, pcpath_source*)
