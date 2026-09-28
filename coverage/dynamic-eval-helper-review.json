@@ -58,8 +58,16 @@
       "coverage/grammar.json": "b3f8a402419af12b8692ca5342bfe2280e47d463fc11f9a72a5649c764bda685"
     },
     "separate_inventory_sync_obligation": {
-      "description": "Fresh grammar mapping from the current schema changes 54 phpType domain indices and adds Stmt_Foreach.keyByRef (already added to schema at 756725773). This predates the helper; the tracked mapping was restored pending a separate reviewed sync.",
-      "transient_patch_sha256": "77aa6e924deaae1b9c5e411c6580b7eb78090af375df3316802903d13d9ba39e"
+      "description": "The helper gate exposed 54 phpType domain-index changes and Stmt_Foreach.keyByRef (already in schema at 756725773); the generated mapping was restored during that gate and synchronized in a separate reviewed increment.",
+      "transient_patch_sha256": "77aa6e924deaae1b9c5e411c6580b7eb78090af375df3316802903d13d9ba39e",
+      "status": "resolved",
+      "synchronization": {
+        "command": "python3 scripts/grammar-mapping.py",
+        "generated_sha256": "54b5c19d123614efe4ae2c13076dfd73656e4c9d3f469cdffd916abebd7e74c9",
+        "mapped_productions": 635,
+        "witnessed_constructors": 169,
+        "scope": "generated coverage/grammar-mapping.json and provenance/progress status only"
+      }
     }
   },
   "isolation": {
