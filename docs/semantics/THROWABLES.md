@@ -40,10 +40,11 @@ Finite `Exception`/`Error` constructors, including identical inherited
 constructors of their built-in descendants, allocate with file/line/TRACE
 before argument evaluation. Direct `__construct` reentry retains those fields.
 Arguments are sent in source order; named errors arise at SEND, and positional
-arity and types are validated before any field write. An omitted message leaves
-it unchanged, a supplied empty message clears it, zero code and null previous
-leave their fields unchanged. Explicit self and two-object previous cycles are
-legal; terminal rendering stops at a repeated object. Finally replacement
+arity and types are validated before any field write. No-argument reentry
+preserves the writable fields; a call supplying only named `code` or `previous`
+supplies the default empty message and clears it. Zero code and null previous
+preserve their fields. Explicit self and two-object previous cycles are legal;
+terminal rendering stops at a repeated object. Finally replacement
 keeps its transition-local generated-chain guard.
 
 Compiler rules preserve throw effects even where its result folds to true,

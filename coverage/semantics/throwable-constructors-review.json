@@ -6,7 +6,7 @@
   "scope": "Finite direct Exception/Error constructors and identical inherited internal variants; direct __construct reentry, atomic validation, legal previous cycles, and bounded uncaught rendering. ErrorException's distinct override and structured trace methods remain Unsupported.",
   "design": [
     "Allocation captures location and opaque trace before ordered argument sends. Constructor reentry retains allocation file, line and trace; all supplied arguments are validated before message, code and previous writes.",
-    "Omitted message preserves its slot; supplied empty message clears it. Zero code and null previous preserve their slots. Explicit self and two-object previous cycles are legal; structural slot validity does not infer allocation history.",
+    "No-argument reentry preserves writable slots. A call supplying only named code or previous supplies the default empty message and clears it; zero code and null previous preserve their slots. Explicit self and two-object previous cycles are legal; structural slot validity does not infer allocation history.",
     "Authenticated constructor tasks retain the selected receiver, copied sent values and active unpack operand. Named diagnostics arise at SEND, positional arity and types at RECEIVE. Generated finally previous linking remains transition-local and conservative.",
     "Uncaught ParseError and CompileError use builtin parse/fatal no-stack diagnostics. Ordinary Exception uses the uncaught stack form. The observer branch is the minimal source-backed hunk borrowed from the private eval author; eval execution is a separate milestone."
   ],
