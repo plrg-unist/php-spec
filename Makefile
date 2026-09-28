@@ -19,6 +19,7 @@ test: build
 	python3 tests/validate_extraction.py
 	python3 tests/malformed.py
 	python3 tests/wire_negative.py
+	python3 tests/eval_source_service.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
 	python3 tests/ternary_metadata.py

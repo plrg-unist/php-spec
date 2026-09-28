@@ -57,6 +57,16 @@ bounded review. The [migration ledger](coverage/semantics/throwable-migration-re
 keeps deferred broader pause sweeps and baseline fixture failures explicit;
 these results do not establish complete-core regression closure.
 
+The [checked eval parser transport](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
+is a syntax-service increment only. Eleven focused eval-source cases and eleven
+protocol negatives pass; the separate 30,980-entry classified gate checks
+existing file syntax on the same frontend/adapter commit. Its
+[provenance ledger](coverage/dynamic-eval-helper-review.json) records the frozen
+inputs, inventory results and a pre-existing grammar-mapping sync obligation.
+Reached eval/include still returns `Unsupported`; native parse-only diagnostics,
+authored `ParseError` handling and stateful source continuation are the next
+steps.
+
 ## Next work
 
 Throwable constructors, accessors, canonical internal property backing, structured

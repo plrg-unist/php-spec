@@ -2,6 +2,7 @@
 // A JSON-line worker. It never evaluates submitted PHP programs.
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/FileLexer.php';
+require __DIR__ . '/EvalLexer.php';
 require __DIR__ . '/encoding-literal.php';
 require __DIR__ . '/encoding.php';
 require __DIR__ . '/wire.php';
@@ -116,10 +117,41 @@ while (($line = fgets(STDIN)) !== false) {
                 catch (CompileError $error) { $result = ['accepted' => false, 'category' => $error instanceof ParseError ? 'parser_rejection' : 'parser_static_rejection', 'message' => base64_encode($error->getMessage())]; }
                 break;
             case 'parse':
-                try { $ast = parseWithEncoding($parser, bytes($request->source)); checkTargetSyntax($ast, $parser->getTokens()); }
-                catch (PhpParser\Error $error) { $result = ['accepted' => false, 'category' => 'parser_rejection', 'message' => base64_encode($error->getMessage())]; break; }
+            case 'parse-eval':
+                $evalMode = $request->op === 'parse-eval';
+                if ($evalMode) {
+                    $keys = array_keys(get_object_vars($request));
+                    sort($keys);
+                    if ($keys !== ['id', 'mode', 'op', 'profile', 'source']
+                        || !is_string($request->id) || !preg_match('/^(0|[1-9][0-9]*)$/D', $request->id)
+                        || $request->mode !== 'eval' || $request->profile !== 'cli-raw-85') {
+                        throw new RuntimeException('Invalid eval parser request');
+                    }
+                    if (ini_get('zend.multibyte') || ini_get('precision') !== '14' || ini_get('short_open_tag') !== '1') {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'Eval parser requires the pinned raw CLI lexer profile'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
+                    $evalParser = new PhpParser\Parser\Php8(new EvalLexer(), $version);
+                    $source = bytes($request->source);
+                    $identity = ['id' => $request->id, 'mode' => 'eval', 'profile' => 'cli-raw-85',
+                        'source' => $request->source];
+                } else {
+                    $source = bytes($request->source);
+                    $identity = [];
+                }
+                try {
+                    $ast = $evalMode ? $evalParser->parse($source, new PhpParser\ErrorHandler\Throwing())
+                                     : parseWithEncoding($parser, $source);
+                    $tokens = $evalMode ? $evalParser->getTokens() : $parser->getTokens();
+                    checkTargetSyntax($ast, $tokens);
+                } catch (PhpParser\Error $error) {
+                    $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
+                        'message' => base64_encode($error->getMessage())];
+                    if ($evalMode) $result['line'] = $error->getStartLine();
+                    break;
+                }
                 // Zend's anonymous namespace AST inherits its opening-brace line.
-                $tokens = $parser->getTokens();
                 foreach ($ast as $node) {
                     if ($node instanceof PhpParser\Node\Stmt\Namespace_ && $node->name === null) {
                         $index = $node->getStartTokenPos() + 1;
@@ -175,15 +207,16 @@ while (($line = fgets(STDIN)) !== false) {
                     }
                 }
                 $transport = ['version' => 1, 'program' => encode($ast)];
-                $encoding = sourceEncoding(bytes($request->source), $parser->getTokens(), $ast);
+                $encoding = $evalMode ? null : sourceEncoding($source, $tokens, $ast);
                 if ($encoding !== null) $transport['encoding'] = $encoding;
                 $comments = [];
-                foreach ($parser->getTokens() as $index => $token) {
+                foreach ($tokens as $index => $token) {
                     if ($token->id === T_COMMENT || $token->id === T_DOC_COMMENT) {
                         $comments[] = ['doc' => $token->id === T_DOC_COMMENT, 'text' => base64_encode($token->text), 'token' => $index];
                     }
                 }
-                $result = ['accepted' => true, 'ast' => $transport, 'token_comments' => $comments];
+                $result = $identity + ['accepted' => true, 'ast' => $transport];
+                if (!$evalMode) $result['token_comments'] = $comments;
                 break;
             case 'print':
                 if ($request->ast->version !== 1) throw new RuntimeException('Transport version mismatch');

@@ -16,6 +16,12 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+The [checked eval parser service](docs/semantics/DYNAMIC-SOURCE-SERVICE.md)
+accepts raw eval-source bytes through a pinned parser transport and validates
+its response as a formal program. Its [evidence ledger](coverage/dynamic-eval-helper-review.json)
+separates 11 focused eval-source cases from the 30,980-entry existing file-syntax
+regression. Eval/include execution and machine pause/resume remain unsupported.
+
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
 licenses and offline dependency builds. The PHP source contains matching PHPT

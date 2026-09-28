@@ -264,6 +264,44 @@ let execute value request =
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
               "message", `String (Util.Error.string_of_error at msg)]
+type source_pending = { id : string; mode : string; profile : string; source : string }
+let source_id json =
+  let id = string json in
+  if String.length id = 0 || (String.length id > 1 && id.[0] = '0')
+     || not (String.for_all (fun c -> c >= '0' && c <= '9') id) then fail "noncanonical source request id";
+  id
+let source_bytes json =
+  ignore (bytes_value json);
+  string json
+let source_pending json =
+  exact ["id"; "mode"; "profile"; "source"] json;
+  let mode = string (field "mode" json) and profile = string (field "profile" json) in
+  if mode <> "eval" || profile <> "cli-raw-85" then fail "unsupported source service mode/profile";
+  { id = source_id (field "id" json); mode; profile; source = source_bytes (field "source" json) }
+let check_source_service request =
+  exact ["op"; "pending"; "response"] request;
+  let pending = source_pending (field "pending" request) in
+  let response = field "response" request in
+  let accepted = match field "accepted" response with `Bool b -> b | _ -> fail "invalid parser acceptance flag" in
+  exact (if accepted then ["id"; "mode"; "profile"; "source"; "accepted"; "ast"]
+         else ["id"; "mode"; "profile"; "source"; "accepted"; "category"; "message"; "line"]) response;
+  if source_id (field "id" response) <> pending.id
+     || string (field "mode" response) <> pending.mode
+     || string (field "profile" response) <> pending.profile
+     || source_bytes (field "source" response) <> pending.source then fail "source response does not match pending request";
+  let identity = ["id", `String pending.id; "mode", `String pending.mode;
+                  "profile", `String pending.profile; "source", `String pending.source] in
+  if accepted then (
+    let value = import_program (field "ast" response) in
+    check (typ "program") value;
+    `Assoc (["ok", `Bool true; "accepted", `Bool true; "ast", export_program value] @ identity))
+  else (
+    if string (field "category" response) <> "parser_rejection" then fail "invalid parser rejection category";
+    let line = field "line" response |> J.to_int in
+    if line < 1 then fail "invalid parser rejection line";
+    let message = source_bytes (field "message" response) in
+    `Assoc (["ok", `Bool true; "accepted", `Bool false; "category", `String "parser_rejection";
+             "message", `String message; "line", `Int line] @ identity))
 let () =
   try while true do
     let line = read_line () in
@@ -273,6 +311,7 @@ let () =
       if op = "elaborate_fixture" then (
         ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ string (field "fixture" request) ^ "\n"));
         `Assoc ["ok", `Bool true])
+      else if op = "check_source_service" then check_source_service request
       else (
         if op <> "check" && op <> "elaborate" && op <> "execute" then fail "unknown operation";
         let value = import_program (field "ast" request) in

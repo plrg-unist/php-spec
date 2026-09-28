@@ -1,0 +1,105 @@
+{
+  "increment": "checked eval-mode parser service transport",
+  "source_commit": "2675e1f3ebc5c123edc3cd3a2f0d82b85aaa1555",
+  "base_commit": "b0bc9d84571e5093653b7b1a87ef50c2a1eb363c",
+  "profile": "PHP 8.5.10 -n; cli-raw-85; zend.multibyte=0; precision=14; short_open_tag=1",
+  "contract": "parse-eval worker returns parser evidence and version-1 AST; check_source_service validates an exact pending-response shape and formal program, without source-to-AST authentication or stateful resume",
+  "focused_eval": {
+    "command": "python3 tests/eval_source_service.py",
+    "source_cases": 11,
+    "protocol_negative_cases": 11,
+    "result": "pass"
+  },
+  "file_syntax_regression": {
+    "command": "python3 tests/parallel_validate.py --corpus --lint-all --output .tools/dynamic-eval-gates/results-corpus.jsonl",
+    "tested": 30980,
+    "counts": {
+      "pass": 30684,
+      "parser_rejection": 254,
+      "compile_phase_difference": 28,
+      "redirect_container": 6,
+      "non_source": 8
+    },
+    "shards": 4,
+    "stable_implementation": true,
+    "implementation_sha256": "ea68deb4e1489fc25001814da750660919ffc25ac50f89f0c5364b206c391d61",
+    "implementation_files": 1163,
+    "report_sha256": "8978779d327349bd69a23448337f37514c0cfe45cec0f9914922d83c39c367f8",
+    "summary_sha256": "fa1d46f8ee0c41e2763b9dbc6c8dac81927e97c3c4afec4b2e5634a8e05a62c9",
+    "scope": "Existing file-mode parser corpus; not 30,980 eval-mode sources"
+  },
+  "inventory": {
+    "commands": [
+      "python3 tests/build_coverage.py",
+      "python3 tests/grammar_coverage.py",
+      "python3 scripts/grammar-mapping.py",
+      "python3 scripts/scanner-mapping.py",
+      "python3 scripts/encoding-spellings.py"
+    ],
+    "targeted_seen": 97,
+    "accepted": 83,
+    "rejected": 14,
+    "grammar_witnessed": 631,
+    "documented_unwitnessed": [
+      0,
+      71,
+      149,
+      200
+    ],
+    "crashes": 0,
+    "scanner_actions": 191,
+    "scanner_alternatives": 264,
+    "encoding_spellings": 214,
+    "encoding_lookups": 685,
+    "generator_inputs_sha256": {
+      "scripts/grammar-mapping.py": "99c4294adddb082f4c81d9413e9b8d181bc4fc4a01f1bbaa4d7e810f91f1138c",
+      "spec/schema.json": "3a5a87afffdc4f3c58eb9ecd49e62258a0dc6560b4dcf2ba02c1b09fd87fb551",
+      "coverage/results-targeted.summary.json": "4a02efe680eb6220dbac4a55af71945379fc32fa104c9bf9f8bf68565adabd00",
+      "coverage/grammar.json": "b3f8a402419af12b8692ca5342bfe2280e47d463fc11f9a72a5649c764bda685"
+    },
+    "separate_inventory_sync_obligation": {
+      "description": "Fresh grammar mapping from the current schema changes 54 phpType domain indices and adds Stmt_Foreach.keyByRef (already added to schema at 756725773). This predates the helper; the tracked mapping was restored pending a separate reviewed sync.",
+      "transient_patch_sha256": "77aa6e924deaae1b9c5e411c6580b7eb78090af375df3316802903d13d9ba39e"
+    }
+  },
+  "isolation": {
+    "private_adapter_sha256": "b24fc995cf71befc21f312ef0d314e2300f687ed8b70a056d05d753ad325afeb",
+    "private_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "private_php_file_sha256": "e1862ac35c61cf67f30314f006e4d0005c0ecd02eae3d668b2177d6ba3169d07",
+    "binary_hashes_unchanged": true,
+    "tracked_tree_clean_at_gate": true
+  },
+  "evidence_recovery": "Ignored reports, shard logs, inventory logs and transient mapping patch are under .tools/dynamic-eval-helper/.tools/dynamic-eval-gates; rerun the exact commands in source_commit with isolated build outputs.",
+  "limits": "Eval/include runtime remains Unsupported; no stateful pause/resume, no checked mapping from arbitrary type-correct AST to source bytes, and helper parser text is not modeled Zend ParseError text.",
+  "latest_base_compatibility": {
+    "base_commit": "4ce3ef23cb716774224ae9a24452e772934e4d12",
+    "rebased_code_commit": "eb6384c73",
+    "scope_checked_by_git_diff": "frontend adapter native spec/php.watsup spec/schema.json Makefile tests/validate.py tests/parallel_validate.py tests/corpus.py tests/eval_source_service.py vendor/php-parser scripts/grammar-mapping.py scripts/scanner-mapping.py scripts/encoding-spellings.py",
+    "scope_result": "byte-identical to source_commit syntax and protocol inputs; intervening changes are finally/goto semantics, tests and documentation",
+    "private_adapter_sha256": "b24fc995cf71befc21f312ef0d314e2300f687ed8b70a056d05d753ad325afeb",
+    "private_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "focused_eval": {
+      "source_cases": 11,
+      "protocol_negative_cases": 11,
+      "result": "pass"
+    },
+    "wire_negative": {
+      "passed": 33,
+      "total": 33
+    },
+    "targeted_file_syntax": {
+      "tested": 97,
+      "counts": {
+        "pass": 83,
+        "parser_rejection": 14
+      },
+      "stable_implementation": true,
+      "implementation_sha256": "5bc3177f324e0d87724fe567d8b88443e48f8a213bf5fcffa3767a295d2dde62",
+      "summary_sha256": "fe50c62e678bc573c32202d2305dc4158ae2cf682ce4aa3825d50a6c762643b3",
+      "command": "python3 tests/validate.py --elaborate --lint-all --output .tools/dynamic-eval-gates/goto-base-targeted.jsonl",
+      "raw_report_path": ".tools/dynamic-eval-gates/goto-base-targeted.jsonl",
+      "raw_report_sha256": "8bbce6e256bdf231d11a45ce9a272dd2bed06e8222966857a9f4fc8b61a2bfa4"
+    },
+    "scope_note": "Compatibility bridge only; the 30,980-entry report was run on source_commit and is not relabeled with this later implementation fingerprint."
+  }
+}
