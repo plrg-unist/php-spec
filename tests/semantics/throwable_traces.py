@@ -26,6 +26,8 @@ CASES = [
     ('generated-typeerror', '<?php function f(int $x){}try{f("x");}catch(TypeError $e){$t=$e->getTrace();echo $t[0]["function"],"|",$e->getTraceAsString();}', 'agreement'),
     ('generated-arity', '<?php function f($x){}try{f();}catch(ArgumentCountError $e){$t=$e->getTrace();echo $t[0]["function"],"|",$e->getTraceAsString();}', 'agreement'),
     ('generated-wrapper-trace', '<?php $f=function($x){unset($x);missing();};try{$f->__invoke([1]);}catch(Error $e){$t=$e->getTrace();echo $t[0]["function"],"|",$t[0]["args"][0]===null,"|",$t[1]["function"],"|",$t[1]["class"],$t[1]["type"],"|",$t[1]["args"][0][0];}', 'agreement'),
+    ('getclass-generated-frame', '<?php try{get_class(1);}catch(TypeError $e){$t=$e->getTrace();echo $t[0]["function"],"|",$t[0]["args"][0],"|",$e->getTraceAsString();}', 'agreement'),
+    ('getclass-wrapper-frame', '<?php $f=get_class(...);try{$f->__invoke(1);}catch(TypeError $e){$t=$e->getTrace();echo $t[0]["function"],"|",$t[1]["function"],"|",$t[1]["class"],$t[1]["type"],"|",$t[1]["args"][0];}', 'agreement'),
     ('method-trace-string', '<?php class A{function f($x){$e=new Exception("x");echo $e->getTraceAsString();}}(new A)->f(7);', 'agreement'),
     ('string-basic', '<?php $e=new Exception("M");echo $e->__toString();', 'agreement'),
     ('string-empty-message', '<?php $e=new Exception;echo $e->__toString();', 'agreement'),
@@ -42,6 +44,9 @@ CASES = [
     ('uncaught-frame', '<?php function f($x){throw new Exception("M");}f(7);', 'agreement'),
     ('uncaught-float-argument', '<?php function f($x){throw new Exception("M");}f(1.25);', 'agreement'),
     ('uncaught-object-argument', '<?php class A{} function f($x){throw new Exception("M");}f(new A);', 'agreement'),
+    ('eval-function-frames', '<?php try{eval(\'function f(){throw new Error("M");}f();\');}catch(Error $e){foreach($e->getTrace() as $frame){echo $frame["function"],",";}echo "|",$e->getTraceAsString();}', 'agreement'),
+    ('eval-nested-runtime-frames', '<?php try{eval(\'eval("1/0;");\');}catch(DivisionByZeroError $e){foreach($e->getTrace() as $frame){echo $frame["function"],",";}echo "|",$e->getTraceAsString();}', 'agreement'),
+    ('eval-inner-parse-frame', '<?php try{eval(\'eval("echo ;");\');}catch(ParseError $e){foreach($e->getTrace() as $frame){echo $frame["function"],",";}echo "|",$e->getTraceAsString();}', 'agreement'),
     ('json-encode-control', '<?php $e=new Exception;echo json_encode($e->getTrace());', 'unsupported'),
     ('reflection-control', '<?php $e=new Exception;$p=new ReflectionProperty(Exception::class,"string");echo $p->getValue($e);', 'unsupported'),
 ]

@@ -12,10 +12,10 @@ from recorded_worker import Worker
 ROOT = Path(__file__).resolve().parents[2]
 CASES = [
     ('parse-in-function',
-     b"<?php function f(){try{eval('echo ;');}catch(ParseError $e){echo 'C';}} f();",
+     b"<?php function f(){try{eval('echo ;');}catch(ParseError $e){return $e;}} $saved=f();",
      b'echo ;', 'ParseError', ('f',)),
     ('compile-reject-in-function',
-     b"<?php function f(){try{eval('class A { final abstract private function g(); }');}catch(CompileError $e){echo 'C';}} f();",
+     b"<?php function f(){try{eval('class A { final abstract private function g(); }');}catch(CompileError $e){return $e;}} $saved=f();",
      b'class A { final abstract private function g(); }', 'CompileError', ('f',)),
     ('class-link',
      b"<?php try{eval('class C extends Missing {}');}catch(Error $e){echo 'C';}",
@@ -88,6 +88,9 @@ def main():
             'n_object = $(|S_done.OBJECTS| - 1)',
             'S_done.OBJECTS[n_object] = THROWABLE pthrowable',
             'pthrowable.KIND = ' + json.dumps(kind),
+            '(HOBJECT n_object) <- S_done.ALLOCATIONS',
+            '$($heap_owners($heap_graph(S_done),HOBJECT n_object) > 0)',
+            '$property_state_valid(S_done)',
             '$throwable_field(S_done,n_object,"trace") = PARRAY n_trace',
             '$trace_graph_valid(S_done,n_trace)',
             'S_done.ARRAYS[n_trace].ITEMS = [' + ','.join('ENTRY (KINT ' + str(i) + ') (DIRECT (PARRAY n_frame_' + str(i) + '))' for i in range(len(frame_names))) + ']',
