@@ -2,6 +2,11 @@
 syntax ppmembers = PPMEMBERS ppstate ppropertydesc* pmethoddesc*
 dec $ppmethod_members(statement*, bool) : bool
 dec $ppmember_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
+dec $ppmember_path(pcpath, pchheader, nat) : pcpath
+def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 3, PCINDEX n]
+  -- if pchheader.KIND = "interface"
+def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 5, PCINDEX n]
+  -- if pchheader.KIND = "class"
 dec $ppmethod_at(pmethoddesc*, ptbytes) : bool
 dec $ppmethod_find(pmethoddesc*, ptbytes) : pmethoddesc?
 dec $ppmethod_magic(ptbytes) : bool
@@ -65,11 +70,12 @@ def $ppmember_groups(P, pcpath, n, eps, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
 def $ppmember_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "class"
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath ++ [PCFIELD 5, PCINDEX n], $source_line(metadata)), pcpath ++ [PCFIELD 5, PCINDEX n], flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
 def $ppmember_groups(P, pcpath, n, (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc_next* = $ppmethod_one(P, pcpath ++ [PCFIELD 5, PCINDEX n], NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc_next* = $ppmethod_one(P, $ppmember_path(pcpath, pchheader, n), NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)
 def $ppmember_groups(P, pcpath, n, statement*, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "class members")) ppropertydesc* pmethoddesc* -- otherwise
 
 def $ppmethod_at(eps, ptbytes) = false
@@ -104,6 +110,7 @@ def $ppmethod_prechecked(flags, ptbytes, phpType47, pchheader) = ($ppmethod_head
 def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_checked($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if $($source_line(metadata) > 0)
   -- if $($source_line(metadata) <= $source_end_line(metadata))
+  -- if pchheader.KIND = "class"
 def $ppmethod_one(P, pcpath, statement, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method attributes, name, or line")) ppropertydesc* pmethoddesc* -- otherwise
 
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Cannot use the readonly modifier on a method"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
@@ -247,7 +254,7 @@ def $ppmethod_early_registry_items(pclassdesc_all*, pclassdesc :: pclassdesc_tai
   -- if pclassdesc.EARLY
 def $ppmethod_early_registry_items(pclassdesc_all*, pclassdesc :: pclassdesc_tail*) = $ppmethod_early_registry_items(pclassdesc_all*, pclassdesc_tail*)
   -- if ~pclassdesc.EARLY
-def $ppmethod_child_desc(P, pchheader, pmethoddesc*) = {ORIGIN PORIGIN P.FOLD.SOURCE.ID P.LOCATION.PATH, NAME pchheader.NAME, PARENT pchheader.PARENT, PROPERTIES eps, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY true, LINE P.LOCATION.LINE}
+def $ppmethod_child_desc(P, pchheader, pmethoddesc*) = {ORIGIN PORIGIN P.FOLD.SOURCE.ID P.LOCATION.PATH, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES pchheader.INTERFACES, PROPERTIES eps, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY true, LINE P.LOCATION.LINE}
 def $ppmethod_ctor_proto(pclassdesc_all*, pclassdesc) = ppmethodinherited
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if $ppclass_prior_early(pclassdesc_all*, ptbytes_parent) = (pclassdesc_parent)
@@ -535,12 +542,12 @@ def $ppdispatch(P, pcpath, NExprClassConstFetch name (NIdentifier (BYTES text_me
 
 ;; Property-only and empty class paths remain in 135/133; mixed bodies are ordered here.
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)
-  -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ $ppmethod_body(pchheader.BODY)
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ $ppmethod_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)
-  -- if pchheader.PARENT =/= eps /\ pchheader.INTERFACES = eps /\ $ppmethod_body(pchheader.BODY)
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT =/= eps /\ $ppmethod_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)

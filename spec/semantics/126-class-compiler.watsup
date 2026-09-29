@@ -203,9 +203,10 @@ dec $ppmethod_body(phpType23) : bool
 def $ppclass_result(P, pcpath, PCHUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppclass_result(P, pcpath, PCHERROR pchdiagnostic*) = $ppclass_diagnostics(P, pchdiagnostic*)
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "class inheritance, interfaces, attributes, or members")
-  -- if pchheader.INTERFACES =/= eps \/ (pchheader.BODY =/= SEQUENCE eps /\ ~$ppproperty_body(pchheader.BODY) /\ ~$ppmethod_body(pchheader.BODY))
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME pchheader.NAME, PARENT eps, PROPERTIES eps, METHODS eps, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
-  -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
+  -- if pchheader.KIND = "class"
+  -- if pchheader.BODY =/= SEQUENCE eps /\ ~$ppproperty_body(pchheader.BODY) /\ ~$ppmethod_body(pchheader.BODY)
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT eps, INTERFACES pchheader.INTERFACES, PROPERTIES eps, METHODS eps, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (pchheader.INTERFACES = eps /\ P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
 
 dec $class_keyword_line(metadata, phpType3) : int
 def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = $ppunsupported(P, "missing ordinary compiler line")

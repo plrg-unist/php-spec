@@ -1,0 +1,57 @@
+;; Interface declarations share the class header and method signature compiler.
+;; A nonempty dependency list is deliberately deferred to runtime linking.
+dec $ppinterface_add(ppstate, pcpath, pchheader, pmethoddesc*) : ppstate
+def $ppinterface_add(P, pcpath, pchheader, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND "interface", NAME pchheader.NAME, PARENT eps, INTERFACES pchheader.INTERFACES, PROPERTIES eps, METHODS pmethoddesc*, ABSTRACT true, FINAL false, READONLY false, EARLY (pchheader.INTERFACES = eps /\ ~$ppmethod_at(pmethoddesc*, $ptascii("__toString")) /\ P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]]
+  -- if P.COMPLETION = PPCNORMAL
+def $ppinterface_add(P, pcpath, pchheader, pmethoddesc*) = P -- otherwise
+
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppinterface_add(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, pmethoddesc*)
+  -- if pchheader.KIND = "interface"
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if PPMEMBERS P_next eps pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
+
+def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader, eps, eps)
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ pchheader.INTERFACES =/= eps /\ pchheader.BODY = SEQUENCE eps
+
+def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, false, $ppclass_context(P_line)))
+  -- if P.CLASSCONTEXT = eps /\ P.COMPLETION = PPCNORMAL
+  -- if $source_line(metadata) = z
+  -- if $(z > 0)
+  -- if P_line = $pplocate(P, pcpath, z)
+def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, true, $ppclass_context(P_line)))
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $source_line(metadata) = z
+  -- if $(z > 0)
+  -- if P_line = $pplocate(P, pcpath, z)
+def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppunsupported(P, "missing interface compiler line")
+  -- if P.COMPLETION = PPCNORMAL /\ $source_line(metadata) = 0
+
+;; An interface has no instance storage. Hooked properties and constants have
+;; separate pending compiler obligations; an ordinary property is a PHP error.
+def $ppmember_groups(P, pcpath, n, (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ptascii("Interfaces may only include hooked properties"), $nabs($source_line(metadata)))) ppropertydesc* pmethoddesc*
+  -- if P.COMPLETION = PPCNORMAL /\ pchheader.KIND = "interface"
+  -- if $($source_line(metadata) > 0)
+
+dec $ppinterface_method(ppstate, pcpath, int, bool, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
+def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppinterface_method($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if pchheader.KIND = "interface"
+  -- if $($source_line(metadata) > 0 /\ $source_line(metadata) <= $source_end_line(metadata))
+
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P[.COMPLETION = PPCABRUPT (COMPILETHROWN $ptascii("Cannot use the final modifier on an abstract method") P.LOCATION.LINE)] ppropertydesc* pmethoddesc*
+  -- if $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error($ppmethod_warning(P, flags, ptbytes), $ptascii("Interface method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() must not be final"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if ~$ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32) /\ ~$ppproperty_flag(flags, 4)
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Interface method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() must not be abstract"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if $ppproperty_flag(flags, 16) /\ ~$ppproperty_flag(flags, 32)
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error($ppmethod_warning(P, flags, ptbytes), $ptascii("Access type for interface method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() must be public"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if ~$ppproperty_flag(flags, 16) /\ ($ppproperty_flag(flags, 2) \/ $ppproperty_flag(flags, 4))
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Interface function ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot contain body"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if ~$ppproperty_flag(flags, 16) /\ ~$ppproperty_flag(flags, 32)
+  -- if phpType47 =/= ABSENT
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, ABSENT, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Cannot redeclare ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("()"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if flags <- [0,1,8,9] /\ $ppmethod_at(pmethoddesc*, ptbytes)
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, ABSENT, metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_begin(P, pcpath, $(flags + 16), b, ptbytes, phpType16, phpType18, ABSENT, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if flags <- [0,1,8,9] /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "interface method modifiers")) ppropertydesc* pmethoddesc* -- otherwise
