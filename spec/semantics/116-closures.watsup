@@ -1,5 +1,8 @@
 ;; Real closure instances own lexical values and their own initialized static cells.
 ;; Backing storage is not a root: the common reference-count graph owns instances.
+dec $closure_binding_at(pclosurebinding*, nat) : pclosurebinding?
+dec $binding_receiver_roots(pclosurebinding*, nat) : pnode*
+dec $closure_bindings_valid(pstate, pclosurebinding*) : bool
 syntax plexical = LEXICAL ptbytes bool int | IMPLICIT ptbytes int
 
 dec $closure_lexical_entry(pcodeexpr) : plexical*
@@ -30,7 +33,7 @@ def $closure_scope_roots(pclosurescope :: pclosurescope_tail*, n) = eps
   -- if pclosurescope.RECEIVER = eps
 def $closure_scope_roots(pclosurescope :: pclosurescope_tail*, n) = $closure_scope_roots(pclosurescope_tail*, n)
   -- if pclosurescope.OBJECT =/= n
-def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $closure_scope_roots(S.CLOSURESCOPES, n)
+def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $closure_scope_roots(S.CLOSURESCOPES, n) ++ $binding_receiver_roots(S.CLOSUREBINDINGS, n)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
 def $node_children(S, HOBJECT n) = eps
   -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
@@ -118,14 +121,17 @@ def $target_receiver(S, CLOSURE_TARGET n) = pclosurescope.RECEIVER
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $target_receiver(S, CLOSURE_TARGET n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $target_lexical_class(S, CLOSURE_TARGET n) = (pclosurescope.LEXICAL)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $target_lexical_class(S, CLOSURE_TARGET n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $target_called_class(S, CLOSURE_TARGET n) = (pclosurescope.CALLED)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $target_called_class(S, CLOSURE_TARGET n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 
 dec $closure_body(pstate, pfunction) : ptask*
 def $closure_body(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
@@ -406,11 +412,13 @@ def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_comp
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_source_class(S, porigin) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_source_class(S, porigin) = (porigin_class)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $closure_scope_complete(S, (HCELL n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
 def $closure_scope_complete(S, (HARRAY n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
@@ -484,6 +492,7 @@ def $closure_state_valid(S) = true
   -- if $closure_template_origins_valid(S, S.CLOSURETEMPLATES)
   -- if $closure_live_nodes_valid(S, S.ALLOCATIONS)
   -- if $closure_scope_rows_valid(S, S.CLOSURESCOPES)
+  -- if $closure_bindings_valid(S, S.CLOSUREBINDINGS)
   -- if $closure_scope_complete(S, S.ALLOCATIONS)
   -- if $clone_statics_compatible(S.STATICS ++ $clone_static_sources(S, S.ALLOCATIONS))
 def $closure_state_valid(S) = false -- otherwise

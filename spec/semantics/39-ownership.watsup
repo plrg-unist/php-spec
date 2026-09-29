@@ -210,12 +210,13 @@ def $hold_literal_reference(S) = S_inputs[.HELD = S_inputs.HELD ++ [HCELL S.CELL
 dec $prune_allocations(pstate) : pstate
 dec $iterators_prune(piterator*, pnode*) : piterator*
 dec $closure_scopes_prune(pclosurescope*, pnode*) : pclosurescope*
+dec $closure_bindings_prune(pclosurebinding*, pnode*) : pclosurebinding*
 def $closure_scopes_prune(eps, pnode*) = eps
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = pclosurescope :: $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if (HOBJECT pclosurescope.OBJECT) <- pnode*
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
-def $prune_allocations(S) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
+def $prune_allocations(S) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
   -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to
