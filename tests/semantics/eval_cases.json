@@ -57,7 +57,6 @@
   {
     "id": "parse-trace-in-function",
     "kind": "normal",
-    "expected_model": "unsupported",
     "source": "<?php function f(){try{eval('echo ;');}catch(ParseError $e){foreach($e->getTrace() as $t){echo $t['function'],'|',$t['file'],'|',$t['line'];}}} f();"
   },
   {
@@ -199,7 +198,6 @@
   {
     "id": "missing-parent-trace",
     "kind": "normal",
-    "expected_model": "unsupported",
     "source": "<?php try{eval('class C extends Missing {}');}catch(Error $e){foreach($e->getTrace() as $t){echo $t['function'],'|',$t['file'],'|',$t['line'];}}"
   },
   {
