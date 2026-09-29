@@ -44,6 +44,7 @@ def $typed_return_marker_shape(S, n, porigin_site, z) = true
   -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
 def $typed_return_marker_shape(S, n, porigin_site, z) = true
   -- if S.TODO = (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
 def $typed_return_marker_shape(S, n, porigin_site, z) = true
   -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
 def $typed_return_marker_shape(S, n, porigin_site, z) = false -- otherwise
