@@ -53,6 +53,8 @@ under the generic 45-second runner; both failed reports remain distinct from
 the bounded agreement.
 [Ledger](coverage/semantics/user-string-typed-author.json).
 
+A private mutable-context candidate is rebasing onto the typed-return tree. It adds versioned include lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts. The 28-source and paused/adapter agreement on the earlier interface/Closure base remains historical until the typed-return bridge passes. [Ledger](coverage/semantics/include-mutable-context-review.json). Dynamic selected calls, stringable operands and broader OS/INI behavior remain open.
+
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
 constrained references, interpolation,

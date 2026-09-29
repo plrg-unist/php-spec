@@ -1,9 +1,10 @@
 # Include/require source boundary
 
-The pinned PHP 8.5.10 CLI profile uses `include_path=.:`. The finite file
-snapshot is explicit input to a semantic run. It contains the canonical main
-script path, a fixed CWD and
-unique `(caller filename, requested operand bytes)` entries. Each entry is
+The pinned PHP 8.5.10 CLI profile starts with `include_path=.:`. The finite
+file snapshot is explicit input to a semantic run. It contains the canonical
+main script path and initial CWD. Version 1 has unique `(caller filename,
+requested operand bytes)` entries under the fixed profile; version 2 keys
+each entry by those bytes plus the captured CWD and `include_path`. Each entry is
 either `missing` with a stream-error fact, `open_failure` with a successfully
 resolved path, first-warning display path and stream-error fact, or `opened`
 with a successfully resolved path or a null resolver result, opened canonical
@@ -58,5 +59,14 @@ transformations need their own facts and source comparisons.
 The [directory failure ledger](../../coverage/semantics/include-open-failure-review.json)
 records exact relative and absolute directory observations, including their
 different stream-error bytes. This bounded extension is installed.
-Runs that mutate CWD or `include_path` need a new authenticated resolution
-context. Other permission and path errors need source comparisons.
+The private mutable-context candidate records CWD and `include_path` at each
+resolution pause. `set_include_path`, `ini_set('include_path', ...)` and
+`ini_restore('include_path')` update the live INI value after argument binding.
+`chdir` uses a separate one-shot finite OS fact: success supplies a canonical
+next CWD; failure supplies `strerror` bytes and errno, while PHP warning
+rendering remains authored semantics. A compiled file retains its original
+lookup context even after a nested call changes the globals. Once membership
+continues to use canonical opened paths. The [mutable-context ledger](../../coverage/semantics/include-mutable-context-review.json)
+records the bounded source and paused checks. Dynamic ownerless intrinsic
+selection and wider OS/INI behavior remain open; this candidate is not yet
+installed. Other permission and path errors need source comparisons.
