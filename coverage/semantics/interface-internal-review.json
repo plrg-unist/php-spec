@@ -1,0 +1,58 @@
+{
+  "status": "reviewed_private_candidate_pending_install",
+  "scope": "Finite inherited Stringable, Throwable, Exception, Error and ErrorException method contracts; ordered source/interface comparison and rooted abstract discharge",
+  "code_commit": "66c9fced9",
+  "catalogue_commit": "a4da3440a",
+  "base": "68119bb22",
+  "catalogue": "tests/semantics/interface_internal_cases.json",
+  "catalogue_sha256": "a1dc3ef00047d4e97be52a759014df3cf869a20454d5450298d800b230608e3b",
+  "oracle": {
+    "php": ".tools/php/bin/php",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "independent_66_source_audit": ".tools/interfaces-review-177/.tools/interface-189-native-catalogue-review.json",
+    "audit_sha256": "6a46fec235b299f5601455b86528de302ef71458b78d7ed1950665cc4680be47"
+  },
+  "current_base_source": {
+    "result": "pass",
+    "exact": 66,
+    "normal": 14,
+    "php_error": 48,
+    "static_rejection": 4,
+    "report": ".tools/interfaces-internal-current/.tools/method-runtime-kc3qnp3c/report.json",
+    "report_sha256": "0dae90decde0d1d902205e8884381fd0499a307eaf0ba135ada94fb6ff9a2de9",
+    "fingerprint_sha256": "1bf4c0935d2b2db1e87be267fc8082c83471e21f5a38b0312d29886fa13a881b"
+  },
+  "current_base_test": {
+    "result": "pass",
+    "command": "make -o build test",
+    "provider_fixture_fix": "9c82675e3 (private cherry-pick of paired-reviewed badc320f28)",
+    "log": ".tools/interfaces-internal-current/.tools/interface-189-provider-fixed-test.log",
+    "log_sha256": "932fd637264efb00c6250c9ab9d18e3f9826a799362d206938f5d1f48153fd3b",
+    "generated": 4103,
+    "deep": 1,
+    "stable_implementation": true,
+    "baseline_note": "Without the provider fixture fix, this target stops before generated validation at tests/file_provider_protocol.py:126; the same failure reproduces on unchanged canonical 68119bb22 with a byte-identical adapter. The prior failed log is retained separately.",
+    "prior_failed_log": ".tools/interfaces-internal-current/.tools/interface-189-current-test.log",
+    "prior_failed_log_sha256": "b415961be28f6f046a149be2a44a47bd9eb83d8fb0dc30ad98bb41c0a99bda91"
+  },
+  "forged_method_contract": {
+    "result": "pass",
+    "author_assertions": 19,
+    "author_report": ".tools/interfaces-internal-current/.tools/interface-189-forged/report.json",
+    "author_report_sha256": "99730cd4fb0e0a415c1447b6fa01b442b13e647189ec47de26f83af4c92a13b3",
+    "independent_assertions": 21,
+    "independent_report": ".tools/interfaces-review-177/.tools/interface-189-review/review-report.json",
+    "independent_report_sha256": "52780645a4cb37e410eee5e5d42ff113a57ef6bf57412325e94cc9bd47c19ea3",
+    "negative": "Changing published J::getMessage return string to int preserves authentic J/I interface links but invalidates the method contract and full linked state."
+  },
+  "independent_current_base_source": {
+    "result": "pass",
+    "exact": 3,
+    "report": ".tools/interfaces-review-177/.tools/method-runtime-dhs_41tq/report.json",
+    "report_sha256": "9b7ff04aa3e600cba681bf4a798c918c4c2735f8591a471aa3ccd1888f5cec03"
+  },
+  "limits": [
+    "Other internal interface method tables and hooks, including Traversable, Iterator, IteratorAggregate and ArrayAccess, remain open.",
+    "Class/interface constants, hooked interface properties, traits and first-class interface method selectors remain open; this is not full interface-family closure."
+  ]
+}

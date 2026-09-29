@@ -33,6 +33,12 @@ named/reference `Closure::call` **9cdadc172**.
 [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
 retain bounded installed counts and historical snapshot identities.
 
+The private 189 candidate adds finite inherited Stringable/Throwable and
+Exception/Error/ErrorException method contracts. Its original 66-source,
+independent replay/guard and full-test evidence remain historical to the
+candidate's reviewed base and provider-fixture repair.
+[189 ledger](coverage/semantics/interface-internal-review.json).
+
 Installed code includes finite file context, selected configuration calls and
 weak positional Stringable-`chdir` operands,
 weak by-value typed string returns, interfaces, Closure binding/calls, ordinary

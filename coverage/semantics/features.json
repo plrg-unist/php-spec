@@ -7953,17 +7953,20 @@
         "spec/semantics/177-interface-compiler.watsup",
         "spec/semantics/178-interface-runtime.watsup",
         "spec/semantics/179-interface-methods.watsup",
-        "spec/semantics/180-interface-obligations.watsup"
+        "spec/semantics/180-interface-obligations.watsup",
+        "spec/semantics/189-internal-interface-prototypes.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/interface_runtime_cases.json",
-        "tests/semantics/interface_compiler_cases.json"
+        "tests/semantics/interface_compiler_cases.json",
+        "tests/semantics/interface_internal_cases.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/interface-internal-review.json"
       ],
-      "review": "Installed 177\u2013180 at 5c423b245: ordered source interface links, nominal relations, variance and abstract obligations. Installed runtime 20/20, compiler 13/13 and forged guard 13/13 pass; independent B-root bridge six exact sources and 13 forged assertions, binding-base six-source bridge, final-base two-source/13-forged recheck, and full test target pass. Earlier 30,980-source syntax/inventory gate covers unchanged parser/AST projection. Internal Throwable method table, constants, hooks, other builtins, traits and selectors remain open; see interface-author.json."
+      "review": "Installed 177\u2013180 at 5c423b245: ordered source links, nominal relations, variance and abstract obligations. Private 189 candidate adds finite inherited Stringable/Throwable/Exception/Error/ErrorException method contracts; current-base source 66/66, independent source 3/3 and forged method guard 21/21 pass, with full test target on a separately reviewed provider fixture fix. Earlier 30,980-source syntax/inventory gate covers unchanged parser/AST projection. Other internal interface tables, constants, hooks, traits and selectors remain open; see interface-author.json and interface-internal-review.json."
     },
     {
       "id": "classes.traits",

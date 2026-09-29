@@ -26,14 +26,21 @@ declared by an ancestor or in an eval unit.
 
 The finite builtin model admits `Stringable` and the nominal `Throwable` root
 rule. A source class may implement `Throwable` only under an authenticated
-`Exception` or `Error` parent chain. Internal Throwable method compatibility,
-other internal interface method tables and hooks (`Traversable`, `Iterator`,
+`Exception` or `Error` parent chain. Module 189 compares the seven `Throwable`
+getters and inherited `__toString`, then selects concrete
+`Exception`/`Error` constructors and `__wakeup`, plus
+`ErrorException::getSeverity`, for rooted classes. These prototypes retain
+builtin owners, optional defaults, method order and line-zero diagnostics;
+`__wakeup` declaration errors remain compile-time. Other internal interface
+method tables and hooks (`Traversable`, `Iterator`,
 `IteratorAggregate`, `ArrayAccess`), interface constants, PHP 8.5 hooked
 interface properties, traits and first-class interface method selectors remain
 explicit obligations. Unsupported paths are tracked separately from PHP
-agreement. The source [runtime](../../tests/semantics/interface_runtime_cases.json)
-and [compiler](../../tests/semantics/interface_compiler_cases.json) catalogues
-and the [author ledger](../../coverage/semantics/interface-author.json) record
+agreement. The source [runtime](../../tests/semantics/interface_runtime_cases.json),
+[compiler](../../tests/semantics/interface_compiler_cases.json), and
+[internal-method](../../tests/semantics/interface_internal_cases.json) catalogues,
+with the [source-interface ledger](../../coverage/semantics/interface-author.json)
+and [internal-method ledger](../../coverage/semantics/interface-internal-review.json), record
 exact original-source comparisons separately from these controls and
 paused-state negatives. The checked frontend retains readonly method syntax
 for the authored no-trace compile fatal; the pinned parser-phase discrepancy is
