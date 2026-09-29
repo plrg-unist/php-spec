@@ -206,7 +206,7 @@ dec $file_open_response_valid(pstate, pfileopenresponse) : bool
 def $file_open_response_valid(S, FILE_MISSING n_nonce n_caller* n_requested* n_stream*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ n_stream* =/= eps)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
-def $file_open_response_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_stream*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ n_resolved* =/= eps /\ n_stream* =/= eps)
+def $file_open_response_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_warning_path* n_stream*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ n_resolved* =/= eps /\ n_warning_path* =/= eps /\ n_stream* =/= eps)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
 def $file_open_response_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ $source_filename(n_opened*))
@@ -215,7 +215,7 @@ def $file_open_response_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_re
 def $file_open_response_valid(S, pfileopenresponse) = false -- otherwise
 
 dec $file_open_resume_valid(pstate, pfileopenresponse) : pstate
-dec $file_open_failed(pstate, pfilecontext, pfilecontext*, preqbytes) : pstate
+dec $file_open_failed(pstate, pfilecontext, pfilecontext*, preqbytes, preqbytes) : pstate
 dec $file_keyword(int) : preqbytes
 def $file_keyword(1) = $ptascii("include")
 def $file_keyword(2) = $ptascii("include_once")
@@ -223,19 +223,19 @@ def $file_keyword(3) = $ptascii("require")
 def $file_keyword(4) = $ptascii("require_once")
 def $file_trace_frame(S, pfilecontext) = {FILE $call_sourcefile(S.FILES, pfilecontext.SITE), LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args([PSTRING n_opened*], 0), HASARGS true}
   -- if pfilecontext.OPENED = (n_opened*)
-def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*) = S_second[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_second[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if (pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2)
   -- if z = $file_site_line(S, pfilecontext.SITE)
   -- if n_keyword* = $file_keyword(pfilecontext.KIND)
   -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
-  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ pfilecontext.REQUESTED ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
+  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
   -- if S_second = $diagnostic(S_first, "Warning", n_keyword* ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='.:')"), z)
-def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*) = S_object[.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_object[.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if (pfilecontext.KIND = 3 \/ pfilecontext.KIND = 4)
   -- if z = $file_site_line(S, pfilecontext.SITE)
   -- if n_keyword* = $file_keyword(pfilecontext.KIND)
   -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
-  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ pfilecontext.REQUESTED ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
+  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
   -- if S_object = $throwable_materialize($throw_scalar(S_first, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='.:')"), z))
   -- if S_object.COMPLETION = THROWING n_object
 dec $file_include_after_compile(preqbytes*, preqbytes) : preqbytes*
@@ -245,7 +245,7 @@ def $file_once_kind(4) = true
 def $file_once_kind(int) = false -- otherwise
 dec $file_once_skip(pstate, pfilecontext, pfilecontext*) : pstate
 def $file_once_skip(S, pfilecontext, pfilecontext_tail*) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)]
-def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_stream*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*)
+def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_warning_path* n_stream*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if $file_once_kind(pfilecontext.KIND)
   -- if n_resolved* <- S.INCLUDEDOPENED
@@ -259,9 +259,9 @@ def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_reso
   -- if n_unit = $next_eval_unit(S.FILES)
   -- if pfilecontext_next = pfilecontext[.PHASE = FILE_PARSE_WAIT][.UNIT = (n_unit)][.RESOLVED = (n_resolved*)][.OPENED = (n_opened*)][.BYTES = (n_bytes*)]
   -- if S_next = $file_once_record_open(S, pfilecontext.KIND, n_opened*)
-def $file_open_resume_valid(S, FILE_MISSING n_nonce n_caller* n_requested* n_stream*) = $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*)
+def $file_open_resume_valid(S, FILE_MISSING n_nonce n_caller* n_requested* n_stream*) = $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_requested*, n_stream*)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
-def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_stream*) = $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*)
+def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_warning_path* n_stream*) = $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if (~$file_once_kind(pfilecontext.KIND) \/ ~(n_resolved* <- S.INCLUDEDOPENED))
 def $file_once_record_open(S, n_kind, n_opened*) = S[.INCLUDEDOPENED = $file_include_after_compile(S.INCLUDEDOPENED, n_opened*)]

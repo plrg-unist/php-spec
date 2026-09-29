@@ -327,7 +327,7 @@ let file_snapshot json =
     let status = string (field "status" entry) in
     let fields = match status with
       | "missing" -> ["caller"; "requested"; "status"; "stream_error"]
-      | "open_failure" -> ["caller"; "requested"; "status"; "resolved"; "stream_error"]
+      | "open_failure" -> ["caller"; "requested"; "status"; "resolved"; "warning_path"; "stream_error"]
       | "opened" -> ["caller"; "requested"; "status"; "resolved"; "opened"; "source"]
       | _ -> fail "unknown file resolution status" in
     exact fields entry;
@@ -336,6 +336,7 @@ let file_snapshot json =
     if List.mem (caller, requested) !keys then fail "duplicate file resolution key";
     keys := (caller, requested) :: !keys;
     if status = "open_failure" then ignore (nonempty_bytes (field "resolved" entry));
+    if status = "open_failure" then ignore (nonempty_bytes (field "warning_path" entry));
     if status = "opened" && field "resolved" entry <> `Null then
       ignore (nonempty_bytes (field "resolved" entry));
     if status = "missing" || status = "open_failure" then
@@ -500,6 +501,7 @@ let resume_file_resolve request =
         [id; caller; requested; decode_bytes (field "stream_error" checked)]
     | "open_failure" -> mk "pfileopenresponse" "FILE_OPEN_FAILURE"
         [id; caller; requested; decode_bytes (field "resolved" checked);
+         decode_bytes (field "warning_path" checked);
          decode_bytes (field "stream_error" checked)]
     | "opened" -> mk "pfileopenresponse" "FILE_OPENED"
         [id; caller; requested; decode_bytes (if field "resolved" checked = `Null
