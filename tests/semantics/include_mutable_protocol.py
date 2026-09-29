@@ -66,19 +66,72 @@ CASES = [
          'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
          'S_done.FILEINCLUDEPATH = ($ptascii(".:"))',
      ]),
-    ('dynamic-unbound', b"<?php $f='ini_restore'; $f('include_path');",
+    ('dynamic-bound', b"<?php $f='ini_restore'; $f('include_path');",
      'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*', [
          'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*',
          'pconfigcall.KIND = INTRINSIC_INI_RESTORE',
          'pconfigcall.OWNER = eps',
-         '~$config_selected_valid(S,pconfigcall)',
-         '~$call_descriptors_valid(S)',
+         'pconfigcall.SELECTION = (n_nonce)',
+         'S.SELECTEDCALLS = [pselectedcall]',
+         'pselectedcall.NONCE = n_nonce',
+         'pselectedcall.KIND = INTRINSIC_INI_RESTORE',
+         'pselectedcall.LOOKUP = $ptascii("ini_restore")',
+         '$config_selected_valid(S,pconfigcall)',
+         '$call_descriptors_valid(S)',
          '~$config_call_valid(S,pconfigcall[.KIND = INTRINSIC_SET_INCLUDE_PATH])',
+         '~$call_descriptors_valid(S[.SELECTSEQ = $(S.SELECTSEQ + 1)])',
+         '~$call_descriptors_valid(S[.SELECTEDCALLS = [pselectedcall[.KIND = INTRINSIC_SET_INCLUDE_PATH]]])',
+         '~$call_descriptors_valid(S[.TODO = (AT pconfigcall.SITE (CONFIG_INVOKE pconfigcall)) :: (CONFIG_INVOKE pconfigcall) :: ptask*])',
          'S_bad = $drive(S[.TODO = (CONFIG_INVOKE pconfigcall[.KIND = INTRINSIC_SET_INCLUDE_PATH]) :: ptask*],1000)',
          'S_bad.COMPLETION = UNSUPPORTED text',
          'S_bad.FILEINCLUDEPATH = S.FILEINCLUDEPATH',
          'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
-         'S_done.COMPLETION = UNSUPPORTED text_done',
+         'S_done.COMPLETION = NORMAL',
+         'S_done.FILEINCLUDEPATH = ($ptascii(".:"))',
+     ]),
+    ('dynamic-saved', b"<?php function arg(){return 'sub';} $f='set_include_path'; echo $f(arg());",
+     'S.SELECTEDCALLS = [pselectedcall]\n  -- if $selected_frame_count(S.FRAMES,pselectedcall.NONCE) = 1\n  -- if $selected_task_count(S.TODO,pselectedcall.NONCE) = 0', [
+         'S.SELECTEDCALLS = [pselectedcall]',
+         '$selected_entry_active_valid(S,pselectedcall)',
+         '$selected_task_count($selected_owner_tasks(S,pselectedcall),pselectedcall.NONCE) = 1',
+         '$call_descriptors_valid(S)',
+         'n_top = |S.FRAMES|',
+         '~$selected_entry_active_valid(S,pselectedcall[.DEPTH = n_top])',
+         'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+         'S_done.COMPLETION = NORMAL',
+         '$outputs(S_done.EVENTS) = $ptascii(".:")',
+     ]),
+    ('dynamic-reentry', b"<?php function g($x){$f='set_include_path'; return $f($x ? throw new Exception('boom') : 'sub');} try{g(true);}catch(Throwable $e){} echo g(false);",
+     'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*\n  -- if S.SELECTEDCALLS = [pselectedcall_old,pselectedcall_new]', [
+         'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*',
+         'S.SELECTEDCALLS = [pselectedcall_old,pselectedcall_new]',
+         'pselectedcall_old.NONCE = 0',
+         'pselectedcall_new.NONCE = 1',
+         'pselectedcall_old.SITE = pselectedcall_new.SITE',
+         'S.SELECTSEQ = 2',
+         'pconfigcall.SELECTION = (1)',
+         '$selected_log_valid(S,S.SELECTEDCALLS,0)',
+         '~$config_call_valid(S,pconfigcall[.SELECTION = (0)])',
+         '~$call_descriptors_valid(S[.TODO = (CONFIG_INVOKE pconfigcall[.SELECTION = (0)]) :: ptask*])',
+         'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+         'S_done.COMPLETION = NORMAL',
+         '$outputs(S_done.EVENTS) = $ptascii(".:")',
+     ]),
+    ('dynamic-chdir-pending', b"<?php $f='chdir'; $f('sub');",
+     'S.TODO = (CHDIR_AWAIT pconfigcall n_dir) :: ptask*', [
+         'S.TODO = (CHDIR_AWAIT pconfigcall n_dir) :: ptask*',
+         'S.COMPLETION = SOURCE_PENDING',
+         'S.DIRCONTEXT = (pdircontext)',
+         'pdircontext.CALL = pconfigcall',
+         'pconfigcall.SELECTION = (n_selection)',
+         'S.SELECTEDCALLS[n_selection] = pselectedcall',
+         'pselectedcall.KIND = INTRINSIC_CHDIR',
+         '$selected_task_count(S.TODO,n_selection) = 1',
+         '$selected_entry_active_valid(S,pselectedcall)',
+         '$dir_pending_state_valid(S)',
+         '$call_descriptors_valid(S)',
+         '~$dir_pending_state_valid(S[.TODO = (CHDIR_AWAIT pconfigcall[.SELECTION = eps] n_dir) :: ptask*])',
+         '~$call_descriptors_valid(S[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.SELECTION = eps]])])',
      ]),
 ]
 
@@ -151,12 +204,14 @@ def main():
         finally:
             frontend.close()
             adapter.close()
+        pending = name == 'dynamic-chdir-pending'
         if name == 'no-file-chdir':
             start = '$php_run(' + checked['fixture'] + ', 300, ' + json.dumps(b64(str(source_path.resolve()).encode())) + ')'
             conditions = ['S_initial = ' + start, 'S = S_initial'] + checks
         else:
-            start = '$php_file_run(' + checked['fixture'] + ', 0, $base64(' + json.dumps(b64(str(source_path.resolve()).encode())) + '), $base64(' + json.dumps(b64(str(ROOT.resolve()).encode())) + '))'
+            start = '$php_file_run(' + checked['fixture'] + (', 300, ' if pending else ', 0, ') + '$base64(' + json.dumps(b64(str(source_path.resolve()).encode())) + '), $base64(' + json.dumps(b64(str(ROOT.resolve()).encode())) + '))'
             conditions = ['S_initial = ' + start,
+                          'S = S_initial' if pending else
                           'S = $seek(S_initial[.COMPLETION = NORMAL],1000)[.COMPLETION = NORMAL]'] + checks
         fixture = directory / 'protocol.watsup'
         fixture.write_text(PREFIX.replace('STAGE', stage) + '\ndec $main() : bool\ndef $main() = true\n'
