@@ -135,10 +135,16 @@ provenance and ownership transitions. A separate first-class review ledger
 [records](../../coverage/semantics/first-class-method-review.json) the exact
 native archive and frozen replay reports.
 
-Finite internal Throwable getter and `Closure->__invoke` first-class captures
-currently return explicit `Unsupported` at selection. They remain required
-follow-up work, not a permanent language boundary. A nullsafe first-class
-method expression emits PHP's compile-time rejection. Interface methods and traits,
+Finite internal Throwable getters now capture their selected receiver and
+internal declaring owner. Invoking the captured callable uses the existing
+ordered getter argument checks, including unknown named-argument errors.
+`Closure->__invoke(...)` capture retains the selected Closure and invokes that
+original object with its bound scope and static cells; the extra capture adds
+no trace frame. Rebinding the source variable does not change either capture.
+The [internal capture ledger](../../coverage/semantics/first-class-internal-review.json)
+pins nine exact native cases and paused ownership/provenance controls. A
+nullsafe first-class method expression emits PHP's compile-time rejection.
+Interface methods and traits,
 static/readonly properties, hooks, user magic methods, destructors,
 closure rebinding services and remaining internal protocols are still open.
 Deferred `new` parameter defaults remain outside the admitted initializer

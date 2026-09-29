@@ -1,0 +1,47 @@
+{
+  "result": "bounded-internal-first-class-capture-pass-pre-include",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
+  "scope": "Finite public final Throwable getters and Closure->__invoke first-class captures. Capture selects the existing internal getter or Closure without invoking it. A getter callable retains its receiver and internal owner; a Closure->__invoke callable retains and invokes the original Closure, preserving lexical scope, statics, argument behavior and direct trace frames.",
+  "candidate": {
+    "source_method_base": "eb193a9a4",
+    "code_commit": "e72f798f1",
+    "frozen_code_test_commit": "04bc26ee0ee8a3d0d60aa930a474ec79635abd39",
+    "note": "The later 395f4a912 commit imports only the previously reviewed source-method ledger and PROGRESS correction. It does not change watched code or tests. Include-base integration remains separate."
+  },
+  "native": {
+    "catalogue": "tests/semantics/first_class_internal_cases.json",
+    "catalogue_sha256": "6b2d9ee7d87c731442b5aba449993b3bf17739d5de7d683329e265b0b5f60e71",
+    "raw_archive": ".tools/static-method-review/first-class-internal-native.json",
+    "raw_archive_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "recovery": "The ignored raw archive pins nine original source hashes and exact native stdout/stderr/exit tuples. Tracked catalogue rows retain every source and replace only the native source path in diagnostics with {FILE}. Run method_runtime.py with the internal catalogue; no native evaluation is used by the semantics."
+  },
+  "author_source": {
+    "result": "9/9 exact and stable; seven normal and two PHP errors",
+    "fingerprint_sha256": "832d81aa0ca8ac1a6b5828421c7861e8f053bad5478438a44d018971a1326dcb",
+    "report": ".tools/static-method-internal/.tools/method-runtime-f9aum5iy/report.json",
+    "report_sha256": "a1dbfbd12cb5c3ca73e44aa814b7625f02ee59ed44299b09e1bc4fc0209e8cd0"
+  },
+  "author_paused": {
+    "result": "4/4 stable, 32 assertions",
+    "cases": ["getter-capture-edge", "invoke-capture-edge", "invoke-after-unset", "getter-pending"],
+    "report": ".tools/static-method-internal/.tools/first-class-internal-protocol-9tyc7zs1/report.json",
+    "report_sha256": "d55b11e5cd1c6525e93e39269e87203183cb4662f0159ec42d53d51611308fc3"
+  },
+  "independent_source": {
+    "result": "9/9 exact and stable",
+    "report": ".tools/static-method-review/first-class-internal-review-uefdm59k/report.json",
+    "report_sha256": "c226c49bb7dd2b6ae6c5079c0c982b60bb941b122d605510ad8adceef377dc82"
+  },
+  "inventory": {
+    "result": "full private inventory and direct semantic inventory pass",
+    "command": "make -o build inventory",
+    "report": ".tools/static-method-internal/.tools/internal-inventory.log",
+    "report_sha256": "b136fedc843ae2a6deeefc0d7998d6c7be55f5e6a57903fcb8e4d1467802ae6e",
+    "semantic_command": "python3 scripts/check-semantic-inventory.py",
+    "semantic_result": "169 constructors, 306 obligations consistent; one obligation closed",
+    "observation": "Configured PHP build and source were copied into this private worktree; 356 text build files had old output-root references rewritten with timestamps preserved, and no copied symlink escaped the private tree. The ordinary PHP binary remained unchanged."
+  },
+  "boundaries": "Only enumerated internal Throwable getters and Closure->__invoke capture are admitted. Other Closure methods and user Throwable subclasses remain separate obligations. Capture-site source checks authenticate literal method names and live receiver/closure types; a fully correlated forgery of a completed dynamic source name or selector cannot be reconstructed after evaluation. The original source-method capture and its 23-case gate remain independently reviewed in first-class-method-review.json."
+}
