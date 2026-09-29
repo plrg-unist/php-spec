@@ -26,7 +26,7 @@ syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILI
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
 syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
-syntax pproptypesource = { OBJECT nat, NAME ptbytes, DECL ppropertyid }
+syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 dec $propref_at(ppropref*, nat) : ppropref?
 syntax pclassdesc = { ORIGIN porigin, KIND text, NAME ptbytes, PARENT ptbytes?, INTERFACES ptbytes*, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }

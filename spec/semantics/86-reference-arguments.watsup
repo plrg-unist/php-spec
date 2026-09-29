@@ -10,6 +10,7 @@ def $call_parameter_reference(S, pcalltarget, n) = false -- otherwise
 def $call_reference_variable(NExprVariable phpType32 metadata) = ~$ppglobals_base(NExprVariable phpType32 metadata)
 def $call_reference_variable(NExprArrayDimFetch expression phpType5 metadata) = true
 def $call_reference_variable(NExprPropertyFetch expression phpType20 metadata) = true
+def $call_reference_variable(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
 def $call_reference_variable(expression) = false -- otherwise
 
 def $call_argument_task(S, pcalltarget_function, n, expression, porigin?) = CALL_REF_PREP pcalltarget_function n porigin?
@@ -28,6 +29,7 @@ dec $call_temporary_base(expression) : bool
 def $call_temporary_base(NExprArrayDimFetch expression phpType5 metadata) = $call_temporary_base(expression)
 def $call_temporary_base(NExprVariable phpType32 metadata) = false
 def $call_temporary_base(NExprPropertyFetch expression phpType20 metadata) = false
+def $call_temporary_base(NExprStaticPropertyFetch phpType19 phpType31 metadata) = false
 def $call_temporary_base(expression) = ~$ppsend_var(expression) -- otherwise
 
 def $base_acquire(S, BASE_VALUE (REFERENCE n), z) = S[.LOCATION = ROOT n]

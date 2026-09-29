@@ -48,35 +48,38 @@ def $update_alias_cell(S, PROPERTY n_object ptbytes) = (n_cell)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
 def $update_alias_cell(S, plocation) = eps -- otherwise
 
+dec $propref_descriptor(pstate, pproptypesource) : ppropertydesc?
+dec $class_static_at(pclassstatic*, ppropertyid) : pclassstatic?
+dec $class_static_active_desc(pstate, (preqbytes, porigin)*, ppropertyid) : ppropertydesc?
 dec $update_first_nodouble(pstate, pproptypesource*) : pproptypesource?
 def $update_first_nodouble(S, eps) = eps
 def $update_first_nodouble(S, pproptypesource :: pproptypesource_tail*) = (pproptypesource)
-  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
-  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
-  -- if ppropertydesc.ORIGIN = pproptypesource.DECL
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
   -- if ~$update_accepts_double(ppropertydesc.TYPE)
 def $update_first_nodouble(S, pproptypesource :: pproptypesource_tail*) = $update_first_nodouble(S, pproptypesource_tail*)
-  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
-  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
-  -- if ppropertydesc.ORIGIN = pproptypesource.DECL
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
   -- if $update_accepts_double(ppropertydesc.TYPE)
 
 dec $update_limit_word(pupdate) : ptbytes
 def $update_limit_word(INCREMENT) = $ptascii("maximal")
 def $update_limit_word(DECREMENT) = $ptascii("minimal")
 dec $update_overflow_message(pstate, pupdate, plocation) : ptbytes?
-def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, pproptypesource.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $update_alias_cell(S, plocation) = (n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $update_first_nodouble(S, ppropref.SOURCES) = (pproptypesource)
-  -- if S.OBJECTS[pproptypesource.OBJECT] = INSTANCE porigin_class
-  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pproptypesource.NAME) = (ppropertydesc)
+  -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
 def $update_overflow_message(S, pupdate, PROPERTY n_object ptbytes) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ~$update_accepts_double(ppropertydesc.TYPE)
+def $update_overflow_message(S, pupdate, CLASS_STATIC ppropertyid) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
   -- if ~$update_accepts_double(ppropertydesc.TYPE)
 def $update_overflow_message(S, pupdate, plocation) = eps -- otherwise
 

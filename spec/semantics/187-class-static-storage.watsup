@@ -22,7 +22,6 @@ def $class_static_finish(S, pclassdesc, S_result) = $class_static_commit(S_resul
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
 def $class_static_finish(S, pclassdesc, S_result) = S[.COMPLETION = UNSUPPORTED "class static default storage"] -- otherwise
 
-dec $class_static_at(pclassstatic*, ppropertyid) : pclassstatic?
 def $class_static_at(eps, ppropertyid) = eps
 def $class_static_at(pclassstatic :: pclassstatic_tail*, ppropertyid) = (pclassstatic)
   -- if pclassstatic.DECL = ppropertyid
@@ -37,7 +36,6 @@ def $class_static_desc_at(ppropertydesc :: ppropertydesc_tail*, ppropertyid) = (
 def $class_static_desc_at(ppropertydesc :: ppropertydesc_tail*, ppropertyid) = $class_static_desc_at(ppropertydesc_tail*, ppropertyid)
   -- if ppropertydesc.ORIGIN =/= ppropertyid \/ ~ppropertydesc.STATIC
 
-dec $class_static_active_desc(pstate, (preqbytes, porigin)*, ppropertyid) : ppropertydesc?
 def $class_static_active_desc(S, eps, ppropertyid) = eps
 def $class_static_active_desc(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, ppropertyid) = (ppropertydesc)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -49,8 +47,13 @@ def $class_static_active_desc(S, (preqbytes, porigin) :: (preqbytes_tail, porigi
   -- if $class_at(S.CLASSES, porigin) = eps
 
 dec $class_static_rows_valid(pstate, pclassstatic*) : bool
+dec $class_static_source_covered(pstate, pclassstatic, ppropertydesc) : bool
+def $class_static_source_covered(S, pclassstatic, ppropertydesc) = $propref_source_present(S.PROPREFS, n_cell, CLASS_PROP_SOURCE pclassstatic.DECL)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+def $class_static_source_covered(S, pclassstatic, ppropertydesc) = true -- otherwise
 def $class_static_rows_valid(S, eps) = true
-def $class_static_rows_valid(S, pclassstatic :: pclassstatic_tail*) = ($property_slot_valid(S, ppropertydesc, {DECL (pclassstatic.DECL), NAME ppropertydesc.KEY, STATE pclassstatic.STATE}) /\ $class_static_rows_valid(S, pclassstatic_tail*))
+def $class_static_rows_valid(S, pclassstatic :: pclassstatic_tail*) = ($property_slot_valid(S, ppropertydesc, {DECL (pclassstatic.DECL), NAME ppropertydesc.KEY, STATE pclassstatic.STATE}) /\ $class_static_source_covered(S, pclassstatic, ppropertydesc) /\ $class_static_rows_valid(S, pclassstatic_tail*))
   -- if $class_static_active_desc(S, S.CLASSNAMES, pclassstatic.DECL) = (ppropertydesc)
   -- if $class_static_at(pclassstatic_tail*, pclassstatic.DECL) = eps
   -- if pclassstatic.STATE =/= PROP_UNSET

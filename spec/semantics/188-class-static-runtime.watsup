@@ -174,6 +174,75 @@ def $base_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_st
   -- if ~$class_static_accessible(S, ppropertydesc)
 def $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $base_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z)
 
+dec $class_static_attach_source(pstate, ppropertyid, nat) : pstate
+def $class_static_attach_source(S, ppropertyid, n_cell) = S[.PROPREFS = $propref_attach(S.PROPREFS, n_cell, CLASS_PROP_SOURCE ppropertyid)]
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+def $class_static_attach_source(S, ppropertyid, n_cell) = S -- otherwise
+
+dec $class_static_detach_source(pstate, ppropertyid) : pstate
+def $class_static_detach_source(S, ppropertyid) = S[.PROPREFS = $propref_detach(S.PROPREFS, n_old, CLASS_PROP_SOURCE ppropertyid)]
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_old)
+  -- if $propref_source_present(S.PROPREFS, n_old, CLASS_PROP_SOURCE ppropertyid)
+def $class_static_detach_source(S, ppropertyid) = S -- otherwise
+
+dec $class_static_reference_fetch(pstate, ppropertyid, int) : pstate
+def $class_static_reference_fetch(S, ppropertyid, z) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+def $class_static_reference_fetch(S, ppropertyid, z) = S_attached[.CLASSSTATICS = $class_static_set(S_attached.CLASSSTATICS, ppropertyid, PROP_VALUE (ALIAS n_cell))][.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if n_cell = |S.STORE|
+  -- if S_attached = $class_static_attach_source($reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell), ppropertyid, n_cell)
+def $class_static_reference_fetch(S, ppropertyid, z) = $throw_scalar(S, "Error", $ptascii("Cannot access uninitialized non-nullable property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" by reference"), z)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_INITIAL
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, PNULL, false) = TYPEREJECT
+def $class_static_reference_fetch(S, ppropertyid, z) = $class_static_reference_fetch(S[.CLASSSTATICS = $class_static_set(S.CLASSSTATICS, ppropertyid, PROP_VALUE (DIRECT PNULL))], ppropertyid, z)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_INITIAL
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, PNULL, false) =/= TYPEREJECT
+def $call_location_reference(S) = $class_static_reference_fetch(S, ppropertyid, $property_current_line(S))
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = CLASS_STATIC ppropertyid
+
+dec $class_static_bind_prepare(pstate, ppropertyid, nat, int) : pstate
+def $class_static_bind_prepare(S, ppropertyid, n_cell, z) = $property_bind_type(S, ppropertydesc, n_cell, pvalue, z)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+def $class_static_bind_prepare(S, ppropertyid, n_cell, z) = S
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps
+dec $assign_class_static_reference(pstate, ppropertyid, nat, int) : pstate
+def $assign_class_static_reference(S, ppropertyid, n_cell, z) = S_attached[.CLASSSTATICS = $class_static_set(S_attached.CLASSSTATICS, ppropertyid, PROP_VALUE (ALIAS n_cell))][.RESULT = REFERENCE n_cell]
+  -- if S_prepared = $class_static_bind_prepare(S, ppropertyid, n_cell, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_attached = $class_static_attach_source($class_static_detach_source($reference_cell(S_prepared, n_cell), ppropertyid), ppropertyid, n_cell)
+def $assign_class_static_reference(S, ppropertyid, n_cell, z) = S_prepared
+  -- if S_prepared = $class_static_bind_prepare(S, ppropertyid, n_cell, z)
+  -- if S_prepared.COMPLETION =/= NORMAL
+
+def $assign_array_reference(S, BASE_CLASS_STATIC porigin_requested ptbytes, n_cell, z) = $assign_class_static_reference(S_target, ppropertyid, n_cell, z)
+  -- if S_target = $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.LOCATION = CLASS_STATIC ppropertyid
+def $assign_array_reference_cv(S, BASE_CLASS_STATIC porigin_requested ptbytes, n_name*, z) = S_cell
+  -- if S_target = $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_cell = $acquire_name(S_target, n_name*)
+  -- if S_cell.COMPLETION =/= NORMAL
+def $assign_array_reference_cv(S, BASE_CLASS_STATIC porigin_requested ptbytes, n_name*, z) = $assign_class_static_reference(S_cell, ppropertyid, S_cell.CELL, z)
+  -- if S_target = $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.LOCATION = CLASS_STATIC ppropertyid
+  -- if S_cell = $acquire_name(S_target, n_name*)
+  -- if S_cell.COMPLETION = NORMAL
+
 def $location_slot(S, CLASS_STATIC ppropertyid) = DEFINED $entry_value(S, pitem)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE pitem
@@ -242,7 +311,7 @@ rule PhpStep/class-static-class-literal: S ~> $class_static_prepare_base(S_class
   -- if S.TODO = (STATIC_PROP_CLASS phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
   -- if S_class = $scoped_class_prepare(S, phpType19, z)
   -- if S_class.COMPLETION = NORMAL
-rule PhpStep/class-static-class-computed: S ~> S_class[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), STATIC_PROP_NAME phpType19 S_class.RESULT z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+rule PhpStep/class-static-class-computed: S ~> S_class[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), STATIC_PROP_NAME phpType19 S_class.RESULT z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (STATIC_PROP_CLASS phpType19 expression_name z) :: ptask_tail*
   -- if $class_static_computed_name(expression_name)
   -- if S_class = $scoped_class_prepare(S, phpType19, z)
@@ -291,6 +360,7 @@ def $class_static_class_task_valid(S, phpType19, phpType31, z) = false -- otherw
 def $call_task_valid(S, STATIC_PROP_CLASS phpType19 phpType31 z) = $class_static_class_task_valid(S, phpType19, phpType31, z)
 dec $class_static_name_task_valid(pstate, phpType19, poperand, int) : bool
 def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = true
+  -- if S.RESULT = KNOWN (PSTRING n_class*)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
@@ -301,6 +371,7 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = t
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_name) = ((z_name, b))
 def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = true
+  -- if S.RESULT = KNOWN (PSTRING n_class*)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
@@ -308,11 +379,12 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = t
   -- if ~$ppscoped_named(phpType19)
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if pclassdesc.NAME = n_class*
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(n_class*)
   -- if $origin_child(S.ORIGIN, [PCFIELD 1]) = (PORIGIN n_unit pcpath_name)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_name) = ((z_name, b))
 def $class_static_name_task_valid(S, phpType19, KNOWN (POBJECT n_class), z) = true
+  -- if S.RESULT = KNOWN (POBJECT n_class)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
@@ -324,3 +396,56 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (POBJECT n_class), z) = tr
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_name) = ((z_name, b))
 def $class_static_name_task_valid(S, phpType19, poperand_selector, z) = false -- otherwise
 def $call_task_valid(S, STATIC_PROP_NAME phpType19 poperand_selector z) = $class_static_name_task_valid(S, phpType19, poperand_selector, z)
+
+;; The shared reference continuation retains the class declaration as a
+;; location. Its source and type constraints are authenticated separately.
+rule PhpStep/class-static-reference-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP (NExprStaticPropertyFetch phpType19 phpType31 metadata_property)), PROPERTY_REF_PREP expression_value $runtime_line(S, [PCFIELD 0], NExprStaticPropertyFetch phpType19 phpType31 metadata_property)] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_value metadata)) :: ptask_tail*
+rule PhpStep/class-static-reference-acquire: S ~> S[.TODO = [DIM_PREP (NExprStaticPropertyFetch phpType19 phpType31 metadata), PROPERTY_REF_FETCH $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (ACQUIRE (NExprStaticPropertyFetch phpType19 phpType31 metadata)) :: ptask_tail*
+
+dec $class_static_ref_name_matches(phpType31, ptbytes) : bool
+def $class_static_ref_name_matches(NVarLikeIdentifier (BYTES text) metadata, ptbytes) = (ptbytes = $base64(text))
+def $class_static_ref_name_matches(phpType31, ptbytes) = true
+  -- if $class_static_computed_name(phpType31)
+def $class_static_ref_name_matches(phpType31, ptbytes) = false -- otherwise
+def $class_static_ref_assignment_task(S, expression_rhs, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_code, b))
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprStaticPropertyFetch phpType19 phpType31 metadata_property)
+def $class_static_ref_assignment_task(S, expression_rhs, z) = false -- otherwise
+dec $class_static_ref_requested(pstate, porigin, phpType19) : bool
+def $class_static_ref_requested(S, porigin_requested, phpType19) = true
+  -- if $ppscoped_named(phpType19)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $scoped_source_name(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], phpType19) = (ptbytes_source)
+  -- if $ptlc(ptbytes_source) = $ptlc(pclassdesc.NAME)
+def $class_static_ref_requested(S, porigin_requested, phpType19) = true
+  -- if ~$ppscoped_named(phpType19)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $class_static_ref_requested(S, porigin_requested, phpType19) = false -- otherwise
+def $class_static_ref_base_task(S, porigin_requested, ptbytes, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_code, b))
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprStaticPropertyFetch phpType19 phpType31 metadata_property)
+  -- if $class_static_ref_name_matches(phpType31, ptbytes)
+  -- if $class_static_ref_requested(S, porigin_requested, phpType19)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
+def $class_static_ref_base_task(S, porigin_requested, ptbytes, z) = false -- otherwise
+def $class_static_ref_fetch_task(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 phpType31 metadata_property)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_code, b))
+  -- if z = $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata_property)
+  -- if $property_ref_demand(S)
+  -- if S.BASE = BASE_CLASS_STATIC porigin_requested ptbytes
+  -- if $class_static_ref_name_matches(phpType31, ptbytes)
+def $class_static_ref_fetch_task(S, z) = false -- otherwise
+def $call_task_valid(S, EVAL (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_value metadata)) = $class_static_source_task(S, NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_value metadata)
+def $call_task_valid(S, ACQUIRE (NExprStaticPropertyFetch phpType19 phpType31 metadata)) = ($class_static_source_task(S, NExprStaticPropertyFetch phpType19 phpType31 metadata) /\ $property_ref_demand(S))
