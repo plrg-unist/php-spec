@@ -162,8 +162,8 @@ def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, pprop
   -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ $ppproperty_explicit(ppropdefault)
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Static property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" cannot be readonly"), $nabs(z))) ppropertydesc*
   -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ ~$ppproperty_explicit(ppropdefault) /\ $ppproperty_flag(flags, 8)
-def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, KEY $ppproperty_key(flags, ptbytes, pchheader.NAME), VISIBILITY $ppproperty_visibility(flags), TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
-  -- if flags <- [0, 1, 2, 4] /\ ~pchheader.READONLY
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, KEY $ppproperty_key(flags, ptbytes, pchheader.NAME), VISIBILITY $ppproperty_visibility(flags), STATIC $ppproperty_flag(flags, 8), TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
+  -- if flags <- [0, 1, 2, 4, 8, 9, 10, 12] /\ ~pchheader.READONLY
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "property visibility, static, readonly, or final")) ppropertydesc* -- otherwise
 
 def $ppproperty_desc_at(eps, ptbytes) = eps

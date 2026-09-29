@@ -76,7 +76,7 @@ def $pil_activate(S, S_parent, pclassdesc, PILMISSINGRESULT ptbytes) = $throw_sc
 def $pil_activate(S, S_parent, pclassdesc, PILUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
   -- if S_parent.COMPLETION = NORMAL
 
-def $activate_class(S, pclassdesc) = $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
+def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps))))
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
@@ -91,7 +91,7 @@ def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptb
   -- if pclassdesc.INTERFACES =/= eps
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
   -- if ~$class_internal(ptbytes_parent)
-def $activate_class(S, pclassdesc) = $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps))
+def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)

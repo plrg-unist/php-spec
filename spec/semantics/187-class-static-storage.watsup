@@ -1,0 +1,76 @@
+;; A static declaration owns one cell for its declaring class. Descendants
+;; resolve the declaration before consulting this table; they do not copy it.
+def $class_static_initial(S, eps) = (eps)
+def $class_static_initial(S, ppropertydesc :: ppropertydesc_tail*) = ({DECL ppropertydesc.ORIGIN, STATE ppropstate} :: pclassstatic_tail*)
+  -- if ppropertydesc.STATIC
+  -- if $property_default_state(S, ppropertydesc) = (ppropstate)
+  -- if $class_static_initial(S, ppropertydesc_tail*) = (pclassstatic_tail*)
+def $class_static_initial(S, ppropertydesc :: ppropertydesc_tail*) = $class_static_initial(S, ppropertydesc_tail*)
+  -- if ~ppropertydesc.STATIC
+def $class_static_initial(S, ppropertydesc*) = eps -- otherwise
+
+def $class_static_commit(S, pclassstatic*) = S -- if S.COMPLETION =/= NORMAL
+def $class_static_commit(S, pclassstatic*) = S[.CLASSSTATICS = S.CLASSSTATICS ++ pclassstatic*]
+  -- if S.COMPLETION = NORMAL
+
+;; Interface linking may publish a class through 178. Commit its cells only
+;; after that path has completed successfully, using defaults from the input.
+dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
+def $class_static_finish(S, pclassdesc, S_result) = S_result -- if S_result.COMPLETION =/= NORMAL
+def $class_static_finish(S, pclassdesc, S_result) = $class_static_commit(S_result, pclassstatic*)
+  -- if S_result.COMPLETION = NORMAL
+  -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
+def $class_static_finish(S, pclassdesc, S_result) = S_result[.COMPLETION = UNSUPPORTED "class static default storage"] -- otherwise
+
+dec $class_static_at(pclassstatic*, ppropertyid) : pclassstatic?
+def $class_static_at(eps, ppropertyid) = eps
+def $class_static_at(pclassstatic :: pclassstatic_tail*, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.DECL = ppropertyid
+def $class_static_at(pclassstatic :: pclassstatic_tail*, ppropertyid) = $class_static_at(pclassstatic_tail*, ppropertyid)
+  -- if pclassstatic.DECL =/= ppropertyid
+
+dec $class_static_desc_at(ppropertydesc*, ppropertyid) : ppropertydesc?
+def $class_static_desc_at(eps, ppropertyid) = eps
+def $class_static_desc_at(ppropertydesc :: ppropertydesc_tail*, ppropertyid) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.STATIC
+def $class_static_desc_at(ppropertydesc :: ppropertydesc_tail*, ppropertyid) = $class_static_desc_at(ppropertydesc_tail*, ppropertyid)
+  -- if ppropertydesc.ORIGIN =/= ppropertyid \/ ~ppropertydesc.STATIC
+
+dec $class_static_active_desc(pstate, (preqbytes, porigin)*, ppropertyid) : ppropertydesc?
+def $class_static_active_desc(S, eps, ppropertyid) = eps
+def $class_static_active_desc(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, ppropertyid) = (ppropertydesc)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_static_desc_at(pclassdesc.PROPERTIES, ppropertyid) = (ppropertydesc)
+def $class_static_active_desc(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, ppropertyid) = $class_static_active_desc(S, (preqbytes_tail, porigin_tail)*, ppropertyid)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_static_desc_at(pclassdesc.PROPERTIES, ppropertyid) = eps
+def $class_static_active_desc(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, ppropertyid) = eps
+  -- if $class_at(S.CLASSES, porigin) = eps
+
+dec $class_static_rows_valid(pstate, pclassstatic*) : bool
+def $class_static_rows_valid(S, eps) = true
+def $class_static_rows_valid(S, pclassstatic :: pclassstatic_tail*) = ($property_slot_valid(S, ppropertydesc, {DECL (pclassstatic.DECL), NAME ppropertydesc.KEY, STATE pclassstatic.STATE}) /\ $class_static_rows_valid(S, pclassstatic_tail*))
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pclassstatic.DECL) = (ppropertydesc)
+  -- if $class_static_at(pclassstatic_tail*, pclassstatic.DECL) = eps
+  -- if pclassstatic.STATE =/= PROP_UNSET
+def $class_static_rows_valid(S, pclassstatic*) = false -- otherwise
+
+dec $class_static_own_complete(pclassstatic*, ppropertydesc*) : bool
+def $class_static_own_complete(pclassstatic*, eps) = true
+def $class_static_own_complete(pclassstatic*, ppropertydesc :: ppropertydesc_tail*) = ($class_static_at(pclassstatic*, ppropertydesc.ORIGIN) =/= eps /\ $class_static_own_complete(pclassstatic*, ppropertydesc_tail*))
+  -- if ppropertydesc.STATIC
+def $class_static_own_complete(pclassstatic*, ppropertydesc :: ppropertydesc_tail*) = $class_static_own_complete(pclassstatic*, ppropertydesc_tail*)
+  -- if ~ppropertydesc.STATIC
+dec $class_static_active_complete(pstate, (preqbytes, porigin)*) : bool
+def $class_static_active_complete(S, eps) = true
+def $class_static_active_complete(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = ($class_static_own_complete(S.CLASSSTATICS, pclassdesc.PROPERTIES) /\ $class_static_active_complete(S, (preqbytes_tail, porigin_tail)*))
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $class_static_active_complete(S, (preqbytes, porigin)*) = false -- otherwise
+def $class_statics_valid(S) = ($class_static_rows_valid(S, S.CLASSSTATICS) /\ $class_static_active_complete(S, S.CLASSNAMES))
+
+def $class_static_roots(eps) = eps
+def $class_static_roots(pclassstatic :: pclassstatic_tail*) = $item_nodes(pitem) ++ $class_static_roots(pclassstatic_tail*)
+  -- if pclassstatic.STATE = PROP_VALUE pitem
+def $class_static_roots(pclassstatic :: pclassstatic_tail*) = $class_static_roots(pclassstatic_tail*)
+  -- if pclassstatic.STATE = PROP_INITIAL \/ pclassstatic.STATE = PROP_UNSET

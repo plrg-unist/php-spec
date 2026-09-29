@@ -10,20 +10,25 @@ dec $property_merge(ppropertydesc*, ppropertydesc*) : ppropertydesc*
 def $property_merge(ppropertydesc_base*, eps) = ppropertydesc_base*
 def $property_merge(ppropertydesc_base*, ppropertydesc :: ppropertydesc_tail*) = $property_merge($property_replace(ppropertydesc_base*, ppropertydesc), ppropertydesc_tail*)
 
+dec $instance_declarations(ppropertydesc*) : ppropertydesc*
+def $instance_declarations(eps) = eps
+def $instance_declarations(ppropertydesc :: ppropertydesc_tail*) = $instance_declarations(ppropertydesc_tail*) -- if ppropertydesc.STATIC
+def $instance_declarations(ppropertydesc :: ppropertydesc_tail*) = ppropertydesc :: $instance_declarations(ppropertydesc_tail*) -- if ~ppropertydesc.STATIC
+
 def $property_layout(S, porigin, 0) = eps
-def $property_layout(S, porigin, n) = $property_merge(eps, pclassdesc.PROPERTIES)
+def $property_layout(S, porigin, n) = $property_merge(eps, $instance_declarations(pclassdesc.PROPERTIES))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps
-def $property_layout(S, porigin, n) = $property_merge(eps, pclassdesc.PROPERTIES)
+def $property_layout(S, porigin, n) = $property_merge(eps, $instance_declarations(pclassdesc.PROPERTIES))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
-def $property_layout(S, porigin, n) = $property_merge($property_layout(S, porigin_parent, $nabs($(n - 1))), pclassdesc.PROPERTIES)
+def $property_layout(S, porigin, n) = $property_merge($property_layout(S, porigin_parent, $nabs($(n - 1))), $instance_declarations(pclassdesc.PROPERTIES))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
-def $property_layout(S, porigin, n) = $property_merge($throwable_layout(text_kind), pclassdesc.PROPERTIES)
+def $property_layout(S, porigin, n) = $property_merge($throwable_layout(text_kind), $instance_declarations(pclassdesc.PROPERTIES))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)

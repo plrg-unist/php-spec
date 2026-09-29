@@ -21,7 +21,16 @@ CASES = {
         'ppropertydesc_a.KEY = [0,42,0,120]', 'ppropertydesc_b.KEY = [120]',
         'ppropertydesc_b.VISIBILITY = PROPERTY_PUBLIC']),
     'private-admission': ('<?php class A{private int $x=1;}', ['P.COMPLETION = PPCNORMAL', 'P.CLASSES = [pclassdesc]', 'pclassdesc.PROPERTIES = [ppropertydesc]', 'ppropertydesc.KEY = [0,65,0,120]', 'ppropertydesc.VISIBILITY = PROPERTY_PRIVATE']),
-    'static-dependency': ('<?php class A{protected static int $x=1;}', ['P.COMPLETION = PPCABRUPT (UNSUPPORTED "property visibility, static, readonly, or final")']),
+    'static-protected': ('<?php class A{protected static int $x=1;}', [
+        'P.COMPLETION = PPCNORMAL', 'P.CLASSES = [pclassdesc]',
+        'pclassdesc.PROPERTIES = [ppropertydesc]', 'ppropertydesc.STATIC',
+        'ppropertydesc.VISIBILITY = PROPERTY_PROTECTED',
+        'ppropertydesc.KEY = [0,42,0,120]']),
+    'static-private': ('<?php class A{private static int $x=1;}', [
+        'P.COMPLETION = PPCNORMAL', 'P.CLASSES = [pclassdesc]',
+        'pclassdesc.PROPERTIES = [ppropertydesc]', 'ppropertydesc.STATIC',
+        'ppropertydesc.VISIBILITY = PROPERTY_PRIVATE',
+        'ppropertydesc.KEY = [0,65,0,120]']),
     'readonly-dependency': ('<?php class A{protected readonly int $x;}', ['P.COMPLETION = PPCABRUPT (UNSUPPORTED "property visibility, static, readonly, or final")']),
     'asymmetric-dependency': ('<?php class A{public protected(set) int $x=1;}', ['P.COMPLETION = PPCABRUPT (UNSUPPORTED "property visibility, static, readonly, or final")']),
     'hook-dependency': ('<?php class A{protected int $x {get=>1;}}', ['P.COMPLETION = PPCABRUPT (UNSUPPORTED "property attributes, hooks, or members")']),
