@@ -158,7 +158,8 @@ def main():
                          'opened': b64(out.as_posix().encode() + b'/other.php'),
                          'source': b64(b'<?php return 8;')}
         context_snapshot = {**snapshot, 'version': 2,
-                            'entries': [context_entry, other_context]}
+                            'entries': [context_entry, other_context],
+                            'chdir_entries': []}
         context_initial = adapter.request({'op': 'execute', 'ast': parsed['ast'],
                                            'filename': b64(main_path), 'steps': 300,
                                            'file_snapshot': context_snapshot}, 30)

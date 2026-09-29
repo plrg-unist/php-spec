@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Finite-context source comparisons for include_path mutation."""
 import base64
+import errno
 import hashlib
 import json
+import locale
 import os
 from pathlib import Path
 import subprocess
@@ -10,6 +12,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 PROFILE = ROOT / 'tests/semantics/profile.json'
+locale.setlocale(locale.LC_ALL, 'C')
 CASES = {
     'set-restore': b"<?php echo include 'one.php'; echo set_include_path('__SUB__'); echo include 'one.php'; ini_restore('include_path'); echo include 'one.php';",
     'ini-set': b"<?php echo ini_set('include_path','__SUB__'); echo include 'one.php';",
@@ -25,6 +28,20 @@ CASES = {
     'strict-ini-int': b"<?php declare(strict_types=1); echo ini_set('include_path',123);",
     'strict-set-int': b"<?php declare(strict_types=1); try{set_include_path(123);}catch(TypeError $e){echo $e->getMessage();} echo include 'one.php';",
     'set-nul': b"<?php try{set_include_path(\"a\\0b\");}catch(ValueError $e){echo $e->getMessage();} echo include 'one.php';",
+    'chdir-success': b"<?php echo include 'one.php'; echo chdir('__SUB__')?'T':'F'; echo include 'one.php';",
+    'chdir-relative': b"<?php echo include 'one.php'; echo chdir('sub')?'T':'F'; echo include 'one.php';",
+    'chdir-function': b"<?php function f(){return chdir('__SUB__');} echo include 'one.php'; f(); echo include 'one.php';",
+    'chdir-once': b"<?php echo include_once 'one.php'; chdir('__SUB__'); echo include_once 'one.php';",
+    'chdir-failure': b"<?php echo chdir('missing')?'T':'F'; echo include 'one.php';",
+    'chdir-empty': b"<?php echo chdir('')?'T':'F'; echo include 'one.php';",
+    'chdir-nul': b"<?php try{chdir(\"a\\0b\");}catch(ValueError $e){echo $e->getMessage();} echo include 'one.php';",
+    'chdir-null': b"<?php echo chdir(null)?'T':'F'; echo include 'one.php';",
+    'chdir-weak-int': b"<?php echo chdir(123)?'T':'F'; echo include 'one.php';",
+    'chdir-strict-int': b"<?php declare(strict_types=1); try{chdir(123);}catch(TypeError $e){echo $e->getMessage();} echo include 'one.php';",
+    'chdir-named': b"<?php chdir(directory:'__SUB__'); echo include 'one.php';",
+    'chdir-unpack': b"<?php chdir(...['directory'=>'__SUB__']); echo include 'one.php';",
+    'chdir-first-class': b"<?php $f=chdir(...); $f('__SUB__'); echo include 'one.php';",
+    'included-function-chdir': b"<?php include 'mutate.php'; echo include 'one.php';",
 }
 
 
@@ -64,11 +81,12 @@ def main():
     profile = json.loads(PROFILE.read_text())
     flags = [piece for key, value in profile.items() for piece in ('-d', key + '=' + value)]
     environment = {**os.environ, 'LC_ALL': 'C'}
-    cwd = os.fsencode(ROOT.resolve())
+    default_cwd = os.fsencode(ROOT.resolve())
     records = []
     for name, template in CASES.items():
         directory = out / name
         directory.mkdir()
+        cwd = os.fsencode(directory.resolve()) if name == 'chdir-relative' else default_cwd
         sub = directory / 'sub'
         sub.mkdir()
         main_path = directory / 'main.php'
@@ -80,22 +98,48 @@ def main():
         source = template.replace(b'__SUB__', sub_bytes)
         main_path.write_bytes(source)
         main_bytes = os.fsencode(main_path.resolve())
+        mutate = directory / 'mutate.php'
+        if name == 'included-function-chdir':
+            mutate.write_bytes(b"<?php function f(){return chdir('__SUB__');} f();".replace(b'__SUB__', sub_bytes))
         entries = []
-        for include_path, target in [(b'.:', local), (sub_bytes, alternate)]:
+        for cwd_key, include_path, target in [(cwd, b'.:', local), (cwd, sub_bytes, alternate),
+                                               (sub_bytes, b'.:', alternate)]:
             opened = os.fsencode(target.resolve())
             entries.append({'caller': b64(main_bytes), 'requested': b64(b'one.php'),
-                            'cwd': b64(cwd), 'include_path': b64(include_path),
+                            'cwd': b64(cwd_key), 'include_path': b64(include_path),
                             'status': 'opened', 'resolved': b64(opened),
                             'opened': b64(opened), 'source': b64(target.read_bytes())})
+        if name == 'included-function-chdir':
+            mutate_bytes = os.fsencode(mutate.resolve())
+            entries.append({'caller': b64(main_bytes), 'requested': b64(b'mutate.php'),
+                            'cwd': b64(cwd), 'include_path': b64(b'.:'), 'status': 'opened',
+                            'resolved': b64(mutate_bytes), 'opened': b64(mutate_bytes),
+                            'source': b64(mutate.read_bytes())})
+        missing_error = os.strerror(errno.ENOENT).encode()
+        chdir_entries = [
+            {'cwd': b64(cwd), 'requested': b64(sub_bytes), 'status': 'success',
+             'next_cwd': b64(sub_bytes)},
+            {'cwd': b64(cwd), 'requested': b64(b'missing'), 'status': 'failure',
+             'stream_error': b64(missing_error), 'errno': errno.ENOENT},
+            {'cwd': b64(cwd), 'requested': b64(b''), 'status': 'failure',
+             'stream_error': b64(missing_error), 'errno': errno.ENOENT},
+            {'cwd': b64(cwd), 'requested': b64(b'123'), 'status': 'failure',
+             'stream_error': b64(missing_error), 'errno': errno.ENOENT},
+        ]
+        if name == 'chdir-relative':
+            chdir_entries.append({'cwd': b64(cwd), 'requested': b64(b'sub'),
+                                  'status': 'success', 'next_cwd': b64(sub_bytes)})
         snapshot = {'version': 2, 'main': b64(main_bytes), 'cwd': b64(cwd),
-                    'include_path': b64(b'.:'), 'entries': entries}
+                    'include_path': b64(b'.:'), 'entries': entries,
+                    'chdir_entries': chdir_entries}
         snapshot_path = directory / 'snapshot.json'
         snapshot_path.write_text(json.dumps(snapshot, sort_keys=True) + '\n')
         model_command = [str(ROOT / 'bin/php-semantics'), str(main_path),
                          '--file-snapshot', str(snapshot_path), '--steps', '100000', '--timeout', '60']
         native_command = [str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(main_path)]
-        model = subprocess.run(model_command, cwd=ROOT, env=environment, capture_output=True, timeout=90)
-        native = subprocess.run(native_command, cwd=ROOT, env=environment, capture_output=True, timeout=30)
+        process_cwd = directory if name == 'chdir-relative' else ROOT
+        model = subprocess.run(model_command, cwd=process_cwd, env=environment, capture_output=True, timeout=90)
+        native = subprocess.run(native_command, cwd=process_cwd, env=environment, capture_output=True, timeout=30)
         for label, result in [('model', model), ('native', native)]:
             (directory / (label + '.stdout')).write_bytes(result.stdout)
             (directory / (label + '.stderr')).write_bytes(result.stderr)
@@ -111,7 +155,9 @@ def main():
         records.append({'case': name, 'result': 'pass' if matching else 'fail',
                         'source_sha256': digest(main_path), 'snapshot_sha256': digest(snapshot_path),
                         'local_sha256': digest(local), 'alternate_sha256': digest(alternate),
+                        'mutate_sha256': digest(mutate) if mutate.exists() else None,
                         'model_command': model_command, 'native_command': native_command,
+                        'process_cwd': str(process_cwd.resolve()),
                         'model_process_exit': model.returncode, 'native_exit': native.returncode,
                         'model_status': outcome.get('status'),
                         'model_stdout_sha256': digest(directory / 'model.stdout'),
@@ -123,6 +169,7 @@ def main():
     vendor_after = vendor_identity()
     report = {'inputs': before, 'input_changes': [key for key in before if before[key] != after[key]],
               'vendor_tree': vendor_before,
+              'chdir_fact_basis': 'Created finite subdirectory canonicalized with Path.resolve; ENOENT number and C-locale strerror from errno.ENOENT/os.strerror, checked against pinned native raw outputs',
               'profile': profile, 'environment': {'LC_ALL': 'C', 'cwd': str(ROOT.resolve())},
               'cases': records, 'passed': all(row['result'] == 'pass' for row in records)}
     (out / 'report.json').write_text(json.dumps(report, indent=2, sort_keys=True) + '\n')
