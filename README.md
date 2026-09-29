@@ -24,8 +24,8 @@ the PHP-Parser AST as a formal program. Its
 separates 11 focused eval-source cases from the 30,980-entry existing file-syntax
 regression. The [native diagnostic ledger](coverage/dynamic-eval-native-diagnostics-review.json)
 records the separate parse-only bridge; the [exception-kind extension](coverage/dynamic-eval-parser-exceptions-review.json)
-records the later CompileError classification. Eval/include execution and machine
-pause/resume remain unsupported.
+records the later CompileError classification. [Reached eval execution](docs/semantics/DYNAMIC-EVAL.md)
+now uses a checked machine pause/resume; include/require remains unsupported.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

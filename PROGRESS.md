@@ -50,7 +50,8 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 155/156 A | Normal/throw finally, previous chains, suppression and exit: 19 source tuples, 11 compiler sources and six paused stages/103 assertions. [Stage A ledger](coverage/semantics/finally-author.json) |
 | 155/156 B | Value/reference return, loop/switch/foreach jumps and goto across finally: 20 additional source tuples, six transfer controls and ten transfer paused stages. A focused repair disambiguates goto entry into try/catch with and without finally and authenticates the rebuilt region across saved calls. [Contract](docs/semantics/SOURCE-FINALLY.md) · [Stage B ledger](coverage/semantics/finally-stage-b-author.json) · [repair ledger](coverage/semantics/finally-goto-repair.json) |
 | 157/158 | Generated Throwable fields use authenticated internal property IDs and sole `OBJECTPROPS` slots; five direct getters retain ordered argument/receiver ownership. Final-base evidence: 26 exact source tuples, seven Unsupported controls, four paused stages/60 assertions, and private 22-source/127-assertion bridge. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-getters-review.json) |
-| 159/160 foundation | Fresh dynamic source-unit registration, preservation of a live caller during compiler append, and per-unit observer filenames. This is compiler/registry groundwork; reached eval and include execution remain open. [Contract](docs/semantics/DYNAMIC-SOURCE.md) · [ledger](coverage/semantics/dynamic-source-foundation.json) |
+| 159/160 foundation | Fresh dynamic source-unit registration, preservation of a live caller during compiler append, and per-unit observer filenames. [Contract](docs/semantics/DYNAMIC-SOURCE.md) · [ledger](coverage/semantics/dynamic-source-foundation.json) |
+| 159/160 reached eval | Owned parser pause/resume, fresh checked source units, caller scope, eval return/throw barriers, catchable parser errors, static fatal priority and dynamic trace frames. A 55-case source run has 48 exact agreements and seven explicit Unsupported controls; current merged code passed six paused/service suites, four selected eval sources and retained no-eval checks. Include/require remains open. [Contract](docs/semantics/DYNAMIC-EVAL.md) · [author ledger](coverage/semantics/dynamic-eval-author.json) |
 | 161/162 | Finite internal `Exception`/`Error` constructors and identical inherited variants capture allocation location/trace, validate all arguments before ordered field writes, support direct reentry and legal previous cycles, and retain paused receiver/sent/unpack roots. Integrated method-base evidence: 35 exact source tuples, three Unsupported controls, seven paused stages/95 assertions, retained Throwable 33/65 and focused method source/paused bridges. [Contract](docs/semantics/THROWABLES.md) · [review](coverage/semantics/throwable-constructors-review.json) |
 | Nonpublic instance methods | Protected/private source descriptors, lexical ancestor-private dispatch, protected root-prototype access, constructors and selected-call provenance. Bounded evidence: 47 exact native sources, 32 compiler fixtures/109 assertions, four paused stages/27 assertions and 12 independent exact replays; the merged frontend has a separately classified 30,980-entry syntax gate. [Contract](docs/semantics/SOURCE-METHODS.md) · [review](coverage/semantics/method-visibility-review.json) |
 | 165/166 `get_class` testing support | Finite live-object names, lexical zero-argument deprecation, ordered callable/argument routes and direct `GET_CLASS` trace mode. Installed evidence: 27 exact pinned source outcomes and four paused stages/48 assertions; private review adds eight exact probes. Closure rebinding, handler callbacks, broader introspection and object-identity closure remain open. [Contract](docs/semantics/GET-CLASS.md) · [ledger](coverage/semantics/get-class-review.json) |
@@ -68,14 +69,16 @@ protocol negatives pass; the separate 30,980-entry classified gate checks
 existing file syntax on the same frontend/adapter commit. Its
 [provenance ledger](coverage/dynamic-eval-helper-review.json) records the frozen
 inputs, inventory results and the separately synchronized grammar mapping.
-Reached eval/include still returns `Unsupported`. Native parse-only diagnostics
+Reached eval uses a checked parser continuation; include/require still returns
+`Unsupported`. Native parse-only diagnostics
 provide exact eval `ParseError` and parse-time `CompileError` evidence while
 PHP-Parser still supplies the checked AST; the [bridge ledger](coverage/dynamic-eval-native-diagnostics-review.json)
 keeps its full file-syntax regression separate from focused eval cases. The
 [exception-kind extension](coverage/dynamic-eval-parser-exceptions-review.json)
 records the later native CompileError classification separately.
 Unknown native failures and parser disagreement remain `helper_unsupported`;
-authored catchable exceptions and stateful source continuation are the next steps.
+the reached eval contract and remaining cases are in
+[DYNAMIC-EVAL.md](docs/semantics/DYNAMIC-EVAL.md).
 
 ## Next work
 

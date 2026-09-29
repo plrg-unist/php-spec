@@ -41,8 +41,14 @@ source filename.
 
 Current source controls cover nested eval, eval return in typed and by-reference
 callers, parser and static errors, namespaces, class scope, inline HTML,
-variable sharing, and eval inside pending finally return/throw. The following
-remain explicit obligations: object `__toString` operand conversion;
+variable sharing, and eval inside pending finally return/throw.
+The [author ledger](../../coverage/semantics/dynamic-eval-author.json) binds
+the 55-case original-source run (48 exact agreements, seven explicit
+Unsupported controls), a retrospective identity check for three previously
+unhashed test helpers, and fresh paused/source/no-eval checks after the
+`get_class` integration. Raw reports remain under ignored `.tools` paths.
+
+Remaining obligations are object `__toString` operand conversion;
 eval-created closure and `parent::class` scope; generic imported-name `::class`
 evaluation; native-accepted namespace headers rejected by the PHP-Parser
 frontend; accepted-AST catchable `CompileError` cases and class-link errors

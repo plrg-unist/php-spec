@@ -1,0 +1,171 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
+  "scope": "Reached eval continuation and get_class integration; Unsupported controls are separate from native agreement. Raw records and commands are in ignored .tools paths.",
+  "full_source": {
+    "command": "python3 tests/semantics/eval_execution.py",
+    "report": ".tools/eval-execution-xgi8nk6d/report.json",
+    "sha256": "b29316be11fc30828c1700dc4e377a6a69d825a195843b53fc95e5318f2bf22a",
+    "result": "pass",
+    "records": 55,
+    "native_agreements": 48,
+    "unsupported_controls": 7,
+    "declared_input_hashes": 170,
+    "capture_commit": "783de7f5e",
+    "retrospective_helper_identity": {
+      "basis": "These clean tracked files had mtimes before the run; no helper was edited during execution. Current bytes equal the captured commit blobs. This bridges the omitted helper hashes; it does not retroactively prove bytes from the original manifest.",
+      "tests/semantics/static_types.py": "81f3a0fdd3f16b80df83997906aee07611d34b0344abd6f5a433179a5d08eec6",
+      "frontend/wire.py": "731b67d6b753b9116d829630374ac64b4dfa7b7ccd773f7c4902cb9e856761f5",
+      "tests/validate.py": "3c272479cd93fd919c21cc1eea661873989faf3e5ed4db6f53988d1f3687c278",
+      "captured_runner_sha256": "4a1cbd855ded1fe1de636b77a486174035bf4f9fa50384dc565b489e0317e710",
+      "run_window_utc": "2026-09-29T09:59:45Z to 2026-09-29T10:03:33Z (first source and report mtimes)",
+      "helper_latest_mtime_utc": "2026-09-28T09:29:13Z"
+    }
+  },
+  "post_rebase_bridge": {
+    "semantic_delta_from_capture": [
+      "get_class task/intrinsic constructors in 30-storage.watsup",
+      "get_class descriptor guard in 84-call-integrity.watsup",
+      "new 165/166 modules and modules.json registration"
+    ],
+    "reason": "No full-source eval case calls get_class; the get_class descriptor guard is true for states without a get_class task. Four representative eval source cases and all six paused/service suites were rerun after this delta.",
+    "source_cases": [
+      {
+        "command": "python3 tests/semantics/eval_execution.py --match nested-runtime-throw",
+        "report": ".tools/eval-execution-sy8grav5/report.json",
+        "sha256": "f12a26c5c3f8469d8a15cd8a096d3f5dd51d55dd5078982b8ea258e67c2c71fe",
+        "result": "pass",
+        "selection": "nested-runtime-throw",
+        "records": 1,
+        "native_agreements": 1,
+        "unsupported_controls": 0
+      },
+      {
+        "command": "python3 tests/semantics/eval_execution.py --match dynamic-class-redeclaration",
+        "report": ".tools/eval-execution-iavb4kvh/report.json",
+        "sha256": "d9edd3c70f313568cb83354ef0f452efc08a3e06461203af8d22a9c9a55df577",
+        "result": "pass",
+        "selection": "dynamic-class-redeclaration",
+        "records": 1,
+        "native_agreements": 1,
+        "unsupported_controls": 0
+      },
+      {
+        "command": "python3 tests/semantics/eval_execution.py --match eval-in-finally-pending-return",
+        "report": ".tools/eval-execution-v7_od29m/report.json",
+        "sha256": "bad73f6508fda2d8afc3ee3d9151aa419d33230f4f64fbd46bc9441e7fca2228",
+        "result": "pass",
+        "selection": "eval-in-finally-pending-return",
+        "records": 1,
+        "native_agreements": 1,
+        "unsupported_controls": 0
+      },
+      {
+        "command": "python3 tests/semantics/eval_execution.py --match typed-caller",
+        "report": ".tools/eval-execution-zxyuviuq/report.json",
+        "sha256": "be13cf8e650fa99c9292a9f04851d8cda7fb6aee160ad908ec590f30aa51076b",
+        "result": "pass",
+        "selection": "typed-caller",
+        "records": 1,
+        "native_agreements": 1,
+        "unsupported_controls": 0
+      }
+    ],
+    "protocols": [
+      {
+        "command": "python3 tests/semantics/eval_protocol.py",
+        "report": ".tools/eval-protocol-h5zohvat/report.json",
+        "sha256": "f5f08a37935700450bbe907846a4de626760a13def105b74d2923f8d5e4fa760",
+        "result": "pass",
+        "assertions": 27
+      },
+      {
+        "command": "python3 tests/semantics/eval_saved_protocol.py",
+        "report": ".tools/eval-saved-protocol-4j9khdli/report.json",
+        "sha256": "f921d57f5cf0887298c0934573b9c9f05d2d6044262a8d137ae505dad3a27353",
+        "result": "pass",
+        "assertions": 42
+      },
+      {
+        "command": "python3 tests/semantics/eval_finally_protocol.py",
+        "report": ".tools/eval-finally-protocol-ajmj_hv3/report.json",
+        "sha256": "ccfe92c52e87d33151978091c57a483e246d2c067ca0b8fb382ba78ed3815f3c",
+        "result": "pass",
+        "records": 2,
+        "assertions": 20
+      },
+      {
+        "command": "python3 tests/semantics/eval_nested_trace_protocol.py",
+        "report": ".tools/eval-nested-trace-1to9bgul/report.json",
+        "sha256": "5c012e59e9eeda5b34c560c671b570dce0db9a355c787b2e705a2fff00a75c3e",
+        "result": "pass",
+        "records": 2,
+        "assertions": 45
+      },
+      {
+        "command": "python3 tests/semantics/eval_trace_protocol.py",
+        "report": ".tools/eval-trace-protocol-utzbjbsu/report.json",
+        "sha256": "bd12dcb87c8cd995dae39917ca7513ea5e162d67a825f7050f1687f0bb0a0fbd",
+        "result": "pass",
+        "records": 5,
+        "assertions": 78
+      },
+      {
+        "command": "python3 tests/semantics/eval_adapter_protocol.py",
+        "report": ".tools/eval-adapter-protocol-vr9_qvkx/report.json",
+        "sha256": "3592a4dcc21d60164da4a99656324a7cab221f66c284420d86766112b9b692d7",
+        "result": "pass"
+      }
+    ],
+    "retained_no_eval": [
+      {
+        "command": "python3 tests/semantics/get_class_intrinsic.py",
+        "report": ".tools/get-class-source-lafcy1z2/report.json",
+        "sha256": "0de33c10fa2db422dc680a2d0d6f7022d6d761455abace76cf1497f000e422d1",
+        "result": "pass",
+        "records": 27
+      },
+      {
+        "command": "python3 tests/semantics/throwable_accessors.py",
+        "report": ".tools/getter-probes-gsfqhetu/report.json",
+        "sha256": "3981ac12c17f312958bbdcf89eb7387cb3fd8b7567b44be3063a20c80deba3a8",
+        "result": "pass",
+        "records": 33,
+        "native_agreements": 27,
+        "unsupported_controls": 6
+      },
+      {
+        "command": "python3 tests/semantics/throwable_constructors.py",
+        "report": ".tools/ctor-probes-ht94o67h/report.json",
+        "sha256": "5cdc09014ab763a262554b593f9c9b50d6b71948760995d4fda7abbef1501e37",
+        "result": "pass",
+        "records": 38,
+        "native_agreements": 35,
+        "unsupported_controls": 3
+      },
+      {
+        "command": "python3 tests/semantics/clone_expressions.py --match author-identity-public",
+        "report": ".tools/clone-source-i3fqahcc/report.json",
+        "sha256": "4baed9f05bd8ab3ae583bb09f7fecab87e951f07b04f8b615347784298b2a47e",
+        "result": "pass",
+        "records": 1
+      },
+      {
+        "command": "python3 tests/semantics/exit_expressions.py --match author-bare",
+        "report": ".tools/exit-expressions-eawj9_vq/report.json",
+        "sha256": "4326e3086a4b7a5746ab608208bb601733884fc7f60e772a288d08d3913fec9b",
+        "result": "pass",
+        "records": 1
+      }
+    ]
+  },
+  "remaining": [
+    "object __toString eval operand",
+    "eval-created closure binding",
+    "parent::class in eval method scope",
+    "imported-name ::class",
+    "PHP-Parser namespace-header disagreement",
+    "accepted-AST catchable CompileError and further class links",
+    "getTrace source cases pending trace-slot integration",
+    "include/require/once source provider"
+  ]
+}
