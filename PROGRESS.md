@@ -55,22 +55,21 @@ callables and direct `implements Throwable` remain in their own streams.
 
 The directory open-failure followup is installed at **b4e87a539** on concat **e199654f4**. It authenticates the first-warning display path and stream-error bytes separately from the requested operand; relative include/require and absolute include match pinned native output. Its full 44-source capture predates concat; a current nine-source selection and independent four-source replay passed before installation. Installed five-source, 119 file-pause, 46 saved-frame and 20 adapter checks pass. [Ledger](coverage/semantics/include-open-failure-review.json). Mutable CWD/`include_path`, other failure causes and transformed wrappers remain open.
 
-The private source-interface candidate admits ordered `extends`/`implements`,
-linked nominal membership, method variance and aggregate abstract obligations.
-Its runtime/compiler catalogues pass 14/14 and 13/13 exact original-source
-cases; independent replay passes 11/11 multiline cases and 20/20 forged-state
-assertions. On the current include/concat base, runtime/compiler catalogues
-again pass 14/14 and 13/13; independent literal two-file diagnostics pass 3/3,
-nominal/type cases 2/2 and forged links 20/20. A frozen 30,980-source frontend
-gate, full test target and isolated inventory pass on both bases. The
-On installed Throwable-subclass base **242607f9c**, the retained runtime
-catalogue passes 20/20 exact source tuples, including four rooted and two
-nonroot `Throwable` cases. Independent replay agrees on six source outcomes
-and rejects direct/transitive forged nonroot links (13/13 assertions). Inherited
-internal method contracts, constants, hooked properties and other protocols
-remain open.
+The reviewed private source-interface candidate admits ordered
+`extends`/`implements`, nominal membership, method variance and abstract
+obligations. On the Throwable-subclass base its retained runtime catalogue
+passes 20/20 exact source tuples; an independent bridge confirms six rooted
+and nonroot outcomes plus 13 forged-link assertions. On the Closure-binding
+code base the compiler catalogue passes 13/13 and the full test target exits
+successfully; a six-source bridge on that code base also passes. An independent
+final-base recheck confirms a rooted instance, a nonroot fatal and 13 forged-link
+assertions. The earlier
+30,980-source syntax gate and inventory apply to the unchanged parser/AST
+projection, with provenance in the [ledger](coverage/semantics/interface-author.json).
+Inherited internal method contracts, constants, hooked properties and other
+protocols remain open.
 [Contract](docs/semantics/SOURCE-INTERFACES.md) ·
-[ledger](coverage/semantics/interface-author.json).
+[history](MILESTONE-HISTORY.md).
 
 Eval object operand conversion is installed at **3a2997e10**. It reuses the owned source `__toString` call; the file-trace-base catalogue has 11 exact outcomes and one explicit weak nested-return Unsupported control. Installed focused throw, included-file bridge and five paused stages pass. The combined captured-closure/eval throw and full repository test target also pass. Earlier include-base evidence and the original failing bridge remain separate in the [ledger](coverage/semantics/user-string-eval-author.json). [Contract](docs/semantics/USER-STRING.md).
 

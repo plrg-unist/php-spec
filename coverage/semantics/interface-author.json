@@ -1,5 +1,5 @@
 {
-  "status": "private_candidate_B_bridge_reviewed_pending_final_gates",
+  "status": "private_candidate_binding_base_reviewed_pending_installed_checks",
   "code_commit": "2177e4c65",
   "base": "33b18cc0a",
   "scope": "source interface declaration/link/nominal relations, ordered method prototype checks and abstract obligations",
@@ -36,7 +36,7 @@
     }
   },
   "limits": [
-    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed retained current-B and independent source/forged bridge; compiler/full-test final-base gates remain pending.",
+    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed retained and independently reviewed source/forged bridges; inherited internal getter contracts remain a separate finite milestone.",
     "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported until the finite catalog is added.",
     "Other internal interfaces and hooks, class/interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open; no full interface-family closure is claimed."
   ],
@@ -202,5 +202,57 @@
       "php_error",
       "static_rejection"
     ]
+  },
+  "binding_base": {
+    "code_base": "e450404e4",
+    "status_base": "85a2e75e9",
+    "candidate": "b7aeb68a6",
+    "compiler": {
+      "result": "pass",
+      "records": 13,
+      "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/interface_compiler_cases.json",
+      "report": ".tools/interfaces-candidate/.tools/method-runtime-d4xwzzoz/report.json",
+      "report_sha256": "5e9aa93bff769038a030725699efb2c57f5fbc0c2c1205ccfa8162ca87139d03",
+      "fingerprint_sha256": "d8f9d6c42c5c21aea4ac8877f3e0e7d4a822bda1f88141ab65b42c82899ac681"
+    },
+    "full_test": {
+      "result": "pass",
+      "command": "make -o build test",
+      "log": ".tools/interfaces-candidate/.tools/interface-binding-test.log",
+      "log_sha256": "5e94e08cc3b332cdb98b7853c687bcb0b0f3940014d72ce97cd2e29bd805d4d4",
+      "generated_counts": {
+        "pass": 3781,
+        "parser_rejection": 319,
+        "classified_encoding_difference": 2,
+        "reviewed_readonly_compile_phase": 1
+      },
+      "deep_corpus_pass": 1,
+      "stable_implementation": true,
+      "fingerprint_sha256": "d8f9d6c42c5c21aea4ac8877f3e0e7d4a822bda1f88141ab65b42c82899ac681"
+    },
+    "throwable_source": {
+      "result": "pass",
+      "exact": 6,
+      "report": ".tools/interfaces-candidate/.tools/method-runtime-d36b8dj5/report.json",
+      "sha256": "015aa784e1b722c7b843bdef98e5d35cc255029436b83ee81cc418441aadfbdb",
+      "note": "run on 29f13f3c1 code; 85a2e75e9 changes only a review ledger"
+    },
+    "independent_current_base": {
+      "result": "pass",
+      "source_exact": 2,
+      "forged_assertions": 13,
+      "ledger": ".tools/interfaces-review-177/.tools/interfaces-review-final-base.json",
+      "ledger_sha256": "5909398aa2fae6bc386a3f39d35c211d7eb2794a5d70c3a0e17684c253d2f0d6",
+      "forged_report": ".tools/interfaces-review-177/.tools/interface-throwable-forged-9xxvb09d/report.json",
+      "forged_report_sha256": "c27aa09203b6187d4e522223f6a80197b3f87e798b450b2d0b4c6cf1bbd682b2"
+    },
+    "syntax_projection": {
+      "source_gate_base": "1b86f8047",
+      "frontend_git_tree": "8d3fb97c06475bfc2c01a61609f12bef9e3f2e4e",
+      "grammar_git_blob": "10a202387708a840a2f63938e4ebdb74284ea500",
+      "parser_vendor_git_tree": "dc8e844b0daa905e5d4265f16488f31ec1d3e9a3",
+      "validation_driver_git_blob": "06cad4e0118127bf58e780969b1c432bb8c96516",
+      "difference": "adapter file-snapshot open_failure warning_path only; source syntax parser and grammar unchanged"
+    }
   }
 }
