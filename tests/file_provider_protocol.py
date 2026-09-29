@@ -116,6 +116,7 @@ def main():
 
         varying = copy.deepcopy(packet)
         varying['snapshot']['version'] = 2
+        varying['snapshot']['chdir_entries'] = []
         first = {**row, 'cwd': snapshot['cwd'], 'include_path': snapshot['include_path']}
         second = {**row, 'cwd': b64(b'/snapshot/sub'), 'include_path': b64(b'sub'),
                   'resolved': b64(b'/snapshot/sub/other.php'),
