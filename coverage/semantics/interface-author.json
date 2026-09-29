@@ -1,5 +1,5 @@
 {
-  "status": "private_candidate_B_root_bridge_pending_independent_review",
+  "status": "private_candidate_B_bridge_reviewed_pending_final_gates",
   "code_commit": "2177e4c65",
   "base": "33b18cc0a",
   "scope": "source interface declaration/link/nominal relations, ordered method prototype checks and abstract obligations",
@@ -36,7 +36,7 @@
     }
   },
   "limits": [
-    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed retained current-B source tests; independent replay and compiler/full-test gates remain pending.",
+    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed retained current-B and independent source/forged bridge; compiler/full-test final-base gates remain pending.",
     "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported until the finite catalog is added.",
     "Other internal interfaces and hooks, class/interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open; no full interface-family closure is claimed."
   ],
@@ -169,7 +169,22 @@
     "exact_original_source": 6,
     "rooted_positive": 4,
     "nonroot_fatal": 2,
-    "unsupported_control": "inherited Throwable getter contract overlap remains explicit Unsupported"
+    "unsupported_control": "inherited Throwable getter contract overlap remains explicit Unsupported",
+    "independent": {
+      "path": ".tools/interfaces-review-177/.tools/interfaces-review-b-bridge.json",
+      "sha256": "d472a9794607b84031811b3ddb531410cda6f284d127e03a33a210808dfe0d2",
+      "exact_original_source": 6,
+      "forged_direct_transitive_assertions": 13,
+      "forged_report": ".tools/interfaces-review-177/.tools/interface-throwable-forged-3wmwsngx/report.json",
+      "forged_report_sha256": "ec8838b4ec6c4d8571538fd02833af99b1dc3d46db6698416b746f28d0bb4241",
+      "earlier_complex_forged_probes": "two timeouts; inconclusive"
+    },
+    "author_forged": {
+      "path": ".tools/interfaces-candidate/.tools/interface-throwable-forged-x457drza/report.json",
+      "sha256": "60e613636cb0ce7e03223ce82df3bd2944e0736724f6f8e405e61049cd9fbcd0",
+      "script_sha256": "74469b52e8f314aecdd5ffa9b03fb514f492906fa960d84ebbc8889b5282db08",
+      "assertions": 13
+    }
   },
   "retained_B_runtime": {
     "base": "242607f9c",

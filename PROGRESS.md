@@ -65,7 +65,8 @@ nominal/type cases 2/2 and forged links 20/20. A frozen 30,980-source frontend
 gate, full test target and isolated inventory pass on both bases. The
 On installed Throwable-subclass base **242607f9c**, the retained runtime
 catalogue passes 20/20 exact source tuples, including four rooted and two
-nonroot `Throwable` cases; independent bridge replay is pending. Inherited
+nonroot `Throwable` cases. Independent replay agrees on six source outcomes
+and rejects direct/transitive forged nonroot links (13/13 assertions). Inherited
 internal method contracts, constants, hooked properties and other protocols
 remain open.
 [Contract](docs/semantics/SOURCE-INTERFACES.md) ·
