@@ -237,10 +237,10 @@ returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
 user-object `__toString` now runs callbacks for echo, print and string casts,
 with other string contexts still open.
-A [private eval-operand candidate](coverage/semantics/user-string-eval-author.json)
-extends that callback to checked eval source requests. Its include-base source,
-retained eval and paused checks pass. On the installed file-trace base, the
-focused source, paused and included-file callback bridge checks also pass.
+[Eval operand conversion](coverage/semantics/user-string-eval-author.json)
+extends that callback to checked eval source requests. Its source catalogue
+passed on the file-trace base; installed focused, paused and included-file
+callback bridge checks also pass.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

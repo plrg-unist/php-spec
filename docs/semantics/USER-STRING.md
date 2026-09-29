@@ -87,7 +87,7 @@ fingerprint and ignored raw report hashes are in the ledger. The bridge
 checks the shared scoped-call and implicit-call guards together. This
 foundation is installed; the remaining conversion consumers are still open.
 
-A private eval-operand increment reuses the same owned method call. The operand
+The installed eval-operand increment reuses the same owned method call. The operand
 keeps its child source occurrence through conversion; a returned string then
 resumes the checked eval parser request at the parent occurrence. Both generated
 source filenames and callback `eval()` frames use the compiled operand line,
