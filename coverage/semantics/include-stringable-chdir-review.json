@@ -1,0 +1,33 @@
+{
+  "scope": "Private checked Stringable operand conversion for finite-provider chdir",
+  "base": "e093e565defeaa69c2d9cc80a08712441bae43b2",
+  "code_commit": "0b49204e0",
+  "test_commit": "4f88e5979",
+  "contract": "A weak positional chdir object with a source-checked __toString method runs the callback before requesting an OS directory fact. The original object remains in the call for trace and selection provenance. The resulting bytes enter an append-only conversion log; the pending DIRCONTEXT requires its exact latest record, owning frame, source site, call line, selected-call nonce and object. The callback can change CWD before the outer request, whose lookup captures the new CWD. Direct, computed-string and owned first-class calls share this route. Strict or non-stringable objects raise TypeError before callback; NUL returned by the callback raises ValueError before any OS request. Ordinary no-snapshot chdir has one explicit Unsupported reached transition.",
+  "source_selected": {
+    "selector": "Import include_mutable_execution; retain the eight IDs beginning chdir-stringable- plus chdir-object-nonstringable in CASES; call main() without editing source inputs.",
+    "report": ".tools/include-stringable-chdir/.tools/include-mutable-nrj1lpqb/report.json",
+    "sha256": "ca7afaa9ec2e561341cba1efd104958d01011e05f6c7f9ccd91d6c2233922deb",
+    "result": "9/9 exact native/model raw stdout, stderr and exit comparisons; weak, dynamic and first-class output ST7; NUL outputs SV8; strict and non-stringable output T8; nested and multiline uncaught traces exit 255; callback CWD mutation outputs T8",
+    "watched_inputs": 198,
+    "input_changes": 0
+  },
+  "directory_paused": {
+    "command": "python3 tests/semantics/include_chdir_protocol.py",
+    "report": ".tools/include-stringable-chdir/.tools/include-chdir-protocol-zx1tzm0p/report.json",
+    "sha256": "ae0c7c6232dda18334c79c3a86a3b3d317c6e53372e9984a44c164f11ccfc31a",
+    "result": "5 source-derived stages and 205 assertions pass, including direct and dynamic object-conversion freshness, forged request bytes, conversion nonce and selected-call nonce",
+    "watched_inputs": 200,
+    "input_changes": 0
+  },
+  "callback_paused": {
+    "selector": "Import include_mutable_protocol; retain no-file-chdir, stringable-entered and stringable-dynamic-entered in CASES; call main() without editing source inputs.",
+    "report": ".tools/include-stringable-chdir/.tools/include-mutable-protocol-76brlu18/report.json",
+    "sha256": "d6483889e377826a6e576ed410e29a49b8df67ad3db892ec0f62d738d06b08c2",
+    "result": "3 source-derived stages and 27 assertions pass: no-snapshot one-step Unsupported, callback context source/call-line ownership, and forged saved-frame selected nonce",
+    "watched_inputs": 200,
+    "input_changes": 0
+  },
+  "historical_pilot": "The earlier two-row direct pilot .tools/include-stringable-chdir/.tools/include-mutable-evzjmivh/report.json (SHA-256 9442de22be240e256f80f26403d495287aae892b0519262ad49f37ea95b6cd72) predates the saved-frame trace and maintained test edits; it remains diagnostic, not current evidence.",
+  "remaining": "Full maintained source catalogue, retained eval/include/Throwable checks, independent selected replay and final paired review remain required before any canonical lease. Named/unpacked object arguments, nested callback line forms beyond the exercised cases, broader OS/INI profiles and transformed stream wrappers remain separate required follow-ups. This private slice is not installed or complete-core acceptance."
+}

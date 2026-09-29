@@ -100,6 +100,11 @@ separate generic91 repair.
 [Ledger](coverage/semantics/closure-call-review.json).
 [Argument extension review](coverage/semantics/closure-call-arguments-review.json).
 
+Private Stringable-`chdir` code follows the installed selected-call increment.
+Its earlier nine-source and callback/conversion checks remain historical;
+current-base source closure, retained validation and paired acceptance are
+pending. [Ledger](coverage/semantics/include-stringable-chdir-review.json).
+
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
 constrained references, interpolation,
