@@ -1,24 +1,164 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
   "scope": "Finite immutable file-provider opened fact with an actual null resolver result. The bounded source witness is an identity-transform php://filter/read=/resource= wrapper over a local file; it does not claim other wrappers or mutable resolution context.",
-  "integration_base": "8d809ef7516dcff3f06962ed3442aac27837dd2d",
-  "tested_code_head": "dd97105189326fef0b01e42b862d7a8ba5dd0803",
-  "tested_code_tree": "be056078ae60c756b95b7b94d7d3c93e2bad800c",
-  "code_commits": ["a6318d07b", "657dcb88f"],
-  "test_commit": "dd9710518",
+  "integration_base": "648605c5f19a2bc3eef5d0877f38c23d929a24ce",
+  "tested_code_head": "4f0946f1a8c5a5a2080d70c2baa968265d31af82",
+  "tested_code_tree": "9b5ef395c7ef41a9e05fefd6eac9de754b026b27",
+  "code_commits": [
+    "5d264669f",
+    "13f436bac"
+  ],
+  "test_commit": "4f0946f1a",
   "engine_basis": [
     "main/fopen_wrappers.c php_resolve_path: a non-plain wrapper may return null instead of a canonical resolver path",
     "Zend/zend_execute.c zend_include_or_eval: pre-open once skip requires a successfully resolved path; opened-path identity is checked after stream open"
   ],
   "boundary": "The provider authenticates JSON resolved:null against the immutable snapshot. The adapter transports it as an empty semantic byte sequence only after FILE_OPENED; FILE_RESOLVE_WAIT still has absent RESOLVED. A null resolver result cannot trigger pre-open once skip. The opened canonical path controls the post-open skip, source filename, __FILE__, and include trace. A skip consumes the file request nonce without a parser request or new source unit.",
-  "current_reports": [
-    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/dynamic-eval-implementation/.tools/include-execution-0vw9ei7m/report.json", "sha256": "43c73e8bf63e0f1aab9aaebdf1b96ed530139d51011290488750595b3b87ed67", "exact_native_agreements": 41, "declared_inputs": 188, "current_input_mismatches": 0},
-    {"command": "python3 tests/semantics/include_protocol.py", "report": ".tools/dynamic-eval-implementation/.tools/include-protocol-duiqghk6/report.json", "sha256": "04aecf68edaa0aad1b8b5898d68030296dda1976372afe826593397f7ce99d50", "assertions": 118, "declared_inputs": 192, "current_input_mismatches": 0},
-    {"command": "python3 tests/semantics/include_adapter_protocol.py", "report": ".tools/dynamic-eval-implementation/.tools/include-adapter-protocol-e1p5r89g/report.json", "sha256": "125a96eefe4a78b324a97d0e9051526565a1355fba76c1015b32b134afaccd69", "assertions": 20, "declared_inputs": 190, "current_input_mismatches": 0},
-    {"command": "python3 tests/semantics/include_saved_protocol.py", "report": ".tools/dynamic-eval-implementation/.tools/include-saved-protocol-_fyjl4re/report.json", "sha256": "8597158cd228b5a86b6180a9266afd03cc600bb95ee09270717f715af071fc78", "assertions": 46, "declared_inputs": 192, "current_input_mismatches": 0}
+  "non_numeric_checks": [
+    "python3 tests/file_provider_protocol.py: opened 1, failure facts 2, forged or ambiguous 16",
+    "python3 tests/include_source_service.py: accepted 9, native rejections 2, request negatives 8, unsupported profiles 3, namespace recoveries 4, mixed recovery blocked 1",
+    "SpecTec elaboration and explicit private Dune adapter/numeric-runner builds passed",
+    "git diff --check passed"
   ],
-  "focused_source_selection": {"selection": ["filter-fallback-once", "filter-fallback-trace"], "report": ".tools/dynamic-eval-implementation/.tools/include-execution-3ogvo2v7/report.json", "sha256": "948bf977290e2f2830e61202551e6741f1803d79f997ec945f9b900a2e511d5f", "exact_native_agreements": 2, "declared_inputs": 188, "current_input_mismatches": 0},
-  "independent_selected_replay": {"selection": ["filter-fallback-once", "filter-fallback-trace", "alias-once"], "method": "Reviewer restricted the maintained source harness in memory, decoded model JSON, and compared raw native stdout, stderr and exit status.", "report": ".tools/dynamic-eval-implementation/.tools/include-execution-ac62ilw2/report.json", "sha256": "4a173a66a58c1be6a1beaa8648b8430c3ae924148d8499ec410a85009db53464", "exact_native_agreements": 3, "declared_inputs": 188, "current_input_mismatches": 0},
-  "non_numeric_checks": ["python3 tests/file_provider_protocol.py: opened 1, failure facts 2, forged or ambiguous 16", "python3 tests/include_source_service.py: accepted 9, native rejections 2, request negatives 8, unsupported profiles 3, namespace recoveries 4, mixed recovery blocked 1", "SpecTec elaboration and explicit private Dune adapter/numeric-runner builds passed", "git diff --check passed"],
-  "remaining_file_provider_work": "Authenticate mutable CWD/include_path context and extend source comparisons to additional stream/open failure observations and non-identity wrappers. No arbitrary workspace read or Zend execution is delegated to the parser service."
+  "remaining_file_provider_work": "Authenticate mutable CWD/include_path context and extend source comparisons to additional stream/open failure observations and non-identity wrappers. No arbitrary workspace read or Zend execution is delegated to the parser service.",
+  "historical_8d_reports": [
+    {
+      "command": "python3 tests/semantics/include_execution.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-execution-0vw9ei7m/report.json",
+      "sha256": "43c73e8bf63e0f1aab9aaebdf1b96ed530139d51011290488750595b3b87ed67",
+      "exact_native_agreements": 41,
+      "declared_inputs": 188,
+      "input_mismatches_after_rebase": 4
+    },
+    {
+      "command": "python3 tests/semantics/include_protocol.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-protocol-duiqghk6/report.json",
+      "sha256": "04aecf68edaa0aad1b8b5898d68030296dda1976372afe826593397f7ce99d50",
+      "assertions": 118,
+      "declared_inputs": 192,
+      "input_mismatches_after_rebase": 4
+    },
+    {
+      "command": "python3 tests/semantics/include_adapter_protocol.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-adapter-protocol-e1p5r89g/report.json",
+      "sha256": "125a96eefe4a78b324a97d0e9051526565a1355fba76c1015b32b134afaccd69",
+      "assertions": 20,
+      "declared_inputs": 190,
+      "input_mismatches_after_rebase": 4
+    },
+    {
+      "command": "python3 tests/semantics/include_saved_protocol.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-saved-protocol-_fyjl4re/report.json",
+      "sha256": "8597158cd228b5a86b6180a9266afd03cc600bb95ee09270717f715af071fc78",
+      "assertions": 46,
+      "declared_inputs": 192,
+      "input_mismatches_after_rebase": 4
+    },
+    {
+      "selection": [
+        "filter-fallback-once",
+        "filter-fallback-trace"
+      ],
+      "report": ".tools/dynamic-eval-implementation/.tools/include-execution-3ogvo2v7/report.json",
+      "sha256": "948bf977290e2f2830e61202551e6741f1803d79f997ec945f9b900a2e511d5f",
+      "exact_native_agreements": 2,
+      "declared_inputs": 188,
+      "input_mismatches_after_rebase": 4
+    },
+    {
+      "selection": [
+        "filter-fallback-once",
+        "filter-fallback-trace",
+        "alias-once"
+      ],
+      "method": "Reviewer restricted the maintained source harness in memory, decoded model JSON, and compared raw native stdout, stderr and exit status.",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-execution-ac62ilw2/report.json",
+      "sha256": "4a173a66a58c1be6a1beaa8648b8430c3ae924148d8499ec410a85009db53464",
+      "exact_native_agreements": 3,
+      "declared_inputs": 188,
+      "input_mismatches_after_rebase": 4
+    }
+  ],
+  "historical_input_delta": [
+    "spec/semantics/95-type-values.watsup",
+    "spec/semantics/160-eval-runtime.watsup",
+    "spec/semantics/168-user-string-runtime.watsup",
+    "spec/semantics/174-internal-method-callables.watsup"
+  ],
+  "current_reports": [
+    {
+      "command": "selected filter-fallback-once, filter-fallback-trace, alias-once via maintained include_execution.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-execution-69v492md/report.json",
+      "sha256": "5784371580c0a4deeecafeeb51fa5f9b85229972768a6125bf0e58bdd42bc9a4",
+      "exact_native_agreements": 3,
+      "declared_inputs": 188,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "injected two-row selector below using maintained include_execution.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-execution-srhpil8g/report.json",
+      "sha256": "c1108bd183dffedadf69c69b3d9b9ce9b72a689145e19556924afeaf836d7fae",
+      "exact_native_agreements": 2,
+      "declared_inputs": 188,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/user_string_eval_bridge.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/user-string-eval-bridge-zy711ol0/report.json",
+      "sha256": "644c8bc0618374ed7b997398efb407c5ecc618d09ad1c4eb943521da77c3c385",
+      "exact_native_agreements": 3,
+      "declared_inputs": 179,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_protocol.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-protocol-53kfck8p/report.json",
+      "sha256": "6b74b8d87b594a247b491028f705756bf8cdf0c3ec27842453310cddeb35ce34",
+      "assertions": 118,
+      "declared_inputs": 192,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_adapter_protocol.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-adapter-protocol-x4oq4bjx/report.json",
+      "sha256": "8f2474e347dd5d6bfcb579933e330807e4434075e50af1fbd2519358dcb3dc22",
+      "assertions": 20,
+      "declared_inputs": 190,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_saved_protocol.py",
+      "report": ".tools/dynamic-eval-implementation/.tools/include-saved-protocol-2pi7vcye/report.json",
+      "sha256": "a2e8aa71f44229d4a62ed0f26216244ffcc9a80ea9c8e4805361272d0c0ae03c",
+      "assertions": 46,
+      "declared_inputs": 192,
+      "current_input_mismatches": 0
+    }
+  ],
+  "injected_cross_feature_source": {
+    "scope": "Focused wrapper-to-eval-object controls, separate from the maintained 41-row catalogue.",
+    "main_source": "<?php $p=\"php://filter/read=/resource=\".__DIR__.\"/one.php\"; include $p;",
+    "requested_paths": [
+      "__FILTER_ONE__"
+    ],
+    "child_sources": {
+      "filter-eval-object-normal": "<?php class O{function __toString(){return 'echo \"E;\";';}} eval(new O);",
+      "filter-eval-object-throw": "<?php class O{function __toString(){throw new Exception(\"x\");}} eval(new O);"
+    },
+    "selector_code": [
+      "import importlib.util",
+      "from pathlib import Path",
+      "path=Path('tests/semantics/include_execution.py')",
+      "spec=importlib.util.spec_from_file_location('include_execution',path)",
+      "module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)",
+      "main=b'<?php $p=\"php://filter/read=/resource=\".__DIR__.\"/one.php\"; include $p;'",
+      "module.CASES={",
+      " 'filter-eval-object-normal':(main,{'one.php':b'''<?php class O{function __toString(){return 'echo \"E;\";';}} eval(new O);'''},['__FILTER_ONE__']),",
+      " 'filter-eval-object-throw':(main,{'one.php':b'''<?php class O{function __toString(){throw new Exception(\"x\");}} eval(new O);'''},['__FILTER_ONE__']),",
+      "}",
+      "raise SystemExit(0 if module.main() else 1)"
+    ],
+    "provenance": "Executed by python3 heredoc in the clean private worktree. The maintained harness report records source, child, snapshot, command and raw outcome hashes."
+  },
+  "rebase_identity_bridge": "All 12 resolver-null scoped file blobs except PROGRESS are byte-identical to the reviewed 8d-base branch; PROGRESS changed only for the new canonical context. The four installed 174/conversion semantic modules in historical_input_delta make pre-rebase reports historical. Current focused reports exercise the null resolver, saved/adapter phases, and file-to-eval-object callback seam."
 }
