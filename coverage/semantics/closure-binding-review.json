@@ -1,5 +1,5 @@
 {
-  "result": "bounded-ordinary-closure-binding-private-review",
+  "result": "bounded-ordinary-closure-binding-current-base-author-pass-independent-pending",
   "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
   "scope": "Literal bindTo and Closure::bind on ordinary real closures copy captured values and static-local state into a separately owned closure; reference captures retain aliases. Lexical scope, called class, receiver, warnings, and binding source provenance follow the bounded contract in docs/semantics/CLOSURE-BINDING.md.",
   "code": {
@@ -64,7 +64,17 @@
       "report": ".tools/closure-binding-current/.tools/closure-binding-current-semantic-inventory.log",
       "report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
     },
-    "setup": "Each private worktree copied the configured PHP build and source, rewrote only text build references to its private output root with timestamps preserved, and ran make -o build inventory. A nested-worktree make build call selected the outer Dune root; explicit-root dune build succeeded on the current rebase."
+    "setup": "Each private worktree copied the configured PHP build and source, rewrote only text build references to its private output root with timestamps preserved, and ran make -o build inventory. A nested-worktree make build call selected the outer Dune root; explicit-root dune build succeeded on the current rebase.",
+    "current_explicit_null_full": {
+      "result": "pass, including optional coverage PHP, on code/test 0d387fda4",
+      "report": ".tools/closure-binding-current/.tools/closure-binding-current-null-inventory.log",
+      "report_sha256": "cbfb2f4d4a624c0efab7d1710d73ae9f7dc0862e06c3044fb2f32b86800ffc42"
+    },
+    "current_explicit_null_semantic": {
+      "result": "169 constructors, 306 obligations consistent; one obligation closed",
+      "report": ".tools/closure-binding-current/.tools/closure-binding-current-null-semantic-inventory.log",
+      "report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    }
   },
   "current_base_bridge": {
     "result": "8/8 exact and stable on b38c4cee8 before explicit-null extension; paused 3/3 stable, 31 assertions",
@@ -78,8 +88,24 @@
   },
   "boundaries": "Completed dynamic operand values and historical source selectors cannot always be reconstructed after evaluation; immediate simple-variable selectors are checked while their value is still live. This is a bounded ordinary real-closure binding increment. Closure::call, first-class fake method/getter/invoke-wrapper rebinding, internal-class objects as receiver or scope, unbinding a closure with an active receiver, named/unpacked binding operands, array callables and source __invoke remain required later work. No unsupported case is counted as native agreement.",
   "current_explicit_null_gate": {
-    "result": "pending 22-source and four-stage paused replay on 0d387fda4",
-    "source_cases": 22,
-    "paused_cases": 4
+    "result": "22/22 exact native source and four paused stages/43 assertions stable on 0d387fda4",
+    "source_report": ".tools/closure-binding-current/.tools/method-runtime-865fjyv2/report.json",
+    "source_report_sha256": "cc1e4fd7852276862334c7d0ff1e3421e6206d2e6053e2972013a26db6404e02",
+    "source_fingerprint_sha256": "0c99142d80ef1c2209a3b94bd77acc4771b373b3154e6d416c29f4b0a0094a7b",
+    "paused_report": ".tools/closure-binding-current/.tools/closure-binding-protocol-o24a07lc/report.json",
+    "paused_report_sha256": "52c21c16dd972574fd40b372ad5903d6255877b876e494db15cae23993ada00e",
+    "paused_cases": [
+      "bindto-selector",
+      "bind-first-argument",
+      "bound-source-release",
+      "null-scope-receiver"
+    ]
+  },
+  "current_compatibility": {
+    "result": "Three retained callable sources exact and six installed 174 paused stages/62 assertions stable on 0d387fda4",
+    "source_report": ".tools/closure-binding-current/.tools/method-runtime-4_exqayh/report.json",
+    "source_report_sha256": "593072bd758dd4be2dfa5e95e531eedaeec7c921d08b67c1c1deb4834ee00bff",
+    "paused_report": ".tools/closure-binding-current/.tools/first-class-internal-protocol-851r7ggu/report.json",
+    "paused_report_sha256": "2657800935940367c0f1ad899ee87e2928170b3d79ce3644f151ca82240b6859"
   }
 }

@@ -40,7 +40,9 @@ Ordinary Closure binding 181 is private at **0d387fda4** on the 9071d10d2
 base. Its original-base 19-source native differential, three paused provenance
 and ownership stages, and independent 19-source replay pass. A later
 current-base eight-source bridge and three paused stages pass on the prior code;
-the new explicit-null scope extension has a 22-source/four-stage gate pending.
+the explicit-null scope extension now passes 22 exact source controls and four
+paused stages, plus three retained callable sources and six installed internal
+capture paused stages. Independent replay of the 22-source extension is pending.
 The [binding ledger](coverage/semantics/closure-binding-review.json) keeps those
 fingerprints separate. `Closure::call`,
 captured callable rebinding, array callables and source `__invoke` remain open.
