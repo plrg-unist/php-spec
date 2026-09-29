@@ -2,6 +2,14 @@
 ;; argument evaluation, diagnostics, state mutation, and later file lookup.
 dec $dir_await_valid(pstate, pconfigcall, nat) : bool
 dec $dir_requested_valid(pstate, pdircontext) : bool
+dec $dir_conversion_log_valid(pstate, pdirconversion*, nat) : bool
+def $dir_conversion_log_valid(S, eps, n) = (n = S.DIRCONVSEQ)
+def $dir_conversion_log_valid(S, pdirconversion :: pdirconversion_tail*, n) = true
+  -- if pdirconversion.NONCE = n
+  -- if $call_line_valid(S, (pdirconversion.CALLSITE), pdirconversion.CALLLINE)
+  -- if ~(0 <- pdirconversion.RESULT)
+  -- if $dir_conversion_log_valid(S, pdirconversion_tail*, $(n + 1))
+def $dir_conversion_log_valid(S, pdirconversion*, n) = false -- otherwise
 def $task_nodes(CHDIR_AWAIT pconfigcall n) = $config_nodes(pconfigcall)
 def $eval_wrapped_marker(CHDIR_AWAIT pconfigcall n) = true
 def $eval_marker_valid(S, CHDIR_AWAIT pconfigcall n) = $dir_await_valid(S, pconfigcall, n)
@@ -29,32 +37,47 @@ def $dir_await_valid(S, pconfigcall, n) = true
 def $dir_await_valid(S, pconfigcall, n) = false -- otherwise
 def $dir_requested_valid(S, pdircontext) = (pdircontext.REQUESTED = eps)
   -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if pdircontext.CONVERSION = eps
   -- if ~$config_strict(S, pdircontext.CALL)
 def $dir_requested_valid(S, pdircontext) = (pdircontext.REQUESTED = n_requested*)
   -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if pdircontext.CONVERSION = eps
   -- if $config_conversion(S, pdircontext.CALL, pvalue) = ptypeconversion
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_converted = $typed_apply(S, ptypeconversion, pdircontext.CALL.LINE)
   -- if S_converted.RESULT = KNOWN (PSTRING n_requested*)
+def $dir_requested_valid(S, pdircontext) = true
+  -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if pdircontext.CONVERSION = (n_conversion)
+  -- if S.DIRCONVSEQ = $(n_conversion + 1)
+  -- if S.DIRCONVERSIONS[n_conversion] = pdirconversion
+  -- if pdirconversion.NONCE = n_conversion
+  -- if pdirconversion.CALLSITE = pdircontext.CALL.SITE
+  -- if pdirconversion.CALLLINE = pdircontext.CALL.LINE
+  -- if pdirconversion.OBJECT = n_object
+  -- if pdirconversion.SELECTION = pdircontext.CALL.SELECTION
+  -- if pdirconversion.OWNERDEPTH = pdircontext.FRAMEOWNER
+  -- if pdirconversion.RESULT = pdircontext.REQUESTED
 def $dir_requested_valid(S, pdircontext) = false -- otherwise
 def $dir_pending_state_valid(S) = (S.DIRSEQ = $(pdircontext.NONCE + 1) /\ pdircontext.FRAMEOWNER = |S.FRAMES| /\ S.ORIGIN = (pdircontext.CALL.SITE) /\ S.FILECWD = (pdircontext.CWD) /\ S.FILEINCLUDEPATH =/= eps /\ $dir_canonical(pdircontext.CWD) /\ ~(0 <- pdircontext.REQUESTED) /\ $config_invoke_valid(S, pdircontext.CALL) /\ $dir_requested_valid(S, pdircontext) /\ pdircontext.CALL.KIND = INTRINSIC_CHDIR /\ S.TODO = (CHDIR_AWAIT pdircontext.CALL pdircontext.NONCE) :: pdircontext.TAIL /\ $($dir_marker_count(S.TODO) + $dir_frame_marker_count(S.FRAMES)) = 1)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.DIRCONTEXT = (pdircontext)
 def $dir_pending_state_valid(S) = false -- otherwise
-def $dir_state_valid(S) = ($($dir_marker_count(S.TODO) + $dir_frame_marker_count(S.FRAMES)) = 0)
+def $dir_state_valid(S) = ($dir_conversion_log_valid(S, S.DIRCONVERSIONS, 0) /\ $($dir_marker_count(S.TODO) + $dir_frame_marker_count(S.FRAMES)) = 0)
   -- if S.DIRCONTEXT = eps
-def $dir_state_valid(S) = $dir_pending_state_valid(S)
+def $dir_state_valid(S) = ($dir_conversion_log_valid(S, S.DIRCONVERSIONS, 0) /\ $dir_pending_state_valid(S))
   -- if S.DIRCONTEXT = (pdircontext)
 
-def $dir_request_start(S, pconfigcall, n_requested*) = S[.DIRSEQ = $(n_nonce + 1)][.DIRCONTEXT = (pdircontext)][.TODO = (CHDIR_AWAIT pconfigcall n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+def $dir_request_start(S, pconfigcall, n_requested*) = $dir_request_start_with_conversion(S, pconfigcall, n_requested*, eps)
+def $dir_request_start_with_conversion(S, pconfigcall, n_requested*, n_conversion?) = S[.DIRSEQ = $(n_nonce + 1)][.DIRCONTEXT = (pdircontext)][.TODO = (CHDIR_AWAIT pconfigcall n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if S.DIRCONTEXT = eps
   -- if S.FILECWD = (n_cwd*)
   -- if S.FILEINCLUDEPATH =/= eps
   -- if n_nonce = S.DIRSEQ
   -- if n_owner = |S.FRAMES|
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
-  -- if pdircontext = {NONCE n_nonce, CALL pconfigcall, CWD n_cwd*, REQUESTED n_requested*, FRAMEOWNER n_owner, TAIL ptask_tail*}
-def $dir_request_start(S, pconfigcall, n_requested*) = S[.COMPLETION = UNSUPPORTED "chdir requires a finite directory snapshot"]
+  -- if pdircontext = {NONCE n_nonce, CALL pconfigcall, CWD n_cwd*, REQUESTED n_requested*, CONVERSION n_conversion?, FRAMEOWNER n_owner, TAIL ptask_tail*}
+def $dir_request_start_with_conversion(S, pconfigcall, n_requested*, n_conversion?) = S[.COMPLETION = UNSUPPORTED "chdir requires a finite directory snapshot"]
   -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
 
 dec $dir_response_valid(pstate, pdirresponse) : bool

@@ -13,9 +13,47 @@ def $config_kind(INTRINSIC_INI_SET) = true
 def $config_kind(INTRINSIC_INI_RESTORE) = true
 def $config_kind(INTRINSIC_CHDIR) = true
 def $config_kind(pintrinsic) = false -- otherwise
+dec $config_invoke_valid(pstate, pconfigcall) : bool
+dec $config_strict(pstate, pconfigcall) : bool
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, eps, PORIGIN n_unit pcpath_child, z_child))
+  -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (1)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $config_string_child_site(S, porigin_site, z) = false -- otherwise
+def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+  -- if pconfigcall.LINE = z_call
+  -- if $config_string_child_site(S, porigin_child, z_call)
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $stringable_instance(S, n_object)
+def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = false -- otherwise
+def $config_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_child), z_call) = true
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_child) z_call) :: (STRINGIFY_RESULT n porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask_tail*
+  -- if $config_string_site_valid(S, pconfigcall, n, porigin_child, z_child, z_call)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_child)
+def $config_string_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+def $config_string_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_child)
+  -- if $config_string_child_site(S, porigin_child, pcallcontext.LINE)
+  -- if $stringify_context_kind(S, pcallcontext)
+def $config_string_context_line_valid(S, pcallcontext) = false -- otherwise
+def $config_string_trace_context(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_child)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask_tail*
+  -- if $stringify_entered(S, S.CURRENT, S.FRAMES, METHOD_TARGET n porigin_method, porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n, porigin_child, z_child, z_call)
+  -- if pcallcontext.LINE = z_call
+def $config_string_trace_context(S, pcallcontext) = false -- otherwise
 def $config_dynamic_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
 def $config_pipe_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $pipe_site(S, porigin) /\ $pipe_fixed_name(S, porigin) = eps)
-dec $config_invoke_valid(pstate, pconfigcall) : bool
 def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
   -- if S.ORIGIN = (porigin)
@@ -51,6 +89,7 @@ def $task_nodes(CONFIG_SEND pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_UNPACK_PREP pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_UNPACK_NEXT pconfigcall poperand n) = $config_nodes(pconfigcall) ++ $operand_nodes(poperand)
 def $task_nodes(CONFIG_INVOKE pconfigcall) = $config_nodes(pconfigcall)
+def $task_nodes(CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) = [HOBJECT n] ++ $config_nodes(pconfigcall)
 
 dec $config_parameter(pintrinsic, preqbytes) : nat?
 def $config_parameter(INTRINSIC_SET_INCLUDE_PATH, preqbytes) = (0) -- if preqbytes = $ptascii("include_path")
@@ -174,7 +213,6 @@ def $config_method_receiver(S, pconfigcall) = true
   -- if pconfigcall.OWNER = (n)
   -- if $exit_method_site(S, pconfigcall.SITE)
 def $config_method_receiver(S, pconfigcall) = false -- otherwise
-dec $config_strict(pstate, pconfigcall) : bool
 def $config_strict(S, pconfigcall) = false -- if $config_method_receiver(S, pconfigcall)
 def $config_strict(S, pconfigcall) = $exit_strict(S, pconfigcall.SITE) -- otherwise
 dec $config_conversion(pstate, pconfigcall, pvalue) : ptypeconversion
@@ -323,9 +361,15 @@ def $config_receive(S, pconfigcall) = $dir_request_start(S_diagnostic, pconfigca
   -- if ~$config_strict(S, pconfigcall)
   -- if S_diagnostic = $diagnostic(S, "Deprecated", $ptascii("chdir(): Passing null to parameter #1 ($directory) of type string is deprecated"), pconfigcall.LINE)
   -- if S_diagnostic.COMPLETION = NORMAL
-def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "chdir stringable object conversion"]
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("chdir(): Argument #1 ($directory) must be of type string, ") ++ $typed_given(S, POBJECT n) ++ $ptascii(" given"))
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if $config_strict(S, pconfigcall) \/ ~$stringable_instance(S, n)
+def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "chdir stringable object argument needs a checked positional source"]
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $stringable_instance(S, n)
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("chdir(): Argument #1 ($directory) must be of type string, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
@@ -335,10 +379,25 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.FILEINCLUDEPATH = eps
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic operand outside checked scalar domain"] -- otherwise
+dec $config_string_launch(pstate, pconfigcall) : bool
+def $config_string_launch(S, pconfigcall) = true
+  -- if S.FILEINCLUDEPATH =/= eps
+  -- if S.FILECWD =/= eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
+def $config_string_launch(S, pconfigcall) = false -- otherwise
+rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigin_child)], n_object, porigin_child, pconfigcall.LINE, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child pconfigcall.LINE, ptask_tail*)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $config_string_launch(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if S.FILEINCLUDEPATH =/= eps
+  -- if ~$config_string_launch(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
@@ -346,6 +405,22 @@ rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_pa
 rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic selection has no source binding"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if ~$config_invoke_valid(S, pconfigcall)
+rule PhpStep/config-string-result: S ~> $dir_request_start_with_conversion(S_record, pconfigcall, n_requested*, (n_conversion))
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING n_requested*)
+  -- if ~(0 <- n_requested*)
+  -- if n_conversion = S.DIRCONVSEQ
+  -- if n_owner = |S.FRAMES|
+  -- if pdirconversion = {NONCE n_conversion, CALLSITE pconfigcall.SITE, CALLLINE pconfigcall.LINE, OBJECT n_object, RESULT n_requested*, SELECTION pconfigcall.SELECTION, OWNERDEPTH n_owner}
+  -- if S_record = S[.DIRCONVSEQ = $(n_conversion + 1)][.DIRCONVERSIONS = S.DIRCONVERSIONS ++ [pdirconversion]][.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
+rule PhpStep/config-string-nul: S ~> $config_error(S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*], pconfigcall, "ValueError", $ptascii("chdir(): Argument #1 ($directory) must not contain any null bytes"))
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING n_requested*)
+  -- if 0 <- n_requested*
 
 ;; The selected intrinsic and each saved argument must derive from the source.
 dec $selected_task_nonce(ptask) : nat?
@@ -355,6 +430,7 @@ def $selected_task_nonce(CONFIG_SEND pconfigcall) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_UNPACK_PREP pconfigcall) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_UNPACK_NEXT pconfigcall poperand n) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_INVOKE pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) = pconfigcall.SELECTION
 def $selected_task_nonce(CHDIR_AWAIT pconfigcall n) = pconfigcall.SELECTION
 def $selected_task_nonce(ptask) = eps -- otherwise
 dec $selected_task_count(ptask*, nat) : nat
@@ -505,6 +581,7 @@ def $call_task_valid(S, CONFIG_SEND pconfigcall) = $config_pending_valid(S, pcon
 def $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall) = $config_pending_valid(S, pconfigcall, true)
 def $config_invoke_valid(S, pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX))
 def $call_task_valid(S, CONFIG_INVOKE pconfigcall) = $config_invoke_valid(S, pconfigcall)
+def $call_task_valid(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
 dec $config_unpack_valid(pstate, pconfigcall, poperand, nat) : bool
 def $config_unpack_valid(S, pconfigcall, KNOWN (PARRAY n), n_cursor) = true
   -- if $config_call_valid(S, pconfigcall)
