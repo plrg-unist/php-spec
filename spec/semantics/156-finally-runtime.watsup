@@ -8,6 +8,13 @@ def $throwable_chain(S, n, n_seen*) = $throwable_chain_next(S, $throwable_previo
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $throwable_chain(S, n, n_seen*) = $throwable_chain_next(S, $throwable_previous_id(S, n), n_seen* ++ [n])
+  -- if ~(n <- n_seen*)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
+  -- if $closure_live_object_valid(S, n)
 def $throwable_chain(S, n, n_seen*) = BADTHROWCHAIN -- otherwise
 def $throwable_chain_next(S, eps, n_seen*) = THROWCHAIN n_seen*
 def $throwable_chain_next(S, (n), n_seen*) = $throwable_chain(S, n, n_seen*)
