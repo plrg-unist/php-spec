@@ -41,6 +41,12 @@ CASES = {
     'caller-receiver': (b"<?php class C { public $x=7; function f(){return include 'one.php';} } echo (new C)->f();", {'one.php': b'<?php return $this->x;'}, ['one.php']),
     'declaration-publication': (b"<?php include 'one.php'; echo f();", {'one.php': b'<?php function f(){return 7;}'}, ['one.php']),
     'own-namespace': (b"<?php echo include 'one.php';", {'one.php': b'<?php namespace N; return __NAMESPACE__;'}, ['one.php']),
+    'direct-throw-trace': (b"<?php include 'one.php';", {'one.php': b"<?php throw new Exception('x');"}, ['one.php']),
+    'inner-throw-trace': (b"<?php include 'one.php';", {'one.php': b"<?php function f(){throw new Exception('x');} f();"}, ['one.php']),
+    'required-inner-throw-trace': (b"<?php require_once 'one.php';", {'one.php': b"<?php function f(){throw new Exception('x');} f();"}, ['one.php']),
+    'file-eval-file-throw-trace': (b"<?php include 'one.php';", {'one.php': b'''<?php eval('include "two.php";');''', 'two.php': b"<?php function f(){throw new Exception('x');} f();"}, ['one.php', 'two.php']),
+    'caught-direct-trace': (b"<?php try{include 'one.php';}catch(Exception $e){$t=$e->getTrace();echo $t[0]['function'],'|',isset($t[0]['args'])?'Y':'N';}", {'one.php': b"<?php throw new Exception('x');"}, ['one.php']),
+    'caught-alias-trace': (b"<?php try{include 'alias.php';}catch(Exception $e){$t=$e->getTrace();echo $t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b"<?php function f(){throw new Exception('x');} f();"}, ['alias.php']),
 }
 
 
@@ -88,13 +94,13 @@ def main():
         main_path.write_bytes(source)
         for filename, data in files.items():
             (directory / filename).write_bytes(data)
-        if name == 'alias-once':
+        if name in {'alias-once', 'caught-alias-trace'}:
             (directory / 'alias.php').symlink_to('one.php')
         main_bytes = os.fsencode(main_path.resolve())
         entries = []
         for filename in requested_paths:
             caller = main_bytes if filename not in {'two.php', '__SELF_ONE__'} else os.fsencode((directory / 'one.php').resolve())
-            if name == 'file-eval-file' and filename == 'two.php':
+            if name in {'file-eval-file', 'file-eval-file-throw-trace'} and filename == 'two.php':
                 caller += b"(1) : eval()'d code"
             requested = main_bytes if filename == '__FILE__' else (caller if filename == '__SELF_ONE__' else filename.encode())
             if filename == 'missing.php':
