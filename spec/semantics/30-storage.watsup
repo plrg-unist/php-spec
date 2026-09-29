@@ -60,7 +60,7 @@ syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIO
 syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, CAPTURE nat?, INDEX nat, SENT poperand*, LINE int}
 syntax pbindkind = INSTANCE_BIND | STATIC_BIND
 syntax pbindcall = {SITE porigin, SOURCE nat?, KIND pbindkind, INDEX nat, SENT poperand*, LINE int}
-syntax pclosurecall = {SITE porigin, SOURCE nat, RECEIVER nat?, INDEX nat, SENT pnamedargs, LINE int}
+syntax pclosurecall = {SITE porigin, SOURCE nat, FIRST pvalue?, RECEIVER nat?, INDEX nat, SENT pnamedargs, RAW (pkey, poperand)*, ERROR ptbytes?, LINE int}
 dec $closure_call_target(pcalltarget) : bool
 syntax pctorcallmode = CTOR_NEW | CTOR_METHOD
 syntax pctorcall = {SITE porigin, RECEIVER nat, BASE text, MODE pctorcallmode, INDEX nat, SENT pnamedslot*, NAMED bool, LINE int}

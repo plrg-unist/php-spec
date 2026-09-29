@@ -86,6 +86,54 @@ CASES = {
             '$call_selected_valid(S, CLOSURE_CALL_TARGET n_source n_receiver, (pclosurecall.SITE))',
         ],
     },
+    'call-invalid-first': {
+        'source': '<?php $c=function($x){}; try {$c->call(null,z:1,x:2);} catch (TypeError $e) {}',
+        'stage': ('S.TODO = (CLOSURE_CALL_ARGS pclosurecall) :: ptask_tail* '
+                  '-- if pclosurecall.INDEX = 1'),
+        'checks': [
+            'pclosurecall.FIRST = (PNULL)',
+            'pclosurecall.RECEIVER = eps',
+            'pclosurecall.ERROR = eps',
+            'pclosurecall.SENT = pnamedargs',
+            '$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            'HOBJECT pclosurecall.SOURCE <- $task_nodes(CLOSURE_CALL_ARGS pclosurecall)',
+            '~$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall[.ERROR = ($ptascii("forged"))])',
+            '~$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall[.SENT = pnamedargs[.NAMED = [($ptascii("x"), KNOWN PNULL)]]])',
+        ],
+    },
+    'call-invalid-raw-root': {
+        'source': '<?php class A {} $c=function($x){}; try {$c->call(null,z:new A,x:2);} catch (TypeError $e) {}',
+        'stage': ('S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail* '
+                  '-- if pclosurecall.FIRST = (PNULL)'),
+        'checks': [
+            'pclosurecall.ERROR = (preqbytes)',
+            'pclosurecall.SENT = pnamedargs',
+            'pclosurecall.RAW[0] = (KSTRING n_name*, KNOWN (POBJECT n_raw))',
+            'HOBJECT n_raw <- $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)',
+            '$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.ERROR = ($ptascii("forged"))])',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.SENT = pnamedargs[.NAMED = [($ptascii("x"), KNOWN PNULL)]]])',
+        ],
+    },
+    'call-raw-sent': {
+        'source': '<?php class A {} $c=function($x){}; $c->call(new A,1);',
+        'stage': ('S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail* '
+                  '-- if pclosurecall.RAW = [(KINT 1, KNOWN (PINT 1))]'),
+        'checks': [
+            'pclosurecall.SENT.SLOTS = [NAMED_SENT (KNOWN (PINT 1))]',
+            '$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.RAW = [(KINT 1, KNOWN (PINT 9))]])',
+        ],
+    },
 }
 
 
