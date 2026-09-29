@@ -100,6 +100,7 @@ def main():
     rejected = '(SOURCE_PARSE_REJECT 1 ' + seq(BAD) + ' ' + seq(base64.b64decode(parsed_bad['message'])) + ' ' + str(parsed_bad['line']) + ')'
     once_start = '$php_file_run(' + checked_once['fixture'] + ', 300, $base64(' + json.dumps(b64(once_bytes)) + '), $base64(' + json.dumps(b64(cwd_bytes)) + '))'
     open_once = '(FILE_OPENED 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(ONCE_SOURCE) + ')'
+    once_open_failure = '(FILE_OPEN_FAILURE 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(b'failure ignored by resolved-path once skip') + ')'
     checks = [
         'S_initial = ' + start,
         'S_initial.COMPLETION = SOURCE_PENDING',
@@ -112,6 +113,7 @@ def main():
         'S_initial.FILESEQ = 1',
         'S_initial.FILES = [SOURCEFILE 0 ' + seq(main_bytes) + ']',
         '$call_descriptors_valid(S_initial)',
+        '~$call_descriptors_valid(S_initial[.FILESEQ = $(S_initial.FILESEQ + 1)])',
         '~$call_descriptors_valid(S_initial[.INCLUDEDOPENED = eps])',
         '~$call_descriptors_valid(S_initial[.INCLUDEDOPENED = S_initial.INCLUDEDOPENED ++ [' + seq(b'/forged/file.php') + ']])',
         'S_initial.SERVICELEFT = (n_left)',
@@ -140,6 +142,7 @@ def main():
         'S_parse.EVALBINDINGS = eps',
         'S_parse.FILEBINDINGS = eps',
         '$call_descriptors_valid(S_parse)',
+        '~$call_descriptors_valid(S_parse[.FILESEQ = $(S_parse.FILESEQ + 1)])',
         '~$call_descriptors_valid(S_parse[.TODO = eps])',
         '~$call_descriptors_valid(S_parse[.TODO = (FILE_PARSE_AWAIT 0) :: S_parse.TODO])',
         '~$call_descriptors_valid(S_parse[.FILECONTEXTS = pfilecontext_parse[.UNIT = eps] :: eps])',
@@ -190,6 +193,15 @@ def main():
         'S_once_skip.FILES = [SOURCEFILE 0 ' + seq(once_bytes) + ']',
         'S_once_skip.FILEBINDINGS = eps',
         '$call_descriptors_valid(S_once_skip)',
+        'S_once_failure_skip = $file_open_resume(S_once_initial, ' + once_open_failure + ')',
+        'S_once_failure_skip.COMPLETION = NORMAL',
+        'S_once_failure_skip.RESULT = KNOWN (PBOOL true)',
+        'S_once_failure_skip.EVENTS = S_once_initial.EVENTS',
+        'S_once_failure_skip.FILESEQ = 1',
+        'S_once_failure_skip.FILECONTEXTS = eps',
+        'S_once_failure_skip.FILES = [SOURCEFILE 0 ' + seq(once_bytes) + ']',
+        'S_once_failure_skip.FILEBINDINGS = eps',
+        '$call_descriptors_valid(S_once_failure_skip)',
     ]
     fixture = out / 'protocol.watsup'
     fixture.write_text('dec $main() : bool\ndef $main() = true\n' + ''.join(

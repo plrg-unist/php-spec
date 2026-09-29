@@ -47,13 +47,13 @@ rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S_value.COMPLETION =/= NORMAL
 def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = (S.ORIGIN = (porigin) /\ $file_site_valid(S, porigin, z, n_kind))
 
-def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: ptask_tail*
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
   -- if z = $file_site_line(S, pfilecontext.SITE)
-def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: ptask_tail*
