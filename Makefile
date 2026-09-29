@@ -229,6 +229,7 @@ test-semantics: build
 	python3 tests/semantics/throwable_trace_protocol.py
 	python3 tests/semantics/throwable_error_exception.py
 	python3 tests/semantics/throwable_error_exception_protocol.py
+	python3 tests/semantics/throwable_subclass_storage_protocol.py
 	python3 tests/semantics/exit_protocol.py
 	python3 tests/semantics/exit_controls.py
 	python3 tests/semantics/clone_compiler.py

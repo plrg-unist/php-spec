@@ -4,7 +4,6 @@ def $throwable_link_kind(ptbytes) = ("Error") -- if $ptlc(ptbytes) = $ptascii("e
 def $throwable_link_kind(ptbytes) = ("ErrorException") -- if $ptlc(ptbytes) = $ptascii("errorexception")
 def $throwable_link_kind(ptbytes) = eps -- otherwise
 
-dec $class_throwable_kind(pstate, porigin, nat) : text?
 def $class_throwable_kind(S, porigin, 0) = eps
 def $class_throwable_kind(S, porigin, n) = (text_kind)
   -- if $(n > 0)

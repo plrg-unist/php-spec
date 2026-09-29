@@ -257,6 +257,13 @@ def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots
   -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
   -- if S.OBJECTS[pobjectprops.OBJECT] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $throwable_instance_slots_valid(S, pobjectprops.OBJECT, porigin, text_kind) /\ $objectprops_valid(S, pobjectprops_tail*))
+  -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
+  -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
+  -- if S.OBJECTS[pobjectprops.OBJECT] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
 def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, eps, pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ pobjectprops.MATERIALIZED) /\ $objectprops_valid(S, pobjectprops_tail*))
   -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
   -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps

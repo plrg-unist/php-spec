@@ -145,6 +145,9 @@ dec $throwable_layout(text) : ppropertydesc*
 dec $throwable_nominal(text, preqbytes, nat) : bool
 dec $throwable_final_issue(text, pmethoddesc*) : pmethodissue
 dec $class_method_link_issue(pstate, pclassdesc, porigin) : pmethodissue
+dec $class_throwable_kind(pstate, porigin, nat) : text?
+dec $throwable_member(pstate, nat) : bool
+dec $throwable_instance_slots_valid(pstate, nat, porigin, text) : bool
 dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool
 dec $class_links_valid(pstate) : bool
 dec $property_layout(pstate, porigin, nat) : ppropertydesc*

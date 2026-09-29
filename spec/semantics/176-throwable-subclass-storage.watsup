@@ -1,0 +1,58 @@
+;; Source descendants stay INSTANCEs, with ordinary source slots and the
+;; inherited internal slots in one property row. The trace is allocated first.
+dec $throwable_instance_initial_slots(pstate, porigin, text, preqbytes, int, nat) : ppropertyslot*?
+def $throwable_instance_initial_slots(S, porigin, text_kind, preqbytes_file, z, n_trace) = (ppropertyslot_final*)
+  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot_initial*)
+  -- if ppropertyslot_trace* = $property_slot_set(ppropertyslot_initial*, $throwable_key($throwable_base(text_kind), "trace"), PROP_VALUE (DIRECT (PARRAY n_trace)))
+  -- if ppropertyslot_file* = $property_slot_set(ppropertyslot_trace*, $throwable_key($throwable_base(text_kind), "file"), PROP_VALUE (DIRECT (PSTRING preqbytes_file)))
+  -- if ppropertyslot_final* = $property_slot_set(ppropertyslot_file*, $throwable_key($throwable_base(text_kind), "line"), PROP_VALUE (DIRECT (PINT z)))
+def $throwable_instance_initial_slots(S, porigin, text_kind, preqbytes_file, z, n_trace) = eps -- otherwise
+
+def $new_class(S, preqbytes, z) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [INSTANCE porigin]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS ppropertyslot*, MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
+  -- if $class_links_valid(S)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S_trace = $trace_materialize(S, $eval_exception_trace(S))
+  -- if S_trace.RESULT = KNOWN (PARRAY n_trace)
+  -- if $throwable_instance_initial_slots(S_trace, porigin, text_kind, $call_sourcefile(S.FILES, porigin_site), z, n_trace) = (ppropertyslot*)
+  -- if n = |S_trace.OBJECTS|
+
+def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled property default"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
+  -- if $class_links_valid(S)
+  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
+
+def $throwable_member(S, n) = true
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_kind(pthrowable.KIND)
+def $throwable_member(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $class_links_valid(S)
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
+def $throwable_member(S, n) = false -- otherwise
+
+def $throwable_instance_slots_valid(S, n, porigin, text_kind) = true
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS)
+  -- if $property_slot_at(pobjectprops.SLOTS, $throwable_key($throwable_base(text_kind), "trace")) = (ppropertyslot_trace)
+  -- if ppropertyslot_trace.DECL = (INTERNAL_PROPERTY $throwable_base(text_kind) $ptascii("trace"))
+  -- if ppropertyslot_trace.STATE = PROP_VALUE (DIRECT (PARRAY n_trace))
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+  -- if $trace_graph_valid(S, n_trace)
+  -- if $property_slot_at(pobjectprops.SLOTS, $throwable_key($throwable_base(text_kind), "previous")) = (ppropertyslot_previous)
+  -- if ppropertyslot_previous.DECL = (INTERNAL_PROPERTY $throwable_base(text_kind) $ptascii("previous"))
+  -- if ppropertyslot_previous.STATE = PROP_VALUE (DIRECT pvalue_previous)
+  -- if pvalue_previous = PNULL \/ $throwable_previous_slot_valid(S, pvalue_previous)
+def $throwable_instance_slots_valid(S, n, porigin, text_kind) = false -- otherwise
