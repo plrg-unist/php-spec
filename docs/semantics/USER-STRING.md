@@ -53,3 +53,9 @@ clauses overlapped; its retained report is
 `.tools/user-string-conversion/.tools/user-string-635sjgan/report.json`
 (SHA-256 `5a9909a8f5bd161deb207417588573c5cdf8f267954080d3f7d5e355d7ad87f6`).
 The clauses were merged before the passing replay.
+
+The same 17-case selection passed again after rebasing the Stage A code to
+installed eval-scope base `f94826254` (private code commit `ab76ee8db`). Its
+ignored report is `.tools/user-string-conversion/.tools/user-string-686ma8n3/report.json`
+(SHA-256 `330a410a71c2109af0b945631973e710bc351d332d11c1e6aaf50f3445c1801c`,
+input fingerprint `b459634b25faffa42e53e2504487555cf4d097cdf96689a472c9cd1551bf119f`).
