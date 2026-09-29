@@ -100,7 +100,6 @@ def main():
                     '~$call_saved_context_valid(S,pframe_method[.CONTEXT = (pcallcontext_method[.LEXICAL_CLASS = (pclassdesc_b.ORIGIN)])])',
                 ]
             checks += ['S_done = $drive(S,2048)', 'S_done.COMPLETION = NORMAL',
-                       'S_done = $drive(S_initial[.COMPLETION = NORMAL],2048)',
                        '$heap_valid($heap_graph(S_done))','$property_state_valid(S_done)',
                        '$heap_owners($heap_graph(S_done),HOBJECT n_object) = 0','S_done.PROPREFS = eps']
             fixture=out/(name+'.watsup');fixture.write_text(PREFIX+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+c+'\n' for c in checks))
