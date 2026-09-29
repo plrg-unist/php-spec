@@ -36,13 +36,12 @@ The separate global closure-integrity repair is installed at **9e7879617** (code
 
 Active work covers Closure binding/call behavior, interface declarations and method lookup, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
 
-The source Throwable subclass candidate is in private final review. It links
-source descendants to internal Exception/Error/ErrorException while retaining
-one owned property and trace graph. Its [ledger](coverage/semantics/throwable-subclass-review.json)
-separates 34 exact source outcomes and two explicit Unsupported controls from
-three post-concat exact controls, source-derived paused stages, and independent
-replay. Generic array callables and direct `implements Throwable` are tracked
-in their separate callable and interface streams.
+Source Throwable subclasses are in private final review on provider base
+**f58ace0c1**. They retain source `INSTANCE` identity, owned inherited slots
+and trace, protected writes, source overrides, and inherited getter capture.
+The [ledger](coverage/semantics/throwable-subclass-review.json) separates the
+native/source, paused, provider-bridge, and independent evidence. Array
+callables and direct `implements Throwable` remain in their own streams.
 
 The directory open-failure followup is installed at **b4e87a539** on concat **e199654f4**. It authenticates the first-warning display path and stream-error bytes separately from the requested operand; relative include/require and absolute include match pinned native output. Its full 44-source capture predates concat; a current nine-source selection and independent four-source replay passed before installation. Installed five-source, 119 file-pause, 46 saved-frame and 20 adapter checks pass. [Ledger](coverage/semantics/include-open-failure-review.json). Mutable CWD/`include_path`, other failure causes and transformed wrappers remain open.
 

@@ -1,8 +1,8 @@
 {
-  "status": "private final review pending",
+  "status": "private provider-base final review pending",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "base": "e199654f4b29238031568cb3d34384cdaabba5a8",
-  "semantic_head": "7bc329c9e7c73d4ac4747d15689e04b246607749",
+  "base": "f58ace0c15c2a16bc77f8b3759998fdd6b3cfca0",
+  "semantic_head": "5176a91b776934ba991ae23d61f32fda603bc12b",
   "scope": "Source Exception, Error, and ErrorException descendants keep INSTANCE identity, own inherited private slots and trace through one OBJECTPROPS row, dispatch source overrides, and capture inherited first-class getters.",
   "native_contracts": {
     "interactions": [".tools/throwable-trace-candidate/.tools/throwable-subclass-probes/native-interactions.json", "53f1da2703b5189bfa275c4de30e3dc6d18bacea76682ae83646e61fbb368f41"],
@@ -24,6 +24,12 @@
     "parent_string_override": {"result": "1 exact", "report": ".tools/throwable-trace-candidate/.tools/throwable-subclass-probes-2s40eyaf/report.json", "sha256": "4fb7f2d6170990cac51eb5f922b6942ab8d832b9995cd9e4ee1e661c85d4100b"},
     "terminal_paused": {"result": "nested saved frame and rendered completion pass", "report": ".tools/throwable-trace-candidate/.tools/throwable-terminal-protocol-y08v_433/report.json", "sha256": "c55a06a79e57cf0997ad6f73451d27f4335328633b9ce30e5dd1b550be476649"},
     "independent_replay": {"result": "2 exact native/model tuples", "head": "d99027e042d1bb26a9f3753806d2fafe49ffeca1", "report": ".tools/throwable-trace-candidate/.tools/throwable-review-replay/report.json", "sha256": "953a096f714589b3a0e7f5ea986268358e7c6975bd14b3c34174dc784ebc0cfa"}
+  },
+  "after_provider": {
+    "base": "f58ace0c15c2a16bc77f8b3759998fdd6b3cfca0",
+    "projection": "All eight B semantic/test commits remain patch-identical to the pre-provider reviewed tree. The provider changes file open-failure diagnostics and request facts in 171/30/adapter; its final commit changes only status documentation.",
+    "source": {"result": "2 exact native/model tuples, 190 watched hashes stable", "cases": ["included-child-throw", "directory-require"], "harness": ".tools/throwable-trace-candidate/.tools/throwable-provider-seam.py", "harness_sha256": "27de10e8aa703e7ee60f6578d44d4425c361a463e44c225ce0f306833fcdf368", "report": ".tools/throwable-trace-candidate/.tools/include-execution-6sljhaob/report.json", "sha256": "b6ab0034a386e667901048e8b1f2243567d5e258bbb85fe59a4a11464f12dc9d"},
+    "validation": {"dune_build": "pass", "make_test": "pass", "semantic_inventory": "169 constructors, 306 runtime obligations; 0 constructors and 1 obligation closed", "verify_inputs": "64872 pinned import files/links verified", "make_inventory": {"result": "pass", "isolated_head": "4752c2230b4f5b2de5453bb07d99a476f86e76d2", "worktree": ".tools/throwable-b-inventory", "setup": "JOBS=4 scripts/build-deps.sh php", "setup_log_sha256": "ebe2acc2fff92f8f3d0328b0135fe103425235e032ec9d9ac9eacb60833e9c88", "log": ".tools/throwable-b-inventory/.tools/throwable-b-inventory.log", "log_sha256": "6f35f709db45424f4e138079cc3e667343b7b30f0d44f2d7b6e3327998a16ac9", "grammar": "83 accepted, 14 rejected, 631 covered", "mapping": "635 productions, 169 constructors; 191 scanner actions, 264 alternatives; 214 spellings, 685 lookups"}}
   },
   "boundaries": {
     "object_message_without_override": "Explicit Unsupported when an inherited protected message contains a non-stringable object during uncaught rendering.",
