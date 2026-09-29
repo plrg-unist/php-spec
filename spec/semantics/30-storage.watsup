@@ -2,12 +2,13 @@
 syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
 syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
-syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PROPERTY pvalue ptbytes | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_SHORT
+syntax porigin = PORIGIN nat pcpath
+syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
+syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PROPERTY pvalue ptbytes | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_SHORT
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
-syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | NOWHERE
+syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_STATIC ppropertyid | NOWHERE
 syntax pvstage = PVFOLD | PVEXEC
 syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)*
-syntax porigin = PORIGIN nat pcpath
 syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | SCOPED_TARGET porigin porigin porigin nat? poperand
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
@@ -20,7 +21,6 @@ syntax pdefault = { INDEX nat, ORIGIN porigin, KIND pdefaultkind }
 syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE pssignature, CVS ptbytes*, ENV plenv, CODE pcode, BODY pcpath, EARLY bool, LINE nat, ENDLINE nat }
 syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED | PROPERTY_PRIVATE
 syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, VISIBILITY ppropertyvisibility, STATIC bool, FINAL bool, ABSTRACT bool }
-syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
 syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin | PROP_LITERAL pvalue
 syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, STATIC bool, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
@@ -75,6 +75,7 @@ syntax ptask = FILE_REQUEST porigin int int | FILE_RESOLVE_AWAIT nat | FILE_PARS
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand
   | INSTANCEOF_RESULT int
   | PROPERTY_PREP phpType20 int | PROPERTY_NAME pvalue int
+  | STATIC_PROP_CLASS phpType19 phpType31 int | STATIC_PROP_NAME phpType19 poperand int
   | PROPERTY_REF_PREP expression int | PROPERTY_REF_CAPTURE pbase int | PROPERTY_REF_BIND pbase nat int | PROPERTY_REF_BIND_CV pbase nat* int | PROPERTY_REF_FETCH int
   | LIST_TEMP_CAPTURE expression int | CALL_REF_PREP pcalltarget nat porigin? | CALL_REF_FETCH pcalltarget nat porigin? | ERROR_UNWIND pcompletion | GLOBAL_BIND expression int | GLOBAL_BIND_NAME int | CALL_DYNAMIC porigin int int | FIRSTCLASS_CONVERT porigin int int | CALL_ARGS pcalltarget phpType7* nat poperand* porigin? int | CALL_SEND pcalltarget phpType7* nat poperand* porigin? int | RETURN_REF_FETCH int | RETURN_REF_VALUE int | RETURN_REF_NULL int | RETURN_VALUE int | RETURN_NULL | RETURN_UNWIND poperand porigin? | RETURN_REF_UNWIND poperand int bool porigin | GLOBAL_NAME int | ISSET_PREP expression bool | ISSET_RESULT bool int | ISSET_NEXT expression* nat | COALESCE_ASSIGN_PREP expression expression int | COALESCE_ASSIGN_WRITE pbase bool int | COALESCE_QUIET expression int int | FOREACH_PREP statement int | FOREACH_CV statement nat* int | FOREACH_NAME statement int | FOREACH_DIM statement int | FOREACH_RESET statement plocation bool int | FOREACH_NEXT nat pnode statement porigin? int | COALESCE_RESULT expression int int | EVAL_EFFECT | COMPILED_RESULT bool | LIST_CAPTURE expression bool int | LIST_PATTERN expression poperand int | LIST_NEXT poperand nat phpType13* int | LIST_FETCH poperand nat expression bool phpType13* int | LIST_STORE expression poperand bool int | LIST_STORE_NAME poperand bool int | LIST_STORE_DIM poperand bool int | ARRAY_UNPACK nat phpType13* int | CONCAT_LEFT expression bool bool int | CONCAT_RIGHT poperand bool bool int | CONCAT_PREP poperand poperand bool bool int | CONCAT_AFTER_LEFT porigin poperand bool int | CONCAT_AFTER_RIGHT porigin nat* int | CAST_RESULT pcast int | BITNOT_RESULT int | COMPOUND_PREP pbin expression expression int | COMPOUND_APPLY pbin pbase bool int | UPDATE_PREP pupdate bool int | TRUTH_RESULT bool int | SHORT_RESULT bool expression int int | VALUE_COPY int | SELECT_VALUE phpType5 expression int int int
   | CHOOSE ptask* ptask* int | LOOP_TEST statement porigin? | LOOP_NEXT statement porigin?
