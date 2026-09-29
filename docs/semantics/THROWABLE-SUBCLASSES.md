@@ -14,13 +14,20 @@ clone, callable, and comparison routes in 35, 69, 95, 136, 142, 150, 152,
 and 154. Source subclasses continue through normal source object routes there.
 A separate ancestry-checked Throwable membership predicate is available for
 throw/catch, previous types, inherited getters/constructors, and trace
-observers; those call routes still need their dedicated bridges. Its recursion
-is bounded by the linked-class count. Allocation materializes a live trace
-array before constructor sends, even when source properties shadow internal
-ones. Source instances retain their normal materialization and property rules.
+observers. Its recursion is bounded by the linked-class count. Allocation
+materializes a live trace array before constructor sends, even when source
+properties shadow internal ones. Source instances retain their normal
+materialization and property rules. An inherited internal `__toString()` uses
+the dynamic source class name; a source override follows normal method
+dispatch. At uncaught termination, the override runs as a rooted callback.
+Its returned bytes stay in the completion, leaving the inherited private
+`string` cache unchanged. If it throws, the new Throwable replaces the old
+one and receives an internal `__toString()` trace frame.
 
 The project-local PHP 8.5.10 native probes under ignored
 `.tools/throwable-subclass-probes` pin inherited/source cast order, final
-getter owner diagnostics, and protected override values. Those observations
-are native contracts until the corresponding model paths are implemented and
-differentially checked.
+getter owner diagnostics, protected override values, and terminal callback
+output. Source differentials and paused protocols check those paths. Uncaught
+rendering of a source subclass whose protected `message` holds a non-stringable
+object and has no source `__toString()` override remains an explicit
+unsupported boundary.
