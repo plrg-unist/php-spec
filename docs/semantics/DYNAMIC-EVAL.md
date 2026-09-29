@@ -72,9 +72,10 @@ opcode line from the compiled operand. It is pending current-base integration;
 the installed eval operand still has that dependency. Remaining obligations are
 generic imported-name `::class` evaluation; accepted-AST catchable
 `CompileError` cases and class-link errors beyond the modeled missing-parent
-`Error`; and include/require/once with a file provider. The eval binding
-invariant applies only to accepted eval units;
-future include units need their own source-kind registry.
+`Error`. The installed [finite file provider](INCLUDE-SOURCES.md) gives
+include/require/once units their own source-kind and binding records; the eval
+binding invariant applies only to accepted eval units. Wider file-provider
+behavior remains open under that separate contract.
 
 Native-accepted invalid namespace structure now reaches the checked AST and the
 authored source compiler; the [parser recovery review](../../coverage/dynamic-eval-namespace-recovery-review.json)
