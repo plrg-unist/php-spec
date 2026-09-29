@@ -22,14 +22,12 @@ def $getter_name(GET_TRACE) = $ptascii("getTrace")
 def $getter_name(GET_TRACE_STRING) = $ptascii("getTraceAsString")
 def $getter_name(GET_TO_STRING) = $ptascii("__toString")
 def $getter_name(GET_SEVERITY) = $ptascii("getSeverity")
-dec $getter_owner(text, pgettermethod) : text
 def $getter_owner("ErrorException", GET_SEVERITY) = "ErrorException"
 def $getter_owner(text, pgettermethod) = $throwable_base(text) -- otherwise
 dec $getter_available(text, pgettermethod) : bool
 def $getter_available("ErrorException", GET_SEVERITY) = true
 def $getter_available(text, GET_SEVERITY) = false -- if text =/= "ErrorException"
 def $getter_available(text, pgettermethod) = true -- if pgettermethod =/= GET_SEVERITY
-dec $ctor_method_start(pstate, nat, int) : pstate
 dec $ctor_selected_name(text, ptbytes) : bool
 def $ctor_selected_name(text_kind, ptbytes) = true
   -- if $ptlc(ptbytes) = $ptascii("__construct")
@@ -61,6 +59,21 @@ def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE p
 def $getter_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $ctor_selected_name(pthrowable.KIND, ptbytes)
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin_site, RECEIVER n, BASE $getter_owner(text_kind, pgettermethod), METHOD pgettermethod, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
+  -- if $getter_named(ptbytes) = (pgettermethod)
+  -- if $getter_available(text_kind, pgettermethod)
+def $getter_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
+  -- if $ctor_selected_name(text_kind, ptbytes)
 def $getter_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "Throwable internal method body"][.TODO = eps]
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if ~$ctor_selected_name(pthrowable.KIND, ptbytes)
@@ -85,6 +98,9 @@ def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if ~$ppfirstclass(phpType7*)
 def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
 def $getter_arguments(S, porigin) = PCALLNOARGUMENTS -- otherwise
 
@@ -237,6 +253,44 @@ def $getter_selected(S, pgettercall) = true
   -- if $getter_available(pthrowable.KIND, pgettercall.METHOD)
   -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
   -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
+def $getter_selected(S, pgettercall) = true
+  -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgettercall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pgettercall.RECEIVER)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if pgettercall.BASE = $getter_owner(text_kind, pgettercall.METHOD)
+  -- if $getter_available(text_kind, pgettercall.METHOD)
+  -- if $method_selected_scope(S, pgettercall.RECEIVER, $getter_name(pgettercall.METHOD), $method_current_scope(S)) = eps
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
+def $getter_selected(S, pgettercall) = true
+  -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgettercall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pgettercall.RECEIVER)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if pgettercall.BASE = $getter_owner(text_kind, pgettercall.METHOD)
+  -- if $getter_available(text_kind, pgettercall.METHOD)
+  -- if $method_selected_scope(S, pgettercall.RECEIVER, $getter_name(pgettercall.METHOD), $method_current_scope(S)) = eps
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
+def $getter_selected(S, pgettercall) = true
+  -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgettercall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pgettercall.RECEIVER)
+  -- if pgettercall.METHOD = GET_TO_STRING
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $ptascii("__toString"))
+  -- if $scoped_source_name(S, phpType19) = (n_class*)
+  -- if $scoped_internal_method_kind(S, phpType19, n_class*, $ptascii("__toString")) = (text_kind)
+  -- if pgettercall.BASE = $getter_owner(text_kind, GET_TO_STRING)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (pgettercall.RECEIVER)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $class_origin_matches(S, porigin_class, pclassdesc_scope.NAME, |S.CLASSES|)
 def $getter_selected(S, pgettercall) = false -- otherwise
 
 dec $getter_prefix(phpType7*) : bool

@@ -37,7 +37,7 @@ dec $ee_previous_value(pstate, pctorcall, pnamedslot) : pstate
 def $ee_previous_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN PNULL]
 def $ee_previous_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = S[.RESULT = KNOWN PNULL]
 def $ee_previous_value(S, pctorcall, NAMED_SENT (KNOWN (POBJECT n))) = S[.RESULT = KNOWN (POBJECT n)]
-  -- if $throwable_object(S, n)
+  -- if $throwable_member(S, n)
 def $ee_previous_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 6, $ptascii("previous"), $ptascii("?Throwable"), pvalue)
   -- if pvalue =/= PNULL
   -- if ~$ctor_previous_acceptable(S, pvalue)

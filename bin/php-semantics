@@ -85,12 +85,21 @@ def observe(state, filename):
     tag, fields = completion['tag'], completion['args']
     uncaught_chain = []
     if tag == 'UNCAUGHT':
+        def class_name(object_id):
+            obj = state['OBJECTS'][object_id]
+            if obj['tag'] == 'THROWABLE':
+                return obj['args'][0]['KIND']
+            origin = obj['args'][0]
+            name = next(row['NAME'] for row in state['CLASSES'] if row['ORIGIN'] == origin)
+            return bytes(map(int, name)).decode('utf-8', 'surrogateescape')
+
         def field(object_id, name):
-            payload = state['OBJECTS'][object_id]['args'][0]
-            owner = 'Exception' if payload['KIND'] in ('Exception', 'ErrorException', 'ClosedGeneratorException') else 'Error'
-            key = (b'\0' + owner.encode() + b'\0' if name in ('string', 'trace', 'previous') else b'\0*\0') + name.encode()
             properties = next(row['SLOTS'] for row in state['OBJECTPROPS'] if int(row['OBJECT']) == object_id)
-            slot = next(slot for slot in properties if list(map(int, slot['NAME'])) == list(key))
+            if name in ('string', 'trace', 'previous'):
+                keys = {b'\0Exception\0' + name.encode(), b'\0Error\0' + name.encode()}
+            else:
+                keys = {b'\0*\0' + name.encode()}
+            slot = next(slot for slot in properties if bytes(map(int, slot['NAME'])) in keys)
             item = slot['STATE']['args'][0]
             return (item['args'][0] if item['tag'] == 'DIRECT'
                     else state['STORE'][int(item['args'][0])]['args'][0])
@@ -103,8 +112,7 @@ def observe(state, filename):
             uncaught_chain.append(object_id)
             previous = field(object_id, 'previous')
             object_id = int(previous['args'][0]) if previous['tag'] == 'POBJECT' else None
-        payload = state['OBJECTS'][root_id]['args'][0]
-        tag, fields = 'THROWN', [payload['KIND'], field(root_id, 'message')['args'][0], field(root_id, 'line')['args'][0]]
+        tag, fields = 'THROWN', [class_name(root_id), field(root_id, 'message')['args'][0], field(root_id, 'line')['args'][0]]
     stderr = b''
     for event in events:
         if event['tag'] == 'WARNING':
@@ -213,6 +221,8 @@ def observe(state, filename):
     origin = state.get('ERRORORIGIN')
     if origin is not None:
         location = source_filename(origin['args'][0])
+    if uncaught_chain:
+        location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][0]))
     diagnostic = None
     status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
@@ -237,13 +247,13 @@ def observe(state, filename):
             stderr += prefix + message + b' in ' + location + b' on line ' + str(line).encode() + b'\n'
         elif uncaught_chain:
             for index, chain_id in enumerate(reversed(uncaught_chain)):
-                payload = state['OBJECTS'][chain_id]['args'][0]
+                chain_name = class_name(chain_id)
                 message_bytes = bytes(map(int, field(chain_id, 'message')['args'][0]))
-                if payload['KIND'] in ('TypeError', 'ArgumentCountError') and b', called in ' in message_bytes.split(b'\0', 1)[0]:
+                if chain_name in ('TypeError', 'ArgumentCountError') and b', called in ' in message_bytes.split(b'\0', 1)[0]:
                     message_bytes += b' and defined'
                 prefix = b'Fatal error: Uncaught ' if index == 0 else b'\nNext '
                 message_part = b': ' + message_bytes if message_bytes else b''
-                stderr += (prefix + payload['KIND'].encode() + message_part + b' in '
+                stderr += (prefix + chain_name.encode('utf-8', 'surrogateescape') + message_part + b' in '
                            + bytes(map(int, field(chain_id, 'file')['args'][0])) + b':' + str(field(chain_id, 'line')['args'][0]).encode()
                            + b'\nStack trace:\n')
                 stderr += slot_trace(int(field(chain_id, 'trace')['args'][0]))

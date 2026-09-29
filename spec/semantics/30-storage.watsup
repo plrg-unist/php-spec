@@ -148,6 +148,11 @@ dec $class_method_link_issue(pstate, pclassdesc, porigin) : pmethodissue
 dec $class_throwable_kind(pstate, porigin, nat) : text?
 dec $throwable_member(pstate, nat) : bool
 dec $throwable_instance_slots_valid(pstate, nat, porigin, text) : bool
+dec $throwable_inherited_method(pstate, nat, ptbytes) : bool
+dec $scoped_internal_ctor_kind(pstate, phpType19, preqbytes) : text?
+dec $scoped_internal_method_kind(pstate, phpType19, preqbytes, ptbytes) : text?
+dec $getter_owner(text, pgettermethod) : text
+dec $ctor_method_start(pstate, nat, int) : pstate
 dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool
 dec $class_links_valid(pstate) : bool
 dec $property_layout(pstate, porigin, nat) : ppropertydesc*

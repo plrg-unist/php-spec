@@ -62,6 +62,23 @@ def $throwable_single_string(S, n) = $ptascii(pthrowable.KIND) ++ $ptascii(": ")
   -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
   -- if $throwable_field(S, n, "line") = PINT z_line
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+def $throwable_single_string(S, n) = $object_name(S, n) ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
+  -- if $throwable_field(S, n, "message") = pvalue_message
+  -- if $echo_value(pvalue_message) = eps
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z_line
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+def $throwable_single_string(S, n) = $object_name(S, n) ++ $ptascii(": ") ++ preqbytes_message ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
+  -- if $throwable_field(S, n, "message") = pvalue_message
+  -- if preqbytes_message = $echo_value(pvalue_message)
+  -- if preqbytes_message =/= eps
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z_line
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
 dec $throwable_chain_string(pstate, nat, nat*) : preqbytes
 def $throwable_chain_string(S, n, nat_seen*) = $throwable_chain_string(S, n_previous, n :: nat_seen*) ++ [10,10] ++ $ptascii("Next ") ++ $throwable_single_string(S, n)
   -- if $throwable_previous_id(S, n) = (n_previous)

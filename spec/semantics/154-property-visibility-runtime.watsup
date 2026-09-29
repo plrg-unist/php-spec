@@ -25,6 +25,14 @@ def $property_protected_allowed(S, ppropertydesc) = ($class_origin_matches(S, po
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_declaring)
   -- if porigin_prototype = $property_prototype(S, porigin_declaring, ppropertydesc.NAME, |S.CLASSES|)
   -- if $class_at(S.CLASSES, porigin_prototype) = (pclassdesc_prototype)
+def $property_protected_allowed(S, ppropertydesc) = true
+  -- if ppropertydesc.ORIGIN = INTERNAL_PROPERTY text_owner ptbytes_field
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $class_throwable_kind(S, porigin_scope, |S.CLASSES|) = (text_kind)
+  -- if $throwable_nominal(text_kind, $ptascii(text_owner), 4)
 def $property_protected_allowed(S, ppropertydesc) = false -- otherwise
 
 dec $property_lexical_private(pstate, nat, ptbytes) : ppropertydesc?

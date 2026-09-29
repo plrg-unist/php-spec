@@ -138,9 +138,9 @@ rule PhpStep/throw-expression: S ~> S[.TODO = [$at_task($origin_child((porigin),
   -- if S.ORIGIN = (porigin)
 dec $throwable_throw_value(pstate, pvalue, int) : pstate
 def $throwable_throw_value(S, POBJECT n, z) = S[.COMPLETION = THROWING n]
-  -- if $throwable_object(S, n)
+  -- if $throwable_member(S, n)
 def $throwable_throw_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Cannot throw objects that do not implement Throwable"), z)
-  -- if ~$throwable_object(S, n)
+  -- if ~$throwable_member(S, n)
 def $throwable_throw_value(S, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Can only throw objects"), z) -- otherwise
 rule PhpStep/throw-value: S ~> $throwable_throw_value(S_read, pvalue, z)
   -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
@@ -192,6 +192,12 @@ rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n
   -- if ptask_tail* = eps
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.FRAMES = eps
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
 
 ;; ZEND_CATCH clears exception eligibility before strict assignment through a
 ;; possible reference. A binding error therefore searches only outer markers.
@@ -275,7 +281,7 @@ def $throwable_try_valid(S, porigin) = false -- otherwise
 dec $throwable_live(pstate, nat) : bool
 def $throwable_live(S, n) = true
   -- if $(n < |S.OBJECTS|)
-  -- if $throwable_object(S, n)
+  -- if $throwable_member(S, n)
   -- if $closure_live_object_valid(S, n)
 def $throwable_live(S, n) = false -- otherwise
 dec $throwable_value_task_valid(pstate, porigin, int) : bool

@@ -102,6 +102,10 @@ def $new_has_ctor(S, preqbytes) = true
 def $new_has_ctor(S, preqbytes) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
   -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+def $new_has_ctor(S, preqbytes) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = eps
 def $new_has_ctor(S, preqbytes) = false -- otherwise
 
 def $target_nodes(METHOD_TARGET n porigin) = [HOBJECT n]
@@ -422,6 +426,11 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $getter_select(S_read, 
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $throwable_object(S_read, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $getter_select(S_read, n, ptbytes, phpType7*, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $throwable_inherited_method(S_read, n, ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION =/= NORMAL
@@ -449,6 +458,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
   -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = eps
+  -- if ~$throwable_inherited_method(S_read, n, ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -665,6 +675,11 @@ def $scoped_source_name(S, NName (BYTES text) metadata) = (pclassdesc_parent.NAM
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+def $scoped_source_name(S, NName (BYTES text) metadata) = ($ptascii(text_kind))
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (INTERNAL_THROWABLE_PARENT text_kind)
 def $scoped_source_name(S, NName (BYTES text) metadata) = (pclassdesc.NAME)
   -- if $ptlc($base64(text)) = $ptascii("static")
   -- if S.CURRENT = (pcallcontext)
@@ -784,6 +799,28 @@ def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
   -- if ~$scoped_receiver_valid(S, porigin_requested, pmethoddesc, $scoped_current_receiver(S))
 dec $scoped_select(pstate, phpType19, poperand, ptbytes, phpType7*, int) : pstate
+def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $ctor_method_start(S, n_receiver, z)
+  -- if $ptlc(ptbytes_method) = $ptascii("__construct")
+  -- if $scoped_internal_ctor_kind(S, phpType19, n_class*) = (text_kind)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_receiver
+  -- if $throwable_member(S, n_receiver)
+  -- if $class_origin_matches(S, porigin_receiver, pclassdesc_scope.NAME, |S.CLASSES|)
+def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin_site, RECEIVER n_receiver, BASE $getter_owner(text_kind, GET_TO_STRING), METHOD GET_TO_STRING, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $ptlc(ptbytes_method) = $ptascii("__tostring")
+  -- if $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = (text_kind)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_receiver
+  -- if $throwable_member(S, n_receiver)
+  -- if $class_origin_matches(S, porigin_receiver, pclassdesc_scope.NAME, |S.CLASSES|)
 def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z) = $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes_method, phpType7*, z)
   -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
   -- if $effective_method(S, porigin_requested, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
@@ -791,8 +828,12 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if $effective_method(S, porigin_requested, ptbytes_method, |S.CLASSES|) = eps
+  -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
+  -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ n_class* ++ $ptascii("\" not found"), z)[.TODO = eps]
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = eps
+  -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
+  -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
 def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped method selection"] -- otherwise
 dec $scoped_name_prepare(pstate, phpType19, poperand, phpType20, phpType7*, int) : pstate
 def $scoped_name_prepare(S, phpType19, poperand_selector, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $scoped_select(S, phpType19, poperand_selector, $base64(text), phpType7*, z)

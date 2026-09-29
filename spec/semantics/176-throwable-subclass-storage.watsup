@@ -56,3 +56,51 @@ def $throwable_instance_slots_valid(S, n, porigin, text_kind) = true
   -- if ppropertyslot_previous.STATE = PROP_VALUE (DIRECT pvalue_previous)
   -- if pvalue_previous = PNULL \/ $throwable_previous_slot_valid(S, pvalue_previous)
 def $throwable_instance_slots_valid(S, n, porigin, text_kind) = false -- otherwise
+
+def $throwable_inherited_method(S, n, ptbytes) = true
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
+  -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
+  -- if $getter_named(ptbytes) = (pgettermethod)
+  -- if $getter_available(text_kind, pgettermethod)
+def $throwable_inherited_method(S, n, ptbytes) = true
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
+  -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
+  -- if $ctor_selected_name(text_kind, ptbytes)
+def $throwable_inherited_method(S, n, ptbytes) = false -- otherwise
+
+def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin_site, RECEIVER n, BASE $throwable_constructor_owner(text_kind), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+
+def $constructor_start(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = eps
+  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new.COMPLETION = NORMAL
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+  -- if S_new.OBJECTS[n] = INSTANCE porigin_class
+
+def $scoped_internal_method_kind(S, NName (BYTES text) metadata, n_class*, ptbytes_method) = (text_kind)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = (INTERNAL_THROWABLE_PARENT text_kind)
+  -- if n_class* = $ptascii(text_kind)
+def $scoped_internal_method_kind(S, NName (BYTES text) metadata, n_class*, ptbytes_method) = (text_kind)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if n_class* = pclassdesc_parent.NAME
+  -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = (text_kind)
+  -- if $effective_method(S, porigin_parent, ptbytes_method, |S.CLASSES|) = eps
+def $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps -- otherwise
+def $scoped_internal_ctor_kind(S, phpType19, n_class*) = $scoped_internal_method_kind(S, phpType19, n_class*, $ptascii("__construct"))

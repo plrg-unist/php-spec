@@ -33,6 +33,59 @@ def $ctor_selected(S, pctorcall) = true
   -- if pctorcall.MODE = CTOR_METHOD
   -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
   -- if $method_source_name(phpType20, $ptascii("__construct"))
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pctorcall.RECEIVER)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if pctorcall.BASE = $throwable_constructor_owner(text_kind)
+  -- if pctorcall.MODE = CTOR_NEW
+  -- if pctorcall.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = eps
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pctorcall.RECEIVER)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if pctorcall.BASE = $throwable_constructor_owner(text_kind)
+  -- if pctorcall.MODE = CTOR_METHOD
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+  -- if $method_selected_scope(S, pctorcall.RECEIVER, $ptascii("__construct"), $method_current_scope(S)) = eps
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pctorcall.RECEIVER)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if pctorcall.BASE = $throwable_constructor_owner(text_kind)
+  -- if pctorcall.MODE = CTOR_METHOD
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+  -- if $method_selected_scope(S, pctorcall.RECEIVER, $ptascii("__construct"), $method_current_scope(S)) = eps
+def $ctor_selected(S, pctorcall) = true
+  -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
+  -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pctorcall.RECEIVER] = INSTANCE porigin_class
+  -- if $throwable_member(S, pctorcall.RECEIVER)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if pctorcall.BASE = $throwable_constructor_owner(text_kind)
+  -- if pctorcall.MODE = CTOR_METHOD
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+  -- if $scoped_source_name(S, phpType19) = (n_class*)
+  -- if $scoped_internal_ctor_kind(S, phpType19, n_class*) = (text_kind)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (pctorcall.RECEIVER)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $class_origin_matches(S, porigin_class, pclassdesc_scope.NAME, |S.CLASSES|)
 def $ctor_selected(S, pctorcall) = false -- otherwise
 
 dec $ctor_slots_known(pnamedslot*) : bool
