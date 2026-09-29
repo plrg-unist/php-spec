@@ -357,7 +357,10 @@ def main():
                     return {'status': 'unsupported', 'reason': 'file resolution requires a finite snapshot'}
                 matches = [entry for entry in file_snapshot['entries']
                            if entry['caller'] == pending['caller']
-                           and entry['requested'] == pending['requested']]
+                           and entry['requested'] == pending['requested']
+                           and (file_snapshot['version'] != 2 or
+                                (entry['cwd'] == pending['cwd'] and
+                                 entry['include_path'] == pending['include_path']))]
                 if len(matches) != 1:
                     return {'status': 'unsupported', 'reason': 'file resolution absent or ambiguous in finite snapshot'}
                 result = adapter.request({'op': 'resume_file_resolve',

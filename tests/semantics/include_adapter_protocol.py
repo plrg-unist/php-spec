@@ -153,7 +153,10 @@ def main():
         context_entry = {**entry, 'cwd': snapshot['cwd'],
                          'include_path': snapshot['include_path']}
         other_context = {**context_entry, 'cwd': b64(b'/other'),
-                         'include_path': b64(b'other')}
+                         'include_path': b64(b'other'),
+                         'resolved': b64(out.as_posix().encode() + b'/other.php'),
+                         'opened': b64(out.as_posix().encode() + b'/other.php'),
+                         'source': b64(b'<?php return 8;')}
         context_snapshot = {**snapshot, 'version': 2,
                             'entries': [context_entry, other_context]}
         context_initial = adapter.request({'op': 'execute', 'ast': parsed['ast'],
@@ -175,6 +178,16 @@ def main():
                             if key not in {'ok', 'diagnostics'}}
         context_done = adapter.request({'op': 'resume_file_parse', 'response': context_response}, 30)
         assert context_done['ok'] and context_done['state']['COMPLETION']['tag'] == 'NORMAL'
+        checks += 1
+
+        context_path = out / 'context-snapshot.json'
+        context_path.write_text(json.dumps(context_snapshot, sort_keys=True) + '\n')
+        cli_result = subprocess.run([str(ROOT / 'bin/php-semantics'), str(path),
+                                     '--file-snapshot', str(context_path), '--steps', '300'],
+                                    cwd=ROOT, capture_output=True, timeout=60)
+        cli_outcome = json.loads(cli_result.stdout)
+        assert cli_result.returncode == 0 and cli_outcome['status'] == 'normal'
+        assert base64.b64decode(cli_outcome['stdout']) == b'7'
         checks += 1
     finally:
         frontend.close()
