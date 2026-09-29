@@ -1,0 +1,41 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
+  "scope": "Finite checked file provider and reached include/require/include_once/require_once execution. The reports compare exact raw stdout, stderr and exit status or assert paused-state/authenticated-adapter invariants. Raw artifacts remain ignored under .tools.",
+  "integration_base": "33b18cc0a7eb6a0c3205b045fc4bf26a897dde40",
+  "tested_code_head": "7ae8c030f525bcd65827c241f39bec911c4b725e",
+  "tested_code_tree": "480ed18feaf59c7b9b94dbebdeddbd3756ccef33",
+  "code_commits": ["dae804bae", "7996a1a25", "216d26fd1", "97ad10c11", "056039ffe", "34e81c890", "fda813ac7", "b80fab7da", "7ae8c030f"],
+  "profile": {
+    "cwd": "fixed finite snapshot input, authenticated at execute",
+    "include_path": ".:",
+    "locale": "LC_ALL=C",
+    "provider": "immutable (caller, requested bytes) snapshot; opened canonical path and original bytes authenticated before parse-only worker response",
+    "vendor_php_parser_tree": "52b866da886b30a8c0c12722ccabec580ede227f"
+  },
+  "current_base_reports": [
+    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/include-execution-wizkc5kb/report.json", "sha256": "85b370c667fb34dc159d2b9b88913f016a2d5f2e62a624783b53a8343cbaf2e5", "exact_native_agreements": 25, "declared_inputs": 186, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_protocol.py", "report": ".tools/include-protocol-44tfvx_j/report.json", "sha256": "4ba44fe9a6e9ea962a7aad09e8764cfb85b0e85525f23fcc8f72419e95e49ec3", "assertions": 100, "declared_inputs": 190, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_saved_protocol.py", "report": ".tools/include-saved-protocol-i8hqqny8/report.json", "sha256": "86f083e8f71bfd465f33261c4c32276a8c348e4d45c806433cf5bffed9df946a", "assertions": 43, "declared_inputs": 190, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_adapter_protocol.py", "report": ".tools/include-adapter-protocol-7b85_t6f/report.json", "sha256": "bcc32b676499fa80c9c9433af21e1b67cda62f981269bfff2c5fc28cae31b703", "assertions": 10, "declared_inputs": 188, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/eval_protocol.py", "report": ".tools/eval-protocol-97229tuy/report.json", "sha256": "74f65218c68091356a81f90ab560c5808b0d7b812e168415ecabcc6d0422b66f", "assertions": 27, "declared_inputs": 179, "current_input_mismatches": 0}
+  ],
+  "current_helper_checks": [
+    "include_source_service: eight accepted, two native rejections, eight request negatives, four checked namespace recoveries and one mixed-error recovery block",
+    "eval_source_service: eleven eval sources and sixteen protocol negatives",
+    "file_provider_protocol: one opened case, two failure facts and fifteen forged/ambiguous negatives",
+    "private Dune adapter build and full SpecTec elaboration pass; git diff --check clean"
+  ],
+  "pre_nonce_independent_replay": {"selection": ["once-bad-retry", "finally-return", "file-eval-file"], "method": "Reviewer imported the maintained source harness and restricted CASES in memory; the report records the three selected rows.", "report": ".tools/include-execution-nw2j_l2q/report.json", "sha256": "e00cc05822c6f03a62642fe4d98e0d9715bcc9af19cb74cd49a9742075b9c84d", "exact_native_agreements": 3, "declared_inputs": 186, "capture_input_mismatches": 0, "note": "Historical after the nonce guard change; final-tree independent replay is recorded separately."},
+  "historical_pre_rebase_reports": [
+    {"report": ".tools/include-execution-uksgscrn/report.json", "sha256": "c3bd04425a2a919714faf38856aa59d6638fe4bb8ae451f6b7b43d0449c9388b", "exact": 25},
+    {"report": ".tools/include-protocol-k4a0i27u/report.json", "sha256": "1c68a7622b02dac59fba2fbe443f1f55bd1ff02d8a11fd976e901f7f8c6dc0ff", "assertions": 85},
+    {"report": ".tools/include-saved-protocol-gtbbcyv6/report.json", "sha256": "540a69984b4516c8b4db3debc6872a028137374c5d5f4ce03458fedd389d4450", "assertions": 43},
+    {"report": ".tools/include-adapter-protocol-a4x7a1tp/report.json", "sha256": "8c4a7dd2cbe5797e4e62d15c44bfc9c41e53462f22449a6f7ea6679e8a2be8e3", "assertions": 10}
+  ],
+  "limitations": [
+    "The finite provider currently requires a successful resolver result before an opened file. Resolver-null but openable fallback remains a required next increment.",
+    "The snapshot fixes CWD and include_path at .:. Programs that mutate either during file lookup need an expanded authenticated resolution context.",
+    "Missing ENOENT behavior is compared at LC_ALL=C. Other permission/path open-failure stream facts are representable but need independent source comparisons.",
+    "The selected 25 sources and paused controls do not establish complete include/require or full core PHP semantics."
+  ]
+}
