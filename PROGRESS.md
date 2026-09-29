@@ -68,6 +68,12 @@ preserving used temporary aliases. Five installed source comparisons and two
 paused stages (30 assertions) pass, independently of pending generic156 replay.
 [Ledger](coverage/semantics/reference-unused-finally-installed.json).
 
+Private selected configuration calls authenticate computed strings and pipes
+across argument evaluation, saved frames and a `chdir` pause. The original
+**e093e565d** catalogue (35 sources, eight stages and 107 assertions) remains
+historical after the finite-mode guard; current-base validation is pending.
+[Ledger](coverage/semantics/include-dynamic-selected-review.json).
+
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
 constrained references, interpolation,
@@ -75,8 +81,8 @@ dynamic names and other string contexts remain separate consumers. Source
 `__invoke` and callable/string precedence, `Closure::call`, array callables,
 inherited internal interface method signatures, constants, static/readonly
 members, traits, hooks, traversal, output handlers and lifecycle callbacks
-remain active core obligations. File inclusion still needs authenticated
-dynamic selected intrinsic calls, stringable `chdir` operands, wider OS/INI
+remain active core obligations. Canonical file inclusion still needs the
+private dynamic selected-call increment installed, stringable `chdir` operands, wider OS/INI
 failure modes and transformed wrappers. Rocq
 interaction-tree semantics and BOLA proofs follow the completed PHP core.
 

@@ -70,3 +70,12 @@ continues to use canonical opened paths. The [mutable-context ledger](../../cove
 records the bounded source and paused checks. Dynamic ownerless intrinsic
 selection and wider OS/INI behavior remain open. Other permission and path
 errors need source comparisons.
+
+A private follow-up records the selected intrinsic before evaluating arguments
+for computed string calls and pipes to `set_include_path`, `ini_set`,
+`ini_restore` and `chdir`. Its monotone selection nonce is checked across saved
+frames and the `chdir` provider pause. Direct calls, fixed pipes and owned
+first-class closures retain their existing provenance. The [selected-call
+ledger](../../coverage/semantics/include-dynamic-selected-review.json) records
+35 exact source rows and eight paused stages on the private tree. Installation
+and broader callable forms remain open.
