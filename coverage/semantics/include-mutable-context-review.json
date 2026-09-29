@@ -1,19 +1,21 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit, pinned -n profile with include_path=.: and LC_ALL=C",
-  "status": "Private candidate on interface/Closure base; independent current-base replay, canonical integration and installed checks pending",
-  "base": "f8013abac554c4da2563a25e819892500355a694",
-  "tested_code_head": "c7730eeba",
+  "status": "Private candidate on final installed typed-return base; independent current-base replay, canonical integration and installed checks pending",
+  "base": "e4d3b837b",
+  "tested_code_head": "4815602bb",
   "commits": [
-    "42bc9a67d",
-    "eda0fd1ff",
-    "f6526673d",
-    "27ca5253d",
-    "b12545b9d",
-    "9a6886e22",
-    "047e66b93",
-    "280ee0e06",
-    "c7730eeba",
-    "ba10ba670"
+    "d6d9226d4",
+    "60f81a2e4",
+    "b7c9f9c73",
+    "6abe889bb",
+    "db1853c09",
+    "fba90e69c",
+    "575fe201f",
+    "f7779844c",
+    "4815602bb",
+    "64d98e164",
+    "643d6b447",
+    "ab11e111f"
   ],
   "contract": "Snapshot v2 keys include resolution facts by exact caller filename, requested bytes, captured CWD and captured include_path. File contexts retain historical lookup provenance while the live globals may change. Source-callable set_include_path, ini_set of exact include_path, and ini_restore mutate only the authored INI state after argument binding. chdir pauses after scalar/path validation for a one-shot finite OS fact keyed by converted requested bytes and current CWD; success changes global CWD, failure emits the authored errno warning and returns false. Neither adapter nor parser executes PHP or changes host CWD. Once membership remains keyed by canonical opened path.",
   "chdir_fact_basis": "The source harness creates finite directories and obtains success next-CWD bytes from Path.resolve. Failure facts use errno.ENOENT and os.strerror under LC_ALL=C. The requested bytes, canonical next path, errno and warning text are explicit snapshot input and are checked against pinned native raw stdout, stderr and exit; no warning or directory result is copied from the model.",
@@ -27,7 +29,8 @@
       "sha256": "d94c2bb845ced7684d0a2c15144859dd3b021538f21d017d99e752f03ea70310",
       "exact_native_agreements": 28,
       "declared_inputs": 192,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/include_chdir_protocol.py",
@@ -35,7 +38,8 @@
       "sha256": "91e5a1fdf5944999a7cf27956c8cf5ce9de8093a47ff671b624f38b3b1b59d7d",
       "assertions": 107,
       "declared_inputs": 194,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/include_chdir_adapter_protocol.py",
@@ -43,7 +47,8 @@
       "sha256": "ea7f8be068d5a1634cdce6abab5cd5f30663f82fe138effcdfa57a4d76fdf870",
       "assertions": 19,
       "declared_inputs": 191,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/include_mutable_protocol.py",
@@ -51,7 +56,8 @@
       "sha256": "c3008a33f1aafb3a86b2d5b31a6005d5645b4f69e24b67495faf9bee79723dc0",
       "assertions": 57,
       "declared_inputs": 194,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/include_protocol.py",
@@ -59,7 +65,8 @@
       "sha256": "bf6e5dd5bced7542f051bcc923b899fa3bff21cdcf25d03c5d58f8bdd6693a17",
       "assertions": 130,
       "declared_inputs": 196,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/include_saved_protocol.py",
@@ -67,7 +74,8 @@
       "sha256": "e5e93d0468554c3cbce566302da077926dfc1d493cbab0617a60cdd2771e2530",
       "assertions": 46,
       "declared_inputs": 196,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/include_adapter_protocol.py",
@@ -75,7 +83,8 @@
       "sha256": "e77dbb6e98ba1f3129e154c3b542dff9036d7800244568bdda401a716eefbf12",
       "assertions": 25,
       "declared_inputs": 194,
-      "post_rebase_input_mismatches": 15
+      "post_rebase_input_mismatches": 15,
+      "current_input_mismatches": 20
     },
     {
       "command": "python3 tests/semantics/eval_protocol.py",
@@ -83,7 +92,8 @@
       "sha256": "908f27983aa318b062cdb3268a17a1809886c95525399b1f6504c6eaa15eef23",
       "assertions": 27,
       "declared_inputs": 185,
-      "post_rebase_input_mismatches": 13
+      "post_rebase_input_mismatches": 13,
+      "current_input_mismatches": 18
     },
     {
       "command": "python3 tests/semantics/eval_saved_protocol.py",
@@ -91,7 +101,8 @@
       "sha256": "e4370cdc5d52466af061aef0f7e81223028f51ff58ba83222ebf84c2e9dd22f9",
       "assertions": 42,
       "declared_inputs": 185,
-      "post_rebase_input_mismatches": 13
+      "post_rebase_input_mismatches": 13,
+      "current_input_mismatches": 18
     }
   ],
   "historical_pre_interface_independent_replay": {
@@ -106,17 +117,18 @@
     "exact_native_agreements": 3,
     "declared_inputs": 192,
     "comparison": "Reviewer decoded and compared raw native/model stdout, stderr and exit; relative 8T7, included-function 7, null F8 with exact Deprecated and Warning bytes.",
-    "post_rebase_input_mismatches": 15
+    "post_rebase_input_mismatches": 15,
+    "current_input_mismatches": 20
   },
-  "rebase_bridge": "The ten scoped commits were replayed onto installed interface/Closure base f8013abac. The 30-storage/40-control conflicts preserve canonical CLOSUREBINDINGS, LINKEDINTERFACES and BIND tasks alongside FILEINCLUDEPATH, CONFIG and CHDIR state/tasks. The pre-interface source, chdir and include reports differ at exactly 15 watched inputs: frontend/encoding.php, frontend/target.php, 116-closures, 126-class-compiler, 127-class-runtime, 133-inheritance-compiler, 134-inheritance-runtime, 135-property-compiler, 141-method-compiler, 142-method-runtime, 150-clone-runtime, 30-storage, 39-ownership, 40-control and modules.json. The pre-interface eval-only reports differ at the same 13 semantic/module inputs without frontend/encoding.php and frontend/target.php. Those reports remain historical; new current-base reports follow.",
-  "current_reports": [
+  "historical_pre_typed_reports": [
     {
       "command": "python3 tests/semantics/include_mutable_execution.py",
       "report": ".tools/include-chdir/.tools/include-mutable-w3i7jssw/report.json",
       "sha256": "de65092246cd367fd67f729ba32a4a541fefdb1ba74d826b3b5fed59c0e5991c",
       "exact_native_agreements": 28,
       "declared_inputs": 197,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/include_chdir_protocol.py",
@@ -124,7 +136,8 @@
       "sha256": "0bc30f60933f9b0c5a0caf622959a4086b208f4ef6481818a69381782b8f7a73",
       "assertions": 107,
       "declared_inputs": 199,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/include_chdir_adapter_protocol.py",
@@ -132,7 +145,8 @@
       "sha256": "321aae872fee8337572378c80c1455293264e537291578187fa96fad21ef375c",
       "assertions": 19,
       "declared_inputs": 196,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/include_mutable_protocol.py",
@@ -140,7 +154,8 @@
       "sha256": "fb9c1a01757e87ab8d58b023a56dba4b778bf6ab84c99e29befc9b31117087ff",
       "assertions": 57,
       "declared_inputs": 199,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/include_protocol.py",
@@ -148,7 +163,8 @@
       "sha256": "830a2d461b6fe3562b06b26c17e20ac5bb516daba2fd8647e00aa2d84078497d",
       "assertions": 130,
       "declared_inputs": 201,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/include_saved_protocol.py",
@@ -156,7 +172,8 @@
       "sha256": "32ec17722f1f336e4fd103f88ae6d4dbbc3d7e6b84aee1f837574e2582a69c21",
       "assertions": 46,
       "declared_inputs": 201,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/include_adapter_protocol.py",
@@ -164,7 +181,8 @@
       "sha256": "1991f13adf755885b74a359d7ca6d0bf9ac3f97fe28d7a94e5096cd6672d1dff",
       "assertions": 25,
       "declared_inputs": 199,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/eval_protocol.py",
@@ -172,7 +190,8 @@
       "sha256": "0364b166c4981c98f733674e9c6f91b71441b701485f9633eea1d8ce20cf2f28",
       "assertions": 27,
       "declared_inputs": 190,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     },
     {
       "command": "python3 tests/semantics/eval_saved_protocol.py",
@@ -180,17 +199,91 @@
       "sha256": "30b5dccefa3c00b54c581ad1b2d2f215b63499fa18b60634e8ebc44736e2af20",
       "assertions": 42,
       "declared_inputs": 190,
-      "current_input_mismatches": 0
+      "post_typed_input_mismatches": 7,
+      "current_input_mismatches": 7
     }
   ],
-  "current_independent_selected_replay": {
-    "selection": ["chdir-relative", "included-function-chdir", "chdir-first-class"],
+  "historical_pre_typed_independent_replay": {
+    "selection": [
+      "chdir-relative",
+      "included-function-chdir",
+      "chdir-first-class"
+    ],
     "command": "import include_mutable_execution; narrow CASES in memory to the three IDs; call main()",
     "report": ".tools/include-chdir/.tools/include-mutable-qi_1coqh/report.json",
     "sha256": "44a5b8d628b7ef38388ce389fa292eae18351382322e37c0ade2d96afe756551",
     "exact_native_agreements": 3,
     "declared_inputs": 197,
+    "comparison": "Reviewer decoded raw model/native stdout, stderr and exit on the rebased code tree: 8T7, 7 and 7, each with empty stderr and exit 0.",
+    "post_typed_input_mismatches": 7,
+    "current_input_mismatches": 7
+  },
+  "typed_rebase_bridge": "Private implementation was replayed additively onto installed typed-return base e4d3b837b. Shared 30-storage retains TYPE_RETURN_THROW alongside CONFIG/CHDIR tasks, while 84-call-integrity and modules.json retain both contracts. The previous interface-base reports now differ in exactly seven watched inputs: 152-throwable-runtime, 156-finally-runtime, 168-user-string-runtime, 30-storage, 80-call-control, 84-call-integrity, and modules.json. No frontend, adapter or test bytes changed; those reports remain historical. Current selected source and paused/adapter reports below exercise the overlapping state and callback path.",
+  "current_reports": [
+    {
+      "command": "In-memory selection of set-restore, first-class, chdir-relative, chdir-null, chdir-first-class and included-function-chdir from include_mutable_execution.CASES",
+      "report": ".tools/include-chdir/.tools/include-mutable-yn47y4i4/report.json",
+      "sha256": "7d4ddb8185f7d3a9ca319ac425c588136defc25d1fada2b021f0c44ba33d7dab",
+      "exact_native_agreements": 6,
+      "declared_inputs": 198,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_chdir_protocol.py",
+      "report": ".tools/include-chdir/.tools/include-chdir-protocol-80wim7a9/report.json",
+      "sha256": "28982e970db81c70d75b2efc0e302644a02d9522790690457d7c01174e6749a4",
+      "assertions": 107,
+      "declared_inputs": 200,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_chdir_adapter_protocol.py",
+      "report": ".tools/include-chdir/.tools/include-chdir-adapter-_sm8kcwa/report.json",
+      "sha256": "226365d31f4e0dfa2ba6b3a817e9c45449c37101ef86e9b1028bd51aec38eb1b",
+      "assertions": 19,
+      "declared_inputs": 197,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_mutable_protocol.py",
+      "report": ".tools/include-chdir/.tools/include-mutable-protocol-lrdh29r_/report.json",
+      "sha256": "7c2fa7a95086fd8468714398ae9332721e6fdb34969e2a75717d8437eb621ffa",
+      "assertions": 57,
+      "declared_inputs": 200,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_saved_protocol.py",
+      "report": ".tools/include-chdir/.tools/include-saved-protocol-rrqsa72e/report.json",
+      "sha256": "7f0da4540e6a55388f6f75562ea6369350470c9fc74c1b1b949d8875c8803b26",
+      "assertions": 46,
+      "declared_inputs": 202,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/eval_saved_protocol.py",
+      "report": ".tools/include-chdir/.tools/eval-saved-protocol-l4qwylsc/report.json",
+      "sha256": "cdc16933120544df2334171816ecf4f96fec2cd829358bdec98f7a2128574fcd",
+      "assertions": 42,
+      "declared_inputs": 191,
+      "current_input_mismatches": 0
+    }
+  ],
+  "current_typed_bridge": {
+    "selection": [
+      "typed-return-chdir-callback"
+    ],
+    "source_template": "<?php class O { function __toString(): string { return (string)(include 'one.php'); } } function f(): string { chdir('__SUB__'); return new O; } echo f(); echo include 'one.php';",
+    "selector": "import include_mutable_execution as m; m.CASES={'typed-return-chdir-callback': SOURCE_TEMPLATE.encode()}; m.main()",
+    "snapshot_construction": "The maintained include_mutable_execution.main creates main.php and one.php in a finite case directory, with local one.php returning 8 and sub/one.php returning 7; replaces __SUB__ with canonical sub path; supplies v2 opened rows for (main.php, one.php, old CWD, .:) to local and (main.php, one.php, sub CWD, .:) to sub; supplies a chdir success fact keyed (old CWD, canonical sub request) with canonical sub as next_cwd. It runs model/native under LC_ALL=C and the pinned profile.",
+    "report": ".tools/include-chdir/.tools/include-mutable-ppbbvxgd/report.json",
+    "sha256": "23019932005e9aa8bd5420522bc6ff41a0d3c1a05384d95cc108b339d143516d",
+    "source_sha256": "6f2500f4c919a0b58d95d9706ab6be91b04fbf09210b6b56d7bb00ea72bd8293",
+    "snapshot_sha256": "4afd57c51646479e49feee37cfbfde3d44c08683939c29ed4f7a8e00d1835c22",
+    "exact_native_agreements": 1,
+    "declared_inputs": 198,
     "current_input_mismatches": 0,
-    "comparison": "Reviewer decoded raw model/native stdout, stderr and exit on the rebased code tree: 8T7, 7 and 7, each with empty stderr and exit 0."
-  }
+    "comparison": "Native and model stdout 77, empty stderr, exit 0. First 7 is the typed-return object callback include after chdir; second 7 is a caller include after function unwind, proving FILECWD persists."
+  },
+  "interface_rebase_bridge": "The ten scoped commits were replayed onto installed interface/Closure base f8013abac. The 30-storage/40-control conflicts preserve canonical CLOSUREBINDINGS, LINKEDINTERFACES and BIND tasks alongside FILEINCLUDEPATH, CONFIG and CHDIR state/tasks. The pre-interface source, chdir and include reports differ at exactly 15 watched inputs: frontend/encoding.php, frontend/target.php, 116-closures, 126-class-compiler, 127-class-runtime, 133-inheritance-compiler, 134-inheritance-runtime, 135-property-compiler, 141-method-compiler, 142-method-runtime, 150-clone-runtime, 30-storage, 39-ownership, 40-control and modules.json. The pre-interface eval-only reports differ at the same 13 semantic/module inputs without frontend/encoding.php and frontend/target.php. Those reports remain historical; new current-base reports follow."
 }

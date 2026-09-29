@@ -53,7 +53,7 @@ under the generic 45-second runner; both failed reports remain distinct from
 the bounded agreement.
 [Ledger](coverage/semantics/user-string-typed-author.json).
 
-A private mutable-context candidate is rebasing onto the typed-return tree. It adds versioned include lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts. The 28-source and paused/adapter agreement on the earlier interface/Closure base remains historical until the typed-return bridge passes. [Ledger](coverage/semantics/include-mutable-context-review.json). Dynamic selected calls, stringable operands and broader OS/INI behavior remain open.
+A private mutable-context candidate is rebased onto installed typed returns at **e4d3b837b**. It adds versioned include lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts. A focused typed-return callback that includes after `chdir`, then includes again in its caller, matches PHP (`77`); six retained source rows and directory/INI/saved-frame protocols pass. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Independent current-base review and installation remain; dynamic selected calls, stringable operands and broader OS/INI behavior stay open.
 
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
