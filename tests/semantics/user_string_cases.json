@@ -190,5 +190,17 @@
     "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} print\n(new O);",
     "source_sha256": "afa884e278346d471282d6ed11662faf16a60829c5a8f909dccaf441c1f04c8e",
     "expected_model": "php_error"
+  },
+  {
+    "id": "callback-parent-scoped",
+    "source": "<?php class A{function __toString(){return \"a\";}} class B extends A{function __toString(){return parent::__toString().\"b\";}} echo new B;",
+    "source_sha256": "eff5a961c6a687bd7ae00530dfbda8c2b77b2378e5828d64697a4cafb1226600",
+    "expected_model": "normal"
+  },
+  {
+    "id": "callback-self-static",
+    "source": "<?php class O{static function f(){echo \"s;\";return \"x\";} function __toString(){return self::f();}} echo new O;",
+    "source_sha256": "483c9b36e9f86577e34c1be5bbe97ed981636f3dd89af04c80ac2f36ad92ec5b",
+    "expected_model": "normal"
   }
 ]
