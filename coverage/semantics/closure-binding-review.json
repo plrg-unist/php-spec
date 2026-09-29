@@ -1,5 +1,5 @@
 {
-  "result": "bounded-ordinary-closure-binding-current-base-author-pass-independent-pending",
+  "result": "bounded-ordinary-closure-binding-private-independent-pass-current-install-pending",
   "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
   "scope": "Literal bindTo and Closure::bind on ordinary real closures copy captured values and static-local state into a separately owned closure; reference captures retain aliases. Lexical scope, called class, receiver, warnings, and binding source provenance follow the bounded contract in docs/semantics/CLOSURE-BINDING.md.",
   "code": {
@@ -99,7 +99,12 @@
       "bind-first-argument",
       "bound-source-release",
       "null-scope-receiver"
-    ]
+    ],
+    "independent_source": {
+      "result": "22/22 exact and stable",
+      "report": ".tools/static-method-review/closure-binding-22-review-v89auq5p/report.json",
+      "report_sha256": "13eb8475747fdf1ad04051182727e1a1a9a8d1c95d31e4da2737fb3080ec0a62"
+    }
   },
   "current_compatibility": {
     "result": "Three retained callable sources exact and six installed 174 paused stages/62 assertions stable on 0d387fda4",
