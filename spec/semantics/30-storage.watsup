@@ -152,6 +152,9 @@ dec $throwable_inherited_method(pstate, nat, ptbytes) : bool
 dec $scoped_internal_ctor_kind(pstate, phpType19, preqbytes) : text?
 dec $scoped_internal_method_kind(pstate, phpType19, preqbytes, ptbytes) : text?
 dec $getter_owner(text, pgettermethod) : text
+dec $throwable_inherited_string(pstate, nat) : bool
+dec $throwable_terminal_message_supported(pvalue) : bool
+dec $throwable_terminal_renderable(pstate, nat, nat*) : bool
 dec $ctor_method_start(pstate, nat, int) : pstate
 dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool
 dec $class_links_valid(pstate) : bool

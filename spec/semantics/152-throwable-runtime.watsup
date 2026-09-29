@@ -192,12 +192,20 @@ rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n
   -- if ptask_tail* = eps
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_terminal_renderable(S, n, eps)
 rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $throwable_member(S, n)
+  -- if $throwable_terminal_renderable(S, n, eps)
+rule PhpStep/throw-search-uncaught-unrenderable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable terminal message conversion"][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.FRAMES = eps
+  -- if $throwable_member(S, n)
+  -- if ~$throwable_terminal_renderable(S, n, eps)
 
 ;; ZEND_CATCH clears exception eligibility before strict assignment through a
 ;; possible reference. A binding error therefore searches only outer markers.

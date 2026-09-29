@@ -42,6 +42,24 @@ def $throwable_member(S, n) = true
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
 def $throwable_member(S, n) = false -- otherwise
 
+def $throwable_terminal_message_supported(PSTRING n*) = true
+def $throwable_terminal_message_supported(PINT z) = true
+def $throwable_terminal_message_supported(PBOOL b) = true
+def $throwable_terminal_message_supported(PNULL) = true
+def $throwable_terminal_message_supported(PFLOAT n) = true
+def $throwable_terminal_message_supported(PARRAY n) = true
+def $throwable_terminal_message_supported(pvalue) = false -- otherwise
+def $throwable_terminal_renderable(S, n, nat_seen*) = true -- if n <- nat_seen*
+def $throwable_terminal_renderable(S, n, nat_seen*) = true
+  -- if ~(n <- nat_seen*)
+  -- if $throwable_terminal_message_supported($throwable_field(S, n, "message"))
+  -- if $throwable_previous_id(S, n) = eps
+def $throwable_terminal_renderable(S, n, nat_seen*) = $throwable_terminal_renderable(S, n_previous, n :: nat_seen*)
+  -- if ~(n <- nat_seen*)
+  -- if $throwable_terminal_message_supported($throwable_field(S, n, "message"))
+  -- if $throwable_previous_id(S, n) = (n_previous)
+def $throwable_terminal_renderable(S, n, nat_seen*) = false -- otherwise
+
 def $throwable_instance_slots_valid(S, n, porigin, text_kind) = true
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS)
@@ -71,6 +89,14 @@ def $throwable_inherited_method(S, n, ptbytes) = true
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
   -- if $ctor_selected_name(text_kind, ptbytes)
 def $throwable_inherited_method(S, n, ptbytes) = false -- otherwise
+
+def $throwable_inherited_string(S, n) = true
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $throwable_member(S, n)
+  -- if $effective_method(S, porigin, $ptascii("__toString"), |S.CLASSES|) = eps
+def $throwable_inherited_string(S, n) = false -- otherwise
+def $stringify(S, POBJECT n, z) = $throwable_stringify(S, n)
+  -- if $throwable_inherited_string(S, n)
 
 def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin_site, RECEIVER n, BASE $throwable_constructor_owner(text_kind), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin_site)

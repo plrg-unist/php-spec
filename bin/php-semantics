@@ -104,6 +104,23 @@ def observe(state, filename):
             return (item['args'][0] if item['tag'] == 'DIRECT'
                     else state['STORE'][int(item['args'][0])]['args'][0])
 
+        def exception_message(value):
+            kind = value['tag']
+            if kind == 'PSTRING':
+                return bytes(map(int, value['args'][0])), False
+            if kind == 'PINT':
+                return str(value['args'][0]).encode(), False
+            if kind == 'PBOOL':
+                return (b'1' if value['args'][0] else b''), False
+            if kind == 'PNULL':
+                return b'', False
+            if kind == 'PARRAY':
+                return b'Array', True
+            if kind == 'PFLOAT':
+                number = struct.unpack('>d', int(value['args'][0]).to_bytes(8, 'big'))[0]
+                return format(number, '.14G').encode(), False
+            raise ValueError(f'unsupported exception message kind {kind}')
+
         root_id = int(fields[0])
         object_id = root_id
         seen = set()
@@ -112,7 +129,7 @@ def observe(state, filename):
             uncaught_chain.append(object_id)
             previous = field(object_id, 'previous')
             object_id = int(previous['args'][0]) if previous['tag'] == 'POBJECT' else None
-        tag, fields = 'THROWN', [class_name(root_id), field(root_id, 'message')['args'][0], field(root_id, 'line')['args'][0]]
+        tag, fields = 'THROWN', [class_name(root_id), list(exception_message(field(root_id, 'message'))[0]), field(root_id, 'line')['args'][0]]
     stderr = b''
     for event in events:
         if event['tag'] == 'WARNING':
@@ -246,9 +263,14 @@ def observe(state, filename):
             prefix = b'Parse error: ' if classname == 'ParseError' else b'Fatal error: '
             stderr += prefix + message + b' in ' + location + b' on line ' + str(line).encode() + b'\n'
         elif uncaught_chain:
+            messages = {}
+            for chain_id in uncaught_chain:
+                messages[chain_id], array_warning = exception_message(field(chain_id, 'message'))
+                if array_warning:
+                    stderr += b'Warning: Array to string conversion in Unknown on line 0\n'
             for index, chain_id in enumerate(reversed(uncaught_chain)):
                 chain_name = class_name(chain_id)
-                message_bytes = bytes(map(int, field(chain_id, 'message')['args'][0]))
+                message_bytes = messages[chain_id]
                 if chain_name in ('TypeError', 'ArgumentCountError') and b', called in ' in message_bytes.split(b'\0', 1)[0]:
                     message_bytes += b' and defined'
                 prefix = b'Fatal error: Uncaught ' if index == 0 else b'\nNext '
