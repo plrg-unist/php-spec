@@ -57,6 +57,6 @@ records the source, pause and adapter comparisons. Other wrappers and stream
 transformations need their own facts and source comparisons.
 The [directory failure ledger](../../coverage/semantics/include-open-failure-review.json)
 records exact relative and absolute directory observations, including their
-different stream-error bytes. This is a private followup pending integration.
+different stream-error bytes. This bounded extension is installed.
 Runs that mutate CWD or `include_path` need a new authenticated resolution
 context. Other permission and path errors need source comparisons.
