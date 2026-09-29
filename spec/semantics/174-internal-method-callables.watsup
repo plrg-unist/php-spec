@@ -92,6 +92,22 @@ def $getter_capture_live(S, n) = true
   -- if $ppfirstclass(phpType7*)
   -- if $method_source_name(phpType20, $getter_name(pgettermethod))
 def $getter_capture_live(S, n) = false -- otherwise
+def $closure_live_object_valid(S, n) = $closure_callable(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+  -- if $closure_callable(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $closure_live_object_valid(S, n) = $getter_capture_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $getter_capture_live(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
 def $closure_callable(S, n) = $getter_capture_live(S, n)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site

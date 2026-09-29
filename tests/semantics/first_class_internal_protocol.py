@@ -18,8 +18,10 @@ CASES = {
                   '-- if S.OBJECTS[n] = GETTERCLOSURE n_receiver GET_MESSAGE text_base porigin_site'),
         'checks': [
             '$getter_capture_live(S, n)',
+            '$closure_live_object_valid(S, n)',
             '$closure_callable(S, n)',
             '$node_children(S, HOBJECT n) = [HOBJECT n_receiver]',
+            '~$closure_scope_complete(S[.CLOSURESCOPES = [{OBJECT n, LEXICAL PORIGIN 0 eps, CALLED PORIGIN 0 eps, RECEIVER eps}]], S.ALLOCATIONS)',
             '~$getter_capture_live(S[.OBJECTS = $object_set(S.OBJECTS, n, GETTERCLOSURE n_receiver GET_CODE text_base porigin_site)], n)',
             '~$getter_capture_live(S[.OBJECTS = $object_set(S.OBJECTS, n, GETTERCLOSURE 9999 GET_MESSAGE text_base porigin_site)], n)',
         ],
@@ -30,9 +32,48 @@ CASES = {
                   '-- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site'),
         'checks': [
             '$closure_callable(S, n)',
+            '$closure_live_object_valid(S, n)',
             '$node_children(S, HOBJECT n) = [HOBJECT n_source]',
+            '~$closure_scope_complete(S[.CLOSURESCOPES = [{OBJECT n, LEXICAL PORIGIN 0 eps, CALLED PORIGIN 0 eps, RECEIVER eps}]], S.ALLOCATIONS)',
             '~$closure_callable(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE n porigin_site)], n)',
             '~$closure_callable(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE 9999 porigin_site)], n)',
+        ],
+    },
+    'getter-invoke-wrapper': {
+        'source': '<?php $e=new Exception("X"); $c=$e->getMessage(...); $w=$c->__invoke(...); $e=null; unset($c); echo $w();',
+        'stage': ('S.RESULT = KNOWN (POBJECT n) '
+                  '-- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site '
+                  '-- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver GET_MESSAGE text_base porigin_getter'),
+        'checks': [
+            '$closure_callable(S, n)',
+            '$closure_live_object_valid(S, n)',
+            '$getter_capture_live(S, n_source)',
+            '$node_children(S, HOBJECT n) = [HOBJECT n_source]',
+            '$node_children(S, HOBJECT n_source) = [HOBJECT n_receiver]',
+            '~$closure_live_object_valid(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE 9999 porigin_site)], n)',
+        ],
+    },
+    'getter-wrapper-after-release': {
+        'source': '<?php $e=new Exception("X"); $c=$e->getMessage(...); $w=$c->__invoke(...); $e=null; unset($c); echo $w();',
+        'stage': ('S.TODO = (GETTER_ARGS pgettercall) :: ptask_tail* '
+                  '-- if pgettercall.CAPTURE = (n_source) '
+                  '-- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver GET_MESSAGE text_base porigin_getter '
+                  '-- if S_global = $global_table_view(S) '
+                  '-- if $lookup(S_global.ENV, $ptascii("w")) = (n_cell) '
+                  '-- if S.STORE[n_cell] = DEFINED (POBJECT n) '
+                  '-- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site '
+                  '-- if $lookup(S_global.ENV, $ptascii("c")) = eps '
+                  '-- if $lookup(S_global.ENV, $ptascii("e")) = (n_ecell) '
+                  '-- if S.STORE[n_ecell] = DEFINED PNULL'),
+        'checks': [
+            '$call_task_valid(S, GETTER_ARGS pgettercall)',
+            '$closure_callable(S, n)',
+            '$getter_capture_live(S, n_source)',
+            '(HOBJECT n) <- S.ALLOCATIONS',
+            '(HOBJECT n_source) <- S.ALLOCATIONS',
+            '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+            '$node_children(S, HOBJECT n) = [HOBJECT n_source]',
+            '$node_children(S, HOBJECT n_source) = [HOBJECT n_receiver]',
         ],
     },
     'invoke-after-unset': {
@@ -109,6 +150,7 @@ def run():
             + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
             '  -- if S = $seek(S_initial[.COMPLETION = NORMAL], 2000)[.COMPLETION = NORMAL]\n'
             '  -- if ' + case['stage'] + '\n'
+            '  -- if $closure_state_valid(S)\n'
             + ''.join('  -- if ' + clause + '\n' for clause in case['checks']))
         result = subprocess.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
                                  *map(str, MODULES), str(fixture)], capture_output=True,
@@ -117,7 +159,7 @@ def run():
         (directory / 'stderr').write_text(result.stderr)
         passed = result.returncode == 0 and result.stdout == 'true\n' and not result.stderr
         records.append({'id': name, 'source_sha256': digest(source),
-                        'assertions': len(case['checks']) + 3, 'pass': passed})
+                        'assertions': len(case['checks']) + 4, 'pass': passed})
         print(name, passed, flush=True)
         if not passed:
             print(result.stderr[-2500:], flush=True)
