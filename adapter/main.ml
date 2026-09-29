@@ -248,7 +248,13 @@ let pending_from_state state =
       let n = int_of_string (string value) in
       if n < 0 || n > 255 then fail "invalid pending source byte" else n)
       |> base64_octets |> fun value -> `String value in
-    match list (field "FILECONTEXTS" json), list (field "EVALCONTEXTS" json) with
+    if field "DIRCONTEXT" json <> `Null then
+      let context = field "DIRCONTEXT" json in
+      Some (`Assoc ["id", field "NONCE" context; "mode", `String "chdir";
+                    "site", field "SITE" (field "CALL" context);
+                    "cwd", encode_field "CWD" context;
+                    "requested", encode_field "REQUESTED" context])
+    else match list (field "FILECONTEXTS" json), list (field "EVALCONTEXTS" json) with
     | context :: _, _ when List.mem
         (string (field "tag" (field "PHASE" context)))
         ["FILE_RESOLVE_WAIT"; "FILE_PARSE_WAIT"] ->
@@ -317,10 +323,26 @@ let nonempty_bytes json =
   let value = source_bytes json in
   if value = "" then fail "empty file identity";
   value
+let absolute_nul_free_bytes json =
+  let encoded = nonempty_bytes json in
+  let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" in
+  let decoded = Buffer.create (String.length encoded * 3 / 4) in
+  for i = 0 to String.length encoded / 4 - 1 do
+    let digit offset =
+      let c = encoded.[4 * i + offset] in
+      if c = '=' then 0 else String.index alphabet c in
+    let bits = (digit 0 lsl 18) lor (digit 1 lsl 12) lor (digit 2 lsl 6) lor digit 3 in
+    Buffer.add_char decoded (Char.chr ((bits lsr 16) land 255));
+    if encoded.[4 * i + 2] <> '=' then Buffer.add_char decoded (Char.chr ((bits lsr 8) land 255));
+    if encoded.[4 * i + 3] <> '=' then Buffer.add_char decoded (Char.chr (bits land 255))
+  done;
+  let path = Buffer.contents decoded in
+  if path.[0] <> '/' || String.contains path '\000' then fail "invalid canonical chdir path"
 let file_snapshot json =
-  exact ["version"; "main"; "cwd"; "include_path"; "entries"] json;
   let version = J.to_int (field "version" json) in
   if version <> 1 && version <> 2 then fail "file snapshot version mismatch";
+  exact (["version"; "main"; "cwd"; "include_path"; "entries"] @
+         if version = 2 then ["chdir_entries"] else []) json;
   ignore (nonempty_bytes (field "main" json));
   ignore (nonempty_bytes (field "cwd" json));
   if source_bytes (field "include_path" json) <> "Ljo=" then fail "file snapshot include_path mismatch";
@@ -355,6 +377,22 @@ let file_snapshot json =
       match List.assoc_opt path !opened with
       | Some prior when prior <> source -> fail "conflicting bytes for opened file"
       | _ -> opened := (path, source) :: !opened)) entries;
+  if version = 2 then (
+    let dir_keys = ref [] in
+    List.iter (fun entry ->
+      let status = string (field "status" entry) in
+      exact (match status with
+        | "success" -> ["cwd"; "requested"; "status"; "next_cwd"]
+        | "failure" -> ["cwd"; "requested"; "status"; "stream_error"; "errno"]
+        | _ -> fail "unknown chdir status") entry;
+      let cwd = nonempty_bytes (field "cwd" entry)
+      and requested = source_bytes (field "requested" entry) in
+      if List.mem (cwd, requested) !dir_keys then fail "duplicate chdir key";
+      dir_keys := (cwd, requested) :: !dir_keys;
+      if status = "success" then absolute_nul_free_bytes (field "next_cwd" entry)
+      else (ignore (nonempty_bytes (field "stream_error" entry));
+            if J.to_int (field "errno" entry) <= 0 then fail "invalid chdir errno"))
+      (list (field "chdir_entries" json)));
   json
 let check_file_resolve request =
   exact ["op"; "snapshot"; "pending"; "response"] request;
@@ -384,6 +422,27 @@ let check_file_resolve request =
   exact (List.map fst expected) response;
   if List.exists (fun (key,value) -> field key response <> value) expected then
     fail "file resolution response differs from finite snapshot";
+  `Assoc (("ok", `Bool true) :: expected)
+let check_chdir request =
+  exact ["op"; "snapshot"; "pending"; "response"] request;
+  let snapshot = file_snapshot (field "snapshot" request) in
+  if J.to_int (field "version" snapshot) <> 2 then fail "chdir requires a version 2 snapshot";
+  let pending = field "pending" request in
+  exact ["id"; "site"; "cwd"; "requested"] pending;
+  let id = source_id (field "id" pending)
+  and site = field "site" pending
+  and cwd = nonempty_bytes (field "cwd" pending)
+  and requested = source_bytes (field "requested" pending) in
+  let entry = match List.find_opt (fun entry ->
+      source_bytes (field "cwd" entry) = cwd
+      && source_bytes (field "requested" entry) = requested)
+      (list (field "chdir_entries" snapshot)) with
+    | Some entry -> entry | None -> fail "chdir absent from finite snapshot" in
+  let expected = ["id", `String id; "site", site] @ assoc entry in
+  let response = field "response" request in
+  exact (List.map fst expected) response;
+  if List.exists (fun (key,value) -> field key response <> value) expected then
+    fail "chdir response differs from finite snapshot";
   `Assoc (("ok", `Bool true) :: expected)
 let execute value request =
   if !active_eval <> None then fail "eval parser response still pending";
@@ -538,6 +597,44 @@ let resume_file_resolve request =
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
               "message", `String (Util.Error.string_of_error at msg)]
+let resume_chdir request =
+  exact ["op"; "response"] request;
+  let state, pending = match !active_eval with
+    | Some active -> active | None -> fail "no pending chdir request" in
+  if string (field "mode" pending) <> "chdir" then fail "not waiting for chdir";
+  let snapshot = match !active_snapshot with
+    | Some facts -> facts | None -> fail "chdir has no finite snapshot" in
+  let identity = `Assoc ["id", field "id" pending; "site", field "site" pending;
+                         "cwd", field "cwd" pending;
+                         "requested", field "requested" pending] in
+  let checked = check_chdir (`Assoc ["op", `String "check_chdir";
+                                     "snapshot", snapshot; "pending", identity;
+                                     "response", field "response" request]) in
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let decode_bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let id = V.Make.nat (Bigint.of_string (source_id (field "id" pending))) in
+  let cwd = decode_bytes (field "cwd" checked)
+  and requested = decode_bytes (field "requested" checked) in
+  let response = match string (field "status" checked) with
+    | "success" -> mk "pdirresponse" "DIR_CHANGED"
+        [id; cwd; requested; decode_bytes (field "next_cwd" checked)]
+    | "failure" -> mk "pdirresponse" "DIR_FAILED"
+        [id; cwd; requested; decode_bytes (field "stream_error" checked);
+         V.Make.nat (Bigint.of_int (J.to_int (field "errno" checked)))]
+    | _ -> fail "unknown checked chdir status" in
+  check (typ "pdirresponse") response;
+  match Runner.Interp.eval_func "dir_continue" [] [state; response] with
+  | Run.Pass next -> check (typ "pstate") next;
+      let following = pending_from_state next in
+      active_eval := Option.map (fun request -> (next, request)) following;
+      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+              match following with Some request -> ["pending", request] | None -> [])
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
 let resume_file_parse request =
   exact ["op"; "response"] request;
   let state, pending = match !active_eval with
@@ -621,8 +718,10 @@ let () =
         `Assoc ["ok", `Bool true])
       else if op = "check_source_service" then check_source_service request
       else if op = "check_file_resolve" then check_file_resolve request
+      else if op = "check_chdir" then check_chdir request
       else if op = "check_file_source_service" then check_file_source_service request
       else if op = "resume_file_resolve" then resume_file_resolve request
+      else if op = "resume_chdir" then resume_chdir request
       else if op = "resume_file_parse" then resume_file_parse request
       else if op = "resume_eval" then resume_eval request
       else (

@@ -352,6 +352,18 @@ def main():
         while result.get('ok') and 'pending' in result:
             pending = result['pending']
             mode = pending['mode']
+            if mode == 'chdir':
+                if file_snapshot is None or file_snapshot['version'] != 2:
+                    return {'status': 'unsupported', 'reason': 'chdir requires a finite version 2 snapshot'}
+                matches = [entry for entry in file_snapshot['chdir_entries']
+                           if entry['cwd'] == pending['cwd']
+                           and entry['requested'] == pending['requested']]
+                if len(matches) != 1:
+                    return {'status': 'unsupported', 'reason': 'chdir absent or ambiguous in finite snapshot'}
+                result = adapter.request({'op': 'resume_chdir',
+                                          'response': {'id': pending['id'], 'site': pending['site'],
+                                                       **matches[0]}}, args.timeout)
+                continue
             if mode == 'file-resolve':
                 if file_snapshot is None:
                     return {'status': 'unsupported', 'reason': 'file resolution requires a finite snapshot'}
