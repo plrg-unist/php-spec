@@ -132,7 +132,8 @@ records hashes and recovery instructions.
 First-class source method controls are in `first_class_method_cases.json` and
 use the same runtime runner; `static_method_protocol.py` also checks capture
 provenance and ownership transitions. A separate first-class review ledger
-will record the exact native archive and frozen replay reports.
+[records](../../coverage/semantics/first-class-method-review.json) the exact
+native archive and frozen replay reports.
 
 Finite internal Throwable getter and `Closure->__invoke` first-class captures
 currently return explicit `Unsupported` at selection. They remain required

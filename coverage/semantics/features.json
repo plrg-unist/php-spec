@@ -8240,20 +8240,24 @@
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/79-call-frames.watsup"
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/173-method-callables.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/static_method_cases.json",
-        "tests/semantics/static_method_protocol.py"
+        "tests/semantics/static_method_protocol.py",
+        "tests/semantics/first_class_method_cases.json",
+        "tests/semantics/first_class_method_overlap_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "docs/semantics/SOURCE-METHODS.md"
+        "docs/semantics/SOURCE-METHODS.md",
+        "coverage/semantics/first-class-method-review.json"
       ],
-      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class method callables, user magic dispatch and broader class integration remain open."
+      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open."
     },
     {
       "id": "classes.instance-lookup",
@@ -8264,7 +8268,8 @@
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/30-storage.watsup",
-        "spec/semantics/83-call-traces.watsup"
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/173-method-callables.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -8272,13 +8277,16 @@
         "tests/semantics/method_runtime.py",
         "tests/semantics/method_wrapper_protocol.py",
         "tests/semantics/method_visibility_cases.json",
-        "tests/semantics/method_visibility_protocol.py"
+        "tests/semantics/method_visibility_protocol.py",
+        "tests/semantics/first_class_method_cases.json",
+        "tests/semantics/first_class_method_overlap_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
-        "coverage/semantics/method-visibility-review.json"
+        "coverage/semantics/method-visibility-review.json",
+        "coverage/semantics/first-class-method-review.json"
       ],
-      "review": "Source instance method lookup is case-insensitive and follows active parent links. Ordinary/nullsafe calls retain selected receivers and reuse named/unpacked/reference arguments; protected root prototypes, ancestor-private lexical redirect, bound closure scope and selected-task provenance have bounded source/paused evidence (methods-review.json, method-visibility-review.json). Static methods, first-class method callables and user magic dispatch remain open."
+      "review": "Source instance method lookup is case-insensitive and follows active parent links. Ordinary/nullsafe calls retain selected receivers and reuse named/unpacked/reference arguments; protected root prototypes, ancestor-private lexical redirect, bound closure scope and selected-task provenance have bounded source/paused evidence (methods-review.json, method-visibility-review.json). First-class source method capture retains selected descriptors and nonstatic receivers (first-class-method-review.json); internal capture forms and user magic dispatch remain open."
     },
     {
       "id": "classes.late-static-binding",

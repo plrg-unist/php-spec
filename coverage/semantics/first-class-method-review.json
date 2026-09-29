@@ -1,0 +1,68 @@
+{
+  "result": "bounded-source-method-capture-pass-current-base-review-pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, ordinary pinned profile",
+  "scope": "First-class source instance and scoped method captures. Conversion selects and authenticates a method without sending arguments or entering it; invocation retains the receiver, called class and declaring-origin method statics.",
+  "candidate": {
+    "original_base": "74bcb986206e1723420070abe688432fde2ba885",
+    "original_clean_head": "1f3f6cae9020bee253c53ae3fa6634d8f4f8e6a9",
+    "conversion_base": "33b18cc0a",
+    "current_code_head": "0662b1431",
+    "rebase": "The conversion increment adds user __toString dispatch and its STRINGIFY_RESULT task, broadens METHOD_TARGET validity only for authenticated stringify sites, and admits public __toString methods. The B source-capture rules remain in modules 141/142/173; 30 storage fields and the 168/169/173 module list were merged additively. No frontend, adapter, native, grammar or scanner input changed."
+  },
+  "native": {
+    "catalogue": "tests/semantics/first_class_method_cases.json",
+    "catalogue_sha256": "c76e0c812195d26feec7b4c90b8ae16b1c5b36650e3ba82d9ea5300217537fcf",
+    "raw_archive": ".tools/static-method-review/first-class-native.json",
+    "raw_archive_sha256": "8bd38bf2948c5bbcc20cedcc07913d265ee4b636df9073b1e04001f0c42953ad",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "recovery": "The ignored raw archive pins each original PHP source hash and native stdout/stderr/exit tuple under the full tests/semantics/profile.json. Every tracked catalogue row pins the raw archive hash and replaces only the source filename in diagnostic stderr with {FILE}. Rerun method_runtime.py with the catalogue and compare exact output bytes and exit status."
+  },
+  "original_author_source": {
+    "result": "23/23 exact and stable",
+    "normal": 14,
+    "php_error": 8,
+    "static_rejection": 1,
+    "fingerprint_sha256": "0b34b176b9dddd7a0a4f7f5bd4f669cb881404fe8168f35f269208b4594a899d",
+    "report": ".tools/static-method-callable/.tools/method-runtime-rkk2m5pu/report.json",
+    "report_sha256": "9c2ab0332e3941948fe7cea931075589718a5055ec5523dbf0b11696a8151331"
+  },
+  "original_author_paused": {
+    "result": "5/5 stable, 32 assertions",
+    "cases": ["first-literal-called", "first-private-origin", "first-convert-name", "first-object-selector-live", "first-object-selector-released"],
+    "report": ".tools/static-method-callable/.tools/static-method-protocol-zlmgjwbl/report.json",
+    "report_sha256": "11cf29f6767be8ab30617630c1e125672fc1ffea78ff4ee11b1987d9783bfd60"
+  },
+  "original_independent_source": {
+    "result": "23/23 exact and stable",
+    "report": ".tools/static-method-review/first-class-review-355irqny/report.json",
+    "report_sha256": "e229382ae615a129a9f1e028980e2205216fa7c5b2b55300fb89eb7272a34da7"
+  },
+  "current_base_bridge": {
+    "result": "author-source-pass-independent-review-pending",
+    "overlap_catalogue": "tests/semantics/first_class_method_overlap_cases.json",
+    "overlap_catalogue_sha256": "788180e1b6a0f549e15cb999d495e2a4019e1ffca7da9d61a34619e75526193f",
+    "overlap_raw_archive": ".tools/static-method-review/first-class-overlap-native.json",
+    "overlap_raw_archive_sha256": "715485d8a5ddd0e46af958bde500b636c1eb9bc418c2eda2185504b6b32c56af",
+    "source_cases": ["first-nullsafe", "first-private-captured", "first-shared-statics", "first-static-trace", "first-tostring-overlap"],
+    "source_result": "5/5 exact",
+    "source_report": ".tools/static-method-callable/.tools/method-runtime-s0vj1mkq/report.json",
+    "source_report_sha256": "0e6ffdef3f700fadfb4cdc15ba1c35b2f0a90a4e49d7fcf0933abff4cc7992a0"
+  },
+  "inventory": {
+    "result": "pass on current private base",
+    "command": "make -o build inventory",
+    "report": ".tools/static-method-callable/.tools/b-current-inventory.log",
+    "report_sha256": "dc679151892d042bef341adcad70f9e5b05425971e19a4ef5159b7bbcd583cbb",
+    "semantic_command": "python3 scripts/check-semantic-inventory.py",
+    "semantic_report": ".tools/static-method-callable/.tools/b-semantic-inventory.log",
+    "semantic_report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+    "observation": "Optional coverage PHP built in the isolated worktree; 97 grammar sources, 635 mapped productions, 191 scanner actions, 214 encoding spellings; semantic inventory consistent with 169 constructors and 306 runtime obligations. Configured PHP build/source were copied privately with preserved timestamps; canonical copies were not modified."
+  },
+  "syntax_bridge": "The frontend, adapter, native helper, schema, grammar, scanner and validation sources are unchanged from the static/scoped A syntax gate. That gate's 30,980-row result and original fingerprint remain in static-method-review.json; no B semantic code or new binary is relabeled as that tested implementation.",
+  "boundaries": {
+    "dynamic_provenance": "Literal source selectors and method names, effective lookup, access, receiver, called class and live captured scope are checked. A fully correlated forgery of a completed dynamic selector or name and all matching origins cannot be recovered from the admitted paused state.",
+    "future_internal": "Finite first-class Throwable getter and Closure->__invoke captures currently return explicit Unsupported at selection; their native source obligations are pinned separately at .tools/static-method-review/first-class-internal-native.json SHA256 6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43 and must be implemented in a following increment.",
+    "interface": "Abstract interface method capture and implementation lookup await the separate interface increment; no interface case is counted in the 23-source class-method gate."
+  }
+}
