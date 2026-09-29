@@ -47,6 +47,13 @@ CASES = {
     'file-eval-file-throw-trace': (b"<?php include 'one.php';", {'one.php': b'''<?php eval('include "two.php";');''', 'two.php': b"<?php function f(){throw new Exception('x');} f();"}, ['one.php', 'two.php']),
     'caught-direct-trace': (b"<?php try{include 'one.php';}catch(Exception $e){$t=$e->getTrace();echo $t[0]['function'],'|',isset($t[0]['args'])?'Y':'N';}", {'one.php': b"<?php throw new Exception('x');"}, ['one.php']),
     'caught-alias-trace': (b"<?php try{include 'alias.php';}catch(Exception $e){$t=$e->getTrace();echo $t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b"<?php function f(){throw new Exception('x');} f();"}, ['alias.php']),
+    'clone-error-trace': (b"<?php try{include 'one.php';}catch(Throwable $e){$t=$e->getTrace();echo $t[0]['function'],'|',$t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b'<?php clone();'}, ['one.php']),
+    'exit-error-trace': (b"<?php try{include 'one.php';}catch(Throwable $e){$t=$e->getTrace();echo $t[0]['function'],'|',$t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b'<?php exit(1,2);'}, ['one.php']),
+    'getclass-error-trace': (b"<?php try{include 'one.php';}catch(Throwable $e){$t=$e->getTrace();echo $t[0]['function'],'|',$t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b"<?php $f='get_class';$f(1);"}, ['one.php']),
+    'eval-getclass-error-trace': (b"<?php try{include 'one.php';}catch(Throwable $e){$t=$e->getTrace();echo $t[0]['function'],'|',$t[1]['function'],'|',$t[2]['function'],'|',$t[2]['args'][0];}", {'one.php': b'''<?php eval('$f="get_class";$f(1);');'''}, ['one.php']),
+    'getter-error-trace': (b"<?php try{include 'one.php';}catch(Throwable $e){$t=$e->getTrace();echo $t[0]['function'],'|',$t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b'<?php (new Exception)->getTrace(1);'}, ['one.php']),
+    'ctor-error-trace': (b"<?php try{include 'one.php';}catch(Throwable $e){$t=$e->getTrace();echo $t[0]['function'],'|',$t[1]['function'],'|',$t[1]['args'][0];}", {'one.php': b'<?php (new Exception)->__construct("x",0,null,1);'}, ['one.php']),
+    'eval-parse-error-trace': (b"<?php try{include 'one.php';}catch(ParseError $e){$t=$e->getTrace();echo $t[0]['function'],'|',isset($t[0]['args'])?'Y':'N';}", {'one.php': b"<?php eval('echo ;');"}, ['one.php']),
 }
 
 
