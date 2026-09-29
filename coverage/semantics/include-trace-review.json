@@ -1,0 +1,26 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
+  "scope": "Throwable frames for authenticated compiled include/require/once file contexts under the finite snapshot provider. Source rows compare exact raw stdout, stderr and exit; paused rows check active and saved source-context ordering. This is bounded evidence, not complete include or PHP core semantics.",
+  "integration_base": "40e03f5cad0a41ef65b148ef7531434279eacdfd",
+  "tested_code_head": "ffebfc97152f97001db9239eb594fdeffef45ac0",
+  "tested_code_tree": "46a0050685bf41b9133c9dfeb4e576adb96b59af",
+  "code_commits": ["16e516831", "a2ff6b7a9"],
+  "test_commits": ["3f17adb1a", "ffebfc971"],
+  "engine_basis": [
+    "Zend/zend_builtin_functions.c zend_fetch_debug_backtrace: include/require pseudo-functions, filename argument from the preceding file frame, and absent argument for a leading include frame",
+    "Zend/zend_exceptions.c zend_trace_to_string: ordered frame rendering",
+    "Zend/zend_execute.c zend_include_or_eval: opened-path identity for a compiled file"
+  ],
+  "current_reports": [
+    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/include-trace-implementation/.tools/include-execution-d4vil2o0/report.json", "sha256": "3d4af8e24bc28bfc58803742848cb719e57561fe536fba283641bf464b5f4654", "exact_native_agreements": 39, "declared_inputs": 188, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_saved_protocol.py", "report": ".tools/include-trace-implementation/.tools/include-saved-protocol-_4vrgwkz/report.json", "sha256": "bc6acedf29e0104212d875f9b2bec6635fd4b4e081e1923b3e7dd2384b0b583b", "assertions": 46, "declared_inputs": 192, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_protocol.py", "report": ".tools/include-trace-implementation/.tools/include-protocol-6vmz86pm/report.json", "sha256": "79bedb5e73e5e5a101c659e4b6a08893e298fdc26414adc3353d50f8dc01c40b", "assertions": 100, "declared_inputs": 192, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/eval_execution.py --match trace", "report": ".tools/include-trace-implementation/.tools/eval-execution-z2cmbxs0/report.json", "sha256": "8a5e1ec0e6f215dcb2818a1baacdef18ad9bf0a4bca05a1f30709fb5a4419555", "exact_native_agreements": 4, "declared_inputs": 182, "current_input_mismatches": 0},
+    {"command": "selected four rows from tests/semantics/throwable_traces.py", "report": ".tools/include-trace-implementation/.tools/trace-probes-f_9j4sar/report.json", "sha256": "8b4438e3520ed958007743fe2fe57b72d7e7bd590bf64e5e57149b3e8b5ad1e7", "exact_native_agreements": 4, "declared_inputs": 178, "current_input_mismatches": 0}
+  ],
+  "historical_counterexamples": [
+    {"report": ".tools/include-trace-implementation/.tools/include-execution-akln78at/report.json", "sha256": "2d60abc365e52516e5249c3cecd709cec2dc97e2a46009939ce426949d1f02b9", "observation": "Direct included-file inner throw omitted the include frame before this increment."},
+    {"report": ".tools/include-trace-implementation/.tools/include-execution-zz9mrk_w/report.json", "sha256": "4a5e6d819277bf6533c8befb87cb3308c1a9150fd9971d9bd1a1cdbae0bebde0", "observation": "An initial mixed-context merge nondeterministically matched two inactive heads; disjoint owner filters repaired it."}
+  ],
+  "remaining_file_provider_work": "Resolver-null openable paths, mutable CWD/include_path resolution context, and wider stream-open failure observations remain separate required increments."
+}

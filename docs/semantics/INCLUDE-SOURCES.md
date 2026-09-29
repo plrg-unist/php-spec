@@ -35,6 +35,15 @@ File parser rejection retains a failed source unit and raises a catchable
 stops compilation globally. The [source and paused-state ledger](../../coverage/semantics/include-source-author.json)
 records the current finite-provider gates and their exact scope.
 
+While a compiled file runs, its authenticated file context contributes an
+`include`, `include_once`, `require` or `require_once` Throwable trace frame at
+the caller site. The frame's argument is the opened canonical path when an
+inner frame precedes it; Zend omits the argument when that file frame leads
+the trace. Active file and eval units interleave by fresh source ID within a
+call frame, while saved call frames retain their stack order. The
+[trace ledger](../../coverage/semantics/include-trace-review.json) records
+the direct, nested, caught and prefixed-error checks.
+
 Resolver-null but openable paths are a required followup: they have no resolved
 identity for the pre-open once check. The first finite-provider implementation
 marks those keys `Unsupported`, while keeping resolution and opening distinct
