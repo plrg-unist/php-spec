@@ -53,6 +53,30 @@
       "report_sha256": "53d848ac6c66da2155f2f579b760972111c195715924cc8458e9ff1d731b0448"
     }
   },
+  "current_base_bridge": {
+    "result": "author-focused-pass-independent-trace-pending",
+    "canonical_base": "8aaece52d308c3ebba63d1f4eee7d68daabdd85b",
+    "private_head_before_bridge_evidence": "09abd12e6",
+    "delta": "The ErrorException increment changes 30-storage, Throwable modules 152/157/158/161/162 and new 169, plus Makefile and docs. It does not change the static-method compiler/runtime 141/142, call frames 79, structured trace producer 83, paused guard 84, or frontend/adapter/native sources. The reviewer audited this projection before focused checks.",
+    "source": {
+      "result": "5/5 exact",
+      "cases": ["parent-constructor", "private-ctor-owner-vs-receiver", "private-ctor-folded-name", "nonstatic-explicit-called", "static-explicit-called"],
+      "report": ".tools/static-method-integrated/.tools/method-runtime-foys2rz9/report.json",
+      "report_sha256": "823baf127e41524c6a1db91b62d9b0104355edfe48f148b44bfd8ee2cb7bf319"
+    },
+    "paused": {
+      "result": "3/3 pass",
+      "cases": ["saved-forwarded-self", "object-selector-roots", "nonstatic-explicit-called"],
+      "report": ".tools/static-method-integrated/.tools/static-method-protocol-z39w1irj/report.json",
+      "report_sha256": "234d76cf612376bee6e4c3eae713c8dbde20e8d65e8cf5d3c4be0b3aafbd8c45"
+    },
+    "eval_import_reset": {
+      "result": "exact native agreement",
+      "detail": "The original import-reset source now returns B through the admitted named class::class rule; its old Unsupported expectation was removed. This was not counted in the frozen 51/31 method gates.",
+      "report": ".tools/static-method-integrated/.tools/eval-execution-igp92hqd/report.json",
+      "report_sha256": "84420ee091f8f4273e9908eff32fcef9c4225f1f65235c3d180ab8f8c26a4a83"
+    }
+  },
   "frontend": {
     "result": "classified-compatibility-bridge",
     "tested_commit": "80e09d6a4",
