@@ -21,7 +21,9 @@ def sha(path):
 
 def run(match, catalogue=DEFAULT_CASES):
     catalogue = Path(catalogue).resolve()
-    cases = json.loads(catalogue.read_text())
+    data = json.loads(catalogue.read_text())
+    cases = data['cases'] if isinstance(data, dict) else data
+    shared_profile = data.get('native_profile') if isinstance(data, dict) else None
     selected = [row for row in cases if match in row['id']]
     assert selected, 'no method source controls selected'
     before = types.syntax_validation.implementation_fingerprint()
@@ -60,7 +62,7 @@ def run(match, catalogue=DEFAULT_CASES):
         records.append({'id': row['id'], 'pass': passed,
                         'native_group': row['native_group'],
                         'native_raw_sha256': row['native_raw_sha256'],
-                        'native_profile': row['native_profile'],
+                        'native_profile': row.get('native_profile', shared_profile),
                         'source_sha256': row['source_sha256'],
                         'runner_exit_status': result.returncode,
                         'actual': actual})

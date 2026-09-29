@@ -52,6 +52,10 @@ def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 
   -- if $(n > 0)
   -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps \/ $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
 def $pil_ancestor_names(S, porigin, n) = $pil_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
   -- if $(n > 0)
   -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
@@ -64,12 +68,19 @@ dec $pil_method_one(pstate, pclassdesc, ppmethodinherited, ppmethodinherited*) :
 dec $pil_method_items(pstate, pclassdesc, ppmethodinherited*, ppmethodinherited*) : pmethodissue
 dec $pil_method_issue(pstate, pclassdesc) : pmethodissue
 dec $pil_order_items(pstate, pclassdesc, pilref*, ppmethodinherited*) : pmethodissue
-dec $pil_order_one(pstate, pclassdesc, pilref, ppmethodinherited*) : pmethodissue
-dec $pil_order_source(pstate, pclassdesc, pilref, ppmethodinherited*) : pmethodissue
-dec $pil_order_source_after(pstate, pclassdesc, porigin, ppmethodinherited*, pmethodissue) : pmethodissue
-dec $pil_order_source_nominal(pstate, pclassdesc, porigin, ppmethodinherited*, bool) : pmethodissue
+dec $pil_order_one(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
+dec $pil_order_source(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
+dec $pil_order_source_after(pstate, pclassdesc, porigin, pilref*, ppmethodinherited*, pmethodissue) : pmethodissue
+dec $pil_order_source_nominal(pstate, pclassdesc, porigin, pilref*, ppmethodinherited*, bool) : pmethodissue
 dec $pil_order_source_stringable(pstate, pclassdesc, porigin, bool) : pmethodissue
-dec $pil_throwable_overlap(ppmethodinherited*) : bool
+dec $pil_order_throwable(pstate, pclassdesc) : pmethodissue
+dec $pil_order_throwable_seen(pstate, pclassdesc, pilref*) : pmethodissue
+dec $pil_order_rooted(pstate, pclassdesc, pmethodissue) : pmethodissue
+dec $pil_parent_source_infos(pstate, pclassdesc) : ppmethodinherited*
+dec $pil_seen_throwable(pstate, pilref*) : bool
+dec $pil_order_checked(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
+dec $pil_order_checked_after(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*, pmethodissue) : pmethodissue
+dec $pil_order_items_seen(pstate, pclassdesc, pilref*, pilref*, ppmethodinherited*) : pmethodissue
 dec $pil_scope(pstate, pclassdesc) : pvclass
 dec $pil_signature_issue(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pmethodissue
 dec $pil_signature_result(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc, pmcheck) : pmethodissue
@@ -112,8 +123,18 @@ def $pil_reline(pclassdesc, pmethoddesc, METHOD_ISSUE ptbytes_message z) = METHO
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_OK) = METHOD_OK
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_UNSUPPORTED text) = METHOD_UNSUPPORTED text
 
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = $pil_internal_selected(S, pclassdesc, pclassdesc_proto, pmethoddesc_proto, text_kind)
+  -- if pclassdesc.KIND = "class"
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = eps
+  -- if $class_throwable_kind(S, pclassdesc.ORIGIN, |S.CLASSES|) = (text_kind)
+  -- if $pil_concrete_signature(text_kind, pmethoddesc_proto.NAME) = (pssignature)
 def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_OK
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = eps
+  -- if pclassdesc.KIND = "interface" \/ $class_throwable_kind(S, pclassdesc.ORIGIN, |S.CLASSES|) = eps
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_OK
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = eps
+  -- if $class_throwable_kind(S, pclassdesc.ORIGIN, |S.CLASSES|) = (text_kind)
+  -- if $pil_concrete_signature(text_kind, pmethoddesc_proto.NAME) = eps
 def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_OK
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
   -- if pmethoddesc_selected.FUNCTION.ORIGIN = pmethoddesc_proto.FUNCTION.ORIGIN
@@ -138,55 +159,62 @@ def $pil_method_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail
 def $pil_method_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*, ppmethodinherited_all*) = pmethodissue
   -- if $pil_method_one(S, pclassdesc, ppmethodinherited, ppmethodinherited_all*) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_throwable_overlap(eps) = false
-def $pil_throwable_overlap((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = true
-  -- if $ptlc(pmethoddesc.NAME) <- [$ptascii("getmessage"), $ptascii("getcode"), $ptascii("getfile"), $ptascii("getline"), $ptascii("gettrace"), $ptascii("getprevious"), $ptascii("gettraceasstring"), $ptascii("__tostring")]
-def $pil_throwable_overlap((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $pil_throwable_overlap(ppmethodinherited_tail*)
-  -- if ~($ptlc(pmethoddesc.NAME) <- [$ptascii("getmessage"), $ptascii("getcode"), $ptascii("getfile"), $ptascii("getline"), $ptascii("gettrace"), $ptascii("getprevious"), $ptascii("gettraceasstring"), $ptascii("__tostring")])
-
-def $pil_order_one(S, pclassdesc, PILSOURCE ptbytes porigin, ppmethodinherited_all*) = METHOD_UNSUPPORTED "Throwable inherited method contract"
-  -- if $pil_throwable_allowed(S, pclassdesc)
-  -- if $pil_throwable_overlap($pil_proto_source(S, porigin, |S.CLASSES|))
-def $pil_order_one(S, pclassdesc, PILSOURCE ptbytes porigin, ppmethodinherited_all*) = $pil_order_source(S, pclassdesc, PILSOURCE ptbytes porigin, ppmethodinherited_all*)
-  -- if ~$pil_throwable_allowed(S, pclassdesc) \/ ~$pil_throwable_overlap($pil_proto_source(S, porigin, |S.CLASSES|))
-def $pil_order_source(S, pclassdesc, PILSOURCE ptbytes porigin, ppmethodinherited_all*) = $pil_order_source_after(S, pclassdesc, porigin, ppmethodinherited_all*, $pil_method_items(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited_all*))
-def $pil_order_source_after(S, pclassdesc, porigin, ppmethodinherited_all*, METHOD_OK) = $pil_order_source_nominal(S, pclassdesc, porigin, ppmethodinherited_all*, $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|))
-def $pil_order_source_after(S, pclassdesc, porigin, ppmethodinherited_all*, pmethodissue) = pmethodissue
+def $pil_order_one(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*) = $pil_order_source(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*)
+def $pil_order_source(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*) = $pil_order_source_after(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, $pil_method_items(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited_all*))
+def $pil_order_source_after(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, METHOD_OK) = $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|))
+def $pil_order_source_after(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_order_source_nominal(S, pclassdesc, porigin, ppmethodinherited_all*, true) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
-  -- if pclassdesc.KIND = "class"
-  -- if ~$pil_throwable_allowed(S, pclassdesc)
-def $pil_order_source_nominal(S, pclassdesc, porigin, ppmethodinherited_all*, true) = METHOD_UNSUPPORTED "Throwable inherited method contract"
-  -- if pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
-  -- if $pil_throwable_overlap(ppmethodinherited_all*)
-def $pil_order_source_nominal(S, pclassdesc, porigin, ppmethodinherited_all*, true) = $pil_stringable_issue(S, pclassdesc)
-  -- if pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
-  -- if ~$pil_throwable_overlap(ppmethodinherited_all*)
-def $pil_order_source_nominal(S, pclassdesc, porigin, ppmethodinherited_all*, false) = $pil_order_source_stringable(S, pclassdesc, porigin, $pil_nominal(S, porigin, $ptascii("Stringable"), |S.CLASSES|))
+def $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, true) = $pil_order_rooted(S, pclassdesc, $pil_order_throwable_seen(S, pclassdesc, pilref_seen*))
+def $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, false) = $pil_order_source_stringable(S, pclassdesc, porigin, $pil_nominal(S, porigin, $ptascii("Stringable"), |S.CLASSES|))
 def $pil_order_source_stringable(S, pclassdesc, porigin, true) = $pil_stringable_issue(S, pclassdesc)
 def $pil_order_source_stringable(S, pclassdesc, porigin, false) = METHOD_OK
-def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, ppmethodinherited_all*) = $pil_stringable_issue(S, pclassdesc)
-  -- if $ptlc(ptbytes) = $ptascii("stringable")
-def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, ppmethodinherited_all*) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
-  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_parent_source_infos(S, pclassdesc) = $method_info_layout(S, porigin_parent, |S.CLASSES|)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $pil_parent_source_infos(S, pclassdesc) = eps -- otherwise
+def $pil_order_throwable(S, pclassdesc) = $pil_order_throwable_seen(S, pclassdesc, eps)
+def $pil_order_throwable_seen(S, pclassdesc, pilref_seen*) = pmethodissue
+  -- if $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_order_throwable_seen(S, pclassdesc, pilref_seen*) = $pil_stringable_issue(S, pclassdesc)
+  -- if $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))) = METHOD_OK
+def $pil_order_rooted(S, pclassdesc, pmethodissue) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
   -- if pclassdesc.KIND = "class"
   -- if ~$pil_throwable_allowed(S, pclassdesc)
-def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, ppmethodinherited_all*) = METHOD_UNSUPPORTED "Throwable inherited method contract"
-  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_OK
   -- if pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
-  -- if $pil_throwable_overlap(ppmethodinherited_all*)
-def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, ppmethodinherited_all*) = METHOD_OK
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = $pil_stringable_issue(S, pclassdesc)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = $pil_order_rooted(S, pclassdesc, $pil_order_throwable_seen(S, pclassdesc, pilref_seen*))
   -- if $ptlc(ptbytes) = $ptascii("throwable")
-  -- if pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
-  -- if ~$pil_throwable_overlap(ppmethodinherited_all*)
-def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, ppmethodinherited_all*) = METHOD_UNSUPPORTED "internal interface method contract"
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = METHOD_UNSUPPORTED "internal interface method contract"
   -- if $ptlc(ptbytes) =/= $ptascii("stringable") /\ $ptlc(ptbytes) =/= $ptascii("throwable")
-def $pil_order_items(S, pclassdesc, eps, ppmethodinherited_all*) = METHOD_OK
-def $pil_order_items(S, pclassdesc, pilref :: pilref_tail*, ppmethodinherited_all*) = $pil_order_items(S, pclassdesc, pilref_tail*, ppmethodinherited_all*)
-  -- if $pil_order_one(S, pclassdesc, pilref, ppmethodinherited_all*) = METHOD_OK
-def $pil_order_items(S, pclassdesc, pilref :: pilref_tail*, ppmethodinherited_all*) = pmethodissue
-  -- if $pil_order_one(S, pclassdesc, pilref, ppmethodinherited_all*) = pmethodissue
+def $pil_seen_throwable(S, eps) = false
+def $pil_seen_throwable(S, (PILBUILTIN ptbytes) :: pilref_tail*) = true
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_seen_throwable(S, (PILBUILTIN ptbytes) :: pilref_tail*) = $pil_seen_throwable(S, pilref_tail*)
+  -- if $ptlc(ptbytes) =/= $ptascii("throwable")
+def $pil_seen_throwable(S, (PILSOURCE ptbytes porigin) :: pilref_tail*) = true
+  -- if $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|)
+def $pil_seen_throwable(S, (PILSOURCE ptbytes porigin) :: pilref_tail*) = $pil_seen_throwable(S, pilref_tail*)
+  -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|)
+def $pil_order_checked(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*) = $pil_order_checked_after(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*, $pil_internal_later_infos(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|)))
+  -- if $pil_seen_throwable(S, pilref_seen*)
+def $pil_order_checked(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = $pil_order_checked_after(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*, $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))))
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) = $pil_order_one(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) -- otherwise
+def $pil_order_checked_after(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*, METHOD_OK) = $pil_order_one(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*)
+def $pil_order_checked_after(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
+def $pil_order_items_seen(S, pclassdesc, pilref_seen*, eps, ppmethodinherited_all*) = METHOD_OK
+def $pil_order_items_seen(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, ppmethodinherited_all*) = $pil_order_items_seen(S, pclassdesc, pilref_seen* ++ [pilref], pilref_tail*, ppmethodinherited_all*)
+  -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) = METHOD_OK
+def $pil_order_items_seen(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, ppmethodinherited_all*) = pmethodissue
+  -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_order_items(S, pclassdesc, pilref*, ppmethodinherited_all*) = $pil_order_items_seen(S, pclassdesc, eps, pilref*, ppmethodinherited_all*)
 def $pil_method_issue(S, pclassdesc) = $pil_order_items(S, pclassdesc, pilref*, ppmethodinherited*)
   -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
   -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_proto_refs(S, pilref*, |S.CLASSES|)

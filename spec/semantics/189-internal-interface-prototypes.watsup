@@ -1,0 +1,122 @@
+;; The finite Throwable contract shared by interface linking and inherited
+;; Exception/Error implementations. Signatures match zend_exceptions.stub.php.
+def $pil_internal_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "string"]))]), BYREF false }
+  -- if $ptlc(ptbytes) <- [$ptascii("getmessage"), $ptascii("getfile"), $ptascii("gettraceasstring"), $ptascii("__tostring")]
+def $pil_internal_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "int"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("getline")
+def $pil_internal_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "array"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("gettrace")
+def $pil_internal_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTCLASS $ptascii("Throwable")])), (PTBRANCH ([PTBUILTIN "null"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("getprevious")
+def $pil_internal_signature(ptbytes) = { PARAMETERS eps, RETURNS eps, BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("getcode")
+def $pil_internal_signature(ptbytes) = eps -- otherwise
+
+;; These methods belong to concrete built-in ancestors, not to Throwable's
+;; interface method table. The optional defaults are retained for diagnostics.
+def $pil_concrete_signature(text_kind, ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "int"]))]), BYREF false }
+  -- if text_kind = "ErrorException" /\ $ptlc(ptbytes) = $ptascii("getseverity")
+def $pil_concrete_signature(text_kind, ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("__wakeup")
+def $pil_concrete_signature(text_kind, ptbytes) = { PARAMETERS ([{ NAME $ptascii("message"), TYPE ([(PTBRANCH ([PTBUILTIN "string"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NScalarString (BYTES "") eps) "string" }, { NAME $ptascii("code"), TYPE ([(PTBRANCH ([PTBUILTIN "int"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NScalarInt (INTEGER 0) eps) "int" }, { NAME $ptascii("severity"), TYPE ([(PTBRANCH ([PTBUILTIN "int"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NExprConstFetch (NName (BYTES "RV9FUlJPUg==") eps) eps) "deferred" }, { NAME $ptascii("filename"), TYPE ([(PTBRANCH ([PTBUILTIN "string"])), (PTBRANCH ([PTBUILTIN "null"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) "null" }, { NAME $ptascii("line"), TYPE ([(PTBRANCH ([PTBUILTIN "int"])), (PTBRANCH ([PTBUILTIN "null"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) "null" }, { NAME $ptascii("previous"), TYPE ([(PTBRANCH ([PTCLASS $ptascii("Throwable")])), (PTBRANCH ([PTBUILTIN "null"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) "null" }]), RETURNS eps, BYREF false }
+  -- if text_kind = "ErrorException" /\ $ptlc(ptbytes) = $ptascii("__construct")
+def $pil_concrete_signature(text_kind, ptbytes) = { PARAMETERS ([{ NAME $ptascii("message"), TYPE ([(PTBRANCH ([PTBUILTIN "string"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NScalarString (BYTES "") eps) "string" }, { NAME $ptascii("code"), TYPE ([(PTBRANCH ([PTBUILTIN "int"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NScalarInt (INTEGER 0) eps) "int" }, { NAME $ptascii("previous"), TYPE ([(PTBRANCH ([PTCLASS $ptascii("Throwable")])), (PTBRANCH ([PTBUILTIN "null"]))]), BYREF false, VARIADIC false, REQUIRED false, DEFAULT PSDEFAULT (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) "null" }]), RETURNS eps, BYREF false }
+  -- if text_kind <- ["Exception", "Error"] /\ $ptlc(ptbytes) = $ptascii("__construct")
+def $pil_concrete_signature(text_kind, ptbytes) = $pil_internal_signature(ptbytes) -- otherwise
+
+def $pil_concrete_owner(text_kind, ptbytes) = $ptascii("ErrorException")
+  -- if text_kind = "ErrorException" /\ $ptlc(ptbytes) <- [$ptascii("getseverity"), $ptascii("__construct")]
+def $pil_concrete_owner(text_kind, ptbytes) = $ptascii($throwable_base(text_kind)) -- otherwise
+
+def $pil_internal_name(ptbytes) = $ptascii("getMessage") -- if $ptlc(ptbytes) = $ptascii("getmessage")
+def $pil_internal_name(ptbytes) = $ptascii("getCode") -- if $ptlc(ptbytes) = $ptascii("getcode")
+def $pil_internal_name(ptbytes) = $ptascii("getFile") -- if $ptlc(ptbytes) = $ptascii("getfile")
+def $pil_internal_name(ptbytes) = $ptascii("getLine") -- if $ptlc(ptbytes) = $ptascii("getline")
+def $pil_internal_name(ptbytes) = $ptascii("getTrace") -- if $ptlc(ptbytes) = $ptascii("gettrace")
+def $pil_internal_name(ptbytes) = $ptascii("getPrevious") -- if $ptlc(ptbytes) = $ptascii("getprevious")
+def $pil_internal_name(ptbytes) = $ptascii("getTraceAsString") -- if $ptlc(ptbytes) = $ptascii("gettraceasstring")
+def $pil_internal_name(ptbytes) = $ptascii("__toString") -- if $ptlc(ptbytes) = $ptascii("__tostring")
+def $pil_internal_name(ptbytes) = $ptascii("getSeverity") -- if $ptlc(ptbytes) = $ptascii("getseverity")
+def $pil_internal_name(ptbytes) = $ptascii("__construct") -- if $ptlc(ptbytes) = $ptascii("__construct")
+def $pil_internal_name(ptbytes) = $ptascii("__wakeup") -- if $ptlc(ptbytes) = $ptascii("__wakeup")
+def $pil_internal_name(ptbytes) = ptbytes -- otherwise
+
+def $pil_internal_method(ptbytes_owner, ptbytes_name, ptbytes_file) = { OWNER ptbytes_owner, NAME $pil_internal_name(ptbytes_name), SIGNATURE pssignature, CONTEXT { NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN ptbytes_owner eps, POSITION PTRETURN, OWNER ptbytes_owner, MEMBER $pil_internal_name(ptbytes_name), FILE ptbytes_file, LINE 1 } }
+  -- if $pil_internal_signature(ptbytes_name) = (pssignature)
+def $pil_internal_method(ptbytes_owner, ptbytes_name, ptbytes_file) = eps -- otherwise
+
+def $pil_signature_method(ptbytes_owner, ptbytes_name, ptbytes_file, pssignature) = { OWNER ptbytes_owner, NAME ptbytes_name, SIGNATURE pssignature, CONTEXT { NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN ptbytes_owner eps, POSITION PTRETURN, OWNER ptbytes_owner, MEMBER ptbytes_name, FILE ptbytes_file, LINE 1 } }
+
+def $pil_internal_scope(ptbytes) = { NAME ptbytes, PARENT eps, ANCESTORS eps, FINAL false }
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+def $pil_internal_scope(ptbytes) = { NAME ptbytes, PARENT eps, ANCESTORS ($ptascii("Stringable") :: eps), FINAL false }
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_internal_scope(ptbytes) = { NAME ptbytes, PARENT eps, ANCESTORS ([$ptascii("Throwable"), $ptascii("Stringable")]), FINAL false }
+  -- if $ptlc(ptbytes) <- [$ptascii("exception"), $ptascii("error")]
+def $pil_internal_scope(ptbytes) = { NAME ptbytes, PARENT $ptascii("Exception"), ANCESTORS ([$ptascii("Exception"), $ptascii("Throwable"), $ptascii("Stringable")]), FINAL false }
+  -- if $ptlc(ptbytes) = $ptascii("errorexception")
+
+def $pil_internal_compare(S, pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto) = $pil_internal_compared(S, pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, $pmcompare(PMUSER pmmethod_selected, pvclass_selected, PMUSER pmmethod_proto, pvclass_proto, $method_active_registry(S, S.CLASSNAMES)))
+def $pil_internal_compared(S, pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, PMCHECK PVYES ptbytes*) = eps
+def $pil_internal_compared(S, pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, PMCHECK PVNO ptbytes*) = $pmmismatch(pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, 14)
+def $pil_internal_compared(S, pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, PMCHECK PVUNRESOLVED ptbytes_missing*) = $pmunavailable(pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, ptbytes_missing*, 14)
+def $pil_internal_compared(S, pmmethod_selected, pvclass_selected, pmmethod_proto, pvclass_proto, PMUNSUPPORTED text) = PMDIAGUNSUPPORTED text
+
+def $pil_internal_proto_owner(ptbytes) = $ptascii("Stringable")
+  -- if $ptlc(ptbytes) = $ptascii("__tostring")
+def $pil_internal_proto_owner(ptbytes) = $ptascii("Throwable") -- otherwise
+
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_OK
+  -- if $pil_internal_signature(pmethoddesc.NAME) = eps
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ") ++ ptbytes_owner ++ $ptascii("::") ++ $pil_internal_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+  -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
+  -- if pmethoddesc.STATIC
+  -- if $pil_internal_proto_owner(pmethoddesc.NAME) = (ptbytes_owner)
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ ptbytes_owner ++ [41]) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+  -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
+  -- if ~pmethoddesc.STATIC
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if $pil_internal_proto_owner(pmethoddesc.NAME) = (ptbytes_owner)
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = $pil_internal_source_result(pmethoddesc, $pil_internal_compare(S, $pmethod_user(pmethoddesc, pclassdesc, ptbytes_file), $pil_scope(S, pclassdesc), pmmethod_proto, $pil_internal_scope(ptbytes_owner)))
+  -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
+  -- if ~pmethoddesc.STATIC
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $pil_internal_proto_owner(pmethoddesc.NAME) = (ptbytes_owner)
+  -- if $call_sourcefile(S.FILES, pclassdesc.ORIGIN) = (ptbytes_file)
+  -- if $pil_internal_method(ptbytes_owner, pmethoddesc.NAME, ptbytes_file) = (pmmethod_proto)
+def $pil_internal_source_result(pmethoddesc, eps) = METHOD_OK
+def $pil_internal_source_result(pmethoddesc, PMDIAGNOSTIC pmdiagnostic) = METHOD_FILEISSUE pmdiagnostic.MESSAGE pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+def $pil_internal_source_result(pmethoddesc, PMDIAGUNSUPPORTED text) = METHOD_UNSUPPORTED text
+def $pil_internal_source_infos(S, eps) = METHOD_OK
+def $pil_internal_source_infos(S, (PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $pil_internal_source_infos(S, ppmethodinherited_tail*)
+  -- if $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_OK
+def $pil_internal_source_infos(S, (PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = pmethodissue
+  -- if $pil_internal_source_one(S, pclassdesc, pmethoddesc) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+
+def $pil_internal_selected(S, pclassdesc_child, pclassdesc_proto, pmethoddesc_proto, text_kind) = METHOD_OK
+  -- if $pil_concrete_signature(text_kind, pmethoddesc_proto.NAME) = eps
+def $pil_internal_selected(S, pclassdesc_child, pclassdesc_proto, pmethoddesc_proto, text_kind) = $pil_internal_selected_owner(S, pclassdesc_child, pclassdesc_proto, pmethoddesc_proto, ptbytes_owner, pssignature)
+  -- if $pil_concrete_signature(text_kind, pmethoddesc_proto.NAME) = (pssignature)
+  -- if $pil_concrete_owner(text_kind, pmethoddesc_proto.NAME) = (ptbytes_owner)
+def $pil_internal_selected_owner(S, pclassdesc_child, pclassdesc_proto, pmethoddesc_proto, ptbytes_owner, pssignature) = METHOD_ISSUE ($ptascii("Cannot make static method ") ++ pclassdesc_proto.NAME ++ $ptascii("::") ++ pmethoddesc_proto.NAME ++ $ptascii("() non static in class ") ++ ptbytes_owner) 0
+  -- if pmethoddesc_proto.STATIC
+def $pil_internal_selected_owner(S, pclassdesc_child, pclassdesc_proto, pmethoddesc_proto, ptbytes_owner, pssignature) = $pil_internal_selected_result($pil_internal_compare(S, pmmethod_selected, $pil_internal_scope(ptbytes_owner), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, ptbytes_file), $pil_scope(S, pclassdesc_proto)))
+  -- if ~pmethoddesc_proto.STATIC
+  -- if $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN) = (ptbytes_file)
+  -- if $pil_signature_method(ptbytes_owner, $pil_internal_name(pmethoddesc_proto.NAME), ptbytes_file, pssignature) = pmmethod_selected
+def $pil_internal_selected_result(eps) = METHOD_OK
+def $pil_internal_selected_result(PMDIAGNOSTIC pmdiagnostic) = METHOD_ISSUE pmdiagnostic.MESSAGE 0
+def $pil_internal_selected_result(PMDIAGUNSUPPORTED text) = METHOD_UNSUPPORTED text
+
+def $pil_internal_later_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited_prior*) = METHOD_OK
+  -- if $pil_internal_signature(pmethoddesc_proto.NAME) = eps \/ $pil_info_named(ppmethodinherited_prior*, pmethoddesc_proto.NAME)
+def $pil_internal_later_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited_prior*) = $pil_internal_selected_owner(S, pclassdesc_child, pclassdesc_proto, pmethoddesc_proto, $pil_internal_proto_owner(pmethoddesc_proto.NAME), pssignature)
+  -- if $pil_internal_signature(pmethoddesc_proto.NAME) = (pssignature)
+  -- if ~$pil_info_named(ppmethodinherited_prior*, pmethoddesc_proto.NAME)
+def $pil_internal_later_infos(S, pclassdesc_child, eps, ppmethodinherited_prior*) = METHOD_OK
+def $pil_internal_later_infos(S, pclassdesc_child, ppmethodinherited :: ppmethodinherited_tail*, ppmethodinherited_prior*) = $pil_internal_later_infos(S, pclassdesc_child, ppmethodinherited_tail*, ppmethodinherited_prior*)
+  -- if $pil_internal_later_one(S, pclassdesc_child, ppmethodinherited, ppmethodinherited_prior*) = METHOD_OK
+def $pil_internal_later_infos(S, pclassdesc_child, ppmethodinherited :: ppmethodinherited_tail*, ppmethodinherited_prior*) = pmethodissue
+  -- if $pil_internal_later_one(S, pclassdesc_child, ppmethodinherited, ppmethodinherited_prior*) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK

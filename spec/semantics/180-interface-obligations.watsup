@@ -23,9 +23,20 @@ def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*)
   -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
   -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = (pmethoddesc)
   -- if ~pmethoddesc.ABSTRACT
+def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract*
+  -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
+  -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = eps
+  -- if $class_throwable_kind(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = (text_kind)
+  -- if $pil_concrete_signature(text_kind, ptbytes_name) = (pssignature)
 def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract* ++ [PILABSTRACT ptbytes_name ptbytes_label]
   -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
   -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = eps
+  -- if $class_throwable_kind(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = eps
+def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract* ++ [PILABSTRACT ptbytes_name ptbytes_label]
+  -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
+  -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = eps
+  -- if $class_throwable_kind(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = (text_kind)
+  -- if $pil_concrete_signature(text_kind, ptbytes_name) = eps
 def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract* ++ [PILABSTRACT ptbytes_name ptbytes_label]
   -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
   -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = (pmethoddesc)

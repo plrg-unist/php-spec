@@ -1127,10 +1127,17 @@ def $method_ancestor_names(S, porigin, n) = [pclassdesc_parent.NAME] ++ $method_
 def $method_ancestor_names(S, porigin, n) = [$ptascii("stdClass")]
   -- if $(n > 0)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $method_ancestor_names(S, porigin, n) = [$ptascii("ErrorException"), $ptascii("Exception"), $ptascii("Throwable"), $ptascii("Stringable")]
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT "ErrorException")
+def $method_ancestor_names(S, porigin, n) = [$ptascii(text_kind), $ptascii("Throwable"), $ptascii("Stringable")]
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
+  -- if text_kind <- ["Exception", "Error"]
 def $method_ancestor_names(S, porigin, n) = eps -- otherwise
 def $method_all_ancestor_names(S, porigin, n) = $method_ancestor_names(S, porigin, n) ++ $pil_ancestor_names(S, porigin, n)
 dec $method_active_registry(pstate, (preqbytes, porigin)*) : pvclasses
-def $method_active_registry(S, eps) = [($ptascii("stringable"), {NAME $ptascii("Stringable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("throwable"), {NAME $ptascii("Throwable"), PARENT eps, ANCESTORS ($ptascii("Stringable") :: eps), FINAL false}), ($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false})]
+def $method_active_registry(S, eps) = [($ptascii("stringable"), {NAME $ptascii("Stringable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("throwable"), $pil_internal_scope($ptascii("Throwable"))), ($ptascii("exception"), $pil_internal_scope($ptascii("Exception"))), ($ptascii("error"), $pil_internal_scope($ptascii("Error"))), ($ptascii("errorexception"), $pil_internal_scope($ptascii("ErrorException"))), ($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false})]
 def $method_active_registry(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = [($ptlc(pclassdesc.NAME), $pmethod_scope(pclassdesc, $method_all_ancestor_names(S, porigin, |S.CLASSES|)))] ++ $method_active_registry(S, (preqbytes_tail, porigin_tail)*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 

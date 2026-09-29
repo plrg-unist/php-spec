@@ -162,7 +162,9 @@ def $pmstring(ptbytes) = [39] ++ ptbytes[0:10] ++ $ptascii("...'")
 def $pmdefaulttext(PSDEFAULT phpType5 text, ptcontext, int) = PMTEXT $ptascii(text)
   -- if text <- ["null", "true", "false"]
 def $pmdefaulttext(PSDEFAULT (NExprArray (SEQUENCE eps) metadata) "array", ptcontext, int) = PMTEXT $ptascii("[]")
+def $pmdefaulttext(PSDEFAULT (NScalarString (BYTES "") eps) "string", ptcontext, int) = PMTEXT $ptascii("\"\"")
 def $pmdefaulttext(PSDEFAULT (NScalarString (BYTES text) metadata) "string", ptcontext, int) = PMTEXT ($pmstring($base64(text)))
+  -- if metadata =/= eps \/ text =/= ""
 def $pmdefaulttext(PSDEFAULT expression text, ptcontext, int) = PMTEXT ptbytes
   -- if text <- ["int", "float"]
   -- if (ptbytes, false) = $number_text($pmmaterialnumber(expression, text), int)
