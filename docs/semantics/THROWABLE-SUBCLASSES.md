@@ -19,7 +19,10 @@ materializes a live trace array before constructor sends, even when source
 properties shadow internal ones. Source instances retain their normal
 materialization and property rules. An inherited internal `__toString()` uses
 the dynamic source class name; a source override follows normal method
-dispatch. At uncaught termination, the override runs as a rooted callback.
+dispatch. First-class inherited getter capture retains the source instance
+and internal declaring owner in the existing getter closure; a source method
+override remains on source dispatch. At uncaught termination, the override
+runs as a rooted callback.
 Its returned bytes stay in the completion, leaving the inherited private
 `string` cache unchanged. If it throws, the new Throwable replaces the old
 one and receives an internal `__toString()` trace frame.
@@ -30,4 +33,5 @@ getter owner diagnostics, protected override values, and terminal callback
 output. Source differentials and paused protocols check those paths. Uncaught
 rendering of a source subclass whose protected `message` holds a non-stringable
 object and has no source `__toString()` override remains an explicit
-unsupported boundary.
+unsupported boundary. PHP array callables remain on the generic unsupported
+array-callable path, including inherited getters.

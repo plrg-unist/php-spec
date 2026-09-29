@@ -91,6 +91,21 @@ def $getter_capture_live(S, n) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*)
   -- if $method_source_name(phpType20, $getter_name(pgettermethod))
+def $getter_capture_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $(n_receiver < n)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
+  -- if $throwable_member(S, n_receiver)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $getter_available(text_kind, pgettermethod)
+  -- if text_base = $getter_owner(text_kind, pgettermethod)
+  -- if $effective_method(S, porigin_class, $getter_name(pgettermethod), |S.CLASSES|) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $getter_name(pgettermethod))
 def $getter_capture_live(S, n) = false -- otherwise
 def $closure_live_object_valid(S, n) = $closure_callable(S, n)
   -- if $(n < |S.OBJECTS|)

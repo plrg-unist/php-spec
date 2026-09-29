@@ -59,7 +59,7 @@ def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE p
 def $getter_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $ctor_selected_name(pthrowable.KIND, ptbytes)
-def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin_site, RECEIVER n, BASE $getter_owner(text_kind, pgettermethod), METHOD pgettermethod, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n pgettermethod ($getter_owner(text_kind, pgettermethod)) porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_closure]][.RESULT = KNOWN (POBJECT n_closure)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
@@ -68,6 +68,18 @@ def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE p
   -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
   -- if $getter_named(ptbytes) = (pgettermethod)
   -- if $getter_available(text_kind, pgettermethod)
+  -- if $ppfirstclass(phpType7*)
+  -- if n_closure = |S.OBJECTS|
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin_site, RECEIVER n, BASE $getter_owner(text_kind, pgettermethod), METHOD pgettermethod, CAPTURE eps, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
+  -- if $getter_named(ptbytes) = (pgettermethod)
+  -- if $getter_available(text_kind, pgettermethod)
+  -- if ~$ppfirstclass(phpType7*)
 def $getter_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $throwable_member(S, n)
@@ -254,6 +266,7 @@ def $getter_selected(S, pgettercall) = true
   -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
   -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
 def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = eps
   -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pgettercall.RECEIVER] = INSTANCE porigin_class
@@ -265,6 +278,7 @@ def $getter_selected(S, pgettercall) = true
   -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
   -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
 def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = eps
   -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pgettercall.RECEIVER] = INSTANCE porigin_class
@@ -276,6 +290,7 @@ def $getter_selected(S, pgettercall) = true
   -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
   -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
 def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = eps
   -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pgettercall.RECEIVER] = INSTANCE porigin_class

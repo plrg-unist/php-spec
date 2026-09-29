@@ -38,6 +38,14 @@ CASES = [
     ('terminal-override-throws', '<?php class M extends Exception { public function __toString(): string { throw new Error("inner"); } } throw new M("outer");', 'agreement'),
     ('terminal-override-nested', '<?php class C { public function __toString(): string { return "I"; } } class M extends Exception { public function __toString(): string { echo new C; return "OVR"; } } throw new M;', 'agreement'),
     ('override-preserves-cache', '<?php class M extends Exception { public function __toString(): string { return "OVR"; } } $e=new M; echo (string)$e,"|",((array)$e)["\\0Exception\\0string"] === "" ? "empty" : "filled";', 'agreement'),
+    ('first-class-message', '<?php class C extends Exception {} $e=new C("m"); $f=$e->GETMESSAGE(...); echo $f();', 'agreement'),
+    ('first-class-severity', '<?php class C extends ErrorException {} $e=new C("m",0,13); $f=$e->getSeverity(...); echo $f();', 'agreement'),
+    ('first-class-trace-string', '<?php class C extends Exception {} $e=new C; $f=$e->getTraceAsString(...); echo $f();', 'agreement'),
+    ('first-class-arity-owner', '<?php class C extends Exception {} $e=new C("m"); $f=$e->getMessage(...); function side(){echo "S";return 1;} try{$f(side());}catch(ArgumentCountError $x){echo $x->getMessage();}', 'agreement'),
+    ('first-class-inherited-string', '<?php class C extends Exception {} $e=new C("m"); $f=$e->__toString(...); echo $f();', 'agreement'),
+    ('first-class-capture-lifetime', '<?php class C extends ErrorException {} $e=new C("m",0,13); $f=$e->getSeverity(...); $e=null; echo $f();', 'agreement'),
+    ('first-class-source-override', '<?php class C extends Exception { public function __toString(): string { return "OVR"; } } $e=new C; $f=$e->__toString(...); echo $f();', 'agreement'),
+    ('array-callable-control', '<?php class C extends Exception {} $e=new C("m"); $f=[$e,"GETMESSAGE"]; echo $f();', 'unsupported'),
 ]
 
 

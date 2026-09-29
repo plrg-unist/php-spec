@@ -809,7 +809,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_receiver
   -- if $throwable_member(S, n_receiver)
   -- if $class_origin_matches(S, porigin_receiver, pclassdesc_scope.NAME, |S.CLASSES|)
-def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin_site, RECEIVER n_receiver, BASE $getter_owner(text_kind, GET_TO_STRING), METHOD GET_TO_STRING, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin_site, RECEIVER n_receiver, BASE $getter_owner(text_kind, GET_TO_STRING), METHOD GET_TO_STRING, CAPTURE eps, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if $ptlc(ptbytes_method) = $ptascii("__tostring")
