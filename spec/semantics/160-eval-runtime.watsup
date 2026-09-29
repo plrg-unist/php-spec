@@ -34,7 +34,6 @@ dec $eval_string_result(pvalue) : bool
 def $eval_string_result(PSTRING n*) = true
 def $eval_string_result(pvalue) = false -- otherwise
 dec $eval_operand(pstate, int) : pstate
-dec $user_string_begin(pstate, nat, porigin, int, ptask, ptask*) : pstate
 dec $eval_callback_ready(pstate, int) : bool
 def $eval_callback_ready(S, z) = true
   -- if S_read = $resolve_at(S, S.RESULT, z)

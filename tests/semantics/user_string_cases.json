@@ -274,5 +274,89 @@
     "source": "<?php declare(strict_types=1); class B{function __toString(){return \"echo 1;\";}} class A{function __toString(){return new B;}} eval(new A);",
     "source_sha256": "993589f42cf400fa88c1646cdb205498b7ca27fd7ea1267f205b5f9f5617c086",
     "expected_model": "php_error"
+  },
+  {
+    "id": "concat-string-left",
+    "source": "<?php class O{function __toString(){echo \"L;\";return \"l\";}} echo (new O).\"r\";",
+    "source_sha256": "9d6b55a9b6bc7ea59255638539a88935a85065c5464acd89209a3911bdf569cf",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-right",
+    "source": "<?php class O{function __toString(){echo \"R;\";return \"r\";}} echo \"l\".(new O);",
+    "source_sha256": "913d295e965627a85e0840ab8e13cf14200ea2b8807a94155aef787502fafb70",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-dual-effect",
+    "source": "<?php class L{function __toString(){echo \"L;\";return \"l\";}function rhs(){echo \"E;\";return new R;}}class R{function __toString(){echo \"R;\";return \"r\";}}$l=new L;echo $l.$l->rhs();",
+    "source_sha256": "71a9e996528e992a286f8fc1e66f6f1ff5ee688c3559f7520e308cfd103995b1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-cv-late",
+    "source": "<?php class R{function __toString(){echo \"old;\";return \"r\";}}class R2{function __toString(){echo \"new;\";return \"n\";}}class L{function __toString(){global $r;$r=new R2;echo \"left;\";return \"l\";}}$r=new R;echo (new L).$r;",
+    "source_sha256": "e0dd680cef8d0e0a93d91be88b1e363c13cad6e31ed8fe58769da04122276170",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-temp-captured",
+    "source": "<?php class R{function __toString(){echo \"old;\";return \"r\";}}class R2{function __toString(){echo \"new;\";return \"n\";}}class L{function __toString(){global $r;$r=new R2;echo \"left;\";return \"l\";}}function rhs(){global $r;echo \"rhs;\";return $r;}$r=new R;echo (new L).rhs();",
+    "source_sha256": "f1ee2b57fbb161b36ea638cc7d8ff268cbd560ff2c057298835979f6eb39a56e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-left-cv-late",
+    "source": "<?php class L{function __toString(){echo \"old;\";return \"l\";}}class N{function __toString(){echo \"new;\";return \"n\";}}function rhs(){global $l;echo \"rhs;\";$l=new N;return \"r\";}$l=new L;echo $l.rhs();",
+    "source_sha256": "b835c53390cdefe77f76d0d1724b4534c48b1566ca34cc159e9af438cb776ac1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-left-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} echo (new O) .\n \"r\";",
+    "source_sha256": "a629902b76f21b9041ac92bb26f5fe67f9ece93fff147e3016bcb8d17e5e1a09",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "concat-string-right-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} echo \"l\" .\n (new O);",
+    "source_sha256": "4a983e000e427ddb3b8152b4857b8d2b346ed190e05b3260918b70f5b3aaac4e",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "concat-string-reentrant",
+    "source": "<?php class O{function __toString(){static $d=0;if($d++===0){echo (new O).\"x\";}return \"o\";}} echo (new O).\"y\";",
+    "source_sha256": "7f1a00e3550487524d28cdb6fbb4cbce91901ef62ade1da176aea55c64d589d1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-scalar",
+    "source": "<?php $a=\"a\";echo $a . 2;",
+    "source_sha256": "0342e3724b6c33244f279debeaad97bbe5530200f198665e76b6ddca78595b83",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-array-warning",
+    "source": "<?php $a=[];echo $a.\"r\";",
+    "source_sha256": "29dc1f868cceb2aa6c13034ff9d0e44276b227ae77dc95f012aec64a636b257a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-no-magic",
+    "source": "<?php class O{} echo (new O).\"r\";",
+    "source_sha256": "0a708130fa9e192d94897e28d36ec8691a167ac4ee1c3a384c3b2ce7276719de",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "concat-string-same-site-reentrant",
+    "source": "<?php class O{function __toString(){static $d=0;if($d++===0)f($this);return \"o\";}}function f($o){echo $o.\"x\";}f(new O);",
+    "source_sha256": "062b249e7ddc9723948053820241e2fdb5cd25dfd3cda4bbfcc475e94639706c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "concat-string-right-no-magic",
+    "source": "<?php class O{} echo \"l\".(new O);",
+    "source_sha256": "398cb26002b8c4282205cb73721430136bb9a6e9767b051f03746665945c25ef",
+    "expected_model": "php_error"
   }
 ]

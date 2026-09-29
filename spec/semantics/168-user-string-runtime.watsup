@@ -32,6 +32,44 @@ def $stringify_echo_operand(S, expression*, porigin_parent, porigin_site, z, n) 
 
 dec $stringify_source(pstate, porigin, int, ptask) : bool
 dec $echo_emit_source(pstate, porigin, int) : bool
+dec $concat_line_valid(pstate, porigin, int) : bool
+dec $concat_child_site_valid(pstate, porigin, int, nat) : bool
+def $concat_line_valid(S, porigin_site, z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 1], expression_right) = z
+def $concat_line_valid(S, porigin_site, z) = false -- otherwise
+def $concat_site_valid(S, porigin_site, z, b_left, b_right) = true
+  -- if $concat_line_valid(S, porigin_site, z)
+  -- if b_left = $concat_constant(S, $origin_child((porigin_site), [PCFIELD 0]))
+  -- if b_right = $concat_constant(S, $origin_child((porigin_site), [PCFIELD 1]))
+def $concat_site_valid(S, porigin_site, z, b_left, b_right) = false -- otherwise
+def $concat_right_site_valid(S, porigin_site, z, b_right) = true
+  -- if $concat_line_valid(S, porigin_site, z)
+  -- if b_right = $concat_constant(S, $origin_child((porigin_site), [PCFIELD 1]))
+def $concat_right_site_valid(S, porigin_site, z, b_right) = false -- otherwise
+def $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right) = true
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if $concat_right_site_valid(S, porigin_parent, z, b_right)
+def $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right) = false -- otherwise
+def $concat_right_child_valid(S, porigin_parent, porigin_site, z) = true
+  -- if $origin_child((porigin_parent), [PCFIELD 1]) = (porigin_site)
+  -- if $concat_line_valid(S, porigin_parent, z)
+def $concat_right_child_valid(S, porigin_parent, porigin_site, z) = false -- otherwise
+def $concat_child_site_valid(S, PORIGIN n_unit pcpath_site, z, n_child) = true
+  -- if $(|pcpath_site| >= 1)
+  -- if pcpath_parent = pcpath_site[0:$nabs($( |pcpath_site| - 1))]
+  -- if $origin_child((PORIGIN n_unit pcpath_parent), [PCFIELD n_child]) = (PORIGIN n_unit pcpath_site)
+  -- if $concat_line_valid(S, PORIGIN n_unit pcpath_parent, z)
+def $concat_child_site_valid(S, porigin_site, z, n_child) = false -- otherwise
+def $concat_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
+  -- if $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
+def $concat_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+def $concat_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $concat_child_site_valid(S, porigin_site, pcallcontext.LINE, 0) \/ $concat_child_site_valid(S, porigin_site, pcallcontext.LINE, 1)
+  -- if $stringify_context_kind(S, pcallcontext)
+def $concat_context_line_valid(S, pcallcontext) = false -- otherwise
 def $echo_emit_source(S, PORIGIN n_unit pcpath_site, z) = true
   -- if $(|pcpath_site| >= 2)
   -- if pcpath_echo = pcpath_site[0:$nabs($( |pcpath_site| - 2))]
@@ -41,6 +79,7 @@ def $echo_emit_source(S, porigin_site, z) = false -- otherwise
 dec $stringify_local_consumer(expression) : bool
 def $stringify_local_consumer(NExprPrint expression metadata) = true
 def $stringify_local_consumer(NExprCastString expression metadata) = true
+def $stringify_local_consumer(NExprBinaryOpConcat expression_left expression_right metadata) = true
 def $stringify_local_consumer(expression) = false -- otherwise
 def $stringify_source(S, PORIGIN n_unit pcpath_site, z, EMIT z) = true
   -- if $echo_emit_source(S, PORIGIN n_unit pcpath_site, z)
@@ -52,10 +91,12 @@ def $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprCastString expression metadata)
   -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 0], expression) = z
 def $stringify_source(S, porigin_site, z, EVAL_REQUEST porigin_parent z) = $eval_operand_site_valid(S, porigin_parent, porigin_site, z)
+def $stringify_source(S, porigin_site, z, CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) = $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right)
+def $stringify_source(S, porigin_site, z, CONCAT_AFTER_RIGHT porigin_parent n_left* z) = $concat_right_child_valid(S, porigin_parent, porigin_site, z)
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
 dec $stringify_site_valid(pstate, porigin, int) : bool
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
@@ -159,6 +200,15 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if $stringify_site_valid(S, porigin_site, z)
 def $stringify_result_valid(S, n, porigin_site, z) = false -- otherwise
 def $call_task_valid(S, STRINGIFY_RESULT n porigin_site z) = $stringify_result_valid(S, n, porigin_site, z)
+def $call_task_valid(S, CONCAT_PREP poperand_left poperand_right b_left b_right z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $concat_site_valid(S, porigin_site, z, b_left, b_right)
+def $call_task_valid(S, CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right)
+def $call_task_valid(S, CONCAT_AFTER_RIGHT porigin_parent n_left* z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $concat_right_child_valid(S, porigin_parent, porigin_site, z)
 def $call_task_valid(S, EMIT z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $echo_emit_source(S, porigin_site, z)

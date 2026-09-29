@@ -1,6 +1,5 @@
 dec $concat_constant(pstate, porigin?) : bool
 dec $concat_operand(pstate, poperand, bool, int) : (pstate, poperand)
-dec $concat_operands(pstate, poperand, poperand, bool, bool, int) : (pstate, poperand, poperand)
 def $concat_constant(S, porigin) = true
   -- if $compiled_read(S, porigin) = (pvalue)
 def $concat_constant(S, porigin?) = false
@@ -11,9 +10,6 @@ def $concat_operand(S, KNOWN pvalue, true, z) = (S, KNOWN (PSTRING $echo_value(p
   -- if ~$is_array_value(pvalue)
 def $concat_operand(S, poperand, b, z) = (S, poperand)
   -- otherwise
-def $concat_operands(S, poperand_left, poperand_right, b_left, b_right, z) = (S_right, poperand_1, poperand_2)
-  -- if (S_left, poperand_1) = $concat_operand(S, poperand_left, b_left, z)
-  -- if (S_right, poperand_2) = $concat_operand(S_left, poperand_right, b_right, z)
 
 rule PhpStep/ordinary-concat: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), CONCAT_LEFT expression_2 b_left b_right $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpConcat expression_1 expression_2 metadata)) :: ptask_tail*
@@ -21,25 +17,111 @@ rule PhpStep/ordinary-concat: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [
   -- if b_right = $concat_constant(S, $origin_child(S.ORIGIN, [PCFIELD 1]))
 rule PhpStep/ordinary-concat-left: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), CONCAT_RIGHT S.RESULT b_left b_right z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CONCAT_LEFT expression b_left b_right z) :: ptask_tail*
-rule PhpStep/ordinary-concat-right: S ~> S_out[.HELD = S.HELD]
+rule PhpStep/ordinary-concat-right: S ~> S[.TODO = (CONCAT_PREP poperand S.RESULT b_left b_right z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONCAT_RIGHT poperand b_left b_right z) :: ptask_tail*
-  -- if (S_prepared, poperand_left, poperand_right) = $concat_operands($hold_task_inputs(S), poperand, S.RESULT, b_left, b_right, z)
-  -- if S_left = $resolve_at(S_prepared, poperand_left, z)
+rule PhpStep/concat-left-call: S ~> $user_string_begin(S_left[.ORIGIN = (porigin_left)], n, porigin_left, z, CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z, ptask_tail*)
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right b_left b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_parent)
+  -- if porigin_left = $origin_child((porigin_parent), [PCFIELD 0])
+  -- if $concat_site_valid(S, porigin_parent, z, b_left, b_right)
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S, poperand_left, b_left, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_left = $resolve_at(S_prepared, poperand_prepared, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_left.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_left, n)
+rule PhpStep/concat-left-scalar: S ~> S_string[.ORIGIN = (porigin_left)][.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*]
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right b_left b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_parent)
+  -- if porigin_left = $origin_child((porigin_parent), [PCFIELD 0])
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S, poperand_left, b_left, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_left = $resolve_at(S_prepared, poperand_prepared, z)
   -- if S_left.COMPLETION = NORMAL
   -- if S_left.RESULT = KNOWN pvalue_left
-  -- if S_right = $resolve_at(S_left, poperand_right, z)
+  -- if ~$user_string_value(S_left, pvalue_left)
+  -- if S_string = $stringify(S_left, pvalue_left, z)
+  -- if S_string.COMPLETION = NORMAL
+rule PhpStep/concat-left-prepare-abrupt: S ~> S_prepared[.TODO = eps]
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right b_left b_right z) :: ptask_tail*
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S, poperand_left, b_left, z)
+  -- if S_prepared.COMPLETION =/= NORMAL
+rule PhpStep/concat-left-read-abrupt: S ~> S_left[.TODO = eps]
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right b_left b_right z) :: ptask_tail*
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S, poperand_left, b_left, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_left = $resolve_at(S_prepared, poperand_prepared, z)
+  -- if S_left.COMPLETION =/= NORMAL
+rule PhpStep/concat-left-string-abrupt: S ~> S_string[.TODO = eps]
+  -- if S.TODO = (CONCAT_PREP poperand_left poperand_right b_left b_right z) :: ptask_tail*
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S, poperand_left, b_left, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_left = $resolve_at(S_prepared, poperand_prepared, z)
+  -- if S_left.COMPLETION = NORMAL
+  -- if S_left.RESULT = KNOWN pvalue_left
+  -- if ~$user_string_value(S_left, pvalue_left)
+  -- if S_string = $stringify(S_left, pvalue_left, z)
+  -- if S_string.COMPLETION =/= NORMAL
+rule PhpStep/concat-right-call: S ~> $user_string_begin(S_right, n, porigin_right, z, CONCAT_AFTER_RIGHT porigin_parent n_left* z, ptask_tail*)
+  -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_left)
+  -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
+  -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
+  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
+  -- if S_right.COMPLETION = NORMAL
+  -- if S_right.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_right, n)
+rule PhpStep/concat-right-scalar: S ~> S_string[.TODO = (CONCAT_AFTER_RIGHT porigin_parent n_left* z) :: ptask_tail*]
+  -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_left)
+  -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
+  -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
+  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
   -- if S_right.COMPLETION = NORMAL
   -- if S_right.RESULT = KNOWN pvalue_right
-  -- if S_out = $binary_apply(S_right, CONCAT, pvalue_left, pvalue_right, z)
-rule PhpStep/ordinary-concat-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
-  -- if S.TODO = (CONCAT_RIGHT poperand b_left b_right z) :: ptask_tail*
-  -- if (S_prepared, poperand_left, poperand_right) = $concat_operands($hold_task_inputs(S), poperand, S.RESULT, b_left, b_right, z)
-  -- if S_left = $resolve_at(S_prepared, poperand_left, z)
-  -- if S_left.COMPLETION =/= NORMAL
-rule PhpStep/ordinary-concat-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
-  -- if S.TODO = (CONCAT_RIGHT poperand b_left b_right z) :: ptask_tail*
-  -- if (S_prepared, poperand_left, poperand_right) = $concat_operands($hold_task_inputs(S), poperand, S.RESULT, b_left, b_right, z)
-  -- if S_left = $resolve_at(S_prepared, poperand_left, z)
-  -- if S_left.COMPLETION = NORMAL
-  -- if S_right = $resolve_at(S_left, poperand_right, z)
+  -- if ~$user_string_value(S_right, pvalue_right)
+  -- if S_string = $stringify(S_right, pvalue_right, z)
+  -- if S_string.COMPLETION = NORMAL
+rule PhpStep/concat-right-prepare-abrupt: S ~> S_prepared[.ORIGIN = (porigin_parent)][.TODO = eps]
+  -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_left)
+  -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
+  -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
+  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
+  -- if S_prepared.COMPLETION =/= NORMAL
+rule PhpStep/concat-right-read-abrupt: S ~> S_right[.ORIGIN = (porigin_parent)][.TODO = eps]
+  -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_left)
+  -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
+  -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
+  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
   -- if S_right.COMPLETION =/= NORMAL
+rule PhpStep/concat-right-string-abrupt: S ~> S_string[.ORIGIN = (porigin_parent)][.TODO = eps]
+  -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_left)
+  -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
+  -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
+  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
+  -- if S_prepared.COMPLETION = NORMAL
+  -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
+  -- if S_right.COMPLETION = NORMAL
+  -- if S_right.RESULT = KNOWN pvalue_right
+  -- if ~$user_string_value(S_right, pvalue_right)
+  -- if S_string = $stringify(S_right, pvalue_right, z)
+  -- if S_string.COMPLETION =/= NORMAL
+rule PhpStep/concat-finish: S ~> S[.ORIGIN = (porigin_parent)][.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING (n_left* ++ n_right*))][.BASE = BASE_VALUE (KNOWN (PSTRING (n_left* ++ n_right*)))]
+  -- if S.TODO = (CONCAT_AFTER_RIGHT porigin_parent n_left* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_right)
+  -- if $concat_right_child_valid(S, porigin_parent, porigin_right, z)
+  -- if S.RESULT = KNOWN (PSTRING n_right*)
