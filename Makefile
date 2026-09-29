@@ -235,6 +235,7 @@ test-semantics: build
 	python3 tests/semantics/get_class_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
+	python3 tests/semantics/eval_class_scope_protocol.py
 	python3 tests/semantics/eval_saved_protocol.py
 	python3 tests/semantics/eval_finally_protocol.py
 	python3 tests/semantics/eval_nested_trace_protocol.py
