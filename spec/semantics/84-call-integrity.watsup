@@ -187,6 +187,7 @@ dec $call_line_valid(pstate, porigin?, int) : bool
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $call_line_valid(S, (porigin_site), z) = true -- if $terminal_string_site(S, porigin_site, z)
 def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 dec $stringify_pending_site(pstate, porigin) : bool

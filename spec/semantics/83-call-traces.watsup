@@ -109,7 +109,11 @@ def $trace_named_args(S, eps) = eps
 def $trace_named_args(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = (KSTRING preqbytes, $variadic_operand_value(S, poperand)) :: $trace_named_args(S, (preqbytes_tail, poperand_tail)*)
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 def $trace_context(S, pbinding*, eps) = eps
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("__toString"), CLASS ($object_name(S, n)), TYPE ($ptascii("->")), ARGS eps, HASARGS true}]
+  -- if $terminal_string_context(S, pcallcontext)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
 def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $wrapper_trace(S, pcallcontext)
+  -- if ~$terminal_string_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)

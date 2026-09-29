@@ -5,11 +5,23 @@ def $trace_items(eps, parray) = parray
 def $trace_items((pkey, pvalue) :: (pkey_tail, pvalue_tail)*, parray) = $trace_items((pkey_tail, pvalue_tail)*, $array_insert(parray, pkey, DIRECT pvalue))
 
 dec $trace_frame_fields(ptraceframe, nat) : parray
+def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_empty(), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION)), KSTRING $ptascii("class"), DIRECT (PSTRING preqbytes_class))
+  -- if ptraceframe.FILE = eps
+  -- if ptraceframe.LINE = $(-1)
+  -- if ptraceframe.CLASS = (preqbytes_class)
+  -- if ptraceframe.TYPE = eps
+def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_insert($array_empty(), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION)), KSTRING $ptascii("class"), DIRECT (PSTRING preqbytes_class)), KSTRING $ptascii("type"), DIRECT (PSTRING preqbytes_type))
+  -- if ptraceframe.FILE = eps
+  -- if ptraceframe.LINE = $(-1)
+  -- if ptraceframe.CLASS = (preqbytes_class)
+  -- if ptraceframe.TYPE = (preqbytes_type)
 def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_insert($array_empty(), KSTRING $ptascii("file"), DIRECT (PSTRING ptraceframe.FILE)), KSTRING $ptascii("line"), DIRECT (PINT ptraceframe.LINE)), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION))
   -- if ptraceframe.CLASS = eps
+  -- if ~(ptraceframe.FILE = eps /\ ptraceframe.LINE = $(-1))
 def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_insert($array_insert($array_insert($array_empty(), KSTRING $ptascii("file"), DIRECT (PSTRING ptraceframe.FILE)), KSTRING $ptascii("line"), DIRECT (PINT ptraceframe.LINE)), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION)), KSTRING $ptascii("class"), DIRECT (PSTRING preqbytes_class)), KSTRING $ptascii("type"), DIRECT (PSTRING preqbytes_type))
   -- if ptraceframe.CLASS = (preqbytes_class)
   -- if ptraceframe.TYPE = (preqbytes_type)
+  -- if ~(ptraceframe.FILE = eps /\ ptraceframe.LINE = $(-1))
 dec $trace_frame_array(pstate, ptraceframe) : pstate
 def $trace_frame_array(S, ptraceframe) = $allocate_array(S_args, $array_insert($trace_frame_fields(ptraceframe, n_args), KSTRING $ptascii("args"), DIRECT (PARRAY n_args)))
   -- if ptraceframe.HASARGS
@@ -39,6 +51,15 @@ def $trace_argument_array_valid(S, n) = $trace_arguments_valid(S.ARRAYS[n].ITEMS
   -- if (HARRAY n) <- S.ALLOCATIONS
 def $trace_argument_array_valid(S, n) = false -- otherwise
 dec $trace_frame_array_valid(pstate, nat, nat) : bool
+def $trace_frame_array_valid(S, n, n_trace) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if n =/= n_trace
+  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function)), ENTRY (KSTRING $ptascii("class")) (DIRECT (PSTRING preqbytes_class)), ENTRY (KSTRING $ptascii("type")) (DIRECT (PSTRING $ptascii("->"))), ENTRY (KSTRING $ptascii("args")) (DIRECT (PARRAY n_args))]
+  -- if preqbytes_function = $ptascii("__toString")
+  -- if n_args =/= n
+  -- if n_args =/= n_trace
+  -- if $trace_argument_array_valid(S, n_args)
 def $trace_frame_array_valid(S, n, n_trace) = true
   -- if $(n < |S.ARRAYS|)
   -- if (HARRAY n) <- S.ALLOCATIONS

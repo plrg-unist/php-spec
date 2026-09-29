@@ -98,6 +98,85 @@ def $throwable_inherited_string(S, n) = false -- otherwise
 def $stringify(S, POBJECT n, z) = $throwable_stringify(S, n)
   -- if $throwable_inherited_string(S, n)
 
+;; Line zero is reserved for a real terminal callback marker, never a general
+;; source call. Both pending and entered forms authenticate the selected method.
+def $terminal_string_site(S, porigin_site, 0) = true
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = [CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) 0, STRINGIFY_RESULT n porigin_site 0, TERMINAL_STRING n]
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if porigin_site = porigin_method
+def $terminal_string_site(S, porigin_site, 0) = true
+  -- if S.CURRENT = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = [STRINGIFY_RESULT n porigin_site 0, TERMINAL_STRING n]
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if porigin_site = pmethoddesc.FUNCTION.ORIGIN
+def $terminal_string_site(S, porigin_site, 0) = true
+  -- if S.CURRENT =/= eps
+  -- if $terminal_string_active_site(S, S.CURRENT, S.FRAMES, porigin_site)
+def $terminal_string_site(S, porigin_site, z) = false -- otherwise
+dec $terminal_string_frame_match(pstate, pcallcontext?, pframe, porigin) : bool
+def $terminal_string_frame_match(S, (pcallcontext), pframe, porigin_site) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pcallcontext.LINE = 0
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.FUNCTION = porigin_method
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = [STRINGIFY_RESULT n porigin_site 0, TERMINAL_STRING n]
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if porigin_site = porigin_method
+def $terminal_string_frame_match(S, pcallcontext?, pframe, porigin_site) = false -- otherwise
+def $terminal_string_active_site(S, pcallcontext?, pframe :: pframe_tail*, porigin_site) = true
+  -- if $terminal_string_frame_match(S, pcallcontext?, pframe, porigin_site)
+def $terminal_string_active_site(S, pcallcontext?, pframe :: pframe_tail*, porigin_site) = $terminal_string_active_site(S, pframe.CONTEXT, pframe_tail*, porigin_site)
+  -- if ~$terminal_string_frame_match(S, pcallcontext?, pframe, porigin_site)
+def $terminal_string_active_site(S, pcallcontext?, eps, porigin_site) = false
+def $terminal_string_active_site(S, pcallcontext?, pframe*, porigin_site) = false -- otherwise
+def $stringify_source(S, porigin_site, 0, TERMINAL_STRING n) = true
+  -- if $terminal_string_site(S, porigin_site, 0)
+  -- if $throwable_member(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+
+dec $terminal_string_saved(pstate, pcallcontext?, pframe*, pcallcontext) : bool
+def $terminal_string_saved(S, (pcallcontext), pframe :: pframe_tail*, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $terminal_string_frame_match(S, (pcallcontext), pframe, porigin_site)
+def $terminal_string_saved(S, (pcallcontext_current), pframe :: pframe_tail*, pcallcontext_target) = $terminal_string_saved(S, pframe.CONTEXT, pframe_tail*, pcallcontext_target)
+  -- if pcallcontext_current =/= pcallcontext_target
+def $terminal_string_saved(S, eps, pframe :: pframe_tail*, pcallcontext_target) = $terminal_string_saved(S, pframe.CONTEXT, pframe_tail*, pcallcontext_target)
+def $terminal_string_saved(S, pcallcontext?, pframe*, pcallcontext_target) = false -- otherwise
+def $terminal_string_context(S, pcallcontext) = $terminal_string_saved(S, S.CURRENT, S.FRAMES, pcallcontext)
+
+rule PhpStep/throw-search-uncaught-override: S ~> $user_string_begin(S[.TODO = eps][.ORIGIN = (porigin_method)], n, porigin_method, 0, TERMINAL_STRING n, eps)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.FRAMES = eps
+  -- if $throwable_member(S, n)
+  -- if $stringable_instance(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if $origin_node(S.SOURCES, porigin_method) = (pcnode)
+rule PhpStep/terminal-string-return: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT_RENDERED n preqbytes][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if S.TODO = (TERMINAL_STRING n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $throwable_member(S, n)
+  -- if S.RESULT = KNOWN (PSTRING preqbytes)
+
 def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin_site, RECEIVER n, BASE $throwable_constructor_owner(text_kind), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin_site)
   -- if S.OBJECTS[n] = INSTANCE porigin_class

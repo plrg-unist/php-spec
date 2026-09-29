@@ -96,7 +96,7 @@ def $stringify_source(S, porigin_site, z, CONCAT_AFTER_RIGHT porigin_parent n_le
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
 dec $stringify_site_valid(pstate, porigin, int) : bool
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
@@ -198,6 +198,14 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if $stringable_instance(S, n)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if $stringify_site_valid(S, porigin_site, z)
+def $stringify_result_valid(S, n, porigin_site, 0) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $terminal_string_site(S, porigin_site, 0)
+  -- if S.TODO = [STRINGIFY_RESULT n porigin_site 0, TERMINAL_STRING n]
+def $stringify_result_valid(S, n, porigin_site, 0) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $terminal_string_site(S, porigin_site, 0)
+  -- if S.TODO = [CALL_ARGS (METHOD_TARGET n porigin_site) eps 0 eps (porigin_site) 0, STRINGIFY_RESULT n porigin_site 0, TERMINAL_STRING n]
 def $stringify_result_valid(S, n, porigin_site, z) = false -- otherwise
 def $call_task_valid(S, STRINGIFY_RESULT n porigin_site z) = $stringify_result_valid(S, n, porigin_site, z)
 def $call_task_valid(S, CONCAT_PREP poperand_left poperand_right b_left b_right z) = true

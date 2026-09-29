@@ -84,7 +84,8 @@ def observe(state, filename):
     completion = state['COMPLETION']
     tag, fields = completion['tag'], completion['args']
     uncaught_chain = []
-    if tag == 'UNCAUGHT':
+    uncaught_rendered = tag == 'UNCAUGHT_RENDERED'
+    if tag in ('UNCAUGHT', 'UNCAUGHT_RENDERED'):
         def class_name(object_id):
             obj = state['OBJECTS'][object_id]
             if obj['tag'] == 'THROWABLE':
@@ -127,9 +128,13 @@ def observe(state, filename):
         while object_id is not None and object_id not in seen:
             seen.add(object_id)
             uncaught_chain.append(object_id)
+            if uncaught_rendered:
+                break
             previous = field(object_id, 'previous')
             object_id = int(previous['args'][0]) if previous['tag'] == 'POBJECT' else None
-        tag, fields = 'THROWN', [class_name(root_id), list(exception_message(field(root_id, 'message'))[0]), field(root_id, 'line')['args'][0]]
+        message = (fields[1] if uncaught_rendered
+                   else list(exception_message(field(root_id, 'message'))[0]))
+        tag, fields = 'THROWN', [class_name(root_id), message, field(root_id, 'line')['args'][0]]
     stderr = b''
     for event in events:
         if event['tag'] == 'WARNING':
@@ -205,7 +210,8 @@ def observe(state, filename):
         for key, value in args:
             prefix = bytes(map(int, key['args'][0])) + b': ' if key['tag'] == 'KSTRING' else b''
             rendered.append(prefix + value_text(value))
-        return (b'#' + str(index).encode() + b' ' + file + b'(' + str(line).encode() + b'): '
+        location = (b'[internal function]' if file is None else file + b'(' + str(line).encode() + b')')
+        return (b'#' + str(index).encode() + b' ' + location + b': '
                 + call + b'(' + b', '.join(rendered) + b')\n')
 
     def slot_trace(array_id):
@@ -213,8 +219,10 @@ def observe(state, filename):
         for index, entry in enumerate(array_items(array_id)):
             frame_id = int(item_value(entry['args'][1])['args'][0])
             get = lambda name: array_field(frame_id, name)
-            file = bytes(map(int, get(b'file')['args'][0]))
-            line = int(get(b'line')['args'][0])
+            file_value = get(b'file')
+            line_value = get(b'line')
+            file = bytes(map(int, file_value['args'][0])) if file_value else None
+            line = int(line_value['args'][0]) if line_value else None
             function = bytes(map(int, get(b'function')['args'][0]))
             classname = get(b'class')
             call_type = get(b'type')
@@ -262,6 +270,9 @@ def observe(state, filename):
         if classname in {'ParseError', 'CompileError'}:
             prefix = b'Parse error: ' if classname == 'ParseError' else b'Fatal error: '
             stderr += prefix + message + b' in ' + location + b' on line ' + str(line).encode() + b'\n'
+        elif uncaught_rendered:
+            stderr += (b'Fatal error: Uncaught ' + message + b'\n  thrown in ' + location
+                       + b' on line ' + str(line).encode() + b'\n')
         elif uncaught_chain:
             messages = {}
             for chain_id in uncaught_chain:

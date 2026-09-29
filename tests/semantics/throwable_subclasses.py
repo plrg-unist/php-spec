@@ -30,6 +30,14 @@ CASES = [
     ('uncaught-integer-message', '<?php class Child extends Exception { protected $message=7; } throw new Child;', 'agreement'),
     ('uncaught-array-message', '<?php class Child extends Exception { protected $message=[]; } throw new Child;', 'agreement'),
     ('uncaught-object-message-control', '<?php class Child extends Exception { function poison(){ $this->message=new stdClass; } } $e=new Child;$e->poison();throw $e;', 'unsupported'),
+    ('terminal-override-simple', '<?php class M extends Exception { public function __toString(): string { return "OVR"; } } throw new M("m");', 'agreement'),
+    ('terminal-override-output', '<?php class M extends Exception { public function __toString(): string { echo "SIDE"; return "OVR"; } } throw new M("m");', 'agreement'),
+    ('terminal-override-previous', '<?php class A extends Exception { public function __toString(): string { return "INNER"; } } class B extends Exception { public function __toString(): string { return "OUTER"; } } throw new B("b",0,new A("a"));', 'agreement'),
+    ('terminal-override-object-message', '<?php class M extends Exception { protected $message; public function __construct(){ $this->message=new stdClass; } public function __toString(): string { return "OVR"; } } throw new M;', 'agreement'),
+    ('terminal-override-parent', '<?php class M extends Exception { public function __toString(): string { return "X".parent::__toString(); } } throw new M("m");', 'agreement'),
+    ('terminal-override-throws', '<?php class M extends Exception { public function __toString(): string { throw new Error("inner"); } } throw new M("outer");', 'agreement'),
+    ('terminal-override-nested', '<?php class C { public function __toString(): string { return "I"; } } class M extends Exception { public function __toString(): string { echo new C; return "OVR"; } } throw new M;', 'agreement'),
+    ('override-preserves-cache', '<?php class M extends Exception { public function __toString(): string { return "OVR"; } } $e=new M; echo (string)$e,"|",((array)$e)["\\0Exception\\0string"] === "" ? "empty" : "filled";', 'agreement'),
 ]
 
 
