@@ -192,8 +192,11 @@ getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
-and goto across protected regions. Throwable subclasses, internal property
-access and lifecycle integration remain pending.
+and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)
+inherit owned internal slots, constructors, getters, traces and source override
+dispatch; their [bounded review](coverage/semantics/throwable-subclass-review.json)
+separates full source, paused-state and later concat checks. Other internal
+property access and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
 explicit-exit completion. Shutdown/destructor callbacks remain pending; native
