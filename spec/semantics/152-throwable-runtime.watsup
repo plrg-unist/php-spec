@@ -236,8 +236,9 @@ rule PhpStep/catch-bind-abrupt: S ~> S_bound
 dec $throwable_stringify(pstate, nat) : pstate
 def $stringify(S, POBJECT n, z) = $throwable_stringify(S, n)
   -- if $throwable_object(S, n)
-def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "Throwable property cast"]
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, $property_cast_array(ppropertyslot*))
   -- if $throwable_object(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $property_read(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
   -- if $throwable_object(S, n)
 def $property_quiet(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]

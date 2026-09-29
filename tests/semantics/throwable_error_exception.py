@@ -22,7 +22,10 @@ CASES = [
     ('severity-arity', '<?php $e=new ErrorException("m",0,9);echo $e->getSeverity(),"|",$e->GETSEVERITY(),"|";function tick(){echo "T";return 1;}try{$e->getSeverity(tick());}catch(ArgumentCountError $x){echo "|",$x->getMessage();}', 'agreement'),
     ('constructor-arity', '<?php try{new ErrorException("m",0,1,null,null,null,7);}catch(ArgumentCountError $e){echo $e->getMessage();}', 'agreement'),
     ('getter-arity', '<?php $e=new ErrorException;try{$e->getSeverity(1);}catch(ArgumentCountError $x){echo $x->getMessage();}', 'agreement'),
-    ('cast-layout-control', '<?php $e=new ErrorException;foreach((array)$e as $key=>$value){echo bin2hex($key),",";}', 'unsupported'),
+    ('exception-cast-order', '<?php $e=new Exception;foreach((array)$e as $key=>$value){echo $key,",";}', 'agreement'),
+    ('error-cast-order', '<?php $e=new Error;foreach((array)$e as $key=>$value){echo $key,",";}', 'agreement'),
+    ('error-exception-cast-order', '<?php $e=new ErrorException;foreach((array)$e as $key=>$value){echo $key,",";}', 'agreement'),
+    ('cast-trace-cow', '<?php function f(){ $e=new ErrorException;$a=(array)$e;$a["\\0Exception\\0trace"][0]["function"]="changed";echo $e->getTrace()[0]["function"];}f();', 'agreement'),
 ]
 
 
