@@ -173,5 +173,61 @@
     "exact_native_agreements": 3,
     "declared_inputs": 188,
     "current_input_mismatches": 0
-  }
+  },
+  "installed_binary_sha256": {
+    "adapter/main.exe": "8782ec0b45841fb03f8bef1e6ac724c94626810e56d710e1fc29a252a6919fad",
+    "numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7"
+  },
+  "installed_reports": [
+    {
+      "selection": [
+        "filter-fallback-once",
+        "filter-fallback-trace",
+        "alias-once"
+      ],
+      "report": ".tools/include-execution-k47cqd97/report.json",
+      "sha256": "a550fc4ab00db18941b166ae9908a69885e2d6d80e46f631431c76ff226ac98f",
+      "exact_native_agreements": 3,
+      "declared_inputs": 188,
+      "current_input_mismatches": 0
+    },
+    {
+      "selection": [
+        "filter-eval-object-normal",
+        "filter-eval-object-throw"
+      ],
+      "report": ".tools/include-execution-wxamg3wa/report.json",
+      "sha256": "506144fb67834b00c7714f14e7bb3c1893375ee0a4874e60d4dd39abd65cf6e4",
+      "exact_native_agreements": 2,
+      "declared_inputs": 188,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_protocol.py",
+      "report": ".tools/include-protocol-y698xnm3/report.json",
+      "sha256": "761dac7ab92b5251c8a07eeb4a0d76065a67f232ad38a0ceab55ce088050a9e7",
+      "assertions": 118,
+      "declared_inputs": 192,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_adapter_protocol.py",
+      "report": ".tools/include-adapter-protocol-qdcilvwg/report.json",
+      "sha256": "1272d8fb1461c3120839ea80751b1f15927198ea9be3495cbfac63161cd383b5",
+      "assertions": 20,
+      "declared_inputs": 190,
+      "current_input_mismatches": 0
+    },
+    {
+      "command": "python3 tests/semantics/include_saved_protocol.py",
+      "report": ".tools/include-saved-protocol-papz883d/report.json",
+      "sha256": "96fa7a47d068c296c4dafe50bb9b60929763e750a85753fe578b1039f240e74a",
+      "assertions": 46,
+      "declared_inputs": 192,
+      "current_input_mismatches": 0
+    }
+  ],
+  "installed_validation": "Canonical adapter and numeric runner were built with explicit Dune roots and match reviewed private binary SHA-256. Provider, file-service, inventory and diff-check passed. Paired reviewer independently verified clean installed tree, five report SHA values, 950/950 current input hashes, and raw selected source agreements.",
+  "installed_code_head": "33e5418212b75b74508f3c89de2c24fdf87cb877",
+  "installed_code_tree": "447ce2bf3cb31650339779176da65a19b86e5f80"
 }
