@@ -25,9 +25,10 @@
     "semantic_delta_from_capture": [
       "get_class task/intrinsic constructors in 30-storage.watsup",
       "get_class descriptor guard in 84-call-integrity.watsup",
-      "new 165/166 modules and modules.json registration"
+      "new 165/166 modules and modules.json registration",
+      "eval-aware get_class error traces in 166-get-class-runtime.watsup"
     ],
-    "reason": "No full-source eval case calls get_class; the get_class descriptor guard is true for states without a get_class task. Four representative eval source cases and all six paused/service suites were rerun after this delta.",
+    "reason": "The captured 55-row catalogue had no get_class call. Get_class task/descriptor additions are dormant in those sources; the later get_class error-trace fix affects only get_class errors. Four representative older eval cases, two new combined-feature cases, all six paused/service suites and retained get_class27 were checked on the merged rules. Earlier getter/constructor/clone/exit reports are retained as unaffected controls with their original input identities.",
     "source_cases": [
       {
         "command": "python3 tests/semantics/eval_execution.py --match nested-runtime-throw",
@@ -73,54 +74,54 @@
     "protocols": [
       {
         "command": "python3 tests/semantics/eval_protocol.py",
-        "report": ".tools/eval-protocol-h5zohvat/report.json",
-        "sha256": "f5f08a37935700450bbe907846a4de626760a13def105b74d2923f8d5e4fa760",
+        "report": ".tools/eval-protocol-lnl7qqsl/report.json",
+        "sha256": "04c56bb0d9a73bccf5b54106de49312e79c1fbdaa64ca3906d86ead60e3e7ed0",
         "result": "pass",
         "assertions": 27
       },
       {
         "command": "python3 tests/semantics/eval_saved_protocol.py",
-        "report": ".tools/eval-saved-protocol-4j9khdli/report.json",
-        "sha256": "f921d57f5cf0887298c0934573b9c9f05d2d6044262a8d137ae505dad3a27353",
+        "report": ".tools/eval-saved-protocol-qzcmrctg/report.json",
+        "sha256": "73c65502b5fd4d041afd0899e439edbfb5d206be1185fa8314ade33d1012108b",
         "result": "pass",
         "assertions": 42
       },
       {
         "command": "python3 tests/semantics/eval_finally_protocol.py",
-        "report": ".tools/eval-finally-protocol-ajmj_hv3/report.json",
-        "sha256": "ccfe92c52e87d33151978091c57a483e246d2c067ca0b8fb382ba78ed3815f3c",
+        "report": ".tools/eval-finally-protocol-0hp0678d/report.json",
+        "sha256": "037912cee79a105d5122830b6f0e6432b1341c6a99f8c4d7828199d7dfb65638",
         "result": "pass",
         "records": 2,
         "assertions": 20
       },
       {
         "command": "python3 tests/semantics/eval_nested_trace_protocol.py",
-        "report": ".tools/eval-nested-trace-1to9bgul/report.json",
-        "sha256": "5c012e59e9eeda5b34c560c671b570dce0db9a355c787b2e705a2fff00a75c3e",
+        "report": ".tools/eval-nested-trace-hnb11agf/report.json",
+        "sha256": "086d28d58d73f5ea73d80a70e30524892739680b287671cada930ab9b8822aec",
         "result": "pass",
         "records": 2,
         "assertions": 45
       },
       {
         "command": "python3 tests/semantics/eval_trace_protocol.py",
-        "report": ".tools/eval-trace-protocol-utzbjbsu/report.json",
-        "sha256": "bd12dcb87c8cd995dae39917ca7513ea5e162d67a825f7050f1687f0bb0a0fbd",
+        "report": ".tools/eval-trace-protocol-diipbgbt/report.json",
+        "sha256": "fe4ed4edc348f44ea5912fde705eadefe3ac94c84603e2c725dea689b3ecb48e",
         "result": "pass",
         "records": 5,
         "assertions": 78
       },
       {
         "command": "python3 tests/semantics/eval_adapter_protocol.py",
-        "report": ".tools/eval-adapter-protocol-vr9_qvkx/report.json",
-        "sha256": "3592a4dcc21d60164da4a99656324a7cab221f66c284420d86766112b9b692d7",
+        "report": ".tools/eval-adapter-protocol-mpdd_t05/report.json",
+        "sha256": "64a2958016e202062ead43eb2ad4296dcd5cac55475d4246568dfe2be0b0c285",
         "result": "pass"
       }
     ],
     "retained_no_eval": [
       {
         "command": "python3 tests/semantics/get_class_intrinsic.py",
-        "report": ".tools/get-class-source-lafcy1z2/report.json",
-        "sha256": "0de33c10fa2db422dc680a2d0d6f7022d6d761455abace76cf1497f000e422d1",
+        "report": ".tools/get-class-source-l9p99unn/report.json",
+        "sha256": "dea64d87fa45414d48a91a0f3686e71cd0cc0a755bb1d8e39d50e1b35fcde975",
         "result": "pass",
         "records": 27
       },
@@ -156,7 +157,17 @@
         "result": "pass",
         "records": 1
       }
-    ]
+    ],
+    "current_catalogue": "57 rows; the full 55-row report retains its captured identity, and two added get_class-in-eval cases have separate exact evidence.",
+    "combined_feature_source": {
+      "command": "python3 tests/semantics/eval_execution.py --match get-class-",
+      "report": ".tools/eval-execution-hmqz5xpe/report.json",
+      "sha256": "40c7c2071f53889518dafe080f3459e06eaac43a0ee24c92e268fd80b6c9f240",
+      "result": "pass",
+      "native_agreements": 2,
+      "unsupported_controls": 0,
+      "records": 2
+    }
   },
   "remaining": [
     "object __toString eval operand",

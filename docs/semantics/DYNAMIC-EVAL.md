@@ -46,7 +46,9 @@ The [author ledger](../../coverage/semantics/dynamic-eval-author.json) binds
 the 55-case original-source run (48 exact agreements, seven explicit
 Unsupported controls), a retrospective identity check for three previously
 unhashed test helpers, and fresh paused/source/no-eval checks after the
-`get_class` integration. Raw reports remain under ignored `.tools` paths.
+`get_class` integration. Two added direct/dynamic `get_class(1)` inside eval
+cases catch the eval frame in a TypeError trace. Raw reports remain under
+ignored `.tools` paths.
 
 Remaining obligations are object `__toString` operand conversion;
 eval-created closure and `parent::class` scope; generic imported-name `::class`
