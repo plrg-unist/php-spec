@@ -138,6 +138,8 @@ source subclass is the prior exception. On the Throwable-subclass base, 17 of
 19 source cases agree exactly with PHP and two remain explicit Unsupported
 controls. Six paused stages pass 71 assertions; four two-file strictness cases,
 the repository test and inventory also pass. The earlier subclass-chain
-interpreter failure remains in the ledger as the repaired counterexample. The
+interpreter failure remains in the ledger as the repaired counterexample. On
+the installed Closure-binding base, a bound closure's typed return that throws
+a source `Exception` subclass also agrees exactly with PHP. The
 [typed-return ledger](../../coverage/semantics/user-string-typed-author.json)
 records the bounded private checks and these limits.

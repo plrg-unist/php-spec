@@ -1,14 +1,15 @@
 {
   "status": "private candidate",
-  "base": "242607f9c",
-  "code_commit": "18e732c7e",
-  "tests_commit": "61713dd8b",
+  "base": "e450404e4",
+  "code_commit": "63dd7b31b",
+  "tests_commit": "020845a8e",
   "scope": "Owned weak by-value typed string return callbacks and recursive returns, plus a disjoint source-Throwable previous-chain repair",
   "limits": "By-reference typed returns need alias write-back; callable|string awaits source __invoke precedence; weak parameters, properties, constrained references and other string contexts remain separate consumers.",
   "replay": [
     "From .tools/user-string-typed run python3 tests/semantics/user_string_typed.py --match typed-return-, python3 tests/semantics/user_string_typed_protocol.py, and python3 tests/semantics/user_string_typed_bridge.py.",
     "Raw reports below retain original source bytes, native/model stdout and stderr, six hashed paused fixtures, and two-file source/snapshot bytes. Use the pinned tests/semantics/profile.json and checked adapter/worker inputs recorded in each report.",
-    "make -o build test and make -o build inventory were run in the private configured PHP build; logs remain ignored. The private php-build copy rewrote 356 text files to its output root while preserving mtimes, leaving no old-root references or symlinks."
+    "make -o build test and make -o build inventory were run in the private configured PHP build; logs remain ignored. The private php-build copy rewrote 356 text files to its output root while preserving mtimes, leaving no old-root references or symlinks.",
+    "On the static-181 base, replay ignored .tools/user-string-typed/.tools/typed-binding-bridge-cases.json through tests/semantics/user_string.py; its one original source and SHA-256 are retained in the report."
   ],
   "throwable_base_evidence": {
     "base": "242607f9c",
@@ -47,11 +48,48 @@
       "log": ".tools/user-string-typed/.tools/user-string-typed-current-inventory.log",
       "log_sha256": "18df97c22a8ce4bc43b295005c13133f011ea74e141b913bfe615be745f586ed",
       "result": "pass"
+    },
+    "independent_review": {
+      "subclass_previous": {
+        "path": ".tools/user-string-typed/.tools/user-string-fbbezbip/report.json",
+        "sha256": "44980bdc5ed00065480ec2f9657b33c514dc7e984de07a8379d5be2219a7548c",
+        "result": "pass",
+        "exact": 1
+      },
+      "finally_replacement": {
+        "path": ".tools/user-string-typed/.tools/user-string-t35ag3_r/report.json",
+        "sha256": "0d0c590bcf61b9dccb371ac3c77ac6764c9d9333a70555c4c872fad4b2839738",
+        "result": "pass",
+        "exact": 1
+      },
+      "paused_source_chain": {
+        "path": ".tools/user-string-typed/.tools/user-string-typed-protocol-5rlije2e/report.json",
+        "sha256": "7e471a50f0cdab65a74e6fff1a2977c9e95c3f86e8ad1b7911023ff0703c6579",
+        "result": "pass",
+        "stages": 1,
+        "assertions": 16
+      }
     }
   },
   "repaired_failure": {
     "path": ".tools/user-string-typed/.tools/user-string-7ttjgszv/report.json",
     "sha256": "915d2f2e8e7c143b01556a37883a4134d0820f97170bf32ac99cf57cc0ef651a",
     "classification": "interpreter_failure before the 156 source-subclass chain clause; retained as the cross-feature counterexample"
+  },
+  "static_binding_base_bridge": {
+    "base": "e450404e4",
+    "implementation_fingerprint_sha256": "d5b4602080970f436923f1039e96e068612c7cd120642256043515b95ce386e3",
+    "projection": "Only the 30 task alternatives and module list needed additive merge; ten reviewed T1 spec/test files are byte-identical to the 242-base candidate. The closure-binding code adds no T1 edits.",
+    "case_json": {
+      "path": ".tools/user-string-typed/.tools/typed-binding-bridge-cases.json",
+      "sha256": "bcde5a51e4394ae2dc1c217ad9c9ffd01877bd411d33311451f61bb42892a24c"
+    },
+    "bound_closure_throw": {
+      "path": ".tools/user-string-typed/.tools/user-string-o9t4ik91/report.json",
+      "sha256": "8e2aebf236536cc46427617a6059bb24b9ede35274acf1df98e6122dbf01455c",
+      "result": "pass",
+      "exact": 1,
+      "source_sha256": "0798bbb2830c94399832f9b8a10993bee5cb97549b134df9165b4f384a16d48a"
+    }
   }
 }
