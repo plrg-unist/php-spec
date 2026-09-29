@@ -26,8 +26,9 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current canonical checkpoint is **0832d4a42** (weak typed string returns 185)
-on the installed interface, Closure-binding and source-Throwable code. Interfaces check
+The latest installed semantic checkpoint is **35b226471** (mutable file
+context; installed status **75aa21099**) on the weak typed string returns,
+interface, Closure-binding and source-Throwable code. Interfaces check
 ordered links, nominal membership, method variance, abstract obligations and
 authenticated `Exception`/`Error` ancestry for direct or transitive
 `implements Throwable`. Their [ledger](coverage/semantics/interface-author.json)
@@ -62,8 +63,9 @@ dynamic names and other string contexts remain separate consumers. Source
 `__invoke` and callable/string precedence, `Closure::call`, array callables,
 inherited internal interface method signatures, constants, static/readonly
 members, traits, hooks, traversal, output handlers and lifecycle callbacks
-remain active core obligations. File inclusion still needs mutable CWD and
-`include_path`, wider failure modes and transformed wrappers. Rocq
+remain active core obligations. File inclusion still needs authenticated
+dynamic selected intrinsic calls, stringable `chdir` operands, wider OS/INI
+failure modes and transformed wrappers. Rocq
 interaction-tree semantics and BOLA proofs follow the completed PHP core.
 
 ## Validation limits
