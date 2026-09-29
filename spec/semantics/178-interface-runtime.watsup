@@ -82,6 +82,7 @@ def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_ac
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = eps
   -- if pclassdesc.INTERFACES =/= eps
+  -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
 def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
@@ -89,6 +90,7 @@ def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptb
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if pclassdesc.INTERFACES =/= eps
+  -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
   -- if ~$class_internal(ptbytes_parent)
 def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
@@ -98,6 +100,7 @@ def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_pa
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if pclassdesc.INTERFACES =/= eps
+  -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) =/= eps \/ $class_internal(ptbytes_parent)
 def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILMISSING ptbytes) = $pil_activate(S, S, pclassdesc, PILMISSINGRESULT ptbytes)
 def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = S_parent

@@ -15,12 +15,12 @@ def $class_static_commit(S, pclassstatic*) = S[.CLASSSTATICS = S.CLASSSTATICS ++
 
 ;; Interface linking may publish a class through 178. Commit its cells only
 ;; after that path has completed successfully, using defaults from the input.
-dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
-def $class_static_finish(S, pclassdesc, S_result) = S_result -- if S_result.COMPLETION =/= NORMAL
+def $class_static_finish(S, pclassdesc, S_result) = S_result[.CLASSNAMES = S.CLASSNAMES][.LINKEDPARENTS = S.LINKEDPARENTS][.LINKEDINTERFACES = S.LINKEDINTERFACES][.CLASSSTATICS = S.CLASSSTATICS]
+  -- if S_result.COMPLETION =/= NORMAL
 def $class_static_finish(S, pclassdesc, S_result) = $class_static_commit(S_result, pclassstatic*)
   -- if S_result.COMPLETION = NORMAL
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
-def $class_static_finish(S, pclassdesc, S_result) = S_result[.COMPLETION = UNSUPPORTED "class static default storage"] -- otherwise
+def $class_static_finish(S, pclassdesc, S_result) = S[.COMPLETION = UNSUPPORTED "class static default storage"] -- otherwise
 
 dec $class_static_at(pclassstatic*, ppropertyid) : pclassstatic?
 def $class_static_at(eps, ppropertyid) = eps

@@ -18,6 +18,7 @@ def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, 
 dec $activate_class(pstate, pclassdesc) : pstate
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
+dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
 dec $class_statics_valid(pstate) : bool
 def $activate_class(S, pclassdesc) = S -- if S.COMPLETION =/= NORMAL
 def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
