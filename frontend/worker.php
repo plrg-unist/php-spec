@@ -229,9 +229,9 @@ while (($line = fgets(STDIN)) !== false) {
                         $ast = $evalParser->parse($source, $errors);
                         if ($ast === null) throw new PhpParser\Error('Checked eval parser produced no AST');
                         foreach ($errors->getErrors() as $error) {
-                            if (!evalNamespaceErrorMatches($error, $ast)) throw $error;
+                            if (!namespaceStructureErrorMatches($error, $ast)) throw $error;
                         }
-                    } else $ast = parseWithEncoding($parser, $source);
+                    } else $ast = parseWithEncoding($parser, $source, $fileMode);
                     $tokens = $evalMode ? $evalParser->getTokens() : $parser->getTokens();
                     checkTargetSyntax($ast, $tokens);
                 } catch (PhpParser\Error $error) {

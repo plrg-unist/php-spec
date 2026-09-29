@@ -24,7 +24,7 @@ class EvalLexer extends PhpParser\Lexer {
 
 // These are PHP-Parser's post-parse namespace checks. Zend accepts their
 // grammar and leaves the corresponding static errors to compilation.
-function evalNamespaceErrorMatches(PhpParser\Error $error, array $ast): bool {
+function namespaceStructureErrorMatches(PhpParser\Error $error, array $ast): bool {
     $position = $error->getAttributes()['startTokenPos'] ?? null;
     if (!is_int($position)) return false;
     $message = $error->getRawMessage();

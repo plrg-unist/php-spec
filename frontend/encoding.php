@@ -3,7 +3,7 @@ require_once __DIR__ . '/FileLexer.php';
 
 // The raw file lexer and independent PHP-Parser grammar use the same real file
 // profile as the reference parser. Declaration discovery never calls zendparse.
-function parseWithEncoding(PhpParser\Parser &$parser, string $source): ?array {
+function parseWithEncoding(PhpParser\Parser &$parser, string $source, bool $checkedDynamicFile = false): ?array {
     global $phpSyntaxFileInfo;
     $phpSyntaxFileInfo = null;
     $events = [];
@@ -52,7 +52,14 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source): ?array {
     $lexer = new FileLexer();
     $lexer->encodingEvents = $events;
     $parser = new PhpParser\Parser\Php8($lexer, PhpParser\PhpVersion::fromComponents(8, 5));
-    try {
+    if ($checkedDynamicFile) {
+        $errors = new PhpParser\ErrorHandler\Collecting();
+        $ast = $parser->parse($source, $errors);
+        if ($ast === null) throw new PhpParser\Error('Checked file parser produced no AST');
+        foreach ($errors->getErrors() as $error) {
+            if (!namespaceStructureErrorMatches($error, $ast)) throw $error;
+        }
+    } else try {
         $ast = $parser->parse($source, new PhpParser\ErrorHandler\Throwing());
     } catch (PhpParser\Error $error) {
         if ($error->getRawMessage() !== 'Cannot use the final modifier on an abstract class member'

@@ -86,23 +86,31 @@ def main():
         packet['extra'] = True
         assert worker.call(packet)['ok'] is False
         assert worker.call(request('7', b'<?php echo 3;'))['accepted']
-        # Zend's file scanner accepts this compile-time namespace error, while
-        # PHP-Parser rejects its AST. It cannot become an unchecked source fact.
-        disagreement = worker.call(request('8', b'<?php echo 1; namespace N;'))
-        assert disagreement['ok'] is False and disagreement['category'] == 'helper_unsupported'
+        # Zend accepts these structural ASTs and defers the fatal diagnostic
+        # to compilation. The checked file-mode retry admits only their nodes.
+        namespace_shapes = (
+            (b'<?php echo 1; namespace N;', ['Stmt_Echo', 'Stmt_Namespace']),
+            (b'<?php namespace N; namespace M {}', ['Stmt_Namespace', 'Stmt_Namespace']),
+            (b'<?php namespace N {} echo 1;', ['Stmt_Namespace', 'Stmt_Echo']),
+            (b'<?php namespace N { namespace M {} }', ['Stmt_Namespace']),
+        )
+        for number, (source, expected_nodes) in enumerate(namespace_shapes, 8):
+            response = worker.call(request(str(number), source))
+            assert response['ok'] and response['accepted'], response
+            assert [node['node'] for node in response['ast']['program']] == expected_nodes
     finally:
         worker.close()
 
     for setting in ('zend.multibyte=1', 'precision=15', 'short_open_tag=0'):
         unsupported = Worker(setting)
         try:
-            response = unsupported.call(request('9', b'<?php echo 1;'))
+            response = unsupported.call(request('12', b'<?php echo 1;'))
             assert response['ok'] is False and response['category'] == 'helper_unsupported'
         finally:
             unsupported.close()
-    print(json.dumps({'result': 'pass', 'accepted': len(accepted) + 2,
+    print(json.dumps({'result': 'pass', 'accepted': len(accepted) + 1 + len(namespace_shapes),
                       'native_rejections': 2, 'request_negatives': 8,
-                      'unsupported_profiles': 3, 'parser_disagreements': 1,
+                      'unsupported_profiles': 3, 'namespace_recoveries': len(namespace_shapes),
                       'native_execution': 'none'}))
 
 
