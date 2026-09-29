@@ -59,6 +59,24 @@ CASES = {
             'poperand* porigin_site? z)',
         ],
     },
+    'null-scope-receiver': {
+        'source': '<?php class A{} $c=function(){return static::class;}; '
+                  '$b=$c->bindTo(new A,null); unset($c); echo $b();',
+        'stage': ('S.TODO = (CALL_ARGS (CLOSURE_TARGET n_bound) phpType7* n_arg '
+                  'poperand* porigin_site? z) :: ptask_tail* '
+                  '-- if $closure_binding_at(S.CLOSUREBINDINGS, n_bound) = (pclosurebinding)'),
+        'checks': [
+            'pclosurebinding.LEXICAL = eps',
+            'pclosurebinding.RECEIVER = (n_receiver)',
+            'pclosurebinding.CALLED = (porigin_called)',
+            'S.OBJECTS[n_receiver] = INSTANCE porigin_called',
+            '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+            'HOBJECT n_receiver <- $node_children(S, HOBJECT n_bound)',
+            'pclosurebinding.SOURCE = n_source',
+            '~((HOBJECT n_source) <- S.ALLOCATIONS)',
+            '$closure_binding_source_valid(S, pclosurebinding)',
+        ],
+    },
 }
 
 

@@ -226,5 +226,41 @@
     "stdout_base64": "Mw==",
     "stderr_template_base64": "",
     "exit_status": 0
+  },
+  {
+    "id": "bind-explicit-null-scope",
+    "native_group": "closure-binding-explicit-null-native.json",
+    "native_raw_sha256": "49e386bbc99fa259aeea24c93368d3382692c1a1343c1489ddcfa736b1fd739d",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A{} $c=function(){return static::class;}; $b=$c->bindTo(new A,null); echo $b();",
+    "source_sha256": "5b673e0d40b7753ef4117e02c0f6ee4d09464a467c83890b02c013f0372a307a",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "bind-static-explicit-null-scope",
+    "native_group": "closure-binding-explicit-null-native.json",
+    "native_raw_sha256": "49e386bbc99fa259aeea24c93368d3382692c1a1343c1489ddcfa736b1fd739d",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A{} $c=function(){return static::class;}; $b=Closure::bind($c,new A,null); echo $b();",
+    "source_sha256": "141d3e551a3c9712c7c2bcc5640f332000b3e7056fe33709b332fc2c778c71e3",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "bind-explicit-null-scope-release",
+    "native_group": "closure-binding-null-release-native.json",
+    "native_raw_sha256": "6cbc44025f1cdecc1696346a86ad6cba27796afbaba7c96ae23baf86c25729ca",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A{} $c=function(){return static::class;}; $b=$c->bindTo(new A,null); unset($c); echo $b();",
+    "source_sha256": "24ab30eb1e4312a5da8a920e4677b7fae5ffb56bde2d1ee5ce325f76eecf2321",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
   }
 ]

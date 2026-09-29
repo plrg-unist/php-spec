@@ -187,6 +187,15 @@ def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inn
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction)
   -- if pbindcall_inner = pbindcall[.KIND = INSTANCE_BIND][.SOURCE = (n_source)][.SENT = [KNOWN (POBJECT n_receiver)]]
+def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inner) :: ptask_tail*], pbindcall_inner, (n_receiver), eps, (porigin_called))
+  -- if pbindcall.KIND = STATIC_BIND
+  -- if S.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*
+  -- if pbindcall.SENT = [KNOWN (POBJECT n_source), KNOWN (POBJECT n_receiver), KNOWN PNULL]
+  -- if S.OBJECTS[n_source] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if pbindcall_inner = pbindcall[.KIND = INSTANCE_BIND][.SOURCE = (n_source)][.SENT = [KNOWN (POBJECT n_receiver), KNOWN PNULL]]
 def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inner) :: ptask_tail*], pbindcall_inner, eps, (porigin_scope), (porigin_scope))
   -- if pbindcall.KIND = STATIC_BIND
   -- if S.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*
@@ -236,6 +245,14 @@ def $bind_result(S, pbindcall) = $report_event(S[.TODO = ptask_tail*][.RESULT = 
 def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, (n_receiver), $bind_source_lexical(S, n_source), (porigin_called))
   -- if pbindcall.KIND = INSTANCE_BIND
   -- if pbindcall.SENT = [KNOWN (POBJECT n_receiver)]
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+  -- if pbindcall.SOURCE = (n_source)
+  -- if S.OBJECTS[n_source] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, (n_receiver), eps, (porigin_called))
+  -- if pbindcall.KIND = INSTANCE_BIND
+  -- if pbindcall.SENT = [KNOWN (POBJECT n_receiver), KNOWN PNULL]
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
   -- if pbindcall.SOURCE = (n_source)
   -- if S.OBJECTS[n_source] = REALCLOSURE porigin pitem* pstaticcell*
