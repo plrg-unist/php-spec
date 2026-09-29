@@ -189,7 +189,9 @@ def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
 def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
+dec $stringify_pending_site(pstate, porigin) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
+  -- if ~$stringify_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
   -- if n_index = |poperand*|
@@ -203,7 +205,9 @@ def $call_arguments_valid(S, (porigin_site), 0, eps, eps, 0) = true
 def $call_arguments_valid(S, porigin?, n_index, phpType7*, poperand*, n_sent) = false -- otherwise
 dec $call_sent_operands_valid(pstate, pcalltarget, nat, poperand*) : bool
 dec $call_arity_valid(pstate, pcallcontext) : bool
+dec $stringify_context_kind(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
+  -- if ~$stringify_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if $named_call_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)

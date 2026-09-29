@@ -31,6 +31,7 @@ rule PhpStep/ordinary-cast_result-value: S ~> S_out[.TODO = ptask_tail*]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if pcast =/= CASTSTRING \/ ~$user_string_value(S_read, pvalue)
   -- if S_out = $cast_apply(S_read, pcast, pvalue, z)
 rule PhpStep/ordinary-cast_result-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (CAST_RESULT pcast z) :: ptask_tail*

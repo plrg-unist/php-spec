@@ -154,5 +154,41 @@
     "source": "<?php class O{function __toString():never{throw new Exception(\"stop\");}} echo \"before;\",new O;",
     "source_sha256": "0dd6d3486675fcb198aa0ca75ec5918d372c6af7d1048cf532a464b4469c2557",
     "expected_model": "php_error"
+  },
+  {
+    "id": "print-callback",
+    "source": "<?php class O{function __toString(){return \"x\";}} $r=print(new O);echo \":\",$r;",
+    "source_sha256": "4f3d68e63be065ff352b9c2669024f4a072e4c43c012d3cb0d95d156ac22b295",
+    "expected_model": "normal"
+  },
+  {
+    "id": "cast-callback",
+    "source": "<?php class O{function __toString(){return \"x\";}} echo (string)(new O);",
+    "source_sha256": "ecf5b59250911a522611ac80dfcd65fb79d96892f51182fe1b5ab69b5fe6574b",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-cast-callback",
+    "source": "<?php class O{function __toString(){return \"x\";}} echo (string)(new O);",
+    "source_sha256": "ecf5b59250911a522611ac80dfcd65fb79d96892f51182fe1b5ab69b5fe6574b",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-print-callback",
+    "source": "<?php class O{function __toString(){return \"x\";}} echo print(new O);",
+    "source_sha256": "c94e77dac25bd4b19c7aef1c14304a51690b80fdefe52334e235821483cd91a1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "cast-multiline-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} echo (string)\n(new O);",
+    "source_sha256": "c58c645142681de7a967b449b835ff590b89bad4f580ec2f0df0edca238c6001",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "print-multiline-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} print\n(new O);",
+    "source_sha256": "afa884e278346d471282d6ed11662faf16a60829c5a8f909dccaf441c1f04c8e",
+    "expected_model": "php_error"
   }
 ]
