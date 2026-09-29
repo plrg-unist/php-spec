@@ -238,7 +238,9 @@ Source, compiler and paused ownership checks cover admitted conversions;
 user-object `__toString` now runs callbacks for echo, print and string casts,
 with other string contexts still open.
 A [private eval-operand candidate](coverage/semantics/user-string-eval-author.json)
-extends that callback to checked eval source requests; current-base review is pending.
+extends that callback to checked eval source requests. Its include-base source,
+retained eval and paused checks pass; an uncaught included-file trace still
+needs the shared file-wrapper frame before integration.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

@@ -1,20 +1,63 @@
 {
   "status": "private_candidate",
-  "base": "33b18cc0a",
-  "code_commit": "678a61981",
+  "base": "70fd71f12",
+  "code_commit": "b91fafba4",
   "scope": "owned user-object eval operand conversion and compiled operand line",
+  "replay": [
+    "From .tools/user-string-eval, run python3 tests/semantics/user_string.py --match eval-string-.",
+    "Run python3 tests/semantics/eval_execution.py, then python3 tests/semantics/user_string_eval_protocol.py.",
+    "Run python3 tests/semantics/user_string_eval_bridge.py after the generic file-wrapper trace fix. The original failed report is retained; raw outputs remain ignored."
+  ],
+  "limits": [
+    "Weak typed string conversion of a returned Stringable object is explicit Unsupported until the shared callback continuation reaches typed consumers.",
+    "Concat, interpolation, dynamic names, exit, string-offset writes, loose comparison and other callback-capable consumers remain open."
+  ],
+  "pre_include_evidence": {
+    "base": "33b18cc0a",
+    "code_commit": "678a61981",
+    "source": {
+      "path": ".tools/user-string-eval/.tools/user-string-5_o8t86s/report.json",
+      "sha256": "26fccfc07101313aa99949533af910badce69dfe48311a5a231f4ebac606b88a",
+      "fingerprint_sha256": "3c00ebd6986db9afccfed0b44d871ca1c06f7515f87a16737fb83ccdac675229",
+      "result": "pass",
+      "exact_normal": 5,
+      "exact_php_error": 6,
+      "explicit_unsupported": 1
+    },
+    "paused": {
+      "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-rd1a1d7o/report.json",
+      "sha256": "fd16d68b51e95f8eff2189925107b478058417ce5e34fb6de52910978e047b2c",
+      "result": "pass",
+      "stages": 5,
+      "assertions": 51,
+      "stable": true
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "result": "pass",
+      "log": ".tools/user-string-eval/.tools/user-string-eval-inventory.log",
+      "log_sha256": "6bbddb69314a696538769ebd442edb47d186feb5d3e2e4567926c72362ed6ca0",
+      "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
+    }
+  },
   "source": {
-    "path": ".tools/user-string-eval/.tools/user-string-5_o8t86s/report.json",
-    "sha256": "26fccfc07101313aa99949533af910badce69dfe48311a5a231f4ebac606b88a",
-    "fingerprint_sha256": "3c00ebd6986db9afccfed0b44d871ca1c06f7515f87a16737fb83ccdac675229",
+    "path": ".tools/user-string-eval/.tools/user-string-jjseo6sc/report.json",
+    "sha256": "d16b58de492b81cb7707aeef41f5175f7f07a5902aca8572e9c9aec7a0edf3df",
+    "fingerprint_sha256": "abdff23a1b25afedf4bfe2a6bbd8f79f02cfe2db628d3b178d7f880a63572e76",
     "result": "pass",
     "exact_normal": 5,
     "exact_php_error": 6,
     "explicit_unsupported": 1
   },
+  "retained_eval": {
+    "path": ".tools/user-string-eval/.tools/eval-execution-zfvyllgp/report.json",
+    "sha256": "f6fbd1b0874a937fba50c323a4d8dc832e9d761322849b2402d3fde9ce124aa8",
+    "result": "pass",
+    "exact": 71
+  },
   "paused": {
-    "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-rd1a1d7o/report.json",
-    "sha256": "fd16d68b51e95f8eff2189925107b478058417ce5e34fb6de52910978e047b2c",
+    "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-irfmc8_s/report.json",
+    "sha256": "814c1ca1a2c4bd050e496a026d7ce62ca8734bdfad43a784a8eba998a6525cd2",
     "result": "pass",
     "stages": 5,
     "assertions": 51,
@@ -23,16 +66,16 @@
   "inventory": {
     "command": "make -o build inventory",
     "result": "pass",
-    "log": ".tools/user-string-eval/.tools/user-string-eval-inventory.log",
+    "log": ".tools/user-string-eval/.tools/user-string-eval-current-inventory.log",
     "log_sha256": "6bbddb69314a696538769ebd442edb47d186feb5d3e2e4567926c72362ed6ca0",
     "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
   },
-  "replay": [
-    "From .tools/user-string-eval, run python3 tests/semantics/user_string.py --match eval-string-.",
-    "Run python3 tests/semantics/user_string_eval_protocol.py. The checked source catalogue and protocol fixture are tracked; raw output remains ignored."
-  ],
-  "limits": [
-    "Weak typed string conversion of a returned Stringable object is explicit Unsupported until the shared callback continuation reaches typed consumers.",
-    "Concat, interpolation, dynamic names, exit, string-offset writes, loose comparison and other callback-capable consumers remain open."
-  ]
+  "file_eval_bridge": {
+    "path": ".tools/user-string-eval/.tools/user-string-eval-bridge-d9ryj2vp/report.json",
+    "sha256": "a4cc6e6cfe60809e4d60f04c446fa5ec165f9c8f16bd8e4e2f57c474d3d4fcab",
+    "result": "fail",
+    "exact": 2,
+    "mismatch": 1,
+    "dependency": "generic included-file wrapper frame in uncaught callback trace; file trace owner is fixing the shared rule"
+  }
 }
