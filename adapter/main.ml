@@ -256,7 +256,9 @@ let pending_from_state state =
         if phase = "FILE_RESOLVE_WAIT" then
           Some (`Assoc ["id", field "NONCE" context; "mode", `String "file-resolve";
                         "caller", encode_field "CALLER" context;
-                        "requested", encode_field "REQUESTED" context])
+                        "requested", encode_field "REQUESTED" context;
+                        "cwd", encode_field "CWD" context;
+                        "include_path", encode_field "INCLUDEPATH" context])
         else if phase = "FILE_PARSE_WAIT" then
           let payload key = match field key context with
             | `Null -> fail "missing opened file parser fact"
@@ -317,7 +319,8 @@ let nonempty_bytes json =
   value
 let file_snapshot json =
   exact ["version"; "main"; "cwd"; "include_path"; "entries"] json;
-  if field "version" json <> `Int 1 then fail "file snapshot version mismatch";
+  let version = J.to_int (field "version" json) in
+  if version <> 1 && version <> 2 then fail "file snapshot version mismatch";
   ignore (nonempty_bytes (field "main" json));
   ignore (nonempty_bytes (field "cwd" json));
   if source_bytes (field "include_path" json) <> "Ljo=" then fail "file snapshot include_path mismatch";
@@ -325,16 +328,21 @@ let file_snapshot json =
   let keys = ref [] and opened = ref [] in
   List.iter (fun entry ->
     let status = string (field "status" entry) in
+    let context = if version = 2 then ["cwd"; "include_path"] else [] in
     let fields = match status with
-      | "missing" -> ["caller"; "requested"; "status"; "stream_error"]
-      | "open_failure" -> ["caller"; "requested"; "status"; "resolved"; "warning_path"; "stream_error"]
-      | "opened" -> ["caller"; "requested"; "status"; "resolved"; "opened"; "source"]
+      | "missing" -> ["caller"; "requested"] @ context @ ["status"; "stream_error"]
+      | "open_failure" -> ["caller"; "requested"] @ context @ ["status"; "resolved"; "warning_path"; "stream_error"]
+      | "opened" -> ["caller"; "requested"] @ context @ ["status"; "resolved"; "opened"; "source"]
       | _ -> fail "unknown file resolution status" in
     exact fields entry;
     let caller = nonempty_bytes (field "caller" entry)
-    and requested = source_bytes (field "requested" entry) in
-    if List.mem (caller, requested) !keys then fail "duplicate file resolution key";
-    keys := (caller, requested) :: !keys;
+    and requested = source_bytes (field "requested" entry)
+    and cwd = (if version = 2 then nonempty_bytes (field "cwd" entry)
+               else source_bytes (field "cwd" json))
+    and include_path = (if version = 2 then nonempty_bytes (field "include_path" entry)
+                        else source_bytes (field "include_path" json)) in
+    if List.mem (caller, requested, cwd, include_path) !keys then fail "duplicate file resolution key";
+    keys := (caller, requested, cwd, include_path) :: !keys;
     if status = "open_failure" then ignore (nonempty_bytes (field "resolved" entry));
     if status = "open_failure" then ignore (nonempty_bytes (field "warning_path" entry));
     if status = "opened" && field "resolved" entry <> `Null then
@@ -352,13 +360,23 @@ let check_file_resolve request =
   exact ["op"; "snapshot"; "pending"; "response"] request;
   let snapshot = file_snapshot (field "snapshot" request) in
   let pending = field "pending" request in
-  exact ["id"; "caller"; "requested"] pending;
+  exact ["id"; "caller"; "requested"; "cwd"; "include_path"] pending;
   let id = source_id (field "id" pending)
   and caller = nonempty_bytes (field "caller" pending)
-  and requested = source_bytes (field "requested" pending) in
+  and requested = source_bytes (field "requested" pending)
+  and cwd = nonempty_bytes (field "cwd" pending)
+  and include_path = nonempty_bytes (field "include_path" pending) in
+  let version = J.to_int (field "version" snapshot) in
+  if version = 1 &&
+     (cwd <> source_bytes (field "cwd" snapshot) ||
+      include_path <> source_bytes (field "include_path" snapshot)) then
+    fail "file resolution context differs from fixed snapshot";
   let entry = match List.find_opt (fun entry ->
       source_bytes (field "caller" entry) = caller
-      && source_bytes (field "requested" entry) = requested)
+      && source_bytes (field "requested" entry) = requested
+      && (version = 1 ||
+          (source_bytes (field "cwd" entry) = cwd &&
+           source_bytes (field "include_path" entry) = include_path)))
       (list (field "entries" snapshot)) with
     | Some entry -> entry | None -> fail "file resolution absent from finite snapshot" in
   let response = field "response" request in
@@ -484,7 +502,9 @@ let resume_file_resolve request =
   let snapshot = match !active_snapshot with
     | Some facts -> facts | None -> fail "file resolution has no finite snapshot" in
   let identity = `Assoc ["id", field "id" pending; "caller", field "caller" pending;
-                         "requested", field "requested" pending] in
+                         "requested", field "requested" pending;
+                         "cwd", field "cwd" pending;
+                         "include_path", field "include_path" pending] in
   let checked = check_file_resolve (`Assoc ["op", `String "check_file_resolve";
                                              "snapshot", snapshot; "pending", identity;
                                              "response", field "response" request]) in

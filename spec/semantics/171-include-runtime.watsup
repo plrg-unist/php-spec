@@ -30,13 +30,14 @@ dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $file_site_valid(S, porigin, z, n_kind)
   -- if S.FILECWD = (preqbytes_cwd)
+  -- if S.FILEINCLUDEPATH = (preqbytes_include_path)
   -- if S.RESULT = KNOWN (PSTRING n_requested*)
   -- if n_nonce = S.FILESEQ
   -- if n_owner = |S.FRAMES|
   -- if n_caller* = $call_sourcefile(S.FILES, porigin)
-  -- if pfilecontext = {NONCE n_nonce, SITE porigin, CALLER n_caller*, REQUESTED n_requested*, KIND n_kind, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE FILE_RESOLVE_WAIT, TAIL ptask_tail*, UNIT eps, RESOLVED eps, OPENED eps, BYTES eps}
+  -- if pfilecontext = {NONCE n_nonce, SITE porigin, CALLER n_caller*, REQUESTED n_requested*, CWD preqbytes_cwd, INCLUDEPATH preqbytes_include_path, KIND n_kind, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE FILE_RESOLVE_WAIT, TAIL ptask_tail*, UNIT eps, RESOLVED eps, OPENED eps, BYTES eps}
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "file provider requires fixed cwd"]
-  -- if S.FILECWD = eps
+  -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
 rule PhpStep/file-request: S ~> $file_request_start(S_value, porigin, z, n_kind, ptask_tail*)
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
   -- if S_value = $eval_operand(S, z)
@@ -47,13 +48,13 @@ rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S_value.COMPLETION =/= NORMAL
 def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = (S.ORIGIN = (porigin) /\ $file_site_valid(S, porigin, z, n_kind))
 
-def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: ptask_tail*
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
   -- if z = $file_site_line(S, pfilecontext.SITE)
-def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: ptask_tail*
@@ -118,9 +119,9 @@ def $file_marker_suffix_valid(ptask :: ptask_tail*, pfilecontext) = (ptask_tail*
 def $file_marker_suffix_valid(ptask :: ptask_tail*, pfilecontext) = $file_marker_suffix_valid(ptask_tail*, pfilecontext)
   -- if ~$file_marker_match(pfilecontext, ptask)
 dec $file_context_phase_valid(pstate, pfilecontext) : bool
-def $file_context_phase_valid(S, pfilecontext) = (pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL)
+def $file_context_phase_valid(S, pfilecontext) = (pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL)
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
-def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $eval_binding_at(S.EVALBINDINGS, n_unit) = eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = eps /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
+def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $eval_binding_at(S.EVALBINDINGS, n_unit) = eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = eps /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
   -- if pfilecontext.PHASE = FILE_PARSE_WAIT
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.RESOLVED = (n_resolved*)
@@ -133,7 +134,7 @@ def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
 dec $file_context_valid(pstate, pfilecontext) : bool
-def $file_context_valid(S, pfilecontext) = (S.FILECWD =/= eps /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $eval_binding_class_valid(S, pfilecontext.LEXICAL_CLASS) /\ $($file_marker_count(S.TODO, pfilecontext) + $file_frame_marker_count(S.FRAMES, pfilecontext)) = 1 /\ $file_marker_count($file_owner_tasks(S, pfilecontext), pfilecontext) = 1 /\ $file_marker_suffix_valid($file_owner_tasks(S, pfilecontext), pfilecontext) /\ $file_context_phase_valid(S, pfilecontext))
+def $file_context_valid(S, pfilecontext) = (S.FILECWD =/= eps /\ S.FILEINCLUDEPATH =/= eps /\ pfilecontext.CWD =/= eps /\ pfilecontext.INCLUDEPATH =/= eps /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $eval_binding_class_valid(S, pfilecontext.LEXICAL_CLASS) /\ $($file_marker_count(S.TODO, pfilecontext) + $file_frame_marker_count(S.FRAMES, pfilecontext)) = 1 /\ $file_marker_count($file_owner_tasks(S, pfilecontext), pfilecontext) = 1 /\ $file_marker_suffix_valid($file_owner_tasks(S, pfilecontext), pfilecontext) /\ $file_context_phase_valid(S, pfilecontext))
   -- if z = $file_site_line(S, pfilecontext.SITE)
 dec $file_contexts_valid(pstate, pfilecontext*) : bool
 def $file_contexts_valid(S, eps) = true
@@ -175,7 +176,7 @@ def $file_main_included(S) = (S.INCLUDEDOPENED = eps)
   -- if S.FILECWD = eps
 def $file_main_included(S) = ($call_sourcefile(S.FILES, PORIGIN 0 eps) <- S.INCLUDEDOPENED)
   -- if S.FILECWD = (n_cwd*)
-def $file_state_valid(S) = ($file_contexts_valid(S, S.FILECONTEXTS) /\ $file_contexts_ordered(S.FILECONTEXTS) /\ $file_main_included(S) /\ $file_included_paths_valid(S, S.INCLUDEDOPENED))
+def $file_state_valid(S) = (((S.FILECWD = eps /\ S.FILEINCLUDEPATH = eps) \/ (S.FILECWD =/= eps /\ S.FILEINCLUDEPATH =/= eps)) /\ $file_contexts_valid(S, S.FILECONTEXTS) /\ $file_contexts_ordered(S.FILECONTEXTS) /\ $file_main_included(S) /\ $file_included_paths_valid(S, S.INCLUDEDOPENED))
 def $call_task_valid(S, FILE_END n_unit) = $file_context_unit_running(S.FILECONTEXTS, n_unit)
 dec $file_active_nonce(pfilecontext*) : nat?
 def $file_active_nonce(pfilecontext :: pfilecontext_tail*) = (pfilecontext.NONCE)
@@ -229,14 +230,14 @@ def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_st
   -- if n_keyword* = $file_keyword(pfilecontext.KIND)
   -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
   -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
-  -- if S_second = $diagnostic(S_first, "Warning", n_keyword* ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='.:')"), z)
+  -- if S_second = $diagnostic(S_first, "Warning", n_keyword* ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='") ++ pfilecontext.INCLUDEPATH ++ $ptascii("')"), z)
 def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_object[.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if (pfilecontext.KIND = 3 \/ pfilecontext.KIND = 4)
   -- if z = $file_site_line(S, pfilecontext.SITE)
   -- if n_keyword* = $file_keyword(pfilecontext.KIND)
   -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
   -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
-  -- if S_object = $throwable_materialize($throw_scalar(S_first, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='.:')"), z))
+  -- if S_object = $throwable_materialize($throw_scalar(S_first, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='") ++ pfilecontext.INCLUDEPATH ++ $ptascii("')"), z))
   -- if S_object.COMPLETION = THROWING n_object
 dec $file_include_after_compile(preqbytes*, preqbytes) : preqbytes*
 dec $file_once_record_open(pstate, int, preqbytes) : pstate
@@ -393,11 +394,11 @@ rule PhpStep/file-throw-cross: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO 
   -- if pfilecontext.TAIL = ptask_tail*
 
 dec $php_file_run(program, nat, preqbytes, preqbytes) : pstate
-def $php_file_run(program, n, n_file*, n_cwd*) = $drive($compile_source($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+def $php_file_run(program, n, n_file*, n_cwd*) = $drive($compile_source($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.FILEINCLUDEPATH = ($ptascii(".:"))][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
   -- if $source_filename(n_file*)
   -- if $source_filename(n_cwd*)
 dec $php_request_file_run(program, nat, preqbytes, prequest, preqbytes) : pstate
-def $php_request_file_run(program, n, n_file*, Q, n_cwd*) = $drive($compile_source($request_bootstrap($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+def $php_request_file_run(program, n, n_file*, Q, n_cwd*) = $drive($compile_source($request_bootstrap($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.FILEINCLUDEPATH = ($ptascii(".:"))][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
   -- if Q.CWD = (n_cwd*)
   -- if $source_filename(n_file*)
   -- if $source_filename(n_cwd*)
