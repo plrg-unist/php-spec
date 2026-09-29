@@ -63,9 +63,10 @@ assertions. On the current include/concat base, runtime/compiler catalogues
 again pass 14/14 and 13/13; independent literal two-file diagnostics pass 3/3,
 nominal/type cases 2/2 and forged links 20/20. A frozen 30,980-source frontend
 gate, full test target and isolated inventory pass on both bases. The
-Exception/Error-root `Throwable` bridge awaits modules 175/176; inherited
-internal method contracts, constants, hooked properties and other protocols
-remain open.
+On installed Throwable-subclass base **242607f9c**, four rooted and two
+nonroot `Throwable` source cases agree exactly with pinned PHP 8.5.10;
+independent bridge replay is pending. Inherited internal method contracts,
+constants, hooked properties and other protocols remain open.
 [Contract](docs/semantics/SOURCE-INTERFACES.md) ·
 [ledger](coverage/semantics/interface-author.json).
 

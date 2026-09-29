@@ -1,5 +1,5 @@
 {
-  "status": "private_candidate_current_base_reviewed_pending_throwable_B",
+  "status": "private_candidate_B_root_bridge_pending_independent_review",
   "code_commit": "2177e4c65",
   "base": "33b18cc0a",
   "scope": "source interface declaration/link/nominal relations, ordered method prototype checks and abstract obligations",
@@ -36,7 +36,7 @@
     }
   },
   "limits": [
-    "Modules 175/176 for authenticated Exception/Error descendants are not installed on this base; direct/transitive rooted and nonroot Throwable implementation must be replayed after their integration.",
+    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed the bounded B bridge; independent replay and a retained current-base gate remain pending.",
     "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported until the finite catalog is added.",
     "Other internal interfaces and hooks, class/interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open; no full interface-family closure is claimed."
   ],
@@ -156,5 +156,19 @@
       "path": ".tools/interfaces-review-177/.tools/interfaces-review-current-base.json",
       "sha256": "84a589e0d7a06266f3d0c438490ae1dbb817bf9ed4f84c086fff43a291130df3"
     }
+  },
+  "throwable_B_bridge": {
+    "result": "pass",
+    "base": "242607f9c",
+    "candidate": "680584fd1",
+    "catalogue_ignored": ".tools/interfaces-candidate/.tools/interface-throwable-bridge-cases.json",
+    "catalogue_sha256": "ac661cc6170eb6f2db53841ce4fb79c7ace46088f6ca92c29f77ac929761639a",
+    "command": "python3 tests/semantics/method_runtime.py --catalogue .tools/interface-throwable-bridge-cases.json",
+    "report": ".tools/interfaces-candidate/.tools/method-runtime-0pvxsnl_/report.json",
+    "report_sha256": "9f27256d60e4a2021f205d5b969387cea456ef134a5aa89175b12ee1c41d9f2e",
+    "exact_original_source": 6,
+    "rooted_positive": 4,
+    "nonroot_fatal": 2,
+    "unsupported_control": "inherited Throwable getter contract overlap remains explicit Unsupported"
   }
 }
