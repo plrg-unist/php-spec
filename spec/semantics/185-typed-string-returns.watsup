@@ -1,0 +1,105 @@
+;; A weak by-value return may call a source __toString after its expression has
+;; finished. Its saved return instruction owns the callback and the original
+;; object until either the checked string or a chained TypeError is produced.
+def $typed_return_source(S, PORIGIN n pcpath, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtReturn expression metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+def $typed_return_source(S, porigin_site, z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $function_at($all_functions(S), porigin_site) = (pfunction)
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+def $typed_return_source(S, porigin_site, z) = false -- otherwise
+
+dec $typed_return_callback_type(pstate, nat) : bool
+def $typed_return_callback_type(S, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if ~pfunction.CODE.STRICT
+  -- if ~("callable" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+  -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, POBJECT n, false, false) = TYPEDEPENDENT "user object string conversion"
+def $typed_return_callback_type(S, n) = false -- otherwise
+
+dec $typed_return_callback_ready(pstate, nat, int) : bool
+def $typed_return_callback_ready(S, n, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $typed_return_source(S, porigin_site, z)
+  -- if $typed_return_task_valid(S, z)
+  -- if $typed_return_callback_type(S, n)
+def $typed_return_callback_ready(S, n, z) = false -- otherwise
+
+def $typed_return_callback_candidate(S, z) = true
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $typed_return_callback_ready(S_read, n, z)
+def $typed_return_callback_candidate(S, z) = false -- otherwise
+
+dec $typed_return_marker_shape(pstate, nat, porigin, int) : bool
+def $typed_return_marker_shape(S, n, porigin_site, z) = true
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+def $typed_return_marker_shape(S, n, porigin_site, z) = true
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+def $typed_return_marker_shape(S, n, porigin_site, z) = true
+  -- if S.TODO = (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+def $typed_return_marker_shape(S, n, porigin_site, z) = true
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+def $typed_return_marker_shape(S, n, porigin_site, z) = false -- otherwise
+
+dec $typed_return_marker_valid(pstate, nat, porigin, int) : bool
+def $typed_return_marker_valid(S, n, porigin_site, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $typed_return_callback_ready(S, n, z)
+  -- if $typed_return_marker_shape(S, n, porigin_site, z)
+def $typed_return_marker_valid(S, n, porigin_site, z) = false -- otherwise
+
+def $typed_return_resume_pending(S, z) = true
+  -- if S.TODO = (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+  -- if $typed_return_marker_valid(S, n, porigin_site, z)
+def $typed_return_resume_pending(S, z) = false -- otherwise
+
+def $typed_return_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+  -- if $throwable_live(S, n_old)
+  -- if $typed_return_marker_valid(S, n, porigin_site, z)
+  -- if $stringify_source(S, porigin_site, z, RETURN_VALUE z)
+def $typed_return_throw_pending(S) = false -- otherwise
+
+def $typed_return_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
+  -- if $typed_return_source(S, porigin_site, z)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
+def $typed_return_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+def $typed_return_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $typed_return_source(S, porigin_site, pcallcontext.LINE)
+  -- if $stringify_context_kind(S, pcallcontext)
+def $typed_return_context_line_valid(S, pcallcontext) = false -- otherwise
+
+def $task_nodes(TYPE_RETURN_THROW n porigin_site z) = [HOBJECT n]
+def $call_task_valid(S, TYPE_RETURN_THROW n porigin_site z) = $typed_return_marker_valid(S, n, porigin_site, z)
+
+rule PhpStep/typed-return-string-call: S ~> $user_string_begin(S_read, n, porigin_site, z, RETURN_VALUE z, (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*)
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $typed_return_callback_ready(S_read, n, z)
+
+rule PhpStep/typed-return-string-complete: S ~> S[.TODO = (RETURN_UNWIND (KNOWN (PSTRING n_text*)) S.ORIGIN) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+  -- if $typed_return_marker_valid(S, n, porigin_site, z)
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+
+rule PhpStep/typed-return-string-throw: S ~> S_linked[.TODO = (THROW_SEARCH n_new) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
+  -- if $typed_return_throw_pending(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S_error = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, POBJECT n) ++ $ptascii(" returned"), z)
+  -- if S_new = $throwable_materialize(S_error)
+  -- if S_new.COMPLETION = THROWING n_new
+  -- if S_linked = $throwable_previous(S_new, n_new, n_old)
+  -- if S_linked.COMPLETION = THROWING n_new

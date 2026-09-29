@@ -183,6 +183,7 @@ rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH 
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if ~$throwable_marker(ptask)
   -- if ~$eval_end_marker(ptask)
+  -- if ~$typed_return_throw_pending(S)
 rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_restored.TODO][.RESULT = KNOWN PNULL][.HELD = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if ptask_tail* = eps

@@ -34,6 +34,7 @@ dec $stringify_source(pstate, porigin, int, ptask) : bool
 dec $echo_emit_source(pstate, porigin, int) : bool
 dec $concat_line_valid(pstate, porigin, int) : bool
 dec $concat_child_site_valid(pstate, porigin, int, nat) : bool
+dec $typed_return_source(pstate, porigin, int) : bool
 def $concat_line_valid(S, porigin_site, z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpConcat expression_left expression_right metadata)
   -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 1], expression_right) = z
@@ -93,18 +94,24 @@ def $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) = true
 def $stringify_source(S, porigin_site, z, EVAL_REQUEST porigin_parent z) = $eval_operand_site_valid(S, porigin_parent, porigin_site, z)
 def $stringify_source(S, porigin_site, z, CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) = $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right)
 def $stringify_source(S, porigin_site, z, CONCAT_AFTER_RIGHT porigin_parent n_left* z) = $concat_right_child_valid(S, porigin_parent, porigin_site, z)
+def $stringify_source(S, porigin_site, z, RETURN_VALUE z) = $typed_return_source(S, porigin_site, z)
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
 dec $stringify_site_valid(pstate, porigin, int) : bool
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
+dec $stringify_typed_return_consumer(ptask) : bool
 def $stringify_eval_consumer(EVAL_REQUEST porigin z) = true
 def $stringify_eval_consumer(ptask) = false -- otherwise
+def $stringify_typed_return_consumer(RETURN_VALUE z) = true
+def $stringify_typed_return_consumer(ptask) = false -- otherwise
 def $stringify_consumer_tail_valid(S, porigin_site, z, EVAL_REQUEST porigin_parent z, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $eval_operand_site_valid(S, porigin_parent, porigin_site, z)
+def $stringify_consumer_tail_valid(S, porigin_site, z, RETURN_VALUE z, (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*) = $typed_return_source(S, porigin_site, z)
 def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = true
   -- if ~$stringify_eval_consumer(ptask_consumer)
+  -- if ~$stringify_typed_return_consumer(ptask_consumer)
 def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = false -- otherwise
 
 dec $stringify_method_selected(pstate, nat, porigin, porigin) : bool
@@ -197,6 +204,12 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $stringable_instance(S, n)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if ~$typed_return_source(S, porigin_site, z)
+  -- if $stringify_site_valid(S, porigin_site, z)
+def $stringify_result_valid(S, n, porigin_site, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $stringable_instance(S, n)
+  -- if $typed_return_source(S, porigin_site, z)
   -- if $stringify_site_valid(S, porigin_site, z)
 def $stringify_result_valid(S, n, porigin_site, 0) = true
   -- if S.ORIGIN = (porigin_site)

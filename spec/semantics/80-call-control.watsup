@@ -155,11 +155,15 @@ rule PhpStep/return-null: S ~> S[.TODO = (RETURN_UNWIND (KNOWN PNULL) S.ORIGIN) 
   -- if S.TODO = RETURN_NULL :: ptask_tail*
 rule PhpStep/return-value: S ~> S_value[.TODO = (RETURN_UNWIND (KNOWN pvalue) S.ORIGIN) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if ~$typed_return_callback_candidate(S, z)
+  -- if ~$typed_return_resume_pending(S, z)
   -- if S_value = $typed_return_value(S, z)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
 rule PhpStep/return-value-abrupt: S ~> S_value
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if ~$typed_return_callback_candidate(S, z)
+  -- if ~$typed_return_resume_pending(S, z)
   -- if S_value = $typed_return_value(S, z)
   -- if S_value.COMPLETION =/= NORMAL
 dec $return_discard(pstate, ptask) : pstate
