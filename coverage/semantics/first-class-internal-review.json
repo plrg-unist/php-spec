@@ -1,5 +1,5 @@
 {
-  "result": "bounded-internal-first-class-capture-pass-private-current-base",
+  "result": "bounded-internal-first-class-capture-pass-installed",
   "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
   "scope": "Finite public final Throwable getters and Closure->__invoke first-class captures. Capture selects the existing internal getter or Closure without invoking it. A getter callable retains its receiver and internal owner; a Closure->__invoke callable retains and invokes the original Closure, preserving lexical scope, statics, argument behavior and direct trace frames.",
   "candidate": {
@@ -71,6 +71,28 @@
       "report_sha256": "c877fdde018459faff786b24cd83e8c7481b97f87bff44d9c2626002e0521b04",
       "semantic_report": ".tools/static-method-internal-current/.tools/internal-current-semantic-inventory.log",
       "semantic_report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    }
+  },
+  "installed_bridge": {
+    "code_checkpoint": "a4e7b8b62",
+    "reviewed_tree_checkpoint": "266989d571f865859097773959bc708df23b009b",
+    "projection": "The installed code, tests, contract and pre-install evidence have the same tracked tree as reviewed private 6c63bd88c; only this completion record and PROGRESS change afterward.",
+    "build": "make build passed on the installed tree",
+    "author_source": {
+      "result": "9/9 exact and stable; seven normal and two PHP errors",
+      "fingerprint_sha256": "352e6ecac95829a77a0909a1dceb1e18ce5d7a045d0131a074a5efc110511e9d",
+      "report": ".tools/method-runtime-ygfqajaz/report.json",
+      "report_sha256": "42289336766f2fdda54e431f01340cddf18d5da7b5fb5b57c9127858ec676a43"
+    },
+    "author_paused": {
+      "result": "4/4 stable, 32 assertions",
+      "report": ".tools/first-class-internal-protocol-c3d6ew45/report.json",
+      "report_sha256": "636f1dc2609f02be6a0485eda22436975e4b478e11d38de1058e1cc14dbcc243"
+    },
+    "semantic_inventory": {
+      "result": "169 constructors, 306 obligations consistent; one obligation closed",
+      "report": ".tools/internal-installed-semantic-inventory.log",
+      "report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
     }
   },
   "boundaries": "Only enumerated internal Throwable getters and Closure->__invoke capture are admitted. Other Closure methods and user Throwable subclasses remain separate obligations. Capture-site source checks authenticate literal method names and live receiver/closure types; a fully correlated forgery of a completed dynamic source name or selector cannot be reconstructed after evaluation. The original source-method capture and its 23-case gate remain independently reviewed in first-class-method-review.json."
