@@ -34,7 +34,7 @@ The separate global closure-integrity repair is installed at **9e7879617** (code
 
 ## Active work and remaining obligations
 
-Active work covers Closure call behavior, interface declarations and method lookup, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
+Active work covers Closure call behavior, inherited internal interface method contracts, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
 
 Ordinary Closure binding 181 is installed at **e450404e4** (code **d0aa3ef16**).
 Its frozen current-base evidence has 22 exact native source controls, four
@@ -55,16 +55,14 @@ callables and direct `implements Throwable` remain in their own streams.
 
 The directory open-failure followup is installed at **b4e87a539** on concat **e199654f4**. It authenticates the first-warning display path and stream-error bytes separately from the requested operand; relative include/require and absolute include match pinned native output. Its full 44-source capture predates concat; a current nine-source selection and independent four-source replay passed before installation. Installed five-source, 119 file-pause, 46 saved-frame and 20 adapter checks pass. [Ledger](coverage/semantics/include-open-failure-review.json). Mutable CWD/`include_path`, other failure causes and transformed wrappers remain open.
 
-The reviewed private source-interface candidate admits ordered
+Source interfaces 177–180 are installed at **5c423b245**. They admit ordered
 `extends`/`implements`, nominal membership, method variance and abstract
-obligations. On the Throwable-subclass base its retained runtime catalogue
-passes 20/20 exact source tuples; an independent bridge confirms six rooted
-and nonroot outcomes plus 13 forged-link assertions. On the Closure-binding
-code base the compiler catalogue passes 13/13 and the full test target exits
-successfully; a six-source bridge on that code base also passes. An independent
-final-base recheck confirms a rooted instance, a nonroot fatal and 13 forged-link
-assertions. The earlier
-30,980-source syntax gate and inventory apply to the unchanged parser/AST
+obligations. Installed runtime and compiler catalogues pass 20/20 and 13/13
+exact source tuples, and a focused forged-link guard passes 13 assertions.
+Earlier independent B-root and final-base rechecks confirm rooted/nonroot
+behavior and link authenticity; the full test target passed on the identical
+semantic code before installation. The earlier 30,980-source syntax gate and
+inventory apply to the unchanged parser/AST
 projection, with provenance in the [ledger](coverage/semantics/interface-author.json).
 Inherited internal method contracts, constants, hooked properties and other
 protocols remain open.
