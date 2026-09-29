@@ -1,0 +1,110 @@
+[
+  {
+    "id": "future-closure-bound",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php class A {private $v=\"A\";function make(){$x=function(){echo $this->v;};return $x->__invoke(...);}}$c=(new A)->make();$c();\n",
+    "source_sha256": "22c31e0ff215c0e446ac1e816f59153f7dde222ed40bdf001ffe4c86af023083",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "future-closure-invoke",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $x=function(){return \"X\";};$c=$x->__invoke(...);echo $c();\n",
+    "source_sha256": "43c01d50cf8da222c959bb8ed4e8157db6115563dbebc0839bca0574f5ace0bd",
+    "status": "normal",
+    "stdout_base64": "WA==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "future-closure-rebind",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $x=function(){echo \"A\";};$c=$x->__invoke(...);$x=function(){echo \"B\";};$c();\n",
+    "source_sha256": "0c185fef5558796f9a858a83a42e5dc4903acc1bff74971479380bb71ce188fa",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "future-closure-trace",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $x=function(){throw new Exception(\"x\");};$c=$x->__invoke(...);$c();\n",
+    "source_sha256": "8898e32c51c5d5cff45ab16943dabeb8905475da352eb9158ac9634b535e33a7",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEV4Y2VwdGlvbjogeCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiB7Y2xvc3VyZTp7RklMRX06MX0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "exit_status": 255
+  },
+  {
+    "id": "future-getter-rebind",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $e=new Exception(\"A\");$c=$e->getMessage(...);$e=new Exception(\"B\");echo $c();\n",
+    "source_sha256": "139bad7b1b596dbf206ea0e118e440f3184060de61ebf7b7467f9eae588c5a82",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "future-getter-trace",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $c=(new Exception(\"A\"))->getMessage(...);$c(unknown:1);\n",
+    "source_sha256": "f801826cb3428f6d16fc89e930e671d677e16e1c099a7c0ec9469767351be278",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmtub3duIG5hbWVkIHBhcmFtZXRlciAkdW5rbm93biBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 255
+  },
+  {
+    "id": "future-getter",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $c=(new Exception)->getMessage(...);echo $c();\n",
+    "source_sha256": "63e72feab9929aa7af654d0d5a58f1f12d76d05606d1b726f40317a3c3d983b3",
+    "status": "normal",
+    "stdout_base64": "",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "future-methodclosure-invoke",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php class A {private function f(){echo \"A\";}function make(){$c=$this->f(...);return $c->__invoke(...);}}$d=(new A)->make();$d();\n",
+    "source_sha256": "3a24085326a2f3b9fb1c1f23527cb70df4ca98a226068e27b21a08c5741c75ea",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "future-severity",
+    "native_group": "first-class-internal-native.json",
+    "native_raw_sha256": "6014d865f009b216f9eaab2b1751de84ddef34f026aa23de9b71984f1b0bdc43",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php $e=new ErrorException(\"x\",0,7);$c=$e->getSeverity(...);echo $c();\n",
+    "source_sha256": "bf8ef6e71c1ee4ce0753ed78f2370e603845340ea3531d5d41f26da731ee1715",
+    "status": "normal",
+    "stdout_base64": "Nw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]
