@@ -55,9 +55,9 @@ the receiver, and the original class selector. Dynamic object selectors stay
 rooted during computed-name evaluation, argument sending and entered/saved
 frames. Source checks revalidate class identity, receiver, visibility and
 forwarding context at those boundaries. A fully correlated forgery of a
-completed dynamic string selector and all matching target origins cannot be
-reconstructed from the admitted paused state; the protocol records this
-limit explicitly.
+completed dynamic class string or method name and all matching target origins
+cannot be reconstructed from the admitted paused state; the protocol records
+this limit explicitly.
 
 Ordinary and nullsafe calls evaluate receiver and computed name in the pinned
 order. A CV receiver can be read after name effects; a fetched property receiver
@@ -112,7 +112,8 @@ Static/scoped source controls are in `static_method_cases.json` and run through
 `method_runtime.py --catalogue tests/semantics/static_method_cases.json`.
 `static_method_protocol.py` checks selected, saved, entered and object-rooted
 states. Their native raw groups are stored in the ignored review archive;
-the tracked review ledger records hashes and recovery instructions.
+the [tracked static-method ledger](../../coverage/semantics/static-method-review.json)
+records hashes and recovery instructions.
 
 First-class method callables, interfaces/traits,
 static/readonly properties, hooks, user magic methods, destructors,

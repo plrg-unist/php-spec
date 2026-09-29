@@ -1,0 +1,57 @@
+{
+  "result": "author-gates-pass-independent-review-pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, ordinary pinned profile",
+  "scope": "Static declarations and scoped calls: forwarding, active nonstatic receivers, constructor arms, dynamic class/name order, and selected/saved ownership. First-class method callables remain separate.",
+  "candidate": {
+    "canonical_base": "f948262540627b44bca815fdecdfc2377233bde3",
+    "code_commit": "c5abb1562",
+    "code_tree": "81bacfe0ecd0d6e9e01c2df93681e5f2487af809"
+  },
+  "native": {
+    "catalogue": "tests/semantics/static_method_cases.json",
+    "catalogue_sha256": "805583430c692aec9852919dca805f43b449f4f8e911ebeba84f56f40a509139",
+    "raw_archives": [".tools/static-method-review/native*.json", ".tools/static-method-candidate/.tools/static-native/*.json"],
+    "recovery": "Each catalogue row pins its source SHA, native profile, raw group filename and raw group SHA. Verify those hashes in the ignored raw archives and rerun the pinned PHP CLI on each row's source under its recorded profile. native11.json supplies the explicit static/nonstatic called-class pair and native9.json the folded constructor name."
+  },
+  "author_source": {
+    "result": "pass",
+    "exact_cases": 51,
+    "normal": 25,
+    "php_error": 15,
+    "static_rejection": 11,
+    "fingerprint_sha256": "a9b512ddf6b307adce9bc99159602f0508c20f0eb8fe79d085a6769c23ccde40",
+    "fingerprint_files": 1198,
+    "report": ".tools/static-method-integrated/.tools/method-runtime-y03g75po/report.json",
+    "report_sha256": "eadf62e58445d155f9be86b7bb8023e51a7f96126f3c4813503c59a5d030e25f"
+  },
+  "author_paused": {
+    "result": "pass",
+    "stable": true,
+    "stages": 6,
+    "assertions": 45,
+    "report": ".tools/static-method-integrated/.tools/static-method-protocol-1fjlnvjm/report.json",
+    "report_sha256": "9bf6df7ce574cb337e6fcfa36a1afe7d4f3f710559fb549ef417d1b664fbec69"
+  },
+  "frontend": {
+    "result": "classified-compatibility-bridge",
+    "tested_commit": "80e09d6a4",
+    "report": ".tools/static-method-integrated/.tools/static-combined-corpus.jsonl",
+    "report_sha256": "d4c5383106701c2e375c3bccda61d51e047ad0f5f23f781666164c88d232d5cc",
+    "summary_sha256": "4812b79c20736f2556d5e47afc33e768869e59c8fe561221bf66e0435ebc379a",
+    "fingerprint_sha256": "36caa4af169dc44035beadc3ae619e9efffe42b6ece8bdc2299e32607efc57ef",
+    "rows": 30980,
+    "counts": {"pass": 30685, "parser_rejection": 250, "compile_phase_difference": 31, "redirect_container": 6, "non_source": 8},
+    "baseline": ".tools/eval-parser-admission/.tools/eval-parser-full-syntax.jsonl",
+    "comparison": "All ordered IDs and source hashes agree with the parser baseline. Only vendor/php-src/Zend/tests/errmsg/errmsg_032.phpt changes from compile_phase_difference to pass, as the static-constructor AST reaches checked compile rejection. Final candidate frontend/adapter/native/vendor, schema, scanner, encoding inventory and syntax validation sources match this tested commit; the rebuilt adapter binary differs, so this report retains its original implementation fingerprint.",
+    "independent_audit": ".tools/static-method-review/combined-syntax-audit.json",
+    "independent_audit_sha256": "37ccf5332ad0d51e70e7fdc034e56ef40dfded929ae640c156120329c719201d"
+  },
+  "inventory": {
+    "result": "pass",
+    "command": "make -o build inventory",
+    "report": ".tools/static-method-integrated/.tools/static-final-inventory.log",
+    "report_sha256": "c2bda6bcfeda0102e01eab46e6492ee3af9b295db1ee0df0ec504030a42ae23c",
+    "observed": "Optional coverage PHP built in the isolated worktree; 97 grammar sources, 635 mapped productions, 191 scanner actions and 214 encoding spellings. Configured php-build and php-src were copied privately with preserved timestamps; no canonical build/source files were modified."
+  },
+  "boundary": "After a computed class string or method name has finished evaluating, the admitted paused state cannot recover a correlated substitution of that value and all matching target origins. Literal source selectors/names, live object selectors, receiver identity, class ancestry, visibility and forwarding context are rechecked. The paused report records the paired dynamic-selector limit."
+}
