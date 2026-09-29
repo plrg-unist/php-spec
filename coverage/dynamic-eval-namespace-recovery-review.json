@@ -1,0 +1,50 @@
+{
+  "milestone": "checked eval namespace structural recovery",
+  "base_commit": "942cdfb9de87287b2ed3f476d7636e4c255194d0",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, raw eval profile",
+  "scope": "parse-eval only; native parse-only gate and checked PHP-Parser AST remain mandatory",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_namespace",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php:handleNamespaces",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php:getNamespacingStyle",
+    "spec/semantics/21-source-context.watsup:$plnamespace"
+  ],
+  "focused_service": {
+    "command": "python3 tests/eval_source_service.py",
+    "report": ".tools/eval-parser-focused.json",
+    "report_sha256": "bccf8267b708602a2a659cd82fe68d237542f6e2b3dd365ce99912ca44ba64f4",
+    "namespace_recoveries": 5,
+    "native_parse_errors": 2,
+    "native_base_compile_errors": 2,
+    "protocol_negatives": 16,
+    "mixed_error_negative": "Native accepts 'echo 1; namespace N; class self {}'; PHP-Parser reports namespace-first plus reserved-class errors, so the worker returns helper_unsupported without AST. Raw probe: .tools/mixed-error-probe.php."
+  },
+  "file_syntax_gate": {
+    "command": "python3 tests/parallel_validate.py --corpus --lint-all --output .tools/eval-parser-full-syntax.jsonl",
+    "summary": ".tools/eval-parser-full-syntax.summary.json",
+    "summary_sha256": "04d3384661bf7ff197dbbad85d2652215fb7c7ff368480ec744a91ce28a87fc1",
+    "jsonl_sha256": "a31ede257607205538883ea3937dee05b74e7a6777a9fe453fb2268d0b342646",
+    "tested": 30980,
+    "counts": {
+      "pass": 30684,
+      "parser_rejection": 250,
+      "compile_phase_difference": 32,
+      "redirect_container": 6,
+      "non_source": 8
+    },
+    "stable_implementation_sha256": "21487d84b8a4791c7bed59c7b806b66fade7fe4681c57536cf85ae21b025314d"
+  },
+  "private_runtime_bridge": {
+    "base_commit": "388008ed05e2499bd1b6580932c0465e5cf22c5e",
+    "path": ".tools/eval-parser-runtime-probe",
+    "report": ".tools/eval-parser-native-matrix/report.json",
+    "report_sha256": "5d599d61589b03f2c3df1eca595209b08b4f70708ac0355ae6909f2dddb2185d",
+    "exact_native_model": "5/5 static rejections, including no preceding echo",
+    "frontend_sha256": {
+      "frontend/EvalLexer.php": "1f61e3117e50f5090c4a863e8db170e88d90dbb62f803c18e73a4383c24b1714",
+      "frontend/worker.php": "8a77a3acfd3c01f696c4da088c4e82d6b53f51f6be72025565d590acda9294b8"
+    },
+    "limit": "Private bridge against the then-frozen eval candidate, not installed canonical runtime evidence. Original source bytes and raw process output are kept in the ignored report path."
+  },
+  "limits": "Native parser acceptance does not authorize arbitrary PHP-Parser recovery. Only complete ASTs with exclusively authenticated namespace structural errors are admitted; other disagreement is helper_unsupported. The parser service does not execute eval or include, and this file-syntax gate is not an eval-source corpus."
+}

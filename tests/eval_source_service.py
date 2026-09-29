@@ -116,6 +116,22 @@ def main():
             assert checked['ok'] and checked['accepted'] is False
             assert checked['category'] == static['category'] and checked['line'] == line
             assert checked['message'] == static['message'] and checked['source'] == identity['source']
+        namespace_sources = (
+            (b'echo 1; namespace N;', ['Stmt_Echo', 'Stmt_Namespace']),
+            (b'namespace N; namespace M {}', ['Stmt_Namespace', 'Stmt_Namespace']),
+            (b'namespace N {} echo 1;', ['Stmt_Namespace', 'Stmt_Echo']),
+            (b'namespace N { namespace M {} }', ['Stmt_Namespace']),
+            (b'namespace N { namespace M { namespace O {} } }', ['Stmt_Namespace']),
+        )
+        for number, (source, nodes) in enumerate(namespace_sources, 16):
+            identity = pending(str(number), source)
+            parsed = frontend.call({'op': 'parse-eval', **identity})
+            assert parsed['ok'] and parsed['accepted'] is True
+            assert [node['node'] for node in parsed['ast']['program']] == nodes
+            checked = adapter.call({'op': 'check_source_service', 'pending': identity,
+                                    'response': parser_response(parsed)})
+            assert checked['ok'] and checked['accepted'] is True
+            assert checked['ast'] == parsed['ast']
         recovered = frontend.call({'op': 'parse-eval', **pending('15', b'echo 4;')})
         assert recovered['ok'] and recovered['accepted'] is True
 
@@ -179,7 +195,8 @@ def main():
                 assert result['ok'] is False and result['category'] == 'helper_unsupported'
             finally:
                 unsupported.close()
-        print(json.dumps({'result': 'pass', 'eval_cases': len(cases), 'native_rejections': 2,
+        print(json.dumps({'result': 'pass', 'eval_cases': len(cases), 'namespace_recoveries': len(namespace_sources),
+                          'native_rejections': 2,
                           'native_static_rejections': 2, 'protocol_negatives': 16,
                           'native_declarations': 'not installed',
                           'file_parse_after_eval': 'unchanged', 'unsupported_profile': 'distinct'}))

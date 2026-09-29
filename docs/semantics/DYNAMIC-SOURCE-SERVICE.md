@@ -31,9 +31,15 @@ restores scanner and compiler state after success or rejection and never calls
 Zend compilation or evaluation. A native `ParseError` supplies
 `parser_rejection`; exact base `CompileError` thrown during parsing supplies
 `parser_static_rejection`, including its original message and line. Other native
-failures, or native acceptance followed by PHP-Parser/target-syntax rejection,
-yield `helper_unsupported` without an AST or rejection payload. Joint acceptance
-produces the checked PHP-Parser AST. Authored runtime rules must use the failed
+failures yield `helper_unsupported` without an AST or rejection payload. After
+native acceptance, PHP-Parser collects its errors. A complete AST is admitted
+when every error is one of its four namespace structure checks (late first
+namespace, mixed styles, code outside braced namespaces, or nested namespaces)
+and matches the reported AST node and token position. The authored source
+compiler then determines the namespace static error before execution. Other
+PHP-Parser or target-syntax disagreements remain `helper_unsupported`. Native
+`ParseError` and base `CompileError` still take priority over any recoverable
+PHP-Parser AST. Authored runtime rules must use the failed
 source unit and rejection kind to construct a catchable exception.
 Its [review ledger](../../coverage/dynamic-eval-native-diagnostics-review.json)
 records the pinned binary and test fingerprints; the 30,980-entry regression
@@ -58,6 +64,7 @@ the focused eval-mode checks distinct from the full classified **file-mode**
 syntax regression. Neither gate establishes dynamic-source execution.
 
 `python3 tests/eval_source_service.py` checks accepted/raw/empty/tagged sources,
+five native-accepted namespace AST recoveries,
 line and byte/token/comment positions, exact native `ParseError` and parse-time
 `CompileError` messages/lines, absence of installed declarations, file parse after
 eval in the same worker, the three profile guards, malformed pending/response

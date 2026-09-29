@@ -76,9 +76,12 @@ PHP-Parser still supplies the checked AST; the [bridge ledger](coverage/dynamic-
 keeps its full file-syntax regression separate from focused eval cases. The
 [exception-kind extension](coverage/dynamic-eval-parser-exceptions-review.json)
 records the later native CompileError classification separately.
-Unknown native failures and parser disagreement remain `helper_unsupported`;
-the reached eval contract and remaining cases are in
-[DYNAMIC-EVAL.md](docs/semantics/DYNAMIC-EVAL.md).
+Unknown native failures and parser disagreement remain `helper_unsupported`,
+except authenticated namespace structure errors with a complete checked AST.
+Their static outcome is left to the authored compiler. The reached eval contract
+and remaining cases are in [DYNAMIC-EVAL.md](docs/semantics/DYNAMIC-EVAL.md);
+the bounded recovery and full file-syntax gate are recorded in
+[the namespace recovery ledger](coverage/dynamic-eval-namespace-recovery-review.json).
 
 ## Next work
 

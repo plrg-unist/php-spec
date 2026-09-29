@@ -21,3 +21,39 @@ class EvalLexer extends PhpParser\Lexer {
         }
     }
 }
+
+// These are PHP-Parser's post-parse namespace checks. Zend accepts their
+// grammar and leaves the corresponding static errors to compilation.
+function evalNamespaceErrorMatches(PhpParser\Error $error, array $ast): bool {
+    $position = $error->getAttributes()['startTokenPos'] ?? null;
+    if (!is_int($position)) return false;
+    $message = $error->getRawMessage();
+    if ($message === 'Namespace declaration statement has to be the very first statement in the script'
+        || $message === 'Cannot mix bracketed namespace declarations with unbracketed namespace declarations') {
+        foreach ($ast as $node) {
+            if ($node instanceof PhpParser\Node\Stmt\Namespace_
+                && $node->getStartTokenPos() === $position) return true;
+        }
+    } elseif ($message === 'Namespace declarations cannot be nested') {
+        $pending = $ast;
+        while ($pending !== []) {
+            $node = array_pop($pending);
+            if (!$node instanceof PhpParser\Node\Stmt\Namespace_) continue;
+            foreach ($node->stmts ?? [] as $child) {
+                if ($child instanceof PhpParser\Node\Stmt\Namespace_) {
+                    if ($child->getStartTokenPos() === $position) return true;
+                    $pending[] = $child;
+                }
+            }
+        }
+    } elseif ($message === 'No code may exist outside of namespace {}') {
+        $afterBraced = false;
+        foreach ($ast as $node) {
+            if ($node instanceof PhpParser\Node\Stmt\Namespace_ && $node->stmts !== null) {
+                $afterBraced = true;
+            } elseif ($afterBraced && $node instanceof PhpParser\Node\Stmt
+                && $node->getStartTokenPos() === $position) return true;
+        }
+    }
+    return false;
+}

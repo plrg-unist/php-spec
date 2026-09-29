@@ -171,8 +171,14 @@ while (($line = fgets(STDIN)) !== false) {
                     $identity = [];
                 }
                 try {
-                    $ast = $evalMode ? $evalParser->parse($source, new PhpParser\ErrorHandler\Throwing())
-                                     : parseWithEncoding($parser, $source);
+                    if ($evalMode) {
+                        $errors = new PhpParser\ErrorHandler\Collecting();
+                        $ast = $evalParser->parse($source, $errors);
+                        if ($ast === null) throw new PhpParser\Error('Checked eval parser produced no AST');
+                        foreach ($errors->getErrors() as $error) {
+                            if (!evalNamespaceErrorMatches($error, $ast)) throw $error;
+                        }
+                    } else $ast = parseWithEncoding($parser, $source);
                     $tokens = $evalMode ? $evalParser->getTokens() : $parser->getTokens();
                     checkTargetSyntax($ast, $tokens);
                 } catch (PhpParser\Error $error) {
