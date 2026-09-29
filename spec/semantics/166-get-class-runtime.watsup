@@ -29,9 +29,9 @@ def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = [{FILE $call_sourcefile
   -- if $getclass_method_receiver(S, pgetclasscall)
 def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = eps -- otherwise
 dec $getclass_error(pstate, pgetclasscall, text, preqbytes) : pstate
-def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, $eval_exception_trace(S))
   -- if $getclass_special(S, pgetclasscall.SITE)
-def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, [ptraceframe] ++ $getclass_wrapper_trace(S, pgetclasscall, pvalue*) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $trace_saved(S, S.FRAMES))
+def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, [ptraceframe] ++ $getclass_wrapper_trace(S, pgetclasscall, pvalue*) ++ $eval_exception_trace(S))
   -- if ~$getclass_special(S, pgetclasscall.SITE)
   -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pgetclasscall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, NAME $ptascii("get_class"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}

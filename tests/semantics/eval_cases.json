@@ -35,6 +35,16 @@
     "source": "<?php try{eval('eval(\"1/0;\");');}catch(DivisionByZeroError $e){echo 'C';}"
   },
   {
+    "id": "get-class-typeerror-trace",
+    "kind": "php_error",
+    "source": "<?php eval('get_class(1);');"
+  },
+  {
+    "id": "get-class-dynamic-typeerror-trace",
+    "kind": "php_error",
+    "source": "<?php $f='get_class'; eval('$f(1);');"
+  },
+  {
     "id": "nested-parser-reject",
     "kind": "normal",
     "source": "<?php try{eval('eval(\"echo ;\");');}catch(ParseError $e){echo 'C';}"
