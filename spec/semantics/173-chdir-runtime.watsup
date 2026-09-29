@@ -48,6 +48,8 @@ def $dir_requested_valid(S, pdircontext) = (pdircontext.REQUESTED = n_requested*
   -- if S_converted.RESULT = KNOWN (PSTRING n_requested*)
 def $dir_requested_valid(S, pdircontext) = true
   -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $intrinsic_argument(S, pdircontext.CALL.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+  -- if $config_string_site_valid(S, pdircontext.CALL, n_object, porigin_child, z_child, pdircontext.CALL.LINE)
   -- if pdircontext.CONVERSION = (n_conversion)
   -- if S.DIRCONVSEQ = $(n_conversion + 1)
   -- if S.DIRCONVERSIONS[n_conversion] = pdirconversion

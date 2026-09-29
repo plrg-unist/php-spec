@@ -136,6 +136,7 @@ def main():
                 'pdirconversion.CALLSITE = pconfigcall.SITE',
                 'pdirconversion.CALLLINE = pconfigcall.LINE',
                 'pdirconversion.SELECTION = pconfigcall.SELECTION',
+                '~$dir_requested_valid(S_initial[.OBJECTS = $object_set(S_initial.OBJECTS,pdirconversion.OBJECT,STDINSTANCE)],pdircontext)',
                 '~$call_descriptors_valid(S_initial[.DIRCONVSEQ = 2])',
                 '~$call_descriptors_valid(S_initial[.DIRCONVERSIONS = eps])',
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CONVERSION = eps])])',
