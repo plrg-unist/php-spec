@@ -37,7 +37,8 @@ def main():
                'source': b64(b'<?php return 7;')}
         snapshot = {'version': 1, 'main': caller, 'cwd': b64(b'/snapshot'),
                     'include_path': b64(b'.:'), 'entries': [row]}
-        pending = {'id': '0', 'caller': caller, 'requested': requested}
+        pending = {'id': '0', 'caller': caller, 'requested': requested,
+                   'cwd': snapshot['cwd'], 'include_path': snapshot['include_path']}
         response = {'id': '0', **row}
         packet = {'op': 'check_file_resolve', 'snapshot': snapshot,
                   'pending': pending, 'response': response}
@@ -64,6 +65,11 @@ def main():
         for changed in (b64(b'/other'), '!!!'):
             bad = copy.deepcopy(packet)
             bad['pending']['requested'] = changed
+            negatives.append(bad)
+        for field, changed in (('cwd', b64(b'/other')),
+                               ('include_path', b64(b'parts'))):
+            bad = copy.deepcopy(packet)
+            bad['pending'][field] = changed
             negatives.append(bad)
         for change in (
             lambda s: s['entries'].append(copy.deepcopy(row)),
@@ -107,6 +113,29 @@ def main():
                 assert call(worker, bad)['ok'] is False
                 negatives.append(bad)
         assert call(worker, packet)['ok']  # A failed probe did not poison the service.
+
+        varying = copy.deepcopy(packet)
+        varying['snapshot']['version'] = 2
+        first = {**row, 'cwd': snapshot['cwd'], 'include_path': snapshot['include_path']}
+        second = {**row, 'cwd': b64(b'/snapshot/sub'), 'include_path': b64(b'sub'),
+                  'resolved': b64(b'/snapshot/sub/other.php'),
+                  'opened': b64(b'/snapshot/sub/other.php'),
+                  'source': b64(b'<?php return 8;')}
+        varying['snapshot']['entries'] = [first, second]
+        varying['response'] = {'id': '0', **first}
+        assert call(worker, varying)['opened'] == first['opened']
+        varying['pending'].update(cwd=second['cwd'], include_path=second['include_path'])
+        varying['response'] = {'id': '0', **second}
+        assert call(worker, varying)['opened'] == second['opened']
+        for field in ('cwd', 'include_path'):
+            bad = copy.deepcopy(varying)
+            bad['response'][field] = first[field]
+            assert call(worker, bad)['ok'] is False
+            negatives.append(bad)
+        bad = copy.deepcopy(varying)
+        bad['snapshot']['entries'].append(copy.deepcopy(second))
+        assert call(worker, bad)['ok'] is False
+        negatives.append(bad)
     finally:
         worker.stdin.close()
         assert worker.wait(timeout=5) == 0, worker.stderr.read()

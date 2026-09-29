@@ -75,6 +75,8 @@ def main():
                                    'filename': b64(main_path), 'steps': 300,
                                    'file_snapshot': snapshot}, 30)
         assert initial['ok'] and initial['pending']['mode'] == 'file-resolve', initial
+        assert initial['pending']['cwd'] == snapshot['cwd']
+        assert initial['pending']['include_path'] == snapshot['include_path']
         checks += 1
         resolver = {'id': initial['pending']['id'], **entry}
         forged = copy.deepcopy(resolver)
@@ -147,6 +149,33 @@ def main():
         checks += 3
         assert not adapter.request({'op': 'resume_file_resolve', 'response': second_fact}, 30)['ok']
         checks += 1
+
+        context_entry = {**entry, 'cwd': snapshot['cwd'],
+                         'include_path': snapshot['include_path']}
+        other_context = {**context_entry, 'cwd': b64(b'/other'),
+                         'include_path': b64(b'other')}
+        context_snapshot = {**snapshot, 'version': 2,
+                            'entries': [context_entry, other_context]}
+        context_initial = adapter.request({'op': 'execute', 'ast': parsed['ast'],
+                                           'filename': b64(main_path), 'steps': 300,
+                                           'file_snapshot': context_snapshot}, 30)
+        assert context_initial['ok'] and context_initial['pending']['mode'] == 'file-resolve'
+        assert context_initial['pending']['cwd'] == context_entry['cwd']
+        assert context_initial['pending']['include_path'] == context_entry['include_path']
+        checks += 1
+        context_fact = {'id': context_initial['pending']['id'], **context_entry}
+        forged_context = {**context_fact, 'include_path': other_context['include_path']}
+        assert not adapter.request({'op': 'resume_file_resolve', 'response': forged_context}, 30)['ok']
+        checks += 1
+        context_parse = adapter.request({'op': 'resume_file_resolve', 'response': context_fact}, 30)
+        assert context_parse['ok'] and context_parse['pending']['mode'] == 'file'
+        checks += 1
+        context_worker = frontend.request({'op': 'parse-file', **context_parse['pending']})
+        context_response = {key: value for key, value in context_worker.items()
+                            if key not in {'ok', 'diagnostics'}}
+        context_done = adapter.request({'op': 'resume_file_parse', 'response': context_response}, 30)
+        assert context_done['ok'] and context_done['state']['COMPLETION']['tag'] == 'NORMAL'
+        checks += 1
     finally:
         frontend.close()
         adapter.close()
@@ -157,7 +186,7 @@ def main():
               'fallback_main_sha256': digest(fallback_path),
               'fallback_snapshot_sha256': hashlib.sha256(json.dumps(fallback_snapshot, sort_keys=True).encode()).hexdigest(),
               'snapshot_sha256': hashlib.sha256(json.dumps(snapshot, sort_keys=True).encode()).hexdigest(),
-              'scope': 'Live resolve/parse pauses, forged responses, phase separation and one-shot replay.'}
+              'scope': 'Live v1/v2 resolve/parse pauses, forged context and source responses, phase separation and one-shot replay.'}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print('include-adapter-protocol', checks, flush=True)
     return True
