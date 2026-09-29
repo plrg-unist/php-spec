@@ -8234,15 +8234,26 @@
     {
       "id": "classes.static-lookup",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/79-call-frames.watsup"
       ],
-      "review": null
+      "helper_tests": [],
+      "source_tests": [
+        "tests/semantics/static_method_cases.json",
+        "tests/semantics/static_method_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/SOURCE-METHODS.md"
+      ],
+      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class method callables, user magic dispatch and broader class integration remain open."
     },
     {
       "id": "classes.instance-lookup",
@@ -8287,7 +8298,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Static calls, forwarding calls and broader late-static-binding behavior remain open.",
+      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open.",
       "planned_source_tests": [
         "tests/semantics/conformance/variance-static-intersection-first.php",
         "tests/semantics/conformance/variance-static-intersection-second.php"

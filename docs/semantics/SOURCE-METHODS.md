@@ -1,8 +1,9 @@
-# Instance methods and constructors
+# Source methods and constructors
 
 Modules 141/142 extend named source classes with instance methods and
 constructors. The nonpublic-method milestone adds protected/private instance
-access and declaring-class private identity. The target remains PHP 8.5.10 CLI NTS 64-bit
+access and declaring-class private identity. The static/scoped milestone adds
+static declarations and scoped calls. The target remains PHP 8.5.10 CLI NTS 64-bit
 under the ordinary profile. The [public-method review](../../coverage/semantics/methods-review.json)
 and [nonpublic-method review](../../coverage/semantics/method-visibility-review.json)
 bind separate native sources, compiler projections and paused ownership checks;
@@ -34,6 +35,29 @@ Selected call tasks and entered/saved contexts authenticate the declaring
 origin against the receiver, executed caller scope and source call site.
 Error traces name an inherited source method by its declaring class and
 declaration spelling, while calls retain the runtime receiver separately.
+
+Static descriptors retain their declaring owner and static flag. Linking rejects
+static/nonstatic override mismatches after final checks and before visibility
+and abstract mismatch checks. A constructor cannot be static. `A::f()`, `self::f()`,
+`parent::f()` and `static::f()` resolve through the selected class, while
+`self`, `parent` and `static` forward the active called class. An explicit
+class name sets the called class for static methods. A nonstatic scoped method may
+reuse the active `$this` only when it is an instance of the requested class;
+its called class is then the receiver's class. Visibility is checked before
+arguments. A literal `__construct` call uses Zend's constructor arm, including
+its receiver-class private check; a variable method name follows ordinary
+method lookup. Parser-foldable string concatenation of `__construct` also
+uses that arm. Class expressions resolve their type and lookup before a
+computed method name; literal class lookup follows the computed name.
+
+Scoped selected tasks retain requested, declaring and called class origins,
+the receiver, and the original class selector. Dynamic object selectors stay
+rooted during computed-name evaluation, argument sending and entered/saved
+frames. Source checks revalidate class identity, receiver, visibility and
+forwarding context at those boundaries. A fully correlated forgery of a
+completed dynamic string selector and all matching target origins cannot be
+reconstructed from the admitted paused state; the protocol records this
+limit explicitly.
 
 Ordinary and nullsafe calls evaluate receiver and computed name in the pinned
 order. A CV receiver can be read after name effects; a fetched property receiver
@@ -84,8 +108,13 @@ concrete class. Retained compiler, runtime, NUL argument,
 intrinsic invocation and paused reports keep separate identities in
 the review ledger. Existing match/print/exit cross cases have explicit bridges;
 a prior broad campaign is not relabeled as a current full-core run.
+Static/scoped source controls are in `static_method_cases.json` and run through
+`method_runtime.py --catalogue tests/semantics/static_method_cases.json`.
+`static_method_protocol.py` checks selected, saved, entered and object-rooted
+states. Their native raw groups are stored in the ignored review archive;
+the tracked review ledger records hashes and recovery instructions.
 
-Static methods, first-class method callables, interfaces/traits,
+First-class method callables, interfaces/traits,
 static/readonly properties, hooks, user magic methods, destructors,
 closure rebinding services and remaining internal protocols are still open.
 Deferred `new` parameter defaults remain outside the admitted initializer

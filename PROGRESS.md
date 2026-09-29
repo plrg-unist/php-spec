@@ -58,6 +58,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 | 169 private | Distinct `ErrorException` eight-slot layout, six-argument constructor/reentry, filename/line overrides, final `getSeverity`, and finite Throwable array casts. Independent private review: 16 exact native source outcomes, three paused stages/56 assertions, three exact replays and retained constructors 38/38 exact. [Contract](docs/semantics/THROWABLES.md) · [ledger](coverage/semantics/error-exception-review.json) |
 | Nonpublic instance methods | Protected/private source descriptors, lexical ancestor-private dispatch, protected root-prototype access, constructors and selected-call provenance. Bounded evidence: 47 exact native sources, 32 compiler fixtures/109 assertions, four paused stages/27 assertions and 12 independent exact replays; the merged frontend has a separately classified 30,980-entry syntax gate. [Contract](docs/semantics/SOURCE-METHODS.md) · [review](coverage/semantics/method-visibility-review.json) |
 | 165/166 `get_class` testing support | Finite live-object names, lexical zero-argument deprecation, ordered callable/argument routes and direct `GET_CLASS` trace mode. Installed evidence: 27 exact pinned source outcomes and four paused stages/48 assertions; private review adds eight exact probes. Closure rebinding, handler callbacks, broader introspection and object-identity closure remain open. [Contract](docs/semantics/GET-CLASS.md) · [ledger](coverage/semantics/get-class-review.json) |
+| Static/scoped methods (candidate) | Static descriptors, scoped access/forwarding, active nonstatic receivers, constructor arms and dynamic class/name ordering are implemented. The catalogue has 51 pinned native source controls and six paused source stages; the complete post-fix gates and independent review remain pending. [Contract](docs/semantics/SOURCE-METHODS.md) |
 
 The current integration combines protected and private properties, public and nonpublic instance methods and
 constructors, cloning, nullsafe chains, match, print and exit/die with generated
@@ -88,10 +89,10 @@ the bounded recovery and full file-syntax gate are recorded in
 
 ## Next work
 
-The distinct `ErrorException` constructor and `getSeverity` are in private
-review; user Throwable subclasses and remaining accessors follow. Direct constructors now admit legal
-previous cycles; generated finally linking remains transition-local. Static methods,
-first-class method callables,
+The distinct `ErrorException` constructor and `getSeverity` are implemented;
+user Throwable subclasses and remaining accessors follow. Direct constructors
+now admit legal previous cycles; generated finally linking remains
+transition-local. First-class method callables,
 static/readonly members, hooks, magic methods, remaining internal parents,
 conversion callbacks, output handlers, traversal and lifecycle integration remain
 open. Exit bypasses catch/finally; shutdown/destructor callbacks remain required.
