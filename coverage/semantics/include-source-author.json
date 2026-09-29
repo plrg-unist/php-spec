@@ -5,6 +5,7 @@
   "tested_code_head": "7ae8c030f525bcd65827c241f39bec911c4b725e",
   "tested_code_tree": "480ed18feaf59c7b9b94dbebdeddbd3756ccef33",
   "code_commits": ["dae804bae", "7996a1a25", "216d26fd1", "97ad10c11", "056039ffe", "34e81c890", "fda813ac7", "b80fab7da", "7ae8c030f"],
+  "catalogue_commit": "2eb17f20a69955c3bfe2c67f1bf130b4f5aabe6b",
   "profile": {
     "cwd": "fixed finite snapshot input, authenticated at execute",
     "include_path": ".:",
@@ -13,7 +14,7 @@
     "vendor_php_parser_tree": "52b866da886b30a8c0c12722ccabec580ede227f"
   },
   "current_base_reports": [
-    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/include-execution-wizkc5kb/report.json", "sha256": "85b370c667fb34dc159d2b9b88913f016a2d5f2e62a624783b53a8343cbaf2e5", "exact_native_agreements": 25, "declared_inputs": 186, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/include-execution-ap6i0ofu/report.json", "sha256": "978857e8940dc0671ca5dcdcea68d7fdc0c22d7ed2e3cb877dcd83b5964c31aa", "exact_native_agreements": 26, "declared_inputs": 186, "current_input_mismatches": 0},
     {"command": "python3 tests/semantics/include_protocol.py", "report": ".tools/include-protocol-44tfvx_j/report.json", "sha256": "4ba44fe9a6e9ea962a7aad09e8764cfb85b0e85525f23fcc8f72419e95e49ec3", "assertions": 100, "declared_inputs": 190, "current_input_mismatches": 0},
     {"command": "python3 tests/semantics/include_saved_protocol.py", "report": ".tools/include-saved-protocol-i8hqqny8/report.json", "sha256": "86f083e8f71bfd465f33261c4c32276a8c348e4d45c806433cf5bffed9df946a", "assertions": 43, "declared_inputs": 190, "current_input_mismatches": 0},
     {"command": "python3 tests/semantics/include_adapter_protocol.py", "report": ".tools/include-adapter-protocol-7b85_t6f/report.json", "sha256": "bcc32b676499fa80c9c9433af21e1b67cda62f981269bfff2c5fc28cae31b703", "assertions": 10, "declared_inputs": 188, "current_input_mismatches": 0},
@@ -25,8 +26,10 @@
     "file_provider_protocol: one opened case, two failure facts and fifteen forged/ambiguous negatives",
     "private Dune adapter build and full SpecTec elaboration pass; git diff --check clean"
   ],
+  "classified_file_syntax_gate": {"command": "python3 tests/parallel_validate.py --jobs 2 --corpus --lint-all --output .tools/include-syntax-current.jsonl", "summary": ".tools/include-syntax-current.summary.json", "summary_sha256": "a4e46d4de7866215f1711130bcf2b05febdb23570aafc255b27d4c2512f48c89", "jsonl_sha256": "45da965f340a056bce65596e139cb23e8967a19eb673a2d7fae409c74b984998", "tested": 30980, "counts": {"pass": 30685, "parser_rejection": 250, "compile_phase_difference": 31, "redirect_container": 6, "non_source": 8}, "stable_implementation": true, "implementation_fingerprint": "cc8ac2d10e2d4545158e7f24f430ad7d906a0f05af90a241bd36081501bbf5c1", "provenance": "Captured before the one-line require_once catalogue edit. That edit changes tests/semantics/include_execution.py, a file inside the broad fingerprint scope but not executed by file-syntax validation; frontend, adapter, spec, native and syntax test bytes remained identical. This is an explicit one-file identity bridge, not a current whole-tree fingerprint."},
+  "pre_require_once_source": {"report": ".tools/include-execution-wizkc5kb/report.json", "sha256": "85b370c667fb34dc159d2b9b88913f016a2d5f2e62a624783b53a8343cbaf2e5", "exact_native_agreements": 25, "note": "Historical because the maintained source catalogue gained one require_once row."},
   "pre_nonce_independent_replay": {"selection": ["once-bad-retry", "finally-return", "file-eval-file"], "method": "Reviewer imported the maintained source harness and restricted CASES in memory; the report records the three selected rows.", "report": ".tools/include-execution-nw2j_l2q/report.json", "sha256": "e00cc05822c6f03a62642fe4d98e0d9715bcc9af19cb74cd49a9742075b9c84d", "exact_native_agreements": 3, "declared_inputs": 186, "capture_input_mismatches": 0, "note": "Historical after the nonce guard change; final-tree independent replay is recorded separately."},
-  "final_tree_independent_replay": {"selection": ["once-bad-retry", "finally-return", "file-eval-file"], "method": "Reviewer imported the maintained source harness and restricted CASES in memory; then independently decoded model JSON and compared raw native stdout, stderr and exit status.", "report": ".tools/include-execution-s0oeoxvo/report.json", "sha256": "5bfe494d7647c1b79a677886ab5c047484f0173aa6431200e9c70ced554d6b5d", "exact_native_agreements": 3, "declared_inputs": 186, "current_input_mismatches": 0},
+  "pre_require_once_independent_replay": {"selection": ["once-bad-retry", "finally-return", "file-eval-file"], "method": "Reviewer imported the maintained source harness and restricted CASES in memory; then independently decoded model JSON and compared raw native stdout, stderr and exit status.", "report": ".tools/include-execution-s0oeoxvo/report.json", "sha256": "5bfe494d7647c1b79a677886ab5c047484f0173aa6431200e9c70ced554d6b5d", "exact_native_agreements": 3, "declared_inputs": 186, "capture_input_mismatches": 0, "note": "Semantic code is byte-identical to the current source run; the one-line catalogue edit makes this report historical."},
   "historical_pre_rebase_reports": [
     {"report": ".tools/include-execution-uksgscrn/report.json", "sha256": "c3bd04425a2a919714faf38856aa59d6638fe4bb8ae451f6b7b43d0449c9388b", "exact": 25},
     {"report": ".tools/include-protocol-k4a0i27u/report.json", "sha256": "1c68a7622b02dac59fba2fbe443f1f55bd1ff02d8a11fd976e901f7f8c6dc0ff", "assertions": 85},
