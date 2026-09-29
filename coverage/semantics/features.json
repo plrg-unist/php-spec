@@ -7917,15 +7917,26 @@
     {
       "id": "classes.interfaces",
       "milestone": "4a",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
+      "status": "partial",
+      "dependencies": [
+        "classes.inheritance",
+        "classes.abstract"
+      ],
+      "implementation": [
+        "spec/semantics/177-interface-compiler.watsup",
+        "spec/semantics/178-interface-runtime.watsup",
+        "spec/semantics/179-interface-methods.watsup",
+        "spec/semantics/180-interface-obligations.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/interface_runtime_cases.json",
+        "tests/semantics/interface_compiler_cases.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": "Private candidate 2177e4c65: ordered source interface declarations/links, method obligations, finite Stringable/Throwable nominal paths, 14 exact runtime and 13 exact compiler original-source cases. Prior independent replay found 10/11 multiline cases and 20/20 forged-state assertions; the inherited location mismatch is corrected and awaits final replay. Constants, hooked properties, other internal contracts, inherited internal Throwable method signatures, traits and first-class interface selectors remain open; this is not family closure."
     },
     {
       "id": "classes.traits",

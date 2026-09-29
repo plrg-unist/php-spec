@@ -1,0 +1,78 @@
+{
+  "status": "private_candidate_pending_independent_review",
+  "code_commit": "2177e4c65",
+  "base": "33b18cc0a",
+  "scope": "source interface declaration/link/nominal relations, ordered method prototype checks and abstract obligations",
+  "source_counts": {
+    "runtime_exact_normal": 2,
+    "runtime_exact_php_error": 11,
+    "runtime_exact_static_rejection": 1,
+    "compiler_exact_static_rejection": 8,
+    "compiler_exact_php_error": 5,
+    "explicit_unsupported": 2
+  },
+  "source": {
+    "catalogue": "tests/semantics/interface_runtime_cases.json",
+    "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/interface_runtime_cases.json",
+    "path": ".tools/interfaces-candidate/.tools/method-runtime-4yhunvjd/report.json",
+    "sha256": "1931f55095f38acfc28f73b262021ed1eb04b579544cd37783842f71d6e49407",
+    "result": "pass",
+    "records": 14,
+    "watched_inputs": 175,
+    "fingerprint_sha256": "e1358663a8ec4d84b758a5adbecea42aca7753c04573bd03c90b4899635e405a"
+  },
+  "preliminary_controls": {
+    "path": ".tools/interfaces-candidate/.tools/interface-ordered-pilot-kek96m_r/results.json",
+    "sha256": "87e3030fd53ac90cc3ffd7340e6b36da57b3a662a1a57f877b39c384649d30b1",
+    "unsupported": [
+      "interface extends Throwable with own getMessage:int",
+      "interface extends source getMessage:int and Throwable"
+    ],
+    "former_timeout_recheck": {
+      "path": ".tools/interfaces-candidate/.tools/interface-timeout-recheck-towl6ojl/results.json",
+      "sha256": "35b09af9fa46f869819b5a222d1375bec21839f941f983c3ffdcab3b100be2af",
+      "exact": 2,
+      "watched_inputs_stable": true
+    }
+  },
+  "limits": [
+    "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported, including authenticated Exception/Error descendants until the finite catalog is added.",
+    "Other internal interfaces and hooks, interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open.",
+    "The full syntax gate and current-base integration are pending. Private make test retains two pre-existing generated encoding roundtrip failures (also present in canonical results); inventory needs a configured private PHP coverage build."
+  ],
+  "compiler_source": {
+    "catalogue": "tests/semantics/interface_compiler_cases.json",
+    "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/interface_compiler_cases.json",
+    "path": ".tools/interfaces-candidate/.tools/method-runtime-vcf7rzbc/report.json",
+    "sha256": "de4975922ddb4bad73f53bfc765ee15ac91a6d28d8f829cf278e24411bd59bb3",
+    "result": "pass",
+    "records": 13,
+    "watched_inputs": 175,
+    "fingerprint_sha256": "c261587f62bf471087649e690568093d625c3436b955bbe51477f6763e592c33"
+  },
+  "selected_origin": {
+    "path": ".tools/interfaces-candidate/.tools/interface-origin-recheck-wfg1dmhn/results.json",
+    "sha256": "15681eca21db15e902167dee139267f05c459e63c5d6b75aac4065ee81811cd9",
+    "inputs_sha256": "cbe4730194e761e9fa978f18ec433cd3982947a78157380786f4a681efdd7eb1",
+    "exact": 2,
+    "cases": [
+      "same-file inherited method",
+      "eval-defined inherited method"
+    ]
+  },
+  "frontend_readonly": {
+    "focused_report": ".tools/interfaces-candidate/.tools/interface-frontend-bgltxgpp/report.json",
+    "sha256": "f2e9590b2f302578e8aaa4f758b45aa0d2a18f7a3d9e3e927138a0ccf4c9cc99",
+    "controls": 3,
+    "phase_ledger": "tests/phase-discrepancies.json",
+    "focused_corpus": "compile_phase_difference",
+    "focused_generated": "compile_phase_difference",
+    "full_corpus": "pending final frozen rerun"
+  },
+  "independent_review": {
+    "source": "10/11 exact on 9b6038a61; sole inherited location corrected in 663a3c112, final replay pending",
+    "paused": "20/20 forged-link assertions on 9b6038a61",
+    "path": ".tools/interfaces-review-177/.tools/interfaces-review-ordered.json",
+    "sha256": "71bc0e371a50ce578275e8c510920ff4d4176e0bc7e372f1a74c8767818ec05e"
+  }
+}
