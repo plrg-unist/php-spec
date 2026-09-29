@@ -1,5 +1,14 @@
 [
   {
+    "id": "parent-class-without-parent-static",
+    "group": "eval-scope-regression",
+    "source": "<?php\necho \"X\"; class B {function f(){return parent::class;}}\n",
+    "source_sha256": "47d239b70383ba658b679719a271597d0266a39e4b8b5fae897216cb419a7863",
+    "static_message": "Cannot use \"parent\" when current class scope has no parent",
+    "static_line": 2,
+    "compiler": "static"
+  },
+  {
     "id": "duplicate-before-invalid-signature",
     "group": "reviewer-static15",
     "source": "<?php\nclass C {function f() {} function F(int $x=\"bad\") {}}\n",

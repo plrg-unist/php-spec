@@ -57,6 +57,9 @@ def $method_selected_scope(S, n, ptbytes, porigin?) = eps -- otherwise
 dec $method_current_scope(pstate) : porigin?
 def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext)
 def $method_current_scope(S) = eps -- otherwise
+dec $method_called_scope(pstate) : porigin?
+def $method_called_scope(S) = pcallcontext.CALLED_CLASS -- if S.CURRENT = (pcallcontext)
+def $method_called_scope(S) = eps -- otherwise
 
 dec $method_prototype(pstate, porigin, ptbytes, nat) : porigin
 def $method_prototype(S, porigin, ptbytes, n) = $method_prototype(S, porigin_parent, ptbytes, $nabs($(n - 1)))
@@ -462,6 +465,43 @@ rule PhpStep/method-called-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (P
   -- if pcallcontext.CALLED_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+dec $method_source_task(pstate, expression) : bool
+rule PhpStep/method-no-class-self: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"self\" in the global scope"), $source_line(metadata))
+  -- if S.TODO = (EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $ptlc($base64(text_name)) = $ptascii("self")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_current_scope(S) = eps
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+rule PhpStep/method-no-class-static: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"static\" in the global scope"), $source_line(metadata))
+  -- if S.TODO = (EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_called_scope(S) = eps
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+rule PhpStep/method-parent-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc_parent.NAME)]
+  -- if S.TODO = (EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $method_current_scope(S) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+rule PhpStep/method-parent-no-class: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"parent\" in the global scope"), $source_line(metadata))
+  -- if S.TODO = (EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $method_current_scope(S) = eps
+rule PhpStep/method-parent-no-parent: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"parent\" when current class scope has no parent"), $source_line(metadata))
+  -- if S.TODO = (EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $method_current_scope(S) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps
 
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
 def $constructor_start(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -493,7 +533,6 @@ rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*
 rule PhpStep/constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CTOR_RESULT n) :: ptask_tail*
 
-dec $method_source_task(pstate, expression) : bool
 def $method_source_task(S, expression) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
@@ -560,6 +599,20 @@ def $call_task_valid(S, EVAL (NExprClassConstFetch (NName (BYTES text_name) meta
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CALLED_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $call_task_valid(S, EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) = true
+  -- if $ptlc($base64(text_name)) = $ptascii("self")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $method_current_scope(S) = eps
+def $call_task_valid(S, EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) = true
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $method_called_scope(S) = eps
+def $call_task_valid(S, EVAL (NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)) = true
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $method_source_task(S, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata)
 def $call_task_valid(S, EVAL (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)) = $method_source_task(S, NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
 def $call_task_valid(S, NULLSAFE_DIM_PREP (NExprMethodCall expression phpType20 phpType6 metadata) b) = $method_source_task(S, NExprMethodCall expression phpType20 phpType6 metadata)
 def $call_task_valid(S, NULLSAFE_DIM_PREP (NExprNullsafeMethodCall expression phpType20 phpType6 metadata) b) = $method_source_task(S, NExprNullsafeMethodCall expression phpType20 phpType6 metadata)

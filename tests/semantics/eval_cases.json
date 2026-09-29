@@ -220,8 +220,37 @@
   {
     "id": "parent-class-in-method",
     "kind": "normal",
-    "expected_model": "unsupported",
     "source": "<?php class A{} class B extends A {function f(){return eval('return parent::class;');}} echo (new B)->f();"
+  },
+  {
+    "id": "parent-class-inherited-method",
+    "kind": "normal",
+    "source": "<?php class A{} class B extends A {function f(){return eval('return parent::class;');}} class C extends B{} echo (new C)->f();"
+  },
+  {
+    "id": "parent-class-no-parent-caught",
+    "kind": "normal",
+    "source": "<?php class B {function f(){try{return eval('echo \"X\"; return parent::class;');}catch(Error $e){echo 'C|',$e->getMessage();}}} (new B)->f();"
+  },
+  {
+    "id": "parent-class-global-caught",
+    "kind": "normal",
+    "source": "<?php try{echo eval('return parent::class;');}catch(Error $e){echo $e->getMessage();}"
+  },
+  {
+    "id": "parent-class-named-function-fatal",
+    "kind": "static_rejection",
+    "source": "<?php class A{} class B extends A {function f(){eval('function g(){return parent::class;}');}} (new B)->f();"
+  },
+  {
+    "id": "parent-class-delayed-closure",
+    "kind": "normal",
+    "source": "<?php class A{} class B extends A {function f(){return eval('return function(){return parent::class;};');}} $f=(new B)->f(); echo $f();"
+  },
+  {
+    "id": "parent-class-nested-closure",
+    "kind": "normal",
+    "source": "<?php class A{} class B extends A {function f(){return eval('return function(){return function(){return parent::class;};};');}} $f=(new B)->f(); $g=$f(); echo $g();"
   },
   {
     "id": "eval-defined-function-self",
@@ -236,8 +265,42 @@
   {
     "id": "eval-created-closure-self",
     "kind": "normal",
-    "expected_model": "unsupported",
     "source": "<?php class C {function f(){return eval('return function(){return __CLASS__.\"|\".self::class;};');}} $f=(new C)->f(); echo $f();"
+  },
+  {
+    "id": "eval-created-closure-called-class",
+    "kind": "normal",
+    "source": "<?php class A {function f(){return eval('return function(){return self::class.\"|\".static::class;};');}} class B extends A{} $f=(new B)->f(); echo $f();"
+  },
+  {
+    "id": "eval-created-nested-closure-self",
+    "kind": "normal",
+    "source": "<?php class A {function f(){return eval('return function(){return function(){return self::class;};};');}} $f=(new A)->f(); $g=$f(); echo $g();"
+  },
+  {
+    "id": "eval-created-arrow-self",
+    "kind": "normal",
+    "source": "<?php class C {function f(){return eval('return fn()=>self::class;');}} $f=(new C)->f(); echo $f();"
+  },
+  {
+    "id": "eval-defined-function-closure-no-class",
+    "kind": "php_error",
+    "source": "<?php class C {function f(){eval('function g(){return function(){return self::class;};}');}} (new C)->f(); $g=g(); echo $g();"
+  },
+  {
+    "id": "eval-defined-function-arrow-no-class",
+    "kind": "php_error",
+    "source": "<?php class C {function f(){eval('function g(){return fn()=>static::class;}');}} (new C)->f(); $g=g(); echo $g();"
+  },
+  {
+    "id": "eval-top-level-self-error",
+    "kind": "normal",
+    "source": "<?php try{eval('return self::class;');}catch(Error $e){echo $e->getMessage();}"
+  },
+  {
+    "id": "eval-top-level-static-error",
+    "kind": "normal",
+    "source": "<?php try{eval('return static::class;');}catch(Error $e){echo $e->getMessage();}"
   },
   {
     "id": "operand-side-effect",
@@ -284,6 +347,11 @@
     "id": "array-stringification",
     "kind": "php_error",
     "source": "<?php eval(['echo 1;']);"
+  },
+  {
+    "id": "array-stringification-suppressed",
+    "kind": "php_error",
+    "source": "<?php @eval(['echo 1;']);"
   },
   {
     "id": "parse-time-compileerror",

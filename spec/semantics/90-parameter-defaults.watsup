@@ -10,7 +10,7 @@ dec $ppdefault_prepare(ppstate, pcpath, expression) : ppstate
 dec $ppdefault_kind(pvalue?) : text
 dec $ppdefault_descriptor(ppstate, pcpath) : pdefaultkind
 
-def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P[.CLASSCONTEXT = eps], ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.GOTOROOT = pcpath], pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P[.CLASSCONTEXT = eps], ptbytes)))
+def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P[.CLASSCONTEXT = eps][.EVALCLASS = eps], ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.GOTOROOT = pcpath], pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P[.CLASSCONTEXT = eps], ptbytes)))
 
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, psprogress) = P
   -- if P.COMPLETION =/= PPCNORMAL

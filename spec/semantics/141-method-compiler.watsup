@@ -338,6 +338,12 @@ def $ppdispatch(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENC
 
 ;; Class lexical constants use the declaring scope. static::class is a runtime
 ;; called-class read, so its compiled operand has no constant value.
+dec $ppparent_deferred(ppstate) : bool
+def $ppparent_deferred(P) = false
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes_owner eps
+  -- if ~P.CLOSURE
+def $ppparent_deferred(P) = true -- otherwise
 def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING ptcontext.OWNER)]]
   -- if P.CLASSCONTEXT = (ptcontext)
   -- if $ptlc($base64(text_name)) = $ptascii("self")
@@ -356,6 +362,64 @@ def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadat
   -- if P.CLASSCONTEXT = eps
   -- if P.EVALCLASS = (ptbytes_class)
   -- if P.FOLD.FUNCTION = eps
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING ptbytes_class)]]
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = (ptbytes_class)
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("self")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = (ptbytes_class)
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = eps
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("self") \/ $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = eps
+  -- if P.FOLD.FUNCTION = eps
+  -- if $ptlc($base64(text_name)) = $ptascii("self") \/ $ptlc($base64(text_name)) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.CLASSCONTEXT =/= eps \/ P.CLOSURE \/ P.FOLD.FUNCTION = eps
+  -- if $ppparent_deferred(P)
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"parent\" when current class scope has no parent"), $nabs($source_line(metadata)))
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes_owner eps
+  -- if ~P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"parent\" when no class scope is active"), $nabs($source_line(metadata)))
+  -- if P.CLASSCONTEXT = eps
+  -- if ~P.CLOSURE
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if $ptlc($base64(text_name)) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"self\" when no class scope is active"), $nabs($source_line(metadata)))
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = eps
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if ~P.CLOSURE
+  -- if $ptlc($base64(text_name)) = $ptascii("self")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"static\" when no class scope is active"), $nabs($source_line(metadata)))
+  -- if P.CLASSCONTEXT = eps
+  -- if P.EVALCLASS = eps
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if ~P.CLOSURE
   -- if $ptlc($base64(text_name)) = $ptascii("static")
   -- if $ptlc($base64(text_member)) = $ptascii("class")
 def $ppdispatch(P, pcpath, NExprClassConstFetch (NName (BYTES text_name) metadata_name) (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"self\" when no class scope is active"), $nabs($source_line(metadata)))
