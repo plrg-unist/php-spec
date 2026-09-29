@@ -1,12 +1,12 @@
 {
   "status": "private_candidate",
-  "base": "70fd71f12",
-  "code_commit": "b91fafba4",
+  "base": "9e7879617",
+  "code_commit": "ffc98d5ee",
   "scope": "owned user-object eval operand conversion and compiled operand line",
   "replay": [
     "From .tools/user-string-eval, run python3 tests/semantics/user_string.py --match eval-string-.",
-    "Run python3 tests/semantics/eval_execution.py, then python3 tests/semantics/user_string_eval_protocol.py.",
-    "Run python3 tests/semantics/user_string_eval_bridge.py after the generic file-wrapper trace fix. The original failed report is retained; raw outputs remain ignored."
+    "Run python3 tests/semantics/user_string_eval_protocol.py and python3 tests/semantics/user_string_eval_bridge.py.",
+    "The 71-row retained eval run and original failed file/eval bridge are historical include-base evidence; raw outputs remain ignored."
   ],
   "limits": [
     "Weak typed string conversion of a returned Stringable object is explicit Unsupported until the shared callback continuation reaches typed consumers.",
@@ -40,42 +40,100 @@
       "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
     }
   },
-  "source": {
-    "path": ".tools/user-string-eval/.tools/user-string-jjseo6sc/report.json",
-    "sha256": "d16b58de492b81cb7707aeef41f5175f7f07a5902aca8572e9c9aec7a0edf3df",
-    "fingerprint_sha256": "abdff23a1b25afedf4bfe2a6bbd8f79f02cfe2db628d3b178d7f880a63572e76",
-    "result": "pass",
-    "exact_normal": 5,
-    "exact_php_error": 6,
-    "explicit_unsupported": 1
+  "include_base_evidence": {
+    "base": "70fd71f12",
+    "source": {
+      "path": ".tools/user-string-eval/.tools/user-string-jjseo6sc/report.json",
+      "sha256": "d16b58de492b81cb7707aeef41f5175f7f07a5902aca8572e9c9aec7a0edf3df",
+      "fingerprint_sha256": "abdff23a1b25afedf4bfe2a6bbd8f79f02cfe2db628d3b178d7f880a63572e76",
+      "result": "pass",
+      "exact_normal": 5,
+      "exact_php_error": 6,
+      "explicit_unsupported": 1
+    },
+    "retained_eval": {
+      "path": ".tools/user-string-eval/.tools/eval-execution-zfvyllgp/report.json",
+      "sha256": "f6fbd1b0874a937fba50c323a4d8dc832e9d761322849b2402d3fde9ce124aa8",
+      "result": "pass",
+      "exact": 71
+    },
+    "paused": {
+      "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-irfmc8_s/report.json",
+      "sha256": "814c1ca1a2c4bd050e496a026d7ce62ca8734bdfad43a784a8eba998a6525cd2",
+      "result": "pass",
+      "stages": 5,
+      "assertions": 51,
+      "stable": true
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "result": "pass",
+      "log": ".tools/user-string-eval/.tools/user-string-eval-current-inventory.log",
+      "log_sha256": "6bbddb69314a696538769ebd442edb47d186feb5d3e2e4567926c72362ed6ca0",
+      "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
+    },
+    "file_eval_bridge_before_trace": {
+      "path": ".tools/user-string-eval/.tools/user-string-eval-bridge-d9ryj2vp/report.json",
+      "sha256": "a4cc6e6cfe60809e4d60f04c446fa5ec165f9c8f16bd8e4e2f57c474d3d4fcab",
+      "result": "fail",
+      "exact": 2,
+      "mismatch": 1,
+      "dependency": "generic included-file wrapper frame in uncaught callback trace; file trace owner is fixing the shared rule"
+    }
   },
-  "retained_eval": {
-    "path": ".tools/user-string-eval/.tools/eval-execution-zfvyllgp/report.json",
-    "sha256": "f6fbd1b0874a937fba50c323a4d8dc832e9d761322849b2402d3fde9ce124aa8",
-    "result": "pass",
-    "exact": 71
+  "file_trace_base_evidence": {
+    "base": "8d809ef75",
+    "source": {
+      "path": ".tools/user-string-eval/.tools/user-string-zxto80mk/report.json",
+      "sha256": "cbd0ee8707db3f3d876bb9f259cfe502d3bb9911cb3558cd2110c0f1ddeb72b2",
+      "fingerprint_sha256": "b5d16366fdbefcf73ae25c99280b27bb83f12568acbc277615801419cc08d489",
+      "result": "pass",
+      "exact_normal": 5,
+      "exact_php_error": 6,
+      "explicit_unsupported": 1
+    },
+    "paused": {
+      "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-by52iik5/report.json",
+      "sha256": "4dfffc78725c40deead4d012ef67ff72b0390c6d9d2391a9dc317f87084f4805",
+      "result": "pass",
+      "stages": 5,
+      "assertions": 51,
+      "stable": true
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "result": "pass",
+      "log": ".tools/user-string-eval/.tools/user-string-eval-final-inventory.log",
+      "log_sha256": "6bbddb69314a696538769ebd442edb47d186feb5d3e2e4567926c72362ed6ca0",
+      "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
+    },
+    "file_eval_bridge": {
+      "path": ".tools/user-string-eval/.tools/user-string-eval-bridge-dbgmwdq9/report.json",
+      "sha256": "17ca25899fe4da0b72f28596f55e20fe3e234ba1de9f715321746f885974e605",
+      "result": "pass",
+      "exact": 3,
+      "stable": true,
+      "note": "Unchanged original fixture; prior failure is preserved under include_base_evidence."
+    }
   },
-  "paused": {
-    "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-irfmc8_s/report.json",
-    "sha256": "814c1ca1a2c4bd050e496a026d7ce62ca8734bdfad43a784a8eba998a6525cd2",
-    "result": "pass",
-    "stages": 5,
-    "assertions": 51,
-    "stable": true
-  },
-  "inventory": {
-    "command": "make -o build inventory",
-    "result": "pass",
-    "log": ".tools/user-string-eval/.tools/user-string-eval-current-inventory.log",
-    "log_sha256": "6bbddb69314a696538769ebd442edb47d186feb5d3e2e4567926c72362ed6ca0",
-    "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
-  },
-  "file_eval_bridge": {
-    "path": ".tools/user-string-eval/.tools/user-string-eval-bridge-d9ryj2vp/report.json",
-    "sha256": "a4cc6e6cfe60809e4d60f04c446fa5ec165f9c8f16bd8e4e2f57c474d3d4fcab",
-    "result": "fail",
-    "exact": 2,
-    "mismatch": 1,
-    "dependency": "generic included-file wrapper frame in uncaught callback trace; file trace owner is fixing the shared rule"
+  "final_base_evidence": {
+    "base": "9e7879617",
+    "code_commit": "ffc98d5ee",
+    "implementation_fingerprint_sha256": "02bb7274c15a159959bfdf36d1e33c78fd8470882492eeb444be1576b1028c3e",
+    "projection": "The final 174 ledger commit is outside implementation fingerprint inputs. The 174 code/test delta is separate from the eval conversion files; the combined seam and repository target validate it.",
+    "captured_closure_eval_seam": {
+      "path": ".tools/user-string-eval/.tools/eval-string-174-seam-knw1vzxv/report.json",
+      "sha256": "c42e17c725773e50ac9ca86692233560dd14e6249d38e170f03cbb45cb85a7c2",
+      "source_sha256": "ae68c9a9f669003b330871d5e260bc59bc6b80e2f5f303271b6140c2031efaee",
+      "result": "pass",
+      "exact": 1,
+      "replay": "Use the retained source.php and pinned profile with native .tools/php/bin/php and bin/php-semantics; compare decoded stdout/stderr, status and exit."
+    },
+    "repository_test": {
+      "command": "make -o build test",
+      "log": ".tools/user-string-eval/.tools/user-string-eval-final-make-test.log",
+      "log_sha256": "e0fad4be3fe63b7e8917a5a494cb2f8ee06a72c23b6a3550025df12d524fbc57",
+      "result": "pass"
+    }
   }
 }

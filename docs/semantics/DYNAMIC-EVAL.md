@@ -68,10 +68,10 @@ also retain their exact fatal traces on the combined rules.
 
 The private [user-object operand candidate](../../coverage/semantics/user-string-eval-author.json)
 adds an owned `__toString` callback before parser request and derives the eval
-opcode line from the compiled operand. It is pending current-base integration;
-the installed eval operand still has that dependency. Include-base focused and
-retained eval checks pass, while an uncaught callback inside an included file
-still needs the generic file-wrapper trace frame. Remaining obligations are
+opcode line from the compiled operand. It is pending integration; the installed
+eval operand still has that dependency. On the installed file-trace base, focused,
+paused and included-file callback bridge checks pass. The earlier 71-row retained
+eval run remains include-base evidence. Remaining obligations are
 generic imported-name `::class` evaluation; accepted-AST catchable
 `CompileError` cases and class-link errors beyond the modeled missing-parent
 `Error`. The installed [finite file provider](INCLUDE-SOURCES.md) gives

@@ -96,8 +96,8 @@ the pre-parser `eval()` trace frame when `__toString` throws. A missing magic
 method raises the ordinary conversion `Error`, and finite internal Throwable
 stringification stays on its separate renderer. The [eval ledger](../../coverage/semantics/user-string-eval-author.json)
 records 11 exact source outcomes, one explicit Unsupported weak nested-return
-control, all 71 retained eval rows and five paused stages/51 assertions on the
-installed include base. A normal included-file callback agrees; the uncaught
-variant awaits the generic file-wrapper trace frame. Weak typed
+control, five paused stages/51 assertions and three exact included-file bridge
+rows on the installed file-trace base. The 71 retained eval rows passed on the
+earlier include base; the original failing bridge is retained. Weak typed
 conversion of a returned Stringable object requires its own resumable callback;
 strict return typing still rejects it before another callback.
