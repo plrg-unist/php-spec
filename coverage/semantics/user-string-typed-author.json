@@ -1,8 +1,8 @@
 {
-  "status": "private candidate",
+  "status": "installed",
   "base": "f8013abac",
-  "code_commit": "97541e7b9",
-  "tests_commit": "4ea3001fb",
+  "code_commit": "aa81a6a40",
+  "tests_commit": "c1f6975af",
   "scope": "Owned weak by-value typed string return callbacks and recursive returns, plus a disjoint source-Throwable previous-chain repair",
   "limits": "By-reference typed returns need alias write-back; callable|string awaits source __invoke precedence; weak parameters, properties, constrained references and other string contexts remain separate consumers.",
   "replay": [
@@ -10,7 +10,8 @@
     "Raw reports below retain original source bytes, native/model stdout and stderr, six hashed paused fixtures, and two-file source/snapshot bytes. Use the pinned tests/semantics/profile.json and checked adapter/worker inputs recorded in each report.",
     "make -o build test and make -o build inventory were run in the private configured PHP build; logs remain ignored. The private php-build copy rewrote 356 text files to its output root while preserving mtimes, leaving no old-root references or symlinks.",
     "On the static-181 base, replay ignored .tools/user-string-typed/.tools/typed-binding-bridge-cases.json through tests/semantics/user_string.py; its one original source and SHA-256 are retained in the report.",
-    "On the installed interface base, replay ignored .tools/user-string-typed/.tools/typed-interface-bridge-run.py. Its one original source uses a measured 90-second model bound; the generic 45-second source runner times out and its failed reports are retained separately. The focused pending paused stage uses the unchanged tracked protocol with only STAGES filtered to pending."
+    "On the interface base, replay ignored .tools/user-string-typed/.tools/typed-interface-bridge-run.py. Its one original source uses a measured 90-second model bound; the generic 45-second source runner times out and its failed reports are retained separately. The focused pending paused stage uses the unchanged tracked protocol with only STAGES filtered to pending.",
+    "On the installed tree, replay ignored .tools/typed-interface-bridge-run.py and .tools/typed-interface-bridge-cases.json, then run the tracked paused protocol with STAGES filtered to pending. The private and installed bridge reports have identical 185 direct input path/hash pairs; the installed implementation fingerprint additionally watches .tools/request-clock.so."
   ],
   "throwable_base_evidence": {
     "base": "242607f9c",
@@ -138,6 +139,40 @@
       "command": "opam exec --root=/home/user/workspace/php-spec/.tools/opam --switch=5.1.0 -- env OCAMLPATH=/home/user/workspace/php-spec/.tools/spectec/lib dune build --root /home/user/workspace/php-spec/.tools/user-string-typed",
       "result": "pass",
       "adapter_sha256": "18b996b45fbda8295e668cfb89495fa7f45e9a6046c8d6b5b8a3d80d149f49ed"
+    }
+  },
+  "installed_evidence": {
+    "head_before_status": "0832d4a42",
+    "implementation_fingerprint_sha256": "5a3c8211d9932bd4d006b872f3a229933e71f6c7d3262eb6dd8e8dc6f59fa201f",
+    "fingerprint_difference": "All 1242 private watched-path bytes match installed bytes; the sole extra installed watched path is .tools/request-clock.so with SHA-256 c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064. Both bridge reports share all 185 direct input path/hash pairs.",
+    "interface_callback": {
+      "path": ".tools/typed-interface-bridge-6nl97bpl/report.json",
+      "sha256": "49a6f2fdf6c69fb991c2bfc8fe011600babfe2e3baa5f476b84cd0c2d8dc6f71",
+      "result": "pass",
+      "model_timeout_s": 90,
+      "model_elapsed_s": 54.945984586142,
+      "exact": 1
+    },
+    "paused_pending": {
+      "path": ".tools/user-string-typed-protocol-5lpk87q8/report.json",
+      "sha256": "b6ca32dbea981f2cd000ed53d8b3f72134369420341112ba6e77ea1ba74b7ee7",
+      "result": "pass",
+      "stable": true,
+      "stages": 1,
+      "assertions": 10
+    },
+    "configured_build": {
+      "command": "opam exec --root=/home/user/workspace/php-spec/.tools/opam --switch=5.1.0 -- env OCAMLPATH=/home/user/workspace/php-spec/.tools/spectec/lib dune build --root /home/user/workspace/php-spec",
+      "log": ".tools/user-string-typed-installed-build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "pass",
+      "adapter_sha256": "18b996b45fbda8295e668cfb89495fa7f45e9a6046c8d6b5b8a3d80d149f49ed"
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "log": ".tools/user-string-typed-installed-inventory.log",
+      "log_sha256": "09ba1a3abe24f82d1e2c014f5be804eda23002182d13848ded3610d89a645dcf",
+      "result": "pass"
     }
   }
 }

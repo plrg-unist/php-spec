@@ -118,7 +118,7 @@ source and paused checks also pass. The
 their reports and input hashes. Interpolation and typed string conversion
 remain separate increments.
 
-The private typed-return increment covers weak by-value `string` and
+The installed typed-return increment covers weak by-value `string` and
 string-admitting union returns, including arrow returns and recursive
 `__toString` return checks. A selected live object callback owns the original
 receiver until the returned string is accepted. If that callback throws, return
@@ -143,6 +143,7 @@ the installed Closure-binding base, a bound closure's typed return that throws
 a source `Exception` subclass also agrees exactly with PHP. On the installed
 interface base, a class implementing an interface-declared `__toString` matches
 PHP on a weak typed return under a measured 90-second model limit; the generic
-45-second runner times out on the interface source, and one focused paused
-return-marker stage passes. The [typed-return ledger](../../coverage/semantics/user-string-typed-author.json)
-records the bounded private checks and these limits.
+45-second runner times out on the interface source. The installed tree passes
+the same 90-second bridge, one focused paused return-marker stage and inventory.
+The [typed-return ledger](../../coverage/semantics/user-string-typed-author.json)
+records the bounded checks and these limits.

@@ -26,8 +26,8 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current canonical checkpoint is **f8013abac** (source interfaces 177–180)
-on the installed Closure-binding and source-Throwable code. Interfaces now check
+The current canonical checkpoint is **0832d4a42** (weak typed string returns 185)
+on the installed interface, Closure-binding and source-Throwable code. Interfaces check
 ordered links, nominal membership, method variance, abstract obligations and
 authenticated `Exception`/`Error` ancestry for direct or transitive
 `implements Throwable`. Their [ledger](coverage/semantics/interface-author.json)
@@ -44,13 +44,13 @@ ledgers. [Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
 
 ## Active work and remaining obligations
 
-Weak by-value typed string returns 185 are a reviewed private candidate rebased
-onto **f8013abac**. The historical source-Throwable catalogue, paused stages,
-two-file strictness and Closure-binding bridge pass; a class implementing an
-interface-declared `__toString` matches native PHP under a measured 90-second model limit,
-and one current-base paused marker stage passes. The same interface source times
-out under the generic 45-second runner; both failed reports remain distinct from
-the bounded agreement. Current-base review and installation remain.
+Weak by-value typed string returns 185 are installed. The historical
+source-Throwable catalogue, paused stages, two-file strictness and
+Closure-binding bridge pass. On the installed tree, a class implementing an
+interface-declared `__toString` matches PHP under a measured 90-second model
+limit; one paused marker stage and inventory pass. The same source times out
+under the generic 45-second runner; both failed reports remain distinct from
+the bounded agreement.
 [Ledger](coverage/semantics/user-string-typed-author.json).
 
 By-reference typed return conversion 186 needs captured-alias write-back and a

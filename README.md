@@ -254,10 +254,11 @@ keeps a right-side variable live across the left callback. Source and paused
 checks pass on the eval-conversion base; installed focused and null-resolver
 include bridge checks also agree.
 [Weak typed-return conversion](coverage/semantics/user-string-typed-author.json)
-is a private candidate. It resumes checked `__toString` callbacks for
+is installed. It resumes checked `__toString` callbacks for
 by-value returns, including nested weak returns and throwable `previous`
-chains. A bounded interface-method bridge agrees; by-reference and other
-typed consumers remain open.
+chains. An installed 90-second interface-method bridge and paused marker check
+pass; the generic 45-second runner times out on that source. By-reference and
+other typed consumers remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
