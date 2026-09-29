@@ -266,6 +266,7 @@ def $eval_stack_ordered(S, pevalcontext :: eps) = true
 def $eval_stack_ordered(S, pevalcontext_new :: pevalcontext_old :: pevalcontext_tail*) = ($(pevalcontext_new.UNIT > pevalcontext_old.UNIT) /\ $(pevalcontext_new.OWNER >= pevalcontext_old.OWNER) /\ (pevalcontext_new.OWNER =/= pevalcontext_old.OWNER \/ $eval_before($eval_owner_tasks(S, pevalcontext_new), pevalcontext_new.UNIT, pevalcontext_old.UNIT)) /\ $eval_stack_ordered(S, pevalcontext_old :: pevalcontext_tail*))
 dec $eval_pending_state_valid(pstate) : bool
 dec $file_pending_state_valid(pstate) : bool
+dec $dir_pending_state_valid(pstate) : bool
 def $eval_pending_state_valid(S) = true
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
@@ -273,6 +274,9 @@ def $eval_pending_state_valid(S) = true
 def $eval_pending_state_valid(S) = true
   -- if S.COMPLETION = SOURCE_PENDING
   -- if $file_pending_state_valid(S)
+def $eval_pending_state_valid(S) = true
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if $dir_pending_state_valid(S)
 def $eval_pending_state_valid(S) = true
   -- if S.COMPLETION =/= SOURCE_PENDING
 def $eval_pending_state_valid(S) = false -- otherwise

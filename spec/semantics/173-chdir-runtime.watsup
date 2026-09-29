@@ -1,0 +1,83 @@
+;; A directory change pauses for an authenticated OS fact. The machine owns
+;; argument evaluation, diagnostics, state mutation, and later file lookup.
+dec $dir_await_valid(pstate, pconfigcall, nat) : bool
+dec $dir_requested_valid(pstate, pdircontext) : bool
+def $task_nodes(CHDIR_AWAIT pconfigcall n) = $config_nodes(pconfigcall)
+def $eval_wrapped_marker(CHDIR_AWAIT pconfigcall n) = true
+def $eval_marker_valid(S, CHDIR_AWAIT pconfigcall n) = $dir_await_valid(S, pconfigcall, n)
+def $call_task_valid(S, CHDIR_AWAIT pconfigcall n) = $dir_await_valid(S, pconfigcall, n)
+
+dec $dir_canonical(nat*) : bool
+def $dir_canonical(47 :: n_tail*) = true -- if $source_filename(47 :: n_tail*)
+def $dir_canonical(nat*) = false -- otherwise
+dec $dir_await_task(ptask) : bool
+dec $dir_marker_count(ptask*) : nat
+def $dir_marker_count(eps) = 0
+def $dir_marker_count((CHDIR_AWAIT pconfigcall n) :: ptask_tail*) = $(1 + $dir_marker_count(ptask_tail*))
+def $dir_marker_count(ptask :: ptask_tail*) = $dir_marker_count(ptask_tail*)
+  -- if ~$dir_await_task(ptask)
+def $dir_await_task(CHDIR_AWAIT pconfigcall n) = true
+def $dir_await_task(ptask) = false -- otherwise
+dec $dir_frame_marker_count(pframe*) : nat
+def $dir_frame_marker_count(eps) = 0
+def $dir_frame_marker_count(pframe :: pframe_tail*) = $($dir_marker_count(pframe.TODO) + $dir_frame_marker_count(pframe_tail*))
+def $dir_await_valid(S, pconfigcall, n) = true
+  -- if S.DIRCONTEXT = (pdircontext)
+  -- if pdircontext.NONCE = n
+  -- if pdircontext.CALL = pconfigcall
+  -- if $dir_pending_state_valid(S)
+def $dir_await_valid(S, pconfigcall, n) = false -- otherwise
+def $dir_requested_valid(S, pdircontext) = (pdircontext.REQUESTED = eps)
+  -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~$config_strict(S, pdircontext.CALL)
+def $dir_requested_valid(S, pdircontext) = (pdircontext.REQUESTED = n_requested*)
+  -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $config_conversion(S, pdircontext.CALL, pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_converted = $typed_apply(S, ptypeconversion, pdircontext.CALL.LINE)
+  -- if S_converted.RESULT = KNOWN (PSTRING n_requested*)
+def $dir_requested_valid(S, pdircontext) = false -- otherwise
+def $dir_pending_state_valid(S) = (S.DIRSEQ = $(pdircontext.NONCE + 1) /\ pdircontext.FRAMEOWNER = |S.FRAMES| /\ S.ORIGIN = (pdircontext.CALL.SITE) /\ S.FILECWD = (pdircontext.CWD) /\ S.FILEINCLUDEPATH =/= eps /\ $dir_canonical(pdircontext.CWD) /\ ~(0 <- pdircontext.REQUESTED) /\ $config_invoke_valid(S, pdircontext.CALL) /\ $dir_requested_valid(S, pdircontext) /\ pdircontext.CALL.KIND = INTRINSIC_CHDIR /\ S.TODO = (CHDIR_AWAIT pdircontext.CALL pdircontext.NONCE) :: pdircontext.TAIL /\ $($dir_marker_count(S.TODO) + $dir_frame_marker_count(S.FRAMES)) = 1)
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if S.DIRCONTEXT = (pdircontext)
+def $dir_pending_state_valid(S) = false -- otherwise
+def $dir_state_valid(S) = ($($dir_marker_count(S.TODO) + $dir_frame_marker_count(S.FRAMES)) = 0)
+  -- if S.DIRCONTEXT = eps
+def $dir_state_valid(S) = $dir_pending_state_valid(S)
+  -- if S.DIRCONTEXT = (pdircontext)
+
+def $dir_request_start(S, pconfigcall, n_requested*) = S[.DIRSEQ = $(n_nonce + 1)][.DIRCONTEXT = (pdircontext)][.TODO = (CHDIR_AWAIT pconfigcall n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+  -- if S.DIRCONTEXT = eps
+  -- if S.FILECWD = (n_cwd*)
+  -- if S.FILEINCLUDEPATH =/= eps
+  -- if n_nonce = S.DIRSEQ
+  -- if n_owner = |S.FRAMES|
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pdircontext = {NONCE n_nonce, CALL pconfigcall, CWD n_cwd*, REQUESTED n_requested*, FRAMEOWNER n_owner, TAIL ptask_tail*}
+def $dir_request_start(S, pconfigcall, n_requested*) = S[.COMPLETION = UNSUPPORTED "chdir requires a finite directory snapshot"]
+  -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
+
+dec $dir_response_valid(pstate, pdirresponse) : bool
+def $dir_response_valid(S, DIR_CHANGED n_nonce n_cwd* n_requested* n_next*) = ($dir_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ S.SERVICELEFT =/= eps /\ pdircontext.NONCE = n_nonce /\ pdircontext.CWD = n_cwd* /\ pdircontext.REQUESTED = n_requested* /\ $dir_canonical(n_next*))
+  -- if S.DIRCONTEXT = (pdircontext)
+def $dir_response_valid(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno) = ($dir_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ S.SERVICELEFT =/= eps /\ pdircontext.NONCE = n_nonce /\ pdircontext.CWD = n_cwd* /\ pdircontext.REQUESTED = n_requested* /\ n_error* =/= eps /\ $(n_errno > 0))
+  -- if S.DIRCONTEXT = (pdircontext)
+def $dir_response_valid(S, pdirresponse) = false -- otherwise
+dec $dir_resume(pstate, pdirresponse) : pstate
+def $dir_resume(S, DIR_CHANGED n_nonce n_cwd* n_requested* n_next*) = S[.DIRCONTEXT = eps][.FILECWD = (n_next*)][.TODO = pdircontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pdircontext.CALL.SITE)]
+  -- if $dir_response_valid(S, DIR_CHANGED n_nonce n_cwd* n_requested* n_next*)
+  -- if S.DIRCONTEXT = (pdircontext)
+def $dir_resume(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno) = $diagnostic(S_ready, "Warning", $ptascii("chdir(): ") ++ n_error* ++ $ptascii(" (errno ") ++ $decimal_integer(n_errno) ++ $ptascii(")"), pdircontext.CALL.LINE)[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dir_response_valid(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno)
+  -- if S.DIRCONTEXT = (pdircontext)
+  -- if S_ready = S[.DIRCONTEXT = eps][.TODO = pdircontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.ORIGIN = (pdircontext.CALL.SITE)]
+def $dir_resume(S, pdirresponse) = S[.COMPLETION = UNSUPPORTED "invalid chdir provider response"]
+  -- if ~$dir_response_valid(S, pdirresponse)
+dec $dir_continue(pstate, pdirresponse) : pstate
+def $dir_continue(S, pdirresponse) = $drive_steps(S_next, n)
+  -- if S.SERVICELEFT = (n)
+  -- if S_next = $dir_resume(S, pdirresponse)
+  -- if S_next.COMPLETION = NORMAL
+def $dir_continue(S, pdirresponse) = S_next
+  -- if S_next = $dir_resume(S, pdirresponse)
+  -- if S_next.COMPLETION =/= NORMAL

@@ -2,13 +2,16 @@
 def $intrinsic_name(INTRINSIC_SET_INCLUDE_PATH) = $ptascii("set_include_path")
 def $intrinsic_name(INTRINSIC_INI_SET) = $ptascii("ini_set")
 def $intrinsic_name(INTRINSIC_INI_RESTORE) = $ptascii("ini_restore")
+def $intrinsic_name(INTRINSIC_CHDIR) = $ptascii("chdir")
 def $intrinsic_named(preqbytes) = (INTRINSIC_SET_INCLUDE_PATH) -- if $ptlc(preqbytes) = $ptascii("set_include_path")
 def $intrinsic_named(preqbytes) = (INTRINSIC_INI_SET) -- if $ptlc(preqbytes) = $ptascii("ini_set")
 def $intrinsic_named(preqbytes) = (INTRINSIC_INI_RESTORE) -- if $ptlc(preqbytes) = $ptascii("ini_restore")
+def $intrinsic_named(preqbytes) = (INTRINSIC_CHDIR) -- if $ptlc(preqbytes) = $ptascii("chdir")
 dec $config_kind(pintrinsic) : bool
 def $config_kind(INTRINSIC_SET_INCLUDE_PATH) = true
 def $config_kind(INTRINSIC_INI_SET) = true
 def $config_kind(INTRINSIC_INI_RESTORE) = true
+def $config_kind(INTRINSIC_CHDIR) = true
 def $config_kind(pintrinsic) = false -- otherwise
 dec $config_invoke_valid(pstate, pconfigcall) : bool
 def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -30,6 +33,7 @@ def $config_parameter(INTRINSIC_SET_INCLUDE_PATH, preqbytes) = (0) -- if preqbyt
 def $config_parameter(INTRINSIC_INI_SET, preqbytes) = (0) -- if preqbytes = $ptascii("option")
 def $config_parameter(INTRINSIC_INI_SET, preqbytes) = (1) -- if preqbytes = $ptascii("value")
 def $config_parameter(INTRINSIC_INI_RESTORE, preqbytes) = (0) -- if preqbytes = $ptascii("option")
+def $config_parameter(INTRINSIC_CHDIR, preqbytes) = (0) -- if preqbytes = $ptascii("directory")
 def $config_parameter(pintrinsic, preqbytes) = eps -- otherwise
 dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
 def $config_destination(pintrinsic, eps, n) = (n)
@@ -130,11 +134,13 @@ dec $config_required(pintrinsic) : nat
 def $config_required(INTRINSIC_SET_INCLUDE_PATH) = 1
 def $config_required(INTRINSIC_INI_SET) = 2
 def $config_required(INTRINSIC_INI_RESTORE) = 1
+def $config_required(INTRINSIC_CHDIR) = 1
 dec $config_parameter_name(pintrinsic, nat) : preqbytes
 def $config_parameter_name(INTRINSIC_SET_INCLUDE_PATH, 0) = $ptascii("include_path")
 def $config_parameter_name(INTRINSIC_INI_SET, 0) = $ptascii("option")
 def $config_parameter_name(INTRINSIC_INI_SET, 1) = $ptascii("value")
 def $config_parameter_name(INTRINSIC_INI_RESTORE, 0) = $ptascii("option")
+def $config_parameter_name(INTRINSIC_CHDIR, 0) = $ptascii("directory")
 dec $config_missing(pnamedslot*, nat) : nat?
 def $config_missing(eps, n) = eps
 def $config_missing(NAMED_HOLE :: pnamedslot*, n) = (n)
@@ -160,6 +166,7 @@ def $config_ini_value_conversion(pvalue) = $typed_weak(["string"], pvalue)
   -- if $typed_scalar(pvalue)
   -- if ~$method_string(pvalue)
 def $config_ini_value_conversion(pvalue) = TYPEREJECT -- otherwise
+dec $dir_request_start(pstate, pconfigcall, nat*) : pstate
 dec $config_object(pvalue) : bool
 def $config_object(POBJECT n) = true
 def $config_object(pvalue) = false -- otherwise
@@ -268,6 +275,39 @@ def $config_receive(S, pconfigcall) = S_value[.TODO = ptask_tail*][.RESULT = KNO
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (PSTRING eps)
   -- if S.TODO = ptask :: ptask_tail*
+def $config_receive(S, pconfigcall) = $dir_request_start(S_value, pconfigcall, n_requested*)
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $config_conversion(S, pconfigcall, pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING n_requested*)
+  -- if ~(0 <- n_requested*)
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ValueError", $ptascii("chdir(): Argument #1 ($directory) must not contain any null bytes"))
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $config_conversion(S, pconfigcall, pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING n_requested*)
+  -- if 0 <- n_requested*
+def $config_receive(S, pconfigcall) = $dir_request_start(S_diagnostic, pconfigcall, eps)
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if S_diagnostic = $diagnostic(S, "Deprecated", $ptascii("chdir(): Passing null to parameter #1 ($directory) of type string is deprecated"), pconfigcall.LINE)
+  -- if S_diagnostic.COMPLETION = NORMAL
+def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "chdir stringable object conversion"]
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("chdir(): Argument #1 ($directory) must be of type string, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $config_conversion(S, pconfigcall, pvalue) = TYPEREJECT
+  -- if ~$config_object(pvalue)
+  -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.FILEINCLUDEPATH = eps
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic operand outside checked scalar domain"] -- otherwise
