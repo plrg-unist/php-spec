@@ -27,7 +27,7 @@ CASES = [
     ('inherited-private-label', '<?php class A { private static $x=1; } class B extends A {} try{echo B::$x;}catch(Error $e){echo $e->getMessage();}'),
     ('inherited-protected-label', '<?php class A { protected static $x=1; } class B extends A {} try{echo B::$x;}catch(Error $e){echo $e->getMessage();}'),
     ('typed-uninitialized', '<?php class A { public static int $x; } class B extends A {} try{echo B::$x;}catch(Error $e){echo $e->getMessage();}'),
-    ('typed-float-default', '<?php class A { public static float $x=1; } echo get_debug_type(A::$x),"|",A::$x;'),
+    ('typed-float-default', '<?php class A { public static float $x=1; } echo (A::$x===1.0?"F":"I"),"|",A::$x;'),
     ('typed-write', '<?php class A { public static int $x; } A::$x=7; echo A::$x;'),
     ('typed-reject-atomic', '<?php class A { public static int $x=1; } try{A::$x=[];}catch(TypeError $e){echo "T|";} echo A::$x;'),
     ('quiet-missing', '<?php class A {} echo isset(A::$x)?"Y":"N", "|", empty(A::$x)?"Y":"N", "|", A::$x ?? "F";'),
