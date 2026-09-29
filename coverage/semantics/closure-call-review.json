@@ -1,0 +1,90 @@
+{
+  "result": "bounded-private-ordinary-closure-call-review-pass-current-base-pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
+  "scope": "Literal Closure::call on ordinary real closures with a user INSTANCE receiver, by-value positional or named forwarding, plus zero-newThis ArgumentCountError and static/stdClass warning paths; docs/semantics/CLOSURE-CALL.md states the bounded contract.",
+  "code": {
+    "base": "85a2e75e93e14be3c918f7f7d4942f3ff866422c",
+    "first_frozen_code_tests": "ab53f6ec116ef1566721ece9368216a359c33030",
+    "extended_frozen_code_tests": "5f74e8ba2",
+    "extension_projection": "The extension changes only 182-closure-call.watsup, closure_call_cases.json and closure_call_protocol.py; the first ten-source/three-stage gate remains historical evidence on ab53."
+  },
+  "native": {
+    "catalogue": "tests/semantics/closure_call_cases.json",
+    "catalogue_sha256": "b5534c88c49b500ebd7cb4dee92f2426f491017f7ccf5548fa1c6b6ee8fc756f",
+    "raw_archives": {
+      ".tools/static-method-review/closure-binding-native.json": "703569baea39b739d75d391ba789a7d3150921e90a0aa0f6e693823a9129d496",
+      ".tools/static-method-review/closure-call-edge-native.json": "85fe5eb92b00643e64be53471584eaa3b0ab9f925cead22394f629caacbeeb32",
+      ".tools/static-method-review/closure-call-order-native.json": "d6d1efdb08290b047167397602f6b46a97a8792e6e131dee6f114f90fcd67100",
+      ".tools/static-method-review/closure-call-named-error-native.json": "939f5cfc2e8e532a1f51a3fd089c5e91017fdc53a98266e1f38a69bad93a7cd2",
+      ".tools/static-method-review/closure-call-caught-native.json": "e150920bbc21cca2477d612b1f6693847629927c84d1a649e84f7db0ecf43438",
+      ".tools/static-method-review/closure-call-newthis-native.json": "0cc4682ef38942c7d96759c85e9b8c90e2d418378a23fd9b086218843dcec396"
+    },
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "recovery": "Six ignored reviewer archives pin the exact PHP source hash, stdout, stderr and exit under the full profile. The tracked 13-row catalogue matches every raw row; only absolute source paths in diagnostics are replaced by {FILE}. Run tests/semantics/method_runtime.py with --catalogue tests/semantics/closure_call_cases.json."
+  },
+  "first_freeze": {
+    "author_source": {
+      "result": "10/10 exact and stable",
+      "report": ".tools/closure-call/.tools/method-runtime-sfi66902/report.json",
+      "report_sha256": "cc2f492f7f49ef00242be97edd8d2baa2894876707b760ba70e3c3246de945f4"
+    },
+    "author_paused": {
+      "result": "3/3 stable",
+      "report": ".tools/closure-call/.tools/closure-call-protocol-e369xgds/report.json",
+      "report_sha256": "389b4aca539afef1afd513540f6bba86ba4626c87a389cec9db49d26a20d1405"
+    },
+    "independent_source": {
+      "result": "10/10 exact and stable",
+      "report": ".tools/static-method-review/closure-call-review-17qx95nr/report.json",
+      "report_sha256": "0caafe3e9ab0c53cdcf34a5f4b8f0f6c44d6a7160f5d6e1805da7b3d9ea60138"
+    },
+    "catalogue_sha256": "9b57e7136781d99fffa42ab30cae74e5aed783153161557ef30f293d1bcfcaf8",
+    "protocol_sha256": "6c5aa23b49d9dce21835cd5e4c46aa61c3f0b6879b3aede5d471ac45d0ba3cc3"
+  },
+  "extended_freeze": {
+    "author_source": {
+      "result": "13/13 exact and stable",
+      "fingerprint_sha256": "7089203ef2d1e5fa2b42fbb7076e34e8d21310a20f724759690ee44818bb2d61",
+      "report": ".tools/closure-call/.tools/method-runtime-xmdynz6i/report.json",
+      "report_sha256": "6c225a06e63b86a5ae3c2e9c8b50018f3d7978867d7121fe5b230c71d82a5d3b"
+    },
+    "author_paused": {
+      "result": "4/4 stable, 54 assertions",
+      "cases": [
+        "call-selector",
+        "call-receiver",
+        "call-stdclass-pending",
+        "call-rebound-source"
+      ],
+      "protocol": "tests/semantics/closure_call_protocol.py",
+      "protocol_sha256": "11f6f438d5ba292d52167518b3a61e4b3d69a3d3ff38c0b39d2ae3acfaaf3e38",
+      "report": ".tools/closure-call/.tools/closure-call-protocol-eefccf8c/report.json",
+      "report_sha256": "6aa67b05be4367d04f46ab4cf690f89eb7aa8591f309ecac06fef3183d1a42c0"
+    },
+    "independent_source": {
+      "result": "13/13 exact and stable",
+      "report": ".tools/static-method-review/closure-call-review-zgg106rf/report.json",
+      "report_sha256": "8d436879cf082cca308a65d1b1aa36b9f0e94bc678cd108e2f71121d6fda53e8"
+    }
+  },
+  "retained_compatibility": {
+    "result": "4/4 exact on the frozen private base: 181 bound static cells, 174 invoke wrapper and getter, source method trace",
+    "catalogue": ".tools/closure-call/.tools/closure-call-retained.json",
+    "catalogue_sha256": "3554774b76887ca76298fc90c956188c44f9dfdeb2f5f1034295e7787208ed74",
+    "report": ".tools/closure-call/.tools/method-runtime-st4qobkw/report.json",
+    "report_sha256": "edc2055e3414209d1a775964295f6283d453cebf25dd44cfefc2ba479e239e14"
+  },
+  "inventory": {
+    "result": "make -o build inventory passed, including optional coverage PHP; direct semantic inventory passed",
+    "full_report": ".tools/closure-call/.tools/closure-call-inventory-revised.log",
+    "full_report_sha256": "52703fdea512a40490ad62c64602e834a20fb6578621bae57b2e75aaf1621d21",
+    "semantic_report": ".tools/closure-call/.tools/closure-call-semantic-inventory-revised.log",
+    "semantic_report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+    "setup": "A private reflink copy of the configured PHP build and source had text build-root paths rewritten with timestamps preserved. No canonical build/source files were edited. Inventory reports 97 grammar sources (83 accepted, 14 rejected), 635 mapped productions/169 constructors, 191 scanner actions/264 alternatives and 214 encoding spellings/685 lookups. The 182 extension changed no frontend or syntax pipeline input."
+  },
+  "boundaries": "Only ordinary REALCLOSURE and literal call are selected. Named newThis, reference/unpacked forwarding, non-stdClass internal or Throwable receiver representations, computed method names, and captured method/getter/invoke wrappers remain required follow-up. Generic array callables, source __invoke and captured callable rebinding are separate core obligations. Unsupported is never counted as native agreement.",
+  "current_base_bridge": {
+    "result": "pending after canonical T1/eval installation; frozen 13/4 evidence remains scoped to private base 85a2e75e9"
+  }
+}
