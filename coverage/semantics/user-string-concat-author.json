@@ -1,7 +1,7 @@
 {
-  "status": "private_candidate",
-  "base": "33e541821",
-  "code_commit": "3bae7f772",
+  "status": "installed",
+  "base": "a8b548e4e",
+  "code_commit": "cd232f41a",
   "scope": "Owned left-then-right user-object concatenation conversion after both operand expressions, with late right CV reads and captured temporary roots",
   "replay": [
     "From .tools/user-string-concat, run python3 tests/semantics/user_string.py --match concat-string- and python3 tests/semantics/user_string_concat_protocol.py for the eval-conversion-base catalogue/protocol.",
@@ -101,6 +101,30 @@
       "log": ".tools/user-string-concat/.tools/user-string-concat-resolver-inventory.log",
       "log_sha256": "3164fd92170537c13a28c5f252eb5222e15e8c642038fb0a32cbc93f0520d210",
       "result": "pass"
+    }
+  },
+  "installed": {
+    "head": "c816aea89",
+    "fingerprint_sha256": "31c12e3abc15f25a59839268d0ad347fdb6cac0610b94daad75c117c4ab0673a",
+    "private_fingerprint_bridge": "All 1222 common implementation inputs are byte-identical to the reviewed private tree; canonical alone has .tools/request-clock.so (SHA-256 c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064).",
+    "included_callback_throw": {
+      "path": ".tools/include-execution-57i6hn5v/report.json",
+      "sha256": "02c7d50efda6c5d53b4dbb8428252e290615675c4f772fce4ab03a2b228d83d5",
+      "result": "pass",
+      "exact": 1
+    },
+    "cv_late": {
+      "path": ".tools/user-string-g0ozqy60/report.json",
+      "sha256": "d332446b315c26cd5172311fbe10aaf21b37ccfbd38b252089961039211cc3a6",
+      "result": "pass",
+      "exact": 1
+    },
+    "right_pending": {
+      "path": ".tools/user-string-concat-protocol-8m_0r38b/report.json",
+      "sha256": "80dddc81d19b99bb6faf625cb73584b1d0ab5648ade259e6fbc60cd95d95d48e",
+      "result": "pass",
+      "stages": 1,
+      "checks": "Consumer-phase swap rejected"
     }
   }
 }
