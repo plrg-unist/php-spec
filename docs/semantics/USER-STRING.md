@@ -40,3 +40,16 @@ The first private increment admits declarations and the finite implicit
 consumer, user-object `$stringify` is explicit Unsupported. The
 [source catalogue](../../tests/semantics/user_string_cases.json) includes
 native-accepted Unsupported controls; agreement counts must not include them.
+
+Private Stage A checkpoint `448e60b77` on trace base `8d03ed096` passed the
+17-case source catalogue: 10 normal and five static rejections agree exactly;
+the explicit interface and echo callback controls remain Unsupported. The
+ignored raw report is
+`.tools/user-string-conversion/.tools/user-string-8h3do684/report.json`
+(SHA-256 `865bf9b8999ab6dc5aeeb44d7e8e6ad6b27692214c0d865b353c34865f8b5244`,
+input fingerprint `f0de09cf608b1bb9778b08bf842e7899384544668e700843c65056901b8a42ee`).
+An earlier 17-case run failed on three typed relations because two `$typed_object_exact`
+clauses overlapped; its retained report is
+`.tools/user-string-conversion/.tools/user-string-635sjgan/report.json`
+(SHA-256 `5a9909a8f5bd161deb207417588573c5cdf8f267954080d3f7d5e355d7ad87f6`).
+The clauses were merged before the passing replay.
