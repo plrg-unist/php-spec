@@ -1,9 +1,9 @@
 {
-  "status": "reviewed private 187 storage checkpoint; 188 source access pending",
-  "base": "242607f9c0fc4bf67e4f32dff0fc965108faa107",
-  "semantic_head": "2013a0bb2f71bc2ae027958ae5dc6d004f36fcf9",
+  "status": "private 187 storage checkpoint on installed interface base; 188 source access pending",
+  "base": "f8013abac",
+  "semantic_head": "d07b5cfb2a1f4896757b1ee5915f53f25d351985",
   "target": "project-local PHP 8.5.10 CLI NTS 64-bit",
-  "scope": "Static property descriptors, instance layout exclusion, declaration-owned class storage, activation/link atomicity, roots and integrity. Static property source fetch/write/reference routes remain pending in 188.",
+  "scope": "Static descriptor and owned-storage integration with installed interface linking. Source read/write/quiet tests are in unreviewed 188 WIP; reference routes remain pending.",
   "native_contract": {
     "cases": 39,
     "harness": ".tools/static-property-candidate/.tools/static-properties-native.py",
@@ -17,14 +17,30 @@
       "name": "source-derived storage and forged rows",
       "assertions": 32,
       "report": ".tools/static-property-candidate/.tools/class-static-storage-w6yn4suz/report.json",
-      "sha256": "187ee7cccbd7fddcfd69b8a24e6a399f1d61851400cbfa96e2564d205857d5f9"
+      "sha256": "187ee7cccbd7fddcfd69b8a24e6a399f1d61851400cbfa96e2564d205857d5f9",
+      "provenance": "pre-interface base 242607f9c; historical storage evidence"
     },
     {
       "name": "source-reached failed runtime parent link",
       "assertions": 13,
       "report": ".tools/static-property-candidate/.tools/class-static-link-khlpdfbm/report.json",
-      "sha256": "90631c6eac80e8a06a00248872c8b12edac0c17569298cffaa691d2ef8b421ac"
+      "sha256": "90631c6eac80e8a06a00248872c8b12edac0c17569298cffaa691d2ef8b421ac",
+      "provenance": "pre-interface base 242607f9c; historical storage evidence"
+    },
+    {
+      "name": "current-base interface-linked publication and forged missing pool",
+      "assertions": 14,
+      "report": ".tools/static-property-candidate/.tools/class-static-interface-k8ywbguw/report.json",
+      "sha256": "d9c53acb4f42e75d9e94d62f54e7bc877bc9dcebe3147263e285f1707e361123",
+      "provenance": "combined 187/188 WIP tree, before 188 freeze"
+    },
+    {
+      "name": "current-base failed interface obligation leaves class and static rows unpublished",
+      "assertions": 12,
+      "report": ".tools/static-property-candidate/.tools/class-static-interface-failure-1ckydaw3/report.json",
+      "sha256": "0a7b1dfe88793de35e747a6986cf1ce89f69d8c2da311c4779e4af873c0fb21b",
+      "provenance": "combined 187/188 WIP tree, before 188 freeze"
     }
   ],
-  "limits": "The missing-default pool assertion is forged-state only; compiled source installs its constant pool before class activation. The previously observed one-case object-cast and fatal pilots are not counted as a retained differential campaign."
+  "limits": "Current-base paused reports include uncommitted 188 inputs and are not standalone 187 evidence. Missing-default pool is forged-state only; compiled source installs its constant pool before activation. Earlier 32/13 reports predate interface installation."
 }
