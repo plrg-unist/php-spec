@@ -1,5 +1,5 @@
 {
-  "result": "author-gates-pass-independent-review-pending",
+  "result": "bounded-static-method-milestone-pass",
   "target": "PHP 8.5.10 CLI NTS 64-bit, ordinary pinned profile",
   "scope": "Static declarations and scoped calls: forwarding, active nonstatic receivers, constructor arms, dynamic class/name order, and selected/saved ownership. First-class method callables remain separate.",
   "candidate": {
@@ -31,6 +31,27 @@
     "assertions": 45,
     "report": ".tools/static-method-integrated/.tools/static-method-protocol-1fjlnvjm/report.json",
     "report_sha256": "9bf6df7ce574cb337e6fcfa36a1afe7d4f3f710559fb549ef417d1b664fbec69"
+  },
+  "independent_source": {
+    "result": "pass-after-native-profile-correction",
+    "exact_cases": 31,
+    "initial": {
+      "result": "29/31",
+      "stable": true,
+      "report": ".tools/static-method-review/static-method-review-fiix1fmp/report.json",
+      "report_sha256": "e7caa3202aa4c0cf8e49c1e9dda3432a916c6a0fb2ff7867c5badb061aebba80"
+    },
+    "correction": "The two trace-only native rows were initially captured with php -n's default display_errors=stdout, while the pinned ordinary profile specifies display_errors=stderr. The candidate emitted the pinned stderr channel. The reviewer repinned those exact sources under the full tests/semantics/profile.json, retaining the original failed report rather than relabeling it.",
+    "corrected_native": {
+      "native10.json": "b6e903347777c744aec0cff55409267a87cf52249faa9b533884c3ed778acce6",
+      "native12.json": "4cd8b1519ae6e700d9b9f2de723354a66cdce36cfcf205917f1a1d3e8281e93c"
+    },
+    "focused": {
+      "result": "2/2",
+      "stable": true,
+      "report": ".tools/static-method-review/static-method-review-x3tj8f5b/report.json",
+      "report_sha256": "53d848ac6c66da2155f2f579b760972111c195715924cc8458e9ff1d731b0448"
+    }
   },
   "frontend": {
     "result": "classified-compatibility-bridge",
