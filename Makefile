@@ -20,6 +20,8 @@ test: build
 	python3 tests/malformed.py
 	python3 tests/wire_negative.py
 	python3 tests/eval_source_service.py
+	python3 tests/include_source_service.py
+	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
 	python3 tests/ternary_metadata.py
@@ -243,6 +245,10 @@ test-semantics: build
 	python3 tests/semantics/eval_nested_trace_protocol.py
 	python3 tests/semantics/eval_trace_protocol.py
 	python3 tests/semantics/eval_adapter_protocol.py
+	python3 tests/semantics/include_execution.py
+	python3 tests/semantics/include_protocol.py
+	python3 tests/semantics/include_saved_protocol.py
+	python3 tests/semantics/include_adapter_protocol.py
 	python3 tests/semantics/print_expressions.py
 	python3 tests/semantics/print_compiler.py
 	python3 tests/semantics/print_protocol.py
