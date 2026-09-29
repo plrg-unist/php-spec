@@ -100,5 +100,11 @@
     "source": "<?php class B{function __toString(){throw new Exception(\"x\");}}class A{function __toString(){try{return new B;}catch(TypeError $e){echo get_class($e->getPrevious()),\";\";return \"ok\";}}}function f():string{return new A;}echo f();",
     "source_sha256": "4e75b97c1773a2f3e18f0a18acaa931f13049fa5c18b49dc4c832a164e340ca8",
     "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-subclass-previous",
+    "source": "<?php class E extends Exception{} class O{function __toString(){throw new E(\"x\");}} function f():string{return new O;} try{f();}catch(TypeError $x){echo get_class($x->getPrevious()),\":\",$x->getPrevious() instanceof E?\"yes\":\"no\";}",
+    "source_sha256": "5e4af2cdf5c76625457e530a9ab456e393e50642bab2041f6cc2dd9303d5e18b",
+    "expected_model": "normal"
   }
 ]
