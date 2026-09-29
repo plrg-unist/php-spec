@@ -1,0 +1,15 @@
+;; A declared or inherited public __toString() makes an ordinary class
+;; Stringable even without an explicit implements clause.
+def $stringable_instance(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.ABSTRACT
+def $stringable_instance(S, n) = false -- otherwise
+
+;; Contexts without a resumable callback consumer remain explicit dependencies.
+def $stringify(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "user object string conversion"]
+  -- if $stringable_instance(S, n)

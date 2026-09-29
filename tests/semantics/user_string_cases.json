@@ -1,0 +1,104 @@
+[
+  {
+    "id": "instance-direct",
+    "source": "<?php class O{function __toString(){return \"x\";}} $o=new O;echo (int)($o instanceof Stringable);",
+    "source_sha256": "8dc6aac26558035038ada73192259c455b45fa0bd157758999269ae000110bc4",
+    "expected_model": "normal"
+  },
+  {
+    "id": "instance-inherited",
+    "source": "<?php class P{function __toString(){return \"x\";}} class C extends P{} $o=new C;echo (int)($o instanceof Stringable);",
+    "source_sha256": "d452676b17cf414eed585c2d2904c0c6d72edb7a3ac59940054eed310670fc82",
+    "expected_model": "normal"
+  },
+  {
+    "id": "instance-never",
+    "source": "<?php class O{function __toString():never{throw new Exception(\"x\");}} $o=new O;echo (int)($o instanceof Stringable);",
+    "source_sha256": "8a9bfaf8f2b5514af49526f61d81ab6a271eb519d81934142e48ab78e4523046",
+    "expected_model": "normal"
+  },
+  {
+    "id": "instance-missing",
+    "source": "<?php class O{} $o=new O;echo (int)($o instanceof Stringable);",
+    "source_sha256": "92e57212df1eb8e85c3e60ae4917be21c4297f2101f33fcbd999f9341732f6ee",
+    "expected_model": "normal"
+  },
+  {
+    "id": "instance-namespaced",
+    "source": "<?php namespace N; class O{function __toString(){return \"x\";}} $o=new O;echo (int)($o instanceof \\Stringable);",
+    "source_sha256": "a6792b2648edba4ce0860a7db761f4d45db13e33f102408e7696cae73163c8cf",
+    "expected_model": "normal"
+  },
+  {
+    "id": "instance-casefold",
+    "source": "<?php class O{function __TOSTRING():STRING{return \"x\";}} $o=new O;echo (int)($o instanceof Stringable);",
+    "source_sha256": "a7ed5faabb3a77cfba4a8ffe57ca1aa5626280ba4134d946f185d4db24c0e926",
+    "expected_model": "normal"
+  },
+  {
+    "id": "abstract-inherited",
+    "source": "<?php abstract class P{abstract public function __toString();} class C extends P{function __toString(){return \"x\";}} $o=new C;echo (int)($o instanceof Stringable);",
+    "source_sha256": "1d9fce3b37781f1dcfb8a7b5f19ff0ecbab7ce219e555cddc118280307df7b35",
+    "expected_model": "normal"
+  },
+  {
+    "id": "magic-arity",
+    "source": "<?php class O{function __toString($x=0){return \"x\";}}",
+    "source_sha256": "955669ac7c3bf04707c33a5724ff4e034b52e27f84e75f0e3005e395d64e8e03",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "magic-static",
+    "source": "<?php class O{static function __toString(){return \"x\";}}",
+    "source_sha256": "e76183bcfc73c3a3fe22d75e06527fb9bb94bb041b19c042bf1d0d5114a4407a",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "magic-return-type",
+    "source": "<?php class O{function __toString():?string{return \"x\";}}",
+    "source_sha256": "78c77189a72e5ba7dcc242158900c2a7e0d86e261806823c0e951fc11c1f1ea4",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "magic-private-line",
+    "source": "<?php\nclass O{\n  private function __toString(){\n    return \"x\";\n  }\n}",
+    "source_sha256": "c278585612934caeceb6c535f75758a87a0e6e3109feee103885c74db732c3d8",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "magic-private-return-priority",
+    "source": "<?php class O{private function __toString():?string{return \"x\";}}",
+    "source_sha256": "6deae070d563a82885f6e0e74692daff310e29459d8fe9ea64888ba515cfab27",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "stringable-param",
+    "source": "<?php class O{function __toString(){return \"x\";}} function f(Stringable $x){echo 1;} f(new O);",
+    "source_sha256": "b107de69546303d20fbcc07c32c369eb947d8631db4209921e33f40e1bb6f6fe",
+    "expected_model": "normal"
+  },
+  {
+    "id": "stringable-return",
+    "source": "<?php class O{function __toString(){return \"x\";}} function f():Stringable{return new O;} echo (int)(f() instanceof Stringable);",
+    "source_sha256": "b520e327d26ac607627b4900ea9d7d2a0359e2b1380adc6ec51106a703207a15",
+    "expected_model": "normal"
+  },
+  {
+    "id": "stringable-property",
+    "source": "<?php class O{function __toString(){return \"x\";}} class B{public Stringable $x;} $b=new B;$b->x=new O;echo (int)($b->x instanceof Stringable);",
+    "source_sha256": "7a81a3ae5545d95da30f415e14baccb9a786221e50c66052f78f84854809cecd",
+    "expected_model": "normal"
+  },
+  {
+    "id": "explicit-interface-open",
+    "source": "<?php class O implements Stringable{function __toString(){return \"x\";}} echo 1;",
+    "source_sha256": "6ec3ef899b487e770049f5faccee844c3913598415d21ce12d49136740cb479e",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "echo-callback-open",
+    "source": "<?php class O{function __toString(){return \"x\";}} echo new O;",
+    "source_sha256": "c69ef36e4ef505eb47504fde287e2cafbfef82218c2de357b0c61e6866eb2c57",
+    "expected_model": "unsupported"
+  }
+]

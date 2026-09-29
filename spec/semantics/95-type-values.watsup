@@ -155,7 +155,7 @@ def $typed_callable(S, pvalue) = (false) -- otherwise
 dec $typed_object_exact(pstate, ptbranch*, pvalue) : bool
 def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_closure_type(ptbranch*) /\ $typed_closure(S, n))
   -- if $typed_closure(S, n)
-def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_chain(S, ptbranch*, porigin, |S.CLASSES|)
+def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_class_chain(S, ptbranch*, porigin, |S.CLASSES|) \/ ($typed_class_type(ptbranch*, $ptascii("Stringable")) /\ $stringable_instance(S, n)))
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $typed_object_exact(S, ptbranch*, pvalue) = false -- otherwise
 

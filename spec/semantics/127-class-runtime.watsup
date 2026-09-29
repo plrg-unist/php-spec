@@ -97,6 +97,9 @@ rule PhpStep/new-class: S ~> $new_class(S[.TODO = ptask_tail*], preqbytes, $runt
 
 dec $class_instanceof(pstate, pvalue, preqbytes) : bool
 def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("stringable")
+  -- if $stringable_instance(S, n)
+def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_origin_matches(S, porigin, preqbytes, |S.CLASSES|)
 def $class_instanceof(S, POBJECT n, preqbytes) = true
