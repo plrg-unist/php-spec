@@ -26,7 +26,8 @@ def run(match):
               ROOT / 'frontend/worker.php', ROOT / 'frontend/EvalLexer.php',
               ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
               ROOT / '_build/default/adapter/main.exe', ROOT / 'tests/semantics/profile.json',
-              Path(__file__), catalogue]
+              ROOT / 'tests/semantics/static_types.py', ROOT / 'frontend/wire.py',
+              ROOT / 'tests/validate.py', Path(__file__), catalogue]
     before = {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     out = Path(tempfile.mkdtemp(prefix='eval-execution-', dir=ROOT / '.tools'))
     print(out, flush=True)

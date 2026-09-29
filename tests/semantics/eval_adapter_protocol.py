@@ -27,7 +27,10 @@ def main():
     inputs = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     inputs += [ROOT / 'spec/semantics/modules.json', ROOT / 'bin/php-semantics',
                ROOT / '_build/default/adapter/main.exe', ROOT / 'frontend/worker.php',
-               ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so', Path(__file__)]
+               ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
+               ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/recorded_worker.py',
+               ROOT / 'tests/semantics/static_types.py', ROOT / 'frontend/wire.py',
+               ROOT / 'tests/validate.py', Path(__file__)]
     before = {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     worker = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
                      'extension=' + str(ROOT / '.tools/php-file.so'),
