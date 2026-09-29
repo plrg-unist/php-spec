@@ -1,0 +1,57 @@
+{
+  "status": "private_candidate_pending_current_base_review",
+  "base": "f94826254",
+  "scope": "finite Stringable declarations and user __toString callback for echo, print and string cast",
+  "source_counts": {
+    "exact_normal": 20,
+    "exact_php_error": 6,
+    "exact_static_rejection": 5,
+    "explicit_unsupported": 1
+  },
+  "paused": {
+    "stages": 4,
+    "assertions": 38
+  },
+  "artifacts": {
+    "source": {
+      "path": ".tools/user-string-callback/.tools/user-string-gfiba4rw/report.json",
+      "sha256": "516c62e8f546d8d53fc17f3789088bac1c697f5855aa66e8aaf607986dd2e01c",
+      "result": "pass",
+      "records": 32,
+      "fingerprint_sha256": "474caa59e61cfbd3c75fd18a361545d0f61d521266d317d7178e7def120a6503"
+    },
+    "multiline": {
+      "path": ".tools/user-string-callback/.tools/user-string-wxtxc0yt/report.json",
+      "sha256": "04076d341705043f572f584cc3db207d6461a78169151408a0314dc3b856757a",
+      "result": "pass",
+      "records": 2,
+      "fingerprint_sha256": "474caa59e61cfbd3c75fd18a361545d0f61d521266d317d7178e7def120a6503"
+    },
+    "paused": {
+      "path": ".tools/user-string-callback/.tools/user-string-protocol-8ig4pl_m/report.json",
+      "sha256": "b84d951464ebbd5d569fb640f516f29577a25db70766e640a4fae49230c32ec7",
+      "result": "pass",
+      "records": 4,
+      "stable": true
+    }
+  },
+  "replay": [
+    "From the private .tools/user-string-callback worktree with pinned .tools/php and built adapter/numeric runner, run python3 tests/semantics/user_string.py.",
+    "Run python3 tests/semantics/user_string_protocol.py for the paused states. Raw files remain ignored; source texts and SHA-256 values are tracked in tests/semantics/user_string_cases.json."
+  ],
+  "limits": [
+    "Explicit implements Stringable requires general interface support.",
+    "Other object-string consumers, including eval and concat, remain required."
+  ],
+  "checks": {
+    "frontend_make_test": "pass; make -o build test on private candidate, 97 target fixtures and 4103 generated syntax cases; generated coverage files restored",
+    "inventory": {
+      "result": "pass",
+      "command": "make -o build inventory",
+      "log": ".tools/user-string-callback/.tools/user-string-inventory.log",
+      "log_sha256": "632f9a7929bf57e280c7719f18f4daa0bc49a62743f600cfa3fdfec3a9dae9e5",
+      "witnessed_constructors": 169,
+      "scanner_actions": 191
+    }
+  }
+}

@@ -59,3 +59,22 @@ installed eval-scope base `f94826254` (private code commit `ab76ee8db`). Its
 ignored report is `.tools/user-string-conversion/.tools/user-string-686ma8n3/report.json`
 (SHA-256 `330a410a71c2109af0b945631973e710bc351d332d11c1e6aaf50f3445c1801c`,
 input fingerprint `b459634b25faffa42e53e2504487555cf4d097cdf96689a472c9cd1551bf119f`).
+
+The next private increment uses one authenticated zero-argument method call
+and a saved `STRINGIFY_RESULT` continuation for echo, print and `(string)`.
+The receiver remains a heap root until the result is consumed. The call
+context, saved caller frame, source occurrence, line and consumer task are
+checked together, including reentrant calls at the same site. Print still
+returns integer `1`; a cast returns the callback's checked string. An echo
+operand that is itself a cast or print is converted by that inner operation,
+then emitted by echo. These are the only user-object callback consumers
+admitted by this increment; the remaining inventory above stays explicit.
+
+The frozen private 32-source catalogue has 20 exact normal outcomes, six exact
+PHP errors and five exact static rejections; explicit `implements Stringable`
+remains one Unsupported control. Four source-derived paused stages pass 38
+assertions for pending and entered calls, same-site reentry, missing or forged
+caller frames, and the restored-result root. See the
+[candidate ledger](../../coverage/semantics/user-string-callback-author.json)
+for hashes and recovery paths. This is private candidate evidence pending
+current-base integration review.
