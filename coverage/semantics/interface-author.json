@@ -1,5 +1,5 @@
 {
-  "status": "private_candidate_reviewed_preintegration",
+  "status": "private_candidate_current_base_reviewed_pending_throwable_B",
   "code_commit": "2177e4c65",
   "base": "33b18cc0a",
   "scope": "source interface declaration/link/nominal relations, ordered method prototype checks and abstract obligations",
@@ -36,9 +36,9 @@
     }
   },
   "limits": [
-    "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported, including authenticated Exception/Error descendants until the finite catalog is added.",
-    "Other internal interfaces and hooks, interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open.",
-    "Current-base integration and literal two-file inherited-method provenance require rebase onto installed include semantics; no full interface-family closure is claimed."
+    "Modules 175/176 for authenticated Exception/Error descendants are not installed on this base; direct/transitive rooted and nonroot Throwable implementation must be replayed after their integration.",
+    "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported until the finite catalog is added.",
+    "Other internal interfaces and hooks, class/interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open; no full interface-family closure is claimed."
   ],
   "compiler_source": {
     "catalogue": "tests/semantics/interface_compiler_cases.json",
@@ -112,5 +112,49 @@
       "generated/encoding-transitions/2167"
     ],
     "status": "unchanged non-exit-failing classified differences"
+  },
+  "integration_commit": "1b86f8047",
+  "integration_base": "c816aea89",
+  "current_base": {
+    "runtime": {
+      "result": "pass",
+      "records": 14,
+      "path": ".tools/interfaces-candidate/.tools/method-runtime-yxsfa8rm/report.json",
+      "sha256": "d51941cfd917e5d5a9ecf5bae7cac66301084df4057112d42a0c356adf0eff51"
+    },
+    "compiler": {
+      "result": "pass",
+      "records": 13,
+      "path": ".tools/interfaces-candidate/.tools/method-runtime-wsmx_ykq/report.json",
+      "sha256": "1d3c23c432030c1065d7da40ae812cdeb0fc48d5e7bad3b868cbfb8cc8801669"
+    },
+    "syntax": {
+      "result": "pass",
+      "eligible": 30980,
+      "stable_implementation": true,
+      "fingerprint_sha256": "00952e7200c87b05960ce0a630222a40c1e311c827167000488e486c978b8ce7",
+      "summary_path": ".tools/interfaces-candidate/coverage/results-corpus.summary.json",
+      "summary_sha256": "00c571ca6da384c537ae4c62d86ca4d3c46a6d90addaea3e8601d4ce8534d819"
+    },
+    "full_test": {
+      "result": "pass",
+      "command": "make -o build test",
+      "log_path": ".tools/interfaces-candidate/.tools/interface-rebased-test.log",
+      "log_sha256": "11abf3600de1e1de84d5533ec19bc76f7491097e31aceac78e2bd843d9ab1167"
+    },
+    "inventory": {
+      "result": "pass",
+      "root": ".tools/interfaces-inventory",
+      "commit": "1b86f8047",
+      "log_path": ".tools/interfaces-inventory/.tools/interface-inventory-current.log",
+      "log_sha256": "82ebbea8d368e46286a5bec617ef83d3e2dba2db62e05bcdfffa8b569384d2c0"
+    },
+    "independent": {
+      "literal_cross_file_exact": 3,
+      "nominal_typed_exact": 2,
+      "forged_paused_assertions": 20,
+      "path": ".tools/interfaces-review-177/.tools/interfaces-review-current-base.json",
+      "sha256": "84a589e0d7a06266f3d0c438490ae1dbb817bf9ed4f84c086fff43a291130df3"
+    }
   }
 }
