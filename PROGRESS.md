@@ -28,7 +28,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 The clean accepted canonical HEAD is **70fd71f12**. Its finite-provider file inclusion increment has 26 exact source outcomes, 100 file-pause assertions, 43 mixed saved-frame assertions, 10 adapter assertions and 27 retained eval assertions; its classified file-syntax gate covers 30,980 rows with a separate one-file identity bridge. [Include contract](docs/semantics/INCLUDE-SOURCES.md) · [ledger](coverage/semantics/include-source-author.json).
 
-Static/scoped methods and user-object string conversion are installed. First-class source method capture has a reviewed private candidate on the conversion base. Its include-base required-file capture, five focused source controls and three paused controls pass on a clean private freeze; independent include-base review is pending. Its [ledger](coverage/semantics/first-class-method-review.json) keeps historical and current-base evidence separate. The full evidence and scope for earlier increments remain in [MILESTONE-HISTORY.md](MILESTONE-HISTORY.md).
+Static/scoped methods and user-object string conversion are installed. First-class source method capture has a reviewed private candidate on the conversion base. Its include-base required-file capture, five focused source controls and three paused controls pass on a clean private freeze; the included-file capture also passes independent exact replay. Its [ledger](coverage/semantics/first-class-method-review.json) keeps historical and current-base evidence separate. The full evidence and scope for earlier increments remain in [MILESTONE-HISTORY.md](MILESTONE-HISTORY.md).
 
 ## Active work and remaining obligations
 
