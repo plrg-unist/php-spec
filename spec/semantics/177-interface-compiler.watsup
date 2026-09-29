@@ -60,7 +60,7 @@ def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BO
   -- if pchheader.KIND = "interface"
   -- if $($source_line(metadata) > 0 /\ $source_line(metadata) <= $source_end_line(metadata))
 
-def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Cannot use the readonly modifier on a method"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P[.COMPLETION = PPCABRUPT (COMPILETHROWN $ptascii("Cannot use the readonly modifier on a method") P.LOCATION.LINE)] ppropertydesc* pmethoddesc*
   -- if $ppproperty_flag(flags, 64)
 
 def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P[.COMPLETION = PPCABRUPT (COMPILETHROWN $ptascii("Cannot use the final modifier on an abstract method") P.LOCATION.LINE)] ppropertydesc* pmethoddesc*

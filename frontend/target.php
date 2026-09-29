@@ -15,8 +15,8 @@ function checkTargetSyntax(array $ast, array $tokens): void {
         } elseif ($node instanceof PhpParser\Node\Stmt\Class_ && $node->name === null && ($node->flags & ~PhpParser\Modifiers::READONLY)) {
             $reject = 'Only readonly is an anonymous-class modifier';
         } elseif ($node instanceof PhpParser\Node\Stmt\ClassMethod
-            && ($node->flags & (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::VISIBILITY_SET_MASK))) {
-            $reject = 'readonly and set visibility are not method modifiers';
+            && ($node->flags & PhpParser\Modifiers::VISIBILITY_SET_MASK)) {
+            $reject = 'Set visibility is not a method modifier';
         } elseif ($node instanceof PhpParser\Node\Stmt\ClassConst
             && ($node->flags & PhpParser\Modifiers::VISIBILITY_SET_MASK)) {
             $reject = 'Set visibility is not a class constant modifier';

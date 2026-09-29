@@ -429,5 +429,37 @@
       "frontend/encoding.php"
     ],
     "ini": {}
+  },
+  {
+    "id": "vendor/php-src/Zend/tests/readonly_props/readonly_method.phpt",
+    "sha256": "ccd7d9ce9c3901354fe911a6408b6d54038126f19582c2738670a94771aa7d0f",
+    "direction": "frontend_accepts_static_rejection",
+    "oracle_category": "parser_static_rejection",
+    "oracle_message": "Cannot use the readonly modifier on a method",
+    "lint_contains": "Fatal error: Cannot use the readonly modifier on a method",
+    "restriction": "readonly_method_modifier",
+    "reason": "Zend raises a parse-time static CompileError for a readonly method; the checked frontend retains its AST and the method compiler emits the same no-trace fatal.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:8803",
+      "spec/semantics/141-method-compiler.watsup",
+      "frontend/encoding.php"
+    ],
+    "ini": {}
+  },
+  {
+    "id": "generated/modifier-method/3508",
+    "sha256": "3123a618f88de9bc136459b74356d06d5cc2b79564e64f75b5413c708e2bfc28",
+    "direction": "frontend_accepts_static_rejection",
+    "oracle_category": "parser_static_rejection",
+    "oracle_message": "Cannot use the readonly modifier on a method",
+    "lint_contains": "Fatal error: Cannot use the readonly modifier on a method",
+    "restriction": "readonly_method_modifier",
+    "reason": "The generated readonly method retains a checked AST for the authored no-trace compile fatal.",
+    "evidence": [
+      "vendor/php-src/Zend/zend_compile.c:8803",
+      "spec/semantics/141-method-compiler.watsup",
+      "frontend/encoding.php"
+    ],
+    "ini": {}
   }
 ]
