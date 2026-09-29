@@ -101,3 +101,19 @@ rows on the installed file-trace base. The 71 retained eval rows passed on the
 earlier include base; the original failing bridge is retained. Weak typed
 conversion of a returned Stringable object requires its own resumable callback;
 strict return typing still rejects it before another callback.
+
+The private concat increment uses the same owned callback. Both operand
+expressions finish before either conversion; then the left converts before the
+right. A right variable or reference is read after the left callback, so its
+new value is visible, while a right temporary retains its evaluated value.
+The left and right callbacks use their distinct child occurrences with the
+compiled concat line, preventing a saved call from swapping phases at one
+source site. Continuation tasks root both operands across nested calls,
+validate each phase on resumption and restore the parent occurrence after
+completion. Fourteen original-source outcomes, five paused stages/41 assertions
+and five ordinary scalar/warning regressions pass on the installed eval
+conversion base. A null-resolver included-file callback/throw bridge and
+focused source/paused checks pass on the later file-provider base. The
+[concat ledger](../../coverage/semantics/user-string-concat-author.json) binds
+their reports and input hashes. Interpolation and typed string conversion
+remain separate increments.

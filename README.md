@@ -241,6 +241,11 @@ with other string contexts still open.
 extends that callback to checked eval source requests. Its source catalogue
 passed on the file-trace base; installed focused, paused and included-file
 callback bridge checks also pass.
+A [private concat conversion candidate](coverage/semantics/user-string-concat-author.json)
+preserves both expression effects before left-to-right string conversion and
+keeps a right-side variable live across the left callback. Source and paused
+checks pass on the eval-conversion base; a focused null-resolver include bridge
+also agrees on the later file-provider base.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

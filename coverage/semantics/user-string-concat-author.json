@@ -1,0 +1,106 @@
+{
+  "status": "private_candidate",
+  "base": "33e541821",
+  "code_commit": "3bae7f772",
+  "scope": "Owned left-then-right user-object concatenation conversion after both operand expressions, with late right CV reads and captured temporary roots",
+  "replay": [
+    "From .tools/user-string-concat, run python3 tests/semantics/user_string.py --match concat-string- and python3 tests/semantics/user_string_concat_protocol.py for the eval-conversion-base catalogue/protocol.",
+    "For the resolver-null bridge, use the retained raw main.php, one.php and snapshot.json with the commands/profile in the report; the snapshot carries resolved:null and the authenticated opened path.",
+    "Raw reports, source files and paused fixtures remain under ignored .tools paths; only this ledger is tracked."
+  ],
+  "limits": "This increment covers concatenation and its ordinary scalar/warning paths. Interpolation, weak typed conversion (including nested Stringable returns), dynamic names, exit, string-offset writes and loose comparison still require their own owned callbacks.",
+  "eval_conversion_base_evidence": {
+    "base": "648605c5f",
+    "source": {
+      "path": ".tools/user-string-concat/.tools/user-string-fzdp7mf4/report.json",
+      "sha256": "d51ba1759d052d0856bcaf650ca9038a67b4341ea92dade942b8ef5567a94461",
+      "fingerprint_sha256": "a0cce530a5429f3139dff00e33b25d3a121ca881ffe8c262d1baa1b7bee5a390",
+      "result": "pass",
+      "exact_normal": 10,
+      "exact_php_error": 4
+    },
+    "paused": {
+      "path": ".tools/user-string-concat/.tools/user-string-concat-protocol-lpvzd0sm/report.json",
+      "sha256": "400c6a73002d0bcd7b5ec276de0b77d27ceacbd3296524d46571b460ebdf4bc9",
+      "result": "pass",
+      "stages": 5,
+      "assertions": 41,
+      "stable": true,
+      "checks": "Pending and entered left/right phases, child-site consumer swaps, captured right temporary root and same-site reentry. Each ignored fixture SHA-256 is in the report."
+    },
+    "retained_scalar": {
+      "path": ".tools/user-string-concat/.tools/concat-retained-95144b7u/report.json",
+      "sha256": "18b76b4f98f83b22264cfedebfa0bdb5f13664a5ee52baab71a9517a58f2b7db",
+      "result": "pass",
+      "exact": 5,
+      "recovery": "The ignored raw directory retains each source.php plus native/model stdout and stderr. Re-run those exact source bytes with the pinned tests/semantics/profile.json flags on .tools/php/bin/php and bin/php-semantics; compare decoded stdout, stderr, status and exit."
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "log": ".tools/user-string-concat/.tools/user-string-concat-inventory.log",
+      "log_sha256": "3164fd92170537c13a28c5f252eb5222e15e8c642038fb0a32cbc93f0520d210",
+      "result": "pass",
+      "configured_php_copy": "Private build copied from the eval candidate; 356 text files rewritten to this output root with mtimes preserved, zero old-root files and zero symlinks."
+    },
+    "independent_review": {
+      "cv_late": {
+        "path": ".tools/user-string-concat/.tools/user-string-j4mrv0rv/report.json",
+        "sha256": "7fb0f051ae53c7be9c3f3b2109332197e343fa3081bbc91000e44c813e7a2b77",
+        "result": "pass",
+        "exact": 1
+      },
+      "right_throw": {
+        "path": ".tools/user-string-concat/.tools/user-string-br2wis2s/report.json",
+        "sha256": "19f5167bdeb1e8e238e1bec64d05746d69cf4859eb3d85f317b1768274d4790e",
+        "result": "pass",
+        "exact": 1
+      },
+      "right_pending": {
+        "path": ".tools/user-string-concat/.tools/user-string-concat-protocol-y3ui74r8/report.json",
+        "sha256": "de4b362fb6935c7fe1115aeb3ccf7c586b34294d46aae3acfb33cbb50ea31f52",
+        "result": "pass",
+        "stages": 1,
+        "checks": "Consumer-phase swap rejected"
+      }
+    },
+    "repository_test": {
+      "command": "make -o build test",
+      "log": ".tools/user-string-concat/.tools/user-string-concat-make-test.log",
+      "log_sha256": "cd8554d9150ffabe438392d811236d66738659c4f6f5eafd214d5b0426fc04af",
+      "result": "pass",
+      "fingerprint_sha256": "a0cce530a5429f3139dff00e33b25d3a121ca881ffe8c262d1baa1b7bee5a390"
+    }
+  },
+  "resolver_null_base_evidence": {
+    "base": "33e541821",
+    "code_commit": "3bae7f772",
+    "implementation_fingerprint_sha256": "1023c5058154fc152aa8b45750ec8ede89cbd8e2c34d744945106d11b7fa6089",
+    "projection": "The resolver-null increment changes 171, adapter, worker and include tests; the concat commit applies unchanged and only focused cross-feature checks are claimed here.",
+    "included_callback_throw": {
+      "path": ".tools/user-string-concat/.tools/include-execution-f2rzm8wc/report.json",
+      "sha256": "c5b42f7afd898835cafb2fab3b971c6947d28bd0be58df0277cf27b7b380e7b2",
+      "result": "pass",
+      "exact": 1,
+      "recovery": "The ignored raw directory retains main.php, one.php, snapshot.json with resolved:null and opened path, commands and raw native/model stdout/stderr; re-run through pinned profile and finite file snapshot."
+    },
+    "cv_late": {
+      "path": ".tools/user-string-concat/.tools/user-string-itip11n4/report.json",
+      "sha256": "a3dace80236a901bd1d855fd2c8a1fb322253b238e2aca06eadf4e144262c116",
+      "result": "pass",
+      "exact": 1
+    },
+    "right_pending": {
+      "path": ".tools/user-string-concat/.tools/user-string-concat-protocol-6imeo055/report.json",
+      "sha256": "aa23e7bb3c976ed8906a39203011ada8b8f35ced4aeb89620d0fdd85f0d78d10",
+      "result": "pass",
+      "stages": 1,
+      "checks": "Child-site right callback and consumer-phase swap rejection"
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "log": ".tools/user-string-concat/.tools/user-string-concat-resolver-inventory.log",
+      "log_sha256": "3164fd92170537c13a28c5f252eb5222e15e8c642038fb0a32cbc93f0520d210",
+      "result": "pass"
+    }
+  }
+}
