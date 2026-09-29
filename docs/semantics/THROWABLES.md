@@ -67,7 +67,7 @@ errors. Stage B handles value/reference returns and jumps across finally.
 
 Still required: the distinct `ErrorException` constructor and layout, source
 access to internal properties, reflection and mutation, user subclasses,
-reached eval and static-method frame integration, remaining finally transfers,
+static-method frame integration, remaining finally transfers,
 handlers, lifecycle callbacks, include errors, generator/Fiber closing and
 serialization. Direct `__toString`, `echo` and string casts work for finite
 builtin Throwables; weak typed string conversion, property access/casts,

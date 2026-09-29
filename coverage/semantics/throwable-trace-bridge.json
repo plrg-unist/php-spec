@@ -1,0 +1,45 @@
+{
+  "status": "parser-base bridge author checks complete; independent review pending",
+  "base": "8bb51e750",
+  "semantic_head": "f041357b6",
+  "fixture_scope_head": "830aeb870",
+  "scope": "Integrates the reviewed structured Throwable trace storage and renderers with reached eval and get_class producers on the installed parser frontend. The frozen-base review remains in throwable-trace-review.json; static method frame integration belongs to the later static increment.",
+  "design": [
+    "Every generated Throwable and direct constructor captures the eval-aware frame stream into the private trace PARRAY slot. Eval and get_class frames use the same structured function/class/type/args representation as ordinary calls.",
+    "Paused eval fixtures retain caught objects through the final state before inspecting live trace slots; dead objects are not kept solely for testing."
+  ],
+  "author_evidence": {
+    "trace_source": {
+      "path": ".tools/throwable-trace-candidate/.tools/trace-probes-hqldro4v/report.json",
+      "sha256": "8bd19c9174995d6c1e272214e5fccf9bc3613fe921d31fd6ba2eb9450b2e489e",
+      "result": "37 exact native/model outcomes, two explicit Unsupported controls, watched inputs stable"
+    },
+    "retained_get_class_source": {
+      "path": ".tools/throwable-trace-candidate/.tools/get-class-source-dj1yz8kb/report.json",
+      "sha256": "f3b4b8e70bbf0ed19b4ba34ed526700e2cf1401b922ee3a286e8f1a79498b51d",
+      "result": "All 27 existing source outcomes exact on the parser base; 1,196-file fingerprint stable"
+    },
+    "eval_trace_paused": {
+      "path": ".tools/throwable-trace-candidate/.tools/eval-trace-protocol-w_fi33iz/report.json",
+      "sha256": "a6d235655f7477263d688db03bb443e2838cd9a7c6adfeb4d1ae4da51a898a77",
+      "result": "Five source-reached stages, 106 assertions, 176 watched inputs stable"
+    },
+    "eval_nested_trace_paused": {
+      "path": ".tools/throwable-trace-candidate/.tools/eval-nested-trace-nk0768ae/report.json",
+      "sha256": "bb70648018e621f6ab6c81db70ca04abef584ae5a2791d381011b5079c534bfa",
+      "result": "Two nested stages, 52 assertions, 176 watched inputs stable"
+    }
+  },
+  "independent_replay": {
+    "path": ".tools/throwable-trace-candidate/.tools/trace-eval-review-f041-yksi51e3/report.json",
+    "sha256": "de94758baa69540ea9cebadaf0d36ade4a2249471baf3ee9e6d38160a3d0dd2c",
+    "result": "Two exact native/model replays for get_class-in-eval TypeError and nested eval ParseError, watched inputs stable"
+  },
+  "recovery": [
+    "python3 tests/semantics/throwable_traces.py",
+    "python3 tests/semantics/get_class_intrinsic.py",
+    "python3 tests/semantics/eval_trace_protocol.py",
+    "python3 tests/semantics/eval_nested_trace_protocol.py"
+  ],
+  "limits": "This is a bounded Throwable trace producer bridge. Static method frames, ErrorException's distinct constructor, user subclasses, property access/mutation and full-core closure remain open."
+}
