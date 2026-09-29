@@ -237,6 +237,8 @@ Source, compiler and paused ownership checks cover admitted conversions;
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
 Clone callbacks, readonly/hook semantics and lifecycle integration remain open.
+[`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
+object names and executing lexical scope through direct and callable invocation.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
 enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)

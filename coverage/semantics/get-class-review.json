@@ -66,11 +66,39 @@
     }
   },
   "private_root": ".tools/get-class-candidate",
+  "installed_bridge": {
+    "commit": "0d59c0f1713c96cf67b29e90e312055d50357405",
+    "reviewed_commit": "f6bdfa1bb6d7f925bf0faaf2f572bd8dc8eed62e",
+    "tree_identical": true,
+    "source_report": ".tools/get-class-source-t51q5mwi/report.json",
+    "source_report_sha256": "494c593afde2f0dc7fd00f3e6cd60e007c53566b6fcd4eb19618de9b5444dfb6",
+    "source_exact": "27/27",
+    "paused_report": ".tools/get-class-protocol-ar5mnjcm/report.json",
+    "paused_report_sha256": "c189f74fc3e72a9424aaf97c2662832d4ca32be065168f5747f9ab1b33bc52f6",
+    "paused_assertions": "4 stages/48 assertions",
+    "fingerprint_sha256": "eb63605b0e2c771587eebf7c2adabd9936632ae143efb5fe1eafb9e0dd404e56"
+  },
+  "independent_review": {
+    "result": "approved",
+    "extra_exact_sources": 8,
+    "raw": ".tools/get-class-candidate/.tools/get-class-independent-f1btjh4u",
+    "source_sha256": {
+      "direct-two-trace": "fcb4f740cbbc26543904c4e46af69373ad5473b4d09b6332a99fa2cda74e0e9f",
+      "named-extra-trace": "21d389590806d066453a1ad8a746216384596660a200adca4578b248dcd3d0bf",
+      "unpack-extra-trace": "a76b65018a986e40cbe9ee9d7e98b9525eae5b642c4ffc105e786587cd4d34ea",
+      "namespace-override-later": "e2465b6a0d35e97600bceaace1b0605d2aa0124744ed78b3614a0a7dd6046d51",
+      "namespace-method-fallback": "cdbe8d33f112f6e0fc1a9d7699a789f8bf88020529edab2ed6b8120f64dcd1a1",
+      "closure-inherited": "baea9660f6874aca6809aa367c7d1c028353a9a7138a1fd02088b9a84040916b",
+      "named-after-empty-unpack": "edae8e912e7730f2b402cf33e9c3f7a2ab42253c0d311503e87c4d3517710dbf",
+      "unpack-unknown-name": "c1f7291f0187d2f6f4665a5e2244dbd63ebc27c8966065e4180eed4e42f3624d"
+    },
+    "replay": "For each ID, use raw/ID/source.php with the pinned oracle and tests/semantics/profile.json, then bin/php-semantics on the same file/cwd. Compare raw stdout, stderr, and exit status; these are private review checks, separate from the installed 27/48 bridge."
+  },
   "unsupported_controls": {
     "closure_scope_rebinding": "Closure::bind/bindTo source runtime is not admitted",
     "throwing_error_handler": "diagnostic handler callbacks remain a separate core obligation",
     "mixed_inherited_static_method": "static method runtime milestone is independently active"
   },
-  "limits": "Reports bind the private base and frozen 1,183-file implementation fingerprint; later canonical integration needs exact shared-file rebase and installed focused bridge. They do not claim a classified file-syntax gate or complete object-identity coverage.",
-  "recovery": "From the private_root on the recorded base, use its private built adapter and numeric runner, then run the two commands above. Raw stdout/stderr and fixtures remain under the ignored report directories."
+  "limits": "Reports bind the reviewed private tree and tree-identical installed commit at the frozen 1,183-file implementation fingerprint. They do not claim a classified file-syntax gate or complete object-identity coverage.",
+  "recovery": "From the installed commit, run the two commands above with its built adapter and numeric runner. Raw stdout/stderr and fixtures remain under the ignored report directories."
 }
