@@ -13,12 +13,36 @@ def $config_kind(INTRINSIC_INI_SET) = true
 def $config_kind(INTRINSIC_INI_RESTORE) = true
 def $config_kind(INTRINSIC_CHDIR) = true
 def $config_kind(pintrinsic) = false -- otherwise
+def $config_dynamic_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
+def $config_pipe_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $pipe_site(S, porigin) /\ $pipe_fixed_name(S, porigin) = eps)
 dec $config_invoke_valid(pstate, pconfigcall) : bool
-def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
   -- if S.ORIGIN = (porigin)
-def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
+  -- if $config_dynamic_selection(S, pintrinsic, porigin)
+  -- if S.ORIGIN = (porigin)
+  -- if $call_line_valid(S, (porigin), z_call)
+  -- if preqbytes_lookup = $dynamic_lookup_name(preqbytes_original)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_send, z_lookup, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
+  -- if $config_pipe_selection(S, pintrinsic, porigin)
+  -- if S.ORIGIN = (porigin)
+  -- if $call_line_valid(S, (porigin), z_call)
+  -- if preqbytes_lookup = $dynamic_lookup_name(preqbytes_original)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
 
 dec $config_nodes(pconfigcall) : pnode*
 def $config_nodes(pconfigcall) = $exit_owner_nodes(pconfigcall.OWNER) ++ $named_slots_roots(pconfigcall.SENT)
@@ -324,15 +348,93 @@ rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_pa
   -- if ~$config_invoke_valid(S, pconfigcall)
 
 ;; The selected intrinsic and each saved argument must derive from the source.
+dec $selected_task_nonce(ptask) : nat?
+def $selected_task_nonce(AT porigin ptask) = $selected_task_nonce(ptask)
+def $selected_task_nonce(CONFIG_ARGS pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(CONFIG_SEND pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(CONFIG_UNPACK_PREP pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(CONFIG_UNPACK_NEXT pconfigcall poperand n) = pconfigcall.SELECTION
+def $selected_task_nonce(CONFIG_INVOKE pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(CHDIR_AWAIT pconfigcall n) = pconfigcall.SELECTION
+def $selected_task_nonce(ptask) = eps -- otherwise
+dec $selected_task_count(ptask*, nat) : nat
+def $selected_task_count(eps, n) = 0
+def $selected_task_count(ptask :: ptask_tail*, n) = $(1 + $selected_task_count(ptask_tail*, n))
+  -- if $selected_task_nonce(ptask) = (n)
+def $selected_task_count(ptask :: ptask_tail*, n) = $selected_task_count(ptask_tail*, n)
+  -- if $selected_task_nonce(ptask) =/= (n)
+dec $selected_frame_count(pframe*, nat) : nat
+def $selected_frame_count(eps, n) = 0
+def $selected_frame_count(pframe :: pframe_tail*, n) = $($selected_task_count(pframe.TODO, n) + $selected_frame_count(pframe_tail*, n))
+dec $selected_owner_tasks(pstate, pselectedcall) : ptask*
+def $selected_owner_tasks(S, pselectedcall) = S.TODO
+  -- if pselectedcall.DEPTH = |S.FRAMES|
+def $selected_owner_tasks(S, pselectedcall) = $eval_frame_tasks(S.FRAMES, n_index)
+  -- if $(pselectedcall.DEPTH < |S.FRAMES|)
+  -- if n_index = $(|S.FRAMES| - pselectedcall.DEPTH - 1)
+def $selected_owner_tasks(S, pselectedcall) = eps
+  -- if $(pselectedcall.DEPTH > |S.FRAMES|)
+dec $selected_entry_active_valid(pstate, pselectedcall) : bool
+dec $selected_newer_same_owner(pselectedcall*, pselectedcall) : bool
+def $selected_newer_same_owner(eps, pselectedcall) = false
+def $selected_newer_same_owner(pselectedcall_other :: pselectedcall_tail*, pselectedcall) = true
+  -- if $(pselectedcall_other.NONCE > pselectedcall.NONCE)
+  -- if pselectedcall_other.SITE = pselectedcall.SITE
+  -- if pselectedcall_other.DEPTH = pselectedcall.DEPTH
+def $selected_newer_same_owner(pselectedcall_other :: pselectedcall_tail*, pselectedcall) = $selected_newer_same_owner(pselectedcall_tail*, pselectedcall)
+  -- if $(pselectedcall_other.NONCE <= pselectedcall.NONCE) \/ pselectedcall_other.SITE =/= pselectedcall.SITE \/ pselectedcall_other.DEPTH =/= pselectedcall.DEPTH
+def $selected_entry_active_valid(S, pselectedcall) = true
+  -- if $($selected_task_count(S.TODO, pselectedcall.NONCE) + $selected_frame_count(S.FRAMES, pselectedcall.NONCE)) = 0
+def $selected_entry_active_valid(S, pselectedcall) = true
+  -- if $($selected_task_count(S.TODO, pselectedcall.NONCE) + $selected_frame_count(S.FRAMES, pselectedcall.NONCE)) = 1
+  -- if $selected_task_count($selected_owner_tasks(S, pselectedcall), pselectedcall.NONCE) = 1
+  -- if ~$selected_newer_same_owner(S.SELECTEDCALLS, pselectedcall)
+def $selected_entry_active_valid(S, pselectedcall) = false -- otherwise
+dec $selected_entry_source_valid(pstate, pselectedcall) : bool
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if $config_kind(pselectedcall.KIND)
+  -- if pselectedcall.LOOKUP = $dynamic_lookup_name(pselectedcall.ORIGINAL)
+  -- if $intrinsic_lookup(pselectedcall.LOOKUP, eps) = (pselectedcall.KIND)
+  -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
+  -- if (($dynamic_site(S, (pselectedcall.SITE)) /\ $dynamic_fixed_name(S, pselectedcall.SITE) = eps) \/ ($pipe_site(S, pselectedcall.SITE) /\ $pipe_fixed_name(S, pselectedcall.SITE) = eps))
+def $selected_entry_source_valid(S, pselectedcall) = false -- otherwise
+dec $selected_entry_valid(pstate, pselectedcall) : bool
+def $selected_entry_valid(S, pselectedcall) = ($selected_entry_source_valid(S, pselectedcall) /\ $selected_entry_active_valid(S, pselectedcall))
+def $selected_log_valid(S, eps, n_next) = (n_next = S.SELECTSEQ)
+def $selected_log_valid(S, pselectedcall :: pselectedcall_tail*, n_next) = true
+  -- if pselectedcall.NONCE = n_next
+  -- if $selected_entry_valid(S, pselectedcall)
+  -- if $selected_log_valid(S, pselectedcall_tail*, $(n_next + 1))
+def $selected_log_valid(S, pselectedcall*, n_next) = false -- otherwise
 dec $config_selected_valid(pstate, pconfigcall) : bool
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
 def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps
+  -- if $pipe_site(S, pconfigcall.SITE)
+  -- if $pipe_fixed_name(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = (n_nonce)
+  -- if $(n_nonce < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
+  -- if pselectedcall.NONCE = n_nonce
+  -- if pselectedcall.SITE = pconfigcall.SITE
+  -- if pselectedcall.KIND = pconfigcall.KIND
+  -- if pselectedcall.LINE = pconfigcall.LINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+  -- if ~$selected_newer_same_owner(S.SELECTEDCALLS, pselectedcall)
+def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
@@ -340,6 +442,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if $exit_dynamic_site(S, pconfigcall.SITE)
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
