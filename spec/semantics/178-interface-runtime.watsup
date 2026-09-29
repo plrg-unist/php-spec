@@ -1,0 +1,312 @@
+;; Direct interface links are recorded only after every dependency was fetched.
+syntax pilfetch = PILFETCHED pilref* | PILMISSING ptbytes
+syntax pilresult = PILOK pilref* | PILFATAL ptbytes | PILMISSINGRESULT ptbytes | PILUNSUPPORTED text
+syntax piltargets = PILTARGETS pilref*
+dec $pil_at(pinterfacelink*, porigin) : piltargets?
+dec $pil_fetch(pstate, ptbytes*, pilref*) : pilfetch
+dec $pil_check(pstate, pclassdesc, pilref*, ptbytes*, pilref*) : pilresult
+dec $pil_checked(pstate, pclassdesc, pilfetch) : pilresult
+dec $pil_role(pclassdesc) : ptbytes
+dec $pil_fatal(pstate, pclassdesc, ptbytes) : pstate
+dec $pil_activate(pstate, pstate, pclassdesc, pilresult) : pstate
+dec $pil_publish(pstate, pclassdesc, pilref*) : pstate
+dec $pil_parent_activate(pstate, pclassdesc, ptbytes, pilfetch) : pstate
+dec $pil_throwable_allowed(pstate, pclassdesc) : bool
+dec $pil_has_contract(pstate, porigin, nat) : bool
+dec $pil_contract_refs(pstate, pilref*, nat) : bool
+
+def $pil_fetch(S, eps, pilref* ) = PILFETCHED pilref*
+def $pil_fetch(S, ptbytes :: ptbytes_tail*, pilref_old* ) = $pil_fetch(S, ptbytes_tail*, pilref_old* ++ [PILSOURCE ptbytes porigin])
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+def $pil_fetch(S, ptbytes :: ptbytes_tail*, pilref_old* ) = $pil_fetch(S, ptbytes_tail*, pilref_old* ++ [PILBUILTIN ptbytes])
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = eps
+  -- if $class_internal(ptbytes)
+def $pil_fetch(S, ptbytes :: ptbytes_tail*, pilref_old* ) = PILMISSING ptbytes
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = eps
+  -- if ~$class_internal(ptbytes)
+
+def $pil_role(pclassdesc) = $ptascii("Interface") -- if pclassdesc.KIND = "interface"
+def $pil_role(pclassdesc) = $ptascii("Class") -- if pclassdesc.KIND = "class"
+def $pil_throwable_allowed(S, pclassdesc) = ($class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Exception"), |S.CLASSES|) \/ $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Error"), |S.CLASSES|))
+  -- if pclassdesc.KIND = "class"
+def $pil_throwable_allowed(S, pclassdesc) = false -- otherwise
+def $pil_has_contract(S, porigin, 0) = false
+def $pil_has_contract(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.METHODS =/= eps
+def $pil_has_contract(S, porigin, n) = $pil_contract_refs(S, pilref_link*, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.METHODS = eps
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref_link*)
+def $pil_has_contract(S, porigin, n) = false -- otherwise
+def $pil_contract_refs(S, eps, n) = false
+def $pil_contract_refs(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = ($ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable")] \/ $pil_contract_refs(S, pilref_tail*, n))
+def $pil_contract_refs(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = ($pil_has_contract(S, porigin, n) \/ $pil_contract_refs(S, pilref_tail*, n))
+def $pil_checked(S, pclassdesc, PILMISSING ptbytes) = PILMISSINGRESULT ptbytes
+def $pil_checked(S, pclassdesc, PILFETCHED pilref* ) = $pil_check(S, pclassdesc, pilref*, eps, eps)
+dec $pil_name(pilref) : ptbytes
+def $pil_name(PILSOURCE ptbytes porigin) = ptbytes
+def $pil_name(PILBUILTIN ptbytes) = ptbytes
+def $pil_check(S, pclassdesc, eps, ptbytes_seen*, pilref_done* ) = PILOK pilref_done*
+def $pil_check(S, pclassdesc, pilref :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($pil_role(pclassdesc) ++ [32] ++ pclassdesc.NAME ++ $ptascii(" cannot implement previously implemented interface ") ++ $pil_name(pilref))
+  -- if $ptlc($pil_name(pilref)) <- ptbytes_seen*
+def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL (pclassdesc.NAME ++ $ptascii(" cannot implement ") ++ pclassdesc_dep.NAME ++ $ptascii(" - it is not an interface"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
+  -- if pclassdesc_dep.KIND = "class"
+def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILUNSUPPORTED "interface method compatibility"
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
+  -- if pclassdesc_dep.KIND = "interface"
+  -- if $pil_has_contract(S, porigin, |S.CLASSES|)
+  -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|) \/ pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
+def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
+  -- if pclassdesc_dep.KIND = "interface"
+  -- if pclassdesc.KIND = "class"
+  -- if $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|)
+  -- if ~$pil_throwable_allowed(S, pclassdesc)
+def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILSOURCE ptbytes porigin])
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
+  -- if pclassdesc_dep.KIND = "interface"
+  -- if ~$pil_has_contract(S, porigin, |S.CLASSES|)
+  -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|) \/ pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL (pclassdesc.NAME ++ $ptascii(" cannot implement ") ++ ptbytes_display ++ $ptascii(" - it is not an interface"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
+  -- if text_kind =/= "interface"
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILUNSUPPORTED "internal interface method contract"
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
+  -- if $ptlc(ptbytes) =/= $ptascii("stringable") /\ $ptlc(ptbytes) =/= $ptascii("throwable")
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.ABSTRACT \/ pclassdesc.ABSTRACT
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Access level to ") ++ pclassdesc_method.NAME ++ $ptascii("::__toString() must be public (as in class Stringable)"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.ABSTRACT
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = eps
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Stringable::__toString)"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if pclassdesc.KIND = "class"
+  -- if ~pclassdesc.ABSTRACT
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = eps
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Stringable::__toString)"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if pclassdesc.KIND = "class"
+  -- if ~pclassdesc.ABSTRACT
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.ABSTRACT
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead"))
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+  -- if pclassdesc.KIND = "class"
+  -- if ~$pil_throwable_allowed(S, pclassdesc)
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+  -- if pclassdesc.KIND = "class"
+  -- if $pil_throwable_allowed(S, pclassdesc)
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if pclassdesc.KIND = "interface"
+  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable")]
+
+def $pil_fatal(S, pclassdesc, ptbytes) = S[.COMPLETION = FATAL ptbytes pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+def $pil_publish(S, pclassdesc, eps) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+def $pil_publish(S, pclassdesc, pilref* ) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDINTERFACES = S.LINKEDINTERFACES ++ [{ OWNER pclassdesc.ORIGIN, TARGETS pilref* }]]
+  -- if pilref* =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+def $pil_publish(S, pclassdesc, pilref* ) = S[.LINKEDINTERFACES = S.LINKEDINTERFACES ++ [{ OWNER pclassdesc.ORIGIN, TARGETS pilref* }]]
+  -- if pilref* =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
+def $pil_activate(S, S_parent, pclassdesc, pilresult) = S_parent
+  -- if S_parent.COMPLETION =/= NORMAL
+def $pil_activate(S, S_parent, pclassdesc, PILOK pilref* ) = $pil_publish(S_parent, pclassdesc, pilref* )
+  -- if S_parent.COMPLETION = NORMAL
+def $pil_activate(S, S_parent, pclassdesc, PILFATAL ptbytes) = $pil_fatal(S, pclassdesc, ptbytes)
+  -- if S_parent.COMPLETION = NORMAL
+def $pil_activate(S, S_parent, pclassdesc, PILMISSINGRESULT ptbytes) = $throw_scalar(S[.ORIGIN = (pclassdesc.ORIGIN)], "Error", $ptascii("Interface \"") ++ ptbytes ++ $ptascii("\" not found"), pclassdesc.LINE)
+  -- if S_parent.COMPLETION = NORMAL
+def $pil_activate(S, S_parent, pclassdesc, PILUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
+  -- if S_parent.COMPLETION = NORMAL
+
+def $activate_class(S, pclassdesc) = $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
+  -- if S.COMPLETION = NORMAL
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if pclassdesc.PARENT = eps
+  -- if pclassdesc.INTERFACES =/= eps
+def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+  -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
+  -- if ~$class_internal(ptbytes_parent)
+def $activate_class(S, pclassdesc) = $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps))
+  -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) =/= eps \/ $class_internal(ptbytes_parent)
+def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILMISSING ptbytes) = $pil_activate(S, S, pclassdesc, PILMISSINGRESULT ptbytes)
+def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = $pil_activate(S, S_parent, pclassdesc, $pil_check(S_parent, pclassdesc, pilref*, eps, eps))
+  -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
+  -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "interface"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if pclassdesc.INTERFACES = eps
+def $activate_class(S, pclassdesc) = $pil_fatal(S, pclassdesc, $ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41])
+  -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "interface"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_old)
+
+rule PhpStep/interface-declaration-early: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.EARLY
+rule PhpStep/interface-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
+  -- if S.TODO = (STMT (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~pclassdesc.EARLY
+
+def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate interface ") ++ pclassdesc.NAME, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
+  -- if ~$class_internal(preqbytes)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_fatal(S, pclassdesc, $ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend interface ") ++ pclassdesc_parent.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "interface"
+
+def $pil_at(eps, porigin) = eps
+def $pil_at(pinterfacelink :: pinterfacelink_tail*, porigin) = (PILTARGETS pinterfacelink.TARGETS)
+  -- if pinterfacelink.OWNER = porigin
+def $pil_at(pinterfacelink :: pinterfacelink_tail*, porigin) = $pil_at(pinterfacelink_tail*, porigin)
+  -- if pinterfacelink.OWNER =/= porigin
+dec $pil_any(pstate, pilref*, ptbytes, nat) : bool
+def $pil_nominal(S, porigin, ptbytes, 0) = false
+def $pil_nominal(S, porigin, ptbytes, n) = $pil_any(S, pilref_link*, ptbytes, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref_link*)
+def $pil_nominal(S, porigin, ptbytes, n) = false -- otherwise
+def $pil_any(S, eps, ptbytes, n) = false
+def $pil_any(S, (PILSOURCE ptbytes_link porigin_link) :: pilref_tail*, ptbytes, n) = ($ptlc(ptbytes_link) = $ptlc(ptbytes) \/ $pil_nominal(S, porigin_link, ptbytes, n) \/ $pil_any(S, pilref_tail*, ptbytes, n))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_link)) = (porigin_link)
+  -- if $class_at(S.CLASSES, porigin_link) = (pclassdesc_link)
+  -- if pclassdesc_link.KIND = "interface"
+def $pil_any(S, (PILBUILTIN ptbytes_link) :: pilref_tail*, ptbytes, n) = ($ptlc(ptbytes_link) = $ptlc(ptbytes) \/ ($ptlc(ptbytes_link) = $ptascii("throwable") /\ $ptlc(ptbytes) = $ptascii("stringable")) \/ $pil_any(S, pilref_tail*, ptbytes, n))
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_link)) = (INTERNAL ptbytes_key ptbytes_display "interface")
+
+dec $pil_targets_valid(pstate, ptbytes*, pilref*) : bool
+dec $pil_unique_names(ptbytes*, ptbytes*) : bool
+dec $pil_precedes((preqbytes, porigin)*, porigin, porigin) : bool
+dec $pil_link_precedes(pinterfacelink*, porigin, porigin) : bool
+dec $pil_targets_ordered(pstate, porigin, pilref*) : bool
+def $pil_unique_names(eps, ptbytes*) = true
+def $pil_unique_names(ptbytes :: ptbytes_tail*, ptbytes_seen*) = false
+  -- if $ptlc(ptbytes) <- ptbytes_seen*
+def $pil_unique_names(ptbytes :: ptbytes_tail*, ptbytes_seen*) = $pil_unique_names(ptbytes_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)])
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+def $pil_precedes(eps, porigin_target, porigin_owner) = false
+def $pil_precedes((preqbytes, porigin_target) :: (preqbytes_tail, porigin_tail)*, porigin_target, porigin_owner) = true
+  -- if porigin_target =/= porigin_owner
+def $pil_precedes((preqbytes, porigin_owner) :: (preqbytes_tail, porigin_tail)*, porigin_target, porigin_owner) = false
+  -- if porigin_target =/= porigin_owner
+def $pil_precedes((preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, porigin_target, porigin_owner) = $pil_precedes((preqbytes_tail, porigin_tail)*, porigin_target, porigin_owner)
+  -- if porigin =/= porigin_target /\ porigin =/= porigin_owner
+def $pil_link_precedes(eps, porigin_target, porigin_owner) = false
+def $pil_link_precedes(pinterfacelink :: pinterfacelink_tail*, porigin_target, porigin_owner) = true
+  -- if pinterfacelink.OWNER = porigin_target /\ porigin_target =/= porigin_owner
+def $pil_link_precedes(pinterfacelink :: pinterfacelink_tail*, porigin_target, porigin_owner) = false
+  -- if pinterfacelink.OWNER = porigin_owner /\ porigin_target =/= porigin_owner
+def $pil_link_precedes(pinterfacelink :: pinterfacelink_tail*, porigin_target, porigin_owner) = $pil_link_precedes(pinterfacelink_tail*, porigin_target, porigin_owner)
+  -- if pinterfacelink.OWNER =/= porigin_target /\ pinterfacelink.OWNER =/= porigin_owner
+def $pil_targets_ordered(S, porigin_owner, eps) = true
+def $pil_targets_ordered(S, porigin_owner, (PILBUILTIN ptbytes) :: pilref_tail* ) = $pil_targets_ordered(S, porigin_owner, pilref_tail* )
+def $pil_targets_ordered(S, porigin_owner, (PILSOURCE ptbytes porigin_target) :: pilref_tail* ) = $pil_targets_ordered(S, porigin_owner, pilref_tail* )
+  -- if $pil_precedes(S.CLASSNAMES, porigin_target, porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_target) = (pclassdesc_target)
+  -- if pclassdesc_target.INTERFACES = eps \/ $pil_link_precedes(S.LINKEDINTERFACES, porigin_target, porigin_owner)
+def $pil_targets_ordered(S, porigin_owner, (PILSOURCE ptbytes porigin_target) :: pilref_tail* ) = false
+  -- if ~$pil_precedes(S.CLASSNAMES, porigin_target, porigin_owner)
+def $pil_targets_ordered(S, porigin_owner, (PILSOURCE ptbytes porigin_target) :: pilref_tail* ) = false
+  -- if $pil_precedes(S.CLASSNAMES, porigin_target, porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_target) = eps
+def $pil_targets_ordered(S, porigin_owner, (PILSOURCE ptbytes porigin_target) :: pilref_tail* ) = false
+  -- if $pil_precedes(S.CLASSNAMES, porigin_target, porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_target) = (pclassdesc_target)
+  -- if pclassdesc_target.INTERFACES =/= eps
+  -- if ~$pil_link_precedes(S.LINKEDINTERFACES, porigin_target, porigin_owner)
+def $pil_targets_valid(S, eps, eps) = true
+def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILSOURCE ptbytes porigin) :: pilref_tail* ) = $pil_targets_valid(S, ptbytes_tail*, pilref_tail* )
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILBUILTIN ptbytes) :: pilref_tail* ) = $pil_targets_valid(S, ptbytes_tail*, pilref_tail* )
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
+def $pil_targets_valid(S, ptbytes*, pilref_link* ) = false -- otherwise
+
+dec $pil_entries_valid(pstate, pinterfacelink*, porigin*) : bool
+def $pil_entries_valid(S, eps, porigin*) = true
+def $pil_entries_valid(S, pinterfacelink :: pinterfacelink_tail*, porigin_seen*) = $pil_entries_valid(S, pinterfacelink_tail*, porigin_seen* ++ [pinterfacelink.OWNER])
+  -- if ~(pinterfacelink.OWNER <- porigin_seen*)
+  -- if $class_at(S.CLASSES, pinterfacelink.OWNER) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pinterfacelink.OWNER)
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $pil_unique_names(pclassdesc.INTERFACES, eps)
+  -- if $pil_targets_valid(S, pclassdesc.INTERFACES, pinterfacelink.TARGETS)
+  -- if $pil_targets_ordered(S, pinterfacelink.OWNER, pinterfacelink.TARGETS)
+  -- if pclassdesc.KIND = "interface" \/ ~$pil_nominal(S, pinterfacelink.OWNER, $ptascii("Throwable"), |S.CLASSES|) \/ $pil_throwable_allowed(S, pclassdesc)
+def $pil_entries_valid(S, pinterfacelink*, porigin*) = false -- otherwise
+dec $pil_complete(pstate, (preqbytes, porigin)*) : bool
+def $pil_complete(S, eps) = true
+def $pil_complete(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $pil_complete(S, (preqbytes_tail, porigin_tail)*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.INTERFACES = eps
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
+def $pil_complete(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $pil_complete(S, (preqbytes_tail, porigin_tail)*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (piltargets)
+def $pil_complete(S, (preqbytes, porigin)*) = false -- otherwise
+def $pil_links_valid(S) = ($pil_entries_valid(S, S.LINKEDINTERFACES, eps) /\ $pil_complete(S, S.CLASSNAMES))

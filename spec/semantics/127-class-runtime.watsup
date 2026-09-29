@@ -23,18 +23,22 @@ def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot red
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
 def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
   -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
-  -- if pclassdesc.PARENT = eps
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
 def $activate_class(S, pclassdesc) = S_parent[.ERRORORIGIN = $compiled_error_origin(S_parent.ERRORORIGIN, S_parent.COMPLETION, n)]
   -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pclassdesc.INTERFACES = eps
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
   -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
-def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare class ") ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
+def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_old)
@@ -73,11 +77,12 @@ def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot ins
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
   -- if ~$class_internal(preqbytes)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.ABSTRACT
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.ABSTRACT
 def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [INSTANCE porigin]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS ppropertyslot*, MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
   -- if ~$class_internal(preqbytes)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if n = |S.OBJECTS|
@@ -142,6 +147,7 @@ def $closure_live_object_valid(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
   -- if $property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), ppropertyslot*)
@@ -177,7 +183,7 @@ def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (P.CLASSES ++ pcla
   -- if P.COMPLETION = PPCNORMAL
   -- if $class_projection(S, pcunit_tail*) = CLASSCHECK pclassdesc*
 def $class_projection(S, pcunit*) = CLASSINVALID -- otherwise
-def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES) /\ $class_links_valid(S) /\ $property_state_valid(S))
+def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES) /\ $class_links_valid(S) /\ $pil_links_valid(S) /\ $property_state_valid(S))
   -- if $class_projection(S, S.SOURCES) = CLASSCHECK S.CLASSES
 def $class_state_valid(S) = false -- otherwise
 

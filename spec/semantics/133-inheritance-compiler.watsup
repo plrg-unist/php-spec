@@ -64,8 +64,8 @@ dec $ppclass_parent_known(pclassdesc*, ptbytes?) : bool
 def $ppclass_parent_known(pclassdesc*, eps) = true
 def $ppclass_parent_known(pclassdesc*, (ptbytes)) = ($class_internal(ptbytes) \/ $ppclass_prior_early(pclassdesc*, ptbytes) =/= eps)
 
-dec $ppclass_inherited_early(ppstate, pcpath, pchheader) : bool
-def $ppclass_inherited_early(P, pcpath, pchheader) = (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME) /\ $ppclass_parent_known(P.CLASSES, pchheader.PARENT) /\ pchheader.INTERFACES = eps)
+dec $ppclass_inherited_early(ppstate, pcpath, pchheader, pmethoddesc*) : bool
+def $ppclass_inherited_early(P, pcpath, pchheader, pmethoddesc*) = (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME) /\ $ppclass_parent_known(P.CLASSES, pchheader.PARENT) /\ $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*) = eps)
 
 dec $ppclass_static_link_error(ppstate, ptbytes) : ppstate
 def $ppclass_static_link_error(P, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes P.LOCATION.LINE)]
@@ -113,26 +113,34 @@ def $ppclass_early_link_check(P, pchheader) = $ppunsupported(P, "internal class 
   -- if ~$class_internal_final(ptbytes_parent)
   -- if $ptlc(ptbytes_parent) =/= $ptascii("stdclass")
   -- if $throwable_link_kind(ptbytes_parent) = eps
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend interface ") ++ pclassdesc_parent.NAME)
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "interface"
 def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME)
   -- if pchheader.PARENT = (ptbytes_parent)
   -- if ~$class_internal(ptbytes_parent)
   -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if pclassdesc_parent.FINAL
 def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ppclass_readonly_error(pchheader, pclassdesc_parent.NAME, pclassdesc_parent.READONLY))
   -- if pchheader.PARENT = (ptbytes_parent)
   -- if ~$class_internal(ptbytes_parent)
   -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pchheader.READONLY =/= pclassdesc_parent.READONLY
 def $ppclass_early_link_check(P, pchheader) = P
   -- if pchheader.PARENT = (ptbytes_parent)
   -- if ~$class_internal(ptbytes_parent)
   -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pchheader.READONLY = pclassdesc_parent.READONLY
 
 dec $ppclass_inherited_add(ppstate, pcpath, pchheader, bool, ppropertydesc*, pmethoddesc*) : ppstate
-def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES pchheader.INTERFACES, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
+def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*), PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
 def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P -- otherwise
 
@@ -140,9 +148,9 @@ dec $ppclass_inherited(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*)
 dec $ppmethod_early_check(ppstate, pchheader, pmethoddesc*) : ppstate
 dec $ppproperty_early_check(ppstate, pchheader, ppropertydesc*) : ppstate
 def $ppclass_inherited(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = $ppclass_inherited_add($ppmethod_early_check($ppproperty_early_check($ppclass_early_link_check(P, pchheader), pchheader, ppropertydesc*), pchheader, pmethoddesc*), pcpath, pchheader, true, ppropertydesc*, pmethoddesc*)
-  -- if $ppclass_inherited_early(P, pcpath, pchheader)
+  -- if $ppclass_inherited_early(P, pcpath, pchheader, pmethoddesc*)
 def $ppclass_inherited(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = $ppclass_inherited_add(P, pcpath, pchheader, false, ppropertydesc*, pmethoddesc*)
-  -- if ~$ppclass_inherited_early(P, pcpath, pchheader)
+  -- if ~$ppclass_inherited_early(P, pcpath, pchheader, pmethoddesc*)
 
 def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader, eps, eps)
   -- if pchheader.PARENT =/= eps

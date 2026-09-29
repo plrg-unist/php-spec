@@ -50,26 +50,31 @@ def $method_link_state(S, pclassdesc, porigin_parent) = S[.CLASSNAMES = S.CLASSN
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if pclassdesc_parent.FINAL
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY /\ ~pclassdesc_parent.READONLY
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Non-readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend readonly class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if ~pclassdesc.READONLY /\ pclassdesc_parent.READONLY
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = (ptbytes_message)
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message z]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
@@ -77,6 +82,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FA
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UNSUPPORTED text]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
@@ -84,6 +90,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UN
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
@@ -134,22 +141,22 @@ def $class_origin_matches(S, porigin, ptbytes, n) = true
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
-def $class_origin_matches(S, porigin, ptbytes, n) = $class_origin_matches(S, porigin_parent, ptbytes, $nabs($(n - 1)))
+def $class_origin_matches(S, porigin, ptbytes, n) = ($pil_nominal(S, porigin, ptbytes, n) \/ $class_origin_matches(S, porigin_parent, ptbytes, $nabs($(n - 1))))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
-def $class_origin_matches(S, porigin, ptbytes, n) = ($ptlc(ptbytes) = $ptascii("stdclass"))
+def $class_origin_matches(S, porigin, ptbytes, n) = ($pil_nominal(S, porigin, ptbytes, n) \/ $ptlc(ptbytes) = $ptascii("stdclass"))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
-def $class_origin_matches(S, porigin, ptbytes, n) = $throwable_nominal(text_kind, ptbytes, 4)
+def $class_origin_matches(S, porigin, ptbytes, n) = ($throwable_nominal(text_kind, ptbytes, 4) \/ $pil_nominal(S, porigin, ptbytes, n))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
-def $class_origin_matches(S, porigin, ptbytes, n) = false -- otherwise
+def $class_origin_matches(S, porigin, ptbytes, n) = $pil_nominal(S, porigin, ptbytes, n) -- otherwise
 
 dec $typed_class_atoms(pstate, ptatom*, porigin, nat) : bool
 def $typed_class_atoms(S, eps, porigin, n) = true
@@ -172,10 +179,12 @@ dec $class_link_entry_valid(pstate, pclasslink*, pclasslink) : bool
 def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child (SOURCE_PARENT porigin_parent)) = true
   -- if $class_link_at(pclasslink_prefix*, porigin_child) = eps
   -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
   -- if pclassdesc_child.PARENT = (ptbytes_parent)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
   -- if ~$class_internal(ptbytes_parent)
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc_child.READONLY = pclassdesc_parent.READONLY
@@ -185,6 +194,7 @@ def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child (SOUR
 def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child STDCLASS_PARENT) = true
   -- if $class_link_at(pclasslink_prefix*, porigin_child) = eps
   -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
   -- if pclassdesc_child.PARENT = (ptbytes_parent)
   -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")

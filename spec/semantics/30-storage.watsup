@@ -32,7 +32,8 @@ dec $propref_at(ppropref*, nat) : ppropref?
 syntax pclassdesc = { ORIGIN porigin, KIND text, NAME ptbytes, PARENT ptbytes?, INTERFACES ptbytes*, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
 syntax pclassparent = SOURCE_PARENT porigin | STDCLASS_PARENT | INTERNAL_THROWABLE_PARENT text
 syntax pclasslink = CLASSLINK porigin pclassparent
-syntax pinterfacelink = INTERFACELINK porigin (ptbytes, porigin?)*
+syntax pilref = PILSOURCE ptbytes porigin | PILBUILTIN ptbytes
+syntax pinterfacelink = { OWNER porigin, TARGETS pilref* }
 syntax pmethodissue = METHOD_OK | METHOD_ISSUE ptbytes int | METHOD_UNSUPPORTED text
 syntax pnoctorcall = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpType7*, INDEX nat, SENT poperand*, LINE int }
 syntax psourcefile = SOURCEFILE nat nat*
@@ -163,8 +164,11 @@ dec $terminal_string_site(pstate, porigin, int) : bool
 dec $terminal_string_active_site(pstate, pcallcontext?, pframe*, porigin) : bool
 dec $terminal_string_context(pstate, pcallcontext) : bool
 dec $ctor_method_start(pstate, nat, int) : pstate
+dec $pil_nominal(pstate, porigin, ptbytes, nat) : bool
 dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool
 dec $class_links_valid(pstate) : bool
+dec $pil_links_valid(pstate) : bool
+dec $ppclass_interfaces(ptbytes*, pmethoddesc*) : ptbytes*
 dec $property_layout(pstate, porigin, nat) : ppropertydesc*
 dec $property_declaring_name(pclassdesc*, ppropertyid) : ptbytes
 dec $property_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
