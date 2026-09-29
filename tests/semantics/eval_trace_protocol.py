@@ -120,7 +120,7 @@ def main():
     assert before == {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     report = {'result': 'pass' if all(row['pass'] for row in records) else 'fail',
               'inputs': before, 'records': records,
-              'scope': 'Internal generated TRACE fields; getTrace source calls remain Unsupported.'}
+              'scope': 'Source-derived eval frames in the live private trace array slot.'}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return report['result'] == 'pass'
 
