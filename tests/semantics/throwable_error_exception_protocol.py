@@ -35,7 +35,7 @@ CASES = [
          'S_done = $drive(S,1000)',
          'S_done.COMPLETION = NORMAL']),
     ('named-roots', b'<?php $p=new Exception("p");$e=new ErrorException(previous:$p,line:-7,filename:"f.php",severity:8,code:9,message:"m");echo $e->getPrevious()===$p;',
-     'S.TODO = (CTOR_INVOKE pctorcall) :: ptask*', [
+     'S.TODO = (CTOR_INVOKE pctorcall) :: ptask* -- if pctorcall.BASE = "ErrorException"', [
          'pctorcall.BASE = "ErrorException"',
          '$call_task_valid(S,CTOR_INVOKE pctorcall)',
          '$named_slot_at(pctorcall.SENT,5) = NAMED_SENT (KNOWN (POBJECT n_previous))',
