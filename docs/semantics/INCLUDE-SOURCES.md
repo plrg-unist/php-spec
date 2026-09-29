@@ -28,12 +28,17 @@ Zend's `zend_include_or_eval` checks a successfully resolved path against
 `EG(included_files)` before opening it, then checks the opened path and records
 that identity before compiling a new `*_once` file. Ordinary include/require
 record the opened path after successful compilation. The initial executed
-script is already included. The current execution rules cover successful file
+script is already included. The draft execution rules cover successful file
 returns and fallthrough, nested includes, once skips, and finite open failures.
-Parser rejection and accepted-source compiler diagnostics remain separate
-transitions to complete before this route is installed as include support.
+File parser rejection retains a failed source unit and raises a catchable
+`ParseError` or base `CompileError`; a static compiler fatal in an accepted file
+stops compilation globally. The source and paused-state gates are required
+before this route is installed as include support.
 
 Resolver-null but openable paths are a required followup: they have no resolved
 identity for the pre-open once check. The first finite-provider implementation
 marks those keys `Unsupported`, while keeping resolution and opening distinct
 so that fallback case can be added without changing once semantics.
+Runs that mutate CWD or `include_path` need a new authenticated resolution
+context. The finite `open_failure` schema carries stream-error bytes, but
+permission and path-error observations need their own source comparisons.
