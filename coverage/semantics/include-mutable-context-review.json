@@ -3,7 +3,7 @@
   "status": "Private candidate on final installed typed-return base; independent current-base replay, canonical integration and installed checks pending",
   "base": "e4d3b837b",
   "tested_code_head": "4815602bb",
-  "commits": [
+  "prior_scoped_commits": [
     "d6d9226d4",
     "60f81a2e4",
     "b7c9f9c73",
@@ -284,6 +284,16 @@
     "declared_inputs": 198,
     "current_input_mismatches": 0,
     "comparison": "Native and model stdout 77, empty stderr, exit 0. First 7 is the typed-return object callback include after chdir; second 7 is a caller include after function unwind, proving FILECWD persists."
+  },
+  "current_independent_selected_replay": {
+    "selection": ["typed-return-chdir-callback", "chdir-relative", "set-restore"],
+    "command": "import include_mutable_execution; narrow CASES in memory to the typed template above and retained chdir-relative/set-restore rows; call main()",
+    "report": ".tools/include-chdir/.tools/include-mutable-xh7ayck5/report.json",
+    "sha256": "6327199dac7a76808d32243a9a8b55d05c4ab098727d1abc1f1cff5f372cf9ed",
+    "exact_native_agreements": 3,
+    "declared_inputs": 198,
+    "current_input_mismatches": 0,
+    "comparison": "Reviewer independently decoded native/model stdout, stderr and exit: typed callback 77, relative 8T7, set/restore 8.:78; each has empty stderr and exit 0."
   },
   "interface_rebase_bridge": "The ten scoped commits were replayed onto installed interface/Closure base f8013abac. The 30-storage/40-control conflicts preserve canonical CLOSUREBINDINGS, LINKEDINTERFACES and BIND tasks alongside FILEINCLUDEPATH, CONFIG and CHDIR state/tasks. The pre-interface source, chdir and include reports differ at exactly 15 watched inputs: frontend/encoding.php, frontend/target.php, 116-closures, 126-class-compiler, 127-class-runtime, 133-inheritance-compiler, 134-inheritance-runtime, 135-property-compiler, 141-method-compiler, 142-method-runtime, 150-clone-runtime, 30-storage, 39-ownership, 40-control and modules.json. The pre-interface eval-only reports differ at the same 13 semantic/module inputs without frontend/encoding.php and frontend/target.php. Those reports remain historical; new current-base reports follow."
 }
