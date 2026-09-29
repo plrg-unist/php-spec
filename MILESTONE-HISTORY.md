@@ -67,4 +67,3 @@ Their static outcome is left to the authored compiler. The reached eval contract
 and remaining cases are in [DYNAMIC-EVAL.md](docs/semantics/DYNAMIC-EVAL.md);
 the bounded recovery and full file-syntax gate are recorded in
 [the namespace recovery ledger](coverage/dynamic-eval-namespace-recovery-review.json).
-
