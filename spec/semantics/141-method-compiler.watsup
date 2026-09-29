@@ -410,7 +410,7 @@ def $ppdispatch(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpTyp
   -- if $ppfirstclass(phpType7*)
 def $ppdispatch(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppmethod_call_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, phpType20), pcpath ++ [PCFIELD 2], 0, phpType7*, PNUNSUPPORTED "method call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*)
-def $ppdispatch(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "first-class nullsafe method callable")
+def $ppdispatch(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcheck(P, $context_error("Cannot combine nullsafe operator with Closure creation", $source_line(metadata)))
   -- if $ppfirstclass(phpType7*)
 def $ppdispatch(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppmethod_call_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, phpType20), pcpath ++ [PCFIELD 2], 0, phpType7*, PNUNSUPPORTED "nullsafe method call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*)

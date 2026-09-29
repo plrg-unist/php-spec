@@ -59,6 +59,21 @@ completed dynamic class string or method name and all matching target origins
 cannot be reconstructed from the admitted paused state; the protocol records
 this limit explicitly.
 
+First-class source method expressions capture after receiver, class and method
+selection, before any argument send or method entry. Capture checks visibility
+at that point and stores the selected declaring descriptor, called class and
+nonstatic bound receiver in an owned `Closure` object. Rebinding the source
+variable does not change that receiver. Static captures retain their called
+class without retaining an object class selector; a temporary selector stays
+rooted through conversion and is released afterward. Invocation uses the
+captured method body and shared declaring-origin static cells. Its trace frame
+names the declaring class and method directly, with `->` for nonstatic methods
+and `::` for static methods, without an extra `Closure->__invoke` frame.
+Literal source selectors and method names, effective lookup, visibility and
+live captured receiver are rechecked in paused tasks and closure rows. As with
+scoped calls, a correlated substitution of a completed dynamic selector or
+method name cannot be reconstructed after its expression has returned.
+
 Ordinary and nullsafe calls evaluate receiver and computed name in the pinned
 order. A CV receiver can be read after name effects; a fetched property receiver
 already denotes its value. Null skips the active nullsafe chain before names and
@@ -114,8 +129,15 @@ Static/scoped source controls are in `static_method_cases.json` and run through
 states. Their native raw groups are stored in the ignored review archive;
 the [tracked static-method ledger](../../coverage/semantics/static-method-review.json)
 records hashes and recovery instructions.
+First-class source method controls are in `first_class_method_cases.json` and
+use the same runtime runner; `static_method_protocol.py` also checks capture
+provenance and ownership transitions. A separate first-class review ledger
+will record the exact native archive and frozen replay reports.
 
-First-class method callables, interfaces/traits,
+Finite internal Throwable getter and `Closure->__invoke` first-class captures
+currently return explicit `Unsupported` at selection. They remain required
+follow-up work, not a permanent language boundary. A nullsafe first-class
+method expression emits PHP's compile-time rejection. Interface methods and traits,
 static/readonly properties, hooks, user magic methods, destructors,
 closure rebinding services and remaining internal protocols are still open.
 Deferred `new` parameter defaults remain outside the admitted initializer

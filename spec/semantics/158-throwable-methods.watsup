@@ -43,12 +43,18 @@ def $getter_other(text, ptbytes) = true
   -- if $throwable_constructor_kind($ptascii(text)) = eps
 def $getter_other(text, ptbytes) = false -- otherwise
 
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable getter first-class callable"]
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $getter_named(ptbytes) = (pgettermethod)
+  -- if $getter_available(pthrowable.KIND, pgettermethod)
+  -- if $ppfirstclass(phpType7*)
 def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n, BASE $getter_owner(pthrowable.KIND, pgettermethod), METHOD pgettermethod, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $getter_named(ptbytes) = (pgettermethod)
   -- if $getter_available(pthrowable.KIND, pgettermethod)
+  -- if ~$ppfirstclass(phpType7*)
 def $getter_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $ctor_selected_name(pthrowable.KIND, ptbytes)

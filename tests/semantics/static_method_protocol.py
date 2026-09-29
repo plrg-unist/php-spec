@@ -111,6 +111,73 @@ CASES = {
             '(n_receiver) poperand_selector])])',
         ],
     },
+    'first-literal-called': {
+        'source': ('<?php class A {public static function f(){echo static::class;}} '
+                   'class B extends A {} $c=A::f(...); $c();'),
+        'stage': ('S.RESULT = KNOWN (POBJECT n) '
+                  '-- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested '
+                  '-- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)'),
+        'checks': [
+            '$closure_scope_row_valid(S, pclosurescope)',
+            '$class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)',
+            '~$closure_scope_row_valid(S, pclosurescope[.CALLED = porigin_b])',
+        ],
+    },
+    'first-private-origin': {
+        'source': ('<?php class A {private function f(){echo "A";}} '
+                   'class B extends A {public function f(){echo "B";}} '
+                   '$c=(new B)->f(...); $c();'),
+        'stage': ('S.RESULT = KNOWN (POBJECT n) '
+                  '-- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested '
+                  '-- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)'),
+        'checks': [
+            '$closure_scope_row_valid(S, pclosurescope)',
+            '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+            '$class_at(S.CLASSES, porigin_a) = (pclassdesc_a)',
+            '$method_named(pclassdesc_a.METHODS, $ptascii("f")) = (pmethoddesc_a)',
+            '~$closure_scope_row_valid(S[.OBJECTS = $object_set(S.OBJECTS, n, '
+            'METHODCLOSURE pmethoddesc_a.FUNCTION.ORIGIN porigin_site porigin_requested)], '
+            'pclosurescope[.LEXICAL = pmethoddesc_a.OWNER])',
+        ],
+    },
+    'first-convert-name': {
+        'source': ('<?php class A {public static function f(){echo "F";} '
+                   'public static function g(){echo "G";}} $c=A::f(...); $c();'),
+        'stage': ('S.TODO = (METHOD_CONVERT (SCOPED_TARGET porigin_requested porigin_method '
+                  'porigin_called n_receiver? poperand_selector) porigin_site z) :: ptask_tail*'),
+        'checks': [
+            '$call_task_valid(S, METHOD_CONVERT (SCOPED_TARGET porigin_requested '
+            'porigin_method porigin_called n_receiver? poperand_selector) porigin_site z)',
+            '$class_at(S.CLASSES, porigin_requested) = (pclassdesc_a)',
+            '$method_named(pclassdesc_a.METHODS, $ptascii("g")) = (pmethoddesc_g)',
+            '~$call_task_valid(S, METHOD_CONVERT (SCOPED_TARGET porigin_requested '
+            'pmethoddesc_g.FUNCTION.ORIGIN porigin_called n_receiver? poperand_selector) '
+            'porigin_site z)',
+        ],
+    },
+    'first-object-selector-live': {
+        'source': ('<?php class A {public static function f(){echo "F";}} '
+                   '$c=(new A)::f(...); $c();'),
+        'stage': ('S.TODO = (METHOD_CONVERT (SCOPED_TARGET porigin_requested porigin_method '
+                  'porigin_called n_receiver? (KNOWN (POBJECT n_selector))) porigin_site z) :: ptask_tail*'),
+        'checks': [
+            '$call_task_valid(S, METHOD_CONVERT (SCOPED_TARGET porigin_requested '
+            'porigin_method porigin_called n_receiver? (KNOWN (POBJECT n_selector))) porigin_site z)',
+            'HOBJECT n_selector <- $tasks_nodes(S.TODO)',
+        ],
+    },
+    'first-object-selector-released': {
+        'source': ('<?php class A {public static function f(){echo "F";}} '
+                   '$c=(new A)::f(...); $c();'),
+        'stage': ('S.RESULT = KNOWN (POBJECT n_closure) '
+                  '-- if S.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_requested '
+                  '-- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)'),
+        'checks': [
+            '$closure_scope_row_valid(S, pclosurescope)',
+            'pclosurescope.RECEIVER = eps',
+            '$node_children(S, HOBJECT n_closure) = eps',
+        ],
+    },
 }
 
 

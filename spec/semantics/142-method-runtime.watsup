@@ -463,6 +463,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
   -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(CLOSURE_TARGET n, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -473,6 +474,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
   -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $intrinsic_prepare(S_read[.TODO = ptask_tail*], pintrinsic, z, (n))
@@ -483,6 +485,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $intrinsic_prepare(S_re
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)

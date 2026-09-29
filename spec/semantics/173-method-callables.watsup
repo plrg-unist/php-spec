@@ -11,13 +11,16 @@ def $method_capture_site(S, porigin_site, pmethoddesc) = true
   -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
 def $method_capture_site(S, porigin_site, pmethoddesc) = false -- otherwise
 
-def $call_task_valid(S, METHOD_CONVERT pcalltarget porigin_site z) = true
+dec $method_convert_valid(pstate, pcalltarget, porigin, int) : bool
+def $method_convert_valid(S, pcalltarget, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
   -- if $method_capture_site(S, porigin_site, pmethoddesc)
   -- if $call_selected_valid(S, pcalltarget, (porigin_site))
   -- if $call_line_valid(S, (porigin_site), z)
+def $method_convert_valid(S, pcalltarget, porigin_site, z) = false -- otherwise
+def $call_task_valid(S, METHOD_CONVERT pcalltarget porigin_site z) = $method_convert_valid(S, pcalltarget, porigin_site, z)
 def $task_nodes(METHOD_CONVERT pcalltarget porigin_site z) = $target_nodes(pcalltarget)
 
 dec $method_capture_requested(pstate, pcalltarget) : porigin?
@@ -196,5 +199,34 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
   -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure __invoke first-class callable"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure __invoke first-class callable"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure __invoke first-class callable"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure __invoke first-class callable"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
