@@ -1,7 +1,8 @@
 ;; These finite internal classes inherit Exception::__construct or
-;; Error::__construct. ErrorException has a distinct constructor; FiberError
+;; Error::__construct, except ErrorException's distinct constructor. FiberError
 ;; cannot be directly instantiated in the pinned engine.
 def $throwable_constructor_kind(preqbytes) = ("Exception") -- if $ptlc(preqbytes) = $ptascii("exception")
+def $throwable_constructor_kind(preqbytes) = ("ErrorException") -- if $ptlc(preqbytes) = $ptascii("errorexception")
 def $throwable_constructor_kind(preqbytes) = ("ClosedGeneratorException") -- if $ptlc(preqbytes) = $ptascii("closedgeneratorexception")
 def $throwable_constructor_kind(preqbytes) = ("Error") -- if $ptlc(preqbytes) = $ptascii("error")
 def $throwable_constructor_kind(preqbytes) = ("CompileError") -- if $ptlc(preqbytes) = $ptascii("compileerror")
@@ -26,7 +27,10 @@ def $new_class(S, preqbytes, z) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWAB
   -- if pthrowable = {KIND text_kind, ORIGIN S.ORIGIN}
 
 dec $ctor_start(pstate, nat, pctorcallmode, int) : pstate
-def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RECEIVER n, BASE $throwable_base(pthrowable.KIND), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $throwable_constructor_owner(text) : text
+def $throwable_constructor_owner("ErrorException") = "ErrorException"
+def $throwable_constructor_owner(text) = $throwable_base(text) -- otherwise
+def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RECEIVER n, BASE $throwable_constructor_owner(pthrowable.KIND), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
 def $ctor_method_start(S, n, z) = $ctor_start(S[.TODO = ptask_tail*], n, CTOR_METHOD, z)
@@ -76,18 +80,29 @@ def $ctor_destination((preqbytes), n) = (0) -- if preqbytes = $ptascii("message"
 def $ctor_destination((preqbytes), n) = (1) -- if preqbytes = $ptascii("code")
 def $ctor_destination((preqbytes), n) = (2) -- if preqbytes = $ptascii("previous")
 def $ctor_destination(preqbytes?, n) = eps -- otherwise
+dec $ctor_destination_for(text, preqbytes?, nat) : nat?
+def $ctor_destination_for("ErrorException", eps, n) = (n)
+def $ctor_destination_for("ErrorException", (preqbytes), n) = (0) -- if preqbytes = $ptascii("message")
+def $ctor_destination_for("ErrorException", (preqbytes), n) = (1) -- if preqbytes = $ptascii("code")
+def $ctor_destination_for("ErrorException", (preqbytes), n) = (2) -- if preqbytes = $ptascii("severity")
+def $ctor_destination_for("ErrorException", (preqbytes), n) = (3) -- if preqbytes = $ptascii("filename")
+def $ctor_destination_for("ErrorException", (preqbytes), n) = (4) -- if preqbytes = $ptascii("line")
+def $ctor_destination_for("ErrorException", (preqbytes), n) = (5) -- if preqbytes = $ptascii("previous")
+def $ctor_destination_for("ErrorException", (preqbytes), n) = eps
+  -- if ~(preqbytes <- [$ptascii("message"), $ptascii("code"), $ptascii("severity"), $ptascii("filename"), $ptascii("line"), $ptascii("previous")])
+def $ctor_destination_for(text, preqbytes?, n) = $ctor_destination(preqbytes?, n) -- if text =/= "ErrorException"
 dec $ctor_send_check(pstate, pctorcall, preqbytes?, int) : pstate
 def $ctor_send_check(S, pctorcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
-  -- if $ctor_destination((preqbytes), |pctorcall.SENT|) = eps
+  -- if $ctor_destination_for(pctorcall.BASE, (preqbytes), |pctorcall.SENT|) = eps
 def $ctor_send_check(S, pctorcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ $c_string(preqbytes) ++ $ptascii(" overwrites previous argument"), z)
-  -- if $ctor_destination((preqbytes), |pctorcall.SENT|) = (n)
+  -- if $ctor_destination_for(pctorcall.BASE, (preqbytes), |pctorcall.SENT|) = (n)
   -- if $named_slot_at(pctorcall.SENT, n) = NAMED_SENT poperand
 def $ctor_send_check(S, pctorcall, eps, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
   -- if pctorcall.NAMED
 def $ctor_send_check(S, pctorcall, preqbytes?, z) = S -- otherwise
 dec $ctor_sent(pctorcall, poperand, preqbytes?) : pctorcall
 def $ctor_sent(pctorcall, poperand, preqbytes?) = pctorcall[.SENT = $named_slot_set(pctorcall.SENT, n, poperand)][.NAMED = (pctorcall.NAMED \/ preqbytes? =/= eps)]
-  -- if $ctor_destination(preqbytes?, |pctorcall.SENT|) = (n)
+  -- if $ctor_destination_for(pctorcall.BASE, preqbytes?, |pctorcall.SENT|) = (n)
 
 rule PhpStep/ctor-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), CTOR_SEND pctorcall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CTOR_ARGS pctorcall) :: ptask_tail*
@@ -219,9 +234,14 @@ def $ctor_result(CTOR_NEW, n) = POBJECT n
 def $ctor_result(CTOR_METHOD, n) = PNULL
 
 dec $ctor_receive(pstate, pctorcall) : pstate
+dec $error_exception_receive(pstate, pctorcall) : pstate
+def $ctor_receive(S, pctorcall) = $error_exception_receive(S, pctorcall)
+  -- if pctorcall.BASE = "ErrorException"
 def $ctor_receive(S, pctorcall) = $ctor_error(S, pctorcall, "ArgumentCountError", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct() expects at most 3 arguments, ") ++ $decimal_integer(|pctorcall.SENT|) ++ $ptascii(" given"))
+  -- if pctorcall.BASE =/= "ErrorException"
   -- if $(|pctorcall.SENT| > 3)
 def $ctor_receive(S, pctorcall) = $ctor_commit(S_previous, pctorcall, pvalue_message, pvalue_code, pvalue_previous)
+  -- if pctorcall.BASE =/= "ErrorException"
   -- if $(|pctorcall.SENT| <= 3)
   -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
   -- if S_message.COMPLETION = NORMAL
@@ -233,16 +253,19 @@ def $ctor_receive(S, pctorcall) = $ctor_commit(S_previous, pctorcall, pvalue_mes
   -- if S_previous.COMPLETION = NORMAL
   -- if S_previous.RESULT = KNOWN pvalue_previous
 def $ctor_receive(S, pctorcall) = S_message
+  -- if pctorcall.BASE =/= "ErrorException"
   -- if $(|pctorcall.SENT| <= 3)
   -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
   -- if S_message.COMPLETION =/= NORMAL
 def $ctor_receive(S, pctorcall) = S_code
+  -- if pctorcall.BASE =/= "ErrorException"
   -- if $(|pctorcall.SENT| <= 3)
   -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
   -- if S_message.COMPLETION = NORMAL
   -- if S_code = $ctor_code_value(S_message, pctorcall, $named_slot_at(pctorcall.SENT, 1))
   -- if S_code.COMPLETION =/= NORMAL
 def $ctor_receive(S, pctorcall) = S_previous
+  -- if pctorcall.BASE =/= "ErrorException"
   -- if $(|pctorcall.SENT| <= 3)
   -- if S_message = $ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0))
   -- if S_message.COMPLETION = NORMAL

@@ -79,7 +79,7 @@ def $closure_live_object_valid(S, n) = true
   -- if $throwable_kind(pthrowable.KIND)
   -- if $throwable_slots_valid(S, n, pthrowable)
   -- if pthrowable.ORIGIN = (porigin)
-  -- if $throwable_field(S, n, "file") = PSTRING $call_sourcefile(S.FILES, porigin)
+  -- if pthrowable.KIND = "ErrorException" \/ $throwable_field(S, n, "file") = PSTRING $call_sourcefile(S.FILES, porigin)
   -- if $throwable_source_origin_valid(S, n, pthrowable)
   -- if $heap_valid($heap_graph(S))
 

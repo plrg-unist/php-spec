@@ -16,6 +16,7 @@ dec $throwable_line_default(text) : ppropdefault
 def $throwable_line_default("Error") = PROP_UNINITIALIZED
 def $throwable_line_default("Exception") = PROP_LITERAL (PINT 0)
 dec $throwable_layout(text) : ppropertydesc*
+def $throwable_layout("ErrorException") = $throwable_layout("Exception") ++ [$throwable_descriptor("ErrorException", "severity", PROPERTY_PROTECTED, [(PTBRANCH ([PTBUILTIN "int"]))], PROP_LITERAL (PINT 1))]
 def $throwable_layout(text) = [
   $throwable_descriptor(text_base, "message", PROPERTY_PROTECTED, eps, PROP_LITERAL (PSTRING eps)),
   $throwable_descriptor(text_base, "string", PROPERTY_PRIVATE, [(PTBRANCH ([PTBUILTIN "string"]))], PROP_LITERAL (PSTRING eps)),
@@ -26,11 +27,14 @@ def $throwable_layout(text) = [
   $throwable_descriptor(text_base, "previous", PROPERTY_PRIVATE, [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTCLASS $ptascii("Throwable")]))], PROP_NULL)
 ]
   -- if $throwable_kind(text)
+  -- if text =/= "ErrorException"
   -- if text_base = $throwable_base(text)
 
 def $property_declaring_name(pclassdesc*, INTERNAL_PROPERTY text ptbytes) = $ptascii(text)
   -- if text = "Exception" \/ text = "Error"
   -- if ptbytes <- [$ptascii("message"), $ptascii("string"), $ptascii("code"), $ptascii("file"), $ptascii("line"), $ptascii("trace"), $ptascii("previous")]
+def $property_declaring_name(pclassdesc*, INTERNAL_PROPERTY "ErrorException" ptbytes) = $ptascii("ErrorException")
+  -- if ptbytes = $ptascii("severity")
 
 dec $throwable_slot(text, text, pvalue) : ppropertyslot
 def $throwable_slot(text, text_field, pvalue) = {DECL (INTERNAL_PROPERTY $throwable_base(text) $ptascii(text_field)), NAME $throwable_key($throwable_base(text), text_field), STATE PROP_VALUE (DIRECT pvalue)}
@@ -44,7 +48,11 @@ def $throwable_slots_values(text, preqbytes_message, preqbytes_string, z_code, p
   $throwable_slot(text, "trace", PARRAY n_trace),
   $throwable_slot(text, "previous", pvalue_previous)
 ]
+dec $throwable_severity_slot(int) : ppropertyslot
+def $throwable_severity_slot(z) = {DECL (INTERNAL_PROPERTY "ErrorException" $ptascii("severity")), NAME $throwable_key("ErrorException", "severity"), STATE PROP_VALUE (DIRECT (PINT z))}
+def $throwable_slots("ErrorException", preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values("ErrorException", preqbytes_message, eps, 0, preqbytes_file, z, n_trace, pvalue_previous) ++ [$throwable_severity_slot(1)]
 def $throwable_slots(text, preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values(text, preqbytes_message, eps, 0, preqbytes_file, z, n_trace, pvalue_previous)
+  -- if text =/= "ErrorException"
 
 def $throwable_field(S, n, text_field) = pvalue
   -- if S.OBJECTS[n] = THROWABLE pthrowable
@@ -75,6 +83,11 @@ def $throwable_constructor_field(S, n, text_field, pvalue) = S[.OBJECTPROPS = $o
   -- if text_field <- ["message", "code", "previous"]
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
+def $throwable_constructor_field(S, n, text_field, pvalue) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(ppropertyslot_list*, $throwable_key("ErrorException", text_field), PROP_VALUE (DIRECT pvalue)))]
+  -- if text_field <- ["file", "line", "severity"]
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if pthrowable.KIND = "ErrorException"
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
 dec $throwable_string_cache(pstate, nat, preqbytes) : pstate
 def $throwable_string_cache(S, n, preqbytes) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(ppropertyslot_list*, $throwable_key($throwable_base(pthrowable.KIND), "string"), PROP_VALUE (DIRECT (PSTRING preqbytes))))]
   -- if S.OBJECTS[n] = THROWABLE pthrowable
@@ -83,6 +96,24 @@ def $throwable_string_cache(S, n, preqbytes) = S[.OBJECTPROPS = $objectprops_set
 ;; Constructors may change message/code/previous; string cache changes only
 ;; through __toString. Trace remains the allocation-time array graph.
 dec $trace_graph_valid(pstate, nat) : bool
+def $throwable_slots_valid(S, n, pthrowable) = true
+  -- if pthrowable.KIND = "ErrorException"
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if ~pobjectprops.MATERIALIZED
+  -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
+  -- if $throwable_field(S, n, "string") = PSTRING preqbytes_string
+  -- if $throwable_field(S, n, "code") = PINT z_code
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+  -- if $trace_graph_valid(S, n_trace)
+  -- if pvalue_previous = $throwable_field(S, n, "previous")
+  -- if $throwable_previous_slot_valid(S, pvalue_previous)
+  -- if $throwable_field(S, n, "severity") = PINT z_severity
+  -- if pobjectprops.SLOTS = $throwable_slots_values("ErrorException", preqbytes_message, preqbytes_string, z_code, preqbytes_file, z, n_trace, pvalue_previous) ++ [$throwable_severity_slot(z_severity)]
+  -- if $property_slots_valid(S, $throwable_layout("ErrorException"), pobjectprops.SLOTS)
 def $throwable_slots_valid(S, n, pthrowable) = true
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if ~pobjectprops.MATERIALIZED
@@ -100,6 +131,7 @@ def $throwable_slots_valid(S, n, pthrowable) = true
   -- if $throwable_previous_slot_valid(S, pvalue_previous)
   -- if pobjectprops.SLOTS = $throwable_slots_values(pthrowable.KIND, preqbytes_message, preqbytes_string, z_code, preqbytes_file, z, n_trace, pvalue_previous)
   -- if $property_slots_valid(S, $throwable_layout(pthrowable.KIND), pobjectprops.SLOTS)
+  -- if pthrowable.KIND =/= "ErrorException"
 def $throwable_slots_valid(S, n, pthrowable) = false -- otherwise
 
 def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($throwable_slots_valid(S, pobjectprops.OBJECT, pthrowable) /\ $objectprops_valid(S, pobjectprops_tail*))

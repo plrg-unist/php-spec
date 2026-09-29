@@ -1,0 +1,83 @@
+;; ErrorException keeps Exception's seven slots and appends its own severity.
+;; Its six-argument constructor validates every value before any field write.
+dec $ee_severity_value(pstate, pctorcall, pnamedslot) : pstate
+def $ee_severity_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN (PINT 1)]
+def $ee_severity_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = $diagnostic(S, "Deprecated", $ptascii("ErrorException::__construct(): Passing null to parameter #3 ($severity) of type int is deprecated"), pctorcall.LINE)[.RESULT = KNOWN (PINT 0)]
+def $ee_severity_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $typed_apply(S, ptypeconversion, pctorcall.LINE)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+def $ee_severity_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 3, $ptascii("severity"), $ptascii("int"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = TYPEREJECT
+
+dec $ee_filename_value(pstate, pctorcall, pnamedslot) : pstate
+def $ee_filename_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN PNULL]
+def $ee_filename_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = S[.RESULT = KNOWN PNULL]
+def $ee_filename_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $typed_apply(S, ptypeconversion, pctorcall.LINE)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "string"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+def $ee_filename_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 4, $ptascii("filename"), $ptascii("?string"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "string"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = TYPEREJECT
+
+dec $ee_line_value(pstate, pctorcall, pnamedslot) : pstate
+def $ee_line_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN PNULL]
+def $ee_line_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = S[.RESULT = KNOWN PNULL]
+def $ee_line_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $typed_apply(S, ptypeconversion, pctorcall.LINE)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+def $ee_line_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 5, $ptascii("line"), $ptascii("?int"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = TYPEREJECT
+
+dec $ee_previous_value(pstate, pctorcall, pnamedslot) : pstate
+def $ee_previous_value(S, pctorcall, NAMED_HOLE) = S[.RESULT = KNOWN PNULL]
+def $ee_previous_value(S, pctorcall, NAMED_SENT (KNOWN PNULL)) = S[.RESULT = KNOWN PNULL]
+def $ee_previous_value(S, pctorcall, NAMED_SENT (KNOWN (POBJECT n))) = S[.RESULT = KNOWN (POBJECT n)]
+  -- if $throwable_object(S, n)
+def $ee_previous_value(S, pctorcall, NAMED_SENT (KNOWN pvalue)) = $ctor_type_error(S, pctorcall, 6, $ptascii("previous"), $ptascii("?Throwable"), pvalue)
+  -- if pvalue =/= PNULL
+  -- if ~$ctor_previous_acceptable(S, pvalue)
+
+dec $ee_validate(pstate, pctorcall, nat, pvalue*) : (pstate, pvalue*)
+dec $ee_continue(pstate, pctorcall, nat, pvalue*) : (pstate, pvalue*)
+def $ee_continue(S, pctorcall, n, pvalue*) = $ee_validate(S, pctorcall, n, pvalue* ++ [pvalue_step])
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue_step
+def $ee_continue(S, pctorcall, n, pvalue*) = (S, pvalue*) -- otherwise
+def $ee_validate(S, pctorcall, 0, pvalue*) = $ee_continue($ctor_message_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 0)), pctorcall, 1, pvalue*)
+def $ee_validate(S, pctorcall, 1, pvalue*) = $ee_continue($ctor_code_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 1)), pctorcall, 2, pvalue*)
+def $ee_validate(S, pctorcall, 2, pvalue*) = $ee_continue($ee_severity_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 2)), pctorcall, 3, pvalue*)
+def $ee_validate(S, pctorcall, 3, pvalue*) = $ee_continue($ee_filename_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 3)), pctorcall, 4, pvalue*)
+def $ee_validate(S, pctorcall, 4, pvalue*) = $ee_continue($ee_line_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 4)), pctorcall, 5, pvalue*)
+def $ee_validate(S, pctorcall, 5, pvalue*) = $ee_continue($ee_previous_value(S, pctorcall, $named_slot_at(pctorcall.SENT, 5)), pctorcall, 6, pvalue*)
+def $ee_validate(S, pctorcall, 6, pvalue*) = (S, pvalue*)
+
+dec $ee_commit_location(pstate, pctorcall, pvalue, pvalue) : pstate
+def $ee_commit_location(S, pctorcall, PSTRING preqbytes, PINT z) = $throwable_constructor_field($throwable_constructor_field(S, pctorcall.RECEIVER, "file", PSTRING preqbytes), pctorcall.RECEIVER, "line", PINT z)
+def $ee_commit_location(S, pctorcall, PSTRING preqbytes, PNULL) = $throwable_constructor_field($throwable_constructor_field(S, pctorcall.RECEIVER, "file", PSTRING preqbytes), pctorcall.RECEIVER, "line", PINT 0)
+def $ee_commit_location(S, pctorcall, PNULL, PINT z) = $throwable_constructor_field(S, pctorcall.RECEIVER, "line", PINT z)
+def $ee_commit_location(S, pctorcall, PNULL, PNULL) = S
+
+dec $ee_commit(pstate, pctorcall, pvalue*) : pstate
+def $ee_commit(S, pctorcall, [PSTRING preqbytes_message, PINT z_code, PINT z_severity, pvalue_filename, pvalue_line, pvalue_previous]) = S_location[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_message = $ctor_commit_field(S, pctorcall, "message", PSTRING preqbytes_message, $(|pctorcall.SENT| > 0))
+  -- if S_code = $ctor_commit_field(S_message, pctorcall, "code", PINT z_code, $(z_code =/= 0))
+  -- if S_previous = $ctor_commit_field(S_code, pctorcall, "previous", pvalue_previous, pvalue_previous =/= PNULL)
+  -- if S_severity = $throwable_constructor_field(S_previous, pctorcall.RECEIVER, "severity", PINT z_severity)
+  -- if S_location = $ee_commit_location(S_severity, pctorcall, pvalue_filename, pvalue_line)
+  -- if pvalue_result = $ctor_result(pctorcall.MODE, pctorcall.RECEIVER)
+
+def $error_exception_receive(S, pctorcall) = $ctor_error(S, pctorcall, "ArgumentCountError", $ptascii("ErrorException::__construct() expects at most 6 arguments, ") ++ $decimal_integer(|pctorcall.SENT|) ++ $ptascii(" given"))
+  -- if $(|pctorcall.SENT| > 6)
+def $error_exception_receive(S, pctorcall) = $ee_commit(S_valid, pctorcall, pvalue*)
+  -- if $(|pctorcall.SENT| <= 6)
+  -- if (S_valid, pvalue*) = $ee_validate(S, pctorcall, 0, eps)
+  -- if S_valid.COMPLETION = NORMAL
+def $error_exception_receive(S, pctorcall) = S_invalid
+  -- if $(|pctorcall.SENT| <= 6)
+  -- if (S_invalid, pvalue*) = $ee_validate(S, pctorcall, 0, eps)
+  -- if S_invalid.COMPLETION =/= NORMAL

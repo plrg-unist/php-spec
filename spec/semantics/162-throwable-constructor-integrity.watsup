@@ -6,7 +6,7 @@ def $ctor_selected(S, pctorcall) = true
   -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pctorcall.RECEIVER] = THROWABLE pthrowable
-  -- if pctorcall.BASE = $throwable_base(pthrowable.KIND)
+  -- if pctorcall.BASE = $throwable_constructor_owner(pthrowable.KIND)
   -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
   -- if pctorcall.MODE = CTOR_NEW
   -- if pthrowable.ORIGIN = (pctorcall.SITE)
@@ -19,7 +19,7 @@ def $ctor_selected(S, pctorcall) = true
   -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pctorcall.RECEIVER] = THROWABLE pthrowable
-  -- if pctorcall.BASE = $throwable_base(pthrowable.KIND)
+  -- if pctorcall.BASE = $throwable_constructor_owner(pthrowable.KIND)
   -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
   -- if pctorcall.MODE = CTOR_METHOD
   -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
@@ -28,7 +28,7 @@ def $ctor_selected(S, pctorcall) = true
   -- if $(pctorcall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pctorcall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pctorcall.RECEIVER] = THROWABLE pthrowable
-  -- if pctorcall.BASE = $throwable_base(pthrowable.KIND)
+  -- if pctorcall.BASE = $throwable_constructor_owner(pthrowable.KIND)
   -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
   -- if pctorcall.MODE = CTOR_METHOD
   -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
@@ -52,10 +52,10 @@ def $ctor_slots_end_sent(pnamedslot*) = false -- otherwise
 dec $ctor_slots_mode(pnamedslot*, bool) : bool
 def $ctor_slots_mode(pnamedslot*, false) = $ctor_slots_without_holes(pnamedslot*)
 def $ctor_slots_mode(pnamedslot*, true) = ($ctor_slots_known(pnamedslot*) /\ $ctor_slots_end_sent(pnamedslot*))
-dec $ctor_source_slots(phpType7*, pnamedslot*) : pnamedslot*
-def $ctor_source_slots(eps, pnamedslot*) = pnamedslot*
-def $ctor_source_slots((NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnamedslot*) = $ctor_source_slots(phpType7*, $named_slot_set(pnamedslot*, n, KNOWN PNULL))
-  -- if $ctor_destination($exit_argument_name(phpType3), |pnamedslot*|) = (n)
+dec $ctor_source_slots(text, phpType7*, pnamedslot*) : pnamedslot*
+def $ctor_source_slots(text_owner, eps, pnamedslot*) = pnamedslot*
+def $ctor_source_slots(text_owner, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnamedslot*) = $ctor_source_slots(text_owner, phpType7*, $named_slot_set(pnamedslot*, n, KNOWN PNULL))
+  -- if $ctor_destination_for(text_owner, $exit_argument_name(phpType3), |pnamedslot*|) = (n)
 dec $ctor_source_named(phpType7*) : bool
 def $ctor_source_named(eps) = false
 def $ctor_source_named((NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = ($exit_argument_name(phpType3) =/= eps \/ $ctor_source_named(phpType7*))
@@ -68,7 +68,7 @@ def $ctor_sent_shape(S, pctorcall, n_current) = true
   -- if ~$call_unpack_present(phpType7_prefix*)
   -- if n_current = 0
   -- if $ctor_slots_mode(pctorcall.SENT, pctorcall.NAMED)
-  -- if $clone_slot_shape(pctorcall.SENT) = $clone_slot_shape($ctor_source_slots(phpType7_prefix*, eps))
+  -- if $clone_slot_shape(pctorcall.SENT) = $clone_slot_shape($ctor_source_slots(pctorcall.BASE, phpType7_prefix*, eps))
   -- if pctorcall.NAMED = $ctor_source_named(phpType7_prefix*)
 def $ctor_sent_shape(S, pctorcall, n_current) = true
   -- if $ctor_arguments(S, pctorcall.SITE) = PCALLARGUMENTS phpType7* n_field
