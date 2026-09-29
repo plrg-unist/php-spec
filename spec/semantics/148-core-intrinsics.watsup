@@ -102,12 +102,12 @@ def $exit_method_receiver(S, pexitcall) = false -- otherwise
 def $exit_error(S, pexitcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pexitcall.SITE)], text, preqbytes, pexitcall.LINE, [ptraceframe, ptraceframe_invoke] ++ $eval_exception_trace(S))
   -- if $exit_method_receiver(S, pexitcall)
   -- if pvalue* = $trace_extra(S, pexitcall.SENT)
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $intrinsic_name(pexitcall.KIND), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
-  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, FUNCTION $intrinsic_name(pexitcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 def $exit_error(S, pexitcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pexitcall.SITE)], text, preqbytes, pexitcall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
   -- if ~$exit_method_receiver(S, pexitcall)
   -- if pvalue* = $trace_extra(S, pexitcall.SENT)
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, NAME $intrinsic_name(pexitcall.KIND), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pexitcall.SITE), LINE pexitcall.LINE, FUNCTION $intrinsic_name(pexitcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $exit_strict(pstate, porigin) : bool
 def $exit_strict(S, PORIGIN n pcpath) = pcode.STRICT
   -- if $code_at(S.CODE, n) = (pcode)

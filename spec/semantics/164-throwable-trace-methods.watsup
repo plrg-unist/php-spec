@@ -1,0 +1,80 @@
+;; All renderers read the same array graph held by the internal trace property.
+dec $trace_array_field(pstate, nat, preqbytes) : pvalue
+def $trace_array_field(S, n, preqbytes) = $entry_value(S, pitem)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KSTRING preqbytes) = (pitem)
+
+dec $trace_argument_prefix(pkey) : preqbytes
+def $trace_argument_prefix(KINT z) = eps
+def $trace_argument_prefix(KSTRING preqbytes) = preqbytes ++ $ptascii(": ")
+dec $trace_array_arguments(pstate, pentry*) : preqbytes
+def $trace_array_arguments(S, eps) = eps
+def $trace_array_arguments(S, [ENTRY pkey pitem]) = $trace_argument_prefix(pkey) ++ $trace_value_text(S, $entry_value(S, pitem))
+def $trace_array_arguments(S, (ENTRY pkey pitem) :: pentry_tail*) = $trace_argument_prefix(pkey) ++ $trace_value_text(S, $entry_value(S, pitem)) ++ $ptascii(", ") ++ $trace_array_arguments(S, pentry_tail*)
+  -- if pentry_tail* =/= eps
+
+dec $trace_frame_call(pstate, nat) : preqbytes
+def $trace_frame_call(S, n_frame) = preqbytes_class ++ preqbytes_type ++ preqbytes_function
+  -- if $trace_array_field(S, n_frame, $ptascii("class")) = PSTRING preqbytes_class
+  -- if $trace_array_field(S, n_frame, $ptascii("type")) = PSTRING preqbytes_type
+  -- if $trace_array_field(S, n_frame, $ptascii("function")) = PSTRING preqbytes_function
+def $trace_frame_call(S, n_frame) = preqbytes_function
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("class")) = eps
+  -- if $trace_array_field(S, n_frame, $ptascii("function")) = PSTRING preqbytes_function
+
+dec $trace_frame_arguments(pstate, nat) : preqbytes
+def $trace_frame_arguments(S, n_frame) = $trace_array_arguments(S, S.ARRAYS[n_args].ITEMS)
+  -- if $trace_array_field(S, n_frame, $ptascii("args")) = PARRAY n_args
+def $trace_frame_arguments(S, n_frame) = eps
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("args")) = eps
+dec $trace_frame_line(pstate, nat, nat) : preqbytes
+def $trace_frame_line(S, n_frame, n_index) = $ptascii("#") ++ $ntunsigned(n_index) ++ [32] ++ preqbytes_file ++ [40] ++ $decimal_integer(z_line) ++ $ptascii("): ") ++ $trace_frame_call(S, n_frame) ++ [40] ++ $trace_frame_arguments(S, n_frame) ++ [41,10]
+  -- if $trace_array_field(S, n_frame, $ptascii("file")) = PSTRING preqbytes_file
+  -- if $trace_array_field(S, n_frame, $ptascii("line")) = PINT z_line
+dec $trace_array_lines(pstate, pentry*, nat) : preqbytes
+def $trace_array_lines(S, eps, n_index) = eps
+def $trace_array_lines(S, (ENTRY pkey (DIRECT (PARRAY n_frame))) :: pentry_tail*, n_index) = $trace_frame_line(S, n_frame, n_index) ++ $trace_array_lines(S, pentry_tail*, $(n_index + 1))
+dec $trace_array_string(pstate, nat) : preqbytes
+def $trace_array_string(S, n_trace) = $trace_array_lines(S, S.ARRAYS[n_trace].ITEMS, 0) ++ $ptascii("#") ++ $ntunsigned(|S.ARRAYS[n_trace].ITEMS|) ++ $ptascii(" {main}")
+
+dec $throwable_single_string(pstate, nat) : preqbytes
+dec $trace_called_in(preqbytes) : bool
+def $trace_called_in(eps) = false
+def $trace_called_in(0 :: n_tail*) = false
+def $trace_called_in(n*) = true -- if n*[0:12] = $ptascii(", called in ")
+def $trace_called_in(n :: n_tail*) = $trace_called_in(n_tail*)
+  -- if n =/= 0
+  -- if (n :: n_tail*)[0:12] =/= $ptascii(", called in ")
+dec $trace_display_message(text, preqbytes) : preqbytes
+def $trace_display_message(text, preqbytes) = preqbytes ++ $ptascii(" and defined")
+  -- if text <- ["TypeError", "ArgumentCountError"]
+  -- if $trace_called_in(preqbytes)
+def $trace_display_message(text, preqbytes) = preqbytes -- otherwise
+def $throwable_single_string(S, n) = $ptascii(pthrowable.KIND) ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_field(S, n, "message") = PSTRING eps
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z_line
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+def $throwable_single_string(S, n) = $ptascii(pthrowable.KIND) ++ $ptascii(": ") ++ $trace_display_message(pthrowable.KIND, preqbytes_message) ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
+  -- if preqbytes_message =/= eps
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z_line
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+dec $throwable_chain_string(pstate, nat, nat*) : preqbytes
+def $throwable_chain_string(S, n, nat_seen*) = $throwable_chain_string(S, n_previous, n :: nat_seen*) ++ [10,10] ++ $ptascii("Next ") ++ $throwable_single_string(S, n)
+  -- if $throwable_previous_id(S, n) = (n_previous)
+  -- if ~(n_previous <- nat_seen*)
+  -- if n_previous =/= n
+def $throwable_chain_string(S, n, nat_seen*) = $throwable_single_string(S, n) -- otherwise
+
+def $trace_method_body(S, pgettercall) = S[.RESULT = KNOWN $throwable_field(S, pgettercall.RECEIVER, "trace")]
+  -- if pgettercall.METHOD = GET_TRACE
+def $trace_method_body(S, pgettercall) = S[.RESULT = KNOWN (PSTRING $trace_array_string(S, n_trace))]
+  -- if pgettercall.METHOD = GET_TRACE_STRING
+  -- if $throwable_field(S, pgettercall.RECEIVER, "trace") = PARRAY n_trace
+def $throwable_stringify(S, n) = $throwable_string_cache(S, n, preqbytes)[.RESULT = KNOWN (PSTRING preqbytes)]
+  -- if preqbytes = $throwable_chain_string(S, n, [n])
+def $trace_method_body(S, pgettercall) = $throwable_stringify(S, pgettercall.RECEIVER)
+  -- if pgettercall.METHOD = GET_TO_STRING

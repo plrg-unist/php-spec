@@ -760,7 +760,7 @@ def $wrapper_values(S, eps) = eps
 def $wrapper_values(S, NAMED_HOLE :: pnamedslot*) = PNULL :: $wrapper_values(S, pnamedslot*)
 def $wrapper_values(S, (NAMED_SENT poperand) :: pnamedslot*) = $variadic_operand_value(S, poperand) :: $wrapper_values(S, pnamedslot*)
 def $wrapper_trace(S, pcallcontext) = eps -- if pcallcontext.WRAPPER = eps
-def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME $ptascii("Closure->__invoke"), VALUES (pvalue* ++ $named_values(S, pnamedargs.NAMED)), ARGTEXT $named_trace_arguments(S, pvalue*, pnamedargs.NAMED)}]
+def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
   -- if pcallcontext.WRAPPER = (pnamedargs)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if pvalue* = $wrapper_values(S, pnamedargs.SLOTS)

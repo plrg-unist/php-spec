@@ -1,13 +1,13 @@
 ;; Internal declaration identities are not fabricated source occurrences.
-;; Scalar and previous fields have exactly one backing in OBJECTPROPS. TRACE
-;; remains opaque allocation metadata until structured trace arrays are modeled.
+;; Every live Throwable field has exactly one backing in OBJECTPROPS.
 def $throwable_base("Exception") = "Exception"
 def $throwable_base("ErrorException") = "Exception"
 def $throwable_base("ClosedGeneratorException") = "Exception"
 def $throwable_base(text) = "Error" -- otherwise
 
 dec $throwable_key(text, text) : ptbytes
-def $throwable_key(text_base, "previous") = [0] ++ $ptascii(text_base) ++ [0] ++ $ptascii("previous")
+def $throwable_key(text_base, text_field) = [0] ++ $ptascii(text_base) ++ [0] ++ $ptascii(text_field)
+  -- if text_field <- ["string", "trace", "previous"]
 def $throwable_key(text_base, text_field) = [0, 42, 0] ++ $ptascii(text_field) -- otherwise
 
 dec $throwable_descriptor(text, text, ppropertyvisibility, ptbranch*, ppropdefault) : ppropertydesc
@@ -18,9 +18,11 @@ def $throwable_line_default("Exception") = PROP_LITERAL (PINT 0)
 dec $throwable_layout(text) : ppropertydesc*
 def $throwable_layout(text) = [
   $throwable_descriptor(text_base, "message", PROPERTY_PROTECTED, eps, PROP_LITERAL (PSTRING eps)),
+  $throwable_descriptor(text_base, "string", PROPERTY_PRIVATE, [(PTBRANCH ([PTBUILTIN "string"]))], PROP_LITERAL (PSTRING eps)),
   $throwable_descriptor(text_base, "code", PROPERTY_PROTECTED, eps, PROP_LITERAL (PINT 0)),
   $throwable_descriptor(text_base, "file", PROPERTY_PROTECTED, [(PTBRANCH ([PTBUILTIN "string"]))], PROP_LITERAL (PSTRING eps)),
   $throwable_descriptor(text_base, "line", PROPERTY_PROTECTED, [(PTBRANCH ([PTBUILTIN "int"]))], $throwable_line_default(text_base)),
+  $throwable_descriptor(text_base, "trace", PROPERTY_PRIVATE, [(PTBRANCH ([PTBUILTIN "array"]))], PROP_UNINITIALIZED),
   $throwable_descriptor(text_base, "previous", PROPERTY_PRIVATE, [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTCLASS $ptascii("Throwable")]))], PROP_NULL)
 ]
   -- if $throwable_kind(text)
@@ -28,19 +30,21 @@ def $throwable_layout(text) = [
 
 def $property_declaring_name(pclassdesc*, INTERNAL_PROPERTY text ptbytes) = $ptascii(text)
   -- if text = "Exception" \/ text = "Error"
-  -- if ptbytes <- [$ptascii("message"), $ptascii("code"), $ptascii("file"), $ptascii("line"), $ptascii("previous")]
+  -- if ptbytes <- [$ptascii("message"), $ptascii("string"), $ptascii("code"), $ptascii("file"), $ptascii("line"), $ptascii("trace"), $ptascii("previous")]
 
 dec $throwable_slot(text, text, pvalue) : ppropertyslot
 def $throwable_slot(text, text_field, pvalue) = {DECL (INTERNAL_PROPERTY $throwable_base(text) $ptascii(text_field)), NAME $throwable_key($throwable_base(text), text_field), STATE PROP_VALUE (DIRECT pvalue)}
-dec $throwable_slots_values(text, preqbytes, int, preqbytes, int, pvalue) : ppropertyslot*
-def $throwable_slots_values(text, preqbytes_message, z_code, preqbytes_file, z_line, pvalue_previous) = [
+dec $throwable_slots_values(text, preqbytes, preqbytes, int, preqbytes, int, nat, pvalue) : ppropertyslot*
+def $throwable_slots_values(text, preqbytes_message, preqbytes_string, z_code, preqbytes_file, z_line, n_trace, pvalue_previous) = [
   $throwable_slot(text, "message", PSTRING preqbytes_message),
+  $throwable_slot(text, "string", PSTRING preqbytes_string),
   $throwable_slot(text, "code", PINT z_code),
   $throwable_slot(text, "file", PSTRING preqbytes_file),
   $throwable_slot(text, "line", PINT z_line),
+  $throwable_slot(text, "trace", PARRAY n_trace),
   $throwable_slot(text, "previous", pvalue_previous)
 ]
-def $throwable_slots(text, preqbytes_message, preqbytes_file, z, pvalue_previous) = $throwable_slots_values(text, preqbytes_message, 0, preqbytes_file, z, pvalue_previous)
+def $throwable_slots(text, preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values(text, preqbytes_message, eps, 0, preqbytes_file, z, n_trace, pvalue_previous)
 
 def $throwable_field(S, n, text_field) = pvalue
   -- if S.OBJECTS[n] = THROWABLE pthrowable
@@ -71,20 +75,30 @@ def $throwable_constructor_field(S, n, text_field, pvalue) = S[.OBJECTPROPS = $o
   -- if text_field <- ["message", "code", "previous"]
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
+dec $throwable_string_cache(pstate, nat, preqbytes) : pstate
+def $throwable_string_cache(S, n, preqbytes) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, $property_slot_set(ppropertyslot_list*, $throwable_key($throwable_base(pthrowable.KIND), "string"), PROP_VALUE (DIRECT (PSTRING preqbytes))))]
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_list*)
 
-;; Constructors may change message/code/previous but retain one exact internal
-;; slot layout. Generated allocation establishes stricter defaults locally.
+;; Constructors may change message/code/previous; string cache changes only
+;; through __toString. Trace remains the allocation-time array graph.
+dec $trace_graph_valid(pstate, nat) : bool
 def $throwable_slots_valid(S, n, pthrowable) = true
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if ~pobjectprops.MATERIALIZED
   -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
+  -- if $throwable_field(S, n, "string") = PSTRING preqbytes_string
   -- if $throwable_field(S, n, "code") = PINT z_code
   -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
   -- if $throwable_field(S, n, "line") = PINT z
   -- if $(z > 0)
+  -- if $throwable_field(S, n, "trace") = PARRAY n_trace
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+  -- if $trace_graph_valid(S, n_trace)
   -- if pvalue_previous = $throwable_field(S, n, "previous")
   -- if $throwable_previous_slot_valid(S, pvalue_previous)
-  -- if pobjectprops.SLOTS = $throwable_slots_values(pthrowable.KIND, preqbytes_message, z_code, preqbytes_file, z, pvalue_previous)
+  -- if pobjectprops.SLOTS = $throwable_slots_values(pthrowable.KIND, preqbytes_message, preqbytes_string, z_code, preqbytes_file, z, n_trace, pvalue_previous)
   -- if $property_slots_valid(S, $throwable_layout(pthrowable.KIND), pobjectprops.SLOTS)
 def $throwable_slots_valid(S, n, pthrowable) = false -- otherwise
 

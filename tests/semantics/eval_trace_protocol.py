@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inspect source-derived eval exception frames while getTrace is unsupported."""
+"""Inspect source-derived eval exception frame arrays."""
 import base64
 import hashlib
 import json
@@ -88,15 +88,19 @@ def main():
             'n_object = $(|S_done.OBJECTS| - 1)',
             'S_done.OBJECTS[n_object] = THROWABLE pthrowable',
             'pthrowable.KIND = ' + json.dumps(kind),
-            'pthrowable.TRACE = [' + ','.join('ptraceframe_' + str(i) for i in range(len(frame_names))) + ']',
+            '$throwable_field(S_done,n_object,"trace") = PARRAY n_trace',
+            '$trace_graph_valid(S_done,n_trace)',
+            'S_done.ARRAYS[n_trace].ITEMS = [' + ','.join('ENTRY (KINT ' + str(i) + ') (DIRECT (PARRAY n_frame_' + str(i) + '))' for i in range(len(frame_names))) + ']',
         ]
         for index, frame_name in enumerate(frame_names):
-            frame = 'ptraceframe_' + str(index)
+            frame = 'n_frame_' + str(index)
             expected_file = ('pevalcontext.FILE' if name == 'function-defined-by-eval' and index == 0
                              else '$call_sourcefile(S.FILES, pevalcontext.SITE)')
-            conditions.extend([frame + '.NAME = $ptascii(' + json.dumps(frame_name) + ')',
-                               frame + '.FILE = ' + expected_file,
-                               frame + '.LINE = 1'])
+            conditions.extend(['$trace_array_field(S_done,' + frame + ',$ptascii("function")) = PSTRING $ptascii(' + json.dumps(frame_name) + ')',
+                               '$trace_array_field(S_done,' + frame + ',$ptascii("file")) = PSTRING ' + expected_file,
+                               '$trace_array_field(S_done,' + frame + ',$ptascii("line")) = PINT 1'])
+            if frame_name == 'eval':
+                conditions.append('$entry_lookup(S_done.ARRAYS[' + frame + '].ITEMS,KSTRING $ptascii("args")) = eps')
         fixture = directory / 'protocol.watsup'
         fixture.write_text('dec $main() : bool\ndef $main() = true\n' + ''.join(
                                '  -- if ' + condition + '\n' for condition in conditions))

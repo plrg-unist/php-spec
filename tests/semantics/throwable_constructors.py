@@ -46,8 +46,8 @@ CASES = [
     ('receiver-rebind', '<?php try{1/0;}catch(Error $e){}echo $e->__construct($e=5)===null;', 'agreement'),
     ('sent-object-rebind', '<?php $p=new Error("P");function kill(&$x){$x=null;return 0;}$e=new Exception(previous:$p,code:kill($p));echo $e->getPrevious()->getMessage(),"|",$p===null;', 'agreement'),
     ('method-null-return', '<?php $e=new Exception("old");$r=$e->__construct("new");echo $r===null,"|",$e->getMessage();', 'agreement'),
-    ('trace-future', '<?php $e=new Exception("x");$e->getTrace();', 'unsupported'),
-    ('string-future', '<?php $e=new Exception("x");$e->__toString();', 'unsupported'),
+    ('trace-allocated', '<?php $e=new Exception("x");$e->getTrace();', 'agreement'),
+    ('string-render', '<?php $e=new Exception("x");$e->__toString();', 'agreement'),
     ('errorexception-override', '<?php new ErrorException("x",1,2,"f",3);', 'unsupported'),
 ]
 

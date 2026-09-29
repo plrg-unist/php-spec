@@ -25,7 +25,6 @@ rule PhpStep/variadic-begin: S ~> $write_name(S_array, psparam.NAME, pvalue)[.TO
   -- if S_array = $allocate_array(S, $array_empty())
   -- if S_array.RESULT = KNOWN pvalue
 
-dec $variadic_operand_value(pstate, poperand) : pvalue
 dec $variadic_value(pstate, pfunction, nat, nat, poperand) : pstate
 def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n_fixed))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n_fixed]

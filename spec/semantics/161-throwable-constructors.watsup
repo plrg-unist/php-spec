@@ -17,11 +17,13 @@ def $throwable_constructor_kind(preqbytes) = eps -- otherwise
 
 ;; New allocation captures origin, location and trace before argument sends.
 ;; The generated-error allocator is a separate throwing transition.
-def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text_kind, eps, $call_sourcefile(S.FILES, porigin), z, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $new_class(S, preqbytes, z) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text_kind, eps, $call_sourcefile(S.FILES, porigin), z, n_trace, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $throwable_constructor_kind(preqbytes) = (text_kind)
   -- if S.ORIGIN = (porigin)
-  -- if n = |S.OBJECTS|
-  -- if pthrowable = {KIND text_kind, TRACE $eval_exception_trace(S), ORIGIN S.ORIGIN}
+  -- if S_trace = $trace_materialize(S, $eval_exception_trace(S))
+  -- if S_trace.RESULT = KNOWN (PARRAY n_trace)
+  -- if n = |S_trace.OBJECTS|
+  -- if pthrowable = {KIND text_kind, ORIGIN S.ORIGIN}
 
 dec $ctor_start(pstate, nat, pctorcallmode, int) : pstate
 def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RECEIVER n, BASE $throwable_base(pthrowable.KIND), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -163,7 +165,7 @@ rule PhpStep/ctor-unpack-done: S ~> S[.TODO = (CTOR_ARGS pctorcall[.INDEX = $(pc
 dec $ctor_error(pstate, pctorcall, text, ptbytes) : pstate
 def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate(S[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pctorcall.SENT))
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, NAME ($ptascii(pctorcall.BASE) ++ $ptascii("->__construct")), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii(pctorcall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $ctor_type_error(pstate, pctorcall, nat, ptbytes, ptbytes, pvalue) : pstate
 def $ctor_type_error(S, pctorcall, n_parameter, preqbytes_name, preqbytes_type, pvalue) = $ctor_error(S, pctorcall, "TypeError", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct(): Argument #") ++ $ntunsigned(n_parameter) ++ $ptascii(" ($") ++ preqbytes_name ++ $ptascii(") must be of type ") ++ preqbytes_type ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
 

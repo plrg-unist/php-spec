@@ -7,6 +7,9 @@ def $getter_named(ptbytes) = (GET_CODE) -- if $ptlc(ptbytes) = $ptascii("getcode
 def $getter_named(ptbytes) = (GET_FILE) -- if $ptlc(ptbytes) = $ptascii("getfile")
 def $getter_named(ptbytes) = (GET_LINE) -- if $ptlc(ptbytes) = $ptascii("getline")
 def $getter_named(ptbytes) = (GET_PREVIOUS) -- if $ptlc(ptbytes) = $ptascii("getprevious")
+def $getter_named(ptbytes) = (GET_TRACE) -- if $ptlc(ptbytes) = $ptascii("gettrace")
+def $getter_named(ptbytes) = (GET_TRACE_STRING) -- if $ptlc(ptbytes) = $ptascii("gettraceasstring")
+def $getter_named(ptbytes) = (GET_TO_STRING) -- if $ptlc(ptbytes) = $ptascii("__tostring")
 def $getter_named(ptbytes) = eps -- otherwise
 dec $getter_name(pgettermethod) : ptbytes
 def $getter_name(GET_MESSAGE) = $ptascii("getMessage")
@@ -14,6 +17,9 @@ def $getter_name(GET_CODE) = $ptascii("getCode")
 def $getter_name(GET_FILE) = $ptascii("getFile")
 def $getter_name(GET_LINE) = $ptascii("getLine")
 def $getter_name(GET_PREVIOUS) = $ptascii("getPrevious")
+def $getter_name(GET_TRACE) = $ptascii("getTrace")
+def $getter_name(GET_TRACE_STRING) = $ptascii("getTraceAsString")
+def $getter_name(GET_TO_STRING) = $ptascii("__toString")
 dec $ctor_method_start(pstate, nat, int) : pstate
 dec $ctor_selected_name(text, ptbytes) : bool
 def $ctor_selected_name(text_kind, ptbytes) = true
@@ -22,7 +28,7 @@ def $ctor_selected_name(text_kind, ptbytes) = true
 def $ctor_selected_name(text_kind, ptbytes) = false -- otherwise
 dec $getter_other(text, ptbytes) : bool
 def $getter_other(text, ptbytes) = true
-  -- if $ptlc(ptbytes) <- [$ptascii("__tostring"), $ptascii("gettrace"), $ptascii("gettraceasstring"), $ptascii("__wakeup"), $ptascii("__clone")]
+  -- if $ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__clone")]
 def $getter_other(text, ptbytes) = true
   -- if $ptlc(ptbytes) = $ptascii("__construct")
   -- if $throwable_constructor_kind($ptascii(text)) = eps
@@ -89,12 +95,15 @@ def $getter_body(S, pgettercall) = $cast_value(S, CASTINT, $throwable_field(S, p
   -- if pgettercall.METHOD = GET_LINE
 def $getter_body(S, pgettercall) = S[.RESULT = KNOWN $throwable_field(S, pgettercall.RECEIVER, "previous")]
   -- if pgettercall.METHOD = GET_PREVIOUS
+dec $trace_method_body(pstate, pgettercall) : pstate
+def $getter_body(S, pgettercall) = $trace_method_body(S, pgettercall)
+  -- if pgettercall.METHOD <- [GET_TRACE, GET_TRACE_STRING, GET_TO_STRING]
 
 dec $getter_error(pstate, pgettercall) : pstate
 def $getter_error(S, pgettercall) = $throwable_allocate(S[.ORIGIN = (pgettercall.SITE)], "ArgumentCountError", ptbytes ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pgettercall.SENT|) ++ $ptascii(" given"), pgettercall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
   -- if ptbytes = $ptascii(pgettercall.BASE) ++ $ptascii("::") ++ $getter_name(pgettercall.METHOD)
   -- if pvalue* = $trace_extra(S, pgettercall.SENT)
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgettercall.SITE), LINE pgettercall.LINE, NAME ($ptascii(pgettercall.BASE) ++ $ptascii("->") ++ $getter_name(pgettercall.METHOD)), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgettercall.SITE), LINE pgettercall.LINE, FUNCTION $getter_name(pgettercall.METHOD), CLASS ($ptascii(pgettercall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 rule PhpStep/getter-invoke: S ~> $getter_body(S[.TODO = ptask_tail*], pgettercall)
   -- if S.TODO = (GETTER_INVOKE pgettercall) :: ptask_tail*
   -- if pgettercall.SENT = eps

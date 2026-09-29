@@ -1,0 +1,74 @@
+;; A trace is an ordinary array graph owned by the private Throwable trace
+;; property. Frame descriptions exist only during allocation and error unwind.
+dec $trace_items((pkey, pvalue)*, parray) : parray
+def $trace_items(eps, parray) = parray
+def $trace_items((pkey, pvalue) :: (pkey_tail, pvalue_tail)*, parray) = $trace_items((pkey_tail, pvalue_tail)*, $array_insert(parray, pkey, DIRECT pvalue))
+
+dec $trace_frame_fields(ptraceframe, nat) : parray
+def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_insert($array_empty(), KSTRING $ptascii("file"), DIRECT (PSTRING ptraceframe.FILE)), KSTRING $ptascii("line"), DIRECT (PINT ptraceframe.LINE)), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION))
+  -- if ptraceframe.CLASS = eps
+def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_insert($array_insert($array_insert($array_empty(), KSTRING $ptascii("file"), DIRECT (PSTRING ptraceframe.FILE)), KSTRING $ptascii("line"), DIRECT (PINT ptraceframe.LINE)), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION)), KSTRING $ptascii("class"), DIRECT (PSTRING preqbytes_class)), KSTRING $ptascii("type"), DIRECT (PSTRING preqbytes_type))
+  -- if ptraceframe.CLASS = (preqbytes_class)
+  -- if ptraceframe.TYPE = (preqbytes_type)
+dec $trace_frame_array(pstate, ptraceframe) : pstate
+def $trace_frame_array(S, ptraceframe) = $allocate_array(S_args, $array_insert($trace_frame_fields(ptraceframe, n_args), KSTRING $ptascii("args"), DIRECT (PARRAY n_args)))
+  -- if ptraceframe.HASARGS
+  -- if S_args = $allocate_array(S, $trace_items(ptraceframe.ARGS, $array_empty()))
+  -- if S_args.RESULT = KNOWN (PARRAY n_args)
+def $trace_frame_array(S, ptraceframe) = $allocate_array(S, $trace_frame_fields(ptraceframe, 0))
+  -- if ~ptraceframe.HASARGS
+
+dec $trace_frames_array(pstate, ptraceframe*, nat, nat) : pstate
+def $trace_frames_array(S, eps, n_outer, n_index) = S[.RESULT = KNOWN (PARRAY n_outer)]
+def $trace_frames_array(S, ptraceframe :: ptraceframe_tail*, n_outer, n_index) = $trace_frames_array(S_frame[.ARRAYS = $array_replace(S_frame.ARRAYS, n_outer, $array_insert(S_frame.ARRAYS[n_outer], KINT n_index, DIRECT (PARRAY n_frame)))], ptraceframe_tail*, n_outer, $(n_index + 1))
+  -- if S_frame = $trace_frame_array(S, ptraceframe)
+  -- if S_frame.RESULT = KNOWN (PARRAY n_frame)
+
+def $trace_materialize(S, ptraceframe*) = $trace_frames_array(S_outer, ptraceframe*, n_outer, 0)
+  -- if S_outer = $allocate_array(S, $array_empty())
+  -- if S_outer.RESULT = KNOWN (PARRAY n_outer)
+
+;; A paused state may not substitute a scalar, alias or fabricated frame array.
+dec $trace_arguments_valid(pentry*) : bool
+def $trace_arguments_valid(eps) = true
+def $trace_arguments_valid((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = $trace_arguments_valid(pentry_tail*)
+def $trace_arguments_valid(pentry*) = false -- otherwise
+dec $trace_argument_array_valid(pstate, nat) : bool
+def $trace_argument_array_valid(S, n) = $trace_arguments_valid(S.ARRAYS[n].ITEMS)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+def $trace_argument_array_valid(S, n) = false -- otherwise
+dec $trace_frame_array_valid(pstate, nat, nat) : bool
+def $trace_frame_array_valid(S, n, n_trace) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if n =/= n_trace
+  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("file")) (DIRECT (PSTRING preqbytes_file)), ENTRY (KSTRING $ptascii("line")) (DIRECT (PINT z_line)), ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function)), ENTRY (KSTRING $ptascii("args")) (DIRECT (PARRAY n_args))]
+  -- if n_args =/= n
+  -- if n_args =/= n_trace
+  -- if $trace_argument_array_valid(S, n_args)
+def $trace_frame_array_valid(S, n, n_trace) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if n =/= n_trace
+  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("file")) (DIRECT (PSTRING preqbytes_file)), ENTRY (KSTRING $ptascii("line")) (DIRECT (PINT z_line)), ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function)), ENTRY (KSTRING $ptascii("class")) (DIRECT (PSTRING preqbytes_class)), ENTRY (KSTRING $ptascii("type")) (DIRECT (PSTRING preqbytes_type)), ENTRY (KSTRING $ptascii("args")) (DIRECT (PARRAY n_args))]
+  -- if preqbytes_type <- [$ptascii("->"), $ptascii("::")]
+  -- if n_args =/= n
+  -- if n_args =/= n_trace
+  -- if $trace_argument_array_valid(S, n_args)
+def $trace_frame_array_valid(S, n, n_trace) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if n =/= n_trace
+  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("file")) (DIRECT (PSTRING preqbytes_file)), ENTRY (KSTRING $ptascii("line")) (DIRECT (PINT z_line)), ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function))]
+  -- if preqbytes_function = $ptascii("eval")
+def $trace_frame_array_valid(S, n, n_trace) = false -- otherwise
+dec $trace_frames_valid(pstate, pentry*, nat, nat) : bool
+def $trace_frames_valid(S, eps, n_index, n_trace) = true
+def $trace_frames_valid(S, (ENTRY (KINT z_index) (DIRECT (PARRAY n_frame))) :: pentry_tail*, n_index, n_trace) = ($trace_frame_array_valid(S, n_frame, n_trace) /\ $trace_frames_valid(S, pentry_tail*, $(n_index + 1), n_trace))
+  -- if z_index = n_index
+def $trace_frames_valid(S, pentry*, n_index, n_trace) = false -- otherwise
+def $trace_graph_valid(S, n_trace) = $trace_frames_valid(S, S.ARRAYS[n_trace].ITEMS, 0, n_trace)
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+def $trace_graph_valid(S, n_trace) = false -- otherwise

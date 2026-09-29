@@ -6,6 +6,8 @@ import json
 import os
 from pathlib import Path
 import select
+import math
+import struct
 import subprocess
 import sys
 import time
@@ -86,7 +88,7 @@ def observe(state, filename):
         def field(object_id, name):
             payload = state['OBJECTS'][object_id]['args'][0]
             owner = 'Exception' if payload['KIND'] in ('Exception', 'ErrorException', 'ClosedGeneratorException') else 'Error'
-            key = (b'\0' + owner.encode() + b'\0' if name == 'previous' else b'\0*\0') + name.encode()
+            key = (b'\0' + owner.encode() + b'\0' if name in ('string', 'trace', 'previous') else b'\0*\0') + name.encode()
             properties = next(row['SLOTS'] for row in state['OBJECTPROPS'] if int(row['OBJECT']) == object_id)
             slot = next(slot for slot in properties if list(map(int, slot['NAME'])) == list(key))
             item = slot['STATE']['args'][0]
@@ -121,11 +123,91 @@ def observe(state, filename):
             unit, severity, message, line = event['args']
             stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
                        + source_filename(unit) + b' on line ' + str(line).encode() + b'\n')
+    def array_items(array_id):
+        return state['ARRAYS'][array_id]['ITEMS']
+
+    def item_value(item):
+        return (item['args'][0] if item['tag'] == 'DIRECT'
+                else state['STORE'][int(item['args'][0])]['args'][0])
+
+    def array_field(array_id, name):
+        for entry in array_items(array_id):
+            key, item = entry['args']
+            if key['tag'] == 'KSTRING' and bytes(map(int, key['args'][0])) == name:
+                return item_value(item)
+        return None
+
+    def value_text(value):
+        kind = value['tag']
+        if kind == 'PNULL':
+            return b'NULL'
+        if kind == 'PBOOL':
+            return b'true' if value['args'][0] else b'false'
+        if kind == 'PINT':
+            return str(value['args'][0]).encode()
+        if kind == 'PFLOAT':
+            number = struct.unpack('>d', int(value['args'][0]).to_bytes(8, 'big'))[0]
+            if math.isnan(number):
+                return b'NAN'
+            if math.isinf(number):
+                return b'-INF' if number < 0 else b'INF'
+            rendered = format(number, '.14G').encode()
+            return rendered + b'.0' if b'.' not in rendered and b'E' not in rendered else rendered
+        if kind == 'PARRAY':
+            return b'Array'
+        if kind == 'POBJECT':
+            obj = state['OBJECTS'][int(value['args'][0])]
+            if obj['tag'] == 'THROWABLE':
+                name = obj['args'][0]['KIND']
+            elif obj['tag'] == 'STDINSTANCE':
+                name = 'stdClass'
+            elif obj['tag'] == 'INSTANCE':
+                name = next(row['NAME'] for row in state['CLASSES'] if row['ORIGIN'] == obj['args'][0])
+                return b'Object(' + bytes(map(int, name)) + b')'
+            else:
+                name = 'Closure'
+            return b'Object(' + name.encode() + b')'
+        if kind == 'PSTRING':
+            data = bytes(map(int, value['args'][0]))
+            escapes = {10: b'\\n', 13: b'\\r', 9: b'\\t', 12: b'\\f', 11: b'\\v', 27: b'\\e', 92: b'\\\\'}
+            return b"'" + b''.join(escapes.get(ch, bytes([ch]) if 32 <= ch <= 126 else f'\\x{ch:02X}'.encode())
+                                   for ch in data[:15]) + (b"...'" if len(data) > 15 else b"'")
+        raise ValueError(f'unsupported trace argument kind {kind}')
+
+    def trace_frame(index, file, line, function, classname, call_type, args):
+        call = (classname + call_type if classname is not None else b'') + function
+        rendered = []
+        for key, value in args:
+            prefix = bytes(map(int, key['args'][0])) + b': ' if key['tag'] == 'KSTRING' else b''
+            rendered.append(prefix + value_text(value))
+        return (b'#' + str(index).encode() + b' ' + file + b'(' + str(line).encode() + b'): '
+                + call + b'(' + b', '.join(rendered) + b')\n')
+
+    def slot_trace(array_id):
+        frames = []
+        for index, entry in enumerate(array_items(array_id)):
+            frame_id = int(item_value(entry['args'][1])['args'][0])
+            get = lambda name: array_field(frame_id, name)
+            file = bytes(map(int, get(b'file')['args'][0]))
+            line = int(get(b'line')['args'][0])
+            function = bytes(map(int, get(b'function')['args'][0]))
+            classname = get(b'class')
+            call_type = get(b'type')
+            args_value = get(b'args')
+            args = ([(entry['args'][0], item_value(entry['args'][1]))
+                     for entry in array_items(int(args_value['args'][0]))] if args_value else [])
+            frames.append(trace_frame(index, file, line, function,
+                                      bytes(map(int, classname['args'][0])) if classname else None,
+                                      bytes(map(int, call_type['args'][0])) if call_type else b'', args))
+        return b''.join(frames) + b'#' + str(len(frames)).encode() + b' {main}\n'
+
     stack = b''
     for i, frame in enumerate(state.get('TRACE', [])):
-        stack += (b'#' + str(i).encode() + b' ' + bytes(map(int, frame['FILE']))
-                  + b'(' + str(frame['LINE']).encode() + b'): ' + bytes(map(int, frame['NAME']))
-                  + b'(' + bytes(map(int, frame['ARGTEXT'])) + b')\n')
+        args = [(key, value) for key, value in frame['ARGS']]
+        stack += trace_frame(i, bytes(map(int, frame['FILE'])), int(frame['LINE']),
+                             bytes(map(int, frame['FUNCTION'])),
+                             bytes(map(int, frame['CLASS'])) if frame['CLASS'] is not None else None,
+                             bytes(map(int, frame['TYPE'])) if frame['TYPE'] is not None else b'', args)
     stack += b'#' + str(len(state.get('TRACE', []))).encode() + b' {main}\n'
     location = os.fsencode(filename)
     origin = state.get('ERRORORIGIN')
@@ -164,11 +246,7 @@ def observe(state, filename):
                 stderr += (prefix + payload['KIND'].encode() + message_part + b' in '
                            + bytes(map(int, field(chain_id, 'file')['args'][0])) + b':' + str(field(chain_id, 'line')['args'][0]).encode()
                            + b'\nStack trace:\n')
-                for frame_index, frame in enumerate(payload['TRACE']):
-                    stderr += (b'#' + str(frame_index).encode() + b' ' + bytes(map(int, frame['FILE']))
-                               + b'(' + str(frame['LINE']).encode() + b'): ' + bytes(map(int, frame['NAME']))
-                               + b'(' + bytes(map(int, frame['ARGTEXT'])) + b')\n')
-                stderr += b'#' + str(len(payload['TRACE'])).encode() + b' {main}\n'
+                stderr += slot_trace(int(field(chain_id, 'trace')['args'][0]))
             stderr += b'  thrown in ' + location + b' on line ' + str(line).encode() + b'\n'
         else:
             message_part = b': ' + display_message if display_message else b''

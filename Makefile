@@ -223,6 +223,8 @@ test-semantics: build
 	python3 tests/semantics/throwable_getter_protocol.py
 	python3 tests/semantics/throwable_constructors.py
 	python3 tests/semantics/throwable_constructor_protocol.py
+	python3 tests/semantics/throwable_traces.py
+	python3 tests/semantics/throwable_trace_protocol.py
 	python3 tests/semantics/exit_protocol.py
 	python3 tests/semantics/exit_controls.py
 	python3 tests/semantics/clone_compiler.py

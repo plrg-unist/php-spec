@@ -35,12 +35,6 @@ def $trace_value_text(S, PFLOAT n) = $trace_float(n)
 def $trace_value_text(S, PSTRING n*) = $trace_string(n*)
 def $trace_value_text(S, PARRAY n) = $ptascii("Array")
 def $trace_value_text(S, POBJECT n) = $ptascii("Object(") ++ $object_name(S, n) ++ [41]
-dec $trace_arguments_text(pstate, pvalue*) : preqbytes
-def $trace_arguments_text(S, eps) = eps
-def $trace_arguments_text(S, [pvalue]) = $trace_value_text(S, pvalue)
-def $trace_arguments_text(S, pvalue :: pvalue_tail*) = $trace_value_text(S, pvalue) ++ [44,32] ++ $trace_arguments_text(S, pvalue_tail*)
-  -- if pvalue_tail* =/= eps
-
 dec $trace_slot(pstate, pbinding*, preqbytes) : pvalue
 def $trace_slot(S, pbinding*, preqbytes) = pvalue
   -- if $lookup(pbinding*, preqbytes) = (n)
@@ -56,42 +50,71 @@ def $trace_extra(S, eps) = eps
 def $trace_extra(S, (KNOWN pvalue) :: poperand*) = pvalue :: $trace_extra(S, poperand*)
 def $trace_extra(S, (REFERENCE n) :: poperand*) = pvalue :: $trace_extra(S, poperand*)
   -- if S.STORE[n] = DEFINED pvalue
-dec $named_values(pstate, (preqbytes, poperand)*) : pvalue*
-dec $named_trace_arguments(pstate, pvalue*, (preqbytes, poperand)*) : preqbytes
-dec $trace_context_name(pstate, pcallcontext) : preqbytes
-def $trace_context_name(S, pcallcontext) = pclassdesc.NAME ++ $ptascii("->") ++ pmethoddesc.NAME
+dec $trace_context_function(pstate, pcallcontext) : preqbytes
+def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
+  -- if pcallcontext.INSTANCE = eps
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+def $trace_context_function(S, pcallcontext) = pcallcontext.NAME -- otherwise
+dec $trace_context_class(pstate, pcallcontext) : preqbytes?
+def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
   -- if pcallcontext.INSTANCE = eps
   -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
-def $trace_context_name(S, pcallcontext) = $object_name(S, n_receiver) ++ $ptascii("->") ++ pcallcontext.NAME
+def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
   -- if pcallcontext.INSTANCE = (n_closure)
   -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
   -- if pclosurescope.RECEIVER = (n_receiver)
-def $trace_context_name(S, pcallcontext) = pclassdesc.NAME ++ $ptascii("::") ++ pcallcontext.NAME
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
+  -- if pcallcontext.INSTANCE = (n_closure)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
+  -- if pclosurescope.RECEIVER = eps
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+def $trace_context_class(S, pcallcontext) = eps -- otherwise
+dec $trace_context_type(pstate, pcallcontext) : preqbytes?
+def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = (n)
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+def $trace_context_type(S, pcallcontext) = ($ptascii("::"))
+  -- if pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = eps
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if pcallcontext.INSTANCE = (n_closure)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
+  -- if pclosurescope.RECEIVER = (n_receiver)
+def $trace_context_type(S, pcallcontext) = ($ptascii("::"))
   -- if pcallcontext.INSTANCE = (n_closure)
   -- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)
   -- if pclosurescope.RECEIVER = eps
   -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc)
-def $trace_context_name(S, pcallcontext) = pcallcontext.NAME -- otherwise
+def $trace_context_type(S, pcallcontext) = eps -- otherwise
+dec $trace_indexed_args(pvalue*, nat) : (pkey, pvalue)*
+def $trace_indexed_args(eps, n) = eps
+def $trace_indexed_args(pvalue :: pvalue_tail*, n) = (KINT n, pvalue) :: $trace_indexed_args(pvalue_tail*, $(n + 1))
+dec $trace_named_args(pstate, (preqbytes, poperand)*) : (pkey, pvalue)*
+dec $variadic_operand_value(pstate, poperand) : pvalue
+def $trace_named_args(S, eps) = eps
+def $trace_named_args(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = (KSTRING preqbytes, $variadic_operand_value(S, poperand)) :: $trace_named_args(S, (preqbytes_tail, poperand_tail)*)
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 def $trace_context(S, pbinding*, eps) = eps
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, NAME $trace_context_name(S, pcallcontext), VALUES pvalue_all*, ARGTEXT $named_trace_arguments(S, pvalue*, pcallcontext.NAMED)}] ++ $wrapper_trace(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $wrapper_trace(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
-  -- if pvalue_all* = pvalue* ++ $named_values(S, pcallcontext.NAMED)
 dec $trace_saved(pstate, pframe*) : ptraceframe*
 def $trace_saved(S, eps) = eps
 def $trace_saved(S, pframe :: pframe_tail*) = $trace_saved(S, pframe_tail*) -- if pframe.CONTEXT = eps
 def $trace_saved(S, pframe :: pframe_tail*) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
-dec $trace_values_roots(pvalue*) : pnode*
+dec $trace_values_roots((pkey, pvalue)*) : pnode*
 def $trace_values_roots(eps) = eps
-def $trace_values_roots(pvalue :: pvalue_tail*) = $operand_nodes(KNOWN pvalue) ++ $trace_values_roots(pvalue_tail*)
+def $trace_values_roots((pkey, pvalue) :: (pkey_tail, pvalue_tail)*) = $operand_nodes(KNOWN pvalue) ++ $trace_values_roots((pkey_tail, pvalue_tail)*)
 def $trace_roots(eps) = eps
-def $trace_roots(ptraceframe :: ptraceframe_tail*) = $trace_values_roots(ptraceframe.VALUES) ++ $trace_roots(ptraceframe_tail*)
+def $trace_roots(ptraceframe :: ptraceframe_tail*) = $trace_values_roots(ptraceframe.ARGS) ++ $trace_roots(ptraceframe_tail*)
 
 ;; Abrupt frame teardown discards its continuations; only saved callers own
 ;; remaining foreach iterator records across the next budget boundary.

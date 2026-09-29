@@ -48,7 +48,7 @@ syntax pintrinsic = INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
 syntax pclonecall = { SITE porigin, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, LINE int }
 syntax pgetclasscall = { SITE porigin, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, LINE int }
-syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS
+syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING
 syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, INDEX nat, SENT poperand*, LINE int}
 syntax pctorcallmode = CTOR_NEW | CTOR_METHOD
 syntax pctorcall = {SITE porigin, RECEIVER nat, BASE text, MODE pctorcallmode, INDEX nat, SENT pnamedslot*, NAMED bool, LINE int}
@@ -87,9 +87,9 @@ syntax pdefaultcache = { ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax pcallcontext = { WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, EXTRA poperand*, NAMED (preqbytes, poperand)* }
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext? }
-syntax ptraceframe = { FILE preqbytes, LINE int, NAME preqbytes, VALUES pvalue*, ARGTEXT preqbytes }
+syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, pvalue)*, HASARGS bool }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
-syntax pthrowable = { KIND text, TRACE ptraceframe*, ORIGIN porigin? }
+syntax pthrowable = { KIND text, ORIGIN porigin? }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat? }
 syntax pobject = THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | INSTANCE porigin | STDINSTANCE
 syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, LINKEDPARENTS pclasslink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, REPORTING int, SILENCES psilence*, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
@@ -385,7 +385,7 @@ dec $finally_transfer_marker(pstate, ptask) : bool
 dec $finally_return_pending(pstate) : bool
 ;; Finite native Throwable backing and invocation interfaces.
 dec $throwable_base(text) : text
-dec $throwable_slots(text, preqbytes, preqbytes, int, pvalue) : ppropertyslot*
+dec $throwable_slots(text, preqbytes, preqbytes, int, nat, pvalue) : ppropertyslot*
 dec $throwable_slots_valid(pstate, nat, pthrowable) : bool
 dec $throwable_field(pstate, nat, text) : pvalue
 dec $throwable_previous_id(pstate, nat) : nat?

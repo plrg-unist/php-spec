@@ -88,14 +88,17 @@ def main():
             'n_object = $(|S_done.OBJECTS| - 1)',
             'S_done.OBJECTS[n_object] = THROWABLE pthrowable',
             'pthrowable.KIND = ' + json.dumps(kind),
-            'pthrowable.TRACE = [' + ','.join('ptraceframe_' + str(i) for i in range(frames)) + ']',
+            '$throwable_field(S_done,n_object,"trace") = PARRAY n_trace',
+            '$trace_graph_valid(S_done,n_trace)',
+            'S_done.ARRAYS[n_trace].ITEMS = [' + ','.join('ENTRY (KINT ' + str(i) + ') (DIRECT (PARRAY n_frame_' + str(i) + '))' for i in range(frames)) + ']',
         ]
         for index in range(frames):
-            frame = 'ptraceframe_' + str(index)
+            frame = 'n_frame_' + str(index)
             site = 'pevalcontext_inner.SITE' if frames == 2 and index == 0 else 'pevalcontext_outer.SITE'
-            conditions.extend([frame + '.NAME = $ptascii("eval")',
-                               frame + '.FILE = $call_sourcefile(S.FILES, ' + site + ')',
-                               frame + '.LINE = 1'])
+            conditions.extend(['$trace_array_field(S_done,' + frame + ',$ptascii("function")) = PSTRING $ptascii("eval")',
+                               '$trace_array_field(S_done,' + frame + ',$ptascii("file")) = PSTRING $call_sourcefile(S.FILES, ' + site + ')',
+                               '$trace_array_field(S_done,' + frame + ',$ptascii("line")) = PINT 1',
+                               '$entry_lookup(S_done.ARRAYS[' + frame + '].ITEMS,KSTRING $ptascii("args")) = eps'])
         fixture = directory / 'protocol.watsup'
         fixture.write_text('var S1 : pstate\n'
                            'dec $main() : bool\ndef $main() = true\n' + ''.join(

@@ -145,13 +145,13 @@ def $clone_method_receiver(S, pclonecall) = true
   -- if $exit_method_site(S, pclonecall.SITE)
 def $clone_method_receiver(S, pclonecall) = false -- otherwise
 dec $clone_wrapper_trace(pstate, pclonecall, pvalue*) : ptraceframe*
-def $clone_wrapper_trace(S, pclonecall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}]
+def $clone_wrapper_trace(S, pclonecall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $clone_method_receiver(S, pclonecall)
 def $clone_wrapper_trace(S, pclonecall, pvalue*) = eps -- otherwise
 dec $clone_error(pstate, pclonecall, text, preqbytes) : pstate
 def $clone_error(S, pclonecall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pclonecall.SITE)], text, preqbytes, pclonecall.LINE, [ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*) ++ $eval_exception_trace(S))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, NAME $ptascii("clone"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, FUNCTION $ptascii("clone"), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $clone_destination(preqbytes?, nat) : nat?
 def $clone_destination(eps, n) = (n)
 def $clone_destination((preqbytes), n) = (0) -- if preqbytes = $ptascii("object")

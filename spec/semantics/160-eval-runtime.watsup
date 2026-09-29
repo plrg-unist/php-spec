@@ -278,7 +278,7 @@ def $eval_compile_throw_source(S, pevalcontext, "Error", n_message*, z) = true
   -- if n_message* = $ptascii("Class \"") ++ ptbytes_parent ++ $ptascii("\" not found")
 def $eval_compile_throw_source(S, pevalcontext, text, n_message*, z) = false -- otherwise
 dec $eval_trace_frame(pstate, pevalcontext) : ptraceframe
-def $eval_trace_frame(S, pevalcontext) = {FILE $call_sourcefile(S.FILES, pevalcontext.SITE), LINE $eval_site_line(S, pevalcontext.SITE), NAME $ptascii("eval"), VALUES eps, ARGTEXT eps}
+def $eval_trace_frame(S, pevalcontext) = {FILE $call_sourcefile(S.FILES, pevalcontext.SITE), LINE $eval_site_line(S, pevalcontext.SITE), FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
 dec $eval_trace_at(pstate, pevalcontext*, nat) : ptraceframe*
 def $eval_trace_at(S, eps, n_owner) = eps
 def $eval_trace_at(S, pevalcontext :: pevalcontext_tail*, n_owner) = [$eval_trace_frame(S, pevalcontext)] ++ $eval_trace_at(S, pevalcontext_tail*, n_owner)

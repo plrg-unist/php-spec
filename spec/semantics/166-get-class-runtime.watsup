@@ -25,7 +25,7 @@ def $getclass_method_receiver(S, pgetclasscall) = true
   -- if $exit_method_site(S, pgetclasscall.SITE)
 def $getclass_method_receiver(S, pgetclasscall) = false -- otherwise
 dec $getclass_wrapper_trace(pstate, pgetclasscall, pvalue*) : ptraceframe*
-def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, NAME $ptascii("Closure->__invoke"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}]
+def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $getclass_method_receiver(S, pgetclasscall)
 def $getclass_wrapper_trace(S, pgetclasscall, pvalue*) = eps -- otherwise
 dec $getclass_error(pstate, pgetclasscall, text, preqbytes) : pstate
@@ -34,7 +34,7 @@ def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.
 def $getclass_error(S, pgetclasscall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pgetclasscall.SITE)], text, preqbytes, pgetclasscall.LINE, [ptraceframe] ++ $getclass_wrapper_trace(S, pgetclasscall, pvalue*) ++ $eval_exception_trace(S))
   -- if ~$getclass_special(S, pgetclasscall.SITE)
   -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pgetclasscall.SENT))
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, NAME $ptascii("get_class"), VALUES pvalue*, ARGTEXT $trace_arguments_text(S, pvalue*)}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgetclasscall.SITE), LINE pgetclasscall.LINE, FUNCTION $ptascii("get_class"), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $getclass_destination(preqbytes?, nat) : nat?
 def $getclass_destination(eps, n) = (n)
 def $getclass_destination((preqbytes), n) = (0) -- if preqbytes = $ptascii("object")
