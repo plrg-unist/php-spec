@@ -34,19 +34,17 @@ The separate global closure-integrity repair is installed at **9e7879617** (code
 
 ## Active work and remaining obligations
 
-Active work covers Closure binding/call behavior, interface declarations and method lookup, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
+Active work covers Closure call behavior, interface declarations and method lookup, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
 
-Ordinary Closure binding 181 is private at **0d387fda4** on the 9071d10d2
-base. Its original-base 19-source native differential, three paused provenance
-and ownership stages, and independent 19-source replay pass. A later
-current-base eight-source bridge and three paused stages pass on the prior code;
-the explicit-null scope extension now passes 22 exact source controls and four
-paused stages, plus three retained callable sources and six installed internal
-capture paused stages. Independent replay of the 22-source extension also
-passes on the private tree; installation remains pending.
-The [binding ledger](coverage/semantics/closure-binding-review.json) keeps those
-fingerprints separate. `Closure::call`,
-captured callable rebinding, array callables and source `__invoke` remain open.
+Ordinary Closure binding 181 is installed at **e450404e4** (code **d0aa3ef16**).
+Its frozen current-base evidence has 22 exact native source controls, four
+paused stages/43 assertions, three retained callable sources and six retained
+internal-capture paused stages; an independent replay passed all 22 source
+controls. On the installed tree, eight focused source controls, four paused
+stages, the build and semantic inventory pass. The [binding ledger](coverage/semantics/closure-binding-review.json)
+keeps original-base, current-base and installed fingerprints separate.
+`Closure::call`, captured callable rebinding, array callables and source
+`__invoke` remain open.
 
 Source Throwable subclasses are installed at **9071d10d2**. They retain
 source `INSTANCE` identity, owned inherited slots

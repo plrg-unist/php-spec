@@ -1,5 +1,5 @@
 {
-  "result": "bounded-ordinary-closure-binding-private-independent-pass-current-install-pending",
+  "result": "bounded-ordinary-closure-binding-installed-reviewed-source-pending-final-signoff",
   "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
   "scope": "Literal bindTo and Closure::bind on ordinary real closures copy captured values and static-local state into a separately owned closure; reference captures retain aliases. Lexical scope, called class, receiver, warnings, and binding source provenance follow the bounded contract in docs/semantics/CLOSURE-BINDING.md.",
   "code": {
@@ -112,5 +112,34 @@
     "source_report_sha256": "593072bd758dd4be2dfa5e95e531eedaeec7c921d08b67c1c1deb4834ee00bff",
     "paused_report": ".tools/closure-binding-current/.tools/first-class-internal-protocol-851r7ggu/report.json",
     "paused_report_sha256": "2657800935940367c0f1ad899ee87e2928170b3d79ce3644f151ca82240b6859"
+  },
+  "installed_bridge": {
+    "base": "242607f9c0fc4bf67e4f32dff0fc965108faa107",
+    "code_checkpoint": "d0aa3ef16",
+    "reviewed_tree_checkpoint": "e450404e4",
+    "projection": "Installed tracked 181 code/tests/contract/ledger match the approved private e450404e4 tree exactly before this completion record; the base delta from private 9d8dea75b is only canonical PROGRESS and the installed Throwable-subclass ledger. Installed adapter, numeric runner, PHP binary and php-file helper bytes match the private current-base gate.",
+    "build": {
+      "result": "make build passed",
+      "report": ".tools/closure-binding-installed-build.log",
+      "report_sha256": "c01a95b28de45a1c973bc970c329f5e1baff4816a979f519f10687e0ee762153"
+    },
+    "semantic_inventory": {
+      "result": "169 constructors, 306 obligations consistent; one obligation closed",
+      "report": ".tools/closure-binding-installed-semantic-inventory.log",
+      "report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "source": {
+      "result": "8/8 exact and stable, five binding plus retained invoke/getter/descendant controls",
+      "catalogue": ".tools/closure-binding-installed8.json",
+      "catalogue_sha256": "84481bb4ad64b96f240dca0609dbc54d8e745b85831fc5b7bf450cd04d7570af",
+      "fingerprint_sha256": "0c99142d80ef1c2209a3b94bd77acc4771b373b3154e6d416c29f4b0a0094a7b",
+      "report": ".tools/method-runtime-16ve_48z/report.json",
+      "report_sha256": "a3deecdd67f44418b932e65bad159993fb0a3616c2e7bacf6bde05315c6fbd04"
+    },
+    "paused": {
+      "result": "4/4 stable, 43 assertions",
+      "report": ".tools/closure-binding-protocol-bdo6tsvy/report.json",
+      "report_sha256": "52c21c16dd972574fd40b372ad5903d6255877b876e494db15cae23993ada00e"
+    }
   }
 }
