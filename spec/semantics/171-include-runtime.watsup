@@ -1,0 +1,255 @@
+;; Finite file-provider facts are consumed in two separate pauses. Resolution
+;; precedes a checked file-mode parser request and any source registration.
+dec $file_kind_valid(int) : bool
+def $file_kind_valid(1) = true
+def $file_kind_valid(2) = true
+def $file_kind_valid(3) = true
+def $file_kind_valid(4) = true
+def $file_kind_valid(int) = false -- otherwise
+dec $file_node_line(pcnode?) : int
+def $file_node_line((NExprInclude expression phpType24 metadata)) = $source_line(metadata)
+def $file_node_line(pcnode?) = 0 -- otherwise
+dec $file_node_kind(pcnode?) : int?
+def $file_node_kind((NExprInclude expression (INTEGER n_kind) metadata)) = (n_kind)
+def $file_node_kind(pcnode?) = eps -- otherwise
+dec $file_site_line(pstate, porigin) : int
+def $file_site_line(S, porigin) = $file_node_line($origin_node(S.SOURCES, porigin))
+dec $file_site_valid(pstate, porigin, int, int) : bool
+def $file_site_valid(S, porigin, z, n_kind) = ($file_node_kind($origin_node(S.SOURCES, porigin)) = (n_kind) /\ $file_site_line(S, porigin) = z /\ $(z > 0) /\ $file_kind_valid(n_kind) /\ $source_filename($call_sourcefile(S.FILES, porigin)))
+
+def $ppdispatch(P, pcpath, NExprInclude expression (INTEGER n_kind) metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+  -- if $file_kind_valid(n_kind)
+
+rule PhpStep/file-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), FILE_REQUEST porigin z n_kind] ++ ptask_tail*]
+  -- if S.TODO = (EVAL (NExprInclude expression (INTEGER n_kind) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if z = $source_line(metadata)
+  -- if $file_kind_valid(n_kind)
+
+dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
+def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+  -- if $file_site_valid(S, porigin, z, n_kind)
+  -- if S.FILECWD = (preqbytes_cwd)
+  -- if S.RESULT = KNOWN (PSTRING n_requested*)
+  -- if n_nonce = S.FILESEQ
+  -- if n_owner = |S.FRAMES|
+  -- if n_caller* = $call_sourcefile(S.FILES, porigin)
+  -- if pfilecontext = {NONCE n_nonce, SITE porigin, CALLER n_caller*, REQUESTED n_requested*, KIND n_kind, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE FILE_RESOLVE_WAIT, TAIL ptask_tail*, UNIT eps, RESOLVED eps, OPENED eps, BYTES eps}
+def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "file provider requires fixed cwd"]
+  -- if S.FILECWD = eps
+rule PhpStep/file-request: S ~> $file_request_start(S_value, porigin, z, n_kind, ptask_tail*)
+  -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if S_value = $eval_operand(S, z)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/file-request-abrupt: S ~> S_value
+  -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if S_value = $eval_operand(S, z)
+  -- if S_value.COMPLETION =/= NORMAL
+def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = (S.ORIGIN = (porigin) /\ $file_site_valid(S, porigin, z, n_kind))
+
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: ptask_tail*
+  -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
+  -- if z = $file_site_line(S, pfilecontext.SITE)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: ptask_tail*
+  -- if pfilecontext.PHASE = FILE_PARSE_WAIT
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.RESOLVED = (n_resolved*)
+  -- if pfilecontext.OPENED = (n_opened*)
+  -- if pfilecontext.BYTES = (n_bytes*)
+  -- if z = $file_site_line(S, pfilecontext.SITE)
+def $file_pending_state_valid(S) = false -- otherwise
+dec $file_active_nonce(pfilecontext*) : nat?
+def $file_active_nonce(pfilecontext :: pfilecontext_tail*) = (pfilecontext.NONCE)
+def $file_active_nonce(eps) = eps
+def $call_task_valid(S, FILE_RESOLVE_AWAIT n_nonce) = ($file_active_nonce(S.FILECONTEXTS) = (n_nonce) /\ $file_pending_state_valid(S))
+def $call_task_valid(S, FILE_PARSE_AWAIT n_nonce) = ($file_active_nonce(S.FILECONTEXTS) = (n_nonce) /\ $file_pending_state_valid(S))
+
+def $file_binding_at(eps, n) = eps
+def $file_binding_at(pfilebinding :: pfilebinding_tail*, n) = (pfilebinding)
+  -- if pfilebinding.UNIT = n
+def $file_binding_at(pfilebinding :: pfilebinding_tail*, n) = $file_binding_at(pfilebinding_tail*, n)
+  -- if pfilebinding.UNIT =/= n
+def $file_bindings_valid(S, eps) = true
+def $file_bindings_valid(S, pfilebinding :: pfilebinding_tail*) = ($(pfilebinding.UNIT > 0) /\ $file_binding_at(pfilebinding_tail*, pfilebinding.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pfilebinding.UNIT) = eps /\ $source_unit(S.SOURCES, pfilebinding.UNIT) =/= eps /\ $file_site_valid(S, pfilebinding.SITE, z, pfilebinding.KIND) /\ $call_sourcefile(S.FILES, PORIGIN pfilebinding.UNIT eps) = pfilebinding.OPENED /\ pfilebinding.RESOLVED =/= eps /\ $source_filename(pfilebinding.OPENED) /\ $eval_binding_class_valid(S, pfilebinding.CLASS) /\ $file_bindings_valid(S, pfilebinding_tail*))
+  -- if z = $file_site_line(S, pfilebinding.SITE)
+def $file_source_ppstate(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, pfilebinding.OPENED, S.FILECWD, (pclassdesc.NAME))
+  -- if $file_binding_at(S.FILEBINDINGS, pcunit.ID) = (pfilebinding)
+  -- if pfilebinding.CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $file_source_ppstate(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, pfilebinding.OPENED, S.FILECWD)
+  -- if $file_binding_at(S.FILEBINDINGS, pcunit.ID) = (pfilebinding)
+  -- if pfilebinding.CLASS = eps
+
+dec $file_open_response_valid(pstate, pfileopenresponse) : bool
+def $file_open_response_valid(S, FILE_MISSING n_nonce n_caller* n_requested* n_stream*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ n_stream* =/= eps)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
+def $file_open_response_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_stream*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ n_resolved* =/= eps /\ n_stream* =/= eps)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
+def $file_open_response_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ pfilecontext.NONCE = n_nonce /\ pfilecontext.CALLER = n_caller* /\ pfilecontext.REQUESTED = n_requested* /\ n_resolved* =/= eps /\ $source_filename(n_opened*))
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
+def $file_open_response_valid(S, pfileopenresponse) = false -- otherwise
+
+dec $file_open_resume_valid(pstate, pfileopenresponse) : pstate
+dec $file_open_failed(pstate, pfilecontext, pfilecontext*, preqbytes) : pstate
+dec $file_keyword(int) : preqbytes
+def $file_keyword(1) = $ptascii("include")
+def $file_keyword(2) = $ptascii("include_once")
+def $file_keyword(3) = $ptascii("require")
+def $file_keyword(4) = $ptascii("require_once")
+def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*) = S_second[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if (pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2)
+  -- if z = $file_site_line(S, pfilecontext.SITE)
+  -- if n_keyword* = $file_keyword(pfilecontext.KIND)
+  -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
+  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ pfilecontext.REQUESTED ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
+  -- if S_second = $diagnostic(S_first, "Warning", n_keyword* ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='.:')"), z)
+def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*) = S_object[.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if (pfilecontext.KIND = 3 \/ pfilecontext.KIND = 4)
+  -- if z = $file_site_line(S, pfilecontext.SITE)
+  -- if n_keyword* = $file_keyword(pfilecontext.KIND)
+  -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
+  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ pfilecontext.REQUESTED ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
+  -- if S_object = $throwable_materialize($throw_scalar(S_first, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='.:')"), z))
+  -- if S_object.COMPLETION = THROWING n_object
+dec $file_include_after_compile(preqbytes*, preqbytes) : preqbytes*
+dec $file_once_record_open(pstate, int, preqbytes) : pstate
+dec $file_once_kind(int) : bool
+def $file_once_kind(2) = true
+def $file_once_kind(4) = true
+def $file_once_kind(int) = false -- otherwise
+dec $file_once_skip(pstate, pfilecontext, pfilecontext*) : pstate
+def $file_once_skip(S, pfilecontext, pfilecontext_tail*) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)]
+def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_stream*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if $file_once_kind(pfilecontext.KIND)
+  -- if n_resolved* <- S.INCLUDEDOPENED
+def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if $file_once_kind(pfilecontext.KIND)
+  -- if (n_resolved* <- S.INCLUDEDOPENED \/ n_opened* <- S.INCLUDEDOPENED)
+def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = S_next[.FILES = S_next.FILES ++ [SOURCEFILE n_unit n_opened*]][.FILECONTEXTS = pfilecontext_next :: pfilecontext_tail*][.TODO = (FILE_PARSE_AWAIT n_nonce) :: pfilecontext.TAIL][.COMPLETION = SOURCE_PENDING]
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if (~$file_once_kind(pfilecontext.KIND) \/ (~(n_resolved* <- S.INCLUDEDOPENED) /\ ~(n_opened* <- S.INCLUDEDOPENED)))
+  -- if n_unit = $next_eval_unit(S.FILES)
+  -- if pfilecontext_next = pfilecontext[.PHASE = FILE_PARSE_WAIT][.UNIT = (n_unit)][.RESOLVED = (n_resolved*)][.OPENED = (n_opened*)][.BYTES = (n_bytes*)]
+  -- if S_next = $file_once_record_open(S, pfilecontext.KIND, n_opened*)
+def $file_open_resume_valid(S, FILE_MISSING n_nonce n_caller* n_requested* n_stream*) = $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_stream*) = $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if (~$file_once_kind(pfilecontext.KIND) \/ ~(n_resolved* <- S.INCLUDEDOPENED))
+def $file_once_record_open(S, n_kind, n_opened*) = S[.INCLUDEDOPENED = $file_include_after_compile(S.INCLUDEDOPENED, n_opened*)]
+  -- if $file_once_kind(n_kind)
+def $file_once_record_open(S, n_kind, n_opened*) = S
+  -- if ~$file_once_kind(n_kind)
+dec $file_open_resume(pstate, pfileopenresponse) : pstate
+def $file_open_resume(S, pfileopenresponse) = $file_open_resume_valid(S, pfileopenresponse)
+  -- if $file_open_response_valid(S, pfileopenresponse)
+def $file_open_resume(S, pfileopenresponse) = S[.COMPLETION = UNSUPPORTED "invalid file resolution response"]
+  -- if ~$file_open_response_valid(S, pfileopenresponse)
+dec $file_open_continue(pstate, pfileopenresponse) : pstate
+def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
+  -- if S.SERVICELEFT = (n)
+  -- if S_next = $file_open_resume(S, pfileopenresponse)
+  -- if S_next.COMPLETION = NORMAL
+def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
+  -- if S.SERVICELEFT = (n)
+  -- if S_next = $file_open_resume(S, pfileopenresponse)
+  -- if S_next.COMPLETION = THROWN text n_message* z
+def $file_open_continue(S, pfileopenresponse) = S_next
+  -- if S_next = $file_open_resume(S, pfileopenresponse)
+  -- if S_next.COMPLETION =/= NORMAL
+
+dec $file_parse_response_valid(pstate, psourceresponse) : bool
+dec $file_parse_context_response(pfilecontext*, psourceresponse) : bool
+def $file_parse_context_response(eps, psourceresponse) = false
+def $file_parse_context_response(pfilecontext :: pfilecontext_tail*, psourceresponse) = (pfilecontext.PHASE = FILE_PARSE_WAIT /\ pfilecontext.UNIT = ($eval_response_id(psourceresponse)) /\ pfilecontext.BYTES = ($eval_response_bytes(psourceresponse)))
+def $file_parse_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $file_parse_context_response(S.FILECONTEXTS, psourceresponse) /\ $eval_response_shape(psourceresponse) /\ $call_descriptors_valid(S))
+
+dec $file_compile_result(pstate, pfilecontext, pfilecontext*, ppstate) : pstate
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN] :: pfilecontext_tail*][.TODO = $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit] ++ pfilecontext.TAIL][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_include_after_compile(S_compiled.INCLUDEDOPENED, n_opened*)]
+  -- if S_compiled.COMPLETION = NORMAL
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.OPENED = (n_opened*)
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "file compile diagnostic transition pending"]
+  -- if S_compiled.COMPLETION =/= NORMAL
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "file compiler state pending"]
+  -- if S_compiled.COMPLETION = NORMAL
+  -- if P.COMPLETION =/= PPCNORMAL
+def $file_include_after_compile(preqbytes_all*, n_opened*) = preqbytes_all* ++ [n_opened*]
+  -- if ~(n_opened* <- preqbytes_all*)
+def $file_include_after_compile(preqbytes_all*, n_opened*) = preqbytes_all*
+  -- if n_opened* <- preqbytes_all*
+
+dec $file_parse_resume_accepted(pstate, pfilecontext, pfilecontext*, program) : pstate
+def $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program) = $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P)
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.RESOLVED = (n_resolved*)
+  -- if pfilecontext.OPENED = (n_opened*)
+  -- if pfilecontext.BYTES = (n_bytes*)
+  -- if P = $ppstart_eval_cwd(n_unit, program, n_opened*, S.FILECWD, $eval_compiler_class(S))
+  -- if pfilebinding = {UNIT n_unit, SITE pfilecontext.SITE, KIND pfilecontext.KIND, REQUESTED pfilecontext.REQUESTED, RESOLVED n_resolved*, OPENED n_opened*, BYTES n_bytes*, CLASS pfilecontext.LEXICAL_CLASS}
+  -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.FILEBINDINGS = S.FILEBINDINGS ++ [pfilebinding]], P)
+dec $file_parse_resume_valid(pstate, psourceresponse) : pstate
+def $file_parse_resume_valid(S, SOURCE_ACCEPT n_unit n_bytes* program) = $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+def $file_parse_resume_valid(S, SOURCE_PARSE_REJECT n_unit n_bytes* n_message* z) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "file parse rejection transition pending"]
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+def $file_parse_resume_valid(S, SOURCE_COMPILE_REJECT n_unit n_bytes* n_message* z) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "file parser static rejection transition pending"]
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+dec $file_parse_resume(pstate, psourceresponse) : pstate
+def $file_parse_resume(S, psourceresponse) = $file_parse_resume_valid(S, psourceresponse)
+  -- if $file_parse_response_valid(S, psourceresponse)
+def $file_parse_resume(S, psourceresponse) = S[.COMPLETION = UNSUPPORTED "invalid file parser response"]
+  -- if ~$file_parse_response_valid(S, psourceresponse)
+dec $file_parse_continue(pstate, psourceresponse) : pstate
+def $file_parse_continue(S, psourceresponse) = $drive_steps(S_next, n)
+  -- if S.SERVICELEFT = (n)
+  -- if S_next = $file_parse_resume(S, psourceresponse)
+  -- if S_next.COMPLETION = NORMAL
+def $file_parse_continue(S, psourceresponse) = S_next
+  -- if S_next = $file_parse_resume(S, psourceresponse)
+  -- if S_next.COMPLETION =/= NORMAL
+
+rule PhpStep/file-end: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN (PINT 1)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)]
+  -- if S.TODO = (FILE_END n_unit) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.TAIL = ptask_tail*
+def $eval_end_marker(FILE_END n_unit) = true
+def $return_step(S, poperand, (PORIGIN n_unit pcpath_source), (FILE_END n_unit) :: ptask_tail*) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)][.HELD = eps]
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.TAIL = ptask_tail*
+def $throwable_marker(FILE_END n_unit) = true
+rule PhpStep/file-throw-cross: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = (THROW_SEARCH n_object) :: ptask_tail*][.ORIGIN = (pfilecontext.SITE)][.HELD = eps]
+  -- if S.TODO = (THROW_SEARCH n_object) :: (FILE_END n_unit) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.TAIL = ptask_tail*
+
+dec $php_file_run(program, nat, preqbytes, preqbytes) : pstate
+def $php_file_run(program, n, n_file*, n_cwd*) = $drive($compile_source($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+dec $php_request_file_run(program, nat, preqbytes, prequest, preqbytes) : pstate
+def $php_request_file_run(program, n, n_file*, Q, n_cwd*) = $drive($compile_source($request_bootstrap($initial_state(NORMAL)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if Q.CWD = (n_cwd*)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)

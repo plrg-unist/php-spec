@@ -82,6 +82,7 @@ def $call_task_valid(S, EVAL_REQUEST porigin z) = (S.ORIGIN = (porigin) /\ $eval
 ;; duplicate, move or change the phase of the sole owned marker.
 dec $eval_context_at(pevalcontext*, nat) : pevalcontext?
 dec $eval_binding_at(pevalbinding*, nat) : pevalbinding?
+dec $file_binding_at(pfilebinding*, nat) : pfilebinding?
 dec $eval_bindings_valid(pstate, pevalbinding*) : bool
 dec $eval_units_bound(pstate, pcunit*) : bool
 dec $eval_binding_class_valid(pstate, porigin?) : bool
@@ -231,10 +232,14 @@ def $eval_stack_ordered(S, eps) = true
 def $eval_stack_ordered(S, pevalcontext :: eps) = true
 def $eval_stack_ordered(S, pevalcontext_new :: pevalcontext_old :: pevalcontext_tail*) = ($(pevalcontext_new.UNIT > pevalcontext_old.UNIT) /\ $(pevalcontext_new.OWNER >= pevalcontext_old.OWNER) /\ (pevalcontext_new.OWNER =/= pevalcontext_old.OWNER \/ $eval_before($eval_owner_tasks(S, pevalcontext_new), pevalcontext_new.UNIT, pevalcontext_old.UNIT)) /\ $eval_stack_ordered(S, pevalcontext_old :: pevalcontext_tail*))
 dec $eval_pending_state_valid(pstate) : bool
+dec $file_pending_state_valid(pstate) : bool
 def $eval_pending_state_valid(S) = true
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
   -- if pevalcontext.PHASE = PARSER_WAIT
+def $eval_pending_state_valid(S) = true
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if $file_pending_state_valid(S)
 def $eval_pending_state_valid(S) = true
   -- if S.COMPLETION =/= SOURCE_PENDING
 def $eval_pending_state_valid(S) = false -- otherwise
@@ -243,7 +248,8 @@ def $eval_static_completion(STATICBYTES n_message* z) = true
 def $eval_static_completion(STATICERROR text z) = true
 def $eval_static_completion(FATAL n_message* z) = true
 def $eval_static_completion(pcompletion) = false -- otherwise
-def $eval_state_valid(S) = ($eval_tasks_markers_valid(S, S.TODO) /\ $eval_frames_markers_valid(S, S.FRAMES) /\ $eval_contexts_valid(S, S.EVALCONTEXTS) /\ $eval_stack_ordered(S, S.EVALCONTEXTS) /\ $eval_bindings_valid(S, S.EVALBINDINGS) /\ $eval_units_bound(S, S.SOURCES) /\ $failed_sources_valid(S, S.FAILEDSOURCES) /\ $eval_pending_state_valid(S) /\ (~S.COMPILESTOP \/ $eval_static_completion(S.COMPLETION)))
+dec $file_bindings_valid(pstate, pfilebinding*) : bool
+def $eval_state_valid(S) = ($eval_tasks_markers_valid(S, S.TODO) /\ $eval_frames_markers_valid(S, S.FRAMES) /\ $eval_contexts_valid(S, S.EVALCONTEXTS) /\ $eval_stack_ordered(S, S.EVALCONTEXTS) /\ $eval_bindings_valid(S, S.EVALBINDINGS) /\ $file_bindings_valid(S, S.FILEBINDINGS) /\ $eval_units_bound(S, S.SOURCES) /\ $failed_sources_valid(S, S.FAILEDSOURCES) /\ $eval_pending_state_valid(S) /\ (~S.COMPILESTOP \/ $eval_static_completion(S.COMPLETION)))
 def $call_task_valid(S, EVAL_AWAIT n) = $eval_marker_valid(S, EVAL_AWAIT n)
 def $call_task_valid(S, EVAL_END n) = $eval_marker_valid(S, EVAL_END n)
 
@@ -368,8 +374,11 @@ def $eval_bindings_valid(S, pevalbinding :: pevalbinding_tail*) = ($(pevalbindin
 def $eval_units_bound(S, eps) = true
 def $eval_units_bound(S, pcunit :: pcunit_tail*) = $eval_units_bound(S, pcunit_tail*)
   -- if pcunit.ID = 0
-def $eval_units_bound(S, pcunit :: pcunit_tail*) = ($eval_binding_at(S.EVALBINDINGS, pcunit.ID) =/= eps /\ $eval_units_bound(S, pcunit_tail*))
+def $eval_units_bound(S, pcunit :: pcunit_tail*) = (($eval_binding_at(S.EVALBINDINGS, pcunit.ID) =/= eps /\ $file_binding_at(S.FILEBINDINGS, pcunit.ID) = eps) \/ ($eval_binding_at(S.EVALBINDINGS, pcunit.ID) = eps /\ $file_binding_at(S.FILEBINDINGS, pcunit.ID) =/= eps)) /\ $eval_units_bound(S, pcunit_tail*)
   -- if $(pcunit.ID > 0)
+dec $file_source_ppstate(pstate, pcunit) : ppstate
+def $eval_source_ppstate(S, pcunit) = $file_source_ppstate(S, pcunit)
+  -- if $file_binding_at(S.FILEBINDINGS, pcunit.ID) = (pfilebinding)
 def $eval_source_ppstate(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), (pclassdesc.NAME))
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = (pevalbinding)
   -- if pevalbinding.CLASS = (porigin_class)

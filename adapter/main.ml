@@ -244,16 +244,38 @@ let pending_from_state state =
   if string (field "tag" (field "COMPLETION" json)) <> "SOURCE_PENDING" then None
   else (
     if field "SERVICELEFT" json = `Null then fail "pending source has no remaining budget";
-    let context = match list (field "EVALCONTEXTS" json) with
-      | context :: _ -> context
-      | [] -> fail "pending source has no context" in
-    if string (field "tag" (field "PHASE" context)) <> "PARSER_WAIT" then fail "pending source phase mismatch";
-    let octets = list (field "BYTES" context) |> List.map (fun value ->
+    let encode_field key context = list (field key context) |> List.map (fun value ->
       let n = int_of_string (string value) in
-      if n < 0 || n > 255 then fail "invalid pending source byte" else n) in
-    Some (`Assoc ["id", field "UNIT" context; "mode", `String "eval";
-                  "profile", `String "cli-raw-85"; "source", `String (base64_octets octets)]))
+      if n < 0 || n > 255 then fail "invalid pending source byte" else n)
+      |> base64_octets |> fun value -> `String value in
+    match list (field "FILECONTEXTS" json), list (field "EVALCONTEXTS" json) with
+    | context :: _, _ when List.mem
+        (string (field "tag" (field "PHASE" context)))
+        ["FILE_RESOLVE_WAIT"; "FILE_PARSE_WAIT"] ->
+        let phase = string (field "tag" (field "PHASE" context)) in
+        if phase = "FILE_RESOLVE_WAIT" then
+          Some (`Assoc ["id", field "NONCE" context; "mode", `String "file-resolve";
+                        "caller", encode_field "CALLER" context;
+                        "requested", encode_field "REQUESTED" context])
+        else if phase = "FILE_PARSE_WAIT" then
+          let payload key = match field key context with
+            | `Null -> fail "missing opened file parser fact"
+            | _ -> encode_field key context in
+          Some (`Assoc ["id", field "NONCE" context; "mode", `String "file";
+                        "profile", `String "cli-raw-85";
+                        "requested", encode_field "REQUESTED" context;
+                        "resolved", payload "RESOLVED";
+                        "opened", payload "OPENED";
+                        "source", payload "BYTES"])
+        else fail "pending file source phase mismatch"
+    | _, context :: _ ->
+        if string (field "tag" (field "PHASE" context)) <> "PARSER_WAIT" then fail "pending source phase mismatch";
+        Some (`Assoc ["id", field "UNIT" context; "mode", `String "eval";
+                      "profile", `String "cli-raw-85";
+                      "source", encode_field "BYTES" context])
+    | _, [] -> fail "pending source has no waiting context")
 let active_eval = ref None
+let active_snapshot = ref None
 let import_request (module Runner : Run.RUNNER) json =
   let keys = ["env"; "argv"; "file"; "seconds"; "microseconds"; "variables"; "jit"] in
   exact (if List.mem_assoc "cwd" (assoc json) then keys @ ["cwd"] else keys) json;
@@ -280,27 +302,6 @@ let import_request (module Runner : Run.RUNNER) json =
   let value = V.Make.str (typ "prequest") (List.map (fun (name,value) -> (Domain.Atom.Keyword name $ no_region, value)) fields) in
   check (typ "prequest") value;
   value
-let execute value request =
-  if !active_eval <> None then fail "eval parser response still pending";
-  let budget = field "steps" request |> J.to_int in
-  if budget < 0 then fail "negative transition budget";
-  let filename = bytes_value (field "filename" request) in
-  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
-  let arguments = [value; V.Make.nat (Bigint.of_int budget); filename] in
-  let name, arguments = match List.filter (fun (key,_) -> key = "request") (assoc request) with
-    | [] -> "php_run", arguments
-    | [(_,json)] -> "php_request_run", arguments @ [import_request (module Runner) json]
-    | _ -> fail "duplicate request field" in
-  match Runner.Interp.eval_func name [] arguments with
-  | Run.Pass state -> check (typ "pstate") state;
-      let pending = pending_from_state state in
-      (match pending with Some request -> active_eval := Some (state, request) | None -> ());
-      `Assoc (["ok", `Bool true; "state", semantic_json state] @
-              match pending with Some request -> ["pending", request] | None -> [])
-  | Run.Fail (at,msg) ->
-      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
-              "message", `String (Util.Error.string_of_error at msg)]
-type source_pending = { id : string; mode : string; profile : string; source : string }
 let source_id json =
   let id = string json in
   if String.length id = 0 || (String.length id > 1 && id.[0] = '0')
@@ -314,8 +315,9 @@ let nonempty_bytes json =
   if value = "" then fail "empty file identity";
   value
 let file_snapshot json =
-  exact ["version"; "cwd"; "include_path"; "entries"] json;
+  exact ["version"; "main"; "cwd"; "include_path"; "entries"] json;
   if field "version" json <> `Int 1 then fail "file snapshot version mismatch";
+  ignore (nonempty_bytes (field "main" json));
   ignore (nonempty_bytes (field "cwd" json));
   if source_bytes (field "include_path" json) <> "Ljo=" then fail "file snapshot include_path mismatch";
   let entries = list (field "entries" json) in
@@ -323,8 +325,8 @@ let file_snapshot json =
   List.iter (fun entry ->
     let status = string (field "status" entry) in
     let fields = match status with
-      | "missing" -> ["caller"; "requested"; "status"]
-      | "open_failure" -> ["caller"; "requested"; "status"; "resolved"]
+      | "missing" -> ["caller"; "requested"; "status"; "stream_error"]
+      | "open_failure" -> ["caller"; "requested"; "status"; "resolved"; "stream_error"]
       | "opened" -> ["caller"; "requested"; "status"; "resolved"; "opened"; "source"]
       | _ -> fail "unknown file resolution status" in
     exact fields entry;
@@ -333,6 +335,8 @@ let file_snapshot json =
     if List.mem (caller, requested) !keys then fail "duplicate file resolution key";
     keys := (caller, requested) :: !keys;
     if status <> "missing" then ignore (nonempty_bytes (field "resolved" entry));
+    if status = "missing" || status = "open_failure" then
+      ignore (nonempty_bytes (field "stream_error" entry));
     if status = "opened" then (
       let path = nonempty_bytes (field "opened" entry)
       and source = source_bytes (field "source" entry) in
@@ -359,6 +363,46 @@ let check_file_resolve request =
   if List.exists (fun (key,value) -> field key response <> value) expected then
     fail "file resolution response differs from finite snapshot";
   `Assoc (("ok", `Bool true) :: expected)
+let execute value request =
+  if !active_eval <> None then fail "eval parser response still pending";
+  let budget = field "steps" request |> J.to_int in
+  if budget < 0 then fail "negative transition budget";
+  let filename_json = field "filename" request in
+  let filename = bytes_value filename_json in
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let snapshot = List.assoc_opt "file_snapshot" (assoc request) |> Option.map file_snapshot in
+  Option.iter (fun facts ->
+    if field "main" facts <> filename_json then fail "file snapshot main path mismatch";
+    match List.assoc_opt "request" (assoc request) with
+    | Some q when List.assoc_opt "cwd" (assoc q) <> Some (field "cwd" facts) ->
+        fail "file snapshot request cwd mismatch"
+    | _ -> ()) snapshot;
+  let decode_bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let arguments = [value; V.Make.nat (Bigint.of_int budget); filename] in
+  let file_arguments = [value; V.Make.nat (Bigint.of_int budget); decode_bytes filename_json] in
+  let name, arguments = match List.filter (fun (key,_) -> key = "request") (assoc request) with
+    | [] -> (match snapshot with
+        | None -> "php_run", arguments
+        | Some facts -> "php_file_run", file_arguments @ [decode_bytes (field "cwd" facts)])
+    | [(_,json)] -> (match snapshot with
+        | None -> "php_request_run", arguments @ [import_request (module Runner) json]
+        | Some facts -> "php_request_file_run",
+            file_arguments @ [import_request (module Runner) json; decode_bytes (field "cwd" facts)])
+    | _ -> fail "duplicate request field" in
+  match Runner.Interp.eval_func name [] arguments with
+  | Run.Pass state -> check (typ "pstate") state;
+      let pending = pending_from_state state in
+      (match pending with Some request -> active_eval := Some (state, request) | None -> ());
+      active_snapshot := snapshot;
+      `Assoc (["ok", `Bool true; "state", semantic_json state] @
+              match pending with Some request -> ["pending", request] | None -> [])
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
+type source_pending = { id : string; mode : string; profile : string; source : string }
 let source_pending json =
   exact ["id"; "mode"; "profile"; "source"] json;
   let mode = string (field "mode" json) and profile = string (field "profile" json) in
@@ -390,6 +434,120 @@ let check_source_service request =
     let message = source_bytes (field "message" response) in
     `Assoc (["ok", `Bool true; "accepted", `Bool false; "category", `String category;
              "message", `String message; "line", `Int line] @ identity))
+let check_file_source_service request =
+  exact ["op"; "pending"; "response"] request;
+  let pending = field "pending" request in
+  let keys = ["id"; "mode"; "profile"; "requested"; "resolved"; "opened"; "source"] in
+  exact keys pending;
+  ignore (source_id (field "id" pending));
+  if string (field "mode" pending) <> "file"
+     || string (field "profile" pending) <> "cli-raw-85" then
+    fail "unsupported file parser mode/profile";
+  List.iter (fun key -> ignore (source_bytes (field key pending)))
+    ["requested"; "resolved"; "opened"; "source"];
+  if field "resolved" pending = `String "" || field "opened" pending = `String "" then
+    fail "empty file parser identity";
+  let response = field "response" request in
+  let accepted = match field "accepted" response with
+    | `Bool value -> value | _ -> fail "invalid file parser acceptance flag" in
+  exact (keys @ if accepted then ["accepted"; "ast"]
+         else ["accepted"; "category"; "message"; "line"]) response;
+  if List.exists (fun key -> field key response <> field key pending) keys then
+    fail "file parser response identity mismatch";
+  let identity = List.map (fun key -> key, field key pending) keys in
+  if accepted then (
+    let value = import_program (field "ast" response) in
+    check (typ "program") value;
+    `Assoc (["ok", `Bool true; "accepted", `Bool true;
+             "ast", export_program value] @ identity))
+  else (
+    let category = string (field "category" response) in
+    if category <> "parser_rejection" && category <> "parser_static_rejection" then
+      fail "invalid file parser rejection kind";
+    let line = field "line" response |> J.to_int in
+    if line < 1 then fail "invalid file parser rejection line";
+    let message = nonempty_bytes (field "message" response) in
+    `Assoc (["ok", `Bool true; "accepted", `Bool false;
+             "category", `String category; "message", `String message;
+             "line", `Int line] @ identity))
+let resume_file_resolve request =
+  exact ["op"; "response"] request;
+  let state, pending = match !active_eval with
+    | Some active -> active | None -> fail "no pending file resolution" in
+  if string (field "mode" pending) <> "file-resolve" then fail "not waiting for file resolution";
+  let snapshot = match !active_snapshot with
+    | Some facts -> facts | None -> fail "file resolution has no finite snapshot" in
+  let identity = `Assoc ["id", field "id" pending; "caller", field "caller" pending;
+                         "requested", field "requested" pending] in
+  let checked = check_file_resolve (`Assoc ["op", `String "check_file_resolve";
+                                             "snapshot", snapshot; "pending", identity;
+                                             "response", field "response" request]) in
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let decode_bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let id = V.Make.nat (Bigint.of_string (source_id (field "id" pending))) in
+  let caller = decode_bytes (field "caller" checked)
+  and requested = decode_bytes (field "requested" checked) in
+  let response = match string (field "status" checked) with
+    | "missing" -> mk "pfileopenresponse" "FILE_MISSING"
+        [id; caller; requested; decode_bytes (field "stream_error" checked)]
+    | "open_failure" -> mk "pfileopenresponse" "FILE_OPEN_FAILURE"
+        [id; caller; requested; decode_bytes (field "resolved" checked);
+         decode_bytes (field "stream_error" checked)]
+    | "opened" -> mk "pfileopenresponse" "FILE_OPENED"
+        [id; caller; requested; decode_bytes (field "resolved" checked);
+         decode_bytes (field "opened" checked); decode_bytes (field "source" checked)]
+    | _ -> fail "unknown checked file resolution status" in
+  check (typ "pfileopenresponse") response;
+  match Runner.Interp.eval_func "file_open_continue" [] [state; response] with
+  | Run.Pass next -> check (typ "pstate") next;
+      let following = pending_from_state next in
+      active_eval := Option.map (fun request -> (next, request)) following;
+      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+              match following with Some request -> ["pending", request] | None -> [])
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
+let resume_file_parse request =
+  exact ["op"; "response"] request;
+  let state, pending = match !active_eval with
+    | Some active -> active | None -> fail "no pending file parser request" in
+  if string (field "mode" pending) <> "file" then fail "not waiting for file parser";
+  let checked = check_file_source_service (`Assoc
+    ["op", `String "check_file_source_service"; "pending", pending;
+     "response", field "response" request]) in
+  let context = match list (field "FILECONTEXTS" (semantic_json state)) with
+    | head :: _ -> head | [] -> fail "file parser has no active context" in
+  let unit = V.Make.nat (Bigint.of_string (string (field "UNIT" context))) in
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let decode_bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let source = decode_bytes (field "source" checked) in
+  let response = if J.to_bool (field "accepted" checked) then
+      mk "psourceresponse" "SOURCE_ACCEPT"
+        [unit; source; import_program (field "ast" checked)]
+    else (
+      let constructor = match string (field "category" checked) with
+        | "parser_rejection" -> "SOURCE_PARSE_REJECT"
+        | "parser_static_rejection" -> "SOURCE_COMPILE_REJECT"
+        | _ -> fail "invalid file parser rejection" in
+      mk "psourceresponse" constructor
+        [unit; source; decode_bytes (field "message" checked);
+         V.Make.int (Bigint.of_int (J.to_int (field "line" checked)))]) in
+  check (typ "psourceresponse") response;
+  match Runner.Interp.eval_func "file_parse_continue" [] [state; response] with
+  | Run.Pass next -> check (typ "pstate") next;
+      let following = pending_from_state next in
+      active_eval := Option.map (fun request -> (next, request)) following;
+      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+              match following with Some request -> ["pending", request] | None -> [])
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
 let resume_eval request =
   exact ["op"; "response"] request;
   let state, pending = match !active_eval with
@@ -435,6 +593,9 @@ let () =
         `Assoc ["ok", `Bool true])
       else if op = "check_source_service" then check_source_service request
       else if op = "check_file_resolve" then check_file_resolve request
+      else if op = "check_file_source_service" then check_file_source_service request
+      else if op = "resume_file_resolve" then resume_file_resolve request
+      else if op = "resume_file_parse" then resume_file_parse request
       else if op = "resume_eval" then resume_eval request
       else (
         if op <> "check" && op <> "elaborate" && op <> "execute" then fail "unknown operation";

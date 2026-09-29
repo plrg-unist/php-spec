@@ -35,7 +35,7 @@ def main():
                'resolved': b64(b'/snapshot/parts/one.php'),
                'opened': b64(b'/snapshot/real/one.php'),
                'source': b64(b'<?php return 7;')}
-        snapshot = {'version': 1, 'cwd': b64(b'/snapshot'),
+        snapshot = {'version': 1, 'main': caller, 'cwd': b64(b'/snapshot'),
                     'include_path': b64(b'.:'), 'entries': [row]}
         pending = {'id': '0', 'caller': caller, 'requested': requested}
         response = {'id': '0', **row}
@@ -76,8 +76,9 @@ def main():
             assert call(worker, bad)['ok'] is False
 
         for status, fields in (
-            ('missing', {}),
-            ('open_failure', {'resolved': b64(b'/snapshot/parts/one.php')}),
+            ('missing', {'stream_error': b64(b'No such file or directory')}),
+            ('open_failure', {'resolved': b64(b'/snapshot/parts/one.php'),
+                              'stream_error': b64(b'Permission denied')}),
         ):
             branch = copy.deepcopy(packet)
             branch['snapshot']['entries'] = [{'caller': caller, 'requested': requested,

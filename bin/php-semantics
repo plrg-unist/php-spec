@@ -278,6 +278,7 @@ def main():
     parser.add_argument('--steps', type=int, default=100000)
     parser.add_argument('--timeout', type=float, default=30)
     parser.add_argument('--request-context', type=Path, help='JSON file containing explicit primitive request facts')
+    parser.add_argument('--file-snapshot', type=Path, help='finite include/require resolution and file-byte facts')
     args = parser.parse_args()
     if args.steps < 0 or args.timeout <= 0:
         parser.error('steps must be nonnegative and timeout positive')
@@ -294,22 +295,46 @@ def main():
                  'filename': b64(os.fsencode(filename))}
     if args.request_context is not None:
         execution['request'] = json.loads(args.request_context.read_text())
+    file_snapshot = None
+    if args.file_snapshot is not None:
+        file_snapshot = json.loads(args.file_snapshot.read_text())
+        if file_snapshot.get('main') != execution['filename']:
+            raise ValueError('file snapshot main path differs from executed source')
+        if file_snapshot.get('cwd') != b64(os.fsencode(Path.cwd().resolve())):
+            raise ValueError('file snapshot cwd differs from process cwd')
+        execution['file_snapshot'] = file_snapshot
     adapter = AdapterSession([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)])
     try:
         result = adapter.request(execution, args.timeout)
         while result.get('ok') and 'pending' in result:
             pending = result['pending']
-            parsed_eval = request([php, '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
-                                   str(ROOT / 'frontend/worker.php')],
-                                  {'op': 'parse-eval', **pending}, args.timeout)
-            if not parsed_eval.get('ok'):
-                if parsed_eval.get('category') == 'helper_unsupported':
-                    return {'status': 'unsupported', 'reason': 'eval source service: ' + parsed_eval.get('message', '')}
-                return {'status': 'frontend_failure', 'frontend': parsed_eval}
-            if parsed_eval.get('diagnostics'):
-                return {'status': 'unsupported', 'reason': 'eval parser service diagnostics'}
-            response = {key: value for key, value in parsed_eval.items() if key not in {'ok', 'diagnostics'}}
-            result = adapter.request({'op': 'resume_eval', 'response': response}, args.timeout)
+            mode = pending['mode']
+            if mode == 'file-resolve':
+                if file_snapshot is None:
+                    return {'status': 'unsupported', 'reason': 'file resolution requires a finite snapshot'}
+                matches = [entry for entry in file_snapshot['entries']
+                           if entry['caller'] == pending['caller']
+                           and entry['requested'] == pending['requested']]
+                if len(matches) != 1:
+                    return {'status': 'unsupported', 'reason': 'file resolution absent or ambiguous in finite snapshot'}
+                result = adapter.request({'op': 'resume_file_resolve',
+                                          'response': {'id': pending['id'], **matches[0]}}, args.timeout)
+                continue
+            if mode not in {'eval', 'file'}:
+                return {'status': 'runner_failure', 'reason': 'unknown source service mode'}
+            operation = 'parse-eval' if mode == 'eval' else 'parse-file'
+            parsed_dynamic = request([php, '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
+                                      str(ROOT / 'frontend/worker.php')],
+                                     {'op': operation, **pending}, args.timeout)
+            if not parsed_dynamic.get('ok'):
+                if parsed_dynamic.get('category') == 'helper_unsupported':
+                    return {'status': 'unsupported', 'reason': mode + ' source service: ' + parsed_dynamic.get('message', '')}
+                return {'status': 'frontend_failure', 'frontend': parsed_dynamic}
+            if parsed_dynamic.get('diagnostics'):
+                return {'status': 'unsupported', 'reason': mode + ' parser service diagnostics'}
+            response = {key: value for key, value in parsed_dynamic.items() if key not in {'ok', 'diagnostics'}}
+            result = adapter.request({'op': 'resume_eval' if mode == 'eval' else 'resume_file_parse',
+                                      'response': response}, args.timeout)
     finally:
         adapter.close()
     if not result.get('ok'):
