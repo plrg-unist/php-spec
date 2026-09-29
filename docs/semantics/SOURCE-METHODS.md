@@ -144,9 +144,12 @@ no trace frame. Rebinding the source variable does not change either capture.
 The [internal capture ledger](../../coverage/semantics/first-class-internal-review.json)
 pins nine exact native cases and paused ownership/provenance controls. A
 nullsafe first-class method expression emits PHP's compile-time rejection.
+Ordinary real-Closure `bindTo` and static `bind` are in private review under
+the separate [binding contract](CLOSURE-BINDING.md); that evidence does not
+establish `Closure::call` or captured-callable rebinding.
 Interface methods and traits,
 static/readonly properties, hooks, user magic methods, destructors,
-closure rebinding services and remaining internal protocols are still open.
+remaining closure services and internal protocols are still open.
 Deferred `new` parameter defaults remain outside the admitted initializer
 language and require a separate cache/scope provenance increment.
 Unsupported declarations/consumers remain explicit; no native evaluation fallback
