@@ -50,6 +50,23 @@ CASES = {
             '~$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall[.RECEIVER = (n_b)])',
         ],
     },
+    'call-stdclass-pending': {
+        'source': '<?php $c=function($x){}; $c->call(new stdClass,1);',
+        'stage': ('S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail* '
+                  '-- if pclosurecall.RECEIVER = (n_receiver) '
+                  '-- if S.OBJECTS[n_receiver] = STDINSTANCE'),
+        'checks': [
+            'pclosurecall.SOURCE = n_source',
+            '(HOBJECT n_source) <- S.ALLOCATIONS',
+            '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+            'HOBJECT n_receiver <- $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)',
+            '$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall)',
+            '~$call_selected_valid(S, CLOSURE_CALL_TARGET n_source n_receiver, (pclosurecall.SITE))',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+        ],
+    },
     'call-rebound-source': {
         'source': '<?php class A {} $c=function(){return get_class($this);}; '
                   'echo $c->call((function() use (&$c){$c=null;return new A;})());',

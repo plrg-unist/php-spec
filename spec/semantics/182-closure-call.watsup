@@ -91,6 +91,23 @@ def $closure_call_task_valid(S, pclosurecall) = true
   -- if pnamedargs_shape = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7_tail*[0:n_done], 0, {SLOTS eps, NAMED eps})
   -- if $named_slots_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, 0, pclosurecall.SENT.SLOTS, pnamedargs_shape.SLOTS)
   -- if $named_entries_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pclosurecall.SENT.NAMED, pnamedargs_shape.NAMED)
+def $closure_call_task_valid(S, pclosurecall) = true
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
+  -- if $(pclosurecall.INDEX > 0)
+  -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $(pclosurecall.SOURCE < |S.OBJECTS|)
+  -- if (HOBJECT pclosurecall.SOURCE) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_callable(S, pclosurecall.SOURCE)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = STDINSTANCE
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if n_done = $(pclosurecall.INDEX - 1)
+  -- if pnamedargs_shape = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7_tail*[0:n_done], 0, {SLOTS eps, NAMED eps})
+  -- if $named_slots_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, 0, pclosurecall.SENT.SLOTS, pnamedargs_shape.SLOTS)
+  -- if $named_entries_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pclosurecall.SENT.NAMED, pnamedargs_shape.NAMED)
 def $closure_call_task_valid(S, pclosurecall) = false -- otherwise
 def $call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall) = ($closure_call_task_valid(S, pclosurecall) /\ $closure_call_initial_source_valid(S, pclosurecall) /\ $closure_call_initial_receiver_valid(S, pclosurecall))
 def $call_task_valid(S, CLOSURE_CALL_SEND pclosurecall) = $closure_call_task_valid(S, pclosurecall)
@@ -108,16 +125,18 @@ rule PhpStep/closure-call-argument-unsupported: S ~> S[.TODO = eps][.COMPLETION 
   -- if $(pclosurecall.INDEX < |phpType7*|)
   -- if phpType7*[pclosurecall.INDEX] = NArg phpType3 expression (BOOLEAN b_ref) (BOOLEAN b_unpack) metadata
   -- if b_ref \/ b_unpack \/ (pclosurecall.INDEX = 0 /\ phpType3 =/= ABSENT)
+dec $closure_call_receiver_object(pstate, pvalue) : bool
 rule PhpStep/closure-call-send-this: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.RECEIVER = (n_receiver)][.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
-  -- if S_read.OBJECTS[n_receiver] = INSTANCE porigin_class
-dec $closure_call_receiver_object(pstate, pvalue) : bool
+  -- if $closure_call_receiver_object(S_read, POBJECT n_receiver)
 def $closure_call_receiver_object(S, POBJECT n_receiver) = true
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
+def $closure_call_receiver_object(S, POBJECT n_receiver) = true
+  -- if S.OBJECTS[n_receiver] = STDINSTANCE
 def $closure_call_receiver_object(S, pvalue) = false -- otherwise
 rule PhpStep/closure-call-send-this-unsupported: S ~> S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure::call newThis operand"]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
@@ -161,20 +180,30 @@ rule PhpStep/closure-call-arguments-done: S ~> S[.TODO = (CLOSURE_CALL_INVOKE pc
   -- if S.TODO = (CLOSURE_CALL_ARGS pclosurecall) :: ptask_tail*
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if pclosurecall.INDEX = |phpType7*|
-rule PhpStep/closure-call-missing-this: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure::call missing newThis"]
+rule PhpStep/closure-call-missing-this: S ~> $throwable_allocate(S[.TODO = ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "ArgumentCountError", $ptascii("Closure::call() expects at least 1 argument, 0 given"), pclosurecall.LINE, [ptraceframe] ++ $eval_exception_trace_raw(S))
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = eps
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = eps
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS eps, HASARGS true}
 rule PhpStep/closure-call-static-warning: S ~> $report_event(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], DIAGNOSTIC "Warning" ($ptascii("Cannot bind an instance to a static closure, this will be an error in PHP 9")) pclosurecall.LINE, 2)
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if $closure_static(S, pfunction)
+rule PhpStep/closure-call-stdclass-warning: S ~> $report_event(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], DIAGNOSTIC "Warning" ($ptascii("Cannot bind closure to scope of internal class stdClass, this will be an error in PHP 9")) pclosurecall.LINE, 2)
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if S.OBJECTS[n_receiver] = STDINSTANCE
+  -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
 
 dec $closure_call_enter(pstate, pfunction, pclosurecall, nat) : pstate
 rule PhpStep/closure-call-invoke: S ~> $closure_call_enter(S[.TODO = ptask_tail*], pfunction, pclosurecall, n_receiver)
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
   -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction)

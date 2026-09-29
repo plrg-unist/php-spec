@@ -118,5 +118,41 @@
     "stdout_base64": "Q0Q=",
     "stderr_template_base64": "",
     "exit_status": 0
+  },
+  {
+    "id": "call-zero-newthis",
+    "native_group": "closure-call-newthis-native.json",
+    "native_raw_sha256": "0cc4682ef38942c7d96759c85e9b8c90e2d418378a23fd9b086218843dcec396",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php $c=function(){}; $c->call();",
+    "source_sha256": "633fd92a68624d70852f6667ac920d5e6e07e2ddd9c55b38bec87a99a5ced1fd",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogQ2xvc3VyZTo6Y2FsbCgpIGV4cGVjdHMgYXQgbGVhc3QgMSBhcmd1bWVudCwgMCBnaXZlbiBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBDbG9zdXJlLT5jYWxsKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 255
+  },
+  {
+    "id": "call-stdclass-newthis",
+    "native_group": "closure-call-newthis-native.json",
+    "native_raw_sha256": "0cc4682ef38942c7d96759c85e9b8c90e2d418378a23fd9b086218843dcec396",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php $c=function(){echo get_class($this);}; $c->call(new stdClass);",
+    "source_sha256": "8aaedee1e6f82881318071dbc3e9136b449a7a8bd7e01e674278892b6d2a5b50",
+    "status": "normal",
+    "stdout_base64": "",
+    "stderr_template_base64": "V2FybmluZzogQ2Fubm90IGJpbmQgY2xvc3VyZSB0byBzY29wZSBvZiBpbnRlcm5hbCBjbGFzcyBzdGRDbGFzcywgdGhpcyB3aWxsIGJlIGFuIGVycm9yIGluIFBIUCA5IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0
+  },
+  {
+    "id": "call-stdclass-warning-order",
+    "native_group": "closure-call-newthis-native.json",
+    "native_raw_sha256": "0cc4682ef38942c7d96759c85e9b8c90e2d418378a23fd9b086218843dcec396",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php $c=function($x){echo \"X\";}; $c->call(new stdClass,(function(){echo \"E\";return 1;})());",
+    "source_sha256": "1bba631b700c3ce306f0662928a3049aa62606a5645dfe0011f6c4d86099a693",
+    "status": "normal",
+    "stdout_base64": "RQ==",
+    "stderr_template_base64": "V2FybmluZzogQ2Fubm90IGJpbmQgY2xvc3VyZSB0byBzY29wZSBvZiBpbnRlcm5hbCBjbGFzcyBzdGRDbGFzcywgdGhpcyB3aWxsIGJlIGFuIGVycm9yIGluIFBIUCA5IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0
   }
 ]
