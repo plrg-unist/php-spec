@@ -1,5 +1,5 @@
 {
-  "status": "reviewed private fix",
+  "status": "installed and independently reviewed",
   "base": "8d809ef7516dcff3f06962ed3442aac27837dd2d",
   "code_test_commit": "71d86def29604e312ba2ca268d5ba82c0fa505b1",
   "scope": "Authenticate live GETTERCLOSURE and INVOKECLOSURE nodes in global closure-state validity, including no spurious lexical scope row. The original callable and getter guards remain the authority.",
@@ -15,5 +15,20 @@
     "report": ".tools/closure-174-integrity/.tools/first-class-internal-protocol-6167dq6_/report.json",
     "sha256": "c32ab36ef991a3b438f49e53843eb6e9519324e9eaaf87837e639c8ff0b043f9"
   },
-  "review": "Independent static reviewer approved the isolated two-file patch and both current-input reports. The descendant getter extension remains a separate private milestone."
+  "review": "Independent static reviewer approved the isolated two-file patch and both current-input reports. The descendant getter extension remains a separate private milestone.",
+  "installed": {
+    "code_test_commit": "60eea72cb",
+    "ledger_commit": "f9dc9d25a718536c92a76cacc659e5cb3903e47e",
+    "source": {
+      "result": "9/9 exact native/model",
+      "report": ".tools/method-runtime-czxqna45/report.json",
+      "sha256": "6209bdf2aa71021658ec3936cf63e33595b71f1a6cee723397e4195e2f0ac675"
+    },
+    "paused": {
+      "result": "6/6 stages",
+      "report": ".tools/first-class-internal-protocol-v7fzwhhg/report.json",
+      "sha256": "c32ab36ef991a3b438f49e53843eb6e9519324e9eaaf87837e639c8ff0b043f9"
+    },
+    "validation": "dune build and git diff --check passed; independent reviewer verified the installed code/test projection and reports"
+  }
 }
