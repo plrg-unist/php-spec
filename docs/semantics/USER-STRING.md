@@ -78,3 +78,11 @@ caller frames, and the restored-result root. See the
 [candidate ledger](../../coverage/semantics/user-string-callback-author.json)
 for hashes and recovery paths. This is private candidate evidence pending
 current-base integration review.
+
+The Static A integration adds two combined controls: a callback calling its
+parent's `__toString` and one calling a static method with an output effect.
+The current-base catalogue passes 33 exact outcomes and retains one explicit
+interface Unsupported control; the same four paused stages pass. The current
+fingerprint and ignored raw report hashes are in the candidate ledger. This
+bridge checks the shared scoped-call and implicit-call guards together; it
+does not yet cover the remaining conversion consumers.

@@ -1,5 +1,5 @@
 {
-  "status": "private_candidate_pending_current_base_review",
+  "status": "private_current_base_candidate_pending_review",
   "base": "f94826254",
   "scope": "finite Stringable declarations and user __toString callback for echo, print and string cast",
   "source_counts": {
@@ -37,7 +37,8 @@
   },
   "replay": [
     "From the private .tools/user-string-callback worktree with pinned .tools/php and built adapter/numeric runner, run python3 tests/semantics/user_string.py.",
-    "Run python3 tests/semantics/user_string_protocol.py for the paused states. Raw files remain ignored; source texts and SHA-256 values are tracked in tests/semantics/user_string_cases.json."
+    "Run python3 tests/semantics/user_string_protocol.py for the paused states. Raw files remain ignored; source texts and SHA-256 values are tracked in tests/semantics/user_string_cases.json.",
+    "For current-base rows, use .tools/user-string-integration and the same commands. The two added scoped/static controls are in its tracked source catalogue."
   ],
   "limits": [
     "Explicit implements Stringable requires general interface support.",
@@ -52,6 +53,79 @@
       "log_sha256": "632f9a7929bf57e280c7719f18f4daa0bc49a62743f600cfa3fdfec3a9dae9e5",
       "witnessed_constructors": 169,
       "scanner_actions": 191
+    }
+  },
+  "current_base": "74bcb9862",
+  "current_base_source_counts": {
+    "exact_normal": 22,
+    "exact_php_error": 6,
+    "exact_static_rejection": 5,
+    "explicit_unsupported": 1
+  },
+  "current_base_artifacts": {
+    "scoped_callback_bridge": {
+      "path": ".tools/user-string-integration/.tools/user-string-n8oav2im/report.json",
+      "sha256": "594c97ce7937b05ec75dc5f26eeb9a58399abfde90639d717c6c18c16d7e92af",
+      "result": "pass",
+      "records": 4,
+      "fingerprint_sha256": "969eaf71ab380283112593b1ac9866258fd4ade4d5c9073f403af52d5c97e3cc"
+    },
+    "source": {
+      "path": ".tools/user-string-integration/.tools/user-string-uur6fgwj/report.json",
+      "sha256": "974fd7814e14931408b52f43a9e657196e7a3b4499d24a697cd4d6688d6f608f",
+      "result": "pass",
+      "records": 34,
+      "fingerprint_sha256": "969eaf71ab380283112593b1ac9866258fd4ade4d5c9073f403af52d5c97e3cc"
+    },
+    "paused": {
+      "path": ".tools/user-string-integration/.tools/user-string-protocol-ns0s77xq/report.json",
+      "sha256": "23a5402f0addfd060dc9bad7ede7297e79d2fe79040773e89eddb6c474430e22",
+      "result": "pass",
+      "records": 4,
+      "stable": true
+    },
+    "independent_paused": {
+      "path": ".tools/user-string-integration/.tools/user-string-protocol-o725sokn/report.json",
+      "sha256": "10b739dc06294d0cfab791785cb5f740febf2f1ce9d42260a52650629473897e",
+      "result": "pass",
+      "stages": 4,
+      "assertions": 38,
+      "stable": true
+    },
+    "independent_sources": {
+      "callback-parent-scoped": {
+        "path": ".tools/user-string-integration/.tools/user-string-fn4q09tl/report.json",
+        "sha256": "4313220dfb81f2bc8d0a710a6b81ced89802f4298afbfa304c8b24840d31ae25"
+      },
+      "callback-self-static": {
+        "path": ".tools/user-string-integration/.tools/user-string-rh4nidbk/report.json",
+        "sha256": "78dc287b564fe844b99ee17b698619c214c380e7f7ca9341d500af7550b8a600"
+      },
+      "cast-multiline-throw": {
+        "path": ".tools/user-string-integration/.tools/user-string-vzdony0x/report.json",
+        "sha256": "40d3b5eb847996bfe33e8b0dc733874fdb061bf221364483d5b4235085ecd6a1"
+      },
+      "echo-reentrant-same-site": {
+        "path": ".tools/user-string-integration/.tools/user-string-yx7vvkxi/report.json",
+        "sha256": "ac9a7c9f004f2cbaa3328f31ba9cbffd7fc562e473c7c3edaf8a335e8f910169"
+      }
+    }
+  },
+  "current_base_checks": {
+    "inventory": {
+      "result": "pass",
+      "command": "make -o build inventory",
+      "log": ".tools/user-string-integration/.tools/user-string-inventory.log",
+      "log_sha256": "4bdc487f0183c0616584e12210bdd989fc8e91145f71cc782278064e0ac9e38b",
+      "witnessed_constructors": 169,
+      "scanner_actions": 191
+    },
+    "frontend_make_test": {
+      "result": "pass",
+      "command": "make -o build test",
+      "log": ".tools/user-string-integration/.tools/user-string-make-test.log",
+      "log_sha256": "1fae445abb87806bc3ca8c258f55ddc9237dc33b4f97305102ff6db437b9a9f7",
+      "implementation_fingerprint_sha256": "969eaf71ab380283112593b1ac9866258fd4ade4d5c9073f403af52d5c97e3cc"
     }
   }
 }
