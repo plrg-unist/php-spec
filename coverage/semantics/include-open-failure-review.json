@@ -1,0 +1,33 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
+  "scope": "Finite provider open_failure facts for a successfully resolved directory that cannot be opened as PHP source. The stream's first-warning display path and diagnostic bytes are authenticated external facts; PHP warning order, second warning, require Error and once skip remain authored semantics. This does not cover every filesystem or wrapper failure.",
+  "integration_base": "e199654f4b29238031568cb3d34384cdaabba5a8",
+  "tested_code_head": "37bbd1d72c1a3bed03b9243d3bc050e0b1d8fe5a",
+  "tested_code_tree": "6f72933f5a0606c9162910277bbc782d8d854bd9",
+  "code_commit": "41c008f6f",
+  "test_commits": ["1c3f39890", "37bbd1d72"],
+  "engine_basis": [
+    "Zend/zend_execute.c zend_include_or_eval checks a resolved once identity before stream open",
+    "main/fopen_wrappers.c and ext/standard/streams: a resolved directory can fail during stream open; the first warning can display the canonical resolved path while the second uses requested bytes"
+  ],
+  "provider_contract": "open_failure now requires nonempty resolved, warning_path and stream_error byte facts in the immutable snapshot. The adapter compares exact response fields against that snapshot before resuming; 171 checks nonempty fields, skips an already included resolved path before warning dispatch, and otherwise uses warning_path only in the first warning. Missing resolution still uses requested bytes for the first warning. The parser service supplies no filesystem or execution answer.",
+  "external_fact_observations": [
+    "With fixed harness CWD and include_path=.:, relative 'parts' resolves to a canonical directory and its first warning displays that path, but prior include-path search leaves ENOENT text 'No such file or directory'.",
+    "An absolute directory operand displays the same canonical path and has ENOTTY text 'Inappropriate ioctl for device'.",
+    "Both facts are supplied from finite source fixtures under LC_ALL=C and compared against pinned native raw streams; semantics does not infer errno from requested bytes."
+  ],
+  "historical_reports": [
+    {"report": ".tools/include-open-failure/.tools/include-execution-c5vo_ydi/report.json", "sha256": "008cf65bdd9c682a1e523482528efd4d032c1ed899cbc2693b42eaf8bcd90b4f", "result": "fail", "observation": "Initial relative-directory fixture incorrectly supplied ENOTTY; native retained ENOENT from include-path search. Fixture repaired before the passed campaigns."},
+    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/include-open-failure/.tools/include-execution-ub3oca62/report.json", "sha256": "01814fbe33d4b2631d2e934d2e2a8062c6772218840a47915ed5c6866b320988", "exact_native_agreements": 44, "declared_inputs": 188, "input_mismatches_after_concat": 6, "changed_modules": ["30-storage", "39-ownership", "59-concat-expressions", "84-call-integrity", "160-eval-runtime", "168-user-string-runtime"]}
+  ],
+  "rebase_bridge": "Five of six scoped file blobs are byte-identical across the pre-concat and current branches; 30-storage adds the separate concat state declarations while preserving the FILE_OPEN_FAILURE arity change. The full 44-row capture remains pre-concat. Current selected source and pause reports below exercise directory failures, once aliases, nested file/eval traces, concat-built wrapper operands and saved descriptor paths after the six-module change.",
+  "current_reports": [
+    {"command": "selected seven maintained include_execution.py rows plus the two exact injected tuples in include-resolver-null-review.json", "selection": ["directory-include", "directory-require", "directory-absolute-include", "file-eval-file", "alias-once", "file-eval-file-throw-trace", "eval-getclass-error-trace", "filter-eval-object-normal", "filter-eval-object-throw"], "report": ".tools/include-open-failure/.tools/include-execution-1cyehz96/report.json", "sha256": "ddd63dd3ec46317616a3a5585ca79ffd15e82ad2199aed84d2a1060aada5bbdd", "exact_native_agreements": 9, "declared_inputs": 188, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_protocol.py", "report": ".tools/include-open-failure/.tools/include-protocol-zw5mv_du/report.json", "sha256": "6efddb7654ddafc6acb18e193dfbb17654386b97f7bc5d7be724754cf415c4b1", "assertions": 119, "declared_inputs": 192, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_adapter_protocol.py", "report": ".tools/include-open-failure/.tools/include-adapter-protocol-x9c31kmk/report.json", "sha256": "a09aa396538dd847ddc81be3ca57a956a489e7a1b4f79171777802c9d31e09f6", "assertions": 20, "declared_inputs": 190, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_saved_protocol.py", "report": ".tools/include-open-failure/.tools/include-saved-protocol-5fvyaik9/report.json", "sha256": "b15bae4deec21b289009af0fba6bc69aab94424776344a43e405e038d796ddf8", "assertions": 46, "declared_inputs": 192, "current_input_mismatches": 0}
+  ],
+  "independent_selected_replay": {"selection": ["directory-include", "directory-require", "directory-absolute-include", "file-eval-file-throw-trace"], "report": ".tools/include-open-failure/.tools/include-execution-l0srl748/report.json", "sha256": "1d36321ef44abb360181667e1faee073a207fc2a978802c294f5cf4b7e820b22", "exact_native_agreements": 4, "declared_inputs": 188, "current_input_mismatches": 0, "comparison": "Reviewer independently decoded raw model/native stdout, stderr and exit tuples on the frozen code tree."},
+  "non_numeric_checks": ["python3 tests/file_provider_protocol.py: 1 opened, 2 failure facts and 19 forged/ambiguous negatives", "python3 tests/include_source_service.py: 9 accepted, 2 native rejections, 8 request negatives, 3 unsupported profiles, 4 namespace recoveries and 1 blocked mixed recovery", "Explicit private Dune adapter/numeric-runner builds, SpecTec elaboration, inventory and git diff --check passed"],
+  "remaining_file_provider_work": "Mutable CWD/include_path lookup context, additional stream-open causes and transformed wrapper content require separate source-authenticated increments."
+}

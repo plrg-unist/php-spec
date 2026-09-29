@@ -5,14 +5,17 @@ snapshot is explicit input to a semantic run. It contains the canonical main
 script path, a fixed CWD and
 unique `(caller filename, requested operand bytes)` entries. Each entry is
 either `missing` with a stream-error fact, `open_failure` with a successfully
-resolved path and stream-error fact, or `opened` with a successfully resolved
-path or a null resolver result, opened canonical path, and original file bytes.
+resolved path, first-warning display path and stream-error fact, or `opened`
+with a successfully resolved path or a null resolver result, opened canonical
+path, and original file bytes.
 Unknown keys are `Unsupported`; they are not modeled as missing PHP files.
 Distinct entries naming one opened path must have identical bytes. The opened
 path is a trusted, authenticated snapshot fact, separate from the display
 filename and the parser's temporary file.
-The stream-error bytes are explicit finite OS/stream-open facts supplied by
-the snapshot; the parser and model do not derive them from Zend execution.
+The warning display path and stream-error bytes are explicit finite
+OS/stream-open facts supplied by the snapshot; the parser and model do not
+derive them from Zend execution. An already included resolved path skips before
+those failure facts produce a warning.
 
 `parse-file` has a separate checked request from `parse-eval`: request nonce,
 file mode and raw CLI profile, requested/resolved/opened identities, and bytes.
@@ -52,6 +55,8 @@ the opened path, `__FILE__`, and include trace refer to the underlying file.
 The [resolver-null ledger](../../coverage/semantics/include-resolver-null-review.json)
 records the source, pause and adapter comparisons. Other wrappers and stream
 transformations need their own facts and source comparisons.
+The [directory failure ledger](../../coverage/semantics/include-open-failure-review.json)
+records exact relative and absolute directory observations, including their
+different stream-error bytes. This is a private followup pending integration.
 Runs that mutate CWD or `include_path` need a new authenticated resolution
-context. The finite `open_failure` schema carries stream-error bytes, but
-permission and path-error observations need their own source comparisons.
+context. Other permission and path errors need source comparisons.
