@@ -118,6 +118,13 @@ dec $throwable_string_coercion(pstate, ptbranch*, pvalue, bool) : bool
 dec $object_name(pstate, nat) : preqbytes
 dec $class_plain_instance(pstate, nat) : bool
 dec $stringable_instance(pstate, nat) : bool
+dec $user_string_value(pstate, pvalue) : bool
+dec $stringify_selected(pstate, pcalltarget, porigin) : bool
+dec $stringify_pending(pstate, pcalltarget, porigin) : bool
+dec $stringify_context(pstate, pcallcontext) : bool
+dec $stringify_pairs_valid(pstate, ptask*) : bool
+dec $stringify_frames_pairs_valid(pstate, pframe*) : bool
+dec $stringify_chain_valid(pstate, pcallcontext?, pframe*) : bool
 dec $activate_parented_class(pstate, pclassdesc, ptbytes) : pstate
 dec $class_origin_matches(pstate, porigin, ptbytes, nat) : bool
 dec $typed_class_chain(pstate, ptbranch*, porigin, nat) : bool

@@ -334,7 +334,7 @@ def $named_context_valid(S, pcallcontext) = true
 def $named_context_valid(S, pcallcontext) = true
   -- if $stringify_context(S, pcallcontext)
   -- if pcallcontext.NAMED = eps
-  -- if pcallcontext.WRAPPER = ({SLOTS eps, NAMED eps})
+  -- if pcallcontext.WRAPPER = eps
 def $named_context_valid(S, pcallcontext) = false -- otherwise
 
 ;; A source prefix determines only slot/key metadata, never prior runtime values.

@@ -99,6 +99,60 @@
     "id": "echo-callback-open",
     "source": "<?php class O{function __toString(){return \"x\";}} echo new O;",
     "source_sha256": "c69ef36e4ef505eb47504fde287e2cafbfef82218c2de357b0c61e6866eb2c57",
-    "expected_model": "unsupported"
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-side-effect",
+    "source": "<?php class O{function __toString(){echo \"call;\";return \"x\";}} echo new O;",
+    "source_sha256": "28619b991141ba436ab0fbd7d52977ce0b3b65e68c0954c2b9fa2d313f3ae295",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-inherited-callback",
+    "source": "<?php class P{function __toString(){return \"p\";}} class C extends P{} echo new C;",
+    "source_sha256": "76cf5e1da6fb32d55168bfc4cd2f76fe4ebd6bfc7ebdd5227b0a6a916dad8cc8",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-same-line-two",
+    "source": "<?php class O{function __toString(){echo \"c;\";return \"x\";}} $o=new O;echo $o,$o;",
+    "source_sha256": "41378ba58d58b7975c4e1673917f44c2dbd4ac8ea01a56b857e53c58a2a0d5c0",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-reentrant-same-site",
+    "source": "<?php class O{public $n=0;function __toString(){if($this->n++<2) echo $this;return \"x\";}} echo new O;",
+    "source_sha256": "f57e395903f6d64f515453ef44e97c1a874bc1efc175912f3a9b48376e4545fb",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-callback-throw-trace",
+    "source": "<?php class O{function __toString(){throw new Exception(\"boom\");}} echo new O;",
+    "source_sha256": "cd922bd971c75083b06e0c30a1a4b54de5b84a2b3a71e247119850fee6b130d0",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "echo-return-weak-int",
+    "source": "<?php class O{function __toString(){return 7;}} echo new O;",
+    "source_sha256": "079641e45c813af1d186ae8c5e192898b46553a225979881deb6b3fe64159333",
+    "expected_model": "normal"
+  },
+  {
+    "id": "echo-return-strict-int",
+    "source": "<?php declare(strict_types=1); class O{function __toString(){return 7;}} echo new O;",
+    "source_sha256": "f78475e6f59e22eb5535259db5c92909a54ad8dcbfde8b086a8651eca4449908",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "echo-no-magic-error",
+    "source": "<?php class O{} echo new O;",
+    "source_sha256": "3a40b763802bd48e13da07cf463861bad477ac7e6482494db85b9de5f23f3c04",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "echo-never-throws",
+    "source": "<?php class O{function __toString():never{throw new Exception(\"stop\");}} echo \"before;\",new O;",
+    "source_sha256": "0dd6d3486675fcb198aa0ca75ec5918d372c6af7d1048cf532a464b4469c2557",
+    "expected_model": "php_error"
   }
 ]
