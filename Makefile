@@ -251,6 +251,8 @@ test-semantics: build
 	python3 tests/semantics/eval_adapter_protocol.py
 	python3 tests/semantics/include_execution.py
 	python3 tests/semantics/include_protocol.py
+	python3 tests/semantics/include_mutable_execution.py
+	python3 tests/semantics/include_mutable_protocol.py
 	python3 tests/semantics/include_saved_protocol.py
 	python3 tests/semantics/include_adapter_protocol.py
 	python3 tests/semantics/print_expressions.py
