@@ -1,5 +1,5 @@
 {
-  "status": "private_candidate_pending_independent_review",
+  "status": "private_candidate_reviewed_preintegration",
   "code_commit": "2177e4c65",
   "base": "33b18cc0a",
   "scope": "source interface declaration/link/nominal relations, ordered method prototype checks and abstract obligations",
@@ -38,7 +38,7 @@
   "limits": [
     "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported, including authenticated Exception/Error descendants until the finite catalog is added.",
     "Other internal interfaces and hooks, interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open.",
-    "The full syntax gate and current-base integration are pending. Private make test retains two pre-existing generated encoding roundtrip failures (also present in canonical results); inventory needs a configured private PHP coverage build."
+    "Current-base integration and literal two-file inherited-method provenance require rebase onto installed include semantics; no full interface-family closure is claimed."
   ],
   "compiler_source": {
     "catalogue": "tests/semantics/interface_compiler_cases.json",
@@ -67,12 +67,50 @@
     "phase_ledger": "tests/phase-discrepancies.json",
     "focused_corpus": "compile_phase_difference",
     "focused_generated": "compile_phase_difference",
-    "full_corpus": "pending final frozen rerun"
+    "full_corpus": {
+      "result": "pass",
+      "eligible": 30980,
+      "stable_implementation": true,
+      "fingerprint_sha256": "a477f34a8178496dfb81c8fe48f7ebb265d02cb1699d64afbeb6d9479ce8ad09",
+      "summary_path": ".tools/interfaces-candidate/coverage/results-corpus.summary.json",
+      "summary_sha256": "825236a4ebcb621d3b6a324f109e3cec3af0e8468985572844a259710658a42e"
+    },
+    "full_test": {
+      "result": "pass",
+      "command": "make -o build test",
+      "log_path": ".tools/interfaces-candidate/.tools/interface-full-test.log",
+      "log_sha256": "814f227c7871b51b9e324987925f09af029f4f93296e77b48f74406369f82744",
+      "generated": 4103,
+      "classified_baseline_roundtrip_differences": 2
+    }
   },
   "independent_review": {
-    "source": "10/11 exact on 9b6038a61; sole inherited location corrected in 663a3c112, final replay pending",
-    "paused": "20/20 forged-link assertions on 9b6038a61",
-    "path": ".tools/interfaces-review-177/.tools/interfaces-review-ordered.json",
-    "sha256": "71bc0e371a50ce578275e8c510920ff4d4176e0bc7e372f1a74c8767818ec05e"
+    "source": "11/11 exact original-source tuples on 2177e4c65",
+    "source_path": ".tools/interfaces-review-177/.tools/interfaces-review-final11.json",
+    "source_sha256": "0d76958a146dc64fc78d25d9eda963853a45b8c875326a195e5cea19ac4569d4",
+    "focused": "2/2 inherited/eval origin exact",
+    "paused": "20/20 forged-link assertions pass",
+    "focused_path": ".tools/interfaces-review-177/.tools/interfaces-review-followup.json",
+    "focused_sha256": "cd737f0f3ccb0c13f2e94375509c37a2ce48abf467b6ec64d47d60d5d0b0d71a"
+  },
+  "inventory": {
+    "result": "pass",
+    "commit": "afdf48962",
+    "command": "make -o build inventory",
+    "root": ".tools/interfaces-inventory",
+    "log_sha256": "82ebbea8d368e46286a5bec617ef83d3e2dba2db62e05bcdfffa8b569384d2c0",
+    "grammar_covered": 631,
+    "grammar_uncovered": 4,
+    "scanner_actions": 191,
+    "encoding_spellings": 214
+  },
+  "classified_baseline": {
+    "path": ".tools/interfaces-review-177/.tools/interfaces-encoding-baseline.json",
+    "sha256": "419bcd5b90f27d062747d57590309f84016877690fbb133ec325e693bf08c8bb",
+    "cases": [
+      "generated/encoding-transitions/2166",
+      "generated/encoding-transitions/2167"
+    ],
+    "status": "unchanged non-exit-failing classified differences"
   }
 }
