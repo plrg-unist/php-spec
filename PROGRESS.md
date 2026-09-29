@@ -36,8 +36,8 @@ The separate global closure-integrity repair is installed at **9e7879617** (code
 
 Active work covers Closure binding/call behavior, interface declarations and method lookup, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
 
-Source Throwable subclasses are in private final review on provider base
-**f58ace0c1**. They retain source `INSTANCE` identity, owned inherited slots
+Source Throwable subclasses are installed at **9071d10d2**. They retain
+source `INSTANCE` identity, owned inherited slots
 and trace, protected writes, source overrides, and inherited getter capture.
 The [ledger](coverage/semantics/throwable-subclass-review.json) separates the
 native/source, paused, provider-bridge, and independent evidence. Array

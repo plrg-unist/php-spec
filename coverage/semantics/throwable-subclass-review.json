@@ -1,5 +1,5 @@
 {
-  "status": "private provider-base final review pending",
+  "status": "installed, bounded canonical validation passed",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "base": "f58ace0c15c2a16bc77f8b3759998fdd6b3cfca0",
   "semantic_head": "5176a91b776934ba991ae23d61f32fda603bc12b",
@@ -30,6 +30,16 @@
     "projection": "All eight B semantic/test commits remain patch-identical to the pre-provider reviewed tree. The provider changes file open-failure diagnostics and request facts in 171/30/adapter; its final commit changes only status documentation.",
     "source": {"result": "2 exact native/model tuples, 190 watched hashes stable", "cases": ["included-child-throw", "directory-require"], "harness": ".tools/throwable-trace-candidate/.tools/throwable-provider-seam.py", "harness_sha256": "27de10e8aa703e7ee60f6578d44d4425c361a463e44c225ce0f306833fcdf368", "report": ".tools/throwable-trace-candidate/.tools/include-execution-6sljhaob/report.json", "sha256": "b6ab0034a386e667901048e8b1f2243567d5e258bbb85fe59a4a11464f12dc9d"},
     "validation": {"dune_build": "pass", "make_test": "pass", "semantic_inventory": "169 constructors, 306 runtime obligations; 0 constructors and 1 obligation closed", "verify_inputs": "64872 pinned import files/links verified", "make_inventory": {"result": "pass", "isolated_head": "4752c2230b4f5b2de5453bb07d99a476f86e76d2", "worktree": ".tools/throwable-b-inventory", "setup": "JOBS=4 scripts/build-deps.sh php", "setup_log": ".tools/throwable-b-inventory/.tools/throwable-b-deps.log", "setup_log_sha256": "ebe2acc2fff92f8f3d0328b0135fe103425235e032ec9d9ac9eacb60833e9c88", "log": ".tools/throwable-b-inventory/.tools/throwable-b-inventory.log", "log_sha256": "6f35f709db45424f4e138079cc3e667343b7b30f0d44f2d7b6e3327998a16ac9", "grammar": "83 accepted, 14 rejected, 631 covered", "mapping": "635 productions, 169 constructors; 191 scanner actions, 264 alternatives; 214 spellings, 685 lookups"}}
+  },
+  "installed": {
+    "head": "9071d10d2445df6db0839d8d38df450575fadd54",
+    "projection": "Canonical code and tests equal the reviewed private tree; the installed status update changes documentation only.",
+    "dune_build": "pass",
+    "semantic_inventory": "169 constructors, 306 runtime obligations; 0 constructors and 1 obligation closed",
+    "selected_source": {"result": "3 exact", "cases": ["two-level-catch-trace", "terminal-override-throws", "first-class-capture-lifetime"], "report": ".tools/throwable-subclass-probes-idvqhiwd/report.json", "sha256": "053de303b9af8632c3299b289816a18878b6188878f15e8fd9a2fb3199eb4695"},
+    "provider_seam": {"result": "2 exact", "cases": ["included-child-throw", "directory-require"], "report": ".tools/include-execution-9h5oi9bc/report.json", "sha256": "420f7c0726ae021de43e8501e64fd99655aea41deca434c7c6738d996655ecc7"},
+    "getter_paused": {"result": "2 stages passed", "report": ".tools/throwable-subclass-callable-p49qrgt4/report.json", "sha256": "ef3bfb9841c60f06697d5e9677c5f6f7ef4aee4c6370083ee58bccd2ff758d8f"},
+    "terminal_paused": {"result": "nested saved-frame and rendered stages passed", "report": ".tools/throwable-terminal-protocol-wo_eskr1/report.json", "sha256": "5ab669575d993fcecd42b350d800a917d8f518c046f3e19c80dadf5afe099e47"}
   },
   "boundaries": {
     "object_message_without_override": "Explicit Unsupported when an inherited protected message contains a non-stringable object during uncaught rendering.",
