@@ -518,5 +518,45 @@
       "-d",
       "zend.assertions=1"
     ]
+  },
+  {
+    "id": "interface-inherited-method-line",
+    "source": "<?php\ninterface I { function f(int $x); }\nclass A { function f(string $x) {} }\nclass C extends A implements I {}\n",
+    "source_sha256": "6a200151c3d5c8f5e74f58669224938b116ecdd00da306e847eb2e2bac55f44d",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEE6OmYoc3RyaW5nICR4KSBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBJOjpmKGludCAkeCkgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+    "exit_status": 255,
+    "status": "php_error",
+    "native_group": ".tools/interface-inherited-line-case.php",
+    "native_raw_sha256": "0c5b39bf3d2a5d1178d6f1f5c2b0ed088fcd1c5645a00644c5b2044fbdb28160",
+    "native_profile": [
+      "-n",
+      "-d",
+      "opcache.enable_cli=0",
+      "-d",
+      "opcache.jit=disable",
+      "-d",
+      "precision=14",
+      "-d",
+      "serialize_precision=-1",
+      "-d",
+      "display_errors=stderr",
+      "-d",
+      "display_startup_errors=1",
+      "-d",
+      "html_errors=0",
+      "-d",
+      "log_errors=0",
+      "-d",
+      "error_reporting=30719",
+      "-d",
+      "date.timezone=UTC",
+      "-d",
+      "output_buffering=0",
+      "-d",
+      "implicit_flush=1",
+      "-d",
+      "zend.assertions=1"
+    ]
   }
 ]
