@@ -5,8 +5,8 @@ snapshot is explicit input to a semantic run. It contains the canonical main
 script path, a fixed CWD and
 unique `(caller filename, requested operand bytes)` entries. Each entry is
 either `missing` with a stream-error fact, `open_failure` with a successfully
-resolved path and stream-error fact, or `opened`
-with successfully resolved path, opened canonical path, and original file bytes.
+resolved path and stream-error fact, or `opened` with a successfully resolved
+path or a null resolver result, opened canonical path, and original file bytes.
 Unknown keys are `Unsupported`; they are not modeled as missing PHP files.
 Distinct entries naming one opened path must have identical bytes. The opened
 path is a trusted, authenticated snapshot fact, separate from the display
@@ -44,10 +44,14 @@ call frame, while saved call frames retain their stack order. The
 [trace ledger](../../coverage/semantics/include-trace-review.json) records
 the direct, nested, caught and prefixed-error checks.
 
-Resolver-null but openable paths are a required followup: they have no resolved
-identity for the pre-open once check. The first finite-provider implementation
-marks those keys `Unsupported`, while keeping resolution and opening distinct
-so that fallback case can be added without changing once semantics.
+An authenticated null resolver result has no identity for the pre-open once
+check. The machine opens the file, then checks its canonical opened path for a
+once skip. The bounded source witness uses the identity-transform
+`php://filter/read=/resource=...` wrapper: its resolver result is null, while
+the opened path, `__FILE__`, and include trace refer to the underlying file.
+The [resolver-null ledger](../../coverage/semantics/include-resolver-null-review.json)
+records the source, pause and adapter comparisons. Other wrappers and stream
+transformations need their own facts and source comparisons.
 Runs that mutate CWD or `include_path` need a new authenticated resolution
 context. The finite `open_failure` schema carries stream-error bytes, but
 permission and path-error observations need their own source comparisons.

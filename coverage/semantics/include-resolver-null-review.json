@@ -1,0 +1,23 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
+  "scope": "Finite immutable file-provider opened fact with an actual null resolver result. The bounded source witness is an identity-transform php://filter/read=/resource= wrapper over a local file; it does not claim other wrappers or mutable resolution context.",
+  "integration_base": "8d809ef7516dcff3f06962ed3442aac27837dd2d",
+  "tested_code_head": "dd97105189326fef0b01e42b862d7a8ba5dd0803",
+  "tested_code_tree": "be056078ae60c756b95b7b94d7d3c93e2bad800c",
+  "code_commits": ["a6318d07b", "657dcb88f"],
+  "test_commit": "dd9710518",
+  "engine_basis": [
+    "main/fopen_wrappers.c php_resolve_path: a non-plain wrapper may return null instead of a canonical resolver path",
+    "Zend/zend_execute.c zend_include_or_eval: pre-open once skip requires a successfully resolved path; opened-path identity is checked after stream open"
+  ],
+  "boundary": "The provider authenticates JSON resolved:null against the immutable snapshot. The adapter transports it as an empty semantic byte sequence only after FILE_OPENED; FILE_RESOLVE_WAIT still has absent RESOLVED. A null resolver result cannot trigger pre-open once skip. The opened canonical path controls the post-open skip, source filename, __FILE__, and include trace. A skip consumes the file request nonce without a parser request or new source unit.",
+  "current_reports": [
+    {"command": "python3 tests/semantics/include_execution.py", "report": ".tools/dynamic-eval-implementation/.tools/include-execution-0vw9ei7m/report.json", "sha256": "43c73e8bf63e0f1aab9aaebdf1b96ed530139d51011290488750595b3b87ed67", "exact_native_agreements": 41, "declared_inputs": 188, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_protocol.py", "report": ".tools/dynamic-eval-implementation/.tools/include-protocol-duiqghk6/report.json", "sha256": "04aecf68edaa0aad1b8b5898d68030296dda1976372afe826593397f7ce99d50", "assertions": 118, "declared_inputs": 192, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_adapter_protocol.py", "report": ".tools/dynamic-eval-implementation/.tools/include-adapter-protocol-e1p5r89g/report.json", "sha256": "125a96eefe4a78b324a97d0e9051526565a1355fba76c1015b32b134afaccd69", "assertions": 20, "declared_inputs": 190, "current_input_mismatches": 0},
+    {"command": "python3 tests/semantics/include_saved_protocol.py", "report": ".tools/dynamic-eval-implementation/.tools/include-saved-protocol-_fyjl4re/report.json", "sha256": "8597158cd228b5a86b6180a9266afd03cc600bb95ee09270717f715af071fc78", "assertions": 46, "declared_inputs": 192, "current_input_mismatches": 0}
+  ],
+  "focused_source_selection": {"selection": ["filter-fallback-once", "filter-fallback-trace"], "report": ".tools/dynamic-eval-implementation/.tools/include-execution-3ogvo2v7/report.json", "sha256": "948bf977290e2f2830e61202551e6741f1803d79f997ec945f9b900a2e511d5f", "exact_native_agreements": 2, "declared_inputs": 188, "current_input_mismatches": 0},
+  "non_numeric_checks": ["python3 tests/file_provider_protocol.py: opened 1, failure facts 2, forged or ambiguous 16", "python3 tests/include_source_service.py: accepted 9, native rejections 2, request negatives 8, unsupported profiles 3, namespace recoveries 4, mixed recovery blocked 1", "SpecTec elaboration and explicit private Dune adapter/numeric-runner builds passed", "git diff --check passed"],
+  "remaining_file_provider_work": "Authenticate mutable CWD/include_path context and extend source comparisons to additional stream/open failure observations and non-identity wrappers. No arbitrary workspace read or Zend execution is delegated to the parser service."
+}
