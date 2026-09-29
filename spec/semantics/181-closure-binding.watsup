@@ -155,7 +155,18 @@ def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inn
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction)
+  -- if $ptlc(n_scope*) =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc(n_scope*)) = (porigin_scope)
+  -- if pbindcall_inner = pbindcall[.KIND = INSTANCE_BIND][.SOURCE = (n_source)][.SENT = [KNOWN (POBJECT n_receiver), KNOWN (PSTRING n_scope*)]]
+def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inner) :: ptask_tail*], pbindcall_inner, (n_receiver), $bind_source_lexical(S, n_source), (porigin_called))
+  -- if pbindcall.KIND = STATIC_BIND
+  -- if S.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*
+  -- if pbindcall.SENT = [KNOWN (POBJECT n_source), KNOWN (POBJECT n_receiver), KNOWN (PSTRING n_scope*)]
+  -- if $ptlc(n_scope*) = $ptascii("static")
+  -- if S.OBJECTS[n_source] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
   -- if pbindcall_inner = pbindcall[.KIND = INSTANCE_BIND][.SOURCE = (n_source)][.SENT = [KNOWN (POBJECT n_receiver), KNOWN (PSTRING n_scope*)]]
 def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inner) :: ptask_tail*], pbindcall_inner, (n_receiver), (porigin_scope), (porigin_called))
   -- if pbindcall.KIND = STATIC_BIND
