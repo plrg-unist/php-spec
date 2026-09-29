@@ -75,14 +75,14 @@ PHP errors and five exact static rejections; explicit `implements Stringable`
 remains one Unsupported control. Four source-derived paused stages pass 38
 assertions for pending and entered calls, same-site reentry, missing or forged
 caller frames, and the restored-result root. See the
-[candidate ledger](../../coverage/semantics/user-string-callback-author.json)
-for hashes and recovery paths. This is private candidate evidence pending
-current-base integration review.
+[ledger](../../coverage/semantics/user-string-callback-author.json)
+for hashes and recovery paths. These reports record the pre-Static A private
+candidate.
 
 The Static A integration adds two combined controls: a callback calling its
 parent's `__toString` and one calling a static method with an output effect.
 The current-base catalogue passes 33 exact outcomes and retains one explicit
 interface Unsupported control; the same four paused stages pass. The current
-fingerprint and ignored raw report hashes are in the candidate ledger. This
-bridge checks the shared scoped-call and implicit-call guards together; it
-does not yet cover the remaining conversion consumers.
+fingerprint and ignored raw report hashes are in the ledger. The bridge
+checks the shared scoped-call and implicit-call guards together. This
+foundation is installed; the remaining conversion consumers are still open.

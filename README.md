@@ -234,8 +234,8 @@ members, hooks and user magic methods remain open.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
-the private user-object `__toString` candidate adds echo, print and string-cast
-callbacks, with other string contexts still open.
+user-object `__toString` now runs callbacks for echo, print and string casts,
+with other string contexts still open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
