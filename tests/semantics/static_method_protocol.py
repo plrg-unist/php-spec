@@ -63,6 +63,54 @@ CASES = {
             '~$call_current_valid(S[.FRAMES = (pframe[.CONTEXT = (pcallcontext_caller[.LEXICAL_CLASS = (porigin_b)])]) :: pframe_tail*])',
         ],
     },
+    'object-selector-roots': {
+        'source': ('<?php class A { public static function f(){echo "A";} } '
+                   'class B { public static function f(){echo "B";} } '
+                   '$a = new A; $b = new B; $a::{"f"}();'),
+        'stage': ('S.CURRENT = (pcallcontext) '
+                  '-- if pcallcontext.TARGET = SCOPED_TARGET porigin_requested '
+                  'porigin_method porigin_called n_receiver? (KNOWN (POBJECT n_selector)) '
+                  '-- if pcallcontext.CALLSITE = (porigin_site)'),
+        'checks': [
+            '$call_current_valid(S)',
+            'HOBJECT n_selector <- $call_context_roots(S.CURRENT)',
+            '$call_selected_valid(S, pcallcontext.TARGET, (porigin_site))',
+            '~$call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method '
+            'porigin_called n_receiver? (KNOWN (PSTRING $ptascii("B"))), (porigin_site))',
+            '~$call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method '
+            'porigin_called n_receiver? (KNOWN (POBJECT 9999)), (porigin_site))',
+            '~$call_current_valid(S[.CURRENT = (pcallcontext[.TARGET = SCOPED_TARGET '
+            'porigin_requested porigin_method porigin_called n_receiver? '
+            '(KNOWN (PSTRING $ptascii("B")))])])',
+        ],
+    },
+    'object-selector-name-root': {
+        'source': ('<?php function name(){return "f";} class A {public static function f(){echo "A";}} '
+                   '$a = new A; $a::{name()}();'),
+        'stage': ('S.TODO = ptask_head :: (SCOPED_NAME phpType19 '
+                  '(KNOWN (POBJECT n_selector)) phpType7* z) :: ptask_tail*'),
+        'checks': [
+            'HOBJECT n_selector <- $tasks_nodes(S.TODO)',
+            '$call_task_valid(S, SCOPED_NAME phpType19 (KNOWN (POBJECT n_selector)) phpType7* z)',
+            '~$call_task_valid(S, SCOPED_NAME phpType19 '
+            '(KNOWN (PSTRING $ptascii("Missing"))) phpType7* z)',
+        ],
+    },
+    'nonstatic-explicit-called': {
+        'source': ('<?php class A {public function f(){echo static::class;}} '
+                   'class B extends A {public function run(){A::f();}} (new B)->run();'),
+        'stage': ('S.CURRENT = (pcallcontext_callee) '
+                  '-- if pcallcontext_callee.TARGET = SCOPED_TARGET porigin_requested '
+                  'porigin_method porigin_called (n_receiver) poperand_selector '
+                  '-- if porigin_requested =/= porigin_called'),
+        'checks': [
+            '$call_current_valid(S)',
+            'S.OBJECTS[n_receiver] = INSTANCE porigin_called',
+            '~$call_current_valid(S[.CURRENT = (pcallcontext_callee[.TARGET = '
+            'SCOPED_TARGET porigin_requested porigin_method porigin_requested '
+            '(n_receiver) poperand_selector])])',
+        ],
+    },
 }
 
 

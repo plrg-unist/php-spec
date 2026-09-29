@@ -574,5 +574,41 @@
     "stdout_base64": "Qg==",
     "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgY2FsbCBwcml2YXRlIEE6Ol9fY29uc3RydWN0KCkgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxKTogQS0+YWdhaW4oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
     "exit_status": 255
+  },
+  {
+    "id": "private-ctor-folded-name",
+    "native_group": "native9.json",
+    "native_raw_sha256": "3f977b17747bccc337f9efce482656ae3d8427da1c68340b895bdedd7336515a",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php class A {function call(){ B::{\"__con\".\"struct\"}();}} class B extends A {private function __construct(){echo \"B\";} static function make(){return new B;}} B::make()->call();",
+    "source_sha256": "3419674b7087cb98ecc62a410d08e20d7c461604e799d7bd2d79ba358eb51b8f",
+    "status": "normal",
+    "stdout_base64": "QkI=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "nonstatic-explicit-called",
+    "native_group": "native11.json",
+    "native_raw_sha256": "7033f1fd928a45e5c3ac252622be767e89faf54c71328ce75403918dbd2e19d9",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php class A { public function f(){ echo static::class; } } class B extends A { public function run(){ A::f(); } } (new B)->run();",
+    "source_sha256": "ec02e9e5d89ece661337c2095943a9f43fa4beda99c378c2575223577249db76",
+    "status": "normal",
+    "stdout_base64": "Qg==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "static-explicit-called",
+    "native_group": "native11.json",
+    "native_raw_sha256": "7033f1fd928a45e5c3ac252622be767e89faf54c71328ce75403918dbd2e19d9",
+    "native_profile": "PHP 8.5.10 -n pinned CLI profile",
+    "source": "<?php class A { public static function f(){ echo static::class; } } class B extends A { public function run(){ A::f(); } } (new B)->run();",
+    "source_sha256": "89c7d2a3834a72a28cf7afd193f8a7dbcbd82d423733229a3f9a97f0707a1d41",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
   }
 ]

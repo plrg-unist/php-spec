@@ -23,6 +23,8 @@ dec $call_target_extra_roots(pcallcontext) : pnode*
 def $call_target_extra_roots(pcallcontext) = [HOBJECT n]
   -- if pcallcontext.TARGET = METHOD_TARGET n porigin
   -- if pcallcontext.RECEIVER = eps
+def $call_target_extra_roots(pcallcontext) = $operand_nodes(poperand_selector)
+  -- if pcallcontext.TARGET = SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector
 def $call_target_extra_roots(pcallcontext) = eps -- otherwise
 def $call_context_roots(eps) = eps
 def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $instance_roots(pcallcontext.RECEIVER) ++ $call_target_extra_roots(pcallcontext) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)

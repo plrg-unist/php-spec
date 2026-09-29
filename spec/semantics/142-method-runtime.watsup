@@ -132,6 +132,12 @@ dec $method_target_eligible(pstate, porigin, pmethoddesc) : bool
 dec $scoped_selector_class(pstate, poperand) : porigin?
 dec $scoped_receiver_valid(pstate, porigin, pmethoddesc, nat?) : bool
 def $scoped_selector_class(S, KNOWN (PSTRING n*)) = $class_named(S.CLASSNAMES, $ptlc(n*))
+def $scoped_selector_class(S, KNOWN (POBJECT n)) = (porigin_class)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
 def $scoped_selector_class(S, poperand) = eps -- otherwise
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, eps) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, (n)) = true
@@ -306,10 +312,14 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcp
   -- if $method_accessible(S, pmethoddesc, $method_site_scope(S, pmethoddesc.FUNCTION.ORIGIN, PORIGIN n_unit pcpath))
 dec $scoped_method_literal(phpType20) : bool
 def $scoped_method_literal(NScalarString (BYTES text) metadata) = true
+def $scoped_method_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = true
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING n*)
 def $scoped_method_literal(phpType20) = false -- otherwise
 dec $scoped_source_method(phpType20, ptbytes) : bool
 def $scoped_source_method(NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
 def $scoped_source_method(NScalarString (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $scoped_source_method(NExprBinaryOpConcat expression_1 expression_2 metadata, ptbytes) = ($ptlc(n*) = $ptlc(ptbytes))
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING n*)
 def $scoped_source_method(expression_name, ptbytes) = true
   -- if $property_computed_name(expression_name)
   -- if ~$scoped_method_literal(expression_name)
@@ -333,14 +343,20 @@ def $scoped_requested_site(S, PORIGIN n_unit pcpath, phpType19, porigin_requeste
 def $scoped_requested_site(S, porigin_site, expression_class, porigin_requested, pcallcontext_caller?) = true
   -- if ~$ppscoped_named(expression_class)
 def $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?) = false -- otherwise
-dec $scoped_called_site(phpType19, porigin, porigin, pcallcontext?) : bool
-def $scoped_called_site(phpType19, porigin_requested, porigin_called, (pcallcontext_caller)) = true
+dec $scoped_called_site(pstate, phpType19, porigin, porigin, pcallcontext?, pmethoddesc, nat?) : bool
+def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, (n_receiver)) = true
+  -- if ~pmethoddesc.STATIC
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, (pcallcontext_caller), pmethoddesc, eps) = true
+  -- if pmethoddesc.STATIC
   -- if $ppscoped_keyword(phpType19)
   -- if pcallcontext_caller.CALLED_CLASS = (porigin_called)
-def $scoped_called_site(phpType19, porigin_requested, porigin_called, pcallcontext_caller?) = true
+def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, eps) = true
+  -- if pmethoddesc.STATIC
   -- if ~$ppscoped_keyword(phpType19)
   -- if porigin_requested = porigin_called
-def $scoped_called_site(phpType19, porigin_requested, porigin_called, pcallcontext_caller?) = false -- otherwise
+def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?) = false -- otherwise
 dec $scoped_receiver_site(pstate, porigin, pmethoddesc, nat?, pcallcontext?) : bool
 def $scoped_receiver_site(S, porigin_requested, pmethoddesc, eps, pcallcontext_caller?) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_site(S, porigin_requested, pmethoddesc, (n_receiver), (pcallcontext_caller)) = true
@@ -364,7 +380,7 @@ def $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method pori
   -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
   -- if $scoped_site_context(S, porigin_method, porigin_site) = pcallcontext_caller?
   -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?)
-  -- if $scoped_called_site(phpType19, porigin_requested, porigin_called, pcallcontext_caller?)
+  -- if $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?)
   -- if $scoped_receiver_site(S, porigin_requested, pmethoddesc, n_receiver?, pcallcontext_caller?)
   -- if $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_caller?)
 def $scoped_call_selected(S, pcalltarget, porigin_site) = false -- otherwise
@@ -668,7 +684,7 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
-def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
+def $scoped_dynamic_class(S, z) = S_read
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
@@ -676,6 +692,7 @@ def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAM
   -- if (HOBJECT n) <- S_read.ALLOCATIONS
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_at(S_read.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S_read.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
 def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class name must be a valid object or a string"), z)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -711,6 +728,10 @@ def $scoped_ctor_arm_at(S, porigin_site) = true
 def $scoped_ctor_arm_at(S, porigin_site) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NScalarString (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $ptlc($base64(text)) = $ptascii("__construct")
+def $scoped_ctor_arm_at(S, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NExprBinaryOpConcat expression_1 expression_2 metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata_name) = (PSTRING n*)
+  -- if $ptlc(n*) = $ptascii("__construct")
 def $scoped_ctor_arm_at(S, porigin_site) = false -- otherwise
 def $scoped_ctor_arm(S) = $scoped_ctor_arm_at(S, porigin_site) -- if S.ORIGIN = (porigin_site)
 def $scoped_ctor_arm(S) = false -- otherwise
@@ -751,9 +772,9 @@ def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_
   -- if $scoped_called_class(S, phpType19, porigin_requested) = (porigin_called)
 def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, (n_receiver), poperand_selector, ptbytes, phpType7*, z)
   -- if ~pmethoddesc.STATIC
-  -- if $scoped_called_class(S, phpType19, porigin_requested) = (porigin_called)
   -- if $scoped_current_receiver(S) = (n_receiver)
   -- if $scoped_receiver_valid(S, porigin_requested, pmethoddesc, (n_receiver))
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
 def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"), z)[.TODO = eps]
   -- if ~pmethoddesc.STATIC
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
@@ -923,6 +944,16 @@ def $scoped_name_task(S, phpType19, KNOWN (PSTRING n_class*), phpType7*, z) = tr
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.NAME = n_class*
+  -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
+def $scoped_name_task(S, phpType19, KNOWN (POBJECT n_class), phpType7*, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 expression_name (SEQUENCE phpType7*) metadata)
+  -- if $scoped_class_task(S, phpType19, expression_name, phpType7*, z)
+  -- if $property_computed_name(expression_name)
+  -- if ~$ppscoped_named(phpType19)
+  -- if $scoped_selector_class(S, KNOWN (POBJECT n_class)) = (porigin_class)
   -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
