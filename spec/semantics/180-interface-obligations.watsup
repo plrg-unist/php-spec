@@ -1,0 +1,83 @@
+;; Abstract obligations are merged in class/member, inherited parent and
+;; direct interface order. Stringable contributes a real virtual prototype.
+syntax pilabstract = PILABSTRACT ptbytes ptbytes
+dec $pil_abs_seen(pilabstract*, ptbytes) : bool
+dec $pil_abs_add(pstate, pclassdesc, ptbytes, ptbytes, pilabstract*) : pilabstract*
+dec $pil_abs_own(pstate, pclassdesc, pclassdesc, pmethoddesc*, pilabstract*) : pilabstract*
+dec $pil_abs_class(pstate, pclassdesc, porigin, nat, pilabstract*) : pilabstract*
+dec $pil_abs_parent(pstate, pclassdesc, porigin, nat, pilabstract*) : pilabstract*
+dec $pil_abs_interface(pstate, pclassdesc, porigin, nat, pilabstract*) : pilabstract*
+dec $pil_abs_link(pstate, pclassdesc, porigin, nat, pilabstract*) : pilabstract*
+dec $pil_abs_refs(pstate, pclassdesc, pilref*, nat, pilabstract*) : pilabstract*
+dec $pil_abs_names(pilabstract*, nat) : ptbytes
+dec $pil_abstract_from(pclassdesc, pilabstract*) : ptbytes?
+
+def $pil_abs_seen(eps, ptbytes) = false
+def $pil_abs_seen((PILABSTRACT ptbytes_name ptbytes_label) :: pilabstract_tail*, ptbytes) = true
+  -- if $ptlc(ptbytes_name) = $ptlc(ptbytes)
+def $pil_abs_seen((PILABSTRACT ptbytes_name ptbytes_label) :: pilabstract_tail*, ptbytes) = $pil_abs_seen(pilabstract_tail*, ptbytes)
+  -- if $ptlc(ptbytes_name) =/= $ptlc(ptbytes)
+def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract*
+  -- if $pil_abs_seen(pilabstract*, ptbytes_name)
+def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract*
+  -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
+  -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.ABSTRACT
+def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract* ++ [PILABSTRACT ptbytes_name ptbytes_label]
+  -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
+  -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = eps
+def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*) = pilabstract* ++ [PILABSTRACT ptbytes_name ptbytes_label]
+  -- if ~$pil_abs_seen(pilabstract*, ptbytes_name)
+  -- if $effective_method(S, pclassdesc_child.ORIGIN, ptbytes_name, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.ABSTRACT
+
+def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, eps, pilabstract*) = pilabstract*
+def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc :: pmethoddesc_tail*, pilabstract*) = $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc_tail*, $pil_abs_add(S, pclassdesc_child, pmethoddesc.NAME, pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME, pilabstract*))
+  -- if pmethoddesc.ABSTRACT
+def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc :: pmethoddesc_tail*, pilabstract*) = $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc_tail*, pilabstract*)
+  -- if ~pmethoddesc.ABSTRACT
+
+def $pil_abs_parent(S, pclassdesc_child, porigin, n, pilabstract*) = $pil_abs_class(S, pclassdesc_child, porigin_parent, n, pilabstract*)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $pil_abs_parent(S, pclassdesc_child, porigin, n, pilabstract*) = pilabstract* -- otherwise
+def $pil_abs_link(S, pclassdesc_child, porigin, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref*, n, pilabstract*)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+def $pil_abs_link(S, pclassdesc_child, porigin, n, pilabstract*) = pilabstract*
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
+def $pil_abs_class(S, pclassdesc_child, porigin, 0, pilabstract*) = pilabstract*
+def $pil_abs_class(S, pclassdesc_child, porigin, n, pilabstract*) = $pil_abs_link(S, pclassdesc_child, porigin, $nabs($(n - 1)), $pil_abs_parent(S, pclassdesc_child, porigin, $nabs($(n - 1)), $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pclassdesc_owner.METHODS, pilabstract*)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "class"
+def $pil_abs_interface(S, pclassdesc_child, porigin, 0, pilabstract*) = pilabstract*
+def $pil_abs_interface(S, pclassdesc_child, porigin, n, pilabstract*) = $pil_abs_link(S, pclassdesc_child, porigin, $nabs($(n - 1)), $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pclassdesc_owner.METHODS, pilabstract*))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "interface"
+def $pil_abs_refs(S, pclassdesc_child, eps, n, pilabstract*) = pilabstract*
+def $pil_abs_refs(S, pclassdesc_child, (PILSOURCE ptbytes porigin) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, $pil_abs_interface(S, pclassdesc_child, porigin, n, pilabstract*))
+def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, pilabstract*)
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if $pil_abs_seen(pilabstract*, $ptascii("__toString"))
+def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, $pil_abs_add(S, pclassdesc_child, $ptascii("__toString"), $ptascii("Stringable::__toString"), pilabstract*))
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+  -- if ~$pil_abs_seen(pilabstract*, $ptascii("__toString"))
+  -- if ~$pil_throwable_allowed(S, pclassdesc_child)
+def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, pilabstract*)
+  -- if $ptlc(ptbytes) =/= $ptascii("stringable") \/ (~$pil_abs_seen(pilabstract*, $ptascii("__toString")) /\ $pil_throwable_allowed(S, pclassdesc_child))
+
+def $pil_abs_names(eps, n) = eps
+def $pil_abs_names(pilabstract :: pilabstract_tail*, 0) = $ptascii("...")
+def $pil_abs_names((PILABSTRACT ptbytes_name ptbytes_label) :: pilabstract_tail*, n) = ptbytes_label
+  -- if $(n > 0) /\ pilabstract_tail* = eps
+def $pil_abs_names((PILABSTRACT ptbytes_name ptbytes_label) :: pilabstract_tail*, n) = ptbytes_label ++ $ptascii(", ") ++ $pil_abs_names(pilabstract_tail*, $nabs($(n - 1)))
+  -- if $(n > 0) /\ pilabstract_tail* =/= eps
+def $pil_abstract_message(S, pclassdesc) = eps
+  -- if pclassdesc.ABSTRACT
+def $pil_abstract_message(S, pclassdesc) = $pil_abstract_from(pclassdesc, $pil_abs_class(S, pclassdesc, pclassdesc.ORIGIN, |S.CLASSES|, eps))
+  -- if ~pclassdesc.ABSTRACT
+def $pil_abstract_from(pclassdesc, eps) = eps
+def $pil_abstract_from(pclassdesc, pilabstract*) = ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (") ++ $pil_abs_names(pilabstract*, 3) ++ [41])
+  -- if |pilabstract*| = 1
+def $pil_abstract_from(pclassdesc, pilabstract*) = ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains ") ++ $ntunsigned(|pilabstract*|) ++ $ptascii(" abstract methods and must therefore be declared abstract or implement the remaining methods (") ++ $pil_abs_names(pilabstract*, 3) ++ [41])
+  -- if $(|pilabstract*| > 1)

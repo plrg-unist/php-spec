@@ -43,50 +43,17 @@ def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbyt
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
   -- if pclassdesc_dep.KIND = "class"
-def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead"))
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
-  -- if pclassdesc_dep.KIND = "interface"
-  -- if pclassdesc.KIND = "class"
-  -- if $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|)
-  -- if ~$pil_throwable_allowed(S, pclassdesc)
 def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILSOURCE ptbytes porigin])
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
   -- if pclassdesc_dep.KIND = "interface"
-  -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|) \/ pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
 def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL (pclassdesc.NAME ++ $ptascii(" cannot implement ") ++ ptbytes_display ++ $ptascii(" - it is not an interface"))
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
   -- if text_kind =/= "interface"
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILUNSUPPORTED "internal interface method contract"
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
-  -- if $ptlc(ptbytes) =/= $ptascii("stringable") /\ $ptlc(ptbytes) =/= $ptascii("throwable")
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("stringable")
-  -- if pclassdesc.KIND = "class"
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead"))
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("throwable")
-  -- if pclassdesc.KIND = "class"
-  -- if ~$pil_throwable_allowed(S, pclassdesc)
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILUNSUPPORTED "Throwable inherited method contract"
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("throwable")
-  -- if pclassdesc.KIND = "interface"
-  -- if pclassdesc.METHODS =/= eps
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("throwable")
-  -- if pclassdesc.KIND = "class"
-  -- if $pil_throwable_allowed(S, pclassdesc)
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if pclassdesc.KIND = "interface"
-  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable")]
-  -- if $ptlc(ptbytes) =/= $ptascii("throwable") \/ pclassdesc.METHODS = eps
 
 def $pil_fatal(S, pclassdesc, ptbytes) = S[.COMPLETION = FATAL ptbytes pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
@@ -244,6 +211,7 @@ def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILSOURCE ptbytes porigin) 
   -- if pclassdesc.KIND = "interface"
 def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILBUILTIN ptbytes) :: pilref_tail* ) = $pil_targets_valid(S, ptbytes_tail*, pilref_tail* )
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
+  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable")]
 def $pil_targets_valid(S, ptbytes*, pilref_link* ) = false -- otherwise
 
 dec $pil_entries_valid(pstate, pinterfacelink*, porigin*) : bool
