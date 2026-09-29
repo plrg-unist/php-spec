@@ -43,12 +43,15 @@ def $getter_other(text, ptbytes) = true
   -- if $throwable_constructor_kind($ptascii(text)) = eps
 def $getter_other(text, ptbytes) = false -- otherwise
 
-def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable getter first-class callable"]
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n pgettermethod ($getter_owner(pthrowable.KIND, pgettermethod)) porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_closure]][.RESULT = KNOWN (POBJECT n_closure)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $getter_named(ptbytes) = (pgettermethod)
   -- if $getter_available(pthrowable.KIND, pgettermethod)
   -- if $ppfirstclass(phpType7*)
-def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n, BASE $getter_owner(pthrowable.KIND, pgettermethod), METHOD pgettermethod, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_closure = |S.OBJECTS|
+def $getter_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n, BASE $getter_owner(pthrowable.KIND, pgettermethod), METHOD pgettermethod, CAPTURE eps, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
@@ -74,6 +77,9 @@ def $getter_select(S, n, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $pta
   -- if ~$getter_available(pthrowable.KIND, GET_SEVERITY)
 
 dec $getter_arguments(pstate, porigin) : pcallarguments
+def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $dynamic_site(S, (porigin))
 def $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
@@ -94,7 +100,10 @@ def $getter_argument(S, pgettercall) = ((expression, b_unpack, $exit_argument_na
 def $getter_argument(S, pgettercall) = eps -- otherwise
 
 dec $getter_nodes(pgettercall) : pnode*
-def $getter_nodes(pgettercall) = [HOBJECT pgettercall.RECEIVER] ++ $operands_roots(pgettercall.SENT)
+dec $getter_capture_nodes(nat?) : pnode*
+def $getter_capture_nodes(eps) = eps
+def $getter_capture_nodes((n)) = [HOBJECT n]
+def $getter_nodes(pgettercall) = [HOBJECT pgettercall.RECEIVER] ++ $getter_capture_nodes(pgettercall.CAPTURE) ++ $operands_roots(pgettercall.SENT)
 def $task_nodes(GETTER_ARGS pgettercall) = $getter_nodes(pgettercall)
 def $task_nodes(GETTER_SEND pgettercall) = $getter_nodes(pgettercall)
 def $task_nodes(GETTER_UNPACK_PREP pgettercall) = $getter_nodes(pgettercall)
@@ -211,6 +220,7 @@ rule PhpStep/getter-unpack-done: S ~> S[.TODO = (GETTER_ARGS pgettercall[.INDEX 
 ;; instruction line and source-order prefix before allowing any body execution.
 dec $getter_selected(pstate, pgettercall) : bool
 def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = eps
   -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pgettercall.RECEIVER] = THROWABLE pthrowable
@@ -219,6 +229,7 @@ def $getter_selected(S, pgettercall) = true
   -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprMethodCall expression phpType20 phpType6 metadata)
   -- if $method_source_name(phpType20, $getter_name(pgettercall.METHOD))
 def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = eps
   -- if $(pgettercall.RECEIVER < |S.OBJECTS|)
   -- if (HOBJECT pgettercall.RECEIVER) <- S.ALLOCATIONS
   -- if S.OBJECTS[pgettercall.RECEIVER] = THROWABLE pthrowable

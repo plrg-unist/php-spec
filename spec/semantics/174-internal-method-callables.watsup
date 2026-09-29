@@ -1,0 +1,143 @@
+;; Closure::__invoke(...) captures an owned alias of the selected Closure.
+;; Calling it enters the original closure directly, retaining its lexical
+;; scope, static cells and trace function name.
+def $invoke_capture(S, n_source, (porigin_site)) = S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [INVOKECLOSURE n_source porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if n = |S.OBJECTS|
+
+def $node_children(S, HOBJECT n) = [HOBJECT n_source]
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [INVOKECLOSURE n_original porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = INVOKECLOSURE n_original porigin_site
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(INVOKECLOSURE n_source porigin_site, INVOKECLOSURE n_source porigin_site) = true
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+
+dec $invoke_capture_source(pstate, porigin) : bool
+def $invoke_capture_source(S, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $invoke_capture_source(S, porigin_site) = false -- otherwise
+def $closure_callable(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+  -- if $(n_source < n)
+  -- if (HOBJECT n_source) <- S.ALLOCATIONS
+  -- if $invoke_capture_source(S, porigin_site)
+  -- if $closure_callable(S, n_source)
+def $dynamic_value(S, porigin, z_init, z_call) = $dynamic_value(S[.RESULT = KNOWN (POBJECT n_source)], porigin, z_init, z_call)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+  -- if $closure_callable(S, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+  -- if $closure_callable(S_read, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $method_select(S_read[.RESULT = KNOWN (POBJECT n_source)], KNOWN (POBJECT n_source), ptbytes, phpType7*, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = INVOKECLOSURE n_source porigin_site
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $closure_callable(S_read, n)
+
+;; A finite Throwable getter retains its receiver and selected C owner.
+def $node_children(S, HOBJECT n) = [HOBJECT n_receiver]
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(GETTERCLOSURE n_receiver pgettermethod text_base porigin_site, GETTERCLOSURE n_receiver pgettermethod text_base porigin_site) = true
+dec $getter_capture_live(pstate, nat) : bool
+def $getter_capture_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $(n_receiver < n)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = THROWABLE pthrowable
+  -- if $getter_available(pthrowable.KIND, pgettermethod)
+  -- if text_base = $getter_owner(pthrowable.KIND, pgettermethod)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $getter_name(pgettermethod))
+def $getter_capture_live(S, n) = false -- otherwise
+def $closure_callable(S, n) = $getter_capture_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = (n)
+  -- if $getter_capture_live(S, n)
+  -- if S.OBJECTS[n] = GETTERCLOSURE pgettercall.RECEIVER pgettercall.METHOD pgettercall.BASE porigin_site
+  -- if $dynamic_site(S, (pgettercall.SITE))
+def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = (n)
+  -- if $getter_capture_live(S, n)
+  -- if S.OBJECTS[n] = GETTERCLOSURE pgettercall.RECEIVER pgettercall.METHOD pgettercall.BASE porigin_site
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = (GETTER_ARGS {SITE porigin, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z_call}) :: (GETTER_CAPTURE_RESULT n porigin) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $closure_callable(S, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_ARGS {SITE porigin_call, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_call)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $closure_callable(S_read, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+  -- if $closure_callable(S_read, n)
+def $task_nodes(GETTER_CAPTURE_RESULT n porigin) = [HOBJECT n]
+dec $getter_capture_result_valid(pstate, nat, porigin) : bool
+def $getter_capture_result_valid(S, n, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $dynamic_site(S, (porigin))
+  -- if $getter_capture_live(S, n)
+def $getter_capture_result_valid(S, n, porigin) = false -- otherwise
+def $call_task_valid(S, GETTER_CAPTURE_RESULT n porigin) = $getter_capture_result_valid(S, n, porigin)
+rule PhpStep/getter-capture-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = (GETTER_CAPTURE_RESULT n porigin) :: ptask_tail*
+  -- if $call_task_valid(S, GETTER_CAPTURE_RESULT n porigin)
