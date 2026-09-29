@@ -36,7 +36,7 @@
     }
   },
   "limits": [
-    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed the bounded B bridge; independent replay and a retained current-base gate remain pending.",
+    "Authenticated Exception/Error-root direct/transitive Throwable implementation passed retained current-B source tests; independent replay and compiler/full-test gates remain pending.",
     "The internal Throwable method signature table is not modeled; overlapping declarations remain Unsupported until the finite catalog is added.",
     "Other internal interfaces and hooks, class/interface constants, PHP 8.5 hooked interface properties, traits and first-class interface method selectors remain open; no full interface-family closure is claimed."
   ],
@@ -170,5 +170,22 @@
     "rooted_positive": 4,
     "nonroot_fatal": 2,
     "unsupported_control": "inherited Throwable getter contract overlap remains explicit Unsupported"
+  },
+  "retained_B_runtime": {
+    "base": "242607f9c",
+    "candidate": "7853d4789",
+    "catalogue": "tests/semantics/interface_runtime_cases.json",
+    "catalogue_sha256": "4c54f846e29a28de8eef977b612dd779a979a66b8cdf29e966b201e4b578789f",
+    "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/interface_runtime_cases.json",
+    "report": ".tools/interfaces-candidate/.tools/method-runtime-npftxipr/report.json",
+    "report_sha256": "4a297f49d9a2550e8d644b5a132122db82ae3e54b711cf0b99af7cc146f7a43c",
+    "fingerprint_sha256": "c494fa78b23243b0a28f7d3abf96819cfa50b9d1e9514290affc6b4b72a72c52",
+    "watched_inputs": 180,
+    "exact_original_source": 20,
+    "statuses": [
+      "normal",
+      "php_error",
+      "static_rejection"
+    ]
   }
 }
