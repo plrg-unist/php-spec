@@ -1,0 +1,201 @@
+;; Linked interface prototypes retain their declaring owner and direct-list order.
+dec $pil_proto_source(pstate, porigin, nat) : ppmethodinherited*
+dec $pil_proto_refs(pstate, pilref*, nat) : ppmethodinherited*
+dec $pil_info_named(ppmethodinherited*, ptbytes) : bool
+dec $pil_info_missing(ppmethodinherited*, ppmethodinherited*) : ppmethodinherited*
+dec $pil_ref_names(pstate, pilref*, nat) : ptbytes*
+
+def $pil_proto_source(S, porigin, 0) = eps
+def $pil_proto_source(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_proto_refs(S, pilref*, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+def $pil_proto_source(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
+def $pil_proto_source(S, porigin, n) = eps -- otherwise
+def $pil_proto_refs(S, eps, n) = eps
+def $pil_proto_refs(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = $pil_proto_source(S, porigin, n) ++ $pil_proto_refs(S, pilref_tail*, n)
+def $pil_proto_refs(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = $pil_proto_refs(S, pilref_tail*, n)
+
+def $pil_info_named(eps, ptbytes) = false
+def $pil_info_named((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = true
+  -- if $ptlc(pmethoddesc.NAME) = $ptlc(ptbytes)
+def $pil_info_named((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = $pil_info_named(ppmethodinherited_tail*, ptbytes)
+  -- if $ptlc(pmethoddesc.NAME) =/= $ptlc(ptbytes)
+def $pil_info_missing(ppmethodinherited*, eps) = eps
+def $pil_info_missing(ppmethodinherited*, (PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $pil_info_missing(ppmethodinherited*, ppmethodinherited_tail*)
+  -- if $pil_info_named(ppmethodinherited*, pmethoddesc.NAME)
+def $pil_info_missing(ppmethodinherited*, (PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = (PPMINHERITED pmethoddesc pclassdesc) :: $pil_info_missing(ppmethodinherited* ++ [PPMINHERITED pmethoddesc pclassdesc], ppmethodinherited_tail*)
+  -- if ~$pil_info_named(ppmethodinherited*, pmethoddesc.NAME)
+def $pil_info_extra(S, porigin, ppmethodinherited*, 0) = eps
+def $pil_info_extra(S, porigin, ppmethodinherited*, n) = $pil_info_missing(ppmethodinherited*, $pil_proto_refs(S, pilref*, $nabs($(n - 1))))
+  -- if $(n > 0)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+def $pil_info_extra(S, porigin, ppmethodinherited*, n) = eps -- otherwise
+
+def $pil_ref_names(S, eps, n) = eps
+def $pil_ref_names(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = [ptbytes] ++ $pil_ancestor_names(S, porigin, n) ++ $pil_ref_names(S, pilref_tail*, n)
+def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Stringable")] ++ $pil_ref_names(S, pilref_tail*, n)
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes] ++ $pil_ref_names(S, pilref_tail*, n)
+  -- if $ptlc(ptbytes) =/= $ptascii("throwable")
+def $pil_ancestor_names(S, porigin, 0) = eps
+def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 1))) ++ $pil_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps \/ $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $pil_ancestor_names(S, porigin, n) = $pil_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $pil_ancestor_names(S, porigin, n) = eps -- otherwise
+
+dec $pil_info_pick(ppmethodinherited*, ptbytes) : ppmethodinherited?
+dec $pil_selected(pstate, pclassdesc, ptbytes, ppmethodinherited*) : ppmethodinherited?
+dec $pil_method_one(pstate, pclassdesc, ppmethodinherited, ppmethodinherited*) : pmethodissue
+dec $pil_method_items(pstate, pclassdesc, ppmethodinherited*, ppmethodinherited*) : pmethodissue
+dec $pil_method_issue(pstate, pclassdesc) : pmethodissue
+dec $pil_scope(pstate, pclassdesc) : pvclass
+dec $pil_signature_issue(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pmethodissue
+dec $pil_signature_result(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc, pmcheck) : pmethodissue
+dec $pil_stringable_issue(pstate, pclassdesc) : pmethodissue
+dec $pil_issue_line(pclassdesc, pmethoddesc) : int
+dec $pil_reline(pclassdesc, pmethoddesc, pmethodissue) : pmethodissue
+dec $pil_method_fatal(pstate, pclassdesc, ptbytes, int) : pstate
+
+def $pil_info_pick(eps, ptbytes) = eps
+def $pil_info_pick((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = (PPMINHERITED pmethoddesc pclassdesc)
+  -- if $ptlc(pmethoddesc.NAME) = $ptlc(ptbytes)
+def $pil_info_pick((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = $pil_info_pick(ppmethodinherited_tail*, ptbytes)
+  -- if $ptlc(pmethoddesc.NAME) =/= $ptlc(ptbytes)
+def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+  -- if $method_named(pclassdesc.METHODS, ptbytes) = (pmethoddesc)
+def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = $pil_info_pick(ppmethodinherited*, ptbytes)
+  -- if pclassdesc.KIND = "interface"
+  -- if $method_named(pclassdesc.METHODS, ptbytes) = eps
+def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_method)
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
+def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
+
+def $pil_scope(S, pclassdesc) = $pmethod_scope(pclassdesc, $method_all_ancestor_names(S, pclassdesc.ORIGIN, |S.CLASSES|))
+def $pil_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto) = $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), PMUSER $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), $method_active_registry(S, S.CLASSNAMES)))
+def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMCHECK PVYES ptbytes*) = METHOD_OK
+def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMCHECK PVNO ptbytes*) = METHOD_ISSUE pmdiagnostic.MESSAGE pclassdesc_child.LINE
+  -- if $pmmismatch($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), 14) = PMDIAGNOSTIC pmdiagnostic
+def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMCHECK PVUNRESOLVED ptbytes_missing*) = METHOD_ISSUE pmdiagnostic.MESSAGE pclassdesc_child.LINE
+  -- if $pmunavailable($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), ptbytes_missing*, 14) = PMDIAGNOSTIC pmdiagnostic
+def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
+def $pil_issue_line(pclassdesc, pmethoddesc) = pmethoddesc.FUNCTION.LINE
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN
+def $pil_issue_line(pclassdesc, pmethoddesc) = pclassdesc.LINE
+  -- if pmethoddesc.OWNER =/= pclassdesc.ORIGIN
+def $pil_reline(pclassdesc, pmethoddesc, METHOD_ISSUE ptbytes_message z) = METHOD_ISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc)
+def $pil_reline(pclassdesc, pmethoddesc, METHOD_OK) = METHOD_OK
+def $pil_reline(pclassdesc, pmethoddesc, METHOD_UNSUPPORTED text) = METHOD_UNSUPPORTED text
+
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_OK
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = eps
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_OK
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
+  -- if pmethoddesc_selected.FUNCTION.ORIGIN = pmethoddesc_proto.FUNCTION.ORIGIN
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_ISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc_selected)
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
+  -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
+  -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = (ptbytes_message)
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_ISSUE ($ptascii("Access level to ") ++ pclassdesc_selected.NAME ++ $ptascii("::") ++ pmethoddesc_selected.NAME ++ $ptascii("() must be public (as in class ") ++ pclassdesc_proto.NAME ++ [41]) $pil_issue_line(pclassdesc, pmethoddesc_selected)
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
+  -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
+  -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = eps
+  -- if pmethoddesc_selected.VISIBILITY =/= PROPERTY_PUBLIC
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = $pil_reline(pclassdesc, pmethoddesc_selected, $pil_signature_issue(S, pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto))
+  -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
+  -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
+  -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = eps
+  -- if pmethoddesc_selected.VISIBILITY = PROPERTY_PUBLIC
+
+def $pil_method_items(S, pclassdesc, eps, ppmethodinherited*) = METHOD_OK
+def $pil_method_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*, ppmethodinherited_all*) = $pil_method_items(S, pclassdesc, ppmethodinherited_tail*, ppmethodinherited_all*)
+  -- if $pil_method_one(S, pclassdesc, ppmethodinherited, ppmethodinherited_all*) = METHOD_OK
+def $pil_method_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*, ppmethodinherited_all*) = pmethodissue
+  -- if $pil_method_one(S, pclassdesc, ppmethodinherited, ppmethodinherited_all*) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_method_issue(S, pclassdesc) = $pil_method_items(S, pclassdesc, ppmethodinherited*, ppmethodinherited*)
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
+  -- if ppmethodinherited* = $pil_proto_refs(S, pilref*, |S.CLASSES|)
+def $pil_method_issue(S, pclassdesc) = METHOD_OK -- otherwise
+
+def $pil_stringable_issue(S, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND = "interface" \/ ~$class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|)
+def $pil_stringable_issue(S, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND = "class"
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|)
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.ABSTRACT \/ pclassdesc.ABSTRACT
+def $pil_stringable_issue(S, pclassdesc) = METHOD_ISSUE ($ptascii("Access level to ") ++ pclassdesc_method.NAME ++ $ptascii("::__toString() must be public (as in class Stringable)")) $pil_issue_line(pclassdesc, pmethoddesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|)
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
+def $pil_stringable_issue(S, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.ABSTRACT
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|)
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = eps
+def $pil_stringable_issue(S, pclassdesc) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Stringable::__toString)")) pclassdesc.LINE
+  -- if pclassdesc.KIND = "class"
+  -- if ~pclassdesc.ABSTRACT
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|)
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = eps
+def $pil_stringable_issue(S, pclassdesc) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Stringable::__toString)")) pclassdesc.LINE
+  -- if pclassdesc.KIND = "class"
+  -- if ~pclassdesc.ABSTRACT
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|)
+  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.ABSTRACT
+def $pil_contract_issue(S, pclassdesc) = pmethodissue
+  -- if $pil_method_issue(S, pclassdesc) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_contract_issue(S, pclassdesc) = $pil_stringable_issue(S, pclassdesc)
+  -- if $pil_method_issue(S, pclassdesc) = METHOD_OK
+
+def $pil_methods_valid(S, eps) = true
+def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $pil_methods_valid(S, (preqbytes_tail, porigin_tail)*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+  -- if $pil_contract_issue(S, pclassdesc) = METHOD_OK
+def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $pil_methods_valid(S, (preqbytes_tail, porigin_tail)*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $pil_contract_issue(S, pclassdesc) = METHOD_OK
+  -- if $ppmethod_abstract_message(pclassdesc, $method_info_layout(S, porigin, |S.CLASSES|)) = eps
+def $pil_methods_valid(S, (preqbytes, porigin)*) = false -- otherwise
+
+def $pil_method_fatal(S, pclassdesc, ptbytes_message, z) = S[.COMPLETION = FATAL ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc, ptbytes_message, z)
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_ISSUE ptbytes_message z
+def $pil_method_publish(S, S_candidate, pclassdesc) = S[.COMPLETION = UNSUPPORTED text]
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_UNSUPPORTED text
+def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND = "class"
+  -- if $ppmethod_abstract_message(pclassdesc, $method_info_layout(S_candidate, pclassdesc.ORIGIN, |S.CLASSES|)) = (ptbytes_message)
+def $pil_method_publish(S, S_candidate, pclassdesc) = S_candidate
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND = "interface" \/ $ppmethod_abstract_message(pclassdesc, $method_info_layout(S_candidate, pclassdesc.ORIGIN, |S.CLASSES|)) = eps

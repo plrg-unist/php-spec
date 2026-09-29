@@ -213,6 +213,7 @@ def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metad
 ;; An inherited method table keeps a class's own insertion order, then adds
 ;; absent parent entries. The parent's table order decides the first error.
 syntax ppmethodinherited = PPMINHERITED pmethoddesc pclassdesc
+dec $pil_info_extra(pstate, porigin, ppmethodinherited*, nat) : ppmethodinherited*
 dec $ppmethod_own(pclassdesc, pmethoddesc*) : ppmethodinherited*
 dec $ppmethod_extra(ppmethodinherited*, pmethoddesc*) : ppmethodinherited*
 dec $ppmethod_early_info(pclassdesc*, pclassdesc) : ppmethodinherited*

@@ -106,6 +106,8 @@ dec $class_instanceof(pstate, pvalue, preqbytes) : bool
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("stringable")
   -- if $stringable_instance(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ~$class_origin_matches(S, porigin, preqbytes, |S.CLASSES|)
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_origin_matches(S, porigin, preqbytes, |S.CLASSES|)

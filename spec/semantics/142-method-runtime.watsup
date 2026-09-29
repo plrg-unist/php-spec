@@ -1100,21 +1100,25 @@ def $ctor_frames_pairs_valid(S, pframe :: pframe_tail*) = ($ctor_pairs_valid(S[.
 ;; type variance both use the active parent graph, including conditional classes.
 dec $method_info_layout(pstate, porigin, nat) : ppmethodinherited*
 def $method_info_layout(S, porigin, 0) = eps
-def $method_info_layout(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $ppmethod_extra($method_info_layout(S, porigin_parent, $nabs($(n - 1))), pclassdesc.METHODS)
+def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_info_extra(S, porigin, ppmethodinherited*, n)
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
-def $method_info_layout(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $ppmethod_extra($method_info_layout(S, porigin_parent, $nabs($(n - 1))), pclassdesc.METHODS)
+def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_info_extra(S, porigin, ppmethodinherited*, n)
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps
-def $method_info_layout(S, porigin, n) = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_info_extra(S, porigin, ppmethodinherited*, n)
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
 def $method_info_layout(S, porigin, n) = eps -- otherwise
 
 dec $method_ancestor_names(pstate, porigin, nat) : ptbytes*
+dec $method_all_ancestor_names(pstate, porigin, nat) : ptbytes*
 def $method_ancestor_names(S, porigin, 0) = eps
 def $method_ancestor_names(S, porigin, n) = [pclassdesc_parent.NAME] ++ $method_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
   -- if $(n > 0)
@@ -1124,9 +1128,10 @@ def $method_ancestor_names(S, porigin, n) = [$ptascii("stdClass")]
   -- if $(n > 0)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
 def $method_ancestor_names(S, porigin, n) = eps -- otherwise
+def $method_all_ancestor_names(S, porigin, n) = $method_ancestor_names(S, porigin, n) ++ $pil_ancestor_names(S, porigin, n)
 dec $method_active_registry(pstate, (preqbytes, porigin)*) : pvclasses
-def $method_active_registry(S, eps) = [($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false})]
-def $method_active_registry(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = [($ptlc(pclassdesc.NAME), $pmethod_scope(pclassdesc, $method_ancestor_names(S, porigin, |S.CLASSES|)))] ++ $method_active_registry(S, (preqbytes_tail, porigin_tail)*)
+def $method_active_registry(S, eps) = [($ptascii("stringable"), {NAME $ptascii("Stringable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("throwable"), {NAME $ptascii("Throwable"), PARENT eps, ANCESTORS ($ptascii("Stringable") :: eps), FINAL false}), ($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false})]
+def $method_active_registry(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = [($ptlc(pclassdesc.NAME), $pmethod_scope(pclassdesc, $method_all_ancestor_names(S, porigin, |S.CLASSES|)))] ++ $method_active_registry(S, (preqbytes_tail, porigin_tail)*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 
 dec $method_ctor_proto(pstate, porigin, nat) : ppmethodinherited?
@@ -1150,10 +1155,10 @@ def $method_ctor_parent_proto(S, porigin, n) = eps -- otherwise
 
 dec $method_signature_issue(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pmethodissue
 def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_OK
-  -- if $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES)) = PMCHECK PVYES ptbytes*
+  -- if $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_all_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_all_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES)) = PMCHECK PVYES ptbytes*
 def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_ISSUE pmdiagnostic.MESSAGE pmethoddesc_child.FUNCTION.LINE
-  -- if $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES)) = PMCHECK PVNO ptbytes*
-  -- if $pmmismatch($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), 14) = PMDIAGNOSTIC pmdiagnostic
+  -- if $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_all_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_all_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES)) = PMCHECK PVNO ptbytes*
+  -- if $pmmismatch($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_all_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_all_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), 14) = PMDIAGNOSTIC pmdiagnostic
 def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_UNSUPPORTED "method signature comparison" -- otherwise
 
 dec $method_override_one(pstate, pclassdesc, ppmethodinherited) : pmethodissue
@@ -1207,7 +1212,7 @@ def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pc
   -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
   -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
-  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct")
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ pmethoddesc_parent.ABSTRACT
 
 dec $method_override_items(pstate, pclassdesc, ppmethodinherited*) : pmethodissue
 def $method_override_items(S, pclassdesc, eps) = METHOD_OK
@@ -1221,10 +1226,11 @@ def $method_link_issue(S, pclassdesc_child, porigin_parent) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
 def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_ISSUE ptbytes_message pclassdesc_child.LINE
   -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
+  -- if pclassdesc_child.INTERFACES = eps
   -- if $ppmethod_abstract_message(pclassdesc_child, $method_info_layout(S, pclassdesc_child.ORIGIN, |S.CLASSES|)) = (ptbytes_message)
 def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_OK
   -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
-  -- if $ppmethod_abstract_message(pclassdesc_child, $method_info_layout(S, pclassdesc_child.ORIGIN, |S.CLASSES|)) = eps
+  -- if pclassdesc_child.INTERFACES =/= eps \/ $ppmethod_abstract_message(pclassdesc_child, $method_info_layout(S, pclassdesc_child.ORIGIN, |S.CLASSES|)) = eps
 
 ;; Closure::__invoke is an internal trampoline. Its original sent operands
 ;; remain owned separately from the weakly received callee parameters.

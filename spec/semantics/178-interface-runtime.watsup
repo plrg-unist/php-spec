@@ -10,10 +10,11 @@ dec $pil_role(pclassdesc) : ptbytes
 dec $pil_fatal(pstate, pclassdesc, ptbytes) : pstate
 dec $pil_activate(pstate, pstate, pclassdesc, pilresult) : pstate
 dec $pil_publish(pstate, pclassdesc, pilref*) : pstate
+dec $pil_method_publish(pstate, pstate, pclassdesc) : pstate
 dec $pil_parent_activate(pstate, pclassdesc, ptbytes, pilfetch) : pstate
 dec $pil_throwable_allowed(pstate, pclassdesc) : bool
-dec $pil_has_contract(pstate, porigin, nat) : bool
-dec $pil_contract_refs(pstate, pilref*, nat) : bool
+dec $pil_contract_issue(pstate, pclassdesc) : pmethodissue
+dec $pil_methods_valid(pstate, (preqbytes, porigin)*) : bool
 
 def $pil_fetch(S, eps, pilref* ) = PILFETCHED pilref*
 def $pil_fetch(S, ptbytes :: ptbytes_tail*, pilref_old* ) = $pil_fetch(S, ptbytes_tail*, pilref_old* ++ [PILSOURCE ptbytes porigin])
@@ -30,20 +31,6 @@ def $pil_role(pclassdesc) = $ptascii("Class") -- if pclassdesc.KIND = "class"
 def $pil_throwable_allowed(S, pclassdesc) = ($class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Exception"), |S.CLASSES|) \/ $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Error"), |S.CLASSES|))
   -- if pclassdesc.KIND = "class"
 def $pil_throwable_allowed(S, pclassdesc) = false -- otherwise
-def $pil_has_contract(S, porigin, 0) = false
-def $pil_has_contract(S, porigin, n) = true
-  -- if $(n > 0)
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.METHODS =/= eps
-def $pil_has_contract(S, porigin, n) = $pil_contract_refs(S, pilref_link*, $nabs($(n - 1)))
-  -- if $(n > 0)
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.METHODS = eps
-  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref_link*)
-def $pil_has_contract(S, porigin, n) = false -- otherwise
-def $pil_contract_refs(S, eps, n) = false
-def $pil_contract_refs(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = ($ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable")] \/ $pil_contract_refs(S, pilref_tail*, n))
-def $pil_contract_refs(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = ($pil_has_contract(S, porigin, n) \/ $pil_contract_refs(S, pilref_tail*, n))
 def $pil_checked(S, pclassdesc, PILMISSING ptbytes) = PILMISSINGRESULT ptbytes
 def $pil_checked(S, pclassdesc, PILFETCHED pilref* ) = $pil_check(S, pclassdesc, pilref*, eps, eps)
 dec $pil_name(pilref) : ptbytes
@@ -56,12 +43,6 @@ def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbyt
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
   -- if pclassdesc_dep.KIND = "class"
-def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILUNSUPPORTED "interface method compatibility"
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
-  -- if pclassdesc_dep.KIND = "interface"
-  -- if $pil_has_contract(S, porigin, |S.CLASSES|)
-  -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|) \/ pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
 def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead"))
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
@@ -73,7 +54,6 @@ def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbyt
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
   -- if pclassdesc_dep.KIND = "interface"
-  -- if ~$pil_has_contract(S, porigin, |S.CLASSES|)
   -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|) \/ pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
 def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL (pclassdesc.NAME ++ $ptascii(" cannot implement ") ++ ptbytes_display ++ $ptascii(" - it is not an interface"))
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
@@ -87,41 +67,16 @@ def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $ptlc(ptbytes) = $ptascii("stringable")
   -- if pclassdesc.KIND = "class"
-  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if ~pmethoddesc.ABSTRACT \/ pclassdesc.ABSTRACT
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Access level to ") ++ pclassdesc_method.NAME ++ $ptascii("::__toString() must be public (as in class Stringable)"))
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("stringable")
-  -- if pclassdesc.KIND = "class"
-  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
-  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("stringable")
-  -- if pclassdesc.KIND = "class"
-  -- if pclassdesc.ABSTRACT
-  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = eps
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Stringable::__toString)"))
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("stringable")
-  -- if pclassdesc.KIND = "class"
-  -- if ~pclassdesc.ABSTRACT
-  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = eps
-def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Stringable::__toString)"))
-  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
-  -- if $ptlc(ptbytes) = $ptascii("stringable")
-  -- if pclassdesc.KIND = "class"
-  -- if ~pclassdesc.ABSTRACT
-  -- if $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if pmethoddesc.ABSTRACT
 def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead"))
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $ptlc(ptbytes) = $ptascii("throwable")
   -- if pclassdesc.KIND = "class"
   -- if ~$pil_throwable_allowed(S, pclassdesc)
+def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILUNSUPPORTED "Throwable inherited method contract"
+  -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+  -- if pclassdesc.KIND = "interface"
+  -- if pclassdesc.METHODS =/= eps
 def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILBUILTIN ptbytes])
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $ptlc(ptbytes) = $ptascii("throwable")
@@ -131,6 +86,7 @@ def $pil_check(S, pclassdesc, (PILBUILTIN ptbytes) :: pilref_tail*, ptbytes_seen
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if pclassdesc.KIND = "interface"
   -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable")]
+  -- if $ptlc(ptbytes) =/= $ptascii("throwable") \/ pclassdesc.METHODS = eps
 
 def $pil_fatal(S, pclassdesc, ptbytes) = S[.COMPLETION = FATAL ptbytes pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
@@ -144,7 +100,7 @@ def $pil_publish(S, pclassdesc, pilref* ) = S[.LINKEDINTERFACES = S.LINKEDINTERF
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
 def $pil_activate(S, S_parent, pclassdesc, pilresult) = S_parent
   -- if S_parent.COMPLETION =/= NORMAL
-def $pil_activate(S, S_parent, pclassdesc, PILOK pilref* ) = $pil_publish(S_parent, pclassdesc, pilref* )
+def $pil_activate(S, S_parent, pclassdesc, PILOK pilref* ) = $pil_method_publish(S, $pil_publish(S_parent, pclassdesc, pilref*), pclassdesc)
   -- if S_parent.COMPLETION = NORMAL
 def $pil_activate(S, S_parent, pclassdesc, PILFATAL ptbytes) = $pil_fatal(S, pclassdesc, ptbytes)
   -- if S_parent.COMPLETION = NORMAL
@@ -177,8 +133,12 @@ def $activate_class(S, pclassdesc) = $pil_parent_activate(S, pclassdesc, ptbytes
   -- if pclassdesc.INTERFACES =/= eps
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) =/= eps \/ $class_internal(ptbytes_parent)
 def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILMISSING ptbytes) = $pil_activate(S, S, pclassdesc, PILMISSINGRESULT ptbytes)
+def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = S_parent
+  -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+  -- if S_parent.COMPLETION =/= NORMAL
 def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = $pil_activate(S, S_parent, pclassdesc, $pil_check(S_parent, pclassdesc, pilref*, eps, eps))
   -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+  -- if S_parent.COMPLETION = NORMAL
 def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "interface"
@@ -309,4 +269,4 @@ def $pil_complete(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = 
   -- if pclassdesc.INTERFACES =/= eps
   -- if $pil_at(S.LINKEDINTERFACES, porigin) = (piltargets)
 def $pil_complete(S, (preqbytes, porigin)*) = false -- otherwise
-def $pil_links_valid(S) = ($pil_entries_valid(S, S.LINKEDINTERFACES, eps) /\ $pil_complete(S, S.CLASSNAMES))
+def $pil_links_valid(S) = ($pil_entries_valid(S, S.LINKEDINTERFACES, eps) /\ $pil_complete(S, S.CLASSNAMES) /\ $pil_methods_valid(S, S.CLASSNAMES))
