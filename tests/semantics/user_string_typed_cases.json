@@ -1,0 +1,104 @@
+[
+  {
+    "id": "typed-return-direct",
+    "source": "<?php class O{function __toString(){echo \"S;\";return \"x\";}}function f():string{return new O;}echo f();",
+    "source_sha256": "122a4eabf00bbf8971fb09988acdb4e4006f9851268e22d2d276843d0b3ca41e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-union",
+    "source": "<?php class O{function __toString(){echo \"S;\";return \"42\";}}function f():int|string{return new O;}$v=f();echo $v===\"42\"?\"string\":\"other\";",
+    "source_sha256": "e0a2ba9fd094656638bd9581fd51072b10967aa5d1c5db055d17263066e795a7",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-strict",
+    "source": "<?php declare(strict_types=1);class O{function __toString(){echo \"BAD;\";return \"x\";}}function f():string{return new O;}f();",
+    "source_sha256": "91a5bbeda4ca5e0fc8d4277117de5b547aa9f30c82bdde33a85ad736ceb71659",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "typed-return-arrow",
+    "source": "<?php class O{function __toString(){echo \"S;\";return \"x\";}}$f=fn():string =>\n new O;echo $f();",
+    "source_sha256": "a2dca70c525a1cb2c51c1e6b0a0ffcb29204dbd59be4ee121092f6ce225ff70f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-arrow-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}}$f=fn():string =>\n new O;$f();",
+    "source_sha256": "4220b2ecc59b5fd0cdbd1c0944ae45f0e79a980128fa70c8f531014c0cb6638e",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "typed-return-nested",
+    "source": "<?php class B{function __toString(){echo \"B;\";return \"b\";}}class A{function __toString(){echo \"A;\";return new B;}}function f():string{return new A;}echo f();",
+    "source_sha256": "04dac9e780c2e669ae1de60964ca698469f38883c00dfe6e64bef6402b325dff",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-inner-error-chain",
+    "source": "<?php class O{function __toString(){return [];}}function f():string{return new O;}try{f();}catch(TypeError $e){echo get_class($e),\":\",get_class($e->getPrevious());}",
+    "source_sha256": "899aec090e6f99d7f596dee2d79076369396b447df12118afc286d8004482dae",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-local-catch",
+    "source": "<?php $e=new Exception(\"x\");class O{function __toString(){global $e;throw $e;}}function f():string{global $e;try{return new O;}catch(Exception $x){echo \"BAD;\";}catch(TypeError $x){echo $x->getPrevious()===$e?\"P;\":\"N;\";return \"caught\";}}echo f();",
+    "source_sha256": "9da1da6ea3b8be7da4f458aa9b3331dd49f2dfe30bd601ff2064a1f17cce9582",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-finally",
+    "source": "<?php class O{function __toString(){echo \"T;\";throw new Exception(\"x\");}}function f():string{try{return new O;}finally{echo \"F;\";}}try{f();}catch(TypeError $e){echo get_class($e->getPrevious());}",
+    "source_sha256": "0d72c1ad744a446c692a59d7997a378a2507a5e776be2ea3bfd5a0529718aee0",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-nested-chain",
+    "source": "<?php $e=new Exception(\"x\");class C{function __toString(){global $e;throw $e;}}class B{function __toString(){return new C;}}class A{function __toString(){return new B;}}function f():string{return new A;}try{f();}catch(TypeError $x){echo get_class($x),get_class($x->getPrevious()),get_class($x->getPrevious()->getPrevious()),$x->getPrevious()->getPrevious()->getPrevious()===$e?\"P\":\"N\";}",
+    "source_sha256": "91fc8304855c2753b8df472123266b3c2d32059d8ebca19af5aebb0a96365525",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-callable-union-control",
+    "source": "<?php class O{function __invoke(){}function __toString(){echo \"BAD;\";return \"x\";}}function f():callable|string{return new O;}$x=f();echo get_class($x);",
+    "source_sha256": "91773869a75c84149fed0eb1c9a41fb92b0f5a8bde66b2ead6701e4b0d77bf01",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "typed-return-reference-control",
+    "source": "<?php class O{function __toString(){echo \"S;\";return \"x\";}}$x=new O;function &f():string{global $x;return $x;}$y=&f();echo $y;",
+    "source_sha256": "851903cbf5f5a1b43e9f9d609b8cf88ee9b595058930d84e917403ed9e711eb6",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "typed-return-stringable-union",
+    "source": "<?php class O{function __toString(){echo \"BAD;\";return \"x\";}}function f():Stringable|string{return new O;}$v=f();echo $v instanceof Stringable?\"object\":\"other\";",
+    "source_sha256": "f4ab6e27f2063f049f7f9c005900b95908efa78676219d8e9d426dc9cd26e3ff",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-nullable",
+    "source": "<?php class O{function __toString(){echo \"S;\";return \"x\";}}function f():?string{return new O;}echo f();",
+    "source_sha256": "6c4e4aa5c59bcd7f2b958cd884ae9591678ef1073dc4f0693aff55d7f77a2eb6",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-eval-function",
+    "source": "<?php eval('class O{function __toString(){echo \"S;\";return \"x\";}}function f():string{return new O;}');echo f();",
+    "source_sha256": "e341bc20694aacdb99f0039009abd08bd27c811ad770ae11f93719b8414a7230",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-no-magic",
+    "source": "<?php class O{}function f():string{return new O;}f();",
+    "source_sha256": "fb39c7a2b05448ca8d8a060fe00723250f4446b7855c663d55f367a33d293989",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "typed-return-nested-catch",
+    "source": "<?php class B{function __toString(){throw new Exception(\"x\");}}class A{function __toString(){try{return new B;}catch(TypeError $e){echo get_class($e->getPrevious()),\";\";return \"ok\";}}}function f():string{return new A;}echo f();",
+    "source_sha256": "4e75b97c1773a2f3e18f0a18acaa931f13049fa5c18b49dc4c832a164e340ca8",
+    "expected_model": "normal"
+  }
+]
