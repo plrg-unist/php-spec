@@ -126,14 +126,14 @@ def $file_context_phase_valid(S, pfilecontext) = (n_resolved* =/= eps /\ $source
   -- if pfilecontext.RESOLVED = (n_resolved*)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
-def $file_context_phase_valid(S, pfilecontext) = (n_resolved* =/= eps /\ $source_filename(n_opened*) /\ $source_unit(S.SOURCES, n_unit) =/= eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = ({UNIT n_unit, SITE pfilecontext.SITE, KIND pfilecontext.KIND, REQUESTED pfilecontext.REQUESTED, RESOLVED n_resolved*, OPENED n_opened*, BYTES n_bytes*, CLASS pfilecontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, n_unit) =/= eps)
+def $file_context_phase_valid(S, pfilecontext) = (n_resolved* =/= eps /\ $source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) =/= eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = ({UNIT n_unit, SITE pfilecontext.SITE, KIND pfilecontext.KIND, REQUESTED pfilecontext.REQUESTED, RESOLVED n_resolved*, OPENED n_opened*, BYTES n_bytes*, CLASS pfilecontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, n_unit) =/= eps)
   -- if pfilecontext.PHASE = FILE_UNIT_RUN
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.RESOLVED = (n_resolved*)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
 dec $file_context_valid(pstate, pfilecontext) : bool
-def $file_context_valid(S, pfilecontext) = ($file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $eval_binding_class_valid(S, pfilecontext.LEXICAL_CLASS) /\ $($file_marker_count(S.TODO, pfilecontext) + $file_frame_marker_count(S.FRAMES, pfilecontext)) = 1 /\ $file_marker_count($file_owner_tasks(S, pfilecontext), pfilecontext) = 1 /\ $file_marker_suffix_valid($file_owner_tasks(S, pfilecontext), pfilecontext) /\ $file_context_phase_valid(S, pfilecontext))
+def $file_context_valid(S, pfilecontext) = (S.FILECWD =/= eps /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ $(pfilecontext.NONCE < S.FILESEQ) /\ $eval_binding_class_valid(S, pfilecontext.LEXICAL_CLASS) /\ $($file_marker_count(S.TODO, pfilecontext) + $file_frame_marker_count(S.FRAMES, pfilecontext)) = 1 /\ $file_marker_count($file_owner_tasks(S, pfilecontext), pfilecontext) = 1 /\ $file_marker_suffix_valid($file_owner_tasks(S, pfilecontext), pfilecontext) /\ $file_context_phase_valid(S, pfilecontext))
   -- if z = $file_site_line(S, pfilecontext.SITE)
 dec $file_contexts_valid(pstate, pfilecontext*) : bool
 def $file_contexts_valid(S, eps) = true
@@ -170,7 +170,12 @@ def $file_failed_once_opened(S, pfailedsource :: pfailedsource_tail*, n_opened*)
 dec $file_included_paths_valid(pstate, preqbytes*) : bool
 def $file_included_paths_valid(S, eps) = true
 def $file_included_paths_valid(S, n_opened* :: preqbytes_tail*) = (~(n_opened* <- preqbytes_tail*) /\ $source_filename(n_opened*) /\ (n_opened* = $call_sourcefile(S.FILES, PORIGIN 0 eps) \/ $file_binding_opened(S.FILEBINDINGS, n_opened*) \/ $file_pending_once_opened(S.FILECONTEXTS, n_opened*) \/ $file_failed_once_opened(S, S.FAILEDSOURCES, n_opened*)) /\ $file_included_paths_valid(S, preqbytes_tail*))
-def $file_state_valid(S) = ($file_contexts_valid(S, S.FILECONTEXTS) /\ $file_contexts_ordered(S.FILECONTEXTS) /\ $file_included_paths_valid(S, S.INCLUDEDOPENED))
+dec $file_main_included(pstate) : bool
+def $file_main_included(S) = (S.INCLUDEDOPENED = eps)
+  -- if S.FILECWD = eps
+def $file_main_included(S) = ($call_sourcefile(S.FILES, PORIGIN 0 eps) <- S.INCLUDEDOPENED)
+  -- if S.FILECWD = (n_cwd*)
+def $file_state_valid(S) = ($file_contexts_valid(S, S.FILECONTEXTS) /\ $file_contexts_ordered(S.FILECONTEXTS) /\ $file_main_included(S) /\ $file_included_paths_valid(S, S.INCLUDEDOPENED))
 def $call_task_valid(S, FILE_END n_unit) = $file_context_unit_running(S.FILECONTEXTS, n_unit)
 dec $file_active_nonce(pfilecontext*) : nat?
 def $file_active_nonce(pfilecontext :: pfilecontext_tail*) = (pfilecontext.NONCE)
@@ -184,9 +189,9 @@ def $file_binding_at(pfilebinding :: pfilebinding_tail*, n) = (pfilebinding)
 def $file_binding_at(pfilebinding :: pfilebinding_tail*, n) = $file_binding_at(pfilebinding_tail*, n)
   -- if pfilebinding.UNIT =/= n
 def $file_bindings_valid(S, eps) = true
-def $file_bindings_valid(S, pfilebinding :: pfilebinding_tail*) = ($(pfilebinding.UNIT > 0) /\ $file_binding_at(pfilebinding_tail*, pfilebinding.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pfilebinding.UNIT) = eps /\ $source_unit(S.SOURCES, pfilebinding.UNIT) =/= eps /\ $file_site_valid(S, pfilebinding.SITE, z, pfilebinding.KIND) /\ $call_sourcefile(S.FILES, PORIGIN pfilebinding.UNIT eps) = pfilebinding.OPENED /\ pfilebinding.RESOLVED =/= eps /\ $source_filename(pfilebinding.OPENED) /\ $eval_binding_class_valid(S, pfilebinding.CLASS) /\ $file_bindings_valid(S, pfilebinding_tail*))
+def $file_bindings_valid(S, pfilebinding :: pfilebinding_tail*) = (S.FILECWD =/= eps /\ $(pfilebinding.UNIT > 0) /\ $file_binding_at(pfilebinding_tail*, pfilebinding.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pfilebinding.UNIT) = eps /\ $source_unit(S.SOURCES, pfilebinding.UNIT) =/= eps /\ $sourcefile_count(S.FILES, pfilebinding.UNIT) = 1 /\ $file_site_valid(S, pfilebinding.SITE, z, pfilebinding.KIND) /\ $call_sourcefile(S.FILES, PORIGIN pfilebinding.UNIT eps) = pfilebinding.OPENED /\ pfilebinding.RESOLVED =/= eps /\ $source_filename(pfilebinding.OPENED) /\ $eval_binding_class_valid(S, pfilebinding.CLASS) /\ $file_bindings_valid(S, pfilebinding_tail*))
   -- if z = $file_site_line(S, pfilebinding.SITE)
-def $file_failed_source_record_valid(S, pfailedsource) = ($file_site_valid(S, pfailedsource.SITE, z, n_kind) /\ $(pfailedsource.UNIT > 0) /\ pfailedsource.BYTES =/= eps /\ pfailedsource.MESSAGE =/= eps /\ $(pfailedsource.LINE > 0) /\ $source_unit(S.SOURCES, pfailedsource.UNIT) = eps /\ $sourcefile_count(S.FILES, pfailedsource.UNIT) = 1 /\ pfailedsource.FILE = $call_sourcefile(S.FILES, PORIGIN pfailedsource.UNIT eps) /\ $source_filename(pfailedsource.FILE) /\ $eval_binding_at(S.EVALBINDINGS, pfailedsource.UNIT) = eps /\ $file_binding_at(S.FILEBINDINGS, pfailedsource.UNIT) = eps)
+def $file_failed_source_record_valid(S, pfailedsource) = (S.FILECWD =/= eps /\ $file_site_valid(S, pfailedsource.SITE, z, n_kind) /\ $(pfailedsource.UNIT > 0) /\ pfailedsource.BYTES =/= eps /\ pfailedsource.MESSAGE =/= eps /\ $(pfailedsource.LINE > 0) /\ $source_unit(S.SOURCES, pfailedsource.UNIT) = eps /\ $sourcefile_count(S.FILES, pfailedsource.UNIT) = 1 /\ pfailedsource.FILE = $call_sourcefile(S.FILES, PORIGIN pfailedsource.UNIT eps) /\ $source_filename(pfailedsource.FILE) /\ $eval_binding_at(S.EVALBINDINGS, pfailedsource.UNIT) = eps /\ $file_binding_at(S.FILEBINDINGS, pfailedsource.UNIT) = eps)
   -- if z = $file_site_line(S, pfailedsource.SITE)
   -- if $file_node_kind($origin_node(S.SOURCES, pfailedsource.SITE)) = (n_kind)
 def $file_source_ppstate(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, pfilebinding.OPENED, S.FILECWD, (pclassdesc.NAME))
