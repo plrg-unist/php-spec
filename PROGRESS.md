@@ -26,56 +26,43 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The installed file-trace code checkpoint is **ffebfc971**, building on internal callable capture at **a4e7b8b62**, source-method capture at **139e66b13** and finite-provider file inclusion at **70fd71f12**. The original include increment had 26 exact source outcomes, 100 file-pause assertions, 43 mixed saved-frame assertions, 10 adapter assertions and 27 retained eval assertions; its classified file-syntax gate covered 30,980 rows with a separate one-file identity bridge. The trace extension has 39 exact source outcomes, 100 file-pause and 46 mixed saved-frame assertions, plus retained eval and Throwable trace selections. The resolver-null finite-provider extension is installed at **33e541821** (code **4f0946f1a**) on conversion **648605c5f**. Its earlier full 41-source agreement is historical; installed focused checks pass three retained filter/alias and two wrapper-to-eval-object sources, plus 118 file-pause, 46 saved-frame and 20 adapter assertions. Three ordinary file-to-eval-object sources also pass on the reviewed code tree. [Include contract](docs/semantics/INCLUDE-SOURCES.md) · [provider ledger](coverage/semantics/include-source-author.json) · [trace ledger](coverage/semantics/include-trace-review.json) · [resolver-null ledger](coverage/semantics/include-resolver-null-review.json).
+The current canonical checkpoint is **f8013abac** (source interfaces 177–180)
+on the installed Closure-binding and source-Throwable code. Interfaces now check
+ordered links, nominal membership, method variance, abstract obligations and
+authenticated `Exception`/`Error` ancestry for direct or transitive
+`implements Throwable`. Their [ledger](coverage/semantics/interface-author.json)
+separates installed compiler/runtime checks from historical syntax evidence.
 
-Static/scoped methods, user-object string conversion, first-class source method capture and finite internal first-class captures are installed. The source-method increment retains its frozen 23-source and five-stage paused evidence; its include-base required-file capture, five focused source controls and three paused controls also pass on the installed tree, with independent exact replay of the included-file case. Its [ledger](coverage/semantics/first-class-method-review.json) separates these bases and hashes. The internal capture [ledger](coverage/semantics/first-class-internal-review.json) records nine exact source controls, four paused stages and independent replay, plus bounded installed checks. The full evidence and scope for earlier increments remain in [MILESTONE-HISTORY.md](MILESTONE-HISTORY.md).
-
-The separate global closure-integrity repair is installed at **9e7879617** (code **60eea72cb**) with nine exact source controls and six paused stages, including retained getter wrappers. Its [ledger](coverage/semantics/first-class-internal-integrity.json) records the installed checks.
+File inclusion and generic file traces, resolver-null identity, directory
+open-failure diagnostics, static/scoped methods, first-class callables,
+Closure binding, source Throwable subclasses, and echo/print/cast/eval/concat
+object-string callbacks are installed. The bounded source, paused and bridge
+counts belong in [milestone history](MILESTONE-HISTORY.md) and their linked
+ledgers. [Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
+[method contract](docs/semantics/SOURCE-METHODS.md) ·
+[string contract](docs/semantics/USER-STRING.md).
 
 ## Active work and remaining obligations
 
-Active work covers Closure call behavior, inherited internal interface method contracts, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
+Weak by-value typed string returns 185 are a reviewed private candidate rebased
+onto **f8013abac**. The historical source-Throwable catalogue, paused stages,
+two-file strictness and Closure-binding bridge pass; a class implementing an
+interface-declared `__toString` matches native PHP under a measured 90-second model limit,
+and one current-base paused marker stage passes. The same interface source times
+out under the generic 45-second runner; both failed reports remain distinct from
+the bounded agreement. Current-base review and installation remain.
+[Ledger](coverage/semantics/user-string-typed-author.json).
 
-Ordinary Closure binding 181 is installed at **e450404e4** (code **d0aa3ef16**).
-Its frozen current-base evidence has 22 exact native source controls, four
-paused stages/43 assertions, three retained callable sources and six retained
-internal-capture paused stages; an independent replay passed all 22 source
-controls. On the installed tree, eight focused source controls, four paused
-stages, the build and semantic inventory pass. The [binding ledger](coverage/semantics/closure-binding-review.json)
-keeps original-base, current-base and installed fingerprints separate.
-`Closure::call`, captured callable rebinding, array callables and source
-`__invoke` remain open.
-
-Source Throwable subclasses are installed at **9071d10d2**. They retain
-source `INSTANCE` identity, owned inherited slots
-and trace, protected writes, source overrides, and inherited getter capture.
-The [ledger](coverage/semantics/throwable-subclass-review.json) separates the
-native/source, paused, provider-bridge, and independent evidence. Array
-callables and direct `implements Throwable` remain in their own streams.
-
-The directory open-failure followup is installed at **b4e87a539** on concat **e199654f4**. It authenticates the first-warning display path and stream-error bytes separately from the requested operand; relative include/require and absolute include match pinned native output. Its full 44-source capture predates concat; a current nine-source selection and independent four-source replay passed before installation. Installed five-source, 119 file-pause, 46 saved-frame and 20 adapter checks pass. [Ledger](coverage/semantics/include-open-failure-review.json). Mutable CWD/`include_path`, other failure causes and transformed wrappers remain open.
-
-Source interfaces 177–180 are installed at **5c423b245**. They admit ordered
-`extends`/`implements`, nominal membership, method variance and abstract
-obligations. Installed runtime and compiler catalogues pass 20/20 and 13/13
-exact source tuples, and a focused forged-link guard passes 13 assertions.
-Earlier independent B-root and final-base rechecks confirm rooted/nonroot
-behavior and link authenticity; the full test target passed on the identical
-semantic code before installation. The earlier 30,980-source syntax gate and
-inventory apply to the unchanged parser/AST
-projection, with provenance in the [ledger](coverage/semantics/interface-author.json).
-Inherited internal method contracts, constants, hooked properties and other
-protocols remain open.
-[Contract](docs/semantics/SOURCE-INTERFACES.md) ·
-[history](MILESTONE-HISTORY.md).
-
-Eval object operand conversion is installed at **3a2997e10**. It reuses the owned source `__toString` call; the file-trace-base catalogue has 11 exact outcomes and one explicit weak nested-return Unsupported control. Installed focused throw, included-file bridge and five paused stages pass. The combined captured-closure/eval throw and full repository test target also pass. Earlier include-base evidence and the original failing bridge remain separate in the [ledger](coverage/semantics/user-string-eval-author.json). [Contract](docs/semantics/USER-STRING.md).
-
-Concat callbacks are installed at **c816aea89**. The eval-conversion-base catalogue passed 14 exact source cases, five paused stages/41 assertions, five retained scalar/warning cases and the full repository test target. Installed `php://filter` included callback/throw, CV-late source and right-pending paused checks also pass. Both expressions evaluate before conversion; the right CV stays live across the left callback, while a right temporary stays captured. Typed and other string consumers follow. [Ledger](coverage/semantics/user-string-concat-author.json).
-
-Weak by-value typed-return string conversion is a private candidate projected onto docs-only base **29f13f3c1** after installed Closure binding. On the preceding Throwable-subclass base, its 19-row catalogue had 14 exact normal and three exact PHP-error outcomes, plus two explicit Unsupported controls; six paused stages passed 71 assertions and four two-file strictness cases matched PHP. The shared previous-chain helper now accepts live source Throwable subclasses, with direct finally replacement and forged-cycle checks. Repository test and inventory passed there. The Closure-binding-base bound-closure throw bridge also matches PHP exactly; final review and installed checks remain. [Contract](docs/semantics/USER-STRING.md) · [ledger](coverage/semantics/user-string-typed-author.json).
-
-Complete core still needs static/readonly members, traits, hooks, user magic methods, remaining Throwable accessors and internal protocols, conversion callbacks, output handlers, traversal and lifecycle integration, and broader source and pause closure. File inclusion still needs mutable CWD/include_path context, wider stream failures, and resolver-null wrappers beyond the bounded identity-transform witness. Generated finally linking remains transition-local; exit bypasses catch/finally while shutdown/destructor callbacks remain open. Rocq interaction-tree semantics and BOLA proofs follow the completed PHP core.
+By-reference typed return conversion 186 needs captured-alias write-back and a
+generic post-`finally` rejection replay. Weak parameters, properties,
+constrained references, interpolation,
+dynamic names and other string contexts remain separate consumers. Source
+`__invoke` and callable/string precedence, `Closure::call`, array callables,
+inherited internal interface method signatures, constants, static/readonly
+members, traits, hooks, traversal, output handlers and lifecycle callbacks
+remain active core obligations. File inclusion still needs mutable CWD and
+`include_path`, wider failure modes and transformed wrappers. Rocq
+interaction-tree semantics and BOLA proofs follow the completed PHP core.
 
 ## Validation limits
 

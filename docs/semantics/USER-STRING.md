@@ -8,9 +8,9 @@ defining file's strictness for return coercion. A private or protected method
 emits a declaration warning before the Stringable visibility fatal. Invalid
 arity and static declaration errors precede that warning; an invalid return
 type follows the warning. A valid method makes its class and descendants
-`Stringable` without an explicit implements clause. General interface
-declarations, including explicit `implements Stringable`, retain the existing
-interface dependency.
+`Stringable` without an explicit implements clause. The installed source
+interface rules also admit explicit `implements Stringable` under their
+nominal and method checks.
 
 `zend_std_cast_object_tostring` calls the selected live receiver's method with
 no arguments while retaining the receiver. The conversion can mutate state,
@@ -140,6 +140,9 @@ controls. Six paused stages pass 71 assertions; four two-file strictness cases,
 the repository test and inventory also pass. The earlier subclass-chain
 interpreter failure remains in the ledger as the repaired counterexample. On
 the installed Closure-binding base, a bound closure's typed return that throws
-a source `Exception` subclass also agrees exactly with PHP. The
-[typed-return ledger](../../coverage/semantics/user-string-typed-author.json)
+a source `Exception` subclass also agrees exactly with PHP. On the installed
+interface base, a class implementing an interface-declared `__toString` matches
+PHP on a weak typed return under a measured 90-second model limit; the generic
+45-second runner times out on the interface source, and one focused paused
+return-marker stage passes. The [typed-return ledger](../../coverage/semantics/user-string-typed-author.json)
 records the bounded private checks and these limits.

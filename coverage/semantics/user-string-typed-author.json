@@ -1,15 +1,16 @@
 {
   "status": "private candidate",
-  "base": "29f13f3c1",
-  "code_commit": "f3f40f2a9",
-  "tests_commit": "7c06f919f",
+  "base": "f8013abac",
+  "code_commit": "97541e7b9",
+  "tests_commit": "4ea3001fb",
   "scope": "Owned weak by-value typed string return callbacks and recursive returns, plus a disjoint source-Throwable previous-chain repair",
   "limits": "By-reference typed returns need alias write-back; callable|string awaits source __invoke precedence; weak parameters, properties, constrained references and other string contexts remain separate consumers.",
   "replay": [
     "From .tools/user-string-typed run python3 tests/semantics/user_string_typed.py --match typed-return-, python3 tests/semantics/user_string_typed_protocol.py, and python3 tests/semantics/user_string_typed_bridge.py.",
     "Raw reports below retain original source bytes, native/model stdout and stderr, six hashed paused fixtures, and two-file source/snapshot bytes. Use the pinned tests/semantics/profile.json and checked adapter/worker inputs recorded in each report.",
     "make -o build test and make -o build inventory were run in the private configured PHP build; logs remain ignored. The private php-build copy rewrote 356 text files to its output root while preserving mtimes, leaving no old-root references or symlinks.",
-    "On the static-181 base, replay ignored .tools/user-string-typed/.tools/typed-binding-bridge-cases.json through tests/semantics/user_string.py; its one original source and SHA-256 are retained in the report."
+    "On the static-181 base, replay ignored .tools/user-string-typed/.tools/typed-binding-bridge-cases.json through tests/semantics/user_string.py; its one original source and SHA-256 are retained in the report.",
+    "On the installed interface base, replay ignored .tools/user-string-typed/.tools/typed-interface-bridge-run.py. Its one original source uses a measured 90-second model bound; the generic 45-second source runner times out and its failed reports are retained separately. The focused pending paused stage uses the unchanged tracked protocol with only STAGES filtered to pending."
   ],
   "throwable_base_evidence": {
     "base": "242607f9c",
@@ -90,6 +91,53 @@
       "result": "pass",
       "exact": 1,
       "source_sha256": "0798bbb2830c94399832f9b8a10993bee5cb97549b134df9165b4f384a16d48a"
+    }
+  },
+  "interface_base_evidence": {
+    "base": "f8013abac",
+    "candidate_head_before_docs": "e64aaf585",
+    "interface_callback": {
+      "path": ".tools/user-string-typed/.tools/typed-interface-bridge-ol93x19u/report.json",
+      "sha256": "78c11be41daaf5b3134e773fa20a51cf58b6fd4128c5a6e05daa1d2fe750e6c9",
+      "result": "pass",
+      "model_timeout_s": 90,
+      "model_elapsed_s": 55.413029719144106,
+      "source_sha256": "43d6cef6e23a7243513663cd3a5e0443545548a6799b44c3a1dc7dedc50e96aa"
+    },
+    "case_json": {
+      "path": ".tools/user-string-typed/.tools/typed-interface-bridge-cases.json",
+      "sha256": "677896783a4996dbd9ede34d23c1fd0a0450fcfe14a3e44917d224ffe6521f0f"
+    },
+    "runner": {
+      "path": ".tools/user-string-typed/.tools/typed-interface-bridge-run.py",
+      "sha256": "775763b95140a12afdbe238965d79e9eaf2783cbffa4129c57e9ff68447341d8"
+    },
+    "paused_pending": {
+      "path": ".tools/user-string-typed/.tools/user-string-typed-protocol-7bm8od6h/report.json",
+      "sha256": "de10e30cac185ef76509e1b9aa2dbd212463edfbb43be33ad9476f7638aee5da",
+      "result": "pass",
+      "stages": 1,
+      "assertions": 10
+    },
+    "failed_45s_diagnostics": [
+      {
+        "path": ".tools/user-string-typed/.tools/user-string-aix2qkrc/report.json",
+        "sha256": "4244017f55071830af7e0a5c637fe3817f71e22fc082166df655889cdfb5a610"
+      },
+      {
+        "path": ".tools/user-string-typed/.tools/user-string-8_8__4y2/report.json",
+        "sha256": "f52eac2ba4a5e751b10c3edb57d347eabb4ed27efc4d0e39f415c910d303a27c"
+      }
+    ],
+    "isolation": {
+      "path": ".tools/user-string-typed/.tools/user-string-8mfj_3bw/report.json",
+      "sha256": "0114323553e1696edb933339f599164aafffd1e67062dde9f7a44a2044473f50",
+      "finding": "Interface echo timed out at 45 seconds; typed return without interface matched exactly."
+    },
+    "configured_build": {
+      "command": "opam exec --root=/home/user/workspace/php-spec/.tools/opam --switch=5.1.0 -- env OCAMLPATH=/home/user/workspace/php-spec/.tools/spectec/lib dune build --root /home/user/workspace/php-spec/.tools/user-string-typed",
+      "result": "pass",
+      "adapter_sha256": "18b996b45fbda8295e668cfb89495fa7f45e9a6046c8d6b5b8a3d80d149f49ed"
     }
   }
 }
