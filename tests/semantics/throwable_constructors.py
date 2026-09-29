@@ -48,7 +48,7 @@ CASES = [
     ('method-null-return', '<?php $e=new Exception("old");$r=$e->__construct("new");echo $r===null,"|",$e->getMessage();', 'agreement'),
     ('trace-allocated', '<?php $e=new Exception("x");$e->getTrace();', 'agreement'),
     ('string-render', '<?php $e=new Exception("x");$e->__toString();', 'agreement'),
-    ('errorexception-override', '<?php new ErrorException("x",1,2,"f",3);', 'unsupported'),
+    ('errorexception-override', '<?php new ErrorException("x",1,2,"f",3);', 'agreement'),
 ]
 
 
