@@ -15,6 +15,8 @@ CASES = [
     ('success', b"<?php echo chdir('__SUB__')?'T':'F'; echo include 'one.php';", b'__SUB__', True, False),
     ('failure', b"<?php echo chdir('missing')?'T':'F'; echo include 'one.php';", b'missing', False, False),
     ('function', b"<?php function f(){return chdir('__SUB__');} f(); echo include 'one.php';", b'__SUB__', True, True),
+    ('stringable', b"<?php class O { function __toString(): string { return '__SUB__'; } } chdir(new O); echo include 'one.php';", b'__SUB__', True, False),
+    ('stringable-dynamic', b"<?php class O { function __toString(): string { return '__SUB__'; } } $f='chdir'; $f(new O); echo include 'one.php';", b'__SUB__', True, False),
 ]
 
 
@@ -123,6 +125,28 @@ def main():
             checks += [
                 'S_initial.FRAMES = pframe :: pframe_tail*',
                 '~$call_descriptors_valid(S_initial[.FRAMES = pframe[.TODO = (CHDIR_AWAIT pconfigcall 0) :: pframe.TODO] :: pframe_tail*])',
+            ]
+        if name.startswith('stringable'):
+            checks += [
+                'S_initial.DIRCONVSEQ = 1',
+                'S_initial.DIRCONVERSIONS = [pdirconversion]',
+                'pdircontext.CONVERSION = (0)',
+                'pdirconversion.NONCE = 0',
+                'pdirconversion.RESULT = ' + seq(requested),
+                'pdirconversion.CALLSITE = pconfigcall.SITE',
+                'pdirconversion.CALLLINE = pconfigcall.LINE',
+                'pdirconversion.SELECTION = pconfigcall.SELECTION',
+                '~$call_descriptors_valid(S_initial[.DIRCONVSEQ = 2])',
+                '~$call_descriptors_valid(S_initial[.DIRCONVERSIONS = eps])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CONVERSION = eps])])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.REQUESTED = ' + seq(b'forged') + '])])',
+            ]
+        if name == 'stringable-dynamic':
+            checks += [
+                'pconfigcall.SELECTION = (n_selection)',
+                'S_initial.SELECTEDCALLS[n_selection] = pselectedcall',
+                '$selected_entry_active_valid(S_initial,pselectedcall)',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.SELECTION = eps]])])',
             ]
         fixture = directory / 'protocol.watsup'
         fixture.write_text('dec $main() : bool\ndef $main() = true\n'

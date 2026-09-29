@@ -50,6 +50,15 @@ CASES = {
     'chdir-unpack': b"<?php chdir(...['directory'=>'__SUB__']); echo include 'one.php';",
     'chdir-first-class': b"<?php $f=chdir(...); $f('__SUB__'); echo include 'one.php';",
     'included-function-chdir': b"<?php include 'mutate.php'; echo include 'one.php';",
+    'chdir-stringable-weak': b"<?php class O { function __toString(): string { echo 'S'; return '__SUB__'; } } echo chdir(new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-throw-lines': b'<?php\nclass O { function __toString(): string { throw new Exception("X"); } }\nchdir(\n  new O\n);\n',
+    'chdir-stringable-nul': b'<?php class O { function __toString(): string { echo "S"; return "a\\0b"; } } try { chdir(new O); } catch (ValueError $e) { echo "V"; } echo include "one.php";',
+    'chdir-stringable-strict': b'<?php declare(strict_types=1); class O { function __toString(): string { echo "S"; return "sub"; } } try { chdir(new O); } catch (TypeError $e) { echo "T"; } echo include "one.php";',
+    'chdir-object-nonstringable': b'<?php class O {} try { chdir(new O); } catch (TypeError $e) { echo "T"; } echo include "one.php";',
+    'chdir-stringable-dynamic': b"<?php class O { function __toString(): string { echo 'S'; return '__SUB__'; } } $f='chdir'; echo $f(new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-first-class': b"<?php class O { function __toString(): string { echo 'S'; return '__SUB__'; } } $f=chdir(...); echo $f(new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-nested-throw': b'<?php class O { function __toString(): string { $this->g(); return "sub"; } function g(): void { throw new Exception("X"); } } chdir(new O);',
+    'chdir-stringable-mutate-cwd': b"<?php class O { function __toString(): string { chdir('__SUB__'); return '..'; } } echo chdir(new O)?'T':'F'; echo include 'one.php';",
 }
 
 
@@ -117,6 +126,13 @@ def main():
                             'cwd': b64(cwd_key), 'include_path': b64(include_path),
                             'status': 'opened', 'resolved': b64(opened),
                             'opened': b64(opened), 'source': b64(target.read_bytes())})
+        if name == 'chdir-stringable-mutate-cwd':
+            case_cwd = os.fsencode(directory.resolve())
+            opened = os.fsencode(local.resolve())
+            entries.append({'caller': b64(main_bytes), 'requested': b64(b'one.php'),
+                            'cwd': b64(case_cwd), 'include_path': b64(b'.:'),
+                            'status': 'opened', 'resolved': b64(opened),
+                            'opened': b64(opened), 'source': b64(local.read_bytes())})
         if name == 'included-function-chdir':
             mutate_bytes = os.fsencode(mutate.resolve())
             entries.append({'caller': b64(main_bytes), 'requested': b64(b'mutate.php'),
@@ -137,6 +153,10 @@ def main():
         if name == 'chdir-relative':
             chdir_entries.append({'cwd': b64(cwd), 'requested': b64(b'sub'),
                                   'status': 'success', 'next_cwd': b64(sub_bytes)})
+        if name == 'chdir-stringable-mutate-cwd':
+            chdir_entries.append({'cwd': b64(sub_bytes), 'requested': b64(b'..'),
+                                  'status': 'success',
+                                  'next_cwd': b64(os.fsencode(directory.resolve()))})
         snapshot = {'version': 2, 'main': b64(main_bytes), 'cwd': b64(cwd),
                     'include_path': b64(b'.:'), 'entries': entries,
                     'chdir_entries': chdir_entries}

@@ -133,6 +133,29 @@ CASES = [
          '~$dir_pending_state_valid(S[.TODO = (CHDIR_AWAIT pconfigcall[.SELECTION = eps] n_dir) :: ptask*])',
          '~$call_descriptors_valid(S[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.SELECTION = eps]])])',
      ]),
+    ('stringable-entered', b"<?php class O { function __toString(): string { return 'sub'; } } chdir(new O);",
+     'S.CURRENT = (pcallcontext)\n  -- if S.FRAMES = pframe :: pframe_tail*\n  -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*', [
+         'S.CURRENT = (pcallcontext)',
+         'S.FRAMES = pframe :: pframe_tail*',
+         'pframe.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*',
+         '$config_string_site_valid(S,pconfigcall,n_object,porigin_child,z_child,z_call)',
+         '$config_string_trace_context(S,pcallcontext)',
+         '$call_descriptors_valid(S)',
+         '~$call_descriptors_valid(S[.FRAMES = pframe[.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall[.LINE = 999] n_object porigin_child z_child z_call) :: ptask_tail*] :: pframe_tail*])',
+         '~$call_descriptors_valid(S[.FRAMES = pframe[.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child 999) :: ptask_tail*] :: pframe_tail*])',
+     ]),
+    ('stringable-dynamic-entered', b"<?php class O { function __toString(): string { return 'sub'; } } $f='chdir'; $f(new O);",
+     'S.CURRENT = (pcallcontext)\n  -- if S.FRAMES = pframe :: pframe_tail*\n  -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*', [
+         'S.FRAMES = pframe :: pframe_tail*',
+         'pframe.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*',
+         'pconfigcall.SELECTION = (n_selection)',
+         'S.SELECTEDCALLS[n_selection] = pselectedcall',
+         '$selected_entry_active_valid(S,pselectedcall)',
+         '$selected_task_count(pframe.TODO,n_selection) = 1',
+         '$call_descriptors_valid(S)',
+         '~$call_descriptors_valid(S[.FRAMES = pframe[.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall[.SELECTION = eps] n_object porigin_child z_child z_call) :: ptask_tail*] :: pframe_tail*])',
+         '~$call_descriptors_valid(S[.FRAMES = pframe[.TODO = (STRINGIFY_RESULT n_object porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall[.SELECTION = (999)] n_object porigin_child z_child z_call) :: ptask_tail*] :: pframe_tail*])',
+     ]),
 ]
 
 PREFIX = '''
