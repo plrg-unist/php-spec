@@ -26,7 +26,8 @@ regression. The [native diagnostic ledger](coverage/dynamic-eval-native-diagnost
 records the separate parse-only bridge; the [exception-kind extension](coverage/dynamic-eval-parser-exceptions-review.json)
 records the later CompileError classification. [Reached eval execution](docs/semantics/DYNAMIC-EVAL.md)
 and [finite-provider include/require](docs/semantics/INCLUDE-SOURCES.md) use checked
-machine pauses. Resolver-null openable paths and mutable lookup context remain open.
+machine pauses. A finite version-2 provider supports checked CWD and
+`include_path` changes; broader path, stream and INI behavior remains open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

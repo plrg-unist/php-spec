@@ -59,7 +59,7 @@ transformations need their own facts and source comparisons.
 The [directory failure ledger](../../coverage/semantics/include-open-failure-review.json)
 records exact relative and absolute directory observations, including their
 different stream-error bytes. This bounded extension is installed.
-The private mutable-context candidate records CWD and `include_path` at each
+The installed mutable-context increment records CWD and `include_path` at each
 resolution pause. `set_include_path`, `ini_set('include_path', ...)` and
 `ini_restore('include_path')` update the live INI value after argument binding.
 `chdir` uses a separate one-shot finite OS fact: success supplies a canonical
@@ -68,5 +68,5 @@ rendering remains authored semantics. A compiled file retains its original
 lookup context even after a nested call changes the globals. Once membership
 continues to use canonical opened paths. The [mutable-context ledger](../../coverage/semantics/include-mutable-context-review.json)
 records the bounded source and paused checks. Dynamic ownerless intrinsic
-selection and wider OS/INI behavior remain open; this candidate is not yet
-installed. Other permission and path errors need source comparisons.
+selection and wider OS/INI behavior remain open. Other permission and path
+errors need source comparisons.

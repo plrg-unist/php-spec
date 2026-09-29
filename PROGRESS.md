@@ -53,7 +53,7 @@ under the generic 45-second runner; both failed reports remain distinct from
 the bounded agreement.
 [Ledger](coverage/semantics/user-string-typed-author.json).
 
-A private mutable-context candidate is rebased onto installed typed returns at **e4d3b837b**. It adds versioned include lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts. A focused typed-return callback that includes after `chdir`, then includes again in its caller, matches PHP (`77`); six retained source rows, directory/INI/saved-frame protocols and independent three-source replay pass. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Canonical installation remains; dynamic selected calls, stringable operands and broader OS/INI behavior stay open.
+Finite mutable include context is installed at **35b226471** on typed returns **e4d3b837b**. Versioned lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts pass three installed source controls (including typed-return callback output `77`), 107 directory-pause, 19 adapter, 57 INI and 46 saved-frame assertions. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Dynamic selected calls, stringable operands and broader OS/INI behavior stay open.
 
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,

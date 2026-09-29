@@ -7936,7 +7936,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Installed 177\u2013180 at 5c423b245: ordered source interface links, nominal relations, variance and abstract obligations. Installed runtime 20/20, compiler 13/13 and forged guard 13/13 pass; independent B-root bridge six exact sources and 13 forged assertions, binding-base six-source bridge, final-base two-source/13-forged recheck, and full test target pass. Earlier 30,980-source syntax/inventory gate covers unchanged parser/AST projection. Internal Throwable method table, constants, hooks, other builtins, traits and selectors remain open; see interface-author.json."
+      "review": "Installed 177–180 at 5c423b245: ordered source interface links, nominal relations, variance and abstract obligations. Installed runtime 20/20, compiler 13/13 and forged guard 13/13 pass; independent B-root bridge six exact sources and 13 forged assertions, binding-base six-source bridge, final-base two-source/13-forged recheck, and full test target pass. Earlier 30,980-source syntax/inventory gate covers unchanged parser/AST projection. Internal Throwable method table, constants, hooks, other builtins, traits and selectors remain open; see interface-author.json."
     },
     {
       "id": "classes.traits",
@@ -9428,25 +9428,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.require",
@@ -9456,25 +9463,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.include-once",
@@ -9484,25 +9498,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.require-once",
@@ -9512,25 +9533,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.source-identity",
@@ -9540,25 +9568,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.source-failure",
@@ -9568,25 +9603,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.included-declarations",
@@ -9596,25 +9638,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.included-return",
@@ -9624,25 +9673,32 @@
       "implementation": [
         "spec/semantics/171-include-runtime.watsup",
         "adapter/main.ml",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/173-chdir-runtime.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
         "tests/file_provider_protocol.py",
         "tests/semantics/include_protocol.py",
         "tests/semantics/include_saved_protocol.py",
-        "tests/semantics/include_adapter_protocol.py"
+        "tests/semantics/include_adapter_protocol.py",
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_protocol.py",
+        "tests/semantics/include_chdir_adapter_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/include_execution.py"
+        "tests/semantics/include_execution.py",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/include-source-author.json",
         "coverage/semantics/include-resolver-null-review.json",
-        "coverage/semantics/include-open-failure-review.json"
+        "coverage/semantics/include-open-failure-review.json",
+        "coverage/semantics/include-mutable-context-review.json"
       ],
-      "review": "Finite immutable provider with fixed CWD/include_path: installed resolver-null identity witness and directory open-failure extension. The followup authenticates warning display and stream-error facts; pre-concat full44 is historical, while current focused source/pause/adapter and independent replay pass. Mutable lookup context, other wrappers and wider failures remain. See the three include ledgers."
+      "review": "Finite provider v2 captures CWD/include_path at each source pause; narrow set_include_path, ini_set/ini_restore(include_path) and authenticated chdir success/ENOENT facts are installed with source/pause/adapter and typed-return callback checks. Original full28 belongs to the pre-interface base; installed selected source3 and paused/auth checks are current. Dynamic selected intrinsic calls, stringable chdir operands, wider OS/INI failures and transformed wrappers remain. See the include and mutable-context ledgers."
     },
     {
       "id": "dynamic.autoload-registration",
