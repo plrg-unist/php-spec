@@ -130,7 +130,7 @@ def $getter_body(S, pgettercall) = $trace_method_body(S, pgettercall)
   -- if pgettercall.METHOD <- [GET_TRACE, GET_TRACE_STRING, GET_TO_STRING]
 
 dec $getter_error(pstate, pgettercall) : pstate
-def $getter_error(S, pgettercall) = $throwable_allocate(S[.ORIGIN = (pgettercall.SITE)], "ArgumentCountError", ptbytes ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pgettercall.SENT|) ++ $ptascii(" given"), pgettercall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
+def $getter_error(S, pgettercall) = $throwable_allocate(S[.ORIGIN = (pgettercall.SITE)], "ArgumentCountError", ptbytes ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pgettercall.SENT|) ++ $ptascii(" given"), pgettercall.LINE, $source_trace_prefixed(S, [ptraceframe]))
   -- if ptbytes = $ptascii(pgettercall.BASE) ++ $ptascii("::") ++ $getter_name(pgettercall.METHOD)
   -- if pvalue* = $trace_extra(S, pgettercall.SENT)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgettercall.SITE), LINE pgettercall.LINE, FUNCTION $getter_name(pgettercall.METHOD), CLASS ($ptascii(pgettercall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}

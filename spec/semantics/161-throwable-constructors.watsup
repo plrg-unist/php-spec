@@ -178,7 +178,7 @@ rule PhpStep/ctor-unpack-done: S ~> S[.TODO = (CTOR_ARGS pctorcall[.INDEX = $(pc
 ;; Validation completes before any field changes. Error frames retain sent
 ;; values, including holes introduced by named arguments.
 dec $ctor_error(pstate, pctorcall, text, ptbytes) : pstate
-def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate(S[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, [ptraceframe] ++ $eval_exception_trace(S))
+def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate(S[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, $source_trace_prefixed(S, [ptraceframe]))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pctorcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii(pctorcall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $ctor_type_error(pstate, pctorcall, nat, ptbytes, ptbytes, pvalue) : pstate

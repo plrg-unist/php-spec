@@ -331,20 +331,23 @@ def $eval_frame_context(S, pframe) = $trace_context(S, psymboltable.ENV, pframe.
   -- if pframe.LOCALS = (psymboltable)
 def $eval_trace_saved(S, eps, n_owner) = eps
 def $eval_trace_saved(S, pframe :: pframe_tail*, n_owner) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner) ++ $eval_frame_context(S, pframe) ++ $eval_trace_saved(S, pframe_tail*, $nabs($(n_owner - 1)))
-def $eval_exception_trace(S) = $source_trace_first($source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.FRAMES, $nabs($(|S.FRAMES| - 1))))
+dec $eval_exception_trace_raw(pstate) : ptraceframe*
+def $eval_exception_trace_raw(S) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
+def $source_trace_prefixed(S, ptraceframe*) = $source_trace_first(ptraceframe* ++ $eval_exception_trace_raw(S))
+def $eval_exception_trace(S) = $source_trace_first($eval_exception_trace_raw(S))
 dec $eval_compile_throw(pstate, pevalcontext, pevalcontext*, text, nat*, int) : pstate
 dec $eval_allocated_throw(pcompletion) : bool
 def $eval_allocated_throw(THROWING n) = true
 def $eval_allocated_throw(pcompletion) = false -- otherwise
 def $eval_compile_throw(S, pevalcontext, pevalcontext_tail*, text, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = (THROW_SEARCH n_object) :: pevalcontext.TAIL][.ORIGIN = (pevalcontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
   -- if $eval_compile_throw_source(S, pevalcontext, text, n_message*, z)
-  -- if S_object = $throwable_allocate(S, text, n_message*, z, [$eval_trace_frame(S, pevalcontext)] ++ $eval_exception_trace(S))
+  -- if S_object = $throwable_allocate(S, text, n_message*, z, $source_trace_prefixed(S, [$eval_trace_frame(S, pevalcontext)]))
   -- if S_object.COMPLETION = THROWING n_object
 def $eval_compile_throw(S, pevalcontext, pevalcontext_tail*, text, n_message*, z) = S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval class-link exception source"]
   -- if ~$eval_compile_throw_source(S, pevalcontext, text, n_message*, z)
 def $eval_compile_throw(S, pevalcontext, pevalcontext_tail*, text, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps]
   -- if $eval_compile_throw_source(S, pevalcontext, text, n_message*, z)
-  -- if S_object = $throwable_allocate(S, text, n_message*, z, [$eval_trace_frame(S, pevalcontext)] ++ $eval_exception_trace(S))
+  -- if S_object = $throwable_allocate(S, text, n_message*, z, $source_trace_prefixed(S, [$eval_trace_frame(S, pevalcontext)]))
   -- if ~$eval_allocated_throw(S_object.COMPLETION)
 dec $eval_redeclare_class_one(pstate, pevalcontext, pclassdesc, nat*, int) : bool
 def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = true
@@ -371,7 +374,7 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_co
   -- if S_compiled.COMPLETION = STATICBYTES n_message* z
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = $eval_exception_trace(S_compiled)]
   -- if S_compiled.COMPLETION = STATICERROR text z
-def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = [$eval_trace_frame(S_compiled, pevalcontext)] ++ $eval_exception_trace(S_compiled)]
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = $source_trace_prefixed(S_compiled, [$eval_trace_frame(S_compiled, pevalcontext)])]
   -- if S_compiled.COMPLETION = FATAL n_message* z
   -- if $eval_redeclare_class(S_compiled, pevalcontext, P.CLASSES, n_message*, z)
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = $eval_exception_trace(S_compiled)]
