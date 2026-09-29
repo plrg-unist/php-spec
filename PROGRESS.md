@@ -56,6 +56,8 @@ Deferred real-Closure default caches fail the global state guard and need a
 separate generic91 repair.
 [Argument review](coverage/semantics/closure-call-arguments-review.json).
 
+Static class properties 187/188 have a private bounded candidate on this base: declaration-owned cells, inherited sharing, typed aliases and source access pass prior 40+9 exact cases, with current-base typed-return/include bridges and retained alias integrity passing. [Ledger](coverage/semantics/class-static-properties.json). Canonical installation, resumable typed object conversion and post-evaluation selector provenance remain open.
+
 Weak parameter and property string conversion, constrained references,
 interpolation and dynamic names remain separate consumers. The inverse typed
 string& object-parameter/config callback combination is untested. Source

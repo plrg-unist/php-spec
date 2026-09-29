@@ -232,6 +232,9 @@ compiler and paused-state gates. [Instance property visibility](docs/semantics/S
 visibility, mangled storage keys and consistent access across aliases, traversal,
 casts and clone updates. Private declaring slots preserve ancestor lexical selection,
 same-name shadows and inherited-private dynamic fallback.
+The private [static-property candidate](coverage/semantics/class-static-properties.json)
+models declaration-owned class cells, inherited sharing and typed aliases;
+its bounded validation is under review and is not yet installed.
 [Nullsafe property access](docs/semantics/SOURCE-NULLSAFE-PROPERTIES.md)
 short-circuits only the active property/dimension chain, skips later names and
 keys, and preserves quiet probes and by-reference argument error ordering. Its
