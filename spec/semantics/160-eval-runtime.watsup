@@ -291,13 +291,37 @@ def $eval_compile_throw_source(S, pevalcontext, "Error", n_message*, z) = true
 def $eval_compile_throw_source(S, pevalcontext, text, n_message*, z) = false -- otherwise
 dec $eval_trace_frame(pstate, pevalcontext) : ptraceframe
 def $eval_trace_frame(S, pevalcontext) = {FILE $call_sourcefile(S.FILES, pevalcontext.SITE), LINE $eval_site_line(S, pevalcontext.SITE), FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
-dec $eval_trace_at(pstate, pevalcontext*, nat) : ptraceframe*
-def $eval_trace_at(S, eps, n_owner) = eps
-def $eval_trace_at(S, pevalcontext :: pevalcontext_tail*, n_owner) = [$eval_trace_frame(S, pevalcontext)] ++ $eval_trace_at(S, pevalcontext_tail*, n_owner)
-  -- if pevalcontext.PHASE = UNIT_RUN
-  -- if pevalcontext.OWNER = n_owner
-def $eval_trace_at(S, pevalcontext :: pevalcontext_tail*, n_owner) = $eval_trace_at(S, pevalcontext_tail*, n_owner)
+dec $file_trace_frame(pstate, pfilecontext) : ptraceframe
+;; Fresh source IDs order interleaved eval/file units within one call frame.
+dec $source_trace_at(pstate, pevalcontext*, pfilecontext*, nat) : ptraceframe*
+dec $eval_trace_live(pevalcontext*, nat) : pevalcontext*
+def $eval_trace_live(eps, n_owner) = eps
+def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = pevalcontext :: $eval_trace_live(pevalcontext_tail*, n_owner)
+  -- if pevalcontext.PHASE = UNIT_RUN /\ pevalcontext.OWNER = n_owner
+def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = $eval_trace_live(pevalcontext_tail*, n_owner)
   -- if pevalcontext.PHASE =/= UNIT_RUN \/ pevalcontext.OWNER =/= n_owner
+dec $file_trace_live(pfilecontext*, nat) : pfilecontext*
+def $file_trace_live(eps, n_owner) = eps
+def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = pfilecontext :: $file_trace_live(pfilecontext_tail*, n_owner)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN /\ pfilecontext.OWNER = n_owner
+def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = $file_trace_live(pfilecontext_tail*, n_owner)
+  -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ pfilecontext.OWNER =/= n_owner
+dec $source_trace_merge(pstate, pevalcontext*, pfilecontext*) : ptraceframe*
+def $source_trace_merge(S, eps, eps) = eps
+def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, eps) = [$eval_trace_frame(S, pevalcontext)] ++ $source_trace_merge(S, pevalcontext_tail*, eps)
+def $source_trace_merge(S, eps, pfilecontext :: pfilecontext_tail*) = [$file_trace_frame(S, pfilecontext)] ++ $source_trace_merge(S, eps, pfilecontext_tail*)
+def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*) = [$eval_trace_frame(S, pevalcontext)] ++ $source_trace_merge(S, pevalcontext_tail*, pfilecontext :: pfilecontext_tail*)
+  -- if pfilecontext.UNIT = (n_file)
+  -- if $(pevalcontext.UNIT > n_file)
+def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*) = [$file_trace_frame(S, pfilecontext)] ++ $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*)
+  -- if pfilecontext.UNIT = (n_file)
+  -- if $(pevalcontext.UNIT < n_file)
+def $source_trace_at(S, pevalcontext*, pfilecontext*, n_owner) = $source_trace_merge(S, $eval_trace_live(pevalcontext*, n_owner), $file_trace_live(pfilecontext*, n_owner))
+dec $source_trace_first(ptraceframe*) : ptraceframe*
+;; Zend omits the include operand when its wrapper is the first trace frame.
+def $source_trace_first(ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = eps][.HASARGS = false] :: ptraceframe_tail*
+  -- if ptraceframe.FUNCTION = $ptascii("include") \/ ptraceframe.FUNCTION = $ptascii("include_once") \/ ptraceframe.FUNCTION = $ptascii("require") \/ ptraceframe.FUNCTION = $ptascii("require_once")
+def $source_trace_first(ptraceframe*) = ptraceframe* -- otherwise
 dec $eval_trace_saved(pstate, pframe*, nat) : ptraceframe*
 dec $eval_frame_context(pstate, pframe) : ptraceframe*
 def $eval_frame_context(S, pframe) = eps
@@ -306,8 +330,8 @@ def $eval_frame_context(S, pframe) = $trace_context(S, psymboltable.ENV, pframe.
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
 def $eval_trace_saved(S, eps, n_owner) = eps
-def $eval_trace_saved(S, pframe :: pframe_tail*, n_owner) = $eval_trace_at(S, S.EVALCONTEXTS, n_owner) ++ $eval_frame_context(S, pframe) ++ $eval_trace_saved(S, pframe_tail*, $nabs($(n_owner - 1)))
-def $eval_exception_trace(S) = $eval_trace_at(S, S.EVALCONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
+def $eval_trace_saved(S, pframe :: pframe_tail*, n_owner) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner) ++ $eval_frame_context(S, pframe) ++ $eval_trace_saved(S, pframe_tail*, $nabs($(n_owner - 1)))
+def $eval_exception_trace(S) = $source_trace_first($source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.FRAMES, $nabs($(|S.FRAMES| - 1))))
 dec $eval_compile_throw(pstate, pevalcontext, pevalcontext*, text, nat*, int) : pstate
 dec $eval_allocated_throw(pcompletion) : bool
 def $eval_allocated_throw(THROWING n) = true

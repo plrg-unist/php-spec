@@ -221,6 +221,8 @@ def $file_keyword(1) = $ptascii("include")
 def $file_keyword(2) = $ptascii("include_once")
 def $file_keyword(3) = $ptascii("require")
 def $file_keyword(4) = $ptascii("require_once")
+def $file_trace_frame(S, pfilecontext) = {FILE $call_sourcefile(S.FILES, pfilecontext.SITE), LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args([PSTRING n_opened*], 0), HASARGS true}
+  -- if pfilecontext.OPENED = (n_opened*)
 def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_stream*) = S_second[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if (pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2)
   -- if z = $file_site_line(S, pfilecontext.SITE)
