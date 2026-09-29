@@ -23,6 +23,7 @@ CASES = {
     'missing-require': (b"<?php echo 'A'; try { require 'missing.php'; } catch (Error $e) { echo 'C'; }", {}, ['missing.php']),
     'directory-include': (b"<?php echo 'A'; echo include 'parts'; echo 'B';", {}, ['__DIRECTORY__']),
     'directory-require': (b"<?php echo 'A'; try { require 'parts'; } catch (Error $e) { echo 'C'; }", {}, ['__DIRECTORY__']),
+    'directory-absolute-include': (b'<?php echo include "__DIRECTORY_PATH__";', {}, ['__DIRECTORY_ABSOLUTE__']),
     'nested': (b"<?php echo include 'one.php';", {'one.php': b"<?php echo 'C'; return include 'two.php';", 'two.php': b'<?php return 7;'}, ['one.php', 'two.php']),
     'parse-reject': (b"<?php try { include 'bad.php'; } catch (ParseError $e) { echo 'C'; } echo 'D';", {'bad.php': b'<?php echo ;'}, ['bad.php']),
     'compile-reject': (b"<?php try { include 'bad.php'; } catch (CompileError $e) { echo 'C'; } echo 'D';", {'bad.php': b'<?php class A { final abstract private function f(); }'}, ['bad.php']),
@@ -105,10 +106,12 @@ def main():
         main_path = directory / 'main.php'
         if name in {'filter-fallback-once', 'filter-fallback-trace'}:
             source = source.replace(b'__FILTER_ONE__', b'php://filter/read=/resource=' + os.fsencode((directory / 'one.php').resolve()))
+        if name == 'directory-absolute-include':
+            source = source.replace(b'__DIRECTORY_PATH__', os.fsencode((directory / 'parts').resolve()))
         main_path.write_bytes(source)
         for filename, data in files.items():
             (directory / filename).write_bytes(data)
-        if name in {'directory-include', 'directory-require'}:
+        if name in {'directory-include', 'directory-require', 'directory-absolute-include'}:
             (directory / 'parts').mkdir()
         if name in {'alias-once', 'caught-alias-trace'}:
             (directory / 'alias.php').symlink_to('one.php')
@@ -126,14 +129,17 @@ def main():
                 requested = b'php://filter/read=/resource=' + os.fsencode((directory / 'one.php').resolve())
             elif filename == '__DIRECTORY__':
                 requested = b'parts'
+            elif filename == '__DIRECTORY_ABSOLUTE__':
+                requested = os.fsencode((directory / 'parts').resolve())
             else:
                 requested = filename.encode()
             if filename == 'missing.php':
                 fact = {'status': 'missing', 'stream_error': b64(STREAM_MISSING)}
-            elif filename == '__DIRECTORY__':
+            elif filename in {'__DIRECTORY__', '__DIRECTORY_ABSOLUTE__'}:
                 warning_path = os.fsencode((directory / 'parts').resolve())
                 fact = {'status': 'open_failure', 'resolved': b64(warning_path),
-                        'warning_path': b64(warning_path), 'stream_error': b64(STREAM_DIRECTORY)}
+                        'warning_path': b64(warning_path),
+                        'stream_error': b64(STREAM_MISSING if filename == '__DIRECTORY__' else STREAM_DIRECTORY)}
             else:
                 opened = main_path if filename == '__FILE__' else (directory / 'one.php' if filename in {'__SELF_ONE__', '__FILTER_ONE__'} else directory / filename)
                 opened_bytes = os.fsencode(opened.resolve())
