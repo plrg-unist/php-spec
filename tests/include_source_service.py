@@ -98,19 +98,22 @@ def main():
             response = worker.call(request(str(number), source))
             assert response['ok'] and response['accepted'], response
             assert [node['node'] for node in response['ast']['program']] == expected_nodes
+        mixed = worker.call(request('12', b'<?php echo 1; namespace N; class self {}'))
+        assert mixed['ok'] is False and mixed['category'] == 'helper_unsupported'
     finally:
         worker.close()
 
     for setting in ('zend.multibyte=1', 'precision=15', 'short_open_tag=0'):
         unsupported = Worker(setting)
         try:
-            response = unsupported.call(request('12', b'<?php echo 1;'))
+            response = unsupported.call(request('13', b'<?php echo 1;'))
             assert response['ok'] is False and response['category'] == 'helper_unsupported'
         finally:
             unsupported.close()
     print(json.dumps({'result': 'pass', 'accepted': len(accepted) + 1 + len(namespace_shapes),
                       'native_rejections': 2, 'request_negatives': 8,
                       'unsupported_profiles': 3, 'namespace_recoveries': len(namespace_shapes),
+                      'mixed_recovery_blocked': 1,
                       'native_execution': 'none'}))
 
 

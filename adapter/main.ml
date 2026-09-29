@@ -309,6 +309,56 @@ let source_id json =
 let source_bytes json =
   ignore (bytes_value json);
   string json
+let nonempty_bytes json =
+  let value = source_bytes json in
+  if value = "" then fail "empty file identity";
+  value
+let file_snapshot json =
+  exact ["version"; "cwd"; "include_path"; "entries"] json;
+  if field "version" json <> `Int 1 then fail "file snapshot version mismatch";
+  ignore (nonempty_bytes (field "cwd" json));
+  if source_bytes (field "include_path" json) <> "Ljo=" then fail "file snapshot include_path mismatch";
+  let entries = list (field "entries" json) in
+  let keys = ref [] and opened = ref [] in
+  List.iter (fun entry ->
+    let status = string (field "status" entry) in
+    let fields = match status with
+      | "missing" -> ["caller"; "requested"; "status"]
+      | "open_failure" -> ["caller"; "requested"; "status"; "resolved"]
+      | "opened" -> ["caller"; "requested"; "status"; "resolved"; "opened"; "source"]
+      | _ -> fail "unknown file resolution status" in
+    exact fields entry;
+    let caller = nonempty_bytes (field "caller" entry)
+    and requested = source_bytes (field "requested" entry) in
+    if List.mem (caller, requested) !keys then fail "duplicate file resolution key";
+    keys := (caller, requested) :: !keys;
+    if status <> "missing" then ignore (nonempty_bytes (field "resolved" entry));
+    if status = "opened" then (
+      let path = nonempty_bytes (field "opened" entry)
+      and source = source_bytes (field "source" entry) in
+      match List.assoc_opt path !opened with
+      | Some prior when prior <> source -> fail "conflicting bytes for opened file"
+      | _ -> opened := (path, source) :: !opened)) entries;
+  json
+let check_file_resolve request =
+  exact ["op"; "snapshot"; "pending"; "response"] request;
+  let snapshot = file_snapshot (field "snapshot" request) in
+  let pending = field "pending" request in
+  exact ["id"; "caller"; "requested"] pending;
+  let id = source_id (field "id" pending)
+  and caller = nonempty_bytes (field "caller" pending)
+  and requested = source_bytes (field "requested" pending) in
+  let entry = match List.find_opt (fun entry ->
+      source_bytes (field "caller" entry) = caller
+      && source_bytes (field "requested" entry) = requested)
+      (list (field "entries" snapshot)) with
+    | Some entry -> entry | None -> fail "file resolution absent from finite snapshot" in
+  let response = field "response" request in
+  let expected = ("id", `String id) :: assoc entry in
+  exact (List.map fst expected) response;
+  if List.exists (fun (key,value) -> field key response <> value) expected then
+    fail "file resolution response differs from finite snapshot";
+  `Assoc (("ok", `Bool true) :: expected)
 let source_pending json =
   exact ["id"; "mode"; "profile"; "source"] json;
   let mode = string (field "mode" json) and profile = string (field "profile" json) in
@@ -384,6 +434,7 @@ let () =
         ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ string (field "fixture" request) ^ "\n"));
         `Assoc ["ok", `Bool true])
       else if op = "check_source_service" then check_source_service request
+      else if op = "check_file_resolve" then check_file_resolve request
       else if op = "resume_eval" then resume_eval request
       else (
         if op <> "check" && op <> "elaborate" && op <> "execute" then fail "unknown operation";
