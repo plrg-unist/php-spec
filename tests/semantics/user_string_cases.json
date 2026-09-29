@@ -202,5 +202,77 @@
     "source": "<?php class O{static function f(){echo \"s;\";return \"x\";} function __toString(){return self::f();}} echo new O;",
     "source_sha256": "483c9b36e9f86577e34c1be5bbe97ed981636f3dd89af04c80ac2f36ad92ec5b",
     "expected_model": "normal"
+  },
+  {
+    "id": "eval-string-code",
+    "source": "<?php class O{function __toString(){echo \"T;\";return 'echo \"E;\";';}} eval(new O);",
+    "source_sha256": "1b3f376fcd63bd942ac136a1dd0e115fb0b44eda46b5f911e418db4b8e9cd9a0",
+    "expected_model": "normal"
+  },
+  {
+    "id": "eval-string-parse-caught",
+    "source": "<?php class O{function __toString(){echo \"T;\";return \"(\";}} try{eval(new O);}catch(ParseError $e){echo \"P;\";}",
+    "source_sha256": "51c18547ed95c943a87b5390570858e80fda294ff3d02e969a5239d5ee734167",
+    "expected_model": "normal"
+  },
+  {
+    "id": "eval-string-empty",
+    "source": "<?php class O{function __toString(){echo \"T;\";return \"\";}} echo eval(new O)===false?\"F;\":\"N;\";",
+    "source_sha256": "8ca79ba459bd8c2a4e837e8aa59e91da47227c62012d5df9dfa8783eaa6b0070",
+    "expected_model": "normal"
+  },
+  {
+    "id": "eval-string-finally-catch",
+    "source": "<?php class O{function __toString(){echo \"T;\";throw new Exception(\"x\");}} try{try{eval(new O);}finally{echo \"F;\";}}catch(Exception $e){echo \"C;\";}",
+    "source_sha256": "5b4325cbe0f442cfc71a342acd8a936965e8bdaf69f6d5cbcdddda2afa8ccfd1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "eval-string-multiline-scalar-throw",
+    "source": "<?php eval(\n \"throw new Exception('x');\"\n);",
+    "source_sha256": "71480d4e957eb98db67da60490361a122dbd10d53b13e96bad1c976136df944d",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "eval-string-multiline-callback-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} eval(\n new O\n);",
+    "source_sha256": "00bf2012520f6e6199ea9b99719a0af8a5e1b379a640fa59a38025487d1a7733",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "eval-string-multiline-generated-throw",
+    "source": "<?php class O{function __toString(){return \"throw new Exception('x');\";}} eval(\n new O\n);",
+    "source_sha256": "874f8a5728dcc1af85700df4debbb9116cdced26aad4f4dbf36a2b39c781c297",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "eval-string-nested-preparse-throw",
+    "source": "<?php class O{function __toString(){throw new Exception(\"x\");}} eval('eval(new O);');",
+    "source_sha256": "e91e16b62fa463c097e1b517862ee1e7c3f965eeed8cdd8ce4a7ea603f7e866a",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "eval-string-no-magic-control",
+    "source": "<?php class O{} eval(new O);",
+    "source_sha256": "59f841f4e8fb5cd46d9de7336304b7e5b9d7a13735d795ecf860830a5e3ae12b",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "eval-string-internal-throwable",
+    "source": "<?php try{eval(new Exception(\"x\"));}catch(ParseError $e){echo \"P;\";}",
+    "source_sha256": "882d28085f464654b4a6f996fc7e1f92f1a63f3e28b4f31dbdd0d08144932d92",
+    "expected_model": "normal"
+  },
+  {
+    "id": "eval-string-nested-return-control",
+    "source": "<?php class B{function __toString(){return 'echo \"E;\";';}} class A{function __toString(){return new B;}} eval(new A);",
+    "source_sha256": "dc84a03b8f4583781fd0fbf2ba61ad77ef41bbaa9dd9f458dfce6c32fc8ff3c7",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "eval-string-strict-nested-return",
+    "source": "<?php declare(strict_types=1); class B{function __toString(){return \"echo 1;\";}} class A{function __toString(){return new B;}} eval(new A);",
+    "source_sha256": "993589f42cf400fa88c1646cdb205498b7ca27fd7ea1267f205b5f9f5617c086",
+    "expected_model": "php_error"
   }
 ]

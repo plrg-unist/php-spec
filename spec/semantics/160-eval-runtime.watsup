@@ -13,31 +13,39 @@ def $next_eval_unit((SOURCEFILE n n_file*) :: psourcefile*) = $(n + 1)
   -- if $(n_tail <= n)
 
 dec $eval_site_valid(pstate, porigin, int) : bool
-dec $eval_node_line(pcnode?) : int
-def $eval_node_line((NExprEval expression metadata)) = $source_line(metadata)
-def $eval_node_line(pcnode?) = 0 -- otherwise
-def $eval_site_valid(S, porigin, z) = ($eval_node_line($origin_node(S.SOURCES, porigin)) = z /\ $(z > 0) /\ $source_filename($call_sourcefile(S.FILES, porigin)))
+dec $eval_site_line(pstate, porigin) : int
+dec $eval_operand_site_valid(pstate, porigin, porigin, int) : bool
+dec $eval_operand_child_site(pstate, porigin, int) : bool
+def $eval_site_valid(S, porigin, z) = ($eval_site_line(S, porigin) = z /\ $(z > 0) /\ $source_filename($call_sourcefile(S.FILES, porigin)))
+def $eval_operand_site_valid(S, porigin_parent, porigin_child, z) = true
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprEval expression metadata)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression)
+  -- if $eval_site_valid(S, porigin_parent, z)
+def $eval_operand_site_valid(S, porigin_parent, porigin_child, z) = false -- otherwise
+def $eval_operand_child_site(S, porigin_child, z) = $eval_operand_site_valid(S, porigin_parent, porigin_child, z)
+  -- if $reference_origin_parent(porigin_child, 1) = ((porigin_parent, [PCFIELD 0]))
+def $eval_operand_child_site(S, porigin_child, z) = false -- otherwise
 
 dec $eval_filename(pstate, porigin, int) : preqbytes
 def $eval_filename(S, porigin, z) = $call_sourcefile(S.FILES, porigin) ++ [40] ++ $decimal_integer(z) ++ $ptascii(") : eval()'d code")
 
-dec $eval_stringable(pvalue) : bool
-def $eval_stringable(POBJECT n) = false
-def $eval_stringable(pvalue) = true -- otherwise
 dec $eval_string_result(pvalue) : bool
 def $eval_string_result(PSTRING n*) = true
 def $eval_string_result(pvalue) = false -- otherwise
 dec $eval_operand(pstate, int) : pstate
+dec $user_string_begin(pstate, nat, porigin, int, ptask, ptask*) : pstate
+dec $eval_callback_ready(pstate, int) : bool
+def $eval_callback_ready(S, z) = true
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
+def $eval_callback_ready(S, z) = false -- otherwise
 def $eval_operand(S, z) = $stringify(S_read, pvalue, z)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
-  -- if $eval_stringable(pvalue)
-def $eval_operand(S, z) = S_read[.COMPLETION = UNSUPPORTED "eval complex string conversion"]
-  -- if S_read = $resolve_at(S, S.RESULT, z)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN pvalue
-  -- if ~$eval_stringable(pvalue)
 def $eval_operand(S, z) = S_read
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION =/= NORMAL
@@ -49,7 +57,7 @@ def $eval_class_origin(S) = eps -- otherwise
 def $eval_request_start(S, porigin, z, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $eval_site_valid(S, porigin, z)
   -- if S.RESULT = KNOWN (PSTRING eps)
-def $eval_request_start(S, porigin, z, ptask_tail*) = S[.FILES = S.FILES ++ [SOURCEFILE n_unit n_file*]][.EVALCONTEXTS = pevalcontext :: S.EVALCONTEXTS][.TODO = (EVAL_AWAIT n_unit) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+def $eval_request_start(S, porigin, z, ptask_tail*) = S[.FILES = S.FILES ++ [SOURCEFILE n_unit n_file*]][.EVALCONTEXTS = pevalcontext :: S.EVALCONTEXTS][.TODO = (EVAL_AWAIT n_unit) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $eval_site_valid(S, porigin, z)
   -- if S.RESULT = KNOWN (PSTRING (n_byte :: n_tail*))
   -- if n_unit = $next_eval_unit(S.FILES)
@@ -63,20 +71,31 @@ def $eval_request_start(S, porigin, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTE
   -- if S.RESULT = KNOWN pvalue
   -- if ~$eval_string_result(pvalue)
 
-rule PhpStep/eval-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), EVAL_REQUEST porigin z] ++ ptask_tail*]
+rule PhpStep/eval-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL_REQUEST porigin z)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprEval expression metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if z = $source_line(metadata)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+rule PhpStep/eval-request-object: S ~> $user_string_begin(S_read, n, porigin_child, z, EVAL_REQUEST porigin_parent z, ptask_tail*)
+  -- if S.TODO = (EVAL_REQUEST porigin_parent z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_child)
+  -- if $eval_operand_site_valid(S, porigin_parent, porigin_child, z)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
 rule PhpStep/eval-request: S ~> $eval_request_start(S_value, porigin, z, ptask_tail*)
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
+  -- if ~$eval_callback_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/eval-request-abrupt: S ~> S_value
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
+  -- if ~$eval_callback_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION =/= NORMAL
 
-def $call_task_valid(S, EVAL_REQUEST porigin z) = (S.ORIGIN = (porigin) /\ $eval_site_valid(S, porigin, z))
+def $call_task_valid(S, EVAL_REQUEST porigin z) = $eval_operand_site_valid(S, porigin, porigin_child, z)
+  -- if S.ORIGIN = (porigin_child)
 
 ;; The context is independent of the task marker. A pause cannot discard,
 ;; duplicate, move or change the phase of the sole owned marker.
@@ -119,7 +138,6 @@ def $eval_end_marker(ptask) = false -- otherwise
 dec $failed_source_at(pfailedsource*, nat) : pfailedsource?
 dec $failed_source_kind(pfailedkind) : text
 dec $failed_source_record_valid(pstate, pfailedsource) : bool
-dec $eval_site_line(pstate, porigin) : int
 def $failed_source_at(eps, n) = eps
 def $failed_source_at(pfailedsource :: pfailedsource_tail*, n) = (pfailedsource)
   -- if pfailedsource.UNIT = n
@@ -198,11 +216,20 @@ def $eval_marker_valid(S, AT porigin ptask) = ~$eval_wrapped_marker(ptask)
 def $eval_marker_valid(S, CHOOSE ptask_left* ptask_right* z) = ~($eval_nested_markers(ptask_left*) \/ $eval_nested_markers(ptask_right*))
 def $eval_marker_valid(S, ptask) = true -- otherwise
 dec $eval_tasks_markers_valid(pstate, ptask*) : bool
+dec $eval_requests_owned(ptask*) : bool
+dec $eval_request_task(ptask) : bool
+def $eval_request_task(EVAL_REQUEST porigin z) = true
+def $eval_request_task(ptask) = false -- otherwise
+def $eval_requests_owned(eps) = true
+def $eval_requests_owned((EVAL_REQUEST porigin z) :: (ORIGIN_RETURN (porigin)) :: ptask_tail*) = $eval_requests_owned(ptask_tail*)
+def $eval_requests_owned(ptask :: ptask_tail*) = $eval_requests_owned(ptask_tail*)
+  -- if ~$eval_request_task(ptask)
+def $eval_requests_owned(ptask*) = false -- otherwise
 def $eval_tasks_markers_valid(S, eps) = true
 def $eval_tasks_markers_valid(S, ptask :: ptask_tail*) = ($eval_marker_valid(S, ptask) /\ $eval_tasks_markers_valid(S, ptask_tail*))
 dec $eval_frames_markers_valid(pstate, pframe*) : bool
 def $eval_frames_markers_valid(S, eps) = true
-def $eval_frames_markers_valid(S, pframe :: pframe_tail*) = ($eval_tasks_markers_valid(S, pframe.TODO) /\ $eval_frames_markers_valid(S, pframe_tail*))
+def $eval_frames_markers_valid(S, pframe :: pframe_tail*) = ($eval_tasks_markers_valid(S, pframe.TODO) /\ $eval_requests_owned(pframe.TODO) /\ $eval_frames_markers_valid(S, pframe_tail*))
 dec $eval_wait_completion(pcompletion) : bool
 def $eval_wait_completion(SOURCE_PENDING) = true
 def $eval_wait_completion(UNSUPPORTED text) = true
@@ -215,7 +242,9 @@ dec $eval_await_head(ptask*, nat) : bool
 def $eval_await_head((EVAL_AWAIT n) :: ptask_tail*, n) = true
 def $eval_await_head(ptask*, n) = false -- otherwise
 def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ (pevalcontext.PHASE = UNIT_RUN /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
-def $eval_site_line(S, porigin) = $eval_node_line($origin_node(S.SOURCES, porigin))
+def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
+def $eval_site_line(S, porigin) = 0 -- otherwise
 dec $eval_context_valid(pstate, pevalcontext) : bool
 def $eval_context_valid(S, pevalcontext) = ($eval_site_valid(S, pevalcontext.SITE, z) /\ pevalcontext.BYTES =/= eps /\ $(pevalcontext.UNIT > 0) /\ $failed_source_at(S.FAILEDSOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_class_valid(S, pevalcontext.LEXICAL_CLASS) /\ $sourcefile_count(S.FILES, pevalcontext.UNIT) = 1 /\ $call_sourcefile(S.FILES, PORIGIN pevalcontext.UNIT eps) = pevalcontext.FILE /\ pevalcontext.FILE = $eval_filename(S, pevalcontext.SITE, z) /\ $($eval_marker_count(S.TODO, pevalcontext.UNIT) + $eval_frame_marker_count(S.FRAMES, pevalcontext.UNIT)) = 1 /\ $eval_owner_marker_count(S, pevalcontext) = 1 /\ $eval_marker_suffix_valid($eval_owner_tasks(S, pevalcontext), pevalcontext.UNIT, pevalcontext.TAIL) /\ $eval_context_phase_valid(S, pevalcontext))
   -- if z = $eval_site_line(S, pevalcontext.SITE)
@@ -255,7 +284,7 @@ def $eval_static_completion(FATAL n_message* z) = true
 def $eval_static_completion(pcompletion) = false -- otherwise
 dec $file_bindings_valid(pstate, pfilebinding*) : bool
 dec $file_state_valid(pstate) : bool
-def $eval_state_valid(S) = ($eval_tasks_markers_valid(S, S.TODO) /\ $eval_frames_markers_valid(S, S.FRAMES) /\ $eval_contexts_valid(S, S.EVALCONTEXTS) /\ $eval_stack_ordered(S, S.EVALCONTEXTS) /\ $eval_bindings_valid(S, S.EVALBINDINGS) /\ $file_bindings_valid(S, S.FILEBINDINGS) /\ $file_state_valid(S) /\ $eval_units_bound(S, S.SOURCES) /\ $failed_sources_valid(S, S.FAILEDSOURCES) /\ $eval_pending_state_valid(S) /\ (~S.COMPILESTOP \/ $eval_static_completion(S.COMPLETION)))
+def $eval_state_valid(S) = ($eval_tasks_markers_valid(S, S.TODO) /\ $eval_requests_owned(S.TODO) /\ $eval_frames_markers_valid(S, S.FRAMES) /\ $eval_contexts_valid(S, S.EVALCONTEXTS) /\ $eval_stack_ordered(S, S.EVALCONTEXTS) /\ $eval_bindings_valid(S, S.EVALBINDINGS) /\ $file_bindings_valid(S, S.FILEBINDINGS) /\ $file_state_valid(S) /\ $eval_units_bound(S, S.SOURCES) /\ $failed_sources_valid(S, S.FAILEDSOURCES) /\ $eval_pending_state_valid(S) /\ (~S.COMPILESTOP \/ $eval_static_completion(S.COMPLETION)))
 def $call_task_valid(S, EVAL_AWAIT n) = $eval_marker_valid(S, EVAL_AWAIT n)
 def $call_task_valid(S, EVAL_END n) = $eval_marker_valid(S, EVAL_END n)
 
@@ -322,17 +351,28 @@ dec $source_trace_first(ptraceframe*) : ptraceframe*
 def $source_trace_first(ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = eps][.HASARGS = false] :: ptraceframe_tail*
   -- if ptraceframe.FUNCTION = $ptascii("include") \/ ptraceframe.FUNCTION = $ptascii("include_once") \/ ptraceframe.FUNCTION = $ptascii("require") \/ ptraceframe.FUNCTION = $ptascii("require_once")
 def $source_trace_first(ptraceframe*) = ptraceframe* -- otherwise
-dec $eval_trace_saved(pstate, pframe*, nat) : ptraceframe*
+dec $eval_trace_saved(pstate, pcallcontext?, pframe*, nat) : ptraceframe*
+dec $eval_trace_preparser(pstate, pcallcontext?, pframe) : ptraceframe*
+dec $stringify_context_frame_valid(pstate, pcallcontext, pframe) : bool
 dec $eval_frame_context(pstate, pframe) : ptraceframe*
 def $eval_frame_context(S, pframe) = eps
   -- if pframe.CONTEXT = eps
 def $eval_frame_context(S, pframe) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
-def $eval_trace_saved(S, eps, n_owner) = eps
-def $eval_trace_saved(S, pframe :: pframe_tail*, n_owner) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner) ++ $eval_frame_context(S, pframe) ++ $eval_trace_saved(S, pframe_tail*, $nabs($(n_owner - 1)))
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, porigin_parent), LINE z, FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if $stringify_context_kind(S, pcallcontext)
+  -- if $stringify_context_frame_valid(S, pcallcontext, pframe)
+  -- if pcallcontext.CALLSITE = (porigin_child)
+  -- if pcallcontext.LINE = z
+  -- if pframe.ORIGIN = (porigin_child)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (EVAL_REQUEST porigin_parent z) :: (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*
+  -- if $eval_operand_site_valid(S, porigin_parent, porigin_child, z)
+def $eval_trace_preparser(S, pcallcontext?, pframe) = eps -- otherwise
+def $eval_trace_saved(S, pcallcontext?, eps, n_owner) = eps
+def $eval_trace_saved(S, pcallcontext?, pframe :: pframe_tail*, n_owner) = $eval_trace_preparser(S, pcallcontext?, pframe) ++ $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner) ++ $eval_frame_context(S, pframe) ++ $eval_trace_saved(S, pframe.CONTEXT, pframe_tail*, $nabs($(n_owner - 1)))
 dec $eval_exception_trace_raw(pstate) : ptraceframe*
-def $eval_exception_trace_raw(S) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
+def $eval_exception_trace_raw(S) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.CURRENT, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
 def $source_trace_prefixed(S, ptraceframe*) = $source_trace_first(ptraceframe* ++ $eval_exception_trace_raw(S))
 def $eval_exception_trace(S) = $source_trace_first($eval_exception_trace_raw(S))
 dec $eval_compile_throw(pstate, pevalcontext, pevalcontext*, text, nat*, int) : pstate

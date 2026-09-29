@@ -51,10 +51,20 @@ def $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) = true
 def $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprCastString expression metadata)
   -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 0], expression) = z
+def $stringify_source(S, porigin_site, z, EVAL_REQUEST porigin_parent z) = $eval_operand_site_valid(S, porigin_parent, porigin_site, z)
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
 dec $stringify_site_valid(pstate, porigin, int) : bool
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z))
+
+dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
+dec $stringify_eval_consumer(ptask) : bool
+def $stringify_eval_consumer(EVAL_REQUEST porigin z) = true
+def $stringify_eval_consumer(ptask) = false -- otherwise
+def $stringify_consumer_tail_valid(S, porigin_site, z, EVAL_REQUEST porigin_parent z, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $eval_operand_site_valid(S, porigin_parent, porigin_site, z)
+def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = true
+  -- if ~$stringify_eval_consumer(ptask_consumer)
+def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = false -- otherwise
 
 dec $stringify_method_selected(pstate, nat, porigin, porigin) : bool
 def $stringify_method_selected(S, n, porigin_method, porigin_site) = true
@@ -71,6 +81,7 @@ def $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site) = true
   -- if S.ORIGIN = (porigin_site)
   -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_pending(S, pcalltarget, porigin_site) = false -- otherwise
 def $stringify_pending_site(S, porigin_site) = true
   -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_tail*
@@ -84,6 +95,7 @@ def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, METHOD_TARGET 
   -- if pframe.ORIGIN = (porigin_site)
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin_site) = $stringify_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
   -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin_site) /\ pframe.ORIGIN = (porigin_site))
 def $stringify_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin_site) = $stringify_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
@@ -116,7 +128,6 @@ dec $stringify_frame_marker(pframe) : bool
 def $stringify_frame_marker(pframe) = true
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_tail*
 def $stringify_frame_marker(pframe) = false -- otherwise
-dec $stringify_context_frame_valid(pstate, pcallcontext, pframe) : bool
 def $stringify_context_frame_valid(S, pcallcontext, pframe) = true
   -- if ~$stringify_context_kind(S, pcallcontext)
   -- if ~$stringify_frame_marker(pframe)
@@ -128,6 +139,7 @@ def $stringify_context_frame_valid(S, pcallcontext, pframe) = true
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if z = pcallcontext.LINE
   -- if $stringify_source(S, porigin_site, pcallcontext.LINE, ptask_consumer)
+  -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_context_frame_valid(S, pcallcontext, pframe) = false -- otherwise
 def $stringify_chain_valid(S, eps, eps) = true
 def $stringify_chain_valid(S, (pcallcontext), eps) = ~$stringify_context_kind(S, pcallcontext)
@@ -154,16 +166,15 @@ def $call_task_valid(S, EMIT z) = true
 dec $stringify_task_marker(ptask) : bool
 def $stringify_task_marker(STRINGIFY_RESULT n porigin_site z) = true
 def $stringify_task_marker(ptask) = false -- otherwise
-dec $stringify_pair_valid(pstate, ptask, ptask, bool) : bool
-def $stringify_pair_valid(S, ptask, ptask_next, false) = true
-def $stringify_pair_valid(S, STRINGIFY_RESULT n porigin_site z, ptask_next, true) = $stringify_source(S, porigin_site, z, ptask_next)
+dec $stringify_pair_valid(pstate, ptask, ptask, ptask*, bool) : bool
+def $stringify_pair_valid(S, ptask, ptask_next, ptask_tail*, false) = true
+def $stringify_pair_valid(S, STRINGIFY_RESULT n porigin_site z, ptask_next, ptask_tail*, true) = ($stringify_source(S, porigin_site, z, ptask_next) /\ $stringify_consumer_tail_valid(S, porigin_site, z, ptask_next, ptask_tail*))
 def $stringify_pairs_valid(S, eps) = true
 def $stringify_pairs_valid(S, [ptask]) = ~$stringify_task_marker(ptask)
-def $stringify_pairs_valid(S, ptask :: ptask_next :: ptask_tail*) = ($stringify_pair_valid(S, ptask, ptask_next, $stringify_task_marker(ptask)) /\ $stringify_pairs_valid($call_after_origin(S, ptask), ptask_next :: ptask_tail*))
+def $stringify_pairs_valid(S, ptask :: ptask_next :: ptask_tail*) = ($stringify_pair_valid(S, ptask, ptask_next, ptask_tail*, $stringify_task_marker(ptask)) /\ $stringify_pairs_valid($call_after_origin(S, ptask), ptask_next :: ptask_tail*))
 def $stringify_frames_pairs_valid(S, eps) = true
 def $stringify_frames_pairs_valid(S, pframe :: pframe_tail*) = ($stringify_pairs_valid(S[.ORIGIN = pframe.ORIGIN], pframe.TODO) /\ $stringify_frames_pairs_valid(S, pframe_tail*))
 
-dec $user_string_begin(pstate, nat, porigin, int, ptask, ptask*) : pstate
 def $user_string_begin(S, n, porigin_site, z, ptask_consumer, ptask_tail*) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
@@ -199,6 +210,7 @@ rule PhpStep/user-string-return: S ~> S_read[.TODO = ptask_consumer :: ptask_tai
   -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if $stringify_result_valid(S, n, porigin_site, z)
   -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING n_text*)

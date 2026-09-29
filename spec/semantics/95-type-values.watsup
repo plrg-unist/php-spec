@@ -159,19 +159,32 @@ def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_class_chain(S, ptbran
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $typed_object_exact(S, ptbranch*, pvalue) = false -- otherwise
 
+dec $user_string_coercion(pstate, ptbranch*, pvalue, bool) : bool
+def $user_string_coercion(S, ptbranch*, POBJECT n, false) = true
+  -- if "string" <- $ptmasks(ptbranch*)
+  -- if ~$typed_exact(ptbranch*, POBJECT n)
+  -- if ~$typed_object_exact(S, ptbranch*, POBJECT n)
+  -- if $stringable_instance(S, n)
+def $user_string_coercion(S, ptbranch*, pvalue, b) = false -- otherwise
+
 dec $typed_conversion_at(pstate, ptbranch*, pvalue, bool) : ptypeconversion
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEVALUE pvalue
   -- if $typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue)
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "user object string conversion"
+  -- if $user_string_coercion(S, ptbranch*, pvalue, b)
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEVALUE pvalue
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if ~$user_string_coercion(S, ptbranch*, pvalue, b)
   -- if "callable" <- $ptmasks(ptbranch*)
   -- if $typed_callable(S, pvalue) = (true)
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "class or method callable type checking"
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if ~$user_string_coercion(S, ptbranch*, pvalue, b)
   -- if "callable" <- $ptmasks(ptbranch*)
   -- if $typed_callable(S, pvalue) = eps
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*, pvalue, b)
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if ~$user_string_coercion(S, ptbranch*, pvalue, b)
   -- if ~("callable" <- $ptmasks(ptbranch*)) \/ $typed_callable(S, pvalue) = (false)
   -- if ~$throwable_string_coercion(S, ptbranch*, pvalue, b)
 
