@@ -7,21 +7,25 @@
     "original_frozen_code_tests": "77f27269d",
     "current_base": "9071d10d2",
     "current_rebase_code_tests": "b38c4cee8",
-    "projection": "181, its 19-source catalogue and its paused protocol are byte-identical across the rebase. The 142 missing-class rule retains installed internal constructor and __toString guards while adding Closure::bind exclusion; modules add 181 after installed 175/176. The installed 174 callable-integrity repair is unchanged."
+    "projection": "At b38c4cee8, the original 181, 19-row catalogue and three-stage protocol were byte-identical across the rebase. The 142 missing-class rule retained installed internal constructor and __toString guards while adding Closure::bind exclusion; modules added 181 after installed 175/176. The installed 174 callable-integrity repair was unchanged. Commit 0d387fda4 then added three explicit-null native rows and one paused stage with disjoint binding arms.",
+    "current_explicit_null_code_tests": "0d387fda4"
   },
   "native": {
     "catalogue": "tests/semantics/closure_binding_cases.json",
-    "catalogue_sha256": "f8692ce106ffc5aaeb741af2afeef66f0957a578c48bb49f12e032247941ae2c",
+    "catalogue_sha256": "fc7a18c6c01450e6ed0251169f0bae7185513a56e1ccdf74156c308854f9ac31",
     "raw_archives": {
       ".tools/static-method-review/closure-binding-native.json": "703569baea39b739d75d391ba789a7d3150921e90a0aa0f6e693823a9129d496",
       ".tools/static-method-review/closure-binding-warning-native.json": "a0908356f3ff56a85bbf04cc05ac15ed38c9030d1738ac47de109566d2c273f0",
       ".tools/static-method-review/closure-binding-null-static-native.json": "826688fedf8c89ec777b26ba0e236f3753feda5ed463b99445f04264a81abf7a",
       ".tools/static-method-review/closure-binding-object-scope-native.json": "0606738dd7fb78773be83e51ca6039921c42ef680d7d52489f04c12823ba4b60",
-      ".tools/static-method-review/closure-binding-null-keyword-native.json": "8cdd3a7029173cb469691608d8b93e5dda8c844c3e504a10f1b7f02e65e78a9f"
+      ".tools/static-method-review/closure-binding-null-keyword-native.json": "8cdd3a7029173cb469691608d8b93e5dda8c844c3e504a10f1b7f02e65e78a9f",
+      ".tools/static-method-review/closure-binding-explicit-null-native.json": "49e386bbc99fa259aeea24c93368d3382692c1a1343c1489ddcfa736b1fd739d",
+      ".tools/static-method-review/closure-binding-null-release-native.json": "6cbc44025f1cdecc1696346a86ad6cba27796afbaba7c96ae23baf86c25729ca"
     },
     "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
-    "recovery": "The ignored reviewer archives pin original source hashes and raw native stdout/stderr/exit under the full CLI profile. Every tracked source and tuple was independently checked against its archive; only absolute native diagnostic source paths become {FILE} in the catalogue. Run method_runtime.py with --catalogue tests/semantics/closure_binding_cases.json. The original six Closure::call or var_dump archive cases are not part of this 19-row binding gate."
+    "recovery": "Seven ignored reviewer archives pin original source hashes and raw native stdout/stderr/exit under the full CLI profile. Every tracked source and tuple was checked against its archive; only absolute native diagnostic source paths become {FILE} in the catalogue. The original 19-case author/independent reports used catalogue SHA f8692ce106ffc5aaeb741af2afeef66f0957a578c48bb49f12e032247941ae2c; the current tracked catalogue has 22 rows including three explicit-null controls. Run method_runtime.py with --catalogue tests/semantics/closure_binding_cases.json. Six original Closure::call or var_dump archive cases remain outside the binding gate.",
+    "original_catalogue_sha256": "f8692ce106ffc5aaeb741af2afeef66f0957a578c48bb49f12e032247941ae2c"
   },
   "original_author_source": {
     "result": "19/19 exact and stable",
@@ -31,7 +35,11 @@
   },
   "original_author_paused": {
     "result": "3/3 stable, 31 assertions",
-    "cases": ["bindto-selector", "bind-first-argument", "bound-source-release"],
+    "cases": [
+      "bindto-selector",
+      "bind-first-argument",
+      "bound-source-release"
+    ],
     "report": ".tools/closure-binding/.tools/closure-binding-protocol-m66flusn/report.json",
     "report_sha256": "d592061107bd62c8f57560bd8c7a62a74da761ebaf5ed0335df718a582e56ba8"
   },
@@ -59,10 +67,19 @@
     "setup": "Each private worktree copied the configured PHP build and source, rewrote only text build references to its private output root with timestamps preserved, and ran make -o build inventory. A nested-worktree make build call selected the outer Dune root; explicit-root dune build succeeded on the current rebase."
   },
   "current_base_bridge": {
-    "result": "pending focused source and paused replay",
+    "result": "8/8 exact and stable on b38c4cee8 before explicit-null extension; paused 3/3 stable, 31 assertions",
     "selection": "Five binding seams, finite getter and Closure->__invoke captures, and a source Throwable-descendant inherited getter capture",
+    "source_report": ".tools/closure-binding-current/.tools/method-runtime-lovts7gp/report.json",
+    "source_report_sha256": "d4a510e7eb393394d01d89412070a6ecd8637393ca96de8081ff9f78844feda0",
+    "paused_report": ".tools/closure-binding-current/.tools/closure-binding-protocol-q0o_cmcs/report.json",
+    "paused_report_sha256": "02017b5ddf8f8975f4e9806089fb887b0a50652d0fb85f5d9cd0d164a8e15ec8",
     "descendant_native_archive": ".tools/static-method-review/closure-binding-descendant-native.json",
     "descendant_native_archive_sha256": "78a6671a7f04f70acadbde351d7ce086bf87816154e1384db15b954d4a1d8a40"
   },
-  "boundaries": "Completed dynamic operand values and historical source selectors cannot always be reconstructed after evaluation; immediate simple-variable selectors are checked while their value is still live. This is a bounded ordinary real-closure binding increment. Closure::call, first-class fake method/getter/invoke-wrapper rebinding, internal-class objects as receiver or scope, unbinding a closure with an active receiver, named/unpacked binding operands, array callables and source __invoke remain required later work. No unsupported case is counted as native agreement."
+  "boundaries": "Completed dynamic operand values and historical source selectors cannot always be reconstructed after evaluation; immediate simple-variable selectors are checked while their value is still live. This is a bounded ordinary real-closure binding increment. Closure::call, first-class fake method/getter/invoke-wrapper rebinding, internal-class objects as receiver or scope, unbinding a closure with an active receiver, named/unpacked binding operands, array callables and source __invoke remain required later work. No unsupported case is counted as native agreement.",
+  "current_explicit_null_gate": {
+    "result": "pending 22-source and four-stage paused replay on 0d387fda4",
+    "source_cases": 22,
+    "paused_cases": 4
+  }
 }

@@ -12,8 +12,10 @@ The bound record retains the source call site and original closure identity as
 provenance, the lexical scope used for private access, the called class, and
 the optional receiver. A receiver supplies the called class; without one, the
 called class is the lexical scope. The scope argument may be an admitted user
-class name, a user object of that class, or `"static"` for the source lexical
-scope. The bound row roots its receiver while it is live. During operand
+class name, a user object of that class, `"static"` for the source lexical
+scope, or explicit `null` to remove lexical class scope while retaining an
+object receiver and its called class. The bound row roots its receiver while it
+is live. During operand
 evaluation, the task roots the source closure and all sent operands. Immediate
 simple-variable source selectors are checked against the live variable before
 argument effects; later states retain the selected historical value.

@@ -36,11 +36,13 @@ The separate global closure-integrity repair is installed at **9e7879617** (code
 
 Active work covers Closure binding/call behavior, interface declarations and method lookup, remaining object conversion consumers, and finite file-provider followups. These branches require their own current-base bridges and reviews before installation.
 
-Ordinary Closure binding 181 is private at **b38c4cee8** on the 9071d10d2
+Ordinary Closure binding 181 is private at **0d387fda4** on the 9071d10d2
 base. Its original-base 19-source native differential, three paused provenance
-and ownership stages, and independent 19-source replay pass; the
-[binding ledger](coverage/semantics/closure-binding-review.json) keeps those
-fingerprints separate from the pending current-base bridge. `Closure::call`,
+and ownership stages, and independent 19-source replay pass. A later
+current-base eight-source bridge and three paused stages pass on the prior code;
+the new explicit-null scope extension has a 22-source/four-stage gate pending.
+The [binding ledger](coverage/semantics/closure-binding-review.json) keeps those
+fingerprints separate. `Closure::call`,
 captured callable rebinding, array callables and source `__invoke` remain open.
 
 Source Throwable subclasses are installed at **9071d10d2**. They retain
