@@ -32,7 +32,7 @@ Static/scoped methods, user-object string conversion and first-class source meth
 
 ## Active work and remaining obligations
 
-Active work covers finite internal first-class captures, interface declarations and method lookup, eval operand object conversion, finite file-provider followups, and Throwable subclass behavior. These branches require their own current-base bridges and reviews before installation.
+Active work covers finite internal first-class captures, interface declarations and method lookup, eval operand object conversion, finite file-provider followups, and Throwable subclass behavior. The internal capture [ledger](coverage/semantics/first-class-internal-review.json) records nine exact source controls and four paused stages on the private include-base candidate, plus independent replay; it is not yet installed. The other branches require their own current-base bridges and reviews before installation.
 
 Complete core still needs static/readonly members, traits, hooks, user magic methods, remaining Throwable accessors and internal protocols, conversion callbacks, output handlers, traversal and lifecycle integration, and broader source and pause closure. File inclusion still needs resolver-null openable paths, mutable CWD/include_path context and wider stream failures. Generated finally linking remains transition-local; exit bypasses catch/finally while shutdown/destructor callbacks remain open. Rocq interaction-tree semantics and BOLA proofs follow the completed PHP core.
 

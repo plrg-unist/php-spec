@@ -1,12 +1,12 @@
 {
-  "result": "bounded-internal-first-class-capture-pass-pre-include",
+  "result": "bounded-internal-first-class-capture-pass-private-current-base",
   "target": "PHP 8.5.10 CLI NTS 64-bit, pinned tests/semantics/profile.json",
   "scope": "Finite public final Throwable getters and Closure->__invoke first-class captures. Capture selects the existing internal getter or Closure without invoking it. A getter callable retains its receiver and internal owner; a Closure->__invoke callable retains and invokes the original Closure, preserving lexical scope, statics, argument behavior and direct trace frames.",
   "candidate": {
     "source_method_base": "eb193a9a4",
     "code_commit": "e72f798f1",
     "frozen_code_test_commit": "04bc26ee0ee8a3d0d60aa930a474ec79635abd39",
-    "note": "The later 395f4a912 commit imports only the previously reviewed source-method ledger and PROGRESS correction. It does not change watched code or tests. Include-base integration remains separate."
+    "note": "The later 395f4a912 commit imports only the previously reviewed source-method ledger and PROGRESS correction. It does not change watched code or tests. The separately fingerprinted include-base bridge is recorded below."
   },
   "native": {
     "catalogue": "tests/semantics/first_class_internal_cases.json",
@@ -44,6 +44,34 @@
     "semantic_report": ".tools/static-method-internal/.tools/internal-semantic-inventory.log",
     "semantic_report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
     "observation": "Configured PHP build and source were copied into this private worktree; 356 text build files had old output-root references rewritten with timestamps preserved, and no copied symlink escaped the private tree. The ordinary PHP binary remained unchanged."
+  },
+  "include_base_bridge": {
+    "base": "2ce13cd53d78093dff7102e172bfaa117218faeb",
+    "frozen_code_test_commit": "c2b9fff8e89376ce9e16e3c8a6391a63448c9f2a",
+    "projection": "The internal 158/173/174 modules, source catalogue and paused script are byte-identical to the reviewed pre-include freeze. The 30-storage and modules changes preserve the installed include source/file state additively.",
+    "author_source": {
+      "result": "9/9 exact and stable; seven normal and two PHP errors",
+      "fingerprint_sha256": "352e6ecac95829a77a0909a1dceb1e18ce5d7a045d0131a074a5efc110511e9d",
+      "report": ".tools/static-method-internal-current/.tools/method-runtime-5mb32rjf/report.json",
+      "report_sha256": "0544f310358348b2d6a6208949ef543b9579a2b9d5cc0cf63589e7d6cc7ac116"
+    },
+    "author_paused": {
+      "result": "4/4 stable, 32 assertions",
+      "report": ".tools/static-method-internal-current/.tools/first-class-internal-protocol-rd54mprp/report.json",
+      "report_sha256": "636f1dc2609f02be6a0485eda22436975e4b478e11d38de1058e1cc14dbcc243"
+    },
+    "independent_source": {
+      "result": "9/9 exact and stable",
+      "report": ".tools/static-method-review/first-class-internal-review-scyzfrpx/report.json",
+      "report_sha256": "6d90c4e9533b283272ede0bcb1fde833a923c15c6d71afbbedbf44ee94a867a6"
+    },
+    "inventory": {
+      "result": "full private inventory and direct semantic inventory pass",
+      "report": ".tools/static-method-internal-current/.tools/internal-current-inventory.log",
+      "report_sha256": "c877fdde018459faff786b24cd83e8c7481b97f87bff44d9c2626002e0521b04",
+      "semantic_report": ".tools/static-method-internal-current/.tools/internal-current-semantic-inventory.log",
+      "semantic_report_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    }
   },
   "boundaries": "Only enumerated internal Throwable getters and Closure->__invoke capture are admitted. Other Closure methods and user Throwable subclasses remain separate obligations. Capture-site source checks authenticate literal method names and live receiver/closure types; a fully correlated forgery of a completed dynamic source name or selector cannot be reconstructed after evaluation. The original source-method capture and its 23-case gate remain independently reviewed in first-class-method-review.json."
 }
