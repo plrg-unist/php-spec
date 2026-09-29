@@ -54,6 +54,10 @@ dec $trace_context_function(pstate, pcallcontext) : preqbytes
 def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
   -- if pcallcontext.INSTANCE = eps
   -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
+  -- if pcallcontext.INSTANCE = (n_closure)
+  -- if S.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
 def $trace_context_function(S, pcallcontext) = pcallcontext.NAME -- otherwise
 dec $trace_context_class(pstate, pcallcontext) : preqbytes?
 def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)

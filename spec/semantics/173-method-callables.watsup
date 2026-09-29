@@ -1,0 +1,200 @@
+;; A first-class method expression captures the selected source descriptor and
+;; call scope without sending arguments or entering the method body.
+dec $method_capture_site(pstate, porigin, pmethoddesc) : bool
+def $method_capture_site(S, porigin_site, pmethoddesc) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+def $method_capture_site(S, porigin_site, pmethoddesc) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+def $method_capture_site(S, porigin_site, pmethoddesc) = false -- otherwise
+
+def $call_task_valid(S, METHOD_CONVERT pcalltarget porigin_site z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $method_capture_site(S, porigin_site, pmethoddesc)
+  -- if $call_selected_valid(S, pcalltarget, (porigin_site))
+  -- if $call_line_valid(S, (porigin_site), z)
+def $task_nodes(METHOD_CONVERT pcalltarget porigin_site z) = $target_nodes(pcalltarget)
+
+dec $method_capture_requested(pstate, pcalltarget) : porigin?
+def $method_capture_requested(S, METHOD_TARGET n porigin_method) = (porigin_class)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+def $method_capture_requested(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (porigin_requested)
+def $method_capture_requested(S, pcalltarget) = eps -- otherwise
+
+rule PhpStep/method-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [METHODCLOSURE pfunction.ORIGIN porigin_site porigin_requested]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (METHOD_CONVERT pcalltarget porigin_site z) :: ptask_tail*
+  -- if $call_task_valid(S, METHOD_CONVERT pcalltarget porigin_site z)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $method_capture_requested(S, pcalltarget) = (porigin_requested)
+  -- if $target_called_class(S, pcalltarget) = (porigin_called)
+  -- if $target_receiver(S, pcalltarget) = n_receiver?
+  -- if n = |S.OBJECTS|
+
+def $node_children(S, HOBJECT n) = $closure_scope_roots(S.CLOSURESCOPES, n)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [METHODCLOSURE porigin_method porigin_site porigin_requested]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)], n_source, n)
+  -- if S.OBJECTS[n_source] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(METHODCLOSURE porigin_method porigin_site porigin_requested, METHODCLOSURE porigin_method porigin_site porigin_requested) = true
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+def $target_function(S, CLOSURE_TARGET n) = (pmethoddesc.FUNCTION)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+  -- if $current_instance(S) = (n)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+  -- if $current_instance(S) = (n)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+def $closure_callable(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_live_object_valid(S, n)
+
+dec $method_capture_receiver_valid(pstate, pmethoddesc, pclosurescope) : bool
+def $method_capture_receiver_valid(S, pmethoddesc, pclosurescope) = true
+  -- if pmethoddesc.STATIC
+  -- if pclosurescope.RECEIVER = eps
+def $method_capture_receiver_valid(S, pmethoddesc, pclosurescope) = true
+  -- if ~pmethoddesc.STATIC
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
+def $method_capture_receiver_valid(S, pmethoddesc, pclosurescope) = false -- otherwise
+dec $method_capture_requested_site(pstate, porigin, phpType19, porigin) : bool
+def $method_capture_requested_site(S, porigin_site, phpType19, porigin_requested) = true
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, eps)
+def $method_capture_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested) = true
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $closure_source_class(S, porigin_site) = (porigin_requested)
+def $method_capture_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested) = true
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if $closure_source_class(S, porigin_site) = (porigin_scope)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = (SOURCE_PARENT porigin_requested)
+def $method_capture_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested) = true
+  -- if $ptlc($base64(text)) = $ptascii("static")
+  -- if $closure_source_class(S, porigin_site) = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $class_origin_matches(S, porigin_requested, pclassdesc_scope.NAME, |S.CLASSES|)
+def $method_capture_requested_site(S, porigin_site, expression_class, porigin_requested) = true
+  -- if ~$ppscoped_named(expression_class)
+def $method_capture_requested_site(S, porigin_site, phpType19, porigin_requested) = false -- otherwise
+dec $method_capture_called_site(phpType19, pmethoddesc, porigin, pclosurescope) : bool
+def $method_capture_called_site(phpType19, pmethoddesc, porigin_requested, pclosurescope) = true
+  -- if ~pmethoddesc.STATIC
+  -- if pclosurescope.RECEIVER = (n_receiver)
+def $method_capture_called_site(phpType19, pmethoddesc, porigin_requested, pclosurescope) = true
+  -- if pmethoddesc.STATIC
+  -- if ~$ppscoped_keyword(phpType19)
+  -- if pclosurescope.CALLED = porigin_requested
+def $method_capture_called_site(NName (BYTES text) metadata, pmethoddesc, porigin_requested, pclosurescope) = true
+  -- if pmethoddesc.STATIC
+  -- if $ptlc($base64(text)) = $ptascii("static")
+  -- if pclosurescope.CALLED = porigin_requested
+def $method_capture_called_site(NName (BYTES text) metadata, pmethoddesc, porigin_requested, pclosurescope) = true
+  -- if pmethoddesc.STATIC
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+def $method_capture_called_site(phpType19, pmethoddesc, porigin_requested, pclosurescope) = false -- otherwise
+dec $method_capture_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
+def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if pmethoddesc.STATIC
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+  -- if pclosurescope.RECEIVER = eps
+  -- if pclosurescope.CALLED = porigin_requested
+  -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $closure_source_class(S, porigin_site))
+def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if pclosurescope.CALLED = porigin_requested
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_requested
+  -- if $method_selected_scope(S, n_receiver, pmethoddesc.NAME, $closure_source_class(S, porigin_site)) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $closure_source_class(S, porigin_site))
+def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $method_capture_requested_site(S, porigin_site, phpType19, porigin_requested)
+  -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $method_capture_called_site(phpType19, pmethoddesc, porigin_requested, pclosurescope)
+  -- if $method_accessible(S, pmethoddesc, $closure_source_class(S, porigin_site))
+def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = false -- otherwise
+def $closure_scope_row_valid(S, pclosurescope) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
+  -- if pclosurescope.LEXICAL = pmethoddesc.OWNER
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_owner)
+  -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc_called)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
+  -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_owner.NAME, |S.CLASSES|)
+  -- if $method_capture_receiver_valid(S, pmethoddesc, pclosurescope)
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $closure_live_object_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $closure_scope_row_valid(S, pclosurescope)
+
+def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $closure_target_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call, n) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $dynamic_site(S, (porigin))
+  -- if $dynamic_fixed_name(S, porigin) = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_callable(S, n)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_callable(S, n)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $closure_callable(S, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(CLOSURE_TARGET n, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $closure_callable(S_read, n)
+  -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)

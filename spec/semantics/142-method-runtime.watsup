@@ -376,7 +376,6 @@ def $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method pori
   -- if $target_function(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
-  -- if ~$ppfirstclass(phpType7*)
   -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
   -- if $scoped_site_context(S, porigin_method, porigin_site) = pcallcontext_caller?
   -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?)
@@ -401,13 +400,15 @@ def $method_capture(S, true, z) = (S_read, S_read.RESULT)
   -- if S_read = $base_read(S, S.BASE, z)
 
 dec $method_args_task(pcalltarget, phpType7*, porigin?, int) : ptask
+def $method_args_task(pcalltarget, phpType7*, (porigin), z) = METHOD_CONVERT pcalltarget porigin z
+  -- if $ppfirstclass(phpType7*)
 def $method_args_task(pcalltarget, phpType7*, porigin?, z) = UNPACK_ARGS {FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX 0, SENT {SLOTS eps, NAMED eps}, CALLSITE porigin?, LINE z}
-  -- if $call_unpack_present(phpType7*)
+  -- if ~$ppfirstclass(phpType7*) /\ $call_unpack_present(phpType7*)
 def $method_args_task(pcalltarget, phpType7*, porigin?, z) = NAMED_ARGS pcalltarget phpType7* 0 {SLOTS eps, NAMED eps} porigin? z
-  -- if ~$call_unpack_present(phpType7*)
+  -- if ~$ppfirstclass(phpType7*) /\ ~$call_unpack_present(phpType7*)
   -- if $named_present(phpType7*)
 def $method_args_task(pcalltarget, phpType7*, porigin?, z) = CALL_ARGS pcalltarget phpType7* 0 eps porigin? z
-  -- if ~$named_present(phpType7*)
+  -- if ~$ppfirstclass(phpType7*) /\ ~$named_present(phpType7*)
 
 dec $getter_select(pstate, nat, ptbytes, phpType7*, int) : pstate
 dec $method_select(pstate, poperand, ptbytes, phpType7*, int) : pstate
@@ -798,11 +799,9 @@ def $scoped_name_prepare(S, phpType19, poperand_selector, expression_name, phpTy
 
 rule PhpStep/scoped-call-named: S ~> S[.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
-  -- if ~$ppfirstclass(phpType7*)
   -- if $ppscoped_named(phpType19)
 rule PhpStep/scoped-call-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_class), SCOPED_CLASS expression_class phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
-  -- if ~$ppfirstclass(phpType7*)
   -- if ~$ppscoped_named(expression_class)
 rule PhpStep/scoped-class: S ~> $scoped_name_prepare(S_class, phpType19, poperand_selector, phpType20, phpType7*, z)
   -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*

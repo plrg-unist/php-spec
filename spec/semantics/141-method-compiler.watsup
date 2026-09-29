@@ -393,18 +393,20 @@ def $ppcall_deferred(NExprMethodCall expression phpType20 phpType6 metadata) = P
 def $ppcall_deferred(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = PPR
 def $ppcall_deferred(NExprStaticCall phpType19 phpType20 phpType6 metadata) = PPR
 def $ppcall_read(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = true
-  -- if ~$ppfirstclass(phpType7*)
 def $ppcall_read(NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = true
   -- if ~$ppfirstclass(phpType7*)
 def $ppcall_read(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = true
-  -- if ~$ppfirstclass(phpType7*)
 def $ppexpr(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR), pcpath, $source_line(metadata))
   -- if P.COMPLETION = PPCNORMAL /\ ~$ppfirstclass(phpType7*)
 def $ppexpr(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR), pcpath, $source_line(metadata))
   -- if P.COMPLETION = PPCNORMAL /\ ~$ppfirstclass(phpType7*)
 def $ppexpr(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR), pcpath, $source_line(metadata))
   -- if P.COMPLETION = PPCNORMAL /\ ~$ppfirstclass(phpType7*)
-def $ppdispatch(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "first-class method callable")
+def $ppexpr(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppfirstclass_done($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprMethodCall expression phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR)), pcpath, NExprMethodCall expression phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppexpr(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppfirstclass_done($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR)), pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR), pcpath)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdispatch(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_init($ppmethod_call_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, phpType20), pcpath)
   -- if $ppfirstclass(phpType7*)
 def $ppdispatch(P, pcpath, NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppmethod_call_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, phpType20), pcpath ++ [PCFIELD 2], 0, phpType7*, PNUNSUPPORTED "method call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*)
@@ -420,7 +422,7 @@ def $ppscoped_parent_missing(P, NName (BYTES text_name) metadata_name) = true
 def $ppscoped_parent_missing(P, phpType19) = false -- otherwise
 def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"parent\" when current class scope has no parent"), P.LOCATION.LINE)
   -- if $ppscoped_parent_missing(P, phpType19)
-def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppunsupported(P, "first-class static method callable")
+def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_init($ppmethod_call_name($ppscoped_class(P, pcpath, phpType19), pcpath, phpType20), pcpath)
   -- if $ppfirstclass(phpType7*) /\ ~$ppscoped_parent_missing(P, phpType19)
 def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppmethod_call_name($ppscoped_class(P, pcpath, phpType19), pcpath, phpType20), pcpath ++ [PCFIELD 2], 0, phpType7*, PNUNSUPPORTED "static method call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*) /\ ~$ppscoped_parent_missing(P, phpType19)
