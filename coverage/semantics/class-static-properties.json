@@ -1,0 +1,30 @@
+{
+  "status": "reviewed private 187 storage checkpoint; 188 source access pending",
+  "base": "242607f9c0fc4bf67e4f32dff0fc965108faa107",
+  "semantic_head": "2013a0bb2f71bc2ae027958ae5dc6d004f36fcf9",
+  "target": "project-local PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Static property descriptors, instance layout exclusion, declaration-owned class storage, activation/link atomicity, roots and integrity. Static property source fetch/write/reference routes remain pending in 188.",
+  "native_contract": {
+    "cases": 39,
+    "harness": ".tools/static-property-candidate/.tools/static-properties-native.py",
+    "harness_sha256": "5170cdf8a161d75df5d2d178274cde019c26808868c77c8a7d10cc87cf8466f1",
+    "report": ".tools/static-property-candidate/.tools/static-properties-native-ar4xzq13/report.json",
+    "report_sha256": "014d0d7b769c9e9be43ca324c7a13bb4c76fe2f7067f8b309976b842475138ef",
+    "agreement_claim": "native oracle only; source static-property access is not yet implemented"
+  },
+  "paused_protocols": [
+    {
+      "name": "source-derived storage and forged rows",
+      "assertions": 32,
+      "report": ".tools/static-property-candidate/.tools/class-static-storage-w6yn4suz/report.json",
+      "sha256": "187ee7cccbd7fddcfd69b8a24e6a399f1d61851400cbfa96e2564d205857d5f9"
+    },
+    {
+      "name": "source-reached failed runtime parent link",
+      "assertions": 13,
+      "report": ".tools/static-property-candidate/.tools/class-static-link-khlpdfbm/report.json",
+      "sha256": "90631c6eac80e8a06a00248872c8b12edac0c17569298cffaa691d2ef8b421ac"
+    }
+  ],
+  "limits": "The missing-default pool assertion is forged-state only; compiled source installs its constant pool before class activation. The previously observed one-case object-cast and fatal pilots are not counted as a retained differential campaign."
+}
