@@ -1,5 +1,5 @@
 {
-  "status": "private bounded 187/188 source, reference and ownership checkpoint; independent replay and canonical rebase pending",
+  "status": "private bounded 187/188 source, reference and ownership checkpoint with independent replay; canonical rebase and final review pending",
   "base": "f8013abac554c4da2563a25e819892500355a694",
   "semantic_head": "2b905e7bc284f50fe8ab2365cf9ba0cd4dd44941",
   "target": "project-local PHP 8.5.10 CLI NTS 64-bit",
@@ -116,5 +116,16 @@
       "report": ".tools/static-property-candidate/.tools/private-property-protocol-iwd66g92/timeout-report.json",
       "sha256": "ce0c575f0b5f5c9268f24d2e20fb27935863981f5f2500220da18cac37677654"
     }
-  ]
+  ],
+  "independent_replay": {
+    "cases": 2,
+    "result": "exact native/model tuples",
+    "head": "f4348b079",
+    "report": ".tools/static-property-candidate/.tools/static-review-replay-oqq4p8as/report.json",
+    "sha256": "c3ffea3de664f8f5d56235210a6224bc6d5d904d34cb2799e837838505d3fcb2",
+    "selection": [
+      "inherited typed static alias shares declaring cell",
+      "static/object typed alias rejects array write atomically"
+    ]
+  }
 }
