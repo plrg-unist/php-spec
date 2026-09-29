@@ -180,7 +180,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = $method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call)
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
@@ -197,6 +197,9 @@ def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remainin
   -- if $(n_offset <= |phpType7*|)
   -- if n_remaining = $(|phpType7*| - n_offset)
   -- if phpType7_remaining* = phpType7*[n_offset:n_remaining]
+def $call_arguments_valid(S, (porigin_site), 0, eps, eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
 def $call_arguments_valid(S, porigin?, n_index, phpType7*, poperand*, n_sent) = false -- otherwise
 dec $call_sent_operands_valid(pstate, pcalltarget, nat, poperand*) : bool
 dec $call_arity_valid(pstate, pcallcontext) : bool
@@ -212,6 +215,14 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if n_received = $call_received(pcallcontext.ARGC, n_fixed)
   -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
   -- if $call_sent_operands_valid(S, $context_target(pcallcontext), n_received, pcallcontext.EXTRA)
+def $call_arity_valid(S, pcallcontext) = true
+  -- if $stringify_context(S, pcallcontext)
+  -- if pcallcontext.ARGC = 0
+  -- if pcallcontext.EXTRA = eps
+  -- if pcallcontext.NAMED = eps
+  -- if pcallcontext.PARAMS = eps
+  -- if $named_context_valid(S, pcallcontext)
+  -- if $call_extent_valid(S, pcallcontext)
 def $call_arity_valid(S, pcallcontext) = false -- otherwise
 dec $call_reference_operand_valid(pstate, poperand) : bool
 def $call_reference_operand_valid(S, REFERENCE n) = true
@@ -306,9 +317,12 @@ def $call_descriptors_valid(S) = true
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_early_bindings(S.CALLABLES, S.FUNCTIONS)
   -- if $call_tasks_valid(S, S.TODO)
+  -- if $stringify_pairs_valid(S, S.TODO)
   -- if $ctor_pairs_valid(S, S.TODO)
   -- if $nullsafe_base_phase_valid(S)
   -- if $call_frames_valid(S, S.FRAMES)
+  -- if $stringify_frames_pairs_valid(S, S.FRAMES)
+  -- if $stringify_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $finally_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)

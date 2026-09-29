@@ -207,6 +207,9 @@ def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $unpack_call_roots(punpa
 ;; Expanded contexts retain runtime slots, not a replay of old source containers.
 def $named_call_valid(S, pcalltarget_function, porigin?) = true -- if $call_unpack_site(S, porigin?)
 def $call_extent_valid(S, pcallcontext) = true -- if $call_unpack_site(S, pcallcontext.CALLSITE)
+def $call_extent_valid(S, pcallcontext) = true
+  -- if $stringify_context(S, pcallcontext)
+  -- if pcallcontext.ARGC = 0
 def $call_extent_valid(S, pcallcontext) = (pcallcontext.ARGC = $named_call_extent(S, $context_target(pcallcontext), pcallcontext.CALLSITE))
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
 dec $unpack_names_valid(pstate, pcalltarget, (preqbytes, poperand)*) : bool

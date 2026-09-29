@@ -109,6 +109,7 @@ rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_read, pvalue)
   -- if S_text = $stringify(S_read, pvalue, z)
   -- if S_text.COMPLETION = NORMAL
   -- if S_text.RESULT = KNOWN (PSTRING n_text*)
@@ -117,6 +118,7 @@ rule PhpStep/emit-stringify-abrupt: S ~> S_text[.TODO = eps]
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_read, pvalue)
   -- if S_text = $stringify(S_read, pvalue, z)
   -- if S_text.COMPLETION =/= NORMAL
 rule PhpStep/emit-abrupt: S ~> S_read[.TODO = eps]

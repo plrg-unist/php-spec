@@ -331,6 +331,10 @@ def $named_context_valid(S, pcallcontext) = true
   -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if $named_entries_valid(S, $context_target(pcallcontext), |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pcallcontext.NAMED, pnamedargs.NAMED)
+def $named_context_valid(S, pcallcontext) = true
+  -- if $stringify_context(S, pcallcontext)
+  -- if pcallcontext.NAMED = eps
+  -- if pcallcontext.WRAPPER = ({SLOTS eps, NAMED eps})
 def $named_context_valid(S, pcallcontext) = false -- otherwise
 
 ;; A source prefix determines only slot/key metadata, never prior runtime values.
@@ -352,6 +356,8 @@ def $named_call_valid(S, pcalltarget_function, (porigin)) = true
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $named_source_valid(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, false, {SLOTS eps, NAMED eps})
+def $named_call_valid(S, pcalltarget_function, (porigin)) = true
+  -- if $stringify_selected(S, pcalltarget_function, porigin)
 def $named_call_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 
 dec $named_previous(nat) : nat

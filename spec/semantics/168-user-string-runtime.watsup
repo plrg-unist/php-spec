@@ -10,6 +10,154 @@ def $stringable_instance(S, n) = true
   -- if ~pmethoddesc.ABSTRACT
 def $stringable_instance(S, n) = false -- otherwise
 
+dec $user_string_value(pstate, pvalue) : bool
+def $user_string_value(S, POBJECT n) = $stringable_instance(S, n)
+def $user_string_value(S, pvalue) = false -- otherwise
+
 ;; Contexts without a resumable callback consumer remain explicit dependencies.
 def $stringify(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "user object string conversion"]
   -- if $stringable_instance(S, n)
+
+;; An implicit method call is tied to the source occurrence that demanded a
+;; string. Echo uses each operand child, including when two operands share a
+;; line; its AT task restores the enclosing echo after emission.
+dec $stringify_echo_operand(pstate, expression*, porigin, porigin, int, nat) : bool
+def $stringify_echo_operand(S, eps, porigin_parent, porigin_site, z, n) = false
+def $stringify_echo_operand(S, expression :: expression_tail*, porigin_parent, porigin_site, z, n) = true
+  -- if $origin_child((porigin_parent), [PCINDEX n]) = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression) = z
+def $stringify_echo_operand(S, expression :: expression_tail*, porigin_parent, porigin_site, z, n) = $stringify_echo_operand(S, expression_tail*, porigin_parent, porigin_site, z, $(n + 1))
+  -- if $origin_child((porigin_parent), [PCINDEX n]) =/= (porigin_site)
+def $stringify_echo_operand(S, expression*, porigin_parent, porigin_site, z, n) = false -- otherwise
+
+dec $stringify_source(pstate, porigin, int, ptask) : bool
+def $stringify_source(S, PORIGIN n_unit pcpath_site, z, EMIT z) = true
+  -- if $(|pcpath_site| >= 2)
+  -- if pcpath_echo = pcpath_site[0:$nabs($( |pcpath_site| - 2))]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_echo) = (NStmtEcho (SEQUENCE expression*) metadata)
+  -- if $stringify_echo_operand(S, expression*, PORIGIN n_unit (pcpath_echo ++ [PCFIELD 0]), PORIGIN n_unit pcpath_site, z, 0)
+def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
+
+dec $stringify_method_selected(pstate, nat, porigin, porigin) : bool
+def $stringify_method_selected(S, n, porigin_method, porigin_site) = true
+  -- if $stringable_instance(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pmethoddesc.FUNCTION)
+def $stringify_method_selected(S, n, porigin_method, porigin_site) = false -- otherwise
+
+;; The selected call is either still pending or has saved its conversion
+;; result and original consumer in the caller frame immediately below it.
+dec $stringify_pending(pstate, pcalltarget, porigin) : bool
+def $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
+  -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+def $stringify_pending(S, pcalltarget, porigin_site) = false -- otherwise
+
+dec $stringify_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
+  -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin_site) = $stringify_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin_site) /\ pframe.ORIGIN = (porigin_site))
+def $stringify_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin_site) = $stringify_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
+def $stringify_entered(S, pcallcontext?, eps, pcalltarget, porigin_site) = false
+def $stringify_entered(S, pcallcontext?, pframe*, pcalltarget, porigin_site) = false -- otherwise
+
+dec $stringify_selected(pstate, pcalltarget, porigin) : bool
+def $stringify_selected(S, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site) \/ $stringify_entered(S, S.CURRENT, S.FRAMES, METHOD_TARGET n porigin_method, porigin_site)
+def $stringify_selected(S, pcalltarget, porigin_site) = false -- otherwise
+
+dec $stringify_context(pstate, pcallcontext) : bool
+def $stringify_context(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+  -- if $stringify_entered(S, S.CURRENT, S.FRAMES, METHOD_TARGET n porigin_method, porigin_site)
+def $stringify_context(S, pcallcontext) = false -- otherwise
+
+;; Validate each active and saved implicit call against its own immediately
+;; following caller frame. Reentrant calls at the same source site cannot borrow
+;; a newer call's marker when an older saved context is checked.
+dec $stringify_context_kind(pstate, pcallcontext) : bool
+def $stringify_context_kind(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+  -- if $stringify_source(S, porigin_site, pcallcontext.LINE, EMIT pcallcontext.LINE)
+  -- if ~$method_call_selected(S, METHOD_TARGET n porigin_method, porigin_site)
+def $stringify_context_kind(S, pcallcontext) = false -- otherwise
+dec $stringify_frame_marker(pframe) : bool
+def $stringify_frame_marker(pframe) = true
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_tail*
+def $stringify_frame_marker(pframe) = false -- otherwise
+dec $stringify_context_frame_valid(pstate, pcallcontext, pframe) : bool
+def $stringify_context_frame_valid(S, pcallcontext, pframe) = true
+  -- if ~$stringify_context_kind(S, pcallcontext)
+  -- if ~$stringify_frame_marker(pframe)
+def $stringify_context_frame_valid(S, pcallcontext, pframe) = true
+  -- if $stringify_context_kind(S, pcallcontext)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
+  -- if z = pcallcontext.LINE
+  -- if $stringify_source(S, porigin_site, pcallcontext.LINE, ptask_consumer)
+def $stringify_context_frame_valid(S, pcallcontext, pframe) = false -- otherwise
+dec $stringify_chain_valid(pstate, pcallcontext?, pframe*) : bool
+def $stringify_chain_valid(S, eps, eps) = true
+def $stringify_chain_valid(S, (pcallcontext), eps) = ~$stringify_context_kind(S, pcallcontext)
+def $stringify_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = ($stringify_context_frame_valid(S, pcallcontext, pframe) /\ $stringify_chain_valid(S, pframe.CONTEXT, pframe_tail*))
+def $stringify_chain_valid(S, eps, pframe :: pframe_tail*) = $stringify_chain_valid(S, pframe.CONTEXT, pframe_tail*)
+  -- if ~$stringify_frame_marker(pframe)
+def $stringify_chain_valid(S, eps, pframe :: pframe_tail*) = false -- otherwise
+
+def $task_nodes(STRINGIFY_RESULT n porigin_site z) = [HOBJECT n]
+
+dec $stringify_result_valid(pstate, nat, porigin, int) : bool
+def $stringify_result_valid(S, n, porigin_site, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $stringable_instance(S, n)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $stringify_source(S, porigin_site, z, EMIT z)
+def $stringify_result_valid(S, n, porigin_site, z) = false -- otherwise
+def $call_task_valid(S, STRINGIFY_RESULT n porigin_site z) = $stringify_result_valid(S, n, porigin_site, z)
+def $call_task_valid(S, EMIT z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $stringify_source(S, porigin_site, z, EMIT z)
+
+dec $stringify_pairs_valid(pstate, ptask*) : bool
+def $stringify_pairs_valid(S, eps) = true
+def $stringify_pairs_valid(S, [STRINGIFY_RESULT n porigin_site z]) = false
+def $stringify_pairs_valid(S, (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*) = ($stringify_source(S, porigin_site, z, ptask_consumer) /\ $stringify_pairs_valid(S, ptask_consumer :: ptask_tail*))
+def $stringify_pairs_valid(S, ptask :: ptask_tail*) = $stringify_pairs_valid($call_after_origin(S, ptask), ptask_tail*) -- otherwise
+dec $stringify_frames_pairs_valid(pstate, pframe*) : bool
+def $stringify_frames_pairs_valid(S, eps) = true
+def $stringify_frames_pairs_valid(S, pframe :: pframe_tail*) = ($stringify_pairs_valid(S[.ORIGIN = pframe.ORIGIN], pframe.TODO) /\ $stringify_frames_pairs_valid(S, pframe_tail*))
+
+rule PhpStep/user-string-echo-call: S ~> S_read[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: (EMIT z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $stringify_source(S, porigin_site, z, EMIT z)
+  -- if S_read = $resolve(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
+  -- if S_read.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S_read, porigin_class, $ptascii("__toString"), |S_read.CLASSES|) = (pmethoddesc)
+
+rule PhpStep/user-string-return: S ~> S_read[.TODO = ptask_consumer :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))]
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
+  -- if $stringify_result_valid(S, n, porigin_site, z)
+  -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING n_text*)

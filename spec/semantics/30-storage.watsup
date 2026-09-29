@@ -70,7 +70,7 @@ syntax ptask = EVAL_REQUEST porigin int | EVAL_AWAIT nat | EVAL_END nat | GETCLA
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
   | NULLSAFE_DIM_PREP expression bool | NULLSAFE_DIM_INDEX expression int bool | NULLSAFE_PROP_PREP phpType20 int bool | NULLSAFE_CHECK phpType20 int bool | NULLSAFE_PROPERTY_NAME pvalue int
   | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
-  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
+  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | STRINGIFY_RESULT nat porigin int | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
