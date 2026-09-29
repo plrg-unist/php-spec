@@ -105,6 +105,48 @@ def main():
         replay = adapter.request({'op': 'resume_file_parse', 'response': response}, 30)
         assert not replay['ok'] and replay['category'] == 'adapter_rejection', replay
         checks += 1
+
+        fallback_path = out / 'fallback.php'
+        wrapper = b'php://filter/read=/resource=' + child_path
+        fallback_source = b'<?php $p="' + wrapper + b'"; echo include_once $p; echo include_once $p;'
+        fallback_path.write_bytes(fallback_source)
+        fallback_main = os.fsencode(fallback_path.resolve())
+        fallback_entry = {'caller': b64(fallback_main), 'requested': b64(wrapper),
+                          'status': 'opened', 'resolved': None,
+                          'opened': b64(child_path), 'source': b64(CHILD)}
+        fallback_snapshot = {**snapshot, 'main': b64(fallback_main), 'entries': [fallback_entry]}
+        fallback_program = frontend.request({'op': 'parse', 'source': b64(fallback_source)})
+        assert fallback_program['accepted'], fallback_program
+        fallback_initial = adapter.request({'op': 'execute', 'ast': fallback_program['ast'],
+                                            'filename': b64(fallback_main), 'steps': 300,
+                                            'file_snapshot': fallback_snapshot}, 30)
+        assert fallback_initial['ok'] and fallback_initial['pending']['mode'] == 'file-resolve'
+        checks += 1
+        fallback_fact = {'id': fallback_initial['pending']['id'], **fallback_entry}
+        forged_fact = {**fallback_fact, 'resolved': b64(child_path)}
+        assert not adapter.request({'op': 'resume_file_resolve', 'response': forged_fact}, 30)['ok']
+        checks += 1
+        fallback_parse = adapter.request({'op': 'resume_file_resolve', 'response': fallback_fact}, 30)
+        assert fallback_parse['ok'] and fallback_parse['pending']['resolved'] is None
+        checks += 1
+        fallback_worker = frontend.request({'op': 'parse-file', **fallback_parse['pending']})
+        assert fallback_worker['accepted'] and fallback_worker['resolved'] is None
+        fallback_response = {key: value for key, value in fallback_worker.items() if key not in {'ok', 'diagnostics'}}
+        checks += 1
+        forged_parse = {**fallback_response, 'resolved': b64(child_path)}
+        assert not adapter.request({'op': 'resume_file_parse', 'response': forged_parse}, 30)['ok']
+        checks += 1
+        fallback_second = adapter.request({'op': 'resume_file_parse', 'response': fallback_response}, 30)
+        assert fallback_second['ok'] and fallback_second['pending']['mode'] == 'file-resolve'
+        checks += 1
+        second_fact = {'id': fallback_second['pending']['id'], **fallback_entry}
+        fallback_done = adapter.request({'op': 'resume_file_resolve', 'response': second_fact}, 30)
+        assert fallback_done['ok'] and 'pending' not in fallback_done
+        assert fallback_done['state']['COMPLETION']['tag'] == 'NORMAL'
+        assert len(fallback_done['state']['FILES']) == 2
+        checks += 3
+        assert not adapter.request({'op': 'resume_file_resolve', 'response': second_fact}, 30)['ok']
+        checks += 1
     finally:
         frontend.close()
         adapter.close()
@@ -112,6 +154,8 @@ def main():
     assert vendor_before == vendor_identity()
     report = {'result': 'pass', 'assertions': checks, 'inputs': before, 'vendor_parser_tree': vendor_before,
               'main_sha256': digest(path), 'child_sha256': digest(child),
+              'fallback_main_sha256': digest(fallback_path),
+              'fallback_snapshot_sha256': hashlib.sha256(json.dumps(fallback_snapshot, sort_keys=True).encode()).hexdigest(),
               'snapshot_sha256': hashlib.sha256(json.dumps(snapshot, sort_keys=True).encode()).hexdigest(),
               'scope': 'Live resolve/parse pauses, forged responses, phase separation and one-shot replay.'}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

@@ -34,6 +34,8 @@ CASES = {
     'file-eval-file': (b"<?php echo include 'one.php';", {'one.php': b'''<?php function f(){ return eval('return include "two.php";'); } return f();''', 'two.php': b'<?php return 7;'}, ['one.php', 'two.php']),
     'ordinary-then-once': (b"<?php echo include 'one.php'; echo include_once 'one.php';", {'one.php': b"<?php echo 'X';"}, ['one.php']),
     'require-once-success-skip': (b"<?php echo require_once 'one.php'; echo require_once 'one.php';", {'one.php': b"<?php echo 'X'; return 7;"}, ['one.php']),
+    'filter-fallback-once': (b'<?php $p="__FILTER_ONE__"; echo include_once $p; echo include_once $p;', {'one.php': b'<?php echo __FILE__; return 7;'}, ['__FILTER_ONE__']),
+    'filter-fallback-trace': (b'<?php $p="__FILTER_ONE__"; try{include $p;}catch(Throwable $e){$t=$e->getTrace();echo $t[1]["function"],"|",$t[1]["args"][0];}', {'one.php': b'<?php function f(){throw new Exception("x");}f();'}, ['__FILTER_ONE__']),
     'alias-once': (b"<?php echo include_once 'one.php'; echo include_once 'alias.php';", {'one.php': b"<?php echo 'X';"}, ['one.php', 'alias.php']),
     'recursive-once': (b"<?php echo include_once 'one.php';", {'one.php': b'<?php echo "X"; echo include_once __FILE__;'}, ['one.php', '__SELF_ONE__']),
     'once-compile-retry': (b"<?php try { include_once 'bad.php'; } catch (CompileError $e) { echo 'C'; } echo include_once 'bad.php';", {'bad.php': b'<?php class A { final abstract private function f(); }'}, ['bad.php']),
@@ -98,6 +100,8 @@ def main():
         directory = out / name
         directory.mkdir()
         main_path = directory / 'main.php'
+        if name in {'filter-fallback-once', 'filter-fallback-trace'}:
+            source = source.replace(b'__FILTER_ONE__', b'php://filter/read=/resource=' + os.fsencode((directory / 'one.php').resolve()))
         main_path.write_bytes(source)
         for filename, data in files.items():
             (directory / filename).write_bytes(data)
@@ -109,13 +113,20 @@ def main():
             caller = main_bytes if filename not in {'two.php', '__SELF_ONE__'} else os.fsencode((directory / 'one.php').resolve())
             if name in {'file-eval-file', 'file-eval-file-throw-trace'} and filename == 'two.php':
                 caller += b"(1) : eval()'d code"
-            requested = main_bytes if filename == '__FILE__' else (caller if filename == '__SELF_ONE__' else filename.encode())
+            if filename == '__FILE__':
+                requested = main_bytes
+            elif filename == '__SELF_ONE__':
+                requested = caller
+            elif filename == '__FILTER_ONE__':
+                requested = b'php://filter/read=/resource=' + os.fsencode((directory / 'one.php').resolve())
+            else:
+                requested = filename.encode()
             if filename == 'missing.php':
                 fact = {'status': 'missing', 'stream_error': b64(STREAM_MISSING)}
             else:
-                opened = main_path if filename == '__FILE__' else (directory / 'one.php' if filename == '__SELF_ONE__' else directory / filename)
+                opened = main_path if filename == '__FILE__' else (directory / 'one.php' if filename in {'__SELF_ONE__', '__FILTER_ONE__'} else directory / filename)
                 opened_bytes = os.fsencode(opened.resolve())
-                fact = {'status': 'opened', 'resolved': b64(opened_bytes),
+                fact = {'status': 'opened', 'resolved': None if filename == '__FILTER_ONE__' else b64(opened_bytes),
                         'opened': b64(opened_bytes), 'source': b64(opened.read_bytes())}
             entries.append({'caller': b64(caller), 'requested': b64(requested), **fact})
         snapshot = {'version': 1, 'main': b64(main_bytes),
