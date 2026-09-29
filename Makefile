@@ -204,6 +204,15 @@ test-semantics: build
 	python3 tests/semantics/property_private_compiler.py
 	python3 tests/semantics/property_private_protocol.py
 	python3 tests/semantics/private_property_scope_protocol.py
+	python3 tests/semantics/class_static_properties.py
+	python3 tests/semantics/class_static_references.py
+	python3 tests/semantics/class_static_merged_bridge.py
+	python3 tests/semantics/class_static_selector_variants_protocol.py
+	python3 tests/semantics/class_static_reference_protocol.py
+	python3 tests/semantics/class_static_reference_auth_protocol.py
+	python3 tests/semantics/class_static_reference_conflict_protocol.py
+	python3 tests/semantics/class_static_interface_protocol.py
+	python3 tests/semantics/class_static_interface_failure_protocol.py
 	python3 tests/semantics/nullsafe_compiler.py
 	python3 tests/semantics/nullsafe_properties.py
 	python3 tests/semantics/nullsafe_properties_protocol.py
