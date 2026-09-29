@@ -1,0 +1,41 @@
+{
+  "status": "independent private review accepted",
+  "base": "8d03ed096",
+  "semantic_head": "3b875ce45",
+  "scope": "Finite ErrorException internal eight-slot layout, distinct six-argument constructor and direct reentry, final getSeverity, and finite Throwable array casts. User subclasses and source property access are separate work.",
+  "design": [
+    "The existing private trace array remains the sole backing. ErrorException appends a protected typed severity slot after the seven inherited Exception slots; string, trace and previous retain Exception private declaration IDs.",
+    "Constructor arguments are bound in source order, validated in declaration order before writes, and retain receiver/sent-value roots. The callable owner is ErrorException while the inherited property owner is Exception.",
+    "A supplied non-null filename writes even if empty and resets a null line to zero; an explicit line accepts any integer. Reentry keeps the allocation trace. getSeverity uses the existing ordered zero-argument getter tasks.",
+    "Finite Throwable array casts copy genuine ordered property slots without marking the sealed object row materialized; trace arrays then follow ordinary COW."
+  ],
+  "native_contract": {
+    "path": ".tools/throwable-trace-candidate/.tools/throwable-next-probes/native.json",
+    "sha256": "611ac02b0ade3a879b69277672841b45168f0e1a014d21549cae0ad90865b117",
+    "notes_path": ".tools/throwable-trace-candidate/.tools/throwable-next-probes/CONTRACT.md",
+    "notes_sha256": "44dd6930cab62d63677fdedcb907948003430fdb6f69ca2e6791a08285301f25",
+    "coverage": "Sixteen native cases pin the next family; this increment selects ErrorException-only cases and leaves user subclasses for a later milestone."
+  },
+  "author_evidence": {
+    "source": {
+      "path": ".tools/throwable-trace-candidate/.tools/error-exception-probes-23tw6ztt/report.json",
+      "sha256": "2217ce604eb518a3613300c7c851551ab58b4f6fd220e34961f42c59b09596bc",
+      "result": "16 exact native/model tuples, including three cast slot orders and cast trace COW; 174 watched inputs stable"
+    },
+    "paused": {
+      "path": ".tools/throwable-trace-candidate/.tools/error-exception-protocol-4yurcqi8/report.json",
+      "sha256": "d68f8fb0e0cf27fd6d63a1bbcb80db74ce2fa5e676b22dd622519741ede96378",
+      "result": "Three source-reached stages, 56 assertions, 174 watched inputs stable"
+    }
+  },
+  "independent_review": {
+    "path": ".tools/throwable-trace-candidate/.tools/error-exception-review-ucv6av_o/report.json",
+    "sha256": "1c94b9c6f07758761880593f27b1d11ed453d363cd1e92ccd1938b702ba5242b",
+    "result": "Three exact native/model replays: named-only reentry retention/reset, last-argument previous TypeError atomicity and cast trace lifetime; watched inputs stable"
+  },
+  "recovery": [
+    "python3 tests/semantics/throwable_error_exception.py",
+    "python3 tests/semantics/throwable_error_exception_protocol.py"
+  ],
+  "limits": "User subclasses, protected severity writes, generic Stringable conversion and direct Throwable implementation diagnostics remain open."
+}

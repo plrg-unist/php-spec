@@ -186,11 +186,13 @@ binds 18 source outcomes and separate compiler and paused-state checks.
 selection, delayed CV subjects, ordered compiler diagnostics and owned value
 results; their [review](coverage/semantics/match-review.json) binds source, compiler
 and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES.md)
-now support ordered no-finally try/catch and throw/rethrow, including unhandled
-match errors. [Finally continuations](docs/semantics/SOURCE-FINALLY.md) now preserve
-normal, thrown and transferring outcomes, including value/reference returns,
-loop jumps and goto across protected regions. Constructors, accessors,
-subclasses and lifecycle integration remain pending.
+now support ordered no-finally try/catch and throw/rethrow, internal constructors,
+getters and structured traces. The distinct `ErrorException` constructor and
+`getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
+[Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
+thrown and transferring outcomes, including value/reference returns, loop jumps
+and goto across protected regions. Throwable subclasses, internal property
+access and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
 explicit-exit completion. Shutdown/destructor callbacks remain pending; native

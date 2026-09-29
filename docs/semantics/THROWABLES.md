@@ -45,6 +45,18 @@ arrays use ordinary COW, references contribute their current value, and
 objects retain identity. Closure class names use lexical scope. Trace strings
 render from the stored graph, including the `and defined` suffix on matching
 type/arity messages before the first NUL byte.
+`ErrorException` appends a protected typed `severity` as the eighth slot; its
+inherited private fields retain `Exception` declaration IDs. Its own
+six-argument constructor validates all values before writes, resets severity
+to `E_ERROR` on every call, and changes file/line only when their nullable
+arguments are supplied. A non-null filename with null line sets line to zero,
+including an empty filename; an explicit line can be negative. `getSeverity`
+reads the live slot after ordered argument evaluation and is final. The
+constructor and getter use `ErrorException` as callable owner while inherited
+getters and slots keep `Exception` as their owner.
+Array casts of finite built-in Throwables copy their ordered property slots,
+including mangled private keys and the appended severity slot. The cast shares
+array values under ordinary COW and leaves the sealed object property row intact.
 Uncaught `ParseError` and `CompileError` use PHP's class-specific parse/fatal
 diagnostics without a stack; ordinary `Exception` keeps the uncaught stack form.
 Finite `Exception`/`Error` constructors, including identical inherited
@@ -65,12 +77,12 @@ entry into catch skips binding and does not activate sibling catches. Stage A
 finally runs on normal and exceptional exits and chains replaced generated
 errors. Stage B handles value/reference returns and jumps across finally.
 
-Still required: the distinct `ErrorException` constructor and layout, source
-access to internal properties, reflection and mutation, user subclasses,
+Still required: source access to internal properties, reflection and mutation,
+user subclasses,
 static-method frame integration, remaining finally transfers,
 handlers, lifecycle callbacks, include errors, generator/Fiber closing and
 serialization. Direct `__toString`, `echo` and string casts work for finite
-builtin Throwables; weak typed string conversion, property access/casts,
+builtin Throwables; weak typed string conversion, property access,
 property traversal and comparison remain explicit Unsupported where required.
 Callable rejection, boolean conversion, identity comparison, nominal ancestry
 and typed nominal consumers are also modeled.
