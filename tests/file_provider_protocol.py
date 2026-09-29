@@ -43,6 +43,10 @@ def main():
                   'pending': pending, 'response': response}
         checked = call(worker, packet)
         assert checked['ok'] and checked['opened'] == row['opened']
+        fallback = copy.deepcopy(packet)
+        fallback['snapshot']['entries'][0]['resolved'] = None
+        fallback['response']['resolved'] = None
+        assert call(worker, fallback)['resolved'] is None
 
         negatives = []
         for field, changed in (('id', '1'), ('caller', b64(b'/snapshot/other.php')),
@@ -74,6 +78,10 @@ def main():
             negatives.append(bad)
         for bad in negatives:
             assert call(worker, bad)['ok'] is False
+        forged_fallback = copy.deepcopy(fallback)
+        forged_fallback['response']['resolved'] = row['resolved']
+        assert call(worker, forged_fallback)['ok'] is False
+        negatives.append(forged_fallback)
 
         for status, fields in (
             ('missing', {'stream_error': b64(b'No such file or directory')}),

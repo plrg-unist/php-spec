@@ -62,6 +62,10 @@ def main():
             assert response['ast']['version'] == 1
             assert 'token_comments' not in response
         assert worker.call({'op': 'parse-file', **request('3', b'<?php echo file_only_declaration();')})['accepted']
+        fallback = request('14', b'<?php return 7;')
+        fallback['resolved'] = None
+        fallback_response = worker.call(fallback)
+        assert fallback_response['accepted'] and fallback_response['resolved'] is None
 
         for identifier, source, category, line, message in (
             ('4', b'<?php\necho ;', 'parser_rejection', 2, b'syntax error, unexpected token ";"'),
@@ -110,7 +114,7 @@ def main():
             assert response['ok'] is False and response['category'] == 'helper_unsupported'
         finally:
             unsupported.close()
-    print(json.dumps({'result': 'pass', 'accepted': len(accepted) + 1 + len(namespace_shapes),
+    print(json.dumps({'result': 'pass', 'accepted': len(accepted) + 2 + len(namespace_shapes),
                       'native_rejections': 2, 'request_negatives': 8,
                       'unsupported_profiles': 3, 'namespace_recoveries': len(namespace_shapes),
                       'mixed_recovery_blocked': 1,

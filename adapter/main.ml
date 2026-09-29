@@ -264,7 +264,8 @@ let pending_from_state state =
           Some (`Assoc ["id", field "NONCE" context; "mode", `String "file";
                         "profile", `String "cli-raw-85";
                         "requested", encode_field "REQUESTED" context;
-                        "resolved", payload "RESOLVED";
+                        "resolved", (if field "RESOLVED" context = `List [] then `Null
+                                     else payload "RESOLVED");
                         "opened", payload "OPENED";
                         "source", payload "BYTES"])
         else fail "pending file source phase mismatch"
@@ -334,7 +335,9 @@ let file_snapshot json =
     and requested = source_bytes (field "requested" entry) in
     if List.mem (caller, requested) !keys then fail "duplicate file resolution key";
     keys := (caller, requested) :: !keys;
-    if status <> "missing" then ignore (nonempty_bytes (field "resolved" entry));
+    if status = "open_failure" then ignore (nonempty_bytes (field "resolved" entry));
+    if status = "opened" && field "resolved" entry <> `Null then
+      ignore (nonempty_bytes (field "resolved" entry));
     if status = "missing" || status = "open_failure" then
       ignore (nonempty_bytes (field "stream_error" entry));
     if status = "opened" then (
@@ -444,8 +447,10 @@ let check_file_source_service request =
      || string (field "profile" pending) <> "cli-raw-85" then
     fail "unsupported file parser mode/profile";
   List.iter (fun key -> ignore (source_bytes (field key pending)))
-    ["requested"; "resolved"; "opened"; "source"];
-  if field "resolved" pending = `String "" || field "opened" pending = `String "" then
+    ["requested"; "opened"; "source"];
+  if field "resolved" pending <> `Null then
+    ignore (nonempty_bytes (field "resolved" pending));
+  if field "opened" pending = `String "" then
     fail "empty file parser identity";
   let response = field "response" request in
   let accepted = match field "accepted" response with
@@ -497,7 +502,8 @@ let resume_file_resolve request =
         [id; caller; requested; decode_bytes (field "resolved" checked);
          decode_bytes (field "stream_error" checked)]
     | "opened" -> mk "pfileopenresponse" "FILE_OPENED"
-        [id; caller; requested; decode_bytes (field "resolved" checked);
+        [id; caller; requested; decode_bytes (if field "resolved" checked = `Null
+                                               then `String "" else field "resolved" checked);
          decode_bytes (field "opened" checked); decode_bytes (field "source" checked)]
     | _ -> fail "unknown checked file resolution status" in
   check (typ "pfileopenresponse") response;

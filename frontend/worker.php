@@ -182,7 +182,7 @@ while (($line = fgets(STDIN)) !== false) {
                         continue 2;
                     }
                     $requested = bytes($request->requested);
-                    $resolved = bytes($request->resolved);
+                    $resolved = $request->resolved === null ? null : bytes($request->resolved);
                     $opened = bytes($request->opened);
                     if ($resolved === '' || $opened === '') throw new RuntimeException('Empty file parser identity');
                     $source = bytes($request->source);
