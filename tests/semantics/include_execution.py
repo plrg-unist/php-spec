@@ -14,12 +14,15 @@ ROOT = Path(__file__).resolve().parents[2]
 PROFILE = ROOT / 'tests/semantics/profile.json'
 locale.setlocale(locale.LC_ALL, 'C')
 STREAM_MISSING = os.strerror(errno.ENOENT).encode()
+STREAM_DIRECTORY = os.strerror(errno.ENOTTY).encode()
 CASES = {
     'return7': (b"<?php echo include 'one.php';", {'one.php': b'<?php return 7;'}, ['one.php']),
     'fallthrough': (b"<?php echo include 'one.php';", {'one.php': b'<?php echo "C";'}, ['one.php']),
     'once-main': (b'<?php echo include_once __FILE__;', {}, ['__FILE__']),
     'missing-include': (b"<?php echo 'A'; echo include 'missing.php'; echo 'B';", {}, ['missing.php']),
     'missing-require': (b"<?php echo 'A'; try { require 'missing.php'; } catch (Error $e) { echo 'C'; }", {}, ['missing.php']),
+    'directory-include': (b"<?php echo 'A'; echo include 'parts'; echo 'B';", {}, ['__DIRECTORY__']),
+    'directory-require': (b"<?php echo 'A'; try { require 'parts'; } catch (Error $e) { echo 'C'; }", {}, ['__DIRECTORY__']),
     'nested': (b"<?php echo include 'one.php';", {'one.php': b"<?php echo 'C'; return include 'two.php';", 'two.php': b'<?php return 7;'}, ['one.php', 'two.php']),
     'parse-reject': (b"<?php try { include 'bad.php'; } catch (ParseError $e) { echo 'C'; } echo 'D';", {'bad.php': b'<?php echo ;'}, ['bad.php']),
     'compile-reject': (b"<?php try { include 'bad.php'; } catch (CompileError $e) { echo 'C'; } echo 'D';", {'bad.php': b'<?php class A { final abstract private function f(); }'}, ['bad.php']),
@@ -105,6 +108,8 @@ def main():
         main_path.write_bytes(source)
         for filename, data in files.items():
             (directory / filename).write_bytes(data)
+        if name in {'directory-include', 'directory-require'}:
+            (directory / 'parts').mkdir()
         if name in {'alias-once', 'caught-alias-trace'}:
             (directory / 'alias.php').symlink_to('one.php')
         main_bytes = os.fsencode(main_path.resolve())
@@ -119,10 +124,16 @@ def main():
                 requested = caller
             elif filename == '__FILTER_ONE__':
                 requested = b'php://filter/read=/resource=' + os.fsencode((directory / 'one.php').resolve())
+            elif filename == '__DIRECTORY__':
+                requested = b'parts'
             else:
                 requested = filename.encode()
             if filename == 'missing.php':
                 fact = {'status': 'missing', 'stream_error': b64(STREAM_MISSING)}
+            elif filename == '__DIRECTORY__':
+                warning_path = os.fsencode((directory / 'parts').resolve())
+                fact = {'status': 'open_failure', 'resolved': b64(warning_path),
+                        'warning_path': b64(warning_path), 'stream_error': b64(STREAM_DIRECTORY)}
             else:
                 opened = main_path if filename == '__FILE__' else (directory / 'one.php' if filename in {'__SELF_ONE__', '__FILTER_ONE__'} else directory / filename)
                 opened_bytes = os.fsencode(opened.resolve())
@@ -171,6 +182,8 @@ def main():
               'cwd': str(ROOT.resolve()), 'include_path': b64(b'.:'),
               'stream_error_fact': {'class': 'ENOENT', 'bytes': b64(STREAM_MISSING),
                                     'source': 'os.strerror(errno.ENOENT), fixed before native/model runs'},
+              'directory_error_fact': {'class': 'ENOTTY', 'bytes': b64(STREAM_DIRECTORY),
+                                       'source': 'os.strerror(errno.ENOTTY), fixed before native/model runs'},
               'locale': {'LC_ALL': 'C'},
               'records': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

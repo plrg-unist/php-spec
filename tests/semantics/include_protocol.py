@@ -102,7 +102,8 @@ def main():
     once_start = '$php_file_run(' + checked_once['fixture'] + ', 300, $base64(' + json.dumps(b64(once_bytes)) + '), $base64(' + json.dumps(b64(cwd_bytes)) + '))'
     open_once = '(FILE_OPENED 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(ONCE_SOURCE) + ')'
     fallback_once = '(FILE_OPENED 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' eps ' + seq(once_bytes) + ' ' + seq(ONCE_SOURCE) + ')'
-    once_open_failure = '(FILE_OPEN_FAILURE 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(b'failure ignored by resolved-path once skip') + ')'
+    once_open_failure = '(FILE_OPEN_FAILURE 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(b'failure ignored by resolved-path once skip') + ')'
+    once_open_failure_no_path = '(FILE_OPEN_FAILURE 0 ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' ' + seq(once_bytes) + ' eps ' + seq(b'failure ignored by resolved-path once skip') + ')'
     checks = [
         'S_initial = ' + start,
         'S_initial.COMPLETION = SOURCE_PENDING',
@@ -213,6 +214,7 @@ def main():
         'S_once_fallback_skip.FILES = [SOURCEFILE 0 ' + seq(once_bytes) + ']',
         'S_once_fallback_skip.FILECONTEXTS = eps',
         '$call_descriptors_valid(S_once_fallback_skip)',
+        '~$file_open_response_valid(S_once_initial, ' + once_open_failure_no_path + ')',
         'S_once_failure_skip = $file_open_resume(S_once_initial, ' + once_open_failure + ')',
         'S_once_failure_skip.COMPLETION = NORMAL',
         'S_once_failure_skip.RESULT = KNOWN (PBOOL true)',

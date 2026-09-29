@@ -86,6 +86,7 @@ def main():
         for status, fields in (
             ('missing', {'stream_error': b64(b'No such file or directory')}),
             ('open_failure', {'resolved': b64(b'/snapshot/parts/one.php'),
+                              'warning_path': b64(b'/snapshot/parts/one.php'),
                               'stream_error': b64(b'Permission denied')}),
         ):
             branch = copy.deepcopy(packet)
@@ -93,6 +94,18 @@ def main():
                                              'status': status, **fields}]
             branch['response'] = {'id': '0', **branch['snapshot']['entries'][0]}
             assert call(worker, branch)['ok']
+            if status == 'open_failure':
+                for field, changed in (('warning_path', b64(b'/forged/path')),
+                                       ('stream_error', b64(b'forged error'))):
+                    bad = copy.deepcopy(branch)
+                    bad['response'][field] = changed
+                    assert call(worker, bad)['ok'] is False
+                    negatives.append(bad)
+                bad = copy.deepcopy(branch)
+                bad['snapshot']['entries'][0]['warning_path'] = b64(b'')
+                bad['response']['warning_path'] = b64(b'')
+                assert call(worker, bad)['ok'] is False
+                negatives.append(bad)
         assert call(worker, packet)['ok']  # A failed probe did not poison the service.
     finally:
         worker.stdin.close()
