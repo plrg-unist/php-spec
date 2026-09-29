@@ -59,6 +59,20 @@ CASES = [
          'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
          'S_done.FILEINCLUDEPATH = ($ptascii(".:"))',
      ]),
+    ('dynamic-unbound', b"<?php $f='ini_restore'; $f('include_path');",
+     'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*', [
+         'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*',
+         'pconfigcall.KIND = INTRINSIC_INI_RESTORE',
+         'pconfigcall.OWNER = eps',
+         '~$config_selected_valid(S,pconfigcall)',
+         '~$call_descriptors_valid(S)',
+         '~$config_call_valid(S,pconfigcall[.KIND = INTRINSIC_SET_INCLUDE_PATH])',
+         'S_bad = $drive(S[.TODO = (CONFIG_INVOKE pconfigcall[.KIND = INTRINSIC_SET_INCLUDE_PATH]) :: ptask*],1000)',
+         'S_bad.COMPLETION = UNSUPPORTED text',
+         'S_bad.FILEINCLUDEPATH = S.FILEINCLUDEPATH',
+         'S_done = $drive(S_initial[.COMPLETION = NORMAL],1000)',
+         'S_done.COMPLETION = UNSUPPORTED text_done',
+     ]),
 ]
 
 PREFIX = '''

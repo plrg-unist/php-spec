@@ -10,6 +10,7 @@ def $config_kind(INTRINSIC_SET_INCLUDE_PATH) = true
 def $config_kind(INTRINSIC_INI_SET) = true
 def $config_kind(INTRINSIC_INI_RESTORE) = true
 def $config_kind(pintrinsic) = false -- otherwise
+dec $config_invoke_valid(pstate, pconfigcall) : bool
 def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
   -- if S.ORIGIN = (porigin)
@@ -272,18 +273,19 @@ def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path 
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic operand outside checked scalar domain"] -- otherwise
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic selection has no source binding"]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if ~$config_invoke_valid(S, pconfigcall)
 
 ;; The selected intrinsic and each saved argument must derive from the source.
 dec $config_selected_valid(pstate, pconfigcall) : bool
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.OWNER = eps
+  -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
-def $config_selected_valid(S, pconfigcall) = true
-  -- if pconfigcall.OWNER = eps
-  -- if $exit_fixed(S, pconfigcall.SITE) = eps
-  -- if $exit_dynamic_site(S, pconfigcall.SITE)
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.OWNER = (n)
   -- if $(n < |S.OBJECTS|)
@@ -353,7 +355,6 @@ def $config_pending_valid(S, pconfigcall, b) = false -- otherwise
 def $call_task_valid(S, CONFIG_ARGS pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall))
 def $call_task_valid(S, CONFIG_SEND pconfigcall) = $config_pending_valid(S, pconfigcall, false)
 def $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall) = $config_pending_valid(S, pconfigcall, true)
-dec $config_invoke_valid(pstate, pconfigcall) : bool
 def $config_invoke_valid(S, pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX))
 def $call_task_valid(S, CONFIG_INVOKE pconfigcall) = $config_invoke_valid(S, pconfigcall)
 dec $config_unpack_valid(pstate, pconfigcall, poperand, nat) : bool
