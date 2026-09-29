@@ -1,7 +1,8 @@
 {
-  "status": "independent private review accepted",
-  "base": "8d03ed096",
-  "semantic_head": "3b875ce45",
+  "status": "pre-rebase independent review accepted; current-base review pending",
+  "base": "f94826254",
+  "semantic_head": "878d44f41",
+  "author_head_at_replay": "f0a29b5d5",
   "scope": "Finite ErrorException internal eight-slot layout, distinct six-argument constructor and direct reentry, final getSeverity, and finite Throwable array casts. User subclasses and source property access are separate work.",
   "design": [
     "The existing private trace array remains the sole backing. ErrorException appends a protected typed severity slot after the seven inherited Exception slots; string, trace and previous retain Exception private declaration IDs.",
@@ -18,25 +19,25 @@
   },
   "author_evidence": {
     "source": {
-      "path": ".tools/throwable-trace-candidate/.tools/error-exception-probes-23tw6ztt/report.json",
-      "sha256": "2217ce604eb518a3613300c7c851551ab58b4f6fd220e34961f42c59b09596bc",
-      "result": "16 exact native/model tuples, including three cast slot orders and cast trace COW; 174 watched inputs stable"
+      "path": ".tools/throwable-trace-candidate/.tools/error-exception-probes-2c2pjpuq/report.json",
+      "sha256": "b03ea8866058d7cfe57a1fae567851d92ea804bed1f4cbaf1cf82e286b3de55a",
+      "result": "16 exact native/model tuples on f948 base, including three cast slot orders and cast trace COW; 174 watched inputs stable"
     },
     "paused": {
-      "path": ".tools/throwable-trace-candidate/.tools/error-exception-protocol-4yurcqi8/report.json",
-      "sha256": "d68f8fb0e0cf27fd6d63a1bbcb80db74ce2fa5e676b22dd622519741ede96378",
-      "result": "Three source-reached stages, 56 assertions, 174 watched inputs stable"
+      "path": ".tools/throwable-trace-candidate/.tools/error-exception-protocol-ihlfbcjb/report.json",
+      "sha256": "2632d7adbab3cb0994ba0dee83a3f35c36c43e365512dc9cc91407a94cf39487",
+      "result": "Three source-reached stages, 56 assertions on f948 base, 174 watched inputs stable"
     },
     "retained_constructor": {
       "path": ".tools/throwable-trace-candidate/.tools/ctor-probes-ntm1no8i/report.json",
       "sha256": "173b3f307e20facc6722e052e975b09271b5398daf25fd0a7322836bb487deb3",
-      "result": "Retained 38-case constructor suite passes exactly after promoting the newly supported ErrorException case"
+      "result": "Retained 38-case constructor suite passes exactly on pre-rebase 8d03 base after promoting the newly supported ErrorException case"
     }
   },
   "independent_review": {
     "path": ".tools/throwable-trace-candidate/.tools/error-exception-review-ucv6av_o/report.json",
     "sha256": "1c94b9c6f07758761880593f27b1d11ed453d363cd1e92ccd1938b702ba5242b",
-    "result": "Three exact native/model replays: named-only reentry retention/reset, last-argument previous TypeError atomicity and cast trace lifetime; watched inputs stable"
+    "result": "Three exact native/model replays on pre-rebase 8d03 base: named-only reentry retention/reset, last-argument previous TypeError atomicity and cast trace lifetime; watched inputs stable"
   },
   "recovery": [
     "python3 tests/semantics/throwable_error_exception.py",
