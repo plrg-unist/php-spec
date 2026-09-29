@@ -61,13 +61,16 @@ compilation; eval and closure lookups can raise the corresponding runtime
 method is called on a deeper subclass. Arrays follow the existing warning and
 `"Array"` conversion before eval parses the resulting text. The
 [scope followup ledger](../../coverage/semantics/eval-scope-followup-author.json)
-separates historical group captures from current-base source and paused checks.
+separates historical group captures from post-trace source and paused checks.
+The two eval `getTrace()` controls now agree with native PHP after structured
+Throwable trace storage landed; direct and dynamic `get_class(1)` inside eval
+also retain their exact fatal traces on the combined rules.
 
 Remaining obligations are object `__toString` operand conversion;
-generic imported-name `::class` evaluation; accepted-AST catchable `CompileError` cases and class-link errors
-beyond the modeled missing-parent `Error`; and include/require/once with a file
-provider. The trace-source `getTrace()` controls also depend on the Throwable trace
-slot milestone. The eval binding invariant applies only to accepted eval units;
+generic imported-name `::class` evaluation; accepted-AST catchable
+`CompileError` cases and class-link errors beyond the modeled missing-parent
+`Error`; and include/require/once with a file provider. The eval binding
+invariant applies only to accepted eval units;
 future include units need their own source-kind registry.
 
 Native-accepted invalid namespace structure now reaches the checked AST and the
