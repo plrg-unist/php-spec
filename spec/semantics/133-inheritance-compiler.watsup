@@ -99,11 +99,20 @@ def $ppclass_early_link_check(P, pchheader) = P
   -- if pchheader.PARENT = (ptbytes_parent)
   -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
   -- if ~pchheader.READONLY
+def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ppclass_readonly_error(pchheader, $ptascii(text_kind), false))
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $throwable_link_kind(ptbytes_parent) = (text_kind)
+  -- if pchheader.READONLY
+def $ppclass_early_link_check(P, pchheader) = P
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $throwable_link_kind(ptbytes_parent) = (text_kind)
+  -- if ~pchheader.READONLY
 def $ppclass_early_link_check(P, pchheader) = $ppunsupported(P, "internal class inheritance")
   -- if pchheader.PARENT = (ptbytes_parent)
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "class")
   -- if ~$class_internal_final(ptbytes_parent)
   -- if $ptlc(ptbytes_parent) =/= $ptascii("stdclass")
+  -- if $throwable_link_kind(ptbytes_parent) = eps
 def $ppclass_early_link_check(P, pchheader) = $ppclass_static_link_error(P, $ptascii("Class ") ++ pchheader.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME)
   -- if pchheader.PARENT = (ptbytes_parent)
   -- if ~$class_internal(ptbytes_parent)

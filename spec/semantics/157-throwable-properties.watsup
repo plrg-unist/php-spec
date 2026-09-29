@@ -15,7 +15,6 @@ def $throwable_descriptor(text_base, text_field, ppropertyvisibility, ptbranch*,
 dec $throwable_line_default(text) : ppropdefault
 def $throwable_line_default("Error") = PROP_UNINITIALIZED
 def $throwable_line_default("Exception") = PROP_LITERAL (PINT 0)
-dec $throwable_layout(text) : ppropertydesc*
 def $throwable_layout("ErrorException") = $throwable_layout("Exception") ++ [$throwable_descriptor("ErrorException", "severity", PROPERTY_PROTECTED, [(PTBRANCH ([PTBUILTIN "int"]))], PROP_LITERAL (PINT 1))]
 def $throwable_layout(text) = [
   $throwable_descriptor(text_base, "message", PROPERTY_PROTECTED, eps, PROP_LITERAL (PSTRING eps)),

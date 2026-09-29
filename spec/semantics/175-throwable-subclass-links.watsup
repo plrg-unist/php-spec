@@ -1,0 +1,38 @@
+;; Only these three internal parents are admitted by this increment.
+def $throwable_link_kind(ptbytes) = ("Exception") -- if $ptlc(ptbytes) = $ptascii("exception")
+def $throwable_link_kind(ptbytes) = ("Error") -- if $ptlc(ptbytes) = $ptascii("error")
+def $throwable_link_kind(ptbytes) = ("ErrorException") -- if $ptlc(ptbytes) = $ptascii("errorexception")
+def $throwable_link_kind(ptbytes) = eps -- otherwise
+
+dec $class_throwable_kind(pstate, porigin, nat) : text?
+def $class_throwable_kind(S, porigin, 0) = eps
+def $class_throwable_kind(S, porigin, n) = (text_kind)
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
+def $class_throwable_kind(S, porigin, n) = $class_throwable_kind(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $class_throwable_kind(S, porigin, n) = eps -- otherwise
+
+dec $throwable_final_owner(text, ptbytes) : text?
+def $throwable_final_owner("ErrorException", ptbytes) = ("ErrorException")
+  -- if $ptlc(ptbytes) = $ptascii("getseverity")
+def $throwable_final_owner(text_kind, ptbytes) = ($throwable_base(text_kind))
+  -- if $ptlc(ptbytes) <- [$ptascii("getmessage"), $ptascii("getcode"), $ptascii("getfile"), $ptascii("getline"), $ptascii("getprevious"), $ptascii("gettrace"), $ptascii("gettraceasstring")]
+def $throwable_final_owner(text_kind, ptbytes) = eps -- otherwise
+
+def $throwable_final_issue(text_kind, eps) = METHOD_OK
+def $throwable_final_issue(text_kind, pmethoddesc :: pmethoddesc_tail*) = METHOD_ISSUE ($ptascii("Cannot override final method ") ++ $ptascii(text_owner) ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()")) pmethoddesc.FUNCTION.LINE
+  -- if $throwable_final_owner(text_kind, pmethoddesc.NAME) = (text_owner)
+def $throwable_final_issue(text_kind, pmethoddesc :: pmethoddesc_tail*) = $throwable_final_issue(text_kind, pmethoddesc_tail*)
+  -- if $throwable_final_owner(text_kind, pmethoddesc.NAME) = eps
+
+def $class_method_link_issue(S, pclassdesc, porigin_parent) = pmethodissue
+  -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = (text_kind)
+  -- if $throwable_final_issue(text_kind, pclassdesc.METHODS) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $class_method_link_issue(S, pclassdesc, porigin_parent) = $method_link_issue(S, pclassdesc, porigin_parent)
+  -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = (text_kind)
+  -- if $throwable_final_issue(text_kind, pclassdesc.METHODS) = METHOD_OK
+def $class_method_link_issue(S, pclassdesc, porigin_parent) = $method_link_issue(S, pclassdesc, porigin_parent)
+  -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = eps

@@ -37,7 +37,6 @@ def $throwable_parent("AssertionError") = ("Error")
 def $throwable_parent("FiberError") = ("Error")
 def $throwable_parent("ClosedGeneratorException") = ("Exception")
 def $throwable_parent(text) = eps -- otherwise
-dec $throwable_nominal(text, preqbytes, nat) : bool
 def $throwable_nominal(text, preqbytes, n) = true
   -- if $throwable_kind(text)
   -- if $ptlc(preqbytes) = $ptlc($ptascii(text)) \/ $ptlc(preqbytes) = $ptascii("throwable") \/ $ptlc(preqbytes) = $ptascii("stringable")

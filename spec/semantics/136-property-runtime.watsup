@@ -23,6 +23,10 @@ def $property_layout(S, porigin, n) = $property_merge($property_layout(S, porigi
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $property_layout(S, porigin, n) = $property_merge($throwable_layout(text_kind), pclassdesc.PROPERTIES)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
 def $property_layout(S, porigin, n) = eps -- otherwise
 
 dec $property_default_value(ptbranch*, pvalue) : pvalue
