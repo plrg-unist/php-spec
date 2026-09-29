@@ -1,0 +1,122 @@
+[
+  {
+    "id": "call-share-statics",
+    "native_group": "closure-binding-native.json",
+    "native_raw_sha256": "703569baea39b739d75d391ba789a7d3150921e90a0aa0f6e693823a9129d496",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function(){static $n=0; return ++$n;}; echo $c(),$c->call(new A),$c(),$c->call(new A);",
+    "source_sha256": "14cfd39a5147832e0deef33baf800e39cfacd485f47e3f0f643c0c7f48522af1",
+    "status": "normal",
+    "stdout_base64": "MTIzNA==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "call-named-arguments",
+    "native_group": "closure-binding-native.json",
+    "native_raw_sha256": "703569baea39b739d75d391ba789a7d3150921e90a0aa0f6e693823a9129d496",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function($x,$y=\"Y\"){return get_class($this).$x.$y;}; echo $c->call(new A,y:\"2\",x:\"1\");",
+    "source_sha256": "c5206be652eeefc4f996803119156975737ed3f723668a6d12ff9ddea43e2cc9",
+    "status": "normal",
+    "stdout_base64": "QTEy",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "call-throw-trace",
+    "native_group": "closure-binding-native.json",
+    "native_raw_sha256": "703569baea39b739d75d391ba789a7d3150921e90a0aa0f6e693823a9129d496",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function(){throw new Exception(\"x\");}; $c->call(new A);",
+    "source_sha256": "ec2dbf6489273f495fad98e9c300b43a09837effab1bb9d4134f36eba896e124",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEV4Y2VwdGlvbjogeCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXTogQS0+e2Nsb3N1cmU6e0ZJTEV9OjF9KCkKIzEge0ZJTEV9KDEpOiBDbG9zdXJlLT5jYWxsKE9iamVjdChBKSkKIzIge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 255
+  },
+  {
+    "id": "call-scope-private",
+    "native_group": "closure-binding-native.json",
+    "native_raw_sha256": "703569baea39b739d75d391ba789a7d3150921e90a0aa0f6e693823a9129d496",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A { private function f(){return \"A\";} } $c=function(){return $this->f();}; echo $c->call(new A);",
+    "source_sha256": "5e80169f6eb0c2ce9cd5613e11a16ff45e8d4498713e32ee0f77976076565368",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "call-bound-original",
+    "native_group": "closure-call-edge-native.json",
+    "native_raw_sha256": "85fe5eb92b00643e64be53471584eaa3b0ab9f925cead22394f629caacbeeb32",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A { private $v=\"A\"; } class B { private $v=\"B\"; } $c=(function(){return $this->v;})->bindTo(new A,A::class); echo $c(),$c->call(new B),$c();",
+    "source_sha256": "437a0eac8801a04c4308adc7ad2db98942f5efbd793d0c0768ad5ec0be73df86",
+    "status": "normal",
+    "stdout_base64": "QUJB",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "call-newthis-rebind",
+    "native_group": "closure-call-edge-native.json",
+    "native_raw_sha256": "85fe5eb92b00643e64be53471584eaa3b0ab9f925cead22394f629caacbeeb32",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function(){return get_class($this);}; echo $c->call((function() use (&$c){$c=null;return new A;})());",
+    "source_sha256": "722fc7efcc43f9fb21f48942dcdcce028c6a377856b177f1bdfc13455c7a667e",
+    "status": "normal",
+    "stdout_base64": "QQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "call-static-warning",
+    "native_group": "closure-call-edge-native.json",
+    "native_raw_sha256": "85fe5eb92b00643e64be53471584eaa3b0ab9f925cead22394f629caacbeeb32",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=static function(){return 1;}; $r=$c->call(new A); echo ($r === null ? \"NULL\" : \"OTHER\");",
+    "source_sha256": "3ca354bb3120423111c670caa9e49efbaa9473e692737a2b903aaa8c8936e173",
+    "status": "normal",
+    "stdout_base64": "TlVMTA==",
+    "stderr_template_base64": "V2FybmluZzogQ2Fubm90IGJpbmQgYW4gaW5zdGFuY2UgdG8gYSBzdGF0aWMgY2xvc3VyZSwgdGhpcyB3aWxsIGJlIGFuIGVycm9yIGluIFBIUCA5IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0
+  },
+  {
+    "id": "call-static-warning-order",
+    "native_group": "closure-call-order-native.json",
+    "native_raw_sha256": "d6d1efdb08290b047167397602f6b46a97a8792e6e131dee6f114f90fcd67100",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A{} $c=static function($x){}; $c->call(new A,(function(){echo \"E\";return 1;})());",
+    "source_sha256": "548eb24ac57b42b8a0e97a7a1e22b1c162b2a521d9dcc78a81186bb72a790484",
+    "status": "normal",
+    "stdout_base64": "RQ==",
+    "stderr_template_base64": "V2FybmluZzogQ2Fubm90IGJpbmQgYW4gaW5zdGFuY2UgdG8gYSBzdGF0aWMgY2xvc3VyZSwgdGhpcyB3aWxsIGJlIGFuIGVycm9yIGluIFBIUCA5IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0
+  },
+  {
+    "id": "call-named-unknown",
+    "native_group": "closure-call-named-error-native.json",
+    "native_raw_sha256": "939f5cfc2e8e532a1f51a3fd089c5e91017fdc53a98266e1f38a69bad93a7cd2",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A{} $c=function($x){}; $c->call(new A,z:(function(){echo \"E\";return 1;})());",
+    "source_sha256": "4aae0723d17fcaec9f9cc39324ddec1e20dcdbd46e8f26f191c186db2fd19f84",
+    "status": "php_error",
+    "stdout_base64": "RQ==",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmtub3duIG5hbWVkIHBhcmFtZXRlciAkeiBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBDbG9zdXJlLT5jYWxsKE9iamVjdChBKSwgejogMSkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 255
+  },
+  {
+    "id": "call-named-caught",
+    "native_group": "closure-call-caught-native.json",
+    "native_raw_sha256": "e150920bbc21cca2477d612b1f6693847629927c84d1a649e84f7db0ecf43438",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A{} $c=function($x){}; try {$c->call(new A,z:1);} catch (Error $e) {echo \"C\";} echo \"D\";",
+    "source_sha256": "f4f2714761302c5ab20b73f2259a64da46189ace8faf4df8969e3902d5073b7e",
+    "status": "normal",
+    "stdout_base64": "Q0Q=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]

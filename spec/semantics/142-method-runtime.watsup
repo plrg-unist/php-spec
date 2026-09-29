@@ -504,7 +504,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_known_other_method(ptbytes)
-  -- if $ptlc(ptbytes) =/= $ptascii("bindto")
+  -- if $ptlc(ptbytes) =/= $ptascii("bindto") /\ $ptlc(ptbytes) =/= $ptascii("call")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -1258,6 +1258,7 @@ def $wrapper_values(S, (NAMED_SENT poperand) :: pnamedslot*) = $variadic_operand
 def $wrapper_trace(S, pcallcontext) = eps -- if pcallcontext.WRAPPER = eps
 def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
   -- if pcallcontext.WRAPPER = (pnamedargs)
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.CALLSITE = (porigin)
   -- if pvalue* = $wrapper_values(S, pnamedargs.SLOTS)
 def $wrapper_context_valid(S, pcallcontext) = true

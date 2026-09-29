@@ -321,6 +321,7 @@ def $named_shape(psparam*, eps, n, pnamedargs) = pnamedargs
 def $named_shape(psparam*, (NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*, n, pnamedargs) = $named_shape(psparam*, phpType7*, $(n + 1), $named_store(pnamedargs, $named_target(psparam*, phpType3, n), KNOWN PNULL))
 dec $named_call_shape(pstate, pcalltarget, porigin?) : pnamedargs
 def $named_call_shape(S, pcalltarget_function, (porigin)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, {SLOTS eps, NAMED eps})
+  -- if ~$closure_call_target(pcalltarget_function)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
 def $named_call_extent(S, pcalltarget_function, porigin?) = |pnamedargs.SLOTS|
@@ -353,6 +354,7 @@ def $named_source_valid(psparam*, (NArg phpType3 expression (BOOLEAN false) (BOO
 def $named_source_valid(psparam*, phpType7*, n, b_named, pnamedargs) = false -- otherwise
 
 def $named_call_valid(S, pcalltarget_function, (porigin)) = true
+  -- if ~$closure_call_target(pcalltarget_function)
   -- if ~$stringify_selected(S, pcalltarget_function, porigin)
   -- if ~$call_unpack_site(S, (porigin))
   -- if $target_function(S, pcalltarget_function) = (pfunction)
