@@ -1,0 +1,19 @@
+{
+  "status": "reviewed private fix",
+  "base": "8d809ef7516dcff3f06962ed3442aac27837dd2d",
+  "code_test_commit": "71d86def29604e312ba2ca268d5ba82c0fa505b1",
+  "scope": "Authenticate live GETTERCLOSURE and INVOKECLOSURE nodes in global closure-state validity, including no spurious lexical scope row. The original callable and getter guards remain the authority.",
+  "source": {
+    "result": "9/9 exact native/model",
+    "catalogue": "tests/semantics/first_class_internal_cases.json",
+    "report": ".tools/closure-174-integrity/.tools/method-runtime-x4b1r56e/report.json",
+    "sha256": "e188b8970beb8338e4026f476f92a9487e48ddfd45d14711469fcb1d1a6aa544"
+  },
+  "paused": {
+    "result": "6/6 stages, including getter wrapper after original variables are released",
+    "script": "tests/semantics/first_class_internal_protocol.py",
+    "report": ".tools/closure-174-integrity/.tools/first-class-internal-protocol-6167dq6_/report.json",
+    "sha256": "c32ab36ef991a3b438f49e53843eb6e9519324e9eaaf87837e639c8ff0b043f9"
+  },
+  "review": "Independent static reviewer approved the isolated two-file patch and both current-input reports. The descendant getter extension remains a separate private milestone."
+}
