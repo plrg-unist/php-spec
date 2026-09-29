@@ -118,7 +118,9 @@ while (($line = fgets(STDIN)) !== false) {
                 break;
             case 'parse':
             case 'parse-eval':
+            case 'parse-file':
                 $evalMode = $request->op === 'parse-eval';
+                $fileMode = $request->op === 'parse-file';
                 if ($evalMode) {
                     $keys = array_keys(get_object_vars($request));
                     sort($keys);
@@ -166,6 +168,57 @@ while (($line = fgets(STDIN)) !== false) {
                             'message' => 'Native eval parser failed without a ParseError'], JSON_THROW_ON_ERROR), "\n";
                         continue 2;
                     }
+                } elseif ($fileMode) {
+                    $keys = array_keys(get_object_vars($request));
+                    sort($keys);
+                    if ($keys !== ['id', 'mode', 'op', 'opened', 'profile', 'requested', 'resolved', 'source']
+                        || !is_string($request->id) || !preg_match('/^(0|[1-9][0-9]*)$/D', $request->id)
+                        || $request->mode !== 'file' || $request->profile !== 'cli-raw-85') {
+                        throw new RuntimeException('Invalid file parser request');
+                    }
+                    if (ini_get('zend.multibyte') || ini_get('precision') !== '14' || ini_get('short_open_tag') !== '1') {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'File parser requires the pinned raw CLI lexer profile'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
+                    $requested = bytes($request->requested);
+                    $resolved = bytes($request->resolved);
+                    $opened = bytes($request->opened);
+                    if ($resolved === '' || $opened === '') throw new RuntimeException('Empty file parser identity');
+                    $source = bytes($request->source);
+                    $identity = ['id' => $request->id, 'mode' => 'file', 'profile' => 'cli-raw-85',
+                        'requested' => $request->requested, 'resolved' => $request->resolved,
+                        'opened' => $request->opened, 'source' => $request->source];
+                    try {
+                        $nativeAccepted = withPhpSourceFile($source, 'php_spec_parse_file');
+                    } catch (ParseError $error) {
+                        if ($error->getLine() < 1) {
+                            echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                                'message' => 'Native file parser gave no source line'], JSON_THROW_ON_ERROR), "\n";
+                            continue 2;
+                        }
+                        $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                        break;
+                    } catch (CompileError $error) {
+                        if (get_class($error) !== CompileError::class || $error->getLine() < 1) {
+                            echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                                'message' => 'Native file parser gave an unsupported compile exception'], JSON_THROW_ON_ERROR), "\n";
+                            continue 2;
+                        }
+                        $result = $identity + ['accepted' => false, 'category' => 'parser_static_rejection',
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                        break;
+                    } catch (Throwable $error) {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'Native file parser produced an unsupported exception'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
+                    if (!$nativeAccepted) {
+                        echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
+                            'message' => 'Native file parser failed without a ParseError'], JSON_THROW_ON_ERROR), "\n";
+                        continue 2;
+                    }
                 } else {
                     $source = bytes($request->source);
                     $identity = [];
@@ -182,9 +235,10 @@ while (($line = fgets(STDIN)) !== false) {
                     $tokens = $evalMode ? $evalParser->getTokens() : $parser->getTokens();
                     checkTargetSyntax($ast, $tokens);
                 } catch (PhpParser\Error $error) {
-                    if ($evalMode) {
+                    if ($evalMode || $fileMode) {
                         echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
-                            'message' => 'Checked eval parser disagrees with native parser'], JSON_THROW_ON_ERROR), "\n";
+                            'message' => $fileMode ? 'Checked file parser disagrees with native parser'
+                                : 'Checked eval parser disagrees with native parser'], JSON_THROW_ON_ERROR), "\n";
                         continue 2;
                     }
                     $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
@@ -257,7 +311,7 @@ while (($line = fgets(STDIN)) !== false) {
                     }
                 }
                 $result = $identity + ['accepted' => true, 'ast' => $transport];
-                if (!$evalMode) $result['token_comments'] = $comments;
+                if (!$evalMode && !$fileMode) $result['token_comments'] = $comments;
                 break;
             case 'print':
                 if ($request->ast->version !== 1) throw new RuntimeException('Transport version mismatch');
