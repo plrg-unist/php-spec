@@ -11,18 +11,19 @@
   ],
   "focused_service": {
     "command": "python3 tests/eval_source_service.py",
-    "report": ".tools/eval-parser-focused.json",
+    "report": ".tools/eval-parser-admission/.tools/eval-parser-focused.json",
     "report_sha256": "bccf8267b708602a2a659cd82fe68d237542f6e2b3dd365ce99912ca44ba64f4",
     "namespace_recoveries": 5,
     "native_parse_errors": 2,
     "native_base_compile_errors": 2,
     "protocol_negatives": 16,
-    "mixed_error_negative": "Native accepts 'echo 1; namespace N; class self {}'; PHP-Parser reports namespace-first plus reserved-class errors, so the worker returns helper_unsupported without AST. Raw probe: .tools/mixed-error-probe.php."
+    "mixed_error_negative": "Native accepts 'echo 1; namespace N; class self {}'; PHP-Parser reports namespace-first plus reserved-class errors, so the worker returns helper_unsupported without AST. Raw probe: .tools/eval-parser-admission/.tools/mixed-error-probe.php."
   },
   "file_syntax_gate": {
     "command": "python3 tests/parallel_validate.py --corpus --lint-all --output .tools/eval-parser-full-syntax.jsonl",
-    "summary": ".tools/eval-parser-full-syntax.summary.json",
+    "summary": ".tools/eval-parser-admission/.tools/eval-parser-full-syntax.summary.json",
     "summary_sha256": "04d3384661bf7ff197dbbad85d2652215fb7c7ff368480ec744a91ce28a87fc1",
+    "jsonl": ".tools/eval-parser-admission/.tools/eval-parser-full-syntax.jsonl",
     "jsonl_sha256": "a31ede257607205538883ea3937dee05b74e7a6777a9fe453fb2268d0b342646",
     "tested": 30980,
     "counts": {
@@ -37,7 +38,7 @@
   "private_runtime_bridge": {
     "base_commit": "388008ed05e2499bd1b6580932c0465e5cf22c5e",
     "path": ".tools/eval-parser-runtime-probe",
-    "report": ".tools/eval-parser-native-matrix/report.json",
+    "report": ".tools/eval-parser-runtime-probe/.tools/eval-parser-native-matrix/report.json",
     "report_sha256": "5d599d61589b03f2c3df1eca595209b08b4f70708ac0355ae6909f2dddb2185d",
     "exact_native_model": "5/5 static rejections, including no preceding echo",
     "frontend_sha256": {
@@ -45,6 +46,39 @@
       "frontend/worker.php": "8a77a3acfd3c01f696c4da088c4e82d6b53f51f6be72025565d590acda9294b8"
     },
     "limit": "Private bridge against the then-frozen eval candidate, not installed canonical runtime evidence. Original source bytes and raw process output are kept in the ignored report path."
+  },
+  "current_eval_base_bridge": {
+    "base_commit": "81f4a2ed99534014212dfd43caadffca08a5a1f6",
+    "report": ".tools/eval-parser-integration/.tools/eval-parser-installed-matrix/report.json",
+    "report_sha256": "f167861d9aa1cf733986fda4c624d3319f8a5412ea895380fc7f19d8594860c0",
+    "result": "5/5 exact original-source static rejections; all native/model stdout empty",
+    "catalogue_change": "The existing invalid-namespace-header-helper-gap source retains its bytes and now expects native agreement instead of Unsupported. The four additional source shapes are private bridge probes."
+  },
+  "current_syntax_bridge": {
+    "result": "The 30,980-entry gate remains attributed to its original fingerprint; it is not relabeled as a current-base full gate.",
+    "unchanged_inputs": [
+      "frontend/EvalLexer.php",
+      "frontend/worker.php",
+      "tests/eval_source_service.py",
+      "spec/php.watsup",
+      "spec/schema.json",
+      "spec/nodes.json",
+      "native/php_file.c",
+      "tests/validate.py",
+      "tests/parallel_validate.py",
+      "vendor/php-parser"
+    ],
+    "adapter_difference": "Only adapter/main.ml differs among file-syntax path inputs: current eval adds pending/resume_eval handling and an execute response field; check/elaborate and AST import/export are unchanged.",
+    "old_adapter_sha256": "62c05f7c9342ce2097ed3024e63b260254a4cb56d33e5054bb1891a98f3aea",
+    "current_adapter_sha256": "a4d3380da26648f555d7a23a7e829bfe4ca4494733f04a4ab45ee1dbcdc4252f",
+    "current_implementation_sha256": "5d6c3ed5cde44214ab2f16d6ee81f2f66069a3679c9cdde4548eec3ebe9eff4b",
+    "make_test": "make -o build test",
+    "make_test_log": ".tools/eval-parser-integration/.tools/eval-parser-make-test.log",
+    "make_test_log_sha256": "6af0eac6897712d919acbd70723f129c9bf2cf59cbd66f09a91c3dbdbccf01bb",
+    "make_inventory": "make -o build inventory",
+    "make_inventory_log": ".tools/eval-parser-integration/.tools/eval-parser-inventory.log",
+    "make_inventory_log_sha256": "d847a5ab45bddd04f41a2110882765a4031a304f540007fe8775db212e6161a5",
+    "build_note": "The private tree used copied pinned PHP/adapter binaries for make test. For inventory, a configured local PHP build/source was copied into ignored .tools, its old project-root references were rewritten in text files while preserving mtimes, and the optional scanner instrumentation was built locally. Generated coverage summaries were retained only in ignored .tools and restored from Git."
   },
   "limits": "Native parser acceptance does not authorize arbitrary PHP-Parser recovery. Only complete ASTs with exclusively authenticated namespace structural errors are admitted; other disagreement is helper_unsupported. The parser service does not execute eval or include, and this file-syntax gate is not an eval-source corpus."
 }

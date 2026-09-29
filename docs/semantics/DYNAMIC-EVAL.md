@@ -52,9 +52,13 @@ ignored `.tools` paths.
 
 Remaining obligations are object `__toString` operand conversion;
 eval-created closure and `parent::class` scope; generic imported-name `::class`
-evaluation; native-accepted namespace headers rejected by the PHP-Parser
-frontend; accepted-AST catchable `CompileError` cases and class-link errors
+evaluation; accepted-AST catchable `CompileError` cases and class-link errors
 beyond the modeled missing-parent `Error`; and include/require/once with a file
 provider. The trace-source `getTrace()` controls also depend on the Throwable trace
 slot milestone. The eval binding invariant applies only to accepted eval units;
 future include units need their own source-kind registry.
+
+Native-accepted invalid namespace structure now reaches the checked AST and the
+authored source compiler; the [parser recovery review](../../coverage/dynamic-eval-namespace-recovery-review.json)
+keeps its five exact static outcomes separate from the native parse-time
+`CompileError` path.
