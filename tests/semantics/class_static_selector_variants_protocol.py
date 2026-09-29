@@ -12,12 +12,13 @@ from recorded_worker import Worker
 ROOT = Path(__file__).resolve().parents[2]
 CASES = [
     ('casefold', b'<?php class A { public static $x=1; } class B { public static $x=2; } '
-     b'$c="a"; $n="x"; echo $c::${$n};', [
-        'poperand = KNOWN (PSTRING ([97]))',
+     b'function nm(){echo "N";return "x";} $c="a"; echo $c::${nm()};', [
+        'poperand = KNOWN (PSTRING n_class*)',
+        '$ptlc(n_class*) = $ptascii("a")',
         '~$call_task_valid(S, STATIC_PROP_NAME phpType19 (KNOWN (PSTRING $ptascii("B"))) z)',
     ]),
     ('object', b'<?php class A { public static $x=1; } class B { public static $x=2; } '
-     b'$a=new A; $b=new B; $n="x"; echo $a::${$n};', [
+     b'function nm(){echo "N";return "x";} $a=new A; $b=new B; echo $a::${nm()};', [
         '$lookup(S.ENV,$ptascii("a")) = (n_a_cell)',
         '$lookup(S.ENV,$ptascii("b")) = (n_b_cell)',
         'S.STORE[n_a_cell] = DEFINED (POBJECT n_a)',
@@ -40,6 +41,15 @@ dec $static_name_seek(pstate,nat) : pstate
 def $static_name_seek(S,n) = S -- if $static_name_pending(S.TODO) =/= eps
 def $static_name_seek(S,n) = $static_name_seek($drive_steps(S[.COMPLETION = NORMAL],1),$nabs($(n - 1)))
   -- if $static_name_pending(S.TODO) = eps
+  -- if $(n > 0)
+dec $static_name_head(pstate) : bool
+def $static_name_head(S) = true
+  -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*
+def $static_name_head(S) = false -- otherwise
+dec $static_name_head_seek(pstate,nat) : pstate
+def $static_name_head_seek(S,n) = S -- if $static_name_head(S)
+def $static_name_head_seek(S,n) = $static_name_head_seek($drive_steps(S[.COMPLETION = NORMAL],1),$nabs($(n - 1)))
+  -- if ~$static_name_head(S)
   -- if $(n > 0)
 '''
 
@@ -79,7 +89,12 @@ def main():
                 '$call_task_valid(S, STATIC_PROP_NAME phpType19 poperand z)',
                 '$call_descriptors_valid(S) /\\ $class_state_valid(S) /\\ $heap_valid($heap_graph(S))',
                 *extra,
-                'S_done = $drive(S[.COMPLETION = NORMAL], 2048)',
+                'S_head = $static_name_head_seek(S[.COMPLETION = NORMAL], 128)',
+                'S_head.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*',
+                'S_head.RESULT = KNOWN (PSTRING ([120]))',
+                '$call_task_valid(S_head, STATIC_PROP_NAME phpType19 poperand z)',
+                '$call_descriptors_valid(S_head) /\\ $class_state_valid(S_head) /\\ $heap_valid($heap_graph(S_head))',
+                'S_done = $drive(S_head[.COMPLETION = NORMAL], 2048)',
                 'S_done.COMPLETION = NORMAL',
             ]
             fixture = directory / 'protocol.watsup'

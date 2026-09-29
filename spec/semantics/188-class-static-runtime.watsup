@@ -359,8 +359,19 @@ def $class_static_class_task_valid(S, phpType19, phpType31, z) = true
 def $class_static_class_task_valid(S, phpType19, phpType31, z) = false -- otherwise
 def $call_task_valid(S, STATIC_PROP_CLASS phpType19 phpType31 z) = $class_static_class_task_valid(S, phpType19, phpType31, z)
 dec $class_static_name_task_valid(pstate, phpType19, poperand, int) : bool
+dec $class_static_name_task_present(ptask*, phpType19, poperand, int) : bool
+def $class_static_name_task_present(eps, phpType19, poperand, z) = false
+def $class_static_name_task_present((STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*, phpType19, poperand, z) = true
+def $class_static_name_task_present(ptask :: ptask_tail*, phpType19, poperand, z) = $class_static_name_task_present(ptask_tail*, phpType19, poperand, z)
+  -- if ptask =/= STATIC_PROP_NAME phpType19 poperand z
+dec $class_static_name_capture_valid(pstate, phpType19, poperand, int) : bool
+def $class_static_name_capture_valid(S, phpType19, poperand, z) = (S.RESULT = poperand)
+  -- if S.TODO = (AT porigin_name (EVAL expression_name)) :: (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*
+def $class_static_name_capture_valid(S, phpType19, poperand, z) = (S.RESULT = poperand)
+  -- if S.TODO = (EVAL expression_name) :: (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*
+def $class_static_name_capture_valid(S, phpType19, poperand, z) = $class_static_name_task_present(S.TODO, phpType19, poperand, z) -- otherwise
 def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = true
-  -- if S.RESULT = KNOWN (PSTRING n_class*)
+  -- if $class_static_name_capture_valid(S, phpType19, KNOWN (PSTRING n_class*), z)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
@@ -371,7 +382,7 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = t
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_name) = ((z_name, b))
 def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = true
-  -- if S.RESULT = KNOWN (PSTRING n_class*)
+  -- if $class_static_name_capture_valid(S, phpType19, KNOWN (PSTRING n_class*), z)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
@@ -384,7 +395,7 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = t
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_name) = ((z_name, b))
 def $class_static_name_task_valid(S, phpType19, KNOWN (POBJECT n_class), z) = true
-  -- if S.RESULT = KNOWN (POBJECT n_class)
+  -- if $class_static_name_capture_valid(S, phpType19, KNOWN (POBJECT n_class), z)
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
