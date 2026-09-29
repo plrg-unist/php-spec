@@ -1,7 +1,8 @@
 {
-  "status": "author evidence; independent review pending",
+  "status": "independent frozen-base review accepted",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle",
   "base": "1d8afcf08",
+  "semantic_head_before_review_ledger": "fc5ed1db1",
   "scope": "Seven genuine Throwable property slots, structured trace capture, getTrace/getTraceAsString/__toString, string cache, terminal observation, and paused trace ownership. Static and eval producer integration is a separate current-branch bridge.",
   "design": [
     "The private trace PARRAY slot is the sole live trace backing; pthrowable contains only kind and origin. Frame and argument arrays are ordinary owned storage, so returned arrays copy on write while captured objects retain identity.",
@@ -29,12 +30,28 @@
       "path": ".tools/throwable-trace-candidate/.tools/throwable-getter-protocol-peipupcp/report.json",
       "sha256": "de4208a70d6dd51ed8e420ccbcaa40e3b138cce3cf84e2d0b57bb7aa7d062ba9",
       "result": "Four paused stages pass with seven-slot malformed-row probes"
+    },
+    "retained_throwable": {
+      "path": ".tools/throwable-trace-candidate/.tools/throwable-expressions-z3kr4mhw/report.json",
+      "sha256": "e4b2f992dce8fe04e9fbfdec5e52adb2facb567dd7e7f2b99844b6c2c7ad8e7d",
+      "result": "All 65 cases pass: 54 exact native agreements and 11 Unsupported controls; both prior stdClass rendering failures pass on current watched inputs"
     }
+  },
+  "independent_review": {
+    "path": ".tools/throwable-trace-candidate/.tools/trace-review-fc5ed1-5jhkds9e/report.json",
+    "sha256": "d8b4d91b59c7e12eff04b0d4b28462b0fb3f4c16070b82bcf037e9efbd783471",
+    "result": "Four exact native/model replays pass with input hashes stable; frozen diff and current retained report reviewed without blocker"
+  },
+  "historical_failure": {
+    "path": ".tools/throwable-trace-candidate/.tools/throwable-source-prefreeze-fail-3787330b.json",
+    "sha256": "3787330bd9ae5869273a19cff5339e6cfb9bfbd4799c0b2b3e5d736381fbcbfd",
+    "reason": "Pre-freeze report failed two stdClass trace-rendering cases on different observer/trace hashes; retained current-input rerun passes both"
   },
   "recovery": [
     "python3 tests/semantics/throwable_traces.py",
     "python3 tests/semantics/throwable_trace_protocol.py",
-    "python3 tests/semantics/throwable_getter_protocol.py"
+    "python3 tests/semantics/throwable_getter_protocol.py",
+    "python3 tests/semantics/throwable_expressions.py"
   ],
   "limits": "The distinct ErrorException constructor, source access to internal properties, reflection/mutation, user subclasses, and combined static/eval trace producer evidence remain open. This is bounded core evidence, not full-core closure."
 }
