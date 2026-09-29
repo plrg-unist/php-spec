@@ -33,6 +33,7 @@ CASES = {
     'class-scope': (b"<?php class C { function f() { return include 'one.php'; } } echo (new C)->f();", {'one.php': b'<?php return self::class;'}, ['one.php']),
     'file-eval-file': (b"<?php echo include 'one.php';", {'one.php': b'''<?php function f(){ return eval('return include "two.php";'); } return f();''', 'two.php': b'<?php return 7;'}, ['one.php', 'two.php']),
     'ordinary-then-once': (b"<?php echo include 'one.php'; echo include_once 'one.php';", {'one.php': b"<?php echo 'X';"}, ['one.php']),
+    'require-once-success-skip': (b"<?php echo require_once 'one.php'; echo require_once 'one.php';", {'one.php': b"<?php echo 'X'; return 7;"}, ['one.php']),
     'alias-once': (b"<?php echo include_once 'one.php'; echo include_once 'alias.php';", {'one.php': b"<?php echo 'X';"}, ['one.php', 'alias.php']),
     'recursive-once': (b"<?php echo include_once 'one.php';", {'one.php': b'<?php echo "X"; echo include_once __FILE__;'}, ['one.php', '__SELF_ONE__']),
     'once-compile-retry': (b"<?php try { include_once 'bad.php'; } catch (CompileError $e) { echo 'C'; } echo include_once 'bad.php';", {'bad.php': b'<?php class A { final abstract private function f(); }'}, ['bad.php']),
