@@ -66,7 +66,10 @@ The two eval `getTrace()` controls now agree with native PHP after structured
 Throwable trace storage landed; direct and dynamic `get_class(1)` inside eval
 also retain their exact fatal traces on the combined rules.
 
-Remaining obligations are object `__toString` operand conversion;
+The private [user-object operand candidate](../../coverage/semantics/user-string-eval-author.json)
+adds an owned `__toString` callback before parser request and derives the eval
+opcode line from the compiled operand. It is pending current-base integration;
+the installed eval operand still has that dependency. Remaining obligations are
 generic imported-name `::class` evaluation; accepted-AST catchable
 `CompileError` cases and class-link errors beyond the modeled missing-parent
 `Error`; and include/require/once with a file provider. The eval binding

@@ -86,3 +86,16 @@ interface Unsupported control; the same four paused stages pass. The current
 fingerprint and ignored raw report hashes are in the ledger. The bridge
 checks the shared scoped-call and implicit-call guards together. This
 foundation is installed; the remaining conversion consumers are still open.
+
+A private eval-operand increment reuses the same owned method call. The operand
+keeps its child source occurrence through conversion; a returned string then
+resumes the checked eval parser request at the parent occurrence. Both generated
+source filenames and callback `eval()` frames use the compiled operand line,
+including multiline expressions. An authenticated saved caller frame supplies
+the pre-parser `eval()` trace frame when `__toString` throws. A missing magic
+method raises the ordinary conversion `Error`, and finite internal Throwable
+stringification stays on its separate renderer. The [eval ledger](../../coverage/semantics/user-string-eval-author.json)
+records 11 exact source outcomes, one explicit Unsupported weak nested-return
+control, and five paused stages/51 assertions on the private base. Weak typed
+conversion of a returned Stringable object requires its own resumable callback;
+strict return typing still rejects it before another callback.

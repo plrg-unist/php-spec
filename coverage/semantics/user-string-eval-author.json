@@ -1,0 +1,38 @@
+{
+  "status": "private_candidate",
+  "base": "33b18cc0a",
+  "code_commit": "678a61981",
+  "scope": "owned user-object eval operand conversion and compiled operand line",
+  "source": {
+    "path": ".tools/user-string-eval/.tools/user-string-5_o8t86s/report.json",
+    "sha256": "26fccfc07101313aa99949533af910badce69dfe48311a5a231f4ebac606b88a",
+    "fingerprint_sha256": "3c00ebd6986db9afccfed0b44d871ca1c06f7515f87a16737fb83ccdac675229",
+    "result": "pass",
+    "exact_normal": 5,
+    "exact_php_error": 6,
+    "explicit_unsupported": 1
+  },
+  "paused": {
+    "path": ".tools/user-string-eval/.tools/user-string-eval-protocol-rd1a1d7o/report.json",
+    "sha256": "fd16d68b51e95f8eff2189925107b478058417ce5e34fb6de52910978e047b2c",
+    "result": "pass",
+    "stages": 5,
+    "assertions": 51,
+    "stable": true
+  },
+  "inventory": {
+    "command": "make -o build inventory",
+    "result": "pass",
+    "log": ".tools/user-string-eval/.tools/user-string-eval-inventory.log",
+    "log_sha256": "6bbddb69314a696538769ebd442edb47d186feb5d3e2e4567926c72362ed6ca0",
+    "configured_php_copy": "356 text files changed to private output root with mtimes preserved; 0 old-root text paths and 0 symlinks remain"
+  },
+  "replay": [
+    "From .tools/user-string-eval, run python3 tests/semantics/user_string.py --match eval-string-.",
+    "Run python3 tests/semantics/user_string_eval_protocol.py. The checked source catalogue and protocol fixture are tracked; raw output remains ignored."
+  ],
+  "limits": [
+    "Weak typed string conversion of a returned Stringable object is explicit Unsupported until the shared callback continuation reaches typed consumers.",
+    "Concat, interpolation, dynamic names, exit, string-offset writes, loose comparison and other callback-capable consumers remain open."
+  ]
+}
