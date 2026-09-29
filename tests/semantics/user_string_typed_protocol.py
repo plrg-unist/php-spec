@@ -79,6 +79,22 @@ STAGES = [
          'S_next.OBJECTS[n_new] = THROWABLE pthrowable',
          'pthrowable.KIND = "TypeError"',
      ]),
+    ('subclass-throw-chain', 'typed-return-subclass-previous',
+     'S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) '
+     ':: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*', [
+         'S.OBJECTS[n_old] = INSTANCE porigin_old',
+         '$throwable_member(S, n_old)',
+         '$throwable_chain(S, n_old, eps) = THROWCHAIN ([n_old])',
+         'S_cycle = $throwable_set_previous_id(S, n_old, (n_old))',
+         '$throwable_chain(S_cycle, n_old, eps) = BADTHROWCHAIN',
+         '$(999999 > |S.OBJECTS|)',
+         'S_forged = $throwable_set_previous_id(S, n_old, (999999))',
+         '$throwable_chain(S_forged, n_old, eps) = BADTHROWCHAIN',
+         '$typed_return_throw_pending(S)',
+         'S_next = $drive_steps(S[.COMPLETION = NORMAL], 1)',
+         'S_next.TODO = (THROW_SEARCH n_new) :: ptask_tail*',
+         '$throwable_previous_id(S_next, n_new) = (n_old)',
+     ]),
 ]
 
 

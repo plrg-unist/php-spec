@@ -106,5 +106,11 @@
     "source": "<?php class E extends Exception{} class O{function __toString(){throw new E(\"x\");}} function f():string{return new O;} try{f();}catch(TypeError $x){echo get_class($x->getPrevious()),\":\",$x->getPrevious() instanceof E?\"yes\":\"no\";}",
     "source_sha256": "5e4af2cdf5c76625457e530a9ab456e393e50642bab2041f6cc2dd9303d5e18b",
     "expected_model": "normal"
+  },
+  {
+    "id": "typed-return-chain-finally-control",
+    "source": "<?php class E extends Exception{}try{try{throw new E(\"old\");}finally{throw new Exception(\"new\");}}catch(Throwable $e){echo get_class($e),\":\",get_class($e->getPrevious()),\":\",$e->getPrevious() instanceof E?\"yes\":\"no\";}",
+    "source_sha256": "451f4e277f0510a5bae4828b11d3e49c0df7970146f00fc7e8e9731d247c28cf",
+    "expected_model": "normal"
   }
 ]
