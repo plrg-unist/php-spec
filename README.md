@@ -253,6 +253,10 @@ preserves both expression effects before left-to-right string conversion and
 keeps a right-side variable live across the left callback. Source and paused
 checks pass on the eval-conversion base; installed focused and null-resolver
 include bridge checks also agree.
+[Weak typed-return conversion](coverage/semantics/user-string-typed-author.json)
+is under private review. It resumes checked `__toString` callbacks for
+by-value returns, including nested weak returns and throwable `previous`
+chains; by-reference and other typed consumers remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

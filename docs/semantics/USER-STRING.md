@@ -117,3 +117,27 @@ source and paused checks also pass. The
 [concat ledger](../../coverage/semantics/user-string-concat-author.json) binds
 their reports and input hashes. Interpolation and typed string conversion
 remain separate increments.
+
+The private typed-return increment covers weak by-value `string` and
+string-admitting union returns, including arrow returns and recursive
+`__toString` return checks. A selected live object callback owns the original
+receiver until the returned string is accepted. If that callback throws, return
+verification creates a `TypeError` before the function's catch/finally search
+and links the original throwable as `previous`; each nested weak return adds
+its own layer. Strict return checks reject the object before a callback, and
+the defining source unit supplies strictness and the return-site line.
+Exact nominal `Stringable|string` matches retain the object without invoking
+`__toString`. A callable/string union remains an explicit source-`__invoke`
+dependency because callable acceptance precedes string coercion. By-reference
+returns require a separate alias write-back continuation, followed by weak
+parameters, properties and constrained references. A disjoint shared
+`$throwable_chain` rule now follows live source Throwable subclasses as well
+as internal Throwables; it retains cycle and forged-previous rejection. This
+allows both return-error chaining and ordinary finally replacement when a
+source subclass is the prior exception. On the Throwable-subclass base, 17 of
+19 source cases agree exactly with PHP and two remain explicit Unsupported
+controls. Six paused stages pass 71 assertions; four two-file strictness cases,
+the repository test and inventory also pass. The earlier subclass-chain
+interpreter failure remains in the ledger as the repaired counterexample. The
+[typed-return ledger](../../coverage/semantics/user-string-typed-author.json)
+records the bounded private checks and these limits.

@@ -1,0 +1,57 @@
+{
+  "status": "private candidate",
+  "base": "242607f9c",
+  "code_commit": "18e732c7e",
+  "tests_commit": "61713dd8b",
+  "scope": "Owned weak by-value typed string return callbacks and recursive returns, plus a disjoint source-Throwable previous-chain repair",
+  "limits": "By-reference typed returns need alias write-back; callable|string awaits source __invoke precedence; weak parameters, properties, constrained references and other string contexts remain separate consumers.",
+  "replay": [
+    "From .tools/user-string-typed run python3 tests/semantics/user_string_typed.py --match typed-return-, python3 tests/semantics/user_string_typed_protocol.py, and python3 tests/semantics/user_string_typed_bridge.py.",
+    "Raw reports below retain original source bytes, native/model stdout and stderr, six hashed paused fixtures, and two-file source/snapshot bytes. Use the pinned tests/semantics/profile.json and checked adapter/worker inputs recorded in each report.",
+    "make -o build test and make -o build inventory were run in the private configured PHP build; logs remain ignored. The private php-build copy rewrote 356 text files to its output root while preserving mtimes, leaving no old-root references or symlinks."
+  ],
+  "throwable_base_evidence": {
+    "base": "242607f9c",
+    "implementation_fingerprint_sha256": "5e7640815a254be333374bf42480463790871b466ae914a2238dc4ff7a921d0a",
+    "source": {
+      "path": ".tools/user-string-typed/.tools/user-string-bvyc3ox1/report.json",
+      "sha256": "45fa69f58fb45d1b94a04b36efae74d3799174b7da24ef6a04ab975888146e7d",
+      "result": "pass",
+      "exact_normal": 14,
+      "exact_php_error": 3,
+      "explicit_unsupported": 2
+    },
+    "paused": {
+      "path": ".tools/user-string-typed/.tools/user-string-typed-protocol-zznl5er0/report.json",
+      "sha256": "d06f8ca8c2d7f2473a473c32e93120a5faffbe926b26847888e0b34ff4a091ba",
+      "result": "pass",
+      "stable": true,
+      "stages": 6,
+      "assertions": 71,
+      "checks": "Pending, entered, restored and returned string phases; exact TypeError previous identity; source-subclass chain, self-cycle and forged previous-ID rejection."
+    },
+    "two_file_strictness": {
+      "path": ".tools/user-string-typed/.tools/user-string-typed-bridge-50zoz6kx/report.json",
+      "sha256": "35186d3cce237577045af3098de0b4d648f23d38a2489d741460b45e7aa8bbd6",
+      "result": "pass",
+      "exact": 4
+    },
+    "repository_test": {
+      "command": "make -o build test",
+      "log": ".tools/user-string-typed/.tools/user-string-typed-current-make-test.log",
+      "log_sha256": "f9d72d6fdc585dff33e41ad2a8c9ec932d7409f7f1dd115d8734031cf3027aa7",
+      "result": "pass"
+    },
+    "inventory": {
+      "command": "make -o build inventory",
+      "log": ".tools/user-string-typed/.tools/user-string-typed-current-inventory.log",
+      "log_sha256": "18df97c22a8ce4bc43b295005c13133f011ea74e141b913bfe615be745f586ed",
+      "result": "pass"
+    }
+  },
+  "repaired_failure": {
+    "path": ".tools/user-string-typed/.tools/user-string-7ttjgszv/report.json",
+    "sha256": "915d2f2e8e7c143b01556a37883a4134d0820f97170bf32ac99cf57cc0ef651a",
+    "classification": "interpreter_failure before the 156 source-subclass chain clause; retained as the cross-feature counterexample"
+  }
+}
