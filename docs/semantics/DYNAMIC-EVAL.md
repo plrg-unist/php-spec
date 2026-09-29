@@ -50,9 +50,21 @@ unhashed test helpers, and fresh paused/source/no-eval checks after the
 cases catch the eval frame in a TypeError trace. Raw reports remain under
 ignored `.tools` paths.
 
+Eval-created closures and arrows retain the caller's lexical and called class
+after eval returns. Nested closures inherit that scope; an eval-defined named
+function starts without it. `self::class`, `static::class`, and `parent::class`
+therefore use their own compile-time or runtime boundary: direct named-function
+use without class scope is a compile fatal, while deferred no-class use raises
+a catchable `Error`. A known parentless ordinary class method fails during
+compilation; eval and closure lookups can raise the corresponding runtime
+`Error`. `parent::class` uses the lexical parent's name even when an inherited
+method is called on a deeper subclass. Arrays follow the existing warning and
+`"Array"` conversion before eval parses the resulting text. The
+[scope followup ledger](../../coverage/semantics/eval-scope-followup-author.json)
+separates historical group captures from current-base source and paused checks.
+
 Remaining obligations are object `__toString` operand conversion;
-eval-created closure and `parent::class` scope; generic imported-name `::class`
-evaluation; accepted-AST catchable `CompileError` cases and class-link errors
+generic imported-name `::class` evaluation; accepted-AST catchable `CompileError` cases and class-link errors
 beyond the modeled missing-parent `Error`; and include/require/once with a file
 provider. The trace-source `getTrace()` controls also depend on the Throwable trace
 slot milestone. The eval binding invariant applies only to accepted eval units;

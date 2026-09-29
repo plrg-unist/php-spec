@@ -1,0 +1,37 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle",
+  "scope": "Eval-created closure and arrow class scope, parent::class, no-class Error boundaries, and array operand conversion. Reports contain exact raw streams, commands, profile and input hashes; raw artifacts remain ignored under .tools.",
+  "base": "8bb51e7506f263eb5790f913cf267be45cd1b778",
+  "code_commits": ["5d3c6b42f", "f6ebf0172"],
+  "catalogue": {
+    "rows": 71,
+    "unsupported_controls": 4,
+    "note": "The full 71-row catalogue was not rerun. Historical group reports are preserved with their capture hashes; current-base representative reports and paused guards are separate."
+  },
+  "pre_parser_rebase_source_groups": [
+    {"selection": "parent-class-", "report": ".tools/eval-execution-fnwm3zmg/report.json", "sha256": "b60cc0323da4fddee7622210d4943067b5cac944ccfb42894481f07e29eec9d8", "exact": 7},
+    {"selection": "eval-defined-function-", "report": ".tools/eval-execution-ztzda5z5/report.json", "sha256": "a135ef9a216d2b28424d5876ec670f744d9c795e6c2d3d872e69f6ec71668b37", "exact": 4},
+    {"selection": "eval-top-level-", "report": ".tools/eval-execution-c5nhovsq/report.json", "sha256": "c994fe372c4d67071b63d9d4ffa40c0f0007365d8830dde6322c723ac8ea6900", "exact": 2},
+    {"selection": "eval-created-", "report": ".tools/eval-execution-7fth9ea8/report.json", "sha256": "6880ab3c786f3369938b1ec8338f00d7bc5a5d3d8485a9d0bdebbb43a38dcfe3", "exact": 4},
+    {"selection": "array-stringification", "report": ".tools/eval-execution-q0mpb7cf/report.json", "sha256": "210ce60837609a21c9580e9de8f08450b47980e9d4d75549525f1fbe1b9dc527", "exact": 2}
+  ],
+  "historical_bridge": "All 19 group records were exact and hash-clean at capture. Later changes to 141/142, the namespace frontend, and the catalogue make those manifests historical. The parser change is confined to namespace structural admission, 141/142 additions are parent rules and then a forged-source rejection, and the current-base representative paths below check the combined behavior. This is a scoped bridge, not a current full-catalogue pass.",
+  "current_source": [
+    {"selection": "parent-class-inherited-method", "report": ".tools/eval-execution-tj823zxu/report.json", "sha256": "ae560508b24e1e5c5fec773a4507d0b5f9d2000cdcc1a38c654c89194ca5b7af"},
+    {"selection": "eval-created-closure-called-class", "report": ".tools/eval-execution-z8rvdvy9/report.json", "sha256": "f7c89078864f285fed41ed96808659f501fcd4fcd0aaee947fd46e2077688d20"},
+    {"selection": "eval-top-level-self-error", "report": ".tools/eval-execution-lgqzpi7e/report.json", "sha256": "e3a975f3a5fe6fb162734b13aa534aabd4cdc6db9640b1bdc29c31a275149946"},
+    {"selection": "eval-defined-function-closure-no-class", "report": ".tools/eval-execution-ml7rpvvc/report.json", "sha256": "36d48ed930dfcd0cfb0ad41bd981719ed2c039f31bcd5736365719c8094a64e9"},
+    {"selection": "array-stringification-suppressed", "report": ".tools/eval-execution-v1c2bmm6/report.json", "sha256": "00066e786a1f155127860bc40160e98bb4c262efa1aa7b3289fbe9fee4761ede"}
+  ],
+  "current_protocols": [
+    {"command": "python3 tests/semantics/eval_class_scope_protocol.py", "report": ".tools/eval-class-scope-protocol-eqsslj6i/report.json", "sha256": "4b06ee7bf5777e0bd459f15ada2182292a834d561ea484b5a48defca28a6d682", "assertions": 13},
+    {"command": "python3 tests/semantics/eval_protocol.py", "report": ".tools/eval-protocol-ddc2wiqz/report.json", "sha256": "67511413ac63c51dc8480fe4c0a175961d56761ae9c1f65710fb4e7ca2dd073c", "assertions": 27},
+    {"command": "python3 tests/semantics/eval_saved_protocol.py", "report": ".tools/eval-saved-protocol-67p0h5x9/report.json", "sha256": "031652015b6f6c8050a58a26f09fb3c62ebeca059fd8316276ee84994957a9de", "assertions": 42},
+    {"command": "python3 tests/semantics/method_compiler.py --match parent-class-without-parent-static", "report": ".tools/method-compiler-o6rr3c7e/report.json", "sha256": "1b1ab759d391b26bcb4400546f5120b5959c828db233b7177c45993ad71387c0", "assertions": 2}
+  ],
+  "limitations": [
+    "The new false guard proves source identity for deferred class-constant tasks; broader class-scope consistency relies on existing call-context and closure-scope invariants.",
+    "Object __toString conversion is owned by a separate generic conversion followup.",
+    "Include/require/once source-provider execution remains open."
+  ]
+}
