@@ -24,10 +24,10 @@ before constants183/184; it must remove the interim rooted wakeup guard.
 [Renewed interface ledger](coverage/semantics/interface-internal-renewed-review.json)
 · [declaration-order milestone](coverage/semantics/compiler-declaration-order-review.json).
 
-Ordinary fatal/Unsupported origin retirement is privately reviewed and awaiting
-its current-base bridge and installation. It preserves diagnostic origins,
-traces and saved-frame cleanup. Its ledger retains the original failures,
-fixture corrections, composite paused evidence and timeout separately.
+Ordinary fatal/Unsupported origin retirement and its focused current-base bridge
+are privately reviewed and await installation. They preserve diagnostic origins,
+traces and saved-frame cleanup. The ledger retains the original failures,
+fixture corrections, composite pauses and timeout separately.
 [Cleanup ledger](coverage/semantics/error-origin-author.json).
 
 ## Validated baseline
