@@ -56,8 +56,10 @@ ordering and trace defects and does not establish current acceptance.
 The [argument extension review](../../coverage/semantics/closure-call-arguments-review.json)
 separates private named receiver and reference-formal gates from the focused
 installed forwarding/exit source/state checks. A separate
-source-derived deferred-default cache counterexample remains a required generic
-closure/default repair; these forwarding catalogues do not cover that branch.
+[default-cache guard repair](../../coverage/semantics/closure-default-cache-review.json)
+passed bounded private Closure/arrow source and paused checks. Installation and
+scoped class defaults remain pending; these forwarding catalogues do not cover
+that branch.
 
 Unpacking and broader reference argument forms remain required extensions. Non-`stdClass`
 internal/Throwable receivers, computed `call` names, captured method/getter/invoke

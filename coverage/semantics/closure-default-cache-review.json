@@ -1,0 +1,148 @@
+{
+  "result": "bounded-private-deferred-closure-cache-authentication-accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "implementation": {
+    "code_test_freeze": "e9150b7667649c5380112d3db4ec9e2ad19f93e8",
+    "base": "e458517ebbac30e7545ce57e495840978caf2dac",
+    "original_private_guard": "6f4ae65f7e9f343a25ef69803c49d0770b29de33",
+    "projection": {
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/closure-default-cache-forwarding-projection.json",
+      "sha256": "ef0c42246865f2118e858afc49a4cd390c9612a021c395863072bfa4fe62d6de"
+    },
+    "scope": "Only generic91 plus its seven-source catalogue and five-stage driver; all three inputs equal the original private guard. Installed182 forwarding is preserved.",
+    "inputs": {
+      "spec/semantics/91-default-parameters.watsup": "4a10099a1c56a77e98eae60563b22a8a5f5b97809dd4e99037fe7c54bc0778f7",
+      "tests/semantics/closure_default_cache_cases.json": "d2dad997d2a6225dee8e8321466e2ce2e3e2165e372a46037a326c46d86c5ccf",
+      "tests/semantics/closure_default_cache_protocol.py": "4b3f20012e30139021404341883b99905a32e4d75f3365a54e497b2ae849d8ae"
+    },
+    "executable_fingerprint": {
+      "sha256": "4435a2624cd63a3d8672a76dfee29d2fb47e6c5993996557a7cb7f32fd8a609e",
+      "files": 1266,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "runtime_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      ".tools/request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064"
+    }
+  },
+  "behavior": [
+    "A deferred Closure/arrow default cache authenticates the exact surviving source template, default descriptor, parameter index and expression, with no compiled stored value at that origin.",
+    "Authentication does not require a live closure object or current call context; valid cache values survive return and object retirement.",
+    "Existing cache uniqueness, cacheable value-class and heap topology checks remain unchanged; missing/wrong templates and stored-literal descriptors forged as deferred are rejected."
+  ],
+  "private_gates": {
+    "elaboration": {
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/closure-default-cache-elaboration-3_h09jh3/report.json",
+      "sha256": "09cc829d318aa1998106dfa58f5d56f6501603a3fde7fa3c1deb305f88178239"
+    },
+    "source": {
+      "cases": 7,
+      "result": "pass",
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/method-runtime-9mbnq7dm/report.json",
+      "sha256": "ef39add045ab897ef8b2e142f47ec7208402684e4c0486f1746c8f09524eeb99"
+    },
+    "paused": {
+      "stages": 5,
+      "assertions": 107,
+      "result": "pass",
+      "stable": true,
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/closure-call-protocol-d9mi5fjc/report.json",
+      "sha256": "2ef29b2fe565e1e58d8939a29ab78b0fa10801a67234ff3c1f6a4b30c77852e5"
+    },
+    "independent_review": {
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/calls-independent-default-cache-auth-review-e915.json",
+      "sha256": "ecc3f378400ca9450420daf225139afe4e4602356ebe92b1bdc595441a465afd"
+    }
+  },
+  "provenance": {
+    "native_bindings": {
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/calls-review-default-cache-native-bindings.json",
+      "sha256": "1cd1ad93dcbd9bc91843f7bdd86998e45afe3dd3325906ec75fb77fbcad18b8d"
+    },
+    "native_scope": "Exact source bytes, PHP/profile hashes, full commands and stdout/stderr/exit tuples; only exact source filenames normalize to {FILE}. Guard7 records also pin native cwd; both separate scope-boundary records omit cwd. LC_ALL=C and TZ=UTC are recorded; other host environment is inherited and unarchived.",
+    "runtime_provision": {
+      "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/closure-default-cache-runtime-provision.json",
+      "sha256": "9284bb50f0108fd32457cbba884ebcd1910e8423b0f2720cbf5ff99be3c027e3"
+    },
+    "adapter_current_source_build": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-review-adapter-current-build.json",
+      "sha256": "25ff8f60ffd0bed64190fbaaacbbb9e039e739dfa90a9ea67b3acde6dec5e070"
+    },
+    "runtime_limit": "Verified current binaries reused with existing toolchain/dependencies; no new full offline rebuild claim."
+  },
+  "original_counterexample": {
+    "path": "/home/user/workspace/php-spec/.tools/closure-call-formals-current/.tools/calls-review-generic91-default-cache-diagnostic-c29.json",
+    "sha256": "1762adbd61e7cc7d460f131658d2a6972f6019ceb6d55a343756a97cb49aac28"
+  },
+  "separate_scope_boundaries": {
+    "class_constant": {
+      "native_stdout": "12",
+      "native_stderr": "",
+      "native_exit_status": 0,
+      "model_status": "unsupported",
+      "model_reason": "class inheritance, interfaces, attributes, or members",
+      "runner_exit_status": 1,
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/method-runtime-qrqrx4uk/report.json",
+        "sha256": "abbf98574eda5656c780df981c10108d59313eeae2e5b1339789e1f5fe2128e1"
+      },
+      "independent_classification": {
+        "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/calls-review-default-scope12-boundary-e915.json",
+        "sha256": "40cd19af670331d06ddc66138217de1d3cd72651b764d89da2779fde18c0f2e2"
+      }
+    },
+    "class_name": {
+      "native_stdout": "AB",
+      "native_stderr": "",
+      "native_exit_status": 0,
+      "model_status": "unsupported",
+      "model_reason": "constant class-name resolution",
+      "runner_exit_status": 1,
+      "native": {
+        "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/closure-default-class-scope-native-rvsq0g3m/native.json",
+        "sha256": "580856ab18426af7de25e7d831089ab084c1f7ce8f9d6fec2254acb7d0c0324e"
+      },
+      "catalogue": {
+        "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/closure-default-class-scope-cases.json",
+        "sha256": "a98aa1de82f2e8a0bcca2b69cd7aa1141eda59afe9c926f9597a2f08719c1987"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/method-runtime-5q0f9oq2/report.json",
+        "sha256": "edaf0bd3d543753bf39c35987f0e6133cde53db5c305dab774ebd03c937a687e"
+      },
+      "independent_classification": {
+        "path": "/home/user/workspace/php-spec/.tools/closure-default-cache-current/.tools/calls-review-default-class-scope-AB-boundary-e915.json",
+        "sha256": "f92ad6ceed60a1f02a851c585fb40ed3ce1f1f4d1190e79db34c38321b961ffb"
+      }
+    },
+    "scope": "Both checked source probes stop before cache reuse is established. Their failed comparison reports remain failures; explicit Unsupported is not native agreement or an observed cache-key mismatch."
+  },
+  "canonical_integration": {
+    "result": "pending",
+    "scope": "Private guard acceptance only; later canonical interactions, installed identity and focused installed review remain pending."
+  },
+  "required_followups": [
+    "Class-constant declarations and runtime/constant self::class resolution, followed by actual temporary-scope default/cache replay.",
+    "Generic142 static object-selector ownership repair, Closure call unpacking, array callables and source __invoke.",
+    "Broader default/call families, complete-core validation and fresh offline rebuild."
+  ],
+  "recovery": "Raw reports/native archives remain ignored at the recorded absolute paths. Tracked catalogue/driver and pinned profile regenerate the guard checks using the verified runtime; original failed diagnostics must not be relabeled as current acceptance."
+}

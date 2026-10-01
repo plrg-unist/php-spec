@@ -54,9 +54,14 @@ nine-source evidence and the interrupted 50-source prefix remain separate.
 
 Generic156 return/Notice replay remains open. By-reference typed string return
 conversion186 still needs captured-alias write-back and post-`finally` rejection.
-Deferred real-Closure default caches fail the global state guard and need a
-separate generic91 repair.
-[Argument review](coverage/semantics/closure-call-arguments-review.json).
+A separate generic91 guard passed seven source comparisons and five paused
+stages (107 assertions) privately. It authenticates deferred Closure/arrow
+caches through surviving source templates after object retirement; later-base
+checks and canonical installation remain pending. Prior class-constant and
+`self::class` default probes stopped at explicit Unsupported, establishing no
+cache-key mismatch. Scoped defaults remain a required followup.
+[Argument review](coverage/semantics/closure-call-arguments-review.json) ·
+[default-cache review](coverage/semantics/closure-default-cache-review.json).
 
 Ordinary static properties 187/188 are installed. One exact combined source
 (`TCR9|s|9`) and one pause with 32 assertions cover nested Stringable

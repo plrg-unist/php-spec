@@ -12,6 +12,18 @@ DEFAULTCACHE is an owning state table keyed by a surviving deferred default orig
 
 Cache values contribute heap roots. Class metadata contributes none. Abrupt unwinding clears the temporary parameter context and ordinary frame cleanup releases local owners; existing cache and pool owners survive. Public resumption checks cache origin, active declaration, uniqueness, cacheable class/value topology and allocated roots. Arbitrary consistent cache values remain valid. Pool/code guards also accept compiled default roots whose receive descriptors were normalized away, while receive/cache guards require surviving descriptors.
 
+A separate generic91 repair authenticates deferred ordinary Closure and arrow
+default caches through the surviving `CLOSURETEMPLATES` entry, without requiring
+a live closure object or call context. It checks the exact source node, surviving
+default index/expression and absent compiled pool; stored literal defaults cannot
+be relabeled as deferred caches. Existing uniqueness, value-class and heap checks
+remain in force. Seven source comparisons and five paused stages (107 assertions)
+passed privately, including authentic caches after object retirement and forged
+descriptor rejection. [The review](../../coverage/semantics/closure-default-cache-review.json)
+keeps that acceptance separate from pending installation and scoped class defaults.
+Class-constant declarations and `self::class` defaults currently return explicit
+Unsupported before the scope probes can establish cache reuse behavior.
+
 Receive tasks require the actual current callee, omitted index, previously initialized parameter slots and the exact source-derived queue shape. Bind tasks require their parameter context and final queue position. Observer readiness clauses are disjoint between stages requiring the current result and stages relying only on recorded facts. Retained actual-source counterexamples cover trailing tasks and ternary/coalesce readiness before their finite repairs.
 
 The maintained source catalogue, cache/task protocol, readiness protocol and suspended-state driver complement independent original-context cache, alias, line and no-default compatibility replays. Final evidence identities and acceptance are recorded separately; this document does not claim completion of all call or constant families.
