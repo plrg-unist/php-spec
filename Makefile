@@ -208,6 +208,8 @@ test-semantics: build
 	python3 tests/semantics/class_static_references.py
 	python3 tests/semantics/class_static_merged_bridge.py
 	python3 tests/semantics/class_static_closure_call_bridge.py
+	python3 tests/semantics/property_scalar_alias.py
+	python3 tests/semantics/property_scalar_alias_protocol.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
