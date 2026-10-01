@@ -41,7 +41,9 @@ Renewed source `__wakeup` checks cover declaration case, variadics, selected
 parent signatures and tentative return notices. Separate replays of the 30
 admitted new controls, original 66 and independent 14 pass; 23 independent
 paused groups and the affected full-test pipe target pass on frozen9.
-The rebased projection onto canonical a33b5bef2 is pending current-base review.
+The reviewed projection onto canonical a33b5bef2 passes eight retained sources for189,
+one Closure and two Stringable controls, plus four independent paused groups.
+Final current-base integration awaits the isolated property/generic91 projection.
 Seven explicit Unsupported controls bound compiler publication dependencies,
 including some previously admitted typed external-root paths. The immediate
 compiler publication milestone must remove that restriction before constants.
