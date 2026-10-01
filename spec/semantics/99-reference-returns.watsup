@@ -33,6 +33,7 @@ def $reference_call_used(S, porigin) = true -- otherwise
 
 def $reference_return_used(S) = $reference_call_used(S, porigin)
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.CALLSITE = (porigin)
 def $reference_return_used(S) = true -- otherwise
 

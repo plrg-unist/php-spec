@@ -171,6 +171,38 @@ CASES = {
             '~$wrapper_context_valid(S, pcallcontext[.WRAPPER = (pnamedargs[.NAMED = [($ptascii("y"), VARIABLE $ptascii("x") 1), ($ptascii("x"), KNOWN (PINT 1))]])])',
         ],
     },
+    'call-reference-return-used': {
+        'source': '<?php class A {} $c=function &(){$x=1;return $x;}; $c->call(new A);',
+        'stage': ('S.TODO = (RETURN_REF_FETCH z) :: ptask_tail* '
+                  '-- if S.CURRENT = (pcallcontext) '
+                  '-- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver'),
+        'checks': [
+            '$reference_return_used(S)',
+            '$call_task_valid(S, RETURN_REF_FETCH z)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+        ],
+    },
+    'call-reference-result-unwrapped': {
+        'source': '<?php class A {} $x=1; $c=function &() use (&$x){return $x;}; $v =& $c->call(new A); $v=2; echo $x;',
+        'stage': ('S.TODO = (CLOSURE_CALL_RESULT porigin z) :: ptask_tail* '
+                  '-- if S.RESULT = REFERENCE n_cell'),
+        'checks': [
+            '$call_task_valid(S, CLOSURE_CALL_RESULT porigin z)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            '~$call_task_valid(S, CLOSURE_CALL_RESULT porigin $(z + 100))',
+            'S_after = $drive_steps(S, 1)[.COMPLETION = NORMAL]',
+            'S_after.RESULT = KNOWN (PINT 1)',
+            'S_after.BASE = BASE_VALUE (KNOWN (PINT 1))',
+            'S_after.STORE[n_cell] = DEFINED (PINT 1)',
+            '$call_descriptors_valid(S_after)',
+            '$closure_state_valid(S_after)',
+            '$heap_valid($heap_graph(S_after))',
+        ],
+    },
 }
 
 

@@ -334,5 +334,17 @@
     "native_group": ".tools/calls-review-wrapper-values-db9q2slm/native.json",
     "native_raw_sha256": "ce8b0507fda8c5fe83c6d50389a064b5a3472d8720221ee0d2161cb0dc53c841",
     "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json"
+  },
+  {
+    "id": "call-reference-return-unwrapped",
+    "source": "<?php class A {} $x=1; $c=function &() use (&$x){return $x;}; $v =& $c->call(new A); $v=2; echo $x;",
+    "source_sha256": "fe4014a05d4f82796ccab11ad96d3a2a13cb700c28ebd40bcdf37c4631cf1509",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0,
+    "native_group": ".tools/calls-review-reference-return-21v41lo5/native.json",
+    "native_raw_sha256": "796a8154bea72dbe19b85e8945bbd92989e80d998c84560755571d42a5773af0",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json"
   }
 ]

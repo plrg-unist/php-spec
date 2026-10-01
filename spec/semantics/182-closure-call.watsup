@@ -9,7 +9,7 @@ def $closure_call_args_at(S, porigin) = phpType7*
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $ptlc($base64(text_name)) = $ptascii("call")
 
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [CLOSURE_CALL_ARGS {SITE porigin_site, SOURCE n, FIRST eps, RECEIVER eps, INDEX 0, SENT {SLOTS eps, NAMED eps}, RAW eps, ERROR eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [CLOSURE_CALL_ARGS {SITE porigin_site, SOURCE n, FIRST eps, RECEIVER eps, INDEX 0, SENT {SLOTS eps, NAMED eps}, RAW eps, ERROR eps, LINE z}, CLOSURE_CALL_RESULT porigin_site z, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -274,6 +274,14 @@ def $closure_call_progress_valid(S, pclosurecall) = false -- otherwise
 def $call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall) = ($closure_call_task_valid(S, pclosurecall) /\ $closure_call_initial_source_valid(S, pclosurecall) /\ $closure_call_initial_receiver_valid(S, pclosurecall))
 def $call_task_valid(S, CLOSURE_CALL_SEND pclosurecall) = $closure_call_task_valid(S, pclosurecall)
 def $call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall) = $closure_call_task_valid(S, pclosurecall)
+def $task_nodes(CLOSURE_CALL_RESULT porigin z) = eps
+def $call_task_valid(S, CLOSURE_CALL_RESULT porigin z) = true
+  -- if $closure_call_args_at(S, porigin) = phpType7*
+  -- if $call_line_valid(S, (porigin), z)
+def $call_task_valid(S, CLOSURE_CALL_RESULT porigin z) = false -- otherwise
+rule PhpStep/closure-call-result: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE S_read.RESULT]
+  -- if S.TODO = (CLOSURE_CALL_RESULT porigin z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
 
 rule PhpStep/closure-call-argument: S ~> S[.TODO = [$at_task($origin_child((pclosurecall.SITE), [PCFIELD 2, PCINDEX pclosurecall.INDEX, PCFIELD 1]), EVAL expression), CLOSURE_CALL_SEND pclosurecall] ++ ptask_tail*]
   -- if S.TODO = (CLOSURE_CALL_ARGS pclosurecall) :: ptask_tail*
