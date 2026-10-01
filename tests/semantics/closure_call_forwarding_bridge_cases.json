@@ -30,7 +30,7 @@
     "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
     "source": "<?php class A {} $a=\"1\"; $c=function(int &$x){$x=9;echo $x;exit(7);}; try{foreach([0] as $k){$c->call(x:$a,newThis:new A);}}finally{echo \"F\";} echo \"T\";",
     "source_sha256": "ba0bcd649b4d1e86cca7d28d1827500c26ad499d20e0282c58bff1ef766c7d47",
-    "status": "normal",
+    "status": "explicit_exit",
     "stdout_base64": "OQ==",
     "stderr_template_base64": "V2FybmluZzogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMxICgkeCkgbXVzdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlLCB2YWx1ZSBnaXZlbiBpbiB7RklMRX0gb24gbGluZSAxCg==",
     "exit_status": 7
